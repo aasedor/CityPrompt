@@ -167,6 +167,29 @@ async def update_zone(
         setattr(zone, field, value)
 
     await db.flush()
+
+    # Propagate relevant property changes to linked building(s)
+    if "properties" in update_data:
+        new_props = update_data["properties"] or {}
+        bids = zone.building_ids or ([str(zone.building_id)] if zone.building_id else [])
+        if bids:
+            for bid_str in bids:
+                try:
+                    b_result = await db.execute(select(Building).where(Building.id == uuid.UUID(str(bid_str))))
+                    b = b_result.scalar_one_or_none()
+                    if b:
+                        if "height" in new_props and new_props["height"] is not None:
+                            b.height_meters = new_props["height"]
+                        if "floors" in new_props and new_props["floors"] is not None:
+                            b.floor_count = new_props["floors"]
+                        if "floor_height" in new_props and new_props["floor_height"] is not None:
+                            b.floor_height_meters = new_props["floor_height"]
+                        if "roof_style" in new_props and new_props["roof_style"] is not None:
+                            b.roof_type = new_props["roof_style"]
+                except Exception:
+                    pass
+            await db.flush()
+
     await db.refresh(zone)
     return _zone_to_response(zone)
 
