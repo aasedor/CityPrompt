@@ -6,6 +6,7 @@ Loads from environment variables and .env file.
 from functools import lru_cache
 from typing import List
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -25,6 +26,26 @@ class Settings(BaseSettings):
     # --- Database ---
     database_url: str = "postgresql+asyncpg://devuser:devpassword@localhost:5432/dev_platform"
     database_url_sync: str = "postgresql://devuser:devpassword@localhost:5432/dev_platform"
+
+    @model_validator(mode="after")
+    def _normalize_database_urls(self) -> "Settings":
+        """Handle Render's postgres:// URL format.
+
+        Render provides DATABASE_URL as postgres://... which needs:
+        - postgresql+asyncpg:// for the async engine
+        - postgresql:// for sync (Alembic / Celery)
+        """
+        url = self.database_url
+        # Render gives postgres:// — SQLAlchemy needs postgresql://
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        # Ensure async driver is present
+        if url.startswith("postgresql://"):
+            async_url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+            self.database_url = async_url
+        # Derive sync URL by stripping +asyncpg
+        self.database_url_sync = self.database_url.replace("+asyncpg", "")
+        return self
 
     # --- Redis ---
     redis_url: str = "redis://localhost:6379/0"

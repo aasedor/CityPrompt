@@ -14,6 +14,8 @@ settings = get_settings()
 
 # Override sqlalchemy.url with the sync version of our database URL
 sync_url = settings.database_url.replace("+asyncpg", "")
+if sync_url.startswith("postgres://"):
+    sync_url = sync_url.replace("postgres://", "postgresql://", 1)
 config.set_main_option("sqlalchemy.url", sync_url)
 
 if config.config_file_name is not None:

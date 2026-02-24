@@ -9,11 +9,14 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
+_pool_size = 5 if settings.app_env == "production" else 20
+_max_overflow = 3 if settings.app_env == "production" else 10
+
 engine = create_async_engine(
     settings.database_url,
     echo=settings.app_debug,
-    pool_size=20,
-    max_overflow=10,
+    pool_size=_pool_size,
+    max_overflow=_max_overflow,
     pool_pre_ping=True,
 )
 
