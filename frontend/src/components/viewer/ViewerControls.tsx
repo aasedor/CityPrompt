@@ -37,7 +37,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
 
       {/* Controls panel — hidden on mobile unless toggled */}
       <div
-        className={`absolute left-4 top-16 z-10 flex max-h-[calc(100vh-5rem)] flex-col gap-2 overflow-y-auto md:top-16 ${
+        className={`absolute left-4 top-16 z-10 flex max-h-[calc(100vh-12rem)] flex-col gap-2 overflow-y-auto pb-4 md:top-16 ${
           mobileOpen ? 'top-28' : 'hidden md:flex'
         }`}
       >

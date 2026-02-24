@@ -54,18 +54,21 @@ class MeshyClient:
             logger.info(f"Meshy text-to-3D preview started: {task_id}")
             return task_id
 
-    async def text_to_3d_refine(self, preview_task_id: str) -> str:
+    async def text_to_3d_refine(self, preview_task_id: str, texture_prompt: str = "") -> str:
         """Start a text-to-3D refine task from a completed preview. Returns task_id."""
         async with self._client() as client:
             payload = {
                 "mode": "refine",
                 "preview_task_id": preview_task_id,
+                "enable_pbr": True,
             }
+            if texture_prompt:
+                payload["texture_prompt"] = texture_prompt
             resp = await client.post("/openapi/v2/text-to-3d", json=payload)
             resp.raise_for_status()
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
-            logger.info(f"Meshy text-to-3D refine started: {task_id}")
+            logger.info(f"Meshy text-to-3D refine started: {task_id} (pbr=True)")
             return task_id
 
     async def image_to_3d(self, image_url: str) -> str:

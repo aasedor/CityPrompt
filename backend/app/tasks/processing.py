@@ -475,7 +475,10 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
         if mode == "text" and refine:
             self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
             try:
-                refine_task_id = asyncio.run(client.text_to_3d_refine(task_id))
+                refine_task_id = asyncio.run(client.text_to_3d_refine(
+                    task_id,
+                    texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}"
+                ))
                 logger.info(f"Refine task started: {refine_task_id} (from preview {task_id})")
                 building.meshy_task_id = refine_task_id
                 session.commit()

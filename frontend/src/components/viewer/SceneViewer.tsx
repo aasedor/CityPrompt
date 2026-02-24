@@ -2745,8 +2745,8 @@ function GLBModel({
     return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: oY };
   }, [clonedScene, targetHeight, footprintCoordinates]);
 
-  // Enable vertex colors on materials that have color attributes (Meshy preview models)
-  // and store original materials so we can restore them after selection/hover
+  // Fix materials: enable vertex colors if present, or apply a warm default
+  // color to untextured Meshy preview models (which have no color data at all).
   const originalMaterials = useRef<Map<THREE.Mesh, THREE.Material | THREE.Material[]>>(new Map());
   useEffect(() => {
     clonedScene.traverse((child) => {
@@ -2756,9 +2756,21 @@ function GLBModel({
         const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
         const newMats = mats.map((m) => {
           const mat = m as THREE.MeshStandardMaterial;
-          if (hasVertexColors && mat.isMeshStandardMaterial && !mat.vertexColors) {
+          if (!mat.isMeshStandardMaterial) return mat;
+          // If the model has vertex colors, enable them
+          if (hasVertexColors && !mat.vertexColors) {
             const cloned = mat.clone();
             cloned.vertexColors = true;
+            cloned.needsUpdate = true;
+            return cloned;
+          }
+          // If the model has no texture map AND no vertex colors, it's an
+          // untextured Meshy preview — apply a warm architectural material
+          if (!mat.map && !hasVertexColors) {
+            const cloned = mat.clone();
+            cloned.color.set('#c8a882');   // warm sandstone
+            cloned.roughness = 0.8;
+            cloned.metalness = 0.05;
             cloned.needsUpdate = true;
             return cloned;
           }
