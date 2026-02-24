@@ -88,7 +88,11 @@ services:
   - type: web
     name: 3d-platform-frontend
     runtime: static
-    buildCommand: cd frontend && npm install && npx vite build
+    buildCommand: >-
+      echo "VITE_API_URL=$VITE_API_URL" > .env.production &&
+      echo "VITE_WS_URL=$VITE_WS_URL" >> .env.production &&
+      echo "VITE_MAPBOX_TOKEN=$VITE_MAPBOX_TOKEN" >> .env.production &&
+      cd frontend && npm install && npx vite build
     staticPublishPath: frontend/dist
     headers:
       - path: /*
