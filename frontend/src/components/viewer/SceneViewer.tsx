@@ -2555,6 +2555,7 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
           buildingId={building.id}
           lodUrls={building.lod_urls}
           targetHeight={height}
+          footprintCoordinates={building.footprint_coordinates}
           isSelected={isSelected}
           isHovered={isHovered}
           onClick={handleClick}
@@ -2605,6 +2606,7 @@ function GLBBuildingMesh({
   buildingId,
   lodUrls,
   targetHeight,
+  footprintCoordinates,
   isSelected,
   isHovered,
   onClick,
@@ -2614,6 +2616,7 @@ function GLBBuildingMesh({
   buildingId: string;
   lodUrls?: Record<string, string>;
   targetHeight: number;
+  footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
   onClick?: () => void;
@@ -2680,6 +2683,7 @@ function GLBBuildingMesh({
       <GLBModel
         url={modelUrl}
         targetHeight={targetHeight}
+        footprintCoordinates={footprintCoordinates}
         isSelected={isSelected}
         isHovered={isHovered}
         onClick={onClick}
@@ -2694,6 +2698,7 @@ function GLBBuildingMesh({
 function GLBModel({
   url,
   targetHeight,
+  footprintCoordinates,
   isSelected,
   isHovered,
   onClick,
@@ -2702,6 +2707,7 @@ function GLBModel({
 }: {
   url: string;
   targetHeight: number;
+  footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
   onClick?: () => void;
@@ -2711,15 +2717,33 @@ function GLBModel({
   const { scene } = useGLTF(url);
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
-  // Compute scale + offset to normalize the GLB so it sits on the ground at the target height
-  const { scale, offsetY } = useMemo(() => {
+  // Compute per-axis scale to fit the model within the zone footprint
+  const { scaleX, scaleY, scaleZ, offsetY } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(clonedScene);
+    const modelWidth = box.max.x - box.min.x;
     const modelHeight = box.max.y - box.min.y;
-    const s = modelHeight > 0.01 ? targetHeight / modelHeight : 1;
-    // After scaling, the model's min-y should sit at y=0
-    const oY = -box.min.y * s;
-    return { scale: s, offsetY: oY };
-  }, [clonedScene, targetHeight]);
+    const modelDepth = box.max.z - box.min.z;
+
+    const sY = modelHeight > 0.01 ? targetHeight / modelHeight : 1;
+
+    // Derive target width/depth from footprint coordinates (in meters)
+    let sX = sY;
+    let sZ = sY;
+    if (footprintCoordinates && footprintCoordinates.length >= 3) {
+      const xs = footprintCoordinates.map(c => c[0]);
+      const ys = footprintCoordinates.map(c => c[1]);
+      const lat = footprintCoordinates[0][1];
+      const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
+      const metersPerDegLat = 111320;
+      const targetWidth = (Math.max(...xs) - Math.min(...xs)) * metersPerDegLon;
+      const targetDepth = (Math.max(...ys) - Math.min(...ys)) * metersPerDegLat;
+      if (modelWidth > 0.01 && targetWidth > 0.1) sX = targetWidth / modelWidth;
+      if (modelDepth > 0.01 && targetDepth > 0.1) sZ = targetDepth / modelDepth;
+    }
+
+    const oY = -box.min.y * sY;
+    return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: oY };
+  }, [clonedScene, targetHeight, footprintCoordinates]);
 
   // Apply selection/hover tint and shadow settings
   useEffect(() => {
@@ -2746,7 +2770,7 @@ function GLBModel({
   }, [clonedScene, isSelected, isHovered]);
 
   return (
-    <group scale={[scale, scale, scale]} position={[0, offsetY, 0]}>
+    <group scale={[scaleX, scaleY, scaleZ]} position={[0, offsetY, 0]}>
       <primitive
         object={clonedScene}
         onClick={onClick}
