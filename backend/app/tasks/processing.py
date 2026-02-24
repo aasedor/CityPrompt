@@ -495,91 +495,17 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
         import httpx as httpx_sync
         glb_data = httpx_sync.get(glb_url, timeout=60.0).content
 
-        self.update_state(state="GENERATING", meta={"progress": 0.8, "step": "optimizing"})
-
-        # Optimize the raw Meshy model using voxel remeshing to a reasonable polygon budget.
-        # Meshy models often have millions of non-manifold faces that resist traditional
-        # decimation, so voxelization + marching cubes produces a clean, lightweight mesh.
-        MAX_FACES = 100000
-        project_id = building.project_id
-        import trimesh
-        from app.generation.geometry.building_generator import GLBExporter
-
-        optimized_data = glb_data
-        combined = None
-        tmp_glb_path = None
-        try:
-            with tempfile.NamedTemporaryFile(suffix=".glb", delete=False) as tmp_glb:
-                tmp_glb.write(glb_data)
-                tmp_glb_path = tmp_glb.name
-
-            scene = trimesh.load(tmp_glb_path)
-            if isinstance(scene, trimesh.Scene):
-                try:
-                    combined = scene.to_geometry()
-                except Exception:
-                    combined = scene.dump(concatenate=True)
-            else:
-                combined = scene
-
-            if isinstance(combined, trimesh.Trimesh) and len(combined.faces) > MAX_FACES:
-                orig_faces = len(combined.faces)
-                logger.info(f"Optimizing AI model: {orig_faces} faces")
-                bounds = combined.bounds
-                max_extent = max(bounds[1] - bounds[0])
-                # Voxel pitch targeting ~100 voxels along longest axis -> ~100K faces
-                pitch = max_extent / 100
-                voxelized = combined.voxelized(pitch)
-                combined = voxelized.marching_cubes
-                optimized_scene = trimesh.Scene([combined])
-                optimized_data = GLBExporter.export_to_bytes(optimized_scene)
-                logger.info(
-                    f"Optimized model: {len(combined.faces)} faces, "
-                    f"{len(optimized_data)} bytes (was {len(glb_data)} bytes)"
-                )
-        except Exception as opt_err:
-            logger.warning(f"Model optimization failed (using raw): {opt_err}")
-
         self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
 
-        # Upload the optimized model to MinIO
+        # Upload the raw Meshy GLB directly — voxel remeshing was stripping all
+        # materials, textures, and colors, producing single-color models.
+        # Meshy models are already reasonably sized for real-time viewing.
+        project_id = building.project_id
         model_key = f"projects/{project_id}/models/{building_id}_ai.glb"
-        model_url = _upload_to_storage(model_key, optimized_data, "model/gltf-binary")
+        model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
 
-        self.update_state(state="GENERATING", meta={"progress": 0.9, "step": "generating_lods"})
-
-        # Generate LOD variants via voxel remeshing at lower resolutions
+        # Use the same model for all LOD levels (preserves textures at all distances)
         lod_urls = {"0": model_url}
-        try:
-            if isinstance(combined, trimesh.Trimesh) and len(combined.faces) > 10:
-                bounds = combined.bounds
-                max_extent = max(bounds[1] - bounds[0])
-                lod_configs = [
-                    (1, 25, "Simplified"),
-                    (2, 12, "Low detail"),
-                ]
-                for level, pitch_div, desc in lod_configs:
-                    try:
-                        pitch = max_extent / pitch_div
-                        voxelized = combined.voxelized(pitch)
-                        lod_mesh = voxelized.marching_cubes
-                        lod_scene = trimesh.Scene([lod_mesh])
-                        lod_data = GLBExporter.export_to_bytes(lod_scene)
-                        lod_key = f"projects/{project_id}/models/{building_id}_ai_lod{level}.glb"
-                        lod_url = _upload_to_storage(lod_key, lod_data, "model/gltf-binary")
-                        lod_urls[str(level)] = lod_url
-                        logger.info(f"AI model LOD {level} ({desc}): {len(lod_mesh.faces)} faces")
-                    except Exception as lod_err:
-                        logger.warning(f"LOD {level} generation failed: {lod_err}")
-        except Exception as lod_err:
-            logger.warning(f"LOD generation for AI model failed (non-fatal): {lod_err}")
-
-        if tmp_glb_path:
-            import os
-            try:
-                os.unlink(tmp_glb_path)
-            except Exception:
-                pass
 
         self.update_state(state="GENERATING", meta={"progress": 0.95, "step": "updating"})
 
