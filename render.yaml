@@ -88,7 +88,7 @@ services:
   - type: web
     name: 3d-platform-frontend
     runtime: static
-    buildCommand: cd frontend && npm install && npm run build
+    buildCommand: cd frontend && npm install && npx vite build
     staticPublishPath: frontend/dist
     headers:
       - path: /*
