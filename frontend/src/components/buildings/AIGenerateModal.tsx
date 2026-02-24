@@ -80,8 +80,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
       startPolling();
     } catch (err: unknown) {
       setGenerating(false);
-      const axiosErr = err as { response?: { data?: { detail?: string } }; message?: string };
-      setError(axiosErr.response?.data?.detail || axiosErr.message || 'Failed to start generation');
+      const axiosErr = err as { response?: { data?: { detail?: unknown } }; message?: string };
+      const detail = axiosErr.response?.data?.detail;
+      const msg = typeof detail === 'string'
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((d: Record<string, unknown>) => (d.msg as string) || JSON.stringify(d)).join('; ')
+          : axiosErr.message || 'Failed to start generation';
+      setError(msg);
     }
   }, [buildingId, artStyle, negativePrompt, startPolling]);
 
@@ -95,8 +101,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
       startPolling();
     } catch (err: unknown) {
       setGenerating(false);
-      const axiosErr = err as { response?: { data?: { detail?: string } }; message?: string };
-      setError(axiosErr.response?.data?.detail || axiosErr.message || 'Failed to start generation');
+      const axiosErr = err as { response?: { data?: { detail?: unknown } }; message?: string };
+      const detail = axiosErr.response?.data?.detail;
+      const msg = typeof detail === 'string'
+        ? detail
+        : Array.isArray(detail)
+          ? detail.map((d: Record<string, unknown>) => (d.msg as string) || JSON.stringify(d)).join('; ')
+          : axiosErr.message || 'Failed to start generation';
+      setError(msg);
     }
   }, [buildingId, imageUrl, startPolling]);
 

@@ -50,7 +50,7 @@ def _building_to_response(building: Building) -> dict:
         "generation_prompt": building.generation_prompt,
         "meshy_task_id": building.meshy_task_id,
         "footprint_coordinates": footprint_coordinates,
-        "rotation_degrees": float(building.rotation_degrees) if building.rotation_degrees is not None else 0,
+        "rotation_degrees": float(building.rotation_degrees) if getattr(building, 'rotation_degrees', None) is not None else 0,
         "created_at": building.created_at,
     }
 
