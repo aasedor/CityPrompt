@@ -201,6 +201,8 @@ export function ViewerPage() {
   // Generation status polling
   // =========================================================================
   const [generationStatuses, setGenerationStatuses] = useState<Map<string, { status: string; progress?: number }>>(new Map());
+  const [generationStartTime, setGenerationStartTime] = useState<number | null>(null);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   // Track buildings that are currently generating
   useEffect(() => {
@@ -208,6 +210,9 @@ export function ViewerPage() {
       (b) => b.generation_status === 'generating'
     );
     if (generatingBuildings.length === 0) return;
+
+    // Record when generation started
+    setGenerationStartTime((prev) => prev ?? Date.now());
 
     // Seed initial statuses
     setGenerationStatuses((prev) => {
@@ -248,11 +253,28 @@ export function ViewerPage() {
     return () => clearInterval(interval);
   }, [project?.buildings, id, queryClient]);
 
+  // Elapsed time ticker
+  useEffect(() => {
+    if (!generationStartTime) return;
+    const tick = setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - generationStartTime) / 1000));
+    }, 1000);
+    return () => clearInterval(tick);
+  }, [generationStartTime]);
+
   // Count generating buildings for batch progress
   const generatingCount = Array.from(generationStatuses.values()).filter(
     (s) => s.status === 'generating'
   ).length;
   const totalTracked = generationStatuses.size;
+
+  // Reset timer when generation finishes
+  useEffect(() => {
+    if (generatingCount === 0 && generationStartTime) {
+      setGenerationStartTime(null);
+      setElapsedSeconds(0);
+    }
+  }, [generatingCount, generationStartTime]);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId);
 
@@ -886,7 +908,8 @@ export function ViewerPage() {
           {generatingCount > 0 && (
             <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2 rounded-lg bg-purple-600/90 px-4 py-2 text-sm font-medium text-white shadow-lg backdrop-blur-sm">
               <Loader2 size={14} className="animate-spin" />
-              <span>{totalTracked > 1 ? `Generating ${generatingCount} of ${totalTracked} buildings...` : 'Generating 3D model...'}</span>
+              <span>{totalTracked > 1 ? `Generating ${generatingCount} of ${totalTracked} buildings` : 'Generating 3D model'}</span>
+              <span className="tabular-nums text-purple-200">{Math.floor(elapsedSeconds / 60)}:{(elapsedSeconds % 60).toString().padStart(2, '0')}</span>
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-purple-400/30">
                 <div
                   className="h-full rounded-full bg-white/80 transition-all"
