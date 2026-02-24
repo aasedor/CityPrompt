@@ -695,9 +695,9 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
   // Compute grid positions for buildings so they don't stack
   const gridPositions = computeBuildingPositions(buildings);
 
-  // Compute final positions: geographic for buildings with footprints when map is on, grid otherwise
+  // Compute final positions: geographic for buildings with footprints (regardless of map mode), grid otherwise
   const positions = useMemo(() => {
-    if (showMapBackground && latitude && longitude) {
+    if (latitude && longitude) {
       const metersPerDegLat = 111320;
       const metersPerDegLon = 111320 * Math.cos((latitude * Math.PI) / 180);
       return buildings.map((b, i) => {
@@ -719,7 +719,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       });
     }
     return gridPositions;
-  }, [buildings, showMapBackground, latitude, longitude, gridPositions]);
+  }, [buildings, latitude, longitude, gridPositions]);
 
   // Filter image documents for display
   const imageDocuments = (documents || []).filter((d) =>

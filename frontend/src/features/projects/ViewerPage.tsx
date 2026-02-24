@@ -886,7 +886,7 @@ export function ViewerPage() {
           {generatingCount > 0 && (
             <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2 rounded-lg bg-purple-600/90 px-4 py-2 text-sm font-medium text-white shadow-lg backdrop-blur-sm">
               <Loader2 size={14} className="animate-spin" />
-              <span>Generating {generatingCount} of {totalTracked} buildings...</span>
+              <span>{totalTracked > 1 ? `Generating ${generatingCount} of ${totalTracked} buildings...` : 'Generating 3D model...'}</span>
               <div className="h-1.5 w-24 overflow-hidden rounded-full bg-purple-400/30">
                 <div
                   className="h-full rounded-full bg-white/80 transition-all"
