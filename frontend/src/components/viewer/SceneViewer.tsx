@@ -2745,7 +2745,34 @@ function GLBModel({
     return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: oY };
   }, [clonedScene, targetHeight, footprintCoordinates]);
 
-  // Apply selection/hover tint and shadow settings
+  // Enable vertex colors on materials that have color attributes (Meshy preview models)
+  // and store original materials so we can restore them after selection/hover
+  const originalMaterials = useRef<Map<THREE.Mesh, THREE.Material | THREE.Material[]>>(new Map());
+  useEffect(() => {
+    clonedScene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        const hasVertexColors = !!mesh.geometry.attributes.color;
+        const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        const newMats = mats.map((m) => {
+          const mat = m as THREE.MeshStandardMaterial;
+          if (hasVertexColors && mat.isMeshStandardMaterial && !mat.vertexColors) {
+            const cloned = mat.clone();
+            cloned.vertexColors = true;
+            cloned.needsUpdate = true;
+            return cloned;
+          }
+          return mat;
+        });
+        mesh.material = Array.isArray(mesh.material) ? newMats : newMats[0];
+        originalMaterials.current.set(mesh, Array.isArray(mesh.material) ? [...newMats] : newMats[0]);
+        mesh.castShadow = false;
+        mesh.receiveShadow = true;
+      }
+    });
+  }, [clonedScene]);
+
+  // Apply selection/hover tint (restores original materials when deselected)
   useEffect(() => {
     clonedScene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -2760,11 +2787,11 @@ function GLBModel({
             mat.opacity = 0.9;
           }
           mesh.material = mat;
+        } else {
+          // Restore original material
+          const orig = originalMaterials.current.get(mesh);
+          if (orig) mesh.material = orig;
         }
-        // Shadows: only receiveShadow on GLB meshes — castShadow on high-poly
-        // meshes is extremely expensive; the parent group handles it as a proxy
-        mesh.castShadow = false;
-        mesh.receiveShadow = true;
       }
     });
   }, [clonedScene, isSelected, isHovered]);

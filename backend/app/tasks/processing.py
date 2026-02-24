@@ -469,17 +469,23 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
         self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling"})
 
         result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
+        logger.info(f"Meshy preview result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
 
-        # For text mode, optionally run refine step (doubles generation time)
+        # For text mode, run refine step to get PBR textures (preview has no textures)
         if mode == "text" and refine:
             self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
             try:
                 refine_task_id = asyncio.run(client.text_to_3d_refine(task_id))
+                logger.info(f"Refine task started: {refine_task_id} (from preview {task_id})")
                 building.meshy_task_id = refine_task_id
                 session.commit()
-                result = asyncio.run(client.poll_until_done(refine_task_id, timeout=300, task_type="text"))
+                result = asyncio.run(client.poll_until_done(refine_task_id, timeout=600, task_type="text"))
+                logger.info(f"Meshy refine result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
             except Exception as refine_err:
-                logger.warning(f"Refine step failed (using preview): {refine_err}")
+                logger.error(f"Refine step FAILED for building {building_id}: {refine_err}", exc_info=True)
+                logger.warning("Falling back to preview model (will lack textures)")
+        elif mode == "text":
+            logger.info(f"Refine disabled for building {building_id} — using preview model")
 
         self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
 
