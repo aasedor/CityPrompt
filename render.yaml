@@ -3,7 +3,7 @@
 
 databases:
   - name: 3d-platform-db
-    plan: standard
+    plan: basic-256mb
     databaseName: dev_platform
     postgresMajorVersion: "16"
     ipAllowList: []  # only internal access
