@@ -311,6 +311,8 @@ export function SitePlannerMap({
       style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [longitude || -114.07, latitude || 51.045],
       zoom: 16,
+      minZoom: 2,
+      maxZoom: 22,
       pitch: 0,
       bearing: 0,
       doubleClickZoom: false,

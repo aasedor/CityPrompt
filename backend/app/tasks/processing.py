@@ -462,7 +462,7 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
         # Optimize the raw Meshy model using voxel remeshing to a reasonable polygon budget.
         # Meshy models often have millions of non-manifold faces that resist traditional
         # decimation, so voxelization + marching cubes produces a clean, lightweight mesh.
-        MAX_FACES = 15000
+        MAX_FACES = 100000
         project_id = building.project_id
         import trimesh
         from app.generation.geometry.building_generator import GLBExporter
@@ -489,8 +489,8 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
                 logger.info(f"Optimizing AI model: {orig_faces} faces")
                 bounds = combined.bounds
                 max_extent = max(bounds[1] - bounds[0])
-                # Voxel pitch targeting ~50 voxels along longest axis -> ~15K faces
-                pitch = max_extent / 50
+                # Voxel pitch targeting ~100 voxels along longest axis -> ~100K faces
+                pitch = max_extent / 100
                 voxelized = combined.voxelized(pitch)
                 combined = voxelized.marching_cubes
                 optimized_scene = trimesh.Scene([combined])
