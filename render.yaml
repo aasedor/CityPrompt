@@ -23,7 +23,7 @@ services:
     name: 3d-platform-api
     runtime: docker
     plan: standard
-    dockerfilePath: ./infrastructure/docker/Dockerfile.render
+    dockerfilePath: ./backend/Dockerfile.render
     dockerContext: ./backend
     healthCheckPath: /health
     envVars:
@@ -59,7 +59,7 @@ services:
     name: 3d-platform-worker
     runtime: docker
     plan: standard
-    dockerfilePath: ./infrastructure/docker/Dockerfile.render
+    dockerfilePath: ./backend/Dockerfile.render
     dockerContext: ./backend
     dockerCommand: celery -A app.tasks.worker:celery_app worker --loglevel=info --concurrency=2
     envVars:
