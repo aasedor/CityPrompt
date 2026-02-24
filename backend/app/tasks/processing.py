@@ -419,7 +419,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
 
 
 @celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2)
-def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None):
+def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None, refine: bool = False):
     """
     Generate a 3D model via Meshy.ai API.
 
@@ -470,8 +470,8 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
 
         result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
 
-        # For text mode, also run refine step
-        if mode == "text":
+        # For text mode, optionally run refine step (doubles generation time)
+        if mode == "text" and refine:
             self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
             try:
                 refine_task_id = asyncio.run(client.text_to_3d_refine(task_id))
