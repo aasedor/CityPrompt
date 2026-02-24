@@ -2,7 +2,7 @@ import { useCallback, useRef, useState, useEffect, Component, type ReactNode, ty
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users, Eye, EyeOff, Map, Trash2, Sparkles } from 'lucide-react';
+import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users, Eye, EyeOff, Map as MapIcon, Trash2, Sparkles, Move, Loader2, Footprints } from 'lucide-react';
 import { projectsApi, buildingsApi, contextApi, annotationsApi, siteZonesApi } from '@/services/api';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 // Annotation type used implicitly via annotationsApi
@@ -10,10 +10,10 @@ import type { SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { SceneViewer } from '@/components/viewer/SceneViewer';
 import { ViewerControls } from '@/components/viewer/ViewerControls';
-import { MapboxBackground } from '@/components/viewer/MapboxBackground';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
+import { WalkthroughHUD } from '@/components/viewer/WalkthroughHUD';
 import { useViewerStore, useAuthStore } from '@/store';
 import { useCollaboration } from '@/services/collaboration';
 
@@ -49,7 +49,7 @@ class SceneErrorBoundary extends Component<{ children: ReactNode }, { error: Err
 export function ViewerPage() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const { selectedBuildingId, selectBuilding, hoverBuilding, isInfoPanelOpen, settings, isComparing, comparePhase, compareDivider, setCompareDivider, isAnnotating, setAnnotating, isSitePlannerActive, setSitePlannerActive, selectedZoneId, selectZone, setCameraTarget } = useViewerStore();
+  const { selectedBuildingId, selectBuilding, hoverBuilding, isInfoPanelOpen, settings, isComparing, comparePhase, compareDivider, setCompareDivider, isAnnotating, setAnnotating, isSitePlannerActive, setSitePlannerActive, selectedZoneId, selectZone, setCameraTarget, setCameraMode, isMovingBuilding, setMovingBuilding, isWalkthroughActive, startWalkthrough, exitWalkthrough } = useViewerStore();
   const { user } = useAuthStore();
 
   // Real-time collaboration
@@ -58,8 +58,9 @@ export function ViewerPage() {
   // Broadcast building selections to collaborators
   const handleSelectBuilding = useCallback((buildingId: string | null) => {
     selectBuilding(buildingId);
+    if (!buildingId) setMovingBuilding(false);
     collaboration.sendSelect(buildingId || '');
-  }, [selectBuilding, collaboration]);
+  }, [selectBuilding, setMovingBuilding, collaboration]);
 
   // Follow camera state — holds the latest camera from the followed user
   const [followCamera, setFollowCamera] = useState<{ position: [number, number, number]; target: [number, number, number] } | null>(null);
@@ -196,6 +197,63 @@ export function ViewerPage() {
     });
   }, [queryClient, id]);
 
+  // =========================================================================
+  // Generation status polling
+  // =========================================================================
+  const [generationStatuses, setGenerationStatuses] = useState<Map<string, { status: string; progress?: number }>>(new Map());
+
+  // Track buildings that are currently generating
+  useEffect(() => {
+    const generatingBuildings = (project?.buildings || []).filter(
+      (b) => b.generation_status === 'generating'
+    );
+    if (generatingBuildings.length === 0) return;
+
+    // Seed initial statuses
+    setGenerationStatuses((prev) => {
+      const next = new Map(prev);
+      for (const b of generatingBuildings) {
+        if (!next.has(b.id)) {
+          next.set(b.id, { status: 'generating', progress: 0 });
+        }
+      }
+      return next;
+    });
+
+    const interval = setInterval(async () => {
+      let anyStillGenerating = false;
+      for (const b of generatingBuildings) {
+        try {
+          const status = await buildingsApi.getGenerationStatus(b.id);
+          setGenerationStatuses((prev) => {
+            const next = new Map(prev);
+            next.set(b.id, { status: status.status, progress: status.progress });
+            return next;
+          });
+          if (status.status === 'generating') {
+            anyStillGenerating = true;
+          } else if (status.status === 'completed') {
+            // Reload project to get updated model URLs
+            queryClient.invalidateQueries({ queryKey: ['project', id] });
+          }
+        } catch {
+          // Ignore status polling errors
+        }
+      }
+      if (!anyStillGenerating) {
+        clearInterval(interval);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [project?.buildings, id, queryClient]);
+
+  // Count generating buildings for batch progress
+  const generatingCount = Array.from(generationStatuses.values()).filter(
+    (s) => s.status === 'generating'
+  ).length;
+  const totalTracked = generationStatuses.size;
+
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId);
 
   const selectedBuilding = project?.buildings?.find((b) => b.id === selectedBuildingId);
@@ -264,6 +322,84 @@ export function ViewerPage() {
     setTimeout(flyToZones, 300);
   }, [setSitePlannerActive, flyToZones]);
 
+  // Compute a good walkthrough start position from zone data
+  const computeWalkthroughEntry = useCallback((): { position: [number, number, number]; target: [number, number, number] } => {
+    if (siteZones.length === 0 || !effectiveLocation) {
+      // Fallback: start near origin at eye level looking north
+      return { position: [0, 1.7, 10], target: [0, 1.7, 0] };
+    }
+    const lat = effectiveLocation.latitude;
+    const lng = effectiveLocation.longitude;
+    const metersPerDegLat = 111320;
+    const metersPerDegLon = metersPerDegLat * Math.cos((lat * Math.PI) / 180);
+
+    // Compute centroid of all zone coordinates in local meters
+    let sumX = 0, sumZ = 0, count = 0;
+    for (const zone of siteZones) {
+      for (const p of zone.coordinates) {
+        sumX += (p[0] - lng) * metersPerDegLon;
+        sumZ += -(p[1] - lat) * metersPerDegLat;
+        count++;
+      }
+    }
+    const cx = count > 0 ? sumX / count : 0;
+    const cz = count > 0 ? sumZ / count : 0;
+
+    // If road zones exist, find the road zone closest to the centroid and use its midpoint
+    const roadZones = siteZones.filter((z) => z.zone_type === 'road');
+    if (roadZones.length > 0) {
+      let bestDist = Infinity;
+      let bestPos: [number, number, number] = [cx, 1.7, cz];
+      for (const road of roadZones) {
+        let rx = 0, rz = 0;
+        for (const p of road.coordinates) {
+          rx += (p[0] - lng) * metersPerDegLon;
+          rz += -(p[1] - lat) * metersPerDegLat;
+        }
+        rx /= road.coordinates.length;
+        rz /= road.coordinates.length;
+        const d = Math.hypot(rx - cx, rz - cz);
+        if (d < bestDist) {
+          bestDist = d;
+          bestPos = [rx, 1.7, rz];
+        }
+      }
+      // Look toward the centroid from the road position
+      return { position: bestPos, target: [cx, 1.7, cz] };
+    }
+
+    // Start slightly south of centroid, looking north
+    return { position: [cx, 1.7, cz + 15], target: [cx, 1.7, cz] };
+  }, [siteZones, effectiveLocation]);
+
+  // Handle "Walk Through" from site planner
+  const handleWalkThrough = useCallback(() => {
+    setSitePlannerActive(false);
+    setTimeout(() => {
+      const { position, target } = computeWalkthroughEntry();
+      // Save current camera state for return
+      startWalkthrough(
+        [position[0] + 50, 50, position[2] + 50], // Approximate current orbit position
+        [position[0], 0, position[2]],
+      );
+      // Animate camera to street level
+      setCameraTarget({ position, target, label: 'Walkthrough' });
+      // After animation, switch to first person
+      setTimeout(() => setCameraMode('firstPerson'), 700);
+    }, 300);
+  }, [setSitePlannerActive, computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
+
+  // Handle "Explore" from top bar (no site planner exit needed)
+  const handleExplore = useCallback(() => {
+    const { position, target } = computeWalkthroughEntry();
+    startWalkthrough(
+      [position[0] + 50, 50, position[2] + 50],
+      [position[0], 0, position[2]],
+    );
+    setCameraTarget({ position, target, label: 'Walkthrough' });
+    setTimeout(() => setCameraMode('firstPerson'), 700);
+  }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
+
   const updateBuilding = useMutation({
     mutationFn: (vars: { buildingId: string; data: Record<string, unknown> }) =>
       buildingsApi.update(vars.buildingId, vars.data),
@@ -298,6 +434,47 @@ export function ViewerPage() {
     setAnnotationText('');
   }, [isAnnotating]);
 
+  // Handle building move — convert scene position back to geographic footprint
+  const handleBuildingMove = useCallback((buildingId: string, position: [number, number, number]) => {
+    const building = allBuildings.find((b) => b.id === buildingId);
+    if (!building) return;
+
+    if (building.footprint_coordinates && building.footprint_coordinates.length >= 3 && effectiveLocation) {
+      const lat = effectiveLocation.latitude;
+      const lng = effectiveLocation.longitude;
+      const metersPerDegLat = 111320;
+      const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
+
+      // Compute current centroid in scene coords
+      let oldCx = 0, oldCy = 0;
+      for (const p of building.footprint_coordinates) {
+        oldCx += p[0]; oldCy += p[1];
+      }
+      oldCx /= building.footprint_coordinates.length;
+      oldCy /= building.footprint_coordinates.length;
+      const oldSceneX = (oldCx - lng) * metersPerDegLon;
+      const oldSceneZ = -(oldCy - lat) * metersPerDegLat;
+
+      // Compute delta in scene space
+      const dx = position[0] - oldSceneX;
+      const dz = position[2] - oldSceneZ;
+
+      // Convert delta back to geographic
+      const dLng = dx / metersPerDegLon;
+      const dLat = -dz / metersPerDegLat;
+
+      // Shift all footprint coordinates
+      const newCoords = building.footprint_coordinates.map(([pLng, pLat]) => [pLng + dLng, pLat + dLat]);
+
+      updateBuilding.mutate({
+        buildingId,
+        data: { footprint_coordinates: newCoords },
+      });
+    }
+
+    setMovingBuilding(false);
+  }, [allBuildings, effectiveLocation, updateBuilding, setMovingBuilding]);
+
   const handleSubmitAnnotation = useCallback(() => {
     if (!pendingAnnotationPos || !annotationText.trim()) return;
     createAnnotation.mutate({
@@ -315,6 +492,27 @@ export function ViewerPage() {
 
   const [screenshotMenuOpen, setScreenshotMenuOpen] = useState(false);
   const [showAIGenerateModal, setShowAIGenerateModal] = useState(false);
+  const [generatingNeighborhood, setGeneratingNeighborhood] = useState(false);
+
+  const handleGenerateNeighborhood = useCallback(async () => {
+    if (!id) return;
+    setGeneratingNeighborhood(true);
+    try {
+      const result = await siteZonesApi.generateAll(id);
+      toast.success(
+        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+      );
+      queryClient.invalidateQueries({ queryKey: ['project', id] });
+      queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Generation failed';
+      toast.error(message);
+    } finally {
+      setGeneratingNeighborhood(false);
+    }
+  }, [id, queryClient]);
+  const [aiGenerateFromZoneBuildingId, setAiGenerateFromZoneBuildingId] = useState<string | null>(null);
+  const [aiGenerateFromZonePrompt, setAiGenerateFromZonePrompt] = useState<string | null>(null);
   const [editingBuilding, setEditingBuilding] = useState(false);
   const [editValues, setEditValues] = useState<{
     height_meters?: number;
@@ -369,13 +567,22 @@ export function ViewerPage() {
         if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
         setShowShortcuts((v) => !v);
       }
+      if (e.key === 'Escape' && isWalkthroughActive) {
+        if (document.pointerLockElement) document.exitPointerLock();
+        exitWalkthrough();
+        return;
+      }
+      if (e.key === 'Escape' && isMovingBuilding) {
+        setMovingBuilding(false);
+        return;
+      }
       if (e.key === 'Escape' && showShortcuts) {
         setShowShortcuts(false);
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [showShortcuts]);
+  }, [showShortcuts, isMovingBuilding, setMovingBuilding, isWalkthroughActive, exitWalkthrough]);
 
   const handleToggleVideoRecord = useCallback(() => {
     if (isRecordingVideo) {
@@ -502,7 +709,7 @@ export function ViewerPage() {
                 : 'bg-white/10 text-white hover:bg-white/20'
             }`}
           >
-            <Map size={14} />
+            <MapIcon size={14} />
             <span className="hidden sm:inline">{isSitePlannerActive ? 'Exit Site Plan' : 'Site Plan'}</span>
           </button>
           {!isSitePlannerActive && (
@@ -513,6 +720,27 @@ export function ViewerPage() {
           >
             <Sparkles size={14} />
             <span className="hidden sm:inline">AI Generate</span>
+          </button>
+          )}
+          {!isSitePlannerActive && siteZones.length > 0 && (
+          <button
+            onClick={handleGenerateNeighborhood}
+            disabled={generatingNeighborhood}
+            className="flex items-center gap-1.5 rounded-lg bg-purple-700/80 p-2 text-sm font-medium text-white backdrop-blur-sm hover:bg-purple-800/80 disabled:opacity-50 sm:px-3 sm:py-1.5"
+            title="Generate 3D models for all building/residential zones"
+          >
+            {generatingNeighborhood ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+            <span className="hidden sm:inline">{generatingNeighborhood ? 'Generating...' : 'Generate Neighborhood'}</span>
+          </button>
+          )}
+          {!isSitePlannerActive && (
+          <button
+            onClick={handleExplore}
+            className="flex items-center gap-1.5 rounded-lg bg-emerald-600/80 p-2 text-sm font-medium text-white backdrop-blur-sm hover:bg-emerald-700/80 sm:px-3 sm:py-1.5"
+            title="Walk through the site at street level"
+          >
+            <Footprints size={14} />
+            <span className="hidden sm:inline">Explore</span>
           </button>
           )}
           {!isSitePlannerActive && (
@@ -592,29 +820,28 @@ export function ViewerPage() {
               onZoneSelected={selectZone}
             />
           </div>
-          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} />
+          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} projectId={id} zones={siteZones} />
           {selectedZone && (
             <ZonePropertiesPanel
               zone={selectedZone}
               onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
+              onAIGenerate={(buildingId, initialPrompt) => {
+                setAiGenerateFromZoneBuildingId(buildingId);
+                setAiGenerateFromZonePrompt(initialPrompt || null);
+                // Refresh project data so the new building appears in the 3D view
+                queryClient.invalidateQueries({ queryKey: ['project', id] });
+                queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+              }}
+              buildings={allBuildings}
             />
           )}
         </>
       ) : (
         <>
-          {/* Mapbox Background Layer */}
-          {showMap && (
-            <MapboxBackground
-              projectLat={effectiveLocation?.latitude}
-              projectLng={effectiveLocation?.longitude}
-              siteZones={siteZones}
-            />
-          )}
-
-          {/* 3D Scene — layered above map */}
-          <div className="absolute inset-0" style={{ zIndex: showMap ? 1 : 0 }}>
+          {/* 3D Scene */}
+          <div className="absolute inset-0" style={{ cursor: isMovingBuilding ? 'crosshair' : undefined }}>
             <SceneErrorBoundary>
               <SceneViewer
                 buildings={allBuildings}
@@ -633,9 +860,41 @@ export function ViewerPage() {
                 onCameraMove={collaboration.sendCursor}
                 followCamera={followCamera}
                 siteZones={siteZones}
+                onBuildingMove={handleBuildingMove}
+                buildingStatuses={generationStatuses}
+                remoteUsers={collaboration.users
+                  .filter((u) => u.id !== collaboration.connectionId)
+                  .map((u) => {
+                    const cursor = collaboration.cursors.get(u.id);
+                    return {
+                      id: u.id,
+                      name: u.name,
+                      color: u.color,
+                      position: cursor?.position || [0, 1.7, 0],
+                      target: cursor?.target || [0, 1.7, -1],
+                    };
+                  })
+                  .filter((u) => u.position[0] !== 0 || u.position[2] !== 0)
+                }
               />
             </SceneErrorBoundary>
           </div>
+
+          <WalkthroughHUD />
+
+          {/* Batch generation progress indicator */}
+          {generatingCount > 0 && (
+            <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2 rounded-lg bg-purple-600/90 px-4 py-2 text-sm font-medium text-white shadow-lg backdrop-blur-sm">
+              <Loader2 size={14} className="animate-spin" />
+              <span>Generating {generatingCount} of {totalTracked} buildings...</span>
+              <div className="h-1.5 w-24 overflow-hidden rounded-full bg-purple-400/30">
+                <div
+                  className="h-full rounded-full bg-white/80 transition-all"
+                  style={{ width: `${totalTracked > 0 ? ((totalTracked - generatingCount) / totalTracked) * 100 : 0}%` }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Phase Comparison Overlay */}
           {isComparing && (
@@ -648,16 +907,20 @@ export function ViewerPage() {
             />
           )}
 
-          {/* Controls */}
+          {/* Controls — hidden during walkthrough for immersion */}
+          {!isWalkthroughActive && (
           <ViewerControls constructionPhases={project?.construction_phases} buildings={project?.buildings} />
+          )}
 
-          {/* Legend */}
+          {/* Legend — hidden during walkthrough */}
+          {!isWalkthroughActive && (
           <ViewerLegend
             phases={project?.construction_phases}
             activePhase={settings.activePhase}
             showMeasurements={settings.showMeasurements}
             showExistingBuildings={settings.showExistingBuildings}
           />
+          )}
         </>
       )}
 
@@ -691,6 +954,19 @@ export function ViewerPage() {
               >
                 {editingBuilding ? 'Cancel' : 'Edit'}
               </button>
+              {selectedBuilding.footprint_coordinates && selectedBuilding.footprint_coordinates.length >= 3 && (
+                <button
+                  onClick={() => setMovingBuilding(!isMovingBuilding)}
+                  className={`rounded-md p-1 ${
+                    isMovingBuilding
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                  }`}
+                  title={isMovingBuilding ? 'Cancel move' : 'Move building'}
+                >
+                  <Move size={14} />
+                </button>
+              )}
               <button
                 onClick={() => {
                   if (confirm('Delete this building? This cannot be undone.')) {
@@ -710,6 +986,12 @@ export function ViewerPage() {
               </button>
             </div>
           </div>
+
+          {isMovingBuilding && (
+            <div className="mt-2 rounded-md bg-blue-50 px-3 py-2 text-xs text-blue-700">
+              Click on the ground to move this building. Press Escape to cancel.
+            </div>
+          )}
 
           {editingBuilding ? (
             <div className="mt-3 space-y-2 text-sm">
@@ -935,6 +1217,25 @@ export function ViewerPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* AI Generate Modal from Zone */}
+      {aiGenerateFromZoneBuildingId && (
+        <AIGenerateModal
+          buildingId={aiGenerateFromZoneBuildingId}
+          buildingName={selectedZone?.name || 'Zone Building'}
+          initialPrompt={aiGenerateFromZonePrompt || undefined}
+          onClose={() => {
+            setAiGenerateFromZoneBuildingId(null);
+            setAiGenerateFromZonePrompt(null);
+          }}
+          onComplete={() => {
+            queryClient.invalidateQueries({ queryKey: ['project', id] });
+            queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+            setAiGenerateFromZoneBuildingId(null);
+            setAiGenerateFromZonePrompt(null);
+          }}
+        />
       )}
 
       {/* Keyboard Shortcuts Modal */}

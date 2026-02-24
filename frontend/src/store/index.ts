@@ -74,6 +74,10 @@ const defaultViewerSettings: ViewerSettings = {
   showShadowStudy: false,
   activePhase: null,
   moveSpeed: 1,
+  headBobEnabled: true,
+  showCrosshair: true,
+  enablePostProcessing: true,
+  enableFog: true,
 };
 
 export interface CameraKeyframe {
@@ -144,10 +148,21 @@ interface ViewerState {
   // Annotation mode
   isAnnotating: boolean;
   setAnnotating: (enabled: boolean) => void;
+  // Building move mode
+  isMovingBuilding: boolean;
+  setMovingBuilding: (enabled: boolean) => void;
+  // Walkthrough mode
+  isWalkthroughActive: boolean;
+  walkthroughReturnPos: [number, number, number] | null;
+  walkthroughReturnTarget: [number, number, number] | null;
+  startWalkthrough: (streetPos: [number, number, number], lookAt: [number, number, number]) => void;
+  exitWalkthrough: () => void;
   // Site planner mode
   isSitePlannerActive: boolean;
   activeSitePlannerTool: SiteZoneType | null;
   selectedZoneId: string | null;
+  isDraggingZone: boolean;
+  setDraggingZone: (dragging: boolean) => void;
   setSitePlannerActive: (enabled: boolean) => void;
   setActiveSitePlannerTool: (tool: SiteZoneType | null) => void;
   selectZone: (id: string | null) => void;
@@ -301,11 +316,40 @@ export const useViewerStore = create<ViewerState>((set) => ({
   clearMeasurements: () => set({ measurements: [], pendingPoint: null, pendingPolygon: [], pendingAngle: [] }),
   isAnnotating: false,
   setAnnotating: (enabled) => set({ isAnnotating: enabled }),
+  // Walkthrough mode
+  isWalkthroughActive: false,
+  walkthroughReturnPos: null,
+  walkthroughReturnTarget: null,
+  startWalkthrough: (streetPos, lookAt) =>
+    set((state) => ({
+      isWalkthroughActive: true,
+      walkthroughReturnPos: streetPos,
+      walkthroughReturnTarget: lookAt,
+    })),
+  exitWalkthrough: () =>
+    set((state) => {
+      const returnPos = state.walkthroughReturnPos;
+      const returnTarget = state.walkthroughReturnTarget;
+      return {
+        isWalkthroughActive: false,
+        settings: { ...state.settings, cameraMode: 'orbit' as const },
+        cameraTarget: returnPos && returnTarget
+          ? { position: returnPos, target: returnTarget, label: 'Return' }
+          : null,
+        walkthroughReturnPos: null,
+        walkthroughReturnTarget: null,
+      };
+    }),
+  // Building move mode
+  isMovingBuilding: false,
+  setMovingBuilding: (enabled) => set({ isMovingBuilding: enabled }),
   // Site planner
   isSitePlannerActive: false,
   activeSitePlannerTool: null,
   selectedZoneId: null,
-  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? 'building' : null, selectedZoneId: null }),
+  isDraggingZone: false,
+  setDraggingZone: (dragging) => set({ isDraggingZone: dragging }),
+  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, selectedZoneId: null }),
   setActiveSitePlannerTool: (tool) => set({ activeSitePlannerTool: tool }),
   selectZone: (id) => set({ selectedZoneId: id }),
 }));

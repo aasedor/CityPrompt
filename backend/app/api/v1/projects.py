@@ -20,6 +20,7 @@ from app.schemas.schemas import (
     ProjectResponse,
     ProjectUpdate,
 )
+from app.api.v1.buildings import _building_to_response
 
 router = APIRouter()
 
@@ -49,7 +50,7 @@ def _project_to_dict(project: Project, include_relations: bool = False) -> dict:
         "owner_id": project.owner_id,
     }
     if include_relations:
-        data["buildings"] = project.buildings
+        data["buildings"] = [_building_to_response(b) for b in project.buildings]
         data["documents"] = project.documents
     return data
 

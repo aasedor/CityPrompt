@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sun, Layers, Ruler, TreePine, Building2, Route, Grid3x3, HardHat, Trash2, Settings, X, Video, ArrowUpDown, Move, Maximize, Circle, Square, Play, Pause, Activity, Triangle, SplitSquareVertical } from 'lucide-react';
+import { Sun, Layers, Ruler, TreePine, Building2, Route, Grid3x3, HardHat, Trash2, Settings, X, Video, ArrowUpDown, Move, Maximize, Circle, Square, Play, Pause, Activity, Triangle, SplitSquareVertical, Sparkles, CloudFog } from 'lucide-react';
 import { useViewerStore, CAMERA_PRESETS } from '@/store';
 import type { ConstructionPhase, CameraPreset, MeasurementMode } from '@/types';
 
@@ -97,6 +97,23 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
               <span>Fast</span>
             </div>
           </div>
+          {/* Head Bob & Crosshair toggles (visible in walk/fly modes) */}
+          {(settings.cameraMode === 'firstPerson' || settings.cameraMode === 'flyThrough') && (
+            <div className="mt-2 flex flex-col gap-1">
+              <Toggle
+                icon={<Activity size={14} />}
+                label="Head Bob"
+                active={settings.headBobEnabled}
+                onClick={() => updateSettings({ headBobEnabled: !settings.headBobEnabled })}
+              />
+              <Toggle
+                icon={<Circle size={14} />}
+                label="Crosshair"
+                active={settings.showCrosshair}
+                onClick={() => updateSettings({ showCrosshair: !settings.showCrosshair })}
+              />
+            </div>
+          )}
           {/* Camera Path Recording */}
           <div className="mt-2 flex items-center gap-1">
             {!isRecording && !isPlaying && (
@@ -229,6 +246,13 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
             <Toggle icon={<Sun size={14} />} label="Shadow Study" active={settings.showShadowStudy} onClick={() => updateSettings({ showShadowStudy: !settings.showShadowStudy })} />
           )}
           <Toggle icon={<Activity size={14} />} label="FPS Monitor" active={settings.showPerformance} onClick={() => updateSettings({ showPerformance: !settings.showPerformance })} />
+        </div>
+        <div className="card !p-3">
+          <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Rendering</h3>
+          <div className="flex flex-col gap-1.5">
+            <Toggle icon={<Sparkles size={14} />} label="Post-Processing" active={settings.enablePostProcessing} onClick={() => updateSettings({ enablePostProcessing: !settings.enablePostProcessing })} />
+            <Toggle icon={<CloudFog size={14} />} label="Fog" active={settings.enableFog} onClick={() => updateSettings({ enableFog: !settings.enableFog })} />
+          </div>
         </div>
         <div className="card !p-3">
           <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500"><Layers size={12} className="mr-1 inline" />Map</h3>

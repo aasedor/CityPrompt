@@ -9,11 +9,18 @@ import {
   Html,
   useGLTF,
 } from '@react-three/drei';
+import { EffectComposer, SSAO, Bloom, Vignette } from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
+// Enable Draco decoder for compressed GLB models
+useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
 import { useViewerStore, type Measurement, type CameraKeyframe } from '@/store';
-import type { Building, Document, SiteZone } from '@/types';
+import type { Building, Document, SiteZone, ViewerSettings } from '@/types';
 import { SiteZonesGroup } from './SiteZonesGroup';
+import { AvatarCapsule } from './AvatarCapsule';
+import { SatelliteGroundPlane } from './SatelliteGroundPlane';
+import { AmbientAudio } from './AmbientAudio';
 import type { ThreeEvent } from '@react-three/fiber';
 
 /**
@@ -56,7 +63,7 @@ function calculateSunPosition(hour: number, date: Date, latitude = 40): [number,
   return [x, Math.max(5, y), z]; // Keep sun above horizon minimum
 }
 
-function SunLight({ settings, showMapBackground, latitude }: { settings: import('@/types').ViewerSettings; showMapBackground?: boolean; latitude?: number }) {
+function SunLight({ settings, latitude }: { settings: import('@/types').ViewerSettings; latitude?: number }) {
   const sunPos = useMemo(
     () => calculateSunPosition(settings.sunTime, settings.sunDate, latitude ?? 40),
     [settings.sunTime, settings.sunDate, latitude]
@@ -76,29 +83,12 @@ function SunLight({ settings, showMapBackground, latitude }: { settings: import(
         shadow-camera-top={100}
         shadow-camera-bottom={-100}
       />
-      {!showMapBackground && <Sky sunPosition={sunPos} />}
-      <Environment preset="city" background={!showMapBackground} />
+      <Sky sunPosition={sunPos} />
+      <Environment preset="city" background />
     </>
   );
 }
 
-/**
- * Reactively manages scene background transparency so the Mapbox map
- * behind the Canvas is visible when a map layer is active.
- */
-function SceneBackgroundManager({ transparent }: { transparent: boolean }) {
-  const { gl, scene } = useThree();
-  useEffect(() => {
-    if (transparent) {
-      gl.setClearColor(0x000000, 0);
-      scene.background = null;
-    } else {
-      gl.setClearColor(0x000000, 1);
-      // Let Environment/Sky set background when not transparent
-    }
-  }, [transparent, gl, scene]);
-  return null;
-}
 
 /**
  * Shadow study overlay — renders a ground-plane heatmap showing cumulative
@@ -305,6 +295,12 @@ interface SceneViewerProps {
   followCamera?: { position: [number, number, number]; target: [number, number, number] } | null;
   /** Site zones drawn on the site planner map */
   siteZones?: SiteZone[];
+  /** Callback when a building is moved via ground click in move mode */
+  onBuildingMove?: (buildingId: string, position: [number, number, number]) => void;
+  /** Remote collaboration users with position/look data */
+  remoteUsers?: { id: string; name: string; color: string; position: [number, number, number]; target: [number, number, number] }[];
+  /** Building generation statuses for overlay indicators */
+  buildingStatuses?: Map<string, { status: string; progress?: number }>;
 }
 
 // Warm color palette for buildings
@@ -617,16 +613,113 @@ function drawGreenRoofPattern(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+// =============================================================================
+// Post-Processing Effects — SSAO, Bloom, Vignette, ToneMapping
+// =============================================================================
+
+function PostProcessingEffects({ settings }: { settings: ViewerSettings }) {
+  if (!settings.enablePostProcessing) return null;
+  if (settings.quality === 'low') return null;
+
+  const isHigh = settings.quality === 'high';
+
+  return (
+    <EffectComposer multisampling={isHigh ? 4 : 0}>
+      <SSAO
+        samples={isHigh ? 32 : 16}
+        rings={isHigh ? 7 : 4}
+        intensity={20}
+        luminanceInfluence={0.6}
+        radius={0.05}
+        bias={0.025}
+        blendFunction={BlendFunction.MULTIPLY}
+      />
+      <Bloom
+        intensity={0.15}
+        luminanceThreshold={0.9}
+        luminanceSmoothing={0.025}
+        mipmapBlur
+      />
+      <Vignette
+        offset={0.3}
+        darkness={0.5}
+        blendFunction={BlendFunction.NORMAL}
+      />
+    </EffectComposer>
+  );
+}
+
+// =============================================================================
+// Scene Fog — atmospheric depth
+// =============================================================================
+
+function SceneFog({ settings }: { settings: ViewerSettings }) {
+  const { scene } = useThree();
+
+  // Compute fog color from sun time — golden near sunrise/sunset, blue-gray midday
+  const fogColor = useMemo(() => {
+    const hour = settings.sunTime;
+    // Distance from sunrise (6-8) or sunset (17-19) times
+    const distFromGolden = Math.min(
+      Math.abs(hour - 7),
+      Math.abs(hour - 18)
+    );
+    const goldenFactor = Math.max(0, 1 - distFromGolden / 3);
+    // Lerp between blue-gray (#c8d6e5) and golden (#e8b88a)
+    const r = Math.round(0xc8 + (0xe8 - 0xc8) * goldenFactor);
+    const g = Math.round(0xd6 + (0xb8 - 0xd6) * goldenFactor);
+    const b = Math.round(0xe5 + (0x8a - 0xe5) * goldenFactor);
+    return new THREE.Color(`rgb(${r},${g},${b})`);
+  }, [settings.sunTime]);
+
+  useEffect(() => {
+    if (settings.enableFog) {
+      scene.fog = new THREE.Fog(fogColor, 200, 800);
+    } else {
+      scene.fog = null;
+    }
+    return () => { scene.fog = null; };
+  }, [scene, settings.enableFog, fogColor]);
+
+  return null;
+}
+
 /**
  * Main 3D scene viewer component.
  * Renders buildings using React Three Fiber with orbit controls,
  * environment lighting, and shadow support.
  */
-export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones }: SceneViewerProps) {
-  const { settings, isAnnotating } = useViewerStore();
+export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones, onBuildingMove, remoteUsers, buildingStatuses }: SceneViewerProps) {
+  const { settings, isAnnotating, isMovingBuilding, selectedBuildingId } = useViewerStore();
 
   // Compute grid positions for buildings so they don't stack
-  const positions = computeBuildingPositions(buildings);
+  const gridPositions = computeBuildingPositions(buildings);
+
+  // Compute final positions: geographic for buildings with footprints when map is on, grid otherwise
+  const positions = useMemo(() => {
+    if (showMapBackground && latitude && longitude) {
+      const metersPerDegLat = 111320;
+      const metersPerDegLon = 111320 * Math.cos((latitude * Math.PI) / 180);
+      return buildings.map((b, i) => {
+        if (b.footprint_coordinates && b.footprint_coordinates.length >= 3) {
+          // Compute centroid of footprint
+          let cx = 0, cy = 0;
+          for (const p of b.footprint_coordinates) {
+            cx += p[0]; cy += p[1];
+          }
+          cx /= b.footprint_coordinates.length;
+          cy /= b.footprint_coordinates.length;
+          const x = (cx - longitude) * metersPerDegLon;
+          const z = -(cy - latitude) * metersPerDegLat;
+          const h = b.height_meters || 10;
+          return [x, h / 2, z] as [number, number, number];
+        }
+        // Fallback to grid position for buildings without footprints
+        return gridPositions[i];
+      });
+    }
+    return gridPositions;
+  }, [buildings, showMapBackground, latitude, longitude, gridPositions]);
 
   // Filter image documents for display
   const imageDocuments = (documents || []).filter((d) =>
@@ -648,20 +741,17 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
   return (
     <Canvas
       shadows={settings.showShadows}
-      gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
+      gl={{ antialias: true, alpha: false, preserveDrawingBuffer: true }}
       className="h-full w-full"
       tabIndex={0}
-      style={showMapBackground ? { background: 'transparent' } : undefined}
       onCreated={({ gl }) => {
-        gl.setClearColor(0x000000, 0);
         glRef.current = gl;
       }}
     >
       <PerspectiveCamera makeDefault position={[50, 50, 50]} fov={60} />
-      <SceneBackgroundManager transparent={!!showMapBackground} />
 
       {/* Lighting — sun position from time + date */}
-      <SunLight settings={settings} showMapBackground={showMapBackground} latitude={latitude} />
+      <SunLight settings={settings} latitude={latitude} />
 
       {/* Ground — hide grid when map is active */}
       {settings.showGrid && !showMapBackground && (
@@ -674,18 +764,21 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
           sectionColor="#9ca3af"
         />
       )}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
-        <planeGeometry args={[1000, 1000]} />
-        <shadowMaterial opacity={0.15} />
-      </mesh>
+      {showMapBackground ? (
+        <SatelliteGroundPlane projectLat={latitude || 51.045} projectLng={longitude || -114.07} mapLayer={settings.mapLayer} />
+      ) : (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+          <planeGeometry args={[1000, 1000]} />
+          <shadowMaterial opacity={0.15} />
+        </mesh>
+      )}
 
       {/* Uploaded reference images on the ground */}
       {imageDocuments.map((doc, i) => (
         <ReferenceImage key={doc.id} document={doc} index={i} totalImages={imageDocuments.length} />
       ))}
 
-      {/* Buildings — hidden when map is active (site zones render natively in Mapbox) */}
-      {!showMapBackground && (
+      {/* Buildings — always rendered; positioned geographically when map is active */}
       <Suspense
         fallback={
           <Html center>
@@ -705,7 +798,6 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
           />
         ))}
       </Suspense>
-      )}
 
       {/* Context buildings from OSM — hidden when map is active (map shows real buildings) */}
       {settings.showExistingBuildings && !showMapBackground && contextBuildings && contextBuildings.length > 0 && (
@@ -717,9 +809,9 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
         <RoadsGroup roads={contextRoads} projectLat={latitude} projectLng={longitude} />
       )}
 
-      {/* Site zones from planner — hidden when map is active (rendered natively in Mapbox) */}
-      {siteZones && siteZones.length > 0 && !showMapBackground && (
-        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} />
+      {/* Site zones from planner */}
+      {siteZones && siteZones.length > 0 && (
+        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} buildingStatuses={buildingStatuses} />
       )}
 
       {/* Landscaping — trees and green spaces (hidden when map is active) */}
@@ -760,6 +852,13 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
         <AnnotationClickPlane onAnnotationClick={onAnnotationClick} />
       )}
 
+      {/* Building move click plane (when move mode active) */}
+      {isMovingBuilding && selectedBuildingId && onBuildingMove && (
+        <BuildingMoveClickPlane
+          onMove={(pos) => onBuildingMove(selectedBuildingId, pos)}
+        />
+      )}
+
       {/* Annotation markers */}
       {annotations && annotations.length > 0 && (
         <AnnotationMarkers
@@ -772,11 +871,35 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       {/* Controls */}
       <CameraControls />
 
-      {/* Camera broadcasting for collaboration + map sync */}
-      {onCameraMove && <CameraBroadcaster onCameraMove={onCameraMove} syncMap={showMapBackground} />}
+      {/* Remote collaboration avatars */}
+      {remoteUsers && remoteUsers.map((user) => (
+        <AvatarCapsule
+          key={user.id}
+          position={user.position}
+          lookDirection={[
+            user.target[0] - user.position[0],
+            user.target[1] - user.position[1],
+            user.target[2] - user.position[2],
+          ]}
+          color={user.color}
+          name={user.name}
+        />
+      ))}
+
+      {/* Camera broadcasting for collaboration */}
+      {onCameraMove && <CameraBroadcaster onCameraMove={onCameraMove} />}
 
       {/* Camera follow mode — lerps camera to followed user's position */}
       {followCamera && <CameraFollower target={followCamera} />}
+
+      {/* Post-processing effects */}
+      <PostProcessingEffects settings={settings} />
+
+      {/* Atmospheric fog */}
+      <SceneFog settings={settings} />
+
+      {/* Walkthrough ambient audio */}
+      <AmbientAudio />
     </Canvas>
   );
 }
@@ -795,75 +918,18 @@ function computeBuildingPositions(buildings: Building[]): [number, number, numbe
   });
 }
 
-/** Broadcasts local camera position to collaborators at ~10fps and syncs Mapbox map */
-function CameraBroadcaster({ onCameraMove, syncMap }: { onCameraMove: (pos: [number, number, number], target: [number, number, number]) => void; syncMap?: boolean }) {
-  const { camera, size } = useThree();
+/** Broadcasts local camera position to collaborators at ~10fps */
+function CameraBroadcaster({ onCameraMove }: { onCameraMove: (pos: [number, number, number], target: [number, number, number]) => void }) {
+  const { camera } = useThree();
   const lastSend = useRef(0);
   const lastPos = useRef(new THREE.Vector3());
   const lastQuat = useRef(new THREE.Quaternion());
-  const prevSyncMap = useRef(syncMap);
-
-  // When syncMap turns on, force an immediate sync even if camera hasn't moved
-  useEffect(() => {
-    if (syncMap && !prevSyncMap.current) {
-      // Reset lastPos to force a sync on next frame
-      lastPos.current.set(Infinity, Infinity, Infinity);
-    }
-    prevSyncMap.current = syncMap;
-  }, [syncMap]);
 
   useFrame(() => {
     // Check if camera position or rotation changed
     const posMoved = camera.position.distanceToSquared(lastPos.current) > 0.0001;
     const rotChanged = !camera.quaternion.equals(lastQuat.current);
     if (!posMoved && !rotChanged) return;
-
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-
-    // Sync Mapbox map camera every frame for tight alignment
-    if (syncMap) {
-      const camY = Math.max(1, camera.position.y);
-
-      // Compute ground intersection: ray from camera along look direction hitting y=0
-      let groundX: number;
-      let groundZ: number;
-      let distToGround: number;
-
-      if (dir.y < -0.001) {
-        // Camera looking downward — intersect y=0 plane
-        const t = -camera.position.y / dir.y;
-        const clampedT = Math.min(t, 2000); // Clamp max distance to prevent extremes at shallow angles
-        groundX = camera.position.x + dir.x * clampedT;
-        groundZ = camera.position.z + dir.z * clampedT;
-        distToGround = Math.sqrt(
-          (camera.position.x - groundX) ** 2 +
-          camY ** 2 +
-          (camera.position.z - groundZ) ** 2,
-        );
-      } else {
-        // Camera looking upward or horizontal — fallback: project straight down
-        groundX = camera.position.x;
-        groundZ = camera.position.z;
-        distToGround = camY;
-      }
-
-      // Pitch: angle between look direction and horizontal plane
-      const elevationAngle = Math.asin(Math.max(-1, Math.min(1, dir.y))) * (180 / Math.PI);
-      const pitch = Math.max(0, Math.min(85, 90 + elevationAngle));
-
-      // Bearing: clockwise from north (negative Z direction)
-      const bearing = (Math.atan2(dir.x, -dir.z) * 180) / Math.PI;
-
-      // Meters per pixel based on Three.js camera
-      const fov = (camera as THREE.PerspectiveCamera).fov || 60;
-      const fovRad = (fov * Math.PI) / 180;
-      const metersPerPixel = (2 * distToGround * Math.tan(fovRad / 2)) / size.height;
-
-      window.dispatchEvent(new CustomEvent('mapbox-sync-camera', {
-        detail: { groundX, groundZ, camY, metersPerPixel, bearing, pitch },
-      }));
-    }
 
     // Throttle collaboration broadcasts to ~10fps
     const now = performance.now();
@@ -872,6 +938,8 @@ function CameraBroadcaster({ onCameraMove, syncMap }: { onCameraMove: (pos: [num
     lastPos.current.copy(camera.position);
     lastQuat.current.copy(camera.quaternion);
 
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
     const target: [number, number, number] = [
       camera.position.x + dir.x * 50,
       camera.position.y + dir.y * 50,
@@ -1060,6 +1128,8 @@ function FirstPersonControls() {
   const { settings } = useViewerStore();
   const walkHeight = 1.7; // eye level in meters
   const baseSpeed = 0.3 * settings.moveSpeed;
+  const bobPhase = useRef(0);
+  const bobAmplitude = 0.03; // 3cm vertical oscillation
 
   useEffect(() => {
     // Set camera to walking height
@@ -1116,13 +1186,30 @@ function FirstPersonControls() {
     if (keys.has('a') || keys.has('arrowleft')) move.sub(right);
 
     if (move.lengthSq() > 0) {
-      const speed = keys.has('shift') ? baseSpeed * 2.5 : baseSpeed;
+      const isSprinting = keys.has('shift');
+      const speed = isSprinting ? baseSpeed * 2.5 : baseSpeed;
       move.normalize().multiplyScalar(speed);
       // Collision check before moving
       if (!checkCollision(camera.position, move)) {
         camera.position.add(move);
       }
-      camera.position.y = walkHeight; // Lock to ground level
+      // Head bob effect
+      if (settings.headBobEnabled) {
+        const bobSpeed = isSprinting ? 0.25 : 0.15;
+        bobPhase.current += bobSpeed;
+        camera.position.y = walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
+      } else {
+        camera.position.y = walkHeight;
+      }
+    } else {
+      // Smoothly decay bob when stationary
+      if (bobPhase.current !== 0 && settings.headBobEnabled) {
+        bobPhase.current *= 0.85;
+        if (Math.abs(bobPhase.current) < 0.01) bobPhase.current = 0;
+        camera.position.y = walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
+      } else {
+        camera.position.y = walkHeight;
+      }
     }
   });
 
@@ -2455,13 +2542,19 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
   const hasGLB = !!building.model_url;
   const hasBuildingData = !!(building.floor_count || building.roof_type);
 
+  // GLB models have their own geometry — place at ground level (y=0), not y=h/2
+  const effectivePosition: [number, number, number] = hasGLB
+    ? [position[0], 0, position[2]]
+    : position;
+
   return (
-    <group ref={groupRef} position={position}>
+    <group ref={groupRef} position={effectivePosition}>
       {hasGLB ? (
         // Path A: GLB model from server (with LOD switching)
         <GLBBuildingMesh
           buildingId={building.id}
           lodUrls={building.lod_urls}
+          targetHeight={height}
           isSelected={isSelected}
           isHovered={isHovered}
           onClick={handleClick}
@@ -2511,6 +2604,7 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
 function GLBBuildingMesh({
   buildingId,
   lodUrls,
+  targetHeight,
   isSelected,
   isHovered,
   onClick,
@@ -2519,6 +2613,7 @@ function GLBBuildingMesh({
 }: {
   buildingId: string;
   lodUrls?: Record<string, string>;
+  targetHeight: number;
   isSelected: boolean;
   isHovered: boolean;
   onClick?: () => void;
@@ -2529,19 +2624,19 @@ function GLBBuildingMesh({
   const groupRef = useRef<THREE.Group>(null);
   const { camera } = useThree();
 
-  // Determine available LOD levels, sorted highest (lowest detail) first
+  // Determine available LOD levels, sorted best (0) to worst
   const availableLods = useMemo(() => {
     if (!lodUrls) return [0];
-    return Object.keys(lodUrls).map(Number).sort((a, b) => b - a);
+    return Object.keys(lodUrls).map(Number).sort((a, b) => a - b);
   }, [lodUrls]);
 
   const hasLods = availableLods.length > 1;
 
-  // Start at the lowest-detail LOD (highest number) for fast initial load
-  const [currentLod, setCurrentLod] = useState(() => availableLods[0]);
-  const [loadedLods, setLoadedLods] = useState<Set<number>>(() => new Set());
+  // Start at LOD 0 (full detail) — Meshy models are already downloaded, no need for progressive upgrade
+  const [currentLod, setCurrentLod] = useState(0);
+  const [loadedLods, setLoadedLods] = useState<Set<number>>(() => new Set([0]));
 
-  // Distance-based LOD switching — only switch to LODs that have been preloaded
+  // Distance-based LOD switching — switch to lower-detail LODs when far away
   useFrame(() => {
     if (!hasLods || !groupRef.current) return;
     const worldPos = new THREE.Vector3();
@@ -2549,7 +2644,7 @@ function GLBBuildingMesh({
     const distance = camera.position.distanceTo(worldPos);
 
     // Find the ideal LOD for this distance
-    let targetLod = availableLods[0]; // fallback to lowest detail
+    let targetLod = 0;
     for (const { level, maxDistance } of LOD_THRESHOLDS) {
       if (distance <= maxDistance && lodUrls && lodUrls[String(level)]) {
         targetLod = level;
@@ -2557,44 +2652,26 @@ function GLBBuildingMesh({
       }
     }
 
-    // Only switch to the target if it's already loaded, otherwise use best loaded LOD
-    if (targetLod !== currentLod) {
-      if (loadedLods.has(targetLod)) {
-        setCurrentLod(targetLod);
-      } else {
-        // Use the best (lowest number) loaded LOD that is still appropriate
-        for (const lod of [...loadedLods].sort((a, b) => a - b)) {
-          if (lod <= targetLod || lod === currentLod) {
-            if (lod !== currentLod) setCurrentLod(lod);
-            break;
-          }
-        }
-      }
+    if (targetLod !== currentLod && loadedLods.has(targetLod)) {
+      setCurrentLod(targetLod);
     }
   });
 
-  // Preload the next-better LOD level in the background
+  // Preload lower-detail LODs in the background for distance switching
   useEffect(() => {
     if (!hasLods) return;
-    const nextBetter = availableLods.find(
-      (l) => l < currentLod && !loadedLods.has(l)
-    );
-    if (nextBetter !== undefined) {
-      const url = `${apiBase}/api/v1/buildings/${buildingId}/model/file?lod=${nextBetter}`;
-      // useGLTF.preload triggers background fetch
-      useGLTF.preload(url);
-      // Mark as loaded after a short delay to let the cache populate
-      const timer = setTimeout(() => {
-        setLoadedLods((prev) => new Set([...prev, nextBetter]));
-      }, 2000);
-      return () => clearTimeout(timer);
+    // Preload all LODs that aren't loaded yet
+    const toLoad = availableLods.filter((l) => l > 0 && !loadedLods.has(l));
+    if (toLoad.length === 0) return;
+    for (const lod of toLoad) {
+      const lodUrl = `${apiBase}/api/v1/buildings/${buildingId}/model/file?lod=${lod}`;
+      useGLTF.preload(lodUrl);
     }
-  }, [currentLod, hasLods, availableLods, loadedLods, apiBase, buildingId]);
-
-  // Mark initial LOD as loaded
-  useEffect(() => {
-    setLoadedLods((prev) => new Set([...prev, currentLod]));
-  }, []);
+    const timer = setTimeout(() => {
+      setLoadedLods((prev) => new Set([...prev, ...toLoad]));
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [hasLods, availableLods, loadedLods, apiBase, buildingId]);
 
   const modelUrl = `${apiBase}/api/v1/buildings/${buildingId}/model/file?lod=${currentLod}`;
 
@@ -2602,6 +2679,7 @@ function GLBBuildingMesh({
     <group ref={groupRef}>
       <GLBModel
         url={modelUrl}
+        targetHeight={targetHeight}
         isSelected={isSelected}
         isHovered={isHovered}
         onClick={onClick}
@@ -2615,6 +2693,7 @@ function GLBBuildingMesh({
 /** Inner component that loads and renders a single GLB model. */
 function GLBModel({
   url,
+  targetHeight,
   isSelected,
   isHovered,
   onClick,
@@ -2622,6 +2701,7 @@ function GLBModel({
   onPointerOut,
 }: {
   url: string;
+  targetHeight: number;
   isSelected: boolean;
   isHovered: boolean;
   onClick?: () => void;
@@ -2631,33 +2711,49 @@ function GLBModel({
   const { scene } = useGLTF(url);
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
-  // Apply selection/hover tint
+  // Compute scale + offset to normalize the GLB so it sits on the ground at the target height
+  const { scale, offsetY } = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(clonedScene);
+    const modelHeight = box.max.y - box.min.y;
+    const s = modelHeight > 0.01 ? targetHeight / modelHeight : 1;
+    // After scaling, the model's min-y should sit at y=0
+    const oY = -box.min.y * s;
+    return { scale: s, offsetY: oY };
+  }, [clonedScene, targetHeight]);
+
+  // Apply selection/hover tint and shadow settings
   useEffect(() => {
     clonedScene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
-        if (isSelected) {
-          mat.color.set('#3b82f6');
-        } else if (isHovered) {
-          mat.color.lerp(new THREE.Color('#60a5fa'), 0.3);
-          mat.transparent = true;
-          mat.opacity = 0.9;
+        if (isSelected || isHovered) {
+          const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
+          if (isSelected) {
+            mat.color.set('#3b82f6');
+          } else {
+            mat.color.lerp(new THREE.Color('#60a5fa'), 0.3);
+            mat.transparent = true;
+            mat.opacity = 0.9;
+          }
+          mesh.material = mat;
         }
-        mesh.material = mat;
-        mesh.castShadow = true;
+        // Shadows: only receiveShadow on GLB meshes — castShadow on high-poly
+        // meshes is extremely expensive; the parent group handles it as a proxy
+        mesh.castShadow = false;
         mesh.receiveShadow = true;
       }
     });
   }, [clonedScene, isSelected, isHovered]);
 
   return (
-    <primitive
-      object={clonedScene}
-      onClick={onClick}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-    />
+    <group scale={[scale, scale, scale]} position={[0, offsetY, 0]}>
+      <primitive
+        object={clonedScene}
+        onClick={onClick}
+        onPointerOver={onPointerOver}
+        onPointerOut={onPointerOut}
+      />
+    </group>
   );
 }
 
@@ -2993,6 +3089,32 @@ function AnnotationClickPlane({
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0.01, 0]}
+      onClick={handleClick}
+      visible={false}
+    >
+      <planeGeometry args={[2000, 2000]} />
+      <meshBasicMaterial />
+    </mesh>
+  );
+}
+
+function BuildingMoveClickPlane({
+  onMove,
+}: {
+  onMove: (position: [number, number, number]) => void;
+}) {
+  const handleClick = useCallback(
+    (e: ThreeEvent<MouseEvent>) => {
+      e.stopPropagation();
+      onMove([e.point.x, e.point.y, e.point.z]);
+    },
+    [onMove]
+  );
+
+  return (
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, 0.02, 0]}
       onClick={handleClick}
       visible={false}
     >

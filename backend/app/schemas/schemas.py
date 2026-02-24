@@ -154,6 +154,7 @@ class BuildingUpdate(BaseModel):
     roof_type: Optional[str] = Field(None, description="Updated roof type: flat, gabled, or hipped")
     construction_phase: Optional[int] = Field(None, description="Updated construction phase")
     specifications: Optional[dict[str, Any]] = Field(None, description="Updated specifications")
+    footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Updated footprint as [[lng, lat], ...] polygon coordinates")
 
 
 class BuildingResponse(BaseModel):
@@ -173,6 +174,7 @@ class BuildingResponse(BaseModel):
     generation_status: Optional[str] = Field(None, description="AI generation status: idle, generating, completed, failed")
     generation_prompt: Optional[str] = Field(None, description="Text prompt used for AI generation")
     meshy_task_id: Optional[str] = Field(None, description="Meshy.ai task ID for tracking")
+    footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Footprint polygon as [[lng, lat], ...] coordinate pairs")
     created_at: datetime = Field(description="Creation timestamp")
 
 
@@ -294,6 +296,7 @@ class SiteZoneResponse(BaseModel):
     color: str
     properties: Optional[dict[str, Any]]
     sort_order: int
+    building_id: Optional[uuid.UUID] = None
     created_at: datetime
     updated_at: datetime
 

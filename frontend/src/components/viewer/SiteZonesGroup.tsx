@@ -1,5 +1,6 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 
@@ -7,13 +8,19 @@ import type { SiteZone } from '@/types';
 // Public API
 // =============================================================================
 
+export interface BuildingGenerationStatus {
+  status: string;
+  progress?: number;
+}
+
 interface SiteZonesGroupProps {
   zones: SiteZone[];
   projectLat?: number;
   projectLng?: number;
+  buildingStatuses?: Map<string, BuildingGenerationStatus>;
 }
 
-export function SiteZonesGroup({ zones, projectLat, projectLng }: SiteZonesGroupProps) {
+export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses }: SiteZonesGroupProps) {
   if (!projectLat || !projectLng || zones.length === 0) return null;
 
   const origin = { lat: projectLat, lon: projectLng };
@@ -21,7 +28,12 @@ export function SiteZonesGroup({ zones, projectLat, projectLng }: SiteZonesGroup
   return (
     <group name="site-zones">
       {zones.map((zone) => (
-        <SiteZoneMesh key={zone.id} zone={zone} origin={origin} />
+        <SiteZoneMesh
+          key={zone.id}
+          zone={zone}
+          origin={origin}
+          generationStatus={zone.building_id ? buildingStatuses?.get(zone.building_id) : undefined}
+        />
       ))}
     </group>
   );
@@ -180,18 +192,22 @@ function getDefaultHeight(zoneType: string): number {
 function SiteZoneMesh({
   zone,
   origin,
+  generationStatus,
 }: {
   zone: SiteZone;
   origin: { lat: number; lon: number };
+  generationStatus?: BuildingGenerationStatus;
 }) {
   const pts = useMemo(() => toLocalPoints(zone.coordinates, origin), [zone.coordinates, origin]);
 
   if (pts.length < 3) return null;
 
   switch (zone.zone_type) {
+    case 'site_boundary':
+      return <SiteBoundaryZone zone={zone} points2D={pts} />;
     case 'building':
     case 'residential':
-      return <DetailedBuildingZone zone={zone} points2D={pts} />;
+      return <DetailedBuildingZone zone={zone} points2D={pts} generationStatus={generationStatus} />;
     case 'road':
       return <RoadZone zone={zone} points2D={pts} />;
     case 'green_space':
@@ -206,15 +222,168 @@ function SiteZoneMesh({
 }
 
 // =============================================================================
-// 1. BUILDING / RESIDENTIAL ZONE — Detailed facades
+// 0. SITE BOUNDARY ZONE — Dashed outline loop, no fill
 // =============================================================================
 
-function DetailedBuildingZone({
+function SiteBoundaryZone({
   zone,
   points2D,
 }: {
   zone: SiteZone;
   points2D: THREE.Vector2[];
+}) {
+  const lineRef = useRef<THREE.Line>(null);
+
+  const geometry = useMemo(() => {
+    // Convert 2D shape points to 3D positions (XZ plane at y=0.1)
+    // Shape (x, y) → 3D (x, 0.1, -y) to match the rotated ShapeGeometry convention
+    const points3D: THREE.Vector3[] = [];
+    for (const p of points2D) {
+      points3D.push(new THREE.Vector3(p.x, 0.1, -p.y));
+    }
+    // Close the loop
+    if (points3D.length > 0) {
+      points3D.push(points3D[0].clone());
+    }
+    const geom = new THREE.BufferGeometry().setFromPoints(points3D);
+    geom.computeBoundingSphere();
+    return geom;
+  }, [points2D]);
+
+  // LineDashedMaterial requires computeLineDistances on the Line object
+  useEffect(() => {
+    if (lineRef.current) {
+      lineRef.current.computeLineDistances();
+    }
+  }, [geometry]);
+
+  return (
+    <line ref={lineRef as React.RefObject<THREE.Line>} geometry={geometry}>
+      <lineDashedMaterial
+        color={zone.color || '#f59e0b'}
+        dashSize={2}
+        gapSize={1}
+        linewidth={1}
+      />
+    </line>
+  );
+}
+
+// =============================================================================
+// 1. BUILDING / RESIDENTIAL ZONE — Detailed facades
+// =============================================================================
+
+// =============================================================================
+// Generation Indicator — pulsing overlay + progress label
+// =============================================================================
+
+function GenerationIndicator({
+  status,
+  height,
+  points2D,
+}: {
+  status: BuildingGenerationStatus;
+  height: number;
+  points2D: THREE.Vector2[];
+}) {
+  const overlayRef = useRef<THREE.Mesh>(null);
+  const flashRef = useRef<THREE.Mesh>(null);
+  const flashOpacity = useRef(0);
+
+  const overlayGeometry = useMemo(() => {
+    try {
+      const shape = new THREE.Shape(points2D);
+      const geom = new THREE.ExtrudeGeometry(shape, {
+        steps: 1,
+        depth: height + 0.2,
+        bevelEnabled: false,
+      });
+      geom.rotateX(-Math.PI / 2);
+      return geom;
+    } catch {
+      return null;
+    }
+  }, [points2D, height]);
+
+  // Compute centroid for label positioning
+  const centroid = useMemo(() => {
+    let cx = 0, cy = 0;
+    for (const p of points2D) { cx += p.x; cy += p.y; }
+    cx /= points2D.length;
+    cy /= points2D.length;
+    return [cx, height + 3, -cy] as [number, number, number];
+  }, [points2D, height]);
+
+  useFrame((_, delta) => {
+    if (overlayRef.current && status.status === 'generating') {
+      const mat = overlayRef.current.material as THREE.MeshStandardMaterial;
+      mat.emissiveIntensity = 0.3 + 0.2 * Math.sin(performance.now() * 0.003);
+      mat.opacity = 0.12 + 0.06 * Math.sin(performance.now() * 0.003);
+    }
+    // Completion flash
+    if (flashRef.current) {
+      if (status.status === 'completed' && flashOpacity.current < 0.01) {
+        flashOpacity.current = 0.5;
+      }
+      if (flashOpacity.current > 0) {
+        flashOpacity.current = Math.max(0, flashOpacity.current - delta * 0.8);
+        const mat = flashRef.current.material as THREE.MeshStandardMaterial;
+        mat.opacity = flashOpacity.current;
+      }
+    }
+  });
+
+  if (!overlayGeometry) return null;
+  if (status.status !== 'generating' && status.status !== 'completed') return null;
+
+  const progress = status.progress ?? 0;
+
+  return (
+    <>
+      {status.status === 'generating' && (
+        <>
+          <mesh ref={overlayRef} geometry={overlayGeometry}>
+            <meshStandardMaterial
+              color="#9333ea"
+              emissive="#9333ea"
+              emissiveIntensity={0.3}
+              transparent
+              opacity={0.15}
+              depthWrite={false}
+            />
+          </mesh>
+          <Html position={centroid} center distanceFactor={100}>
+            <div className="pointer-events-none flex items-center gap-1.5 rounded-full bg-purple-600/90 px-3 py-1 text-[11px] font-medium text-white shadow-lg backdrop-blur-sm whitespace-nowrap">
+              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+              Generating...{progress > 0 ? ` ${Math.round(progress * 100)}%` : ''}
+            </div>
+          </Html>
+        </>
+      )}
+      {status.status === 'completed' && (
+        <mesh ref={flashRef} geometry={overlayGeometry}>
+          <meshStandardMaterial
+            color="#22c55e"
+            emissive="#22c55e"
+            emissiveIntensity={1}
+            transparent
+            opacity={0}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+    </>
+  );
+}
+
+function DetailedBuildingZone({
+  zone,
+  points2D,
+  generationStatus,
+}: {
+  zone: SiteZone;
+  points2D: THREE.Vector2[];
+  generationStatus?: BuildingGenerationStatus;
 }) {
   const height = zone.properties?.height ?? getDefaultHeight(zone.zone_type);
   const floors = zone.properties?.floors ?? Math.max(1, Math.round(height / 3));
@@ -299,6 +468,11 @@ function DetailedBuildingZone({
           floors={floors}
           floorHeight={floorHeight}
         />
+      )}
+
+      {/* Generation status overlay */}
+      {generationStatus && (
+        <GenerationIndicator status={generationStatus} height={height} points2D={points2D} />
       )}
     </group>
   );

@@ -426,6 +426,16 @@ export const siteZonesApi = {
   delete: async (zoneId: string): Promise<void> => {
     await api.delete(`/api/v1/site-zones/${zoneId}`);
   },
+
+  createBuildingFromZone: async (zoneId: string): Promise<Building> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/create-building`);
+    return data;
+  },
+
+  generateAll: async (projectId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all`);
+    return data;
+  },
 };
 
 export default api;

@@ -6,6 +6,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import Response
+from geoalchemy2.shape import to_shape
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,6 +23,36 @@ router = APIRouter()
 settings = get_settings()
 
 
+def _building_to_response(building: Building) -> dict:
+    """Convert a Building ORM object to a response dict with footprint_coordinates."""
+    footprint_coordinates: list[list[float]] | None = None
+    if building.footprint is not None:
+        try:
+            shape = to_shape(building.footprint)
+            footprint_coordinates = [[c[0], c[1]] for c in shape.exterior.coords[:-1]]
+        except Exception:
+            pass
+
+    return {
+        "id": building.id,
+        "project_id": building.project_id,
+        "name": building.name,
+        "height_meters": building.height_meters,
+        "floor_count": building.floor_count,
+        "floor_height_meters": building.floor_height_meters,
+        "roof_type": building.roof_type,
+        "construction_phase": building.construction_phase,
+        "model_url": building.model_url,
+        "lod_urls": building.lod_urls,
+        "specifications": building.specifications,
+        "generation_status": building.generation_status,
+        "generation_prompt": building.generation_prompt,
+        "meshy_task_id": building.meshy_task_id,
+        "footprint_coordinates": footprint_coordinates,
+        "created_at": building.created_at,
+    }
+
+
 @router.get("/projects/{project_id}/buildings", response_model=list[BuildingResponse])
 async def list_buildings(
     project_id: uuid.UUID,
@@ -31,7 +62,7 @@ async def list_buildings(
     result = await db.execute(
         select(Building).where(Building.project_id == project_id).order_by(Building.created_at)
     )
-    return result.scalars().all()
+    return [_building_to_response(b) for b in result.scalars().all()]
 
 
 @router.post(
@@ -92,7 +123,7 @@ async def create_building(
     from app.api.v1.activity import log_activity
     await log_activity(db, project_id, "building_created", user_id=user.id, details={"name": building.name})
 
-    return building
+    return _building_to_response(building)
 
 
 @router.get("/{building_id}", response_model=BuildingResponse)
@@ -105,7 +136,7 @@ async def get_building(
     building = result.scalar_one_or_none()
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
-    return building
+    return _building_to_response(building)
 
 
 @router.put("/{building_id}", response_model=BuildingResponse)
@@ -135,12 +166,24 @@ async def update_building(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to edit buildings in this project")
 
-    for field, value in building_in.model_dump(exclude_unset=True).items():
+    update_data = building_in.model_dump(exclude_unset=True)
+
+    # Handle footprint_coordinates → geometry conversion
+    if "footprint_coordinates" in update_data:
+        coords = update_data.pop("footprint_coordinates")
+        if coords and len(coords) >= 3:
+            from geoalchemy2.elements import WKTElement
+            if coords[0] != coords[-1]:
+                coords.append(coords[0])
+            coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
+            building.footprint = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
+
+    for field, value in update_data.items():
         setattr(building, field, value)
 
     await db.flush()
     await db.refresh(building)
-    return building
+    return _building_to_response(building)
 
 
 @router.delete("/{building_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -314,6 +357,13 @@ async def generate_from_text(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
+    # Check that MESHY_API_KEY is configured before queuing
+    if not settings.meshy_api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="MESHY_API_KEY is not configured. Add your Meshy.ai API key to the .env file.",
+        )
+
     # Update building with generation info
     building.generation_status = "generating"
     building.generation_prompt = req.prompt
@@ -356,6 +406,13 @@ async def generate_from_image(
         )
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
+
+    # Check that MESHY_API_KEY is configured before queuing
+    if not settings.meshy_api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="MESHY_API_KEY is not configured. Add your Meshy.ai API key to the .env file.",
+        )
 
     building.generation_status = "generating"
     building.generation_prompt = f"[image] {req.image_url}"

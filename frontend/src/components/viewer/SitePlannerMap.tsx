@@ -64,6 +64,14 @@ function minPointsForTool(tool: SiteZoneType | null): number {
   return isLinearTool(tool) ? 2 : 3;
 }
 
+interface DragState {
+  type: 'zone' | 'vertex';
+  zoneId: string;
+  vertexIndex?: number;
+  startLngLat: [number, number];
+  originalCoords: number[][];
+}
+
 interface SitePlannerMapProps {
   latitude?: number;
   longitude?: number;
@@ -78,14 +86,12 @@ export function SitePlannerMap({
   longitude,
   siteZones,
   onZoneCreated,
-  onZoneUpdated: _onZoneUpdated,
+  onZoneUpdated,
   onZoneSelected,
 }: SitePlannerMapProps) {
-  void _onZoneUpdated;
-
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, selectedZoneId } = useViewerStore();
+  const { activeSitePlannerTool, selectedZoneId, setDraggingZone } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
@@ -94,10 +100,19 @@ export function SitePlannerMap({
   onZoneCreatedRef.current = onZoneCreated;
   const onZoneSelectedRef = useRef(onZoneSelected);
   onZoneSelectedRef.current = onZoneSelected;
+  const onZoneUpdatedRef = useRef(onZoneUpdated);
+  onZoneUpdatedRef.current = onZoneUpdated;
   const activeSitePlannerToolRef = useRef(activeSitePlannerTool);
   activeSitePlannerToolRef.current = activeSitePlannerTool;
+  const siteZonesRef = useRef(siteZones);
+  siteZonesRef.current = siteZones;
   const mapLoadedRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
+
+  // Drag state for zone/vertex editing
+  const dragStateRef = useRef<DragState | null>(null);
+  // Ref to track pending coords during drag for persistence on mouseup
+  const pendingCoordsRef = useRef<{ zoneId: string; coords: number[][] } | null>(null);
 
   /** Build GeoJSON preview features for the current drawing */
   const buildPreviewFeatures = useCallback((pts: number[][], tool: SiteZoneType | null): GeoJSON.Feature[] => {
@@ -197,22 +212,36 @@ export function SitePlannerMap({
     updateDrawingPreview();
   }, [updateDrawingPreview, finishDrawing]);
 
-  /** Sync saved siteZones to the map GeoJSON source */
-  const syncZonesToMap = useCallback((zones: SiteZone[]) => {
-    const map = mapRef.current;
-    if (!map || !mapLoadedRef.current) return;
+  /** Build zone features for the map source, optionally with modified coords for a specific zone */
+  const buildZoneFeatures = useCallback((zones: SiteZone[], overrideZoneId?: string, overrideCoords?: number[][]): GeoJSON.Feature[] => {
+    return zones.map((zone) => {
+      if (overrideZoneId && zone.id === overrideZoneId && overrideCoords) {
+        const closed = [...overrideCoords];
+        if (closed.length > 0 && (closed[0][0] !== closed[closed.length - 1][0] || closed[0][1] !== closed[closed.length - 1][1])) {
+          closed.push(closed[0]);
+        }
+        return {
+          type: 'Feature' as const,
+          properties: {
+            id: zone.id,
+            color: zone.color,
+            label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
+            zone_type: zone.zone_type,
+          },
+          geometry: {
+            type: 'Polygon' as const,
+            coordinates: [closed],
+          },
+        };
+      }
 
-    const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
-    if (!source) return;
-
-    const features: GeoJSON.Feature[] = zones.map((zone) => {
-      const coords = [...zone.coordinates];
+      const zoneCoords = [...zone.coordinates];
       if (
-        coords.length > 0 &&
-        (coords[0][0] !== coords[coords.length - 1][0] ||
-          coords[0][1] !== coords[coords.length - 1][1])
+        zoneCoords.length > 0 &&
+        (zoneCoords[0][0] !== zoneCoords[zoneCoords.length - 1][0] ||
+          zoneCoords[0][1] !== zoneCoords[zoneCoords.length - 1][1])
       ) {
-        coords.push(coords[0]);
+        zoneCoords.push(zoneCoords[0]);
       }
       return {
         type: 'Feature' as const,
@@ -224,12 +253,51 @@ export function SitePlannerMap({
         },
         geometry: {
           type: 'Polygon' as const,
-          coordinates: [coords],
+          coordinates: [zoneCoords],
         },
       };
     });
+  }, []);
 
+  /** Sync saved siteZones to the map GeoJSON source */
+  const syncZonesToMap = useCallback((zones: SiteZone[]) => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+    if (!source) return;
+
+    const features = buildZoneFeatures(zones);
     source.setData({ type: 'FeatureCollection', features });
+  }, [buildZoneFeatures]);
+
+  /** Update vertex handles for the selected zone */
+  const updateVertexHandles = useCallback((zoneId: string | null, zones: SiteZone[], overrideCoords?: number[][]) => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    const src = map.getSource('zone-edit-vertices') as mapboxgl.GeoJSONSource | undefined;
+    if (!src) return;
+
+    if (!zoneId) {
+      src.setData({ type: 'FeatureCollection', features: [] });
+      return;
+    }
+
+    const zone = zones.find((z) => z.id === zoneId);
+    if (!zone) {
+      src.setData({ type: 'FeatureCollection', features: [] });
+      return;
+    }
+
+    const coords = overrideCoords || zone.coordinates;
+    const features: GeoJSON.Feature[] = coords.map((c, i) => ({
+      type: 'Feature',
+      properties: { zoneId, vertexIndex: i },
+      geometry: { type: 'Point', coordinates: c },
+    }));
+
+    src.setData({ type: 'FeatureCollection', features });
   }, []);
 
   // ─── Initialize map ───
@@ -299,6 +367,24 @@ export function SitePlannerMap({
         },
       });
 
+      // --- Vertex edit handles source + layer ---
+      map.addSource('zone-edit-vertices', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      map.addLayer({
+        id: 'zone-edit-vertices-layer',
+        type: 'circle',
+        source: 'zone-edit-vertices',
+        paint: {
+          'circle-radius': 7,
+          'circle-color': '#ffffff',
+          'circle-stroke-color': '#3b82f6',
+          'circle-stroke-width': 2,
+        },
+      });
+
       // --- Drawing preview source + layers ---
       map.addSource('drawing-preview', {
         type: 'geojson',
@@ -338,8 +424,11 @@ export function SitePlannerMap({
       setMapReady(true);
     });
 
-    // ─── Click to place points ───
+    // ─── Click to place points (drawing mode) OR select zones ───
     map.on('click', (e) => {
+      // Don't process click events during/right after drag
+      if (dragStateRef.current) return;
+
       const tool = activeSitePlannerToolRef.current;
       if (tool) {
         drawingPointsRef.current = [
@@ -366,7 +455,7 @@ export function SitePlannerMap({
           src.setData({ type: 'FeatureCollection', features });
         });
       } else {
-        // Selection mode
+        // Selection mode — but only if not coming from a drag
         const features = map.queryRenderedFeatures(e.point, {
           layers: ['site-zones-fill'],
         });
@@ -402,15 +491,109 @@ export function SitePlannerMap({
       }
     });
 
-    // Cursor changes for zone hover
-    map.on('mouseenter', 'site-zones-fill', () => {
-      if (!activeSitePlannerToolRef.current) {
-        map.getCanvas().style.cursor = 'pointer';
+    // ─── Mousedown: start drag (zone body or vertex) ───
+    map.on('mousedown', (e) => {
+      const tool = activeSitePlannerToolRef.current;
+      if (tool) return; // Drawing mode — don't interfere
+
+      // Check vertex handles first (higher priority)
+      const vertexFeatures = map.queryRenderedFeatures(e.point, {
+        layers: ['zone-edit-vertices-layer'],
+      });
+      if (vertexFeatures.length > 0) {
+        const props = vertexFeatures[0].properties;
+        const zoneId = props?.zoneId as string;
+        const vertexIndex = props?.vertexIndex as number;
+        const zone = siteZonesRef.current.find((z) => z.id === zoneId);
+        if (zone) {
+          e.preventDefault();
+          dragStateRef.current = {
+            type: 'vertex',
+            zoneId,
+            vertexIndex,
+            startLngLat: [e.lngLat.lng, e.lngLat.lat],
+            originalCoords: zone.coordinates.map((c) => [...c]),
+          };
+          map.dragPan.disable();
+          map.getCanvas().style.cursor = 'crosshair';
+          setDraggingZone(true);
+          return;
+        }
+      }
+
+      // Check zone body for zone dragging
+      const zoneFeatures = map.queryRenderedFeatures(e.point, {
+        layers: ['site-zones-fill'],
+      });
+      if (zoneFeatures.length > 0) {
+        const zoneId = zoneFeatures[0].properties?.id as string;
+        const zone = siteZonesRef.current.find((z) => z.id === zoneId);
+        if (zone) {
+          e.preventDefault();
+          dragStateRef.current = {
+            type: 'zone',
+            zoneId,
+            startLngLat: [e.lngLat.lng, e.lngLat.lat],
+            originalCoords: zone.coordinates.map((c) => [...c]),
+          };
+          map.dragPan.disable();
+          map.getCanvas().style.cursor = 'grabbing';
+          setDraggingZone(true);
+        }
       }
     });
-    map.on('mouseleave', 'site-zones-fill', () => {
-      map.getCanvas().style.cursor = activeSitePlannerToolRef.current ? 'crosshair' : '';
+
+    // ─── Mousemove: update drag position ───
+    map.on('mousemove', (e) => {
+      const ds = dragStateRef.current;
+      if (!ds) {
+        // Cursor hints when not dragging
+        const tool = activeSitePlannerToolRef.current;
+        if (tool) {
+          map.getCanvas().style.cursor = 'crosshair';
+          return;
+        }
+        // Check if hovering vertex handle
+        const vertexHits = map.queryRenderedFeatures(e.point, {
+          layers: ['zone-edit-vertices-layer'],
+        });
+        if (vertexHits.length > 0) {
+          map.getCanvas().style.cursor = 'crosshair';
+          return;
+        }
+        // Check if hovering zone body
+        const zoneHits = map.queryRenderedFeatures(e.point, {
+          layers: ['site-zones-fill'],
+        });
+        if (zoneHits.length > 0) {
+          map.getCanvas().style.cursor = 'grab';
+          return;
+        }
+        map.getCanvas().style.cursor = '';
+        return;
+      }
+
+      const dlng = e.lngLat.lng - ds.startLngLat[0];
+      const dlat = e.lngLat.lat - ds.startLngLat[1];
+
+      if (ds.type === 'zone') {
+        // Move all vertices by delta
+        const newCoords = ds.originalCoords.map((c) => [c[0] + dlng, c[1] + dlat]);
+        updateZoneOnMap(ds.zoneId, newCoords);
+        updateVertexHandles(ds.zoneId, siteZonesRef.current, newCoords);
+      } else if (ds.type === 'vertex' && ds.vertexIndex != null) {
+        // Move only the dragged vertex
+        const newCoords = ds.originalCoords.map((c) => [...c]);
+        newCoords[ds.vertexIndex] = [
+          ds.originalCoords[ds.vertexIndex][0] + dlng,
+          ds.originalCoords[ds.vertexIndex][1] + dlat,
+        ];
+        updateZoneOnMap(ds.zoneId, newCoords);
+        updateVertexHandles(ds.zoneId, siteZonesRef.current, newCoords);
+      }
     });
+
+    // Mouseup on map is handled by the window-level listener below
 
     return () => {
       mapLoadedRef.current = false;
@@ -418,7 +601,48 @@ export function SitePlannerMap({
       map.remove();
       mapRef.current = null;
     };
-  }, [latitude, longitude, buildPreviewFeatures, finishDrawing]);
+  }, [latitude, longitude, buildPreviewFeatures, finishDrawing, setDraggingZone, updateVertexHandles]);
+
+  // Helper to update a zone's geometry on the map in real-time
+  function updateZoneOnMap(zoneId: string, newCoords: number[][]) {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+    if (!source) return;
+
+    const features = buildZoneFeatures(siteZonesRef.current, zoneId, newCoords);
+    source.setData({ type: 'FeatureCollection', features });
+
+    // Store the pending coordinates for persistence on mouseup
+    pendingCoordsRef.current = { zoneId, coords: newCoords };
+  }
+
+  // We need to handle mouseup more cleanly - use a window listener to catch mouseup even outside map
+  useEffect(() => {
+    const handleMouseUp = () => {
+      const ds = dragStateRef.current;
+      if (!ds) return;
+
+      const map = mapRef.current;
+      if (map) {
+        map.dragPan.enable();
+        map.getCanvas().style.cursor = '';
+      }
+      setDraggingZone(false);
+      dragStateRef.current = null;
+
+      // Persist the pending coordinates
+      const pending = pendingCoordsRef.current;
+      if (pending) {
+        onZoneUpdatedRef.current(pending.zoneId, pending.coords);
+        pendingCoordsRef.current = null;
+      }
+    };
+
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => window.removeEventListener('mouseup', handleMouseUp);
+  }, [setDraggingZone]);
 
   // ─── Auto-finish polygon when switching tools ───
   const prevToolRef = useRef(activeSitePlannerTool);
@@ -451,14 +675,21 @@ export function SitePlannerMap({
     }
   }, [siteZones, mapReady, syncZonesToMap]);
 
-  // ─── Selected zone highlight ───
+  // ─── Selected zone highlight + vertex handles ───
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !mapReady) return;
     try {
       map.setFilter('site-zones-selected', ['==', ['get', 'id'], selectedZoneId || '']);
     } catch { /* Layer might not be ready yet */ }
-  }, [selectedZoneId, mapReady]);
+
+    // Update vertex handles for selected zone (only in select mode)
+    if (!activeSitePlannerTool) {
+      updateVertexHandles(selectedZoneId, siteZones);
+    } else {
+      updateVertexHandles(null, siteZones);
+    }
+  }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, updateVertexHandles]);
 
   // ─── Keyboard shortcuts ───
   useEffect(() => {
@@ -510,6 +741,12 @@ export function SitePlannerMap({
             : linear
             ? `${drawingPoints.length} waypoints — Double-click or Enter to finish — Esc to cancel`
             : `${drawingPoints.length} points — Double-click or Enter to finish — Esc to cancel`}
+        </div>
+      )}
+      {/* Select mode hint */}
+      {!activeSitePlannerTool && (
+        <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-xs text-white backdrop-blur-sm">
+          Click a zone to select — Drag to move — Drag vertices to reshape
         </div>
       )}
     </>

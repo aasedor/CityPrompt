@@ -487,10 +487,10 @@ These are the external services the project relies on. The team has active accou
 | Service | Purpose | Plan | Cost | URL |
 |---------|---------|------|------|-----|
 | **GitHub** | Code hosting & version control | Free | Free | https://github.com/beemanbesh/3D-Maps |
-| **Render.com** | Cloud hosting (production) | Multiple services | ~$21/mo total | https://dashboard.render.com |
-| **Anthropic** | Claude AI for document analysis | Pay-as-you-go | Usage-based | https://console.anthropic.com |
+| **Render.com** | Cloud hosting (production) | Multiple services | ~$30/mo total | https://dashboard.render.com |
+| **Anthropic** | Claude AI for document analysis | Max | $300 | https://console.anthropic.com |
 | **Mapbox** | Satellite maps & geocoding | Free tier | Free (50K loads/mo) | https://www.mapbox.com |
-| **Meshy.ai** | AI 3D model generation | Free tier | Free (5 credits/day) | https://www.meshy.ai |
+| **Meshy.ai** | AI 3D model generation | Basic | $20/mo | https://www.meshy.ai |
 | **Cloudflare R2** | Cloud file storage (production) | Free tier | Free (10GB/10M reads) | https://dash.cloudflare.com |
 
 ### Render.com Services (Production)
@@ -557,3 +557,43 @@ For local development, you only need **API keys** — you do NOT need Render, Cl
 |---------|----------|----------|
 | PostgreSQL | `devuser` | `devpassword` |
 | MinIO | `minioadmin` | `minioadmin` |
+
+
+  ┌────────────┬─────────────────────────────────────────────┐
+  │  Service   │                     URL                     │
+  ├────────────┼─────────────────────────────────────────────┤
+  │ Frontend   │ https://3d-platform-frontend.onrender.com   │
+  ├────────────┼─────────────────────────────────────────────┤
+  │ API Health │ https://3d-platform-api.onrender.com/health │
+  ├────────────┼─────────────────────────────────────────────┤
+  │ API Docs   │ https://3d-platform-api.onrender.com/docs   │
+  └────────────┴─────────────────────────────────────────────┘
+
+Cloudflare
+Create Account API Token
+3d-platform was successfully created
+Summary:
+Permissions:
+
+Allows the ability to read, write, and list objects in specific buckets.
+Buckets:
+3d-platform-uploads
+Use this token for authenticating against the Cloudflare API:
+
+    Token value
+
+    wWkZEmKQ5HX0eID_TXMkIP6Ph3E7IarHbAybzasa
+
+Use the following credentials for S3 clients:
+
+    Access Key ID
+
+    6ec62154aa5d0d8c666004fbea672edc
+
+    Secret Access Key
+
+    7d07a777edeca3f673db51b99b6f961bb866d85f467e281b6f089b0ccc76d003
+
+Use jurisdiction-specific endpoints for S3 clients:
+
+https://afbac43892c4d8dd7c33345236cb99c0.r2.cloudflarestorage.com

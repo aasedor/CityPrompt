@@ -161,13 +161,16 @@ class SiteZone(Base):
     project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
     name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     zone_type: Mapped[str] = mapped_column(
-        Enum("building", "residential", "road", "green_space", "parking", "water", "development_area", name="zone_type", create_type=False),
+        Enum("site_boundary", "building", "residential", "road", "green_space", "parking", "water", "development_area", name="zone_type", create_type=False),
         nullable=False,
     )
     geometry = mapped_column(Geography("POLYGON", srid=4326), nullable=False)
     color: Mapped[str] = mapped_column(String(7), nullable=False, default="#9b59b6")
     properties: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    building_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
@@ -175,6 +178,7 @@ class SiteZone(Base):
 
     # Relationships
     project: Mapped["Project"] = relationship(back_populates="site_zones")
+    building: Mapped["Building | None"] = relationship()
 
 
 class ActivityLog(Base):

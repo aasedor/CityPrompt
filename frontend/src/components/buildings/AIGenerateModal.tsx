@@ -6,6 +6,7 @@ import type { AITemplate, GenerationStatus } from '@/types';
 interface AIGenerateModalProps {
   buildingId: string;
   buildingName?: string;
+  initialPrompt?: string;
   onClose: () => void;
   onComplete: () => void;
 }
@@ -13,8 +14,9 @@ interface AIGenerateModalProps {
 type TabId = 'templates' | 'text' | 'image';
 type CategoryFilter = 'all' | 'commercial' | 'residential' | 'infrastructure' | 'landscaping';
 
-export function AIGenerateModal({ buildingId, buildingName, onClose, onComplete }: AIGenerateModalProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('templates');
+export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClose, onComplete }: AIGenerateModalProps) {
+  // When an initialPrompt is provided (from zone properties), default to the text tab
+  const [activeTab, setActiveTab] = useState<TabId>(initialPrompt ? 'text' : 'templates');
   const [generating, setGenerating] = useState(false);
   const [genStatus, setGenStatus] = useState<GenerationStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,8 +28,8 @@ export function AIGenerateModal({ buildingId, buildingName, onClose, onComplete 
   const [selectedTemplate, setSelectedTemplate] = useState<AITemplate | null>(null);
   const [templatePrompt, setTemplatePrompt] = useState('');
 
-  // Text tab state
-  const [textPrompt, setTextPrompt] = useState('');
+  // Text tab state — pre-fill with initialPrompt from zone properties if provided
+  const [textPrompt, setTextPrompt] = useState(initialPrompt || '');
   const [artStyle, setArtStyle] = useState('realistic');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [showNegative, setShowNegative] = useState(false);
@@ -76,9 +78,10 @@ export function AIGenerateModal({ buildingId, buildingName, onClose, onComplete 
     try {
       await buildingsApi.generate(buildingId, prompt, artStyle, negativePrompt || undefined);
       startPolling();
-    } catch (err) {
+    } catch (err: unknown) {
       setGenerating(false);
-      setError(err instanceof Error ? err.message : 'Failed to start generation');
+      const axiosErr = err as { response?: { data?: { detail?: string } }; message?: string };
+      setError(axiosErr.response?.data?.detail || axiosErr.message || 'Failed to start generation');
     }
   }, [buildingId, artStyle, negativePrompt, startPolling]);
 
@@ -90,9 +93,10 @@ export function AIGenerateModal({ buildingId, buildingName, onClose, onComplete 
     try {
       await buildingsApi.generateFromImage(buildingId, imageUrl.trim());
       startPolling();
-    } catch (err) {
+    } catch (err: unknown) {
       setGenerating(false);
-      setError(err instanceof Error ? err.message : 'Failed to start generation');
+      const axiosErr = err as { response?: { data?: { detail?: string } }; message?: string };
+      setError(axiosErr.response?.data?.detail || axiosErr.message || 'Failed to start generation');
     }
   }, [buildingId, imageUrl, startPolling]);
 
@@ -137,6 +141,7 @@ export function AIGenerateModal({ buildingId, buildingName, onClose, onComplete 
               <h2 className="text-lg font-bold text-gray-900">AI 3D Generation</h2>
               <p className="text-xs text-gray-500">
                 {buildingName ? `Generating for "${buildingName}"` : 'Generate a 3D model'}
+                {initialPrompt && ' — prompt pre-filled from zone properties'}
               </p>
             </div>
           </div>

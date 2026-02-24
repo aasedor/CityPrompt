@@ -45,6 +45,7 @@ export interface Building {
   generation_status?: string;
   generation_prompt?: string;
   meshy_task_id?: string;
+  footprint_coordinates?: number[][];
   created_at: string;
 }
 
@@ -79,7 +80,7 @@ export interface ProcessingStatus {
 // Site Zone Types
 // =============================================================================
 
-export type SiteZoneType = 'building' | 'residential' | 'road' | 'green_space' | 'parking' | 'water' | 'development_area';
+export type SiteZoneType = 'site_boundary' | 'building' | 'residential' | 'road' | 'green_space' | 'parking' | 'water' | 'development_area';
 
 export interface SiteZoneProperties {
   height?: number;
@@ -99,6 +100,7 @@ export interface SiteZone {
   color: string;
   properties?: SiteZoneProperties;
   sort_order: number;
+  building_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -111,6 +113,12 @@ export interface ZoneTypeConfig {
 }
 
 export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
+  site_boundary: {
+    label: 'Site Boundary',
+    color: '#f59e0b',
+    icon: 'S',
+    defaultProperties: {},
+  },
   building: {
     label: 'Building',
     color: '#9b59b6',
@@ -216,6 +224,10 @@ export interface ViewerSettings {
   showShadowStudy: boolean;
   activePhase: number | null; // null = show all phases
   moveSpeed: number; // multiplier: 0.25 (slow) to 3 (fast), default 1
+  headBobEnabled: boolean;   // subtle head bob during walk movement
+  showCrosshair: boolean;    // crosshair dot in walk/fly modes
+  enablePostProcessing: boolean;
+  enableFog: boolean;
 }
 
 export interface SceneObject {
