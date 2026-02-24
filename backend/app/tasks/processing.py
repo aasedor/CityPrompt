@@ -419,7 +419,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
 
 
 @celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2)
-def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None, refine: bool = False):
+def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None, refine: bool = True):
     """
     Generate a 3D model via Meshy.ai API.
 
