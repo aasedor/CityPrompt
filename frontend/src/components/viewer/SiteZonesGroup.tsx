@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { SiteZone, Building } from '@/types';
+import type { SiteZone } from '@/types';
 
 // =============================================================================
 // Public API
@@ -26,23 +26,16 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
 
   const origin = { lat: projectLat, lon: projectLng };
 
-  // Build a set of zone IDs that have at least one completed GLB building
-  const zonesWithGLB = useMemo(() => {
+  // Build a set of zone IDs that have linked buildings (hide procedural geometry)
+  const zonesWithBuildings = useMemo(() => {
     const result = new Set<string>();
-    if (!buildings) return result;
     for (const zone of zones) {
-      // Check building_ids (multi-unit) or building_id (single)
-      const bids = zone.building_ids || (zone.building_id ? [zone.building_id] : []);
-      for (const bid of bids) {
-        const b = buildings.find((bld) => bld.id === bid);
-        if (b?.model_url) {
-          result.add(zone.id);
-          break;
-        }
+      if (zone.building_id || (zone.building_ids && zone.building_ids.length > 0)) {
+        result.add(zone.id);
       }
     }
     return result;
-  }, [zones, buildings]);
+  }, [zones]);
 
   return (
     <group name="site-zones">
@@ -52,7 +45,7 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
           zone={zone}
           origin={origin}
           generationStatus={zone.building_id ? buildingStatuses?.get(zone.building_id) : undefined}
-          hasGLBModel={zonesWithGLB.has(zone.id)}
+          hasLinkedBuildings={zonesWithBuildings.has(zone.id)}
         />
       ))}
     </group>
@@ -213,12 +206,12 @@ function SiteZoneMesh({
   zone,
   origin,
   generationStatus,
-  hasGLBModel,
+  hasLinkedBuildings,
 }: {
   zone: SiteZone;
   origin: { lat: number; lon: number };
   generationStatus?: BuildingGenerationStatus;
-  hasGLBModel?: boolean;
+  hasLinkedBuildings?: boolean;
 }) {
   const pts = useMemo(() => toLocalPoints(zone.coordinates, origin), [zone.coordinates, origin]);
 
@@ -229,9 +222,9 @@ function SiteZoneMesh({
       return <SiteBoundaryZone zone={zone} points2D={pts} />;
     case 'building':
     case 'residential':
-      // If the zone already has a completed GLB model, skip the procedural building
-      // to avoid rendering duplicate geometry on top of the AI-generated model
-      if (hasGLBModel) return null;
+      // Once buildings are linked to this zone, hide the procedural placeholder
+      // to avoid duplicate geometry (the real buildings render via SceneViewer)
+      if (hasLinkedBuildings) return null;
       return <DetailedBuildingZone zone={zone} points2D={pts} generationStatus={generationStatus} />;
     case 'road':
       return <RoadZone zone={zone} points2D={pts} />;
