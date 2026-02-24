@@ -380,6 +380,44 @@ def process_document(self, document_id: str):
             pass
 
 
+def _propagate_model_to_siblings(session: Session, building_id: str, model_url: str, lod_urls: dict):
+    """Copy generated model to all sibling buildings in the same zone.
+
+    Finds the zone that contains this building_id in its building_ids list,
+    then updates all other buildings in that list with the same model_url and lod_urls.
+    """
+    from app.models.models import Building, SiteZone
+
+    # Find zones where building_ids contains this building_id
+    zones = session.query(SiteZone).filter(
+        SiteZone.building_ids.isnot(None)
+    ).all()
+
+    for zone in zones:
+        bid_list = zone.building_ids or []
+        if building_id not in bid_list and str(building_id) not in [str(b) for b in bid_list]:
+            continue
+
+        # Found the zone — propagate to siblings
+        sibling_count = 0
+        for bid_str in bid_list:
+            if str(bid_str) == str(building_id):
+                continue  # Skip the source building
+            sibling = session.query(Building).filter_by(id=uuid.UUID(str(bid_str))).first()
+            if sibling:
+                sibling.model_url = model_url
+                sibling.lod_urls = lod_urls
+                sibling.generation_status = "completed"
+                sibling_count += 1
+
+        if sibling_count > 0:
+            session.commit()
+            logger.info(
+                f"Propagated model from building {building_id} to {sibling_count} sibling(s)"
+            )
+        break  # A building belongs to at most one zone
+
+
 @celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2)
 def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None):
     """
@@ -550,6 +588,12 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
         building.lod_urls = lod_urls
         building.generation_status = "completed"
         session.commit()
+
+        # Propagate model to sibling buildings in the same zone (multi-unit)
+        try:
+            _propagate_model_to_siblings(session, building_id, model_url, lod_urls)
+        except Exception as prop_err:
+            logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
 
         logger.info(f"AI 3D model generated for building {building_id}: {model_url}")
         return {

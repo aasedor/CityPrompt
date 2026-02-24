@@ -3,6 +3,8 @@ Site Zone management API endpoints.
 """
 
 import logging
+import math
+import re
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -40,6 +42,7 @@ def _zone_to_response(zone: SiteZone) -> dict:
         "properties": zone.properties,
         "sort_order": zone.sort_order,
         "building_id": zone.building_id,
+        "building_ids": [uuid.UUID(bid) for bid in zone.building_ids] if zone.building_ids else None,
         "created_at": zone.created_at,
         "updated_at": zone.updated_at,
     }
@@ -197,13 +200,89 @@ async def delete_zone(
     await db.delete(zone)
 
 
+def _parse_unit_count_from_text(text: str) -> int:
+    """Parse unit count from description text like '10 homes', '5 houses', '20 units'."""
+    if not text:
+        return 0
+    match = re.search(r'(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)', text, re.I)
+    if match:
+        return int(match.group(1))
+    return 0
+
+
+def _resolve_unit_count(zone: SiteZone) -> int:
+    """Determine unit count from zone properties and description text, taking the max."""
+    props = zone.properties or {}
+    prop_count = int(props.get("unit_count", 1))
+    desc = props.get("description_text", "") or ""
+    parsed_count = _parse_unit_count_from_text(desc)
+    return max(prop_count, parsed_count, 1)
+
+
+def compute_unit_positions(zone_geometry, unit_count: int):
+    """Compute grid positions for N units within zone bounding box.
+
+    Returns list of (cx, cy, cell_w, cell_h) tuples — center coordinates
+    and cell dimensions in degrees.
+    """
+    shape = to_shape(zone_geometry)
+    minx, miny, maxx, maxy = shape.bounds
+
+    # Inset by margin (~5m in degrees)
+    margin_deg = 0.000045
+    minx += margin_deg
+    miny += margin_deg
+    maxx -= margin_deg
+    maxy -= margin_deg
+
+    # Ensure inset didn't collapse the box
+    if maxx <= minx or maxy <= miny:
+        # Fallback: use original bounds without margin
+        minx, miny, maxx, maxy = shape.bounds
+
+    cols = math.ceil(math.sqrt(unit_count))
+    rows = math.ceil(unit_count / cols)
+
+    cell_w = (maxx - minx) / cols
+    cell_h = (maxy - miny) / rows
+
+    positions = []
+    for i in range(unit_count):
+        row = i // cols
+        col = i % cols
+        cx = minx + (col + 0.5) * cell_w
+        cy = miny + (row + 0.5) * cell_h
+        positions.append((cx, cy, cell_w, cell_h))
+
+    return positions
+
+
+def _make_footprint_polygon(cx: float, cy: float, cell_w: float, cell_h: float, fill_ratio: float = 0.7) -> str:
+    """Create a WKT POLYGON string for a rectangular footprint centered at (cx, cy)."""
+    hw = cell_w * fill_ratio / 2
+    hh = cell_h * fill_ratio / 2
+    coords = [
+        f"{cx - hw} {cy - hh}",
+        f"{cx + hw} {cy - hh}",
+        f"{cx + hw} {cy + hh}",
+        f"{cx - hw} {cy + hh}",
+        f"{cx - hw} {cy - hh}",
+    ]
+    return f"POLYGON(({', '.join(coords)}))"
+
+
 @router.post("/{zone_id}/create-building", response_model=BuildingResponse)
 async def create_building_from_zone(
     zone_id: uuid.UUID,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Auto-create a Building record from a zone's geometry and properties."""
+    """Auto-create Building record(s) from a zone's geometry and properties.
+
+    For residential zones with unit_count > 1, creates N buildings in a grid
+    layout within the zone, all sharing the same model after generation.
+    Returns the first building (the one that triggers AI generation).
+    """
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = result.scalar_one_or_none()
     if not zone:
@@ -226,7 +305,7 @@ async def create_building_from_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # If zone already has a linked building, return it
+    # If zone already has linked buildings, return the first one
     if zone.building_id:
         existing = await db.execute(select(Building).where(Building.id == zone.building_id))
         building = existing.scalar_one_or_none()
@@ -235,25 +314,57 @@ async def create_building_from_zone(
 
     # Extract properties from zone
     props = zone.properties or {}
+    unit_count = _resolve_unit_count(zone)
 
-    building = Building(
-        project_id=zone.project_id,
-        name=zone.name or "Building from Zone",
-        footprint=zone.geometry,
-        height_meters=props.get("height"),
-        floor_count=props.get("floors"),
-        roof_type=props.get("roof_style"),
-    )
+    if unit_count <= 1:
+        # Single building — original behavior
+        building = Building(
+            project_id=zone.project_id,
+            name=zone.name or "Building from Zone",
+            footprint=zone.geometry,
+            height_meters=props.get("height"),
+            floor_count=props.get("floors"),
+            roof_type=props.get("roof_style"),
+        )
+        db.add(building)
+        await db.flush()
+        await db.refresh(building)
 
-    db.add(building)
+        zone.building_id = building.id
+        zone.building_ids = [str(building.id)]
+        await db.flush()
+
+        return _building_to_response(building)
+
+    # Multi-unit: create N buildings in a grid layout
+    grid_positions = compute_unit_positions(zone.geometry, unit_count)
+    all_building_ids: list[str] = []
+    first_building = None
+
+    for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
+        footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+        building = Building(
+            project_id=zone.project_id,
+            name=f"{zone.name or 'Unit'} #{i + 1}",
+            footprint=WKTElement(footprint_wkt, srid=4326),
+            height_meters=props.get("height"),
+            floor_count=props.get("floors"),
+            roof_type=props.get("roof_style"),
+        )
+        db.add(building)
+        await db.flush()
+        await db.refresh(building)
+        all_building_ids.append(str(building.id))
+
+        if i == 0:
+            first_building = building
+
+    # Link zone to all buildings
+    zone.building_id = first_building.id
+    zone.building_ids = all_building_ids
     await db.flush()
-    await db.refresh(building)
 
-    # Link the zone to the new building
-    zone.building_id = building.id
-    await db.flush()
-
-    return _building_to_response(building)
+    return _building_to_response(first_building)
 
 
 # =============================================================================
@@ -269,16 +380,27 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
     Includes building type, dimensions from geometry, height/floors,
     facade material, roof style, user description, neighbor context,
     and quality directives for walkthrough-grade models.
+
+    When unit_count > 1, the prompt asks for a single representative
+    home suitable for instancing, not an aerial view of a subdivision.
     """
     props = zone.properties or {}
     parts: list[str] = []
+
+    # Determine unit count
+    unit_count = _resolve_unit_count(zone)
 
     # 1. Building type + aesthetic
     aesthetic = props.get("development_aesthetic", "")
     dev_type = props.get("development_type", zone.zone_type)
     aesthetic_label = aesthetic.replace("_", " ").title() if aesthetic else ""
     type_label = dev_type.replace("_", " ").title()
-    if aesthetic_label:
+    if unit_count > 1:
+        if aesthetic_label:
+            parts.append(f"A single {aesthetic_label} {type_label} home suitable for a neighborhood of {unit_count} homes")
+        else:
+            parts.append(f"A single {type_label} home suitable for a neighborhood of {unit_count} homes")
+    elif aesthetic_label:
         parts.append(f"A {aesthetic_label} {type_label} building")
     else:
         parts.append(f"A {type_label} building")
@@ -351,12 +473,21 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
             pass
 
     # 7. Quality directives
-    parts.append(
-        "Realistic architectural style with detailed facade, visible windows, "
-        "entrance doors, and appropriate material textures. "
-        "Suitable for close-up walkthrough viewing. "
-        "Single standalone building, no background or ground plane."
-    )
+    if unit_count > 1:
+        parts.append(
+            "Realistic architectural style with detailed facade, visible windows, "
+            "entrance doors, and appropriate material textures. "
+            "Suitable for close-up walkthrough viewing. "
+            "Single standalone unit, no surrounding buildings or landscape, "
+            "no background or ground plane."
+        )
+    else:
+        parts.append(
+            "Realistic architectural style with detailed facade, visible windows, "
+            "entrance doors, and appropriate material textures. "
+            "Suitable for close-up walkthrough viewing. "
+            "Single standalone building, no background or ground plane."
+        )
 
     return ". ".join(parts)
 
@@ -428,25 +559,57 @@ async def generate_all(
                         logger.warning("Failed to queue generation for building %s: %s", building.id, e)
                 continue
 
-        # Create a new building from the zone
-        building = Building(
-            project_id=zone.project_id,
-            name=zone.name or "Building from Zone",
-            footprint=zone.geometry,
-            height_meters=zone_props.get("height"),
-            floor_count=zone_props.get("floors"),
-            roof_type=zone_props.get("roof_style"),
-        )
-        db.add(building)
-        await db.flush()
-        await db.refresh(building)
+        # Determine unit count for this zone
+        unit_count = _resolve_unit_count(zone)
 
-        # Link zone to building
-        zone.building_id = building.id
-        await db.flush()
-        buildings_created += 1
+        if unit_count <= 1:
+            # Single building — original behavior
+            building = Building(
+                project_id=zone.project_id,
+                name=zone.name or "Building from Zone",
+                footprint=zone.geometry,
+                height_meters=zone_props.get("height"),
+                floor_count=zone_props.get("floors"),
+                roof_type=zone_props.get("roof_style"),
+            )
+            db.add(building)
+            await db.flush()
+            await db.refresh(building)
 
-        # Compose prompt and queue generation
+            zone.building_id = building.id
+            zone.building_ids = [str(building.id)]
+            await db.flush()
+            buildings_created += 1
+        else:
+            # Multi-unit: create N buildings in a grid layout
+            grid_positions = compute_unit_positions(zone.geometry, unit_count)
+            all_building_ids: list[str] = []
+            first_building = None
+
+            for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
+                footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+                b = Building(
+                    project_id=zone.project_id,
+                    name=f"{zone.name or 'Unit'} #{i + 1}",
+                    footprint=WKTElement(footprint_wkt, srid=4326),
+                    height_meters=zone_props.get("height"),
+                    floor_count=zone_props.get("floors"),
+                    roof_type=zone_props.get("roof_style"),
+                )
+                db.add(b)
+                await db.flush()
+                await db.refresh(b)
+                all_building_ids.append(str(b.id))
+                if i == 0:
+                    first_building = b
+
+            zone.building_id = first_building.id
+            zone.building_ids = all_building_ids
+            await db.flush()
+            buildings_created += unit_count
+            building = first_building
+
+        # Compose prompt and queue generation (only for first building)
         prompt = compose_zone_prompt(zone, all_zones)
         building.generation_status = "generating"
         building.generation_prompt = prompt

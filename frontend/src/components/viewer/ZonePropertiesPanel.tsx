@@ -172,15 +172,30 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         )}
 
         {zone.zone_type === 'residential' && (
-          <div className="flex items-center justify-between">
-            <label className="text-xs text-gray-500">Balconies</label>
-            <input
-              type="checkbox"
-              checked={!!props.balconies}
-              onChange={(e) => setProps((p) => ({ ...p, balconies: e.target.checked }))}
-              className="rounded border-gray-300"
-            />
-          </div>
+          <>
+            <div className="flex items-center justify-between">
+              <label className="text-xs text-gray-500">Balconies</label>
+              <input
+                type="checkbox"
+                checked={!!props.balconies}
+                onChange={(e) => setProps((p) => ({ ...p, balconies: e.target.checked }))}
+                className="rounded border-gray-300"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Unit Count</label>
+              <input
+                type="number"
+                min="1"
+                max="50"
+                step="1"
+                value={(props.unit_count as number) ?? 1}
+                onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 1 }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              />
+              <span className="text-[10px] text-gray-400">Number of buildings to generate within this zone</span>
+            </div>
+          </>
         )}
 
         {/* ============================================================= */}
@@ -657,11 +672,27 @@ function composeZonePrompt(zone: SiteZone): string {
   const props = zone.properties || {};
   const parts: string[] = [];
 
+  // Determine unit count from properties or description text
+  let unitCount = (props.unit_count as number) || 1;
+  const desc = (props.description_text as string) || '';
+  const unitMatch = desc.match(/(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)/i);
+  if (unitMatch) {
+    const parsed = parseInt(unitMatch[1]);
+    if (parsed > unitCount) unitCount = parsed;
+  }
+
   // 1. Building type + aesthetic
   const aesthetic = ((props.development_aesthetic as string) || '').replace(/_/g, ' ').trim();
   const devType = ((props.development_type as string) || zone.zone_type).replace(/_/g, ' ');
   const typeLabel = devType.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  if (aesthetic) {
+  if (unitCount > 1) {
+    if (aesthetic) {
+      const aestheticLabel = aesthetic.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      parts.push(`A single ${aestheticLabel} ${typeLabel} home suitable for a neighborhood of ${unitCount} homes`);
+    } else {
+      parts.push(`A single ${typeLabel} home suitable for a neighborhood of ${unitCount} homes`);
+    }
+  } else if (aesthetic) {
     const aestheticLabel = aesthetic.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     parts.push(`A ${aestheticLabel} ${typeLabel} building`);
   } else {
@@ -715,12 +746,21 @@ function composeZonePrompt(zone: SiteZone): string {
   }
 
   // 6. Quality directives
-  parts.push(
-    'Realistic architectural style with detailed facade, visible windows, ' +
-    'entrance doors, and appropriate material textures. ' +
-    'Suitable for close-up walkthrough viewing. ' +
-    'Single standalone building, no background or ground plane.'
-  );
+  if (unitCount > 1) {
+    parts.push(
+      'Realistic architectural style with detailed facade, visible windows, ' +
+      'entrance doors, and appropriate material textures. ' +
+      'Suitable for close-up walkthrough viewing. ' +
+      'Single standalone unit, no surrounding buildings or landscape, no background or ground plane.'
+    );
+  } else {
+    parts.push(
+      'Realistic architectural style with detailed facade, visible windows, ' +
+      'entrance doors, and appropriate material textures. ' +
+      'Suitable for close-up walkthrough viewing. ' +
+      'Single standalone building, no background or ground plane.'
+    );
+  }
 
   return parts.join('. ');
 }

@@ -88,6 +88,7 @@ export interface SiteZoneProperties {
   floor_height?: number;
   tree_density?: number;
   width?: number;
+  unit_count?: number;
   [key: string]: unknown;
 }
 
@@ -101,6 +102,7 @@ export interface SiteZone {
   properties?: SiteZoneProperties;
   sort_order: number;
   building_id?: string;
+  building_ids?: string[];
   created_at: string;
   updated_at: string;
 }

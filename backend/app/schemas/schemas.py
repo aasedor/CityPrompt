@@ -297,6 +297,7 @@ class SiteZoneResponse(BaseModel):
     properties: Optional[dict[str, Any]]
     sort_order: int
     building_id: Optional[uuid.UUID] = None
+    building_ids: Optional[list[uuid.UUID]] = None
     created_at: datetime
     updated_at: datetime
 
