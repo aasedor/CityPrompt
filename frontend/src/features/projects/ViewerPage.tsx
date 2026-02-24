@@ -423,14 +423,46 @@ export function ViewerPage() {
   }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
 
   const updateBuilding = useMutation({
-    mutationFn: (vars: { buildingId: string; data: Record<string, unknown> }) =>
+    mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean }) =>
       buildingsApi.update(vars.buildingId, vars.data),
+    onMutate: async (vars) => {
+      // Optimistically update cache for silent updates (move/rotation)
+      // so the building doesn't flicker/shrink during refetch
+      if (vars.silent) {
+        await queryClient.cancelQueries({ queryKey: ['project', id] });
+        const prev = queryClient.getQueryData(['project', id]);
+        queryClient.setQueryData(['project', id], (old: any) => {
+          if (!old?.buildings) return old;
+          return {
+            ...old,
+            buildings: old.buildings.map((b: any) =>
+              b.id === vars.buildingId ? { ...b, ...vars.data } : b
+            ),
+          };
+        });
+        return { prev };
+      }
+    },
     onSuccess: (_data, vars) => {
-      queryClient.invalidateQueries({ queryKey: ['project', id] });
-      toast.success('Building updated');
-      setEditingBuilding(false);
+      if (!vars.silent) {
+        queryClient.invalidateQueries({ queryKey: ['project', id] });
+        toast.success('Building updated');
+        setEditingBuilding(false);
+      }
       // Broadcast edit to collaborators
       collaboration.sendEdit(vars.buildingId, vars.data);
+    },
+    onError: (_err, vars, context) => {
+      // Roll back optimistic update on error
+      if (vars.silent && context?.prev) {
+        queryClient.setQueryData(['project', id], context.prev);
+      }
+    },
+    onSettled: (_data, _err, vars) => {
+      // Refetch after silent updates settle to sync with server
+      if (vars.silent) {
+        queryClient.invalidateQueries({ queryKey: ['project', id] });
+      }
     },
   });
 
@@ -483,7 +515,7 @@ export function ViewerPage() {
       const dLat = -dz / metersPerDegLat;
 
       const newCoords = building.footprint_coordinates.map(([pLng, pLat]) => [pLng + dLng, pLat + dLat]);
-      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords } });
+      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords }, silent: true });
     } else {
       // No footprint yet — create a footprint proportional to the building height
       const clickLng = lng + position[0] / metersPerDegLon;
@@ -499,7 +531,7 @@ export function ViewerPage() {
         [clickLng + halfW, clickLat + halfH],
         [clickLng - halfW, clickLat + halfH],
       ];
-      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords } });
+      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords }, silent: true });
     }
 
     setMovingBuilding(false);
@@ -1134,28 +1166,30 @@ export function ViewerPage() {
             </dl>
           )}
           {/* Rotation control */}
-          <div className="mt-3 border-t border-gray-100 pt-3">
-            <label className="mb-1 flex items-center gap-1 text-xs font-medium text-gray-500">
-              <RotateCw size={12} />
-              Rotation
-              <span className="ml-auto tabular-nums text-gray-400">{selectedBuilding.rotation_degrees ?? 0}°</span>
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="360"
-              step="5"
-              value={selectedBuilding.rotation_degrees ?? 0}
-              onChange={(e) => {
-                const deg = parseFloat(e.target.value);
-                updateBuilding.mutate({
-                  buildingId: selectedBuilding.id,
-                  data: { rotation_degrees: deg },
-                });
-              }}
-              className="w-full accent-primary-600"
-            />
-          </div>
+          <RotationSlider
+            buildingId={selectedBuilding.id}
+            value={selectedBuilding.rotation_degrees ?? 0}
+            onDrag={(deg) => {
+              // Optimistic cache update for instant 3D feedback (no API call)
+              queryClient.setQueryData(['project', id], (old: any) => {
+                if (!old?.buildings) return old;
+                return {
+                  ...old,
+                  buildings: old.buildings.map((b: any) =>
+                    b.id === selectedBuilding.id ? { ...b, rotation_degrees: deg } : b
+                  ),
+                };
+              });
+            }}
+            onCommit={(deg) => {
+              // Save to API only when user releases the slider
+              updateBuilding.mutate({
+                buildingId: selectedBuilding.id,
+                data: { rotation_degrees: deg },
+                silent: true,
+              });
+            }}
+          />
           {/* Material picker */}
           <div className="mt-3 border-t border-gray-100 pt-3">
             <label className="mb-1.5 block text-xs font-medium text-gray-500">Facade Material</label>
@@ -1355,6 +1389,49 @@ function ShortcutRow({ keys, desc }: { keys: string; desc: string }) {
           )
         )}
       </div>
+    </div>
+  );
+}
+
+/** Rotation slider: drags update 3D instantly via cache; saves to API on release. */
+function RotationSlider({
+  buildingId,
+  value,
+  onDrag,
+  onCommit,
+}: {
+  buildingId: string;
+  value: number;
+  onDrag: (deg: number) => void;
+  onCommit: (deg: number) => void;
+}) {
+  const [localDeg, setLocalDeg] = useState(value);
+
+  // Sync with server value when building selection changes
+  useEffect(() => { setLocalDeg(value); }, [value, buildingId]);
+
+  return (
+    <div className="mt-3 border-t border-gray-100 pt-3">
+      <label className="mb-1 flex items-center gap-1 text-xs font-medium text-gray-500">
+        <RotateCw size={12} />
+        Rotation
+        <span className="ml-auto tabular-nums text-gray-400">{localDeg}°</span>
+      </label>
+      <input
+        type="range"
+        min="0"
+        max="360"
+        step="5"
+        value={localDeg}
+        onChange={(e) => {
+          const deg = parseFloat(e.target.value);
+          setLocalDeg(deg);
+          onDrag(deg);
+        }}
+        onMouseUp={() => onCommit(localDeg)}
+        onTouchEnd={() => onCommit(localDeg)}
+        className="w-full accent-primary-600"
+      />
     </div>
   );
 }
