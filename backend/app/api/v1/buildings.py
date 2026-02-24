@@ -30,8 +30,9 @@ def _building_to_response(building: Building) -> dict:
         try:
             shape = to_shape(building.footprint)
             footprint_coordinates = [[c[0], c[1]] for c in shape.exterior.coords[:-1]]
-        except Exception:
-            pass
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning(f"Failed to convert footprint for building {building.id}: {e}")
 
     return {
         "id": building.id,
@@ -49,6 +50,7 @@ def _building_to_response(building: Building) -> dict:
         "generation_prompt": building.generation_prompt,
         "meshy_task_id": building.meshy_task_id,
         "footprint_coordinates": footprint_coordinates,
+        "rotation_degrees": float(building.rotation_degrees) if building.rotation_degrees is not None else 0,
         "created_at": building.created_at,
     }
 

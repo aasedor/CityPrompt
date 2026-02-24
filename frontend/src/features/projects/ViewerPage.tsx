@@ -2,7 +2,7 @@ import { useCallback, useRef, useState, useEffect, Component, type ReactNode, ty
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users, Eye, EyeOff, Map as MapIcon, Trash2, Sparkles, Move, Loader2, Footprints } from 'lucide-react';
+import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users, Eye, EyeOff, Map as MapIcon, Trash2, Sparkles, Move, RotateCw, Loader2, Footprints } from 'lucide-react';
 import { projectsApi, buildingsApi, contextApi, annotationsApi, siteZonesApi } from '@/services/api';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 // Annotation type used implicitly via annotationsApi
@@ -485,11 +485,14 @@ export function ViewerPage() {
       const newCoords = building.footprint_coordinates.map(([pLng, pLat]) => [pLng + dLng, pLat + dLat]);
       updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords } });
     } else {
-      // No footprint yet — create a default ~15m x 15m rectangle at the clicked position
+      // No footprint yet — create a footprint proportional to the building height
       const clickLng = lng + position[0] / metersPerDegLon;
       const clickLat = lat - position[2] / metersPerDegLat;
-      const halfW = 0.000075; // ~8m
-      const halfH = 0.000065; // ~7m
+      const h = building.height_meters || 10;
+      // Make footprint roughly 1:1 aspect ratio, sized relative to height
+      const sideMeters = Math.max(h * 0.8, 10);
+      const halfW = (sideMeters / 2) / metersPerDegLon;
+      const halfH = (sideMeters / 2) / metersPerDegLat;
       const newCoords = [
         [clickLng - halfW, clickLat - halfH],
         [clickLng + halfW, clickLat - halfH],
@@ -1130,6 +1133,29 @@ export function ViewerPage() {
               )}
             </dl>
           )}
+          {/* Rotation control */}
+          <div className="mt-3 border-t border-gray-100 pt-3">
+            <label className="mb-1 flex items-center gap-1 text-xs font-medium text-gray-500">
+              <RotateCw size={12} />
+              Rotation
+              <span className="ml-auto tabular-nums text-gray-400">{selectedBuilding.rotation_degrees ?? 0}°</span>
+            </label>
+            <input
+              type="range"
+              min="0"
+              max="360"
+              step="5"
+              value={selectedBuilding.rotation_degrees ?? 0}
+              onChange={(e) => {
+                const deg = parseFloat(e.target.value);
+                updateBuilding.mutate({
+                  buildingId: selectedBuilding.id,
+                  data: { rotation_degrees: deg },
+                });
+              }}
+              className="w-full accent-primary-600"
+            />
+          </div>
           {/* Material picker */}
           <div className="mt-3 border-t border-gray-100 pt-3">
             <label className="mb-1.5 block text-xs font-medium text-gray-500">Facade Material</label>

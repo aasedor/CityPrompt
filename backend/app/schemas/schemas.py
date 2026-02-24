@@ -155,6 +155,7 @@ class BuildingUpdate(BaseModel):
     construction_phase: Optional[int] = Field(None, description="Updated construction phase")
     specifications: Optional[dict[str, Any]] = Field(None, description="Updated specifications")
     footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Updated footprint as [[lng, lat], ...] polygon coordinates")
+    rotation_degrees: Optional[float] = Field(None, description="Y-axis rotation in degrees (0-360)")
 
 
 class BuildingResponse(BaseModel):
@@ -175,6 +176,7 @@ class BuildingResponse(BaseModel):
     generation_prompt: Optional[str] = Field(None, description="Text prompt used for AI generation")
     meshy_task_id: Optional[str] = Field(None, description="Meshy.ai task ID for tracking")
     footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Footprint polygon as [[lng, lat], ...] coordinate pairs")
+    rotation_degrees: Optional[float] = Field(None, description="Y-axis rotation in degrees (0-360)")
     created_at: datetime = Field(description="Creation timestamp")
 
 

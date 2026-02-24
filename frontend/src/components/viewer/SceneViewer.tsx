@@ -2547,8 +2547,11 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
     ? [position[0], 0, position[2]]
     : position;
 
+  // Y-axis rotation from building.rotation_degrees
+  const rotationY = ((building.rotation_degrees ?? 0) * Math.PI) / 180;
+
   return (
-    <group ref={groupRef} position={effectivePosition}>
+    <group ref={groupRef} position={effectivePosition} rotation={[0, rotationY, 0]}>
       {hasGLB ? (
         // Path A: GLB model from server (with LOD switching)
         <GLBBuildingMesh

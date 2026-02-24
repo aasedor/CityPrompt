@@ -88,6 +88,7 @@ class Building(Base):
     generation_status: Mapped[str | None] = mapped_column(String(20), nullable=True, default="idle")
     generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
     meshy_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    rotation_degrees: Mapped[float | None] = mapped_column(Numeric(6, 2), nullable=True, default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships

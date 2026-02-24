@@ -37,9 +37,12 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
     if (!data.footprint_coordinates && projectLocation?.latitude && projectLocation?.longitude) {
       const lat = projectLocation.latitude;
       const lng = projectLocation.longitude;
-      // ~15m x 15m default footprint (in degrees)
-      const halfW = 0.000075; // ~8m in longitude
-      const halfH = 0.000065; // ~7m in latitude
+      const h = data.height_meters || 10;
+      const sideMeters = Math.max(h * 0.8, 10);
+      const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
+      const metersPerDegLat = 111320;
+      const halfW = (sideMeters / 2) / metersPerDegLon;
+      const halfH = (sideMeters / 2) / metersPerDegLat;
       data.footprint_coordinates = [
         [lng - halfW, lat - halfH],
         [lng + halfW, lat - halfH],

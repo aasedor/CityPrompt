@@ -46,6 +46,7 @@ export interface Building {
   generation_prompt?: string;
   meshy_task_id?: string;
   footprint_coordinates?: number[][];
+  rotation_degrees?: number;
   created_at: string;
 }
 
