@@ -674,8 +674,8 @@ function composeZonePrompt(zone: SiteZone): string {
 
   // Determine unit count from properties or description text
   let unitCount = (props.unit_count as number) || 1;
-  const desc = (props.description_text as string) || '';
-  const unitMatch = desc.match(/(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)/i);
+  const descText = (props.description_text as string) || '';
+  const unitMatch = descText.match(/(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)/i);
   if (unitMatch) {
     const parsed = parseInt(unitMatch[1]);
     if (parsed > unitCount) unitCount = parsed;
