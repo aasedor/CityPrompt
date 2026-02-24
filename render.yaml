@@ -41,9 +41,9 @@ services:
       - key: LOG_LEVEL
         value: INFO
       - key: ALLOWED_ORIGINS
-        value: https://3d-platform-frontend.onrender.com
+        value: https://threed-platform-frontend.onrender.com
       - key: FRONTEND_URL
-        value: https://3d-platform-frontend.onrender.com
+        value: https://threed-platform-frontend.onrender.com
       - key: S3_BUCKET_NAME
         value: 3d-platform-uploads
       - key: S3_REGION
@@ -100,8 +100,8 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://3d-platform-api.onrender.com
+        value: https://threed-platform-api.onrender.com
       - key: VITE_WS_URL
-        value: wss://3d-platform-api.onrender.com
+        value: wss://threed-platform-api.onrender.com
       # Set manually in Render dashboard:
       # VITE_MAPBOX_TOKEN
