@@ -811,7 +811,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
 
       {/* Site zones from planner */}
       {siteZones && siteZones.length > 0 && (
-        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} buildingStatuses={buildingStatuses} />
+        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} buildingStatuses={buildingStatuses} buildings={buildings} />
       )}
 
       {/* Landscaping — trees and green spaces (hidden when map is active) */}
