@@ -459,15 +459,15 @@ export function ViewerPage() {
   // Handle building move — convert scene position back to geographic footprint
   const handleBuildingMove = useCallback((buildingId: string, position: [number, number, number]) => {
     const building = allBuildings.find((b) => b.id === buildingId);
-    if (!building) return;
+    if (!building || !effectiveLocation) return;
 
-    if (building.footprint_coordinates && building.footprint_coordinates.length >= 3 && effectiveLocation) {
-      const lat = effectiveLocation.latitude;
-      const lng = effectiveLocation.longitude;
-      const metersPerDegLat = 111320;
-      const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
+    const lat = effectiveLocation.latitude;
+    const lng = effectiveLocation.longitude;
+    const metersPerDegLat = 111320;
+    const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
 
-      // Compute current centroid in scene coords
+    if (building.footprint_coordinates && building.footprint_coordinates.length >= 3) {
+      // Existing footprint — shift it by the delta
       let oldCx = 0, oldCy = 0;
       for (const p of building.footprint_coordinates) {
         oldCx += p[0]; oldCy += p[1];
@@ -477,21 +477,26 @@ export function ViewerPage() {
       const oldSceneX = (oldCx - lng) * metersPerDegLon;
       const oldSceneZ = -(oldCy - lat) * metersPerDegLat;
 
-      // Compute delta in scene space
       const dx = position[0] - oldSceneX;
       const dz = position[2] - oldSceneZ;
-
-      // Convert delta back to geographic
       const dLng = dx / metersPerDegLon;
       const dLat = -dz / metersPerDegLat;
 
-      // Shift all footprint coordinates
       const newCoords = building.footprint_coordinates.map(([pLng, pLat]) => [pLng + dLng, pLat + dLat]);
-
-      updateBuilding.mutate({
-        buildingId,
-        data: { footprint_coordinates: newCoords },
-      });
+      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords } });
+    } else {
+      // No footprint yet — create a default ~15m x 15m rectangle at the clicked position
+      const clickLng = lng + position[0] / metersPerDegLon;
+      const clickLat = lat - position[2] / metersPerDegLat;
+      const halfW = 0.000075; // ~8m
+      const halfH = 0.000065; // ~7m
+      const newCoords = [
+        [clickLng - halfW, clickLat - halfH],
+        [clickLng + halfW, clickLat - halfH],
+        [clickLng + halfW, clickLat + halfH],
+        [clickLng - halfW, clickLat + halfH],
+      ];
+      updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords } });
     }
 
     setMovingBuilding(false);
@@ -977,19 +982,17 @@ export function ViewerPage() {
               >
                 {editingBuilding ? 'Cancel' : 'Edit'}
               </button>
-              {selectedBuilding.footprint_coordinates && selectedBuilding.footprint_coordinates.length >= 3 && (
-                <button
-                  onClick={() => setMovingBuilding(!isMovingBuilding)}
-                  className={`rounded-md p-1 ${
-                    isMovingBuilding
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
-                  }`}
-                  title={isMovingBuilding ? 'Cancel move' : 'Move building'}
-                >
-                  <Move size={14} />
-                </button>
-              )}
+              <button
+                onClick={() => setMovingBuilding(!isMovingBuilding)}
+                className={`rounded-md p-1 ${
+                  isMovingBuilding
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                }`}
+                title={isMovingBuilding ? 'Cancel move' : 'Move building'}
+              >
+                <Move size={14} />
+              </button>
               <button
                 onClick={() => {
                   if (confirm('Delete this building? This cannot be undone.')) {

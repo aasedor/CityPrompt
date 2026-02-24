@@ -63,6 +63,32 @@ export function ProjectViewPage() {
     enabled: !!id,
   });
 
+  // Generation elapsed timer
+  const generatingBuildingCount = useMemo(() => {
+    if (!project?.buildings) return 0;
+    return project.buildings.filter((b: { generation_status?: string }) => b.generation_status === 'generating').length;
+  }, [project?.buildings]);
+
+  const [genStartTime, setGenStartTime] = useState<number | null>(null);
+  const [genElapsed, setGenElapsed] = useState(0);
+
+  useEffect(() => {
+    if (generatingBuildingCount > 0) {
+      setGenStartTime((prev) => prev ?? Date.now());
+    } else if (genStartTime) {
+      setGenStartTime(null);
+      setGenElapsed(0);
+    }
+  }, [generatingBuildingCount, genStartTime]);
+
+  useEffect(() => {
+    if (!genStartTime) return;
+    const tick = setInterval(() => {
+      setGenElapsed(Math.floor((Date.now() - genStartTime) / 1000));
+    }, 1000);
+    return () => clearInterval(tick);
+  }, [genStartTime]);
+
   const processingDocCount = useMemo(() => {
     if (!project?.documents) return 0;
     return project.documents.filter(
@@ -189,6 +215,11 @@ export function ProjectViewPage() {
                         <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
                           <Loader2 size={10} className="animate-spin" />
                           Generating...
+                          {genElapsed > 0 && (
+                            <span className="tabular-nums text-blue-500">
+                              {Math.floor(genElapsed / 60)}:{(genElapsed % 60).toString().padStart(2, '0')}
+                            </span>
+                          )}
                         </span>
                       ) : b.generation_status === 'failed' ? (
                         <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
@@ -232,7 +263,11 @@ export function ProjectViewPage() {
           </section>
 
           {showAddBuilding && (
-            <AddBuildingModal projectId={project.id} onClose={() => setShowAddBuilding(false)} />
+            <AddBuildingModal
+              projectId={project.id}
+              projectLocation={project.location}
+              onClose={() => setShowAddBuilding(false)}
+            />
           )}
           {showShare && (
             <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />
