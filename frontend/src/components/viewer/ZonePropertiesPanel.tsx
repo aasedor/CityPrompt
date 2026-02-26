@@ -36,24 +36,34 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const area = computePolygonAreaM2(zone.coordinates);
 
   return (
-    <div className="absolute right-4 top-16 z-20 w-80 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-4 w-4 rounded"
-            style={{ backgroundColor: zone.color }}
-          />
-          <h3 className="text-sm font-semibold text-gray-900">{config?.label || zone.zone_type}</h3>
+    <>
+      {/* Backdrop overlay — mobile only */}
+      <div
+        className="fixed inset-0 z-20 bg-black/30 sm:hidden"
+        onClick={onClose}
+      />
+      <div className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100vh-6rem)] sm:rounded-xl">
+        {/* Drag handle — mobile visual cue */}
+        <div className="mb-3 flex justify-center sm:hidden">
+          <div className="h-1 w-10 rounded-full bg-gray-300" />
         </div>
-        <button
-          onClick={onClose}
-          className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-        >
-          <X size={14} />
-        </button>
-      </div>
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-block h-4 w-4 rounded"
+              style={{ backgroundColor: zone.color }}
+            />
+            <h3 className="text-sm font-semibold text-gray-900">{config?.label || zone.zone_type}</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          >
+            <X size={14} />
+          </button>
+        </div>
 
-      <div className="mt-3 space-y-2.5 text-sm">
+        <div className="mt-3 space-y-2.5 text-sm">
         {/* Name */}
         <div>
           <label className="block text-xs text-gray-500">Name</label>
@@ -510,6 +520,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         </button>
       </div>
     </div>
+    </>
   );
 }
 

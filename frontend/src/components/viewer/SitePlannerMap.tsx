@@ -731,7 +731,7 @@ export function SitePlannerMap({
       <div ref={containerRef} className="h-full w-full" />
       {/* Drawing hint */}
       {activeSitePlannerTool && (
-        <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-xs text-white backdrop-blur-sm">
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           {drawingPoints.length === 0
             ? linear
               ? `Click to start drawing a ${ZONE_TYPE_CONFIG[activeSitePlannerTool].label} path`
@@ -747,7 +747,7 @@ export function SitePlannerMap({
       )}
       {/* Select mode hint */}
       {!activeSitePlannerTool && (
-        <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-xs text-white backdrop-blur-sm">
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           Click a zone to select — Drag to move — Drag vertices to reshape
         </div>
       )}
