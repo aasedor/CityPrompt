@@ -12,6 +12,9 @@ import type {
   SiteZoneProperties,
   GenerationStatus,
   AITemplate,
+  ArchitecturalStyle,
+  RenderPreview,
+  GenerationEngine,
 } from '@/types';
 
 const api = axios.create({
@@ -203,11 +206,20 @@ export const buildingsApi = {
     return data.model_url;
   },
 
-  generate: async (id: string, prompt: string, artStyle = 'realistic', negativePrompt?: string): Promise<GenerationStatus> => {
+  generate: async (
+    id: string,
+    prompt: string,
+    artStyle = 'realistic',
+    negativePrompt?: string,
+    style?: string,
+    engine?: string,
+  ): Promise<GenerationStatus> => {
     const { data } = await api.post(`/api/v1/buildings/${id}/generate`, {
       prompt,
       art_style: artStyle,
       negative_prompt: negativePrompt,
+      style,
+      engine,
     });
     return data;
   },
@@ -226,6 +238,37 @@ export const buildingsApi = {
 
   getTemplates: async (): Promise<AITemplate[]> => {
     const { data } = await api.get('/api/v1/buildings/ai/templates');
+    return data;
+  },
+
+  getStyles: async (): Promise<ArchitecturalStyle[]> => {
+    const { data } = await api.get('/api/v1/buildings/ai/styles');
+    return data;
+  },
+
+  getEngines: async (): Promise<GenerationEngine[]> => {
+    const { data } = await api.get('/api/v1/buildings/ai/engines');
+    return data;
+  },
+
+  generatePreview: async (
+    id: string,
+    prompt: string,
+    style?: string,
+    sourceType = 'text',
+    sourceImageUrl?: string,
+  ): Promise<RenderPreview> => {
+    const { data } = await api.post(`/api/v1/buildings/${id}/render-preview`, {
+      prompt,
+      style,
+      source_type: sourceType,
+      source_image_url: sourceImageUrl,
+    });
+    return data;
+  },
+
+  getRenderPreviews: async (id: string): Promise<RenderPreview[]> => {
+    const { data } = await api.get(`/api/v1/buildings/${id}/render-previews`);
     return data;
   },
 };

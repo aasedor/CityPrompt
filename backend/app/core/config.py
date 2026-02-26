@@ -75,6 +75,11 @@ class Settings(BaseSettings):
     mapbox_access_token: str = ""
     meshy_api_key: str = ""
     meshy_api_base: str = "https://api.meshy.ai"
+    stability_api_key: str = ""
+    stability_api_base: str = "https://api.stability.ai"
+    tripo_api_key: str = ""
+    tripo_api_base: str = "https://api.tripo3d.ai"
+    default_generation_engine: str = "meshy"
 
     # --- Object Storage ---
     s3_bucket_name: str = "dev-platform-uploads"

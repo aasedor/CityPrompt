@@ -419,19 +419,24 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
 
 
 @celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2)
-def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text", image_url: str = None, refine: bool = True):
+def generate_3d_model_ai(
+    self, building_id: str, prompt: str, mode: str = "text",
+    image_url: str = None, refine: bool = True,
+    engine: str = "meshy", style_id: str = None,
+    negative_prompt: str = None,
+):
     """
-    Generate a 3D model via Meshy.ai API.
+    Generate a 3D model via AI API (Meshy or Tripo3D).
 
     Pipeline:
-    1. Call Meshy API (text-to-3d or image-to-3d)
+    1. Call AI API (text-to-3d or image-to-3d)
     2. Poll until complete
     3. Download GLB file
     4. Upload to MinIO
     5. Update building.model_url in DB
     6. Update building.generation_status = 'completed'
     """
-    logger.info(f"AI generating 3D model for building: {building_id} (mode={mode})")
+    logger.info(f"AI generating 3D model for building: {building_id} (mode={mode}, engine={engine})")
     session = _get_sync_session()
 
     try:
@@ -442,79 +447,130 @@ def generate_3d_model_ai(self, building_id: str, prompt: str, mode: str = "text"
 
         building.generation_status = "generating"
         building.generation_prompt = prompt
+        building.generation_engine = engine
+        if style_id:
+            building.architectural_style = style_id
         session.commit()
 
-        self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "calling_meshy"})
-
-        from app.generation.meshy_client import MeshyClient
-        client = MeshyClient()
-
-        architectural_negative_prompt = (
+        architectural_negative_prompt = negative_prompt or (
             "blurry, low quality, deformed, floating objects, ground plane, "
             "background, people, vehicles, cartoon, anime, stylized, miniature"
         )
 
-        if mode == "image" and image_url:
-            task_id = asyncio.run(client.image_to_3d(image_url))
-            task_type = "image"
-        else:
-            task_id = asyncio.run(client.text_to_3d_preview(
-                prompt, negative_prompt=architectural_negative_prompt
-            ))
-            task_type = "text"
+        # --- Tripo3D engine ---
+        if engine == "tripo":
+            self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "calling_tripo"})
 
-        building.meshy_task_id = task_id
-        session.commit()
+            from app.generation.tripo_client import TripoClient
+            tripo = TripoClient()
 
-        self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling"})
+            if mode == "image" and image_url:
+                task_id = asyncio.run(tripo.image_to_3d(image_url))
+            else:
+                task_id = asyncio.run(tripo.text_to_3d(prompt, negative_prompt=architectural_negative_prompt))
 
-        result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
-        logger.info(f"Meshy preview result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
+            building.meshy_task_id = task_id
+            session.commit()
 
-        # For text mode, run refine step to get PBR textures (preview has no textures)
-        if mode == "text" and refine:
-            self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
+            self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling_tripo"})
+            result = asyncio.run(tripo.poll_until_done(task_id, timeout=120))
+
+            model_url_remote = result.get("model_url") or result.get("output", {}).get("model", {}).get("url")
+            if not model_url_remote:
+                raise RuntimeError("No model URL in Tripo result")
+
+            # Optionally run smart_low_poly for web-ready LOD
+            lod_model_url_remote = None
             try:
-                refine_task_id = asyncio.run(client.text_to_3d_refine(
-                    task_id,
-                    texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}"
+                self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "smart_low_poly"})
+                lp_task_id = asyncio.run(tripo.smart_low_poly(task_id))
+                lp_result = asyncio.run(tripo.poll_until_done(lp_task_id, timeout=120))
+                lod_model_url_remote = lp_result.get("model_url") or lp_result.get("output", {}).get("model", {}).get("url")
+            except Exception as lp_err:
+                logger.warning(f"Tripo smart_low_poly failed (non-fatal): {lp_err}")
+
+            self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
+            glb_data = asyncio.run(tripo.download_model(model_url_remote))
+
+            self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
+            project_id = building.project_id
+            model_key = f"projects/{project_id}/models/{building_id}_tripo.glb"
+            model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
+
+            lod_urls = {"0": model_url}
+            if lod_model_url_remote:
+                try:
+                    lod_glb = asyncio.run(tripo.download_model(lod_model_url_remote))
+                    lod_key = f"projects/{project_id}/models/{building_id}_tripo_lod1.glb"
+                    lod_url = _upload_to_storage(lod_key, lod_glb, "model/gltf-binary")
+                    lod_urls["1"] = lod_url
+                except Exception:
+                    pass
+
+        # --- Meshy engine (default) ---
+        else:
+            self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "calling_meshy"})
+
+            from app.generation.meshy_client import MeshyClient
+            client = MeshyClient()
+
+            if mode == "image" and image_url:
+                task_id = asyncio.run(client.image_to_3d(image_url))
+                task_type = "image"
+            else:
+                task_id = asyncio.run(client.text_to_3d_preview(
+                    prompt, negative_prompt=architectural_negative_prompt
                 ))
-                logger.info(f"Refine task started: {refine_task_id} (from preview {task_id})")
-                building.meshy_task_id = refine_task_id
-                session.commit()
-                result = asyncio.run(client.poll_until_done(refine_task_id, timeout=600, task_type="text"))
-                logger.info(f"Meshy refine result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
-            except Exception as refine_err:
-                logger.error(f"Refine step FAILED for building {building_id}: {refine_err}", exc_info=True)
-                logger.warning("Falling back to preview model (will lack textures)")
-        elif mode == "text":
-            logger.info(f"Refine disabled for building {building_id} — using preview model")
+                task_type = "text"
 
-        self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
+            building.meshy_task_id = task_id
+            session.commit()
 
-        # Extract the GLB URL from result
-        glb_url = None
-        model_urls = result.get("model_urls", {})
-        glb_url = model_urls.get("glb") or model_urls.get("obj")
+            self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling"})
 
-        if not glb_url:
-            raise RuntimeError("No GLB model URL in Meshy result")
+            result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
+            logger.info(f"Meshy preview result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
 
-        # Download the GLB file
-        import httpx as httpx_sync
-        glb_data = httpx_sync.get(glb_url, timeout=60.0).content
+            # For text mode, run refine step to get PBR textures (preview has no textures)
+            if mode == "text" and refine:
+                self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
+                try:
+                    refine_task_id = asyncio.run(client.text_to_3d_refine(
+                        task_id,
+                        texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}"
+                    ))
+                    logger.info(f"Refine task started: {refine_task_id} (from preview {task_id})")
+                    building.meshy_task_id = refine_task_id
+                    session.commit()
+                    result = asyncio.run(client.poll_until_done(refine_task_id, timeout=600, task_type="text"))
+                    logger.info(f"Meshy refine result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
+                except Exception as refine_err:
+                    logger.error(f"Refine step FAILED for building {building_id}: {refine_err}", exc_info=True)
+                    logger.warning("Falling back to preview model (will lack textures)")
+            elif mode == "text":
+                logger.info(f"Refine disabled for building {building_id} — using preview model")
 
-        self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
+            self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
 
-        # Upload the raw Meshy GLB directly — voxel remeshing was stripping all
-        # materials, textures, and colors, producing single-color models.
-        # Meshy models are already reasonably sized for real-time viewing.
-        project_id = building.project_id
-        model_key = f"projects/{project_id}/models/{building_id}_ai.glb"
-        model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
+            # Extract the GLB URL from result
+            glb_url = None
+            model_urls = result.get("model_urls", {})
+            glb_url = model_urls.get("glb") or model_urls.get("obj")
 
-        # Use the same model for all LOD levels (preserves textures at all distances)
-        lod_urls = {"0": model_url}
+            if not glb_url:
+                raise RuntimeError("No GLB model URL in Meshy result")
+
+            # Download the GLB file
+            import httpx as httpx_sync
+            glb_data = httpx_sync.get(glb_url, timeout=60.0).content
+
+            self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
+
+            project_id = building.project_id
+            model_key = f"projects/{project_id}/models/{building_id}_ai.glb"
+            model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
+
+            lod_urls = {"0": model_url}
 
         self.update_state(state="GENERATING", meta={"progress": 0.95, "step": "updating"})
 
@@ -588,7 +644,18 @@ def generate_3d_model(self, building_id: str, building_data: dict):
             "features": {"windows": True},
         }
 
-        scene = generator.generate_building(gen_data)
+        # Load architectural style if set on building
+        style = None
+        try:
+            from app.models.models import Building as BuildingModel
+            building_record = session.query(BuildingModel).filter_by(id=uuid.UUID(building_id)).first()
+            if building_record and building_record.architectural_style:
+                from app.generation.styles import get_style
+                style = get_style(building_record.architectural_style)
+        except Exception:
+            pass
+
+        scene = generator.generate_building(gen_data, style=style)
 
         self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "exporting"})
 

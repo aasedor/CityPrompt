@@ -71,16 +71,39 @@ def _apply_material(mesh: trimesh.Trimesh, material_name: str) -> None:
     mesh.visual = trimesh.visual.TextureVisuals(material=mat)
 
 
+def _get_styled_material(material_name: str, style=None) -> PBRMaterial:
+    """Get a PBR material with optional style color overrides applied."""
+    base = MATERIALS.get(material_name, MATERIALS["concrete"])
+    if not style or not style.color_overrides:
+        return base
+    override = style.color_overrides.get(material_name)
+    if override:
+        return PBRMaterial(
+            baseColorFactor=override,
+            metallicFactor=base.metallicFactor,
+            roughnessFactor=base.roughnessFactor,
+            name=f"{material_name}_{style.id}",
+        )
+    return base
+
+
+def _apply_styled_material(mesh: trimesh.Trimesh, material_name: str, style=None) -> None:
+    """Apply a PBR material with style color overrides to a mesh."""
+    mat = _get_styled_material(material_name, style)
+    mesh.visual = trimesh.visual.TextureVisuals(material=mat)
+
+
 class BuildingGenerator:
     """Generates 3D building geometry from normalized data."""
 
-    def generate_building(self, building_data: dict[str, Any]) -> trimesh.Scene:
+    def generate_building(self, building_data: dict[str, Any], style=None) -> trimesh.Scene:
         """
         Generate a complete building model from normalized data.
 
         Args:
             building_data: Dict with keys: footprint, height, floors, floor_height,
                           roof_type, materials, features
+            style: Optional ArchitecturalStyle for material/geometry overrides
 
         Returns:
             trimesh.Scene containing the building geometry
@@ -93,56 +116,73 @@ class BuildingGenerator:
         floor_height = building_data.get("floor_height", height / floors)
         roof_type = building_data.get("roof_type", "flat")
 
-        # Determine facade material from building data
+        # Determine facade material from style or building data
         materials_cfg = building_data.get("materials", {})
-        facade_mat = materials_cfg.get("facade", "concrete")
-        roof_mat = "roof_tile" if roof_type != "flat" else "concrete"
+        if style:
+            facade_mat = style.facade_material
+            roof_mat = style.roof_material
+            # Override roof_type if style has preferences and current type isn't in them
+            if style.preferred_roof_types and roof_type not in style.preferred_roof_types:
+                roof_type = style.preferred_roof_types[0]
+        else:
+            facade_mat = materials_cfg.get("facade", "concrete")
+            roof_mat = "roof_tile" if roof_type != "flat" else "concrete"
 
         # Generate main building volume
         body = self._extrude_footprint(footprint, height)
         if body:
-            _apply_material(body, facade_mat)
+            _apply_styled_material(body, facade_mat, style)
             scene.add_geometry(body, geom_name="building_body")
 
         # Generate floor plates
         for i in range(1, floors):
             floor_plate = self._create_floor_plate(footprint, i * floor_height)
             if floor_plate:
-                _apply_material(floor_plate, "floor_slab")
+                _apply_styled_material(floor_plate, "floor_slab", style)
                 scene.add_geometry(floor_plate, geom_name=f"floor_{i}")
 
         # Generate roof
         roof = self._generate_roof(footprint, height, roof_type)
         if roof:
-            _apply_material(roof, roof_mat)
+            _apply_styled_material(roof, roof_mat, style)
             scene.add_geometry(roof, geom_name="roof")
 
-        # Generate windows (procedural placement)
+        # Generate windows (procedural placement, style-aware density/size)
         features = building_data.get("features", {})
         if features.get("windows"):
-            windows = self._generate_windows(footprint, floors, floor_height, features["windows"])
+            win_width = style.window_width if style else 1.2
+            win_height = style.window_height if style else 1.5
+            win_density = style.window_density if style else 0.5
+            windows = self._generate_windows(
+                footprint, floors, floor_height, features["windows"],
+                win_width=win_width, win_height=win_height, density=win_density,
+            )
             for i, window in enumerate(windows):
-                _apply_material(window, "glass")
+                _apply_styled_material(window, "glass", style)
                 scene.add_geometry(window, geom_name=f"window_{i}")
 
         # Generate front door
         door = self._generate_door(footprint, floor_height)
         if door:
-            _apply_material(door, "wood")
+            _apply_styled_material(door, "wood", style)
             scene.add_geometry(door, geom_name="door")
 
-        # Generate balconies on upper floors
-        if features.get("balconies", False) and floors > 1:
+        # Generate balconies on upper floors (style-aware probability)
+        balcony_prob = style.balcony_probability if style else 0.3
+        has_balconies = features.get("balconies", balcony_prob > 0.3)
+        if has_balconies and floors > 1:
             balconies = self._generate_balconies(footprint, floors, floor_height)
             for i, balcony in enumerate(balconies):
-                _apply_material(balcony, "concrete")
+                _apply_styled_material(balcony, facade_mat, style)
                 scene.add_geometry(balcony, geom_name=f"balcony_{i}")
 
-        # Generate cornice at roofline
-        cornice = self._generate_cornice(footprint, height)
-        if cornice:
-            _apply_material(cornice, "concrete")
-            scene.add_geometry(cornice, geom_name="cornice")
+        # Generate cornice at roofline (style-aware)
+        cornice_enabled = style.cornice_enabled if style else True
+        if cornice_enabled:
+            cornice = self._generate_cornice(footprint, height)
+            if cornice:
+                _apply_styled_material(cornice, facade_mat, style)
+                scene.add_geometry(cornice, geom_name="cornice")
 
         return scene
 
@@ -327,10 +367,16 @@ class BuildingGenerator:
         floors: int,
         floor_height: float,
         window_spec: Any,
+        win_width: float = 1.2,
+        win_height: float = 1.5,
+        density: float = 0.5,
     ) -> list[trimesh.Trimesh]:
         """Generate procedural window geometry on building facades."""
         windows = []
         try:
+            # Spacing inversely proportional to density (0.3→4.5m, 0.75→2.0m)
+            spacing = max(1.5, 4.5 - density * 4.0)
+
             # Get facade edges from footprint
             pts = footprint[:, :2]
             for i in range(len(pts) - 1):
@@ -346,10 +392,7 @@ class BuildingGenerator:
                 normal = np.array([-edge_dir[1], edge_dir[0]])
 
                 # Window parameters
-                win_width = 1.2
-                win_height = 1.5
                 win_depth = 0.1
-                spacing = 3.0
 
                 # Calculate number of windows along this edge
                 n_windows = max(1, int((edge_len - 1.0) / spacing))
