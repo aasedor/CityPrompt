@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Eye, Upload, Building2, FileText, Plus, Loader2, CheckCircle, AlertCircle, Clock, Image, FileSpreadsheet, Trash2, Share2, MapPin, FileDown, Sparkles } from 'lucide-react';
@@ -8,15 +8,62 @@ import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { FileUpload } from '@/components/upload/FileUpload';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
+import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
+import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
+import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
+import { useViewerStore } from '@/store';
+import { useSiteZones } from '@/hooks/useSiteZones';
 import type { Document } from '@/types';
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
+
+  // Site planner store + zone CRUD
+  const {
+    setSitePlannerActive,
+    setActiveSitePlannerTool,
+    selectedZoneId,
+    selectZone,
+  } = useViewerStore();
+
+  const {
+    siteZones,
+    updateZone,
+    deleteZone,
+    handleZoneCreated,
+    handleZoneUpdated,
+  } = useSiteZones(id);
+
+  const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
+
+  // Activate site planner on mount, pre-select residential tool
+  useEffect(() => {
+    setSitePlannerActive(true);
+    setActiveSitePlannerTool('residential');
+    return () => {
+      setSitePlannerActive(false);
+      setActiveSitePlannerTool(null);
+      selectZone(null);
+    };
+  }, [setSitePlannerActive, setActiveSitePlannerTool, selectZone]);
+
+  const handleZoneSelected = useCallback((zoneId: string | null) => {
+    selectZone(zoneId);
+  }, [selectZone]);
+
+  const handleViewIn3D = useCallback(() => {
+    navigate(`/projects/${id}/viewer`);
+  }, [navigate, id]);
+
+  const handleWalkThrough = useCallback(() => {
+    navigate(`/projects/${id}/viewer`);
+  }, [navigate, id]);
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
@@ -141,6 +188,34 @@ export function ProjectViewPage() {
           </Link>
         </div>
       </div>
+
+      {/* Embedded Site Planner Map */}
+      <section className="relative mt-6 h-[350px] overflow-hidden rounded-xl border border-gray-200 shadow-sm sm:h-[400px] lg:h-[500px]">
+        <SitePlannerMap
+          latitude={project.location?.latitude}
+          longitude={project.location?.longitude}
+          siteZones={siteZones}
+          onZoneCreated={handleZoneCreated}
+          onZoneUpdated={handleZoneUpdated}
+          onZoneSelected={handleZoneSelected}
+        />
+        {selectedZone && (
+          <ZonePropertiesPanel
+            zone={selectedZone}
+            onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+            onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+            onClose={() => selectZone(null)}
+            onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+            buildings={project.buildings}
+          />
+        )}
+        <SitePlannerToolbar
+          onViewIn3D={handleViewIn3D}
+          onWalkThrough={handleWalkThrough}
+          projectId={id}
+          zones={siteZones}
+        />
+      </section>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
