@@ -6,8 +6,7 @@ import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users
 import { projectsApi, buildingsApi, contextApi, annotationsApi, siteZonesApi } from '@/services/api';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 // Annotation type used implicitly via annotationsApi
-import type { SiteZoneType, SiteZoneProperties } from '@/types';
-import { ZONE_TYPE_CONFIG } from '@/types';
+import { useSiteZones } from '@/hooks/useSiteZones';
 import { SceneViewer } from '@/components/viewer/SceneViewer';
 import { ViewerControls } from '@/components/viewer/ViewerControls';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
@@ -139,63 +138,14 @@ export function ViewerPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['annotations', id] }),
   });
 
-  // Fetch site zones
-  const { data: siteZones = [] } = useQuery({
-    queryKey: ['site-zones', id],
-    queryFn: () => siteZonesApi.list(id!),
-    enabled: !!id,
-  });
-
-  const createZone = useMutation({
-    mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType }) =>
-      siteZonesApi.create(id!, {
-        zone_type: vars.zone_type,
-        coordinates: vars.coordinates,
-        color: ZONE_TYPE_CONFIG[vars.zone_type].color,
-        properties: ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-      toast.success('Zone created');
-    },
-    onError: (err: Error) => {
-      toast.error(`Failed to create zone: ${err.message}`);
-    },
-  });
-
-  const updateZone = useMutation({
-    mutationFn: (vars: { zoneId: string; data: { name?: string; properties?: SiteZoneProperties } }) =>
-      siteZonesApi.update(vars.zoneId, vars.data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-      toast.success('Zone updated');
-    },
-    onError: (err: Error) => {
-      toast.error(`Failed to update zone: ${err.message}`);
-    },
-  });
-
-  const deleteZone = useMutation({
-    mutationFn: (zoneId: string) => siteZonesApi.delete(zoneId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-      selectZone(null);
-      toast.success('Zone deleted');
-    },
-    onError: (err: Error) => {
-      toast.error(`Failed to delete zone: ${err.message}`);
-    },
-  });
-
-  const handleZoneCreated = useCallback((coordinates: number[][], zoneType: SiteZoneType) => {
-    createZone.mutate({ coordinates, zone_type: zoneType });
-  }, [createZone]);
-
-  const handleZoneUpdated = useCallback((zoneId: string, coordinates: number[][]) => {
-    siteZonesApi.update(zoneId, { coordinates }).then(() => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-    });
-  }, [queryClient, id]);
+  // Site zones via shared hook
+  const {
+    siteZones,
+    updateZone,
+    deleteZone,
+    handleZoneCreated,
+    handleZoneUpdated,
+  } = useSiteZones(id);
 
   // =========================================================================
   // Generation status polling

@@ -83,6 +83,9 @@ export function ProjectListPage() {
     }),
     onSuccess: (newProject) => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      if (newProject?.id) {
+        queryClient.setQueryData(['project', newProject.id], newProject);
+      }
       setShowCreate(false);
       setNewName('');
       setNewDescription('');

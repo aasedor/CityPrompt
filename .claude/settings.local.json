@@ -59,7 +59,26 @@
       "Bash(gh repo create:*)",
       "Bash(git remote add:*)",
       "Bash(git push:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(cd:*)",
+      "Bash(ls:*)",
+      "Bash(node ./node_modules/.bin/tsc:*)",
+      "Bash(\"/c/Program Files/nodejs/node.exe\" --version)",
+      "Bash(npm run dev:*)",
+      "Bash(pip --version:*)",
+      "Bash(docker:*)",
+      "Bash(netstat:*)",
+      "Bash(ss:*)",
+      "Bash(tasklist.exe:*)",
+      "Bash(taskkill.exe:*)",
+      "Bash(npx --yes @gltf-transform/cli:*)",
+      "Bash(npm ls:*)",
+      "Bash(node -e:*)",
+      "Bash(npx --yes tsx -e:*)",
+      "Bash(npx vite build:*)",
+      "WebFetch(domain:render.com)",
+      "Bash(grep:*)"
     ]
   }
 }

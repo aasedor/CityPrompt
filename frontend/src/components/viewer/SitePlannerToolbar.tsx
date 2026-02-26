@@ -6,7 +6,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { siteZonesApi } from '@/services/api';
 
-const ZONE_TYPES: SiteZoneType[] = ['site_boundary', 'building', 'residential', 'road', 'green_space', 'parking', 'water', 'development_area'];
+const ZONE_TYPES: SiteZoneType[] = ['residential', 'building', 'site_boundary', 'road', 'green_space', 'parking', 'water', 'development_area'];
 
 /** Short labels for mobile (< sm breakpoint) */
 const ZONE_SHORT_LABELS: Record<SiteZoneType, string> = {

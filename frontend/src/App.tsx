@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { ProjectListPage } from '@/features/projects/ProjectListPage';
 import { ProjectViewPage } from '@/features/projects/ProjectViewPage';
 import { ViewerPage } from '@/features/projects/ViewerPage';
+import { SitePlannerPage } from '@/features/projects/SitePlannerPage';
 import { SharedProjectPage } from '@/features/projects/SharedProjectPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
@@ -42,7 +43,8 @@ export default function App() {
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
       </Route>
-      {/* Viewer is full-screen, no layout wrapper */}
+      {/* Full-screen pages, no layout wrapper */}
+      <Route path="/projects/:id/site-planner" element={<ProtectedRoute><SitePlannerPage /></ProtectedRoute>} />
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
       {/* Shared project view (public link) */}
       <Route path="/shared/:token" element={<SharedProjectPage />} />
