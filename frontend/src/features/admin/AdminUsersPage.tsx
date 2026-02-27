@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, AlertTriangle, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
@@ -98,6 +98,17 @@ export function AdminUsersPage() {
     }
   };
 
+  const handleDeleteUser = async (userId: string, email: string) => {
+    if (!window.confirm(`Permanently delete ${email}? This cannot be undone.`)) return;
+    try {
+      await adminApi.deleteUser(userId);
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
+      toast.success('User deleted');
+    } catch (err: any) {
+      toast.error(err.response?.data?.detail || 'Failed to delete user');
+    }
+  };
+
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
@@ -182,7 +193,7 @@ export function AdminUsersPage() {
                   <td className="px-4 py-3 text-gray-500">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 flex items-center gap-1">
                     <button
                       onClick={() => handleToggleActive(u.id, u.is_active)}
                       className={`rounded px-2 py-1 text-xs font-medium ${
@@ -192,6 +203,13 @@ export function AdminUsersPage() {
                       }`}
                     >
                       {u.is_active ? 'Deactivate' : 'Activate'}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(u.id, u.email)}
+                      className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                      title="Delete user"
+                    >
+                      <Trash2 size={14} />
                     </button>
                   </td>
                 </tr>

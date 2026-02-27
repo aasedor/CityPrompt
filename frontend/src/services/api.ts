@@ -572,6 +572,10 @@ export const adminApi = {
     return data;
   },
 
+  deleteUser: async (userId: string): Promise<void> => {
+    await api.delete(`/api/v1/admin/users/${userId}`);
+  },
+
   listAllProjects: async (params?: {
     skip?: number;
     limit?: number;

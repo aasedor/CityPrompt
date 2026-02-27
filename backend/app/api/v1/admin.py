@@ -258,6 +258,25 @@ async def confirm_role_change(
     )
 
 
+@router.delete("/users/{user_id}", status_code=204)
+async def delete_user(
+    user_id: uuid.UUID,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a user account. Cannot delete yourself."""
+    if user_id == user.id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+
+    result = await db.execute(select(User).where(User.id == user_id))
+    target = result.scalar_one_or_none()
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    await db.delete(target)
+    await db.flush()
+
+
 @router.get("/projects", response_model=list[AdminProjectListResponse])
 async def list_all_projects(
     skip: int = Query(0, ge=0),
