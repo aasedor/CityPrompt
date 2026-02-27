@@ -56,3 +56,59 @@ async def send_password_reset_email(to_email: str, reset_link: str) -> None:
     except Exception:
         logger.exception("Failed to send password reset email to %s", to_email)
         raise
+
+
+async def send_admin_demotion_confirmation_email(
+    to_email: str,
+    target_email: str,
+    new_role: str,
+    confirm_link: str,
+) -> None:
+    """Send a confirmation email when an admin demotes another admin."""
+    settings = get_settings()
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = settings.smtp_sender or settings.smtp_user
+    msg["To"] = to_email
+    msg["Subject"] = f"{settings.app_name} - Confirm Role Change"
+
+    html = f"""\
+<html>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
+  <h2 style="color: #1a1a1a;">Confirm Role Change</h2>
+  <p style="color: #4a4a4a; line-height: 1.6;">
+    You requested to change <strong>{target_email}</strong>'s role from
+    <strong>admin</strong> to <strong>{new_role}</strong> on {settings.app_name}.
+  </p>
+  <p style="color: #4a4a4a; line-height: 1.6;">
+    This will revoke their admin privileges. Click the button below to confirm
+    this change. This link expires in 1 hour.
+  </p>
+  <a href="{confirm_link}"
+     style="display: inline-block; background: #dc2626; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
+    Confirm Role Change
+  </a>
+  <p style="color: #888; font-size: 13px; margin-top: 24px;">
+    If you didn't request this change, you can safely ignore this email.
+  </p>
+</body>
+</html>"""
+
+    msg.attach(MIMEText(html, "html"))
+
+    try:
+        await aiosmtplib.send(
+            msg,
+            hostname=settings.smtp_host,
+            port=settings.smtp_port,
+            username=settings.smtp_user,
+            password=settings.smtp_password,
+            start_tls=True,
+        )
+        logger.info(
+            "Admin demotion confirmation email sent to %s (target: %s -> %s)",
+            to_email, target_email, new_role,
+        )
+    except Exception:
+        logger.exception("Failed to send demotion confirmation email to %s", to_email)
+        raise

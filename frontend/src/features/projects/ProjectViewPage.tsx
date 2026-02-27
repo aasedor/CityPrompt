@@ -190,25 +190,27 @@ export function ProjectViewPage() {
       </div>
 
       {/* Embedded Site Planner Map */}
-      <section className="relative mt-6 h-[350px] overflow-hidden rounded-xl border border-gray-200 shadow-sm sm:h-[400px] lg:h-[500px]">
-        <SitePlannerMap
-          latitude={project.location?.latitude}
-          longitude={project.location?.longitude}
-          siteZones={siteZones}
-          onZoneCreated={handleZoneCreated}
-          onZoneUpdated={handleZoneUpdated}
-          onZoneSelected={handleZoneSelected}
-        />
-        {selectedZone && (
-          <ZonePropertiesPanel
-            zone={selectedZone}
-            onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
-            onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-            onClose={() => selectZone(null)}
-            onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
-            buildings={project.buildings}
+      <section className="mt-6 overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+        <div className="relative h-[350px] sm:h-[400px] lg:h-[500px]">
+          <SitePlannerMap
+            latitude={project.location?.latitude}
+            longitude={project.location?.longitude}
+            siteZones={siteZones}
+            onZoneCreated={handleZoneCreated}
+            onZoneUpdated={handleZoneUpdated}
+            onZoneSelected={handleZoneSelected}
           />
-        )}
+          {selectedZone && (
+            <ZonePropertiesPanel
+              zone={selectedZone}
+              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+              onClose={() => selectZone(null)}
+              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              buildings={project.buildings}
+            />
+          )}
+        </div>
         <SitePlannerToolbar
           onViewIn3D={handleViewIn3D}
           onWalkThrough={handleWalkThrough}

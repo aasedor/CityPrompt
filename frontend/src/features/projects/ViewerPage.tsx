@@ -821,8 +821,8 @@ export function ViewerPage() {
 
       {/* Site Planner Mode */}
       {isSitePlannerActive ? (
-        <>
-          <div className="absolute inset-0">
+        <div className="absolute inset-0 flex flex-col">
+          <div className="relative min-h-0 flex-1">
             <SitePlannerMap
               latitude={effectiveLocation?.latitude}
               longitude={effectiveLocation?.longitude}
@@ -831,25 +831,24 @@ export function ViewerPage() {
               onZoneUpdated={handleZoneUpdated}
               onZoneSelected={selectZone}
             />
+            {selectedZone && (
+              <ZonePropertiesPanel
+                zone={selectedZone}
+                onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+                onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+                onClose={() => selectZone(null)}
+                onAIGenerate={(buildingId, initialPrompt) => {
+                  setAiGenerateFromZoneBuildingId(buildingId);
+                  setAiGenerateFromZonePrompt(initialPrompt || null);
+                  queryClient.invalidateQueries({ queryKey: ['project', id] });
+                  queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+                }}
+                buildings={allBuildings}
+              />
+            )}
           </div>
           <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} projectId={id} zones={siteZones} />
-          {selectedZone && (
-            <ZonePropertiesPanel
-              zone={selectedZone}
-              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
-              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-              onClose={() => selectZone(null)}
-              onAIGenerate={(buildingId, initialPrompt) => {
-                setAiGenerateFromZoneBuildingId(buildingId);
-                setAiGenerateFromZonePrompt(initialPrompt || null);
-                // Refresh project data so the new building appears in the 3D view
-                queryClient.invalidateQueries({ queryKey: ['project', id] });
-                queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
-              }}
-              buildings={allBuildings}
-            />
-          )}
-        </>
+        </div>
       ) : (
         <>
           {/* 3D Scene */}

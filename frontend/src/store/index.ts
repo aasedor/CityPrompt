@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType } from '@/types';
+import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // =============================================================================
@@ -160,11 +160,12 @@ interface ViewerState {
   // Site planner mode
   isSitePlannerActive: boolean;
   activeSitePlannerTool: SiteZoneType | null;
+  activeToolProperties: SiteZoneProperties | null;
   selectedZoneId: string | null;
   isDraggingZone: boolean;
   setDraggingZone: (dragging: boolean) => void;
   setSitePlannerActive: (enabled: boolean) => void;
-  setActiveSitePlannerTool: (tool: SiteZoneType | null) => void;
+  setActiveSitePlannerTool: (tool: SiteZoneType | null, properties?: SiteZoneProperties) => void;
   selectZone: (id: string | null) => void;
 }
 
@@ -346,11 +347,12 @@ export const useViewerStore = create<ViewerState>((set) => ({
   // Site planner
   isSitePlannerActive: false,
   activeSitePlannerTool: null,
+  activeToolProperties: null,
   selectedZoneId: null,
   isDraggingZone: false,
   setDraggingZone: (dragging) => set({ isDraggingZone: dragging }),
-  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, selectedZoneId: null }),
-  setActiveSitePlannerTool: (tool) => set({ activeSitePlannerTool: tool }),
+  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, activeToolProperties: null, selectedZoneId: null }),
+  setActiveSitePlannerTool: (tool, properties?) => set({ activeSitePlannerTool: tool, activeToolProperties: properties ?? null }),
   selectZone: (id) => set({ selectedZoneId: id }),
 }));
 

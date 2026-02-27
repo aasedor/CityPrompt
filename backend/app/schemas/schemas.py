@@ -486,6 +486,17 @@ class AdminUserUpdate(BaseModel):
     full_name: Optional[str] = None
 
 
+class ConfirmRoleChangeRequest(BaseModel):
+    """Confirm a pending admin role change via email token."""
+    token: str = Field(description="Confirmation token from the email link")
+
+
+class PendingRoleChangeResponse(BaseModel):
+    """Response when an admin demotion requires email confirmation."""
+    detail: str = Field(description="Message about the confirmation email")
+    requires_confirmation: bool = Field(default=True)
+
+
 class AdminProjectListResponse(BaseModel):
     """Project info for admin project oversight."""
     id: uuid.UUID

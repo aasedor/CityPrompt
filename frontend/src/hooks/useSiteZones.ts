@@ -17,12 +17,12 @@ export function useSiteZones(projectId: string | undefined) {
   });
 
   const createZone = useMutation({
-    mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType }) =>
+    mutationFn: (vars: { coordinates: number[][]; zone_type: SiteZoneType; properties?: SiteZoneProperties }) =>
       siteZonesApi.create(projectId!, {
         zone_type: vars.zone_type,
         coordinates: vars.coordinates,
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
-        properties: ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
+        properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
       }),
     onMutate: async (vars) => {
       // Cancel outgoing refetches so they don't overwrite optimistic update
@@ -35,7 +35,7 @@ export function useSiteZones(projectId: string | undefined) {
         zone_type: vars.zone_type,
         coordinates: vars.coordinates,
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
-        properties: ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
+        properties: vars.properties ?? ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
         sort_order: (previous?.length ?? 0),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -80,8 +80,9 @@ export function useSiteZones(projectId: string | undefined) {
     },
   });
 
-  const handleZoneCreated = useCallback((coordinates: number[][], zoneType: SiteZoneType) => {
-    createZone.mutate({ coordinates, zone_type: zoneType });
+  const handleZoneCreated = useCallback((coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => {
+    const toolProps = properties ?? useViewerStore.getState().activeToolProperties;
+    createZone.mutate({ coordinates, zone_type: zoneType, properties: toolProps ?? undefined });
   }, [createZone]);
 
   const handleZoneUpdated = useCallback((zoneId: string, coordinates: number[][]) => {

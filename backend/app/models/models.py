@@ -8,6 +8,7 @@ from datetime import datetime
 from geoalchemy2 import Geography
 from sqlalchemy import (
     BigInteger,
+    Boolean,
     DateTime,
     Enum,
     ForeignKey,
@@ -218,3 +219,19 @@ class ActivityLog(Base):
     # Relationships
     project: Mapped["Project"] = relationship()
     user: Mapped["User | None"] = relationship()
+
+
+class PendingRoleChange(Base):
+    __tablename__ = "pending_role_changes"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    token: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
+    target_user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    requested_by_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    new_role: Mapped[str] = mapped_column(String(20), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    # Relationships
+    target_user: Mapped["User"] = relationship(foreign_keys=[target_user_id])
+    requested_by: Mapped["User"] = relationship(foreign_keys=[requested_by_id])

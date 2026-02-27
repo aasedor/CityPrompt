@@ -1,15 +1,23 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
+
+interface PromotionModal {
+  userId: string;
+  email: string;
+}
 
 export function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
+  const [promotionModal, setPromotionModal] = useState<PromotionModal | null>(null);
+  // Track previous roles so we can revert dropdowns on 202
+  const prevRolesRef = useRef<Record<string, string>>({});
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -19,6 +27,10 @@ export function AdminUsersPage() {
         role: roleFilter || undefined,
       });
       setUsers(data);
+      // Snapshot current roles
+      const roles: Record<string, string> = {};
+      for (const u of data) roles[u.id] = u.role;
+      prevRolesRef.current = roles;
     } catch {
       toast.error('Failed to load users');
     } finally {
@@ -31,14 +43,49 @@ export function AdminUsersPage() {
     return () => clearTimeout(timer);
   }, [fetchUsers]);
 
-  const handleRoleChange = async (userId: string, role: string) => {
+  const applyRoleChange = async (userId: string, role: string) => {
     try {
       const updated = await adminApi.updateUser(userId, { role });
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
+      prevRolesRef.current[userId] = updated.role;
       toast.success('Role updated');
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || 'Failed to update role');
+      // 202 means confirmation email was sent (admin demotion)
+      if (err.response?.status === 202) {
+        toast.success(
+          err.response.data?.detail || 'Confirmation email sent — check your inbox',
+          { duration: 5000 },
+        );
+        // Revert the dropdown to the original role
+        const originalRole = prevRolesRef.current[userId];
+        if (originalRole) {
+          setUsers((prev) =>
+            prev.map((u) => (u.id === userId ? { ...u, role: originalRole } : u)),
+          );
+        }
+      } else {
+        toast.error(err.response?.data?.detail || 'Failed to update role');
+      }
     }
+  };
+
+  const handleRoleChange = (userId: string, role: string) => {
+    const targetUser = users.find((u) => u.id === userId);
+    if (!targetUser) return;
+
+    // Promoting to admin — show confirmation modal
+    if (role === 'admin' && targetUser.role !== 'admin') {
+      setPromotionModal({ userId, email: targetUser.email });
+      return;
+    }
+
+    applyRoleChange(userId, role);
+  };
+
+  const confirmPromotion = () => {
+    if (!promotionModal) return;
+    applyRoleChange(promotionModal.userId, 'admin');
+    setPromotionModal(null);
   };
 
   const handleToggleActive = async (userId: string, isActive: boolean) => {
@@ -151,6 +198,40 @@ export function AdminUsersPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Promotion confirmation modal */}
+      {promotionModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+                <AlertTriangle className="h-5 w-5 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">Grant Admin Access?</h3>
+            </div>
+            <p className="mb-2 text-sm text-gray-600">
+              You are about to promote <strong className="text-gray-900">{promotionModal.email}</strong> to <strong className="text-gray-900">Admin</strong>.
+            </p>
+            <p className="mb-6 text-sm text-gray-500">
+              This will give full platform access including user management. Are you sure?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setPromotionModal(null)}
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmPromotion}
+                className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+              >
+                Yes, Grant Admin
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

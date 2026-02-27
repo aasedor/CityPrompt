@@ -84,7 +84,7 @@ export function SitePlannerPage() {
   }
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-gray-900">
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-gray-900">
       {/* Header overlay */}
       <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-gray-900/70 px-4 py-3 backdrop-blur-md">
         <div className="flex items-center gap-3">
@@ -121,8 +121,8 @@ export function SitePlannerPage() {
         </Link>
       </div>
 
-      {/* Full-screen map */}
-      <div className="h-full w-full">
+      {/* Map fills remaining space */}
+      <div className="min-h-0 flex-1">
         <SitePlannerMap
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}

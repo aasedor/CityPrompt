@@ -81,8 +81,8 @@ async def create_zone(
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    # Check editor permission
-    if project.owner_id != user.id:
+    # Check editor permission (admins bypass)
+    if project.owner_id != user.id and user.role != "admin":
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
@@ -138,10 +138,10 @@ async def update_zone(
     if not zone:
         raise HTTPException(status_code=404, detail="Zone not found")
 
-    # Check editor permission on parent project
+    # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id:
+    if project.owner_id != user.id and user.role != "admin":
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -206,10 +206,10 @@ async def delete_zone(
     if not zone:
         raise HTTPException(status_code=404, detail="Zone not found")
 
-    # Check editor permission on parent project
+    # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id:
+    if project.owner_id != user.id and user.role != "admin":
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -314,10 +314,10 @@ async def create_building_from_zone(
     if zone.zone_type not in ("building", "residential"):
         raise HTTPException(status_code=400, detail="Only building or residential zones can create buildings")
 
-    # Check editor permission on parent project
+    # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id:
+    if project.owner_id != user.id and user.role != "admin":
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -532,7 +532,7 @@ async def generate_all(
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    if project.owner_id != user.id:
+    if project.owner_id != user.id and user.role != "admin":
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,

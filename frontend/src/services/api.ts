@@ -20,6 +20,7 @@ import type {
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
   headers: { 'Content-Type': 'application/json' },
+  timeout: 15000,
 });
 
 // Request interceptor for auth token
@@ -563,6 +564,11 @@ export const adminApi = {
 
   updateUser: async (userId: string, update: AdminUserUpdate): Promise<AdminUser> => {
     const { data } = await api.put(`/api/v1/admin/users/${userId}`, update);
+    return data;
+  },
+
+  confirmRoleChange: async (token: string): Promise<AdminUser> => {
+    const { data } = await api.post('/api/v1/admin/confirm-role-change', { token });
     return data;
   },
 

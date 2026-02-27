@@ -171,6 +171,25 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
 };
 
 // =============================================================================
+// Road Sub-Type Presets
+// =============================================================================
+
+export interface RoadPresetConfig {
+  label: string;
+  width: number;
+  lanes: number;
+  description: string;
+}
+
+export const ROAD_PRESETS: RoadPresetConfig[] = [
+  { label: 'Bike Lane', width: 3, lanes: 1, description: 'Cycling path' },
+  { label: 'Local Street', width: 8, lanes: 2, description: 'Neighborhood road' },
+  { label: 'Collector', width: 14, lanes: 2, description: '2 lanes + parking' },
+  { label: 'Arterial', width: 22, lanes: 4, description: '4 lanes + median' },
+  { label: 'Boulevard', width: 34, lanes: 6, description: '6 lanes + median + sidewalks' },
+];
+
+// =============================================================================
 // API Request Types
 // =============================================================================
 

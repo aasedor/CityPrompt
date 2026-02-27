@@ -15,6 +15,7 @@ import { ChangePasswordPage } from '@/features/auth/ChangePasswordPage';
 import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
 import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
 import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
+import { ConfirmRoleChangePage } from '@/features/admin/ConfirmRoleChangePage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
@@ -25,12 +26,15 @@ export default function App() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
+      // Safety timeout: if the API never responds, stop loading after 10s
+      const safetyTimeout = setTimeout(() => setUser(null), 10000);
       authApi
         .me()
         .then((user) => setUser(user))
         .catch(() => {
           setUser(null);
-        });
+        })
+        .finally(() => clearTimeout(safetyTimeout));
     } else {
       setLoading(false);
     }
@@ -54,6 +58,7 @@ export default function App() {
         <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboardPage /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
         <Route path="/admin/projects" element={<ProtectedRoute requiredRole="admin"><AdminProjectsPage /></ProtectedRoute>} />
+        <Route path="/admin/confirm-role-change" element={<ProtectedRoute requiredRole="admin"><ConfirmRoleChangePage /></ProtectedRoute>} />
       </Route>
       {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />

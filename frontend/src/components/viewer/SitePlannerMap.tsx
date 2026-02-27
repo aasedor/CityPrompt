@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type { SiteZone, SiteZoneType } from '@/types';
+import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 
@@ -76,7 +76,7 @@ interface SitePlannerMapProps {
   latitude?: number;
   longitude?: number;
   siteZones: SiteZone[];
-  onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType) => void;
+  onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
 }
@@ -91,7 +91,7 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, selectedZoneId, setDraggingZone } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
@@ -104,6 +104,8 @@ export function SitePlannerMap({
   onZoneUpdatedRef.current = onZoneUpdated;
   const activeSitePlannerToolRef = useRef(activeSitePlannerTool);
   activeSitePlannerToolRef.current = activeSitePlannerTool;
+  const activeToolPropertiesRef = useRef(activeToolProperties);
+  activeToolPropertiesRef.current = activeToolProperties;
   const siteZonesRef = useRef(siteZones);
   siteZonesRef.current = siteZones;
   const mapLoadedRef = useRef(false);
@@ -138,7 +140,7 @@ export function SitePlannerMap({
           geometry: { type: 'LineString', coordinates: pts },
         });
         // Show buffered polygon preview
-        const width = ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
+        const width = activeToolPropertiesRef.current?.width ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
         const buffered = bufferLineToPolygon(pts, width);
         features.push({
           type: 'Feature',
@@ -191,15 +193,16 @@ export function SitePlannerMap({
   }, [buildPreviewFeatures]);
 
   /** Finish the current drawing and create a zone */
-  const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][]) => {
+  const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
+    const props = properties ?? activeToolPropertiesRef.current;
     let coords: number[][];
     if (isLinearTool(tool)) {
-      const width = ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
+      const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
       coords = bufferLineToPolygon(pts, width);
     } else {
       coords = [...pts];
     }
-    onZoneCreatedRef.current(coords, tool);
+    onZoneCreatedRef.current(coords, tool, props ?? undefined);
   }, []);
 
   /** Finish current polygon via keyboard or explicit action */
@@ -648,6 +651,7 @@ export function SitePlannerMap({
 
   // ─── Auto-finish polygon when switching tools ───
   const prevToolRef = useRef(activeSitePlannerTool);
+  const prevToolPropertiesRef = useRef(activeToolProperties);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -656,19 +660,21 @@ export function SitePlannerMap({
 
     const pts = drawingPointsRef.current;
     const prevTool = prevToolRef.current;
+    const prevToolProperties = prevToolPropertiesRef.current;
     prevToolRef.current = activeSitePlannerTool;
+    prevToolPropertiesRef.current = activeToolProperties;
 
     if (pts.length > 0) {
       const minPts = minPointsForTool(prevTool);
       if (pts.length >= minPts && prevTool) {
-        // Auto-finish with the PREVIOUS tool type
-        finishDrawing(prevTool, [...pts]);
+        // Auto-finish with the PREVIOUS tool type and its properties
+        finishDrawing(prevTool, [...pts], prevToolProperties);
       }
       drawingPointsRef.current = [];
       setDrawingPoints([]);
       updateDrawingPreview();
     }
-  }, [activeSitePlannerTool, updateDrawingPreview, finishDrawing]);
+  }, [activeSitePlannerTool, activeToolProperties, updateDrawingPreview, finishDrawing]);
 
   // ─── Sync saved zones to map (re-runs when map becomes ready OR zones change) ───
   useEffect(() => {
