@@ -12,7 +12,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.email import send_password_reset_email
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -174,6 +173,7 @@ async def forgot_password(
         )
         reset_link = f"{settings.frontend_url}/reset-password?token={reset_token}"
         try:
+            from app.core.email import send_password_reset_email
             await send_password_reset_email(user.email, reset_link)
         except Exception:
             logger.warning("Failed to send reset email for %s", body.email)
