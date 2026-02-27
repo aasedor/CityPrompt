@@ -176,17 +176,166 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
 
 export interface RoadPresetConfig {
   label: string;
-  width: number;
-  lanes: number;
   description: string;
+  properties: SiteZoneProperties;
 }
 
 export const ROAD_PRESETS: RoadPresetConfig[] = [
-  { label: 'Bike Lane', width: 3, lanes: 1, description: 'Cycling path' },
-  { label: 'Local Street', width: 8, lanes: 2, description: 'Neighborhood road' },
-  { label: 'Collector', width: 14, lanes: 2, description: '2 lanes + parking' },
-  { label: 'Arterial', width: 22, lanes: 4, description: '4 lanes + median' },
-  { label: 'Boulevard', width: 34, lanes: 6, description: '6 lanes + median + sidewalks' },
+  {
+    label: 'Bike Lane',
+    description: 'Cycling path',
+    properties: {
+      width: 3,
+      lane_count: 1,
+      road_aesthetic: 'pedestrian_focused',
+      volume: 'low',
+      has_sidewalks: false,
+      pedestrian_priority: 2,
+      cycling_priority: 1,
+    },
+  },
+  {
+    label: 'Local Street',
+    description: 'Neighborhood road',
+    properties: {
+      width: 8,
+      lane_count: 2,
+      road_aesthetic: 'curvilinear_residential',
+      volume: 'low',
+      has_sidewalks: true,
+      pedestrian_priority: 1,
+      cycling_priority: 2,
+      active_transport_priority: 3,
+    },
+  },
+  {
+    label: 'Collector',
+    description: '2 lanes + parking',
+    properties: {
+      width: 14,
+      lane_count: 2,
+      road_aesthetic: 'neighborhood_high_street',
+      volume: 'medium',
+      has_sidewalks: true,
+      pedestrian_priority: 2,
+      cycling_priority: 3,
+      active_transport_priority: 1,
+    },
+  },
+  {
+    label: 'Arterial',
+    description: '4 lanes + median',
+    properties: {
+      width: 22,
+      lane_count: 4,
+      road_aesthetic: 'grand_boulevard',
+      volume: 'high',
+      has_sidewalks: true,
+      pedestrian_priority: 3,
+      transit_priority: 2,
+      active_transport_priority: 1,
+    },
+  },
+  {
+    label: 'Boulevard',
+    description: '6 lanes + median + sidewalks',
+    properties: {
+      width: 34,
+      lane_count: 6,
+      road_aesthetic: 'grand_boulevard',
+      volume: 'high',
+      has_sidewalks: true,
+      pedestrian_priority: 2,
+      cycling_priority: 3,
+      transit_priority: 1,
+      active_transport_priority: 4,
+    },
+  },
+];
+
+// =============================================================================
+// Building Sub-Type Presets
+// =============================================================================
+
+export interface BuildingPresetConfig {
+  label: string;
+  description: string;
+  properties: SiteZoneProperties;
+}
+
+export const BUILDING_PRESETS: BuildingPresetConfig[] = [
+  {
+    label: 'Brownstone Row',
+    description: 'Traditional rowhouse',
+    properties: {
+      development_type: 'residential',
+      development_aesthetic: 'historic_traditional',
+      floors: 4,
+      height: 14,
+      floor_height: 3.5,
+      facade_material: 'brick',
+      roof_type: 'flat',
+    },
+  },
+  {
+    label: 'Modern Apartment',
+    description: 'Mid-rise residential',
+    properties: {
+      development_type: 'residential',
+      development_aesthetic: 'modern',
+      floors: 8,
+      height: 28,
+      floor_height: 3.5,
+      facade_material: 'glass',
+      roof_type: 'flat',
+    },
+  },
+  {
+    label: 'Office Tower',
+    description: 'High-rise commercial',
+    properties: {
+      development_type: 'commercial',
+      development_aesthetic: 'modern',
+      floors: 20,
+      height: 70,
+      floor_height: 3.5,
+      facade_material: 'glass',
+      roof_type: 'flat',
+    },
+  },
+  {
+    label: 'Mixed-Use Retail',
+    description: 'Retail + residential',
+    properties: {
+      development_type: 'mixed_use',
+      development_aesthetic: 'modern',
+      floors: 6,
+      height: 22,
+      floor_height: 3.67,
+      facade_material: 'concrete',
+      roof_type: 'flat',
+    },
+  },
+  {
+    label: 'Park / Plaza',
+    description: 'Open public space',
+    properties: {
+      development_type: 'park_plaza',
+    },
+  },
+  {
+    label: 'Institutional',
+    description: 'School, library, civic',
+    properties: {
+      development_type: 'institutional',
+      development_aesthetic: 'historic_traditional',
+      floors: 3,
+      height: 14,
+      floor_height: 4.67,
+      facade_material: 'stone',
+      roof_type: 'gabled',
+    },
+  },
 ];
 
 // =============================================================================

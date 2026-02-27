@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { Eye, MousePointer, Sparkles, Loader2, Footprints, RefreshCw, Building2, Route, TreePine, Map as MapIcon, ChevronUp } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZoneType, SiteZone, SiteZoneProperties } from '@/types';
-import { ZONE_TYPE_CONFIG, ROAD_PRESETS } from '@/types';
+import type { SiteZoneType, SiteZone, SiteZoneProperties, RoadPresetConfig, BuildingPresetConfig } from '@/types';
+import { ZONE_TYPE_CONFIG, ROAD_PRESETS, BUILDING_PRESETS } from '@/types';
 import { useViewerStore } from '@/store';
 import { siteZonesApi } from '@/services/api';
 
@@ -35,7 +35,7 @@ const ZONE_GROUPS = [
 ] as const;
 
 /** Maximum width across all road presets — used to scale visual width bars */
-const MAX_ROAD_WIDTH = Math.max(...ROAD_PRESETS.map((p) => p.width));
+const MAX_ROAD_WIDTH = Math.max(...ROAD_PRESETS.map((p) => (p.properties.width as number) || 0));
 
 interface ZoneGroupDropdownProps {
   group: (typeof ZONE_GROUPS)[number];
@@ -45,12 +45,66 @@ interface ZoneGroupDropdownProps {
   onSelectTool: (type: SiteZoneType, properties?: SiteZoneProperties) => void;
 }
 
+/** Returns the presets list for zone types that have them */
+function getPresetsForType(type: SiteZoneType): (RoadPresetConfig | BuildingPresetConfig)[] | null {
+  if (type === 'road') return ROAD_PRESETS;
+  if (type === 'building' || type === 'residential') return BUILDING_PRESETS;
+  return null;
+}
+
+/** Compact indicator shown next to each preset label */
+function PresetIndicator({ preset, color }: { preset: RoadPresetConfig | BuildingPresetConfig; color: string }) {
+  const width = preset.properties.width as number | undefined;
+  const floors = preset.properties.floors as number | undefined;
+
+  if (width) {
+    // Road: width-proportional bar
+    return (
+      <span
+        className="inline-block h-2 flex-shrink-0 rounded-sm"
+        style={{
+          width: `${Math.max(8, (width / MAX_ROAD_WIDTH) * 48)}px`,
+          backgroundColor: color,
+        }}
+      />
+    );
+  }
+  if (floors) {
+    // Building: small floors badge
+    return (
+      <span
+        className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-[9px] font-bold leading-none"
+        style={{ backgroundColor: color, color: '#fff' }}
+      >
+        {floors}
+      </span>
+    );
+  }
+  // Fallback: colored dot
+  return (
+    <span
+      className="inline-block h-3 w-3 flex-shrink-0 rounded-full"
+      style={{ backgroundColor: color }}
+    />
+  );
+}
+
+/** Compact summary shown on the right side of a preset button */
+function PresetSummary({ preset }: { preset: RoadPresetConfig | BuildingPresetConfig }) {
+  const width = preset.properties.width as number | undefined;
+  const floors = preset.properties.floors as number | undefined;
+
+  if (width) return <span className="ml-auto text-[10px] text-gray-500 group-hover:text-gray-400">{width}m</span>;
+  if (floors) return <span className="ml-auto text-[10px] text-gray-500 group-hover:text-gray-400">{floors}F</span>;
+  return null;
+}
+
 function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }: ZoneGroupDropdownProps) {
   const { Icon, label, types } = group;
   const activeChild = types.find((t) => t === activeTool);
   const activeColor = activeChild ? ZONE_TYPE_CONFIG[activeChild].color : undefined;
 
-  // Track which zone type is expanded to show sub-presets (e.g. road)
+  // Track which zone type is expanded to show sub-presets
   const [expandedType, setExpandedType] = useState<SiteZoneType | null>(null);
 
   return (
@@ -62,7 +116,8 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
             {types.map((type) => {
               const config = ZONE_TYPE_CONFIG[type];
               const isActive = activeTool === type;
-              const hasPresets = type === 'road';
+              const presets = getPresetsForType(type);
+              const hasPresets = presets !== null;
               const isExpanded = expandedType === type;
 
               return (
@@ -100,31 +155,22 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                     )}
                   </button>
 
-                  {/* Road preset sub-menu */}
-                  {hasPresets && isExpanded && (
+                  {/* Preset sub-menu (road, building, residential) */}
+                  {hasPresets && isExpanded && presets && (
                     <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-white/10 pl-2">
-                      {ROAD_PRESETS.map((preset) => (
+                      {presets.map((preset) => (
                         <button
                           key={preset.label}
                           onClick={() => {
-                            onSelectTool('road', { width: preset.width, lane_count: preset.lanes });
+                            onSelectTool(type, preset.properties);
                             setExpandedType(null);
                           }}
                           className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-gray-300 transition-all hover:bg-white/10 hover:text-white"
-                          title={`${preset.label} — ${preset.width}m, ${preset.lanes} lane${preset.lanes > 1 ? 's' : ''}`}
+                          title={`${preset.label} — ${preset.description}`}
                         >
-                          {/* Width-proportional bar */}
-                          <span
-                            className="inline-block h-2 flex-shrink-0 rounded-sm"
-                            style={{
-                              width: `${Math.max(8, (preset.width / MAX_ROAD_WIDTH) * 48)}px`,
-                              backgroundColor: config.color,
-                            }}
-                          />
+                          <PresetIndicator preset={preset} color={config.color} />
                           <span className="font-medium">{preset.label}</span>
-                          <span className="ml-auto text-[10px] text-gray-500 group-hover:text-gray-400">
-                            {preset.width}m
-                          </span>
+                          <PresetSummary preset={preset} />
                         </button>
                       ))}
                     </div>
