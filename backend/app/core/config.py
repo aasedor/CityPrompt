@@ -61,6 +61,13 @@ class Settings(BaseSettings):
     def cors_origins(self) -> List[str]:
         return [origin.strip() for origin in self.allowed_origins.split(",")]
 
+    # --- SMTP (Password Reset Emails) ---
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_sender: str = ""
+
     # --- OAuth2 Social Login ---
     google_client_id: str = ""
     google_client_secret: str = ""

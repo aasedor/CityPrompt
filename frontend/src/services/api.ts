@@ -109,6 +109,27 @@ export const authApi = {
     const { data } = await api.get('/api/v1/auth/me');
     return data;
   },
+
+  changePassword: async (currentPassword: string, newPassword: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/api/v1/auth/change-password', {
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+    return data;
+  },
+
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/api/v1/auth/forgot-password', { email });
+    return data;
+  },
+
+  resetPassword: async (token: string, newPassword: string): Promise<{ message: string }> => {
+    const { data } = await api.post('/api/v1/auth/reset-password', {
+      token,
+      new_password: newPassword,
+    });
+    return data;
+  },
 };
 
 // =============================================================================

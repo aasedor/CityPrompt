@@ -53,6 +53,28 @@ class RefreshRequest(BaseModel):
     refresh_token: str = Field(description="Valid refresh token")
 
 
+class ChangePasswordRequest(BaseModel):
+    """Change password for an authenticated user."""
+    current_password: str = Field(description="Current account password")
+    new_password: str = Field(min_length=8, description="New password, minimum 8 characters")
+
+
+class ForgotPasswordRequest(BaseModel):
+    """Request a password reset email."""
+    email: EmailStr = Field(description="Email address to send reset link to")
+
+
+class ResetPasswordRequest(BaseModel):
+    """Reset password using a token from a reset email."""
+    token: str = Field(description="Password reset JWT token")
+    new_password: str = Field(min_length=8, description="New password, minimum 8 characters")
+
+
+class MessageResponse(BaseModel):
+    """Generic message response."""
+    message: str = Field(description="Response message")
+
+
 # =============================================================================
 # Location Schemas
 # =============================================================================

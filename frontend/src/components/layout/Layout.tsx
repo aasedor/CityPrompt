@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Box, LogIn, LogOut, User, Menu, X } from 'lucide-react';
+import { Box, KeyRound, LogIn, LogOut, User, Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/store';
 
 export function Layout() {
@@ -34,6 +34,13 @@ export function Layout() {
                   <User size={14} />
                   {user?.full_name || user?.email}
                 </span>
+                <Link
+                  to="/settings/password"
+                  className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                >
+                  <KeyRound size={14} />
+                  Change Password
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
@@ -79,6 +86,14 @@ export function Layout() {
                   <User size={14} />
                   {user?.full_name || user?.email}
                 </div>
+                <Link
+                  to="/settings/password"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                >
+                  <KeyRound size={14} />
+                  Change Password
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex w-full items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"

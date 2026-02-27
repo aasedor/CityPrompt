@@ -9,6 +9,9 @@ import { SharedProjectPage } from '@/features/projects/SharedProjectPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { OAuthCallbackPage } from '@/features/auth/OAuthCallbackPage';
+import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/features/auth/ResetPasswordPage';
+import { ChangePasswordPage } from '@/features/auth/ChangePasswordPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
@@ -36,11 +39,14 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       {/* App routes — require authentication */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
+        <Route path="/settings/password" element={<ChangePasswordPage />} />
       </Route>
       {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
