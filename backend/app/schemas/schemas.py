@@ -450,3 +450,51 @@ class GenerationEngineInfo(BaseModel):
     description: str = Field(description="Engine description")
     available: bool = Field(description="Whether the engine is configured and available")
     features: list[str] = Field(default=[], description="Engine capabilities")
+
+
+# =============================================================================
+# Admin Schemas
+# =============================================================================
+
+class AdminDashboardStats(BaseModel):
+    """Platform-wide statistics for the admin dashboard."""
+    total_users: int
+    active_users: int
+    total_projects: int
+    total_buildings: int
+    total_documents: int
+    users_by_role: dict[str, int]
+    projects_by_status: dict[str, int]
+
+
+class AdminUserListResponse(BaseModel):
+    """User info for admin user management."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    email: str
+    full_name: Optional[str]
+    role: str
+    is_active: bool
+    created_at: datetime
+    project_count: int
+
+
+class AdminUserUpdate(BaseModel):
+    """Update a user's role, active status, or name (admin only)."""
+    role: Optional[str] = Field(None, pattern="^(viewer|editor|admin)$")
+    is_active: Optional[bool] = None
+    full_name: Optional[str] = None
+
+
+class AdminProjectListResponse(BaseModel):
+    """Project info for admin project oversight."""
+    id: uuid.UUID
+    name: str
+    description: Optional[str]
+    status: str
+    created_at: datetime
+    updated_at: datetime
+    owner_id: uuid.UUID
+    owner_email: str
+    owner_name: Optional[str]
+    building_count: int

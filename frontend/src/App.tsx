@@ -50,12 +50,10 @@ export default function App() {
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
         <Route path="/settings/password" element={<ChangePasswordPage />} />
-      </Route>
-      {/* Admin routes — require admin role */}
-      <Route element={<ProtectedRoute requiredRole="admin"><Layout /></ProtectedRoute>}>
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/users" element={<AdminUsersPage />} />
-        <Route path="/admin/projects" element={<AdminProjectsPage />} />
+        {/* Admin routes — require admin role */}
+        <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboardPage /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
+        <Route path="/admin/projects" element={<ProtectedRoute requiredRole="admin"><AdminProjectsPage /></ProtectedRoute>} />
       </Route>
       {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
