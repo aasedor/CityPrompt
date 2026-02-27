@@ -12,6 +12,9 @@ import { OAuthCallbackPage } from '@/features/auth/OAuthCallbackPage';
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
 import { ResetPasswordPage } from '@/features/auth/ResetPasswordPage';
 import { ChangePasswordPage } from '@/features/auth/ChangePasswordPage';
+import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
+import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
+import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
@@ -47,6 +50,12 @@ export default function App() {
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
         <Route path="/settings/password" element={<ChangePasswordPage />} />
+      </Route>
+      {/* Admin routes — require admin role */}
+      <Route element={<ProtectedRoute requiredRole="admin"><Layout /></ProtectedRoute>}>
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
+        <Route path="/admin/projects" element={<AdminProjectsPage />} />
       </Route>
       {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
