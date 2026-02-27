@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.email import send_admin_demotion_confirmation_email
+from app.core.email import send_admin_demotion_confirmation_email, send_admin_welcome_email
 from app.core.security import require_admin
 from app.models.models import Building, Document, PendingRoleChange, Project, User
 from app.schemas.schemas import (
@@ -162,12 +162,28 @@ async def update_user(
             },
         )
 
+    was_promoted_to_admin = (
+        update.role == "admin" and target.role != "admin"
+    )
+
     update_data = update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(target, field, value)
 
     await db.flush()
     await db.refresh(target)
+
+    # Send welcome email to newly promoted admin
+    if was_promoted_to_admin:
+        settings = get_settings()
+        try:
+            await send_admin_welcome_email(
+                to_email=target.email,
+                promoted_by_email=user.email,
+                login_link=f"{settings.frontend_url}/admin",
+            )
+        except Exception:
+            pass  # Don't fail the request if email fails
 
     count_result = await db.execute(
         select(func.count(Project.id)).where(Project.owner_id == target.id)
