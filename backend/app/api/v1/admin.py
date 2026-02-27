@@ -8,7 +8,6 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.core.security import require_admin
@@ -37,13 +36,11 @@ async def get_admin_stats(
     total_buildings = (await db.execute(select(func.count(Building.id)))).scalar() or 0
     total_documents = (await db.execute(select(func.count(Document.id)))).scalar() or 0
 
-    # Users by role
     role_rows = (
         await db.execute(select(User.role, func.count(User.id)).group_by(User.role))
     ).all()
     users_by_role = {row[0]: row[1] for row in role_rows}
 
-    # Projects by status
     status_rows = (
         await db.execute(
             select(Project.status, func.count(Project.id)).group_by(Project.status)
@@ -115,7 +112,6 @@ async def update_user(
     if not target:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Prevent self-demotion and self-deactivation
     if target.id == user.id:
         if update.role is not None and update.role != user.role:
             raise HTTPException(
@@ -133,7 +129,6 @@ async def update_user(
     await db.flush()
     await db.refresh(target)
 
-    # Get project count
     count_result = await db.execute(
         select(func.count(Project.id)).where(Project.owner_id == target.id)
     )

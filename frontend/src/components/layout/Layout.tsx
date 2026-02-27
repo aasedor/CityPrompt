@@ -1,18 +1,34 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Box, LogIn, LogOut, User, Menu, X, Shield } from 'lucide-react';
+import { Box, ChevronDown, KeyRound, LogIn, LogOut, Shield, User, Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/store';
 
 export function Layout() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     logout();
     setMobileMenuOpen(false);
+    setUserMenuOpen(false);
     navigate('/login');
   };
+
+  // Close desktop dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [userMenuOpen]);
 
   return (
     <div className="min-h-screen">
@@ -35,18 +51,45 @@ export function Layout() {
               </Link>
             )}
             {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1.5 text-sm text-gray-600">
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                >
                   <User size={14} />
                   {user?.full_name || user?.email}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
-                >
-                  <LogOut size={14} />
-                  Sign out
+                  <ChevronDown size={14} className={`transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 z-50 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        <Shield size={14} />
+                        Admin Dashboard
+                      </Link>
+                    )}
+                    <Link
+                      to="/settings/password"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <KeyRound size={14} />
+                      Change Password
+                    </Link>
+                    <div className="my-1 border-t border-gray-100" />
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      <LogOut size={14} />
+                      Sign out
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <Link
@@ -95,9 +138,17 @@ export function Layout() {
                   <User size={14} />
                   {user?.full_name || user?.email}
                 </div>
+                <Link
+                  to="/settings/password"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                >
+                  <KeyRound size={14} />
+                  Change Password
+                </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
                 >
                   <LogOut size={14} />
                   Sign out

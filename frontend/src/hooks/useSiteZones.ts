@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { siteZonesApi } from '@/services/api';
-import type { SiteZoneType, SiteZoneProperties } from '@/types';
+import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 
@@ -24,11 +24,34 @@ export function useSiteZones(projectId: string | undefined) {
         color: ZONE_TYPE_CONFIG[vars.zone_type].color,
         properties: ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
       }),
+    onMutate: async (vars) => {
+      // Cancel outgoing refetches so they don't overwrite optimistic update
+      await queryClient.cancelQueries({ queryKey: ['site-zones', projectId] });
+      const previous = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
+      // Optimistic zone so the map renders it immediately
+      const optimistic: SiteZone = {
+        id: `temp-${Date.now()}`,
+        project_id: projectId!,
+        zone_type: vars.zone_type,
+        coordinates: vars.coordinates,
+        color: ZONE_TYPE_CONFIG[vars.zone_type].color,
+        properties: ZONE_TYPE_CONFIG[vars.zone_type].defaultProperties,
+        sort_order: (previous?.length ?? 0),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => [...(old ?? []), optimistic]);
+      return { previous };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone created');
     },
-    onError: (err: Error) => {
+    onError: (err: Error, _vars, context) => {
+      // Roll back to previous state on failure
+      if (context?.previous) {
+        queryClient.setQueryData(['site-zones', projectId], context.previous);
+      }
       toast.error(`Failed to create zone: ${err.message}`);
     },
   });

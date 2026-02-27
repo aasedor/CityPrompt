@@ -5,11 +5,13 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { ProjectListPage } from '@/features/projects/ProjectListPage';
 import { ProjectViewPage } from '@/features/projects/ProjectViewPage';
 import { ViewerPage } from '@/features/projects/ViewerPage';
-import { SitePlannerPage } from '@/features/projects/SitePlannerPage';
 import { SharedProjectPage } from '@/features/projects/SharedProjectPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { OAuthCallbackPage } from '@/features/auth/OAuthCallbackPage';
+import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/features/auth/ResetPasswordPage';
+import { ChangePasswordPage } from '@/features/auth/ChangePasswordPage';
 import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
 import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
 import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
@@ -40,20 +42,20 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       {/* App routes — require authentication */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
+        <Route path="/settings/password" element={<ChangePasswordPage />} />
+        {/* Admin routes — require admin role */}
+        <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboardPage /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
+        <Route path="/admin/projects" element={<ProtectedRoute requiredRole="admin"><AdminProjectsPage /></ProtectedRoute>} />
       </Route>
-      {/* Admin routes — require admin role */}
-      <Route element={<ProtectedRoute requiredRole="admin"><Layout /></ProtectedRoute>}>
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/users" element={<AdminUsersPage />} />
-        <Route path="/admin/projects" element={<AdminProjectsPage />} />
-      </Route>
-      {/* Full-screen pages, no layout wrapper */}
-      <Route path="/projects/:id/site-planner" element={<ProtectedRoute><SitePlannerPage /></ProtectedRoute>} />
+      {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
       {/* Shared project view (public link) */}
       <Route path="/shared/:token" element={<SharedProjectPage />} />

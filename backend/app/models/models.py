@@ -56,6 +56,7 @@ class Project(Base):
     )
     metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
     construction_phases: Mapped[list | None] = mapped_column(JSONB, nullable=True)
+    default_style: Mapped[str | None] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
@@ -89,10 +90,15 @@ class Building(Base):
     generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
     meshy_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     rotation_degrees: Mapped[float | None] = mapped_column(Numeric(6, 2), nullable=True, default=0)
+    architectural_style: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    preview_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    preview_status: Mapped[str | None] = mapped_column(String(20), nullable=True, default="idle")
+    generation_engine: Mapped[str | None] = mapped_column(String(20), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
     project: Mapped["Project"] = relationship(back_populates="buildings")
+    render_previews: Mapped[list["RenderPreview"]] = relationship(back_populates="building", cascade="all, delete-orphan")
 
 
 class ProjectShare(Base):
@@ -181,6 +187,22 @@ class SiteZone(Base):
     # Relationships
     project: Mapped["Project"] = relationship(back_populates="site_zones")
     building: Mapped["Building | None"] = relationship()
+
+
+class RenderPreview(Base):
+    __tablename__ = "render_previews"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    building_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="CASCADE"), nullable=False, index=True)
+    image_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
+    style: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    source_type: Mapped[str] = mapped_column(String(20), nullable=False, default="text")
+    source_image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    building: Mapped["Building"] = relationship(back_populates="render_previews")
 
 
 class ActivityLog(Base):

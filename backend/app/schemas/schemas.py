@@ -53,6 +53,28 @@ class RefreshRequest(BaseModel):
     refresh_token: str = Field(description="Valid refresh token")
 
 
+class ChangePasswordRequest(BaseModel):
+    """Change password for an authenticated user."""
+    current_password: str = Field(description="Current account password")
+    new_password: str = Field(min_length=8, description="New password, minimum 8 characters")
+
+
+class ForgotPasswordRequest(BaseModel):
+    """Request a password reset email."""
+    email: EmailStr = Field(description="Email address to send reset link to")
+
+
+class ResetPasswordRequest(BaseModel):
+    """Reset password using a token from a reset email."""
+    token: str = Field(description="Password reset JWT token")
+    new_password: str = Field(min_length=8, description="New password, minimum 8 characters")
+
+
+class MessageResponse(BaseModel):
+    """Generic message response."""
+    message: str = Field(description="Response message")
+
+
 # =============================================================================
 # Location Schemas
 # =============================================================================
@@ -90,6 +112,7 @@ class ProjectCreate(BaseModel):
     description: Optional[str] = Field(None, description="Project description")
     location: Optional[LocationInput] = Field(None, description="Project site location")
     construction_phases: Optional[list[ConstructionPhaseInput]] = Field(None, description="Ordered list of construction phases")
+    default_style: Optional[str] = Field(None, description="Default architectural style for buildings in this project")
 
 
 class ProjectUpdate(BaseModel):
@@ -99,6 +122,7 @@ class ProjectUpdate(BaseModel):
     location: Optional[LocationInput] = Field(None, description="Updated location")
     status: Optional[str] = Field(None, description="Project status: draft, processing, ready, archived")
     construction_phases: Optional[list[ConstructionPhaseInput]] = Field(None, description="Updated construction phases")
+    default_style: Optional[str] = Field(None, description="Default architectural style for new buildings")
 
 
 class ProjectResponse(BaseModel):
@@ -110,6 +134,7 @@ class ProjectResponse(BaseModel):
     status: str = Field(description="Current status: draft, processing, ready, archived")
     location: Optional[LocationResponse] = Field(None, description="Project site location")
     construction_phases: Optional[list[dict[str, Any]]] = Field(None, description="Construction phase definitions")
+    default_style: Optional[str] = Field(None, description="Default architectural style for buildings")
     created_at: datetime = Field(description="Creation timestamp")
     updated_at: datetime = Field(description="Last update timestamp")
     owner_id: uuid.UUID = Field(description="Owner user ID")
@@ -143,6 +168,7 @@ class BuildingCreate(BaseModel):
     construction_phase: Optional[int] = Field(None, description="Construction phase number this building belongs to")
     footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Building footprint as [[x,y], ...] polygon coordinates")
     specifications: Optional[dict[str, Any]] = Field(None, description="Additional specs: facade_material, total_area_sqm, etc.")
+    architectural_style: Optional[str] = Field(None, description="Architectural style ID (e.g., 'modern', 'classical', 'brutalist')")
 
 
 class BuildingUpdate(BaseModel):
@@ -156,6 +182,7 @@ class BuildingUpdate(BaseModel):
     specifications: Optional[dict[str, Any]] = Field(None, description="Updated specifications")
     footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Updated footprint as [[lng, lat], ...] polygon coordinates")
     rotation_degrees: Optional[float] = Field(None, description="Y-axis rotation in degrees (0-360)")
+    architectural_style: Optional[str] = Field(None, description="Architectural style ID")
 
 
 class BuildingResponse(BaseModel):
@@ -177,6 +204,10 @@ class BuildingResponse(BaseModel):
     meshy_task_id: Optional[str] = Field(None, description="Meshy.ai task ID for tracking")
     footprint_coordinates: Optional[list[list[float]]] = Field(None, description="Footprint polygon as [[lng, lat], ...] coordinate pairs")
     rotation_degrees: Optional[float] = Field(None, description="Y-axis rotation in degrees (0-360)")
+    architectural_style: Optional[str] = Field(None, description="Architectural style ID")
+    preview_url: Optional[str] = Field(None, description="URL to the latest AI render preview image")
+    preview_status: Optional[str] = Field(None, description="Render preview status: idle, generating, completed, failed")
+    generation_engine: Optional[str] = Field(None, description="3D generation engine used: meshy, tripo, procedural")
     created_at: datetime = Field(description="Creation timestamp")
 
 
@@ -337,6 +368,8 @@ class GenerateRequest(BaseModel):
     prompt: str = Field(min_length=3, max_length=500, description="Text description of the 3D model to generate")
     art_style: str = Field(default="realistic", description="Art style: realistic, cartoon, low-poly, sculpture")
     negative_prompt: Optional[str] = Field(None, max_length=500, description="What to avoid in generation")
+    style: Optional[str] = Field(None, description="Architectural style ID for prompt enrichment")
+    engine: Optional[str] = Field(None, description="Generation engine: 'meshy' or 'tripo' (defaults to system setting)")
 
 
 class GenerateFromImageRequest(BaseModel):
@@ -363,18 +396,75 @@ class AITemplate(BaseModel):
 
 
 # =============================================================================
+# Architectural Style Schemas
+# =============================================================================
+
+class ArchitecturalStyleResponse(BaseModel):
+    """Architectural style definition for the frontend."""
+    id: str = Field(description="Unique style identifier")
+    name: str = Field(description="Display name")
+    description: str = Field(description="Style description")
+    facade_material: str = Field(description="Primary facade material")
+    secondary_material: str = Field(description="Secondary material")
+    roof_material: str = Field(description="Roof material")
+    preferred_roof_types: list[str] = Field(description="Suitable roof types for this style")
+    prompt_prefix: str = Field(description="AI prompt prefix for this style")
+    meshy_art_style: str = Field(description="Meshy.ai art style mapping")
+    thumbnail_url: Optional[str] = Field(None, description="Preview thumbnail URL")
+    tags: list[str] = Field(default=[], description="Searchable tags")
+
+
+# =============================================================================
+# Render Preview Schemas
+# =============================================================================
+
+class RenderPreviewRequest(BaseModel):
+    """Request to generate an AI render preview image."""
+    prompt: str = Field(min_length=3, max_length=500, description="Prompt for the render")
+    style: Optional[str] = Field(None, description="Architectural style ID")
+    source_type: str = Field(default="text", description="Source type: text, sketch, floor_plan")
+    source_image_url: Optional[str] = Field(None, description="Source image URL for sketch-to-render")
+
+
+class RenderPreviewResponse(BaseModel):
+    """Render preview result."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID = Field(description="Preview ID")
+    building_id: uuid.UUID = Field(description="Building ID")
+    image_url: str = Field(description="URL to the generated preview image")
+    prompt: Optional[str] = Field(description="Prompt used")
+    style: Optional[str] = Field(description="Style used")
+    source_type: str = Field(description="Source type")
+    source_image_url: Optional[str] = Field(None, description="Source image URL")
+    created_at: datetime = Field(description="Creation timestamp")
+
+
+# =============================================================================
+# Generation Engine Schemas
+# =============================================================================
+
+class GenerationEngineInfo(BaseModel):
+    """Information about an available 3D generation engine."""
+    id: str = Field(description="Engine identifier: meshy, tripo, procedural")
+    name: str = Field(description="Display name")
+    description: str = Field(description="Engine description")
+    available: bool = Field(description="Whether the engine is configured and available")
+    features: list[str] = Field(default=[], description="Engine capabilities")
+
+
+# =============================================================================
 # Admin Schemas
 # =============================================================================
 
 class AdminDashboardStats(BaseModel):
-    """Platform-wide statistics for admin dashboard."""
-    total_users: int = Field(description="Total registered users")
-    active_users: int = Field(description="Users with is_active=True")
-    total_projects: int = Field(description="Total projects across all users")
-    total_buildings: int = Field(description="Total buildings across all projects")
-    total_documents: int = Field(description="Total uploaded documents")
-    users_by_role: dict[str, int] = Field(description="User count per role")
-    projects_by_status: dict[str, int] = Field(description="Project count per status")
+    """Platform-wide statistics for the admin dashboard."""
+    total_users: int
+    active_users: int
+    total_projects: int
+    total_buildings: int
+    total_documents: int
+    users_by_role: dict[str, int]
+    projects_by_status: dict[str, int]
 
 
 class AdminUserListResponse(BaseModel):
@@ -386,19 +476,18 @@ class AdminUserListResponse(BaseModel):
     role: str
     is_active: bool
     created_at: datetime
-    project_count: int = Field(default=0, description="Number of projects owned")
+    project_count: int
 
 
 class AdminUserUpdate(BaseModel):
-    """Admin-editable user fields."""
+    """Update a user's role, active status, or name (admin only)."""
     role: Optional[str] = Field(None, pattern="^(viewer|editor|admin)$")
     is_active: Optional[bool] = None
     full_name: Optional[str] = None
 
 
 class AdminProjectListResponse(BaseModel):
-    """Project info for admin project management."""
-    model_config = ConfigDict(from_attributes=True)
+    """Project info for admin project oversight."""
     id: uuid.UUID
     name: str
     description: Optional[str]
@@ -406,6 +495,6 @@ class AdminProjectListResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     owner_id: uuid.UUID
-    owner_email: str = Field(description="Owner's email address")
-    owner_name: Optional[str] = Field(None, description="Owner's display name")
-    building_count: int = Field(default=0, description="Number of buildings")
+    owner_email: str
+    owner_name: Optional[str]
+    building_count: int

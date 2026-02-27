@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Upload } from 'lucide-react';
+import { X, Sparkles, Image, LayoutGrid, Type, Loader2, CheckCircle, AlertCircle, Upload, Eye, Cpu } from 'lucide-react';
 import { buildingsApi } from '@/services/api';
-import type { AITemplate, GenerationStatus } from '@/types';
+import { StyleSelector } from './StyleSelector';
+import type { AITemplate, GenerationStatus, GenerationEngine, RenderPreview } from '@/types';
 
 interface AIGenerateModalProps {
   buildingId: string;
@@ -11,7 +12,7 @@ interface AIGenerateModalProps {
   onComplete: () => void;
 }
 
-type TabId = 'templates' | 'text' | 'image';
+type TabId = 'templates' | 'text' | 'image' | 'preview';
 type CategoryFilter = 'all' | 'commercial' | 'residential' | 'infrastructure' | 'landscaping';
 
 export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClose, onComplete }: AIGenerateModalProps) {
@@ -21,6 +22,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
   const [genStatus, setGenStatus] = useState<GenerationStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Style selection (shared across tabs)
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [showStylePicker, setShowStylePicker] = useState(false);
+
+  // Engine selection
+  const [engines, setEngines] = useState<GenerationEngine[]>([]);
+  const [selectedEngine, setSelectedEngine] = useState<string | undefined>(undefined);
 
   // Templates tab state
   const [templates, setTemplates] = useState<AITemplate[]>([]);
@@ -38,10 +47,23 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
   const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // Load templates
+  // Preview tab state
+  const [previewPrompt, setPreviewPrompt] = useState('');
+  const [previewGenerating, setPreviewGenerating] = useState(false);
+  const [renderPreviews, setRenderPreviews] = useState<RenderPreview[]>([]);
+
+  // Load templates and engines
   useEffect(() => {
     buildingsApi.getTemplates().then(setTemplates).catch(() => {});
+    buildingsApi.getEngines().then((eng) => {
+      setEngines(eng);
+    }).catch(() => {});
   }, []);
+
+  // Load existing render previews
+  useEffect(() => {
+    buildingsApi.getRenderPreviews(buildingId).then(setRenderPreviews).catch(() => {});
+  }, [buildingId]);
 
   // Cleanup polling on unmount
   useEffect(() => {
@@ -76,7 +98,12 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
     setGenerating(true);
     setGenStatus({ status: 'generating', progress: 0 });
     try {
-      await buildingsApi.generate(buildingId, prompt, artStyle, negativePrompt || undefined);
+      await buildingsApi.generate(
+        buildingId, prompt, artStyle,
+        negativePrompt || undefined,
+        selectedStyle || undefined,
+        selectedEngine,
+      );
       startPolling();
     } catch (err: unknown) {
       setGenerating(false);
@@ -89,7 +116,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           : axiosErr.message || 'Failed to start generation';
       setError(msg);
     }
-  }, [buildingId, artStyle, negativePrompt, startPolling]);
+  }, [buildingId, artStyle, negativePrompt, selectedStyle, selectedEngine, startPolling]);
 
   const handleGenerateImage = useCallback(async () => {
     if (!imageUrl.trim()) return;
@@ -112,6 +139,47 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
     }
   }, [buildingId, imageUrl, startPolling]);
 
+  const handleGeneratePreview = useCallback(async () => {
+    if (!previewPrompt.trim()) return;
+    setPreviewGenerating(true);
+    setError(null);
+    try {
+      await buildingsApi.generatePreview(
+        buildingId,
+        previewPrompt,
+        selectedStyle || undefined,
+      );
+      // Poll for updated previews
+      const pollPreview = setInterval(async () => {
+        try {
+          const building = await buildingsApi.get(buildingId);
+          if (building.preview_status === 'completed') {
+            clearInterval(pollPreview);
+            setPreviewGenerating(false);
+            const previews = await buildingsApi.getRenderPreviews(buildingId);
+            setRenderPreviews(previews);
+          } else if (building.preview_status === 'failed') {
+            clearInterval(pollPreview);
+            setPreviewGenerating(false);
+            setError('Preview generation failed');
+          }
+        } catch {
+          // ignore
+        }
+      }, 3000);
+      // Timeout after 2 minutes
+      setTimeout(() => {
+        clearInterval(pollPreview);
+        setPreviewGenerating(false);
+      }, 120000);
+    } catch (err: unknown) {
+      setPreviewGenerating(false);
+      const axiosErr = err as { response?: { data?: { detail?: unknown } }; message?: string };
+      const detail = axiosErr.response?.data?.detail;
+      setError(typeof detail === 'string' ? detail : axiosErr.message || 'Failed to generate preview');
+    }
+  }, [buildingId, previewPrompt, selectedStyle]);
+
   const handleImageFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -128,10 +196,13 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
     ? templates
     : templates.filter((t) => t.category === categoryFilter);
 
+  const availableEngines = engines.filter((e) => e.available && e.id !== 'procedural');
+
   const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
     { id: 'templates', label: 'Templates', icon: <LayoutGrid size={14} /> },
     { id: 'text', label: 'Text to 3D', icon: <Type size={14} /> },
     { id: 'image', label: 'Image to 3D', icon: <Image size={14} /> },
+    { id: 'preview', label: 'Preview', icon: <Eye size={14} /> },
   ];
 
   const CATEGORIES: { id: CategoryFilter; label: string }[] = [
@@ -157,13 +228,72 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-          >
-            <X size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Engine selector (only shown when 2+ engines available) */}
+            {availableEngines.length >= 2 && (
+              <div className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-2 py-1">
+                <Cpu size={12} className="text-gray-400" />
+                <select
+                  value={selectedEngine || ''}
+                  onChange={(e) => setSelectedEngine(e.target.value || undefined)}
+                  className="border-none bg-transparent text-xs font-medium text-gray-700 focus:outline-none"
+                >
+                  <option value="">Auto</option>
+                  {availableEngines.map((eng) => (
+                    <option key={eng.id} value={eng.id}>
+                      {eng.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <button
+              onClick={onClose}
+              className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
+
+        {/* Style selector bar */}
+        <div className="border-b border-gray-100 px-6 py-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium text-gray-500">Style:</span>
+            <StyleSelector
+              selectedStyle={selectedStyle}
+              onSelect={setSelectedStyle}
+              compact
+            />
+            <button
+              onClick={() => setShowStylePicker(!showStylePicker)}
+              className="ml-auto text-xs font-medium text-purple-600 hover:text-purple-700"
+            >
+              {showStylePicker ? 'Less' : 'Browse all'}
+            </button>
+          </div>
+          {showStylePicker && (
+            <div className="mt-2.5 max-h-48 overflow-y-auto rounded-lg border border-gray-100 p-3">
+              <StyleSelector
+                selectedStyle={selectedStyle}
+                onSelect={(id) => {
+                  setSelectedStyle(id);
+                  setShowStylePicker(false);
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Engine info banner */}
+        {selectedEngine && (
+          <div className="border-b border-gray-100 bg-gray-50 px-6 py-2">
+            <p className="text-xs text-gray-600">
+              <span className="font-medium">{engines.find((e) => e.id === selectedEngine)?.name}:</span>{' '}
+              {engines.find((e) => e.id === selectedEngine)?.description}
+            </p>
+          </div>
+        )}
 
         {/* Generation in progress overlay */}
         {generating && (
@@ -421,12 +551,94 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               </button>
             </div>
           )}
+
+          {/* Preview Tab (AI Render) */}
+          {activeTab === 'preview' && (
+            <div className="space-y-4">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Render Preview Prompt
+                </label>
+                <textarea
+                  value={previewPrompt}
+                  onChange={(e) => setPreviewPrompt(e.target.value)}
+                  placeholder="Describe the architectural visualization you want..."
+                  rows={3}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                />
+                <p className="mt-1 text-xs text-gray-400">
+                  Generates a photorealistic 2D render preview using Stability AI.
+                  {selectedStyle && ` Style "${selectedStyle}" will be applied to the prompt.`}
+                </p>
+              </div>
+
+              <button
+                onClick={handleGeneratePreview}
+                disabled={previewGenerating || !previewPrompt.trim()}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              >
+                {previewGenerating ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Generating Preview...
+                  </>
+                ) : (
+                  <>
+                    <Eye size={14} />
+                    Generate Preview
+                  </>
+                )}
+              </button>
+
+              {/* Render preview gallery */}
+              {renderPreviews.length > 0 && (
+                <div>
+                  <h4 className="mb-2 text-xs font-semibold text-gray-600 uppercase">
+                    Render Previews ({renderPreviews.length})
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {renderPreviews.map((preview) => (
+                      <div
+                        key={preview.id}
+                        className="group relative overflow-hidden rounded-lg border border-gray-200"
+                      >
+                        <img
+                          src={preview.image_url}
+                          alt={preview.prompt || 'Render preview'}
+                          className="h-40 w-full object-cover"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                          <p className="line-clamp-1 text-[10px] text-white">
+                            {preview.prompt}
+                          </p>
+                          {preview.style && (
+                            <span className="mt-0.5 inline-block rounded bg-white/20 px-1 py-0.5 text-[9px] text-white">
+                              {preview.style}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {renderPreviews.length === 0 && !previewGenerating && (
+                <p className="text-center text-xs text-gray-400">
+                  No render previews yet. Generate one above to see a photorealistic visualization.
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Footer */}
         <div className="border-t border-gray-100 px-6 py-3">
           <p className="text-center text-xs text-gray-400">
-            Powered by Meshy.ai &middot; Generation typically takes 2-4 minutes
+            {activeTab === 'preview'
+              ? 'Powered by Stability AI'
+              : `Powered by ${selectedEngine === 'tripo' ? 'Tripo3D' : 'Meshy.ai'}`}
+            {activeTab !== 'preview' && ' \u00b7 Generation typically takes 2-4 minutes'}
           </p>
         </div>
       </div>

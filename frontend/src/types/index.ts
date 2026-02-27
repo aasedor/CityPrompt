@@ -47,6 +47,10 @@ export interface Building {
   meshy_task_id?: string;
   footprint_coordinates?: number[][];
   rotation_degrees?: number;
+  architectural_style?: string;
+  preview_url?: string;
+  preview_status?: string;
+  generation_engine?: string;
   created_at: string;
 }
 
@@ -263,4 +267,49 @@ export interface AITemplate {
   category: string;
   prompt: string;
   thumbnail_url?: string;
+}
+
+// =============================================================================
+// Architectural Style Types
+// =============================================================================
+
+export interface ArchitecturalStyle {
+  id: string;
+  name: string;
+  description: string;
+  facade_material: string;
+  secondary_material: string;
+  roof_material: string;
+  preferred_roof_types: string[];
+  prompt_prefix: string;
+  meshy_art_style: string;
+  thumbnail_url?: string;
+  tags: string[];
+}
+
+// =============================================================================
+// Render Preview Types
+// =============================================================================
+
+export interface RenderPreview {
+  id: string;
+  building_id: string;
+  image_url: string;
+  prompt?: string;
+  style?: string;
+  source_type: string;
+  source_image_url?: string;
+  created_at: string;
+}
+
+// =============================================================================
+// Generation Engine Types
+// =============================================================================
+
+export interface GenerationEngine {
+  id: string;
+  name: string;
+  description: string;
+  available: boolean;
+  features: string[];
 }

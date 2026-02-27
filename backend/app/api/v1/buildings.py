@@ -13,10 +13,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import require_auth
-from app.models.models import Building, Project, ProjectShare, User
+from app.generation.styles import ARCHITECTURAL_STYLES, get_style
+from app.models.models import Building, Project, ProjectShare, RenderPreview, User
 from app.schemas.schemas import (
+    ArchitecturalStyleResponse,
     BuildingCreate, BuildingResponse, BuildingUpdate,
     GenerateRequest, GenerateFromImageRequest, GenerationStatusResponse, AITemplate,
+    GenerationEngineInfo,
+    RenderPreviewRequest, RenderPreviewResponse,
 )
 
 router = APIRouter()
@@ -51,8 +55,61 @@ def _building_to_response(building: Building) -> dict:
         "meshy_task_id": building.meshy_task_id,
         "footprint_coordinates": footprint_coordinates,
         "rotation_degrees": float(building.rotation_degrees) if getattr(building, 'rotation_degrees', None) is not None else 0,
+        "architectural_style": building.architectural_style,
+        "preview_url": building.preview_url,
+        "preview_status": building.preview_status,
+        "generation_engine": building.generation_engine,
         "created_at": building.created_at,
     }
+
+
+def _enrich_prompt_with_style(prompt: str, style_id: str | None) -> str:
+    """Prepend/append style modifiers to a generation prompt."""
+    style = get_style(style_id)
+    parts = []
+    if style.prompt_prefix:
+        parts.append(style.prompt_prefix)
+    parts.append(prompt)
+    if style.prompt_suffix:
+        parts.append(style.prompt_suffix)
+    return " ".join(parts)
+
+
+def _get_style_negative_prompt(style_id: str | None, user_negative: str | None) -> str:
+    """Combine style's negative prompt with user-provided negative prompt."""
+    style = get_style(style_id)
+    parts = []
+    base_negative = (
+        "blurry, low quality, deformed, floating objects, ground plane, "
+        "background, people, vehicles, cartoon, anime, stylized, miniature"
+    )
+    parts.append(base_negative)
+    if style.negative_prompt:
+        parts.append(style.negative_prompt)
+    if user_negative:
+        parts.append(user_negative)
+    return ", ".join(parts)
+
+
+def _resolve_engine(req_engine: str | None) -> str:
+    """Resolve which generation engine to use."""
+    if req_engine:
+        return req_engine
+    return settings.default_generation_engine
+
+
+def _check_engine_available(engine: str) -> None:
+    """Raise HTTPException if the requested engine is not configured."""
+    if engine == "meshy" and not settings.meshy_api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="MESHY_API_KEY is not configured. Add your Meshy.ai API key to the .env file.",
+        )
+    elif engine == "tripo" and not settings.tripo_api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="TRIPO_API_KEY is not configured. Add your Tripo3D API key to the .env file.",
+        )
 
 
 @router.get("/projects/{project_id}/buildings", response_model=list[BuildingResponse])
@@ -106,6 +163,7 @@ async def create_building(
         roof_type=building_in.roof_type,
         construction_phase=building_in.construction_phase,
         specifications=building_in.specifications,
+        architectural_style=building_in.architectural_style,
     )
 
     if building_in.footprint_coordinates:
@@ -297,6 +355,31 @@ async def get_building_model_file(
 
 
 # =============================================================================
+# Architectural Styles
+# =============================================================================
+
+@router.get("/ai/styles", response_model=list[ArchitecturalStyleResponse])
+async def get_styles():
+    """Get the list of available architectural styles."""
+    return [
+        ArchitecturalStyleResponse(
+            id=s.id,
+            name=s.name,
+            description=s.description,
+            facade_material=s.facade_material,
+            secondary_material=s.secondary_material,
+            roof_material=s.roof_material,
+            preferred_roof_types=s.preferred_roof_types,
+            prompt_prefix=s.prompt_prefix,
+            meshy_art_style=s.meshy_art_style,
+            thumbnail_url=s.thumbnail_url,
+            tags=s.tags,
+        )
+        for s in ARCHITECTURAL_STYLES.values()
+    ]
+
+
+# =============================================================================
 # AI 3D Generation Endpoints
 # =============================================================================
 
@@ -359,21 +442,31 @@ async def generate_from_text(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # Check that MESHY_API_KEY is configured before queuing
-    if not settings.meshy_api_key:
-        raise HTTPException(
-            status_code=400,
-            detail="MESHY_API_KEY is not configured. Add your Meshy.ai API key to the .env file.",
-        )
+    # Resolve engine and check availability
+    engine = _resolve_engine(req.engine)
+    _check_engine_available(engine)
+
+    # Resolve style: request > building > project default
+    style_id = req.style or building.architectural_style or getattr(project, 'default_style', None)
+
+    # Enrich prompt with style
+    enriched_prompt = _enrich_prompt_with_style(req.prompt, style_id)
+    negative = _get_style_negative_prompt(style_id, req.negative_prompt)
 
     # Update building with generation info
     building.generation_status = "generating"
     building.generation_prompt = req.prompt
+    if style_id:
+        building.architectural_style = style_id
+    building.generation_engine = engine
     await db.flush()
 
     # Queue Celery task
     from app.tasks.processing import generate_3d_model_ai
-    generate_3d_model_ai.delay(str(building_id), req.prompt, "text")
+    generate_3d_model_ai.delay(
+        str(building_id), enriched_prompt, "text",
+        None, True, engine, style_id, negative,
+    )
 
     return GenerationStatusResponse(
         status="generating",
@@ -409,19 +502,20 @@ async def generate_from_image(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # Check that MESHY_API_KEY is configured before queuing
-    if not settings.meshy_api_key:
-        raise HTTPException(
-            status_code=400,
-            detail="MESHY_API_KEY is not configured. Add your Meshy.ai API key to the .env file.",
-        )
+    # For image mode, default to meshy (tripo also supports image_to_3d)
+    engine = _resolve_engine(None)
+    _check_engine_available(engine)
 
     building.generation_status = "generating"
     building.generation_prompt = f"[image] {req.image_url}"
+    building.generation_engine = engine
     await db.flush()
 
     from app.tasks.processing import generate_3d_model_ai
-    generate_3d_model_ai.delay(str(building_id), "", "image", req.image_url)
+    generate_3d_model_ai.delay(
+        str(building_id), "", "image", req.image_url,
+        True, engine, None, None,
+    )
 
     return GenerationStatusResponse(
         status="generating",
@@ -458,3 +552,114 @@ async def get_generation_status(
 async def get_ai_templates():
     """Get the list of pre-built AI generation templates."""
     return AI_TEMPLATES
+
+
+# =============================================================================
+# Render Preview Endpoints
+# =============================================================================
+
+@router.post("/{building_id}/render-preview", response_model=RenderPreviewResponse)
+async def generate_render_preview(
+    building_id: uuid.UUID,
+    req: RenderPreviewRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Generate an AI render preview image for a building."""
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == building.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id:
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == building.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    if not settings.stability_api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="STABILITY_API_KEY is not configured. Add your Stability AI API key to the .env file.",
+        )
+
+    # Update building preview status
+    building.preview_status = "generating"
+    await db.flush()
+
+    # Resolve style for prompt enrichment
+    style_id = req.style or building.architectural_style or getattr(project, 'default_style', None)
+
+    # Queue Celery task
+    from app.tasks.render_preview import generate_render_preview as render_task
+    render_task.delay(
+        str(building_id), req.prompt, req.source_type,
+        req.source_image_url, style_id,
+    )
+
+    # Return a placeholder response
+    return RenderPreviewResponse(
+        id=uuid.uuid4(),
+        building_id=building_id,
+        image_url="",
+        prompt=req.prompt,
+        style=style_id,
+        source_type=req.source_type,
+        source_image_url=req.source_image_url,
+        created_at=building.created_at,
+    )
+
+
+@router.get("/{building_id}/render-previews", response_model=list[RenderPreviewResponse])
+async def get_render_previews(
+    building_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """Get all render previews for a building."""
+    result = await db.execute(
+        select(RenderPreview)
+        .where(RenderPreview.building_id == building_id)
+        .order_by(RenderPreview.created_at.desc())
+    )
+    return result.scalars().all()
+
+
+# =============================================================================
+# Generation Engines
+# =============================================================================
+
+@router.get("/ai/engines", response_model=list[GenerationEngineInfo])
+async def get_engines():
+    """Get the list of available 3D generation engines."""
+    engines = [
+        GenerationEngineInfo(
+            id="procedural",
+            name="Procedural",
+            description="Local geometry generation from building data. Instant, no API key required.",
+            available=True,
+            features=["instant", "LOD variants", "PBR materials", "no API key"],
+        ),
+        GenerationEngineInfo(
+            id="meshy",
+            name="Meshy.ai",
+            description="AI text/image-to-3D with PBR textures and refinement step.",
+            available=bool(settings.meshy_api_key),
+            features=["text-to-3D", "image-to-3D", "PBR textures", "refinement"],
+        ),
+        GenerationEngineInfo(
+            id="tripo",
+            name="Tripo3D",
+            description="Fast AI 3D generation with smart low-poly optimization and mesh segmentation.",
+            available=bool(settings.tripo_api_key),
+            features=["text-to-3D", "image-to-3D", "smart low-poly", "mesh segmentation", "fast (~10-45s)"],
+        ),
+    ]
+    return engines

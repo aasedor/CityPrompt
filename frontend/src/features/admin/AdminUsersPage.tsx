@@ -1,58 +1,66 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Search, ArrowLeft } from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowLeft, Loader2, Search } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
-import type { AdminUser, AdminUserUpdate } from '@/services/api';
+import type { AdminUser } from '@/services/api';
 
 export function AdminUsersPage() {
-  const queryClient = useQueryClient();
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
 
-  const { data: users, isLoading } = useQuery({
-    queryKey: ['admin', 'users', search, roleFilter],
-    queryFn: () =>
-      adminApi.listUsers({
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await adminApi.listUsers({
         search: search || undefined,
         role: roleFilter || undefined,
-        limit: 100,
-      }),
-  });
+      });
+      setUsers(data);
+    } catch {
+      toast.error('Failed to load users');
+    } finally {
+      setLoading(false);
+    }
+  }, [search, roleFilter]);
 
-  const updateMutation = useMutation({
-    mutationFn: ({ userId, update }: { userId: string; update: AdminUserUpdate }) =>
-      adminApi.updateUser(userId, update),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin'] });
-    },
-  });
+  useEffect(() => {
+    const timer = setTimeout(fetchUsers, 300);
+    return () => clearTimeout(timer);
+  }, [fetchUsers]);
 
-  const handleRoleChange = (user: AdminUser, newRole: string) => {
-    updateMutation.mutate({ userId: user.id, update: { role: newRole } });
+  const handleRoleChange = async (userId: string, role: string) => {
+    try {
+      const updated = await adminApi.updateUser(userId, { role });
+      setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
+      toast.success('Role updated');
+    } catch (err: any) {
+      toast.error(err.response?.data?.detail || 'Failed to update role');
+    }
   };
 
-  const handleToggleActive = (user: AdminUser) => {
-    updateMutation.mutate({
-      userId: user.id,
-      update: { is_active: !user.is_active },
-    });
+  const handleToggleActive = async (userId: string, isActive: boolean) => {
+    try {
+      const updated = await adminApi.updateUser(userId, { is_active: !isActive });
+      setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
+      toast.success(isActive ? 'User deactivated' : 'User activated');
+    } catch (err: any) {
+      toast.error(err.response?.data?.detail || 'Failed to update user');
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3">
+    <div>
+      <div className="mb-6 flex items-center gap-3">
         <Link to="/admin" className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
           <ArrowLeft size={20} />
         </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <p className="text-sm text-gray-500">{users?.length ?? 0} users</p>
-        </div>
+        <h1 className="text-2xl font-bold text-gray-900">Manage Users</h1>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -60,13 +68,13 @@ export function AdminUsersPage() {
             placeholder="Search by email or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
         >
           <option value="">All roles</option>
           <option value="viewer">Viewer</option>
@@ -75,43 +83,45 @@ export function AdminUsersPage() {
         </select>
       </div>
 
-      {/* Table */}
-      {isLoading ? (
-        <div className="flex h-40 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
         </div>
+      ) : users.length === 0 ? (
+        <p className="py-8 text-center text-sm text-gray-500">No users found.</p>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+        <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Email</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Name</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Role</th>
-                <th className="px-4 py-3 text-center font-medium text-gray-600">Projects</th>
-                <th className="px-4 py-3 text-center font-medium text-gray-600">Status</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Joined</th>
-                <th className="px-4 py-3 text-right font-medium text-gray-600">Actions</th>
+              <tr className="border-b border-gray-200 text-left text-xs font-medium uppercase text-gray-500">
+                <th className="px-4 py-3">User</th>
+                <th className="px-4 py-3">Role</th>
+                <th className="px-4 py-3">Projects</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Joined</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {users?.map((u) => (
+              {users.map((u) => (
                 <tr key={u.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">{u.email}</td>
-                  <td className="px-4 py-3 text-gray-600">{u.full_name || '-'}</td>
+                  <td className="px-4 py-3">
+                    <div className="font-medium text-gray-900">{u.full_name || '-'}</div>
+                    <div className="text-xs text-gray-500">{u.email}</div>
+                  </td>
                   <td className="px-4 py-3">
                     <select
                       value={u.role}
-                      onChange={(e) => handleRoleChange(u, e.target.value)}
-                      className="rounded border border-gray-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none"
+                      onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                      className="rounded border border-gray-200 px-2 py-1 text-xs focus:border-primary-500 focus:outline-none"
                     >
                       <option value="viewer">Viewer</option>
                       <option value="editor">Editor</option>
                       <option value="admin">Admin</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-center text-gray-600">{u.project_count}</td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-4 py-3 text-gray-600">{u.project_count}</td>
+                  <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         u.is_active
@@ -125,10 +135,10 @@ export function AdminUsersPage() {
                   <td className="px-4 py-3 text-gray-500">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3">
                     <button
-                      onClick={() => handleToggleActive(u)}
-                      className={`rounded-lg px-3 py-1 text-xs font-medium ${
+                      onClick={() => handleToggleActive(u.id, u.is_active)}
+                      className={`rounded px-2 py-1 text-xs font-medium ${
                         u.is_active
                           ? 'text-red-600 hover:bg-red-50'
                           : 'text-green-600 hover:bg-green-50'
@@ -139,13 +149,6 @@ export function AdminUsersPage() {
                   </td>
                 </tr>
               ))}
-              {users?.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
-                    No users found
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
         </div>

@@ -2,10 +2,15 @@
 Authentication API endpoints.
 """
 
+import logging
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from jose import jwt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import (
     create_access_token,
@@ -17,12 +22,18 @@ from app.core.security import (
 )
 from app.models.models import User
 from app.schemas.schemas import (
+    ChangePasswordRequest,
+    ForgotPasswordRequest,
     LoginRequest,
+    MessageResponse,
     RefreshRequest,
+    ResetPasswordRequest,
     TokenResponse,
     UserCreate,
     UserResponse,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -122,3 +133,85 @@ async def get_current_user_info(
 ):
     """Get the profile of the currently authenticated user. Requires a valid access token."""
     return user
+
+
+@router.post("/change-password", response_model=MessageResponse)
+async def change_password(
+    body: ChangePasswordRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Change password for the currently authenticated user. Requires current password."""
+    if not user.hashed_password or not verify_password(body.current_password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Current password is incorrect",
+        )
+
+    user.hashed_password = hash_password(body.new_password)
+    await db.flush()
+    return MessageResponse(message="Password changed successfully")
+
+
+@router.post("/forgot-password", response_model=MessageResponse)
+async def forgot_password(
+    body: ForgotPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+):
+    """Request a password reset email. Always returns success to avoid leaking email existence."""
+    settings = get_settings()
+
+    result = await db.execute(select(User).where(User.email == body.email))
+    user = result.scalar_one_or_none()
+
+    if user and user.is_active:
+        expire = datetime.now(timezone.utc) + timedelta(hours=1)
+        reset_token = jwt.encode(
+            {"sub": str(user.id), "type": "reset", "exp": expire},
+            settings.jwt_secret_key,
+            algorithm=settings.jwt_algorithm,
+        )
+        reset_link = f"{settings.frontend_url}/reset-password?token={reset_token}"
+        try:
+            from app.core.email import send_password_reset_email
+            await send_password_reset_email(user.email, reset_link)
+        except Exception:
+            logger.warning("Failed to send reset email for %s", body.email)
+
+    return MessageResponse(message="If that email is registered, a reset link has been sent.")
+
+
+@router.post("/reset-password", response_model=MessageResponse)
+async def reset_password(
+    body: ResetPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+):
+    """Reset password using a token from a password reset email."""
+    payload = decode_token(body.token)
+
+    if payload.get("type") != "reset":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid reset token",
+        )
+
+    user_id = payload.get("sub")
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid reset token",
+        )
+
+    import uuid as _uuid
+    result = await db.execute(select(User).where(User.id == _uuid.UUID(user_id)))
+    user = result.scalar_one_or_none()
+
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid reset token",
+        )
+
+    user.hashed_password = hash_password(body.new_password)
+    await db.flush()
+    return MessageResponse(message="Password has been reset successfully")
