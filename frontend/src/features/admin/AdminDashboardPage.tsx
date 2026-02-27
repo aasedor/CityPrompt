@@ -71,27 +71,31 @@ export function AdminDashboardPage() {
         <div className="card">
           <h2 className="mb-3 text-sm font-semibold text-gray-700">Users by Role</h2>
           <div className="space-y-2">
-            {Object.entries(stats.users_by_role).map(([role, count]) => (
-              <div key={role} className="flex items-center justify-between">
-                <span className="text-sm capitalize text-gray-600">{role}</span>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 rounded-full bg-primary-100" style={{ width: `${Math.max(20, (count / stats.total_users) * 200)}px` }}>
-                    <div
-                      className="h-2 rounded-full bg-primary-500"
-                      style={{ width: '100%' }}
-                    />
+            {Object.entries(stats.users_by_role).map(([role, count]) => {
+              const n = count as number;
+              return (
+                <div key={role} className="flex items-center justify-between">
+                  <span className="text-sm capitalize text-gray-600">{role}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="h-2 rounded-full bg-primary-100" style={{ width: `${Math.max(20, (n / stats.total_users) * 200)}px` }}>
+                      <div
+                        className="h-2 rounded-full bg-primary-500"
+                        style={{ width: '100%' }}
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-gray-900">{n}</span>
                   </div>
-                  <span className="text-sm font-medium text-gray-900">{count}</span>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         <div className="card">
           <h2 className="mb-3 text-sm font-semibold text-gray-700">Projects by Status</h2>
           <div className="space-y-2">
-            {Object.entries(stats.projects_by_status).map(([status, count]) => {
+            {Object.entries(stats.projects_by_status).map(([s, count]) => {
+              const n = count as number;
               const statusColors: Record<string, string> = {
                 draft: 'bg-gray-500',
                 processing: 'bg-yellow-500',
@@ -99,16 +103,16 @@ export function AdminDashboardPage() {
                 archived: 'bg-red-400',
               };
               return (
-                <div key={status} className="flex items-center justify-between">
-                  <span className="text-sm capitalize text-gray-600">{status}</span>
+                <div key={s} className="flex items-center justify-between">
+                  <span className="text-sm capitalize text-gray-600">{s}</span>
                   <div className="flex items-center gap-2">
-                    <div className="h-2 rounded-full bg-gray-100" style={{ width: `${Math.max(20, (count / Math.max(stats.total_projects, 1)) * 200)}px` }}>
+                    <div className="h-2 rounded-full bg-gray-100" style={{ width: `${Math.max(20, (n / Math.max(stats.total_projects, 1)) * 200)}px` }}>
                       <div
-                        className={`h-2 rounded-full ${statusColors[status] || 'bg-gray-400'}`}
+                        className={`h-2 rounded-full ${statusColors[s] || 'bg-gray-400'}`}
                         style={{ width: '100%' }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">{count}</span>
+                    <span className="text-sm font-medium text-gray-900">{n}</span>
                   </div>
                 </div>
               );
