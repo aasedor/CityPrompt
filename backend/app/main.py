@@ -37,7 +37,12 @@ if settings.sentry_dsn:
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     logger.info("Starting 3D Development Platform API...")
-    # Startup: initialize resources, verify connections
+    # Startup: ensure admin users exist
+    try:
+        from scripts.ensure_admins import ensure_admins
+        await ensure_admins()
+    except Exception as e:
+        logger.warning(f"Admin seeding skipped: {e}")
     yield
     # Shutdown: cleanup resources
     logger.info("Shutting down 3D Development Platform API...")

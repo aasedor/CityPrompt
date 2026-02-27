@@ -54,7 +54,11 @@ else
     alembic stamp head
 fi
 
-# --- 4. Start uvicorn ---
+# --- 4. Ensure admin users exist ---
+echo "Ensuring admin users..."
+python -m scripts.ensure_admins
+
+# --- 5. Start uvicorn ---
 PORT="${PORT:-8000}"
 echo "Starting uvicorn on port $PORT..."
 exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT" --proxy-headers --forwarded-allow-ips="*"
