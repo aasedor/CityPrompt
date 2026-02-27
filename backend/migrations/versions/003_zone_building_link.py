@@ -17,21 +17,43 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _column_exists(table: str, column: str) -> bool:
+    conn = op.get_bind()
+    result = conn.execute(sa.text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+        "WHERE table_name = :table AND column_name = :column)"
+    ), {"table": table, "column": column})
+    return result.scalar()
+
+
+def _constraint_exists(constraint: str) -> bool:
+    conn = op.get_bind()
+    result = conn.execute(sa.text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.table_constraints "
+        "WHERE constraint_name = :name)"
+    ), {"name": constraint})
+    return result.scalar()
+
+
 def upgrade() -> None:
-    op.add_column(
-        "site_zones",
-        sa.Column("building_id", UUID(as_uuid=True), nullable=True),
-    )
-    op.create_foreign_key(
-        "fk_site_zones_building_id",
-        "site_zones",
-        "buildings",
-        ["building_id"],
-        ["id"],
-        ondelete="SET NULL",
-    )
+    if not _column_exists("site_zones", "building_id"):
+        op.add_column(
+            "site_zones",
+            sa.Column("building_id", UUID(as_uuid=True), nullable=True),
+        )
+    if not _constraint_exists("fk_site_zones_building_id"):
+        op.create_foreign_key(
+            "fk_site_zones_building_id",
+            "site_zones",
+            "buildings",
+            ["building_id"],
+            ["id"],
+            ondelete="SET NULL",
+        )
 
 
 def downgrade() -> None:
-    op.drop_constraint("fk_site_zones_building_id", "site_zones", type_="foreignkey")
-    op.drop_column("site_zones", "building_id")
+    if _constraint_exists("fk_site_zones_building_id"):
+        op.drop_constraint("fk_site_zones_building_id", "site_zones", type_="foreignkey")
+    if _column_exists("site_zones", "building_id"):
+        op.drop_column("site_zones", "building_id")

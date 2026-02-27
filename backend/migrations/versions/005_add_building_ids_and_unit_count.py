@@ -17,9 +17,20 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _column_exists(table: str, column: str) -> bool:
+    conn = op.get_bind()
+    result = conn.execute(sa.text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+        "WHERE table_name = :table AND column_name = :column)"
+    ), {"table": table, "column": column})
+    return result.scalar()
+
+
 def upgrade() -> None:
-    op.add_column("site_zones", sa.Column("building_ids", JSONB, nullable=True))
+    if not _column_exists("site_zones", "building_ids"):
+        op.add_column("site_zones", sa.Column("building_ids", JSONB, nullable=True))
 
 
 def downgrade() -> None:
-    op.drop_column("site_zones", "building_ids")
+    if _column_exists("site_zones", "building_ids"):
+        op.drop_column("site_zones", "building_ids")

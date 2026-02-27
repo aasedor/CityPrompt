@@ -16,9 +16,20 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _column_exists(table: str, column: str) -> bool:
+    conn = op.get_bind()
+    result = conn.execute(sa.text(
+        "SELECT EXISTS (SELECT 1 FROM information_schema.columns "
+        "WHERE table_name = :table AND column_name = :column)"
+    ), {"table": table, "column": column})
+    return result.scalar()
+
+
 def upgrade() -> None:
-    op.add_column("buildings", sa.Column("rotation_degrees", sa.Numeric(6, 2), nullable=True, server_default="0"))
+    if not _column_exists("buildings", "rotation_degrees"):
+        op.add_column("buildings", sa.Column("rotation_degrees", sa.Numeric(6, 2), nullable=True, server_default="0"))
 
 
 def downgrade() -> None:
-    op.drop_column("buildings", "rotation_degrees")
+    if _column_exists("buildings", "rotation_degrees"):
+        op.drop_column("buildings", "rotation_degrees")
