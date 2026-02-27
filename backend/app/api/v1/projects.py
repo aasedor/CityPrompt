@@ -90,7 +90,22 @@ async def list_projects(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """List projects owned by or shared with the authenticated user."""
+    """List projects owned by or shared with the authenticated user.
+
+    Admin users see all projects across the platform.
+    """
+    # Admin users see all projects
+    if user.role == "admin":
+        query = (
+            select(Project)
+            .order_by(Project.updated_at.desc())
+            .offset(skip)
+            .limit(limit)
+        )
+        result = await db.execute(query)
+        projects = result.scalars().all()
+        return [_project_to_dict(p) for p in projects]
+
     # Get IDs of projects shared with this user
     shared_result = await db.execute(
         select(ProjectShare.project_id).where(

@@ -107,8 +107,11 @@ async def require_auth(
     return await get_current_user(token, db)
 
 
-async def require_role(required_role: str):
-    """Factory for role-checking dependencies."""
+def require_role(required_role: str):
+    """Factory for role-checking dependencies.
+
+    Usage: Depends(require_role("admin"))
+    """
     async def checker(user=Depends(require_auth)):
         role_hierarchy = {"viewer": 0, "editor": 1, "admin": 2}
         user_level = role_hierarchy.get(user.role, 0)
@@ -120,6 +123,9 @@ async def require_role(required_role: str):
             )
         return user
     return checker
+
+
+require_admin = require_role("admin")
 
 
 async def check_project_permission(

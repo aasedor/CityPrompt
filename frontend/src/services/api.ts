@@ -438,4 +438,79 @@ export const siteZonesApi = {
   },
 };
 
+// =============================================================================
+// Admin
+// =============================================================================
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  full_name?: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+  project_count: number;
+}
+
+export interface AdminUserUpdate {
+  role?: string;
+  is_active?: boolean;
+  full_name?: string;
+}
+
+export interface AdminDashboardStats {
+  total_users: number;
+  active_users: number;
+  total_projects: number;
+  total_buildings: number;
+  total_documents: number;
+  users_by_role: Record<string, number>;
+  projects_by_status: Record<string, number>;
+}
+
+export interface AdminProject {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  owner_id: string;
+  owner_email: string;
+  owner_name?: string;
+  building_count: number;
+}
+
+export const adminApi = {
+  getStats: async (): Promise<AdminDashboardStats> => {
+    const { data } = await api.get('/api/v1/admin/stats');
+    return data;
+  },
+
+  listUsers: async (params?: {
+    skip?: number;
+    limit?: number;
+    search?: string;
+    role?: string;
+  }): Promise<AdminUser[]> => {
+    const { data } = await api.get('/api/v1/admin/users', { params });
+    return data;
+  },
+
+  updateUser: async (userId: string, update: AdminUserUpdate): Promise<AdminUser> => {
+    const { data } = await api.put(`/api/v1/admin/users/${userId}`, update);
+    return data;
+  },
+
+  listAllProjects: async (params?: {
+    skip?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+  }): Promise<AdminProject[]> => {
+    const { data } = await api.get('/api/v1/admin/projects', { params });
+    return data;
+  },
+};
+
 export default api;

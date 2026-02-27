@@ -360,3 +360,52 @@ class AITemplate(BaseModel):
     category: str = Field(description="Category: commercial, residential, infrastructure, landscaping")
     prompt: str = Field(description="Text prompt for generation")
     thumbnail_url: Optional[str] = Field(None, description="Preview thumbnail URL")
+
+
+# =============================================================================
+# Admin Schemas
+# =============================================================================
+
+class AdminDashboardStats(BaseModel):
+    """Platform-wide statistics for admin dashboard."""
+    total_users: int = Field(description="Total registered users")
+    active_users: int = Field(description="Users with is_active=True")
+    total_projects: int = Field(description="Total projects across all users")
+    total_buildings: int = Field(description="Total buildings across all projects")
+    total_documents: int = Field(description="Total uploaded documents")
+    users_by_role: dict[str, int] = Field(description="User count per role")
+    projects_by_status: dict[str, int] = Field(description="Project count per status")
+
+
+class AdminUserListResponse(BaseModel):
+    """User info for admin user management."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    email: str
+    full_name: Optional[str]
+    role: str
+    is_active: bool
+    created_at: datetime
+    project_count: int = Field(default=0, description="Number of projects owned")
+
+
+class AdminUserUpdate(BaseModel):
+    """Admin-editable user fields."""
+    role: Optional[str] = Field(None, pattern="^(viewer|editor|admin)$")
+    is_active: Optional[bool] = None
+    full_name: Optional[str] = None
+
+
+class AdminProjectListResponse(BaseModel):
+    """Project info for admin project management."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    name: str
+    description: Optional[str]
+    status: str
+    created_at: datetime
+    updated_at: datetime
+    owner_id: uuid.UUID
+    owner_email: str = Field(description="Owner's email address")
+    owner_name: Optional[str] = Field(None, description="Owner's display name")
+    building_count: int = Field(default=0, description="Number of buildings")

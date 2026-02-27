@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Box, LogIn, LogOut, User, Menu, X } from 'lucide-react';
+import { Box, LogIn, LogOut, User, Menu, X, Shield } from 'lucide-react';
 import { useAuthStore } from '@/store';
 
 export function Layout() {
@@ -28,6 +28,12 @@ export function Layout() {
             <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900">
               Projects
             </Link>
+            {user?.role === 'admin' && (
+              <Link to="/admin" className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900">
+                <Shield size={14} />
+                Admin
+              </Link>
+            )}
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1.5 text-sm text-gray-600">
@@ -73,6 +79,16 @@ export function Layout() {
             >
               Projects
             </Link>
+            {user?.role === 'admin' && (
+              <Link
+                to="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+              >
+                <Shield size={14} />
+                Admin
+              </Link>
+            )}
             {isAuthenticated ? (
               <>
                 <div className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600">

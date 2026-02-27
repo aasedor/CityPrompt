@@ -1,8 +1,19 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store';
 
-export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuthStore();
+const ROLE_HIERARCHY: Record<string, number> = {
+  viewer: 0,
+  editor: 1,
+  admin: 2,
+};
+
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  requiredRole?: string;
+}
+
+export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+  const { user, isAuthenticated, isLoading } = useAuthStore();
   const location = useLocation();
 
   if (isLoading) {
@@ -15,6 +26,14 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (requiredRole && user) {
+    const userLevel = ROLE_HIERARCHY[user.role] ?? 0;
+    const requiredLevel = ROLE_HIERARCHY[requiredRole] ?? 0;
+    if (userLevel < requiredLevel) {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return <>{children}</>;

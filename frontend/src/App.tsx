@@ -10,6 +10,9 @@ import { SharedProjectPage } from '@/features/projects/SharedProjectPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { OAuthCallbackPage } from '@/features/auth/OAuthCallbackPage';
+import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
+import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
+import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
@@ -42,6 +45,12 @@ export default function App() {
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
+      </Route>
+      {/* Admin routes — require admin role */}
+      <Route element={<ProtectedRoute requiredRole="admin"><Layout /></ProtectedRoute>}>
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
+        <Route path="/admin/projects" element={<AdminProjectsPage />} />
       </Route>
       {/* Full-screen pages, no layout wrapper */}
       <Route path="/projects/:id/site-planner" element={<ProtectedRoute><SitePlannerPage /></ProtectedRoute>} />
