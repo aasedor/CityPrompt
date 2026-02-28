@@ -52,18 +52,18 @@ async def ensure_admins() -> None:
         else:
             print(f"[ensure_admins] {DEFAULT_ADMIN_EMAIL} already admin — OK")
 
-        # 2. Promote configured emails to admin
+        # 2. Promote configured emails to cofounder
         for email in PROMOTE_EMAILS:
             result = await db.execute(select(User).where(User.email == email))
             user = result.scalar_one_or_none()
 
             if user is None:
                 print(f"[ensure_admins] {email} not registered yet — skipping")
-            elif user.role != "admin":
-                user.role = "admin"
-                print(f"[ensure_admins] Promoted {email} to admin")
+            elif user.role != "cofounder":
+                user.role = "cofounder"
+                print(f"[ensure_admins] Promoted {email} to cofounder")
             else:
-                print(f"[ensure_admins] {email} already admin — OK")
+                print(f"[ensure_admins] {email} already cofounder — OK")
 
         await db.commit()
         print("[ensure_admins] Done.")

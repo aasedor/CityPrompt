@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
-from app.core.security import get_current_user, require_auth, check_project_permission
+from app.core.security import get_current_user, is_admin_or_above, require_auth, check_project_permission
 from app.models.models import Project, ProjectShare, User
 from app.schemas.schemas import (
     LocationResponse,
@@ -94,8 +94,8 @@ async def list_projects(
 
     Admin users see all projects across the platform.
     """
-    # Admin users see all projects
-    if user.role == "admin":
+    # Admin/cofounder users see all projects
+    if is_admin_or_above(user):
         query = (
             select(Project)
             .order_by(Project.updated_at.desc())

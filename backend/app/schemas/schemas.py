@@ -481,7 +481,7 @@ class AdminUserListResponse(BaseModel):
 
 class AdminUserUpdate(BaseModel):
     """Update a user's role, active status, or name (admin only)."""
-    role: Optional[str] = Field(None, pattern="^(viewer|editor|admin)$")
+    role: Optional[str] = Field(None, pattern="^(viewer|editor|admin|cofounder)$")
     is_active: Optional[bool] = None
     full_name: Optional[str] = None
 

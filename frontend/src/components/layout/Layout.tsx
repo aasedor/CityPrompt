@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Box, ChevronDown, KeyRound, LogIn, LogOut, Shield, User, Menu, X } from 'lucide-react';
+import { Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, Shield, User, Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/store';
 
 export function Layout() {
@@ -44,9 +44,9 @@ export function Layout() {
             <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900">
               Projects
             </Link>
-            {user?.role === 'admin' && (
+            {user?.role && ['admin', 'cofounder'].includes(user.role) && (
               <Link to="/admin" className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900">
-                <Shield size={14} />
+                {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
               </Link>
             )}
@@ -62,13 +62,13 @@ export function Layout() {
                 </button>
                 {userMenuOpen && (
                   <div className="absolute right-0 z-50 mt-1 w-48 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
-                    {user?.role === 'admin' && (
+                    {user?.role && ['admin', 'cofounder'].includes(user.role) && (
                       <Link
                         to="/admin"
                         onClick={() => setUserMenuOpen(false)}
                         className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                       >
-                        <Shield size={14} />
+                        {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                         Admin Dashboard
                       </Link>
                     )}
@@ -122,13 +122,13 @@ export function Layout() {
             >
               Projects
             </Link>
-            {user?.role === 'admin' && (
+            {user?.role && ['admin', 'cofounder'].includes(user.role) && (
               <Link
                 to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
               >
-                <Shield size={14} />
+                {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
               </Link>
             )}

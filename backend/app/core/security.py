@@ -113,7 +113,7 @@ def require_role(required_role: str):
     Usage: Depends(require_role("admin"))
     """
     async def checker(user=Depends(require_auth)):
-        role_hierarchy = {"viewer": 0, "editor": 1, "admin": 2}
+        role_hierarchy = {"viewer": 0, "editor": 1, "admin": 2, "cofounder": 3}
         user_level = role_hierarchy.get(user.role, 0)
         required_level = role_hierarchy.get(required_role, 0)
         if user_level < required_level:
@@ -125,7 +125,13 @@ def require_role(required_role: str):
     return checker
 
 
+def is_admin_or_above(user) -> bool:
+    """Return True if the user's role is admin or cofounder."""
+    return user.role in ("admin", "cofounder")
+
+
 require_admin = require_role("admin")
+require_cofounder = require_role("cofounder")
 
 
 async def check_project_permission(
@@ -153,8 +159,8 @@ async def check_project_permission(
     if user and project.owner_id == user.id:
         return "owner"
 
-    # Admin users have full access
-    if user and getattr(user, "role", "") == "admin":
+    # Admin/cofounder users have full access
+    if user and is_admin_or_above(user):
         return "owner"
 
     # Check project shares

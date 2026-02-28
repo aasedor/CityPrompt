@@ -393,6 +393,225 @@ async def send_admin_welcome_email(to_email: str, promoted_by_email: str, login_
         logger.exception("Failed to send admin welcome email to %s", to_email)
 
 
+async def send_cofounder_welcome_email(to_email: str, promoted_by_email: str, login_link: str) -> None:
+    """Send a premium welcome email when a user is promoted to cofounder."""
+    settings = get_settings()
+
+    msg = MIMEMultipart("alternative")
+    msg["From"] = settings.smtp_sender or settings.smtp_user
+    msg["To"] = to_email
+    msg["Subject"] = f"{settings.app_name} - Welcome, Cofounder"
+
+    year = __import__("datetime").datetime.now().year
+
+    html = f"""\
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+
+<!-- Outer wrapper -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a1a;padding:40px 0;">
+<tr><td align="center">
+
+<!-- Main card -->
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#1f1f1f;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.4);border:1px solid #333;">
+
+  <!-- Header banner -->
+  <tr>
+    <td style="background:linear-gradient(135deg,#78520a 0%,#b8860b 40%,#daa520 70%,#b8860b 100%);padding:48px 40px;text-align:center;">
+      <!-- Crown icon -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 20px;">
+        <tr>
+          <td style="background:rgba(0,0,0,0.2);border-radius:50%;width:72px;height:72px;text-align:center;vertical-align:middle;">
+            <span style="font-size:36px;line-height:72px;">&#128081;</span>
+          </td>
+        </tr>
+      </table>
+      <h1 style="margin:0 0 8px;color:#ffffff;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
+        Welcome, Cofounder
+      </h1>
+      <p style="margin:0;color:rgba(255,255,255,0.85);font-size:15px;font-weight:400;">
+        {settings.app_name}
+      </p>
+    </td>
+  </tr>
+
+  <!-- Body content -->
+  <tr>
+    <td style="padding:40px;">
+
+      <p style="margin:0 0 20px;color:#e0e0e0;font-size:16px;line-height:1.7;">
+        Congratulations! You have been granted <strong style="color:#daa520;">Cofounder</strong>
+        privileges on {settings.app_name} by <strong style="color:#e0e0e0;">{promoted_by_email}</strong>.
+      </p>
+
+      <p style="margin:0 0 28px;color:#999;font-size:15px;line-height:1.7;">
+        As a cofounder, you hold the highest level of authority on the platform.
+        Below is an overview of your exclusive capabilities.
+      </p>
+
+      <!-- Capabilities grid -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+        <tr>
+          <td style="padding:16px 20px;background:#2a2a2a;border-radius:12px 12px 0 0;border-bottom:1px solid #333;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:40px;vertical-align:top;">
+                  <span style="font-size:20px;">&#128101;</span>
+                </td>
+                <td>
+                  <strong style="color:#e0e0e0;font-size:14px;">User Management</strong>
+                  <p style="margin:4px 0 0;color:#888;font-size:13px;line-height:1.5;">
+                    Full control over all user accounts. Promote and demote admins, manage roles, and oversee platform access.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 20px;background:#2a2a2a;border-bottom:1px solid #333;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:40px;vertical-align:top;">
+                  <span style="font-size:20px;">&#128737;</span>
+                </td>
+                <td>
+                  <strong style="color:#e0e0e0;font-size:14px;">Admin Oversight</strong>
+                  <p style="margin:4px 0 0;color:#888;font-size:13px;line-height:1.5;">
+                    Only cofounders can grant or revoke admin privileges. Admins cannot modify cofounder accounts.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 20px;background:#2a2a2a;border-bottom:1px solid #333;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:40px;vertical-align:top;">
+                  <span style="font-size:20px;">&#127970;</span>
+                </td>
+                <td>
+                  <strong style="color:#e0e0e0;font-size:14px;">Platform Governance</strong>
+                  <p style="margin:4px 0 0;color:#888;font-size:13px;line-height:1.5;">
+                    Shape the direction of the platform. Access all projects, buildings, and documents across the system.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 20px;background:#2a2a2a;border-radius:0 0 12px 12px;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:40px;vertical-align:top;">
+                  <span style="font-size:20px;">&#9881;&#65039;</span>
+                </td>
+                <td>
+                  <strong style="color:#e0e0e0;font-size:14px;">System Configuration</strong>
+                  <p style="margin:4px 0 0;color:#888;font-size:13px;line-height:1.5;">
+                    Configure platform settings, manage integrations, and maintain system health at the highest level.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- CTA button -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" style="padding:4px 0 32px;">
+            <a href="{login_link}"
+               style="display:inline-block;background:linear-gradient(135deg,#b8860b,#daa520);color:#1a1a1a;padding:16px 40px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 14px rgba(218,165,32,0.35);">
+              Open Admin Dashboard &rarr;
+            </a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Security notice -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#2a2a00;border:1px solid #4a4a00;border-radius:10px;">
+        <tr>
+          <td style="padding:16px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:32px;vertical-align:top;">
+                  <span style="font-size:18px;">&#128081;</span>
+                </td>
+                <td>
+                  <strong style="color:#daa520;font-size:13px;">Cofounder Privilege</strong>
+                  <p style="margin:4px 0 0;color:#b8a000;font-size:12px;line-height:1.5;">
+                    With the highest level of access comes the greatest responsibility. Your actions
+                    affect all users and administrators on the platform. Exercise your privileges wisely.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+
+  <!-- Divider -->
+  <tr>
+    <td style="padding:0 40px;">
+      <hr style="border:none;border-top:1px solid #333;margin:0;">
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="padding:24px 40px 32px;text-align:center;">
+      <p style="margin:0 0 6px;color:#666;font-size:12px;">
+        This is an automated message from {settings.app_name}.
+      </p>
+      <p style="margin:0 0 6px;color:#666;font-size:12px;">
+        If you believe this was sent in error, please contact your team lead.
+      </p>
+      <p style="margin:0;color:#444;font-size:11px;">
+        &copy; {year} {settings.app_name}. All rights reserved.
+      </p>
+    </td>
+  </tr>
+
+</table>
+<!-- /Main card -->
+
+</td></tr>
+</table>
+<!-- /Outer wrapper -->
+
+</body>
+</html>"""
+
+    msg.attach(MIMEText(html, "html"))
+
+    logger.info(
+        "Attempting cofounder welcome email: from=%s to=%s smtp_host=%s smtp_user=%s",
+        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+    )
+    try:
+        result = await aiosmtplib.send(
+            msg,
+            hostname=settings.smtp_host,
+            port=settings.smtp_port,
+            username=settings.smtp_user,
+            password=settings.smtp_password,
+            start_tls=True,
+        )
+        logger.info("Cofounder welcome email sent to %s, SMTP response: %s", to_email, result)
+    except Exception:
+        logger.exception("Failed to send cofounder welcome email to %s", to_email)
+
+
 async def send_admin_demotion_confirmation_email(
     to_email: str,
     target_email: str,

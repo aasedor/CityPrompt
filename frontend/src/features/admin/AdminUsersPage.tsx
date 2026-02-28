@@ -1,9 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, AlertTriangle, ShieldAlert, Trash2 } from 'lucide-react';
+import { ArrowLeft, Crown, Loader2, Search, AlertTriangle, ShieldAlert, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
+import { useAuthStore } from '@/store';
 
 interface RoleChangeModal {
   userId: string;
@@ -13,6 +14,8 @@ interface RoleChangeModal {
 }
 
 export function AdminUsersPage() {
+  const { user: currentUser } = useAuthStore();
+  const isCofounder = currentUser?.role === 'cofounder';
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -46,7 +49,7 @@ export function AdminUsersPage() {
       if (updated._email_failed) {
         toast.success('Role updated, but welcome email failed to send', { duration: 4000 });
       } else {
-        toast.success(role === 'admin' ? 'Role updated — welcome email sent' : 'Role updated');
+        toast.success(['admin', 'cofounder'].includes(role) ? 'Role updated — welcome email sent' : 'Role updated');
       }
     } catch (err: any) {
       toast.error(err.response?.data?.detail || 'Failed to update role');
@@ -57,14 +60,26 @@ export function AdminUsersPage() {
     const targetUser = users.find((u) => u.id === userId);
     if (!targetUser) return;
 
-    // Promoting to admin — show confirmation modal
-    if (role === 'admin' && targetUser.role !== 'admin') {
+    // Promoting to admin or cofounder — show confirmation modal
+    if (['admin', 'cofounder'].includes(role) && !['admin', 'cofounder'].includes(targetUser.role)) {
       setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'promotion' });
       return;
     }
 
-    // Demoting from admin — show confirmation modal
-    if (targetUser.role === 'admin' && role !== 'admin') {
+    // Promoting admin to cofounder
+    if (role === 'cofounder' && targetUser.role === 'admin') {
+      setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'promotion' });
+      return;
+    }
+
+    // Demoting from admin or cofounder — show confirmation modal
+    if (['admin', 'cofounder'].includes(targetUser.role) && !['admin', 'cofounder'].includes(role)) {
+      setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'demotion' });
+      return;
+    }
+
+    // Demoting cofounder to admin
+    if (targetUser.role === 'cofounder' && role === 'admin') {
       setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'demotion' });
       return;
     }
@@ -128,6 +143,7 @@ export function AdminUsersPage() {
           <option value="viewer">Viewer</option>
           <option value="editor">Editor</option>
           <option value="admin">Admin</option>
+          <option value="cofounder">Cofounder</option>
         </select>
       </div>
 
@@ -161,11 +177,13 @@ export function AdminUsersPage() {
                     <select
                       value={u.role}
                       onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                      className="rounded border border-gray-200 px-2 py-1 text-xs focus:border-primary-500 focus:outline-none"
+                      disabled={!isCofounder && ['admin', 'cofounder'].includes(u.role)}
+                      className="rounded border border-gray-200 px-2 py-1 text-xs focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <option value="viewer">Viewer</option>
                       <option value="editor">Editor</option>
                       <option value="admin">Admin</option>
+                      {isCofounder && <option value="cofounder">Cofounder</option>}
                     </select>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{u.project_count}</td>
@@ -215,29 +233,43 @@ export function AdminUsersPage() {
           <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
             <div className="mb-4 flex items-center gap-3">
               {roleModal.type === 'promotion' ? (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-                  <AlertTriangle className="h-5 w-5 text-amber-600" />
-                </div>
+                roleModal.newRole === 'cofounder' ? (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100">
+                    <Crown className="h-5 w-5 text-yellow-600" />
+                  </div>
+                ) : (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+                    <AlertTriangle className="h-5 w-5 text-amber-600" />
+                  </div>
+                )
               ) : (
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
                   <ShieldAlert className="h-5 w-5 text-red-600" />
                 </div>
               )}
               <h3 className="text-lg font-semibold text-gray-900">
-                {roleModal.type === 'promotion' ? 'Grant Admin Access?' : 'Remove Admin Access?'}
+                {roleModal.type === 'promotion'
+                  ? roleModal.newRole === 'cofounder'
+                    ? 'Grant Cofounder Access?'
+                    : 'Grant Admin Access?'
+                  : roleModal.newRole === 'admin'
+                    ? 'Remove Cofounder Access?'
+                    : 'Remove Admin Access?'}
               </h3>
             </div>
             <p className="mb-2 text-sm text-gray-600">
               {roleModal.type === 'promotion' ? (
-                <>You are about to promote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900">Admin</strong>.</>
+                <>You are about to promote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
               ) : (
-                <>You are about to demote <strong className="text-gray-900">{roleModal.email}</strong> from <strong className="text-gray-900">Admin</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to demote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
               )}
             </p>
             <p className="mb-6 text-sm text-gray-500">
               {roleModal.type === 'promotion'
-                ? 'This will give full platform access including user management. Are you sure?'
-                : 'This will revoke their admin privileges. They will no longer be able to manage users or platform settings.'}
+                ? roleModal.newRole === 'cofounder'
+                  ? 'This will grant the highest level of access, including the ability to manage admins. Are you sure?'
+                  : 'This will give full platform access including user management. Are you sure?'
+                : 'This will revoke their elevated privileges. They will no longer be able to manage users or platform settings.'}
             </p>
             <div className="flex justify-end gap-3">
               <button
@@ -250,11 +282,17 @@ export function AdminUsersPage() {
                 onClick={confirmRoleChange}
                 className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
                   roleModal.type === 'promotion'
-                    ? 'bg-amber-600 hover:bg-amber-700'
+                    ? roleModal.newRole === 'cofounder'
+                      ? 'bg-yellow-600 hover:bg-yellow-700'
+                      : 'bg-amber-600 hover:bg-amber-700'
                     : 'bg-red-600 hover:bg-red-700'
                 }`}
               >
-                {roleModal.type === 'promotion' ? 'Yes, Grant Admin' : 'Yes, Remove Admin'}
+                {roleModal.type === 'promotion'
+                  ? roleModal.newRole === 'cofounder'
+                    ? 'Yes, Grant Cofounder'
+                    : 'Yes, Grant Admin'
+                  : 'Yes, Confirm Demotion'}
               </button>
             </div>
           </div>

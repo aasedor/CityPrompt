@@ -5,6 +5,7 @@ const ROLE_HIERARCHY: Record<string, number> = {
   viewer: 0,
   editor: 1,
   admin: 2,
+  cofounder: 3,
 };
 
 interface ProtectedRouteProps {

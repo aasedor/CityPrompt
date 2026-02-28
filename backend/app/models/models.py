@@ -33,7 +33,7 @@ class User(Base):
     full_name: Mapped[str] = mapped_column(String(255), nullable=True)
     oauth_provider: Mapped[str | None] = mapped_column(String(50), nullable=True)
     role: Mapped[str] = mapped_column(
-        Enum("viewer", "editor", "admin", name="user_role"),
+        Enum("viewer", "editor", "admin", "cofounder", name="user_role"),
         default="editor",
     )
     is_active: Mapped[bool] = mapped_column(default=True)

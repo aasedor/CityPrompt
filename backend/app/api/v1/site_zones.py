@@ -14,7 +14,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.security import require_auth
+from app.core.security import is_admin_or_above, require_auth
 from app.models.models import Building, Project, ProjectShare, SiteZone, User
 from app.schemas.schemas import BuildingResponse, SiteZoneCreate, SiteZoneResponse, SiteZoneUpdate
 from app.api.v1.buildings import _building_to_response
@@ -82,7 +82,7 @@ async def create_zone(
         raise HTTPException(status_code=404, detail="Project not found")
 
     # Check editor permission (admins bypass)
-    if project.owner_id != user.id and user.role != "admin":
+    if project.owner_id != user.id and not is_admin_or_above(user):
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
@@ -141,7 +141,7 @@ async def update_zone(
     # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id and user.role != "admin":
+    if project.owner_id != user.id and not is_admin_or_above(user):
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -209,7 +209,7 @@ async def delete_zone(
     # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id and user.role != "admin":
+    if project.owner_id != user.id and not is_admin_or_above(user):
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -317,7 +317,7 @@ async def create_building_from_zone(
     # Check editor permission on parent project (admins bypass)
     proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
     project = proj_result.scalar_one_or_none()
-    if project.owner_id != user.id and user.role != "admin":
+    if project.owner_id != user.id and not is_admin_or_above(user):
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == zone.project_id,
@@ -532,7 +532,7 @@ async def generate_all(
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    if project.owner_id != user.id and user.role != "admin":
+    if project.owner_id != user.id and not is_admin_or_above(user):
         share_result = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,

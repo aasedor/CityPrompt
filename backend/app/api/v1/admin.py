@@ -12,8 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.email import send_admin_welcome_email
-from app.core.security import require_admin
+from app.core.email import send_admin_welcome_email, send_cofounder_welcome_email
+from app.core.security import is_admin_or_above, require_admin
 from app.models.models import Building, Document, Project, User
 
 logger = logging.getLogger(__name__)
@@ -69,7 +69,7 @@ async def list_users(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=100),
     search: Optional[str] = Query(None),
-    role: Optional[str] = Query(None, pattern="^(viewer|editor|admin)$"),
+    role: Optional[str] = Query(None, pattern="^(viewer|editor|admin|cofounder)$"),
     user: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
@@ -127,8 +127,24 @@ async def update_user(
                 status_code=400, detail="Cannot deactivate your own account"
             )
 
+    # Cofounder-only guards for role changes
+    if update.role is not None:
+        # Only cofounders can set role to admin or cofounder
+        if update.role in ("admin", "cofounder") and user.role != "cofounder":
+            raise HTTPException(
+                status_code=403, detail="Requires cofounder role"
+            )
+        # Only cofounders can change an admin's or cofounder's role
+        if target.role in ("admin", "cofounder") and user.role != "cofounder":
+            raise HTTPException(
+                status_code=403, detail="Requires cofounder role"
+            )
+
     was_promoted_to_admin = (
-        update.role == "admin" and target.role != "admin"
+        update.role == "admin" and target.role not in ("admin", "cofounder")
+    )
+    was_promoted_to_cofounder = (
+        update.role == "cofounder" and target.role != "cofounder"
     )
 
     update_data = update.model_dump(exclude_unset=True)
@@ -138,9 +154,20 @@ async def update_user(
     await db.flush()
     await db.refresh(target)
 
-    # Send welcome email to newly promoted admin
+    # Send welcome email to newly promoted admin or cofounder
     email_sent = False
-    if was_promoted_to_admin:
+    if was_promoted_to_cofounder:
+        settings = get_settings()
+        try:
+            await send_cofounder_welcome_email(
+                to_email=target.email,
+                promoted_by_email=user.email,
+                login_link=f"{settings.frontend_url}/admin",
+            )
+            email_sent = True
+        except Exception:
+            logger.exception("Failed to send cofounder welcome email to %s", target.email)
+    elif was_promoted_to_admin:
         settings = get_settings()
         try:
             await send_admin_welcome_email(
@@ -167,7 +194,7 @@ async def update_user(
         project_count=project_count,
     )
 
-    if was_promoted_to_admin and not email_sent:
+    if (was_promoted_to_admin or was_promoted_to_cofounder) and not email_sent:
         from fastapi.responses import JSONResponse
         data = result_data.model_dump(mode="json")
         data["_email_failed"] = True
@@ -190,6 +217,14 @@ async def delete_user(
     target = result.scalar_one_or_none()
     if not target:
         raise HTTPException(status_code=404, detail="User not found")
+
+    # Nobody can delete cofounders
+    if target.role == "cofounder":
+        raise HTTPException(status_code=403, detail="Cofounders cannot be deleted")
+
+    # Only cofounders can delete admins
+    if target.role == "admin" and user.role != "cofounder":
+        raise HTTPException(status_code=403, detail="Requires cofounder role")
 
     await db.delete(target)
     await db.flush()
