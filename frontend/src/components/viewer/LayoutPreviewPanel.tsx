@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock, Sparkles } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock, ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, LayoutOption, OSMContext, LockedLayers } from '@/types';
 import { siteZonesApi } from '@/services/api';
@@ -23,33 +23,60 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const [applying, setApplying] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
   const [previewImages, setPreviewImages] = useState<Record<number, string>>({});
-  const [renderingIndex, setRenderingIndex] = useState<number | null>(null);
-
-  const handleRenderPreview = async (idx: number, option: LayoutOption) => {
-    setRenderingIndex(idx);
-    try {
-      const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
-      setPreviewImages((prev) => ({ ...prev, [idx]: result.image_url }));
-      toast.success('Preview image rendered');
-    } catch {
-      toast.error('Failed to render preview image');
-    } finally {
-      setRenderingIndex(null);
-    }
-  };
+  const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
+  const autoRenderTriggered = useRef(false);
 
   const isPreviewActive = layoutPreview?.zoneId === zone.id;
   const options = isPreviewActive ? layoutPreview!.options : [];
   const activeIndex = isPreviewActive ? layoutPreview!.activeIndex : 0;
   const activeOption = options[activeIndex];
 
+  // Auto-render AI previews for all options after layout generation
+  useEffect(() => {
+    if (!isPreviewActive || options.length === 0 || autoRenderTriggered.current) return;
+    // Don't auto-render if we already have images for all options
+    const allRendered = options.every((_, idx) => previewImages[idx]);
+    if (allRendered) return;
+
+    autoRenderTriggered.current = true;
+    // Render all options in parallel
+    options.forEach((opt, idx) => {
+      if (previewImages[idx]) return; // Skip already rendered
+      renderOption(idx, opt);
+    });
+  }, [isPreviewActive, options.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Reset auto-render flag when zone changes
+  useEffect(() => {
+    autoRenderTriggered.current = false;
+    setPreviewImages({});
+  }, [zone.id]);
+
+  const renderOption = async (idx: number, option: LayoutOption) => {
+    setRenderingIndices((prev) => new Set(prev).add(idx));
+    try {
+      const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
+      setPreviewImages((prev) => ({ ...prev, [idx]: result.image_url }));
+    } catch {
+      // Silently fail — SVG fallback will show
+    } finally {
+      setRenderingIndices((prev) => {
+        const next = new Set(prev);
+        next.delete(idx);
+        return next;
+      });
+    }
+  };
+
   const handlePreview = async () => {
     setLoading(true);
+    autoRenderTriggered.current = false;
+    setPreviewImages({});
     try {
       const response = await siteZonesApi.previewLayouts(zone.id);
       setLayoutPreview(zone.id, response.options);
       clearLockedLayers();
-      toast.success(`Generated ${response.options.length} layout options`);
+      toast.success(`Generated ${response.options.length} layout options — rendering previews...`);
     } catch {
       toast.error('Failed to generate layout options');
     } finally {
@@ -77,10 +104,12 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const handleRegenerate = async () => {
     if (!lockedLayers) return;
     setRegenerating(true);
+    autoRenderTriggered.current = false;
+    setPreviewImages({});
     try {
       const response = await siteZonesApi.regenerateLayout(zone.id, lockedLayers);
       setLayoutPreview(zone.id, response.options);
-      toast.success(`Regenerated ${response.options.length} layout options (locked layers preserved)`);
+      toast.success(`Regenerated ${response.options.length} layout options — rendering previews...`);
     } catch {
       toast.error('Failed to regenerate layout');
     } finally {
@@ -108,20 +137,30 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     );
   }
 
-  // Previewing — show option cards with diagrams
+  const renderingCount = renderingIndices.size;
+
+  // Previewing — show option cards with AI-rendered images
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold text-gray-700">Layout Options</span>
-        <button
-          onClick={handlePreview}
-          disabled={loading}
-          className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-600 hover:bg-indigo-50"
-          title="Regenerate options"
-        >
-          <RefreshCw size={10} className={loading ? 'animate-spin' : ''} />
-          Regenerate
-        </button>
+        <div className="flex items-center gap-2">
+          {renderingCount > 0 && (
+            <span className="flex items-center gap-1 text-[10px] text-purple-500">
+              <Loader2 size={9} className="animate-spin" />
+              Rendering {renderingCount}...
+            </span>
+          )}
+          <button
+            onClick={handlePreview}
+            disabled={loading}
+            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-600 hover:bg-indigo-50"
+            title="Regenerate options"
+          >
+            <RefreshCw size={10} className={loading ? 'animate-spin' : ''} />
+            Regenerate
+          </button>
+        </div>
       </div>
 
       {options.map((opt, idx) => (
@@ -135,12 +174,12 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
           lockedLayers={lockedLayers}
           siblingZones={siblingZones}
           previewImageUrl={previewImages[idx]}
-          isRendering={renderingIndex === idx}
-          onRenderPreview={() => handleRenderPreview(idx, opt)}
+          isRendering={renderingIndices.has(idx)}
+          onRerender={() => renderOption(idx, opt)}
         />
       ))}
 
-      {/* Expanded diagram for active option */}
+      {/* Expanded view for active option */}
       {activeOption && (
         <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
           {previewImages[activeIndex] ? (
@@ -149,6 +188,13 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
               alt="AI-rendered layout preview"
               className="w-full rounded"
             />
+          ) : renderingIndices.has(activeIndex) ? (
+            <div className="flex h-[200px] items-center justify-center rounded bg-gray-100">
+              <div className="flex flex-col items-center gap-2">
+                <Loader2 size={20} className="animate-spin text-purple-500" />
+                <span className="text-[10px] text-gray-500">Rendering realistic preview...</span>
+              </div>
+            </div>
           ) : (
             <SitePlanDiagram
               zone={zone}
@@ -240,7 +286,7 @@ function OptionCard({
   siblingZones,
   previewImageUrl,
   isRendering,
-  onRenderPreview,
+  onRerender,
 }: {
   option: LayoutOption;
   zone: SiteZone;
@@ -251,7 +297,7 @@ function OptionCard({
   siblingZones?: SiteZone[];
   previewImageUrl?: string;
   isRendering?: boolean;
-  onRenderPreview?: () => void;
+  onRerender?: () => void;
 }) {
   return (
     <div
@@ -270,35 +316,57 @@ function OptionCard({
           {option.buildings.length} units
         </span>
       </div>
+
+      {/* Primary: AI-rendered image. Fallback: SVG diagram while rendering */}
       {previewImageUrl ? (
-        <img
-          src={previewImageUrl}
-          alt="AI-rendered preview"
-          className="w-full rounded"
-        />
+        <div className="relative">
+          <img
+            src={previewImageUrl}
+            alt="AI-rendered preview"
+            className="w-full rounded"
+          />
+          {onRerender && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onRerender(); }}
+              className="absolute bottom-1 right-1 rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white"
+              title="Re-render preview"
+            >
+              <RefreshCw size={10} />
+            </button>
+          )}
+        </div>
+      ) : isRendering ? (
+        <div className="flex h-[140px] items-center justify-center rounded bg-gray-100">
+          <div className="flex flex-col items-center gap-1.5">
+            <Loader2 size={16} className="animate-spin text-purple-400" />
+            <span className="text-[9px] text-gray-400">Rendering...</span>
+          </div>
+        </div>
       ) : (
-        <SitePlanDiagram
-          zone={zone}
-          option={option}
-          referenceContext={referenceContext}
-          lockedLayers={isActive ? lockedLayers : undefined}
-          siblingZones={siblingZones}
-          width={250}
-          height={140}
-          showLabels={false}
-          showDimensions={false}
-        />
+        <div className="relative">
+          <SitePlanDiagram
+            zone={zone}
+            option={option}
+            referenceContext={referenceContext}
+            lockedLayers={isActive ? lockedLayers : undefined}
+            siblingZones={siblingZones}
+            width={250}
+            height={140}
+            showLabels={false}
+            showDimensions={false}
+          />
+          {onRerender && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onRerender(); }}
+              className="absolute bottom-1 right-1 flex items-center gap-1 rounded bg-purple-600/80 px-1.5 py-0.5 text-[9px] font-medium text-white hover:bg-purple-600"
+            >
+              <ImageIcon size={9} />
+              Render
+            </button>
+          )}
+        </div>
       )}
-      {!previewImageUrl && onRenderPreview && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onRenderPreview(); }}
-          disabled={isRendering}
-          className="mt-1.5 flex w-full items-center justify-center gap-1 rounded bg-purple-50 px-2 py-1 text-[10px] font-medium text-purple-600 hover:bg-purple-100 disabled:opacity-50"
-        >
-          {isRendering ? <Loader2 size={10} className="animate-spin" /> : <Sparkles size={10} />}
-          {isRendering ? 'Rendering...' : 'Render Preview'}
-        </button>
-      )}
+
       {option.density_achieved && (
         <div className="mt-1 text-[10px] text-gray-400">
           {option.density_achieved} units/ha

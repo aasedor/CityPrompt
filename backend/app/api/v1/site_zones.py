@@ -646,10 +646,32 @@ async def render_layout_preview(
     shape = to_shape(zone.geometry)
     props = zone.properties or {}
 
+    # Gather full site context for realistic rendering
+    all_zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == zone.project_id,
+            SiteZone.id != zone.id,
+        )
+    )
+    all_zones = all_zones_result.scalars().all()
+    neighbors = _build_neighbor_list(all_zones)
+
+    reference_context = None
+    for z in all_zones:
+        if z.zone_type == "site_boundary":
+            z_props = z.properties or {}
+            if "_osm_context" in z_props:
+                reference_context = z_props["_osm_context"]
+                break
+
     try:
         from app.services.layout_planner import _upload_image_to_storage
         planner = LayoutPlanner()
-        image_bytes = await planner.generate_layout_preview_image(shape, option, props)
+        image_bytes = await planner.generate_layout_preview_image(
+            shape, option, props,
+            neighbors=neighbors if neighbors else None,
+            reference_context=reference_context,
+        )
 
         # Upload to MinIO
         preview_key = f"projects/{zone.project_id}/layout-previews/{zone_id}_{uuid.uuid4()}.png"

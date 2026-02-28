@@ -224,6 +224,18 @@ class LayoutPlanner:
                 temperature=0.8,
             ),
         )
+
+        try:
+            from app.core.usage_logger import log_api_usage_sync
+            log_api_usage_sync(
+                provider="gemini",
+                operation="layout_preview",
+                input_tokens=getattr(response.usage_metadata, 'prompt_token_count', 0) or 0,
+                output_tokens=getattr(response.usage_metadata, 'candidates_token_count', 0) or 0,
+            )
+        except Exception:
+            pass
+
         return self._parse_multi_ai_response(response.text, zone_polygon, count)
 
     def _build_multi_layout_prompt(
@@ -258,6 +270,28 @@ class LayoutPlanner:
         aesthetic = properties.get("development_aesthetic", "")
         height = properties.get("height")
         floors = properties.get("floors")
+        facade_material = properties.get("facade_material", "")
+        roof_type = properties.get("roof_type", "")
+        ground_texture = properties.get("ground_texture", "")
+        description_text = properties.get("description_text", "")
+        tree_density = properties.get("tree_density")
+        unit_count_prop = properties.get("unit_count")
+
+        # Build extra zone detail lines
+        zone_extras = []
+        if facade_material:
+            zone_extras.append(f"- Facade material: {facade_material}")
+        if roof_type:
+            zone_extras.append(f"- Roof type: {roof_type}")
+        if ground_texture:
+            zone_extras.append(f"- Ground texture: {ground_texture}")
+        if tree_density:
+            zone_extras.append(f"- Tree density: {tree_density}")
+        if unit_count_prop:
+            zone_extras.append(f"- Target unit count: {unit_count_prop}")
+        if description_text:
+            zone_extras.append(f'- User description: "{description_text}"')
+        zone_extras_text = chr(10).join(zone_extras) if zone_extras else ""
 
         # Build user-drawn sibling zones section (spatial context)
         sibling_section = ""
@@ -271,7 +305,6 @@ class LayoutPlanner:
             }
             for n in neighbors:
                 zt = n.get("zone_type", "")
-                # Skip site_boundary — it's context, not a spatial constraint
                 if zt == "site_boundary":
                     continue
                 center = n.get("center")
@@ -282,21 +315,51 @@ class LayoutPlanner:
                 w = n.get("width_m", 0)
                 d = n.get("depth_m", 0)
                 name = n.get("name") or zone_type_labels.get(zt, zt)
-                np = n.get("properties") or {}
+                zp = n.get("properties") or {}
 
-                desc_parts = [f"{zone_type_labels.get(zt, zt)}"]
-                if np.get("development_aesthetic"):
-                    desc_parts[0] = f"{np['development_aesthetic'].replace('_', ' ').title()} {desc_parts[0]}"
-                if np.get("height"):
-                    desc_parts.append(f"{np['height']}m tall")
-                if np.get("floors"):
-                    desc_parts.append(f"{np['floors']}F")
-                if np.get("width"):
-                    desc_parts.append(f"{np['width']}m wide road")
-                if np.get("facade_material"):
-                    desc_parts.append(np["facade_material"])
+                # Build a rich description from ALL properties
+                attrs = []
+                if zp.get("development_type"):
+                    attrs.append(f"type: {zp['development_type']}")
+                if zp.get("development_aesthetic"):
+                    attrs.append(f"aesthetic: {zp['development_aesthetic'].replace('_', ' ')}")
+                if zp.get("unit_count"):
+                    attrs.append(f"{zp['unit_count']} units")
+                if zp.get("height"):
+                    attrs.append(f"{zp['height']}m tall")
+                if zp.get("floors"):
+                    attrs.append(f"{zp['floors']} floors")
+                if zp.get("floor_height"):
+                    attrs.append(f"{zp['floor_height']}m/floor")
+                if zp.get("facade_material"):
+                    attrs.append(f"facade: {zp['facade_material']}")
+                if zp.get("roof_type"):
+                    attrs.append(f"roof: {zp['roof_type']}")
+                # Road properties
+                if zp.get("width"):
+                    attrs.append(f"{zp['width']}m wide")
+                if zp.get("lane_count"):
+                    attrs.append(f"{zp['lane_count']} lanes")
+                if zp.get("road_aesthetic"):
+                    attrs.append(f"style: {zp['road_aesthetic'].replace('_', ' ')}")
+                if zp.get("road_surface"):
+                    attrs.append(f"surface: {zp['road_surface']}")
+                if zp.get("volume"):
+                    attrs.append(f"traffic: {zp['volume']}")
+                if zp.get("has_sidewalks"):
+                    attrs.append("sidewalks")
+                # Green/landscape
+                if zp.get("tree_density"):
+                    attrs.append(f"tree density: {zp['tree_density']}")
+                if zp.get("ground_texture"):
+                    attrs.append(f"ground: {zp['ground_texture']}")
+                # Description text — user-written, most important context
+                if zp.get("description_text"):
+                    attrs.append(f'description: "{zp["description_text"]}"')
 
-                line = f"  - {name}: {', '.join(desc_parts)} — center at ({dx},{dy})m, {w:.0f}m x {d:.0f}m"
+                label = zone_type_labels.get(zt, zt)
+                attr_str = f" ({', '.join(attrs)})" if attrs else ""
+                line = f"  - {name} [{label}]{attr_str} — center at ({dx},{dy})m, {w:.0f}m x {d:.0f}m"
                 sibling_parts.append(line)
 
             if sibling_parts:
@@ -307,8 +370,9 @@ class LayoutPlanner:
 **Coordination rules:**
 - Do NOT place buildings or roads overlapping these existing zones
 - Connect new roads to existing road zones where they touch the boundary
-- Match aesthetics and setbacks of adjacent building zones
+- Match aesthetics, materials, and setbacks of adjacent building zones
 - Preserve green spaces and water features already placed
+- Respect the described character and unit counts of each zone
 """
 
         # Build reference context section
@@ -401,6 +465,7 @@ class LayoutPlanner:
 - Zone dimensions: {width_m:.0f}m wide x {depth_m:.0f}m deep ({area_m2:.0f} sq m)
 - Zone polygon (meters from centroid): {json.dumps(coords_m)}
 - Building height: {height or 'standard'}m, Floors: {floors or 'standard'}
+{zone_extras_text}
 {sibling_section}
 {reference_section}
 {locked_section}
@@ -463,25 +528,33 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             text = text.rsplit("```", 1)[0]
 
         data = json.loads(text)
+        logger.info("AI response parsed: type=%s, len=%s", type(data).__name__, len(data) if isinstance(data, list) else 1)
 
         # Handle both array and single-object responses
         if isinstance(data, dict):
             data = [data]
 
         centroid = zone_polygon.centroid
+        logger.info("Zone centroid: (%f, %f), bounds: %s", centroid.x, centroid.y, zone_polygon.bounds)
         options: list[SiteLayoutOption] = []
 
         for idx, item in enumerate(data[:count]):
             layout = SiteLayoutResponse(**item)
+            logger.info("Option %d: %d buildings, %d roads, strategy=%s",
+                        idx, len(layout.buildings), len(layout.roads), layout.layout_strategy)
 
             # Validate buildings are inside zone
             valid_buildings = []
             for b in layout.buildings:
                 pt = Point(centroid.x + b.center_x, centroid.y + b.center_y)
-                if zone_polygon.contains(pt) or zone_polygon.distance(pt) < 0.00001:
+                inside = zone_polygon.contains(pt)
+                dist = zone_polygon.distance(pt)
+                if inside or dist < 0.00001:
                     valid_buildings.append(b)
                 else:
-                    logger.warning("Preview option %d: building outside zone, skipping", idx)
+                    logger.warning("Preview option %d: building at center_x=%f, center_y=%f -> point(%f,%f) outside zone (dist=%f)",
+                                   idx, b.center_x, b.center_y, pt.x, pt.y, dist)
+            logger.info("Option %d: %d/%d buildings passed validation", idx, len(valid_buildings), len(layout.buildings))
             layout.buildings = valid_buildings
 
             option = SiteLayoutOption(
@@ -886,6 +959,18 @@ Return ONLY valid JSON matching this schema:
                 temperature=0.7,
             ),
         )
+
+        try:
+            from app.core.usage_logger import log_api_usage_sync
+            log_api_usage_sync(
+                provider="gemini",
+                operation="layout_generation",
+                input_tokens=getattr(response.usage_metadata, 'prompt_token_count', 0) or 0,
+                output_tokens=getattr(response.usage_metadata, 'candidates_token_count', 0) or 0,
+            )
+        except Exception:
+            pass
+
         return self._parse_ai_response(response.text, zone_polygon)
 
     # -------------------------------------------------------------------------
@@ -1141,9 +1226,12 @@ Return ONLY valid JSON matching this schema:
         zone_polygon: Polygon,
         option: SiteLayoutOption,
         properties: dict[str, Any],
+        neighbors: Optional[list[dict[str, Any]]] = None,
+        reference_context: Optional[dict[str, Any]] = None,
     ) -> bytes:
         """Generate a photorealistic 2D aerial preview image using Gemini.
 
+        Includes full site context (sibling zones, OSM features) for realism.
         Returns PNG bytes of the rendered image.
         """
         if not settings.gemini_api_key:
@@ -1160,52 +1248,119 @@ Return ONLY valid JSON matching this schema:
         # Build descriptive prompt from layout data
         building_desc = []
         for b in option.buildings:
+            btype = getattr(b, "building_type", "residential")
             building_desc.append(
-                f"- {b.label or 'Building'}: {b.width_m}m x {b.depth_m}m, "
-                f"{b.floors} floors, at offset ({b.x_offset_m}, {b.y_offset_m})m, "
-                f"rotated {b.rotation_deg}°"
+                f"- {btype} building: {b.width_m}m x {b.depth_m}m, "
+                f"{b.floors or properties.get('floors', 2)} floors"
             )
 
         road_desc = []
         for r in option.roads:
-            road_desc.append(
-                f"- {r.label or 'Road'}: {r.width_m}m wide, "
-                f"from ({r.start_x_m}, {r.start_y_m}) to ({r.end_x_m}, {r.end_y_m})"
-            )
+            road_desc.append(f"- {r.road_type} road: {r.width_m}m wide")
 
         green_desc = []
         for g in option.green_spaces:
-            green_desc.append(
-                f"- {g.label or 'Green space'}: {g.width_m}m x {g.depth_m}m "
-                f"at ({g.x_offset_m}, {g.y_offset_m})m"
-            )
+            green_desc.append(f"- {g.space_type} green space")
 
         dev_type = properties.get("development_type", "residential")
         aesthetic = properties.get("development_aesthetic", "modern suburban")
+        facade = properties.get("facade_material", "")
+        roof = properties.get("roof_type", "")
+        ground = properties.get("ground_texture", "")
+        description = properties.get("description_text", "")
 
-        prompt = f"""Generate a photorealistic top-down aerial view (bird's eye / plan view) of a proposed {dev_type} development.
+        # Zone material details
+        material_details = []
+        if facade:
+            material_details.append(f"Building facades: {facade}")
+        if roof:
+            material_details.append(f"Roof style: {roof}")
+        if ground:
+            material_details.append(f"Ground/landscape: {ground}")
+        if description:
+            material_details.append(f"Character: {description}")
+        material_text = chr(10).join(f"- {m}" for m in material_details) if material_details else ""
 
-Site dimensions: {width_m}m wide x {depth_m}m deep
-Layout strategy: {option.layout_strategy}
+        # Sibling zones context for realism
+        sibling_text = ""
+        if neighbors:
+            sibling_lines = []
+            for n in neighbors:
+                zt = n.get("zone_type", "")
+                if zt == "site_boundary":
+                    continue
+                zp = n.get("properties") or {}
+                name = n.get("name") or zt.replace("_", " ")
+                parts = [name]
+                if zp.get("development_aesthetic"):
+                    parts.append(zp["development_aesthetic"].replace("_", " "))
+                if zp.get("facade_material"):
+                    parts.append(f"{zp['facade_material']} facade")
+                if zp.get("height"):
+                    parts.append(f"{zp['height']}m tall")
+                if zp.get("width"):
+                    parts.append(f"{zp['width']}m wide")
+                if zp.get("description_text"):
+                    parts.append(f'"{zp["description_text"]}"')
+                sibling_lines.append(f"- {', '.join(parts)}")
+            if sibling_lines:
+                sibling_text = f"\nSurrounding zones on the site:\n{chr(10).join(sibling_lines)}"
+
+        # OSM reference context
+        osm_text = ""
+        if reference_context:
+            osm_parts = []
+            ref_roads = reference_context.get("roads", [])
+            if ref_roads:
+                road_types = set(r.get("road_type", "residential") for r in ref_roads)
+                road_names = [r.get("name") for r in ref_roads if r.get("name")]
+                osm_parts.append(f"Existing roads nearby: {len(ref_roads)} ({', '.join(sorted(road_types))})")
+                if road_names:
+                    osm_parts.append(f"  Named streets: {', '.join(road_names[:5])}")
+            ref_buildings = reference_context.get("buildings", [])
+            if ref_buildings:
+                heights = [b.get("height_m") for b in ref_buildings if b.get("height_m")]
+                avg_h = round(sum(heights) / len(heights), 1) if heights else None
+                osm_parts.append(f"Existing buildings nearby: {len(ref_buildings)}" + (f" (avg {avg_h}m)" if avg_h else ""))
+            ref_water = reference_context.get("water", [])
+            if ref_water:
+                osm_parts.append(f"Water features: {len(ref_water)} nearby")
+            ref_parks = reference_context.get("parks", [])
+            if ref_parks:
+                osm_parts.append(f"Parks/green areas: {len(ref_parks)} nearby")
+            if osm_parts:
+                osm_text = f"\nReal-world surroundings (OpenStreetMap):\n" + chr(10).join(f"- {p}" for p in osm_parts)
+
+        prompt = f"""Generate a photorealistic top-down aerial view (bird's eye / drone photo) of a proposed {dev_type} development.
+
+Site: {width_m:.0f}m wide x {depth_m:.0f}m deep
+Layout: {option.layout_strategy}
 Aesthetic: {aesthetic or 'modern suburban'}
 
-Buildings:
+Proposed buildings ({len(building_desc)}):
 {chr(10).join(building_desc) if building_desc else 'None'}
 
-Roads:
+Internal roads ({len(road_desc)}):
 {chr(10).join(road_desc) if road_desc else 'None'}
 
-Green spaces:
+Green spaces ({len(green_desc)}):
 {chr(10).join(green_desc) if green_desc else 'None'}
 
+{material_text}
+{sibling_text}
+{osm_text}
+
 Requirements:
-- Bird's-eye / top-down aerial perspective looking straight down
-- Photorealistic rendering with realistic textures: rooftops, asphalt roads, green lawns, trees
-- Include shadows for depth
-- Show driveways connecting buildings to roads
-- Landscaping with trees and shrubs around buildings
-- Clean, professional architectural visualization style
-- The image should look like a drone photo of the completed development
+- Top-down aerial perspective, looking straight down like a high-altitude drone photo
+- Photorealistic rendering — this must look like a real drone photograph, not a diagram or illustration
+- Real materials: visible roof tiles/materials, asphalt roads with lane markings, concrete sidewalks, real grass textures, mature trees with shadows
+- Realistic shadows cast by buildings based on afternoon sun
+- Driveways connecting each building to the road network
+- Landscaping: trees, shrubs, hedges around properties; lawn areas with visible grass texture
+- Road details: curbs, sidewalks, crosswalks at intersections, road surface texture
+- Surrounding context should be visible at the edges (neighboring roads, buildings, vegetation)
+- Professional architectural visualization quality — indistinguishable from a real aerial photograph
+- No labels, no annotations, no text overlays, no colored zones — pure photorealistic image
 """
 
         import google.generativeai as genai
