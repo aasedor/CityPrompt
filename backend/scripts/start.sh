@@ -22,37 +22,9 @@ with engine.connect() as conn:
 print('Extensions enabled.')
 "
 
-# --- 2. Create base tables (idempotent) ---
-echo "Running create_all for base tables..."
-python -c "
-from app.core.database import Base
-from app.models import models  # register all models
-import sqlalchemy
-engine = sqlalchemy.create_engine('${SYNC_URL}')
-Base.metadata.create_all(bind=engine)
-print('Base tables ensured.')
-"
-
-# --- 3. Run Alembic migrations ---
+# --- 2. Run Alembic migrations (handles all table creation) ---
 echo "Running Alembic migrations..."
-# Check if alembic_version table exists (i.e. not a fresh deploy)
-HAS_ALEMBIC=$(python -c "
-import sqlalchemy
-engine = sqlalchemy.create_engine('${SYNC_URL}')
-with engine.connect() as conn:
-    result = conn.execute(sqlalchemy.text(
-        \"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'alembic_version')\"
-    ))
-    print(result.scalar())
-")
-
-if [ "$HAS_ALEMBIC" = "True" ]; then
-    echo "Existing deployment detected — running alembic upgrade head..."
-    alembic upgrade head
-else
-    echo "Fresh deployment detected — stamping alembic to head..."
-    alembic stamp head
-fi
+alembic upgrade head
 
 # --- 4. Ensure admin users exist ---
 echo "Ensuring admin users..."
