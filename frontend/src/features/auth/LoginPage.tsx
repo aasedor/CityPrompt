@@ -68,7 +68,7 @@ export function LoginPage() {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <Link to="/forgot-password" className="text-xs font-medium text-primary-600 hover:text-primary-500">
+              <Link to="/forgot-password" tabIndex={-1} className="text-xs font-medium text-primary-600 hover:text-primary-500">
                 Forgot password?
               </Link>
             </div>
