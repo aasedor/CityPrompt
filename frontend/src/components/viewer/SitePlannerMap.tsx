@@ -676,6 +676,18 @@ export function SitePlannerMap({
     }
   }, [activeSitePlannerTool, activeToolProperties, updateDrawingPreview, finishDrawing]);
 
+  // ─── Auto-finish any in-progress drawing on unmount ───
+  // (e.g. user clicks "View in 3D" without finishing their drawing)
+  useEffect(() => {
+    return () => {
+      const pts = drawingPointsRef.current;
+      const tool = activeSitePlannerToolRef.current;
+      if (pts.length > 0 && tool && pts.length >= minPointsForTool(tool)) {
+        finishDrawing(tool, [...pts]);
+      }
+    };
+  }, [finishDrawing]);
+
   // ─── Sync saved zones to map (re-runs when map becomes ready OR zones change) ───
   useEffect(() => {
     if (mapReady) {
