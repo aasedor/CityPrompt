@@ -91,8 +91,12 @@ async def send_admin_welcome_email(to_email: str, promoted_by_email: str, login_
 
     msg.attach(MIMEText(html, "html"))
 
+    logger.info(
+        "Attempting admin welcome email: from=%s to=%s smtp_host=%s smtp_user=%s",
+        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+    )
     try:
-        await aiosmtplib.send(
+        result = await aiosmtplib.send(
             msg,
             hostname=settings.smtp_host,
             port=settings.smtp_port,
@@ -100,7 +104,7 @@ async def send_admin_welcome_email(to_email: str, promoted_by_email: str, login_
             password=settings.smtp_password,
             start_tls=True,
         )
-        logger.info("Admin welcome email sent to %s", to_email)
+        logger.info("Admin welcome email sent to %s, SMTP response: %s", to_email, result)
     except Exception:
         logger.exception("Failed to send admin welcome email to %s", to_email)
 
@@ -143,8 +147,12 @@ async def send_admin_demotion_confirmation_email(
 
     msg.attach(MIMEText(html, "html"))
 
+    logger.info(
+        "Attempting demotion confirmation email: from=%s to=%s smtp_host=%s smtp_user=%s",
+        settings.smtp_sender or settings.smtp_user, to_email, settings.smtp_host, settings.smtp_user,
+    )
     try:
-        await aiosmtplib.send(
+        result = await aiosmtplib.send(
             msg,
             hostname=settings.smtp_host,
             port=settings.smtp_port,
@@ -153,8 +161,8 @@ async def send_admin_demotion_confirmation_email(
             start_tls=True,
         )
         logger.info(
-            "Admin demotion confirmation email sent to %s (target: %s -> %s)",
-            to_email, target_email, new_role,
+            "Admin demotion confirmation email sent to %s (target: %s -> %s), SMTP response: %s",
+            to_email, target_email, new_role, result,
         )
     except Exception:
         logger.exception("Failed to send demotion confirmation email to %s", to_email)
