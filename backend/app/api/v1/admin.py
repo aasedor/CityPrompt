@@ -98,6 +98,7 @@ async def list_users(
             role=u.role,
             is_active=u.is_active,
             created_at=u.created_at,
+            last_login_at=u.last_login_at,
             project_count=count,
         )
         for u, count in rows
@@ -191,6 +192,7 @@ async def update_user(
         role=target.role,
         is_active=target.is_active,
         created_at=target.created_at,
+        last_login_at=target.last_login_at,
         project_count=project_count,
     )
 

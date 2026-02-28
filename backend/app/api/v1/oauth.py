@@ -3,6 +3,7 @@ OAuth2 social login endpoints for Google and Microsoft.
 """
 
 import secrets
+from datetime import datetime, timezone
 from urllib.parse import urlencode
 
 import httpx
@@ -140,6 +141,9 @@ async def google_callback(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account is disabled",
         )
+
+    user.last_login_at = datetime.now(timezone.utc)
+    await db.flush()
 
     # Generate JWT tokens
     access_token = create_access_token(str(user.id), user.role)
@@ -279,6 +283,9 @@ async def microsoft_callback(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account is disabled",
         )
+
+    user.last_login_at = datetime.now(timezone.utc)
+    await db.flush()
 
     # Generate JWT tokens
     access_token = create_access_token(str(user.id), user.role)

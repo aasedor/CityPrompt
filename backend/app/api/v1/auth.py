@@ -85,6 +85,9 @@ async def login(
             detail="Account is disabled",
         )
 
+    user.last_login_at = datetime.now(timezone.utc)
+    await db.flush()
+
     access_token = create_access_token(str(user.id), user.role)
     refresh_token = create_refresh_token(str(user.id))
 

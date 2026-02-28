@@ -38,6 +38,7 @@ class User(Base):
     )
     is_active: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     # Relationships
     projects: Mapped[list["Project"]] = relationship(back_populates="owner", cascade="all, delete-orphan")

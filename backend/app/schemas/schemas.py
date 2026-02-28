@@ -476,6 +476,7 @@ class AdminUserListResponse(BaseModel):
     role: str
     is_active: bool
     created_at: datetime
+    last_login_at: Optional[datetime] = None
     project_count: int
 
 

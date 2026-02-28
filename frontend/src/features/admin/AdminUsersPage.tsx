@@ -162,6 +162,7 @@ export function AdminUsersPage() {
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Last Login</th>
                 <th className="px-4 py-3">Joined</th>
                 <th className="px-4 py-3"></th>
               </tr>
@@ -197,6 +198,11 @@ export function AdminUsersPage() {
                     >
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-500">
+                    {u.last_login_at
+                      ? new Date(u.last_login_at).toLocaleDateString()
+                      : <span className="text-gray-300">Never</span>}
                   </td>
                   <td className="px-4 py-3 text-gray-500">
                     {new Date(u.created_at).toLocaleDateString()}
