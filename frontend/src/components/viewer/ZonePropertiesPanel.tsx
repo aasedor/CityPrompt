@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi } from '@/services/api';
+import { useViewerStore } from '@/store';
+import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
@@ -16,6 +18,7 @@ interface ZonePropertiesPanelProps {
 
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
+  const osmContext = useViewerStore((s) => s.osmContext);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
 
@@ -87,12 +90,29 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         </div>
 
         {/* ============================================================= */}
-        {/* SITE BOUNDARY — minimal properties                            */}
+        {/* SITE BOUNDARY — shows OSM context info                        */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
-          <div className="text-xs text-gray-400 italic">
-            Site boundary outline. No additional properties.
-          </div>
+          <>
+            {osmContext ? (
+              <div className="rounded border border-amber-200 bg-amber-50/50 p-2 space-y-1">
+                <span className="text-[10px] font-semibold text-amber-700 uppercase tracking-wide">OSM Context Loaded</span>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-gray-600">
+                  <span>Buildings: {osmContext.buildings.length}</span>
+                  <span>Roads: {osmContext.roads.length}</span>
+                  <span>Water: {osmContext.water.length}</span>
+                  <span>Parks: {osmContext.parks.length}</span>
+                </div>
+                <div className="text-[9px] text-gray-400">
+                  Fetched {new Date(osmContext.fetched_at).toLocaleDateString()} ({osmContext.buffer_m}m buffer)
+                </div>
+              </div>
+            ) : (
+              <div className="text-xs text-gray-400 italic">
+                Site boundary outline. OSM context will be fetched automatically.
+              </div>
+            )}
+          </>
         )}
 
         {/* ============================================================= */}
@@ -465,19 +485,83 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* DEVELOPMENT AREA                                               */}
         {/* ============================================================= */}
         {zone.zone_type === 'development_area' && (
-          <div>
-            <label className="block text-xs text-gray-500">Ground Texture</label>
-            <select
-              value={(props.ground_texture as string) || 'grass'}
-              onChange={(e) => setProps((p) => ({ ...p, ground_texture: e.target.value }))}
-              className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
-            >
-              <option value="grass">Grass</option>
-              <option value="concrete">Concrete</option>
-              <option value="gravel">Gravel</option>
-              <option value="dirt">Dirt</option>
-            </select>
-          </div>
+          <>
+            <div>
+              <label className="block text-xs text-gray-500">Development Type</label>
+              <select
+                value={(props.development_type as string) || ''}
+                onChange={(e) => setProps((p) => ({ ...p, development_type: e.target.value || undefined }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              >
+                <option value="">-- Select --</option>
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="mixed_use">Mixed Use</option>
+                <option value="institutional">Institutional</option>
+                <option value="industrial">Industrial</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Target Units</label>
+              <input
+                type="number"
+                min="2"
+                max="100"
+                step="1"
+                value={(props.unit_count as number) ?? 10}
+                onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 2 }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              />
+              <span className="text-[10px] text-gray-400">Number of buildings to generate within this development area</span>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Development Aesthetic</label>
+              <select
+                value={(props.development_aesthetic as string) || ''}
+                onChange={(e) => setProps((p) => ({ ...p, development_aesthetic: e.target.value || undefined }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              >
+                <option value="">-- Select --</option>
+                <option value="historic_traditional">Historic / Traditional</option>
+                <option value="modern">Modern</option>
+                <option value="futuristic">Futuristic</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Height (m)</label>
+              <input
+                type="number"
+                step="1"
+                value={props.height ?? ''}
+                onChange={(e) => setProps((p) => ({ ...p, height: parseFloat(e.target.value) || undefined }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Floors</label>
+              <input
+                type="number"
+                step="1"
+                value={props.floors ?? ''}
+                onChange={(e) => setProps((p) => ({ ...p, floors: parseInt(e.target.value) || undefined }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500">Ground Texture</label>
+              <select
+                value={(props.ground_texture as string) || 'grass'}
+                onChange={(e) => setProps((p) => ({ ...p, ground_texture: e.target.value }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              >
+                <option value="grass">Grass</option>
+                <option value="concrete">Concrete</option>
+                <option value="gravel">Gravel</option>
+                <option value="dirt">Dirt</option>
+              </select>
+            </div>
+          </>
         )}
 
         {/* ============================================================= */}
@@ -513,12 +597,53 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           Save Changes
         </button>
 
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && onAIGenerate && (
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && onAIGenerate && !zone.building_id && (() => {
+          const unitCount = Math.max(
+            (props.unit_count as number) || 1,
+            (() => {
+              const desc = (props.description_text as string) || '';
+              const m = desc.match(/(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)/i);
+              return m ? parseInt(m[1]) : 0;
+            })(),
+            1,
+          );
+          if (unitCount > 1) {
+            return (
+              <LayoutPreviewPanel
+                zone={zone}
+                onApplied={() => {
+                  // Refresh by triggering a re-fetch — the parent will pick up building_ids
+                }}
+                onAIGenerate={onAIGenerate}
+                referenceContext={osmContext}
+              />
+            );
+          }
+          return <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />;
+        })()}
+
+        {/* Development Area Layout Preview */}
+        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && (() => {
+          const unitCount = (props.unit_count as number) || 10;
+          if (unitCount > 1) {
+            return (
+              <LayoutPreviewPanel
+                zone={zone}
+                onApplied={() => {}}
+                onAIGenerate={onAIGenerate}
+                referenceContext={osmContext}
+              />
+            );
+          }
+          return null;
+        })()}
+
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && onAIGenerate && zone.building_id && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
         )}
 
         {/* Quick Regenerate — visible when zone already has a generated building */}
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && zone.building_id && (() => {
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (() => {
           const linkedBuilding = buildings?.find((b) => b.id === zone.building_id);
           if (!linkedBuilding || linkedBuilding.generation_status !== 'completed') return null;
           return (

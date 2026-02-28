@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties } from '@/types';
+import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // Re-export undo/redo store
@@ -170,6 +170,18 @@ interface ViewerState {
   setSitePlannerActive: (enabled: boolean) => void;
   setActiveSitePlannerTool: (tool: SiteZoneType | null, properties?: SiteZoneProperties) => void;
   selectZone: (id: string | null) => void;
+  // Layout preview
+  layoutPreview: { zoneId: string; options: LayoutOption[]; activeIndex: number } | null;
+  setLayoutPreview: (zoneId: string, options: LayoutOption[]) => void;
+  clearLayoutPreview: () => void;
+  setActivePreviewIndex: (index: number) => void;
+  // OSM context
+  osmContext: OSMContext | null;
+  setOSMContext: (ctx: OSMContext | null) => void;
+  // Locked layers for regeneration
+  lockedLayers: LockedLayers | null;
+  toggleLayerLock: (layer: keyof LockedLayers, indices: number[]) => void;
+  clearLockedLayers: () => void;
 }
 
 // Compute area of a 3D polygon projected onto the XZ plane (Shoelace formula)
@@ -354,9 +366,35 @@ export const useViewerStore = create<ViewerState>((set) => ({
   selectedZoneId: null,
   isDraggingZone: false,
   setDraggingZone: (dragging) => set({ isDraggingZone: dragging }),
-  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, activeToolProperties: null, selectedZoneId: null }),
+  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, activeToolProperties: null, selectedZoneId: null, layoutPreview: null }),
   setActiveSitePlannerTool: (tool, properties?) => set({ activeSitePlannerTool: tool, activeToolProperties: properties ?? null }),
   selectZone: (id) => set({ selectedZoneId: id }),
+  // Layout preview
+  layoutPreview: null,
+  setLayoutPreview: (zoneId, options) => set({ layoutPreview: { zoneId, options, activeIndex: 0 } }),
+  clearLayoutPreview: () => set({ layoutPreview: null }),
+  setActivePreviewIndex: (index) =>
+    set((state) => {
+      if (!state.layoutPreview) return {};
+      return { layoutPreview: { ...state.layoutPreview, activeIndex: index } };
+    }),
+  // OSM context
+  osmContext: null,
+  setOSMContext: (ctx) => set({ osmContext: ctx }),
+  // Locked layers
+  lockedLayers: null,
+  toggleLayerLock: (layer, indices) =>
+    set((state) => {
+      const current = state.lockedLayers || { roads: [], buildings: [], green_spaces: [] };
+      const existing = current[layer];
+      // Toggle: if all indices are already locked, unlock them; otherwise lock them
+      const allLocked = indices.every((i) => existing.includes(i));
+      const updated = allLocked
+        ? existing.filter((i) => !indices.includes(i))
+        : [...new Set([...existing, ...indices])];
+      return { lockedLayers: { ...current, [layer]: updated } };
+    }),
+  clearLockedLayers: () => set({ lockedLayers: null }),
 }));
 
 // =============================================================================

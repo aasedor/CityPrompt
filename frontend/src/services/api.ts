@@ -15,6 +15,10 @@ import type {
   ArchitecturalStyle,
   RenderPreview,
   GenerationEngine,
+  LayoutPreviewResponse,
+  LayoutOption,
+  OSMContext,
+  LockedLayers,
 } from '@/types';
 
 const api = axios.create({
@@ -497,8 +501,42 @@ export const siteZonesApi = {
     return data;
   },
 
+  previewLayouts: async (zoneId: string): Promise<LayoutPreviewResponse> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/preview-layouts`);
+    return data;
+  },
+
+  applyLayout: async (zoneId: string, optionIndex: number, layout: LayoutOption): Promise<Building> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/apply-layout`, {
+      option_index: optionIndex,
+      layout: {
+        buildings: layout.buildings,
+        roads: layout.roads,
+        green_spaces: layout.green_spaces,
+        layout_strategy: layout.layout_strategy,
+        reasoning: layout.reasoning,
+        density_achieved: layout.density_achieved,
+      },
+    });
+    return data;
+  },
+
   generateAll: async (projectId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all`);
+    return data;
+  },
+
+  fetchContext: async (zoneId: string): Promise<OSMContext> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/fetch-context`, {}, { timeout: 35000 });
+    return data;
+  },
+
+  regenerateLayout: async (zoneId: string, locked: LockedLayers): Promise<LayoutPreviewResponse> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/regenerate-layout`, {
+      locked_roads: locked.roads,
+      locked_buildings: locked.buildings,
+      locked_green_spaces: locked.green_spaces,
+    });
     return data;
   },
 };

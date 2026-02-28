@@ -376,6 +376,74 @@ class SiteLayoutResponse(BaseModel):
     density_achieved: Optional[float] = Field(None, description="Achieved density in units per hectare")
 
 
+class SiteLayoutOption(SiteLayoutResponse):
+    """A single layout option in a multi-option preview response."""
+    option_index: int = Field(description="Index of this option (0-based)")
+    option_label: str = Field(default="", description="Human-readable label, e.g. 'Cul-de-sac', 'Loop Road'")
+
+
+class LayoutPreviewResponse(BaseModel):
+    """Response containing multiple layout options for user to choose from."""
+    options: list[SiteLayoutOption] = Field(description="Layout options to choose from")
+    zone_id: str = Field(description="Zone ID these options are for")
+
+
+class ApplyLayoutRequest(BaseModel):
+    """Request to apply a chosen layout option to a zone."""
+    option_index: int = Field(description="Index of the chosen layout option")
+    layout: SiteLayoutResponse = Field(description="The full layout data to apply")
+
+
+# =============================================================================
+# OSM Context Schemas
+# =============================================================================
+
+class OSMContextBuilding(BaseModel):
+    """A building from OSM context data."""
+    osm_id: int = Field(description="OpenStreetMap way ID")
+    coordinates: list[list[float]] = Field(description="Polygon as [[lon, lat], ...]")
+    height_m: Optional[float] = Field(None, description="Estimated height in meters")
+    building_type: str = Field(default="yes", description="OSM building tag value")
+    name: Optional[str] = Field(None, description="Building name if tagged")
+    levels: Optional[str] = Field(None, description="Number of levels")
+
+
+class OSMContextRoad(BaseModel):
+    """A road from OSM context data."""
+    osm_id: int = Field(description="OpenStreetMap way ID")
+    coordinates: list[list[float]] = Field(description="Linestring as [[lon, lat], ...]")
+    width_m: float = Field(default=6.0, description="Estimated width in meters")
+    road_type: str = Field(default="residential", description="OSM highway tag value")
+    name: Optional[str] = Field(None, description="Road name if tagged")
+    surface: Optional[str] = Field(None, description="Road surface material")
+    lanes: Optional[str] = Field(None, description="Number of lanes")
+
+
+class OSMContextFeature(BaseModel):
+    """A water or park feature from OSM context data."""
+    osm_id: int = Field(description="OpenStreetMap way ID")
+    coordinates: list[list[float]] = Field(description="Geometry as [[lon, lat], ...]")
+    feature_type: str = Field(description="Feature type: water, park, grass, etc.")
+    name: Optional[str] = Field(None, description="Feature name if tagged")
+
+
+class OSMContextResponse(BaseModel):
+    """Complete OSM context for a site boundary."""
+    buildings: list[OSMContextBuilding] = Field(default=[], description="Nearby buildings")
+    roads: list[OSMContextRoad] = Field(default=[], description="Nearby roads")
+    water: list[OSMContextFeature] = Field(default=[], description="Water features")
+    parks: list[OSMContextFeature] = Field(default=[], description="Parks and green spaces")
+    fetched_at: str = Field(description="ISO timestamp of when context was fetched")
+    buffer_m: float = Field(default=50, description="Buffer distance used in meters")
+
+
+class RegenerateLayoutRequest(BaseModel):
+    """Request to regenerate layout with locked layers preserved."""
+    locked_roads: list[int] = Field(default=[], description="Indices of roads to keep locked")
+    locked_buildings: list[int] = Field(default=[], description="Indices of buildings to keep locked")
+    locked_green_spaces: list[int] = Field(default=[], description="Indices of green spaces to keep locked")
+
+
 # =============================================================================
 # 3D Generation Schemas
 # =============================================================================

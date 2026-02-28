@@ -110,7 +110,86 @@ export interface SiteZoneProperties {
   _layout_roads?: LayoutRoadData[];
   _layout_green_spaces?: LayoutGreenSpaceData[];
   _layout_density?: number;
+  _osm_context?: OSMContext;
   [key: string]: unknown;
+}
+
+// =============================================================================
+// Layout Preview Types
+// =============================================================================
+
+export interface LayoutBuildingData {
+  center_x: number;
+  center_y: number;
+  width_m: number;
+  depth_m: number;
+  rotation_deg: number;
+  height_m?: number;
+  floors?: number;
+  building_type: string;
+  setback_front_m: number;
+  setback_side_m: number;
+}
+
+export interface LayoutOption {
+  option_index: number;
+  option_label: string;
+  buildings: LayoutBuildingData[];
+  roads: LayoutRoadData[];
+  green_spaces: LayoutGreenSpaceData[];
+  layout_strategy: string;
+  reasoning: string;
+  density_achieved?: number;
+}
+
+export interface LayoutPreviewResponse {
+  options: LayoutOption[];
+  zone_id: string;
+}
+
+// =============================================================================
+// OSM Context Types
+// =============================================================================
+
+export interface OSMContextBuilding {
+  osm_id: number;
+  coordinates: number[][];
+  height_m?: number;
+  building_type: string;
+  name?: string;
+  levels?: string;
+}
+
+export interface OSMContextRoad {
+  osm_id: number;
+  coordinates: number[][];
+  width_m: number;
+  road_type: string;
+  name?: string;
+  surface?: string;
+  lanes?: string;
+}
+
+export interface OSMContextFeature {
+  osm_id: number;
+  coordinates: number[][];
+  feature_type: string;
+  name?: string;
+}
+
+export interface OSMContext {
+  buildings: OSMContextBuilding[];
+  roads: OSMContextRoad[];
+  water: OSMContextFeature[];
+  parks: OSMContextFeature[];
+  fetched_at: string;
+  buffer_m: number;
+}
+
+export interface LockedLayers {
+  roads: number[];
+  buildings: number[];
+  green_spaces: number[];
 }
 
 export interface SiteZone {

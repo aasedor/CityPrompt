@@ -50,7 +50,7 @@ export function useSiteZones(projectId: string | undefined) {
       queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => [...(old ?? []), optimistic]);
       return { previous };
     },
-    onSuccess: (createdZone) => {
+    onSuccess: async (createdZone) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone created');
       // Push undo action (skip if this was triggered by undo/redo system)
@@ -58,6 +58,19 @@ export function useSiteZones(projectId: string | undefined) {
         useUndoRedoStore.getState().pushAction(
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
+      }
+      // Auto-fetch OSM context when a site_boundary is created
+      if (createdZone.zone_type === 'site_boundary') {
+        try {
+          const ctx = await siteZonesApi.fetchContext(createdZone.id);
+          const { setOSMContext } = useViewerStore.getState();
+          setOSMContext(ctx);
+          const total = ctx.buildings.length + ctx.roads.length + ctx.water.length + ctx.parks.length;
+          toast.success(`Fetched ${total} OSM features (${ctx.buildings.length} buildings, ${ctx.roads.length} roads)`);
+          queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+        } catch (e) {
+          console.warn('Failed to auto-fetch OSM context:', e);
+        }
       }
     },
     onError: (err: Error, _vars, context) => {

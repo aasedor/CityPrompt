@@ -58,7 +58,7 @@ class SceneErrorBoundary extends Component<{ children: ReactNode }, { error: Err
 export function ViewerPage() {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const { selectedBuildingId, selectBuilding, hoverBuilding, isInfoPanelOpen, settings, isComparing, comparePhase, compareDivider, setCompareDivider, isAnnotating, setAnnotating, isSitePlannerActive, setSitePlannerActive, selectedZoneId, selectZone, setCameraTarget, setCameraMode, isMovingBuilding, setMovingBuilding, isWalkthroughActive, startWalkthrough, exitWalkthrough } = useViewerStore();
+  const { selectedBuildingId, selectBuilding, hoverBuilding, isInfoPanelOpen, settings, updateSettings, isComparing, comparePhase, compareDivider, setCompareDivider, isAnnotating, setAnnotating, isSitePlannerActive, setSitePlannerActive, selectedZoneId, selectZone, setCameraTarget, setCameraMode, isMovingBuilding, setMovingBuilding, isWalkthroughActive, startWalkthrough, exitWalkthrough } = useViewerStore();
   const { user } = useAuthStore();
 
   // Undo/Redo keyboard shortcuts
@@ -162,6 +162,16 @@ export function ViewerPage() {
     handleZoneCreated,
     handleZoneUpdated,
   } = useSiteZones(id);
+
+  // Load OSM context from site_boundary zone on mount
+  const { setOSMContext } = useViewerStore();
+  useEffect(() => {
+    if (!siteZones.length) return;
+    const boundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    if (boundary?.properties?._osm_context) {
+      setOSMContext(boundary.properties._osm_context as import('@/types').OSMContext);
+    }
+  }, [siteZones, setOSMContext]);
 
   // =========================================================================
   // Generation status polling
@@ -308,10 +318,12 @@ export function ViewerPage() {
     // Always reset to orbit mode when returning to 3D viewer
     if (isWalkthroughActive) exitWalkthrough();
     setCameraMode('orbit');
+    // Reset map layer to 'none' so the satellite background doesn't persist
+    updateSettings({ mapLayer: 'none' });
     setSitePlannerActive(false);
     // After a short delay to allow the 3D scene to mount, fly to zones
     setTimeout(flyToZones, 300);
-  }, [setSitePlannerActive, flyToZones, isWalkthroughActive, exitWalkthrough, setCameraMode]);
+  }, [setSitePlannerActive, flyToZones, isWalkthroughActive, exitWalkthrough, setCameraMode, updateSettings]);
 
   // Compute a good walkthrough start position from zone data
   const computeWalkthroughEntry = useCallback((): { position: [number, number, number]; target: [number, number, number] } => {
@@ -383,8 +395,10 @@ export function ViewerPage() {
     );
     setCameraMode('firstPerson');
     setCameraTarget({ position, target, label: 'Walkthrough' });
+    // Reset map layer to 'none' so the satellite background doesn't persist
+    updateSettings({ mapLayer: 'none' });
     setSitePlannerActive(false);
-  }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode, setSitePlannerActive]);
+  }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode, setSitePlannerActive, updateSettings]);
 
   const updateBuilding = useMutation({
     mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean; _undoPrevious?: Record<string, unknown>; _undoLabel?: string }) =>

@@ -17,9 +17,23 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.core.security import is_admin_or_above, require_auth
 from app.models.models import Building, Project, ProjectShare, SiteZone, User
-from app.schemas.schemas import BuildingResponse, SiteZoneCreate, SiteZoneResponse, SiteZoneUpdate
+from app.schemas.schemas import (
+    ApplyLayoutRequest,
+    BuildingResponse,
+    LayoutPreviewResponse,
+    OSMContextResponse,
+    RegenerateLayoutRequest,
+    SiteLayoutResponse,
+    SiteLayoutOption,
+    SiteZoneCreate,
+    SiteZoneResponse,
+    SiteZoneUpdate,
+)
 from app.api.v1.buildings import _building_to_response
 from app.services.layout_planner import LayoutPlanner
+from app.services.osm_context import OSMContextFetcher
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -124,7 +138,94 @@ async def create_zone(
     await db.flush()
     await db.refresh(zone)
 
+    # Auto-fetch OSM context when creating a site_boundary zone
+    if zone_in.zone_type == "site_boundary":
+        try:
+            shape = to_shape(zone.geometry)
+            fetcher = OSMContextFetcher()
+            osm_context = await fetcher.fetch(shape)
+            updated_props = dict(zone.properties or {})
+            updated_props["_osm_context"] = osm_context
+            zone.properties = updated_props
+            await db.flush()
+            await db.refresh(zone)
+            logger.info(
+                "Auto-fetched OSM context for site_boundary %s: %d buildings, %d roads",
+                zone.id,
+                len(osm_context.get("buildings", [])),
+                len(osm_context.get("roads", [])),
+            )
+        except Exception as e:
+            logger.warning("Failed to auto-fetch OSM context for zone %s: %s", zone.id, e)
+
     return _zone_to_response(zone)
+
+
+# =============================================================================
+# OSM Context Endpoints
+# =============================================================================
+
+@router.post("/{zone_id}/fetch-context", response_model=OSMContextResponse)
+async def fetch_context(
+    zone_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Fetch OSM features for a site_boundary zone and store in properties."""
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    if zone.zone_type != "site_boundary":
+        raise HTTPException(status_code=400, detail="Only site_boundary zones support context fetching")
+
+    shape = to_shape(zone.geometry)
+    fetcher = OSMContextFetcher()
+    osm_context = await fetcher.fetch(shape)
+
+    # Store in zone properties
+    updated_props = dict(zone.properties or {})
+    updated_props["_osm_context"] = osm_context
+    zone.properties = updated_props
+    await db.flush()
+    await db.refresh(zone)
+
+    # Convert to response schema
+    from app.schemas.schemas import OSMContextBuilding, OSMContextRoad, OSMContextFeature
+    return OSMContextResponse(
+        buildings=[OSMContextBuilding(
+            osm_id=b["osm_id"],
+            coordinates=b["coordinates"],
+            height_m=b.get("height_m"),
+            building_type=b.get("building_type", "yes"),
+            name=b.get("name"),
+            levels=b.get("levels"),
+        ) for b in osm_context.get("buildings", [])],
+        roads=[OSMContextRoad(
+            osm_id=r["osm_id"],
+            coordinates=r["coordinates"],
+            width_m=r.get("width_m", 6.0),
+            road_type=r.get("road_type", "residential"),
+            name=r.get("name"),
+            surface=r.get("surface"),
+            lanes=r.get("lanes"),
+        ) for r in osm_context.get("roads", [])],
+        water=[OSMContextFeature(
+            osm_id=w["osm_id"],
+            coordinates=w["coordinates"],
+            feature_type=w.get("water_type", "water"),
+            name=w.get("name"),
+        ) for w in osm_context.get("water", [])],
+        parks=[OSMContextFeature(
+            osm_id=p["osm_id"],
+            coordinates=p["coordinates"],
+            feature_type=p.get("park_type", "park"),
+            name=p.get("name"),
+        ) for p in osm_context.get("parks", [])],
+        fetched_at=osm_context.get("fetched_at", ""),
+        buffer_m=osm_context.get("buffer_m", 50),
+    )
 
 
 @router.put("/{zone_id}", response_model=SiteZoneResponse)
@@ -380,6 +481,279 @@ async def _generate_layout_for_zone(
     return layout
 
 
+# =============================================================================
+# Layout Preview + Apply Endpoints
+# =============================================================================
+
+@router.post("/{zone_id}/preview-layouts", response_model=LayoutPreviewResponse)
+async def preview_layouts(
+    zone_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Generate multiple layout options for a multi-unit zone without creating buildings.
+
+    Returns 3 layout strategies for the user to compare and choose from.
+    Pure read-only preview — does NOT modify any records.
+    """
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    if zone.zone_type not in ("building", "residential", "development_area"):
+        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones support layout preview")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id and not is_admin_or_above(user):
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == zone.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    unit_count = _resolve_unit_count(zone)
+    if unit_count <= 1:
+        raise HTTPException(status_code=400, detail="Layout preview requires unit_count > 1")
+
+    # Generate layout options
+    shape = to_shape(zone.geometry)
+    props = zone.properties or {}
+
+    # Gather neighbor context
+    all_zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == zone.project_id,
+            SiteZone.id != zone.id,
+        )
+    )
+    all_zones = all_zones_result.scalars().all()
+    neighbors = []
+    for z in all_zones:
+        neighbors.append({
+            "zone_type": z.zone_type,
+            "name": z.name,
+            "properties": z.properties,
+        })
+
+    # For development_area, find parent site_boundary OSM context
+    reference_context = None
+    if zone.zone_type == "development_area":
+        for z in all_zones:
+            if z.zone_type == "site_boundary":
+                z_props = z.properties or {}
+                if "_osm_context" in z_props:
+                    reference_context = z_props["_osm_context"]
+                    break
+
+    planner = LayoutPlanner()
+    options = await planner.generate_layout_options(
+        zone_polygon=shape,
+        zone_type=zone.zone_type,
+        unit_count=unit_count,
+        properties=props,
+        neighbors=neighbors if neighbors else None,
+        count=3,
+        reference_context=reference_context,
+    )
+
+    return LayoutPreviewResponse(
+        options=options,
+        zone_id=str(zone_id),
+    )
+
+
+@router.post("/{zone_id}/apply-layout", response_model=BuildingResponse)
+async def apply_layout(
+    zone_id: uuid.UUID,
+    body: ApplyLayoutRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Apply a chosen layout option to a zone, creating Building records.
+
+    Takes the chosen layout from a preview and creates Building records.
+    Does NOT queue 3D generation — user triggers that separately.
+    """
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    if zone.zone_type not in ("building", "residential", "development_area"):
+        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones can apply layouts")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id and not is_admin_or_above(user):
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == zone.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    # If zone already has linked buildings, return the first one
+    if zone.building_id:
+        existing = await db.execute(select(Building).where(Building.id == zone.building_id))
+        building = existing.scalar_one_or_none()
+        if building:
+            return _building_to_response(building)
+
+    layout = body.layout
+    props = zone.properties or {}
+
+    # Create buildings from the chosen layout
+    shape = to_shape(zone.geometry)
+    centroid = shape.centroid
+    center_lat = centroid.y
+    all_building_ids: list[str] = []
+    first_building = None
+
+    for i, lb in enumerate(layout.buildings):
+        abs_cx = centroid.x + lb.center_x
+        abs_cy = centroid.y + lb.center_y
+
+        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
+        half_h = _m_to_deg_lat(lb.depth_m / 2)
+
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+
+        building = Building(
+            project_id=zone.project_id,
+            name=f"{zone.name or 'Unit'} #{i + 1}",
+            footprint=WKTElement(footprint_wkt, srid=4326),
+            height_meters=lb.height_m or props.get("height"),
+            floor_count=lb.floors or props.get("floors"),
+            roof_type=props.get("roof_style"),
+            rotation_degrees=lb.rotation_deg,
+        )
+        db.add(building)
+        await db.flush()
+        await db.refresh(building)
+        all_building_ids.append(str(building.id))
+
+        if i == 0:
+            first_building = building
+
+    if not first_building:
+        raise HTTPException(status_code=500, detail="Layout contained no valid buildings")
+
+    # Store layout metadata in zone properties
+    updated_props = dict(props)
+    updated_props["_layout_strategy"] = layout.layout_strategy
+    updated_props["_layout_reasoning"] = layout.reasoning
+    updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
+    updated_props["_layout_green_spaces"] = [g.model_dump() for g in layout.green_spaces]
+    if layout.density_achieved:
+        updated_props["_layout_density"] = layout.density_achieved
+    zone.properties = updated_props
+
+    # Link zone to all buildings
+    zone.building_id = first_building.id
+    zone.building_ids = all_building_ids
+    await db.flush()
+
+    return _building_to_response(first_building)
+
+
+@router.post("/{zone_id}/regenerate-layout", response_model=LayoutPreviewResponse)
+async def regenerate_layout(
+    zone_id: uuid.UUID,
+    body: RegenerateLayoutRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Regenerate layout with locked layers preserved.
+
+    Keeps locked roads/buildings/green_spaces from the current layout
+    and generates new elements around them.
+    """
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    if zone.zone_type not in ("building", "residential", "development_area"):
+        raise HTTPException(status_code=400, detail="Only building, residential, or development_area zones support layout regeneration")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id and not is_admin_or_above(user):
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == zone.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    unit_count = _resolve_unit_count(zone)
+    shape = to_shape(zone.geometry)
+    props = zone.properties or {}
+
+    # Build locked layers from existing layout data
+    locked_layers = None
+    existing_roads = props.get("_layout_roads", [])
+    existing_green_spaces = props.get("_layout_green_spaces", [])
+
+    if body.locked_roads or body.locked_buildings or body.locked_green_spaces:
+        locked_layers = {
+            "roads": [existing_roads[i] for i in body.locked_roads if i < len(existing_roads)],
+            "buildings": [],  # Building positions from last applied layout
+            "green_spaces": [existing_green_spaces[i] for i in body.locked_green_spaces if i < len(existing_green_spaces)],
+        }
+
+    # Gather neighbor context and reference context
+    all_zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == zone.project_id,
+            SiteZone.id != zone.id,
+        )
+    )
+    all_zones = all_zones_result.scalars().all()
+    neighbors = [{"zone_type": z.zone_type, "name": z.name, "properties": z.properties} for z in all_zones]
+
+    reference_context = None
+    if zone.zone_type == "development_area":
+        for z in all_zones:
+            if z.zone_type == "site_boundary":
+                z_props = z.properties or {}
+                if "_osm_context" in z_props:
+                    reference_context = z_props["_osm_context"]
+                    break
+
+    planner = LayoutPlanner()
+    options = await planner.generate_layout_options(
+        zone_polygon=shape,
+        zone_type=zone.zone_type,
+        unit_count=unit_count,
+        properties=props,
+        neighbors=neighbors if neighbors else None,
+        count=3,
+        reference_context=reference_context,
+        locked_layers=locked_layers,
+    )
+
+    return LayoutPreviewResponse(
+        options=options,
+        zone_id=str(zone_id),
+    )
+
+
 @router.post("/{zone_id}/create-building", response_model=BuildingResponse)
 async def create_building_from_zone(
     zone_id: uuid.UUID,
@@ -532,8 +906,6 @@ async def create_building_from_zone(
 # =============================================================================
 # AI Prompt Composition
 # =============================================================================
-
-logger = logging.getLogger(__name__)
 
 
 def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
