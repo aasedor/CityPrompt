@@ -743,11 +743,9 @@ function RoadZone({
   zone: SiteZone;
   points2D: THREE.Vector2[];
 }) {
-  const roadWidth = zone.properties?.width ?? 10;
-
-  const { roadGeometry, centerLineGeometry, leftSidewalk, rightSidewalk } = useMemo(() => {
+  const { roadGeometry, centerLineGeometry, leftSidewalk, rightSidewalk, measuredWidth } = useMemo(() => {
     const n = points2D.length;
-    if (n < 4) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null };
+    if (n < 4) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0 };
 
     // Reconstruct centerline from the buffered polygon:
     // polygon = [left0, left1, ..., leftM, rightM, ..., right0]
@@ -755,6 +753,7 @@ function RoadZone({
     // Shape (x, y) → 3D (x, -y), so negate the y midpoint for world z
     const half = Math.floor(n / 2);
     const centerPoints: { x: number; z: number }[] = [];
+    let totalWidth = 0;
     for (let i = 0; i < half; i++) {
       const a = points2D[i];
       const b = points2D[n - 1 - i];
@@ -762,12 +761,38 @@ function RoadZone({
         x: (a.x + b.x) / 2,
         z: -((a.y + b.y) / 2),
       });
+      // Measure actual width from opposing polygon vertices
+      totalWidth += a.distanceTo(b);
     }
 
-    if (centerPoints.length < 2) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null };
+    if (centerPoints.length < 2) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0 };
 
+    // Use the actual polygon width (average of opposing vertex distances)
+    // instead of zone.properties.width which may not be saved/loaded correctly
+    const roadWidth = half > 0 ? totalWidth / half : (zone.properties?.width ?? 10);
     const halfWidth = roadWidth / 2;
     const sidewalkWidth = 2.0;
+
+
+    // Build a flat ribbon geometry with upward-facing normals.
+    // All flat road/sidewalk geometry uses this helper to ensure
+    // consistent CCW winding (normals point +Y) for proper lighting
+    // and face culling without needing DoubleSide.
+    function buildFlatRibbon(
+      points: { x: number; z: number }[],
+      verts: number[],
+      idxs: number[],
+    ): THREE.BufferGeometry | null {
+      if (verts.length < 12) return null; // need at least 4 vertices (2 pairs)
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+      geom.setIndex(idxs);
+      // Explicit upward normals for flat horizontal surfaces
+      const normals = new Float32Array(verts.length);
+      for (let j = 1; j < normals.length; j += 3) normals[j] = 1;
+      geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+      return geom;
+    }
 
     // Build ribbon geometry from centerline
     function buildRibbon(
@@ -794,9 +819,11 @@ function RoadZone({
         const nx = -dz / len;
         const nz = dx / len;
 
+        // Swap vertex order: right edge first, then left edge
+        // This produces CCW winding (normals up) for the index pattern below
         vertices.push(
-          points[i].x + nx * hw, yPos, points[i].z + nz * hw,
           points[i].x - nx * hw, yPos, points[i].z - nz * hw,
+          points[i].x + nx * hw, yPos, points[i].z + nz * hw,
         );
 
         if (i < points.length - 1) {
@@ -806,11 +833,7 @@ function RoadZone({
         }
       }
 
-      const geom = new THREE.BufferGeometry();
-      geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-      geom.setIndex(indices);
-      geom.computeVertexNormals();
-      return geom;
+      return buildFlatRibbon(points, vertices, indices);
     }
 
     // Build offset ribbon for sidewalks (innerDist and outerDist from centerline,
@@ -825,6 +848,11 @@ function RoadZone({
 
       const vertices: number[] = [];
       const indices: number[] = [];
+
+      // Ensure consistent winding: first vertex should be the one
+      // closer to center (smaller absolute offset)
+      const d0 = Math.abs(innerDist) < Math.abs(outerDist) ? innerDist : outerDist;
+      const d1 = Math.abs(innerDist) < Math.abs(outerDist) ? outerDist : innerDist;
 
       for (let i = 0; i < points.length; i++) {
         let dx = 0, dz = 0;
@@ -841,8 +869,8 @@ function RoadZone({
         const nz = dx / len;
 
         vertices.push(
-          points[i].x + nx * innerDist, yPos, points[i].z + nz * innerDist,
-          points[i].x + nx * outerDist, yPos, points[i].z + nz * outerDist,
+          points[i].x + nx * d0, yPos, points[i].z + nz * d0,
+          points[i].x + nx * d1, yPos, points[i].z + nz * d1,
         );
 
         if (i < points.length - 1) {
@@ -852,11 +880,7 @@ function RoadZone({
         }
       }
 
-      const geom = new THREE.BufferGeometry();
-      geom.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-      geom.setIndex(indices);
-      geom.computeVertexNormals();
-      return geom;
+      return buildFlatRibbon(points, vertices, indices);
     }
 
     const roadGeom = buildRibbon(centerPoints, halfWidth, 0.05);
@@ -880,8 +904,9 @@ function RoadZone({
       centerLineGeometry: centerLineGeom,
       leftSidewalk: leftSW,
       rightSidewalk: rightSW,
+      measuredWidth: roadWidth,
     };
-  }, [points2D, roadWidth]);
+  }, [points2D, zone.properties]);
 
   if (!roadGeometry) return null;
 
@@ -899,22 +924,22 @@ function RoadZone({
         </line>
       )}
 
-      {/* Left sidewalk */}
-      {leftSidewalk && (
+      {/* Sidewalks — only for road types that have them */}
+      {zone.properties?.has_sidewalks !== false && leftSidewalk && (
         <mesh geometry={leftSidewalk} receiveShadow>
           <meshStandardMaterial color="#a0a0a0" roughness={0.85} metalness={0.0} />
         </mesh>
       )}
-
-      {/* Right sidewalk */}
-      {rightSidewalk && (
+      {zone.properties?.has_sidewalks !== false && rightSidewalk && (
         <mesh geometry={rightSidewalk} receiveShadow>
           <meshStandardMaterial color="#a0a0a0" roughness={0.85} metalness={0.0} />
         </mesh>
       )}
 
-      {/* Curb lines — thin raised strips between road and sidewalks */}
-      <RoadCurbs points2D={points2D} roadWidth={roadWidth} />
+      {/* Curb lines — only when sidewalks are present */}
+      {zone.properties?.has_sidewalks !== false && (
+        <RoadCurbs points2D={points2D} roadWidth={measuredWidth} />
+      )}
     </group>
   );
 }
@@ -959,9 +984,10 @@ function RoadCurbs({
         const cx = centerPoints[i].x + nx * sign * (halfWidth + 0.15);
         const cz = centerPoints[i].z + nz * sign * (halfWidth + 0.15);
 
+        // Swap vertex order for CCW winding (normals up)
         verts.push(
-          cx + nx * curbHalfW, 0.15, cz + nz * curbHalfW,
           cx - nx * curbHalfW, 0.15, cz - nz * curbHalfW,
+          cx + nx * curbHalfW, 0.15, cz + nz * curbHalfW,
         );
 
         if (i < centerPoints.length - 1) {
@@ -973,7 +999,10 @@ function RoadCurbs({
       const geom = new THREE.BufferGeometry();
       geom.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
       geom.setIndex(idx);
-      geom.computeVertexNormals();
+      // Explicit upward normals for flat surface
+      const normals = new Float32Array(verts.length);
+      for (let j = 1; j < normals.length; j += 3) normals[j] = 1;
+      geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
       return geom;
     }
 

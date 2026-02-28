@@ -15,8 +15,11 @@ const STYLE_URLS: Record<string, string> = {
 // Meters per degree at equator
 const METERS_PER_DEG_LAT = 111320;
 
-// Meters per pixel at zoom level 0 at the equator (Web Mercator, 256px tiles)
-const MAPBOX_METERS_PER_PIXEL_Z0 = 156543.03392;
+// Meters per pixel at zoom level 0 at the equator (Web Mercator)
+// Mapbox GL v3 uses 512px tiles internally, so effective m/px at z0 is halved
+// compared to the classic 256px-tile value (156543.03392).
+// Used only for computing a target Mapbox zoom level (tile detail), NOT for mesh scale.
+const MAPBOX_METERS_PER_PIXEL_Z0 = 78271.517;
 
 // Offscreen map resolution
 const MAP_SIZE = 2048;
@@ -26,6 +29,18 @@ const UPDATE_INTERVAL_MS = 100;
 
 // How long camera must be stationary before we stop updating
 const IDLE_THRESHOLD_MS = 500;
+
+/**
+ * Measure the actual ground-plane width (in meters) that the Mapbox viewport
+ * covers at its current zoom/center. Uses map.unproject() so the result is
+ * always correct regardless of Mapbox GL version or internal tile size.
+ */
+function measureGroundSize(map: mapboxgl.Map, cosLat: number): number {
+  const left = map.unproject([0, MAP_SIZE / 2]);
+  const right = map.unproject([MAP_SIZE, MAP_SIZE / 2]);
+  const mPerDegLon = METERS_PER_DEG_LAT * cosLat;
+  return (right.lng - left.lng) * mPerDegLon;
+}
 
 interface SatelliteGroundPlaneProps {
   projectLat: number;
@@ -43,7 +58,7 @@ interface SatelliteGroundPlaneProps {
  * always align perfectly — no drift is possible.
  */
 export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: SatelliteGroundPlaneProps) {
-  const { camera, size } = useThree();
+  const { camera } = useThree();
   const meshRef = useRef<THREE.Mesh>(null);
   const matRef = useRef<THREE.MeshStandardMaterial>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -57,6 +72,11 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
   const currentStyleRef = useRef(mapLayer);
   const textureAttached = useRef(false);
   const lastZoom = useRef(16);
+  const mapRepainted = useRef(false);
+  const pendingRepaint = useRef(false);
+  const idleFinalUpdate = useRef(false);
+  // Ground size measured from actual Mapbox viewport (meters)
+  const lastGroundSize = useRef(0);
 
   const origin = useMemo(() => ({
     lat: projectLat,
@@ -97,10 +117,21 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       bearing: 0,
       trackResize: false,
       failIfMajorPerformanceCaveat: false,
+      // Force 1:1 pixel ratio so canvas is always MAP_SIZE x MAP_SIZE
+      // regardless of system display scaling (125%, 150%, etc.)
+      pixelRatio: 1,
+    } as mapboxgl.MapOptions & { pixelRatio: number });
+
+    // Track actual Mapbox canvas repaints so we know when needsUpdate is safe
+    map.on('render', () => {
+      mapRepainted.current = true;
     });
 
     map.on('load', () => {
       isMapReady.current = true;
+
+      // Measure actual ground size from the live Mapbox viewport
+      lastGroundSize.current = measureGroundSize(map, cosLat);
 
       const mapCanvas = map.getCanvas();
       const texture = new THREE.CanvasTexture(mapCanvas);
@@ -123,6 +154,9 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
     return () => {
       isMapReady.current = false;
       textureAttached.current = false;
+      mapRepainted.current = false;
+      pendingRepaint.current = false;
+      idleFinalUpdate.current = false;
       if (textureRef.current) {
         textureRef.current.dispose();
         textureRef.current = null;
@@ -175,13 +209,9 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       textureAttached.current = true;
     }
 
-    // --- Mesh scale is always derived from the LAST RENDERED zoom level ---
-    // This keeps scale and texture content perfectly synchronized:
-    // both change together only when a new Mapbox frame is rendered.
-    const mppAtZoom = MAPBOX_METERS_PER_PIXEL_Z0 * cosLat / Math.pow(2, lastZoom.current);
-    const groundSize = mppAtZoom * MAP_SIZE;
-
-    if (meshRef.current) {
+    // --- Mesh scale from the measured ground size (set by measureGroundSize) ---
+    const groundSize = lastGroundSize.current;
+    if (meshRef.current && groundSize > 0) {
       meshRef.current.scale.set(groundSize, groundSize, 1);
     }
 
@@ -202,9 +232,26 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       lastCamQuat.current.copy(camera.quaternion);
     }
 
-    // Skip updates when camera has been idle
+    // Pick up async Mapbox repaints (from pending or ongoing renders)
+    if (mapRepainted.current || pendingRepaint.current) {
+      textureRef.current.needsUpdate = true;
+      if (mapRepainted.current) {
+        mapRepainted.current = false;
+        pendingRepaint.current = false;
+      }
+    }
+
+    // After camera goes idle, do one final texture update to capture the last repaint
     const idleMs = now - lastMoveTime.current;
-    if (idleMs > IDLE_THRESHOLD_MS && !cameraMoved) return;
+    if (idleMs > IDLE_THRESHOLD_MS && !cameraMoved) {
+      if (!idleFinalUpdate.current) {
+        // One final update after idle
+        textureRef.current.needsUpdate = true;
+        idleFinalUpdate.current = true;
+      }
+      return;
+    }
+    idleFinalUpdate.current = false;
 
     // Throttle updates
     if (now - lastUpdateTime.current < UPDATE_INTERVAL_MS) return;
@@ -218,9 +265,11 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
     const fov = (camera as THREE.PerspectiveCamera).fov || 60;
     const fovRad = (fov * Math.PI) / 180;
     const viewRadius = camY * Math.tan(fovRad / 2) * 2;
-    const neededRadius = Math.max(250, camDistXZ + viewRadius);
+    const neededRadius = Math.max(500, camDistXZ + viewRadius * 1.5);
     const neededSize = neededRadius * 2;
     const mpp = Math.max(0.001, neededSize / MAP_SIZE);
+    // This formula is only used to pick a Mapbox zoom level (tile detail).
+    // The actual mesh scale is set via measureGroundSize() below.
     const zoomLevel = Math.max(1, Math.min(22,
       Math.log2((MAPBOX_METERS_PER_PIXEL_Z0 * cosLat) / mpp),
     ));
@@ -237,20 +286,32 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       pitch: 0,
     });
 
-    // Force synchronous render
+    // Measure the ACTUAL ground size from the Mapbox viewport after jumpTo
+    // This is always correct regardless of tile size (256 vs 512) or version
+    lastGroundSize.current = measureGroundSize(map, cosLat);
+
+    // Try synchronous render, but ALWAYS schedule async repaint as backup.
+    // In Mapbox GL v3, _render() can silently no-op, so we never trust it alone.
+    const mapAny = map as any;
     try {
-      (map as any)._render();
+      if (typeof mapAny._render === 'function') {
+        mapAny._render();
+      } else if (typeof mapAny._rerender === 'function') {
+        mapAny._rerender();
+      }
     } catch {
-      map.triggerRepaint();
+      // Synchronous render not available
     }
+
+    // Always schedule an async repaint as a safety net and track it
+    map.triggerRepaint();
+    pendingRepaint.current = true;
 
     textureRef.current.needsUpdate = true;
 
-    // Immediately sync mesh scale to the new zoom (same frame as texture)
-    const newMpp = MAPBOX_METERS_PER_PIXEL_Z0 * cosLat / Math.pow(2, zoomLevel);
-    const newGroundSize = newMpp * MAP_SIZE;
+    // Immediately sync mesh scale to the measured ground size
     if (meshRef.current) {
-      meshRef.current.scale.set(newGroundSize, newGroundSize, 1);
+      meshRef.current.scale.set(lastGroundSize.current, lastGroundSize.current, 1);
     }
   });
 
