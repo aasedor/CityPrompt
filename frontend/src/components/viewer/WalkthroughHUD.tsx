@@ -1,27 +1,30 @@
 import { useState, useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 import { useViewerStore } from '@/store';
 
 export function WalkthroughHUD() {
-  const { settings, isWalkthroughActive } = useViewerStore();
+  const { settings, isWalkthroughActive, exitWalkthrough, setCameraMode } = useViewerStore();
   const mode = settings.cameraMode;
   const showHUD = mode === 'firstPerson' || mode === 'flyThrough';
 
-  // Auto-fade the controls hint after 5 seconds
+  // Auto-fade the controls hint after 8 seconds, re-show when mode changes
   const [hintVisible, setHintVisible] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    if (isWalkthroughActive) {
+    if (showHUD) {
       setHintVisible(true);
       clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setHintVisible(false), 5000);
+      timerRef.current = setTimeout(() => setHintVisible(false), 8000);
     } else {
       setHintVisible(false);
     }
     return () => clearTimeout(timerRef.current);
-  }, [isWalkthroughActive]);
+  }, [showHUD, mode]);
 
   if (!showHUD) return null;
+
+  const modeLabel = mode === 'firstPerson' ? 'Walk' : 'Fly';
 
   return (
     <>
@@ -41,22 +44,53 @@ export function WalkthroughHUD() {
         </div>
       )}
 
-      {/* Controls hint pill */}
-      {isWalkthroughActive && (
-        <div
-          className={`pointer-events-none fixed bottom-8 left-1/2 z-30 -translate-x-1/2 transition-opacity duration-500 ${
-            hintVisible ? 'opacity-100' : 'opacity-0'
-          }`}
+      {/* Persistent exit button (top-right) */}
+      {isWalkthroughActive ? (
+        <button
+          onClick={() => {
+            if (document.pointerLockElement) document.exitPointerLock();
+            exitWalkthrough();
+          }}
+          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-gray-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-gray-900/90 transition-colors"
         >
-          <div className="rounded-full bg-gray-900/70 px-5 py-2.5 text-sm text-white/90 shadow-lg backdrop-blur-md">
-            Press <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">ESC</kbd> to exit
-            <span className="mx-2 text-white/40">|</span>
-            <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">WASD</kbd> to move
-            <span className="mx-2 text-white/40">|</span>
-            <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">Shift</kbd> to sprint
-          </div>
-        </div>
+          <X size={14} />
+          Exit Walkthrough
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            if (document.pointerLockElement) document.exitPointerLock();
+            setCameraMode('orbit');
+          }}
+          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-gray-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-gray-900/90 transition-colors"
+        >
+          <X size={14} />
+          Exit {modeLabel} Mode
+        </button>
       )}
+
+      {/* Controls hint pill */}
+      <div
+        className={`pointer-events-none fixed bottom-8 left-1/2 z-30 -translate-x-1/2 transition-opacity duration-500 ${
+          hintVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <div className="rounded-full bg-gray-900/70 px-5 py-2.5 text-sm text-white/90 shadow-lg backdrop-blur-md">
+          <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">WASD</kbd> to move
+          <span className="mx-2 text-white/40">|</span>
+          <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">Shift</kbd> to sprint
+          <span className="mx-2 text-white/40">|</span>
+          {mode === 'flyThrough' && (
+            <>
+              <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">Q</kbd>/<kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">Space</kbd> up
+              <span className="mx-2 text-white/40">|</span>
+              <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">E</kbd> down
+              <span className="mx-2 text-white/40">|</span>
+            </>
+          )}
+          <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">ESC</kbd> to exit
+        </div>
+      </div>
     </>
   );
 }

@@ -289,10 +289,13 @@ export function ViewerPage() {
   }, [siteZones, effectiveLocation, setCameraTarget]);
 
   const handleExitSitePlanner = useCallback(() => {
+    // Always reset to orbit mode when returning to 3D viewer
+    if (isWalkthroughActive) exitWalkthrough();
+    setCameraMode('orbit');
     setSitePlannerActive(false);
     // After a short delay to allow the 3D scene to mount, fly to zones
     setTimeout(flyToZones, 300);
-  }, [setSitePlannerActive, flyToZones]);
+  }, [setSitePlannerActive, flyToZones, isWalkthroughActive, exitWalkthrough, setCameraMode]);
 
   // Compute a good walkthrough start position from zone data
   const computeWalkthroughEntry = useCallback((): { position: [number, number, number]; target: [number, number, number] } => {
@@ -571,7 +574,7 @@ export function ViewerPage() {
   const [isRecordingVideo, setIsRecordingVideo] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
 
-  // '?' key toggles shortcuts modal
+  // '?' key toggles shortcuts modal + ESC handler
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === '?' || (e.key === '/' && e.shiftKey)) {
@@ -595,6 +598,18 @@ export function ViewerPage() {
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [showShortcuts, isMovingBuilding, setMovingBuilding, isWalkthroughActive, exitWalkthrough]);
+
+  // When browser exits pointer lock (ESC consumed by browser before JS keydown),
+  // also exit walkthrough mode so user isn't stuck in firstPerson
+  useEffect(() => {
+    const handlePointerLockChange = () => {
+      if (!document.pointerLockElement && isWalkthroughActive) {
+        exitWalkthrough();
+      }
+    };
+    document.addEventListener('pointerlockchange', handlePointerLockChange);
+    return () => document.removeEventListener('pointerlockchange', handlePointerLockChange);
+  }, [isWalkthroughActive, exitWalkthrough]);
 
   const handleToggleVideoRecord = useCallback(() => {
     if (isRecordingVideo) {
@@ -919,20 +934,16 @@ export function ViewerPage() {
             />
           )}
 
-          {/* Controls — hidden during walkthrough for immersion */}
-          {!isWalkthroughActive && (
+          {/* Controls */}
           <ViewerControls constructionPhases={project?.construction_phases} buildings={project?.buildings} />
-          )}
 
-          {/* Legend — hidden during walkthrough */}
-          {!isWalkthroughActive && (
+          {/* Legend */}
           <ViewerLegend
             phases={project?.construction_phases}
             activePhase={settings.activePhase}
             showMeasurements={settings.showMeasurements}
             showExistingBuildings={settings.showExistingBuildings}
           />
-          )}
         </>
       )}
 
