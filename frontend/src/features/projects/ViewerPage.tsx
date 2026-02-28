@@ -354,8 +354,8 @@ export function ViewerPage() {
       [position[0] + 50, 50, position[2] + 50],
       [position[0], 0, position[2]],
     );
+    setCameraMode('firstPerson');
     setCameraTarget({ position, target, label: 'Walkthrough' });
-    setTimeout(() => setCameraMode('firstPerson'), 700);
   }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
 
   // Handle "Walk Through" from site planner — exit planner then explore
@@ -589,10 +589,15 @@ export function ViewerPage() {
   }, [showShortcuts, isMovingBuilding, setMovingBuilding, isWalkthroughActive, exitWalkthrough]);
 
   // When browser exits pointer lock (ESC consumed by browser before JS keydown),
-  // also exit walkthrough mode so user isn't stuck in firstPerson
+  // also exit walkthrough mode so user isn't stuck in firstPerson.
+  // Track whether pointer lock was ever acquired to avoid false triggers.
+  const hadPointerLock = useRef(false);
   useEffect(() => {
     const handlePointerLockChange = () => {
-      if (!document.pointerLockElement && isWalkthroughActive) {
+      if (document.pointerLockElement) {
+        hadPointerLock.current = true;
+      } else if (hadPointerLock.current && isWalkthroughActive) {
+        hadPointerLock.current = false;
         exitWalkthrough();
       }
     };
