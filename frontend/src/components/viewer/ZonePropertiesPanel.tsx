@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Sparkles, Loader2, Plus, X, RefreshCw } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, Plus, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -90,29 +90,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         </div>
 
         {/* ============================================================= */}
-        {/* SITE BOUNDARY — shows OSM context info                        */}
+        {/* SITE BOUNDARY — analysis + generate                           */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
-          <>
-            {osmContext ? (
-              <div className="rounded border border-amber-200 bg-amber-50/50 p-2 space-y-1">
-                <span className="text-[10px] font-semibold text-amber-700 uppercase tracking-wide">OSM Context Loaded</span>
-                <div className="grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-gray-600">
-                  <span>Buildings: {osmContext.buildings.length}</span>
-                  <span>Roads: {osmContext.roads.length}</span>
-                  <span>Water: {osmContext.water.length}</span>
-                  <span>Parks: {osmContext.parks.length}</span>
-                </div>
-                <div className="text-[9px] text-gray-400">
-                  Fetched {new Date(osmContext.fetched_at).toLocaleDateString()} ({osmContext.buffer_m}m buffer)
-                </div>
-              </div>
-            ) : (
-              <div className="text-xs text-gray-400 italic">
-                Site boundary outline. OSM context will be fetched automatically.
-              </div>
-            )}
-          </>
+          <SiteBoundarySection zone={zone} />
         )}
 
         {/* ============================================================= */}
@@ -663,6 +644,156 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       </div>
     </div>
     </>
+  );
+}
+
+// =============================================================================
+// Site Boundary Section
+// =============================================================================
+
+const ZONE_TYPE_ICONS: Record<string, typeof Building2> = {
+  building: Building2,
+  residential: Building2,
+  road: Route,
+  green_space: TreePine,
+  water: Droplets,
+  parking: ParkingCircle,
+  development_area: MapPin,
+};
+
+function SiteBoundarySection({ zone }: { zone: SiteZone }) {
+  const [analysis, setAnalysis] = useState<BoundaryAnalysisResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [generating, setGenerating] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    siteZonesApi.getBoundaryAnalysis(zone.id)
+      .then((data) => { if (!cancelled) setAnalysis(data); })
+      .catch(() => { if (!cancelled) setAnalysis(null); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [zone.id]);
+
+  const handleGenerate = async () => {
+    setGenerating(true);
+    try {
+      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
+      toast.success(
+        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+      );
+    } catch {
+      toast.error('Generation failed');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 text-xs text-gray-400">
+        <Loader2 size={12} className="animate-spin" />
+        Analyzing boundary...
+      </div>
+    );
+  }
+
+  if (!analysis) {
+    return (
+      <div className="text-xs text-gray-400 italic">
+        Could not analyze boundary contents.
+      </div>
+    );
+  }
+
+  const hasZones = analysis.total_contained > 0;
+  const hasBuildableZones = Object.entries(analysis.zone_summary).some(
+    ([type]) => type === 'building' || type === 'residential'
+  );
+  const osmBuildings = analysis.osm_context?.buildings;
+  const osmRoads = analysis.osm_context?.roads;
+  const hasOsm = (osmBuildings?.count ?? 0) > 0 || (osmRoads?.count ?? 0) > 0;
+
+  return (
+    <div className="space-y-2">
+      {/* Contained zones summary */}
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1">
+          Contained Zones ({analysis.total_contained})
+        </label>
+        {hasZones ? (
+          <div className="space-y-1">
+            {Object.entries(analysis.zone_summary).map(([type, count]) => {
+              const config = ZONE_TYPE_CONFIG[type as keyof typeof ZONE_TYPE_CONFIG];
+              const Icon = ZONE_TYPE_ICONS[type] || MapPin;
+              return (
+                <div key={type} className="flex items-center gap-2 text-xs text-gray-700">
+                  <span
+                    className="inline-block h-2.5 w-2.5 rounded-sm"
+                    style={{ backgroundColor: config?.color || '#999' }}
+                  />
+                  <Icon size={11} className="text-gray-400" />
+                  <span>{config?.label || type}</span>
+                  <span className="ml-auto font-medium">{count}</span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-xs text-gray-400 italic">
+            No zones inside this boundary. Draw zones within the boundary to get started.
+          </div>
+        )}
+      </div>
+
+      {/* OSM Infrastructure */}
+      {hasOsm && (
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Existing Infrastructure (OSM)
+          </label>
+          <div className="space-y-0.5 text-xs text-gray-500">
+            {osmBuildings?.count ? (
+              <div className="flex items-center gap-1.5">
+                <Building2 size={10} />
+                <span>{osmBuildings.count} buildings</span>
+                {osmBuildings.avg_height ? (
+                  <span className="text-gray-400">(avg {osmBuildings.avg_height.toFixed(0)}m)</span>
+                ) : null}
+              </div>
+            ) : null}
+            {osmRoads?.count ? (
+              <div className="flex items-center gap-1.5">
+                <Route size={10} />
+                <span>{osmRoads.count} roads</span>
+                {osmRoads.named_roads?.length ? (
+                  <span className="text-gray-400 truncate">
+                    ({osmRoads.named_roads.slice(0, 3).join(', ')})
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+
+      {/* Generate Neighborhood button */}
+      <button
+        onClick={handleGenerate}
+        disabled={generating || !hasBuildableZones}
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+        title={!hasBuildableZones ? 'Add building or residential zones inside the boundary first' : 'Generate 3D models for zones within this boundary'}
+      >
+        {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+        {generating ? 'Generating...' : 'Generate Neighborhood'}
+      </button>
+      {!hasBuildableZones && hasZones && (
+        <p className="text-[10px] text-gray-400 text-center">
+          Add building or residential zones inside the boundary to generate
+        </p>
+      )}
+    </div>
   );
 }
 

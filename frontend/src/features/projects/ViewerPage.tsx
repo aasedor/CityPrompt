@@ -23,6 +23,7 @@ import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { WalkthroughHUD } from '@/components/viewer/WalkthroughHUD';
+import { SitePlannerGuide } from '@/components/viewer/SitePlannerGuide';
 import { useViewerStore, useAuthStore } from '@/store';
 import { useCollaboration } from '@/services/collaboration';
 
@@ -572,7 +573,14 @@ export function ViewerPage() {
     if (!id) return;
     setGeneratingNeighborhood(true);
     try {
-      const result = await siteZonesApi.generateAll(id);
+      // If a site_boundary is selected, scope generation to that boundary
+      const boundaryZone = selectedZone?.zone_type === 'site_boundary' ? selectedZone : null;
+      let result;
+      if (boundaryZone) {
+        result = await siteZonesApi.generateForBoundary(id, boundaryZone.id);
+      } else {
+        result = await siteZonesApi.generateAll(id);
+      }
       toast.success(
         `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
       );
@@ -584,7 +592,7 @@ export function ViewerPage() {
     } finally {
       setGeneratingNeighborhood(false);
     }
-  }, [id, queryClient]);
+  }, [id, queryClient, selectedZone]);
   const [aiGenerateFromZoneBuildingId, setAiGenerateFromZoneBuildingId] = useState<string | null>(null);
   const [aiGenerateFromZonePrompt, setAiGenerateFromZonePrompt] = useState<string | null>(null);
   const [editingBuilding, setEditingBuilding] = useState(false);
@@ -632,6 +640,7 @@ export function ViewerPage() {
   const chunksRef = useRef<Blob[]>([]);
   const [isRecordingVideo, setIsRecordingVideo] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
 
   // '?' key toggles shortcuts modal + ESC handler
   useEffect(() => {
@@ -903,6 +912,7 @@ export function ViewerPage() {
       {isSitePlannerActive ? (
         <div className="absolute inset-0 flex flex-col">
           <div className="relative min-h-0 flex-1">
+            <SitePlannerGuide forceShow={showGuide} onDismiss={() => setShowGuide(false)} />
             <SitePlannerMap
               latitude={effectiveLocation?.latitude}
               longitude={effectiveLocation?.longitude}
@@ -927,7 +937,7 @@ export function ViewerPage() {
               />
             )}
           </div>
-          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} projectId={id} zones={siteZones} />
+          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} projectId={id} zones={siteZones} selectedZoneId={selectedZoneId} onShowGuide={() => setShowGuide(true)} />
         </div>
       ) : (
         <>

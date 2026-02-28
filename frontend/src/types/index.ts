@@ -581,3 +581,35 @@ export interface GenerationEngine {
   available: boolean;
   features: string[];
 }
+
+// =============================================================================
+// Boundary Analysis Types
+// =============================================================================
+
+export interface BoundaryContainedZone {
+  id: string;
+  name?: string;
+  zone_type: SiteZoneType;
+  color: string;
+  properties: SiteZoneProperties;
+  area_m2: number;
+}
+
+export interface BoundaryAnalysisResponse {
+  boundary_zone_id: string;
+  contained_zones: BoundaryContainedZone[];
+  zone_summary: Record<string, number>;
+  total_contained: number;
+  osm_context: {
+    buildings?: {
+      count?: number;
+      avg_height?: number;
+      by_type?: Record<string, number>;
+    };
+    roads?: {
+      count?: number;
+      named_roads?: string[];
+      by_type?: Record<string, number>;
+    };
+  };
+}

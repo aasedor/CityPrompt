@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Eye, MousePointer, Sparkles, Loader2, Footprints, RefreshCw, Building2, Route, TreePine, Map as MapIcon, ChevronUp } from 'lucide-react';
+import { Eye, MousePointer, Sparkles, Loader2, Footprints, RefreshCw, Building2, Route, TreePine, Map as MapIcon, ChevronUp, HelpCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZoneType, SiteZone, SiteZoneProperties, RoadPresetConfig, BuildingPresetConfig } from '@/types';
 import { ZONE_TYPE_CONFIG, ROAD_PRESETS, BUILDING_PRESETS } from '@/types';
@@ -218,9 +218,11 @@ interface SitePlannerToolbarProps {
   onWalkThrough: () => void;
   projectId?: string;
   zones?: SiteZone[];
+  selectedZoneId?: string | null;
+  onShowGuide?: () => void;
 }
 
-export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones }: SitePlannerToolbarProps) {
+export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones, selectedZoneId, onShowGuide }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
   const [generating, setGenerating] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
@@ -241,6 +243,12 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
     }
   }, [openGroup]);
 
+  // Detect if selected zone is a site_boundary
+  const selectedZone = selectedZoneId
+    ? (zones || []).find((z) => z.id === selectedZoneId)
+    : null;
+  const isBoundarySelected = selectedZone?.zone_type === 'site_boundary';
+
   // Count building/residential zones that already have buildings
   const buildingZones = (zones || []).filter(
     (z) => (z.zone_type === 'building' || z.zone_type === 'residential')
@@ -252,7 +260,12 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
     if (!projectId) return;
     setGenerating(true);
     try {
-      const result = await siteZonesApi.generateAll(projectId);
+      let result;
+      if (isBoundarySelected && selectedZoneId) {
+        result = await siteZonesApi.generateForBoundary(projectId, selectedZoneId);
+      } else {
+        result = await siteZonesApi.generateAll(projectId);
+      }
       toast.success(
         `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
       );
@@ -343,11 +356,11 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
             onClick={handleGenerateAll}
             disabled={generating}
             className="flex items-center gap-1.5 rounded-lg bg-purple-600 px-3 py-2 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50 sm:px-4 sm:py-1.5"
-            title="Generate 3D models for all building/residential zones"
+            title={isBoundarySelected ? 'Generate 3D models for zones within selected boundary' : 'Generate 3D models for all building/residential zones'}
           >
             {generating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-            <span className="sm:hidden">{generating ? '...' : 'Generate'}</span>
-            <span className="hidden sm:inline">{generating ? 'Generating...' : 'Generate All'}</span>
+            <span className="sm:hidden">{generating ? '...' : isBoundarySelected ? 'Boundary' : 'Generate'}</span>
+            <span className="hidden sm:inline">{generating ? 'Generating...' : isBoundarySelected ? 'Generate Boundary' : 'Generate All'}</span>
           </button>
         )}
 
@@ -401,6 +414,16 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
           <span className="sm:hidden">3D</span>
           <span className="hidden sm:inline">View in 3D</span>
         </button>
+
+        {onShowGuide && (
+          <button
+            onClick={onShowGuide}
+            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-gray-300 hover:bg-white/10 hover:text-white sm:py-1.5"
+            title="Show quick-start guide"
+          >
+            <HelpCircle size={14} />
+          </button>
+        )}
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ import type {
   LayoutOption,
   OSMContext,
   LockedLayers,
+  BoundaryAnalysisResponse,
 } from '@/types';
 
 const api = axios.create({
@@ -537,6 +538,16 @@ export const siteZonesApi = {
       locked_buildings: locked.buildings,
       locked_green_spaces: locked.green_spaces,
     });
+    return data;
+  },
+
+  getBoundaryAnalysis: async (zoneId: string): Promise<BoundaryAnalysisResponse> => {
+    const { data } = await api.get(`/api/v1/site-zones/${zoneId}/boundary-analysis`);
+    return data;
+  },
+
+  generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all?boundary_zone_id=${boundaryZoneId}`);
     return data;
   },
 };

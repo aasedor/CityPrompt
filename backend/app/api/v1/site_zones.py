@@ -7,8 +7,11 @@ import math
 import re
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from geoalchemy2.elements import WKTElement
+from geoalchemy2.functions import ST_Intersects
 from geoalchemy2.shape import to_shape
 from shapely.geometry import Polygon
 from sqlalchemy import select
@@ -908,7 +911,7 @@ async def create_building_from_zone(
 # =============================================================================
 
 
-def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
+def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_context: dict | None = None) -> str:
     """Build a rich AI generation prompt from zone properties.
 
     Includes building type, dimensions from geometry, height/floors,
@@ -917,6 +920,10 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
 
     When unit_count > 1, the prompt asks for a single representative
     home suitable for instancing, not an aerial view of a subdivision.
+
+    If site_context is provided, appends a SITE CONTEXT section with
+    sibling zone details (types, aesthetics, heights, materials) and
+    OSM infrastructure summary (buildings by type, roads by type).
     """
     props = zone.properties or {}
     parts: list[str] = []
@@ -1023,7 +1030,145 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
             "Single standalone building, no background or ground plane."
         )
 
+    # 8. Site context (boundary-scoped)
+    if site_context:
+        ctx_parts: list[str] = []
+        # Sibling zones summary
+        sibling_zones = site_context.get("sibling_zones", [])
+        if sibling_zones:
+            zone_summaries = []
+            for sz in sibling_zones:
+                desc = sz.get("zone_type", "").replace("_", " ").title()
+                if sz.get("aesthetic"):
+                    desc = f"{sz['aesthetic'].replace('_', ' ').title()} {desc}"
+                if sz.get("height"):
+                    desc += f" ({sz['height']}m)"
+                if sz.get("facade_material"):
+                    desc += f", {sz['facade_material']}"
+                zone_summaries.append(desc)
+            ctx_parts.append(f"Sibling zones in the site: {'; '.join(zone_summaries)}")
+        # OSM buildings summary
+        osm_buildings = site_context.get("osm_buildings", {})
+        if osm_buildings.get("count"):
+            osm_desc = f"{osm_buildings['count']} existing buildings nearby"
+            if osm_buildings.get("avg_height"):
+                osm_desc += f" (avg height {osm_buildings['avg_height']:.0f}m)"
+            by_type = osm_buildings.get("by_type", {})
+            if by_type:
+                type_parts = [f"{v} {k}" for k, v in sorted(by_type.items(), key=lambda x: -x[1])[:5]]
+                osm_desc += f" — {', '.join(type_parts)}"
+            ctx_parts.append(osm_desc)
+        # OSM roads summary
+        osm_roads = site_context.get("osm_roads", {})
+        if osm_roads.get("count"):
+            road_desc = f"{osm_roads['count']} existing roads nearby"
+            named = osm_roads.get("named_roads", [])
+            if named:
+                road_desc += f" including {', '.join(named[:5])}"
+            ctx_parts.append(road_desc)
+        if ctx_parts:
+            parts.append("SITE CONTEXT: " + ". ".join(ctx_parts))
+
     return ". ".join(parts)
+
+
+# =============================================================================
+# Boundary Analysis
+# =============================================================================
+
+
+def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]) -> dict:
+    """Build a site_context dict from a boundary zone and its contained zones."""
+    sibling_zones = []
+    for z in contained_zones:
+        if z.id == boundary_zone.id:
+            continue
+        zp = z.properties or {}
+        sibling_zones.append({
+            "zone_type": z.zone_type,
+            "name": z.name,
+            "aesthetic": zp.get("development_aesthetic"),
+            "height": zp.get("height"),
+            "floors": zp.get("floors"),
+            "facade_material": zp.get("facade_material"),
+            "description": zp.get("description_text"),
+        })
+
+    # Extract OSM context from boundary properties (stored during creation)
+    boundary_props = boundary_zone.properties or {}
+    osm_ctx = boundary_props.get("osm_context", {})
+
+    return {
+        "sibling_zones": sibling_zones,
+        "osm_buildings": osm_ctx.get("buildings", {}),
+        "osm_roads": osm_ctx.get("roads", {}),
+    }
+
+
+def _compute_zone_area(zone: SiteZone) -> float:
+    """Compute approximate area in m² from zone geometry."""
+    try:
+        shape = to_shape(zone.geometry)
+        bounds = shape.bounds
+        center_lat = (bounds[1] + bounds[3]) / 2
+        meters_per_deg_lon = 111320 * abs(math.cos(math.radians(center_lat)))
+        meters_per_deg_lat = 111320
+        width_m = abs(bounds[2] - bounds[0]) * meters_per_deg_lon
+        depth_m = abs(bounds[3] - bounds[1]) * meters_per_deg_lat
+        return width_m * depth_m
+    except Exception:
+        return 0.0
+
+
+@router.get("/{zone_id}/boundary-analysis")
+async def boundary_analysis(
+    zone_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+):
+    """Analyze a site boundary: find all zones within it and return summary."""
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    boundary = result.scalar_one_or_none()
+    if not boundary:
+        raise HTTPException(status_code=404, detail="Zone not found")
+    if boundary.zone_type != "site_boundary":
+        raise HTTPException(status_code=400, detail="Zone is not a site_boundary")
+
+    # Find all zones that intersect this boundary (same project, exclude self)
+    contained_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == boundary.project_id,
+            SiteZone.id != boundary.id,
+            ST_Intersects(boundary.geometry, SiteZone.geometry),
+        )
+    )
+    contained_zones = contained_result.scalars().all()
+
+    # Build zone details for response
+    zone_details = []
+    type_counts: dict[str, int] = {}
+    for z in contained_zones:
+        zp = z.properties or {}
+        zone_details.append({
+            "id": str(z.id),
+            "name": z.name,
+            "zone_type": z.zone_type,
+            "color": z.color,
+            "properties": zp,
+            "area_m2": _compute_zone_area(z),
+        })
+        type_counts[z.zone_type] = type_counts.get(z.zone_type, 0) + 1
+
+    # OSM context from boundary properties
+    boundary_props = boundary.properties or {}
+    osm_context = boundary_props.get("osm_context", {})
+
+    return {
+        "boundary_zone_id": str(boundary.id),
+        "contained_zones": zone_details,
+        "zone_summary": type_counts,
+        "total_contained": len(contained_zones),
+        "osm_context": osm_context,
+    }
 
 
 # =============================================================================
@@ -1033,10 +1178,15 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None) -> str:
 @router.post("/projects/{project_id}/generate-all")
 async def generate_all(
     project_id: uuid.UUID,
+    boundary_zone_id: Optional[uuid.UUID] = Query(None, description="Scope generation to zones within this site boundary"),
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Batch-generate buildings + queue AI 3D model generation for all building/residential zones."""
+    """Batch-generate buildings + queue AI 3D model generation for building/residential zones.
+
+    When boundary_zone_id is provided, only zones within that boundary are processed
+    and the AI prompt is enriched with site context (sibling zones + OSM data).
+    """
     # Verify project & permissions
     result = await db.execute(select(Project).where(Project.id == project_id))
     project = result.scalar_one_or_none()
@@ -1054,11 +1204,40 @@ async def generate_all(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # Fetch all zones for this project
-    zones_result = await db.execute(
-        select(SiteZone).where(SiteZone.project_id == project_id)
-    )
-    all_zones = zones_result.scalars().all()
+    # Build zone list — scoped to boundary if provided
+    site_context: dict | None = None
+
+    if boundary_zone_id:
+        # Validate boundary zone
+        boundary_result = await db.execute(
+            select(SiteZone).where(SiteZone.id == boundary_zone_id)
+        )
+        boundary_zone = boundary_result.scalar_one_or_none()
+        if not boundary_zone:
+            raise HTTPException(status_code=404, detail="Boundary zone not found")
+        if boundary_zone.zone_type != "site_boundary":
+            raise HTTPException(status_code=400, detail="Specified zone is not a site_boundary")
+        if boundary_zone.project_id != project_id:
+            raise HTTPException(status_code=400, detail="Boundary zone does not belong to this project")
+
+        # Fetch only zones within the boundary
+        zones_result = await db.execute(
+            select(SiteZone).where(
+                SiteZone.project_id == project_id,
+                SiteZone.id != boundary_zone_id,
+                ST_Intersects(boundary_zone.geometry, SiteZone.geometry),
+            )
+        )
+        all_zones = zones_result.scalars().all()
+
+        # Build enriched site context
+        site_context = _build_site_context(boundary_zone, all_zones)
+    else:
+        # Fetch all zones for this project (original behavior)
+        zones_result = await db.execute(
+            select(SiteZone).where(SiteZone.project_id == project_id)
+        )
+        all_zones = zones_result.scalars().all()
 
     buildings_created = 0
     generations_queued = 0
@@ -1078,7 +1257,7 @@ async def generate_all(
             if building:
                 # Queue generation if not currently in progress
                 if building.generation_status != "generating":
-                    prompt = compose_zone_prompt(zone, all_zones)
+                    prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
                     building.generation_status = "generating"
                     building.generation_prompt = prompt
                     await db.flush()
@@ -1209,7 +1388,7 @@ async def generate_all(
             building = first_building
 
         # Compose prompt and queue generation (only for first building)
-        prompt = compose_zone_prompt(zone, all_zones)
+        prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
         building.generation_status = "generating"
         building.generation_prompt = prompt
         await db.flush()
