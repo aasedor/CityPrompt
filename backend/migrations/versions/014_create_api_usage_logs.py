@@ -17,25 +17,38 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        "api_usage_logs",
-        sa.Column("id", sa.dialects.postgresql.UUID(as_uuid=True), primary_key=True, server_default=sa.text("gen_random_uuid()")),
-        sa.Column("provider", sa.String(30), nullable=False),
-        sa.Column("operation", sa.String(50), nullable=False),
-        sa.Column("credits_used", sa.Numeric(10, 2), nullable=True),
-        sa.Column("input_tokens", sa.Integer(), nullable=True),
-        sa.Column("output_tokens", sa.Integer(), nullable=True),
-        sa.Column("task_id", sa.String(100), nullable=True),
-        sa.Column("building_id", sa.dialects.postgresql.UUID(as_uuid=True), sa.ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True),
-        sa.Column("document_id", sa.dialects.postgresql.UUID(as_uuid=True), sa.ForeignKey("documents.id", ondelete="SET NULL"), nullable=True),
-        sa.Column("user_id", sa.dialects.postgresql.UUID(as_uuid=True), sa.ForeignKey("users.id", ondelete="SET NULL"), nullable=True),
-        sa.Column("status", sa.String(20), server_default="success"),
-        sa.Column("metadata", sa.dialects.postgresql.JSONB(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()")),
-    )
+    # Use raw SQL with IF NOT EXISTS to handle the case where the table
+    # was already created by a previous create_all() call
+    op.execute("""
+        CREATE TABLE IF NOT EXISTS api_usage_logs (
+            id UUID DEFAULT gen_random_uuid() NOT NULL,
+            provider VARCHAR(30) NOT NULL,
+            operation VARCHAR(50) NOT NULL,
+            credits_used NUMERIC(10, 2),
+            input_tokens INTEGER,
+            output_tokens INTEGER,
+            task_id VARCHAR(100),
+            building_id UUID,
+            document_id UUID,
+            user_id UUID,
+            status VARCHAR(20) DEFAULT 'success',
+            metadata JSONB,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+            PRIMARY KEY (id),
+            FOREIGN KEY(building_id) REFERENCES buildings (id) ON DELETE SET NULL,
+            FOREIGN KEY(document_id) REFERENCES documents (id) ON DELETE SET NULL,
+            FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE SET NULL
+        )
+    """)
 
-    op.create_index("ix_api_usage_logs_provider_created_at", "api_usage_logs", ["provider", "created_at"])
-    op.create_index("ix_api_usage_logs_user_id_created_at", "api_usage_logs", ["user_id", "created_at"])
+    op.execute("""
+        CREATE INDEX IF NOT EXISTS ix_api_usage_logs_provider_created_at
+        ON api_usage_logs (provider, created_at)
+    """)
+    op.execute("""
+        CREATE INDEX IF NOT EXISTS ix_api_usage_logs_user_id_created_at
+        ON api_usage_logs (user_id, created_at)
+    """)
 
 
 def downgrade() -> None:
