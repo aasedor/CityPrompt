@@ -23,21 +23,137 @@ async def send_password_reset_email(to_email: str, reset_link: str) -> None:
     msg["To"] = to_email
     msg["Subject"] = f"{settings.app_name} - Password Reset"
 
+    year = __import__("datetime").datetime.now().year
+
     html = f"""\
-<html>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
-  <h2 style="color: #1a1a1a;">Password Reset</h2>
-  <p style="color: #4a4a4a; line-height: 1.6;">
-    You requested a password reset for your {settings.app_name} account.
-    Click the button below to set a new password. This link expires in 1 hour.
-  </p>
-  <a href="{reset_link}"
-     style="display: inline-block; background: #4f46e5; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
-    Reset Password
-  </a>
-  <p style="color: #888; font-size: 13px; margin-top: 24px;">
-    If you didn't request this, you can safely ignore this email.
-  </p>
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+
+<!-- Outer wrapper -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f2f5;padding:40px 0;">
+<tr><td align="center">
+
+<!-- Main card -->
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+  <!-- Header banner -->
+  <tr>
+    <td style="background:linear-gradient(135deg,#312e81 0%,#4f46e5 50%,#6366f1 100%);padding:48px 40px;text-align:center;">
+      <!-- Lock icon -->
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 20px;">
+        <tr>
+          <td style="background:rgba(255,255,255,0.15);border-radius:50%;width:72px;height:72px;text-align:center;vertical-align:middle;">
+            <span style="font-size:36px;line-height:72px;">&#128274;</span>
+          </td>
+        </tr>
+      </table>
+      <h1 style="margin:0 0 8px;color:#ffffff;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
+        Password Reset Request
+      </h1>
+      <p style="margin:0;color:rgba(255,255,255,0.85);font-size:15px;font-weight:400;">
+        {settings.app_name}
+      </p>
+    </td>
+  </tr>
+
+  <!-- Body content -->
+  <tr>
+    <td style="padding:40px;">
+
+      <p style="margin:0 0 20px;color:#1a1a1a;font-size:16px;line-height:1.7;">
+        We received a request to reset the password associated with
+        <strong style="color:#4f46e5;">{to_email}</strong>.
+      </p>
+
+      <p style="margin:0 0 28px;color:#4b5563;font-size:15px;line-height:1.7;">
+        Click the button below to create a new password. For your security,
+        this link will expire in <strong>1 hour</strong>.
+      </p>
+
+      <!-- CTA button -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" style="padding:4px 0 32px;">
+            <a href="{reset_link}"
+               style="display:inline-block;background:linear-gradient(135deg,#4f46e5,#4338ca);color:#ffffff;padding:16px 40px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 14px rgba(79,70,229,0.35);">
+              Reset Your Password &rarr;
+            </a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Link fallback -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:10px;margin-bottom:24px;">
+        <tr>
+          <td style="padding:16px 20px;">
+            <p style="margin:0 0 6px;color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">
+              Button not working? Copy this link:
+            </p>
+            <p style="margin:0;color:#4f46e5;font-size:12px;line-height:1.5;word-break:break-all;">
+              {reset_link}
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Security tips -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+        <tr>
+          <td style="padding:16px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="width:32px;vertical-align:top;">
+                  <span style="font-size:18px;">&#128272;</span>
+                </td>
+                <td>
+                  <strong style="color:#166534;font-size:13px;">Password Tips</strong>
+                  <ul style="margin:6px 0 0;padding-left:16px;color:#15803d;font-size:12px;line-height:1.8;">
+                    <li>Use at least 8 characters with a mix of letters, numbers, and symbols</li>
+                    <li>Avoid reusing passwords from other services</li>
+                    <li>Consider using a password manager for secure storage</li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+
+  <!-- Divider -->
+  <tr>
+    <td style="padding:0 40px;">
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:0;">
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="padding:24px 40px 32px;text-align:center;">
+      <p style="margin:0 0 6px;color:#9ca3af;font-size:12px;">
+        If you didn't request a password reset, you can safely ignore this email.
+        Your password will remain unchanged.
+      </p>
+      <p style="margin:0 0 6px;color:#9ca3af;font-size:12px;">
+        This is an automated message from {settings.app_name}.
+      </p>
+      <p style="margin:0;color:#d1d5db;font-size:11px;">
+        &copy; {year} {settings.app_name}. All rights reserved.
+      </p>
+    </td>
+  </tr>
+
+</table>
+<!-- /Main card -->
+
+</td></tr>
+</table>
+<!-- /Outer wrapper -->
+
 </body>
 </html>"""
 
