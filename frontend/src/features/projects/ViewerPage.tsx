@@ -935,10 +935,11 @@ export function ViewerPage() {
                   queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
                 }}
                 buildings={allBuildings}
+                allZones={siteZones}
               />
             )}
           </div>
-          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} projectId={id} zones={siteZones} selectedZoneId={selectedZoneId} onShowGuide={() => setShowGuide(true)} />
+          <SitePlannerToolbar onViewIn3D={handleExitSitePlanner} onWalkThrough={handleWalkThrough} onShowGuide={() => setShowGuide(true)} />
         </div>
       ) : (
         <>
@@ -1036,6 +1037,7 @@ export function ViewerPage() {
                 queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
               }}
               buildings={allBuildings}
+              allZones={siteZones}
             />
           )}
         </>

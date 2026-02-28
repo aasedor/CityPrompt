@@ -14,9 +14,10 @@ interface ZonePropertiesPanelProps {
   onClose: () => void;
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
   buildings?: Building[];
+  allZones?: SiteZone[];
 }
 
-export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const [name, setName] = useState(zone.name || '');
@@ -597,6 +598,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 }}
                 onAIGenerate={onAIGenerate}
                 referenceContext={osmContext}
+                siblingZones={allZones?.filter((z) => z.id !== zone.id)}
               />
             );
           }
@@ -613,6 +615,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 onApplied={() => {}}
                 onAIGenerate={onAIGenerate}
                 referenceContext={osmContext}
+                siblingZones={allZones?.filter((z) => z.id !== zone.id)}
               />
             );
           }

@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import type { SiteZone, LayoutOption, OSMContext, LockedLayers } from '@/types';
+import { ZONE_TYPE_CONFIG } from '@/types';
 
 interface SitePlanDiagramProps {
   zone: SiteZone;
   option: LayoutOption;
   referenceContext?: OSMContext | null;
   lockedLayers?: LockedLayers | null;
+  siblingZones?: SiteZone[];
   width?: number;
   height?: number;
   showLabels?: boolean;
@@ -84,6 +86,7 @@ export function SitePlanDiagram({
   option,
   referenceContext,
   lockedLayers,
+  siblingZones,
   width = 260,
   height = 180,
   showLabels = true,
@@ -199,6 +202,46 @@ export function SitePlanDiagram({
             strokeOpacity={0.3}
             strokeLinecap="round"
             strokeLinejoin="round"
+          />
+        );
+      })}
+
+      {/* User-drawn sibling zones */}
+      {siblingZones?.map((sz, i) => {
+        if (sz.id === zone.id || sz.coordinates.length < 3) return null;
+        const color = ZONE_TYPE_CONFIG[sz.zone_type]?.color || sz.color;
+        const pts = sz.coordinates
+          .map((c) => toSVG(c[0], c[1], transform))
+          .map(([x, y]) => `${x},${y}`)
+          .join(' ');
+
+        // Roads render as polylines, everything else as polygons
+        if (sz.zone_type === 'road') {
+          const roadW = Math.max(2, ((sz.properties?.width as number) || 8) * transform.scale);
+          return (
+            <polyline
+              key={`sib-${i}`}
+              points={pts}
+              fill="none"
+              stroke={color}
+              strokeWidth={roadW}
+              strokeOpacity={0.45}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          );
+        }
+
+        return (
+          <polygon
+            key={`sib-${i}`}
+            points={pts}
+            fill={color}
+            fillOpacity={sz.zone_type === 'site_boundary' ? 0 : 0.25}
+            stroke={color}
+            strokeWidth={sz.zone_type === 'site_boundary' ? 1.5 : 0.8}
+            strokeDasharray={sz.zone_type === 'site_boundary' ? '4,3' : undefined}
+            strokeOpacity={0.6}
           />
         );
       })}

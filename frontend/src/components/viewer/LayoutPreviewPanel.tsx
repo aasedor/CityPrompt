@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock } from 'lucide-react';
+import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock, Sparkles } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, LayoutOption, OSMContext, LockedLayers } from '@/types';
 import { siteZonesApi } from '@/services/api';
@@ -11,9 +11,10 @@ interface LayoutPreviewPanelProps {
   onApplied: () => void;
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
   referenceContext?: OSMContext | null;
+  siblingZones?: SiteZone[];
 }
 
-export function LayoutPreviewPanel({ zone, onApplied, referenceContext }: LayoutPreviewPanelProps) {
+export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZones }: LayoutPreviewPanelProps) {
   const {
     layoutPreview, setLayoutPreview, clearLayoutPreview, setActivePreviewIndex,
     lockedLayers, toggleLayerLock, clearLockedLayers,
@@ -21,6 +22,21 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext }: Layout
   const [loading, setLoading] = useState(false);
   const [applying, setApplying] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
+  const [previewImages, setPreviewImages] = useState<Record<number, string>>({});
+  const [renderingIndex, setRenderingIndex] = useState<number | null>(null);
+
+  const handleRenderPreview = async (idx: number, option: LayoutOption) => {
+    setRenderingIndex(idx);
+    try {
+      const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
+      setPreviewImages((prev) => ({ ...prev, [idx]: result.image_url }));
+      toast.success('Preview image rendered');
+    } catch {
+      toast.error('Failed to render preview image');
+    } finally {
+      setRenderingIndex(null);
+    }
+  };
 
   const isPreviewActive = layoutPreview?.zoneId === zone.id;
   const options = isPreviewActive ? layoutPreview!.options : [];
@@ -117,22 +133,35 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext }: Layout
           onClick={() => setActivePreviewIndex(idx)}
           referenceContext={referenceContext}
           lockedLayers={lockedLayers}
+          siblingZones={siblingZones}
+          previewImageUrl={previewImages[idx]}
+          isRendering={renderingIndex === idx}
+          onRenderPreview={() => handleRenderPreview(idx, opt)}
         />
       ))}
 
       {/* Expanded diagram for active option */}
       {activeOption && (
         <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
-          <SitePlanDiagram
-            zone={zone}
-            option={activeOption}
-            referenceContext={referenceContext}
-            lockedLayers={lockedLayers}
-            width={270}
-            height={200}
-            showLabels
-            showDimensions
-          />
+          {previewImages[activeIndex] ? (
+            <img
+              src={previewImages[activeIndex]}
+              alt="AI-rendered layout preview"
+              className="w-full rounded"
+            />
+          ) : (
+            <SitePlanDiagram
+              zone={zone}
+              option={activeOption}
+              referenceContext={referenceContext}
+              lockedLayers={lockedLayers}
+              siblingZones={siblingZones}
+              width={270}
+              height={200}
+              showLabels
+              showDimensions
+            />
+          )}
         </div>
       )}
 
@@ -208,6 +237,10 @@ function OptionCard({
   onClick,
   referenceContext,
   lockedLayers,
+  siblingZones,
+  previewImageUrl,
+  isRendering,
+  onRenderPreview,
 }: {
   option: LayoutOption;
   zone: SiteZone;
@@ -215,11 +248,15 @@ function OptionCard({
   onClick: () => void;
   referenceContext?: OSMContext | null;
   lockedLayers?: LockedLayers | null;
+  siblingZones?: SiteZone[];
+  previewImageUrl?: string;
+  isRendering?: boolean;
+  onRenderPreview?: () => void;
 }) {
   return (
-    <button
+    <div
       onClick={onClick}
-      className={`w-full rounded-lg border p-2 text-left transition-all ${
+      className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
         isActive
           ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
           : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
@@ -233,16 +270,35 @@ function OptionCard({
           {option.buildings.length} units
         </span>
       </div>
-      <SitePlanDiagram
-        zone={zone}
-        option={option}
-        referenceContext={referenceContext}
-        lockedLayers={isActive ? lockedLayers : undefined}
-        width={250}
-        height={140}
-        showLabels={false}
-        showDimensions={false}
-      />
+      {previewImageUrl ? (
+        <img
+          src={previewImageUrl}
+          alt="AI-rendered preview"
+          className="w-full rounded"
+        />
+      ) : (
+        <SitePlanDiagram
+          zone={zone}
+          option={option}
+          referenceContext={referenceContext}
+          lockedLayers={isActive ? lockedLayers : undefined}
+          siblingZones={siblingZones}
+          width={250}
+          height={140}
+          showLabels={false}
+          showDimensions={false}
+        />
+      )}
+      {!previewImageUrl && onRenderPreview && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onRenderPreview(); }}
+          disabled={isRendering}
+          className="mt-1.5 flex w-full items-center justify-center gap-1 rounded bg-purple-50 px-2 py-1 text-[10px] font-medium text-purple-600 hover:bg-purple-100 disabled:opacity-50"
+        >
+          {isRendering ? <Loader2 size={10} className="animate-spin" /> : <Sparkles size={10} />}
+          {isRendering ? 'Rendering...' : 'Render Preview'}
+        </button>
+      )}
       {option.density_achieved && (
         <div className="mt-1 text-[10px] text-gray-400">
           {option.density_achieved} units/ha
@@ -251,7 +307,7 @@ function OptionCard({
       <p className="mt-0.5 text-[10px] leading-tight text-gray-500 line-clamp-2">
         {option.reasoning}
       </p>
-    </button>
+    </div>
   );
 }
 

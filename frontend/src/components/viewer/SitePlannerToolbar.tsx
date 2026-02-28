@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Eye, MousePointer, Sparkles, Loader2, Footprints, RefreshCw, Building2, Route, TreePine, Map as MapIcon, ChevronUp, HelpCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
-import type { SiteZoneType, SiteZone, SiteZoneProperties, RoadPresetConfig, BuildingPresetConfig } from '@/types';
+import { Eye, MousePointer, Footprints, Building2, Route, TreePine, Map as MapIcon, ChevronUp, HelpCircle } from 'lucide-react';
+import type { SiteZoneType, SiteZoneProperties, RoadPresetConfig, BuildingPresetConfig } from '@/types';
 import { ZONE_TYPE_CONFIG, ROAD_PRESETS, BUILDING_PRESETS } from '@/types';
 import { useViewerStore } from '@/store';
-import { siteZonesApi } from '@/services/api';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 
 /** Logical groupings for zone types */
@@ -216,17 +214,11 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
 interface SitePlannerToolbarProps {
   onViewIn3D: () => void;
   onWalkThrough: () => void;
-  projectId?: string;
-  zones?: SiteZone[];
-  selectedZoneId?: string | null;
   onShowGuide?: () => void;
 }
 
-export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones, selectedZoneId, onShowGuide }: SitePlannerToolbarProps) {
+export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
-  const [generating, setGenerating] = useState(false);
-  const [regenerating, setRegenerating] = useState(false);
-  const [confirmRegenerate, setConfirmRegenerate] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const groupsRef = useRef<HTMLDivElement>(null);
 
@@ -242,61 +234,6 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [openGroup]);
-
-  // Detect if selected zone is a site_boundary
-  const selectedZone = selectedZoneId
-    ? (zones || []).find((z) => z.id === selectedZoneId)
-    : null;
-  const isBoundarySelected = selectedZone?.zone_type === 'site_boundary';
-
-  // Count building/residential zones that already have buildings
-  const buildingZones = (zones || []).filter(
-    (z) => (z.zone_type === 'building' || z.zone_type === 'residential')
-  );
-  const zonesWithBuildings = buildingZones.filter((z) => z.building_id);
-  const hasExistingBuildings = zonesWithBuildings.length > 0;
-
-  const handleGenerateAll = async () => {
-    if (!projectId) return;
-    setGenerating(true);
-    try {
-      let result;
-      if (isBoundarySelected && selectedZoneId) {
-        result = await siteZonesApi.generateForBoundary(projectId, selectedZoneId);
-      } else {
-        result = await siteZonesApi.generateAll(projectId);
-      }
-      toast.success(
-        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
-      );
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Generation failed';
-      toast.error(message);
-    } finally {
-      setGenerating(false);
-    }
-  };
-
-  const handleRegenerateAll = async () => {
-    if (!projectId) return;
-    if (!confirmRegenerate) {
-      setConfirmRegenerate(true);
-      return;
-    }
-    setConfirmRegenerate(false);
-    setRegenerating(true);
-    try {
-      const result = await siteZonesApi.generateAll(projectId);
-      toast.success(
-        `${result.generations_queued} buildings queued for regeneration`,
-      );
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Regeneration failed';
-      toast.error(message);
-    } finally {
-      setRegenerating(false);
-    }
-  };
 
   const handleSelectTool = (type: SiteZoneType, properties?: SiteZoneProperties) => {
     if (!properties && activeSitePlannerTool === type) {

@@ -30,6 +30,35 @@ settings = get_settings()
 METERS_PER_DEG_LAT = 111320
 
 
+def _upload_image_to_storage(key: str, data: bytes, content_type: str) -> str:
+    """Upload binary data to S3-compatible storage (MinIO). Returns the public URL."""
+    import boto3
+    from botocore.config import Config
+
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=settings.s3_endpoint_url,
+        aws_access_key_id=settings.s3_access_key,
+        aws_secret_access_key=settings.s3_secret_key,
+        region_name=settings.s3_region,
+        config=Config(signature_version="s3v4"),
+    )
+    try:
+        s3.head_bucket(Bucket=settings.s3_bucket_name)
+    except Exception:
+        try:
+            s3.create_bucket(Bucket=settings.s3_bucket_name)
+        except Exception:
+            pass
+    s3.put_object(
+        Bucket=settings.s3_bucket_name,
+        Key=key,
+        Body=data,
+        ContentType=content_type,
+    )
+    return f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{key}"
+
+
 def _meters_per_deg_lon(lat: float) -> float:
     return METERS_PER_DEG_LAT * abs(math.cos(math.radians(lat)))
 
@@ -230,11 +259,57 @@ class LayoutPlanner:
         height = properties.get("height")
         floors = properties.get("floors")
 
-        neighbor_text = ""
+        # Build user-drawn sibling zones section (spatial context)
+        sibling_section = ""
         if neighbors:
-            types = set(n.get("zone_type", "") for n in neighbors)
-            if types:
-                neighbor_text = f"\nSurrounding zone types: {', '.join(sorted(types))}"
+            sibling_parts = []
+            zone_type_labels = {
+                "road": "Road", "building": "Building", "residential": "Residential",
+                "green_space": "Green Space", "parking": "Parking/Plaza",
+                "water": "Water", "site_boundary": "Site Boundary",
+                "development_area": "Development Area",
+            }
+            for n in neighbors:
+                zt = n.get("zone_type", "")
+                # Skip site_boundary — it's context, not a spatial constraint
+                if zt == "site_boundary":
+                    continue
+                center = n.get("center")
+                if not center:
+                    continue
+                dx = round((center[0] - centroid.x) * mlon, 1)
+                dy = round((center[1] - centroid.y) * METERS_PER_DEG_LAT, 1)
+                w = n.get("width_m", 0)
+                d = n.get("depth_m", 0)
+                name = n.get("name") or zone_type_labels.get(zt, zt)
+                np = n.get("properties") or {}
+
+                desc_parts = [f"{zone_type_labels.get(zt, zt)}"]
+                if np.get("development_aesthetic"):
+                    desc_parts[0] = f"{np['development_aesthetic'].replace('_', ' ').title()} {desc_parts[0]}"
+                if np.get("height"):
+                    desc_parts.append(f"{np['height']}m tall")
+                if np.get("floors"):
+                    desc_parts.append(f"{np['floors']}F")
+                if np.get("width"):
+                    desc_parts.append(f"{np['width']}m wide road")
+                if np.get("facade_material"):
+                    desc_parts.append(np["facade_material"])
+
+                line = f"  - {name}: {', '.join(desc_parts)} — center at ({dx},{dy})m, {w:.0f}m x {d:.0f}m"
+                sibling_parts.append(line)
+
+            if sibling_parts:
+                sibling_section = f"""
+## User-Drawn Zones (already placed on site)
+{chr(10).join(sibling_parts)}
+
+**Coordination rules:**
+- Do NOT place buildings or roads overlapping these existing zones
+- Connect new roads to existing road zones where they touch the boundary
+- Match aesthetics and setbacks of adjacent building zones
+- Preserve green spaces and water features already placed
+"""
 
         # Build reference context section
         reference_section = ""
@@ -326,7 +401,7 @@ class LayoutPlanner:
 - Zone dimensions: {width_m:.0f}m wide x {depth_m:.0f}m deep ({area_m2:.0f} sq m)
 - Zone polygon (meters from centroid): {json.dumps(coords_m)}
 - Building height: {height or 'standard'}m, Floors: {floors or 'standard'}
-{neighbor_text}
+{sibling_section}
 {reference_section}
 {locked_section}
 
@@ -1056,3 +1131,96 @@ Return ONLY valid JSON matching this schema:
             reasoning=f"Algorithmic fallback: placed {len(buildings)} of {unit_count} buildings along a main road oriented to zone geometry",
             density_achieved=round(len(buildings) / max(area_ha, 0.01), 1),
         )
+
+    # -------------------------------------------------------------------------
+    # 2D Image Preview (Gemini)
+    # -------------------------------------------------------------------------
+
+    async def generate_layout_preview_image(
+        self,
+        zone_polygon: Polygon,
+        option: SiteLayoutOption,
+        properties: dict[str, Any],
+    ) -> bytes:
+        """Generate a photorealistic 2D aerial preview image using Gemini.
+
+        Returns PNG bytes of the rendered image.
+        """
+        if not settings.gemini_api_key:
+            raise RuntimeError("GEMINI_API_KEY is not configured")
+
+        centroid = zone_polygon.centroid
+        center_lat = centroid.y
+        mlon = _meters_per_deg_lon(center_lat)
+
+        bounds = zone_polygon.bounds
+        width_m = round(abs(bounds[2] - bounds[0]) * mlon, 1)
+        depth_m = round(abs(bounds[3] - bounds[1]) * METERS_PER_DEG_LAT, 1)
+
+        # Build descriptive prompt from layout data
+        building_desc = []
+        for b in option.buildings:
+            building_desc.append(
+                f"- {b.label or 'Building'}: {b.width_m}m x {b.depth_m}m, "
+                f"{b.floors} floors, at offset ({b.x_offset_m}, {b.y_offset_m})m, "
+                f"rotated {b.rotation_deg}°"
+            )
+
+        road_desc = []
+        for r in option.roads:
+            road_desc.append(
+                f"- {r.label or 'Road'}: {r.width_m}m wide, "
+                f"from ({r.start_x_m}, {r.start_y_m}) to ({r.end_x_m}, {r.end_y_m})"
+            )
+
+        green_desc = []
+        for g in option.green_spaces:
+            green_desc.append(
+                f"- {g.label or 'Green space'}: {g.width_m}m x {g.depth_m}m "
+                f"at ({g.x_offset_m}, {g.y_offset_m})m"
+            )
+
+        dev_type = properties.get("development_type", "residential")
+        aesthetic = properties.get("development_aesthetic", "modern suburban")
+
+        prompt = f"""Generate a photorealistic top-down aerial view (bird's eye / plan view) of a proposed {dev_type} development.
+
+Site dimensions: {width_m}m wide x {depth_m}m deep
+Layout strategy: {option.layout_strategy}
+Aesthetic: {aesthetic or 'modern suburban'}
+
+Buildings:
+{chr(10).join(building_desc) if building_desc else 'None'}
+
+Roads:
+{chr(10).join(road_desc) if road_desc else 'None'}
+
+Green spaces:
+{chr(10).join(green_desc) if green_desc else 'None'}
+
+Requirements:
+- Bird's-eye / top-down aerial perspective looking straight down
+- Photorealistic rendering with realistic textures: rooftops, asphalt roads, green lawns, trees
+- Include shadows for depth
+- Show driveways connecting buildings to roads
+- Landscaping with trees and shrubs around buildings
+- Clean, professional architectural visualization style
+- The image should look like a drone photo of the completed development
+"""
+
+        import google.generativeai as genai
+        genai.configure(api_key=settings.gemini_api_key)
+        model = genai.GenerativeModel("gemini-2.0-flash-exp")
+        response = model.generate_content(
+            prompt,
+            generation_config=genai.GenerationConfig(
+                response_modalities=["IMAGE", "TEXT"],
+            ),
+        )
+
+        # Extract image from response
+        for part in response.candidates[0].content.parts:
+            if hasattr(part, "inline_data") and part.inline_data is not None:
+                return part.inline_data.data
+
+        raise RuntimeError("Gemini did not return an image")

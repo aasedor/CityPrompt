@@ -41,6 +41,44 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _build_neighbor_list(zones: list) -> list[dict]:
+    """Build a neighbor list with geometry for AI layout context.
+
+    Extracts coordinates, dimensions, and properties for each zone
+    so the AI can understand spatial relationships.
+    """
+    neighbors = []
+    for z in zones:
+        zp = z.properties or {}
+        coords = []
+        center = None
+        width_m = 0
+        depth_m = 0
+        try:
+            shape = to_shape(z.geometry)
+            coords = [[c[0], c[1]] for c in shape.exterior.coords[:-1]]
+            centroid = shape.centroid
+            center = [centroid.x, centroid.y]
+            bounds = shape.bounds
+            center_lat = centroid.y
+            m_lon = 111320 * abs(math.cos(math.radians(center_lat)))
+            width_m = abs(bounds[2] - bounds[0]) * m_lon
+            depth_m = abs(bounds[3] - bounds[1]) * 111320
+        except Exception:
+            pass
+
+        neighbors.append({
+            "zone_type": z.zone_type,
+            "name": z.name,
+            "properties": zp,
+            "coordinates": coords,
+            "center": center,
+            "width_m": round(width_m, 1),
+            "depth_m": round(depth_m, 1),
+        })
+    return neighbors
+
+
 def _zone_to_response(zone: SiteZone) -> dict:
     """Convert a SiteZone ORM object to a response dict with coordinates."""
     coords: list[list[float]] = []
@@ -529,7 +567,7 @@ async def preview_layouts(
     shape = to_shape(zone.geometry)
     props = zone.properties or {}
 
-    # Gather neighbor context
+    # Gather neighbor context with geometry
     all_zones_result = await db.execute(
         select(SiteZone).where(
             SiteZone.project_id == zone.project_id,
@@ -537,23 +575,16 @@ async def preview_layouts(
         )
     )
     all_zones = all_zones_result.scalars().all()
-    neighbors = []
-    for z in all_zones:
-        neighbors.append({
-            "zone_type": z.zone_type,
-            "name": z.name,
-            "properties": z.properties,
-        })
+    neighbors = _build_neighbor_list(all_zones)
 
-    # For development_area, find parent site_boundary OSM context
+    # Find parent site_boundary OSM context for any zone inside a boundary
     reference_context = None
-    if zone.zone_type == "development_area":
-        for z in all_zones:
-            if z.zone_type == "site_boundary":
-                z_props = z.properties or {}
-                if "_osm_context" in z_props:
-                    reference_context = z_props["_osm_context"]
-                    break
+    for z in all_zones:
+        if z.zone_type == "site_boundary":
+            z_props = z.properties or {}
+            if "_osm_context" in z_props:
+                reference_context = z_props["_osm_context"]
+                break
 
     planner = LayoutPlanner()
     options = await planner.generate_layout_options(
@@ -570,6 +601,64 @@ async def preview_layouts(
         options=options,
         zone_id=str(zone_id),
     )
+
+
+@router.post("/{zone_id}/render-layout-preview")
+async def render_layout_preview(
+    zone_id: uuid.UUID,
+    body: dict,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Generate an AI-rendered 2D preview image for a layout option using Gemini.
+
+    Accepts a layout option and returns a URL to the rendered PNG image.
+    """
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id and not is_admin_or_above(user):
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == zone.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    # Parse layout from body
+    layout_data = body.get("layout")
+    if not layout_data:
+        raise HTTPException(status_code=400, detail="Missing 'layout' in request body")
+
+    try:
+        option = SiteLayoutOption(**layout_data)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid layout data: {e}")
+
+    shape = to_shape(zone.geometry)
+    props = zone.properties or {}
+
+    try:
+        from app.services.layout_planner import _upload_image_to_storage
+        planner = LayoutPlanner()
+        image_bytes = await planner.generate_layout_preview_image(shape, option, props)
+
+        # Upload to MinIO
+        preview_key = f"projects/{zone.project_id}/layout-previews/{zone_id}_{uuid.uuid4()}.png"
+        image_url = _upload_image_to_storage(preview_key, image_bytes, "image/png")
+
+        return {"image_url": image_url, "zone_id": str(zone_id)}
+    except Exception as e:
+        logger.error("Layout preview image generation failed for zone %s: %s", zone_id, e)
+        raise HTTPException(status_code=500, detail=f"Image generation failed: {e}")
 
 
 @router.post("/{zone_id}/apply-layout", response_model=BuildingResponse)
@@ -728,16 +817,15 @@ async def regenerate_layout(
         )
     )
     all_zones = all_zones_result.scalars().all()
-    neighbors = [{"zone_type": z.zone_type, "name": z.name, "properties": z.properties} for z in all_zones]
+    neighbors = _build_neighbor_list(all_zones)
 
     reference_context = None
-    if zone.zone_type == "development_area":
-        for z in all_zones:
-            if z.zone_type == "site_boundary":
-                z_props = z.properties or {}
-                if "_osm_context" in z_props:
-                    reference_context = z_props["_osm_context"]
-                    break
+    for z in all_zones:
+        if z.zone_type == "site_boundary":
+            z_props = z.properties or {}
+            if "_osm_context" in z_props:
+                reference_context = z_props["_osm_context"]
+                break
 
     planner = LayoutPlanner()
     options = await planner.generate_layout_options(
