@@ -22,6 +22,7 @@ import { AvatarCapsule } from './AvatarCapsule';
 import { SatelliteGroundPlane } from './SatelliteGroundPlane';
 import { AmbientAudio } from './AmbientAudio';
 import type { ThreeEvent } from '@react-three/fiber';
+import { ContextBuildingsGroup as EnhancedContextBuildingsGroup } from './ContextBuildings';
 
 /**
  * Calculate sun position based on time of day and date.
@@ -803,7 +804,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
 
       {/* Context buildings from OSM */}
       {settings.showExistingBuildings && contextBuildings && contextBuildings.length > 0 && (
-        <ContextBuildingsGroup buildings={contextBuildings} projectLat={latitude} projectLng={longitude} />
+        <EnhancedContextBuildingsGroup buildings={contextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} />
       )}
 
       {/* Roads from OSM — hidden when map is active (map shows real roads) */}
