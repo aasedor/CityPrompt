@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash2, Sparkles, Loader2, Plus, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, Plus, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -665,6 +665,9 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
   const [analysis, setAnalysis] = useState<BoundaryAnalysisResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [previewingAll, setPreviewingAll] = useState(false);
+  const selectZone = useViewerStore((s) => s.selectZone);
+  const { layoutPreview, setLayoutPreview, clearLockedLayers } = useViewerStore();
 
   useEffect(() => {
     let cancelled = false;
@@ -675,6 +678,42 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [zone.id]);
+
+  const handlePreviewAll = async () => {
+    if (!analysis) return;
+    const buildableZones = analysis.contained_zones.filter(
+      (z) => z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area'
+    );
+    if (buildableZones.length === 0) return;
+
+    setPreviewingAll(true);
+    let generated = 0;
+    try {
+      for (const cz of buildableZones) {
+        try {
+          const response = await siteZonesApi.previewLayouts(cz.id);
+          setLayoutPreview(cz.id, response.options);
+          clearLockedLayers();
+          generated++;
+        } catch {
+          // Skip zones that fail (e.g. single-unit zones)
+        }
+      }
+      if (generated > 0) {
+        toast.success(`Generated 2D layouts for ${generated} zone${generated > 1 ? 's' : ''}`);
+        // Select the first buildable zone to show its layout
+        if (buildableZones[0]) {
+          selectZone(buildableZones[0].id);
+        }
+      } else {
+        toast.error('No layout previews could be generated');
+      }
+    } catch {
+      toast.error('Failed to generate layout previews');
+    } finally {
+      setPreviewingAll(false);
+    }
+  };
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -708,35 +747,53 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
   }
 
   const hasZones = analysis.total_contained > 0;
-  const hasBuildableZones = Object.entries(analysis.zone_summary).some(
-    ([type]) => type === 'building' || type === 'residential'
+  const buildableTypes = ['building', 'residential', 'development_area'];
+  const buildableZones = analysis.contained_zones.filter(
+    (z) => buildableTypes.includes(z.zone_type)
   );
+  const hasBuildableZones = buildableZones.length > 0;
   const osmBuildings = analysis.osm_context?.buildings;
   const osmRoads = analysis.osm_context?.roads;
   const hasOsm = (osmBuildings?.count ?? 0) > 0 || (osmRoads?.count ?? 0) > 0;
 
+  // Check which buildable zones already have layout previews
+  const zonesWithPreviews = buildableZones.filter((z) => layoutPreview?.zoneId === z.id);
+  const hasAnyPreviews = zonesWithPreviews.length > 0;
+
   return (
     <div className="space-y-2">
-      {/* Contained zones summary */}
+      {/* Contained zones — clickable to select */}
       <div>
         <label className="block text-xs font-medium text-gray-600 mb-1">
           Contained Zones ({analysis.total_contained})
         </label>
         {hasZones ? (
-          <div className="space-y-1">
-            {Object.entries(analysis.zone_summary).map(([type, count]) => {
-              const config = ZONE_TYPE_CONFIG[type as keyof typeof ZONE_TYPE_CONFIG];
-              const Icon = ZONE_TYPE_ICONS[type] || MapPin;
+          <div className="space-y-0.5">
+            {analysis.contained_zones.map((cz) => {
+              const config = ZONE_TYPE_CONFIG[cz.zone_type as keyof typeof ZONE_TYPE_CONFIG];
+              const Icon = ZONE_TYPE_ICONS[cz.zone_type] || MapPin;
+              const isBuildable = buildableTypes.includes(cz.zone_type);
               return (
-                <div key={type} className="flex items-center gap-2 text-xs text-gray-700">
+                <button
+                  key={cz.id}
+                  onClick={() => selectZone(cz.id)}
+                  className={`flex w-full items-center gap-2 rounded px-1.5 py-1 text-xs text-left transition-colors ${
+                    isBuildable
+                      ? 'text-gray-700 hover:bg-indigo-50 cursor-pointer'
+                      : 'text-gray-500 hover:bg-gray-50 cursor-pointer'
+                  }`}
+                  title={isBuildable ? 'Click to edit & preview layout' : 'Click to edit zone'}
+                >
                   <span
-                    className="inline-block h-2.5 w-2.5 rounded-sm"
-                    style={{ backgroundColor: config?.color || '#999' }}
+                    className="inline-block h-2.5 w-2.5 rounded-sm flex-shrink-0"
+                    style={{ backgroundColor: cz.color || config?.color || '#999' }}
                   />
-                  <Icon size={11} className="text-gray-400" />
-                  <span>{config?.label || type}</span>
-                  <span className="ml-auto font-medium">{count}</span>
-                </div>
+                  <Icon size={11} className="text-gray-400 flex-shrink-0" />
+                  <span className="truncate">{cz.name || config?.label || cz.zone_type}</span>
+                  {isBuildable && (
+                    <span className="ml-auto text-[10px] text-indigo-400 flex-shrink-0">edit</span>
+                  )}
+                </button>
               );
             })}
           </div>
@@ -751,13 +808,13 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
       {hasOsm && (
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">
-            Existing Infrastructure (OSM)
+            Nearby Infrastructure (OSM)
           </label>
           <div className="space-y-0.5 text-xs text-gray-500">
             {osmBuildings?.count ? (
               <div className="flex items-center gap-1.5">
                 <Building2 size={10} />
-                <span>{osmBuildings.count} buildings</span>
+                <span>{osmBuildings.count} existing buildings</span>
                 {osmBuildings.avg_height ? (
                   <span className="text-gray-400">(avg {osmBuildings.avg_height.toFixed(0)}m)</span>
                 ) : null}
@@ -766,7 +823,7 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
             {osmRoads?.count ? (
               <div className="flex items-center gap-1.5">
                 <Route size={10} />
-                <span>{osmRoads.count} roads</span>
+                <span>{osmRoads.count} existing roads</span>
                 {osmRoads.named_roads?.length ? (
                   <span className="text-gray-400 truncate">
                     ({osmRoads.named_roads.slice(0, 3).join(', ')})
@@ -775,19 +832,53 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
               </div>
             ) : null}
           </div>
+          <p className="mt-0.5 text-[10px] text-gray-400">
+            Real-world data from OpenStreetMap used for context
+          </p>
         </div>
       )}
 
-      {/* Generate Neighborhood button */}
-      <button
-        onClick={handleGenerate}
-        disabled={generating || !hasBuildableZones}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50"
-        title={!hasBuildableZones ? 'Add building or residential zones inside the boundary first' : 'Generate 3D models for zones within this boundary'}
-      >
-        {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-        {generating ? 'Generating...' : 'Generate Neighborhood'}
-      </button>
+      {/* Step 1: Preview 2D Layouts */}
+      {hasBuildableZones && (
+        <div className="space-y-1.5">
+          <label className="block text-xs font-medium text-gray-600">
+            Step 1: Preview 2D Layouts
+          </label>
+          <button
+            onClick={handlePreviewAll}
+            disabled={previewingAll}
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            title="Generate AI 2D layout options for each buildable zone"
+          >
+            {previewingAll ? <Loader2 size={12} className="animate-spin" /> : <LayoutGrid size={12} />}
+            {previewingAll ? 'Generating previews...' : `Preview Layouts (${buildableZones.length} zone${buildableZones.length > 1 ? 's' : ''})`}
+          </button>
+          <p className="text-[10px] text-gray-400 text-center">
+            {hasAnyPreviews
+              ? 'Click a zone above to view & adjust its layout'
+              : 'AI generates 2D layout options for each zone to review before 3D'}
+          </p>
+        </div>
+      )}
+
+      {/* Step 2: Generate 3D */}
+      {hasBuildableZones && (
+        <div className="space-y-1.5">
+          <label className="block text-xs font-medium text-gray-600">
+            Step 2: Generate 3D Models
+          </label>
+          <button
+            onClick={handleGenerate}
+            disabled={generating}
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+            title="Generate 3D models for zones within this boundary"
+          >
+            {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+            {generating ? 'Generating...' : 'Generate 3D Neighborhood'}
+          </button>
+        </div>
+      )}
+
       {!hasBuildableZones && hasZones && (
         <p className="text-[10px] text-gray-400 text-center">
           Add building or residential zones inside the boundary to generate

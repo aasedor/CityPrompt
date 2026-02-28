@@ -1094,14 +1094,43 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
             "description": zp.get("description_text"),
         })
 
-    # Extract OSM context from boundary properties (stored during creation)
+    # Extract OSM context from boundary properties (stored during creation as _osm_context)
+    # Summarize raw arrays into prompt-friendly dicts
     boundary_props = boundary_zone.properties or {}
-    osm_ctx = boundary_props.get("osm_context", {})
+    osm_ctx = boundary_props.get("_osm_context", {})
+
+    osm_buildings_summary = {}
+    raw_buildings = osm_ctx.get("buildings", [])
+    if raw_buildings and isinstance(raw_buildings, list):
+        heights = [b.get("height_m") for b in raw_buildings if b.get("height_m")]
+        by_type: dict[str, int] = {}
+        for b in raw_buildings:
+            bt = b.get("building_type", "unknown")
+            by_type[bt] = by_type.get(bt, 0) + 1
+        osm_buildings_summary = {
+            "count": len(raw_buildings),
+            "avg_height": round(sum(heights) / len(heights), 1) if heights else None,
+            "by_type": by_type,
+        }
+
+    osm_roads_summary = {}
+    raw_roads = osm_ctx.get("roads", [])
+    if raw_roads and isinstance(raw_roads, list):
+        named = list({r.get("name") for r in raw_roads if r.get("name")})
+        by_road_type: dict[str, int] = {}
+        for r in raw_roads:
+            rt = r.get("road_type", "unknown")
+            by_road_type[rt] = by_road_type.get(rt, 0) + 1
+        osm_roads_summary = {
+            "count": len(raw_roads),
+            "named_roads": sorted(named),
+            "by_type": by_road_type,
+        }
 
     return {
         "sibling_zones": sibling_zones,
-        "osm_buildings": osm_ctx.get("buildings", {}),
-        "osm_roads": osm_ctx.get("roads", {}),
+        "osm_buildings": osm_buildings_summary,
+        "osm_roads": osm_roads_summary,
     }
 
 
@@ -1158,16 +1187,44 @@ async def boundary_analysis(
         })
         type_counts[z.zone_type] = type_counts.get(z.zone_type, 0) + 1
 
-    # OSM context from boundary properties
+    # OSM context from boundary properties (stored as _osm_context)
+    # Summarize raw arrays into frontend-friendly structure
     boundary_props = boundary.properties or {}
-    osm_context = boundary_props.get("osm_context", {})
+    raw_osm = boundary_props.get("_osm_context", {})
+
+    osm_summary: dict = {}
+    raw_buildings = raw_osm.get("buildings", [])
+    if raw_buildings and isinstance(raw_buildings, list):
+        heights = [b.get("height_m") for b in raw_buildings if b.get("height_m")]
+        by_type: dict[str, int] = {}
+        for b in raw_buildings:
+            bt = b.get("building_type", "unknown")
+            by_type[bt] = by_type.get(bt, 0) + 1
+        osm_summary["buildings"] = {
+            "count": len(raw_buildings),
+            "avg_height": round(sum(heights) / len(heights), 1) if heights else None,
+            "by_type": by_type,
+        }
+
+    raw_roads = raw_osm.get("roads", [])
+    if raw_roads and isinstance(raw_roads, list):
+        named = list({r.get("name") for r in raw_roads if r.get("name")})
+        by_road_type: dict[str, int] = {}
+        for r in raw_roads:
+            rt = r.get("road_type", "unknown")
+            by_road_type[rt] = by_road_type.get(rt, 0) + 1
+        osm_summary["roads"] = {
+            "count": len(raw_roads),
+            "named_roads": sorted(named),
+            "by_type": by_road_type,
+        }
 
     return {
         "boundary_zone_id": str(boundary.id),
         "contained_zones": zone_details,
         "zone_summary": type_counts,
         "total_contained": len(contained_zones),
-        "osm_context": osm_context,
+        "osm_context": osm_summary,
     }
 
 
