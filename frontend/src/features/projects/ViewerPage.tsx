@@ -347,24 +347,7 @@ export function ViewerPage() {
     return { position: [cx, 1.7, cz + 15], target: [cx, 1.7, cz] };
   }, [siteZones, effectiveLocation]);
 
-  // Handle "Walk Through" from site planner
-  const handleWalkThrough = useCallback(() => {
-    setSitePlannerActive(false);
-    setTimeout(() => {
-      const { position, target } = computeWalkthroughEntry();
-      // Save current camera state for return
-      startWalkthrough(
-        [position[0] + 50, 50, position[2] + 50], // Approximate current orbit position
-        [position[0], 0, position[2]],
-      );
-      // Animate camera to street level
-      setCameraTarget({ position, target, label: 'Walkthrough' });
-      // After animation, switch to first person
-      setTimeout(() => setCameraMode('firstPerson'), 700);
-    }, 300);
-  }, [setSitePlannerActive, computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
-
-  // Handle "Explore" from top bar (no site planner exit needed)
+  // Handle "Explore" — enter walkthrough at street level
   const handleExplore = useCallback(() => {
     const { position, target } = computeWalkthroughEntry();
     startWalkthrough(
@@ -374,6 +357,12 @@ export function ViewerPage() {
     setCameraTarget({ position, target, label: 'Walkthrough' });
     setTimeout(() => setCameraMode('firstPerson'), 700);
   }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
+
+  // Handle "Walk Through" from site planner — exit planner then explore
+  const handleWalkThrough = useCallback(() => {
+    setSitePlannerActive(false);
+    setTimeout(handleExplore, 300);
+  }, [setSitePlannerActive, handleExplore]);
 
   const updateBuilding = useMutation({
     mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean }) =>
