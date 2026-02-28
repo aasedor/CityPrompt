@@ -1363,19 +1363,20 @@ Requirements:
 - No labels, no annotations, no text overlays, no colored zones — pure photorealistic image
 """
 
-        import google.generativeai as genai
-        genai.configure(api_key=settings.gemini_api_key)
-        model = genai.GenerativeModel("gemini-2.0-flash-exp")
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.GenerationConfig(
+        from google import genai
+
+        client = genai.Client(api_key=settings.gemini_api_key)
+        response = client.models.generate_content(
+            model="gemini-2.0-flash-exp-image-generation",  # alternatives: gemini-2.5-flash-image, imagen-4.0-generate-001
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
                 response_modalities=["IMAGE", "TEXT"],
             ),
         )
 
         # Extract image from response
         for part in response.candidates[0].content.parts:
-            if hasattr(part, "inline_data") and part.inline_data is not None:
+            if part.inline_data is not None:
                 return part.inline_data.data
 
         raise RuntimeError("Gemini did not return an image")

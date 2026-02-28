@@ -11,6 +11,7 @@ const PROVIDER_COLORS: Record<string, string> = {
   tripo: 'bg-green-500',
   stability: 'bg-amber-500',
   anthropic: 'bg-purple-500',
+  gemini: 'bg-teal-500',
 };
 
 const PROVIDER_DOT_COLORS: Record<string, string> = {
@@ -18,6 +19,7 @@ const PROVIDER_DOT_COLORS: Record<string, string> = {
   tripo: 'bg-green-500',
   stability: 'bg-amber-500',
   anthropic: 'bg-purple-500',
+  gemini: 'bg-teal-500',
 };
 
 const ranges = ['7d', '30d', '90d', 'all'] as const;

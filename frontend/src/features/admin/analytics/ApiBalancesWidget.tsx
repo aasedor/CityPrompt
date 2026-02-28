@@ -173,6 +173,42 @@ export function ApiBalancesWidget({ data, loading, onRefresh }: Props) {
             </div>
           )}
 
+          {/* Gemini card */}
+          {data.gemini.configured ? (
+            <div className="rounded-lg border border-gray-100 bg-teal-50 p-3">
+              <div className="mb-2 flex items-center gap-2 text-teal-600">
+                <Bot size={16} />
+                <span className="text-xs font-semibold">Google Gemini</span>
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Total Calls</span>
+                  <span className="font-bold text-teal-700">{data.gemini.total_calls.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Input Tokens</span>
+                  <span className="font-medium text-gray-700">
+                    {(data.gemini.total_input_tokens / 1000).toFixed(1)}k
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Output Tokens</span>
+                  <span className="font-medium text-gray-700">
+                    {(data.gemini.total_output_tokens / 1000).toFixed(1)}k
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-gray-100 bg-gray-50 p-3">
+              <div className="mb-2 flex items-center gap-2">
+                <Minus size={16} className="text-gray-300" />
+                <span className="text-xs font-semibold text-gray-400">Google Gemini</span>
+              </div>
+              <p className="text-sm text-gray-400">Not configured</p>
+            </div>
+          )}
+
           {/* Non-metered services */}
           {data.services?.map((svc) => (
             <ServiceCard key={svc.provider} service={svc} />

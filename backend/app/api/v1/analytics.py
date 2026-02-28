@@ -23,6 +23,7 @@ from app.schemas.schemas import (
     TopUserEntry,
     ProviderBalance,
     AnthropicTokenUsage,
+    GeminiTokenUsage,
     ServiceStatus,
     ApiBalanceResponse,
     OperationBreakdown,
@@ -444,6 +445,28 @@ async def api_balances(
         await db.rollback()
         anthropic_usage = AnthropicTokenUsage(configured=anthropic_configured)
 
+    # Gemini token totals from usage logs
+    gemini_configured = bool(cfg.gemini_api_key)
+    try:
+        gemini_result = await db.execute(
+            select(
+                func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
+                func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
+                func.count().label("total_calls"),
+            )
+            .where(ApiUsageLog.provider == "gemini")
+        )
+        row = gemini_result.one()
+        gemini_usage = GeminiTokenUsage(
+            total_input_tokens=int(row.total_input),
+            total_output_tokens=int(row.total_output),
+            total_calls=int(row.total_calls),
+            configured=gemini_configured,
+        )
+    except Exception:
+        await db.rollback()
+        gemini_usage = GeminiTokenUsage(configured=gemini_configured)
+
     # Non-metered services
     services = [
         ServiceStatus(
@@ -463,6 +486,7 @@ async def api_balances(
         tripo=tripo_bal,
         stability=stability_bal,
         anthropic=anthropic_usage,
+        gemini=gemini_usage,
         services=services,
     )
 

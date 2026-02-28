@@ -503,7 +503,7 @@ export const siteZonesApi = {
   },
 
   previewLayouts: async (zoneId: string): Promise<LayoutPreviewResponse> => {
-    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/preview-layouts`);
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/preview-layouts`, {}, { timeout: 60000 });
     return data;
   },
 
@@ -537,7 +537,12 @@ export const siteZonesApi = {
       locked_roads: locked.roads,
       locked_buildings: locked.buildings,
       locked_green_spaces: locked.green_spaces,
-    });
+    }, { timeout: 60000 });
+    return data;
+  },
+
+  renderLayoutPreview: async (zoneId: string, layout: LayoutOption): Promise<{ image_url: string; zone_id: string }> => {
+    const { data } = await api.post(`/api/v1/site-zones/${zoneId}/render-layout-preview`, { layout }, { timeout: 60000 });
     return data;
   },
 
@@ -711,6 +716,13 @@ export interface AnthropicTokenUsage {
   configured: boolean;
 }
 
+export interface GeminiTokenUsage {
+  total_input_tokens: number;
+  total_output_tokens: number;
+  total_calls: number;
+  configured: boolean;
+}
+
 export interface ServiceStatus {
   provider: string;
   configured: boolean;
@@ -722,6 +734,7 @@ export interface ApiBalanceResponse {
   tripo: ProviderBalance;
   stability: ProviderBalance;
   anthropic: AnthropicTokenUsage;
+  gemini: GeminiTokenUsage;
   services: ServiceStatus[];
 }
 

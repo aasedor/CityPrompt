@@ -702,6 +702,14 @@ class AnthropicTokenUsage(BaseModel):
     configured: bool = True
 
 
+class GeminiTokenUsage(BaseModel):
+    """Aggregated Gemini token usage from usage logs."""
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+    total_calls: int = 0
+    configured: bool = True
+
+
 class ServiceStatus(BaseModel):
     """Status for a non-metered service (e.g. Mapbox, Google OAuth)."""
     provider: str
@@ -715,6 +723,7 @@ class ApiBalanceResponse(BaseModel):
     tripo: ProviderBalance
     stability: ProviderBalance
     anthropic: AnthropicTokenUsage
+    gemini: GeminiTokenUsage
     services: list[ServiceStatus] = []
 
 
