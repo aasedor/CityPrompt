@@ -5,6 +5,7 @@ import type { SiteZoneType, SiteZone, SiteZoneProperties, RoadPresetConfig, Buil
 import { ZONE_TYPE_CONFIG, ROAD_PRESETS, BUILDING_PRESETS } from '@/types';
 import { useViewerStore } from '@/store';
 import { siteZonesApi } from '@/services/api';
+import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 
 /** Logical groupings for zone types */
 const ZONE_GROUPS = [
@@ -310,6 +311,10 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
           <MousePointer size={14} />
           <span>Select</span>
         </button>
+
+        <div className="mx-0.5 hidden h-6 w-px bg-white/20 sm:block" />
+
+        <UndoRedoButtons />
 
         <div className="mx-0.5 hidden h-6 w-px bg-white/20 sm:block" />
 

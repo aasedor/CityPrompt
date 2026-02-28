@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_access_token_expire_minutes: int = 30
     jwt_refresh_token_expire_days: int = 7
-    allowed_origins: str = "http://localhost:5173,http://localhost:3000,http://localhost:3001"
+    allowed_origins: str = "http://localhost:5173,http://localhost:5174,http://localhost:3000,http://localhost:3001"
 
     @property
     def cors_origins(self) -> List[str]:
@@ -87,6 +87,8 @@ class Settings(BaseSettings):
     tripo_api_key: str = ""
     tripo_api_base: str = "https://api.tripo3d.ai"
     default_generation_engine: str = "meshy"
+    gemini_api_key: str = ""
+    layout_ai_provider: str = "claude"
 
     # --- Object Storage ---
     s3_bucket_name: str = "dev-platform-uploads"

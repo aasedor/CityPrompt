@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties } from '@/types';
 import type { AuthUser } from '@/services/api';
 
+// Re-export undo/redo store
+export { useUndoRedoStore, selectCanUndo, selectCanRedo } from './undoRedo';
+
 // =============================================================================
 // Auth Store
 // =============================================================================

@@ -5,6 +5,13 @@ import { siteZonesApi } from '@/services/api';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
+import { useUndoRedoStore } from '@/store/undoRedo';
+import {
+  createZoneCreateAction,
+  createZoneDeleteAction,
+  createZoneUpdateAction,
+  createZoneCoordinatesAction,
+} from '@/store/undoActions';
 
 export function useSiteZones(projectId: string | undefined) {
   const queryClient = useQueryClient();
@@ -43,9 +50,15 @@ export function useSiteZones(projectId: string | undefined) {
       queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) => [...(old ?? []), optimistic]);
       return { previous };
     },
-    onSuccess: () => {
+    onSuccess: (createdZone) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone created');
+      // Push undo action (skip if this was triggered by undo/redo system)
+      if (!useUndoRedoStore.getState()._isSystemAction && projectId) {
+        useUndoRedoStore.getState().pushAction(
+          createZoneCreateAction(projectId, createdZone, queryClient),
+        );
+      }
     },
     onError: (err: Error, _vars, context) => {
       // Roll back to previous state on failure
@@ -57,11 +70,17 @@ export function useSiteZones(projectId: string | undefined) {
   });
 
   const updateZone = useMutation({
-    mutationFn: (vars: { zoneId: string; data: { name?: string; properties?: SiteZoneProperties } }) =>
+    mutationFn: (vars: { zoneId: string; data: { name?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; properties?: SiteZoneProperties } }) =>
       siteZonesApi.update(vars.zoneId, vars.data),
-    onSuccess: () => {
+    onSuccess: (_result, vars) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone updated');
+      // Push undo action
+      if (!useUndoRedoStore.getState()._isSystemAction && projectId && vars.previousData) {
+        useUndoRedoStore.getState().pushAction(
+          createZoneUpdateAction(projectId, vars.zoneId, vars.previousData, vars.data, queryClient),
+        );
+      }
     },
     onError: (err: Error) => {
       toast.error(`Failed to update zone: ${err.message}`);
@@ -70,10 +89,22 @@ export function useSiteZones(projectId: string | undefined) {
 
   const deleteZone = useMutation({
     mutationFn: (zoneId: string) => siteZonesApi.delete(zoneId),
-    onSuccess: () => {
+    onMutate: (zoneId) => {
+      // Capture zone snapshot before deletion for undo
+      const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
+      const deletedZone = zones?.find((z) => z.id === zoneId);
+      return { deletedZone };
+    },
+    onSuccess: (_data, _zoneId, context) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       selectZone(null);
       toast.success('Zone deleted');
+      // Push undo action
+      if (!useUndoRedoStore.getState()._isSystemAction && projectId && context?.deletedZone) {
+        useUndoRedoStore.getState().pushAction(
+          createZoneDeleteAction(projectId, context.deletedZone, queryClient),
+        );
+      }
     },
     onError: (err: Error) => {
       toast.error(`Failed to delete zone: ${err.message}`);
@@ -86,8 +117,19 @@ export function useSiteZones(projectId: string | undefined) {
   }, [createZone]);
 
   const handleZoneUpdated = useCallback((zoneId: string, coordinates: number[][]) => {
+    // Capture previous coordinates from cache before updating
+    const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
+    const prevZone = zones?.find((z) => z.id === zoneId);
+    const prevCoords = prevZone?.coordinates;
+
     siteZonesApi.update(zoneId, { coordinates }).then(() => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      // Push undo action for coordinate change
+      if (!useUndoRedoStore.getState()._isSystemAction && projectId && prevCoords) {
+        useUndoRedoStore.getState().pushAction(
+          createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient),
+        );
+      }
     });
   }, [queryClient, projectId]);
 

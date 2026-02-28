@@ -5,6 +5,16 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Camera, Download, Video, Square, MessageSquarePlus, X, Users, Eye, EyeOff, Map as MapIcon, Trash2, Sparkles, Move, RotateCw, Loader2, Footprints } from 'lucide-react';
 import { projectsApi, buildingsApi, contextApi, annotationsApi, siteZonesApi } from '@/services/api';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
+import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
+import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
+import { useUndoRedoStore } from '@/store/undoRedo';
+import {
+  createBuildingDeleteAction,
+  createBuildingUpdateAction,
+  createBuildingMoveAction,
+  createBuildingRotationAction,
+  createBuildingMaterialAction,
+} from '@/store/undoActions';
 // Annotation type used implicitly via annotationsApi
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { SceneViewer } from '@/components/viewer/SceneViewer';
@@ -50,6 +60,12 @@ export function ViewerPage() {
   const queryClient = useQueryClient();
   const { selectedBuildingId, selectBuilding, hoverBuilding, isInfoPanelOpen, settings, isComparing, comparePhase, compareDivider, setCompareDivider, isAnnotating, setAnnotating, isSitePlannerActive, setSitePlannerActive, selectedZoneId, selectZone, setCameraTarget, setCameraMode, isMovingBuilding, setMovingBuilding, isWalkthroughActive, startWalkthrough, exitWalkthrough } = useViewerStore();
   const { user } = useAuthStore();
+
+  // Undo/Redo keyboard shortcuts
+  useUndoRedoKeyboard();
+
+  // Track rotation value before drag starts for undo
+  const rotationBeforeDrag = useRef<number | null>(null);
 
   // Real-time collaboration
   const collaboration = useCollaboration(id, user?.full_name || user?.email || 'Anonymous');
@@ -371,7 +387,7 @@ export function ViewerPage() {
   }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode, setSitePlannerActive]);
 
   const updateBuilding = useMutation({
-    mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean }) =>
+    mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean; _undoPrevious?: Record<string, unknown>; _undoLabel?: string }) =>
       buildingsApi.update(vars.buildingId, vars.data),
     onMutate: async (vars) => {
       // Optimistically update cache for silent updates (move/rotation)
@@ -399,6 +415,19 @@ export function ViewerPage() {
       }
       // Broadcast edit to collaborators
       collaboration.sendEdit(vars.buildingId, vars.data);
+      // Push undo action when previous data is provided
+      if (!useUndoRedoStore.getState()._isSystemAction && id && vars._undoPrevious) {
+        useUndoRedoStore.getState().pushAction(
+          createBuildingUpdateAction(
+            id,
+            vars.buildingId,
+            vars._undoPrevious,
+            vars.data,
+            vars._undoLabel || 'Update building',
+            queryClient,
+          ),
+        );
+      }
     },
     onError: (_err, vars, context) => {
       // Roll back optimistic update on error
@@ -416,10 +445,22 @@ export function ViewerPage() {
 
   const deleteBuilding = useMutation({
     mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
-    onSuccess: () => {
+    onMutate: (buildingId) => {
+      // Capture building snapshot before deletion for undo
+      const project = queryClient.getQueryData<any>(['project', id]);
+      const building = project?.buildings?.find((b: any) => b.id === buildingId);
+      return { building };
+    },
+    onSuccess: (_data, _buildingId, context) => {
       queryClient.invalidateQueries({ queryKey: ['project', id] });
       selectBuilding(null);
       toast.success('Building deleted');
+      // Push undo action
+      if (!useUndoRedoStore.getState()._isSystemAction && id && context?.building) {
+        useUndoRedoStore.getState().pushAction(
+          createBuildingDeleteAction(id, context.building, queryClient),
+        );
+      }
     },
     onError: () => {
       toast.error('Failed to delete building');
@@ -446,6 +487,9 @@ export function ViewerPage() {
     const metersPerDegLat = 111320;
     const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
 
+    // Capture previous coordinates for undo
+    const previousCoords = building.footprint_coordinates ? [...building.footprint_coordinates.map(c => [...c])] : undefined;
+
     if (building.footprint_coordinates && building.footprint_coordinates.length >= 3) {
       // Existing footprint — shift it by the delta
       let oldCx = 0, oldCy = 0;
@@ -464,6 +508,12 @@ export function ViewerPage() {
 
       const newCoords = building.footprint_coordinates.map(([pLng, pLat]) => [pLng + dLng, pLat + dLat]);
       updateBuilding.mutate({ buildingId, data: { footprint_coordinates: newCoords }, silent: true });
+      // Push undo action for move
+      if (!useUndoRedoStore.getState()._isSystemAction && id && previousCoords) {
+        useUndoRedoStore.getState().pushAction(
+          createBuildingMoveAction(id, buildingId, previousCoords, newCoords, queryClient),
+        );
+      }
     } else {
       // No footprint yet — create a footprint proportional to the building height
       const clickLng = lng + position[0] / metersPerDegLon;
@@ -483,7 +533,7 @@ export function ViewerPage() {
     }
 
     setMovingBuilding(false);
-  }, [allBuildings, effectiveLocation, updateBuilding, setMovingBuilding]);
+  }, [allBuildings, effectiveLocation, updateBuilding, setMovingBuilding, id, queryClient]);
 
   const handleSubmitAnnotation = useCallback(() => {
     if (!pendingAnnotationPos || !annotationText.trim()) return;
@@ -672,6 +722,7 @@ export function ViewerPage() {
             <h1 className="truncate text-sm font-semibold text-white sm:text-lg">{project?.name || 'Loading...'}</h1>
             <p className="text-xs text-gray-300">{project?.buildings?.length || 0} buildings</p>
           </div>
+          <UndoRedoButtons />
           {/* Presence indicators with follow mode */}
           {collaboration.users.length > 1 && (
             <div className="ml-2 flex items-center gap-1" title={`${collaboration.users.length} viewers online`}>
@@ -1007,13 +1058,9 @@ export function ViewerPage() {
                 <Move size={14} />
               </button>
               <button
-                onClick={() => {
-                  if (confirm('Delete this building? This cannot be undone.')) {
-                    deleteBuilding.mutate(selectedBuilding.id);
-                  }
-                }}
+                onClick={() => deleteBuilding.mutate(selectedBuilding.id)}
                 className="rounded-md p-1 text-gray-400 hover:bg-red-100 hover:text-red-600"
-                title="Delete building"
+                title="Delete building (Ctrl+Z to undo)"
               >
                 <Trash2 size={14} />
               </button>
@@ -1081,6 +1128,13 @@ export function ViewerPage() {
                   updateBuilding.mutate({
                     buildingId: selectedBuilding.id,
                     data: editValues,
+                    _undoPrevious: {
+                      height_meters: selectedBuilding.height_meters,
+                      floor_count: selectedBuilding.floor_count,
+                      floor_height_meters: selectedBuilding.floor_height_meters,
+                      roof_type: selectedBuilding.roof_type,
+                    },
+                    _undoLabel: 'Edit building',
                   })
                 }
                 disabled={updateBuilding.isPending}
@@ -1148,6 +1202,10 @@ export function ViewerPage() {
             buildingId={selectedBuilding.id}
             value={selectedBuilding.rotation_degrees ?? 0}
             onDrag={(deg) => {
+              // Capture the rotation before drag starts for undo
+              if (rotationBeforeDrag.current === null) {
+                rotationBeforeDrag.current = selectedBuilding.rotation_degrees ?? 0;
+              }
               // Optimistic cache update for instant 3D feedback (no API call)
               queryClient.setQueryData(['project', id], (old: any) => {
                 if (!old?.buildings) return old;
@@ -1160,6 +1218,14 @@ export function ViewerPage() {
               });
             }}
             onCommit={(deg) => {
+              // Push undo action for rotation change
+              const prevDeg = rotationBeforeDrag.current;
+              rotationBeforeDrag.current = null;
+              if (!useUndoRedoStore.getState()._isSystemAction && id && prevDeg !== null && prevDeg !== deg) {
+                useUndoRedoStore.getState().pushAction(
+                  createBuildingRotationAction(id, selectedBuilding.id, prevDeg, deg, queryClient),
+                );
+              }
               // Save to API only when user releases the slider
               updateBuilding.mutate({
                 buildingId: selectedBuilding.id,
@@ -1186,12 +1252,20 @@ export function ViewerPage() {
                   <button
                     key={mat}
                     title={mat}
-                    onClick={() =>
+                    onClick={() => {
+                      const prevSpecs = selectedBuilding.specifications ? { ...selectedBuilding.specifications } : undefined;
+                      const newSpecs = { ...selectedBuilding.specifications, facade_material: mat };
+                      // Push undo action for material change
+                      if (!useUndoRedoStore.getState()._isSystemAction && id) {
+                        useUndoRedoStore.getState().pushAction(
+                          createBuildingMaterialAction(id, selectedBuilding.id, prevSpecs, newSpecs, queryClient),
+                        );
+                      }
                       updateBuilding.mutate({
                         buildingId: selectedBuilding.id,
-                        data: { specifications: { ...selectedBuilding.specifications, facade_material: mat } },
-                      })
-                    }
+                        data: { specifications: newSpecs },
+                      });
+                    }}
                     className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium capitalize transition-all ${
                       isActive
                         ? 'ring-2 ring-primary-500 ring-offset-1 bg-primary-50 text-primary-700'

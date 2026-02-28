@@ -9,6 +9,8 @@ import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
+import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { useState } from 'react';
 
 export function SitePlannerPage() {
@@ -21,6 +23,7 @@ export function SitePlannerPage() {
     selectZone,
   } = useViewerStore();
 
+  useUndoRedoKeyboard();
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
 
   // Activate site planner on mount, set residential as default tool
@@ -111,14 +114,17 @@ export function SitePlannerPage() {
           )}
         </div>
 
-        <Link
-          to={`/projects/${id}/viewer`}
-          className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
-        >
-          <Eye size={14} />
-          <span className="hidden sm:inline">View in 3D</span>
-          <span className="sm:hidden">3D</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <UndoRedoButtons />
+          <Link
+            to={`/projects/${id}/viewer`}
+            className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
+          >
+            <Eye size={14} />
+            <span className="hidden sm:inline">View in 3D</span>
+            <span className="sm:hidden">3D</span>
+          </Link>
+        </div>
       </div>
 
       {/* Map fills remaining space */}

@@ -10,6 +10,7 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.shape import to_shape
+from shapely.geometry import Polygon
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,6 +19,7 @@ from app.core.security import is_admin_or_above, require_auth
 from app.models.models import Building, Project, ProjectShare, SiteZone, User
 from app.schemas.schemas import BuildingResponse, SiteZoneCreate, SiteZoneResponse, SiteZoneUpdate
 from app.api.v1.buildings import _building_to_response
+from app.services.layout_planner import LayoutPlanner
 
 router = APIRouter()
 
@@ -294,6 +296,90 @@ def _make_footprint_polygon(cx: float, cy: float, cell_w: float, cell_h: float, 
     return f"POLYGON(({', '.join(coords)}))"
 
 
+def _make_rotated_footprint(
+    cx: float, cy: float, half_w_deg: float, half_h_deg: float, rotation_deg: float
+) -> str:
+    """Create a WKT POLYGON for a rotated rectangular footprint centered at (cx, cy).
+
+    half_w_deg/half_h_deg are half-dimensions in degrees.
+    rotation_deg is clockwise rotation from north (0=north-aligned).
+    """
+    # Build corners in local space then rotate
+    corners = [
+        (-half_w_deg, -half_h_deg),
+        ( half_w_deg, -half_h_deg),
+        ( half_w_deg,  half_h_deg),
+        (-half_w_deg,  half_h_deg),
+    ]
+
+    rad = math.radians(rotation_deg)
+    cos_r = math.cos(rad)
+    sin_r = math.sin(rad)
+
+    rotated = []
+    for dx, dy in corners:
+        rx = dx * cos_r - dy * sin_r
+        ry = dx * sin_r + dy * cos_r
+        rotated.append(f"{cx + rx} {cy + ry}")
+    # Close polygon
+    rotated.append(rotated[0])
+
+    return f"POLYGON(({', '.join(rotated)}))"
+
+
+METERS_PER_DEG_LAT = 111320
+
+
+def _m_to_deg_lon(m: float, lat: float) -> float:
+    return m / (METERS_PER_DEG_LAT * abs(math.cos(math.radians(lat))))
+
+
+def _m_to_deg_lat(m: float) -> float:
+    return m / METERS_PER_DEG_LAT
+
+
+async def _generate_layout_for_zone(
+    zone: SiteZone,
+    unit_count: int,
+    all_zones: list | None = None,
+) -> "SiteLayoutResponse":
+    """Call LayoutPlanner to generate an AI-powered site layout for a zone.
+
+    Falls back to algorithmic layout if AI is unavailable.
+    """
+    from app.schemas.schemas import SiteLayoutResponse
+
+    shape = to_shape(zone.geometry)
+    if not isinstance(shape, Polygon):
+        # If geometry is not a polygon, convert bounds to polygon
+        minx, miny, maxx, maxy = shape.bounds
+        shape = Polygon([(minx, miny), (maxx, miny), (maxx, maxy), (minx, maxy)])
+
+    props = zone.properties or {}
+
+    # Build neighbor context
+    neighbors = None
+    if all_zones:
+        neighbors = []
+        for other in all_zones:
+            if other.id == zone.id:
+                continue
+            neighbors.append({
+                "zone_type": other.zone_type,
+                "name": other.name,
+            })
+
+    planner = LayoutPlanner()
+    layout = await planner.generate_layout(
+        zone_polygon=shape,
+        zone_type=zone.zone_type,
+        unit_count=unit_count,
+        properties=props,
+        neighbors=neighbors,
+    )
+    return layout
+
+
 @router.post("/{zone_id}/create-building", response_model=BuildingResponse)
 async def create_building_from_zone(
     zone_id: uuid.UUID,
@@ -359,20 +445,60 @@ async def create_building_from_zone(
 
         return _building_to_response(building)
 
-    # Multi-unit: create N buildings in a grid layout
-    grid_positions = compute_unit_positions(zone.geometry, unit_count)
+    # Multi-unit: generate AI-powered layout (falls back to algorithmic)
+    try:
+        layout = await _generate_layout_for_zone(zone, unit_count)
+    except Exception as e:
+        logger.warning("Layout generation failed for zone %s, falling back to grid: %s", zone_id, e)
+        # Last-resort fallback to old grid
+        grid_positions = compute_unit_positions(zone.geometry, unit_count)
+        all_building_ids_fallback: list[str] = []
+        first_building_fallback = None
+        for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
+            footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+            building = Building(
+                project_id=zone.project_id,
+                name=f"{zone.name or 'Unit'} #{i + 1}",
+                footprint=WKTElement(footprint_wkt, srid=4326),
+                height_meters=props.get("height"),
+                floor_count=props.get("floors"),
+                roof_type=props.get("roof_style"),
+            )
+            db.add(building)
+            await db.flush()
+            await db.refresh(building)
+            all_building_ids_fallback.append(str(building.id))
+            if i == 0:
+                first_building_fallback = building
+        zone.building_id = first_building_fallback.id
+        zone.building_ids = all_building_ids_fallback
+        await db.flush()
+        return _building_to_response(first_building_fallback)
+
+    # Use AI-generated layout to create buildings
+    shape = to_shape(zone.geometry)
+    centroid = shape.centroid
+    center_lat = centroid.y
     all_building_ids: list[str] = []
     first_building = None
 
-    for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
-        footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+    for i, lb in enumerate(layout.buildings):
+        abs_cx = centroid.x + lb.center_x
+        abs_cy = centroid.y + lb.center_y
+
+        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
+        half_h = _m_to_deg_lat(lb.depth_m / 2)
+
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+
         building = Building(
             project_id=zone.project_id,
             name=f"{zone.name or 'Unit'} #{i + 1}",
             footprint=WKTElement(footprint_wkt, srid=4326),
-            height_meters=props.get("height"),
-            floor_count=props.get("floors"),
+            height_meters=lb.height_m or props.get("height"),
+            floor_count=lb.floors or props.get("floors"),
             roof_type=props.get("roof_style"),
+            rotation_degrees=lb.rotation_deg,
         )
         db.add(building)
         await db.flush()
@@ -381,6 +507,19 @@ async def create_building_from_zone(
 
         if i == 0:
             first_building = building
+
+    if not first_building:
+        raise HTTPException(status_code=500, detail="Layout generation produced no valid buildings")
+
+    # Store layout metadata in zone properties
+    updated_props = dict(props)
+    updated_props["_layout_strategy"] = layout.layout_strategy
+    updated_props["_layout_reasoning"] = layout.reasoning
+    updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
+    updated_props["_layout_green_spaces"] = [g.model_dump() for g in layout.green_spaces]
+    if layout.density_achieved:
+        updated_props["_layout_density"] = layout.density_achieved
+    zone.properties = updated_props
 
     # Link zone to all buildings
     zone.building_id = first_building.id
@@ -604,20 +743,72 @@ async def generate_all(
             await db.flush()
             buildings_created += 1
         else:
-            # Multi-unit: create N buildings in a grid layout
-            grid_positions = compute_unit_positions(zone.geometry, unit_count)
+            # Multi-unit: generate AI-powered layout
+            try:
+                layout = await _generate_layout_for_zone(zone, unit_count, all_zones)
+            except Exception as layout_err:
+                logger.warning("Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err)
+                grid_positions = compute_unit_positions(zone.geometry, unit_count)
+                all_building_ids_fb: list[str] = []
+                first_building_fb = None
+                for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
+                    footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+                    b = Building(
+                        project_id=zone.project_id,
+                        name=f"{zone.name or 'Unit'} #{i + 1}",
+                        footprint=WKTElement(footprint_wkt, srid=4326),
+                        height_meters=zone_props.get("height"),
+                        floor_count=zone_props.get("floors"),
+                        roof_type=zone_props.get("roof_style"),
+                    )
+                    db.add(b)
+                    await db.flush()
+                    await db.refresh(b)
+                    all_building_ids_fb.append(str(b.id))
+                    if i == 0:
+                        first_building_fb = b
+                zone.building_id = first_building_fb.id
+                zone.building_ids = all_building_ids_fb
+                await db.flush()
+                buildings_created += unit_count
+                building = first_building_fb
+                prompt = compose_zone_prompt(zone, all_zones)
+                building.generation_status = "generating"
+                building.generation_prompt = prompt
+                await db.flush()
+                try:
+                    from app.tasks.processing import generate_3d_model_ai
+                    if ref_images:
+                        generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                    else:
+                        generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                    generations_queued += 1
+                except Exception as e:
+                    logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+                continue
+
+            # Use AI layout to create buildings
+            shape = to_shape(zone.geometry)
+            centroid = shape.centroid
+            center_lat = centroid.y
             all_building_ids: list[str] = []
             first_building = None
 
-            for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
-                footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+            for i, lb in enumerate(layout.buildings):
+                abs_cx = centroid.x + lb.center_x
+                abs_cy = centroid.y + lb.center_y
+                half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
+                half_h = _m_to_deg_lat(lb.depth_m / 2)
+                footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+
                 b = Building(
                     project_id=zone.project_id,
                     name=f"{zone.name or 'Unit'} #{i + 1}",
                     footprint=WKTElement(footprint_wkt, srid=4326),
-                    height_meters=zone_props.get("height"),
-                    floor_count=zone_props.get("floors"),
+                    height_meters=lb.height_m or zone_props.get("height"),
+                    floor_count=lb.floors or zone_props.get("floors"),
                     roof_type=zone_props.get("roof_style"),
+                    rotation_degrees=lb.rotation_deg,
                 )
                 db.add(b)
                 await db.flush()
@@ -626,10 +817,23 @@ async def generate_all(
                 if i == 0:
                     first_building = b
 
+            if not first_building:
+                continue
+
+            # Store layout metadata in zone properties
+            updated_props = dict(zone_props)
+            updated_props["_layout_strategy"] = layout.layout_strategy
+            updated_props["_layout_reasoning"] = layout.reasoning
+            updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
+            updated_props["_layout_green_spaces"] = [g.model_dump() for g in layout.green_spaces]
+            if layout.density_achieved:
+                updated_props["_layout_density"] = layout.density_achieved
+            zone.properties = updated_props
+
             zone.building_id = first_building.id
             zone.building_ids = all_building_ids
             await db.flush()
-            buildings_created += unit_count
+            buildings_created += len(layout.buildings)
             building = first_building
 
         # Compose prompt and queue generation (only for first building)

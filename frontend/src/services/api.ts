@@ -746,4 +746,26 @@ export const analyticsApi = {
   },
 };
 
+// =============================================================================
+// Platform Settings (Cofounder)
+// =============================================================================
+
+export interface PlatformSettings {
+  layout_ai_provider: string;
+  claude_configured: boolean;
+  gemini_configured: boolean;
+}
+
+export const settingsApi = {
+  getPlatformSettings: async (): Promise<PlatformSettings> => {
+    const { data } = await api.get('/api/v1/settings/platform-settings');
+    return data;
+  },
+
+  updatePlatformSettings: async (update: { layout_ai_provider?: string }): Promise<PlatformSettings> => {
+    const { data } = await api.put('/api/v1/settings/platform-settings', update);
+    return data;
+  },
+};
+
 export default api;

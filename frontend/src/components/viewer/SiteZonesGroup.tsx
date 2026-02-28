@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { SiteZone } from '@/types';
+import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData } from '@/types';
 
 // =============================================================================
 // Public API
@@ -231,7 +231,17 @@ function SiteZoneMesh({
     case 'residential':
       // Once buildings are linked to this zone, hide the procedural placeholder
       // to avoid duplicate geometry (the real buildings render via SceneViewer)
-      if (hasLinkedBuildings) return null;
+      // But still render AI-generated layout infrastructure (roads, green spaces)
+      if (hasLinkedBuildings) {
+        const layoutRoads = zone.properties?._layout_roads as LayoutRoadData[] | undefined;
+        const layoutGreens = zone.properties?._layout_green_spaces as LayoutGreenSpaceData[] | undefined;
+        if (layoutRoads?.length || layoutGreens?.length) {
+          content = <LayoutInfrastructure zone={zone} origin={origin} roads={layoutRoads} greenSpaces={layoutGreens} />;
+        } else {
+          return null;
+        }
+        break;
+      }
       content = <DetailedBuildingZone zone={zone} points2D={pts} generationStatus={generationStatus} />;
       break;
     case 'road':
@@ -759,6 +769,232 @@ function PolygonBalconies({
 // 2. ROAD ZONE — Ribbon mesh + center line + sidewalks
 // =============================================================================
 
+// Visual style per road surface type
+interface RoadSurfaceStyle {
+  color: string;
+  roughness: number;
+  metalness: number;
+  sidewalkColor?: string;
+  lineColor?: string;
+  showLaneMarkings?: boolean;
+}
+
+const ROAD_SURFACE_STYLES: Record<string, RoadSurfaceStyle> = {
+  asphalt: {
+    color: '#3a3a3a',
+    roughness: 0.90,
+    metalness: 0.0,
+    sidewalkColor: '#a0a0a0',
+    lineColor: '#e0e0e0',
+    showLaneMarkings: true,
+  },
+  cobblestone: {
+    color: '#7a6b5a',
+    roughness: 0.98,
+    metalness: 0.0,
+    sidewalkColor: '#9a9080',
+    showLaneMarkings: false,
+  },
+  concrete: {
+    color: '#8a8a88',
+    roughness: 0.80,
+    metalness: 0.0,
+    sidewalkColor: '#a8a8a6',
+    lineColor: '#d0d0d0',
+    showLaneMarkings: true,
+  },
+  brick: {
+    color: '#8b5e4b',
+    roughness: 0.95,
+    metalness: 0.0,
+    sidewalkColor: '#a09080',
+    showLaneMarkings: false,
+  },
+  gravel: {
+    color: '#9a9080',
+    roughness: 1.0,
+    metalness: 0.0,
+    sidewalkColor: '#a8a098',
+    showLaneMarkings: false,
+  },
+  paver: {
+    color: '#7a7068',
+    roughness: 0.88,
+    metalness: 0.02,
+    sidewalkColor: '#9a9088',
+    lineColor: '#c8c8c4',
+    showLaneMarkings: true,
+  },
+};
+
+// =============================================================================
+// Road geometry helpers (module scope — used by RoadZone and RoadAestheticFurniture)
+// =============================================================================
+
+function buildFlatRibbon(
+  _points: { x: number; z: number }[],
+  verts: number[],
+  idxs: number[],
+): THREE.BufferGeometry | null {
+  if (verts.length < 12) return null;
+  const geom = new THREE.BufferGeometry();
+  geom.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+  geom.setIndex(idxs);
+  const normals = new Float32Array(verts.length);
+  for (let j = 1; j < normals.length; j += 3) normals[j] = 1;
+  geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  return geom;
+}
+
+function buildOffsetRibbon(
+  points: { x: number; z: number }[],
+  innerDist: number,
+  outerDist: number,
+  yPos: number,
+): THREE.BufferGeometry | null {
+  if (points.length < 2) return null;
+
+  const vertices: number[] = [];
+  const indices: number[] = [];
+
+  const d0 = Math.min(innerDist, outerDist);
+  const d1 = Math.max(innerDist, outerDist);
+
+  for (let i = 0; i < points.length; i++) {
+    let dx = 0, dz = 0;
+    if (i < points.length - 1) {
+      dx += points[i + 1].x - points[i].x;
+      dz += points[i + 1].z - points[i].z;
+    }
+    if (i > 0) {
+      dx += points[i].x - points[i - 1].x;
+      dz += points[i].z - points[i - 1].z;
+    }
+    const len = Math.sqrt(dx * dx + dz * dz) || 1;
+    const nx = -dz / len;
+    const nz = dx / len;
+
+    vertices.push(
+      points[i].x + nx * d0, yPos, points[i].z + nz * d0,
+      points[i].x + nx * d1, yPos, points[i].z + nz * d1,
+    );
+
+    if (i < points.length - 1) {
+      const base = i * 2;
+      indices.push(base, base + 1, base + 2);
+      indices.push(base + 1, base + 3, base + 2);
+    }
+  }
+
+  return buildFlatRibbon(points, vertices, indices);
+}
+
+// =============================================================================
+// Centerline walker — evenly-spaced placement points along road center
+// =============================================================================
+
+interface PlacementPoint {
+  x: number; z: number;       // world position
+  nx: number; nz: number;     // perpendicular normal (left = positive)
+  angle: number;              // Y rotation (along road direction)
+}
+
+function walkCenterline(
+  centerPoints: { x: number; z: number }[],
+  spacing: number,
+  startOffset = 0,
+): PlacementPoint[] {
+  if (centerPoints.length < 2 || spacing <= 0) return [];
+  const result: PlacementPoint[] = [];
+  let accDist = -startOffset;
+
+  for (let i = 1; i < centerPoints.length; i++) {
+    const prev = centerPoints[i - 1];
+    const cur = centerPoints[i];
+    const sdx = cur.x - prev.x;
+    const sdz = cur.z - prev.z;
+    const segLen = Math.sqrt(sdx * sdx + sdz * sdz);
+    if (segLen < 0.001) continue;
+
+    const dirX = sdx / segLen;
+    const dirZ = sdz / segLen;
+    const nx = -dirZ;
+    const nz = dirX;
+    const angle = Math.atan2(dirX, dirZ);
+
+    const segStart = accDist;
+    accDist += segLen;
+
+    // Emit points at each spacing interval within this segment
+    let nextEmit = Math.ceil(segStart / spacing) * spacing;
+    while (nextEmit <= accDist) {
+      const t = (nextEmit - segStart) / segLen;
+      if (t >= 0 && t <= 1) {
+        result.push({
+          x: prev.x + sdx * t,
+          z: prev.z + sdz * t,
+          nx, nz, angle,
+        });
+      }
+      nextEmit += spacing;
+    }
+  }
+  return result;
+}
+
+// =============================================================================
+// Road aesthetic furniture configs
+// =============================================================================
+
+interface FurnitureSlot {
+  type: 'tree' | 'lightpole' | 'bollard' | 'bench' | 'railing';
+  side: 'left' | 'right' | 'both';
+  spacing: number;
+}
+
+interface AestheticConfig {
+  furniture: FurnitureSlot[];
+  median?: boolean;          // green median strip with trees (4+ lanes only)
+}
+
+const ROAD_AESTHETIC_CONFIGS: Record<string, AestheticConfig> = {
+  grand_boulevard: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 10 },
+      { type: 'lightpole', side: 'both', spacing: 15 },
+    ],
+    median: true,
+  },
+  neighborhood_high_street: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 8 },
+      { type: 'lightpole', side: 'both', spacing: 12 },
+    ],
+  },
+  curvilinear_residential: {
+    furniture: [
+      { type: 'tree', side: 'left', spacing: 12 },
+      { type: 'lightpole', side: 'right', spacing: 20 },
+    ],
+  },
+  pedestrian_focused: {
+    furniture: [
+      { type: 'lightpole', side: 'both', spacing: 10 },
+      { type: 'bollard', side: 'both', spacing: 3 },
+      { type: 'bench', side: 'right', spacing: 15 },
+    ],
+  },
+  water_centric: {
+    furniture: [
+      { type: 'lightpole', side: 'right', spacing: 12 },
+      { type: 'railing', side: 'left', spacing: 1.5 },
+    ],
+  },
+  industrial_collector: {
+    furniture: [],
+  },
+};
+
 function RoadZone({
   zone,
   points2D,
@@ -766,9 +1002,22 @@ function RoadZone({
   zone: SiteZone;
   points2D: THREE.Vector2[];
 }) {
-  const { roadGeometry, centerLineGeometry, leftSidewalk, rightSidewalk, measuredWidth } = useMemo(() => {
+  const {
+    roadGeometry, centerLineGeometry, leftSidewalk, rightSidewalk, measuredWidth,
+    edgeLineLeftGeo, edgeLineRightGeo, laneDividerGeos, centerDividerGeo,
+    gutterLeftGeo, gutterRightGeo, leftJointGeo, rightJointGeo, surfacePatternGeo,
+    hasLeftSidewalk, hasRightSidewalk,
+    centerPoints, halfWidth, laneCount, sidewalkWidth,
+  } = useMemo(() => {
     const n = points2D.length;
-    if (n < 4) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0 };
+    if (n < 4) return {
+      roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0,
+      edgeLineLeftGeo: null, edgeLineRightGeo: null, laneDividerGeos: [] as THREE.BufferGeometry[],
+      centerDividerGeo: null, gutterLeftGeo: null, gutterRightGeo: null,
+      leftJointGeo: null, rightJointGeo: null, surfacePatternGeo: null,
+      hasLeftSidewalk: false, hasRightSidewalk: false,
+      centerPoints: [] as { x: number; z: number }[], halfWidth: 0, laneCount: 0, sidewalkWidth: 0,
+    };
 
     // Reconstruct centerline from the buffered polygon:
     // polygon = [left0, left1, ..., leftM, rightM, ..., right0]
@@ -788,7 +1037,14 @@ function RoadZone({
       totalWidth += a.distanceTo(b);
     }
 
-    if (centerPoints.length < 2) return { roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0 };
+    if (centerPoints.length < 2) return {
+      roadGeometry: null, centerLineGeometry: null, leftSidewalk: null, rightSidewalk: null, measuredWidth: 0,
+      edgeLineLeftGeo: null, edgeLineRightGeo: null, laneDividerGeos: [] as THREE.BufferGeometry[],
+      centerDividerGeo: null, gutterLeftGeo: null, gutterRightGeo: null,
+      leftJointGeo: null, rightJointGeo: null, surfacePatternGeo: null,
+      hasLeftSidewalk: false, hasRightSidewalk: false,
+      centerPoints: [] as { x: number; z: number }[], halfWidth: 0, laneCount: 0, sidewalkWidth: 0,
+    };
 
     // Use the actual polygon width (average of opposing vertex distances)
     // instead of zone.properties.width which may not be saved/loaded correctly
@@ -796,26 +1052,6 @@ function RoadZone({
     const halfWidth = roadWidth / 2;
     const sidewalkWidth = 2.0;
 
-
-    // Build a flat ribbon geometry with upward-facing normals.
-    // All flat road/sidewalk geometry uses this helper to ensure
-    // consistent CCW winding (normals point +Y) for proper lighting
-    // and face culling without needing DoubleSide.
-    function buildFlatRibbon(
-      points: { x: number; z: number }[],
-      verts: number[],
-      idxs: number[],
-    ): THREE.BufferGeometry | null {
-      if (verts.length < 12) return null; // need at least 4 vertices (2 pairs)
-      const geom = new THREE.BufferGeometry();
-      geom.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
-      geom.setIndex(idxs);
-      // Explicit upward normals for flat horizontal surfaces
-      const normals = new Float32Array(verts.length);
-      for (let j = 1; j < normals.length; j += 3) normals[j] = 1;
-      geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
-      return geom;
-    }
 
     // Build ribbon geometry from centerline
     function buildRibbon(
@@ -859,54 +1095,254 @@ function RoadZone({
       return buildFlatRibbon(points, vertices, indices);
     }
 
-    // Build offset ribbon for sidewalks (innerDist and outerDist from centerline,
-    // measured along the perpendicular normal — positive = left, negative = right)
-    function buildOffsetRibbon(
+    // Build a dashed ribbon (thin flat mesh with dash/gap pattern) at an offset from centerline
+    function buildDashedRibbon(
+      points: { x: number; z: number }[],
+      offset: number,
+      ribbonHalfW: number,
+      yPos: number,
+      dashLen: number,
+      gapLen: number,
+    ): THREE.BufferGeometry | null {
+      if (points.length < 2) return null;
+
+      // Precompute normals at each point
+      const normals: { nx: number; nz: number }[] = [];
+      for (let i = 0; i < points.length; i++) {
+        let dx = 0, dz = 0;
+        if (i < points.length - 1) { dx += points[i + 1].x - points[i].x; dz += points[i + 1].z - points[i].z; }
+        if (i > 0) { dx += points[i].x - points[i - 1].x; dz += points[i].z - points[i - 1].z; }
+        const len = Math.sqrt(dx * dx + dz * dz) || 1;
+        normals.push({ nx: -dz / len, nz: dx / len });
+      }
+
+      // Walk the centerline accumulating distance, emitting ribbon segments during "dash" phases
+      const dashSegments: { x: number; z: number }[][] = [];
+      let accDist = 0;
+      let currentSeg: { x: number; z: number }[] = [];
+      const cycleLen = dashLen + gapLen;
+
+      for (let i = 0; i < points.length; i++) {
+        if (i > 0) {
+          const segDx = points[i].x - points[i - 1].x;
+          const segDz = points[i].z - points[i - 1].z;
+          accDist += Math.sqrt(segDx * segDx + segDz * segDz);
+        }
+
+        const phase = accDist % cycleLen;
+        const inDash = phase < dashLen;
+
+        const px = points[i].x + normals[i].nx * offset;
+        const pz = points[i].z + normals[i].nz * offset;
+
+        if (inDash) {
+          currentSeg.push({ x: px, z: pz });
+        } else {
+          if (currentSeg.length >= 2) {
+            dashSegments.push(currentSeg);
+          }
+          currentSeg = [];
+        }
+      }
+      if (currentSeg.length >= 2) dashSegments.push(currentSeg);
+
+      // Combine all dash segments into one geometry
+      const allVerts: number[] = [];
+      const allIdx: number[] = [];
+      let vertOffset = 0;
+
+      for (const seg of dashSegments) {
+        for (let i = 0; i < seg.length; i++) {
+          // Compute local perpendicular for ribbon width
+          let dx = 0, dz = 0;
+          if (i < seg.length - 1) { dx += seg[i + 1].x - seg[i].x; dz += seg[i + 1].z - seg[i].z; }
+          if (i > 0) { dx += seg[i].x - seg[i - 1].x; dz += seg[i].z - seg[i - 1].z; }
+          const len = Math.sqrt(dx * dx + dz * dz) || 1;
+          const rnx = -dz / len;
+          const rnz = dx / len;
+
+          allVerts.push(
+            seg[i].x - rnx * ribbonHalfW, yPos, seg[i].z - rnz * ribbonHalfW,
+            seg[i].x + rnx * ribbonHalfW, yPos, seg[i].z + rnz * ribbonHalfW,
+          );
+
+          if (i < seg.length - 1) {
+            const base = vertOffset + i * 2;
+            allIdx.push(base, base + 1, base + 2, base + 1, base + 3, base + 2);
+          }
+        }
+        vertOffset += seg.length * 2;
+      }
+
+      return buildFlatRibbon([], allVerts, allIdx);
+    }
+
+    // Build perpendicular joint lines across sidewalk at regular intervals
+    function buildSidewalkJoints(
       points: { x: number; z: number }[],
       innerDist: number,
       outerDist: number,
       yPos: number,
+      spacing: number,
     ): THREE.BufferGeometry | null {
       if (points.length < 2) return null;
 
-      const vertices: number[] = [];
-      const indices: number[] = [];
+      const positions: number[] = [];
+      let accDist = 0;
+      let nextJoint = spacing;
 
-      // Ensure consistent winding: first vertex should be the one
-      // closer to center (smaller absolute offset)
-      const d0 = Math.abs(innerDist) < Math.abs(outerDist) ? innerDist : outerDist;
-      const d1 = Math.abs(innerDist) < Math.abs(outerDist) ? outerDist : innerDist;
+      for (let i = 1; i < points.length; i++) {
+        const segDx = points[i].x - points[i - 1].x;
+        const segDz = points[i].z - points[i - 1].z;
+        const segLen = Math.sqrt(segDx * segDx + segDz * segDz);
+        accDist += segLen;
 
-      for (let i = 0; i < points.length; i++) {
-        let dx = 0, dz = 0;
-        if (i < points.length - 1) {
-          dx += points[i + 1].x - points[i].x;
-          dz += points[i + 1].z - points[i].z;
-        }
-        if (i > 0) {
-          dx += points[i].x - points[i - 1].x;
-          dz += points[i].z - points[i - 1].z;
-        }
-        const len = Math.sqrt(dx * dx + dz * dz) || 1;
-        const nx = -dz / len;
-        const nz = dx / len;
+        while (accDist >= nextJoint && i < points.length) {
+          // Interpolate position along segment
+          const overshoot = accDist - nextJoint;
+          const t = 1 - overshoot / segLen;
+          const px = points[i - 1].x + segDx * t;
+          const pz = points[i - 1].z + segDz * t;
 
-        vertices.push(
-          points[i].x + nx * d0, yPos, points[i].z + nz * d0,
-          points[i].x + nx * d1, yPos, points[i].z + nz * d1,
-        );
+          // Perpendicular normal
+          const len = segLen || 1;
+          const nx = -segDz / len;
+          const nz = segDx / len;
 
-        if (i < points.length - 1) {
-          const base = i * 2;
-          indices.push(base, base + 1, base + 2);
-          indices.push(base + 1, base + 3, base + 2);
+          // Line from inner edge to outer edge of sidewalk
+          positions.push(
+            px + nx * innerDist, yPos, pz + nz * innerDist,
+            px + nx * outerDist, yPos, pz + nz * outerDist,
+          );
+
+          nextJoint += spacing;
         }
       }
 
-      return buildFlatRibbon(points, vertices, indices);
+      if (positions.length < 6) return null;
+
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      return geom;
+    }
+
+    // Build surface pattern lines (grid for cobblestone/paver, herringbone for brick)
+    function buildSurfacePattern(
+      points: { x: number; z: number }[],
+      hw: number,
+      yPos: number,
+      surface: string,
+    ): THREE.BufferGeometry | null {
+      if (points.length < 2) return null;
+
+      const positions: number[] = [];
+
+      // Precompute normals
+      const normals: { nx: number; nz: number; dx: number; dz: number }[] = [];
+      for (let i = 0; i < points.length; i++) {
+        let dx = 0, dz = 0;
+        if (i < points.length - 1) { dx += points[i + 1].x - points[i].x; dz += points[i + 1].z - points[i].z; }
+        if (i > 0) { dx += points[i].x - points[i - 1].x; dz += points[i].z - points[i - 1].z; }
+        const len = Math.sqrt(dx * dx + dz * dz) || 1;
+        normals.push({ nx: -dz / len, nz: dx / len, dx: dx / len, dz: dz / len });
+      }
+
+      if (surface === 'brick') {
+        // Herringbone: diagonal lines at ~45 degrees across the road
+        let accDist = 0;
+        const spacing = 0.6;
+
+        for (let i = 1; i < points.length; i++) {
+          const segDx = points[i].x - points[i - 1].x;
+          const segDz = points[i].z - points[i - 1].z;
+          const segLen = Math.sqrt(segDx * segDx + segDz * segDz);
+          accDist += segLen;
+
+          while (accDist >= spacing) {
+            accDist -= spacing;
+            const t = 1 - accDist / segLen;
+            const px = points[i - 1].x + segDx * t;
+            const pz = points[i - 1].z + segDz * t;
+            const n = normals[i];
+
+            // Diagonal line: offset perpendicular + along direction
+            const diagLen = hw * 0.8;
+            positions.push(
+              px + n.nx * diagLen + n.dx * diagLen * 0.3, yPos, pz + n.nz * diagLen + n.dz * diagLen * 0.3,
+              px - n.nx * diagLen - n.dx * diagLen * 0.3, yPos, pz - n.nz * diagLen - n.dz * diagLen * 0.3,
+            );
+          }
+        }
+      } else {
+        // Cobblestone / paver: transverse + longitudinal grid
+        const transverseSpacing = 0.5;
+        const longitudinalSpacing = 0.8;
+
+        // Transverse lines (across road)
+        let accDist = 0;
+        for (let i = 1; i < points.length; i++) {
+          const segDx = points[i].x - points[i - 1].x;
+          const segDz = points[i].z - points[i - 1].z;
+          const segLen = Math.sqrt(segDx * segDx + segDz * segDz);
+          accDist += segLen;
+
+          while (accDist >= transverseSpacing) {
+            accDist -= transverseSpacing;
+            const t = 1 - accDist / segLen;
+            const px = points[i - 1].x + segDx * t;
+            const pz = points[i - 1].z + segDz * t;
+            const n = normals[i];
+
+            positions.push(
+              px + n.nx * hw, yPos, pz + n.nz * hw,
+              px - n.nx * hw, yPos, pz - n.nz * hw,
+            );
+          }
+        }
+
+        // Longitudinal lines (along road at fixed offsets)
+        const numLong = Math.floor(hw * 2 / longitudinalSpacing);
+        for (let li = 1; li < numLong; li++) {
+          const offset = -hw + li * longitudinalSpacing;
+          for (let i = 0; i < points.length - 1; i++) {
+            const n0 = normals[i];
+            const n1 = normals[i + 1];
+            positions.push(
+              points[i].x + n0.nx * offset, yPos, points[i].z + n0.nz * offset,
+              points[i + 1].x + n1.nx * offset, yPos, points[i + 1].z + n1.nz * offset,
+            );
+          }
+        }
+      }
+
+      if (positions.length < 6) return null;
+
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      return geom;
     }
 
     const roadGeom = buildRibbon(centerPoints, halfWidth, 0.05);
+
+    // --- Shared surface info ---
+    const surface = (zone.properties?.road_surface as string) || 'asphalt';
+    const style = ROAD_SURFACE_STYLES[surface] || ROAD_SURFACE_STYLES.asphalt;
+
+    // Add per-vertex color variation to road surface for weathered look
+    if (roadGeom) {
+      const posAttr = roadGeom.getAttribute('position');
+      const vertCount = posAttr.count;
+      const colors = new Float32Array(vertCount * 3);
+      const baseColor = new THREE.Color(style.color);
+      const rand = makeRand(centerPoints.length * 7 + 31);
+      for (let v = 0; v < vertCount; v++) {
+        const noise = (rand() - 0.5) * 0.04; // ±0.02 RGB
+        colors[v * 3] = Math.max(0, Math.min(1, baseColor.r + noise));
+        colors[v * 3 + 1] = Math.max(0, Math.min(1, baseColor.g + noise));
+        colors[v * 3 + 2] = Math.max(0, Math.min(1, baseColor.b + noise));
+      }
+      roadGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    }
 
     // Center line points
     const linePoints = centerPoints.map((p) => new THREE.Vector3(p.x, 0.08, p.z));
@@ -919,8 +1355,68 @@ function RoadZone({
     const rightInner = -(halfWidth + gap);
     const rightOuter = -(halfWidth + gap + sidewalkWidth);
 
-    const leftSW = buildOffsetRibbon(centerPoints, leftInner, leftOuter, 0.1);
-    const rightSW = buildOffsetRibbon(centerPoints, rightInner, rightOuter, 0.1);
+    // Determine per-side sidewalk visibility
+    const sidewalkSetting = (zone.properties?.sidewalks as string) || (zone.properties?.has_sidewalks === false ? 'none' : 'both');
+    const hasLeftSidewalk = sidewalkSetting === 'both' || sidewalkSetting === 'left';
+    const hasRightSidewalk = sidewalkSetting === 'both' || sidewalkSetting === 'right';
+
+    const leftSW = hasLeftSidewalk ? buildOffsetRibbon(centerPoints, leftInner, leftOuter, 0.1) : null;
+    const rightSW = hasRightSidewalk ? buildOffsetRibbon(centerPoints, rightInner, rightOuter, 0.1) : null;
+
+    // --- Detail layers ---
+    const laneCount = (zone.properties?.lane_count as number) || 2;
+
+    // Edge lines: solid white ribbons along left and right road edges
+    let edgeLineLeftGeo: THREE.BufferGeometry | null = null;
+    let edgeLineRightGeo: THREE.BufferGeometry | null = null;
+    if (style.showLaneMarkings) {
+      const edgeOffset = halfWidth - 0.15;
+      edgeLineLeftGeo = buildOffsetRibbon(centerPoints, edgeOffset - 0.06, edgeOffset + 0.06, 0.07);
+      edgeLineRightGeo = buildOffsetRibbon(centerPoints, -(edgeOffset - 0.06), -(edgeOffset + 0.06), 0.07);
+    }
+
+    // Lane divider lines: dashed white ribbons between lanes
+    const laneDividerGeoList: THREE.BufferGeometry[] = [];
+    if (style.showLaneMarkings && laneCount > 1) {
+      const laneWidth = roadWidth / laneCount;
+      for (let lane = 1; lane < laneCount; lane++) {
+        const offset = -halfWidth + lane * laneWidth;
+        const geo = buildDashedRibbon(centerPoints, offset, 0.06, 0.07, 3, 3);
+        if (geo) laneDividerGeoList.push(geo);
+      }
+    }
+
+    // Center divider: solid yellow ribbon for even lane counts (opposing traffic)
+    let centerDividerGeo: THREE.BufferGeometry | null = null;
+    if (style.showLaneMarkings && laneCount >= 2 && laneCount % 2 === 0) {
+      centerDividerGeo = buildOffsetRibbon(centerPoints, -0.05, 0.05, 0.08);
+    }
+
+    // Gutter strips: dark narrow ribbons between road edge and curb
+    let gutterLeftGeo: THREE.BufferGeometry | null = null;
+    let gutterRightGeo: THREE.BufferGeometry | null = null;
+    if (hasLeftSidewalk) {
+      gutterLeftGeo = buildOffsetRibbon(centerPoints, halfWidth, halfWidth + 0.2, 0.06);
+    }
+    if (hasRightSidewalk) {
+      gutterRightGeo = buildOffsetRibbon(centerPoints, -halfWidth, -(halfWidth + 0.2), 0.06);
+    }
+
+    // Sidewalk expansion joints
+    let leftJointGeo: THREE.BufferGeometry | null = null;
+    let rightJointGeo: THREE.BufferGeometry | null = null;
+    if (hasLeftSidewalk) {
+      leftJointGeo = buildSidewalkJoints(centerPoints, leftInner, leftOuter, 0.11, 1.5);
+    }
+    if (hasRightSidewalk) {
+      rightJointGeo = buildSidewalkJoints(centerPoints, rightInner, rightOuter, 0.11, 1.5);
+    }
+
+    // Surface pattern lines (cobblestone/brick/paver only)
+    let surfacePatternGeo: THREE.BufferGeometry | null = null;
+    if (!style.showLaneMarkings && (surface === 'cobblestone' || surface === 'brick' || surface === 'paver')) {
+      surfacePatternGeo = buildSurfacePattern(centerPoints, halfWidth, 0.065, surface);
+    }
 
     return {
       roadGeometry: roadGeom,
@@ -928,41 +1424,332 @@ function RoadZone({
       leftSidewalk: leftSW,
       rightSidewalk: rightSW,
       measuredWidth: roadWidth,
+      edgeLineLeftGeo,
+      edgeLineRightGeo,
+      laneDividerGeos: laneDividerGeoList,
+      centerDividerGeo,
+      gutterLeftGeo,
+      gutterRightGeo,
+      leftJointGeo,
+      rightJointGeo,
+      surfacePatternGeo,
+      hasLeftSidewalk,
+      hasRightSidewalk,
+      centerPoints,
+      halfWidth,
+      laneCount,
+      sidewalkWidth,
     };
   }, [points2D, zone.properties]);
 
+  const surfaceMat = useMemo(() => {
+    const surface = (zone.properties?.road_surface as string) || 'asphalt';
+    return ROAD_SURFACE_STYLES[surface] || ROAD_SURFACE_STYLES.asphalt;
+  }, [zone.properties?.road_surface]);
+
+  // Whether to show center lane markings (not for cobblestone/brick/gravel — they don't have lane markings)
+  const showCenterLine = surfaceMat.showLaneMarkings !== false;
+
   if (!roadGeometry) return null;
+
+  const surface = (zone.properties?.road_surface as string) || 'asphalt';
+  const surfacePatternColor = surface === 'brick' ? '#5a3a2a' : '#4a3a2a';
+  const surfacePatternOpacity = surface === 'brick' ? 0.20 : 0.18;
 
   return (
     <group>
-      {/* Road surface */}
+      {/* Road surface — with vertex colors for weathered variation */}
       <mesh geometry={roadGeometry} receiveShadow>
-        <meshStandardMaterial color="#3a3a3a" roughness={0.9} metalness={0.0} />
+        <meshStandardMaterial
+          vertexColors
+          roughness={surfaceMat.roughness}
+          metalness={surfaceMat.metalness}
+        />
       </mesh>
 
-      {/* Center line stripe */}
-      {centerLineGeometry && (
+      {/* Gutter strips — dark narrow bands between road edge and curb */}
+      {gutterLeftGeo && (
+        <mesh geometry={gutterLeftGeo}>
+          <meshStandardMaterial color="#2a2a2a" roughness={0.95} metalness={0.0} />
+        </mesh>
+      )}
+      {gutterRightGeo && (
+        <mesh geometry={gutterRightGeo}>
+          <meshStandardMaterial color="#2a2a2a" roughness={0.95} metalness={0.0} />
+        </mesh>
+      )}
+
+      {/* Surface pattern lines — cobblestone/brick/paver grid/herringbone */}
+      {surfacePatternGeo && (
+        <lineSegments geometry={surfacePatternGeo}>
+          <lineBasicMaterial color={surfacePatternColor} transparent opacity={surfacePatternOpacity} />
+        </lineSegments>
+      )}
+
+      {/* Edge lines — solid white ribbons at road edges */}
+      {edgeLineLeftGeo && (
+        <mesh geometry={edgeLineLeftGeo}>
+          <meshStandardMaterial color="#ffffff" transparent opacity={0.6} roughness={0.5} metalness={0.0} depthWrite={false} />
+        </mesh>
+      )}
+      {edgeLineRightGeo && (
+        <mesh geometry={edgeLineRightGeo}>
+          <meshStandardMaterial color="#ffffff" transparent opacity={0.6} roughness={0.5} metalness={0.0} depthWrite={false} />
+        </mesh>
+      )}
+
+      {/* Lane divider lines — dashed white ribbons between lanes */}
+      {laneDividerGeos.map((geo, i) => (
+        <mesh key={`lane-div-${i}`} geometry={geo}>
+          <meshStandardMaterial color="#ffffff" transparent opacity={0.7} roughness={0.5} metalness={0.0} depthWrite={false} />
+        </mesh>
+      ))}
+
+      {/* Center divider — solid yellow ribbon for opposing traffic (even lane counts) */}
+      {centerDividerGeo && (
+        <mesh geometry={centerDividerGeo}>
+          <meshStandardMaterial color="#e8b800" transparent opacity={0.85} roughness={0.5} metalness={0.0} depthWrite={false} />
+        </mesh>
+      )}
+
+      {/* Center line stripe — fallback for odd lane counts with lane markings */}
+      {showCenterLine && !centerDividerGeo && centerLineGeometry && (
         <line geometry={centerLineGeometry}>
-          <lineBasicMaterial color="#e0e0e0" transparent opacity={0.7} />
+          <lineBasicMaterial color={surfaceMat.lineColor || '#e0e0e0'} transparent opacity={0.7} />
         </line>
       )}
 
-      {/* Sidewalks — only for road types that have them */}
-      {zone.properties?.has_sidewalks !== false && leftSidewalk && (
+      {/* Sidewalks — per-side based on sidewalks property */}
+      {leftSidewalk && (
         <mesh geometry={leftSidewalk} receiveShadow>
-          <meshStandardMaterial color="#a0a0a0" roughness={0.85} metalness={0.0} />
+          <meshStandardMaterial color={surfaceMat.sidewalkColor || '#a0a0a0'} roughness={0.85} metalness={0.0} />
         </mesh>
       )}
-      {zone.properties?.has_sidewalks !== false && rightSidewalk && (
+      {rightSidewalk && (
         <mesh geometry={rightSidewalk} receiveShadow>
-          <meshStandardMaterial color="#a0a0a0" roughness={0.85} metalness={0.0} />
+          <meshStandardMaterial color={surfaceMat.sidewalkColor || '#a0a0a0'} roughness={0.85} metalness={0.0} />
         </mesh>
       )}
 
-      {/* Curb lines — only when sidewalks are present */}
-      {zone.properties?.has_sidewalks !== false && (
-        <RoadCurbs points2D={points2D} roadWidth={measuredWidth} />
+      {/* Sidewalk expansion joints — perpendicular lines every ~1.5m */}
+      {leftJointGeo && (
+        <lineSegments geometry={leftJointGeo}>
+          <lineBasicMaterial color="#888888" transparent opacity={0.35} />
+        </lineSegments>
       )}
+      {rightJointGeo && (
+        <lineSegments geometry={rightJointGeo}>
+          <lineBasicMaterial color="#888888" transparent opacity={0.35} />
+        </lineSegments>
+      )}
+
+      {/* Curb lines — per-side */}
+      {(hasLeftSidewalk || hasRightSidewalk) && (
+        <RoadCurbs points2D={points2D} roadWidth={measuredWidth} showLeft={hasLeftSidewalk} showRight={hasRightSidewalk} />
+      )}
+
+      {/* Road aesthetic street furniture */}
+      {centerPoints.length >= 2 && (
+        <RoadAestheticFurniture
+          aesthetic={(zone.properties?.road_aesthetic as string) || ''}
+          centerPoints={centerPoints}
+          halfWidth={halfWidth}
+          laneCount={laneCount}
+          sidewalkWidth={sidewalkWidth}
+          hasLeftSidewalk={hasLeftSidewalk}
+          hasRightSidewalk={hasRightSidewalk}
+        />
+      )}
+    </group>
+  );
+}
+
+// =============================================================================
+// Road aesthetic furniture — trees, poles, bollards, benches, median, railing
+// =============================================================================
+
+function RoadAestheticFurniture({
+  aesthetic,
+  centerPoints,
+  halfWidth,
+  laneCount,
+  sidewalkWidth,
+  hasLeftSidewalk,
+  hasRightSidewalk,
+}: {
+  aesthetic: string;
+  centerPoints: { x: number; z: number }[];
+  halfWidth: number;
+  laneCount: number;
+  sidewalkWidth: number;
+  hasLeftSidewalk: boolean;
+  hasRightSidewalk: boolean;
+}) {
+  const elements = useMemo(() => {
+    const config = ROAD_AESTHETIC_CONFIGS[aesthetic];
+    if (!config || centerPoints.length < 2) return null;
+
+    const trees: { pos: [number, number, number]; scale: number; type: 'deciduous' | 'conifer' }[] = [];
+    const poles: [number, number, number][] = [];
+    const bollards: [number, number, number][] = [];
+    const benches: { pos: [number, number, number]; rot: number }[] = [];
+    const railingPosts: { pos: [number, number, number]; angle: number }[] = [];
+
+    // Sidewalk midpoint offset from road edge
+    const swMid = halfWidth + sidewalkWidth / 2;
+    // Inner sidewalk edge (near road)
+    const swInner = halfWidth + 0.3;
+    // Outer sidewalk edge
+    const swOuter = halfWidth + sidewalkWidth - 0.3;
+
+    const rand = makeRand(Math.abs(Math.round(centerPoints[0].x * 100)) + centerPoints.length * 7);
+
+    for (const slot of config.furniture) {
+      const points = walkCenterline(centerPoints, slot.spacing, slot.spacing * 0.3);
+      const sides: ('left' | 'right')[] =
+        slot.side === 'both' ? ['left', 'right'] :
+        [slot.side];
+
+      for (const side of sides) {
+        if (side === 'left' && !hasLeftSidewalk) continue;
+        if (side === 'right' && !hasRightSidewalk) continue;
+
+        const sign = side === 'left' ? 1 : -1;
+        let count = 0;
+
+        for (const pt of points) {
+          if (count >= 100) break;
+
+          if (slot.type === 'tree') {
+            const offset = swMid * sign;
+            trees.push({
+              pos: [pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset],
+              scale: 0.7 + rand() * 0.5,
+              type: rand() > 0.35 ? 'deciduous' : 'conifer',
+            });
+          } else if (slot.type === 'lightpole') {
+            const offset = swOuter * sign;
+            poles.push([pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset]);
+          } else if (slot.type === 'bollard') {
+            const offset = swInner * sign;
+            bollards.push([pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset]);
+          } else if (slot.type === 'bench') {
+            const offset = swMid * sign;
+            benches.push({
+              pos: [pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset],
+              rot: pt.angle + (side === 'right' ? Math.PI : 0),
+            });
+          } else if (slot.type === 'railing') {
+            const offset = swOuter * sign;
+            railingPosts.push({
+              pos: [pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset],
+              angle: pt.angle,
+            });
+          }
+          count++;
+        }
+      }
+    }
+
+    // Median strip (grand_boulevard with 4+ lanes)
+    let medianGeo: THREE.BufferGeometry | null = null;
+    const medianTrees: { pos: [number, number, number]; scale: number; type: 'deciduous' | 'conifer' }[] = [];
+    if (config.median && laneCount >= 4) {
+      const medianHalf = 0.8;
+      medianGeo = buildOffsetRibbon(centerPoints, -medianHalf, medianHalf, 0.08);
+      // Place smaller trees along the median
+      const medianPts = walkCenterline(centerPoints, 12, 4);
+      let mCount = 0;
+      for (const pt of medianPts) {
+        if (mCount >= 100) break;
+        medianTrees.push({
+          pos: [pt.x, 0, pt.z],
+          scale: 0.5 + rand() * 0.3,
+          type: 'deciduous',
+        });
+        mCount++;
+      }
+    }
+
+    return { trees, poles, bollards, benches, railingPosts, medianGeo, medianTrees };
+  }, [aesthetic, centerPoints, halfWidth, laneCount, sidewalkWidth, hasLeftSidewalk, hasRightSidewalk]);
+
+  if (!elements) return null;
+
+  const { trees, poles, bollards, benches, railingPosts, medianGeo, medianTrees } = elements;
+
+  return (
+    <group>
+      {/* Street trees */}
+      {trees.map((t, i) => (
+        <group key={`st-${i}`} position={t.pos} scale={t.scale}>
+          <mesh position={[0, 1.5, 0]} castShadow>
+            <cylinderGeometry args={[0.15, 0.2, 3, 6]} />
+            <meshStandardMaterial color="#6b4423" roughness={0.9} />
+          </mesh>
+          {t.type === 'conifer' ? (
+            <mesh position={[0, 4, 0]} castShadow>
+              <coneGeometry args={[1.5, 4, 6]} />
+              <meshStandardMaterial color="#2d5a27" />
+            </mesh>
+          ) : (
+            <mesh position={[0, 4.5, 0]} castShadow>
+              <sphereGeometry args={[2, 8, 6]} />
+              <meshStandardMaterial color="#3a7d32" />
+            </mesh>
+          )}
+        </group>
+      ))}
+
+      {/* Light poles */}
+      {poles.map((p, i) => (
+        <LightPole key={`lp-${i}`} position={p} />
+      ))}
+
+      {/* Bollards */}
+      {bollards.map((p, i) => (
+        <Bollard key={`bl-${i}`} position={p} />
+      ))}
+
+      {/* Benches */}
+      {benches.map((b, i) => (
+        <Bench key={`bn-${i}`} position={b.pos} rotation={b.rot} />
+      ))}
+
+      {/* Railing (water_centric) */}
+      {railingPosts.map((r, i) => (
+        <group key={`rl-${i}`} position={r.pos}>
+          {/* Vertical post */}
+          <mesh position={[0, 0.45, 0]} castShadow>
+            <cylinderGeometry args={[0.03, 0.03, 0.9, 6]} />
+            <meshStandardMaterial color="#5a5a5a" roughness={0.3} metalness={0.8} />
+          </mesh>
+          {/* Top horizontal rail bar */}
+          <mesh position={[0, 0.9, 0]} rotation={[0, r.angle, Math.PI / 2]}>
+            <cylinderGeometry args={[0.025, 0.025, 1.5, 4]} />
+            <meshStandardMaterial color="#5a5a5a" roughness={0.3} metalness={0.8} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Median strip (green ribbon + trees) */}
+      {medianGeo && (
+        <mesh geometry={medianGeo} receiveShadow>
+          <meshStandardMaterial color="#4a8c3f" roughness={0.9} />
+        </mesh>
+      )}
+      {medianTrees.map((t, i) => (
+        <group key={`mt-${i}`} position={t.pos} scale={t.scale}>
+          <mesh position={[0, 1.2, 0]} castShadow>
+            <cylinderGeometry args={[0.1, 0.14, 2.4, 6]} />
+            <meshStandardMaterial color="#6b4423" roughness={0.9} />
+          </mesh>
+          <mesh position={[0, 3.2, 0]} castShadow>
+            <sphereGeometry args={[1.4, 8, 6]} />
+            <meshStandardMaterial color="#3a7d32" />
+          </mesh>
+        </group>
+      ))}
     </group>
   );
 }
@@ -971,9 +1758,13 @@ function RoadZone({
 function RoadCurbs({
   points2D,
   roadWidth,
+  showLeft = true,
+  showRight = true,
 }: {
   points2D: THREE.Vector2[];
   roadWidth: number;
+  showLeft?: boolean;
+  showRight?: boolean;
 }) {
   const curbGeometries = useMemo(() => {
     const n = points2D.length;
@@ -1029,8 +1820,11 @@ function RoadCurbs({
       return geom;
     }
 
-    return { left: buildCurbLine(1), right: buildCurbLine(-1) };
-  }, [points2D, roadWidth]);
+    return {
+      left: showLeft ? buildCurbLine(1) : null,
+      right: showRight ? buildCurbLine(-1) : null,
+    };
+  }, [points2D, roadWidth, showLeft, showRight]);
 
   return (
     <>
@@ -1538,6 +2332,152 @@ function Bollard({ position }: { position: [number, number, number] }) {
     <mesh position={[position[0], 0.35, position[2]]} castShadow>
       <cylinderGeometry args={[0.08, 0.08, 0.7, 8]} />
       <meshStandardMaterial color="#555555" roughness={0.4} metalness={0.7} />
+    </mesh>
+  );
+}
+
+// =============================================================================
+// AI Layout Infrastructure — Roads and Green Spaces from layout metadata
+// =============================================================================
+
+function LayoutInfrastructure({
+  zone,
+  origin,
+  roads,
+  greenSpaces,
+}: {
+  zone: SiteZone;
+  origin: { lat: number; lon: number };
+  roads?: LayoutRoadData[];
+  greenSpaces?: LayoutGreenSpaceData[];
+}) {
+  // Compute zone centroid for offset conversion
+  const centroid = useMemo(() => {
+    const coords = zone.coordinates;
+    let cx = 0, cy = 0;
+    for (const p of coords) {
+      cx += p[0];
+      cy += p[1];
+    }
+    return { lon: cx / coords.length, lat: cy / coords.length };
+  }, [zone.coordinates]);
+
+  return (
+    <group name={`layout-infra-${zone.id}`}>
+      {roads?.map((road, i) => (
+        <LayoutRoadMesh key={`road-${i}`} road={road} centroid={centroid} origin={origin} />
+      ))}
+      {greenSpaces?.map((gs, i) => (
+        <LayoutGreenMesh key={`green-${i}`} greenSpace={gs} centroid={centroid} origin={origin} />
+      ))}
+    </group>
+  );
+}
+
+function LayoutRoadMesh({
+  road,
+  centroid,
+  origin,
+}: {
+  road: LayoutRoadData;
+  centroid: { lon: number; lat: number };
+  origin: { lat: number; lon: number };
+}) {
+  const geometry = useMemo(() => {
+    if (road.centerline.length < 2) return null;
+
+    const mLon = metersPerDegLon(origin.lat);
+    const halfW = road.width_m / 2;
+
+    // Convert centerline offsets to local meter positions
+    const points = road.centerline.map(([ox, oy]) => {
+      const absLon = centroid.lon + ox;
+      const absLat = centroid.lat + oy;
+      const x = (absLon - origin.lon) * mLon;
+      const z = -((absLat - origin.lat) * METERS_PER_DEG_LAT);
+      return { x, z };
+    });
+
+    // Build ribbon geometry
+    const vertices: number[] = [];
+    const indices: number[] = [];
+
+    for (let i = 0; i < points.length; i++) {
+      let dx = 0, dz = 0;
+      if (i < points.length - 1) {
+        dx += points[i + 1].x - points[i].x;
+        dz += points[i + 1].z - points[i].z;
+      }
+      if (i > 0) {
+        dx += points[i].x - points[i - 1].x;
+        dz += points[i].z - points[i - 1].z;
+      }
+      const len = Math.sqrt(dx * dx + dz * dz) || 1;
+      const nx = -dz / len;
+      const nz = dx / len;
+
+      vertices.push(
+        points[i].x - nx * halfW, 0.05, points[i].z - nz * halfW,
+        points[i].x + nx * halfW, 0.05, points[i].z + nz * halfW,
+      );
+
+      if (i < points.length - 1) {
+        const base = i * 2;
+        indices.push(base, base + 1, base + 2);
+        indices.push(base + 1, base + 3, base + 2);
+      }
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    return geo;
+  }, [road, centroid, origin]);
+
+  if (!geometry) return null;
+
+  return (
+    <mesh geometry={geometry} receiveShadow>
+      <meshStandardMaterial color="#444444" roughness={0.9} />
+    </mesh>
+  );
+}
+
+function LayoutGreenMesh({
+  greenSpace,
+  centroid,
+  origin,
+}: {
+  greenSpace: LayoutGreenSpaceData;
+  centroid: { lon: number; lat: number };
+  origin: { lat: number; lon: number };
+}) {
+  const geometry = useMemo(() => {
+    if (greenSpace.polygon.length < 3) return null;
+
+    const mLon = metersPerDegLon(origin.lat);
+
+    // Convert offsets to local 2D points
+    const pts = greenSpace.polygon.map(([ox, oy]) => {
+      const absLon = centroid.lon + ox;
+      const absLat = centroid.lat + oy;
+      const x = (absLon - origin.lon) * mLon;
+      const y = (absLat - origin.lat) * METERS_PER_DEG_LAT;
+      return new THREE.Vector2(x, y);
+    });
+
+    const shape = new THREE.Shape(pts);
+    const geo = new THREE.ShapeGeometry(shape);
+    geo.rotateX(-Math.PI / 2);
+    return geo;
+  }, [greenSpace, centroid, origin]);
+
+  if (!geometry) return null;
+
+  return (
+    <mesh geometry={geometry} position={[0, 0.02, 0]} receiveShadow>
+      <meshStandardMaterial color="#27ae60" roughness={0.8} />
     </mesh>
   );
 }

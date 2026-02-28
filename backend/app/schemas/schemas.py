@@ -336,6 +336,47 @@ class SiteZoneResponse(BaseModel):
 
 
 # =============================================================================
+# AI Layout Generation Schemas
+# =============================================================================
+
+class LayoutBuilding(BaseModel):
+    """A single building placement in an AI-generated site layout."""
+    center_x: float = Field(description="X offset from zone centroid in degrees longitude")
+    center_y: float = Field(description="Y offset from zone centroid in degrees latitude")
+    width_m: float = Field(description="Building footprint width in meters")
+    depth_m: float = Field(description="Building footprint depth in meters")
+    rotation_deg: float = Field(default=0, description="Rotation in degrees (0=north-facing)")
+    height_m: Optional[float] = Field(None, description="Building height override in meters")
+    floors: Optional[int] = Field(None, description="Number of floors override")
+    building_type: str = Field(default="residential", description="Building type: residential, commercial, mixed_use")
+    setback_front_m: float = Field(default=3.0, description="Front setback in meters")
+    setback_side_m: float = Field(default=1.5, description="Side setback in meters")
+
+
+class LayoutRoad(BaseModel):
+    """An internal road in the AI-generated layout."""
+    centerline: list[list[float]] = Field(description="Road centerline as [[x_offset, y_offset], ...] in degrees")
+    width_m: float = Field(default=6.0, description="Road width in meters")
+    road_type: str = Field(default="local", description="Road type: local, collector, cul_de_sac, loop")
+
+
+class LayoutGreenSpace(BaseModel):
+    """A green/open space in the AI-generated layout."""
+    polygon: list[list[float]] = Field(description="Polygon as [[x_offset, y_offset], ...] in degrees")
+    space_type: str = Field(default="buffer", description="Space type: buffer, park, setback, courtyard")
+
+
+class SiteLayoutResponse(BaseModel):
+    """Complete AI-generated site layout response."""
+    buildings: list[LayoutBuilding] = Field(description="Building placements")
+    roads: list[LayoutRoad] = Field(default=[], description="Internal roads")
+    green_spaces: list[LayoutGreenSpace] = Field(default=[], description="Green/open spaces")
+    layout_strategy: str = Field(default="grid", description="Layout strategy used: cul_de_sac, loop_road, grid_collector, perimeter, etc.")
+    reasoning: str = Field(default="", description="AI reasoning for the layout decisions")
+    density_achieved: Optional[float] = Field(None, description="Achieved density in units per hectare")
+
+
+# =============================================================================
 # 3D Generation Schemas
 # =============================================================================
 

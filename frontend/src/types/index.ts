@@ -87,6 +87,17 @@ export interface ProcessingStatus {
 
 export type SiteZoneType = 'site_boundary' | 'building' | 'residential' | 'road' | 'green_space' | 'parking' | 'water' | 'development_area';
 
+export interface LayoutRoadData {
+  centerline: number[][];  // [[x_offset_deg, y_offset_deg], ...]
+  width_m: number;
+  road_type: string;
+}
+
+export interface LayoutGreenSpaceData {
+  polygon: number[][];  // [[x_offset_deg, y_offset_deg], ...]
+  space_type: string;
+}
+
 export interface SiteZoneProperties {
   height?: number;
   floors?: number;
@@ -94,6 +105,11 @@ export interface SiteZoneProperties {
   tree_density?: number;
   width?: number;
   unit_count?: number;
+  _layout_strategy?: string;
+  _layout_reasoning?: string;
+  _layout_roads?: LayoutRoadData[];
+  _layout_green_spaces?: LayoutGreenSpaceData[];
+  _layout_density?: number;
   [key: string]: unknown;
 }
 
@@ -188,6 +204,7 @@ export const ROAD_PRESETS: RoadPresetConfig[] = [
       width: 3,
       lane_count: 1,
       road_aesthetic: 'pedestrian_focused',
+      road_surface: 'asphalt',
       volume: 'low',
       has_sidewalks: false,
       pedestrian_priority: 2,
@@ -201,6 +218,7 @@ export const ROAD_PRESETS: RoadPresetConfig[] = [
       width: 8,
       lane_count: 2,
       road_aesthetic: 'curvilinear_residential',
+      road_surface: 'asphalt',
       volume: 'low',
       has_sidewalks: true,
       pedestrian_priority: 1,
@@ -215,6 +233,7 @@ export const ROAD_PRESETS: RoadPresetConfig[] = [
       width: 14,
       lane_count: 2,
       road_aesthetic: 'neighborhood_high_street',
+      road_surface: 'asphalt',
       volume: 'medium',
       has_sidewalks: true,
       pedestrian_priority: 2,
@@ -229,6 +248,7 @@ export const ROAD_PRESETS: RoadPresetConfig[] = [
       width: 22,
       lane_count: 4,
       road_aesthetic: 'grand_boulevard',
+      road_surface: 'asphalt',
       volume: 'high',
       has_sidewalks: true,
       pedestrian_priority: 3,
@@ -243,6 +263,7 @@ export const ROAD_PRESETS: RoadPresetConfig[] = [
       width: 34,
       lane_count: 6,
       road_aesthetic: 'grand_boulevard',
+      road_surface: 'asphalt',
       volume: 'high',
       has_sidewalks: true,
       pedestrian_priority: 2,

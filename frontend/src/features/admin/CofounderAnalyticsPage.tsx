@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { analyticsApi } from '@/services/api';
+import { analyticsApi, settingsApi } from '@/services/api';
 import type {
   TimeSeriesResponse,
   CreationTrendsResponse,
@@ -10,6 +10,7 @@ import type {
   TopUsersResponse,
   ApiBalanceResponse,
   ApiUsageResponse,
+  PlatformSettings,
 } from '@/services/api';
 import { TimeRangeSelector } from './analytics/TimeRangeSelector';
 import { UserGrowthChart } from './analytics/UserGrowthChart';
@@ -37,6 +38,8 @@ export function CofounderAnalyticsPage() {
   const [apiBalancesLoading, setApiBalancesLoading] = useState(false);
   const [apiUsageLoading, setApiUsageLoading] = useState(false);
   const [apiUsageRange, setApiUsageRange] = useState('30d');
+  const [platformSettings, setPlatformSettings] = useState<PlatformSettings | null>(null);
+  const [settingsSaving, setSettingsSaving] = useState(false);
 
   const fetchAll = useCallback(async (r: string) => {
     setLoading(true);
@@ -91,10 +94,32 @@ export function CofounderAnalyticsPage() {
     await Promise.all([fetchApiBalances(), fetchApiUsage(apiUsageRange)]);
   }, [fetchApiBalances, fetchApiUsage, apiUsageRange]);
 
+  const fetchPlatformSettings = useCallback(async () => {
+    try {
+      const s = await settingsApi.getPlatformSettings();
+      setPlatformSettings(s);
+    } catch {
+      // silently fail
+    }
+  }, []);
+
+  const handleProviderChange = useCallback(async (provider: string) => {
+    setSettingsSaving(true);
+    try {
+      const updated = await settingsApi.updatePlatformSettings({ layout_ai_provider: provider });
+      setPlatformSettings(updated);
+    } catch {
+      // silently fail
+    } finally {
+      setSettingsSaving(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchAll(range);
     fetchApiData();
-  }, [range, fetchAll, fetchApiData]);
+    fetchPlatformSettings();
+  }, [range, fetchAll, fetchApiData, fetchPlatformSettings]);
 
   useEffect(() => {
     fetchApiUsage(apiUsageRange);
@@ -143,7 +168,49 @@ export function CofounderAnalyticsPage() {
             <TopUsersTable data={topUsers} />
           </div>
 
-          {/* Row 4: API Usage & Balances */}
+          {/* Row 4: Platform Settings */}
+          {platformSettings && (
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-lg font-semibold text-gray-800">Platform Settings</h2>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="flex-1">
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    Layout AI Provider
+                  </label>
+                  <p className="text-xs text-gray-500">
+                    Controls which AI provider generates site layouts for multi-unit zones.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={platformSettings.layout_ai_provider}
+                    onChange={(e) => handleProviderChange(e.target.value)}
+                    disabled={settingsSaving}
+                    className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:opacity-50"
+                  >
+                    <option value="claude" disabled={!platformSettings.claude_configured}>
+                      Claude {!platformSettings.claude_configured ? '(not configured)' : ''}
+                    </option>
+                    <option value="gemini" disabled={!platformSettings.gemini_configured}>
+                      Gemini {!platformSettings.gemini_configured ? '(not configured)' : ''}
+                    </option>
+                    <option value="algorithmic">Algorithmic (no AI)</option>
+                  </select>
+                  {settingsSaving && <Loader2 className="h-4 w-4 animate-spin text-gray-400" />}
+                </div>
+              </div>
+              <div className="mt-3 flex gap-4 text-xs text-gray-500">
+                <span className={platformSettings.claude_configured ? 'text-green-600' : 'text-gray-400'}>
+                  Claude: {platformSettings.claude_configured ? 'configured' : 'not configured'}
+                </span>
+                <span className={platformSettings.gemini_configured ? 'text-green-600' : 'text-gray-400'}>
+                  Gemini: {platformSettings.gemini_configured ? 'configured' : 'not configured'}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Row 5: API Usage & Balances */}
           <div>
             <h2 className="mb-4 text-lg font-semibold text-gray-800">API Usage & Balances</h2>
             <div className="space-y-6">
