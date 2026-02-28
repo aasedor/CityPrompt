@@ -76,7 +76,7 @@ function SunLight({ settings, latitude }: { settings: import('@/types').ViewerSe
         position={sunPos}
         intensity={1.2}
         castShadow={settings.showShadows}
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-camera-far={500}
         shadow-camera-left={-100}
         shadow-camera-right={100}
@@ -625,15 +625,17 @@ function PostProcessingEffects({ settings }: { settings: ViewerSettings }) {
 
   return (
     <EffectComposer multisampling={isHigh ? 4 : 0}>
-      <SSAO
-        samples={isHigh ? 32 : 16}
-        rings={isHigh ? 7 : 4}
-        intensity={20}
-        luminanceInfluence={0.6}
-        radius={0.05}
-        bias={0.025}
-        blendFunction={BlendFunction.MULTIPLY}
-      />
+      {isHigh && (
+        <SSAO
+          samples={32}
+          rings={7}
+          intensity={20}
+          luminanceInfluence={0.6}
+          radius={0.05}
+          bias={0.025}
+          blendFunction={BlendFunction.MULTIPLY}
+        />
+      )}
       <Bloom
         intensity={0.15}
         luminanceThreshold={0.9}
@@ -799,8 +801,8 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
         ))}
       </Suspense>
 
-      {/* Context buildings from OSM — hidden when map is active (map shows real buildings) */}
-      {settings.showExistingBuildings && !showMapBackground && contextBuildings && contextBuildings.length > 0 && (
+      {/* Context buildings from OSM */}
+      {settings.showExistingBuildings && contextBuildings && contextBuildings.length > 0 && (
         <ContextBuildingsGroup buildings={contextBuildings} projectLat={latitude} projectLng={longitude} />
       )}
 
@@ -924,12 +926,12 @@ function CameraBroadcaster({ onCameraMove }: { onCameraMove: (pos: [number, numb
   const lastSend = useRef(0);
   const lastPos = useRef(new THREE.Vector3());
   const lastQuat = useRef(new THREE.Quaternion());
+  const dirVec = useRef(new THREE.Vector3());
 
   useFrame(() => {
     // Check if camera position or rotation changed
-    const posMoved = camera.position.distanceToSquared(lastPos.current) > 0.0001;
-    const rotChanged = !camera.quaternion.equals(lastQuat.current);
-    if (!posMoved && !rotChanged) return;
+    if (camera.position.distanceToSquared(lastPos.current) < 0.01 &&
+        camera.quaternion.equals(lastQuat.current)) return;
 
     // Throttle collaboration broadcasts to ~10fps
     const now = performance.now();
@@ -938,16 +940,11 @@ function CameraBroadcaster({ onCameraMove }: { onCameraMove: (pos: [number, numb
     lastPos.current.copy(camera.position);
     lastQuat.current.copy(camera.quaternion);
 
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-    const target: [number, number, number] = [
-      camera.position.x + dir.x * 50,
-      camera.position.y + dir.y * 50,
-      camera.position.z + dir.z * 50,
-    ];
+    camera.getWorldDirection(dirVec.current);
+    const d = dirVec.current;
     onCameraMove(
       [camera.position.x, camera.position.y, camera.position.z],
-      target,
+      [camera.position.x + d.x * 50, camera.position.y + d.y * 50, camera.position.z + d.z * 50],
     );
   });
 
@@ -1130,6 +1127,11 @@ function FirstPersonControls() {
   const baseSpeed = 0.3 * settings.moveSpeed;
   const bobPhase = useRef(0);
   const bobAmplitude = 0.03; // 3cm vertical oscillation
+  // Pre-allocate vectors to avoid GC pressure in useFrame
+  const _forward = useRef(new THREE.Vector3());
+  const _right = useRef(new THREE.Vector3());
+  const _move = useRef(new THREE.Vector3());
+  const _up = useRef(new THREE.Vector3(0, 1, 0));
 
   useEffect(() => {
     // Set camera to walking height
@@ -1171,15 +1173,15 @@ function FirstPersonControls() {
     const keys = keysPressed.current;
     if (keys.size === 0) return;
 
-    const forward = new THREE.Vector3();
+    const forward = _forward.current;
     camera.getWorldDirection(forward);
     forward.y = 0;
     forward.normalize();
 
-    const right = new THREE.Vector3();
-    right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+    const right = _right.current;
+    right.crossVectors(forward, _up.current).normalize();
 
-    const move = new THREE.Vector3();
+    const move = _move.current.set(0, 0, 0);
     if (keys.has('w') || keys.has('arrowup')) move.add(forward);
     if (keys.has('s') || keys.has('arrowdown')) move.sub(forward);
     if (keys.has('d') || keys.has('arrowright')) move.add(right);
@@ -1224,6 +1226,11 @@ function FlyThroughControls() {
   const checkCollision = useCollisionCheck();
   const { settings } = useViewerStore();
   const baseSpeed = 0.6 * settings.moveSpeed;
+  // Pre-allocate vectors to avoid GC pressure in useFrame
+  const _forward = useRef(new THREE.Vector3());
+  const _right = useRef(new THREE.Vector3());
+  const _move = useRef(new THREE.Vector3());
+  const _up = useRef(new THREE.Vector3(0, 1, 0));
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => keysPressed.current.add(e.key.toLowerCase());
@@ -1263,13 +1270,13 @@ function FlyThroughControls() {
     if (keys.size === 0) return;
 
     // In fly mode, forward includes Y component (true flight direction)
-    const forward = new THREE.Vector3();
+    const forward = _forward.current;
     camera.getWorldDirection(forward);
 
-    const right = new THREE.Vector3();
-    right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+    const right = _right.current;
+    right.crossVectors(forward, _up.current).normalize();
 
-    const move = new THREE.Vector3();
+    const move = _move.current.set(0, 0, 0);
     if (keys.has('w') || keys.has('arrowup')) move.add(forward);
     if (keys.has('s') || keys.has('arrowdown')) move.sub(forward);
     if (keys.has('d') || keys.has('arrowright')) move.add(right);

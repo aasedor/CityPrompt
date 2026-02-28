@@ -209,22 +209,15 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       textureAttached.current = true;
     }
 
-    // --- Mesh scale from the measured ground size (set by measureGroundSize) ---
-    const groundSize = lastGroundSize.current;
-    if (meshRef.current && groundSize > 0) {
-      meshRef.current.scale.set(groundSize, groundSize, 1);
-    }
-
     // --- Throttled: update Mapbox texture zoom ---
     const map = mapRef.current;
     if (!map || !isMapReady.current || !textureRef.current) return;
 
     const now = performance.now();
 
-    // Detect camera movement
-    const posMoved = camera.position.distanceToSquared(lastCamPos.current) > 0.0001;
-    const rotChanged = !camera.quaternion.equals(lastCamQuat.current);
-    const cameraMoved = posMoved || rotChanged;
+    // Detect camera movement (cheap comparison first)
+    const posMoved = camera.position.distanceToSquared(lastCamPos.current) > 0.01;
+    const cameraMoved = posMoved || !camera.quaternion.equals(lastCamQuat.current);
 
     if (cameraMoved) {
       lastMoveTime.current = now;
@@ -232,20 +225,17 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
       lastCamQuat.current.copy(camera.quaternion);
     }
 
-    // Pick up async Mapbox repaints (from pending or ongoing renders)
-    if (mapRepainted.current || pendingRepaint.current) {
+    // Pick up async Mapbox repaints — only set needsUpdate when canvas actually changed
+    if (mapRepainted.current) {
       textureRef.current.needsUpdate = true;
-      if (mapRepainted.current) {
-        mapRepainted.current = false;
-        pendingRepaint.current = false;
-      }
+      mapRepainted.current = false;
+      pendingRepaint.current = false;
     }
 
     // After camera goes idle, do one final texture update to capture the last repaint
     const idleMs = now - lastMoveTime.current;
     if (idleMs > IDLE_THRESHOLD_MS && !cameraMoved) {
       if (!idleFinalUpdate.current) {
-        // One final update after idle
         textureRef.current.needsUpdate = true;
         idleFinalUpdate.current = true;
       }
