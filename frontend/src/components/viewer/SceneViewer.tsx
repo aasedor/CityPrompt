@@ -2794,7 +2794,8 @@ function GLBModel({
   }, [clonedScene, targetHeight, footprintCoordinates]);
 
   // Fix materials: enable vertex colors if present, or apply a warm default
-  // color to untextured Meshy preview models (which have no color data at all).
+  // color to models that have no usable texture/color data (Meshy preview
+  // models, or image-to-3D models where textures failed to embed in the GLB).
   const originalMaterials = useRef<Map<THREE.Mesh, THREE.Material | THREE.Material[]>>(new Map());
   useEffect(() => {
     clonedScene.traverse((child) => {
@@ -2812,13 +2813,19 @@ function GLBModel({
             cloned.needsUpdate = true;
             return cloned;
           }
-          // If the model has no texture map AND no vertex colors, it's an
-          // untextured Meshy preview — apply a warm architectural material
-          if (!mat.map && !hasVertexColors) {
+          // Check if the texture map actually has loaded image data —
+          // some Meshy models (especially image-to-3D) have a map property
+          // set but the texture image didn't actually load/embed in the GLB
+          const hasLoadedTexture = mat.map && mat.map.image &&
+            (mat.map.image.width > 0 || mat.map.image.data);
+          // If the model has no usable texture AND no vertex colors,
+          // apply a warm architectural material as fallback
+          if (!hasLoadedTexture && !hasVertexColors) {
             const cloned = mat.clone();
             cloned.color.set('#c8a882');   // warm sandstone
             cloned.roughness = 0.8;
             cloned.metalness = 0.05;
+            cloned.map = null;             // clear broken texture reference
             cloned.needsUpdate = true;
             return cloned;
           }
