@@ -358,11 +358,17 @@ export function ViewerPage() {
     setCameraTarget({ position, target, label: 'Walkthrough' });
   }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode]);
 
-  // Handle "Walk Through" from site planner — exit planner then explore
+  // Handle "Walk Through" from site planner — set all state at once, no timeouts
   const handleWalkThrough = useCallback(() => {
+    const { position, target } = computeWalkthroughEntry();
+    startWalkthrough(
+      [position[0] + 50, 50, position[2] + 50],
+      [position[0], 0, position[2]],
+    );
+    setCameraMode('firstPerson');
+    setCameraTarget({ position, target, label: 'Walkthrough' });
     setSitePlannerActive(false);
-    setTimeout(handleExplore, 300);
-  }, [setSitePlannerActive, handleExplore]);
+  }, [computeWalkthroughEntry, startWalkthrough, setCameraTarget, setCameraMode, setSitePlannerActive]);
 
   const updateBuilding = useMutation({
     mutationFn: (vars: { buildingId: string; data: Record<string, unknown>; silent?: boolean }) =>
