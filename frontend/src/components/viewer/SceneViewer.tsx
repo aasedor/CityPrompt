@@ -733,8 +733,8 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
   useEffect(() => {
     return () => {
       if (glRef.current) {
-        glRef.current.dispose();
         glRef.current.forceContextLoss();
+        glRef.current.dispose();
         glRef.current = null;
       }
     };
