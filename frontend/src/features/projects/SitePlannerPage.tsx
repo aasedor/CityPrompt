@@ -136,6 +136,7 @@ export function SitePlannerPage() {
           onZoneCreated={handleZoneCreated}
           onZoneUpdated={handleZoneUpdated}
           onZoneSelected={handleZoneSelected}
+          onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
         />
       </div>
 

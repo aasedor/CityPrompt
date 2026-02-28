@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
+import { useUndoRedoStore } from '@/store/undoRedo';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -64,6 +65,38 @@ function minPointsForTool(tool: SiteZoneType | null): number {
   return isLinearTool(tool) ? 2 : 3;
 }
 
+/**
+ * From overlapping features at a click point, pick the one with the smallest
+ * polygon area (the innermost / most specific zone). Uses the shoelace formula
+ * on raw coordinates — absolute value is fine for relative comparison.
+ */
+function pickSmallestFeature(features: mapboxgl.MapGeoJSONFeature[]): mapboxgl.MapGeoJSONFeature {
+  if (features.length <= 1) return features[0];
+
+  let best = features[0];
+  let bestArea = Infinity;
+
+  for (const f of features) {
+    const geom = f.geometry;
+    if (geom.type !== 'Polygon') continue;
+    const ring = (geom as GeoJSON.Polygon).coordinates[0];
+    if (!ring || ring.length < 3) continue;
+
+    // Shoelace formula (absolute value)
+    let area = 0;
+    for (let i = 0; i < ring.length - 1; i++) {
+      area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+    }
+    area = Math.abs(area) / 2;
+
+    if (area < bestArea) {
+      bestArea = area;
+      best = f;
+    }
+  }
+  return best;
+}
+
 interface DragState {
   type: 'zone' | 'vertex';
   zoneId: string;
@@ -79,6 +112,7 @@ interface SitePlannerMapProps {
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
+  onZoneDeleted?: (zoneId: string) => void;
 }
 
 export function SitePlannerMap({
@@ -88,6 +122,7 @@ export function SitePlannerMap({
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
+  onZoneDeleted,
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -95,9 +130,12 @@ export function SitePlannerMap({
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
+  const removedPointsRef = useRef<number[][]>([]);  // stack for redo of removed vertices
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
   const onZoneCreatedRef = useRef(onZoneCreated);
   onZoneCreatedRef.current = onZoneCreated;
+  const onZoneDeletedRef = useRef(onZoneDeleted);
+  onZoneDeletedRef.current = onZoneDeleted;
   const onZoneSelectedRef = useRef(onZoneSelected);
   onZoneSelectedRef.current = onZoneSelected;
   const onZoneUpdatedRef = useRef(onZoneUpdated);
@@ -192,6 +230,48 @@ export function SitePlannerMap({
     src.setData({ type: 'FeatureCollection', features });
   }, [buildPreviewFeatures]);
 
+  // ─── Drawing interceptor: lets undo button / Ctrl+Z remove vertices ───
+  const { setDrawingInterceptor, clearDrawingInterceptor } = useUndoRedoStore.getState();
+
+  // Helper to remove last drawing vertex (shared by interceptor and Backspace handler)
+  const undoLastVertex = useCallback(() => {
+    if (drawingPointsRef.current.length === 0) return false;
+    const removed = drawingPointsRef.current.pop()!;
+    removedPointsRef.current.push(removed);
+    setDrawingPoints([...drawingPointsRef.current]);
+    updateDrawingPreview();
+    return true;
+  }, [updateDrawingPreview]);
+
+  // Helper to redo a removed vertex
+  const redoLastVertex = useCallback(() => {
+    if (removedPointsRef.current.length === 0) return false;
+    const restored = removedPointsRef.current.pop()!;
+    drawingPointsRef.current.push(restored);
+    setDrawingPoints([...drawingPointsRef.current]);
+    updateDrawingPreview();
+    return true;
+  }, [updateDrawingPreview]);
+
+  // Register / clear interceptor whenever drawing points change
+  useEffect(() => {
+    if (drawingPoints.length > 0) {
+      setDrawingInterceptor({
+        undo: () => undoLastVertex(),
+        redo: () => redoLastVertex(),
+        canUndo: () => drawingPointsRef.current.length > 0,
+        canRedo: () => removedPointsRef.current.length > 0,
+      });
+    } else {
+      clearDrawingInterceptor();
+    }
+  }, [drawingPoints, undoLastVertex, redoLastVertex, setDrawingInterceptor, clearDrawingInterceptor]);
+
+  // Clean up interceptor on unmount
+  useEffect(() => {
+    return () => clearDrawingInterceptor();
+  }, [clearDrawingInterceptor]);
+
   /** Finish the current drawing and create a zone */
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
     const props = properties ?? activeToolPropertiesRef.current;
@@ -211,6 +291,7 @@ export function SitePlannerMap({
     if (!tool || drawingPointsRef.current.length < minPointsForTool(tool)) return;
     finishDrawing(tool, [...drawingPointsRef.current]);
     drawingPointsRef.current = [];
+    removedPointsRef.current = [];
     setDrawingPoints([]);
     updateDrawingPreview();
   }, [updateDrawingPreview, finishDrawing]);
@@ -440,6 +521,7 @@ export function SitePlannerMap({
           ...drawingPointsRef.current,
           [e.lngLat.lng, e.lngLat.lat],
         ];
+        removedPointsRef.current = [];  // clear redo stack on new point
         setDrawingPoints([...drawingPointsRef.current]);
         requestAnimationFrame(() => {
           const m = mapRef.current;
@@ -465,7 +547,7 @@ export function SitePlannerMap({
           layers: ['site-zones-fill'],
         });
         if (features.length > 0) {
-          const zoneId = features[0].properties?.id;
+          const zoneId = pickSmallestFeature(features).properties?.id;
           if (zoneId) {
             onZoneSelectedRef.current(zoneId);
             return;
@@ -486,6 +568,7 @@ export function SitePlannerMap({
         drawingPointsRef.current = drawingPointsRef.current.slice(0, -1);
         finishDrawing(tool, [...drawingPointsRef.current]);
         drawingPointsRef.current = [];
+        removedPointsRef.current = [];
         setDrawingPoints([]);
         requestAnimationFrame(() => {
           const m = mapRef.current;
@@ -531,7 +614,7 @@ export function SitePlannerMap({
         layers: ['site-zones-fill'],
       });
       if (zoneFeatures.length > 0) {
-        const zoneId = zoneFeatures[0].properties?.id as string;
+        const zoneId = pickSmallestFeature(zoneFeatures).properties?.id as string;
         const zone = siteZonesRef.current.find((z) => z.id === zoneId);
         if (zone) {
           e.preventDefault();
@@ -671,6 +754,7 @@ export function SitePlannerMap({
         finishDrawing(prevTool, [...pts], prevToolProperties);
       }
       drawingPointsRef.current = [];
+      removedPointsRef.current = [];
       setDrawingPoints([]);
       updateDrawingPreview();
     }
@@ -714,24 +798,38 @@ export function SitePlannerMap({
   // ─── Keyboard shortcuts ───
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      // Skip when focus is in an editable element
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if ((e.target as HTMLElement)?.isContentEditable) return;
+
       const tool = activeSitePlannerToolRef.current;
+
       if (e.key === 'Escape' && drawingPointsRef.current.length > 0) {
         drawingPointsRef.current = [];
+        removedPointsRef.current = [];
         setDrawingPoints([]);
         updateDrawingPreview();
       }
       if (e.key === 'Enter' && tool && drawingPointsRef.current.length >= minPointsForTool(tool)) {
         finishPolygon();
       }
-      if ((e.key === 'Backspace' || e.key === 'Delete') && drawingPointsRef.current.length > 0) {
-        drawingPointsRef.current = drawingPointsRef.current.slice(0, -1);
-        setDrawingPoints([...drawingPointsRef.current]);
-        updateDrawingPreview();
+      // Backspace removes last vertex while drawing
+      if (e.key === 'Backspace' && drawingPointsRef.current.length > 0) {
+        undoLastVertex();
+      }
+      // Delete key: remove last vertex while drawing, OR delete selected zone
+      if (e.key === 'Delete') {
+        if (drawingPointsRef.current.length > 0) {
+          undoLastVertex();
+        } else if (!tool && selectedZoneId && onZoneDeletedRef.current) {
+          onZoneDeletedRef.current(selectedZoneId);
+        }
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [updateDrawingPreview, finishPolygon]);
+  }, [updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -756,8 +854,8 @@ export function SitePlannerMap({
               : `Click to start drawing a ${ZONE_TYPE_CONFIG[activeSitePlannerTool].label} zone`
             : drawingPoints.length < minPts
             ? linear
-              ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Backspace to undo`
-              : `Click to add points (${drawingPoints.length}/${minPts} min) — Backspace to undo`
+              ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
+              : `Click to add points (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
             : linear
             ? `${drawingPoints.length} waypoints — Double-click or Enter to finish — Esc to cancel`
             : `${drawingPoints.length} points — Double-click or Enter to finish — Esc to cancel`}
@@ -766,7 +864,7 @@ export function SitePlannerMap({
       {/* Select mode hint */}
       {!activeSitePlannerTool && (
         <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
-          Click a zone to select — Drag to move — Drag vertices to reshape
+          Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
         </div>
       )}
     </>

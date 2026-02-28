@@ -199,6 +199,7 @@ export function ProjectViewPage() {
             onZoneCreated={handleZoneCreated}
             onZoneUpdated={handleZoneUpdated}
             onZoneSelected={handleZoneSelected}
+            onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
           />
           {selectedZone && (
             <ZonePropertiesPanel

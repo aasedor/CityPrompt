@@ -920,6 +920,7 @@ export function ViewerPage() {
               onZoneCreated={handleZoneCreated}
               onZoneUpdated={handleZoneUpdated}
               onZoneSelected={selectZone}
+              onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
             />
             {selectedZone && (
               <ZonePropertiesPanel
