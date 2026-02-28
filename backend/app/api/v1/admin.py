@@ -2,6 +2,7 @@
 Admin API endpoints for platform management.
 """
 
+import logging
 import uuid
 from typing import Optional
 
@@ -14,6 +15,8 @@ from app.core.database import get_db
 from app.core.email import send_admin_welcome_email
 from app.core.security import require_admin
 from app.models.models import Building, Document, Project, User
+
+logger = logging.getLogger(__name__)
 from app.schemas.schemas import (
     AdminDashboardStats,
     AdminProjectListResponse,
@@ -136,6 +139,7 @@ async def update_user(
     await db.refresh(target)
 
     # Send welcome email to newly promoted admin
+    email_sent = False
     if was_promoted_to_admin:
         settings = get_settings()
         try:
@@ -144,15 +148,16 @@ async def update_user(
                 promoted_by_email=user.email,
                 login_link=f"{settings.frontend_url}/admin",
             )
+            email_sent = True
         except Exception:
-            pass  # Don't fail the request if email fails
+            logger.exception("Failed to send admin welcome email to %s", target.email)
 
     count_result = await db.execute(
         select(func.count(Project.id)).where(Project.owner_id == target.id)
     )
     project_count = count_result.scalar() or 0
 
-    return AdminUserListResponse(
+    result_data = AdminUserListResponse(
         id=target.id,
         email=target.email,
         full_name=target.full_name,
@@ -161,6 +166,14 @@ async def update_user(
         created_at=target.created_at,
         project_count=project_count,
     )
+
+    if was_promoted_to_admin and not email_sent:
+        from fastapi.responses import JSONResponse
+        data = result_data.model_dump(mode="json")
+        data["_email_failed"] = True
+        return JSONResponse(content=data)
+
+    return result_data
 
 
 @router.delete("/users/{user_id}", status_code=204)

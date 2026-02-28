@@ -43,7 +43,11 @@ export function AdminUsersPage() {
     try {
       const updated = await adminApi.updateUser(userId, { role });
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
-      toast.success('Role updated');
+      if (updated._email_failed) {
+        toast.success('Role updated, but welcome email failed to send', { duration: 4000 });
+      } else {
+        toast.success(role === 'admin' ? 'Role updated — welcome email sent' : 'Role updated');
+      }
     } catch (err: any) {
       toast.error(err.response?.data?.detail || 'Failed to update role');
     }
