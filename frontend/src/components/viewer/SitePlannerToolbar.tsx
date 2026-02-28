@@ -350,53 +350,6 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
 
       {/* Action buttons row */}
       <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-        {/* Generate All */}
-        {projectId && (
-          <button
-            onClick={handleGenerateAll}
-            disabled={generating}
-            className="flex items-center gap-1.5 rounded-lg bg-purple-600 px-3 py-2 text-xs font-medium text-white hover:bg-purple-700 disabled:opacity-50 sm:px-4 sm:py-1.5"
-            title={isBoundarySelected ? 'Generate 3D models for zones within selected boundary' : 'Generate 3D models for all building/residential zones'}
-          >
-            {generating ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
-            <span className="sm:hidden">{generating ? '...' : isBoundarySelected ? 'Boundary' : 'Generate'}</span>
-            <span className="hidden sm:inline">{generating ? 'Generating...' : isBoundarySelected ? 'Generate Boundary' : 'Generate All'}</span>
-          </button>
-        )}
-
-        {/* Regenerate All — visible when buildings already exist */}
-        {projectId && hasExistingBuildings && (
-          confirmRegenerate ? (
-            <div className="flex items-center gap-1">
-              <button
-                onClick={handleRegenerateAll}
-                disabled={regenerating}
-                className="flex items-center gap-1 rounded-lg bg-orange-500 px-3 py-2 text-xs font-medium text-white hover:bg-orange-600 disabled:opacity-50 sm:py-1.5"
-              >
-                {regenerating ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
-                <span>Confirm ({zonesWithBuildings.length})</span>
-              </button>
-              <button
-                onClick={() => setConfirmRegenerate(false)}
-                className="rounded-lg px-2 py-2 text-xs text-gray-300 hover:text-white sm:py-1.5"
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleRegenerateAll}
-              disabled={regenerating}
-              className="flex items-center gap-1.5 rounded-lg bg-purple-500/80 px-3 py-2 text-xs font-medium text-white hover:bg-purple-600 disabled:opacity-50 sm:py-1.5"
-              title={`Regenerate ${zonesWithBuildings.length} existing buildings`}
-            >
-              <RefreshCw size={14} />
-              <span className="sm:hidden">Regen</span>
-              <span className="hidden sm:inline">Regen All</span>
-            </button>
-          )
-        )}
-
         <button
           onClick={onWalkThrough}
           className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white hover:bg-emerald-700 sm:px-4 sm:py-1.5"
