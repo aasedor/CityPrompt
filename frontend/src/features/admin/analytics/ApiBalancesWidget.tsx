@@ -57,8 +57,6 @@ function ProviderCard({ label, provider }: { label: string; provider: ProviderBa
 }
 
 export function ApiBalancesWidget({ data, loading, onRefresh }: Props) {
-  if (!data) return null;
-
   return (
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
@@ -73,37 +71,43 @@ export function ApiBalancesWidget({ data, loading, onRefresh }: Props) {
         </button>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <ProviderCard label="Meshy" provider={data.meshy} />
-        <ProviderCard label="Tripo" provider={data.tripo} />
-        <ProviderCard label="Stability AI" provider={data.stability} />
+      {loading && !data ? (
+        <p className="py-6 text-center text-sm text-gray-400">Loading balances…</p>
+      ) : !data ? (
+        <p className="py-6 text-center text-sm text-gray-400">Unable to load balances. Click Refresh to retry.</p>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <ProviderCard label="Meshy" provider={data.meshy} />
+          <ProviderCard label="Tripo" provider={data.tripo} />
+          <ProviderCard label="Stability AI" provider={data.stability} />
 
-        {/* Anthropic Claude card */}
-        <div className="rounded-lg border border-gray-100 bg-purple-50 p-3">
-          <div className="mb-2 flex items-center gap-2 text-purple-600">
-            <Bot size={16} />
-            <span className="text-xs font-semibold">Anthropic Claude</span>
-          </div>
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Total Calls</span>
-              <span className="font-bold text-purple-700">{data.anthropic.total_calls.toLocaleString()}</span>
+          {/* Anthropic Claude card */}
+          <div className="rounded-lg border border-gray-100 bg-purple-50 p-3">
+            <div className="mb-2 flex items-center gap-2 text-purple-600">
+              <Bot size={16} />
+              <span className="text-xs font-semibold">Anthropic Claude</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Input Tokens</span>
-              <span className="font-medium text-gray-700">
-                {(data.anthropic.total_input_tokens / 1000).toFixed(1)}k
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Output Tokens</span>
-              <span className="font-medium text-gray-700">
-                {(data.anthropic.total_output_tokens / 1000).toFixed(1)}k
-              </span>
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Total Calls</span>
+                <span className="font-bold text-purple-700">{data.anthropic.total_calls.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Input Tokens</span>
+                <span className="font-medium text-gray-700">
+                  {(data.anthropic.total_input_tokens / 1000).toFixed(1)}k
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Output Tokens</span>
+                <span className="font-medium text-gray-700">
+                  {(data.anthropic.total_output_tokens / 1000).toFixed(1)}k
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

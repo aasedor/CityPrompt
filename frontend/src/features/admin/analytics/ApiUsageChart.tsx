@@ -29,7 +29,31 @@ const rangeLabels: Record<string, string> = {
 };
 
 export function ApiUsageChart({ data, range, onRangeChange }: Props) {
-  if (!data) return null;
+  if (!data) {
+    return (
+      <div className="card">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-700">Daily Credit Usage</h3>
+          <div className="inline-flex rounded-lg border border-gray-200 bg-white p-1">
+            {ranges.map((r) => (
+              <button
+                key={r}
+                onClick={() => onRangeChange(r)}
+                className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                  range === r
+                    ? 'bg-primary-600 text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                {rangeLabels[r]}
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="py-8 text-center text-sm text-gray-400">No usage data available yet</p>
+      </div>
+    );
+  }
 
   // Group daily usage by date for stacked bars
   const dateMap = new Map<string, Record<string, number>>();

@@ -410,21 +410,27 @@ async def api_balances(
         _fetch_meshy(), _fetch_tripo(), _fetch_stability()
     )
 
-    # Anthropic token totals from usage logs
-    anthropic_result = await db.execute(
-        select(
-            func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
-            func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
-            func.count().label("total_calls"),
+    # Anthropic token totals from usage logs (table may not exist yet)
+    try:
+        anthropic_result = await db.execute(
+            select(
+                func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
+                func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
+                func.count().label("total_calls"),
+            )
+            .where(ApiUsageLog.provider == "anthropic")
         )
-        .where(ApiUsageLog.provider == "anthropic")
-    )
-    row = anthropic_result.one()
-    anthropic_usage = AnthropicTokenUsage(
-        total_input_tokens=int(row.total_input),
-        total_output_tokens=int(row.total_output),
-        total_calls=int(row.total_calls),
-    )
+        row = anthropic_result.one()
+        anthropic_usage = AnthropicTokenUsage(
+            total_input_tokens=int(row.total_input),
+            total_output_tokens=int(row.total_output),
+            total_calls=int(row.total_calls),
+        )
+    except Exception:
+        await db.rollback()
+        anthropic_usage = AnthropicTokenUsage(
+            total_input_tokens=0, total_output_tokens=0, total_calls=0
+        )
 
     return ApiBalanceResponse(
         meshy=meshy_bal,
@@ -436,27 +442,32 @@ async def api_balances(
 
 @router.get("/api-usage", response_model=ApiUsageResponse)
 async def api_usage(
-    range: str = Query("30d", pattern="^(7d|30d|90d|1y)$"),
+    range: str = Query("30d", pattern="^(7d|30d|90d|1y|all)$"),
     user: User = Depends(require_cofounder),
     db: AsyncSession = Depends(get_db),
 ):
     """Aggregated API usage analytics by provider, operation, and day."""
-    since = parse_time_range(range)
+    since = parse_time_range(range) if range != "all" else None
 
-    # Per-provider, per-operation aggregation
-    result = await db.execute(
-        select(
+    try:
+        # Per-provider, per-operation aggregation
+        stmt = select(
             ApiUsageLog.provider,
             ApiUsageLog.operation,
             func.coalesce(func.sum(ApiUsageLog.credits_used), 0).label("total_credits"),
             func.count().label("call_count"),
             func.count().filter(ApiUsageLog.status == "success").label("success_count"),
         )
-        .where(ApiUsageLog.created_at >= since)
-        .group_by(ApiUsageLog.provider, ApiUsageLog.operation)
-        .order_by(ApiUsageLog.provider, ApiUsageLog.operation)
-    )
-    rows = result.all()
+        if since:
+            stmt = stmt.where(ApiUsageLog.created_at >= since)
+        stmt = stmt.group_by(ApiUsageLog.provider, ApiUsageLog.operation).order_by(
+            ApiUsageLog.provider, ApiUsageLog.operation
+        )
+        result = await db.execute(stmt)
+        rows = result.all()
+    except Exception:
+        await db.rollback()
+        return ApiUsageResponse(providers=[], daily=[], range=range)
 
     # Build provider-level aggregations
     provider_map: dict[str, dict] = {}
@@ -500,18 +511,21 @@ async def api_usage(
         )
 
     # Daily breakdown for chart
-    daily_result = await db.execute(
-        select(
+    try:
+        daily_stmt = select(
             cast(ApiUsageLog.created_at, Date).label("day"),
             ApiUsageLog.provider,
             func.coalesce(func.sum(ApiUsageLog.credits_used), 0).label("credits"),
             func.count().label("calls"),
         )
-        .where(ApiUsageLog.created_at >= since)
-        .group_by("day", ApiUsageLog.provider)
-        .order_by("day")
-    )
-    daily_rows = daily_result.all()
+        if since:
+            daily_stmt = daily_stmt.where(ApiUsageLog.created_at >= since)
+        daily_stmt = daily_stmt.group_by("day", ApiUsageLog.provider).order_by("day")
+        daily_result = await db.execute(daily_stmt)
+        daily_rows = daily_result.all()
+    except Exception:
+        await db.rollback()
+        daily_rows = []
 
     daily = [
         DailyUsage(
