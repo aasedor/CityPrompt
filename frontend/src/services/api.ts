@@ -646,6 +646,54 @@ export interface TopUsersResponse {
   range: string;
 }
 
+export interface ProviderBalance {
+  provider: string;
+  balance?: number;
+  frozen?: number;
+  error?: string;
+}
+
+export interface AnthropicTokenUsage {
+  total_input_tokens: number;
+  total_output_tokens: number;
+  total_calls: number;
+}
+
+export interface ApiBalanceResponse {
+  meshy: ProviderBalance;
+  tripo: ProviderBalance;
+  stability: ProviderBalance;
+  anthropic: AnthropicTokenUsage;
+}
+
+export interface OperationBreakdown {
+  operation: string;
+  total_credits: number;
+  call_count: number;
+  success_rate: number;
+}
+
+export interface ApiUsageByProvider {
+  provider: string;
+  total_credits: number;
+  total_calls: number;
+  success_rate: number;
+  by_operation: OperationBreakdown[];
+}
+
+export interface DailyUsage {
+  date: string;
+  provider: string;
+  credits: number;
+  calls: number;
+}
+
+export interface ApiUsageResponse {
+  providers: ApiUsageByProvider[];
+  daily: DailyUsage[];
+  range: string;
+}
+
 export const analyticsApi = {
   getUserGrowth: async (range = '30d'): Promise<TimeSeriesResponse> => {
     const { data } = await api.get('/api/v1/analytics/user-growth', { params: { range } });
@@ -674,6 +722,16 @@ export const analyticsApi = {
 
   getTopUsers: async (range = '30d'): Promise<TopUsersResponse> => {
     const { data } = await api.get('/api/v1/analytics/top-users', { params: { range } });
+    return data;
+  },
+
+  getApiBalances: async (): Promise<ApiBalanceResponse> => {
+    const { data } = await api.get('/api/v1/analytics/api-balances');
+    return data;
+  },
+
+  getApiUsage: async (range = '30d'): Promise<ApiUsageResponse> => {
+    const { data } = await api.get('/api/v1/analytics/api-usage', { params: { range } });
     return data;
   },
 };

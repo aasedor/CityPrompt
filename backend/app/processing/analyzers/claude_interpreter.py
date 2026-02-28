@@ -11,6 +11,7 @@ from typing import Any, Optional
 import anthropic
 
 from app.core.config import get_settings
+from app.core.usage_logger import log_api_usage_sync
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -22,6 +23,20 @@ class ClaudeInterpreter:
     def __init__(self):
         self.client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
         self.model = "claude-sonnet-4-20250514"
+
+    def _log_usage(self, message, operation: str) -> None:
+        """Log token usage from a Claude API response."""
+        try:
+            input_tokens = message.usage.input_tokens
+            output_tokens = message.usage.output_tokens
+            log_api_usage_sync(
+                provider="anthropic",
+                operation=operation,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            )
+        except Exception as exc:
+            logger.warning(f"Failed to log Claude usage for {operation}: {exc}")
 
     async def interpret_floor_plan(
         self, image_data: bytes, context: Optional[dict] = None
@@ -107,6 +122,7 @@ Only return valid JSON, no other text."""
                     }
                 ],
             )
+            self._log_usage(message, "interpret_floor_plan")
 
             response_text = message.content[0].text
             # Strip markdown code fences if present
@@ -190,6 +206,7 @@ Only return valid JSON."""
                     }
                 ],
             )
+            self._log_usage(message, "interpret_elevation")
 
             response_text = message.content[0].text.strip()
             if response_text.startswith("```"):
@@ -257,6 +274,7 @@ Only return valid JSON."""
                     }
                 ],
             )
+            self._log_usage(message, "extract_dimensions_from_text")
 
             response_text = message.content[0].text.strip()
             if response_text.startswith("```"):
@@ -296,6 +314,7 @@ Only return valid JSON."""
                     }
                 ],
             )
+            self._log_usage(message, "validate_extracted_data")
 
             response_text = message.content[0].text.strip()
             if response_text.startswith("```"):

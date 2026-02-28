@@ -2,16 +2,17 @@
 Cofounder-only analytics endpoints for deep platform insights.
 """
 
+import asyncio
 import time
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import func, select, case, distinct
+from sqlalchemy import func, select, case, cast, distinct, Date
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.security import require_cofounder
-from app.models.models import User, Project, Building, Document
+from app.models.models import User, Project, Building, Document, ApiUsageLog
 from app.schemas.schemas import (
     TimeSeriesResponse,
     TimeSeriesPoint,
@@ -20,6 +21,13 @@ from app.schemas.schemas import (
     PlatformHealthResponse,
     TopUsersResponse,
     TopUserEntry,
+    ProviderBalance,
+    AnthropicTokenUsage,
+    ApiBalanceResponse,
+    OperationBreakdown,
+    ApiUsageByProvider,
+    DailyUsage,
+    ApiUsageResponse,
 )
 
 router = APIRouter()
@@ -352,3 +360,167 @@ async def top_users(
         ],
         range=range,
     )
+
+
+@router.get("/api-balances", response_model=ApiBalanceResponse)
+async def api_balances(
+    user: User = Depends(require_cofounder),
+    db: AsyncSession = Depends(get_db),
+):
+    """Fetch current credit balances from all external API providers."""
+    from app.generation.meshy_client import MeshyClient
+    from app.generation.tripo_client import TripoClient
+    from app.generation.stability_client import StabilityClient
+
+    async def _fetch_meshy() -> ProviderBalance:
+        try:
+            data = await MeshyClient().get_balance()
+            return ProviderBalance(
+                provider="meshy",
+                balance=data.get("balance") or data.get("credits"),
+                frozen=data.get("frozen"),
+            )
+        except Exception as exc:
+            return ProviderBalance(provider="meshy", error=str(exc))
+
+    async def _fetch_tripo() -> ProviderBalance:
+        try:
+            data = await TripoClient().get_balance()
+            inner = data.get("data", data)
+            return ProviderBalance(
+                provider="tripo",
+                balance=inner.get("balance") or inner.get("credits"),
+                frozen=inner.get("frozen"),
+            )
+        except Exception as exc:
+            return ProviderBalance(provider="tripo", error=str(exc))
+
+    async def _fetch_stability() -> ProviderBalance:
+        try:
+            data = await StabilityClient().get_balance()
+            return ProviderBalance(
+                provider="stability",
+                balance=data.get("credits"),
+                frozen=data.get("frozen"),
+            )
+        except Exception as exc:
+            return ProviderBalance(provider="stability", error=str(exc))
+
+    meshy_bal, tripo_bal, stability_bal = await asyncio.gather(
+        _fetch_meshy(), _fetch_tripo(), _fetch_stability()
+    )
+
+    # Anthropic token totals from usage logs
+    anthropic_result = await db.execute(
+        select(
+            func.coalesce(func.sum(ApiUsageLog.input_tokens), 0).label("total_input"),
+            func.coalesce(func.sum(ApiUsageLog.output_tokens), 0).label("total_output"),
+            func.count().label("total_calls"),
+        )
+        .where(ApiUsageLog.provider == "anthropic")
+    )
+    row = anthropic_result.one()
+    anthropic_usage = AnthropicTokenUsage(
+        total_input_tokens=int(row.total_input),
+        total_output_tokens=int(row.total_output),
+        total_calls=int(row.total_calls),
+    )
+
+    return ApiBalanceResponse(
+        meshy=meshy_bal,
+        tripo=tripo_bal,
+        stability=stability_bal,
+        anthropic=anthropic_usage,
+    )
+
+
+@router.get("/api-usage", response_model=ApiUsageResponse)
+async def api_usage(
+    range: str = Query("30d", pattern="^(7d|30d|90d|1y)$"),
+    user: User = Depends(require_cofounder),
+    db: AsyncSession = Depends(get_db),
+):
+    """Aggregated API usage analytics by provider, operation, and day."""
+    since = parse_time_range(range)
+
+    # Per-provider, per-operation aggregation
+    result = await db.execute(
+        select(
+            ApiUsageLog.provider,
+            ApiUsageLog.operation,
+            func.coalesce(func.sum(ApiUsageLog.credits_used), 0).label("total_credits"),
+            func.count().label("call_count"),
+            func.count().filter(ApiUsageLog.status == "success").label("success_count"),
+        )
+        .where(ApiUsageLog.created_at >= since)
+        .group_by(ApiUsageLog.provider, ApiUsageLog.operation)
+        .order_by(ApiUsageLog.provider, ApiUsageLog.operation)
+    )
+    rows = result.all()
+
+    # Build provider-level aggregations
+    provider_map: dict[str, dict] = {}
+    for row in rows:
+        p = row.provider
+        if p not in provider_map:
+            provider_map[p] = {
+                "provider": p,
+                "total_credits": 0.0,
+                "total_calls": 0,
+                "success_count": 0,
+                "by_operation": [],
+            }
+        entry = provider_map[p]
+        credits = float(row.total_credits)
+        calls = int(row.call_count)
+        successes = int(row.success_count)
+        entry["total_credits"] += credits
+        entry["total_calls"] += calls
+        entry["success_count"] += successes
+        entry["by_operation"].append(
+            OperationBreakdown(
+                operation=row.operation,
+                total_credits=credits,
+                call_count=calls,
+                success_rate=round(successes / calls * 100, 1) if calls > 0 else 0.0,
+            )
+        )
+
+    providers = []
+    for info in provider_map.values():
+        tc = info["total_calls"]
+        providers.append(
+            ApiUsageByProvider(
+                provider=info["provider"],
+                total_credits=round(info["total_credits"], 2),
+                total_calls=tc,
+                success_rate=round(info["success_count"] / tc * 100, 1) if tc > 0 else 0.0,
+                by_operation=info["by_operation"],
+            )
+        )
+
+    # Daily breakdown for chart
+    daily_result = await db.execute(
+        select(
+            cast(ApiUsageLog.created_at, Date).label("day"),
+            ApiUsageLog.provider,
+            func.coalesce(func.sum(ApiUsageLog.credits_used), 0).label("credits"),
+            func.count().label("calls"),
+        )
+        .where(ApiUsageLog.created_at >= since)
+        .group_by("day", ApiUsageLog.provider)
+        .order_by("day")
+    )
+    daily_rows = daily_result.all()
+
+    daily = [
+        DailyUsage(
+            date=str(r.day),
+            provider=r.provider,
+            credits=float(r.credits),
+            calls=int(r.calls),
+        )
+        for r in daily_rows
+    ]
+
+    return ApiUsageResponse(providers=providers, daily=daily, range=range)

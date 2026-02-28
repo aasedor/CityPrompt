@@ -14,6 +14,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
+from app.core.usage_logger import log_api_usage_sync
 from app.tasks.worker import celery_app
 
 logger = logging.getLogger(__name__)
@@ -466,8 +467,10 @@ def generate_3d_model_ai(
 
             if mode == "image" and image_url:
                 task_id = asyncio.run(tripo.image_to_3d(image_url))
+                log_api_usage_sync(provider="tripo", operation="image_to_3d", credits_used=30, task_id=task_id, building_id=building_id)
             else:
                 task_id = asyncio.run(tripo.text_to_3d(prompt, negative_prompt=architectural_negative_prompt))
+                log_api_usage_sync(provider="tripo", operation="text_to_3d", credits_used=30, task_id=task_id, building_id=building_id)
 
             building.meshy_task_id = task_id
             session.commit()
@@ -486,6 +489,7 @@ def generate_3d_model_ai(
                 lp_task_id = asyncio.run(tripo.smart_low_poly(task_id))
                 lp_result = asyncio.run(tripo.poll_until_done(lp_task_id, timeout=120))
                 lod_model_url_remote = lp_result.get("model_url") or lp_result.get("output", {}).get("model", {}).get("url")
+                log_api_usage_sync(provider="tripo", operation="retopology", credits_used=10, task_id=lp_task_id, building_id=building_id)
             except Exception as lp_err:
                 logger.warning(f"Tripo smart_low_poly failed (non-fatal): {lp_err}")
 
@@ -517,11 +521,13 @@ def generate_3d_model_ai(
             if mode == "image" and image_url:
                 task_id = asyncio.run(client.image_to_3d(image_url))
                 task_type = "image"
+                log_api_usage_sync(provider="meshy", operation="image_to_3d", credits_used=20, task_id=task_id, building_id=building_id)
             else:
                 task_id = asyncio.run(client.text_to_3d_preview(
                     prompt, negative_prompt=architectural_negative_prompt
                 ))
                 task_type = "text"
+                log_api_usage_sync(provider="meshy", operation="text_to_3d_preview", credits_used=10, task_id=task_id, building_id=building_id)
 
             building.meshy_task_id = task_id
             session.commit()
@@ -544,6 +550,7 @@ def generate_3d_model_ai(
                     session.commit()
                     result = asyncio.run(client.poll_until_done(refine_task_id, timeout=600, task_type="text"))
                     logger.info(f"Meshy refine result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
+                    log_api_usage_sync(provider="meshy", operation="text_to_3d_refine", credits_used=10, task_id=refine_task_id, building_id=building_id)
                 except Exception as refine_err:
                     logger.error(f"Refine step FAILED for building {building_id}: {refine_err}", exc_info=True)
                     logger.warning("Falling back to preview model (will lack textures)")
@@ -595,6 +602,7 @@ def generate_3d_model_ai(
 
     except Exception as exc:
         logger.error(f"AI 3D generation failed for building {building_id}: {exc}")
+        log_api_usage_sync(provider=engine, operation=f"{mode}_to_3d", status="failed", building_id=building_id)
         try:
             from app.models.models import Building
             building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()

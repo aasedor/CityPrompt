@@ -8,6 +8,8 @@ import type {
   GenerationStatsResponse,
   PlatformHealthResponse,
   TopUsersResponse,
+  ApiBalanceResponse,
+  ApiUsageResponse,
 } from '@/services/api';
 import { TimeRangeSelector } from './analytics/TimeRangeSelector';
 import { UserGrowthChart } from './analytics/UserGrowthChart';
@@ -16,6 +18,8 @@ import { CreationTrendsChart } from './analytics/CreationTrendsChart';
 import { GenerationStatsWidget } from './analytics/GenerationStatsWidget';
 import { PlatformHealthWidget } from './analytics/PlatformHealthWidget';
 import { TopUsersTable } from './analytics/TopUsersTable';
+import { ApiBalancesWidget } from './analytics/ApiBalancesWidget';
+import { ApiUsageChart } from './analytics/ApiUsageChart';
 
 export function CofounderAnalyticsPage() {
   const [range, setRange] = useState('30d');
@@ -28,6 +32,11 @@ export function CofounderAnalyticsPage() {
   const [generationStats, setGenerationStats] = useState<GenerationStatsResponse | null>(null);
   const [platformHealth, setPlatformHealth] = useState<PlatformHealthResponse | null>(null);
   const [topUsers, setTopUsers] = useState<TopUsersResponse | null>(null);
+  const [apiBalances, setApiBalances] = useState<ApiBalanceResponse | null>(null);
+  const [apiUsage, setApiUsage] = useState<ApiUsageResponse | null>(null);
+  const [apiBalancesLoading, setApiBalancesLoading] = useState(false);
+  const [apiUsageLoading, setApiUsageLoading] = useState(false);
+  const [apiUsageRange, setApiUsageRange] = useState('30d');
 
   const fetchAll = useCallback(async (r: string) => {
     setLoading(true);
@@ -54,9 +63,42 @@ export function CofounderAnalyticsPage() {
     }
   }, []);
 
+  const fetchApiBalances = useCallback(async () => {
+    setApiBalancesLoading(true);
+    try {
+      const balances = await analyticsApi.getApiBalances();
+      setApiBalances(balances);
+    } catch {
+      // silently fail — balances widget handles null
+    } finally {
+      setApiBalancesLoading(false);
+    }
+  }, []);
+
+  const fetchApiUsage = useCallback(async (r: string) => {
+    setApiUsageLoading(true);
+    try {
+      const usage = await analyticsApi.getApiUsage(r);
+      setApiUsage(usage);
+    } catch {
+      // silently fail — usage chart handles null
+    } finally {
+      setApiUsageLoading(false);
+    }
+  }, []);
+
+  const fetchApiData = useCallback(async () => {
+    await Promise.all([fetchApiBalances(), fetchApiUsage(apiUsageRange)]);
+  }, [fetchApiBalances, fetchApiUsage, apiUsageRange]);
+
   useEffect(() => {
     fetchAll(range);
-  }, [range, fetchAll]);
+    fetchApiData();
+  }, [range, fetchAll, fetchApiData]);
+
+  useEffect(() => {
+    fetchApiUsage(apiUsageRange);
+  }, [apiUsageRange, fetchApiUsage]);
 
   return (
     <div>
@@ -99,6 +141,23 @@ export function CofounderAnalyticsPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             <PlatformHealthWidget data={platformHealth} />
             <TopUsersTable data={topUsers} />
+          </div>
+
+          {/* Row 4: API Usage & Balances */}
+          <div>
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">API Usage & Balances</h2>
+            <div className="space-y-6">
+              <ApiBalancesWidget
+                data={apiBalances}
+                loading={apiBalancesLoading}
+                onRefresh={fetchApiBalances}
+              />
+              <ApiUsageChart
+                data={apiUsage}
+                range={apiUsageRange}
+                onRangeChange={setApiUsageRange}
+              />
+            </div>
           </div>
         </div>
       )}

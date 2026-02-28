@@ -142,3 +142,10 @@ class TripoClient:
             resp.raise_for_status()
             logger.info(f"Downloaded Tripo model ({len(resp.content)} bytes)")
             return resp.content
+
+    async def get_balance(self) -> dict:
+        """Fetch current credit balance."""
+        async with self._client() as client:
+            resp = await client.get(f"{self.base_url}/v2/openapi/user/balance")
+            resp.raise_for_status()
+            return resp.json()

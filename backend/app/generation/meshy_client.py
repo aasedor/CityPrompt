@@ -137,3 +137,10 @@ class MeshyClient:
             elapsed += poll_interval
 
         raise TimeoutError(f"Meshy task {task_id} timed out after {timeout}s")
+
+    async def get_balance(self) -> dict:
+        """Fetch current credit balance."""
+        async with self._client() as client:
+            resp = await client.get(f"{self.base_url}/openapi/v1/balance")
+            resp.raise_for_status()
+            return resp.json()

@@ -127,3 +127,13 @@ class StabilityClient:
             resp.raise_for_status()
             logger.info(f"Stability image-to-image generated ({len(resp.content)} bytes)")
             return resp.content
+
+    async def get_balance(self) -> dict:
+        """Fetch current credit balance."""
+        async with self._client() as client:
+            resp = await client.get(
+                f"{self.base_url}/v1/user/balance",
+                headers={"Authorization": f"Bearer {self.api_key}", "Accept": "application/json"},
+            )
+            resp.raise_for_status()
+            return resp.json()

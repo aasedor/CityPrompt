@@ -569,3 +569,62 @@ class TopUsersResponse(BaseModel):
     """Top users ranked by total platform activity."""
     users: list[TopUserEntry]
     range: str
+
+
+# =============================================================================
+# API Usage & Balance Schemas
+# =============================================================================
+
+class ProviderBalance(BaseModel):
+    """Balance information for a single API provider."""
+    provider: str
+    balance: Optional[float] = None
+    frozen: Optional[float] = None
+    error: Optional[str] = None
+
+
+class AnthropicTokenUsage(BaseModel):
+    """Aggregated Anthropic token usage from usage logs."""
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+    total_calls: int = 0
+
+
+class ApiBalanceResponse(BaseModel):
+    """Combined balance response for all API providers."""
+    meshy: ProviderBalance
+    tripo: ProviderBalance
+    stability: ProviderBalance
+    anthropic: AnthropicTokenUsage
+
+
+class OperationBreakdown(BaseModel):
+    """Usage breakdown for a single operation within a provider."""
+    operation: str
+    total_credits: float
+    call_count: int
+    success_rate: float
+
+
+class ApiUsageByProvider(BaseModel):
+    """Aggregated API usage for a single provider."""
+    provider: str
+    total_credits: float
+    total_calls: int
+    success_rate: float
+    by_operation: list[OperationBreakdown]
+
+
+class DailyUsage(BaseModel):
+    """Daily usage data point for charting."""
+    date: str
+    provider: str
+    credits: float
+    calls: int
+
+
+class ApiUsageResponse(BaseModel):
+    """Full API usage analytics response."""
+    providers: list[ApiUsageByProvider]
+    daily: list[DailyUsage]
+    range: str
