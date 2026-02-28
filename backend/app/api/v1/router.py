@@ -4,7 +4,7 @@ API v1 router - aggregates all endpoint routers.
 
 from fastapi import APIRouter
 
-from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin
+from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin, analytics
 
 api_router = APIRouter()
 
@@ -20,3 +20,4 @@ api_router.include_router(reports.router, prefix="/reports", tags=["Reports"])
 api_router.include_router(activity.router, prefix="/activity", tags=["Activity"])
 api_router.include_router(site_zones.router, prefix="/site-zones", tags=["Site Zones"])
 api_router.include_router(admin.router, prefix="/admin", tags=["Admin"])
+api_router.include_router(analytics.router, prefix="/analytics", tags=["Cofounder Analytics"])

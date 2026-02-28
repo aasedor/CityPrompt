@@ -16,6 +16,7 @@ import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
 import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
 import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
 import { ConfirmRoleChangePage } from '@/features/admin/ConfirmRoleChangePage';
+import { CofounderAnalyticsPage } from '@/features/admin/CofounderAnalyticsPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
@@ -58,6 +59,7 @@ export default function App() {
         <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboardPage /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
         <Route path="/admin/projects" element={<ProtectedRoute requiredRole="admin"><AdminProjectsPage /></ProtectedRoute>} />
+        <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="cofounder"><CofounderAnalyticsPage /></ProtectedRoute>} />
         <Route path="/admin/confirm-role-change" element={<ProtectedRoute requiredRole="admin"><ConfirmRoleChangePage /></ProtectedRoute>} />
       </Route>
       {/* Viewer is full-screen, no layout wrapper */}

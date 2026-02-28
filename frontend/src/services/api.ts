@@ -583,4 +583,99 @@ export const adminApi = {
   },
 };
 
+// =============================================================================
+// Cofounder Analytics
+// =============================================================================
+
+export interface TimeSeriesPoint {
+  period: string;
+  count: number;
+}
+
+export interface TimeSeriesResponse {
+  data: TimeSeriesPoint[];
+  total_in_range: number;
+  range: string;
+  granularity: string;
+}
+
+export interface CreationTrendsResponse {
+  projects: TimeSeriesPoint[];
+  buildings: TimeSeriesPoint[];
+  range: string;
+  granularity: string;
+}
+
+export interface GenerationStatsResponse {
+  by_engine: Record<string, Record<string, number>>;
+  total_generations: number;
+  success_rate: number;
+  range: string;
+}
+
+export interface PlatformHealthResponse {
+  api: {
+    total_requests: number;
+    uptime_seconds: number;
+    avg_response_ms: number;
+    p95_response_ms: number;
+    recent_samples: number;
+  };
+  queue: {
+    active: number;
+    reserved: number;
+    scheduled: number;
+    available: boolean;
+  };
+  documents: Record<string, number>;
+}
+
+export interface TopUserEntry {
+  id: string;
+  email: string;
+  full_name?: string;
+  role: string;
+  project_count: number;
+  building_count: number;
+  document_count: number;
+  total_activity: number;
+}
+
+export interface TopUsersResponse {
+  users: TopUserEntry[];
+  range: string;
+}
+
+export const analyticsApi = {
+  getUserGrowth: async (range = '30d'): Promise<TimeSeriesResponse> => {
+    const { data } = await api.get('/api/v1/analytics/user-growth', { params: { range } });
+    return data;
+  },
+
+  getActiveUsers: async (range = '30d'): Promise<TimeSeriesResponse> => {
+    const { data } = await api.get('/api/v1/analytics/active-users', { params: { range } });
+    return data;
+  },
+
+  getCreationTrends: async (range = '30d'): Promise<CreationTrendsResponse> => {
+    const { data } = await api.get('/api/v1/analytics/creation-trends', { params: { range } });
+    return data;
+  },
+
+  getGenerationStats: async (range = '30d'): Promise<GenerationStatsResponse> => {
+    const { data } = await api.get('/api/v1/analytics/generation-stats', { params: { range } });
+    return data;
+  },
+
+  getPlatformHealth: async (): Promise<PlatformHealthResponse> => {
+    const { data } = await api.get('/api/v1/analytics/platform-health');
+    return data;
+  },
+
+  getTopUsers: async (range = '30d'): Promise<TopUsersResponse> => {
+    const { data } = await api.get('/api/v1/analytics/top-users', { params: { range } });
+    return data;
+  },
+};
+
 export default api;

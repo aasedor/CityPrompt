@@ -510,3 +510,62 @@ class AdminProjectListResponse(BaseModel):
     owner_email: str
     owner_name: Optional[str]
     building_count: int
+
+
+# =============================================================================
+# Cofounder Analytics Schemas
+# =============================================================================
+
+class TimeSeriesPoint(BaseModel):
+    """A single data point in a time series."""
+    period: datetime
+    count: int
+
+
+class TimeSeriesResponse(BaseModel):
+    """Generic time series response with metadata."""
+    data: list[TimeSeriesPoint]
+    total_in_range: int
+    range: str
+    granularity: str
+
+
+class CreationTrendsResponse(BaseModel):
+    """Dual time series for project and building creation trends."""
+    projects: list[TimeSeriesPoint]
+    buildings: list[TimeSeriesPoint]
+    range: str
+    granularity: str
+
+
+class GenerationStatsResponse(BaseModel):
+    """3D generation statistics by engine with overall success rate."""
+    by_engine: dict[str, dict[str, int]]
+    total_generations: int
+    success_rate: float
+    range: str
+
+
+class PlatformHealthResponse(BaseModel):
+    """Platform health metrics: API, queue, and document pipeline."""
+    api: dict[str, Any]
+    queue: dict[str, Any]
+    documents: dict[str, Any]
+
+
+class TopUserEntry(BaseModel):
+    """A single user entry in the top users ranking."""
+    id: str
+    email: str
+    full_name: Optional[str]
+    role: str
+    project_count: int
+    building_count: int
+    document_count: int
+    total_activity: int
+
+
+class TopUsersResponse(BaseModel):
+    """Top users ranked by total platform activity."""
+    users: list[TopUserEntry]
+    range: str

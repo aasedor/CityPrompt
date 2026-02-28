@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, FolderOpen, Box, FileText, Loader2 } from 'lucide-react';
+import { Users, FolderOpen, Box, FileText, Loader2, BarChart3 } from 'lucide-react';
 import { adminApi } from '@/services/api';
 import type { AdminDashboardStats } from '@/services/api';
+import { useAuthStore } from '@/store';
 
 export function AdminDashboardPage() {
+  const { user } = useAuthStore();
   const [stats, setStats] = useState<AdminDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -120,6 +122,21 @@ export function AdminDashboardPage() {
           </div>
         </div>
       </div>
+
+      {user?.role === 'cofounder' && (
+        <Link
+          to="/admin/analytics"
+          className="mt-8 flex items-center gap-4 rounded-xl border border-primary-200 bg-primary-50 p-5 transition-all hover:border-primary-300 hover:shadow-md"
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-primary-600">
+            <BarChart3 size={24} />
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-primary-900">Analytics Dashboard</p>
+            <p className="text-sm text-primary-600">Deep platform insights, user trends, and system health</p>
+          </div>
+        </Link>
+      )}
     </div>
   );
 }

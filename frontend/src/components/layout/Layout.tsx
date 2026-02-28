@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, Shield, User, Menu, X } from 'lucide-react';
+import { BarChart3, Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, Shield, User, Menu, X } from 'lucide-react';
 import { useAuthStore } from '@/store';
 
 export function Layout() {
@@ -50,6 +50,12 @@ export function Layout() {
                 Admin
               </Link>
             )}
+            {user?.role === 'cofounder' && (
+              <Link to="/admin/analytics" className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900">
+                <BarChart3 size={14} />
+                Analytics
+              </Link>
+            )}
             {isAuthenticated ? (
               <div className="relative" ref={userMenuRef}>
                 <button
@@ -70,6 +76,16 @@ export function Layout() {
                       >
                         {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                         Admin Dashboard
+                      </Link>
+                    )}
+                    {user?.role === 'cofounder' && (
+                      <Link
+                        to="/admin/analytics"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                      >
+                        <BarChart3 size={14} />
+                        Analytics
                       </Link>
                     )}
                     <Link
@@ -130,6 +146,16 @@ export function Layout() {
               >
                 {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
+              </Link>
+            )}
+            {user?.role === 'cofounder' && (
+              <Link
+                to="/admin/analytics"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+              >
+                <BarChart3 size={14} />
+                Analytics
               </Link>
             )}
             {isAuthenticated ? (
