@@ -689,6 +689,30 @@ function SceneFog({ settings }: { settings: ViewerSettings }) {
   return null;
 }
 
+/** Ray-casting point-in-polygon test (works with [lon, lat] coordinate arrays). */
+function pointInPolygon(px: number, py: number, polygon: number[][]): boolean {
+  let inside = false;
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][0], yi = polygon[i][1];
+    const xj = polygon[j][0], yj = polygon[j][1];
+    if ((yi > py) !== (yj > py) && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+/** Compute the centroid of a polygon given as [[lon, lat], ...]. */
+function polygonCentroid(pts: number[][]): [number, number] {
+  let sx = 0, sy = 0, n = 0;
+  for (const p of pts) {
+    // Skip closing point if it duplicates the first
+    if (n > 0 && n === pts.length - 1 && p[0] === pts[0][0] && p[1] === pts[0][1]) continue;
+    sx += p[0]; sy += p[1]; n++;
+  }
+  return [sx / n, sy / n];
+}
+
 /**
  * Main 3D scene viewer component.
  * Renders buildings using React Three Fiber with orbit controls,
@@ -699,6 +723,17 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
 
   // Compute grid positions for buildings so they don't stack
   const gridPositions = computeBuildingPositions(buildings);
+
+  // Filter out context buildings that fall inside any development_area zone
+  const filteredContextBuildings = useMemo(() => {
+    if (!contextBuildings || !siteZones) return contextBuildings;
+    const devZones = siteZones.filter((z) => z.zone_type === 'development_area');
+    if (devZones.length === 0) return contextBuildings;
+    return contextBuildings.filter((b) => {
+      const [cx, cy] = polygonCentroid(b.footprint);
+      return !devZones.some((z) => pointInPolygon(cx, cy, z.coordinates));
+    });
+  }, [contextBuildings, siteZones]);
 
   // Compute final positions: geographic for buildings with footprints (regardless of map mode), grid otherwise
   const positions = useMemo(() => {
@@ -805,8 +840,8 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       </Suspense>
 
       {/* Context buildings from OSM */}
-      {settings.showExistingBuildings && contextBuildings && contextBuildings.length > 0 && (
-        <EnhancedContextBuildingsGroup buildings={contextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} />
+      {settings.showExistingBuildings && filteredContextBuildings && filteredContextBuildings.length > 0 && (
+        <EnhancedContextBuildingsGroup buildings={filteredContextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} />
       )}
 
       {/* Roads from OSM — hidden when map is active (map shows real roads) */}
