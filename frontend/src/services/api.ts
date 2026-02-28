@@ -563,18 +563,7 @@ export const adminApi = {
   },
 
   updateUser: async (userId: string, update: AdminUserUpdate): Promise<AdminUser> => {
-    const response = await api.put(`/api/v1/admin/users/${userId}`, update);
-    // 202 means confirmation email sent (admin demotion) — not an actual user update
-    if (response.status === 202) {
-      const err = new Error('Confirmation required') as any;
-      err.response = response;
-      throw err;
-    }
-    return response.data;
-  },
-
-  confirmRoleChange: async (token: string): Promise<AdminUser> => {
-    const { data } = await api.post('/api/v1/admin/confirm-role-change', { token });
+    const { data } = await api.put(`/api/v1/admin/users/${userId}`, update);
     return data;
   },
 

@@ -1,13 +1,15 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, AlertTriangle, Trash2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, AlertTriangle, ShieldAlert, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
 
-interface PromotionModal {
+interface RoleChangeModal {
   userId: string;
   email: string;
+  newRole: string;
+  type: 'promotion' | 'demotion';
 }
 
 export function AdminUsersPage() {
@@ -15,9 +17,7 @@ export function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
-  const [promotionModal, setPromotionModal] = useState<PromotionModal | null>(null);
-  // Track previous roles so we can revert dropdowns on 202
-  const prevRolesRef = useRef<Record<string, string>>({});
+  const [roleModal, setRoleModal] = useState<RoleChangeModal | null>(null);
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -27,10 +27,6 @@ export function AdminUsersPage() {
         role: roleFilter || undefined,
       });
       setUsers(data);
-      // Snapshot current roles
-      const roles: Record<string, string> = {};
-      for (const u of data) roles[u.id] = u.role;
-      prevRolesRef.current = roles;
     } catch {
       toast.error('Failed to load users');
     } finally {
@@ -47,25 +43,9 @@ export function AdminUsersPage() {
     try {
       const updated = await adminApi.updateUser(userId, { role });
       setUsers((prev) => prev.map((u) => (u.id === userId ? updated : u)));
-      prevRolesRef.current[userId] = updated.role;
       toast.success('Role updated');
     } catch (err: any) {
-      // 202 means confirmation email was sent (admin demotion)
-      if (err.response?.status === 202) {
-        toast.success(
-          err.response.data?.detail || 'Confirmation email sent — check your inbox',
-          { duration: 5000 },
-        );
-        // Revert the dropdown to the original role
-        const originalRole = prevRolesRef.current[userId];
-        if (originalRole) {
-          setUsers((prev) =>
-            prev.map((u) => (u.id === userId ? { ...u, role: originalRole } : u)),
-          );
-        }
-      } else {
-        toast.error(err.response?.data?.detail || 'Failed to update role');
-      }
+      toast.error(err.response?.data?.detail || 'Failed to update role');
     }
   };
 
@@ -75,17 +55,23 @@ export function AdminUsersPage() {
 
     // Promoting to admin — show confirmation modal
     if (role === 'admin' && targetUser.role !== 'admin') {
-      setPromotionModal({ userId, email: targetUser.email });
+      setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'promotion' });
+      return;
+    }
+
+    // Demoting from admin — show confirmation modal
+    if (targetUser.role === 'admin' && role !== 'admin') {
+      setRoleModal({ userId, email: targetUser.email, newRole: role, type: 'demotion' });
       return;
     }
 
     applyRoleChange(userId, role);
   };
 
-  const confirmPromotion = () => {
-    if (!promotionModal) return;
-    applyRoleChange(promotionModal.userId, 'admin');
-    setPromotionModal(null);
+  const confirmRoleChange = () => {
+    if (!roleModal) return;
+    applyRoleChange(roleModal.userId, roleModal.newRole);
+    setRoleModal(null);
   };
 
   const handleToggleActive = async (userId: string, isActive: boolean) => {
@@ -219,34 +205,52 @@ export function AdminUsersPage() {
         </div>
       )}
 
-      {/* Promotion confirmation modal */}
-      {promotionModal && (
+      {/* Role change confirmation modal */}
+      {roleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">Grant Admin Access?</h3>
+              {roleModal.type === 'promotion' ? (
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+                  <AlertTriangle className="h-5 w-5 text-amber-600" />
+                </div>
+              ) : (
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
+                  <ShieldAlert className="h-5 w-5 text-red-600" />
+                </div>
+              )}
+              <h3 className="text-lg font-semibold text-gray-900">
+                {roleModal.type === 'promotion' ? 'Grant Admin Access?' : 'Remove Admin Access?'}
+              </h3>
             </div>
             <p className="mb-2 text-sm text-gray-600">
-              You are about to promote <strong className="text-gray-900">{promotionModal.email}</strong> to <strong className="text-gray-900">Admin</strong>.
+              {roleModal.type === 'promotion' ? (
+                <>You are about to promote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900">Admin</strong>.</>
+              ) : (
+                <>You are about to demote <strong className="text-gray-900">{roleModal.email}</strong> from <strong className="text-gray-900">Admin</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
+              )}
             </p>
             <p className="mb-6 text-sm text-gray-500">
-              This will give full platform access including user management. Are you sure?
+              {roleModal.type === 'promotion'
+                ? 'This will give full platform access including user management. Are you sure?'
+                : 'This will revoke their admin privileges. They will no longer be able to manage users or platform settings.'}
             </p>
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setPromotionModal(null)}
+                onClick={() => setRoleModal(null)}
                 className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
-                onClick={confirmPromotion}
-                className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
+                onClick={confirmRoleChange}
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
+                  roleModal.type === 'promotion'
+                    ? 'bg-amber-600 hover:bg-amber-700'
+                    : 'bg-red-600 hover:bg-red-700'
+                }`}
               >
-                Yes, Grant Admin
+                {roleModal.type === 'promotion' ? 'Yes, Grant Admin' : 'Yes, Remove Admin'}
               </button>
             </div>
           </div>

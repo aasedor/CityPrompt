@@ -2,27 +2,23 @@
 Admin API endpoints for platform management.
 """
 
-import secrets
 import uuid
-from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from fastapi.responses import JSONResponse
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.email import send_admin_demotion_confirmation_email, send_admin_welcome_email
+from app.core.email import send_admin_welcome_email
 from app.core.security import require_admin
-from app.models.models import Building, Document, PendingRoleChange, Project, User
+from app.models.models import Building, Document, Project, User
 from app.schemas.schemas import (
     AdminDashboardStats,
     AdminProjectListResponse,
     AdminUserListResponse,
     AdminUserUpdate,
-    ConfirmRoleChangeRequest,
 )
 
 router = APIRouter()
@@ -128,41 +124,6 @@ async def update_user(
                 status_code=400, detail="Cannot deactivate your own account"
             )
 
-    # Guard: demoting an admin requires email confirmation (production only)
-    settings = get_settings()
-    if (
-        update.role is not None
-        and target.role == "admin"
-        and update.role != "admin"
-        and settings.app_env == "production"
-    ):
-        token = secrets.token_urlsafe(48)
-        pending = PendingRoleChange(
-            token=token,
-            target_user_id=target.id,
-            requested_by_id=user.id,
-            new_role=update.role,
-            expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
-        )
-        db.add(pending)
-        await db.flush()
-
-        confirm_link = f"{settings.frontend_url}/admin/confirm-role-change?token={token}"
-        await send_admin_demotion_confirmation_email(
-            to_email=user.email,
-            target_email=target.email,
-            new_role=update.role,
-            confirm_link=confirm_link,
-        )
-
-        return JSONResponse(
-            status_code=202,
-            content={
-                "detail": "Confirmation email sent. Check your inbox to confirm this change.",
-                "requires_confirmation": True,
-            },
-        )
-
     was_promoted_to_admin = (
         update.role == "admin" and target.role != "admin"
     )
@@ -185,63 +146,6 @@ async def update_user(
             )
         except Exception:
             pass  # Don't fail the request if email fails
-
-    count_result = await db.execute(
-        select(func.count(Project.id)).where(Project.owner_id == target.id)
-    )
-    project_count = count_result.scalar() or 0
-
-    return AdminUserListResponse(
-        id=target.id,
-        email=target.email,
-        full_name=target.full_name,
-        role=target.role,
-        is_active=target.is_active,
-        created_at=target.created_at,
-        project_count=project_count,
-    )
-
-
-@router.post("/confirm-role-change", response_model=AdminUserListResponse)
-async def confirm_role_change(
-    body: ConfirmRoleChangeRequest,
-    user: User = Depends(require_admin),
-    db: AsyncSession = Depends(get_db),
-):
-    """Confirm a pending admin demotion via email token."""
-    result = await db.execute(
-        select(PendingRoleChange).where(PendingRoleChange.token == body.token)
-    )
-    pending = result.scalar_one_or_none()
-
-    if not pending:
-        raise HTTPException(status_code=404, detail="Invalid or already used token")
-
-    if pending.expires_at < datetime.now(timezone.utc):
-        await db.delete(pending)
-        await db.flush()
-        raise HTTPException(status_code=410, detail="Token has expired")
-
-    if pending.requested_by_id != user.id:
-        raise HTTPException(
-            status_code=403,
-            detail="This confirmation link belongs to a different admin",
-        )
-
-    # Apply the role change
-    target_result = await db.execute(
-        select(User).where(User.id == pending.target_user_id)
-    )
-    target = target_result.scalar_one_or_none()
-    if not target:
-        await db.delete(pending)
-        await db.flush()
-        raise HTTPException(status_code=404, detail="Target user no longer exists")
-
-    target.role = pending.new_role
-    await db.delete(pending)
-    await db.flush()
-    await db.refresh(target)
 
     count_result = await db.execute(
         select(func.count(Project.id)).where(Project.owner_id == target.id)
