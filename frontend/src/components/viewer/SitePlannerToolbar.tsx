@@ -385,8 +385,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, projectId, zones
           title="Walk through the site at street level"
         >
           <Footprints size={14} />
-          <span className="sm:hidden">Walk</span>
-          <span className="hidden sm:inline">Walk Through</span>
+          <span className="hidden sm:inline">Explore</span>
         </button>
 
         <button
