@@ -886,6 +886,7 @@ export function ViewerPage() {
                 onCameraMove={collaboration.sendCursor}
                 followCamera={followCamera}
                 siteZones={siteZones}
+                onZoneClick={selectZone}
                 onBuildingMove={handleBuildingMove}
                 buildingStatuses={generationStatuses}
                 remoteUsers={collaboration.users
@@ -944,6 +945,23 @@ export function ViewerPage() {
             showMeasurements={settings.showMeasurements}
             showExistingBuildings={settings.showExistingBuildings}
           />
+
+          {/* Zone properties panel — shown when a zone is clicked in 3D */}
+          {selectedZone && (
+            <ZonePropertiesPanel
+              zone={selectedZone}
+              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+              onClose={() => selectZone(null)}
+              onAIGenerate={(buildingId, initialPrompt) => {
+                setAiGenerateFromZoneBuildingId(buildingId);
+                setAiGenerateFromZonePrompt(initialPrompt || null);
+                queryClient.invalidateQueries({ queryKey: ['project', id] });
+                queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+              }}
+              buildings={allBuildings}
+            />
+          )}
         </>
       )}
 

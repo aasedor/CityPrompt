@@ -296,6 +296,8 @@ interface SceneViewerProps {
   followCamera?: { position: [number, number, number]; target: [number, number, number] } | null;
   /** Site zones drawn on the site planner map */
   siteZones?: SiteZone[];
+  /** Callback when a zone is clicked in the 3D view */
+  onZoneClick?: (id: string) => void;
   /** Callback when a building is moved via ground click in move mode */
   onBuildingMove?: (buildingId: string, position: [number, number, number]) => void;
   /** Remote collaboration users with position/look data */
@@ -692,7 +694,7 @@ function SceneFog({ settings }: { settings: ViewerSettings }) {
  * Renders buildings using React Three Fiber with orbit controls,
  * environment lighting, and shadow support.
  */
-export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones, onBuildingMove, remoteUsers, buildingStatuses }: SceneViewerProps) {
+export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones, onZoneClick, onBuildingMove, remoteUsers, buildingStatuses }: SceneViewerProps) {
   const { settings, isAnnotating, isMovingBuilding, selectedBuildingId } = useViewerStore();
 
   // Compute grid positions for buildings so they don't stack
@@ -814,7 +816,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
 
       {/* Site zones from planner */}
       {siteZones && siteZones.length > 0 && (
-        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} buildingStatuses={buildingStatuses} buildings={buildings} />
+        <SiteZonesGroup zones={siteZones} projectLat={latitude} projectLng={longitude} buildingStatuses={buildingStatuses} buildings={buildings} onZoneClick={onZoneClick} />
       )}
 
       {/* Landscaping — trees and green spaces (hidden when map is active) */}

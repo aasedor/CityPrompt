@@ -19,9 +19,10 @@ interface SiteZonesGroupProps {
   projectLng?: number;
   buildingStatuses?: Map<string, BuildingGenerationStatus>;
   buildings?: Building[];
+  onZoneClick?: (id: string) => void;
 }
 
-export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses, buildings }: SiteZonesGroupProps) {
+export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses, buildings, onZoneClick }: SiteZonesGroupProps) {
   if (!projectLat || !projectLng || zones.length === 0) return null;
 
   const origin = { lat: projectLat, lon: projectLng };
@@ -46,6 +47,7 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
           origin={origin}
           generationStatus={zone.building_id ? buildingStatuses?.get(zone.building_id) : undefined}
           hasLinkedBuildings={zonesWithBuildings.has(zone.id)}
+          onClick={onZoneClick ? () => onZoneClick(zone.id) : undefined}
         />
       ))}
     </group>
@@ -207,36 +209,57 @@ function SiteZoneMesh({
   origin,
   generationStatus,
   hasLinkedBuildings,
+  onClick,
 }: {
   zone: SiteZone;
   origin: { lat: number; lon: number };
   generationStatus?: BuildingGenerationStatus;
   hasLinkedBuildings?: boolean;
+  onClick?: () => void;
 }) {
   const pts = useMemo(() => toLocalPoints(zone.coordinates, origin), [zone.coordinates, origin]);
 
   if (pts.length < 3) return null;
 
+  let content: React.ReactNode = null;
+
   switch (zone.zone_type) {
     case 'site_boundary':
-      return <SiteBoundaryZone zone={zone} points2D={pts} />;
+      content = <SiteBoundaryZone zone={zone} points2D={pts} />;
+      break;
     case 'building':
     case 'residential':
       // Once buildings are linked to this zone, hide the procedural placeholder
       // to avoid duplicate geometry (the real buildings render via SceneViewer)
       if (hasLinkedBuildings) return null;
-      return <DetailedBuildingZone zone={zone} points2D={pts} generationStatus={generationStatus} />;
+      content = <DetailedBuildingZone zone={zone} points2D={pts} generationStatus={generationStatus} />;
+      break;
     case 'road':
-      return <RoadZone zone={zone} points2D={pts} />;
+      content = <RoadZone zone={zone} points2D={pts} />;
+      break;
     case 'green_space':
-      return <GreenSpaceZone zone={zone} points2D={pts} />;
+      content = <GreenSpaceZone zone={zone} points2D={pts} />;
+      break;
     case 'parking':
-      return <ParkingZone zone={zone} points2D={pts} />;
+      content = <ParkingZone zone={zone} points2D={pts} />;
+      break;
     case 'water':
-      return <WaterZone zone={zone} points2D={pts} />;
+      content = <WaterZone zone={zone} points2D={pts} />;
+      break;
     default:
-      return <FallbackZone zone={zone} points2D={pts} />;
+      content = <FallbackZone zone={zone} points2D={pts} />;
+      break;
   }
+
+  if (onClick) {
+    return (
+      <group onClick={(e) => { e.stopPropagation(); onClick(); }}>
+        {content}
+      </group>
+    );
+  }
+
+  return <>{content}</>;
 }
 
 // =============================================================================
