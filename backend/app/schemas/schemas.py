@@ -580,6 +580,8 @@ class ProviderBalance(BaseModel):
     provider: str
     balance: Optional[float] = None
     frozen: Optional[float] = None
+    unit: str = "credits"
+    configured: bool = True
     error: Optional[str] = None
 
 
@@ -588,6 +590,14 @@ class AnthropicTokenUsage(BaseModel):
     total_input_tokens: int = 0
     total_output_tokens: int = 0
     total_calls: int = 0
+    configured: bool = True
+
+
+class ServiceStatus(BaseModel):
+    """Status for a non-metered service (e.g. Mapbox, Google OAuth)."""
+    provider: str
+    configured: bool = False
+    description: str = ""
 
 
 class ApiBalanceResponse(BaseModel):
@@ -596,6 +606,7 @@ class ApiBalanceResponse(BaseModel):
     tripo: ProviderBalance
     stability: ProviderBalance
     anthropic: AnthropicTokenUsage
+    services: list[ServiceStatus] = []
 
 
 class OperationBreakdown(BaseModel):

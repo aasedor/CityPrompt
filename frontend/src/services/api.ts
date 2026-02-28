@@ -650,6 +650,8 @@ export interface ProviderBalance {
   provider: string;
   balance?: number;
   frozen?: number;
+  unit?: string;
+  configured: boolean;
   error?: string;
 }
 
@@ -657,6 +659,13 @@ export interface AnthropicTokenUsage {
   total_input_tokens: number;
   total_output_tokens: number;
   total_calls: number;
+  configured: boolean;
+}
+
+export interface ServiceStatus {
+  provider: string;
+  configured: boolean;
+  description: string;
 }
 
 export interface ApiBalanceResponse {
@@ -664,6 +673,7 @@ export interface ApiBalanceResponse {
   tripo: ProviderBalance;
   stability: ProviderBalance;
   anthropic: AnthropicTokenUsage;
+  services: ServiceStatus[];
 }
 
 export interface OperationBreakdown {

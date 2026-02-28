@@ -23,6 +23,7 @@ from app.schemas.schemas import (
     TopUserEntry,
     ProviderBalance,
     AnthropicTokenUsage,
+    ServiceStatus,
     ApiBalanceResponse,
     OperationBreakdown,
     ApiUsageByProvider,
@@ -368,49 +369,61 @@ async def api_balances(
     db: AsyncSession = Depends(get_db),
 ):
     """Fetch current credit balances from all external API providers."""
-    from app.generation.meshy_client import MeshyClient
-    from app.generation.tripo_client import TripoClient
-    from app.generation.stability_client import StabilityClient
+    from app.core.config import get_settings
+    cfg = get_settings()
 
     async def _fetch_meshy() -> ProviderBalance:
+        if not cfg.meshy_api_key:
+            return ProviderBalance(provider="meshy", configured=False, unit="credits")
         try:
+            from app.generation.meshy_client import MeshyClient
             data = await MeshyClient().get_balance()
             return ProviderBalance(
                 provider="meshy",
                 balance=data.get("balance") or data.get("credits"),
                 frozen=data.get("frozen"),
+                unit="credits",
             )
         except Exception as exc:
-            return ProviderBalance(provider="meshy", error=str(exc))
+            return ProviderBalance(provider="meshy", error=str(exc), unit="credits")
 
     async def _fetch_tripo() -> ProviderBalance:
+        if not cfg.tripo_api_key:
+            return ProviderBalance(provider="tripo", configured=False, unit="credits")
         try:
+            from app.generation.tripo_client import TripoClient
             data = await TripoClient().get_balance()
             inner = data.get("data", data)
             return ProviderBalance(
                 provider="tripo",
                 balance=inner.get("balance") or inner.get("credits"),
                 frozen=inner.get("frozen"),
+                unit="credits",
             )
         except Exception as exc:
-            return ProviderBalance(provider="tripo", error=str(exc))
+            return ProviderBalance(provider="tripo", error=str(exc), unit="credits")
 
     async def _fetch_stability() -> ProviderBalance:
+        if not cfg.stability_api_key:
+            return ProviderBalance(provider="stability", configured=False, unit="credits")
         try:
+            from app.generation.stability_client import StabilityClient
             data = await StabilityClient().get_balance()
             return ProviderBalance(
                 provider="stability",
                 balance=data.get("credits"),
                 frozen=data.get("frozen"),
+                unit="credits",
             )
         except Exception as exc:
-            return ProviderBalance(provider="stability", error=str(exc))
+            return ProviderBalance(provider="stability", error=str(exc), unit="credits")
 
     meshy_bal, tripo_bal, stability_bal = await asyncio.gather(
         _fetch_meshy(), _fetch_tripo(), _fetch_stability()
     )
 
     # Anthropic token totals from usage logs (table may not exist yet)
+    anthropic_configured = bool(cfg.anthropic_api_key)
     try:
         anthropic_result = await db.execute(
             select(
@@ -425,18 +438,32 @@ async def api_balances(
             total_input_tokens=int(row.total_input),
             total_output_tokens=int(row.total_output),
             total_calls=int(row.total_calls),
+            configured=anthropic_configured,
         )
     except Exception:
         await db.rollback()
-        anthropic_usage = AnthropicTokenUsage(
-            total_input_tokens=0, total_output_tokens=0, total_calls=0
-        )
+        anthropic_usage = AnthropicTokenUsage(configured=anthropic_configured)
+
+    # Non-metered services
+    services = [
+        ServiceStatus(
+            provider="mapbox",
+            configured=bool(cfg.mapbox_access_token),
+            description="Maps & satellite imagery",
+        ),
+        ServiceStatus(
+            provider="google_oauth",
+            configured=bool(cfg.google_client_id and cfg.google_client_secret),
+            description="Google sign-in",
+        ),
+    ]
 
     return ApiBalanceResponse(
         meshy=meshy_bal,
         tripo=tripo_bal,
         stability=stability_bal,
         anthropic=anthropic_usage,
+        services=services,
     )
 
 
