@@ -374,14 +374,27 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
               />
             </div>
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-gray-500">Has Sidewalks</label>
-              <input
-                type="checkbox"
-                checked={props.has_sidewalks !== false}
-                onChange={(e) => setProps((p) => ({ ...p, has_sidewalks: e.target.checked }))}
-                className="rounded border-gray-300"
-              />
+            <div>
+              <label className="block text-xs text-gray-500">Sidewalks</label>
+              <select
+                value={
+                  props.sidewalks === 'left' ? 'left'
+                    : props.sidewalks === 'right' ? 'right'
+                    : props.sidewalks === 'none' || props.has_sidewalks === false ? 'none'
+                    : 'both'
+                }
+                onChange={(e) => setProps((p) => ({
+                  ...p,
+                  sidewalks: e.target.value,
+                  has_sidewalks: e.target.value !== 'none',
+                }))}
+                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              >
+                <option value="both">Both Sides</option>
+                <option value="left">Left Only</option>
+                <option value="right">Right Only</option>
+                <option value="none">None</option>
+              </select>
             </div>
             <div>
               <label className="block text-xs text-gray-500">Road Surface</label>
@@ -391,7 +404,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
               >
                 <option value="asphalt">Asphalt</option>
+                <option value="concrete">Concrete</option>
                 <option value="cobblestone">Cobblestone</option>
+                <option value="brick">Brick</option>
+                <option value="paver">Paver</option>
+                <option value="gravel">Gravel</option>
               </select>
             </div>
           </>
