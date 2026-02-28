@@ -128,13 +128,14 @@ async def update_user(
                 status_code=400, detail="Cannot deactivate your own account"
             )
 
-    # Guard: demoting an admin requires email confirmation
+    # Guard: demoting an admin requires email confirmation (production only)
+    settings = get_settings()
     if (
         update.role is not None
         and target.role == "admin"
         and update.role != "admin"
+        and settings.app_env == "production"
     ):
-        settings = get_settings()
         token = secrets.token_urlsafe(48)
         pending = PendingRoleChange(
             token=token,
