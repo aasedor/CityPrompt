@@ -738,10 +738,42 @@ async function captureMapScreenshots(
       await waitForIdle();
     }
 
-    // 1. Capture WITH zones visible
+    // 1. Capture WITH zones visible (but hide the site boundary polygon so inner zones are clearer)
+    //    Filter out site_boundary from fill/outline layers, hide selection + edit vertices
+    const FILTER_LAYERS = ['site-zones-fill', 'site-zones-outline'];
+    const HIDE_FOR_ZONES = ['site-zones-selected', 'zone-edit-vertices-layer', 'drawing-preview-fill', 'drawing-preview-line'];
+    const prevFilters: Record<string, unknown> = {};
+    const prevVisZones: Record<string, string> = {};
+    for (const layerId of FILTER_LAYERS) {
+      try {
+        prevFilters[layerId] = map.getFilter(layerId);
+        map.setFilter(layerId, ['!=', ['get', 'zone_type'], 'site_boundary']);
+      } catch { /* ignore */ }
+    }
+    // Boost fill opacity so zones (especially dark road) are clearly visible
+    let prevFillOpacity: number | undefined;
+    try {
+      prevFillOpacity = map.getPaintProperty('site-zones-fill', 'fill-opacity');
+      map.setPaintProperty('site-zones-fill', 'fill-opacity', 0.75);
+    } catch { /* ignore */ }
+    for (const layerId of HIDE_FOR_ZONES) {
+      try {
+        prevVisZones[layerId] = map.getLayoutProperty(layerId, 'visibility') || 'visible';
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+      } catch { /* ignore */ }
+    }
+    await waitForIdle();
     const withZones = map.getCanvas().toDataURL('image/jpeg', 0.85);
+    // Restore filters, opacity, and visibility
+    for (const layerId of FILTER_LAYERS) {
+      try { map.setFilter(layerId, prevFilters[layerId] ?? null); } catch { /* ignore */ }
+    }
+    try { map.setPaintProperty('site-zones-fill', 'fill-opacity', prevFillOpacity ?? 0.5); } catch { /* ignore */ }
+    for (const layerId of HIDE_FOR_ZONES) {
+      try { map.setLayoutProperty(layerId, 'visibility', prevVisZones[layerId] || 'visible'); } catch { /* ignore */ }
+    }
 
-    // 2. Hide zone layers, wait for repaint, capture satellite only
+    // 2. Hide ALL zone layers, wait for repaint, capture satellite only
     const prevVisibility: Record<string, string> = {};
     for (const layerId of ZONE_LAYERS) {
       try {

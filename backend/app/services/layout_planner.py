@@ -1691,11 +1691,11 @@ Requirements:
 
         prompt = f"""You are generating a photorealistic aerial photograph of a proposed development site.
 
-TASK: The attached SATELLITE IMAGE shows the real location. Replace what is currently inside the site boundary area with the proposed development described below. Keep everything OUTSIDE the site boundary exactly as it appears in the satellite image.
+TASK: Two images are attached. The SATELLITE IMAGE is your base — build on top of it. The ZONE POSITIONS image shows colored polygons indicating where each zone goes — use it only as a spatial guide, do NOT reproduce those colored shapes.
+
+Replace what is currently inside the development area with the proposed buildings and features described below. Keep everything OUTSIDE the development exactly as it appears in the satellite image.
 
 SITE DIMENSIONS: {site_width_m:.0f}m wide x {site_depth_m:.0f}m deep
-
-The satellite image is centered on the site. Use the surrounding streets, buildings, and terrain visible in the satellite image as context — the areas outside the development should look exactly like the real satellite imagery.
 
 === DEVELOPMENT ZONES (build these in the described locations) ===
 {chr(10).join(zone_descriptions) if zone_descriptions else '(no buildable zones)'}
@@ -1734,24 +1734,28 @@ REQUIREMENTS:
         # Build multi-modal content: map screenshots + reference images + text prompt
         contents = []
 
-        # 1. Satellite screenshot only (no zones overlay — that causes Gemini to draw outlines)
+        # 1. Map screenshots: satellite (base) + zones overlay (position reference)
         if map_screenshots:
-            satellite_b64 = map_screenshots.get("satellite", "")
-            if satellite_b64:
-                try:
-                    if "," in satellite_b64:
-                        header, b64_data = satellite_b64.split(",", 1)
-                        mime = header.split(":")[1].split(";")[0] if ":" in header else "image/jpeg"
-                    else:
-                        b64_data = satellite_b64
-                        mime = "image/jpeg"
-                    img_bytes = base64.b64decode(b64_data)
-                    contents.append(
-                        genai.types.Part.from_bytes(data=img_bytes, mime_type=mime)
-                    )
-                    contents.append("[SATELLITE IMAGE of the actual site location — use this as the base]")
-                except Exception as e:
-                    logger.warning("Failed to decode satellite screenshot: %s", e)
+            for key, label in [
+                ("satellite", "SATELLITE IMAGE — This is the real aerial photo of the site. Build your output on top of this. Keep areas outside the development exactly as shown here."),
+                ("with_zones", "ZONE POSITIONS — This shows the colored zone polygons drawn over the satellite. Use this ONLY to understand where each zone is located. Do NOT reproduce these colored shapes in your output."),
+            ]:
+                b64_str = map_screenshots.get(key, "")
+                if b64_str:
+                    try:
+                        if "," in b64_str:
+                            header, b64_data = b64_str.split(",", 1)
+                            mime = header.split(":")[1].split(";")[0] if ":" in header else "image/jpeg"
+                        else:
+                            b64_data = b64_str
+                            mime = "image/jpeg"
+                        img_bytes = base64.b64decode(b64_data)
+                        contents.append(
+                            genai.types.Part.from_bytes(data=img_bytes, mime_type=mime)
+                        )
+                        contents.append(f"[{label}]")
+                    except Exception as e:
+                        logger.warning("Failed to decode map screenshot (%s): %s", key, e)
 
         # 2. Reference images from individual zones
         fetched_ref_count = 0
