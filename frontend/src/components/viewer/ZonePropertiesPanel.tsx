@@ -692,6 +692,7 @@ const ZONE_TYPE_ICONS: Record<string, typeof Building2> = {
 async function captureMapScreenshots(
   mapInstance: unknown,
   boundaryCoords?: number[][],
+  allZones?: SiteZone[],
 ): Promise<{ satellite: string; withZones: string } | null> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = mapInstance as any;
@@ -716,64 +717,30 @@ async function captureMapScreenshots(
     });
 
   try {
-    // 0. Fit the map to the site boundary so the screenshot centers on the zones
-    if (boundaryCoords && boundaryCoords.length > 0) {
+    // 0. Fit the map EXACTLY to the inner zones — zero padding.
+    //    Gemini receives ONLY the development area filling the entire frame.
+    const innerZones = (allZones || []).filter((z) => z.zone_type !== 'site_boundary');
+    const cropCoords = innerZones.length > 0
+      ? innerZones.flatMap((z) => z.coordinates || [])
+      : boundaryCoords || [];
+
+    if (cropCoords.length > 0) {
       let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
-      for (const [lng, lat] of boundaryCoords) {
+      for (const [lng, lat] of cropCoords) {
         if (lng < minLng) minLng = lng;
         if (lng > maxLng) maxLng = lng;
         if (lat < minLat) minLat = lat;
         if (lat > maxLat) maxLat = lat;
       }
-      // Expand bounds by ~30% so surrounding context (roads, buildings) is visible
-      const lngSpan = maxLng - minLng;
-      const latSpan = maxLat - minLat;
-      const expand = 0.3;
+      // Zero expand — the zones should fill the entire frame
       map.fitBounds(
-        [[minLng - lngSpan * expand, minLat - latSpan * expand],
-         [maxLng + lngSpan * expand, maxLat + latSpan * expand]],
-        { padding: 20, animate: false },
+        [[minLng, minLat], [maxLng, maxLat]],
+        { padding: 10, animate: false },
       );
-      // Wait for the map to settle at the new bounds
       await waitForIdle();
     }
 
-    // 1. Capture WITH zones visible (but hide the site boundary polygon so inner zones are clearer)
-    //    Filter out site_boundary from fill/outline layers, hide selection + edit vertices
-    const FILTER_LAYERS = ['site-zones-fill', 'site-zones-outline'];
-    const HIDE_FOR_ZONES = ['site-zones-selected', 'zone-edit-vertices-layer', 'drawing-preview-fill', 'drawing-preview-line'];
-    const prevFilters: Record<string, unknown> = {};
-    const prevVisZones: Record<string, string> = {};
-    for (const layerId of FILTER_LAYERS) {
-      try {
-        prevFilters[layerId] = map.getFilter(layerId);
-        map.setFilter(layerId, ['!=', ['get', 'zone_type'], 'site_boundary']);
-      } catch { /* ignore */ }
-    }
-    // Boost fill opacity so zones (especially dark road) are clearly visible
-    let prevFillOpacity: number | undefined;
-    try {
-      prevFillOpacity = map.getPaintProperty('site-zones-fill', 'fill-opacity');
-      map.setPaintProperty('site-zones-fill', 'fill-opacity', 0.75);
-    } catch { /* ignore */ }
-    for (const layerId of HIDE_FOR_ZONES) {
-      try {
-        prevVisZones[layerId] = map.getLayoutProperty(layerId, 'visibility') || 'visible';
-        map.setLayoutProperty(layerId, 'visibility', 'none');
-      } catch { /* ignore */ }
-    }
-    await waitForIdle();
-    const withZones = map.getCanvas().toDataURL('image/jpeg', 0.85);
-    // Restore filters, opacity, and visibility
-    for (const layerId of FILTER_LAYERS) {
-      try { map.setFilter(layerId, prevFilters[layerId] ?? null); } catch { /* ignore */ }
-    }
-    try { map.setPaintProperty('site-zones-fill', 'fill-opacity', prevFillOpacity ?? 0.5); } catch { /* ignore */ }
-    for (const layerId of HIDE_FOR_ZONES) {
-      try { map.setLayoutProperty(layerId, 'visibility', prevVisZones[layerId] || 'visible'); } catch { /* ignore */ }
-    }
-
-    // 2. Hide ALL zone layers, wait for repaint, capture satellite only
+    // 1. Hide ALL zone layers and capture clean satellite of just the development area
     const prevVisibility: Record<string, string> = {};
     for (const layerId of ZONE_LAYERS) {
       try {
@@ -782,7 +749,50 @@ async function captureMapScreenshots(
       } catch { /* layer might not exist */ }
     }
     await waitForIdle();
-    const satellite = map.getCanvas().toDataURL('image/jpeg', 0.85);
+
+    // 2. Pixel-crop the canvas to exactly the zone bounding box.
+    //    fitBounds respects the canvas aspect ratio, so if zones are portrait
+    //    but the canvas is landscape, there's wasted space on the sides.
+    //    We solve this by projecting zone coords to pixels and cropping.
+    let satellite: string;
+    const mapCanvas = map.getCanvas();
+    if (cropCoords.length > 0) {
+      let pxMinX = Infinity, pxMaxX = -Infinity, pxMinY = Infinity, pxMaxY = -Infinity;
+      for (const [lng, lat] of cropCoords) {
+        const pt = map.project([lng, lat]);
+        if (pt.x < pxMinX) pxMinX = pt.x;
+        if (pt.x > pxMaxX) pxMaxX = pt.x;
+        if (pt.y < pxMinY) pxMinY = pt.y;
+        if (pt.y > pxMaxY) pxMaxY = pt.y;
+      }
+      // Add a tiny margin (2% of zone dimensions) so edges aren't cut off
+      const marginX = (pxMaxX - pxMinX) * 0.02;
+      const marginY = (pxMaxY - pxMinY) * 0.02;
+      pxMinX = Math.max(0, pxMinX - marginX);
+      pxMinY = Math.max(0, pxMinY - marginY);
+      pxMaxX = Math.min(mapCanvas.width, pxMaxX + marginX);
+      pxMaxY = Math.min(mapCanvas.height, pxMaxY + marginY);
+
+      const cropW = Math.round(pxMaxX - pxMinX);
+      const cropH = Math.round(pxMaxY - pxMinY);
+
+      // Account for devicePixelRatio — canvas pixels != CSS pixels
+      const dpr = window.devicePixelRatio || 1;
+      const offscreen = document.createElement('canvas');
+      offscreen.width = Math.round(cropW * dpr);
+      offscreen.height = Math.round(cropH * dpr);
+      const ctx = offscreen.getContext('2d')!;
+      ctx.drawImage(
+        mapCanvas,
+        Math.round(pxMinX * dpr), Math.round(pxMinY * dpr),
+        offscreen.width, offscreen.height,
+        0, 0,
+        offscreen.width, offscreen.height,
+      );
+      satellite = offscreen.toDataURL('image/jpeg', 0.92);
+    } else {
+      satellite = mapCanvas.toDataURL('image/jpeg', 0.92);
+    }
 
     // 3. Restore zone layers
     for (const layerId of ZONE_LAYERS) {
@@ -791,7 +801,7 @@ async function captureMapScreenshots(
       } catch { /* ignore */ }
     }
 
-    return { satellite, withZones };
+    return { satellite, withZones: satellite };
   } catch (e) {
     console.warn('Failed to capture map screenshots:', e);
     return null;
@@ -901,7 +911,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
     if (buildableZones.length === 0) return;
 
     // Capture map screenshots BEFORE anything changes
-    mapScreenshotsRef.current = await captureMapScreenshots(mapInstance, zone.coordinates);
+    mapScreenshotsRef.current = await captureMapScreenshots(mapInstance, zone.coordinates, allZones);
 
     setPreviewingAll(true);
     autoRenderTriggered.current = false;
@@ -938,6 +948,29 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
   const handleGenerate = async () => {
     setGenerating(true);
     try {
+      // Auto-apply any active site preview selections before generating
+      if (isSitePreviewActive) {
+        let appliedCount = 0;
+        const applyResults = await Promise.all(
+          Object.entries(siteOptions).map(async ([zoneId, options]) => {
+            if (!options[siteActiveIndex]) return null;
+            try {
+              await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
+              return zoneId;
+            } catch (e) {
+              console.warn(`Failed to apply layout for zone ${zoneId}:`, e);
+              return null;
+            }
+          })
+        );
+        appliedCount = applyResults.filter(Boolean).length;
+        clearSitePreview();
+        clearLockedLayers();
+        if (appliedCount > 0) {
+          toast.success(`Applied ${appliedCount} previewed layout${appliedCount > 1 ? 's' : ''}`);
+        }
+      }
+
       const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
       toast.success(
         `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,

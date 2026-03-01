@@ -1689,34 +1689,28 @@ Requirements:
             for ri in reference_image_urls:
                 ref_img_text += f"  - Zone '{ri['zone_name']}': match the style/materials shown in its reference image\n"
 
-        prompt = f"""You are generating a photorealistic aerial photograph of a proposed development site.
+        prompt = f"""Generate a photorealistic aerial photograph of a proposed development.
 
-TASK: Two images are attached. The SATELLITE IMAGE is your base — build on top of it. The ZONE POSITIONS image shows colored polygons indicating where each zone goes — use it only as a spatial guide, do NOT reproduce those colored shapes.
+The attached image shows ONLY the development area — tightly cropped. The entire image IS your canvas. Replace what is currently there with the proposed development described below. Every pixel of your output should show the new development.
 
-Replace what is currently inside the development area with the proposed buildings and features described below. Keep everything OUTSIDE the development exactly as it appears in the satellite image.
+Each zone's "Location" tells you where it sits in the image (top, center, bottom, left, right). Place each zone accordingly.
 
-SITE DIMENSIONS: {site_width_m:.0f}m wide x {site_depth_m:.0f}m deep
+SITE: {site_width_m:.0f}m wide x {site_depth_m:.0f}m deep
 
-=== DEVELOPMENT ZONES (build these in the described locations) ===
 {chr(10).join(zone_descriptions) if zone_descriptions else '(no buildable zones)'}
 
-=== EXISTING INFRASTRUCTURE WITHIN SITE ===
-{chr(10).join(infra_lines) if infra_lines else '(none)'}
+{chr(10).join(infra_lines) if infra_lines else ''}
 
 {osm_text}
 {ref_img_text}
 
-REQUIREMENTS:
-- Pure photorealistic aerial photograph — must look like a real drone photo taken from directly above
-- Place each zone at its described location (top-left, center, bottom-right, etc.) within the site area
-- Follow each zone's *** USER VISION *** text precisely — this is the user's specific intent
-- Use the specified materials, heights, and architectural styles for each zone's buildings
-- Real materials: roof tiles, asphalt roads with lane markings, concrete sidewalks, real grass, mature trees with shadows
-- Afternoon sun casting realistic shadows from buildings and trees
-- Roads within the site should connect naturally to surrounding streets visible in the satellite image
-- The ENTIRE site area must be visible in the frame
-- Absolutely NO outlines, NO colored borders, NO zone boundaries, NO text labels, NO annotations, NO diagram elements — just a pure photorealistic photograph
-- If reference images are attached, match their architectural style and materials for that zone
+OUTPUT RULES:
+- Photorealistic drone photo from directly above
+- Fill the ENTIRE frame — no empty/unchanged satellite land
+- Follow each zone's *** USER VISION *** text precisely
+- Real materials: roof tiles, asphalt, concrete sidewalks, real grass, mature trees with shadows
+- Afternoon sun, realistic building shadows
+- ZERO outlines, ZERO borders, ZERO labels, ZERO annotations
 """
 
         logger.info("=== GEMINI SITE PREVIEW PROMPT ===")
@@ -1734,11 +1728,10 @@ REQUIREMENTS:
         # Build multi-modal content: map screenshots + reference images + text prompt
         contents = []
 
-        # 1. Map screenshots: satellite (base) + zones overlay (position reference)
+        # 1. Send ONLY the tight satellite crop — no zone diagram overlay
         if map_screenshots:
             for key, label in [
-                ("satellite", "SATELLITE IMAGE — This is the real aerial photo of the site. Build your output on top of this. Keep areas outside the development exactly as shown here."),
-                ("with_zones", "ZONE POSITIONS — This shows the colored zone polygons drawn over the satellite. Use this ONLY to understand where each zone is located. Do NOT reproduce these colored shapes in your output."),
+                ("satellite", "This is the development area. Replace everything in this image with the proposed development."),
             ]:
                 b64_str = map_screenshots.get(key, "")
                 if b64_str:

@@ -574,6 +574,45 @@ export function ViewerPage() {
     if (!id) return;
     setGeneratingNeighborhood(true);
     try {
+      // Auto-apply any active layout preview selections before generating
+      const { sitePreview, layoutPreview, clearSitePreview, clearLayoutPreview, clearLockedLayers } = useViewerStore.getState();
+      let appliedCount = 0;
+
+      if (sitePreview) {
+        const { zoneLayouts, activeIndex } = sitePreview;
+        const applyResults = await Promise.all(
+          Object.entries(zoneLayouts).map(async ([zoneId, options]) => {
+            if (!options[activeIndex]) return null;
+            try {
+              await siteZonesApi.applyLayout(zoneId, activeIndex, options[activeIndex]);
+              return zoneId;
+            } catch (e) {
+              console.warn(`Failed to apply layout for zone ${zoneId}:`, e);
+              return null;
+            }
+          })
+        );
+        appliedCount = applyResults.filter(Boolean).length;
+        clearSitePreview();
+        clearLockedLayers();
+      } else if (layoutPreview) {
+        const { zoneId, options, activeIndex } = layoutPreview;
+        if (options[activeIndex]) {
+          try {
+            await siteZonesApi.applyLayout(zoneId, activeIndex, options[activeIndex]);
+            appliedCount = 1;
+          } catch (e) {
+            console.warn(`Failed to apply layout for zone ${zoneId}:`, e);
+          }
+        }
+        clearLayoutPreview();
+        clearLockedLayers();
+      }
+
+      if (appliedCount > 0) {
+        toast.success(`Applied ${appliedCount} previewed layout${appliedCount > 1 ? 's' : ''}`);
+      }
+
       // If a site_boundary is selected, scope generation to that boundary
       const boundaryZone = selectedZone?.zone_type === 'site_boundary' ? selectedZone : null;
       let result;
