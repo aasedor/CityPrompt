@@ -227,14 +227,18 @@ class LayoutPlanner:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+            um = response.usage_metadata
+            input_toks = (um.prompt_token_count if um else 0) or 0
+            output_toks = (um.candidates_token_count if um else 0) or 0
+            logger.debug("Gemini layout_preview usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
             log_api_usage_sync(
                 provider="gemini",
                 operation="layout_preview",
-                input_tokens=getattr(response.usage_metadata, 'prompt_token_count', 0) or 0,
-                output_tokens=getattr(response.usage_metadata, 'candidates_token_count', 0) or 0,
+                input_tokens=input_toks,
+                output_tokens=output_toks,
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Failed to log Gemini usage for layout_preview: %s", exc)
 
         return self._parse_multi_ai_response(response.text, zone_polygon, count)
 
@@ -962,14 +966,18 @@ Return ONLY valid JSON matching this schema:
 
         try:
             from app.core.usage_logger import log_api_usage_sync
+            um = response.usage_metadata
+            input_toks = (um.prompt_token_count if um else 0) or 0
+            output_toks = (um.candidates_token_count if um else 0) or 0
+            logger.debug("Gemini layout_generation usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
             log_api_usage_sync(
                 provider="gemini",
                 operation="layout_generation",
-                input_tokens=getattr(response.usage_metadata, 'prompt_token_count', 0) or 0,
-                output_tokens=getattr(response.usage_metadata, 'candidates_token_count', 0) or 0,
+                input_tokens=input_toks,
+                output_tokens=output_toks,
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Failed to log Gemini usage for layout_generation: %s", exc)
 
         return self._parse_ai_response(response.text, zone_polygon)
 
@@ -1373,6 +1381,21 @@ Requirements:
                 response_modalities=["IMAGE", "TEXT"],
             ),
         )
+
+        try:
+            from app.core.usage_logger import log_api_usage_sync
+            um = response.usage_metadata
+            input_toks = (um.prompt_token_count if um else 0) or 0
+            output_toks = (um.candidates_token_count if um else 0) or 0
+            logger.debug("Gemini layout_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
+            log_api_usage_sync(
+                provider="gemini",
+                operation="layout_preview_image",
+                input_tokens=input_toks,
+                output_tokens=output_toks,
+            )
+        except Exception as exc:
+            logger.warning("Failed to log Gemini usage for layout_preview_image: %s", exc)
 
         # Extract image from response
         for part in response.candidates[0].content.parts:
@@ -1790,6 +1813,21 @@ OUTPUT RULES:
                 response_modalities=["IMAGE", "TEXT"],
             ),
         )
+
+        try:
+            from app.core.usage_logger import log_api_usage_sync
+            um = response.usage_metadata
+            input_toks = (um.prompt_token_count if um else 0) or 0
+            output_toks = (um.candidates_token_count if um else 0) or 0
+            logger.debug("Gemini site_preview_image usage_metadata: %s (input=%d, output=%d)", um, input_toks, output_toks)
+            log_api_usage_sync(
+                provider="gemini",
+                operation="site_preview_image",
+                input_tokens=input_toks,
+                output_tokens=output_toks,
+            )
+        except Exception as exc:
+            logger.warning("Failed to log Gemini usage for site_preview_image: %s", exc)
 
         # Extract image from response
         for part in response.candidates[0].content.parts:
