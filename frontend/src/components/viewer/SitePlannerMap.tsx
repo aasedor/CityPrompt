@@ -126,7 +126,7 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
@@ -400,10 +400,12 @@ export function SitePlannerMap({
       pitch: 0,
       bearing: 0,
       doubleClickZoom: false,
+      preserveDrawingBuffer: true, // Needed for canvas screenshot capture
     });
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     mapRef.current = map;
+    setMapInstance(map);
 
     map.on('load', () => {
       mapLoadedRef.current = true;
@@ -688,8 +690,9 @@ export function SitePlannerMap({
       setMapReady(false);
       map.remove();
       mapRef.current = null;
+      setMapInstance(null);
     };
-  }, [latitude, longitude, buildPreviewFeatures, finishDrawing, setDraggingZone, updateVertexHandles]);
+  }, [latitude, longitude, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
 
   // Helper to update a zone's geometry on the map in real-time
   function updateZoneOnMap(zoneId: string, newCoords: number[][]) {

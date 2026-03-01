@@ -166,15 +166,33 @@ interface ViewerState {
   activeToolProperties: SiteZoneProperties | null;
   selectedZoneId: string | null;
   isDraggingZone: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mapInstance: any | null; // mapboxgl.Map stored for screenshot capture
   setDraggingZone: (dragging: boolean) => void;
+  setMapInstance: (map: unknown) => void;
   setSitePlannerActive: (enabled: boolean) => void;
   setActiveSitePlannerTool: (tool: SiteZoneType | null, properties?: SiteZoneProperties) => void;
   selectZone: (id: string | null) => void;
-  // Layout preview
-  layoutPreview: { zoneId: string; options: LayoutOption[]; activeIndex: number } | null;
+  // Layout preview (per-zone)
+  layoutPreview: { zoneId: string; options: LayoutOption[]; activeIndex: number; imageUrls: Record<number, string> } | null;
   setLayoutPreview: (zoneId: string, options: LayoutOption[]) => void;
   clearLayoutPreview: () => void;
   setActivePreviewIndex: (index: number) => void;
+  setPreviewImageUrl: (index: number, url: string) => void;
+  // Site-wide preview (whole boundary)
+  sitePreview: {
+    boundaryZoneId: string;
+    zoneLayouts: Record<string, LayoutOption[]>; // zoneId → 3 options
+    activeIndex: number;
+    imageUrls: Record<number, string>;
+  } | null;
+  setSitePreview: (boundaryZoneId: string, zoneLayouts: Record<string, LayoutOption[]>) => void;
+  clearSitePreview: () => void;
+  setActiveSitePreviewIndex: (index: number) => void;
+  setSitePreviewImageUrl: (index: number, url: string) => void;
+  // Lightbox for expanded image view
+  lightboxImageUrl: string | null;
+  setLightboxImage: (url: string | null) => void;
   // OSM context
   osmContext: OSMContext | null;
   setOSMContext: (ctx: OSMContext | null) => void;
@@ -365,19 +383,43 @@ export const useViewerStore = create<ViewerState>((set) => ({
   activeToolProperties: null,
   selectedZoneId: null,
   isDraggingZone: false,
+  mapInstance: null,
   setDraggingZone: (dragging) => set({ isDraggingZone: dragging }),
-  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, activeToolProperties: null, selectedZoneId: null, layoutPreview: null }),
+  setMapInstance: (map) => set({ mapInstance: map }),
+  setSitePlannerActive: (enabled) => set({ isSitePlannerActive: enabled, activeSitePlannerTool: enabled ? null : null, activeToolProperties: null, selectedZoneId: null, layoutPreview: null, sitePreview: null }),
   setActiveSitePlannerTool: (tool, properties?) => set({ activeSitePlannerTool: tool, activeToolProperties: properties ?? null }),
   selectZone: (id) => set({ selectedZoneId: id }),
   // Layout preview
   layoutPreview: null,
-  setLayoutPreview: (zoneId, options) => set({ layoutPreview: { zoneId, options, activeIndex: 0 } }),
+  setLayoutPreview: (zoneId, options) => set({ layoutPreview: { zoneId, options, activeIndex: 0, imageUrls: {} } }),
   clearLayoutPreview: () => set({ layoutPreview: null }),
   setActivePreviewIndex: (index) =>
     set((state) => {
       if (!state.layoutPreview) return {};
       return { layoutPreview: { ...state.layoutPreview, activeIndex: index } };
     }),
+  setPreviewImageUrl: (index, url) =>
+    set((state) => {
+      if (!state.layoutPreview) return {};
+      return { layoutPreview: { ...state.layoutPreview, imageUrls: { ...state.layoutPreview.imageUrls, [index]: url } } };
+    }),
+  // Site-wide preview
+  sitePreview: null,
+  setSitePreview: (boundaryZoneId, zoneLayouts) => set({ sitePreview: { boundaryZoneId, zoneLayouts, activeIndex: 0, imageUrls: {} } }),
+  clearSitePreview: () => set({ sitePreview: null }),
+  setActiveSitePreviewIndex: (index) =>
+    set((state) => {
+      if (!state.sitePreview) return {};
+      return { sitePreview: { ...state.sitePreview, activeIndex: index } };
+    }),
+  setSitePreviewImageUrl: (index, url) =>
+    set((state) => {
+      if (!state.sitePreview) return {};
+      return { sitePreview: { ...state.sitePreview, imageUrls: { ...state.sitePreview.imageUrls, [index]: url } } };
+    }),
+  // Lightbox
+  lightboxImageUrl: null,
+  setLightboxImage: (url) => set({ lightboxImageUrl: url }),
   // OSM context
   osmContext: null,
   setOSMContext: (ctx) => set({ osmContext: ctx }),

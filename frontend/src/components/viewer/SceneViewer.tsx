@@ -85,7 +85,10 @@ function SunLight({ settings, latitude }: { settings: import('@/types').ViewerSe
         shadow-camera-bottom={-100}
       />
       <Sky sunPosition={sunPos} />
-      <Environment preset="city" background />
+      {/* Use "city" preset for reflections/IBL only — never as background.
+          The "city" preset loads the Potsdamer Platz (Berlin) HDRI which looks
+          like a street-view when rendered as the scene background. */}
+      <Environment preset="city" />
     </>
   );
 }
@@ -658,7 +661,7 @@ function PostProcessingEffects({ settings }: { settings: ViewerSettings }) {
 // Scene Fog — atmospheric depth
 // =============================================================================
 
-function SceneFog({ settings }: { settings: ViewerSettings }) {
+function SceneFog({ settings, showMapBackground }: { settings: ViewerSettings; showMapBackground?: boolean }) {
   const { scene } = useThree();
 
   // Compute fog color from sun time — golden near sunrise/sunset, blue-gray midday
@@ -678,13 +681,16 @@ function SceneFog({ settings }: { settings: ViewerSettings }) {
   }, [settings.sunTime]);
 
   useEffect(() => {
-    if (settings.enableFog) {
+    if (settings.enableFog && !showMapBackground) {
+      // Only apply atmospheric fog when map background is OFF.
+      // When the satellite map is active, fog obscures the ground-plane
+      // tiles and severely limits view distance, so disable it entirely.
       scene.fog = new THREE.Fog(fogColor, 200, 800);
     } else {
       scene.fog = null;
     }
     return () => { scene.fog = null; };
-  }, [scene, settings.enableFog, fogColor]);
+  }, [scene, settings.enableFog, fogColor, showMapBackground]);
 
   return null;
 }
@@ -936,7 +942,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       <PostProcessingEffects settings={settings} />
 
       {/* Atmospheric fog */}
-      <SceneFog settings={settings} />
+      <SceneFog settings={settings} showMapBackground={showMapBackground} />
 
       {/* Walkthrough ambient audio */}
       <AmbientAudio />

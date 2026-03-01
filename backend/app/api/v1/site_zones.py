@@ -677,9 +677,150 @@ async def render_layout_preview(
         preview_key = f"projects/{zone.project_id}/layout-previews/{zone_id}_{uuid.uuid4()}.png"
         image_url = _upload_image_to_storage(preview_key, image_bytes, "image/png")
 
+        # Rewrite internal Docker URL to localhost for browser access
+        image_url = image_url.replace("http://minio:9000", "http://localhost:9000")
+
         return {"image_url": image_url, "zone_id": str(zone_id)}
     except Exception as e:
         logger.error("Layout preview image generation failed for zone %s: %s", zone_id, e)
+        raise HTTPException(status_code=500, detail=f"Image generation failed: {e}")
+
+
+@router.post("/{zone_id}/render-site-preview")
+async def render_site_preview(
+    zone_id: uuid.UUID,
+    body: dict,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Generate an AI-rendered 2D preview image for the ENTIRE site boundary.
+
+    Takes combined layout data from all buildable zones and renders one
+    comprehensive aerial view of the whole site including existing infrastructure.
+    """
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    boundary_zone = result.scalar_one_or_none()
+    if not boundary_zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+    if boundary_zone.zone_type != "site_boundary":
+        raise HTTPException(status_code=400, detail="Zone must be a site_boundary")
+
+    # Check editor permission
+    proj_result = await db.execute(select(Project).where(Project.id == boundary_zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if project.owner_id != user.id and not is_admin_or_above(user):
+        share_result = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == boundary_zone.project_id,
+                (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+                ProjectShare.permission == "editor",
+            )
+        )
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Not authorized")
+
+    # Parse zone_layouts: { zoneId: LayoutOption }
+    zone_layouts = body.get("zone_layouts")
+    option_index = body.get("option_index", 0)
+    if not zone_layouts:
+        raise HTTPException(status_code=400, detail="Missing 'zone_layouts' in request body")
+
+    # Load all contained zones
+    all_zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == boundary_zone.project_id,
+        )
+    )
+    all_zones = all_zones_result.scalars().all()
+
+    # Build zone lookup and parse layout options
+    zone_lookup = {str(z.id): z for z in all_zones}
+    parsed_layouts = []
+    for zid, layout_data in zone_layouts.items():
+        zone_obj = zone_lookup.get(zid)
+        if not zone_obj:
+            continue
+        try:
+            option = SiteLayoutOption(**layout_data)
+            shape = to_shape(zone_obj.geometry)
+            parsed_layouts.append({
+                "zone": zone_obj,
+                "shape": shape,
+                "option": option,
+                "properties": zone_obj.properties or {},
+            })
+        except Exception as e:
+            logger.warning("Skipping zone %s: invalid layout data: %s", zid, e)
+
+    # Gather non-buildable zones (roads, green spaces, water, parking)
+    non_buildable = []
+    # Gather buildable zones that don't have layouts (their properties/descriptions still matter)
+    buildable_without_layouts = []
+    layout_zone_ids = set(zone_layouts.keys())
+    for z in all_zones:
+        if str(z.id) == str(zone_id):
+            continue  # skip the boundary itself
+        if z.zone_type in ("road", "green_space", "water", "parking"):
+            try:
+                shape = to_shape(z.geometry)
+                non_buildable.append({
+                    "zone_type": z.zone_type,
+                    "shape": shape,
+                    "properties": z.properties or {},
+                    "name": z.name,
+                    "zone_id": str(z.id),
+                })
+            except Exception:
+                pass
+        elif z.zone_type in ("building", "residential", "development_area") and str(z.id) not in layout_zone_ids:
+            # Buildable zone without a generated layout — still include its properties
+            try:
+                shape = to_shape(z.geometry)
+                buildable_without_layouts.append({
+                    "zone": z,
+                    "shape": shape,
+                    "properties": z.properties or {},
+                })
+            except Exception:
+                pass
+
+    boundary_shape = to_shape(boundary_zone.geometry)
+    boundary_props = boundary_zone.properties or {}
+    reference_context = boundary_props.get("_osm_context")
+
+    # Parse optional map screenshots (base64 data URLs from frontend canvas capture)
+    map_screenshots = None
+    satellite_b64 = body.get("map_screenshot_satellite")
+    zones_b64 = body.get("map_screenshot_with_zones")
+    if satellite_b64 and zones_b64:
+        map_screenshots = {"satellite": satellite_b64, "with_zones": zones_b64}
+
+    # Parse optional zone metadata (colors, names, types for prompt context)
+    zone_meta = body.get("zone_meta", {})
+
+    try:
+        from app.services.layout_planner import _upload_image_to_storage
+        planner = LayoutPlanner()
+        image_bytes = await planner.generate_site_preview_image(
+            boundary_polygon=boundary_shape,
+            zone_layouts=parsed_layouts,
+            non_buildable_zones=non_buildable,
+            reference_context=reference_context,
+            map_screenshots=map_screenshots,
+            zone_meta=zone_meta,
+            buildable_without_layouts=buildable_without_layouts,
+        )
+
+        # Upload to MinIO
+        preview_key = f"projects/{boundary_zone.project_id}/site-previews/{zone_id}_{option_index}_{uuid.uuid4()}.png"
+        image_url = _upload_image_to_storage(preview_key, image_bytes, "image/png")
+
+        # Rewrite internal Docker URL to localhost for browser access
+        image_url = image_url.replace("http://minio:9000", "http://localhost:9000")
+
+        return {"image_url": image_url, "zone_id": str(zone_id), "option_index": option_index}
+    except Exception as e:
+        logger.error("Site preview image generation failed for boundary %s: %s", zone_id, e)
         raise HTTPException(status_code=500, detail=f"Image generation failed: {e}")
 
 

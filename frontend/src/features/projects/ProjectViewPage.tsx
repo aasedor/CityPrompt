@@ -13,6 +13,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import type { Document } from '@/types';
 
 export function ProjectViewPage() {
@@ -203,12 +204,14 @@ export function ProjectViewPage() {
           />
           {selectedZone && (
             <ZonePropertiesPanel
+              key={selectedZone.id}
               zone={selectedZone}
               onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
               buildings={project.buildings}
+              allZones={siteZones}
             />
           )}
         </div>
@@ -432,6 +435,7 @@ export function ProjectViewPage() {
           )}
         </div>
       </div>
+      <ImageLightbox />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
+import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { useState } from 'react';
 
@@ -143,14 +144,19 @@ export function SitePlannerPage() {
       {/* Zone properties panel */}
       {selectedZone && (
         <ZonePropertiesPanel
+          key={selectedZone.id}
           zone={selectedZone}
           onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
           onDelete={(zoneId) => deleteZone.mutate(zoneId)}
           onClose={() => selectZone(null)}
           onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
           buildings={project.buildings}
+          allZones={siteZones}
         />
       )}
+
+      {/* Image lightbox */}
+      <ImageLightbox />
 
       {/* Toolbar */}
       <SitePlannerToolbar

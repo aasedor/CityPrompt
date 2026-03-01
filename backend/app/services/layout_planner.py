@@ -1367,7 +1367,7 @@ Requirements:
 
         client = genai.Client(api_key=settings.gemini_api_key)
         response = client.models.generate_content(
-            model="gemini-2.0-flash-exp-image-generation",  # alternatives: gemini-2.5-flash-image, imagen-4.0-generate-001
+            model="gemini-2.5-flash-image",
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_modalities=["IMAGE", "TEXT"],
@@ -1380,3 +1380,423 @@ Requirements:
                 return part.inline_data.data
 
         raise RuntimeError("Gemini did not return an image")
+
+    async def generate_site_preview_image(
+        self,
+        boundary_polygon: Polygon,
+        zone_layouts: list[dict[str, Any]],
+        non_buildable_zones: list[dict[str, Any]],
+        reference_context: Optional[dict[str, Any]] = None,
+        map_screenshots: Optional[dict[str, str]] = None,
+        zone_meta: Optional[dict[str, dict[str, str]]] = None,
+        buildable_without_layouts: Optional[list[dict[str, Any]]] = None,
+    ) -> bytes:
+        """Generate a photorealistic 2D aerial preview of the ENTIRE site.
+
+        Combines all buildable zones' chosen layouts, non-buildable zones
+        (roads, green spaces, water, parking), and OSM context into one
+        comprehensive aerial image.
+        """
+        if not settings.gemini_api_key:
+            raise RuntimeError("GEMINI_API_KEY is not configured")
+
+        zone_meta = zone_meta or {}
+
+        centroid = boundary_polygon.centroid
+        center_lat = centroid.y
+        mlon = _meters_per_deg_lon(center_lat)
+
+        bounds = boundary_polygon.bounds
+        site_width_m = round(abs(bounds[2] - bounds[0]) * mlon, 1)
+        site_depth_m = round(abs(bounds[3] - bounds[1]) * METERS_PER_DEG_LAT, 1)
+
+        def _position_description(shape_centroid, site_centroid, site_w, site_d, mlon_val):
+            """Convert a zone's position to human-readable image-relative directions."""
+            dx_m = (shape_centroid.x - site_centroid.x) * mlon_val
+            dy_m = (shape_centroid.y - site_centroid.y) * METERS_PER_DEG_LAT
+            # Normalize to -1..+1 range within site
+            nx = dx_m / (site_w / 2) if site_w else 0
+            ny = dy_m / (site_d / 2) if site_d else 0
+            # Vertical: top (north) / center / bottom (south)
+            if ny > 0.3:
+                v = "top"
+            elif ny < -0.3:
+                v = "bottom"
+            else:
+                v = "center"
+            # Horizontal: left (west) / center / right (east)
+            if nx > 0.3:
+                h = "right"
+            elif nx < -0.3:
+                h = "left"
+            else:
+                h = "center"
+            if v == "center" and h == "center":
+                return "center of the site"
+            elif v == "center":
+                return f"{h} side of the site"
+            elif h == "center":
+                return f"{v} of the site"
+            else:
+                return f"{v}-{h} of the site"
+
+        def _color_name(hex_color: str) -> str:
+            """Convert hex color to human-readable name for Gemini."""
+            color_map = {
+                "#f59e0b": "amber/orange", "#9b59b6": "purple", "#e91e8a": "pink/magenta",
+                "#444444": "dark gray", "#27ae60": "green", "#95a5a6": "light gray",
+                "#3498db": "blue", "#d4a574": "tan/brown",
+            }
+            return color_map.get(hex_color.lower(), hex_color)
+
+        # Collect reference image URLs from all zones for multi-modal input
+        reference_image_urls = []
+
+        # Describe each buildable zone and its chosen layout
+        zone_descriptions = []
+        for zl in zone_layouts:
+            zone = zl["zone"]
+            shape = zl["shape"]
+            option = zl["option"]
+            props = zl["properties"]
+            zt = zone.zone_type
+            zid = str(zone.id)
+            meta = zone_meta.get(zid, {})
+            zname = meta.get("name") or zone.name or zt.replace("_", " ")
+            zone_color = meta.get("color", "")
+            dev_type = props.get("development_type", "residential")
+            aesthetic = props.get("development_aesthetic", "modern")
+            facade = props.get("facade_material", "")
+            roof = props.get("roof_style", "")
+            ground = props.get("ground_texture", "")
+            desc_text = props.get("description_text", "")
+            height = props.get("height")
+            floors = props.get("floors")
+            balconies = props.get("balconies", False)
+            unit_count = props.get("unit_count")
+
+            # Collect reference images for this zone
+            ref_imgs = props.get("reference_images") or []
+            for img_url in ref_imgs:
+                reference_image_urls.append({"url": img_url, "zone_name": zname})
+
+            z_bounds = shape.bounds
+            z_w = round(abs(z_bounds[2] - z_bounds[0]) * mlon, 1)
+            z_d = round(abs(z_bounds[3] - z_bounds[1]) * METERS_PER_DEG_LAT, 1)
+
+            # Position as human-readable direction
+            position = _position_description(shape.centroid, centroid, site_width_m, site_depth_m, mlon)
+
+            building_lines = []
+            for b in option.buildings:
+                btype = getattr(b, "building_type", dev_type)
+                b_floors = b.floors or floors or props.get("floors", 2)
+                b_height = b.height_m or height or (b_floors * 3.5)
+                building_lines.append(
+                    f"    - {btype}: {b.width_m}m x {b.depth_m}m, "
+                    f"{b_floors} floors ({b_height:.0f}m tall)"
+                )
+
+            road_lines = []
+            for r in option.roads:
+                road_lines.append(f"    - {r.road_type} road: {r.width_m}m wide")
+
+            green_lines = []
+            for g in option.green_spaces:
+                green_lines.append(f"    - {g.space_type} green space")
+
+            style_parts = []
+            if aesthetic:
+                style_parts.append(f"Style: {aesthetic}")
+            if facade:
+                style_parts.append(f"Facade: {facade}")
+            if roof:
+                style_parts.append(f"Roof: {roof}")
+            if ground:
+                style_parts.append(f"Ground: {ground}")
+            if balconies:
+                style_parts.append("Has balconies")
+            if height:
+                style_parts.append(f"Height: {height}m")
+            if floors:
+                style_parts.append(f"Floors: {floors}")
+            if unit_count:
+                style_parts.append(f"Units: {unit_count}")
+            if ref_imgs:
+                style_parts.append(f"{len(ref_imgs)} reference image(s) attached")
+
+            desc_block = ""
+            if desc_text:
+                desc_block = f"\n    *** USER VISION: \"{desc_text}\" ***"
+
+            zone_block = f"""  ZONE: "{zname}" — {dev_type} zone
+    Location: {position}, {z_w:.0f}m x {z_d:.0f}m
+    Layout strategy: {option.layout_strategy}{desc_block}
+    Appearance: {'; '.join(style_parts) if style_parts else 'default modern'}
+    Buildings ({len(option.buildings)}):
+{chr(10).join(building_lines) if building_lines else '      (none)'}
+    Roads ({len(option.roads)}):
+{chr(10).join(road_lines) if road_lines else '      (none)'}
+    Green spaces ({len(option.green_spaces)}):
+{chr(10).join(green_lines) if green_lines else '      (none)'}"""
+            zone_descriptions.append(zone_block)
+
+        # Include buildable zones that didn't get AI layouts (their properties/descriptions still matter)
+        for bwl in (buildable_without_layouts or []):
+            zone = bwl["zone"]
+            shape = bwl["shape"]
+            props = bwl["properties"]
+            zt = zone.zone_type
+            zid = str(zone.id)
+            meta = zone_meta.get(zid, {})
+            zname = meta.get("name") or zone.name or zt.replace("_", " ")
+
+            dev_type = props.get("development_type", "residential" if zt == "residential" else "commercial")
+            aesthetic = props.get("development_aesthetic", "modern")
+            facade = props.get("facade_material", "")
+            roof = props.get("roof_style", "")
+            ground = props.get("ground_texture", "")
+            desc_text = props.get("description_text", "")
+            height = props.get("height")
+            floors = props.get("floors")
+            balconies = props.get("balconies", False)
+            unit_count = props.get("unit_count")
+
+            ref_imgs = props.get("reference_images") or []
+            for img_url in ref_imgs:
+                reference_image_urls.append({"url": img_url, "zone_name": zname})
+
+            z_bounds = shape.bounds
+            z_w = round(abs(z_bounds[2] - z_bounds[0]) * mlon, 1)
+            z_d = round(abs(z_bounds[3] - z_bounds[1]) * METERS_PER_DEG_LAT, 1)
+            position = _position_description(shape.centroid, centroid, site_width_m, site_depth_m, mlon)
+
+            style_parts = []
+            if aesthetic: style_parts.append(f"Style: {aesthetic}")
+            if facade: style_parts.append(f"Facade: {facade}")
+            if roof: style_parts.append(f"Roof: {roof}")
+            if ground: style_parts.append(f"Ground: {ground}")
+            if balconies: style_parts.append("Has balconies")
+            if height: style_parts.append(f"Height: {height}m")
+            if floors: style_parts.append(f"Floors: {floors}")
+            if unit_count: style_parts.append(f"Units: {unit_count}")
+            if ref_imgs: style_parts.append(f"{len(ref_imgs)} reference image(s) attached")
+
+            desc_block = ""
+            if desc_text:
+                desc_block = f"\n    *** USER VISION: \"{desc_text}\" ***"
+
+            zone_block = f"""  ZONE: "{zname}" — {dev_type} zone
+    Location: {position}, {z_w:.0f}m x {z_d:.0f}m{desc_block}
+    Appearance: {'; '.join(style_parts) if style_parts else 'default modern'}
+    (No specific building layout generated — render buildings according to the zone properties and user vision above)"""
+            zone_descriptions.append(zone_block)
+
+        # Describe non-buildable zones (existing infrastructure within boundary)
+        infra_lines = []
+        for nb in non_buildable_zones:
+            zt = nb["zone_type"]
+            props = nb["properties"]
+            zname = nb.get("name") or zt.replace("_", " ")
+            shape = nb["shape"]
+
+            position = _position_description(shape.centroid, centroid, site_width_m, site_depth_m, mlon)
+
+            # Collect reference images for non-buildable zones too
+            ref_imgs = props.get("reference_images") or []
+            for img_url in ref_imgs:
+                reference_image_urls.append({"url": img_url, "zone_name": zname})
+
+            details = []
+            if zt == "road":
+                width = props.get("width", 10)
+                surface = props.get("road_surface", "asphalt")
+                lanes = props.get("lane_count", 2)
+                sidewalks = props.get("sidewalks", "both")
+                volume = props.get("volume", "")
+                details.append(f"{width}m wide, {lanes} lanes, {surface}")
+                if sidewalks and sidewalks != "none":
+                    details.append(f"sidewalks: {sidewalks}")
+                if volume:
+                    details.append(f"{volume} traffic")
+                aesthetic = props.get("road_aesthetic", "")
+                if aesthetic:
+                    details.append(aesthetic.replace("_", " "))
+                priorities = []
+                if props.get("priority_pedestrian"):
+                    priorities.append(f"pedestrian={props['priority_pedestrian']}")
+                if props.get("priority_cycling"):
+                    priorities.append(f"cycling={props['priority_cycling']}")
+                if props.get("priority_transit"):
+                    priorities.append(f"transit={props['priority_transit']}")
+                if props.get("priority_auto"):
+                    priorities.append(f"auto={props['priority_auto']}")
+                if priorities:
+                    details.append(f"priorities: {', '.join(priorities)}")
+            elif zt == "green_space":
+                density = props.get("tree_density_level", "medium")
+                tree_val = props.get("tree_density")
+                details.append(f"{density} trees" + (f" ({tree_val})" if tree_val else ""))
+                if props.get("has_paths"):
+                    details.append("walking paths")
+                if props.get("has_benches"):
+                    details.append("benches")
+            elif zt == "water":
+                wtype = props.get("water_type", "pond")
+                details.append(wtype)
+            elif zt == "parking":
+                layout = props.get("parking_layout", "perpendicular")
+                details.append(f"{layout} layout")
+                if props.get("covered"):
+                    details.append("covered")
+
+            desc_text = props.get("description_text", "")
+            desc_suffix = ""
+            if desc_text:
+                desc_suffix = f'\n      *** USER VISION: "{desc_text}" ***'
+
+            infra_lines.append(f"  - {zname} ({zt}) at {position}: {', '.join(details)}{desc_suffix}")
+
+        # OSM reference context
+        osm_text = ""
+        if reference_context:
+            osm_parts = []
+            ref_roads = reference_context.get("roads", [])
+            if ref_roads:
+                road_types = set(r.get("road_type", "residential") for r in ref_roads)
+                road_names = [r.get("name") for r in ref_roads if r.get("name")]
+                osm_parts.append(f"Surrounding roads: {len(ref_roads)} ({', '.join(sorted(road_types))})")
+                if road_names:
+                    osm_parts.append(f"  Streets: {', '.join(road_names[:5])}")
+            ref_buildings = reference_context.get("buildings", [])
+            if ref_buildings:
+                heights = [b.get("height_m") for b in ref_buildings if b.get("height_m")]
+                avg_h = round(sum(heights) / len(heights), 1) if heights else None
+                osm_parts.append(f"Surrounding buildings: {len(ref_buildings)}" + (f" (avg {avg_h}m)" if avg_h else ""))
+            ref_water = reference_context.get("water", [])
+            if ref_water:
+                osm_parts.append(f"Nearby water: {len(ref_water)}")
+            ref_parks = reference_context.get("parks", [])
+            if ref_parks:
+                osm_parts.append(f"Nearby parks: {len(ref_parks)}")
+            if osm_parts:
+                osm_text = "SURROUNDING CONTEXT (from OpenStreetMap):\n" + chr(10).join(f"  {p}" for p in osm_parts)
+
+        # Reference images text note
+        ref_img_text = ""
+        if reference_image_urls:
+            ref_img_text = f"REFERENCE IMAGES ({len(reference_image_urls)} attached above):\n"
+            for ri in reference_image_urls:
+                ref_img_text += f"  - Zone '{ri['zone_name']}': match the style/materials shown in its reference image\n"
+
+        prompt = f"""You are generating a photorealistic aerial photograph of a proposed development site.
+
+TASK: The attached SATELLITE IMAGE shows the real location. Replace what is currently inside the site boundary area with the proposed development described below. Keep everything OUTSIDE the site boundary exactly as it appears in the satellite image.
+
+SITE DIMENSIONS: {site_width_m:.0f}m wide x {site_depth_m:.0f}m deep
+
+The satellite image is centered on the site. Use the surrounding streets, buildings, and terrain visible in the satellite image as context — the areas outside the development should look exactly like the real satellite imagery.
+
+=== DEVELOPMENT ZONES (build these in the described locations) ===
+{chr(10).join(zone_descriptions) if zone_descriptions else '(no buildable zones)'}
+
+=== EXISTING INFRASTRUCTURE WITHIN SITE ===
+{chr(10).join(infra_lines) if infra_lines else '(none)'}
+
+{osm_text}
+{ref_img_text}
+
+REQUIREMENTS:
+- Pure photorealistic aerial photograph — must look like a real drone photo taken from directly above
+- Place each zone at its described location (top-left, center, bottom-right, etc.) within the site area
+- Follow each zone's *** USER VISION *** text precisely — this is the user's specific intent
+- Use the specified materials, heights, and architectural styles for each zone's buildings
+- Real materials: roof tiles, asphalt roads with lane markings, concrete sidewalks, real grass, mature trees with shadows
+- Afternoon sun casting realistic shadows from buildings and trees
+- Roads within the site should connect naturally to surrounding streets visible in the satellite image
+- The ENTIRE site area must be visible in the frame
+- Absolutely NO outlines, NO colored borders, NO zone boundaries, NO text labels, NO annotations, NO diagram elements — just a pure photorealistic photograph
+- If reference images are attached, match their architectural style and materials for that zone
+"""
+
+        logger.info("=== GEMINI SITE PREVIEW PROMPT ===")
+        logger.info("Zones: %d with layouts, %d buildable without layouts, %d infrastructure, %d reference images",
+                     len(zone_layouts), len(buildable_without_layouts or []), len(non_buildable_zones), len(reference_image_urls))
+        logger.info("Map screenshots: %s", "yes" if map_screenshots else "no")
+        logger.info("Zone meta colors: %s", {m.get("name"): m.get("color") for m in zone_meta.values()} if zone_meta else "none")
+        logger.info("Prompt length: %d chars", len(prompt))
+        logger.info("Full prompt:\n%s", prompt)
+
+        from google import genai
+        import base64
+        import httpx
+
+        # Build multi-modal content: map screenshots + reference images + text prompt
+        contents = []
+
+        # 1. Satellite screenshot only (no zones overlay — that causes Gemini to draw outlines)
+        if map_screenshots:
+            satellite_b64 = map_screenshots.get("satellite", "")
+            if satellite_b64:
+                try:
+                    if "," in satellite_b64:
+                        header, b64_data = satellite_b64.split(",", 1)
+                        mime = header.split(":")[1].split(";")[0] if ":" in header else "image/jpeg"
+                    else:
+                        b64_data = satellite_b64
+                        mime = "image/jpeg"
+                    img_bytes = base64.b64decode(b64_data)
+                    contents.append(
+                        genai.types.Part.from_bytes(data=img_bytes, mime_type=mime)
+                    )
+                    contents.append("[SATELLITE IMAGE of the actual site location — use this as the base]")
+                except Exception as e:
+                    logger.warning("Failed to decode satellite screenshot: %s", e)
+
+        # 2. Reference images from individual zones
+        fetched_ref_count = 0
+        for ri in reference_image_urls:
+            url = ri["url"]
+            # Reference image URLs stored in DB may use localhost — rewrite to minio for Docker access
+            fetch_url = url.replace("http://localhost:9000", "http://minio:9000")
+            logger.info("Fetching reference image for zone '%s': %s", ri["zone_name"], fetch_url)
+            try:
+                resp = httpx.get(fetch_url, timeout=10, follow_redirects=True)
+                logger.info("Reference image response: status=%d, content-type=%s, size=%d bytes",
+                            resp.status_code, resp.headers.get("content-type", "?"), len(resp.content))
+                if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
+                    img_data = resp.content
+                    mime = resp.headers.get("content-type", "image/jpeg")
+                    contents.append(
+                        genai.types.Part.from_bytes(data=img_data, mime_type=mime)
+                    )
+                    contents.append(f"[Reference image for zone: {ri['zone_name']} — match this style/aesthetic]")
+                    fetched_ref_count += 1
+                else:
+                    logger.warning("Reference image fetch failed: status=%d, content-type=%s", resp.status_code, resp.headers.get("content-type", "?"))
+            except Exception as e:
+                logger.warning("Failed to fetch reference image %s: %s", fetch_url, e)
+
+        # Count total image parts being sent
+        image_parts = sum(1 for c in contents if hasattr(c, 'inline_data') or (hasattr(c, '_raw_part') and hasattr(c._raw_part, 'inline_data')))
+        logger.info("Sending to Gemini: %d image parts (1 satellite + %d reference), prompt %d chars",
+                     image_parts, fetched_ref_count, len(prompt))
+
+        # 3. Text prompt (after all images)
+        contents.append(prompt)
+
+        client = genai.Client(api_key=settings.gemini_api_key)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-image",
+            contents=contents,
+            config=genai.types.GenerateContentConfig(
+                response_modalities=["IMAGE", "TEXT"],
+            ),
+        )
+
+        # Extract image from response
+        for part in response.candidates[0].content.parts:
+            if part.inline_data is not None:
+                return part.inline_data.data
+
+        raise RuntimeError("Gemini did not return an image for site preview")

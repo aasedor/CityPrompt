@@ -546,6 +546,29 @@ export const siteZonesApi = {
     return data;
   },
 
+  renderSitePreview: async (
+    boundaryZoneId: string,
+    optionIndex: number,
+    zoneLayouts: Record<string, LayoutOption>,
+    mapScreenshots?: { satellite: string; withZones: string },
+    zoneMeta?: Record<string, { color: string; name: string; zone_type: string }>,
+  ): Promise<{ image_url: string; zone_id: string; option_index: number }> => {
+    const { data } = await api.post(
+      `/api/v1/site-zones/${boundaryZoneId}/render-site-preview`,
+      {
+        option_index: optionIndex,
+        zone_layouts: zoneLayouts,
+        ...(mapScreenshots && {
+          map_screenshot_satellite: mapScreenshots.satellite,
+          map_screenshot_with_zones: mapScreenshots.withZones,
+        }),
+        ...(zoneMeta && { zone_meta: zoneMeta }),
+      },
+      { timeout: 120000 },
+    );
+    return data;
+  },
+
   getBoundaryAnalysis: async (zoneId: string): Promise<BoundaryAnalysisResponse> => {
     const { data } = await api.get(`/api/v1/site-zones/${zoneId}/boundary-analysis`);
     return data;

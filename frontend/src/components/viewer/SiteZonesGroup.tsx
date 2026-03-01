@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData } from '@/types';
+import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData, LayoutOption } from '@/types';
+import { useViewerStore } from '@/store';
 
 // =============================================================================
 // Public API
@@ -50,6 +51,7 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
           onClick={onZoneClick ? () => onZoneClick(zone.id) : undefined}
         />
       ))}
+      <LayoutPreviewOverlay zones={zones} origin={origin} />
     </group>
   );
 }
@@ -2480,4 +2482,147 @@ function LayoutGreenMesh({
       <meshStandardMaterial color="#27ae60" roughness={0.8} />
     </mesh>
   );
+}
+
+// =============================================================================
+// Layout Preview Overlay
+// =============================================================================
+
+function LayoutPreviewOverlay({
+  zones,
+  origin,
+}: {
+  zones: SiteZone[];
+  origin: { lat: number; lon: number };
+}) {
+  const layoutPreview = useViewerStore((s) => s.layoutPreview);
+  const sitePreview = useViewerStore((s) => s.sitePreview);
+
+  // Site-wide preview: render overlays for ALL zones
+  if (sitePreview) {
+    const { zoneLayouts, activeIndex } = sitePreview;
+    const entries = Object.entries(zoneLayouts);
+    return (
+      <group name="layout-preview-overlay">
+        {entries.map(([zoneId, options]) => {
+          const zone = zones.find((z) => z.id === zoneId);
+          if (!zone) return null;
+          const option = options[activeIndex];
+          if (!option) return null;
+          return (
+            <ZoneLayoutOverlay
+              key={zoneId}
+              zone={zone}
+              option={option}
+              origin={origin}
+            />
+          );
+        })}
+      </group>
+    );
+  }
+
+  // Per-zone preview (existing behavior)
+  if (!layoutPreview) return null;
+
+  const zone = zones.find((z) => z.id === layoutPreview.zoneId);
+  if (!zone) return null;
+
+  const activeOption = layoutPreview.options[layoutPreview.activeIndex];
+  if (!activeOption) return null;
+
+  return (
+    <group name="layout-preview-overlay">
+      <ZoneLayoutOverlay zone={zone} option={activeOption} origin={origin} />
+    </group>
+  );
+}
+
+/** Renders buildings/roads/green spaces for a single zone's layout option */
+function ZoneLayoutOverlay({
+  zone,
+  option,
+  origin,
+}: {
+  zone: SiteZone;
+  option: LayoutOption;
+  origin: { lat: number; lon: number };
+}) {
+  // Zone centroid for converting offsets
+  const centroid = useMemo(() => {
+    const coords = zone.coordinates;
+    let cx = 0, cy = 0;
+    for (const p of coords) {
+      cx += p[0];
+      cy += p[1];
+    }
+    return { lon: cx / coords.length, lat: cy / coords.length };
+  }, [zone.coordinates]);
+
+  return (
+    <group name={`zone-overlay-${zone.id}`}>
+      {option.buildings.map((bld, i) => (
+        <PreviewBuildingFootprint
+          key={`preview-bld-${zone.id}-${i}`}
+          building={bld}
+          centroid={centroid}
+          origin={origin}
+          height={bld.height_m || (zone.properties?.height as number) || 12}
+        />
+      ))}
+      {option.roads.map((road, i) => (
+        <LayoutRoadMesh
+          key={`preview-road-${zone.id}-${i}`}
+          road={road}
+          centroid={centroid}
+          origin={origin}
+        />
+      ))}
+      {option.green_spaces.map((gs, i) => (
+        <LayoutGreenMesh
+          key={`preview-green-${zone.id}-${i}`}
+          greenSpace={gs}
+          centroid={centroid}
+          origin={origin}
+        />
+      ))}
+    </group>
+  );
+}
+
+function PreviewBuildingFootprint({
+  building,
+  centroid,
+  origin,
+  height,
+}: {
+  building: LayoutOption['buildings'][0];
+  centroid: { lon: number; lat: number };
+  origin: { lat: number; lon: number };
+  height: number;
+}) {
+  const mesh = useMemo(() => {
+    const mLon = metersPerDegLon(origin.lat);
+
+    const absLon = centroid.lon + building.center_x;
+    const absLat = centroid.lat + building.center_y;
+    const x = (absLon - origin.lon) * mLon;
+    const z = -((absLat - origin.lat) * METERS_PER_DEG_LAT);
+
+    const geo = new THREE.BoxGeometry(building.width_m, height, building.depth_m);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x6366f1,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.6,
+    });
+
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, height / 2, z);
+    m.rotation.y = -((building.rotation_deg * Math.PI) / 180);
+
+    return m;
+  }, [building, centroid, origin, height]);
+
+  return <primitive object={mesh} />;
 }

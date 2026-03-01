@@ -71,6 +71,7 @@ services:
       - S3_BUCKET_NAME=dev-platform-uploads
       - APP_ENV=development
       - APP_DEBUG=true
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
     env_file:
       - .env
     ports:
@@ -102,6 +103,7 @@ services:
       - S3_ACCESS_KEY=minioadmin
       - S3_SECRET_KEY=minioadmin
       - S3_BUCKET_NAME=dev-platform-uploads
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
     env_file:
       - .env
     volumes:
@@ -127,7 +129,7 @@ services:
       - VITE_MAPBOX_TOKEN=${MAPBOX_ACCESS_TOKEN}
       - VITE_SENTRY_DSN=${SENTRY_DSN_FRONTEND:-}
     ports:
-      - "5173:5173"
+      - "5175:5174"
     volumes:
       - ./frontend:/app
       - /app/node_modules

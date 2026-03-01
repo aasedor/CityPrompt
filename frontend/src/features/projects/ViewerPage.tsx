@@ -24,6 +24,7 @@ import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { WalkthroughHUD } from '@/components/viewer/WalkthroughHUD';
 import { SitePlannerGuide } from '@/components/viewer/SitePlannerGuide';
+import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { useViewerStore, useAuthStore } from '@/store';
 import { useCollaboration } from '@/services/collaboration';
 
@@ -924,6 +925,7 @@ export function ViewerPage() {
             />
             {selectedZone && (
               <ZonePropertiesPanel
+                key={selectedZone.id}
                 zone={selectedZone}
                 onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
                 onDelete={(zoneId) => deleteZone.mutate(zoneId)}
@@ -1026,6 +1028,7 @@ export function ViewerPage() {
           {/* Zone properties panel — shown when a zone is clicked in 3D */}
           {selectedZone && (
             <ZonePropertiesPanel
+              key={selectedZone.id}
               zone={selectedZone}
               onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
@@ -1440,6 +1443,7 @@ export function ViewerPage() {
           </div>
         </div>
       )}
+      <ImageLightbox />
     </div>
   );
 }

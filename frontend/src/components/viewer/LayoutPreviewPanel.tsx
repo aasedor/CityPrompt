@@ -17,12 +17,12 @@ interface LayoutPreviewPanelProps {
 export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZones }: LayoutPreviewPanelProps) {
   const {
     layoutPreview, setLayoutPreview, clearLayoutPreview, setActivePreviewIndex,
+    setPreviewImageUrl, setLightboxImage,
     lockedLayers, toggleLayerLock, clearLockedLayers,
   } = useViewerStore();
   const [loading, setLoading] = useState(false);
   const [applying, setApplying] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
-  const [previewImages, setPreviewImages] = useState<Record<number, string>>({});
   const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
   const autoRenderTriggered = useRef(false);
 
@@ -30,6 +30,8 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const options = isPreviewActive ? layoutPreview!.options : [];
   const activeIndex = isPreviewActive ? layoutPreview!.activeIndex : 0;
   const activeOption = options[activeIndex];
+  // Image URLs persisted in Zustand store (survives navigation)
+  const previewImages = isPreviewActive ? layoutPreview!.imageUrls : {};
 
   // Auto-render AI previews for all options after layout generation
   useEffect(() => {
@@ -39,9 +41,9 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     if (allRendered) return;
 
     autoRenderTriggered.current = true;
-    // Render all options in parallel
+    // Render only options that don't already have images
     options.forEach((opt, idx) => {
-      if (previewImages[idx]) return; // Skip already rendered
+      if (previewImages[idx]) return; // Skip already rendered (persisted from previous visit)
       renderOption(idx, opt);
     });
   }, [isPreviewActive, options.length]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -49,14 +51,14 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   // Reset auto-render flag when zone changes
   useEffect(() => {
     autoRenderTriggered.current = false;
-    setPreviewImages({});
   }, [zone.id]);
 
   const renderOption = async (idx: number, option: LayoutOption) => {
     setRenderingIndices((prev) => new Set(prev).add(idx));
     try {
       const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
-      setPreviewImages((prev) => ({ ...prev, [idx]: result.image_url }));
+      // Store image URL in Zustand store so it persists across navigation
+      setPreviewImageUrl(idx, result.image_url);
     } catch {
       // Silently fail — SVG fallback will show
     } finally {
@@ -71,10 +73,9 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const handlePreview = async () => {
     setLoading(true);
     autoRenderTriggered.current = false;
-    setPreviewImages({});
     try {
       const response = await siteZonesApi.previewLayouts(zone.id);
-      setLayoutPreview(zone.id, response.options);
+      setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
       clearLockedLayers();
       toast.success(`Generated ${response.options.length} layout options — rendering previews...`);
     } catch {
@@ -105,10 +106,9 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     if (!lockedLayers) return;
     setRegenerating(true);
     autoRenderTriggered.current = false;
-    setPreviewImages({});
     try {
       const response = await siteZonesApi.regenerateLayout(zone.id, lockedLayers);
-      setLayoutPreview(zone.id, response.options);
+      setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
       toast.success(`Regenerated ${response.options.length} layout options — rendering previews...`);
     } catch {
       toast.error('Failed to regenerate layout');
@@ -176,6 +176,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
           previewImageUrl={previewImages[idx]}
           isRendering={renderingIndices.has(idx)}
           onRerender={() => renderOption(idx, opt)}
+          onImageClick={previewImages[idx] ? () => setLightboxImage(previewImages[idx]) : undefined}
         />
       ))}
 
@@ -186,7 +187,8 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
             <img
               src={previewImages[activeIndex]}
               alt="AI-rendered layout preview"
-              className="w-full rounded"
+              className="w-full rounded cursor-zoom-in"
+              onClick={() => setLightboxImage(previewImages[activeIndex])}
             />
           ) : renderingIndices.has(activeIndex) ? (
             <div className="flex h-[200px] items-center justify-center rounded bg-gray-100">
@@ -287,6 +289,7 @@ function OptionCard({
   previewImageUrl,
   isRendering,
   onRerender,
+  onImageClick,
 }: {
   option: LayoutOption;
   zone: SiteZone;
@@ -298,6 +301,7 @@ function OptionCard({
   previewImageUrl?: string;
   isRendering?: boolean;
   onRerender?: () => void;
+  onImageClick?: () => void;
 }) {
   return (
     <div
@@ -323,7 +327,8 @@ function OptionCard({
           <img
             src={previewImageUrl}
             alt="AI-rendered preview"
-            className="w-full rounded"
+            className={`w-full rounded${onImageClick ? ' cursor-zoom-in' : ''}`}
+            onClick={onImageClick ? (e) => { e.stopPropagation(); onImageClick(); } : undefined}
           />
           {onRerender && (
             <button

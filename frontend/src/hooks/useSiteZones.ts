@@ -85,8 +85,9 @@ export function useSiteZones(projectId: string | undefined) {
   const updateZone = useMutation({
     mutationFn: (vars: { zoneId: string; data: { name?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; properties?: SiteZoneProperties } }) =>
       siteZonesApi.update(vars.zoneId, vars.data),
-    onSuccess: (_result, vars) => {
-      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+    onSuccess: async (_result, vars) => {
+      // Await refetch so the cache is fresh before the user can click away
+      await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
       toast.success('Zone updated');
       // Push undo action
       if (!useUndoRedoStore.getState()._isSystemAction && projectId && vars.previousData) {

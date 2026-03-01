@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Trash2, Sparkles, Loader2, Plus, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -20,14 +20,23 @@ interface ZonePropertiesPanelProps {
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
+  const layoutPreview = useViewerStore((s) => s.layoutPreview);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Sync when zone changes
+  // Scroll panel to top when zone changes (e.g. after "Preview All" switches to buildable zone)
+  useEffect(() => {
+    panelRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [zone.id]);
+
+  // Sync when zone changes — only on zone.id since key={zone.id} forces remount.
+  // Do NOT depend on zone.properties — React Query background refetches would
+  // overwrite the user's unsaved edits (e.g. reference images added but not yet saved).
   useEffect(() => {
     setName(zone.name || '');
     setProps(zone.properties || {});
-  }, [zone.id, zone.name, zone.properties]);
+  }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = () => {
     onUpdate(zone.id, {
@@ -46,7 +55,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         className="fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
+      <div ref={panelRef} className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
         {/* Drag handle — mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-gray-300" />
@@ -91,10 +100,25 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         </div>
 
         {/* ============================================================= */}
+        {/* LAYOUT PREVIEW — shown at top when preview is active           */}
+        {/* ============================================================= */}
+        {layoutPreview?.zoneId === zone.id &&
+          (zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') &&
+          onAIGenerate && (
+          <LayoutPreviewPanel
+            zone={zone}
+            onApplied={() => {}}
+            onAIGenerate={onAIGenerate}
+            referenceContext={osmContext}
+            siblingZones={allZones?.filter((z) => z.id !== zone.id)}
+          />
+        )}
+
+        {/* ============================================================= */}
         {/* SITE BOUNDARY — analysis + generate                           */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
-          <SiteBoundarySection zone={zone} />
+          <SiteBoundarySection zone={zone} allZones={allZones} />
         )}
 
         {/* ============================================================= */}
@@ -579,7 +603,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           Save Changes
         </button>
 
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && onAIGenerate && !zone.building_id && (() => {
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (() => {
           const unitCount = Math.max(
             (props.unit_count as number) || 1,
             (() => {
@@ -606,7 +630,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         })()}
 
         {/* Development Area Layout Preview */}
-        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && (() => {
+        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (() => {
           const unitCount = (props.unit_count as number) || 10;
           if (unitCount > 1) {
             return (
@@ -664,13 +688,100 @@ const ZONE_TYPE_ICONS: Record<string, typeof Building2> = {
   development_area: MapPin,
 };
 
-function SiteBoundarySection({ zone }: { zone: SiteZone }) {
+/** Capture two screenshots from the Mapbox map: satellite-only and with zones drawn */
+async function captureMapScreenshots(
+  mapInstance: unknown,
+  boundaryCoords?: number[][],
+): Promise<{ satellite: string; withZones: string } | null> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const map = mapInstance as any;
+  if (!map || typeof map.getCanvas !== 'function') return null;
+
+  const ZONE_LAYERS = [
+    'site-zones-fill', 'site-zones-outline', 'site-zones-selected',
+    'site-zones-labels', 'zone-edit-vertices-layer',
+    'drawing-preview-fill', 'drawing-preview-line',
+  ];
+
+  /** Wait for the map to finish rendering after a change */
+  const waitForIdle = (): Promise<void> =>
+    new Promise((resolve) => {
+      const onIdle = () => resolve();
+      if (map.isMoving() || map.isZooming()) {
+        map.once('idle', onIdle);
+      } else {
+        map.once('render', () => resolve());
+        map.triggerRepaint();
+      }
+    });
+
+  try {
+    // 0. Fit the map to the site boundary so the screenshot centers on the zones
+    if (boundaryCoords && boundaryCoords.length > 0) {
+      let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+      for (const [lng, lat] of boundaryCoords) {
+        if (lng < minLng) minLng = lng;
+        if (lng > maxLng) maxLng = lng;
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+      }
+      // Expand bounds by ~30% so surrounding context (roads, buildings) is visible
+      const lngSpan = maxLng - minLng;
+      const latSpan = maxLat - minLat;
+      const expand = 0.3;
+      map.fitBounds(
+        [[minLng - lngSpan * expand, minLat - latSpan * expand],
+         [maxLng + lngSpan * expand, maxLat + latSpan * expand]],
+        { padding: 20, animate: false },
+      );
+      // Wait for the map to settle at the new bounds
+      await waitForIdle();
+    }
+
+    // 1. Capture WITH zones visible
+    const withZones = map.getCanvas().toDataURL('image/jpeg', 0.85);
+
+    // 2. Hide zone layers, wait for repaint, capture satellite only
+    const prevVisibility: Record<string, string> = {};
+    for (const layerId of ZONE_LAYERS) {
+      try {
+        prevVisibility[layerId] = map.getLayoutProperty(layerId, 'visibility') || 'visible';
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+      } catch { /* layer might not exist */ }
+    }
+    await waitForIdle();
+    const satellite = map.getCanvas().toDataURL('image/jpeg', 0.85);
+
+    // 3. Restore zone layers
+    for (const layerId of ZONE_LAYERS) {
+      try {
+        map.setLayoutProperty(layerId, 'visibility', prevVisibility[layerId] || 'visible');
+      } catch { /* ignore */ }
+    }
+
+    return { satellite, withZones };
+  } catch (e) {
+    console.warn('Failed to capture map screenshots:', e);
+    return null;
+  }
+}
+
+function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: SiteZone[] }) {
   const [analysis, setAnalysis] = useState<BoundaryAnalysisResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [previewingAll, setPreviewingAll] = useState(false);
+  const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
+  const autoRenderTriggered = useRef(false);
+  const mapScreenshotsRef = useRef<{ satellite: string; withZones: string } | null>(null);
   const selectZone = useViewerStore((s) => s.selectZone);
-  const { layoutPreview, setLayoutPreview, clearLockedLayers } = useViewerStore();
+  const mapInstance = useViewerStore((s) => s.mapInstance);
+  const {
+    sitePreview, setSitePreview, clearSitePreview,
+    setActiveSitePreviewIndex, setSitePreviewImageUrl,
+    setLightboxImage,
+    clearLockedLayers,
+  } = useViewerStore();
 
   useEffect(() => {
     let cancelled = false;
@@ -682,6 +793,74 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
     return () => { cancelled = true; };
   }, [zone.id]);
 
+  const isSitePreviewActive = sitePreview?.boundaryZoneId === zone.id;
+  const siteOptions = isSitePreviewActive ? sitePreview!.zoneLayouts : {};
+  const siteImageUrls = isSitePreviewActive ? sitePreview!.imageUrls : {};
+  const siteActiveIndex = isSitePreviewActive ? sitePreview!.activeIndex : 0;
+
+  // Figure out how many option sets we have (max across zones, typically 3)
+  const optionCount = Object.values(siteOptions).reduce(
+    (max, opts) => Math.max(max, opts.length), 0
+  );
+
+  // Auto-render site previews after layout generation
+  useEffect(() => {
+    if (!isSitePreviewActive || optionCount === 0 || autoRenderTriggered.current) return;
+    const allRendered = Array.from({ length: optionCount }, (_, i) => i).every((i) => siteImageUrls[i]);
+    if (allRendered) return;
+
+    autoRenderTriggered.current = true;
+    for (let idx = 0; idx < optionCount; idx++) {
+      if (siteImageUrls[idx]) continue;
+      renderSiteOption(idx);
+    }
+  }, [isSitePreviewActive, optionCount]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Reset auto-render flag when zone changes
+  useEffect(() => {
+    autoRenderTriggered.current = false;
+  }, [zone.id]);
+
+  const renderSiteOption = async (idx: number) => {
+    setRenderingIndices((prev) => new Set(prev).add(idx));
+    try {
+      // Build a map of zoneId → chosen option for this index
+      const zoneLayoutsForOption: Record<string, LayoutOption> = {};
+      for (const [zid, opts] of Object.entries(siteOptions)) {
+        if (opts[idx]) {
+          zoneLayoutsForOption[zid] = opts[idx];
+        }
+      }
+      // Build zone metadata (color, name, type) for Gemini prompt context
+      const zoneMeta: Record<string, { color: string; name: string; zone_type: string }> = {};
+      if (allZones) {
+        for (const z of allZones) {
+          if (z.id !== zone.id) { // skip the boundary itself
+            zoneMeta[z.id] = {
+              color: z.color,
+              name: z.name || ZONE_TYPE_CONFIG[z.zone_type as keyof typeof ZONE_TYPE_CONFIG]?.label || z.zone_type,
+              zone_type: z.zone_type,
+            };
+          }
+        }
+      }
+      const result = await siteZonesApi.renderSitePreview(
+        zone.id, idx, zoneLayoutsForOption,
+        mapScreenshotsRef.current || undefined,
+        Object.keys(zoneMeta).length > 0 ? zoneMeta : undefined,
+      );
+      setSitePreviewImageUrl(idx, result.image_url);
+    } catch {
+      // Silently fail — we'll show a placeholder
+    } finally {
+      setRenderingIndices((prev) => {
+        const next = new Set(prev);
+        next.delete(idx);
+        return next;
+      });
+    }
+  };
+
   const handlePreviewAll = async () => {
     if (!analysis) return;
     const buildableZones = analysis.contained_zones.filter(
@@ -689,25 +868,31 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
     );
     if (buildableZones.length === 0) return;
 
+    // Capture map screenshots BEFORE anything changes
+    mapScreenshotsRef.current = await captureMapScreenshots(mapInstance, zone.coordinates);
+
     setPreviewingAll(true);
-    let generated = 0;
+    autoRenderTriggered.current = false;
     try {
-      for (const cz of buildableZones) {
-        try {
-          const response = await siteZonesApi.previewLayouts(cz.id);
-          setLayoutPreview(cz.id, response.options);
-          clearLockedLayers();
+      // Run all zone previews in parallel
+      const results = await Promise.allSettled(
+        buildableZones.map((cz) => siteZonesApi.previewLayouts(cz.id))
+      );
+      // Collect all zone layouts into a single map
+      const allZoneLayouts: Record<string, LayoutOption[]> = {};
+      let generated = 0;
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].status === 'fulfilled') {
+          const res = (results[i] as PromiseFulfilledResult<{ options: LayoutOption[] }>).value;
+          allZoneLayouts[buildableZones[i].id] = res.options;
           generated++;
-        } catch {
-          // Skip zones that fail (e.g. single-unit zones)
         }
       }
+      clearLockedLayers();
       if (generated > 0) {
-        toast.success(`Generated 2D layouts for ${generated} zone${generated > 1 ? 's' : ''}`);
-        // Select the first buildable zone to show its layout
-        if (buildableZones[0]) {
-          selectZone(buildableZones[0].id);
-        }
+        // Store site-wide preview — stay on boundary
+        setSitePreview(zone.id, allZoneLayouts);
+        toast.success(`Generated layouts for ${generated} zone${generated > 1 ? 's' : ''} — rendering site previews...`);
       } else {
         toast.error('No layout previews could be generated');
       }
@@ -759,9 +944,7 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
   const osmRoads = analysis.osm_context?.roads;
   const hasOsm = (osmBuildings?.count ?? 0) > 0 || (osmRoads?.count ?? 0) > 0;
 
-  // Check which buildable zones already have layout previews
-  const zonesWithPreviews = buildableZones.filter((z) => layoutPreview?.zoneId === z.id);
-  const hasAnyPreviews = zonesWithPreviews.length > 0;
+  const renderingCount = renderingIndices.size;
 
   return (
     <div className="space-y-2">
@@ -842,7 +1025,7 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
       )}
 
       {/* Step 1: Preview 2D Layouts */}
-      {hasBuildableZones && (
+      {hasBuildableZones && !isSitePreviewActive && (
         <div className="space-y-1.5">
           <label className="block text-xs font-medium text-gray-600">
             Step 1: Preview 2D Layouts
@@ -857,10 +1040,130 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
             {previewingAll ? 'Generating previews...' : `Preview Layouts (${buildableZones.length} zone${buildableZones.length > 1 ? 's' : ''})`}
           </button>
           <p className="text-[10px] text-gray-400 text-center">
-            {hasAnyPreviews
-              ? 'Click a zone above to view & adjust its layout'
-              : 'AI generates 2D layout options for each zone to review before 3D'}
+            AI generates comprehensive site layout options — one image per option
           </p>
+        </div>
+      )}
+
+      {/* Site-wide preview options */}
+      {isSitePreviewActive && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-700">Site Layout Options</span>
+            <div className="flex items-center gap-2">
+              {renderingCount > 0 && (
+                <span className="flex items-center gap-1 text-[10px] text-purple-500">
+                  <Loader2 size={9} className="animate-spin" />
+                  Rendering {renderingCount}...
+                </span>
+              )}
+              <button
+                onClick={() => { autoRenderTriggered.current = false; handlePreviewAll(); }}
+                disabled={previewingAll}
+                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-600 hover:bg-indigo-50"
+                title="Regenerate all options"
+              >
+                <RefreshCw size={10} className={previewingAll ? 'animate-spin' : ''} />
+                Regenerate
+              </button>
+            </div>
+          </div>
+
+          {/* Option cards */}
+          {Array.from({ length: optionCount }, (_, idx) => {
+            const isActive = idx === siteActiveIndex;
+            const imageUrl = siteImageUrls[idx];
+            const isRendering = renderingIndices.has(idx);
+            // Collect stats for this option across all zones
+            let totalBuildings = 0;
+            let totalRoads = 0;
+            let totalGreen = 0;
+            for (const opts of Object.values(siteOptions)) {
+              if (opts[idx]) {
+                totalBuildings += opts[idx].buildings.length;
+                totalRoads += opts[idx].roads.length;
+                totalGreen += opts[idx].green_spaces.length;
+              }
+            }
+            // Get label from first zone's option
+            const firstOpts = Object.values(siteOptions)[0];
+            const label = firstOpts?.[idx]?.option_label || `Option ${idx + 1}`;
+            const reasoning = firstOpts?.[idx]?.reasoning || '';
+
+            return (
+              <div
+                key={idx}
+                onClick={() => setActiveSitePreviewIndex(idx)}
+                className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
+                  isActive
+                    ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
+                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-gray-700'}`}>
+                    {label}
+                  </span>
+                  <span className="text-[10px] text-gray-400">
+                    {totalBuildings} buildings, {totalRoads} roads, {totalGreen} green
+                  </span>
+                </div>
+
+                {imageUrl ? (
+                  <div className="relative">
+                    <img
+                      src={imageUrl}
+                      alt={`Site layout option ${idx + 1}`}
+                      className="w-full rounded cursor-zoom-in"
+                      onClick={(e) => { e.stopPropagation(); setLightboxImage(imageUrl); }}
+                    />
+                    <button
+                      onClick={(e) => { e.stopPropagation(); renderSiteOption(idx); }}
+                      className="absolute bottom-1 right-1 rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white"
+                      title="Re-render preview"
+                    >
+                      <RefreshCw size={10} />
+                    </button>
+                  </div>
+                ) : isRendering ? (
+                  <div className="flex h-[160px] items-center justify-center rounded bg-gray-100">
+                    <div className="flex flex-col items-center gap-1.5">
+                      <Loader2 size={16} className="animate-spin text-purple-400" />
+                      <span className="text-[9px] text-gray-400">Rendering site preview...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex h-[80px] items-center justify-center rounded bg-gray-100">
+                    <span className="text-[10px] text-gray-400">Waiting to render...</span>
+                  </div>
+                )}
+
+                <p className="mt-0.5 text-[10px] leading-tight text-gray-500 line-clamp-2">
+                  {reasoning}
+                </p>
+              </div>
+            );
+          })}
+
+          {/* Expanded active option */}
+          {siteImageUrls[siteActiveIndex] && (
+            <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
+              <img
+                src={siteImageUrls[siteActiveIndex]}
+                alt="Selected site layout"
+                className="w-full rounded cursor-zoom-in"
+                onClick={() => setLightboxImage(siteImageUrls[siteActiveIndex])}
+              />
+              <p className="mt-1 text-[10px] text-center text-gray-400">Click image to expand</p>
+            </div>
+          )}
+
+          <button
+            onClick={() => { clearSitePreview(); clearLockedLayers(); }}
+            className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-50"
+          >
+            Cancel Preview
+          </button>
         </div>
       )}
 
@@ -868,7 +1171,7 @@ function SiteBoundarySection({ zone }: { zone: SiteZone }) {
       {hasBuildableZones && (
         <div className="space-y-1.5">
           <label className="block text-xs font-medium text-gray-600">
-            Step 2: Generate 3D Models
+            {isSitePreviewActive ? 'Step 2: ' : ''}Generate 3D Models
           </label>
           <button
             onClick={handleGenerate}
@@ -947,16 +1250,16 @@ function ReferenceImagesSection({
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Image URL..."
+            placeholder="Paste image URL and press Enter"
             className="flex-1 rounded border border-gray-200 px-2 py-1 text-xs"
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
           />
           <button
             onClick={handleAdd}
             disabled={!url.trim()}
-            className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200 disabled:opacity-40"
+            className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 disabled:opacity-40"
           >
-            <Plus size={12} />
+            Add
           </button>
         </div>
       )}
