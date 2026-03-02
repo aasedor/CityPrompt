@@ -378,9 +378,15 @@ def _parse_unit_count_from_text(text: str) -> int:
 
 
 def _resolve_unit_count(zone: SiteZone) -> int:
-    """Determine unit count from zone properties and description text, taking the max."""
+    """Determine unit count from zone properties and description text, taking the max.
+
+    Uses zone-type-aware defaults: development_area defaults to 10 (matching
+    the frontend) since subdivisions are inherently multi-unit.
+    """
     props = zone.properties or {}
-    prop_count = int(props.get("unit_count", 1))
+    # Zone-type-aware default: development_area is inherently multi-unit
+    default = 10 if zone.zone_type == "development_area" else 1
+    prop_count = int(props.get("unit_count", default))
     desc = props.get("description_text", "") or ""
     parsed_count = _parse_unit_count_from_text(desc)
     return max(prop_count, parsed_count, 1)

@@ -910,10 +910,19 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
 
   const handlePreviewAll = async () => {
     if (!analysis) return;
-    const buildableZones = analysis.contained_zones.filter(
-      (z) => z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area'
-    );
-    if (buildableZones.length === 0) return;
+    // Use previewableZones (unit_count > 1) — computed in the render scope.
+    // Fall back to re-computing if called before render (shouldn't happen, but safe).
+    const zonesToPreview = analysis.contained_zones.filter((z) => {
+      if (z.zone_type !== 'building' && z.zone_type !== 'residential' && z.zone_type !== 'development_area') return false;
+      const zp = z.properties || {};
+      const defaultUc = z.zone_type === 'development_area' ? 10 : 1;
+      const uc = (zp.unit_count as number) || defaultUc;
+      return uc > 1;
+    });
+    if (zonesToPreview.length === 0) {
+      toast.error('No zones with unit_count > 1 — set unit count on each zone first');
+      return;
+    }
 
     // Capture map screenshots BEFORE anything changes
     mapScreenshotsRef.current = await captureMapScreenshots(mapInstance, zone.coordinates, allZones);
@@ -923,7 +932,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
     try {
       // Run all zone previews in parallel
       const results = await Promise.allSettled(
-        buildableZones.map((cz) => siteZonesApi.previewLayouts(cz.id))
+        zonesToPreview.map((cz) => siteZonesApi.previewLayouts(cz.id))
       );
       // Collect all zone layouts into a single map
       const allZoneLayouts: Record<string, LayoutOption[]> = {};
@@ -931,7 +940,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       for (let i = 0; i < results.length; i++) {
         if (results[i].status === 'fulfilled') {
           const res = (results[i] as PromiseFulfilledResult<{ options: LayoutOption[] }>).value;
-          allZoneLayouts[buildableZones[i].id] = res.options;
+          allZoneLayouts[zonesToPreview[i].id] = res.options;
           generated++;
         }
       }
@@ -1010,6 +1019,13 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
     (z) => buildableTypes.includes(z.zone_type)
   );
   const hasBuildableZones = buildableZones.length > 0;
+  // Only include zones with effective unit_count > 1 for preview
+  const previewableZones = buildableZones.filter((z) => {
+    const zp = z.properties || {};
+    const defaultUc = z.zone_type === 'development_area' ? 10 : 1;
+    const uc = (zp.unit_count as number) || defaultUc;
+    return uc > 1;
+  });
   const osmBuildings = analysis.osm_context?.buildings;
   const osmRoads = analysis.osm_context?.roads;
   const hasOsm = (osmBuildings?.count ?? 0) > 0 || (osmRoads?.count ?? 0) > 0;
@@ -1102,15 +1118,17 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
           </label>
           <button
             onClick={handlePreviewAll}
-            disabled={previewingAll}
+            disabled={previewingAll || previewableZones.length === 0}
             className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
             title="Generate AI 2D layout options for each buildable zone"
           >
             {previewingAll ? <Loader2 size={12} className="animate-spin" /> : <LayoutGrid size={12} />}
-            {previewingAll ? 'Generating previews...' : `Preview Layouts (${buildableZones.length} zone${buildableZones.length > 1 ? 's' : ''})`}
+            {previewingAll ? 'Generating previews...' : `Preview Layouts (${previewableZones.length} zone${previewableZones.length > 1 ? 's' : ''})`}
           </button>
           <p className="text-[10px] text-gray-400 text-center">
-            AI generates comprehensive site layout options — one image per option
+            {previewableZones.length < buildableZones.length
+              ? `${buildableZones.length - previewableZones.length} zone${buildableZones.length - previewableZones.length > 1 ? 's' : ''} skipped (set unit_count > 1 to include)`
+              : 'AI generates comprehensive site layout options — one image per option'}
           </p>
         </div>
       )}
