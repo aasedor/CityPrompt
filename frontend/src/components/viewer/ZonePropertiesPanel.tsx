@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -661,6 +661,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           );
         })()}
 
+        {/* Preview History — buildable zones */}
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
+          <PreviewHistorySection zone={zone} />
+        )}
+
         <button
           onClick={() => onDelete(zone.id)}
           className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-100"
@@ -1278,6 +1283,9 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
           Add building or residential zones inside the boundary to generate
         </p>
       )}
+
+      {/* Preview History — site boundary */}
+      <PreviewHistorySection zone={zone} />
     </div>
   );
 }
@@ -1349,6 +1357,61 @@ function ReferenceImagesSection({
           >
             Add
           </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// =============================================================================
+// Preview History section
+// =============================================================================
+
+function PreviewHistorySection({ zone }: { zone: SiteZone }) {
+  const [expanded, setExpanded] = useState(false);
+  const { setLightboxImage } = useViewerStore();
+
+  const history: PreviewHistoryEntry[] =
+    (zone.properties?._preview_history as PreviewHistoryEntry[]) || [];
+
+  if (history.length === 0) return null;
+
+  // Most recent first
+  const sorted = [...history].reverse();
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-gray-50/50">
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="flex w-full items-center justify-between px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800"
+      >
+        <span>Previous Previews ({history.length})</span>
+        <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
+      </button>
+      {expanded && (
+        <div className="grid grid-cols-3 gap-1.5 px-2.5 pb-2.5">
+          {sorted.map((entry, idx) => (
+            <div
+              key={idx}
+              className="group relative cursor-pointer overflow-hidden rounded border border-gray-200 bg-white"
+              onClick={() => setLightboxImage(entry.image_url)}
+            >
+              <img
+                src={entry.image_url}
+                alt={entry.label}
+                className="aspect-square w-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="p-1">
+                  <p className="text-[9px] font-medium leading-tight text-white truncate">{entry.label}</p>
+                  <p className="text-[8px] text-white/70">
+                    {new Date(entry.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

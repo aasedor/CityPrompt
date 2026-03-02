@@ -186,6 +186,15 @@ export interface OSMContext {
   buffer_m: number;
 }
 
+export interface PreviewHistoryEntry {
+  image_url: string;
+  label: string;
+  strategy: string;
+  created_at: string;
+  preview_type: 'layout' | 'site';
+  option_index: number;
+}
+
 export interface LockedLayers {
   roads: number[];
   buildings: number[];

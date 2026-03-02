@@ -6,6 +6,7 @@ import logging
 import math
 import re
 import uuid
+from datetime import datetime, timezone
 
 from typing import Optional
 
@@ -16,6 +17,7 @@ from geoalchemy2.shape import to_shape
 from shapely.geometry import Polygon
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import is_admin_or_above, require_auth
@@ -77,6 +79,39 @@ def _build_neighbor_list(zones: list) -> list[dict]:
             "depth_m": round(depth_m, 1),
         })
     return neighbors
+
+
+MAX_PREVIEW_HISTORY = 20
+
+
+async def _append_preview_history(
+    zone: "SiteZone",
+    db: AsyncSession,
+    *,
+    image_url: str,
+    label: str,
+    strategy: str,
+    preview_type: str,
+    option_index: int = 0,
+) -> None:
+    """Append a preview entry to zone.properties._preview_history (capped at 20)."""
+    props = zone.properties or {}
+    history: list = props.get("_preview_history", [])
+    history.append({
+        "image_url": image_url,
+        "label": label,
+        "strategy": strategy,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "preview_type": preview_type,
+        "option_index": option_index,
+    })
+    if len(history) > MAX_PREVIEW_HISTORY:
+        history = history[-MAX_PREVIEW_HISTORY:]
+    props["_preview_history"] = history
+    zone.properties = props
+    flag_modified(zone, "properties")
+    db.add(zone)
+    await db.flush()
 
 
 def _zone_to_response(zone: SiteZone) -> dict:
@@ -681,10 +716,21 @@ async def render_layout_preview(
 
         # Upload to MinIO
         preview_key = f"projects/{zone.project_id}/layout-previews/{zone_id}_{uuid.uuid4()}.png"
-        image_url = _upload_image_to_storage(preview_key, image_bytes, "image/png")
+        _upload_image_to_storage(preview_key, image_bytes, "image/png")
 
-        # Rewrite internal Docker URL to localhost for browser access
-        image_url = image_url.replace("http://minio:9000", "http://localhost:9000")
+        # Return API-relative URL (proxied through /api/v1/files/)
+        image_url = f"/api/v1/files/{preview_key}"
+
+        # Save to preview history
+        await _append_preview_history(
+            zone, db,
+            image_url=image_url,
+            label=option.option_label or f"Option {option.option_index + 1}",
+            strategy=option.layout_strategy,
+            preview_type="layout",
+            option_index=option.option_index,
+        )
+        await db.commit()
 
         return {"image_url": image_url, "zone_id": str(zone_id)}
     except Exception as e:
@@ -819,10 +865,21 @@ async def render_site_preview(
 
         # Upload to MinIO
         preview_key = f"projects/{boundary_zone.project_id}/site-previews/{zone_id}_{option_index}_{uuid.uuid4()}.png"
-        image_url = _upload_image_to_storage(preview_key, image_bytes, "image/png")
+        _upload_image_to_storage(preview_key, image_bytes, "image/png")
 
-        # Rewrite internal Docker URL to localhost for browser access
-        image_url = image_url.replace("http://minio:9000", "http://localhost:9000")
+        # Return API-relative URL (proxied through /api/v1/files/)
+        image_url = f"/api/v1/files/{preview_key}"
+
+        # Save to preview history on the boundary zone
+        await _append_preview_history(
+            boundary_zone, db,
+            image_url=image_url,
+            label=f"Site Preview (option {option_index + 1})",
+            strategy="site_preview",
+            preview_type="site",
+            option_index=option_index,
+        )
+        await db.commit()
 
         return {"image_url": image_url, "zone_id": str(zone_id), "option_index": option_index}
     except Exception as e:
