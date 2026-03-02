@@ -696,7 +696,11 @@ async function captureMapScreenshots(
 ): Promise<{ satellite: string; withZones: string } | null> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = mapInstance as any;
-  if (!map || typeof map.getCanvas !== 'function') return null;
+  if (!map || typeof map.getCanvas !== 'function') {
+    console.warn('[captureMapScreenshots] No valid map instance');
+    return null;
+  }
+  console.log('[captureMapScreenshots] Starting capture, innerZones:', allZones?.filter(z => z.zone_type !== 'site_boundary').length);
 
   const ZONE_LAYERS = [
     'site-zones-fill', 'site-zones-outline', 'site-zones-selected',
@@ -801,9 +805,10 @@ async function captureMapScreenshots(
       } catch { /* ignore */ }
     }
 
+    console.log('[captureMapScreenshots] Done, satellite size:', satellite.length);
     return { satellite, withZones: satellite };
   } catch (e) {
-    console.warn('Failed to capture map screenshots:', e);
+    console.error('[captureMapScreenshots] FAILED:', e);
     return null;
   }
 }
@@ -892,8 +897,8 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
         Object.keys(zoneMeta).length > 0 ? zoneMeta : undefined,
       );
       setSitePreviewImageUrl(idx, result.image_url);
-    } catch {
-      // Silently fail — we'll show a placeholder
+    } catch (err) {
+      console.error('[renderSiteOption] Failed for index', idx, err);
     } finally {
       setRenderingIndices((prev) => {
         const next = new Set(prev);
