@@ -4,7 +4,7 @@ import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Dr
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { siteZonesApi, buildingsApi } from '@/services/api';
+import { siteZonesApi, buildingsApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 
@@ -1516,7 +1516,7 @@ function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGen
   const handleDownload = (e: React.MouseEvent, entry: PreviewHistoryEntry) => {
     e.stopPropagation();
     const link = document.createElement('a');
-    link.href = entry.image_url;
+    link.href = resolveApiFileUrl(entry.image_url);
     link.download = `${entry.label.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
     link.click();
   };
@@ -1538,7 +1538,7 @@ function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGen
   const openLightbox = (entry: PreviewHistoryEntry) => {
     const download = () => {
       const link = document.createElement('a');
-      link.href = entry.image_url;
+      link.href = resolveApiFileUrl(entry.image_url);
       link.download = `${entry.label.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
       link.click();
     };
@@ -1584,7 +1584,7 @@ function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGen
       };
     }
 
-    setLightboxImage(entry.image_url, {
+    setLightboxImage(resolveApiFileUrl(entry.image_url), {
       onDownload: download,
       onApply: apply,
       applyLabel,
@@ -1609,7 +1609,7 @@ function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGen
               onClick={() => openLightbox(entry)}
             >
               <img
-                src={entry.image_url}
+                src={resolveApiFileUrl(entry.image_url)}
                 alt={entry.label}
                 className="aspect-square w-full object-cover"
                 onError={(e) => {

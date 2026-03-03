@@ -22,11 +22,27 @@ import type {
   BoundaryAnalysisResponse,
 } from '@/types';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
 });
+
+/**
+ * Resolve a relative API URL (e.g. /api/v1/files/...) to an absolute URL
+ * pointing at the backend. In dev the Vite proxy handles /api/ routes, but
+ * in production the frontend and backend are on different domains.
+ */
+export function resolveApiFileUrl(url: string): string {
+  if (!url) return url;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('/api/') && API_BASE_URL && API_BASE_URL !== 'http://localhost:8000') {
+    return `${API_BASE_URL}${url}`;
+  }
+  return url;
+}
 
 // Request interceptor for auth token
 api.interceptors.request.use((config) => {
@@ -543,7 +559,7 @@ export const siteZonesApi = {
 
   renderLayoutPreview: async (zoneId: string, layout: LayoutOption): Promise<{ image_url: string; zone_id: string }> => {
     const { data } = await api.post(`/api/v1/site-zones/${zoneId}/render-layout-preview`, { layout }, { timeout: 60000 });
-    return data;
+    return { ...data, image_url: resolveApiFileUrl(data.image_url) };
   },
 
   renderSitePreview: async (
@@ -566,7 +582,7 @@ export const siteZonesApi = {
       },
       { timeout: 120000 },
     );
-    return data;
+    return { ...data, image_url: resolveApiFileUrl(data.image_url) };
   },
 
   getBoundaryAnalysis: async (zoneId: string): Promise<BoundaryAnalysisResponse> => {
