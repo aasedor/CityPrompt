@@ -24,6 +24,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const [applying, setApplying] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
   const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
+  const [failedIndices, setFailedIndices] = useState<Set<number>>(new Set());
   const autoRenderTriggered = useRef(false);
 
   const isPreviewActive = layoutPreview?.zoneId === zone.id;
@@ -51,16 +52,24 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   // Reset auto-render flag when zone changes
   useEffect(() => {
     autoRenderTriggered.current = false;
+    setFailedIndices(new Set());
   }, [zone.id]);
 
   const renderOption = async (idx: number, option: LayoutOption) => {
     setRenderingIndices((prev) => new Set(prev).add(idx));
+    setFailedIndices((prev) => {
+      const next = new Set(prev);
+      next.delete(idx);
+      return next;
+    });
     try {
       const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
       // Store image URL in Zustand store so it persists across navigation
       setPreviewImageUrl(idx, result.image_url);
-    } catch {
-      // Silently fail — SVG fallback will show
+    } catch (err) {
+      console.error(`Preview render failed for option ${idx}:`, err);
+      setFailedIndices((prev) => new Set(prev).add(idx));
+      toast.error(`Preview ${idx + 1} failed to render`);
     } finally {
       setRenderingIndices((prev) => {
         const next = new Set(prev);
@@ -73,6 +82,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const handlePreview = async () => {
     setLoading(true);
     autoRenderTriggered.current = false;
+    setFailedIndices(new Set());
     try {
       const response = await siteZonesApi.previewLayouts(zone.id);
       setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
@@ -106,6 +116,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     if (!lockedLayers) return;
     setRegenerating(true);
     autoRenderTriggered.current = false;
+    setFailedIndices(new Set());
     try {
       const response = await siteZonesApi.regenerateLayout(zone.id, lockedLayers);
       setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
@@ -129,7 +140,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       <button
         onClick={handlePreview}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-400 disabled:opacity-50"
       >
         {loading ? <Loader2 size={12} className="animate-spin" /> : <LayoutGrid size={12} />}
         {loading ? 'Generating layout options...' : 'Preview Layouts'}
@@ -143,10 +154,10 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-gray-700">Layout Options</span>
+        <span className="text-xs font-semibold text-neutral-300">Layout Options</span>
         <div className="flex items-center gap-2">
           {renderingCount > 0 && (
-            <span className="flex items-center gap-1 text-[10px] text-purple-500">
+            <span className="flex items-center gap-1 text-[10px] text-purple-400">
               <Loader2 size={9} className="animate-spin" />
               Rendering {renderingCount}...
             </span>
@@ -154,7 +165,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
           <button
             onClick={handlePreview}
             disabled={loading}
-            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-600 hover:bg-indigo-50"
+            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-400 hover:bg-white/10"
             title="Regenerate options"
           >
             <RefreshCw size={10} className={loading ? 'animate-spin' : ''} />
@@ -175,6 +186,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
           siblingZones={siblingZones}
           previewImageUrl={previewImages[idx]}
           isRendering={renderingIndices.has(idx)}
+          hasFailed={failedIndices.has(idx)}
           onRerender={() => renderOption(idx, opt)}
           onImageClick={previewImages[idx] ? () => setLightboxImage(previewImages[idx]) : undefined}
         />
@@ -182,7 +194,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
       {/* Expanded view for active option */}
       {activeOption && (
-        <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
+        <div className="rounded-lg border border-indigo-400/20 bg-indigo-500/10 p-2">
           {previewImages[activeIndex] ? (
             <img
               src={previewImages[activeIndex]}
@@ -191,10 +203,23 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
               onClick={() => setLightboxImage(previewImages[activeIndex])}
             />
           ) : renderingIndices.has(activeIndex) ? (
-            <div className="flex h-[200px] items-center justify-center rounded bg-gray-100">
+            <div className="flex h-[200px] items-center justify-center rounded bg-white/[0.04]">
               <div className="flex flex-col items-center gap-2">
-                <Loader2 size={20} className="animate-spin text-purple-500" />
-                <span className="text-[10px] text-gray-500">Rendering realistic preview...</span>
+                <Loader2 size={20} className="animate-spin text-purple-400" />
+                <span className="text-[10px] text-neutral-400">Rendering realistic preview...</span>
+              </div>
+            </div>
+          ) : failedIndices.has(activeIndex) ? (
+            <div className="flex h-[200px] items-center justify-center rounded bg-red-500/10">
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-[10px] text-red-400">Render failed</span>
+                <button
+                  onClick={() => renderOption(activeIndex, activeOption)}
+                  className="flex items-center gap-1 rounded bg-white/10 px-2 py-1 text-[10px] text-white hover:bg-white/20"
+                >
+                  <RefreshCw size={9} />
+                  Retry
+                </button>
               </div>
             </div>
           ) : (
@@ -215,8 +240,8 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
       {/* Layer Lock Controls */}
       {activeOption && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-2 space-y-1.5">
-          <span className="text-[10px] font-semibold text-gray-600 uppercase tracking-wide">Lock Layers</span>
+        <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-2 space-y-1.5">
+          <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide">Lock Layers</span>
           <div className="flex gap-1.5">
             <LayerLockButton
               label="Roads"
@@ -250,7 +275,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
             <button
               onClick={handleRegenerate}
               disabled={regenerating}
-              className="flex w-full items-center justify-center gap-1.5 rounded bg-amber-500 px-2 py-1 text-[10px] font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-1.5 rounded bg-amber-500 px-2 py-1 text-[10px] font-medium text-white shadow-lg shadow-amber-500/25 hover:bg-amber-400 disabled:opacity-50"
             >
               {regenerating ? <Loader2 size={10} className="animate-spin" /> : <RefreshCw size={10} />}
               {regenerating ? 'Regenerating...' : 'Regenerate Unlocked Layers'}
@@ -262,7 +287,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       <button
         onClick={handleApply}
         disabled={applying}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white hover:bg-green-700 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-green-600/25 hover:bg-green-500 disabled:opacity-50"
       >
         {applying ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
         {applying ? 'Applying...' : 'Apply This Layout'}
@@ -270,7 +295,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
       <button
         onClick={() => { clearLayoutPreview(); clearLockedLayers(); }}
-        className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-50"
+        className="w-full rounded-lg border border-white/[0.08] px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/[0.06]"
       >
         Cancel Preview
       </button>
@@ -288,6 +313,7 @@ function OptionCard({
   siblingZones,
   previewImageUrl,
   isRendering,
+  hasFailed,
   onRerender,
   onImageClick,
 }: {
@@ -300,6 +326,7 @@ function OptionCard({
   siblingZones?: SiteZone[];
   previewImageUrl?: string;
   isRendering?: boolean;
+  hasFailed?: boolean;
   onRerender?: () => void;
   onImageClick?: () => void;
 }) {
@@ -308,15 +335,15 @@ function OptionCard({
       onClick={onClick}
       className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
         isActive
-          ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
-          : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+          ? 'border-indigo-400/40 bg-indigo-500/15 ring-1 ring-indigo-400/30'
+          : 'border-white/[0.08] bg-white/[0.04] hover:border-white/[0.15] hover:bg-white/[0.07]'
       }`}
     >
       <div className="flex items-center justify-between mb-1.5">
-        <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-gray-700'}`}>
+        <span className={`text-xs font-semibold ${isActive ? 'text-indigo-300' : 'text-neutral-200'}`}>
           {option.option_label}
         </span>
-        <span className="text-[10px] text-gray-400">
+        <span className="text-[10px] text-neutral-500">
           {option.buildings.length} units
         </span>
       </div>
@@ -341,10 +368,25 @@ function OptionCard({
           )}
         </div>
       ) : isRendering ? (
-        <div className="flex h-[140px] items-center justify-center rounded bg-gray-100">
+        <div className="flex h-[140px] items-center justify-center rounded bg-white/[0.04]">
           <div className="flex flex-col items-center gap-1.5">
             <Loader2 size={16} className="animate-spin text-purple-400" />
-            <span className="text-[9px] text-gray-400">Rendering...</span>
+            <span className="text-[9px] text-neutral-500">Rendering...</span>
+          </div>
+        </div>
+      ) : hasFailed ? (
+        <div className="flex h-[140px] items-center justify-center rounded bg-red-500/10">
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-[9px] text-red-400">Failed</span>
+            {onRerender && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onRerender(); }}
+                className="flex items-center gap-1 rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-white hover:bg-white/20"
+              >
+                <RefreshCw size={8} />
+                Retry
+              </button>
+            )}
           </div>
         </div>
       ) : (
@@ -363,7 +405,7 @@ function OptionCard({
           {onRerender && (
             <button
               onClick={(e) => { e.stopPropagation(); onRerender(); }}
-              className="absolute bottom-1 right-1 flex items-center gap-1 rounded bg-purple-600/80 px-1.5 py-0.5 text-[9px] font-medium text-white hover:bg-purple-600"
+              className="absolute bottom-1 right-1 flex items-center gap-1 rounded bg-purple-500/80 px-1.5 py-0.5 text-[9px] font-medium text-white hover:bg-purple-500"
             >
               <ImageIcon size={9} />
               Render
@@ -373,11 +415,11 @@ function OptionCard({
       )}
 
       {option.density_achieved && (
-        <div className="mt-1 text-[10px] text-gray-400">
+        <div className="mt-1 text-[10px] text-neutral-500">
           {option.density_achieved} units/ha
         </div>
       )}
-      <p className="mt-0.5 text-[10px] leading-tight text-gray-500 line-clamp-2">
+      <p className="mt-0.5 text-[10px] leading-tight text-neutral-400 line-clamp-2">
         {option.reasoning}
       </p>
     </div>
@@ -401,8 +443,8 @@ function LayerLockButton({
       onClick={onClick}
       className={`flex items-center gap-1 rounded px-2 py-1 text-[10px] font-medium transition-colors ${
         isLocked
-          ? 'bg-amber-100 text-amber-700 border border-amber-300'
-          : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+          ? 'bg-amber-500/20 text-amber-400 border border-amber-400/30'
+          : 'bg-white/[0.06] text-neutral-400 border border-white/[0.08] hover:bg-white/10'
       }`}
     >
       {isLocked ? <Lock size={9} /> : <Unlock size={9} />}

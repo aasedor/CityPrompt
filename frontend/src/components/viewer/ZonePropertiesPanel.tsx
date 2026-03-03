@@ -56,10 +56,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         className="fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="glass-dark rounded-xl fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
+      <div ref={panelRef} className="glass-dark fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl p-4 shadow-2xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
         {/* Drag handle — mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
-          <div className="h-1 w-10 rounded-full bg-gray-300" />
+          <div className="h-1 w-10 rounded-full bg-white/20" />
         </div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
