@@ -911,10 +911,11 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
         Object.keys(zoneMeta).length > 0 ? zoneMeta : undefined,
       );
       setSitePreviewImageUrl(idx, result.image_url);
-    } catch (err) {
-      console.error('[renderSiteOption] Failed for index', idx, err);
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail || err?.message || 'Unknown error';
+      console.error('[renderSiteOption] Failed for index', idx, detail, err);
       setFailedSiteRenderIndices((prev) => new Set(prev).add(idx));
-      toast.error(`Site preview ${idx + 1} failed to render`);
+      toast.error(`Site preview ${idx + 1}: ${detail}`, { duration: 8000 });
     } finally {
       setRenderingIndices((prev) => {
         const next = new Set(prev);
@@ -1223,6 +1224,10 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                       src={imageUrl}
                       alt={`Site layout option ${idx + 1}`}
                       className="w-full rounded cursor-zoom-in"
+                      onError={(e) => {
+                        console.error('Site preview image failed to load:', imageUrl);
+                        (e.target as HTMLImageElement).style.opacity = '0.3';
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setLightboxImage(imageUrl, {

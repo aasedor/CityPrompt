@@ -66,10 +66,11 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       const result = await siteZonesApi.renderLayoutPreview(zone.id, option);
       // Store image URL in Zustand store so it persists across navigation
       setPreviewImageUrl(idx, result.image_url);
-    } catch (err) {
-      console.error(`Preview render failed for option ${idx}:`, err);
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail || err?.message || 'Unknown error';
+      console.error(`Preview render failed for option ${idx}:`, detail, err);
       setFailedIndices((prev) => new Set(prev).add(idx));
-      toast.error(`Preview ${idx + 1} failed to render`);
+      toast.error(`Preview ${idx + 1}: ${detail}`, { duration: 8000 });
     } finally {
       setRenderingIndices((prev) => {
         const next = new Set(prev);
@@ -356,7 +357,16 @@ function OptionCard({
             alt="AI-rendered preview"
             className={`w-full rounded${onImageClick ? ' cursor-zoom-in' : ''}`}
             onClick={onImageClick ? (e) => { e.stopPropagation(); onImageClick(); } : undefined}
+            onError={(e) => {
+              console.error('Preview image failed to load:', previewImageUrl);
+              (e.target as HTMLImageElement).style.display = 'none';
+              const p = (e.target as HTMLImageElement).nextElementSibling as HTMLElement;
+              if (p?.dataset.placeholder) p.style.display = 'flex';
+            }}
           />
+          <div data-placeholder="true" className="h-[140px] items-center justify-center rounded bg-red-500/10 text-[9px] text-red-400" style={{ display: 'none' }}>
+            Image failed to load
+          </div>
           {onRerender && (
             <button
               onClick={(e) => { e.stopPropagation(); onRerender(); }}
