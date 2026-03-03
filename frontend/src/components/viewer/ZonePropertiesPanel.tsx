@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -55,7 +56,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         className="fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
+      <div ref={panelRef} className="glass-dark rounded-xl fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
         {/* Drag handle — mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-gray-300" />
@@ -66,11 +67,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               className="inline-block h-4 w-4 rounded"
               style={{ backgroundColor: zone.color }}
             />
-            <h3 className="text-sm font-semibold text-gray-900">{config?.label || zone.zone_type}</h3>
+            <h3 className="text-sm font-semibold text-white">{config?.label || zone.zone_type}</h3>
           </div>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded-md p-1 text-neutral-400 hover:bg-white/10 hover:text-neutral-300"
           >
             <X size={14} />
           </button>
@@ -79,20 +80,20 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         <div className="mt-3 space-y-2.5 text-sm">
         {/* Name */}
         <div>
-          <label className="block text-xs text-gray-500">Name</label>
+          <label className="block text-xs text-neutral-400">Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={config?.label || 'Zone'}
-            className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+            className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
           />
         </div>
 
         {/* Area display */}
         <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Area</span>
-          <span className="text-xs font-medium text-gray-700">
+          <span className="text-xs text-neutral-400">Area</span>
+          <span className="text-xs font-medium text-neutral-300">
             {area >= 10000
               ? `${(area / 10000).toFixed(2)} ha`
               : `${Math.round(area).toLocaleString()} m\u00B2`}
@@ -128,11 +129,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           <>
             {/* Development Type */}
             <div>
-              <label className="block text-xs text-gray-500">Development Type</label>
+              <label className="block text-xs text-neutral-400">Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, development_type: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="residential">Residential</option>
@@ -146,11 +147,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
             </div>
             {/* Development Aesthetic */}
             <div>
-              <label className="block text-xs text-gray-500">Development Aesthetic</label>
+              <label className="block text-xs text-neutral-400">Development Aesthetic</label>
               <select
                 value={(props.development_aesthetic as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, development_aesthetic: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="historic_traditional">Historic / Traditional</option>
@@ -160,31 +161,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Height (m)</label>
+              <label className="block text-xs text-neutral-400">Height (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.height ?? config?.defaultProperties.height ?? ''}
                 onChange={(e) => setProps((p) => ({ ...p, height: parseFloat(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Floors</label>
+              <label className="block text-xs text-neutral-400">Floors</label>
               <input
                 type="number"
                 step="1"
                 value={props.floors ?? config?.defaultProperties.floors ?? ''}
                 onChange={(e) => setProps((p) => ({ ...p, floors: parseInt(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Facade Material</label>
+              <label className="block text-xs text-neutral-400">Facade Material</label>
               <select
                 value={(props.facade_material as string) || 'concrete'}
                 onChange={(e) => setProps((p) => ({ ...p, facade_material: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="glass">Glass</option>
                 <option value="brick">Brick</option>
@@ -193,11 +194,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Roof Style</label>
+              <label className="block text-xs text-neutral-400">Roof Style</label>
               <select
                 value={(props.roof_style as string) || 'flat'}
                 onChange={(e) => setProps((p) => ({ ...p, roof_style: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="flat">Flat</option>
                 <option value="gabled">Gabled</option>
@@ -210,16 +211,16 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'residential' && (
           <>
             <div className="flex items-center justify-between">
-              <label className="text-xs text-gray-500">Balconies</label>
+              <label className="text-xs text-neutral-400">Balconies</label>
               <input
                 type="checkbox"
                 checked={!!props.balconies}
                 onChange={(e) => setProps((p) => ({ ...p, balconies: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-white/20"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Unit Count</label>
+              <label className="block text-xs text-neutral-400">Unit Count</label>
               <input
                 type="number"
                 min="1"
@@ -227,9 +228,9 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 step="1"
                 value={(props.unit_count as number) ?? 1}
                 onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 1 }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
-              <span className="text-[10px] text-gray-400">Number of buildings to generate within this zone</span>
+              <span className="text-[10px] text-neutral-400">Number of buildings to generate within this zone</span>
             </div>
           </>
         )}
@@ -240,11 +241,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'green_space' && (
           <>
             <div>
-              <label className="block text-xs text-gray-500">Tree Density</label>
+              <label className="block text-xs text-neutral-400">Tree Density</label>
               <select
                 value={(props.tree_density_level as string) || 'medium'}
                 onChange={(e) => setProps((p) => ({ ...p, tree_density_level: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="sparse">Sparse</option>
                 <option value="medium">Medium</option>
@@ -252,7 +253,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Tree Density Value (0-1)</label>
+              <label className="block text-xs text-neutral-400">Tree Density Value (0-1)</label>
               <input
                 type="number"
                 step="0.1"
@@ -260,25 +261,25 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 max="1"
                 value={props.tree_density ?? config?.defaultProperties.tree_density ?? 0.3}
                 onChange={(e) => setProps((p) => ({ ...p, tree_density: parseFloat(e.target.value) || 0 }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-xs text-gray-500">Has Benches</label>
+              <label className="text-xs text-neutral-400">Has Benches</label>
               <input
                 type="checkbox"
                 checked={!!props.has_benches}
                 onChange={(e) => setProps((p) => ({ ...p, has_benches: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-white/20"
               />
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-xs text-gray-500">Has Paths</label>
+              <label className="text-xs text-neutral-400">Has Paths</label>
               <input
                 type="checkbox"
                 checked={!!props.has_paths}
                 onChange={(e) => setProps((p) => ({ ...p, has_paths: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-white/20"
               />
             </div>
           </>
@@ -291,11 +292,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           <>
             {/* Roadway Aesthetic */}
             <div>
-              <label className="block text-xs text-gray-500">Roadway Aesthetic</label>
+              <label className="block text-xs text-neutral-400">Roadway Aesthetic</label>
               <select
                 value={(props.road_aesthetic as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, road_aesthetic: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="grand_boulevard">Grand Boulevard</option>
@@ -310,10 +311,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Mode Priority */}
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Mode Priority (1-4 rank)</label>
+              <label className="block text-xs font-medium text-neutral-300 mb-1">Mode Priority (1-4 rank)</label>
               <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
                 <div>
-                  <label className="block text-xs text-gray-500">Pedestrian</label>
+                  <label className="block text-xs text-neutral-400">Pedestrian</label>
                   <input
                     type="number"
                     min="1"
@@ -321,11 +322,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                     placeholder="--"
                     value={(props.priority_pedestrian as number) ?? ''}
                     onChange={(e) => setProps((p) => ({ ...p, priority_pedestrian: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                    className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500">Cycling</label>
+                  <label className="block text-xs text-neutral-400">Cycling</label>
                   <input
                     type="number"
                     min="1"
@@ -333,11 +334,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                     placeholder="--"
                     value={(props.priority_cycling as number) ?? ''}
                     onChange={(e) => setProps((p) => ({ ...p, priority_cycling: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                    className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500">Transit</label>
+                  <label className="block text-xs text-neutral-400">Transit</label>
                   <input
                     type="number"
                     min="1"
@@ -345,11 +346,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                     placeholder="--"
                     value={(props.priority_transit as number) ?? ''}
                     onChange={(e) => setProps((p) => ({ ...p, priority_transit: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                    className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500">Automobiles</label>
+                  <label className="block text-xs text-neutral-400">Automobiles</label>
                   <input
                     type="number"
                     min="1"
@@ -357,7 +358,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                     placeholder="--"
                     value={(props.priority_auto as number) ?? ''}
                     onChange={(e) => setProps((p) => ({ ...p, priority_auto: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                    className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
                   />
                 </div>
               </div>
@@ -365,11 +366,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Volume */}
             <div>
-              <label className="block text-xs text-gray-500">Volume</label>
+              <label className="block text-xs text-neutral-400">Volume</label>
               <select
                 value={(props.volume as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, volume: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="high">High</option>
@@ -379,17 +380,17 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
             </div>
 
             <div>
-              <label className="block text-xs text-gray-500">Width (m)</label>
+              <label className="block text-xs text-neutral-400">Width (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.width ?? config?.defaultProperties.width ?? 10}
                 onChange={(e) => setProps((p) => ({ ...p, width: parseFloat(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Lane Count</label>
+              <label className="block text-xs text-neutral-400">Lane Count</label>
               <input
                 type="number"
                 step="1"
@@ -397,11 +398,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 max="6"
                 value={(props.lane_count as number) ?? 2}
                 onChange={(e) => setProps((p) => ({ ...p, lane_count: parseInt(e.target.value) || 2 }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Sidewalks</label>
+              <label className="block text-xs text-neutral-400">Sidewalks</label>
               <select
                 value={
                   props.sidewalks === 'left' ? 'left'
@@ -414,7 +415,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                   sidewalks: e.target.value,
                   has_sidewalks: e.target.value !== 'none',
                 }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="both">Both Sides</option>
                 <option value="left">Left Only</option>
@@ -423,11 +424,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Road Surface</label>
+              <label className="block text-xs text-neutral-400">Road Surface</label>
               <select
                 value={(props.road_surface as string) || 'asphalt'}
                 onChange={(e) => setProps((p) => ({ ...p, road_surface: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="asphalt">Asphalt</option>
                 <option value="concrete">Concrete</option>
@@ -446,11 +447,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'parking' && (
           <>
             <div>
-              <label className="block text-xs text-gray-500">Parking Layout</label>
+              <label className="block text-xs text-neutral-400">Parking Layout</label>
               <select
                 value={(props.parking_layout as string) || 'perpendicular'}
                 onChange={(e) => setProps((p) => ({ ...p, parking_layout: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="angled">Angled</option>
                 <option value="perpendicular">Perpendicular</option>
@@ -458,12 +459,12 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-xs text-gray-500">Covered</label>
+              <label className="text-xs text-neutral-400">Covered</label>
               <input
                 type="checkbox"
                 checked={!!props.covered}
                 onChange={(e) => setProps((p) => ({ ...p, covered: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-white/20"
               />
             </div>
           </>
@@ -474,11 +475,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* ============================================================= */}
         {zone.zone_type === 'water' && (
           <div>
-            <label className="block text-xs text-gray-500">Water Type</label>
+            <label className="block text-xs text-neutral-400">Water Type</label>
             <select
               value={(props.water_type as string) || 'pond'}
               onChange={(e) => setProps((p) => ({ ...p, water_type: e.target.value }))}
-              className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+              className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
             >
               <option value="pond">Pond</option>
               <option value="stream">Stream</option>
@@ -493,11 +494,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'development_area' && (
           <>
             <div>
-              <label className="block text-xs text-gray-500">Development Type</label>
+              <label className="block text-xs text-neutral-400">Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, development_type: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="residential">Residential</option>
@@ -508,7 +509,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Target Units</label>
+              <label className="block text-xs text-neutral-400">Target Units</label>
               <input
                 type="number"
                 min="2"
@@ -516,16 +517,16 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 step="1"
                 value={(props.unit_count as number) ?? 10}
                 onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 2 }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
-              <span className="text-[10px] text-gray-400">Number of buildings to generate within this development area</span>
+              <span className="text-[10px] text-neutral-400">Number of buildings to generate within this development area</span>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Development Aesthetic</label>
+              <label className="block text-xs text-neutral-400">Development Aesthetic</label>
               <select
                 value={(props.development_aesthetic as string) || ''}
                 onChange={(e) => setProps((p) => ({ ...p, development_aesthetic: e.target.value || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="">-- Select --</option>
                 <option value="historic_traditional">Historic / Traditional</option>
@@ -535,31 +536,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Height (m)</label>
+              <label className="block text-xs text-neutral-400">Height (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.height ?? ''}
                 onChange={(e) => setProps((p) => ({ ...p, height: parseFloat(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Floors</label>
+              <label className="block text-xs text-neutral-400">Floors</label>
               <input
                 type="number"
                 step="1"
                 value={props.floors ?? ''}
                 onChange={(e) => setProps((p) => ({ ...p, floors: parseInt(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500">Ground Texture</label>
+              <label className="block text-xs text-neutral-400">Ground Texture</label>
               <select
                 value={(props.ground_texture as string) || 'grass'}
                 onChange={(e) => setProps((p) => ({ ...p, ground_texture: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white"
               >
                 <option value="grass">Grass</option>
                 <option value="concrete">Concrete</option>
@@ -575,13 +576,13 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* ============================================================= */}
         {zone.zone_type !== 'site_boundary' && (
           <div>
-            <label className="block text-xs text-gray-500">Descriptive Text</label>
+            <label className="block text-xs text-neutral-400">Descriptive Text</label>
             <textarea
               value={(props.description_text as string) || ''}
               onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
               placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
               rows={2}
-              className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm resize-none"
+              className="mt-0.5 w-full rounded border border-white/10 bg-white/10 px-2 py-1 text-sm text-white resize-none"
             />
           </div>
         )}
@@ -663,7 +664,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
         {/* Preview History — buildable zones */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
-          <PreviewHistorySection zone={zone} />
+          <PreviewHistorySection zone={zone} onAIGenerate={onAIGenerate} />
         )}
 
         <button
@@ -819,6 +820,7 @@ async function captureMapScreenshots(
 }
 
 function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: SiteZone[] }) {
+  const queryClient = useQueryClient();
   const [analysis, setAnalysis] = useState<BoundaryAnalysisResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
@@ -991,6 +993,8 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       }
 
       const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
+      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
+      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
       toast.success(
         `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
       );
@@ -1003,7 +1007,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-xs text-gray-400">
+      <div className="flex items-center gap-2 text-xs text-neutral-400">
         <Loader2 size={12} className="animate-spin" />
         Analyzing boundary...
       </div>
@@ -1012,7 +1016,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
 
   if (!analysis) {
     return (
-      <div className="text-xs text-gray-400 italic">
+      <div className="text-xs text-neutral-400 italic">
         Could not analyze boundary contents.
       </div>
     );
@@ -1041,7 +1045,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
     <div className="space-y-2">
       {/* Contained zones — clickable to select */}
       <div>
-        <label className="block text-xs font-medium text-gray-600 mb-1">
+        <label className="block text-xs font-medium text-neutral-300 mb-1">
           Contained Zones ({analysis.total_contained})
         </label>
         {hasZones ? (
@@ -1056,8 +1060,8 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                   onClick={() => selectZone(cz.id)}
                   className={`flex w-full items-center gap-2 rounded px-1.5 py-1 text-xs text-left transition-colors ${
                     isBuildable
-                      ? 'text-gray-700 hover:bg-indigo-50 cursor-pointer'
-                      : 'text-gray-500 hover:bg-gray-50 cursor-pointer'
+                      ? 'text-neutral-300 hover:bg-indigo-50 cursor-pointer'
+                      : 'text-neutral-400 hover:bg-white/10 cursor-pointer'
                   }`}
                   title={isBuildable ? 'Click to edit & preview layout' : 'Click to edit zone'}
                 >
@@ -1065,7 +1069,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                     className="inline-block h-2.5 w-2.5 rounded-sm flex-shrink-0"
                     style={{ backgroundColor: cz.color || config?.color || '#999' }}
                   />
-                  <Icon size={11} className="text-gray-400 flex-shrink-0" />
+                  <Icon size={11} className="text-neutral-400 flex-shrink-0" />
                   <span className="truncate">{cz.name || config?.label || cz.zone_type}</span>
                   {isBuildable && (
                     <span className="ml-auto text-[10px] text-indigo-400 flex-shrink-0">edit</span>
@@ -1075,7 +1079,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
             })}
           </div>
         ) : (
-          <div className="text-xs text-gray-400 italic">
+          <div className="text-xs text-neutral-400 italic">
             No zones inside this boundary. Draw zones within the boundary to get started.
           </div>
         )}
@@ -1084,16 +1088,16 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       {/* OSM Infrastructure */}
       {hasOsm && (
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">
+          <label className="block text-xs font-medium text-neutral-300 mb-1">
             Nearby Infrastructure (OSM)
           </label>
-          <div className="space-y-0.5 text-xs text-gray-500">
+          <div className="space-y-0.5 text-xs text-neutral-400">
             {osmBuildings?.count ? (
               <div className="flex items-center gap-1.5">
                 <Building2 size={10} />
                 <span>{osmBuildings.count} existing buildings</span>
                 {osmBuildings.avg_height ? (
-                  <span className="text-gray-400">(avg {osmBuildings.avg_height.toFixed(0)}m)</span>
+                  <span className="text-neutral-400">(avg {osmBuildings.avg_height.toFixed(0)}m)</span>
                 ) : null}
               </div>
             ) : null}
@@ -1102,14 +1106,14 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                 <Route size={10} />
                 <span>{osmRoads.count} existing roads</span>
                 {osmRoads.named_roads?.length ? (
-                  <span className="text-gray-400 truncate">
+                  <span className="text-neutral-400 truncate">
                     ({osmRoads.named_roads.slice(0, 3).join(', ')})
                   </span>
                 ) : null}
               </div>
             ) : null}
           </div>
-          <p className="mt-0.5 text-[10px] text-gray-400">
+          <p className="mt-0.5 text-[10px] text-neutral-400">
             Real-world data from OpenStreetMap used for context
           </p>
         </div>
@@ -1118,7 +1122,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       {/* Step 1: Preview 2D Layouts */}
       {hasBuildableZones && !isSitePreviewActive && (
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-gray-600">
+          <label className="block text-xs font-medium text-neutral-300">
             Step 1: Preview 2D Layouts
           </label>
           <button
@@ -1130,7 +1134,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
             {previewingAll ? <Loader2 size={12} className="animate-spin" /> : <LayoutGrid size={12} />}
             {previewingAll ? 'Generating previews...' : `Preview Layouts (${previewableZones.length} zone${previewableZones.length > 1 ? 's' : ''})`}
           </button>
-          <p className="text-[10px] text-gray-400 text-center">
+          <p className="text-[10px] text-neutral-400 text-center">
             {previewableZones.length < buildableZones.length
               ? `${buildableZones.length - previewableZones.length} zone${buildableZones.length - previewableZones.length > 1 ? 's' : ''} skipped (set unit_count > 1 to include)`
               : 'AI generates comprehensive site layout options — one image per option'}
@@ -1142,7 +1146,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       {isSitePreviewActive && (
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-700">Site Layout Options</span>
+            <span className="text-xs font-semibold text-neutral-300">Site Layout Options</span>
             <div className="flex items-center gap-2">
               {renderingCount > 0 && (
                 <span className="flex items-center gap-1 text-[10px] text-purple-500">
@@ -1190,48 +1194,100 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                 className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
                   isActive
                     ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
-                    : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50'
+                    : 'border-white/10 bg-white/10 hover:border-white/20 hover:bg-white/10'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-gray-700'}`}>
+                  <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-neutral-300'}`}>
                     {label}
                   </span>
-                  <span className="text-[10px] text-gray-400">
+                  <span className="text-[10px] text-neutral-400">
                     {totalBuildings} buildings, {totalRoads} roads, {totalGreen} green
                   </span>
                 </div>
 
                 {imageUrl ? (
-                  <div className="relative">
+                  <div className="relative group/card">
                     <img
                       src={imageUrl}
                       alt={`Site layout option ${idx + 1}`}
                       className="w-full rounded cursor-zoom-in"
-                      onClick={(e) => { e.stopPropagation(); setLightboxImage(imageUrl); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLightboxImage(imageUrl, {
+                          onDownload: () => {
+                            const link = document.createElement('a');
+                            link.href = imageUrl;
+                            link.download = `site-layout-option-${idx + 1}.png`;
+                            link.click();
+                          },
+                          onApply: async () => {
+                            // Auto-apply layouts then generate 3D
+                            const applyResults = await Promise.all(
+                              Object.entries(siteOptions).map(async ([zoneId, options]) => {
+                                if (!options[idx]) return null;
+                                try {
+                                  await siteZonesApi.applyLayout(zoneId, idx, options[idx]);
+                                  return zoneId;
+                                } catch (err) {
+                                  console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
+                                  return null;
+                                }
+                              })
+                            );
+                            const appliedCount = applyResults.filter(Boolean).length;
+                            if (appliedCount > 0) {
+                              clearSitePreview();
+                              clearLockedLayers();
+                            }
+                            const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
+                            queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
+                            queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
+                            toast.success(
+                              `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+                            );
+                          },
+                          applyLabel: 'Generate 3D Neighborhood',
+                        });
+                      }}
                     />
-                    <button
-                      onClick={(e) => { e.stopPropagation(); renderSiteOption(idx); }}
-                      className="absolute bottom-1 right-1 rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white"
-                      title="Re-render preview"
-                    >
-                      <RefreshCw size={10} />
-                    </button>
+                    <div className="absolute bottom-1 right-1 flex gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const link = document.createElement('a');
+                          link.href = imageUrl;
+                          link.download = `site-layout-option-${idx + 1}.png`;
+                          link.click();
+                        }}
+                        className="rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white opacity-0 group-hover/card:opacity-100 transition-opacity"
+                        title="Download image"
+                      >
+                        <ArrowDownToLine size={10} />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); renderSiteOption(idx); }}
+                        className="rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white"
+                        title="Re-render preview"
+                      >
+                        <RefreshCw size={10} />
+                      </button>
+                    </div>
                   </div>
                 ) : isRendering ? (
-                  <div className="flex h-[160px] items-center justify-center rounded bg-gray-100">
+                  <div className="flex h-[160px] items-center justify-center rounded bg-white/10">
                     <div className="flex flex-col items-center gap-1.5">
                       <Loader2 size={16} className="animate-spin text-purple-400" />
-                      <span className="text-[9px] text-gray-400">Rendering site preview...</span>
+                      <span className="text-[9px] text-neutral-400">Rendering site preview...</span>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex h-[80px] items-center justify-center rounded bg-gray-100">
-                    <span className="text-[10px] text-gray-400">Waiting to render...</span>
+                  <div className="flex h-[80px] items-center justify-center rounded bg-white/10">
+                    <span className="text-[10px] text-neutral-400">Waiting to render...</span>
                   </div>
                 )}
 
-                <p className="mt-0.5 text-[10px] leading-tight text-gray-500 line-clamp-2">
+                <p className="mt-0.5 text-[10px] leading-tight text-neutral-400 line-clamp-2">
                   {reasoning}
                 </p>
               </div>
@@ -1241,19 +1297,66 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
           {/* Expanded active option */}
           {siteImageUrls[siteActiveIndex] && (
             <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
-              <img
-                src={siteImageUrls[siteActiveIndex]}
-                alt="Selected site layout"
-                className="w-full rounded cursor-zoom-in"
-                onClick={() => setLightboxImage(siteImageUrls[siteActiveIndex])}
-              />
-              <p className="mt-1 text-[10px] text-center text-gray-400">Click image to expand</p>
+              <div className="relative group/expanded">
+                <img
+                  src={siteImageUrls[siteActiveIndex]}
+                  alt="Selected site layout"
+                  className="w-full rounded cursor-zoom-in"
+                  onClick={() => setLightboxImage(siteImageUrls[siteActiveIndex], {
+                    onDownload: () => {
+                      const link = document.createElement('a');
+                      link.href = siteImageUrls[siteActiveIndex];
+                      link.download = `site-layout-option-${siteActiveIndex + 1}.png`;
+                      link.click();
+                    },
+                    onApply: async () => {
+                      const applyResults = await Promise.all(
+                        Object.entries(siteOptions).map(async ([zoneId, options]) => {
+                          if (!options[siteActiveIndex]) return null;
+                          try {
+                            await siteZonesApi.applyLayout(zoneId, siteActiveIndex, options[siteActiveIndex]);
+                            return zoneId;
+                          } catch (err) {
+                            console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
+                            return null;
+                          }
+                        })
+                      );
+                      const appliedCount = applyResults.filter(Boolean).length;
+                      if (appliedCount > 0) {
+                        clearSitePreview();
+                        clearLockedLayers();
+                      }
+                      const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
+                      queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
+                      queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
+                      toast.success(
+                        `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+                      );
+                    },
+                    applyLabel: 'Generate 3D Neighborhood',
+                  })}
+                />
+                <button
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = siteImageUrls[siteActiveIndex];
+                    link.download = `site-layout-option-${siteActiveIndex + 1}.png`;
+                    link.click();
+                  }}
+                  className="absolute top-1 right-1 rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white opacity-0 group-hover/expanded:opacity-100 transition-opacity"
+                  title="Download image"
+                >
+                  <ArrowDownToLine size={10} />
+                </button>
+              </div>
+              <p className="mt-1 text-[10px] text-center text-neutral-400">Click image to expand</p>
             </div>
           )}
 
           <button
             onClick={() => { clearSitePreview(); clearLockedLayers(); }}
-            className="w-full rounded-lg border border-gray-200 px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-50"
+            className="w-full rounded-lg border border-white/10 px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/10"
           >
             Cancel Preview
           </button>
@@ -1263,7 +1366,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       {/* Step 2: Generate 3D */}
       {hasBuildableZones && (
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-gray-600">
+          <label className="block text-xs font-medium text-neutral-300">
             {isSitePreviewActive ? 'Step 2: ' : ''}Generate 3D Models
           </label>
           <button
@@ -1279,7 +1382,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       )}
 
       {!hasBuildableZones && hasZones && (
-        <p className="text-[10px] text-gray-400 text-center">
+        <p className="text-[10px] text-neutral-400 text-center">
           Add building or residential zones inside the boundary to generate
         </p>
       )}
@@ -1317,12 +1420,12 @@ function ReferenceImagesSection({
 
   return (
     <div>
-      <label className="block text-xs text-gray-500 mb-1">Reference Images</label>
+      <label className="block text-xs text-neutral-400 mb-1">Reference Images</label>
       {/* Thumbnails */}
       {images.length > 0 && (
         <div className="flex gap-1.5 mb-1.5 flex-wrap">
           {images.map((imgUrl, idx) => (
-            <div key={idx} className="relative group w-16 h-16 rounded border border-gray-200 overflow-hidden bg-gray-100">
+            <div key={idx} className="relative group w-16 h-16 rounded border border-white/10 overflow-hidden bg-white/10">
               <img
                 src={imgUrl}
                 alt={`Ref ${idx + 1}`}
@@ -1347,13 +1450,13 @@ function ReferenceImagesSection({
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Paste image URL and press Enter"
-            className="flex-1 rounded border border-gray-200 px-2 py-1 text-xs"
+            className="flex-1 rounded border border-white/10 bg-white/10 px-2 py-1 text-xs text-white"
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
           />
           <button
             onClick={handleAdd}
             disabled={!url.trim()}
-            className="rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 disabled:opacity-40"
+            className="rounded bg-white/10 px-2 py-1 text-xs font-medium text-neutral-300 hover:bg-white/15 disabled:opacity-40"
           >
             Add
           </button>
@@ -1367,8 +1470,10 @@ function ReferenceImagesSection({
 // Preview History section
 // =============================================================================
 
-function PreviewHistorySection({ zone }: { zone: SiteZone }) {
+function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate?: (buildingId: string, initialPrompt?: string) => void }) {
+  const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState(false);
+  const [applyingIdx, setApplyingIdx] = useState<number | null>(null);
   const { setLightboxImage } = useViewerStore();
 
   const history: PreviewHistoryEntry[] =
@@ -1379,11 +1484,89 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
   // Most recent first
   const sorted = [...history].reverse();
 
+  const handleDownload = (e: React.MouseEvent, entry: PreviewHistoryEntry) => {
+    e.stopPropagation();
+    const link = document.createElement('a');
+    link.href = entry.image_url;
+    link.download = `${entry.label.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+    link.click();
+  };
+
+  const handleApplyLayout = async (e: React.MouseEvent, entry: PreviewHistoryEntry, idx: number) => {
+    e.stopPropagation();
+    if (!entry.layout_data || applyingIdx !== null) return;
+    setApplyingIdx(idx);
+    try {
+      await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
+      toast.success('Layout applied — buildings created');
+    } catch {
+      toast.error('Failed to apply layout');
+    } finally {
+      setApplyingIdx(null);
+    }
+  };
+
+  const openLightbox = (entry: PreviewHistoryEntry) => {
+    const download = () => {
+      const link = document.createElement('a');
+      link.href = entry.image_url;
+      link.download = `${entry.label.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      link.click();
+    };
+
+    let apply: (() => Promise<void>) | undefined;
+    let applyLabel = 'Apply Layout';
+
+    if (entry.layout_data && entry.preview_type === 'layout') {
+      apply = async () => {
+        await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
+        toast.success('Layout applied — buildings created');
+      };
+    } else if (entry.preview_type === 'site' && zone.zone_type === 'site_boundary') {
+      applyLabel = 'Generate 3D Neighborhood';
+      apply = async () => {
+        // If this history entry has stored zone layouts, apply them first
+        const zoneLayouts = entry.layout_data && 'zone_layouts' in entry.layout_data
+          ? (entry.layout_data as { zone_layouts: Record<string, LayoutOption> }).zone_layouts
+          : null;
+        if (zoneLayouts) {
+          const applyResults = await Promise.all(
+            Object.entries(zoneLayouts).map(async ([zoneId, layout]) => {
+              try {
+                await siteZonesApi.applyLayout(zoneId, entry.option_index, layout);
+                return zoneId;
+              } catch (err) {
+                console.warn(`Failed to apply layout for zone ${zoneId}:`, err);
+                return null;
+              }
+            })
+          );
+          const appliedCount = applyResults.filter(Boolean).length;
+          if (appliedCount > 0) {
+            toast.success(`Applied layouts for ${appliedCount} zone${appliedCount > 1 ? 's' : ''}`);
+          }
+        }
+        const result = await siteZonesApi.generateForBoundary(zone.project_id, zone.id);
+        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] });
+        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] });
+        toast.success(
+          `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
+        );
+      };
+    }
+
+    setLightboxImage(entry.image_url, {
+      onDownload: download,
+      onApply: apply,
+      applyLabel,
+    });
+  };
+
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50/50">
+    <div className="rounded-lg border border-white/10 bg-white/10">
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="flex w-full items-center justify-between px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800"
+        className="flex w-full items-center justify-between px-2.5 py-1.5 text-xs font-medium text-neutral-300 hover:text-white"
       >
         <span>Previous Previews ({history.length})</span>
         <ChevronDown size={12} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
@@ -1393,8 +1576,8 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
           {sorted.map((entry, idx) => (
             <div
               key={idx}
-              className="group relative cursor-pointer overflow-hidden rounded border border-gray-200 bg-white"
-              onClick={() => setLightboxImage(entry.image_url)}
+              className="group relative cursor-pointer overflow-hidden rounded border border-white/10 bg-white/10"
+              onClick={() => openLightbox(entry)}
             >
               <img
                 src={entry.image_url}
@@ -1403,6 +1586,26 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                {/* Action buttons */}
+                <div className="absolute top-1 right-1 flex gap-1">
+                  <button
+                    onClick={(e) => handleDownload(e, entry)}
+                    className="rounded bg-black/50 p-1 text-white hover:bg-black/70"
+                    title="Download"
+                  >
+                    <ArrowDownToLine size={10} />
+                  </button>
+                  {entry.layout_data && entry.preview_type === 'layout' && (
+                    <button
+                      onClick={(e) => handleApplyLayout(e, entry, idx)}
+                      disabled={applyingIdx !== null}
+                      className="rounded bg-black/50 p-1 text-white hover:bg-green-600/80 disabled:opacity-50"
+                      title="Apply Layout"
+                    >
+                      {applyingIdx === idx ? <Loader2 size={10} className="animate-spin" /> : <Check size={10} />}
+                    </button>
+                  )}
+                </div>
                 <div className="p-1">
                   <p className="text-[9px] font-medium leading-tight text-white truncate">{entry.label}</p>
                   <p className="text-[8px] text-white/70">
@@ -1450,7 +1653,7 @@ function QuickRegenerateSection({ building }: { building: Building }) {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         rows={3}
-        className="mb-1.5 w-full rounded border border-purple-200 bg-white px-2 py-1 text-xs text-gray-700 focus:border-purple-400 focus:outline-none"
+        className="mb-1.5 w-full rounded border border-purple-200 bg-white/10 px-2 py-1 text-xs text-white focus:border-purple-400 focus:outline-none"
       />
       <button
         onClick={handleRegenerate}

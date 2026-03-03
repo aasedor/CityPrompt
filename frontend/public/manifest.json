@@ -1,11 +1,11 @@
 {
-  "name": "3D Development Platform",
-  "short_name": "3D Dev",
-  "description": "Transform architectural documents into interactive 3D visualizations",
+  "name": "SiteForge",
+  "short_name": "SiteForge",
+  "description": "Design site plans, generate AI-powered 3D buildings, and explore immersive architectural visualizations",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f9fafb",
-  "theme_color": "#2563eb",
+  "background_color": "#f5f7fa",
+  "theme_color": "#001668",
   "orientation": "any",
   "icons": [
     {

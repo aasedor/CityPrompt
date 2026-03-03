@@ -93,8 +93,8 @@ function PresetSummary({ preset }: { preset: RoadPresetConfig | BuildingPresetCo
   const width = preset.properties.width as number | undefined;
   const floors = preset.properties.floors as number | undefined;
 
-  if (width) return <span className="ml-auto text-[10px] text-gray-500 group-hover:text-gray-400">{width}m</span>;
-  if (floors) return <span className="ml-auto text-[10px] text-gray-500 group-hover:text-gray-400">{floors}F</span>;
+  if (width) return <span className="ml-auto text-[10px] text-neutral-400 group-hover:text-neutral-400">{width}m</span>;
+  if (floors) return <span className="ml-auto text-[10px] text-neutral-400 group-hover:text-neutral-400">{floors}F</span>;
   return null;
 }
 
@@ -110,7 +110,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
     <div className="relative">
       {/* Upward flyout */}
       {isOpen && (
-        <div className="absolute bottom-full left-1/2 z-30 mb-2 -translate-x-1/2 rounded-lg bg-gray-800 p-1.5 shadow-xl ring-1 ring-white/10">
+        <div className="absolute bottom-full left-1/2 z-30 mb-2 -translate-x-1/2 rounded-lg bg-primary-950 p-1.5 shadow-xl ring-1 ring-white/10">
           <div className="flex flex-col gap-1">
             {types.map((type) => {
               const config = ZONE_TYPE_CONFIG[type];
@@ -132,7 +132,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                     className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                       isActive
                         ? 'bg-white/20 text-white ring-1 ring-white/40'
-                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                        : 'text-neutral-300 hover:bg-white/10 hover:text-white'
                     }`}
                     title={hasPresets ? `Expand ${config.label} presets` : `Draw ${config.label} zone`}
                   >
@@ -164,7 +164,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                             onSelectTool(type, preset.properties);
                             setExpandedType(null);
                           }}
-                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-gray-300 transition-all hover:bg-white/10 hover:text-white"
+                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-neutral-300 transition-all hover:bg-white/10 hover:text-white"
                           title={`${preset.label} — ${preset.description}`}
                         >
                           <PresetIndicator preset={preset} color={config.color} />
@@ -189,7 +189,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
             ? 'bg-white/20 text-white ring-2 ring-white/40'
             : activeChild
               ? 'bg-white/15 text-white'
-              : 'text-gray-300 hover:bg-white/10 hover:text-white'
+              : 'text-neutral-300 hover:bg-white/10 hover:text-white'
         }`}
         title={label}
       >
@@ -245,7 +245,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
   };
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-1.5 rounded-xl bg-gray-900/90 px-3 py-2 shadow-2xl backdrop-blur-sm sm:flex-row sm:items-center sm:justify-center sm:gap-2">
+    <div className="flex w-full flex-col items-stretch gap-1.5 rounded-xl bg-primary-900/90 px-3 py-2 shadow-2xl backdrop-blur-sm sm:flex-row sm:items-center sm:justify-center sm:gap-2">
       {/* Zone tools row — wraps on mobile */}
       <div ref={groupsRef} className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
         {/* Select / Move tool */}
@@ -254,7 +254,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
           className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all sm:py-1.5 ${
             activeSitePlannerTool === null
               ? 'bg-white/20 text-white ring-2 ring-white/40'
-              : 'text-gray-300 hover:bg-white/10 hover:text-white'
+              : 'text-neutral-300 hover:bg-white/10 hover:text-white'
           }`}
           title="Select / Move zones"
         >
@@ -308,7 +308,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
         {onShowGuide && (
           <button
             onClick={onShowGuide}
-            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-gray-300 hover:bg-white/10 hover:text-white sm:py-1.5"
+            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-neutral-300 hover:bg-white/10 hover:text-white sm:py-1.5"
             title="Show quick-start guide"
           >
             <HelpCircle size={14} />

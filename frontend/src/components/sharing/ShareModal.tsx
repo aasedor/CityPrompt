@@ -76,11 +76,11 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center" onClick={onClose}>
-      <div className="w-full max-w-md rounded-t-xl bg-white p-5 shadow-2xl sm:rounded-xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-primary-950/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
+      <div className="w-full max-w-md rounded-t-2xl bg-primary-900/95 backdrop-blur-xl border border-white/[0.1] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Share "{projectName}"</h2>
-          <button onClick={onClose} className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+          <h2 className="text-lg font-semibold text-white">Share "{projectName}"</h2>
+          <button onClick={onClose} className="rounded-md p-1 text-neutral-400 hover:bg-white/10 hover:text-neutral-300">
             <X size={20} />
           </button>
         </div>
@@ -94,12 +94,12 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleInvite()}
-              className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base flex-1"
             />
             <select
               value={permission}
               onChange={(e) => setPermission(e.target.value as 'viewer' | 'editor')}
-              className="rounded-lg border border-gray-300 px-2 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base px-2"
             >
               <option value="viewer">Viewer</option>
               <option value="editor">Editor</option>
@@ -112,13 +112,13 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               {shareMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />}
             </button>
           </div>
-          {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+          {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
         </div>
 
         {/* Shared users list */}
         {emailShares.length > 0 && (
           <div className="mt-4 space-y-2">
-            <h3 className="text-xs font-semibold uppercase text-gray-500">Shared with</h3>
+            <h3 className="text-xs font-semibold uppercase text-neutral-400">Shared with</h3>
             {emailShares.map((share) => (
               <ShareRow key={share.id} share={share} onRevoke={() => revokeMutation.mutate(share.id)} revoking={revokeMutation.isPending} />
             ))}
@@ -126,17 +126,17 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
         )}
 
         {/* Public link section */}
-        <div className="mt-5 border-t border-gray-100 pt-4">
+        <div className="mt-5 border-t border-white/[0.08] pt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Link2 size={16} className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-700">Public link</span>
+              <Link2 size={16} className="text-neutral-400" />
+              <span className="text-sm font-medium text-neutral-300">Public link</span>
             </div>
             {publicLink ? (
               <button
                 onClick={() => revokePublicLinkMutation.mutate()}
                 disabled={revokePublicLinkMutation.isPending}
-                className="text-xs font-medium text-red-600 hover:text-red-700"
+                className="text-xs font-medium text-red-400 hover:text-red-300"
               >
                 Disable
               </button>
@@ -144,7 +144,7 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               <button
                 onClick={() => publicLinkMutation.mutate()}
                 disabled={publicLinkMutation.isPending}
-                className="text-xs font-medium text-primary-600 hover:text-primary-700"
+                className="text-xs font-medium text-primary-500 hover:text-primary-400"
               >
                 {publicLinkMutation.isPending ? 'Creating...' : 'Enable'}
               </button>
@@ -155,20 +155,20 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               <input
                 readOnly
                 value={`${window.location.origin}/shared/${publicLink.invite_token}`}
-                className="flex-1 truncate rounded-lg bg-gray-50 px-3 py-1.5 text-xs text-gray-600"
+                className="flex-1 truncate rounded-lg bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400"
               />
               <button
                 onClick={handleCopyLink}
-                className="rounded-lg bg-gray-100 p-1.5 text-gray-600 hover:bg-gray-200"
+                className="rounded-lg bg-white/10 p-1.5 text-neutral-400 hover:bg-white/[0.15]"
               >
-                {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
+                {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
               </button>
             </div>
           )}
         </div>
 
         {isLoading && (
-          <div className="mt-4 text-center text-sm text-gray-500">
+          <div className="mt-4 text-center text-sm text-neutral-400">
             <Loader2 size={16} className="mx-auto animate-spin" />
           </div>
         )}
@@ -179,15 +179,15 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
 
 function ShareRow({ share, onRevoke, revoking }: { share: ProjectShareInfo; onRevoke: () => void; revoking: boolean }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-100 px-3 py-2">
+    <div className="flex items-center justify-between rounded-lg border border-white/[0.08] px-3 py-2">
       <div>
-        <p className="text-sm font-medium text-gray-700">{share.email}</p>
-        <p className="text-xs capitalize text-gray-500">{share.permission}</p>
+        <p className="text-sm font-medium text-neutral-300">{share.email}</p>
+        <p className="text-xs capitalize text-neutral-400">{share.permission}</p>
       </div>
       <button
         onClick={onRevoke}
         disabled={revoking}
-        className="rounded-md p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
+        className="rounded-md p-1 text-neutral-400 hover:bg-red-500/10 hover:text-red-500"
       >
         <Trash2 size={14} />
       </button>

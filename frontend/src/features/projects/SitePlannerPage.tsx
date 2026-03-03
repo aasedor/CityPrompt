@@ -70,7 +70,7 @@ export function SitePlannerPage() {
 
   if (isLoading || (!project && !isError)) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-gray-900 text-white">
+      <div className="flex h-screen w-screen items-center justify-center bg-primary-900 text-white">
         Loading project...
       </div>
     );
@@ -78,9 +78,9 @@ export function SitePlannerPage() {
 
   if (!project) {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-gray-900 text-white">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-primary-900 text-white">
         <p>Project not found</p>
-        <Link to="/" className="text-sm text-primary-400 hover:text-primary-300">
+        <Link to="/projects" className="text-sm text-primary-400 hover:text-primary-300">
           Back to projects
         </Link>
       </div>
@@ -88,12 +88,12 @@ export function SitePlannerPage() {
   }
 
   return (
-    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-gray-900">
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-primary-900">
       {/* Header overlay */}
-      <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-gray-900/70 px-4 py-3 backdrop-blur-md">
+      <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-primary-900/70 px-4 py-3 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <Link
-            to="/"
+            to="/projects"
             className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white"
             title="Home"
           >

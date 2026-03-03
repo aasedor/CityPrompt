@@ -36,17 +36,17 @@ export function CreationTrendsChart({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">Creation Trends</h3>
+      <h3 className="mb-4 text-sm font-semibold text-neutral-300">Creation Trends</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="period" tick={{ fontSize: 12 }} stroke="#9ca3af" />
-            <YAxis allowDecimals={false} tick={{ fontSize: 12 }} stroke="#9ca3af" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+            <XAxis dataKey="period" tick={{ fontSize: 12, fill: '#9ca3af' }} stroke="rgba(255,255,255,0.1)" />
+            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#9ca3af' }} stroke="rgba(255,255,255,0.1)" />
             <Tooltip
-              contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb', fontSize: '13px' }}
+              contentStyle={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', backgroundColor: 'rgba(15,15,30,0.9)', color: '#e5e7eb' }}
             />
-            <Legend wrapperStyle={{ fontSize: '13px' }} />
+            <Legend wrapperStyle={{ fontSize: '13px', color: '#9ca3af' }} />
             <Bar dataKey="projects" name="Projects" fill="#22c55e" radius={[4, 4, 0, 0]} />
             <Bar dataKey="buildings" name="Buildings" fill="#a855f7" radius={[4, 4, 0, 0]} />
           </BarChart>

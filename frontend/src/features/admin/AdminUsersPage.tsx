@@ -117,27 +117,27 @@ export function AdminUsersPage() {
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
-        <Link to="/admin" className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+        <Link to="/admin" className="rounded-lg p-1.5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900">Manage Users</h1>
+        <h1 className="text-2xl font-bold text-white">Manage Users</h1>
       </div>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             type="text"
             placeholder="Search by email or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="w-full rounded-lg border border-white/[0.12] bg-white/[0.06] py-2 pl-9 pr-3 text-sm text-white placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+          className="rounded-lg border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
         >
           <option value="">All roles</option>
           <option value="viewer">Viewer</option>
@@ -152,12 +152,12 @@ export function AdminUsersPage() {
           <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
         </div>
       ) : users.length === 0 ? (
-        <p className="py-8 text-center text-sm text-gray-500">No users found.</p>
+        <p className="py-8 text-center text-sm text-neutral-400">No users found.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 text-left text-xs font-medium uppercase text-gray-500">
+              <tr className="border-b border-white/[0.08] text-left text-xs font-medium uppercase text-neutral-400">
                 <th className="px-4 py-3">User</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
@@ -167,19 +167,19 @@ export function AdminUsersPage() {
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/[0.08]">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50">
+                <tr key={u.id} className="hover:bg-white/[0.04]">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-gray-900">{u.full_name || '-'}</div>
-                    <div className="text-xs text-gray-500">{u.email}</div>
+                    <div className="font-medium text-white">{u.full_name || '-'}</div>
+                    <div className="text-xs text-neutral-400">{u.email}</div>
                   </td>
                   <td className="px-4 py-3">
                     <select
                       value={u.role}
                       onChange={(e) => handleRoleChange(u.id, e.target.value)}
                       disabled={!isCofounder && ['admin', 'cofounder'].includes(u.role)}
-                      className="rounded border border-gray-200 px-2 py-1 text-xs focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="rounded border border-white/[0.12] bg-white/[0.06] px-2 py-1 text-xs text-white focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <option value="viewer">Viewer</option>
                       <option value="editor">Editor</option>
@@ -187,24 +187,24 @@ export function AdminUsersPage() {
                       {isCofounder && <option value="cofounder">Cofounder</option>}
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{u.project_count}</td>
+                  <td className="px-4 py-3 text-neutral-400">{u.project_count}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         u.is_active
-                          ? 'bg-green-50 text-green-700'
-                          : 'bg-red-50 text-red-700'
+                          ? 'bg-green-500/15 text-green-400'
+                          : 'bg-red-500/15 text-red-400'
                       }`}
                     >
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-neutral-400">
                     {u.last_login_at
                       ? new Date(u.last_login_at).toLocaleDateString()
-                      : <span className="text-gray-300">Never</span>}
+                      : <span className="text-neutral-500">Never</span>}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-neutral-400">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 flex items-center gap-1">
@@ -212,15 +212,15 @@ export function AdminUsersPage() {
                       onClick={() => handleToggleActive(u.id, u.is_active)}
                       className={`rounded px-2 py-1 text-xs font-medium ${
                         u.is_active
-                          ? 'text-red-600 hover:bg-red-50'
-                          : 'text-green-600 hover:bg-green-50'
+                          ? 'text-red-400 hover:bg-red-500/15'
+                          : 'text-green-400 hover:bg-green-500/15'
                       }`}
                     >
                       {u.is_active ? 'Deactivate' : 'Activate'}
                     </button>
                     <button
                       onClick={() => handleDeleteUser(u.id, u.email)}
-                      className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                      className="rounded p-1 text-neutral-400 hover:bg-red-500/15 hover:text-red-400"
                       title="Delete user"
                     >
                       <Trash2 size={14} />
@@ -235,25 +235,25 @@ export function AdminUsersPage() {
 
       {/* Role change confirmation modal */}
       {roleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="mx-4 w-full max-w-md rounded-xl bg-white/[0.04] border border-white/[0.08] p-6 shadow-xl backdrop-blur-xl">
             <div className="mb-4 flex items-center gap-3">
               {roleModal.type === 'promotion' ? (
                 roleModal.newRole === 'cofounder' ? (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100">
-                    <Crown className="h-5 w-5 text-yellow-600" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-500/15">
+                    <Crown className="h-5 w-5 text-yellow-400" />
                   </div>
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-                    <AlertTriangle className="h-5 w-5 text-amber-600" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/15">
+                    <AlertTriangle className="h-5 w-5 text-amber-400" />
                   </div>
                 )
               ) : (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
-                  <ShieldAlert className="h-5 w-5 text-red-600" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/15">
+                  <ShieldAlert className="h-5 w-5 text-red-400" />
                 </div>
               )}
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-white">
                 {roleModal.type === 'promotion'
                   ? roleModal.newRole === 'cofounder'
                     ? 'Grant Cofounder Access?'
@@ -263,14 +263,14 @@ export function AdminUsersPage() {
                     : 'Remove Admin Access?'}
               </h3>
             </div>
-            <p className="mb-2 text-sm text-gray-600">
+            <p className="mb-2 text-sm text-neutral-400">
               {roleModal.type === 'promotion' ? (
-                <>You are about to promote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to promote <strong className="text-white">{roleModal.email}</strong> to <strong className="text-white capitalize">{roleModal.newRole}</strong>.</>
               ) : (
-                <>You are about to demote <strong className="text-gray-900">{roleModal.email}</strong> to <strong className="text-gray-900 capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to demote <strong className="text-white">{roleModal.email}</strong> to <strong className="text-white capitalize">{roleModal.newRole}</strong>.</>
               )}
             </p>
-            <p className="mb-6 text-sm text-gray-500">
+            <p className="mb-6 text-sm text-neutral-400">
               {roleModal.type === 'promotion'
                 ? roleModal.newRole === 'cofounder'
                   ? 'This will grant the highest level of access, including the ability to manage admins. Are you sure?'
@@ -280,7 +280,7 @@ export function AdminUsersPage() {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setRoleModal(null)}
-                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="rounded-lg border border-white/[0.12] px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-white/[0.06]"
               >
                 Cancel
               </button>

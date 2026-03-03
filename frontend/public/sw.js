@@ -1,4 +1,4 @@
-const CACHE_NAME = '3d-dev-platform-v1';
+const CACHE_NAME = 'siteforge-v1';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',

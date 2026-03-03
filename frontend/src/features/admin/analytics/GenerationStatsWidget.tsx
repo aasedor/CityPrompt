@@ -9,7 +9,7 @@ const STATUS_COLORS: Record<string, string> = {
   completed: '#22c55e',
   failed: '#ef4444',
   generating: '#f59e0b',
-  idle: '#9ca3af',
+  idle: '#a0afc2',
 };
 
 export function GenerationStatsWidget({ data }: Props) {
@@ -27,7 +27,7 @@ export function GenerationStatsWidget({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">3D Generation Stats</h3>
+      <h3 className="mb-4 text-sm font-semibold text-neutral-300">3D Generation Stats</h3>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Pie chart */}
@@ -48,26 +48,26 @@ export function GenerationStatsWidget({ data }: Props) {
                 ))}
               </Pie>
               <Tooltip
-                contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb', fontSize: '13px' }}
+                contentStyle={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', backgroundColor: 'rgba(15,15,30,0.9)', color: '#e5e7eb' }}
               />
-              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Legend wrapperStyle={{ fontSize: '12px', color: '#9ca3af' }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Stat cards */}
         <div className="flex flex-col justify-center gap-3">
-          <div className="rounded-lg bg-gray-50 px-4 py-3">
-            <p className="text-xs text-gray-500">Total Generations</p>
-            <p className="text-xl font-bold text-gray-900">{data.total_generations}</p>
+          <div className="rounded-lg bg-white/[0.06] px-4 py-3">
+            <p className="text-xs text-neutral-400">Total Generations</p>
+            <p className="text-xl font-bold text-white">{data.total_generations}</p>
           </div>
-          <div className="rounded-lg bg-green-50 px-4 py-3">
-            <p className="text-xs text-green-600">Success Rate</p>
-            <p className="text-xl font-bold text-green-700">{data.success_rate}%</p>
+          <div className="rounded-lg bg-green-500/15 px-4 py-3">
+            <p className="text-xs text-green-400">Success Rate</p>
+            <p className="text-xl font-bold text-green-400">{data.success_rate}%</p>
           </div>
-          <div className="rounded-lg bg-gray-50 px-4 py-3">
-            <p className="text-xs text-gray-500">Engines Active</p>
-            <p className="text-xl font-bold text-gray-900">{Object.keys(data.by_engine).length}</p>
+          <div className="rounded-lg bg-white/[0.06] px-4 py-3">
+            <p className="text-xs text-neutral-400">Engines Active</p>
+            <p className="text-xl font-bold text-white">{Object.keys(data.by_engine).length}</p>
           </div>
         </div>
       </div>
@@ -75,14 +75,14 @@ export function GenerationStatsWidget({ data }: Props) {
       {/* Per-engine breakdown */}
       {Object.keys(data.by_engine).length > 0 && (
         <div className="mt-4 space-y-2">
-          <p className="text-xs font-medium text-gray-500">By Engine</p>
+          <p className="text-xs font-medium text-neutral-400">By Engine</p>
           {Object.entries(data.by_engine).map(([engine, statuses]) => (
-            <div key={engine} className="flex items-center justify-between rounded-md bg-gray-50 px-3 py-2">
-              <span className="text-sm font-medium capitalize text-gray-700">{engine}</span>
+            <div key={engine} className="flex items-center justify-between rounded-md bg-white/[0.06] px-3 py-2">
+              <span className="text-sm font-medium capitalize text-neutral-300">{engine}</span>
               <div className="flex gap-3">
                 {Object.entries(statuses).map(([status, count]) => (
-                  <span key={status} className="text-xs text-gray-500">
-                    <span className="capitalize">{status}</span>: <span className="font-medium text-gray-700">{count}</span>
+                  <span key={status} className="text-xs text-neutral-400">
+                    <span className="capitalize">{status}</span>: <span className="font-medium text-neutral-300">{count}</span>
                   </span>
                 ))}
               </div>

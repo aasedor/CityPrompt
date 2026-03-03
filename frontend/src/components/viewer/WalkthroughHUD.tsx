@@ -51,7 +51,7 @@ export function WalkthroughHUD() {
             if (document.pointerLockElement) document.exitPointerLock();
             exitWalkthrough();
           }}
-          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-gray-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-gray-900/90 transition-colors"
+          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-primary-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-primary-900/90 transition-colors"
         >
           <X size={14} />
           Exit Walkthrough
@@ -62,7 +62,7 @@ export function WalkthroughHUD() {
             if (document.pointerLockElement) document.exitPointerLock();
             setCameraMode('orbit');
           }}
-          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-gray-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-gray-900/90 transition-colors"
+          className="fixed right-4 top-16 z-40 flex items-center gap-1.5 rounded-lg bg-primary-900/70 px-3 py-2 text-sm font-medium text-white/90 shadow-lg backdrop-blur-md hover:bg-primary-900/90 transition-colors"
         >
           <X size={14} />
           Exit {modeLabel} Mode
@@ -75,7 +75,7 @@ export function WalkthroughHUD() {
           hintVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="rounded-full bg-gray-900/70 px-5 py-2.5 text-sm text-white/90 shadow-lg backdrop-blur-md">
+        <div className="rounded-full bg-primary-900/70 px-5 py-2.5 text-sm text-white/90 shadow-lg backdrop-blur-md">
           <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">WASD</kbd> to move
           <span className="mx-2 text-white/40">|</span>
           <kbd className="mx-1 rounded bg-white/20 px-1.5 py-0.5 text-xs font-mono">Shift</kbd> to sprint

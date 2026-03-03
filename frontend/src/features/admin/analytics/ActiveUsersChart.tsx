@@ -23,8 +23,8 @@ export function ActiveUsersChart({ data }: Props) {
   return (
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700">Active Users</h3>
-        <span className="text-xs text-gray-400">{data.total_in_range} active</span>
+        <h3 className="text-sm font-semibold text-neutral-300">Active Users</h3>
+        <span className="text-xs text-neutral-400">{data.total_in_range} active</span>
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -35,11 +35,11 @@ export function ActiveUsersChart({ data }: Props) {
                 <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="period" tick={{ fontSize: 12 }} stroke="#9ca3af" />
-            <YAxis allowDecimals={false} tick={{ fontSize: 12 }} stroke="#9ca3af" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+            <XAxis dataKey="period" tick={{ fontSize: 12, fill: '#9ca3af' }} stroke="rgba(255,255,255,0.1)" />
+            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#9ca3af' }} stroke="rgba(255,255,255,0.1)" />
             <Tooltip
-              contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb', fontSize: '13px' }}
+              contentStyle={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '13px', backgroundColor: 'rgba(15,15,30,0.9)', color: '#e5e7eb' }}
             />
             <Area
               type="monotone"

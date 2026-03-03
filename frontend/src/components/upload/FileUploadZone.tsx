@@ -39,7 +39,7 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
   const fileIcon = (type: string) => {
     if (type.startsWith('image/')) return <Image size={16} className="text-green-500" />;
     if (type === 'application/pdf') return <FileText size={16} className="text-red-500" />;
-    return <FileSpreadsheet size={16} className="text-blue-500" />;
+    return <FileSpreadsheet size={16} className="text-primary-500" />;
   };
 
   return (
@@ -48,16 +48,16 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
         {...getRootProps()}
         className={`cursor-pointer rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
           isDragActive
-            ? 'border-primary-400 bg-primary-50'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-primary-400/50 bg-primary-500/10'
+            : 'border-white/[0.15] hover:border-white/20'
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto mb-3 h-10 w-10 text-gray-400" />
-        <p className="text-sm font-medium text-gray-700">
+        <Upload className="mx-auto mb-3 h-10 w-10 text-neutral-400" />
+        <p className="text-sm font-medium text-neutral-300">
           {isDragActive ? 'Drop files here...' : 'Drag & drop files, or click to browse'}
         </p>
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-neutral-400">
           PDF, Images, CAD (DXF), Excel, CSV, GeoJSON — up to 100MB
         </p>
       </div>
@@ -67,18 +67,18 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
           {files.map((f) => (
             <div
               key={f.id}
-              className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3"
+              className="flex items-center gap-3 rounded-lg border border-white/[0.08] bg-white/[0.04] px-4 py-3"
             >
               {fileIcon(f.file.type)}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900">{f.file.name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="truncate text-sm font-medium text-white">{f.file.name}</p>
+                <p className="text-xs text-neutral-400">
                   {(f.file.size / 1024 / 1024).toFixed(1)} MB
                   {f.status !== 'pending' && (
                     <span className={`ml-2 capitalize ${
-                      f.status === 'completed' ? 'text-green-600' :
-                      f.status === 'failed' ? 'text-red-600' :
-                      'text-amber-600'
+                      f.status === 'completed' ? 'text-green-400' :
+                      f.status === 'failed' ? 'text-red-400' :
+                      'text-amber-400'
                     }`}>
                       {f.status}
                     </span>
@@ -86,7 +86,7 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
                 </p>
               </div>
               {f.status === 'uploading' && (
-                <div className="h-1.5 w-24 rounded-full bg-gray-200">
+                <div className="h-1.5 w-24 rounded-full bg-white/10">
                   <div
                     className="h-1.5 rounded-full bg-primary-500 transition-all"
                     style={{ width: `${f.progress}%` }}
@@ -95,7 +95,7 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
               )}
               <button
                 onClick={() => removeFile(f.id)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-neutral-400 hover:text-neutral-300"
               >
                 <X size={16} />
               </button>

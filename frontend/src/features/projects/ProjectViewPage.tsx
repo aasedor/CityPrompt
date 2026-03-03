@@ -144,24 +144,24 @@ export function ProjectViewPage() {
     ).length;
   }, [project?.documents]);
 
-  if (isLoading) return <div className="text-center text-gray-500">Loading project...</div>;
-  if (!project) return <div className="text-center text-gray-500">Project not found</div>;
+  if (isLoading) return <div className="text-center text-neutral-400">Loading project...</div>;
+  if (!project) return <div className="text-center text-neutral-400">Project not found</div>;
 
   return (
     <div>
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         <div className="flex items-center gap-3 sm:gap-4">
-          <Link to="/" className="rounded-lg p-2 hover:bg-gray-100">
+          <Link to="/projects" className="rounded-lg p-2 hover:bg-white/10">
             <ArrowLeft size={20} />
           </Link>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-xl font-bold text-gray-900 sm:text-2xl">{project.name}</h1>
+            <h1 className="truncate text-xl font-bold text-white sm:text-2xl">{project.name}</h1>
             {project.description && (
-              <p className="mt-1 line-clamp-2 text-sm text-gray-500">{project.description}</p>
+              <p className="mt-1 line-clamp-2 text-sm text-neutral-400">{project.description}</p>
             )}
             {project.location?.address && (
-              <p className="mt-1 flex items-center text-xs text-gray-400">
+              <p className="mt-1 flex items-center text-xs text-neutral-400">
                 <MapPin size={11} className="mr-1 flex-shrink-0" />
                 {project.location.address}
               </p>
@@ -191,7 +191,7 @@ export function ProjectViewPage() {
       </div>
 
       {/* Embedded Site Planner Map */}
-      <section className="mt-6 overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+      <section className="mt-6 overflow-hidden rounded-xl border border-white/[0.08] shadow-card">
         <div className="relative h-[350px] sm:h-[400px] lg:h-[500px]">
           <SitePlannerMap
             latitude={project.location?.latitude}
@@ -228,7 +228,7 @@ export function ProjectViewPage() {
         <div className="lg:col-span-2 space-y-8">
           {/* Document Upload */}
           <section className="card">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
               <Upload size={20} />
               Upload Documents
             </h2>
@@ -241,11 +241,11 @@ export function ProjectViewPage() {
           {project.documents && project.documents.length > 0 && (
             <section className="card">
               <div className="flex items-center justify-between">
-                <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+                <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
                   <FileText size={20} />
                   Documents
                   {processingDocCount > 0 && (
-                    <span className="ml-2 flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
+                    <span className="ml-2 flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-xs text-amber-400">
                       <Loader2 size={12} className="animate-spin" />
                       {processingDocCount} processing
                     </span>
@@ -263,13 +263,13 @@ export function ProjectViewPage() {
           {/* Buildings */}
           <section className="card">
             <div className="flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
                 <Building2 size={20} />
                 Buildings
               </h2>
               <button
                 onClick={() => setShowAddBuilding(true)}
-                className="flex items-center gap-1 rounded-lg bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100"
+                className="flex items-center gap-1 rounded-lg bg-primary-500/15 px-3 py-1.5 text-sm font-medium text-primary-400 hover:bg-primary-500/25"
               >
                 <Plus size={16} />
                 Add Building
@@ -278,10 +278,10 @@ export function ProjectViewPage() {
             {project.buildings?.length ? (
               <div className="mt-4 space-y-3">
                 {project.buildings.map((b) => (
-                  <div key={b.id} className="flex items-center justify-between rounded-lg border border-gray-100 p-4">
+                  <div key={b.id} className="flex items-center justify-between rounded-lg border border-white/[0.08] p-4">
                     <div>
-                      <p className="font-medium text-gray-900">{b.name || 'Unnamed Building'}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-white">{b.name || 'Unnamed Building'}</p>
+                      <p className="text-sm text-neutral-400">
                         {b.floor_count && `${b.floor_count} floors`}
                         {b.height_meters && ` · ${b.height_meters}m tall`}
                         {b.roof_type && ` · ${b.roof_type} roof`}
@@ -289,27 +289,27 @@ export function ProjectViewPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       {b.model_url ? (
-                        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
+                        <span className="badge bg-emerald-500/15 text-emerald-400">
                           3D Ready
                         </span>
                       ) : b.generation_status === 'generating' ? (
-                        <span className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+                        <span className="flex items-center gap-1 badge bg-primary-500/15 text-primary-400">
                           <Loader2 size={10} className="animate-spin" />
                           Generating...
                           {genElapsed > 0 && (
-                            <span className="tabular-nums text-blue-500">
+                            <span className="tabular-nums text-primary-500">
                               {Math.floor(genElapsed / 60)}:{(genElapsed % 60).toString().padStart(2, '0')}
                             </span>
                           )}
                         </span>
                       ) : b.generation_status === 'failed' ? (
-                        <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
+                        <span className="badge bg-red-500/15 text-red-400">
                           Failed
                         </span>
                       ) : (
                         <button
                           onClick={() => setAiGenerateBuildingId(b.id)}
-                          className="flex items-center gap-1 rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700 hover:bg-purple-200"
+                          className="flex items-center gap-1 rounded-full bg-purple-500/15 px-2.5 py-0.5 text-xs font-medium text-purple-400 hover:bg-purple-500/25"
                           title="Generate 3D model with AI"
                         >
                           <Sparkles size={10} />
@@ -327,7 +327,7 @@ export function ProjectViewPage() {
                             });
                           }
                         }}
-                        className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                        className="rounded-md p-1.5 text-neutral-500 hover:bg-red-500/10 hover:text-red-400"
                         title="Delete building"
                       >
                         <Trash2 size={14} />
@@ -337,7 +337,7 @@ export function ProjectViewPage() {
                 ))}
               </div>
             ) : (
-              <p className="mt-4 text-sm text-gray-500">
+              <p className="mt-4 text-sm text-neutral-400">
                 No buildings yet. Upload documents or add buildings manually.
               </p>
             )}
@@ -369,31 +369,31 @@ export function ProjectViewPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           <div className="card">
-            <h3 className="font-semibold text-gray-900">Project Details</h3>
+            <h3 className="font-semibold text-white">Project Details</h3>
             <dl className="mt-4 space-y-3 text-sm">
               <div>
-                <dt className="text-gray-500">Status</dt>
-                <dd className="mt-0.5 font-medium capitalize text-gray-900">{project.status}</dd>
+                <dt className="text-neutral-400">Status</dt>
+                <dd className="mt-0.5 font-medium capitalize text-white">{project.status}</dd>
               </div>
               <div>
-                <dt className="text-gray-500">Created</dt>
-                <dd className="mt-0.5 text-gray-900">
+                <dt className="text-neutral-400">Created</dt>
+                <dd className="mt-0.5 text-white">
                   {new Date(project.created_at).toLocaleDateString()}
                 </dd>
               </div>
               <div>
-                <dt className="text-gray-500">Last Updated</dt>
-                <dd className="mt-0.5 text-gray-900">
+                <dt className="text-neutral-400">Last Updated</dt>
+                <dd className="mt-0.5 text-white">
                   {new Date(project.updated_at).toLocaleDateString()}
                 </dd>
               </div>
               <div>
-                <dt className="text-gray-500">Buildings</dt>
-                <dd className="mt-0.5 text-gray-900">{project.buildings?.length || 0}</dd>
+                <dt className="text-neutral-400">Buildings</dt>
+                <dd className="mt-0.5 text-white">{project.buildings?.length || 0}</dd>
               </div>
               <div>
-                <dt className="text-gray-500">Documents</dt>
-                <dd className="mt-0.5 text-gray-900">{project.documents?.length || 0}</dd>
+                <dt className="text-neutral-400">Documents</dt>
+                <dd className="mt-0.5 text-white">{project.documents?.length || 0}</dd>
               </div>
             </dl>
           </div>
@@ -401,7 +401,7 @@ export function ProjectViewPage() {
           {/* Activity Feed */}
           {activityLog && activityLog.length > 0 && (
             <div className="card">
-              <h3 className="font-semibold text-gray-900">Recent Activity</h3>
+              <h3 className="font-semibold text-white">Recent Activity</h3>
               <ul className="mt-3 space-y-2">
                 {activityLog.slice(0, 10).map((entry) => {
                   const actionLabels: Record<string, string> = {
@@ -414,18 +414,18 @@ export function ProjectViewPage() {
                   const name = entry.user_name || entry.user_email?.split('@')[0] || 'System';
                   const timeAgo = formatTimeAgo(entry.created_at);
                   return (
-                    <li key={entry.id} className="flex items-start gap-2 text-xs text-gray-600">
+                    <li key={entry.id} className="flex items-start gap-2 text-xs text-neutral-400">
                       <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-400" />
                       <span>
-                        <span className="font-medium text-gray-800">{name}</span>{' '}
+                        <span className="font-medium text-neutral-100">{name}</span>{' '}
                         {label}
                         {entry.details?.filename && (
-                          <span className="text-gray-400"> ({entry.details.filename as string})</span>
+                          <span className="text-neutral-400"> ({entry.details.filename as string})</span>
                         )}
                         {entry.details?.name && (
-                          <span className="text-gray-400"> ({entry.details.name as string})</span>
+                          <span className="text-neutral-400"> ({entry.details.name as string})</span>
                         )}
-                        <span className="ml-1 text-gray-400">{timeAgo}</span>
+                        <span className="ml-1 text-neutral-400">{timeAgo}</span>
                       </span>
                     </li>
                   );
@@ -455,10 +455,10 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
   const [deleting, setDeleting] = useState(false);
 
   const statusConfig = {
-    pending: { icon: <Clock size={14} />, color: 'text-amber-600 bg-amber-50', label: 'Pending' },
-    processing: { icon: <Loader2 size={14} className="animate-spin" />, color: 'text-blue-600 bg-blue-50', label: 'Processing' },
-    completed: { icon: <CheckCircle size={14} />, color: 'text-green-600 bg-green-50', label: 'Completed' },
-    failed: { icon: <AlertCircle size={14} />, color: 'text-red-600 bg-red-50', label: 'Failed' },
+    pending: { icon: <Clock size={14} />, color: 'text-amber-400 bg-amber-500/10', label: 'Pending' },
+    processing: { icon: <Loader2 size={14} className="animate-spin" />, color: 'text-primary-400 bg-primary-500/15', label: 'Processing' },
+    completed: { icon: <CheckCircle size={14} />, color: 'text-emerald-400 bg-emerald-500/15', label: 'Completed' },
+    failed: { icon: <AlertCircle size={14} />, color: 'text-red-400 bg-red-500/10', label: 'Failed' },
   };
 
   const status = statusConfig[doc.processing_status] || statusConfig.pending;
@@ -467,8 +467,8 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
     const ext = doc.file_type.toLowerCase();
     if (ext === 'pdf') return <FileText size={16} className="text-red-500" />;
     if (['jpg', 'jpeg', 'png', 'tiff'].includes(ext)) return <Image size={16} className="text-green-500" />;
-    if (['csv', 'xlsx'].includes(ext)) return <FileSpreadsheet size={16} className="text-blue-500" />;
-    return <FileText size={16} className="text-gray-500" />;
+    if (['csv', 'xlsx'].includes(ext)) return <FileSpreadsheet size={16} className="text-primary-500" />;
+    return <FileText size={16} className="text-neutral-500" />;
   };
 
   const formatSize = (bytes: number) => {
@@ -493,24 +493,24 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
   const isProcessing = doc.processing_status === 'processing' || doc.processing_status === 'pending';
 
   return (
-    <div className="group rounded-lg border border-gray-100 bg-white">
+    <div className="group rounded-lg border border-white/[0.08] bg-white/[0.04]">
       <div className="flex items-center gap-3 px-4 py-3">
         {getFileIcon()}
         <div className="flex-1 min-w-0">
-          <p className="truncate text-sm font-medium text-gray-700">{doc.filename}</p>
-          <p className="text-xs text-gray-500">
+          <p className="truncate text-sm font-medium text-neutral-300">{doc.filename}</p>
+          <p className="text-xs text-neutral-400">
             {formatSize(doc.file_size_bytes)} · {doc.file_type.toUpperCase()}
             {doc.processed_at && ` · Processed ${new Date(doc.processed_at).toLocaleDateString()}`}
           </p>
         </div>
-        <span className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.color}`}>
+        <span className={`flex items-center gap-1 badge ${status.color}`}>
           {status.icon}
           {status.label}
         </span>
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="ml-1 rounded-md p-1 text-gray-400 opacity-100 transition-opacity hover:bg-red-50 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50"
+          className="ml-1 rounded-md p-1 text-neutral-500 opacity-100 transition-opacity hover:bg-red-500/10 hover:text-red-500 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50"
           title="Delete document"
         >
           {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
@@ -518,9 +518,9 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
       </div>
       {isProcessing && (
         <div className="px-4 pb-3">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 animate-[shimmer_1.5s_ease-in-out_infinite]"
+              className="h-full rounded-full bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400 animate-[shimmer_1.5s_ease-in-out_infinite]"
               style={{
                 width: doc.processing_status === 'pending' ? '30%' : '70%',
                 backgroundSize: '200% 100%',
@@ -528,7 +528,7 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
               }}
             />
           </div>
-          <p className="mt-1 text-[10px] text-gray-400">
+          <p className="mt-1 text-[10px] text-neutral-400">
             {doc.processing_status === 'pending' ? 'Queued for processing...' : 'Extracting data and generating 3D models...'}
           </p>
         </div>

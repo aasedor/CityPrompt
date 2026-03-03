@@ -20,7 +20,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-400 border-t-transparent" />
       </div>
     );
   }
@@ -33,7 +33,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     const userLevel = ROLE_HIERARCHY[user.role] ?? 0;
     const requiredLevel = ROLE_HIERARCHY[requiredRole] ?? 0;
     if (userLevel < requiredLevel) {
-      return <Navigate to="/" replace />;
+      return <Navigate to="/projects" replace />;
     }
   }
 

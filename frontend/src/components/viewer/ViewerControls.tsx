@@ -41,14 +41,14 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
           mobileOpen ? 'top-28' : 'hidden md:flex'
         }`}
       >
-        <div className="card !p-3">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Camera</h3>
+        <div className="glass-dark rounded-xl !p-3">
+          <h3 className="mb-2 text-xs font-semibold uppercase text-neutral-300">Camera</h3>
           <div className="mb-2 flex flex-wrap gap-1">
             {(Object.keys(CAMERA_PRESETS) as CameraPreset[]).map((preset) => (
               <button
                 key={preset}
                 onClick={() => setCameraPreset(preset)}
-                className="rounded-md bg-gray-50 px-2 py-0.5 text-[10px] font-medium text-gray-500 hover:bg-primary-50 hover:text-primary-600"
+                className="rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-300 hover:bg-primary-50 hover:text-primary-600"
               >
                 {CAMERA_PRESETS[preset].label}
               </button>
@@ -67,10 +67,10 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                   title={disabled ? 'Not available on touch devices' : undefined}
                   className={`rounded-md px-2 py-1 text-xs font-medium transition-colors ${
                     disabled
-                      ? 'cursor-not-allowed text-gray-300'
+                      ? 'cursor-not-allowed text-neutral-400'
                       : settings.cameraMode === mode
-                        ? 'bg-primary-100 text-primary-700'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-white/20 text-white'
+                        : 'text-neutral-300 hover:bg-white/10'
                   }`}
                 >
                   {mode === 'orbit' ? 'Orbit' : mode === 'firstPerson' ? 'Walk' : 'Fly'}
@@ -80,7 +80,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
           </div>
           {/* Move Speed */}
           <div className="mt-2">
-            <label className="text-[11px] text-gray-500">
+            <label className="text-[11px] text-neutral-300">
               Speed: {settings.moveSpeed < 1 ? settings.moveSpeed.toFixed(2) : settings.moveSpeed.toFixed(1)}x
             </label>
             <input
@@ -92,7 +92,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
               onChange={(e) => updateSettings({ moveSpeed: parseFloat(e.target.value) })}
               className="mt-0.5 w-full"
             />
-            <div className="flex justify-between text-[9px] text-gray-400">
+            <div className="flex justify-between text-[9px] text-neutral-400">
               <span>Slow</span>
               <span>Fast</span>
             </div>
@@ -119,7 +119,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
             {!isRecording && !isPlaying && (
               <button
                 onClick={startRecording}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-gray-500 hover:bg-red-50 hover:text-red-600"
+                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-neutral-300 hover:bg-red-50 hover:text-red-600"
                 title="Record camera path"
               >
                 <Circle size={10} className="fill-red-500 text-red-500" />
@@ -138,7 +138,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
             {!isRecording && cameraPath.length > 0 && !isPlaying && (
               <button
                 onClick={startPlayback}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-gray-500 hover:bg-primary-50 hover:text-primary-600"
+                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-neutral-300 hover:bg-primary-50 hover:text-primary-600"
               >
                 <Play size={10} />
                 Play
@@ -156,15 +156,15 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
             {!isRecording && cameraPath.length > 0 && !isPlaying && (
               <button
                 onClick={clearCameraPath}
-                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-gray-400 hover:text-red-500"
+                className="flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-neutral-400 hover:text-red-500"
               >
                 <Trash2 size={10} />
               </button>
             )}
           </div>
         </div>
-        <div className="card !p-3">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Layers</h3>
+        <div className="glass-dark rounded-xl !p-3">
+          <h3 className="mb-2 text-xs font-semibold uppercase text-neutral-300">Layers</h3>
           <div className="flex flex-col gap-1.5">
             <Toggle icon={<Building2 size={14} />} label="Existing Buildings" active={settings.showExistingBuildings} onClick={() => updateSettings({ showExistingBuildings: !settings.showExistingBuildings })} />
             <Toggle icon={<TreePine size={14} />} label="Landscaping" active={settings.showLandscaping} onClick={() => updateSettings({ showLandscaping: !settings.showLandscaping })} />
@@ -186,8 +186,8 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                     onClick={() => setMeasurementMode(mode)}
                     className={`flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
                       measurementMode === mode
-                        ? 'bg-primary-100 text-primary-700'
-                        : 'text-gray-500 hover:bg-gray-100'
+                        ? 'bg-white/20 text-white'
+                        : 'text-neutral-300 hover:bg-white/10'
                     }`}
                   >
                     {icon}{label}
@@ -197,7 +197,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
               <div className="mt-1.5 flex items-center gap-1.5">
                 <button
                   onClick={() => setMeasurementUnit(measurementUnit === 'metric' ? 'imperial' : 'metric')}
-                  className="rounded-md bg-gray-50 px-2 py-0.5 text-[10px] font-medium text-gray-500 hover:bg-gray-100"
+                  className="rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-medium text-neutral-300 hover:bg-white/10"
                 >
                   {measurementUnit === 'metric' ? 'm / m²' : 'ft / ft²'}
                 </button>
@@ -211,7 +211,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                   </button>
                 )}
               </div>
-              <p className="mt-1 text-[10px] text-gray-400">
+              <p className="mt-1 text-[10px] text-neutral-400">
                 {measurementMode === 'distance' && 'Click two points to measure distance'}
                 {measurementMode === 'area' && 'Click 3+ points, then Enter to close'}
                 {measurementMode === 'height' && 'Click a building to measure height'}
@@ -220,16 +220,16 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
             </>
           )}
         </div>
-        <div className="card !p-3">
+        <div className="glass-dark rounded-xl !p-3">
           <Toggle icon={<Sun size={14} />} label="Shadows" active={settings.showShadows} onClick={() => updateSettings({ showShadows: !settings.showShadows })} />
           {settings.showShadows && (
             <div className="mt-2 space-y-2">
               <div>
-                <label className="text-xs text-gray-500">Time: {Math.floor(settings.sunTime)}:{String(Math.round((settings.sunTime % 1) * 60)).padStart(2, '0')}</label>
+                <label className="text-xs text-neutral-300">Time: {Math.floor(settings.sunTime)}:{String(Math.round((settings.sunTime % 1) * 60)).padStart(2, '0')}</label>
                 <input type="range" min={6} max={20} step={0.5} value={settings.sunTime} onChange={(e) => updateSettings({ sunTime: parseFloat(e.target.value) })} className="mt-1 w-full" />
               </div>
               <div>
-                <label className="text-xs text-gray-500">Date</label>
+                <label className="text-xs text-neutral-300">Date</label>
                 <input
                   type="date"
                   value={settings.sunDate.toISOString().split('T')[0]}
@@ -237,7 +237,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                     const d = new Date(e.target.value + 'T12:00:00');
                     if (!isNaN(d.getTime())) updateSettings({ sunDate: d });
                   }}
-                  className="mt-1 w-full rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 focus:border-primary-400 focus:outline-none"
+                  className="mt-1 w-full rounded-md border border-white/20 bg-white/10 px-2 py-1 text-xs text-white focus:border-primary-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -247,18 +247,18 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
           )}
           <Toggle icon={<Activity size={14} />} label="FPS Monitor" active={settings.showPerformance} onClick={() => updateSettings({ showPerformance: !settings.showPerformance })} />
         </div>
-        <div className="card !p-3">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Rendering</h3>
+        <div className="glass-dark rounded-xl !p-3">
+          <h3 className="mb-2 text-xs font-semibold uppercase text-neutral-300">Rendering</h3>
           <div className="flex flex-col gap-1.5">
             <Toggle icon={<Sparkles size={14} />} label="Post-Processing" active={settings.enablePostProcessing} onClick={() => updateSettings({ enablePostProcessing: !settings.enablePostProcessing })} />
             <Toggle icon={<CloudFog size={14} />} label="Fog" active={settings.enableFog} onClick={() => updateSettings({ enableFog: !settings.enableFog })} />
           </div>
         </div>
-        <div className="card !p-3">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500"><Layers size={12} className="mr-1 inline" />Map</h3>
+        <div className="glass-dark rounded-xl !p-3">
+          <h3 className="mb-2 text-xs font-semibold uppercase text-neutral-300"><Layers size={12} className="mr-1 inline" />Map</h3>
           <div className="flex flex-wrap gap-1">
             {(['none', 'satellite', 'streets', 'terrain'] as const).map((layer) => (
-              <button key={layer} onClick={() => updateSettings({ mapLayer: layer })} className={`rounded-md px-2 py-1 text-xs font-medium capitalize transition-colors ${settings.mapLayer === layer ? 'bg-primary-100 text-primary-700' : 'text-gray-600 hover:bg-gray-100'}`}>
+              <button key={layer} onClick={() => updateSettings({ mapLayer: layer })} className={`rounded-md px-2 py-1 text-xs font-medium capitalize transition-colors ${settings.mapLayer === layer ? 'bg-white/20 text-white' : 'text-neutral-300 hover:bg-white/10'}`}>
                 {layer === 'none' ? 'Off' : layer}
               </button>
             ))}
@@ -266,8 +266,8 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
         </div>
         {/* Construction Phasing Timeline */}
         {constructionPhases && constructionPhases.length > 0 && (
-          <div className="card !p-3">
-            <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">
+          <div className="glass-dark rounded-xl !p-3">
+            <h3 className="mb-2 text-xs font-semibold uppercase text-neutral-300">
               <HardHat size={12} className="mr-1 inline" />Phasing
             </h3>
             <div className="flex flex-col gap-1.5">
@@ -275,8 +275,8 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                 onClick={() => updateSettings({ activePhase: null })}
                 className={`rounded-md px-2 py-1 text-left text-xs font-medium transition-colors ${
                   settings.activePhase === null
-                    ? 'bg-primary-100 text-primary-700'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    ? 'bg-white/20 text-white'
+                    : 'text-neutral-300 hover:bg-white/10'
                 }`}
               >
                 All Phases
@@ -289,8 +289,8 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                     onClick={() => updateSettings({ activePhase: phase.phase_number })}
                     className={`flex items-center gap-2 rounded-md px-2 py-1 text-left text-xs font-medium transition-colors ${
                       settings.activePhase === phase.phase_number
-                        ? 'bg-primary-100 text-primary-700'
-                        : 'text-gray-600 hover:bg-gray-100'
+                        ? 'bg-white/20 text-white'
+                        : 'text-neutral-300 hover:bg-white/10'
                     }`}
                   >
                     {phase.color && (
@@ -314,7 +314,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                   onChange={(e) => updateSettings({ activePhase: parseInt(e.target.value) })}
                   className="w-full"
                 />
-                <div className="mt-0.5 flex justify-between text-[10px] text-gray-400">
+                <div className="mt-0.5 flex justify-between text-[10px] text-neutral-400">
                   <span>Phase 1</span>
                   <span>Phase {maxPhase}</span>
                 </div>
@@ -333,8 +333,8 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                   }}
                   className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
                     isComparing
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-gray-500 hover:bg-gray-100'
+                      ? 'bg-white/20 text-white'
+                      : 'text-neutral-300 hover:bg-white/10'
                   }`}
                 >
                   <SplitSquareVertical size={12} />
@@ -342,11 +342,11 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                 </button>
                 {isComparing && (
                   <div className="mt-1.5 flex items-center gap-1.5 text-[10px]">
-                    <span className="text-gray-500">vs Phase</span>
+                    <span className="text-neutral-300">vs Phase</span>
                     <select
                       value={comparePhase ?? 1}
                       onChange={(e) => setComparePhase(parseInt(e.target.value))}
-                      className="rounded border border-gray-200 px-1.5 py-0.5 text-[10px] text-gray-700"
+                      className="rounded border border-white/20 px-1.5 py-0.5 text-[10px] text-white"
                     >
                       {constructionPhases
                         .sort((a, b) => a.phase_number - b.phase_number)
@@ -373,22 +373,22 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
                 (sum, b) => sum + (b.specifications?.residential_units || 0), 0
               );
               return (
-                <div className="mt-2 rounded-md bg-gray-50 p-2 text-[11px]">
-                  <div className="font-medium text-gray-700">{phase?.name || `Phase ${settings.activePhase}`}</div>
+                <div className="mt-2 rounded-md bg-white/10 p-2 text-[11px]">
+                  <div className="font-medium text-white">{phase?.name || `Phase ${settings.activePhase}`}</div>
                   {phase?.start_date && (
-                    <div className="mt-0.5 text-gray-500">
+                    <div className="mt-0.5 text-neutral-300">
                       {phase.start_date}{phase.end_date ? ` → ${phase.end_date}` : ''}
                     </div>
                   )}
-                  <div className="mt-1 grid grid-cols-2 gap-x-3 gap-y-0.5 text-gray-500">
+                  <div className="mt-1 grid grid-cols-2 gap-x-3 gap-y-0.5 text-neutral-300">
                     <span>This phase:</span>
-                    <span className="font-medium text-gray-700">{phaseBuildings.length} building{phaseBuildings.length !== 1 ? 's' : ''}</span>
+                    <span className="font-medium text-white">{phaseBuildings.length} building{phaseBuildings.length !== 1 ? 's' : ''}</span>
                     <span>Cumulative:</span>
-                    <span className="font-medium text-gray-700">{cumulativeBuildings.length} building{cumulativeBuildings.length !== 1 ? 's' : ''}</span>
+                    <span className="font-medium text-white">{cumulativeBuildings.length} building{cumulativeBuildings.length !== 1 ? 's' : ''}</span>
                     {totalUnits > 0 && (
                       <>
                         <span>Total units:</span>
-                        <span className="font-medium text-gray-700">{totalUnits}</span>
+                        <span className="font-medium text-white">{totalUnits}</span>
                       </>
                     )}
                   </div>
@@ -404,7 +404,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
 
 function Toggle({ icon, label, active, onClick }: { icon: React.ReactNode; label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} className={`flex items-center gap-2 rounded-md px-2 py-1 text-xs font-medium transition-colors ${active ? 'bg-primary-50 text-primary-700' : 'text-gray-500 hover:bg-gray-50'}`}>
+    <button onClick={onClick} className={`flex items-center gap-2 rounded-md px-2 py-1 text-xs font-medium transition-colors ${active ? 'bg-white/20 text-white' : 'text-neutral-300 hover:bg-white/10'}`}>
       {icon}{label}
     </button>
   );

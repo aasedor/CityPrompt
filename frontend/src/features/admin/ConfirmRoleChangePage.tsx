@@ -32,32 +32,32 @@ export function ConfirmRoleChangePage() {
   }, [token]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg text-center">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="w-full max-w-md rounded-2xl bg-white/[0.04] border border-white/[0.08] p-8 shadow-elevated text-center backdrop-blur-xl">
         {status === 'loading' && (
           <>
             <Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600" />
-            <p className="mt-4 text-sm text-gray-500">Confirming role change...</p>
+            <p className="mt-4 text-sm text-neutral-400">Confirming role change...</p>
           </>
         )}
 
         {status === 'success' && (
           <>
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-              <CheckCircle className="h-7 w-7 text-green-600" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500/15">
+              <CheckCircle className="h-7 w-7 text-green-400" />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-gray-900">Role Change Confirmed</h2>
-            <p className="mt-2 text-sm text-gray-600">{message}</p>
+            <h2 className="mt-4 text-lg font-semibold text-white">Role Change Confirmed</h2>
+            <p className="mt-2 text-sm text-neutral-400">{message}</p>
           </>
         )}
 
         {status === 'error' && (
           <>
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100">
-              <XCircle className="h-7 w-7 text-red-600" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15">
+              <XCircle className="h-7 w-7 text-red-400" />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-gray-900">Confirmation Failed</h2>
-            <p className="mt-2 text-sm text-gray-600">{message}</p>
+            <h2 className="mt-4 text-lg font-semibold text-white">Confirmation Failed</h2>
+            <p className="mt-2 text-sm text-neutral-400">{message}</p>
           </>
         )}
 

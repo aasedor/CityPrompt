@@ -40,7 +40,7 @@ class SceneErrorBoundary extends Component<{ children: ReactNode }, { error: Err
           <p className="text-lg font-semibold">3D Scene Error</p>
           <pre className="max-w-xl overflow-auto rounded bg-red-900/50 p-3 text-xs text-red-200">{this.state.error.toString()}</pre>
           {isWebGLError && (
-            <p className="max-w-md text-center text-sm text-gray-400">
+            <p className="max-w-md text-center text-sm text-neutral-400">
               Browser ran out of WebGL contexts. Close other tabs using 3D/maps and reload the page.
             </p>
           )}
@@ -569,9 +569,18 @@ export function ViewerPage() {
   const [screenshotMenuOpen, setScreenshotMenuOpen] = useState(false);
   const [showAIGenerateModal, setShowAIGenerateModal] = useState(false);
   const [generatingNeighborhood, setGeneratingNeighborhood] = useState(false);
+  const [showGenerateConfirm, setShowGenerateConfirm] = useState(false);
 
-  const handleGenerateNeighborhood = useCallback(async () => {
+  // Compute buildable zone counts for the confirmation dialog
+  const buildableZones = siteZones.filter(z => ['building', 'residential', 'development_area'].includes(z.zone_type));
+  const totalBuildableCount = buildableZones.length;
+  const totalUnits = buildableZones.reduce((sum, z) => sum + ((z.properties?.unit_count as number) || 1), 0);
+
+  const selectedBoundary = selectedZone?.zone_type === 'site_boundary' ? selectedZone : null;
+
+  const runGenerate = useCallback(async (mode: 'boundary' | 'all') => {
     if (!id) return;
+    setShowGenerateConfirm(false);
     setGeneratingNeighborhood(true);
     try {
       // Auto-apply any active layout preview selections before generating
@@ -613,11 +622,9 @@ export function ViewerPage() {
         toast.success(`Applied ${appliedCount} previewed layout${appliedCount > 1 ? 's' : ''}`);
       }
 
-      // If a site_boundary is selected, scope generation to that boundary
-      const boundaryZone = selectedZone?.zone_type === 'site_boundary' ? selectedZone : null;
       let result;
-      if (boundaryZone) {
-        result = await siteZonesApi.generateForBoundary(id, boundaryZone.id);
+      if (mode === 'boundary' && selectedBoundary) {
+        result = await siteZonesApi.generateForBoundary(id, selectedBoundary.id);
       } else {
         result = await siteZonesApi.generateAll(id);
       }
@@ -632,7 +639,7 @@ export function ViewerPage() {
     } finally {
       setGeneratingNeighborhood(false);
     }
-  }, [id, queryClient, selectedZone]);
+  }, [id, queryClient, selectedBoundary]);
   const [aiGenerateFromZoneBuildingId, setAiGenerateFromZoneBuildingId] = useState<string | null>(null);
   const [aiGenerateFromZonePrompt, setAiGenerateFromZonePrompt] = useState<string | null>(null);
   const [editingBuilding, setEditingBuilding] = useState(false);
@@ -773,7 +780,7 @@ export function ViewerPage() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-gray-900">
       {/* Top Bar */}
-      <div className="absolute left-0 right-0 top-0 z-20 flex items-center justify-between bg-gradient-to-b from-gray-900/80 to-transparent px-3 py-2 sm:px-4 sm:py-3">
+      <div className="absolute left-0 right-0 top-0 z-20 flex items-center justify-between bg-primary-900/90 backdrop-blur-sm shadow-lg px-3 py-2 sm:px-4 sm:py-3">
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
             to={`/projects/${id}`}
@@ -783,7 +790,7 @@ export function ViewerPage() {
           </Link>
           <div className="min-w-0">
             <h1 className="truncate text-sm font-semibold text-white sm:text-lg">{project?.name || 'Loading...'}</h1>
-            <p className="text-xs text-gray-300">{project?.buildings?.length || 0} buildings</p>
+            <p className="text-xs text-neutral-300">{project?.buildings?.length || 0} buildings</p>
           </div>
           <UndoRedoButtons />
           {/* Presence indicators with follow mode */}
@@ -818,7 +825,7 @@ export function ViewerPage() {
                       >
                         {u.name.charAt(0).toUpperCase()}
                         {isFollowing && (
-                          <Eye size={8} className="absolute -bottom-1 -right-1 rounded-full bg-white text-gray-900 p-px" />
+                          <Eye size={8} className="absolute -bottom-1 -right-1 rounded-full bg-white text-neutral-900 p-px" />
                         )}
                       </button>
                     );
@@ -865,7 +872,7 @@ export function ViewerPage() {
           )}
           {!isSitePlannerActive && siteZones.length > 0 && (
           <button
-            onClick={handleGenerateNeighborhood}
+            onClick={() => setShowGenerateConfirm(true)}
             disabled={generatingNeighborhood}
             className="flex items-center gap-1.5 rounded-lg bg-purple-700/80 p-2 text-sm font-medium text-white backdrop-blur-sm hover:bg-purple-800/80 disabled:opacity-50 sm:px-3 sm:py-1.5"
             title="Generate 3D models for all building/residential zones"
@@ -1089,9 +1096,9 @@ export function ViewerPage() {
       {isInfoPanelOpen && selectedBuilding && (
         <div className="absolute bottom-0 left-0 right-0 z-20 rounded-t-xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm sm:bottom-4 sm:left-auto sm:right-4 sm:w-80 sm:rounded-xl sm:p-5">
           {/* Drag handle for mobile */}
-          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-gray-300 sm:hidden" />
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-neutral-300 sm:hidden" />
           <div className="flex items-start justify-between">
-            <h3 className="font-semibold text-gray-900">
+            <h3 className="font-semibold text-neutral-900">
               {selectedBuilding.name || 'Building Details'}
             </h3>
             <div className="flex items-center gap-1">
@@ -1110,7 +1117,7 @@ export function ViewerPage() {
                 className={`rounded-md px-2 py-0.5 text-xs font-medium ${
                   editingBuilding
                     ? 'bg-amber-100 text-amber-700'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200'
                 }`}
               >
                 {editingBuilding ? 'Cancel' : 'Edit'}
@@ -1120,7 +1127,7 @@ export function ViewerPage() {
                 className={`rounded-md p-1 ${
                   isMovingBuilding
                     ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                    : 'text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600'
                 }`}
                 title={isMovingBuilding ? 'Cancel move' : 'Move building'}
               >
@@ -1128,14 +1135,14 @@ export function ViewerPage() {
               </button>
               <button
                 onClick={() => deleteBuilding.mutate(selectedBuilding.id)}
-                className="rounded-md p-1 text-gray-400 hover:bg-red-100 hover:text-red-600"
+                className="rounded-md p-1 text-neutral-400 hover:bg-red-100 hover:text-red-600"
                 title="Delete building (Ctrl+Z to undo)"
               >
                 <Trash2 size={14} />
               </button>
               <button
                 onClick={() => selectBuilding(null)}
-                className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
               >
                 ✕
               </button>
@@ -1151,41 +1158,41 @@ export function ViewerPage() {
           {editingBuilding ? (
             <div className="mt-3 space-y-2 text-sm">
               <div>
-                <label className="block text-xs text-gray-500">Height (m)</label>
+                <label className="block text-xs text-neutral-500">Height (m)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={editValues.height_meters ?? ''}
                   onChange={(e) => setEditValues((v) => ({ ...v, height_meters: parseFloat(e.target.value) || undefined }))}
-                  className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500">Floors</label>
+                <label className="block text-xs text-neutral-500">Floors</label>
                 <input
                   type="number"
                   step="1"
                   value={editValues.floor_count ?? ''}
                   onChange={(e) => setEditValues((v) => ({ ...v, floor_count: parseInt(e.target.value) || undefined }))}
-                  className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500">Floor Height (m)</label>
+                <label className="block text-xs text-neutral-500">Floor Height (m)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={editValues.floor_height_meters ?? ''}
                   onChange={(e) => setEditValues((v) => ({ ...v, floor_height_meters: parseFloat(e.target.value) || undefined }))}
-                  className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-500">Roof Type</label>
+                <label className="block text-xs text-neutral-500">Roof Type</label>
                 <select
                   value={editValues.roof_type || 'flat'}
                   onChange={(e) => setEditValues((v) => ({ ...v, roof_type: e.target.value }))}
-                  className="mt-0.5 w-full rounded border border-gray-200 px-2 py-1 text-sm"
+                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
                 >
                   <option value="flat">Flat</option>
                   <option value="gabled">Gabled</option>
@@ -1216,25 +1223,25 @@ export function ViewerPage() {
             <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-1 sm:gap-x-0">
               {selectedBuilding.height_meters && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Height</dt>
+                  <dt className="text-neutral-500">Height</dt>
                   <dd className="font-medium">{selectedBuilding.height_meters}m</dd>
                 </div>
               )}
               {selectedBuilding.floor_count && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Floors</dt>
+                  <dt className="text-neutral-500">Floors</dt>
                   <dd className="font-medium">{selectedBuilding.floor_count}</dd>
                 </div>
               )}
               {selectedBuilding.roof_type && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Roof Type</dt>
+                  <dt className="text-neutral-500">Roof Type</dt>
                   <dd className="font-medium capitalize">{selectedBuilding.roof_type}</dd>
                 </div>
               )}
               {selectedBuilding.specifications?.total_area_sqm && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Total Area</dt>
+                  <dt className="text-neutral-500">Total Area</dt>
                   <dd className="font-medium">
                     {selectedBuilding.specifications.total_area_sqm.toLocaleString()} m²
                   </dd>
@@ -1242,13 +1249,13 @@ export function ViewerPage() {
               )}
               {selectedBuilding.specifications?.residential_units && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">Units</dt>
+                  <dt className="text-neutral-500">Units</dt>
                   <dd className="font-medium">{selectedBuilding.specifications.residential_units}</dd>
                 </div>
               )}
               {selectedBuilding.specifications?.ai_confidence != null && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-500">AI Confidence</dt>
+                  <dt className="text-neutral-500">AI Confidence</dt>
                   <dd className="font-medium">
                     <span
                       className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -1304,8 +1311,8 @@ export function ViewerPage() {
             }}
           />
           {/* Material picker */}
-          <div className="mt-3 border-t border-gray-100 pt-3">
-            <label className="mb-1.5 block text-xs font-medium text-gray-500">Facade Material</label>
+          <div className="mt-3 border-t border-neutral-100 pt-3">
+            <label className="mb-1.5 block text-xs font-medium text-neutral-500">Facade Material</label>
             <div className="flex flex-wrap gap-1.5">
               {(['concrete', 'glass', 'brick', 'metal', 'wood', 'green_roof'] as const).map((mat) => {
                 const colors: Record<string, string> = {
@@ -1338,7 +1345,7 @@ export function ViewerPage() {
                     className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium capitalize transition-all ${
                       isActive
                         ? 'ring-2 ring-primary-500 ring-offset-1 bg-primary-50 text-primary-700'
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                        : 'bg-neutral-50 text-neutral-600 hover:bg-neutral-100'
                     }`}
                   >
                     <span className={`inline-block h-2.5 w-2.5 rounded-full ${colors[mat]}`} />
@@ -1366,14 +1373,14 @@ export function ViewerPage() {
       {pendingAnnotationPos && (
         <div className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2">
           <div className="rounded-xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm" style={{ width: 320 }}>
-            <p className="mb-2 text-xs font-medium text-gray-500">Add annotation at this point</p>
+            <p className="mb-2 text-xs font-medium text-neutral-500">Add annotation at this point</p>
             <textarea
               autoFocus
               value={annotationText}
               onChange={(e) => setAnnotationText(e.target.value)}
               placeholder="Enter your comment..."
               rows={2}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
             />
             <div className="mt-2 flex gap-2">
               <button
@@ -1411,17 +1418,56 @@ export function ViewerPage() {
           <div className="mx-4 w-full max-w-sm rounded-xl bg-white p-6 shadow-2xl">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={20} className="text-purple-500" />
-              <h2 className="text-lg font-bold text-gray-900">AI Generate</h2>
+              <h2 className="text-lg font-bold text-neutral-900">AI Generate</h2>
             </div>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-neutral-600 mb-4">
               Select a building first to generate a 3D model for it, or create a new building to get started.
             </p>
             <button
               onClick={() => setShowAIGenerateModal(false)}
-              className="w-full rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+              className="w-full rounded-lg bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200"
             >
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Generate Neighborhood Confirmation Dialog */}
+      {showGenerateConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowGenerateConfirm(false)}>
+          <div className="mx-4 w-full max-w-sm rounded-xl bg-white p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles size={20} className="text-purple-600" />
+              <h2 className="text-lg font-bold text-neutral-900">Generate Neighborhood</h2>
+            </div>
+            <p className="text-sm text-neutral-600 mb-4">
+              Choose which zones to generate 3D models for:
+            </p>
+            <div className="flex flex-col gap-2">
+              {selectedBoundary && (
+                <button
+                  onClick={() => runGenerate('boundary')}
+                  className="w-full rounded-lg bg-purple-600 px-4 py-2.5 text-left text-sm font-medium text-white hover:bg-purple-700"
+                >
+                  <div>Generate for &ldquo;{selectedBoundary.name || 'Selected Boundary'}&rdquo;</div>
+                  <div className="text-purple-200 text-xs mt-0.5">Boundary-scoped zones only</div>
+                </button>
+              )}
+              <button
+                onClick={() => runGenerate('all')}
+                className="w-full rounded-lg bg-purple-700 px-4 py-2.5 text-left text-sm font-medium text-white hover:bg-purple-800"
+              >
+                <div>Generate all zones</div>
+                <div className="text-purple-200 text-xs mt-0.5">{totalBuildableCount} zone{totalBuildableCount !== 1 ? 's' : ''}, ~{totalUnits} unit{totalUnits !== 1 ? 's' : ''}</div>
+              </button>
+              <button
+                onClick={() => setShowGenerateConfirm(false)}
+                className="w-full rounded-lg bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -1450,8 +1496,8 @@ export function ViewerPage() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="mx-4 w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-900">Keyboard Shortcuts</h2>
-              <button onClick={() => setShowShortcuts(false)} className="rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+              <h2 className="text-lg font-bold text-neutral-900">Keyboard Shortcuts</h2>
+              <button onClick={() => setShowShortcuts(false)} className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600">
                 <X size={20} />
               </button>
             </div>
@@ -1478,7 +1524,7 @@ export function ViewerPage() {
                 <ShortcutRow keys="Dbl-click" desc="Close polygon" />
               </ShortcutSection>
             </div>
-            <p className="mt-4 text-center text-xs text-gray-400">Press ? or Esc to close</p>
+            <p className="mt-4 text-center text-xs text-neutral-400">Press ? or Esc to close</p>
           </div>
         </div>
       )}
@@ -1490,7 +1536,7 @@ export function ViewerPage() {
 function ShortcutSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-3">
-      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-gray-400">{title}</h3>
+      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-neutral-400">{title}</h3>
       <div className="space-y-0.5">{children}</div>
     </div>
   );
@@ -1499,13 +1545,13 @@ function ShortcutSection({ title, children }: { title: string; children: React.R
 function ShortcutRow({ keys, desc }: { keys: string; desc: string }) {
   return (
     <div className="flex items-center justify-between py-0.5">
-      <span className="text-gray-600">{desc}</span>
+      <span className="text-neutral-600">{desc}</span>
       <div className="flex gap-1">
         {keys.split(' ').map((k, i) =>
           k === '/' ? (
-            <span key={i} className="text-gray-400">/</span>
+            <span key={i} className="text-neutral-400">/</span>
           ) : (
-            <kbd key={i} className="rounded bg-gray-100 px-1.5 py-0.5 text-[11px] font-mono font-medium text-gray-700">
+            <kbd key={i} className="rounded bg-neutral-100 px-1.5 py-0.5 text-[11px] font-mono font-medium text-neutral-700">
               {k}
             </kbd>
           )
@@ -1533,11 +1579,11 @@ function RotationSlider({
   useEffect(() => { setLocalDeg(value); }, [value, buildingId]);
 
   return (
-    <div className="mt-3 border-t border-gray-100 pt-3">
-      <label className="mb-1 flex items-center gap-1 text-xs font-medium text-gray-500">
+    <div className="mt-3 border-t border-neutral-100 pt-3">
+      <label className="mb-1 flex items-center gap-1 text-xs font-medium text-neutral-500">
         <RotateCw size={12} />
         Rotation
-        <span className="ml-auto tabular-nums text-gray-400">{localDeg}°</span>
+        <span className="ml-auto tabular-nums text-neutral-400">{localDeg}°</span>
       </label>
       <input
         type="range"
@@ -1575,26 +1621,26 @@ function ViewerLegend({
     <div className="absolute bottom-4 left-4 z-20 hidden sm:block">
       <button
         onClick={() => setCollapsed((v) => !v)}
-        className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-lg backdrop-blur-sm hover:bg-white"
+        className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-neutral-600 shadow-card backdrop-blur-sm hover:bg-white"
       >
         {collapsed ? 'Legend' : 'Hide Legend'}
       </button>
       {!collapsed && (
-        <div className="mt-2 rounded-lg bg-white/90 p-3 shadow-lg backdrop-blur-sm" style={{ minWidth: 160 }}>
+        <div className="mt-2 rounded-lg bg-white/90 p-3 shadow-card backdrop-blur-sm" style={{ minWidth: 160 }}>
           <div className="space-y-2 text-[11px]">
             {/* Phase colors */}
             {phases && phases.length > 0 && (
               <div>
-                <div className="mb-1 font-semibold text-gray-600">Construction Phases</div>
+                <div className="mb-1 font-semibold text-neutral-600">Construction Phases</div>
                 {phases
                   .sort((a, b) => a.phase_number - b.phase_number)
                   .map((p) => (
                     <div key={p.phase_number} className="flex items-center gap-2 py-0.5">
                       <span
-                        className="inline-block h-2.5 w-2.5 rounded-full border border-gray-200"
+                        className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200"
                         style={{ backgroundColor: p.color || '#94a3b8' }}
                       />
-                      <span className={activePhase === p.phase_number ? 'font-medium text-gray-800' : 'text-gray-500'}>
+                      <span className={activePhase === p.phase_number ? 'font-medium text-neutral-800' : 'text-neutral-500'}>
                         {p.name}
                       </span>
                     </div>
@@ -1605,30 +1651,30 @@ function ViewerLegend({
             {/* Context buildings */}
             {showExistingBuildings && (
               <div className="flex items-center gap-2 py-0.5">
-                <span className="inline-block h-2.5 w-2.5 rounded-full border border-gray-200" style={{ backgroundColor: '#c0c0c0', opacity: 0.6 }} />
-                <span className="text-gray-500">Existing Buildings</span>
+                <span className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200" style={{ backgroundColor: '#c0c0c0', opacity: 0.6 }} />
+                <span className="text-neutral-500">Existing Buildings</span>
               </div>
             )}
 
             {/* Measurements */}
             {showMeasurements && (
               <div>
-                <div className="mb-1 mt-1 font-semibold text-gray-600">Measurements</div>
+                <div className="mb-1 mt-1 font-semibold text-neutral-600">Measurements</div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-0.5 w-3 rounded bg-red-500" />
-                  <span className="text-gray-500">Distance</span>
+                  <span className="text-neutral-500">Distance</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-2.5 w-2.5 rounded-sm bg-amber-400/40 border border-amber-400" />
-                  <span className="text-gray-500">Area</span>
+                  <span className="text-neutral-500">Area</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-3 w-0.5 rounded bg-violet-500" />
-                  <span className="text-gray-500">Height</span>
+                  <span className="text-neutral-500">Height</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-0.5 w-3 rounded bg-cyan-500" />
-                  <span className="text-gray-500">Angle</span>
+                  <span className="text-neutral-500">Angle</span>
                 </div>
               </div>
             )}
@@ -1708,8 +1754,8 @@ function ComparisonOverlay({
         {/* Handle grip */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg">
           <div className="flex gap-0.5">
-            <div className="h-4 w-0.5 rounded-full bg-gray-400" />
-            <div className="h-4 w-0.5 rounded-full bg-gray-400" />
+            <div className="h-4 w-0.5 rounded-full bg-neutral-400" />
+            <div className="h-4 w-0.5 rounded-full bg-neutral-400" />
           </div>
         </div>
       </div>

@@ -10,16 +10,16 @@ interface StyleSelectorProps {
 }
 
 const TAG_COLORS: Record<string, string> = {
-  contemporary: 'bg-blue-100 text-blue-700',
-  minimal: 'bg-gray-100 text-gray-700',
-  glass: 'bg-cyan-100 text-cyan-700',
-  traditional: 'bg-amber-100 text-amber-700',
-  ornamental: 'bg-yellow-100 text-yellow-700',
-  concrete: 'bg-stone-100 text-stone-700',
-  wood: 'bg-orange-100 text-orange-700',
-  urban: 'bg-violet-100 text-violet-700',
-  residential: 'bg-pink-100 text-pink-700',
-  steel: 'bg-slate-100 text-slate-700',
+  contemporary: 'bg-blue-500/20 text-blue-400',
+  minimal: 'bg-neutral-500/20 text-neutral-400',
+  glass: 'bg-cyan-500/20 text-cyan-400',
+  traditional: 'bg-amber-500/20 text-amber-400',
+  ornamental: 'bg-yellow-500/20 text-yellow-400',
+  concrete: 'bg-stone-500/20 text-stone-400',
+  wood: 'bg-orange-500/20 text-orange-400',
+  urban: 'bg-violet-500/20 text-violet-400',
+  residential: 'bg-pink-500/20 text-pink-400',
+  steel: 'bg-slate-500/20 text-slate-400',
 };
 
 export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelectorProps) {
@@ -51,8 +51,8 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
           onClick={() => onSelect(null)}
           className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
             !selectedStyle
-              ? 'bg-purple-100 text-purple-700 ring-1 ring-purple-300'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              ? 'bg-purple-500/20 text-purple-400 ring-1 ring-purple-400/30'
+              : 'bg-white/10 text-neutral-400 hover:bg-white/[0.15]'
           }`}
         >
           Default
@@ -64,15 +64,15 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
             title={s.description}
             className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
               selectedStyle === s.id
-                ? 'bg-purple-100 text-purple-700 ring-1 ring-purple-300'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-purple-500/20 text-purple-400 ring-1 ring-purple-400/30'
+                : 'bg-white/10 text-neutral-400 hover:bg-white/[0.15]'
             }`}
           >
             {s.name}
           </button>
         ))}
         {styles.length > 8 && (
-          <span className="self-center text-xs text-gray-400">+{styles.length - 8} more</span>
+          <span className="self-center text-xs text-neutral-400">+{styles.length - 8} more</span>
         )}
       </div>
     );
@@ -83,13 +83,13 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
       {/* Search + tag filters */}
       <div className="mb-3 flex items-center gap-2">
         <div className="relative flex-1">
-          <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search styles..."
-            className="w-full rounded-lg border border-gray-200 py-1.5 pl-8 pr-3 text-xs focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400"
+            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] py-1.5 pl-8 pr-3 text-xs text-neutral-100 focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400"
           />
         </div>
       </div>
@@ -99,7 +99,7 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
         <button
           onClick={() => setTagFilter(null)}
           className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-all ${
-            !tagFilter ? 'bg-purple-100 text-purple-700' : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
+            !tagFilter ? 'bg-purple-500/20 text-purple-400' : 'bg-white/[0.03] text-neutral-400 hover:bg-white/10'
           }`}
         >
           All
@@ -110,8 +110,8 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
             onClick={() => setTagFilter(tagFilter === tag ? null : tag)}
             className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-all ${
               tagFilter === tag
-                ? TAG_COLORS[tag] || 'bg-purple-100 text-purple-700'
-                : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
+                ? TAG_COLORS[tag] || 'bg-purple-500/20 text-purple-400'
+                : 'bg-white/[0.03] text-neutral-400 hover:bg-white/10'
             }`}
           >
             {tag}
@@ -126,12 +126,12 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
           onClick={() => onSelect(null)}
           className={`rounded-lg border p-2.5 text-left transition-all ${
             !selectedStyle
-              ? 'border-purple-300 bg-purple-50 ring-1 ring-purple-200'
-              : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+              ? 'border-purple-400/40 bg-purple-500/15 ring-1 ring-purple-400/20'
+              : 'border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.06]'
           }`}
         >
-          <p className="text-xs font-semibold text-gray-800">Default</p>
-          <p className="mt-0.5 text-[10px] text-gray-500">No style applied</p>
+          <p className="text-xs font-semibold text-neutral-100">Default</p>
+          <p className="mt-0.5 text-[10px] text-neutral-400">No style applied</p>
         </button>
 
         {filtered.map((style) => (
@@ -140,18 +140,18 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
             onClick={() => onSelect(style.id)}
             className={`rounded-lg border p-2.5 text-left transition-all ${
               selectedStyle === style.id
-                ? 'border-purple-300 bg-purple-50 ring-1 ring-purple-200'
-                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                ? 'border-purple-400/40 bg-purple-500/15 ring-1 ring-purple-400/20'
+                : 'border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.06]'
             }`}
           >
-            <p className="text-xs font-semibold text-gray-800">{style.name}</p>
-            <p className="mt-0.5 line-clamp-2 text-[10px] text-gray-500">{style.description}</p>
+            <p className="text-xs font-semibold text-neutral-100">{style.name}</p>
+            <p className="mt-0.5 line-clamp-2 text-[10px] text-neutral-400">{style.description}</p>
             <div className="mt-1.5 flex flex-wrap gap-0.5">
               {style.tags.slice(0, 2).map((tag) => (
                 <span
                   key={tag}
                   className={`rounded px-1 py-0.5 text-[9px] font-medium ${
-                    TAG_COLORS[tag] || 'bg-gray-100 text-gray-600'
+                    TAG_COLORS[tag] || 'bg-white/10 text-neutral-400'
                   }`}
                 >
                   {tag}
@@ -163,7 +163,7 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
       </div>
 
       {filtered.length === 0 && (
-        <p className="mt-4 text-center text-xs text-gray-400">No styles match your search.</p>
+        <p className="mt-4 text-center text-xs text-neutral-400">No styles match your search.</p>
       )}
     </div>
   );

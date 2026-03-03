@@ -35,7 +35,7 @@ export function OAuthCallbackPage() {
       .then((user) => {
         setUser(user);
         toast.success(`Welcome, ${user.full_name || user.email}!`);
-        navigate('/', { replace: true });
+        navigate('/projects', { replace: true });
       })
       .catch(() => {
         toast.error('Failed to load user profile after OAuth login');
@@ -46,10 +46,10 @@ export function OAuthCallbackPage() {
   }, [searchParams, navigate, setUser]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+    <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <Loader2 size={32} className="mx-auto animate-spin text-primary-600" />
-        <p className="mt-4 text-sm text-gray-500">Completing sign in...</p>
+        <Loader2 size={32} className="mx-auto animate-spin text-primary-400" />
+        <p className="mt-4 text-sm text-neutral-400">Completing sign in...</p>
       </div>
     </div>
   );

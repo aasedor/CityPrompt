@@ -7,7 +7,7 @@
     @apply antialiased;
   }
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-primary-950 text-neutral-100;
   }
 }
 
@@ -17,19 +17,77 @@
 }
 
 @layer components {
+  /* ── Buttons ──────────────────────────────────────────────────── */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2
-           text-sm font-medium text-white shadow-sm transition-colors
-           hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500
-           focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center rounded-xl bg-primary-500 px-4 py-2.5
+           text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-200
+           hover:bg-primary-400 hover:shadow-glow-sm
+           focus:outline-none focus:ring-2 focus:ring-primary-400/30
+           active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-lg border border-gray-300
-           bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm
-           transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2
-           focus:ring-primary-500 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center rounded-xl border border-white/[0.12]
+           bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-neutral-200
+           shadow-inner-glow backdrop-blur-sm transition-all duration-200
+           hover:bg-white/[0.12] hover:text-white hover:border-white/20
+           focus:outline-none focus:ring-2 focus:ring-primary-400/30
+           active:scale-[0.97];
   }
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-xl bg-accent-300 px-4 py-2.5
+           text-sm font-semibold text-primary-950 shadow-lg shadow-accent-300/20 transition-all duration-200
+           hover:bg-accent-200 hover:shadow-glow-accent
+           focus:outline-none focus:ring-2 focus:ring-accent-300/30
+           active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* ── Cards ────────────────────────────────────────────────────── */
   .card {
-    @apply rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6;
+    @apply rounded-2xl border border-white/[0.08] bg-white/[0.04] p-4 shadow-card
+           backdrop-blur-xl sm:p-6;
+  }
+  .card-hover {
+    @apply rounded-2xl border border-white/[0.08] bg-white/[0.04] p-4 shadow-card
+           backdrop-blur-xl sm:p-6 transition-all duration-300
+           hover:border-white/[0.15] hover:bg-white/[0.07] hover:shadow-glow;
+  }
+  .card-glow {
+    @apply rounded-2xl border border-primary-500/20 bg-gradient-card p-4 shadow-card
+           backdrop-blur-xl sm:p-6 transition-all duration-300
+           hover:border-primary-400/30 hover:shadow-glow;
+  }
+
+  /* ── Glass ────────────────────────────────────────────────────── */
+  .glass {
+    @apply border border-white/[0.1] bg-white/[0.06] backdrop-blur-xl shadow-inner-glow;
+  }
+  .glass-dark {
+    @apply border border-white/[0.08] bg-primary-900/80 backdrop-blur-xl shadow-inner-glow;
+  }
+
+  /* ── Inputs ───────────────────────────────────────────────────── */
+  .input-base {
+    @apply rounded-xl border border-white/[0.12] bg-white/[0.06] px-3.5 py-2.5 text-sm
+           text-white placeholder:text-neutral-500 backdrop-blur-sm transition-all duration-200
+           focus:border-primary-400/50 focus:bg-white/[0.08] focus:outline-none
+           focus:ring-2 focus:ring-primary-400/20;
+  }
+
+  /* ── Badges ───────────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  /* ── Glow line (decorative) ───────────────────────────────────── */
+  .glow-line {
+    @apply h-px bg-gradient-to-r from-transparent via-primary-400/50 to-transparent;
+  }
+  .glow-line-accent {
+    @apply h-px bg-gradient-to-r from-transparent via-accent-400/40 to-transparent;
+  }
+
+  /* ── Dividers ─────────────────────────────────────────────────── */
+  .divider {
+    @apply border-t border-white/[0.08];
   }
 }

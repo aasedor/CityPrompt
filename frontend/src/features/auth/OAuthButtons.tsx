@@ -30,7 +30,7 @@ export function OAuthButtons() {
         type="button"
         disabled={loadingProvider !== null}
         onClick={() => handleOAuth('google')}
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-3 rounded-lg border border-white/[0.12] bg-white/[0.04] px-3 py-2 text-sm font-medium text-neutral-200 shadow-inner-glow transition-colors hover:bg-white/[0.06] focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:ring-offset-1 disabled:opacity-50"
       >
         {loadingProvider === 'google' ? (
           <Loader2 size={18} className="animate-spin" />

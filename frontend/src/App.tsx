@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { LandingPage } from '@/features/landing/LandingPage';
 import { ProjectListPage } from '@/features/projects/ProjectListPage';
 import { ProjectViewPage } from '@/features/projects/ProjectViewPage';
 import { ViewerPage } from '@/features/projects/ViewerPage';
@@ -43,6 +44,9 @@ export default function App() {
 
   return (
     <Routes>
+      {/* Public landing page */}
+      <Route path="/" element={<LandingPage />} />
+
       {/* Auth routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -52,7 +56,7 @@ export default function App() {
 
       {/* App routes — require authentication */}
       <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-        <Route path="/" element={<ProjectListPage />} />
+        <Route path="/projects" element={<ProjectListPage />} />
         <Route path="/projects/:id" element={<ProjectViewPage />} />
         <Route path="/settings/password" element={<ChangePasswordPage />} />
         {/* Admin routes — require admin role */}

@@ -13,7 +13,7 @@ if (sentryDsn) {
   Sentry.init({
     dsn: sentryDsn,
     environment: import.meta.env.MODE,
-    release: `3d-platform-frontend@0.1.0`,
+    release: `siteforge-frontend@0.1.0`,
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
@@ -36,10 +36,10 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Sentry.ErrorBoundary fallback={({ error, resetError }) => (
-      <div className="flex h-screen flex-col items-center justify-center gap-4 p-8 text-gray-600">
-        <p className="text-lg font-semibold">Something went wrong</p>
-        <pre className="max-w-2xl overflow-auto rounded bg-red-50 p-4 text-sm text-red-700">{error?.toString()}{'\n'}{(error as Error)?.stack}</pre>
-        <button onClick={resetError} className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Try Again</button>
+      <div className="flex h-screen flex-col items-center justify-center gap-4 bg-primary-950 p-8 text-neutral-300">
+        <p className="text-lg font-semibold text-white">Something went wrong</p>
+        <pre className="max-w-2xl overflow-auto rounded-xl border border-white/[0.08] bg-red-500/10 p-4 text-sm text-red-400">{error?.toString()}{'\n'}{(error as Error)?.stack}</pre>
+        <button onClick={resetError} className="btn-primary rounded-xl px-5 py-2.5">Try Again</button>
       </div>
     )}>
       <QueryClientProvider client={queryClient}>

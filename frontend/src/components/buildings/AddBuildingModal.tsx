@@ -54,23 +54,23 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center" onClick={onClose}>
-      <div className="w-full max-w-md rounded-t-xl bg-white p-5 shadow-2xl sm:rounded-xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-primary-950/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
+      <div className="w-full max-w-md rounded-t-2xl bg-primary-900/95 backdrop-blur-xl border border-white/[0.1] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Add Building</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <h2 className="text-lg font-semibold text-white">Add Building</h2>
+          <button onClick={onClose} className="text-neutral-400 hover:text-neutral-300">
             <X size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Building Name</label>
+            <label className="block text-sm font-medium text-neutral-300">Building Name</label>
             <input
               type="text"
               value={form.name || ''}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base mt-1 w-full"
               placeholder="e.g. Tower A"
               required
             />
@@ -78,23 +78,23 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Height (m)</label>
+              <label className="block text-sm font-medium text-neutral-300">Height (m)</label>
               <input
                 type="number"
                 value={form.height_meters || ''}
                 onChange={(e) => setForm({ ...form, height_meters: parseFloat(e.target.value) || undefined })}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="input-base mt-1 w-full"
                 min={1}
                 step={0.5}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Floors</label>
+              <label className="block text-sm font-medium text-neutral-300">Floors</label>
               <input
                 type="number"
                 value={form.floor_count || ''}
                 onChange={(e) => setForm({ ...form, floor_count: parseInt(e.target.value) || undefined })}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="input-base mt-1 w-full"
                 min={1}
               />
             </div>
@@ -102,23 +102,23 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Floor Height (m)</label>
+              <label className="block text-sm font-medium text-neutral-300">Floor Height (m)</label>
               <input
                 type="number"
                 value={form.floor_height_meters || ''}
                 onChange={(e) => setForm({ ...form, floor_height_meters: parseFloat(e.target.value) || undefined })}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="input-base mt-1 w-full"
                 min={2}
                 max={10}
                 step={0.1}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Roof Type</label>
+              <label className="block text-sm font-medium text-neutral-300">Roof Type</label>
               <select
                 value={form.roof_type || 'flat'}
                 onChange={(e) => setForm({ ...form, roof_type: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="input-base mt-1 w-full"
               >
                 <option value="flat">Flat</option>
                 <option value="gabled">Gabled</option>
@@ -129,11 +129,11 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
           </div>
 
           {mutation.isError && (
-            <p className="text-sm text-red-600">Failed to create building. Please try again.</p>
+            <p className="text-sm text-red-400">Failed to create building. Please try again.</p>
           )}
 
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+            <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10">
               Cancel
             </button>
             <button

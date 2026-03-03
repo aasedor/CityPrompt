@@ -39,15 +39,15 @@ export function ChangePasswordPage() {
 
   return (
     <div className="mx-auto max-w-md">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Change Password</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Change Password</h1>
 
       <form onSubmit={handleSubmit} className="card space-y-4">
         {error && (
-          <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
+          <div className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</div>
         )}
 
         <div>
-          <label htmlFor="currentPassword" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="currentPassword" className="mb-1 block text-sm font-medium text-neutral-300">
             Current password
           </label>
           <div className="relative">
@@ -57,12 +57,12 @@ export function ChangePasswordPage() {
               required
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base w-full pr-10"
             />
             <button
               type="button"
               onClick={() => setShowCurrent((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 hover:text-neutral-300"
               tabIndex={-1}
             >
               {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -71,7 +71,7 @@ export function ChangePasswordPage() {
         </div>
 
         <div>
-          <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-neutral-300">
             New password
           </label>
           <div className="relative">
@@ -82,13 +82,13 @@ export function ChangePasswordPage() {
               minLength={8}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base w-full pr-10"
               placeholder="Min 8 characters"
             />
             <button
               type="button"
               onClick={() => setShowNew((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 hover:text-neutral-300"
               tabIndex={-1}
             >
               {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -97,7 +97,7 @@ export function ChangePasswordPage() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-gray-700">
+          <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-neutral-300">
             Confirm new password
           </label>
           <div className="relative">
@@ -108,13 +108,13 @@ export function ChangePasswordPage() {
               minLength={8}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+              className="input-base w-full pr-10"
               placeholder="Re-enter new password"
             />
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-500 hover:text-neutral-300"
               tabIndex={-1}
             >
               {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}

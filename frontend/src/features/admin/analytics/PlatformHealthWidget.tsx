@@ -21,82 +21,82 @@ export function PlatformHealthWidget({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-gray-700">Platform Health</h3>
+      <h3 className="mb-4 text-sm font-semibold text-neutral-300">Platform Health</h3>
 
       <div className="grid gap-3 sm:grid-cols-2">
         {/* API stats */}
-        <div className="rounded-lg border border-gray-100 p-3">
-          <div className="mb-2 flex items-center gap-2 text-blue-600">
+        <div className="rounded-lg border border-white/[0.08] p-3">
+          <div className="mb-2 flex items-center gap-2 text-blue-400">
             <Activity size={16} />
             <span className="text-xs font-semibold">API Performance</span>
           </div>
           <div className="space-y-1.5">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Avg Response</span>
-              <span className="font-medium text-gray-900">{data.api.avg_response_ms.toFixed(1)} ms</span>
+              <span className="text-neutral-400">Avg Response</span>
+              <span className="font-medium text-white">{data.api.avg_response_ms.toFixed(1)} ms</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">P95 Response</span>
-              <span className="font-medium text-gray-900">{data.api.p95_response_ms.toFixed(1)} ms</span>
+              <span className="text-neutral-400">P95 Response</span>
+              <span className="font-medium text-white">{data.api.p95_response_ms.toFixed(1)} ms</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Total Requests</span>
-              <span className="font-medium text-gray-900">{data.api.total_requests.toLocaleString()}</span>
+              <span className="text-neutral-400">Total Requests</span>
+              <span className="font-medium text-white">{data.api.total_requests.toLocaleString()}</span>
             </div>
           </div>
         </div>
 
         {/* Uptime */}
-        <div className="rounded-lg border border-gray-100 p-3">
-          <div className="mb-2 flex items-center gap-2 text-green-600">
+        <div className="rounded-lg border border-white/[0.08] p-3">
+          <div className="mb-2 flex items-center gap-2 text-green-400">
             <Clock size={16} />
             <span className="text-xs font-semibold">Uptime</span>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{formatUptime(data.api.uptime_seconds)}</p>
-          <p className="text-xs text-gray-400">{data.api.recent_samples} recent samples</p>
+          <p className="text-2xl font-bold text-white">{formatUptime(data.api.uptime_seconds)}</p>
+          <p className="text-xs text-neutral-400">{data.api.recent_samples} recent samples</p>
         </div>
 
         {/* Queue */}
-        <div className="rounded-lg border border-gray-100 p-3">
-          <div className="mb-2 flex items-center gap-2 text-purple-600">
+        <div className="rounded-lg border border-white/[0.08] p-3">
+          <div className="mb-2 flex items-center gap-2 text-purple-400">
             <HardDrive size={16} />
             <span className="text-xs font-semibold">Task Queue</span>
           </div>
           {data.queue.available ? (
             <div className="space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Active</span>
-                <span className="font-medium text-gray-900">{data.queue.active}</span>
+                <span className="text-neutral-400">Active</span>
+                <span className="font-medium text-white">{data.queue.active}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Reserved</span>
-                <span className="font-medium text-gray-900">{data.queue.reserved}</span>
+                <span className="text-neutral-400">Reserved</span>
+                <span className="font-medium text-white">{data.queue.reserved}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Scheduled</span>
-                <span className="font-medium text-gray-900">{data.queue.scheduled}</span>
+                <span className="text-neutral-400">Scheduled</span>
+                <span className="font-medium text-white">{data.queue.scheduled}</span>
               </div>
             </div>
           ) : (
-            <p className="text-sm text-gray-400">Queue unavailable</p>
+            <p className="text-sm text-neutral-400">Queue unavailable</p>
           )}
         </div>
 
         {/* Documents pipeline */}
-        <div className="rounded-lg border border-gray-100 p-3">
-          <div className="mb-2 flex items-center gap-2 text-orange-600">
+        <div className="rounded-lg border border-white/[0.08] p-3">
+          <div className="mb-2 flex items-center gap-2 text-orange-400">
             <FileText size={16} />
             <span className="text-xs font-semibold">Doc Pipeline ({docTotal})</span>
           </div>
           <div className="space-y-1.5">
             {Object.entries(data.documents).map(([status, count]) => (
               <div key={status} className="flex justify-between text-sm">
-                <span className="capitalize text-gray-500">{status}</span>
-                <span className="font-medium text-gray-900">{count}</span>
+                <span className="capitalize text-neutral-400">{status}</span>
+                <span className="font-medium text-white">{count}</span>
               </div>
             ))}
             {Object.keys(data.documents).length === 0 && (
-              <p className="text-sm text-gray-400">No documents</p>
+              <p className="text-sm text-neutral-400">No documents</p>
             )}
           </div>
         </div>
