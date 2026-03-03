@@ -5,6 +5,7 @@ Generates realistic building placements, internal roads, and green spaces
 for multi-unit zones using Claude, Gemini, or an improved algorithmic fallback.
 """
 
+import base64
 import json
 import logging
 import math
@@ -30,10 +31,62 @@ settings = get_settings()
 METERS_PER_DEG_LAT = 111320
 
 
+def _ensure_image_bytes(data: bytes) -> bytes:
+    """Validate and fix image data from Gemini.
+
+    The google-genai SDK may return inline_data.data as either raw bytes
+    or base64-encoded bytes depending on SDK version and transport.
+    This function detects base64-encoded data and decodes it.
+    """
+    if not data:
+        raise ValueError("Empty image data received from Gemini")
+
+    # PNG magic bytes: \x89PNG\r\n\x1a\n
+    PNG_MAGIC = b'\x89PNG\r\n\x1a\n'
+    # JPEG magic bytes: \xff\xd8\xff
+    JPEG_MAGIC = b'\xff\xd8\xff'
+
+    # Already valid image bytes
+    if data[:8] == PNG_MAGIC or data[:3] == JPEG_MAGIC:
+        logger.info("Image data is valid raw bytes (%d bytes)", len(data))
+        return data
+
+    # Try base64 decoding — the SDK sometimes returns base64-encoded strings as bytes
+    try:
+        # Check if it looks like base64 (only contains valid base64 characters)
+        if isinstance(data, bytes):
+            text = data.decode('ascii', errors='strict')
+        else:
+            text = str(data)
+
+        # Strip data URL prefix if present
+        if ',' in text[:100]:
+            text = text.split(',', 1)[1]
+
+        decoded = base64.b64decode(text, validate=True)
+        if decoded[:8] == PNG_MAGIC or decoded[:3] == JPEG_MAGIC:
+            logger.info("Image data was base64-encoded, decoded to %d bytes", len(decoded))
+            return decoded
+    except Exception:
+        pass
+
+    # If we get here, data might still be a valid image in another format,
+    # or it could be corrupt. Log a warning but proceed anyway.
+    logger.warning(
+        "Image data (%d bytes) does not have recognized magic bytes "
+        "(first 16 bytes: %s). Uploading as-is.",
+        len(data), data[:16].hex() if data else "empty"
+    )
+    return data
+
+
 def _upload_image_to_storage(key: str, data: bytes, content_type: str) -> str:
     """Upload binary data to S3-compatible storage (MinIO). Returns the public URL."""
     import boto3
     from botocore.config import Config
+
+    # Validate/fix image bytes before upload
+    data = _ensure_image_bytes(data)
 
     s3 = boto3.client(
         "s3",
@@ -56,6 +109,7 @@ def _upload_image_to_storage(key: str, data: bytes, content_type: str) -> str:
         Body=data,
         ContentType=content_type,
     )
+    logger.info("Uploaded image to MinIO: %s (%d bytes)", key, len(data))
     return f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{key}"
 
 
@@ -1398,11 +1452,25 @@ Requirements:
             logger.warning("Failed to log Gemini usage for layout_preview_image: %s", exc)
 
         # Extract image from response
+        if not response.candidates:
+            raise RuntimeError("Gemini returned no candidates")
         for part in response.candidates[0].content.parts:
             if part.inline_data is not None:
-                return part.inline_data.data
+                data = part.inline_data.data
+                logger.info(
+                    "Gemini layout_preview returned image: type=%s, size=%s, first_bytes=%s",
+                    type(data).__name__,
+                    len(data) if data else 0,
+                    data[:16].hex() if isinstance(data, bytes) and data else "N/A",
+                )
+                return data
 
-        raise RuntimeError("Gemini did not return an image")
+        # Log what we got instead of an image
+        part_types = [
+            f"text({len(p.text)})" if p.text else "inline_data" if p.inline_data else "other"
+            for p in response.candidates[0].content.parts
+        ]
+        raise RuntimeError(f"Gemini did not return an image. Parts received: {part_types}")
 
     async def generate_site_preview_image(
         self,
@@ -1745,7 +1813,6 @@ OUTPUT RULES:
         logger.info("Full prompt:\n%s", prompt)
 
         from google import genai
-        import base64
         import httpx
 
         # Build multi-modal content: map screenshots + reference images + text prompt
@@ -1830,8 +1897,21 @@ OUTPUT RULES:
             logger.warning("Failed to log Gemini usage for site_preview_image: %s", exc)
 
         # Extract image from response
+        if not response.candidates:
+            raise RuntimeError("Gemini returned no candidates for site preview")
         for part in response.candidates[0].content.parts:
             if part.inline_data is not None:
-                return part.inline_data.data
+                data = part.inline_data.data
+                logger.info(
+                    "Gemini site_preview returned image: type=%s, size=%s, first_bytes=%s",
+                    type(data).__name__,
+                    len(data) if data else 0,
+                    data[:16].hex() if isinstance(data, bytes) and data else "N/A",
+                )
+                return data
 
-        raise RuntimeError("Gemini did not return an image for site preview")
+        part_types = [
+            f"text({len(p.text)})" if p.text else "inline_data" if p.inline_data else "other"
+            for p in response.candidates[0].content.parts
+        ]
+        raise RuntimeError(f"Gemini did not return an image for site preview. Parts received: {part_types}")

@@ -193,6 +193,7 @@ export interface PreviewHistoryEntry {
   created_at: string;
   preview_type: 'layout' | 'site';
   option_index: number;
+  layout_data?: LayoutOption | { zone_layouts: Record<string, LayoutOption> };
 }
 
 export interface LockedLayers {

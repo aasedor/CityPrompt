@@ -192,7 +192,8 @@ interface ViewerState {
   setSitePreviewImageUrl: (index: number, url: string) => void;
   // Lightbox for expanded image view
   lightboxImageUrl: string | null;
-  setLightboxImage: (url: string | null) => void;
+  lightboxActions: { onDownload?: () => void; onApply?: () => void; applyLabel?: string } | null;
+  setLightboxImage: (url: string | null, actions?: { onDownload?: () => void; onApply?: () => void; applyLabel?: string }) => void;
   // OSM context
   osmContext: OSMContext | null;
   setOSMContext: (ctx: OSMContext | null) => void;
@@ -419,7 +420,8 @@ export const useViewerStore = create<ViewerState>((set) => ({
     }),
   // Lightbox
   lightboxImageUrl: null,
-  setLightboxImage: (url) => set({ lightboxImageUrl: url }),
+  lightboxActions: null,
+  setLightboxImage: (url, actions) => set({ lightboxImageUrl: url, lightboxActions: actions || null }),
   // OSM context
   osmContext: null,
   setOSMContext: (ctx) => set({ osmContext: ctx }),

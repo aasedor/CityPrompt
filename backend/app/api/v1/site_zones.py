@@ -93,18 +93,22 @@ async def _append_preview_history(
     strategy: str,
     preview_type: str,
     option_index: int = 0,
+    layout_data: Optional[dict] = None,
 ) -> None:
     """Append a preview entry to zone.properties._preview_history (capped at 20)."""
     props = zone.properties or {}
     history: list = props.get("_preview_history", [])
-    history.append({
+    entry = {
         "image_url": image_url,
         "label": label,
         "strategy": strategy,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "preview_type": preview_type,
         "option_index": option_index,
-    })
+    }
+    if layout_data is not None:
+        entry["layout_data"] = layout_data
+    history.append(entry)
     if len(history) > MAX_PREVIEW_HISTORY:
         history = history[-MAX_PREVIEW_HISTORY:]
     props["_preview_history"] = history
@@ -721,7 +725,7 @@ async def render_layout_preview(
         # Return API-relative URL (proxied through /api/v1/files/)
         image_url = f"/api/v1/files/{preview_key}"
 
-        # Save to preview history
+        # Save to preview history (include layout data so user can re-apply later)
         await _append_preview_history(
             zone, db,
             image_url=image_url,
@@ -729,6 +733,16 @@ async def render_layout_preview(
             strategy=option.layout_strategy,
             preview_type="layout",
             option_index=option.option_index,
+            layout_data={
+                "option_index": option.option_index,
+                "option_label": option.option_label,
+                "buildings": [b.dict() if hasattr(b, 'dict') else b for b in option.buildings],
+                "roads": [r.dict() if hasattr(r, 'dict') else r for r in option.roads],
+                "green_spaces": [g.dict() if hasattr(g, 'dict') else g for g in option.green_spaces],
+                "layout_strategy": option.layout_strategy,
+                "reasoning": option.reasoning,
+                "density_achieved": option.density_achieved,
+            },
         )
         await db.commit()
 
@@ -870,6 +884,24 @@ async def render_site_preview(
         # Return API-relative URL (proxied through /api/v1/files/)
         image_url = f"/api/v1/files/{preview_key}"
 
+        # Build per-zone layout data for history (so user can re-apply later)
+        zone_layouts_for_history = {}
+        for zid, layout_dict in zone_layouts.items():
+            try:
+                opt = SiteLayoutOption(**layout_dict) if isinstance(layout_dict, dict) else layout_dict
+                zone_layouts_for_history[zid] = {
+                    "option_index": opt.option_index,
+                    "option_label": opt.option_label,
+                    "buildings": [b.dict() if hasattr(b, 'dict') else b for b in opt.buildings],
+                    "roads": [r.dict() if hasattr(r, 'dict') else r for r in opt.roads],
+                    "green_spaces": [g.dict() if hasattr(g, 'dict') else g for g in opt.green_spaces],
+                    "layout_strategy": opt.layout_strategy,
+                    "reasoning": opt.reasoning,
+                    "density_achieved": opt.density_achieved,
+                }
+            except Exception:
+                pass
+
         # Save to preview history on the boundary zone
         await _append_preview_history(
             boundary_zone, db,
@@ -878,6 +910,7 @@ async def render_site_preview(
             strategy="site_preview",
             preview_type="site",
             option_index=option_index,
+            layout_data={"zone_layouts": zone_layouts_for_history} if zone_layouts_for_history else None,
         )
         await db.commit()
 
@@ -955,6 +988,14 @@ async def apply_layout(
             floor_count=lb.floors or props.get("floors"),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
+            specifications={
+                "development_type": props.get("development_type"),
+                "development_aesthetic": props.get("development_aesthetic"),
+                "description_text": props.get("description_text"),
+                "facade_material": props.get("facade_material"),
+                "roof_style": props.get("roof_style"),
+                "building_type": lb.building_type,
+            },
         )
         db.add(building)
         await db.flush()
@@ -1655,6 +1696,13 @@ async def generate_all(
                 height_meters=zone_props.get("height"),
                 floor_count=zone_props.get("floors"),
                 roof_type=zone_props.get("roof_style"),
+                specifications={
+                    "development_type": zone_props.get("development_type"),
+                    "development_aesthetic": zone_props.get("development_aesthetic"),
+                    "description_text": zone_props.get("description_text"),
+                    "facade_material": zone_props.get("facade_material"),
+                    "roof_style": zone_props.get("roof_style"),
+                },
             )
             db.add(building)
             await db.flush()
@@ -1682,6 +1730,13 @@ async def generate_all(
                         height_meters=zone_props.get("height"),
                         floor_count=zone_props.get("floors"),
                         roof_type=zone_props.get("roof_style"),
+                        specifications={
+                            "development_type": zone_props.get("development_type"),
+                            "development_aesthetic": zone_props.get("development_aesthetic"),
+                            "description_text": zone_props.get("description_text"),
+                            "facade_material": zone_props.get("facade_material"),
+                            "roof_style": zone_props.get("roof_style"),
+                        },
                     )
                     db.add(b)
                     await db.flush()
@@ -1731,6 +1786,14 @@ async def generate_all(
                     floor_count=lb.floors or zone_props.get("floors"),
                     roof_type=zone_props.get("roof_style"),
                     rotation_degrees=lb.rotation_deg,
+                    specifications={
+                        "development_type": zone_props.get("development_type"),
+                        "development_aesthetic": zone_props.get("development_aesthetic"),
+                        "description_text": zone_props.get("description_text"),
+                        "facade_material": zone_props.get("facade_material"),
+                        "roof_style": zone_props.get("roof_style"),
+                        "building_type": lb.building_type,
+                    },
                 )
                 db.add(b)
                 await db.flush()

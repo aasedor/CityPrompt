@@ -826,6 +826,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
   const [generating, setGenerating] = useState(false);
   const [previewingAll, setPreviewingAll] = useState(false);
   const [renderingIndices, setRenderingIndices] = useState<Set<number>>(new Set());
+  const [failedSiteRenderIndices, setFailedSiteRenderIndices] = useState<Set<number>>(new Set());
   const autoRenderTriggered = useRef(false);
   const mapScreenshotsRef = useRef<{ satellite: string; withZones: string } | null>(null);
   const selectZone = useViewerStore((s) => s.selectZone);
@@ -870,13 +871,19 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
     }
   }, [isSitePreviewActive, optionCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Reset auto-render flag when zone changes
+  // Reset auto-render flag and failed state when zone changes
   useEffect(() => {
     autoRenderTriggered.current = false;
+    setFailedSiteRenderIndices(new Set());
   }, [zone.id]);
 
   const renderSiteOption = async (idx: number) => {
     setRenderingIndices((prev) => new Set(prev).add(idx));
+    setFailedSiteRenderIndices((prev) => {
+      const next = new Set(prev);
+      next.delete(idx);
+      return next;
+    });
     try {
       // Build a map of zoneId → chosen option for this index
       const zoneLayoutsForOption: Record<string, LayoutOption> = {};
@@ -906,6 +913,8 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
       setSitePreviewImageUrl(idx, result.image_url);
     } catch (err) {
       console.error('[renderSiteOption] Failed for index', idx, err);
+      setFailedSiteRenderIndices((prev) => new Set(prev).add(idx));
+      toast.error(`Site preview ${idx + 1} failed to render`);
     } finally {
       setRenderingIndices((prev) => {
         const next = new Set(prev);
@@ -936,6 +945,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
 
     setPreviewingAll(true);
     autoRenderTriggered.current = false;
+    setFailedSiteRenderIndices(new Set());
     try {
       // Run all zone previews in parallel
       const results = await Promise.allSettled(
@@ -1060,7 +1070,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                   onClick={() => selectZone(cz.id)}
                   className={`flex w-full items-center gap-2 rounded px-1.5 py-1 text-xs text-left transition-colors ${
                     isBuildable
-                      ? 'text-neutral-300 hover:bg-indigo-50 cursor-pointer'
+                      ? 'text-neutral-300 hover:bg-indigo-500/10 cursor-pointer'
                       : 'text-neutral-400 hover:bg-white/10 cursor-pointer'
                   }`}
                   title={isBuildable ? 'Click to edit & preview layout' : 'Click to edit zone'}
@@ -1157,7 +1167,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
               <button
                 onClick={() => { autoRenderTriggered.current = false; handlePreviewAll(); }}
                 disabled={previewingAll}
-                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-600 hover:bg-indigo-50"
+                className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-400 hover:bg-white/10"
                 title="Regenerate all options"
               >
                 <RefreshCw size={10} className={previewingAll ? 'animate-spin' : ''} />
@@ -1171,6 +1181,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
             const isActive = idx === siteActiveIndex;
             const imageUrl = siteImageUrls[idx];
             const isRendering = renderingIndices.has(idx);
+            const hasFailed = failedSiteRenderIndices.has(idx);
             // Collect stats for this option across all zones
             let totalBuildings = 0;
             let totalRoads = 0;
@@ -1193,12 +1204,12 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                 onClick={() => setActiveSitePreviewIndex(idx)}
                 className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
                   isActive
-                    ? 'border-indigo-500 bg-indigo-50 ring-1 ring-indigo-500'
-                    : 'border-white/10 bg-white/10 hover:border-white/20 hover:bg-white/10'
+                    ? 'border-indigo-400/40 bg-indigo-500/15 ring-1 ring-indigo-400/30'
+                    : 'border-white/[0.08] bg-white/[0.04] hover:border-white/[0.15] hover:bg-white/[0.07]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-neutral-300'}`}>
+                  <span className={`text-xs font-semibold ${isActive ? 'text-indigo-300' : 'text-neutral-300'}`}>
                     {label}
                   </span>
                   <span className="text-[10px] text-neutral-400">
@@ -1281,6 +1292,19 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
                       <span className="text-[9px] text-neutral-400">Rendering site preview...</span>
                     </div>
                   </div>
+                ) : hasFailed ? (
+                  <div className="flex h-[100px] items-center justify-center rounded bg-red-500/10">
+                    <div className="flex flex-col items-center gap-1.5">
+                      <span className="text-[9px] text-red-400">Render failed</span>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); renderSiteOption(idx); }}
+                        className="flex items-center gap-1 rounded bg-white/10 px-2 py-1 text-[9px] text-white hover:bg-white/20"
+                      >
+                        <RefreshCw size={8} />
+                        Retry
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex h-[80px] items-center justify-center rounded bg-white/10">
                     <span className="text-[10px] text-neutral-400">Waiting to render...</span>
@@ -1296,7 +1320,7 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
 
           {/* Expanded active option */}
           {siteImageUrls[siteActiveIndex] && (
-            <div className="rounded-lg border border-indigo-200 bg-indigo-50/30 p-2">
+            <div className="rounded-lg border border-indigo-400/20 bg-indigo-500/10 p-2">
               <div className="relative group/expanded">
                 <img
                   src={siteImageUrls[siteActiveIndex]}
@@ -1583,8 +1607,17 @@ function PreviewHistorySection({ zone, onAIGenerate }: { zone: SiteZone; onAIGen
                 src={entry.image_url}
                 alt={entry.label}
                 className="aspect-square w-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.style.display = 'none';
+                  // Show error placeholder in next sibling
+                  const placeholder = img.nextElementSibling as HTMLElement;
+                  if (placeholder) placeholder.style.display = 'flex';
+                }}
               />
+              <div className="aspect-square w-full items-center justify-center bg-white/5 text-neutral-500" style={{ display: 'none' }}>
+                <span className="text-[9px]">Image unavailable</span>
+              </div>
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                 {/* Action buttons */}
                 <div className="absolute top-1 right-1 flex gap-1">
