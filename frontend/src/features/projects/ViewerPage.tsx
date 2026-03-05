@@ -37,11 +37,11 @@ class SceneErrorBoundary extends Component<{ children: ReactNode }, { error: Err
     if (this.state.error) {
       const isWebGLError = this.state.error.message?.includes('WebGL');
       return (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gray-900 text-primary-950 dark:text-accent-50">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-gray-900 text-primary-950">
           <p className="text-lg font-semibold">3D Scene Error</p>
           <pre className="max-w-xl overflow-auto rounded bg-red-900/50 p-3 text-xs text-red-200">{this.state.error.toString()}</pre>
           {isWebGLError && (
-            <p className="max-w-md text-center text-sm text-primary-950/50 dark:text-white/50">
+            <p className="max-w-md text-center text-sm text-primary-950/50">
               Browser ran out of WebGL contexts. Close other tabs using 3D/maps and reload the page.
             </p>
           )}
@@ -744,19 +744,19 @@ export function ViewerPage() {
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
             to={`/projects/${id}`}
-            className="rounded-lg bg-primary-950/[0.04] dark:bg-white/[0.04] p-2 text-primary-950 dark:text-accent-50 backdrop-blur-sm hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06]"
+            className="rounded-lg bg-primary-950/[0.04] p-2 text-primary-950 backdrop-blur-sm hover:bg-primary-950/[0.06]"
           >
             <ArrowLeft size={18} />
           </Link>
           <div className="min-w-0">
-            <h1 className="truncate text-sm font-semibold text-primary-950 dark:text-accent-50 sm:text-lg">{project?.name || 'Loading...'}</h1>
-            <p className="text-xs text-primary-950/60 dark:text-white/60">{project?.buildings?.length || 0} buildings</p>
+            <h1 className="truncate text-sm font-semibold text-primary-950 sm:text-lg">{project?.name || 'Loading...'}</h1>
+            <p className="text-xs text-primary-950/60">{project?.buildings?.length || 0} buildings</p>
           </div>
           <UndoRedoButtons />
           {/* Presence indicators with follow mode */}
           {collaboration.users.length > 1 && (
             <div className="ml-2 flex items-center gap-1" title={`${collaboration.users.length} viewers online`}>
-              <Users size={14} className="text-primary-950/60 dark:text-white/60" />
+              <Users size={14} className="text-primary-950/60" />
               <div className="flex -space-x-1.5">
                 {collaboration.users
                   .filter((u) => u.id !== collaboration.connectionId)
@@ -785,13 +785,13 @@ export function ViewerPage() {
                       >
                         {u.name.charAt(0).toUpperCase()}
                         {isFollowing && (
-                          <Eye size={8} className="absolute -bottom-1 -right-1 rounded-full bg-white dark:bg-primary-900 text-neutral-900 p-px" />
+                          <Eye size={8} className="absolute -bottom-1 -right-1 rounded-full bg-white text-neutral-900 p-px" />
                         )}
                       </button>
                     );
                   })}
                 {collaboration.users.length > 6 && (
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-900/80 bg-gray-600 text-[9px] font-bold text-primary-950 dark:text-accent-50">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-900/80 bg-gray-600 text-[9px] font-bold text-primary-950">
                     +{collaboration.users.length - 6}
                   </div>
                 )}
@@ -799,7 +799,7 @@ export function ViewerPage() {
               {collaboration.followingUserId && (
                 <button
                   onClick={() => collaboration.setFollowing(null)}
-                  className="ml-1 flex items-center gap-1 rounded-md bg-primary-950/[0.06] dark:bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium text-primary-950 dark:text-accent-50 hover:bg-primary-950/[0.1] dark:hover:bg-white/[0.1]"
+                  className="ml-1 flex items-center gap-1 rounded-md bg-primary-950/[0.06] px-2 py-0.5 text-[10px] font-medium text-primary-950 hover:bg-primary-950/[0.1]"
                 >
                   <EyeOff size={10} />
                   Stop
@@ -814,7 +814,7 @@ export function ViewerPage() {
             className={`flex items-center gap-1.5 rounded-lg p-2 text-sm font-medium backdrop-blur-sm sm:px-3 sm:py-1.5 ${
               isSitePlannerActive
                 ? 'bg-emerald-500/80 text-white hover:bg-emerald-600/80'
-                : 'bg-primary-950/[0.04] dark:bg-white/[0.04] text-primary-950 dark:text-accent-50 hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06]'
+                : 'bg-primary-950/[0.04] text-primary-950 hover:bg-primary-950/[0.06]'
             }`}
           >
             <MapIcon size={14} />
@@ -823,7 +823,7 @@ export function ViewerPage() {
           {!isSitePlannerActive && (
           <button
             onClick={() => setShowAIGenerateModal(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-purple-500/80 p-2 text-sm font-medium text-primary-950 dark:text-accent-50 backdrop-blur-sm hover:bg-purple-600/80 sm:px-3 sm:py-1.5"
+            className="flex items-center gap-1.5 rounded-lg bg-purple-500/80 p-2 text-sm font-medium text-primary-950 backdrop-blur-sm hover:bg-purple-600/80 sm:px-3 sm:py-1.5"
             title="AI 3D Generation"
           >
             <Sparkles size={14} />
@@ -834,7 +834,7 @@ export function ViewerPage() {
           <button
             onClick={() => setShowGenerateConfirm(true)}
             disabled={generatingNeighborhood}
-            className="flex items-center gap-1.5 rounded-lg bg-purple-700/80 p-2 text-sm font-medium text-primary-950 dark:text-accent-50 backdrop-blur-sm hover:bg-purple-800/80 disabled:opacity-50 sm:px-3 sm:py-1.5"
+            className="flex items-center gap-1.5 rounded-lg bg-purple-700/80 p-2 text-sm font-medium text-primary-950 backdrop-blur-sm hover:bg-purple-800/80 disabled:opacity-50 sm:px-3 sm:py-1.5"
             title="Generate 3D models for all building/residential zones"
           >
             {generatingNeighborhood ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -856,8 +856,8 @@ export function ViewerPage() {
             onClick={() => { setAnnotating(!isAnnotating); setPendingAnnotationPos(null); }}
             className={`flex items-center gap-1.5 rounded-lg p-2 text-sm font-medium backdrop-blur-sm sm:px-3 sm:py-1.5 ${
               isAnnotating
-                ? 'bg-yellow-500/80 text-primary-950 dark:text-accent-50 hover:bg-yellow-600/80'
-                : 'bg-primary-950/[0.04] dark:bg-white/[0.04] text-primary-950 dark:text-accent-50 hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06]'
+                ? 'bg-yellow-500/80 text-primary-950 hover:bg-yellow-600/80'
+                : 'bg-primary-950/[0.04] text-primary-950 hover:bg-primary-950/[0.06]'
             }`}
           >
             <MessageSquarePlus size={14} />
@@ -871,7 +871,7 @@ export function ViewerPage() {
             className={`flex items-center gap-1.5 rounded-lg p-2 text-sm font-medium backdrop-blur-sm sm:px-3 sm:py-1.5 ${
               isRecordingVideo
                 ? 'bg-red-500/80 text-white hover:bg-red-600/80'
-                : 'bg-primary-950/[0.04] dark:bg-white/[0.04] text-primary-950 dark:text-accent-50 hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06]'
+                : 'bg-primary-950/[0.04] text-primary-950 hover:bg-primary-950/[0.06]'
             }`}
           >
             {isRecordingVideo ? <Square size={14} /> : <Video size={14} />}
@@ -879,7 +879,7 @@ export function ViewerPage() {
           </button>
           <button
             onClick={handleExportScene}
-            className="flex items-center gap-1.5 rounded-lg bg-primary-950/[0.04] dark:bg-white/[0.04] p-2 text-sm font-medium text-primary-950 dark:text-accent-50 backdrop-blur-sm hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06] sm:px-3 sm:py-1.5"
+            className="flex items-center gap-1.5 rounded-lg bg-primary-950/[0.04] p-2 text-sm font-medium text-primary-950 backdrop-blur-sm hover:bg-primary-950/[0.06] sm:px-3 sm:py-1.5"
           >
             <Download size={14} />
             <span className="hidden sm:inline">Export</span>
@@ -887,7 +887,7 @@ export function ViewerPage() {
           <div className="relative">
             <button
               onClick={() => setScreenshotMenuOpen((v) => !v)}
-              className="flex items-center gap-1.5 rounded-lg bg-primary-950/[0.04] dark:bg-white/[0.04] p-2 text-sm font-medium text-primary-950 dark:text-accent-50 backdrop-blur-sm hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06] sm:px-3 sm:py-1.5"
+              className="flex items-center gap-1.5 rounded-lg bg-primary-950/[0.04] p-2 text-sm font-medium text-primary-950 backdrop-blur-sm hover:bg-primary-950/[0.06] sm:px-3 sm:py-1.5"
             >
               <Camera size={14} />
               <span className="hidden sm:inline">Screenshot</span>
@@ -902,7 +902,7 @@ export function ViewerPage() {
                   <button
                     key={mult}
                     onClick={() => handleScreenshot(mult)}
-                    className="block w-full whitespace-nowrap rounded px-3 py-1.5 text-left text-xs text-primary-950 dark:text-accent-50 hover:bg-primary-950/[0.06] dark:hover:bg-white/[0.06]"
+                    className="block w-full whitespace-nowrap rounded px-3 py-1.5 text-left text-xs text-primary-950 hover:bg-primary-950/[0.06]"
                   >
                     {label} Resolution
                   </button>
@@ -1062,7 +1062,7 @@ export function ViewerPage() {
                 className={`rounded-md px-2 py-0.5 text-xs font-medium ${
                   editingBuilding
                     ? 'bg-amber-100 text-amber-700'
-                    : 'bg-neutral-100 text-primary-950/40 dark:text-white/40 hover:bg-neutral-200'
+                    : 'bg-neutral-100 text-primary-950/40 hover:bg-neutral-200'
                 }`}
               >
                 {editingBuilding ? 'Cancel' : 'Edit'}
@@ -1072,7 +1072,7 @@ export function ViewerPage() {
                 className={`rounded-md p-1 ${
                   isMovingBuilding
                     ? 'bg-blue-100 text-blue-700'
-                    : 'text-primary-950/50 dark:text-white/50 hover:bg-neutral-100 hover:text-primary-950/30'
+                    : 'text-primary-950/50 hover:bg-neutral-100 hover:text-primary-950/30'
                 }`}
                 title={isMovingBuilding ? 'Cancel move' : 'Move building'}
               >
@@ -1080,14 +1080,14 @@ export function ViewerPage() {
               </button>
               <button
                 onClick={() => deleteBuilding.mutate(selectedBuilding.id)}
-                className="rounded-md p-1 text-primary-950/50 dark:text-white/50 hover:bg-red-100 hover:text-red-600"
+                className="rounded-md p-1 text-primary-950/50 hover:bg-red-100 hover:text-red-600"
                 title="Delete building (Ctrl+Z to undo)"
               >
                 <Trash2 size={14} />
               </button>
               <button
                 onClick={() => selectBuilding(null)}
-                className="rounded-md p-1 text-primary-950/50 dark:text-white/50 hover:bg-neutral-100 hover:text-primary-950/30"
+                className="rounded-md p-1 text-primary-950/50 hover:bg-neutral-100 hover:text-primary-950/30"
               >
                 ✕
               </button>
@@ -1103,7 +1103,7 @@ export function ViewerPage() {
           {editingBuilding ? (
             <div className="mt-3 space-y-2 text-sm">
               <div>
-                <label className="block text-xs text-primary-950/40 dark:text-white/40">Height (m)</label>
+                <label className="block text-xs text-primary-950/40">Height (m)</label>
                 <input
                   type="number"
                   step="0.1"
@@ -1113,7 +1113,7 @@ export function ViewerPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-primary-950/40 dark:text-white/40">Floors</label>
+                <label className="block text-xs text-primary-950/40">Floors</label>
                 <input
                   type="number"
                   step="1"
@@ -1123,7 +1123,7 @@ export function ViewerPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-primary-950/40 dark:text-white/40">Floor Height (m)</label>
+                <label className="block text-xs text-primary-950/40">Floor Height (m)</label>
                 <input
                   type="number"
                   step="0.1"
@@ -1133,7 +1133,7 @@ export function ViewerPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-primary-950/40 dark:text-white/40">Roof Type</label>
+                <label className="block text-xs text-primary-950/40">Roof Type</label>
                 <select
                   value={editValues.roof_type || 'flat'}
                   onChange={(e) => setEditValues((v) => ({ ...v, roof_type: e.target.value }))}
@@ -1168,25 +1168,25 @@ export function ViewerPage() {
             <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-1 sm:gap-x-0">
               {selectedBuilding.height_meters && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">Height</dt>
+                  <dt className="text-primary-950/40">Height</dt>
                   <dd className="font-medium">{selectedBuilding.height_meters}m</dd>
                 </div>
               )}
               {selectedBuilding.floor_count && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">Floors</dt>
+                  <dt className="text-primary-950/40">Floors</dt>
                   <dd className="font-medium">{selectedBuilding.floor_count}</dd>
                 </div>
               )}
               {selectedBuilding.roof_type && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">Roof Type</dt>
+                  <dt className="text-primary-950/40">Roof Type</dt>
                   <dd className="font-medium capitalize">{selectedBuilding.roof_type}</dd>
                 </div>
               )}
               {selectedBuilding.specifications?.total_area_sqm && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">Total Area</dt>
+                  <dt className="text-primary-950/40">Total Area</dt>
                   <dd className="font-medium">
                     {selectedBuilding.specifications.total_area_sqm.toLocaleString()} m²
                   </dd>
@@ -1194,13 +1194,13 @@ export function ViewerPage() {
               )}
               {selectedBuilding.specifications?.residential_units && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">Units</dt>
+                  <dt className="text-primary-950/40">Units</dt>
                   <dd className="font-medium">{selectedBuilding.specifications.residential_units}</dd>
                 </div>
               )}
               {selectedBuilding.specifications?.ai_confidence != null && (
                 <div className="flex justify-between">
-                  <dt className="text-primary-950/40 dark:text-white/40">AI Confidence</dt>
+                  <dt className="text-primary-950/40">AI Confidence</dt>
                   <dd className="font-medium">
                     <span
                       className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -1257,7 +1257,7 @@ export function ViewerPage() {
           />
           {/* Material picker */}
           <div className="mt-3 border-t border-neutral-100 pt-3">
-            <label className="mb-1.5 block text-xs font-medium text-primary-950/40 dark:text-white/40">Facade Material</label>
+            <label className="mb-1.5 block text-xs font-medium text-primary-950/40">Facade Material</label>
             <div className="flex flex-wrap gap-1.5">
               {(['concrete', 'glass', 'brick', 'metal', 'wood', 'green_roof'] as const).map((mat) => {
                 const colors: Record<string, string> = {
@@ -1290,7 +1290,7 @@ export function ViewerPage() {
                     className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium capitalize transition-all ${
                       isActive
                         ? 'ring-2 ring-primary-500 ring-offset-1 bg-primary-50 text-primary-700'
-                        : 'bg-neutral-50 text-primary-950/30 dark:text-white/30 hover:bg-neutral-100'
+                        : 'bg-neutral-50 text-primary-950/30 hover:bg-neutral-100'
                     }`}
                   >
                     <span className={`inline-block h-2.5 w-2.5 rounded-full ${colors[mat]}`} />
@@ -1318,7 +1318,7 @@ export function ViewerPage() {
       {pendingAnnotationPos && (
         <div className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2">
           <div className="rounded-xl bg-white/95 p-4 shadow-2xl backdrop-blur-sm" style={{ width: 320 }}>
-            <p className="mb-2 text-xs font-medium text-primary-950/40 dark:text-white/40">Add annotation at this point</p>
+            <p className="mb-2 text-xs font-medium text-primary-950/40">Add annotation at this point</p>
             <textarea
               autoFocus
               value={annotationText}
@@ -1360,12 +1360,12 @@ export function ViewerPage() {
       )}
       {showAIGenerateModal && !selectedBuildingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-sm rounded-xl bg-white dark:bg-primary-900 p-6 shadow-2xl">
+          <div className="mx-4 w-full max-w-sm rounded-xl bg-white p-6 shadow-2xl">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={20} className="text-purple-500" />
               <h2 className="text-lg font-bold text-neutral-900">AI Generate</h2>
             </div>
-            <p className="text-sm text-primary-950/30 dark:text-white/30 mb-4">
+            <p className="text-sm text-primary-950/30 mb-4">
               Select a building first to generate a 3D model for it, or create a new building to get started.
             </p>
             <button
@@ -1381,19 +1381,19 @@ export function ViewerPage() {
       {/* Generate Neighborhood Confirmation Dialog */}
       {showGenerateConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowGenerateConfirm(false)}>
-          <div className="mx-4 w-full max-w-sm rounded-xl bg-white dark:bg-primary-900 p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+          <div className="mx-4 w-full max-w-sm rounded-xl bg-white p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-2 mb-4">
               <Sparkles size={20} className="text-purple-600" />
               <h2 className="text-lg font-bold text-neutral-900">Generate Neighborhood</h2>
             </div>
-            <p className="text-sm text-primary-950/30 dark:text-white/30 mb-4">
+            <p className="text-sm text-primary-950/30 mb-4">
               Choose which zones to generate 3D models for:
             </p>
             <div className="flex flex-col gap-2">
               {selectedBoundary && (
                 <button
                   onClick={() => runGenerate('boundary')}
-                  className="w-full rounded-lg bg-purple-600 px-4 py-2.5 text-left text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-700"
+                  className="w-full rounded-lg bg-purple-600 px-4 py-2.5 text-left text-sm font-medium text-primary-950 hover:bg-purple-700"
                 >
                   <div>Generate for &ldquo;{selectedBoundary.name || 'Selected Boundary'}&rdquo;</div>
                   <div className="text-purple-200 text-xs mt-0.5">Boundary-scoped zones only</div>
@@ -1401,7 +1401,7 @@ export function ViewerPage() {
               )}
               <button
                 onClick={() => runGenerate('all')}
-                className="w-full rounded-lg bg-purple-700 px-4 py-2.5 text-left text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-800"
+                className="w-full rounded-lg bg-purple-700 px-4 py-2.5 text-left text-sm font-medium text-primary-950 hover:bg-purple-800"
               >
                 <div>Generate all zones</div>
                 <div className="text-purple-200 text-xs mt-0.5">{totalBuildableCount} zone{totalBuildableCount !== 1 ? 's' : ''}, ~{totalUnits} unit{totalUnits !== 1 ? 's' : ''}</div>
@@ -1439,10 +1439,10 @@ export function ViewerPage() {
       {/* Keyboard Shortcuts Modal */}
       {showShortcuts && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-lg rounded-xl bg-white dark:bg-primary-900 p-6 shadow-2xl">
+          <div className="mx-4 w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-neutral-900">Keyboard Shortcuts</h2>
-              <button onClick={() => setShowShortcuts(false)} className="rounded-md p-1 text-primary-950/50 dark:text-white/50 hover:bg-neutral-100 hover:text-primary-950/30">
+              <button onClick={() => setShowShortcuts(false)} className="rounded-md p-1 text-primary-950/50 hover:bg-neutral-100 hover:text-primary-950/30">
                 <X size={20} />
               </button>
             </div>
@@ -1469,7 +1469,7 @@ export function ViewerPage() {
                 <ShortcutRow keys="Dbl-click" desc="Close polygon" />
               </ShortcutSection>
             </div>
-            <p className="mt-4 text-center text-xs text-primary-950/50 dark:text-white/50">Press ? or Esc to close</p>
+            <p className="mt-4 text-center text-xs text-primary-950/50">Press ? or Esc to close</p>
           </div>
         </div>
       )}
@@ -1481,7 +1481,7 @@ export function ViewerPage() {
 function ShortcutSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-3">
-      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-950/50 dark:text-white/50">{title}</h3>
+      <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-primary-950/50">{title}</h3>
       <div className="space-y-0.5">{children}</div>
     </div>
   );
@@ -1490,11 +1490,11 @@ function ShortcutSection({ title, children }: { title: string; children: React.R
 function ShortcutRow({ keys, desc }: { keys: string; desc: string }) {
   return (
     <div className="flex items-center justify-between py-0.5">
-      <span className="text-primary-950/30 dark:text-white/30">{desc}</span>
+      <span className="text-primary-950/30">{desc}</span>
       <div className="flex gap-1">
         {keys.split(' ').map((k, i) =>
           k === '/' ? (
-            <span key={i} className="text-primary-950/50 dark:text-white/50">/</span>
+            <span key={i} className="text-primary-950/50">/</span>
           ) : (
             <kbd key={i} className="rounded bg-neutral-100 px-1.5 py-0.5 text-[11px] font-mono font-medium text-neutral-700">
               {k}
@@ -1525,10 +1525,10 @@ function RotationSlider({
 
   return (
     <div className="mt-3 border-t border-neutral-100 pt-3">
-      <label className="mb-1 flex items-center gap-1 text-xs font-medium text-primary-950/40 dark:text-white/40">
+      <label className="mb-1 flex items-center gap-1 text-xs font-medium text-primary-950/40">
         <RotateCw size={12} />
         Rotation
-        <span className="ml-auto tabular-nums text-primary-950/50 dark:text-white/50">{localDeg}°</span>
+        <span className="ml-auto tabular-nums text-primary-950/50">{localDeg}°</span>
       </label>
       <input
         type="range"
@@ -1566,7 +1566,7 @@ function ViewerLegend({
     <div className="absolute bottom-4 left-4 z-20 hidden sm:block">
       <button
         onClick={() => setCollapsed((v) => !v)}
-        className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-primary-950/30 dark:text-white/30 shadow-card backdrop-blur-sm hover:bg-white"
+        className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-primary-950/30 shadow-card backdrop-blur-sm hover:bg-white"
       >
         {collapsed ? 'Legend' : 'Hide Legend'}
       </button>
@@ -1576,7 +1576,7 @@ function ViewerLegend({
             {/* Phase colors */}
             {phases && phases.length > 0 && (
               <div>
-                <div className="mb-1 font-semibold text-primary-950/30 dark:text-white/30">Construction Phases</div>
+                <div className="mb-1 font-semibold text-primary-950/30">Construction Phases</div>
                 {phases
                   .sort((a, b) => a.phase_number - b.phase_number)
                   .map((p) => (
@@ -1585,7 +1585,7 @@ function ViewerLegend({
                         className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200"
                         style={{ backgroundColor: p.color || '#94a3b8' }}
                       />
-                      <span className={activePhase === p.phase_number ? 'font-medium text-neutral-800' : 'text-primary-950/40 dark:text-white/40'}>
+                      <span className={activePhase === p.phase_number ? 'font-medium text-neutral-800' : 'text-primary-950/40'}>
                         {p.name}
                       </span>
                     </div>
@@ -1597,29 +1597,29 @@ function ViewerLegend({
             {showExistingBuildings && (
               <div className="flex items-center gap-2 py-0.5">
                 <span className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200" style={{ backgroundColor: '#c0c0c0', opacity: 0.6 }} />
-                <span className="text-primary-950/40 dark:text-white/40">Existing Buildings</span>
+                <span className="text-primary-950/40">Existing Buildings</span>
               </div>
             )}
 
             {/* Measurements */}
             {showMeasurements && (
               <div>
-                <div className="mb-1 mt-1 font-semibold text-primary-950/30 dark:text-white/30">Measurements</div>
+                <div className="mb-1 mt-1 font-semibold text-primary-950/30">Measurements</div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-0.5 w-3 rounded bg-red-500" />
-                  <span className="text-primary-950/40 dark:text-white/40">Distance</span>
+                  <span className="text-primary-950/40">Distance</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-2.5 w-2.5 rounded-sm bg-amber-400/40 border border-amber-400" />
-                  <span className="text-primary-950/40 dark:text-white/40">Area</span>
+                  <span className="text-primary-950/40">Area</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-3 w-0.5 rounded bg-violet-500" />
-                  <span className="text-primary-950/40 dark:text-white/40">Height</span>
+                  <span className="text-primary-950/40">Height</span>
                 </div>
                 <div className="flex items-center gap-2 py-0.5">
                   <span className="inline-block h-0.5 w-3 rounded bg-cyan-500" />
-                  <span className="text-primary-950/40 dark:text-white/40">Angle</span>
+                  <span className="text-primary-950/40">Angle</span>
                 </div>
               </div>
             )}
@@ -1695,9 +1695,9 @@ function ComparisonOverlay({
         style={{ left: `${dividerPct}%`, width: 4, marginLeft: -2, pointerEvents: 'auto' }}
         onPointerDown={handlePointerDown}
       >
-        <div className="h-full w-full bg-white dark:bg-primary-900 shadow-lg" />
+        <div className="h-full w-full bg-white shadow-lg" />
         {/* Handle grip */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white dark:bg-primary-900 p-1.5 shadow-lg">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white p-1.5 shadow-lg">
           <div className="flex gap-0.5">
             <div className="h-4 w-0.5 rounded-full bg-neutral-400" />
             <div className="h-4 w-0.5 rounded-full bg-neutral-400" />

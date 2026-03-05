@@ -30,7 +30,7 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-accent-50 dark:bg-primary-950">
+    <div className="flex min-h-screen bg-accent-50">
       {/* Left hero panel - desktop only */}
       <div className="hidden w-1/2 flex-col justify-between bg-primary-950 p-12 lg:flex">
         <div className="flex items-center gap-3">
@@ -49,17 +49,17 @@ export function RegisterPage() {
         <div className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <Building2 size={40} className="mx-auto text-primary-400" />
-            <h1 className="mt-4 text-2xl font-bold text-primary-950 dark:text-accent-50">Create account</h1>
-            <p className="mt-1 text-sm text-primary-950/40 dark:text-white/40">SiteForge</p>
+            <h1 className="mt-4 text-2xl font-bold text-primary-950">Create account</h1>
+            <p className="mt-1 text-sm text-primary-950/40">SiteForge</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-primary-950/[0.06] dark:border-white/[0.06] bg-white dark:bg-primary-900 p-6 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-primary-950/[0.06] bg-white p-6 shadow-sm">
             {error && (
               <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</div>
             )}
 
             <div>
-              <label htmlFor="fullName" className="mb-1 block text-sm font-medium text-primary-950/70 dark:text-white/70">
+              <label htmlFor="fullName" className="mb-1 block text-sm font-medium text-primary-950/70">
                 Full Name
               </label>
               <input
@@ -67,13 +67,13 @@ export function RegisterPage() {
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full rounded-xl border border-primary-950/[0.1] dark:border-white/[0.1] bg-accent-50 dark:bg-primary-950 px-3.5 py-2.5 text-sm text-primary-950 dark:text-accent-50 placeholder:text-primary-950/30 dark:placeholder:text-white/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
+                className="w-full rounded-xl border border-primary-950/[0.1] bg-accent-50 px-3.5 py-2.5 text-sm text-primary-950 placeholder:text-primary-950/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
                 placeholder="Optional"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="mb-1 block text-sm font-medium text-primary-950/70 dark:text-white/70">
+              <label htmlFor="email" className="mb-1 block text-sm font-medium text-primary-950/70">
                 Email
               </label>
               <input
@@ -82,13 +82,13 @@ export function RegisterPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-primary-950/[0.1] dark:border-white/[0.1] bg-accent-50 dark:bg-primary-950 px-3.5 py-2.5 text-sm text-primary-950 dark:text-accent-50 placeholder:text-primary-950/30 dark:placeholder:text-white/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
+                className="w-full rounded-xl border border-primary-950/[0.1] bg-accent-50 px-3.5 py-2.5 text-sm text-primary-950 placeholder:text-primary-950/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="mb-1 block text-sm font-medium text-primary-950/70 dark:text-white/70">
+              <label htmlFor="password" className="mb-1 block text-sm font-medium text-primary-950/70">
                 Password
               </label>
               <div className="relative">
@@ -99,13 +99,13 @@ export function RegisterPage() {
                   minLength={8}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl border border-primary-950/[0.1] dark:border-white/[0.1] bg-accent-50 dark:bg-primary-950 px-3.5 py-2.5 pr-10 text-sm text-primary-950 dark:text-accent-50 placeholder:text-primary-950/30 dark:placeholder:text-white/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
+                  className="w-full rounded-xl border border-primary-950/[0.1] bg-accent-50 px-3.5 py-2.5 pr-10 text-sm text-primary-950 placeholder:text-primary-950/30 transition-all focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-400/20"
                   placeholder="Min 8 characters"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/30 dark:text-white/30 hover:text-primary-950/60"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/30 hover:text-primary-950/60"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -122,7 +122,7 @@ export function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-primary-950/40 dark:text-white/40">
+          <p className="mt-4 text-center text-sm text-primary-950/40">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-primary-400 hover:text-primary-500">
               Sign in

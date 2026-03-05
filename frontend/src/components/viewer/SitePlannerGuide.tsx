@@ -61,7 +61,7 @@ export function SitePlannerGuide({ forceShow, onDismiss }: SitePlannerGuideProps
 
   return (
     <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="relative mx-4 max-w-md rounded-2xl bg-white dark:bg-primary-900 p-6 shadow-2xl">
+      <div className="relative mx-4 max-w-md rounded-2xl bg-white p-6 shadow-2xl">
         <button
           onClick={handleDismiss}
           className="absolute right-3 top-3 rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
@@ -95,7 +95,7 @@ export function SitePlannerGuide({ forceShow, onDismiss }: SitePlannerGuideProps
 
         <button
           onClick={handleDismiss}
-          className="mt-5 w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-700"
+          className="mt-5 w-full rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-primary-950 hover:bg-purple-700"
         >
           Got it, let's start!
         </button>

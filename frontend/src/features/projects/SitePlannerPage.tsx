@@ -70,7 +70,7 @@ export function SitePlannerPage() {
 
   if (isLoading || (!project && !isError)) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-white dark:bg-primary-900 text-primary-950 dark:text-accent-50">
+      <div className="flex h-screen w-screen items-center justify-center bg-white text-primary-950">
         Loading project...
       </div>
     );
@@ -78,7 +78,7 @@ export function SitePlannerPage() {
 
   if (!project) {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-white dark:bg-primary-900 text-primary-950 dark:text-accent-50">
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-3 bg-white text-primary-950">
         <p>Project not found</p>
         <Link to="/projects" className="text-sm text-primary-400 hover:text-primary-300">
           Back to projects
@@ -88,20 +88,20 @@ export function SitePlannerPage() {
   }
 
   return (
-    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-white dark:bg-primary-900">
+    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-white">
       {/* Header overlay */}
       <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-white/70 px-4 py-3 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <Link
             to="/projects"
-            className="rounded-lg p-2 text-primary-950/70 dark:text-white/70 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50"
+            className="rounded-lg p-2 text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
             title="Home"
           >
             <ArrowLeft size={18} />
           </Link>
           <Link
             to={`/projects/${id}`}
-            className="rounded-lg px-3 py-1.5 text-xs font-medium text-primary-950/70 dark:text-white/70 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50"
+            className="rounded-lg px-3 py-1.5 text-xs font-medium text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
           >
             <FileText size={14} className="mr-1.5 inline" />
             Project Details
@@ -109,9 +109,9 @@ export function SitePlannerPage() {
         </div>
 
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <h1 className="text-sm font-semibold text-primary-950 dark:text-accent-50 sm:text-base">{project.name}</h1>
+          <h1 className="text-sm font-semibold text-primary-950 sm:text-base">{project.name}</h1>
           {project.location?.address && (
-            <p className="mt-0.5 text-xs text-primary-950/60 dark:text-white/60">{project.location.address}</p>
+            <p className="mt-0.5 text-xs text-primary-950/60">{project.location.address}</p>
           )}
         </div>
 

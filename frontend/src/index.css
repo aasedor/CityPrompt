@@ -7,8 +7,7 @@
     @apply antialiased;
   }
   body {
-    @apply bg-accent-50 text-primary-950
-           dark:bg-primary-950 dark:text-accent-50;
+    @apply bg-accent-50 text-primary-950;
   }
 }
 
@@ -18,7 +17,7 @@
 }
 
 @layer components {
-  /* ── Buttons ──────────────────────────────────────────────────── */
+  /* -- Buttons ------------------------------------------------- */
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-xl bg-primary-400 px-4 py-2.5
            text-sm font-semibold text-white shadow-lg shadow-primary-400/25 transition-all duration-200
@@ -32,9 +31,7 @@
            transition-all duration-200
            hover:bg-primary-950/[0.04] hover:text-primary-950 hover:border-primary-950/20
            focus:outline-none focus:ring-2 focus:ring-primary-400/30
-           active:scale-[0.97]
-           dark:border-white/[0.1] dark:text-white/60
-           dark:hover:bg-white/[0.06] dark:hover:text-white dark:hover:border-white/20;
+           active:scale-[0.97];
   }
   .btn-accent {
     @apply inline-flex items-center justify-center rounded-xl bg-accent-500 px-4 py-2.5
@@ -44,51 +41,43 @@
            active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  /* ── Cards ────────────────────────────────────────────────────── */
+  /* -- Cards --------------------------------------------------- */
   .card {
-    @apply rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm
-           sm:p-6
-           dark:bg-white/[0.03] dark:border-white/[0.06];
+    @apply rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm sm:p-6;
   }
   .card-hover {
     @apply rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm
            sm:p-6 transition-all duration-300
-           hover:border-primary-950/[0.1] hover:shadow-lg
-           dark:bg-white/[0.03] dark:border-white/[0.06]
-           dark:hover:border-white/[0.1];
+           hover:border-primary-950/[0.1] hover:shadow-lg;
   }
   .card-glow {
     @apply rounded-2xl border border-primary-400/20 bg-white p-4 shadow-sm
            sm:p-6 transition-all duration-300
-           hover:border-primary-400/30 hover:shadow-lg
-           dark:bg-white/[0.03];
+           hover:border-primary-400/30 hover:shadow-lg;
   }
 
-  /* ── Glass ────────────────────────────────────────────────────── */
+  /* -- Glass --------------------------------------------------- */
   .glass {
-    @apply border border-primary-950/[0.06] bg-white/80 backdrop-blur-xl
-           dark:border-white/[0.06] dark:bg-primary-950/80;
+    @apply border border-primary-950/[0.06] bg-white/80 backdrop-blur-xl;
   }
   .glass-dark {
     @apply border border-primary-950/[0.08] bg-primary-950/80 backdrop-blur-xl;
   }
 
-  /* ── Inputs ───────────────────────────────────────────────────── */
+  /* -- Inputs -------------------------------------------------- */
   .input-base {
     @apply rounded-xl border border-primary-950/[0.1] bg-accent-50 px-3.5 py-2.5 text-sm
            text-primary-950 placeholder:text-primary-950/30 transition-all duration-200
            focus:border-primary-400 focus:outline-none
-           focus:ring-2 focus:ring-primary-400/20
-           dark:border-white/[0.1] dark:bg-white/[0.05] dark:text-accent-50
-           dark:placeholder:text-white/30;
+           focus:ring-2 focus:ring-primary-400/20;
   }
 
-  /* ── Badges ───────────────────────────────────────────────────── */
+  /* -- Badges -------------------------------------------------- */
   .badge {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
   }
 
-  /* ── Glow line (decorative) ───────────────────────────────────── */
+  /* -- Glow line (decorative) ---------------------------------- */
   .glow-line {
     @apply h-px bg-gradient-to-r from-transparent via-primary-400/30 to-transparent;
   }
@@ -96,9 +85,86 @@
     @apply h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent;
   }
 
-  /* ── Dividers ─────────────────────────────────────────────────── */
+  /* -- Dividers ------------------------------------------------ */
   .divider {
-    @apply border-t border-primary-950/[0.06]
-           dark:border-white/[0.06];
+    @apply border-t border-primary-950/[0.06];
   }
 }
+
+/* =================================================================
+   DARK MODE  --  all overrides via html.dark descendant selectors
+   This avoids Tailwind CSS-variable conflicts with dark: variants.
+   ================================================================= */
+
+html.dark body {
+  background-color: #1d1b4f;
+  color: #fefaf7;
+}
+
+html.dark .bg-accent-50        { background-color: #1d1b4f; }
+html.dark .bg-accent-50\/80   { background-color: rgba(29,27,79,0.8); }
+html.dark .bg-accent-50\/95   { background-color: rgba(29,27,79,0.95); }
+html.dark .bg-white            { background-color: #28184d; }
+
+html.dark .text-primary-950       { color: #fefaf7; }
+html.dark .text-primary-950\/20  { color: rgba(255,255,255,0.2); }
+html.dark .text-primary-950\/25  { color: rgba(255,255,255,0.25); }
+html.dark .text-primary-950\/30  { color: rgba(255,255,255,0.3); }
+html.dark .text-primary-950\/40  { color: rgba(255,255,255,0.4); }
+html.dark .text-primary-950\/50  { color: rgba(255,255,255,0.5); }
+html.dark .text-primary-950\/60  { color: rgba(255,255,255,0.6); }
+html.dark .text-primary-950\/70  { color: rgba(255,255,255,0.7); }
+html.dark .text-primary-950\/80  { color: rgba(255,255,255,0.8); }
+html.dark .text-primary-950\/90  { color: rgba(255,255,255,0.9); }
+
+html.dark .border-primary-950\/\[0\.06\] { border-color: rgba(255,255,255,0.06); }
+html.dark .border-primary-950\/\[0\.08\] { border-color: rgba(255,255,255,0.08); }
+html.dark .border-primary-950\/\[0\.1\]  { border-color: rgba(255,255,255,0.1); }
+html.dark .border-primary-950\/20 { border-color: rgba(255,255,255,0.2); }
+
+html.dark .bg-primary-950\/\[0\.04\] { background-color: rgba(255,255,255,0.04); }
+html.dark .bg-primary-950\/\[0\.06\] { background-color: rgba(255,255,255,0.06); }
+
+html.dark .hover\:bg-primary-950\/\[0\.04\]:hover { background-color: rgba(255,255,255,0.06); }
+html.dark .hover\:bg-primary-950\/\[0\.08\]:hover { background-color: rgba(255,255,255,0.08); }
+html.dark .hover\:bg-primary-950\/\[0\.1\]:hover  { background-color: rgba(255,255,255,0.1); }
+html.dark .hover\:text-primary-950:hover { color: #fefaf7; }
+html.dark .hover\:border-primary-950\/20:hover { border-color: rgba(255,255,255,0.2); }
+
+html.dark .placeholder\:text-primary-950\/30::placeholder { color: rgba(255,255,255,0.3); }
+
+html.dark .group:hover .group-hover\:text-primary-950 { color: #fefaf7; }
+html.dark .group:hover .group-hover\:text-coral-500 { color: #f14a72; }
+
+html.dark .card,
+html.dark .card-hover,
+html.dark .card-glow {
+  background-color: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+}
+html.dark .card-hover:hover { border-color: rgba(255,255,255,0.1); }
+
+html.dark .btn-secondary {
+  border-color: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+}
+html.dark .btn-secondary:hover {
+  background-color: rgba(255,255,255,0.06);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.2);
+}
+
+html.dark .input-base {
+  border-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.05);
+  color: #fefaf7;
+}
+html.dark .input-base::placeholder { color: rgba(255,255,255,0.3); }
+html.dark .input-base:focus { border-color: #4496d5; }
+
+html.dark .glass {
+  border-color: rgba(255,255,255,0.06);
+  background-color: rgba(29,27,79,0.8);
+}
+
+html.dark .divider { border-color: rgba(255,255,255,0.06); }

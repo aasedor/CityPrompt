@@ -311,7 +311,7 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
     <mesh
       ref={meshRef}
       rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, -0.02, 0]}
+      position={[0, -0.05, 0]}
       receiveShadow
     >
       <planeGeometry args={[1, 1]} />
@@ -319,6 +319,9 @@ export function SatelliteGroundPlane({ projectLat, projectLng, mapLayer }: Satel
         ref={matRef}
         roughness={0.95}
         metalness={0}
+        polygonOffset
+        polygonOffsetFactor={6}
+        polygonOffsetUnits={6}
       />
     </mesh>
   );

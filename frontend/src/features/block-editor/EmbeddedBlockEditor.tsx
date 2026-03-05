@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, ChevronDown, Undo2, Redo2, Save, Wand2, Grid3X3, Ruler } from 'lucide-react';
@@ -20,6 +21,7 @@ interface EmbeddedBlockEditorProps {
 
 export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedBlockEditorProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 800, height: 500 });
   const [loading, setLoading] = useState(false);
@@ -108,14 +110,21 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     setIsSaving(true);
     try {
       // Uses save-layout endpoint which saves to properties AND updates building positions
-      await siteZonesApi.saveLayout(activeZoneId, editedLayout);
-      toast.success('Layout saved — building positions updated');
+      const saveResult = await siteZonesApi.saveLayout(activeZoneId, editedLayout);
+      const parts = [];
+      if (saveResult.buildings_updated) parts.push(`${saveResult.buildings_updated} updated`);
+      if (saveResult.buildings_created) parts.push(`${saveResult.buildings_created} created`);
+      if (saveResult.buildings_deleted) parts.push(`${saveResult.buildings_deleted} removed`);
+      toast.success(`Layout saved${parts.length ? ' — ' + parts.join(', ') : ''}`);
+      // Invalidate project query so 3D viewer gets updated building positions
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
     } catch {
       toast.error('Failed to save layout');
     } finally {
       setIsSaving(false);
     }
-  }, [editedLayout, activeZoneId]);
+  }, [editedLayout, activeZoneId, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (!editedLayout || !activeZoneId || !projectId) return;

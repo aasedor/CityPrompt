@@ -1324,7 +1324,7 @@ function RoadZone({
       return geom;
     }
 
-    const roadGeom = buildRibbon(centerPoints, halfWidth, 0.05);
+    const roadGeom = buildRibbon(centerPoints, halfWidth, 0.15);
 
     // --- Shared surface info ---
     const surface = (zone.properties?.road_surface as string) || 'asphalt';
@@ -1347,7 +1347,7 @@ function RoadZone({
     }
 
     // Center line points
-    const linePoints = centerPoints.map((p) => new THREE.Vector3(p.x, 0.08, p.z));
+    const linePoints = centerPoints.map((p) => new THREE.Vector3(p.x, 0.18, p.z));
     const centerLineGeom = new THREE.BufferGeometry().setFromPoints(linePoints);
 
     // Sidewalks: left side (positive normal direction), right side (negative)
@@ -1362,8 +1362,8 @@ function RoadZone({
     const hasLeftSidewalk = sidewalkSetting === 'both' || sidewalkSetting === 'left';
     const hasRightSidewalk = sidewalkSetting === 'both' || sidewalkSetting === 'right';
 
-    const leftSW = hasLeftSidewalk ? buildOffsetRibbon(centerPoints, leftInner, leftOuter, 0.1) : null;
-    const rightSW = hasRightSidewalk ? buildOffsetRibbon(centerPoints, rightInner, rightOuter, 0.1) : null;
+    const leftSW = hasLeftSidewalk ? buildOffsetRibbon(centerPoints, leftInner, leftOuter, 0.20) : null;
+    const rightSW = hasRightSidewalk ? buildOffsetRibbon(centerPoints, rightInner, rightOuter, 0.20) : null;
 
     // --- Detail layers ---
     const laneCount = (zone.properties?.lane_count as number) || 2;
@@ -1373,8 +1373,8 @@ function RoadZone({
     let edgeLineRightGeo: THREE.BufferGeometry | null = null;
     if (style.showLaneMarkings) {
       const edgeOffset = halfWidth - 0.15;
-      edgeLineLeftGeo = buildOffsetRibbon(centerPoints, edgeOffset - 0.06, edgeOffset + 0.06, 0.07);
-      edgeLineRightGeo = buildOffsetRibbon(centerPoints, -(edgeOffset - 0.06), -(edgeOffset + 0.06), 0.07);
+      edgeLineLeftGeo = buildOffsetRibbon(centerPoints, edgeOffset - 0.06, edgeOffset + 0.06, 0.17);
+      edgeLineRightGeo = buildOffsetRibbon(centerPoints, -(edgeOffset - 0.06), -(edgeOffset + 0.06), 0.17);
     }
 
     // Lane divider lines: dashed white ribbons between lanes
@@ -1383,7 +1383,7 @@ function RoadZone({
       const laneWidth = roadWidth / laneCount;
       for (let lane = 1; lane < laneCount; lane++) {
         const offset = -halfWidth + lane * laneWidth;
-        const geo = buildDashedRibbon(centerPoints, offset, 0.06, 0.07, 3, 3);
+        const geo = buildDashedRibbon(centerPoints, offset, 0.06, 0.17, 3, 3);
         if (geo) laneDividerGeoList.push(geo);
       }
     }
@@ -1391,17 +1391,17 @@ function RoadZone({
     // Center divider: solid yellow ribbon for even lane counts (opposing traffic)
     let centerDividerGeo: THREE.BufferGeometry | null = null;
     if (style.showLaneMarkings && laneCount >= 2 && laneCount % 2 === 0) {
-      centerDividerGeo = buildOffsetRibbon(centerPoints, -0.05, 0.05, 0.08);
+      centerDividerGeo = buildOffsetRibbon(centerPoints, -0.05, 0.05, 0.18);
     }
 
     // Gutter strips: dark narrow ribbons between road edge and curb
     let gutterLeftGeo: THREE.BufferGeometry | null = null;
     let gutterRightGeo: THREE.BufferGeometry | null = null;
     if (hasLeftSidewalk) {
-      gutterLeftGeo = buildOffsetRibbon(centerPoints, halfWidth, halfWidth + 0.2, 0.06);
+      gutterLeftGeo = buildOffsetRibbon(centerPoints, halfWidth, halfWidth + 0.2, 0.16);
     }
     if (hasRightSidewalk) {
-      gutterRightGeo = buildOffsetRibbon(centerPoints, -halfWidth, -(halfWidth + 0.2), 0.06);
+      gutterRightGeo = buildOffsetRibbon(centerPoints, -halfWidth, -(halfWidth + 0.2), 0.16);
     }
 
     // Sidewalk expansion joints
@@ -1417,7 +1417,7 @@ function RoadZone({
     // Surface pattern lines (cobblestone/brick/paver only)
     let surfacePatternGeo: THREE.BufferGeometry | null = null;
     if (!style.showLaneMarkings && (surface === 'cobblestone' || surface === 'brick' || surface === 'paver')) {
-      surfacePatternGeo = buildSurfacePattern(centerPoints, halfWidth, 0.065, surface);
+      surfacePatternGeo = buildSurfacePattern(centerPoints, halfWidth, 0.165, surface);
     }
 
     return {
@@ -1466,6 +1466,9 @@ function RoadZone({
           vertexColors
           roughness={surfaceMat.roughness}
           metalness={surfaceMat.metalness}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
         />
       </mesh>
 
@@ -1658,7 +1661,7 @@ function RoadAestheticFurniture({
     const medianTrees: { pos: [number, number, number]; scale: number; type: 'deciduous' | 'conifer' }[] = [];
     if (config.median && laneCount >= 4) {
       const medianHalf = 0.8;
-      medianGeo = buildOffsetRibbon(centerPoints, -medianHalf, medianHalf, 0.08);
+      medianGeo = buildOffsetRibbon(centerPoints, -medianHalf, medianHalf, 0.18);
       // Place smaller trees along the median
       const medianPts = walkCenterline(centerPoints, 12, 4);
       let mCount = 0;
@@ -1871,10 +1874,10 @@ function GreenSpaceZone({
   if (!groundGeometry) return null;
 
   return (
-    <group position={[0, 0.04, 0]}>
+    <group position={[0, 0.12, 0]}>
       {/* Green ground surface */}
       <mesh geometry={groundGeometry} receiveShadow>
-        <meshStandardMaterial color="#4a8c3f" roughness={0.95} metalness={0.0} />
+        <meshStandardMaterial color="#4a8c3f" roughness={0.95} metalness={0.0} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
       </mesh>
 
       {/* Mixed trees */}
@@ -2152,10 +2155,10 @@ function ParkingZone({
   if (!groundGeometry) return null;
 
   return (
-    <group position={[0, 0.03, 0]}>
+    <group position={[0, 0.10, 0]}>
       {/* Asphalt surface */}
       <mesh geometry={groundGeometry} receiveShadow>
-        <meshStandardMaterial color="#3a3a3a" roughness={0.95} metalness={0.0} />
+        <meshStandardMaterial color="#3a3a3a" roughness={0.95} metalness={0.0} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
       </mesh>
 
       {/* Parking space markings */}
@@ -2217,7 +2220,7 @@ function WaterZone({
   if (!geometry) return null;
 
   return (
-    <mesh ref={meshRef} geometry={geometry} position={[0, 0.01, 0]} receiveShadow>
+    <mesh ref={meshRef} geometry={geometry} position={[0, 0.05, 0]} receiveShadow>
       <meshPhysicalMaterial
         color="#1a6b8a"
         roughness={0.05}
@@ -2227,6 +2230,9 @@ function WaterZone({
         transparent
         opacity={0.85}
         side={THREE.DoubleSide}
+        polygonOffset
+        polygonOffsetFactor={3}
+        polygonOffsetUnits={3}
       />
     </mesh>
   );
@@ -2257,13 +2263,16 @@ function FallbackZone({
   if (!geometry) return null;
 
   return (
-    <mesh geometry={geometry} position={[0, 0.02, 0]} receiveShadow>
+    <mesh geometry={geometry} position={[0, 0.08, 0]} receiveShadow>
       <meshStandardMaterial
         color={zone.color}
         roughness={0.7}
         metalness={0.05}
         transparent
         opacity={0.75}
+        polygonOffset
+        polygonOffsetFactor={2}
+        polygonOffsetUnits={2}
       />
     </mesh>
   );
@@ -2419,8 +2428,8 @@ function LayoutRoadMesh({
       const nz = dx / len;
 
       vertices.push(
-        points[i].x - nx * halfW, 0.05, points[i].z - nz * halfW,
-        points[i].x + nx * halfW, 0.05, points[i].z + nz * halfW,
+        points[i].x - nx * halfW, 0.15, points[i].z - nz * halfW,
+        points[i].x + nx * halfW, 0.15, points[i].z + nz * halfW,
       );
 
       if (i < points.length - 1) {
@@ -2478,8 +2487,8 @@ function LayoutGreenMesh({
   if (!geometry) return null;
 
   return (
-    <mesh geometry={geometry} position={[0, 0.02, 0]} receiveShadow>
-      <meshStandardMaterial color="#27ae60" roughness={0.8} />
+    <mesh geometry={geometry} position={[0, 0.12, 0]} receiveShadow>
+      <meshStandardMaterial color="#27ae60" roughness={0.8} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
     </mesh>
   );
 }

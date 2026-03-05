@@ -42,7 +42,7 @@ export function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-primary-950 dark:text-accent-50">Admin Dashboard</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary-950">Admin Dashboard</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => {
@@ -53,9 +53,9 @@ export function AdminDashboardPage() {
                 <Icon size={24} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-primary-950 dark:text-accent-50">{card.value}</p>
-                <p className="text-sm text-primary-950/70 dark:text-white/70">{card.label}</p>
-                {card.sub && <p className="text-xs text-primary-950/70 dark:text-white/70">{card.sub}</p>}
+                <p className="text-2xl font-bold text-primary-950">{card.value}</p>
+                <p className="text-sm text-primary-950/70">{card.label}</p>
+                {card.sub && <p className="text-xs text-primary-950/70">{card.sub}</p>}
               </div>
             </div>
           );
@@ -71,13 +71,13 @@ export function AdminDashboardPage() {
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <div className="card">
-          <h2 className="mb-3 text-sm font-semibold text-primary-950/60 dark:text-white/60">Users by Role</h2>
+          <h2 className="mb-3 text-sm font-semibold text-primary-950/60">Users by Role</h2>
           <div className="space-y-2">
             {Object.entries(stats.users_by_role).map(([role, count]) => {
               const n = count as number;
               return (
                 <div key={role} className="flex items-center justify-between">
-                  <span className="text-sm capitalize text-primary-950/70 dark:text-white/70">{role}</span>
+                  <span className="text-sm capitalize text-primary-950/70">{role}</span>
                   <div className="flex items-center gap-2">
                     <div className="h-2 rounded-full bg-primary-500/15" style={{ width: `${Math.max(20, (n / stats.total_users) * 200)}px` }}>
                       <div
@@ -85,7 +85,7 @@ export function AdminDashboardPage() {
                         style={{ width: '100%' }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-primary-950 dark:text-accent-50">{n}</span>
+                    <span className="text-sm font-medium text-primary-950">{n}</span>
                   </div>
                 </div>
               );
@@ -94,7 +94,7 @@ export function AdminDashboardPage() {
         </div>
 
         <div className="card">
-          <h2 className="mb-3 text-sm font-semibold text-primary-950/60 dark:text-white/60">Projects by Status</h2>
+          <h2 className="mb-3 text-sm font-semibold text-primary-950/60">Projects by Status</h2>
           <div className="space-y-2">
             {Object.entries(stats.projects_by_status).map(([s, count]) => {
               const n = count as number;
@@ -106,7 +106,7 @@ export function AdminDashboardPage() {
               };
               return (
                 <div key={s} className="flex items-center justify-between">
-                  <span className="text-sm capitalize text-primary-950/70 dark:text-white/70">{s}</span>
+                  <span className="text-sm capitalize text-primary-950/70">{s}</span>
                   <div className="flex items-center gap-2">
                     <div className="h-2 rounded-full bg-primary-950/[0.04]" style={{ width: `${Math.max(20, (n / Math.max(stats.total_projects, 1)) * 200)}px` }}>
                       <div
@@ -114,7 +114,7 @@ export function AdminDashboardPage() {
                         style={{ width: '100%' }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-primary-950 dark:text-accent-50">{n}</span>
+                    <span className="text-sm font-medium text-primary-950">{n}</span>
                   </div>
                 </div>
               );

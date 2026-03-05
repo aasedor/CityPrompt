@@ -63,7 +63,7 @@ export function FileUpload({ projectId, onUploadComplete }: FileUploadProps) {
     if (ext === 'pdf') return <FileText size={16} className="text-red-500" />;
     if (['jpg', 'jpeg', 'png', 'tiff'].includes(ext || '')) return <Image size={16} className="text-green-500" />;
     if (['csv', 'xlsx'].includes(ext || '')) return <FileSpreadsheet size={16} className="text-primary-500" />;
-    return <FileText size={16} className="text-primary-950/50 dark:text-white/50" />;
+    return <FileText size={16} className="text-primary-950/50" />;
   };
 
   return (
@@ -73,15 +73,15 @@ export function FileUpload({ projectId, onUploadComplete }: FileUploadProps) {
         className={`cursor-pointer rounded-xl border-2 border-dashed p-5 text-center transition-colors sm:p-8 ${
           isDragActive
             ? 'border-primary-400/50 bg-primary-500/10'
-            : 'border-primary-950/[0.12] dark:border-white/[0.12] hover:border-primary-950/[0.1] hover:bg-primary-950/[0.02] dark:hover:bg-white/[0.02]'
+            : 'border-primary-950/[0.12] hover:border-primary-950/[0.1] hover:bg-primary-950/[0.02]'
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto mb-3 h-10 w-10 text-primary-950/50 dark:text-white/50" />
-        <p className="text-sm font-medium text-primary-950/60 dark:text-white/60">
+        <Upload className="mx-auto mb-3 h-10 w-10 text-primary-950/50" />
+        <p className="text-sm font-medium text-primary-950/60">
           {isDragActive ? 'Drop files here...' : 'Drag & drop architectural documents'}
         </p>
-        <p className="mt-1 text-xs text-primary-950/50 dark:text-white/50">
+        <p className="mt-1 text-xs text-primary-950/50">
           PDF, Images, CAD (DXF), Excel/CSV, GeoJSON — up to 100MB
         </p>
       </div>
@@ -91,17 +91,17 @@ export function FileUpload({ projectId, onUploadComplete }: FileUploadProps) {
           {files.map((f) => (
             <div
               key={f.id}
-              className="flex items-center gap-3 rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] bg-white dark:bg-primary-900 px-4 py-3"
+              className="flex items-center gap-3 rounded-lg border border-primary-950/[0.08] bg-white px-4 py-3"
             >
               {getFileIcon(f.file.name)}
               <div className="flex-1 min-w-0">
-                <p className="truncate text-sm font-medium text-primary-950/60 dark:text-white/60">{f.file.name}</p>
-                <p className="text-xs text-primary-950/50 dark:text-white/50">
+                <p className="truncate text-sm font-medium text-primary-950/60">{f.file.name}</p>
+                <p className="text-xs text-primary-950/50">
                   {(f.file.size / 1024 / 1024).toFixed(1)} MB — {f.status}
                 </p>
               </div>
               {f.status === 'pending' && (
-                <button onClick={() => removeFile(f.id)} className="text-primary-950/50 dark:text-white/50 hover:text-red-500">
+                <button onClick={() => removeFile(f.id)} className="text-primary-950/50 hover:text-red-500">
                   <X size={16} />
                 </button>
               )}

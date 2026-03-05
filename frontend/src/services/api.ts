@@ -590,8 +590,9 @@ export const siteZonesApi = {
     return data;
   },
 
-  saveLayout: async (zoneId: string, layout: LayoutOption): Promise<void> => {
-    await api.put(`/api/v1/site-zones/${zoneId}/save-layout`, { layout });
+  saveLayout: async (zoneId: string, layout: LayoutOption): Promise<{ status: string; zone_id: string; buildings_updated: number; buildings_created: number; buildings_deleted: number }> => {
+    const { data } = await api.put(`/api/v1/site-zones/${zoneId}/save-layout`, { layout });
+    return data;
   },
 
   generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {

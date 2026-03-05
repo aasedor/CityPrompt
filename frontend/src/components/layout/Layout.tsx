@@ -34,20 +34,20 @@ export function Layout() {
 
   return (
     <div className="min-h-screen">
-      <header className="relative border-b border-primary-950/[0.06] bg-accent-50/80 backdrop-blur-xl dark:border-white/[0.06] dark:bg-primary-950/80">
+      <header className="relative border-b border-primary-950/[0.06] bg-accent-50/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
           <Link to="/projects" className="flex items-center gap-2">
             <Box className="h-7 w-7 text-coral-500 sm:h-8 sm:w-8" />
-            <span className="text-lg font-bold text-primary-950 dark:text-accent-50 sm:text-xl">SiteForge</span>
+            <span className="text-lg font-bold text-primary-950 sm:text-xl">SiteForge</span>
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-4 sm:flex">
-            <Link to="/projects" className="text-sm font-medium text-primary-950/60 dark:text-white/60 transition-colors hover:text-primary-950 dark:hover:text-white">
+            <Link to="/projects" className="text-sm font-medium text-primary-950/60 transition-colors hover:text-primary-950">
               Projects
             </Link>
             {user?.role && ['admin', 'cofounder'].includes(user.role) && (
-              <Link to="/admin" className="flex items-center gap-1 text-sm font-medium text-primary-950/60 dark:text-white/60 transition-colors hover:text-primary-950 dark:hover:text-white">
+              <Link to="/admin" className="flex items-center gap-1 text-sm font-medium text-primary-950/60 transition-colors hover:text-primary-950">
                 {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
               </Link>
@@ -59,24 +59,24 @@ export function Layout() {
               </Link>
             )}
             {/* Theme toggle */}
-            <div className="flex items-center rounded-lg border border-primary-950/[0.06] dark:border-white/[0.06]">
+            <div className="flex items-center rounded-lg border border-primary-950/[0.06]">
               <button
                 onClick={() => setTheme('light')}
-                className={`rounded-l-lg p-1.5 transition-colors ${theme === 'light' ? 'bg-primary-950/[0.06] text-primary-950 dark:bg-white/[0.1] dark:text-white' : 'text-primary-950/40 hover:text-primary-950 dark:text-white/40 dark:hover:text-white'}`}
+                className={`rounded-l-lg p-1.5 transition-colors ${theme === 'light' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
                 title="Light mode"
               >
                 <Sun size={14} />
               </button>
               <button
                 onClick={() => setTheme('system')}
-                className={`p-1.5 transition-colors ${theme === 'system' ? 'bg-primary-950/[0.06] text-primary-950 dark:bg-white/[0.1] dark:text-white' : 'text-primary-950/40 hover:text-primary-950 dark:text-white/40 dark:hover:text-white'}`}
+                className={`p-1.5 transition-colors ${theme === 'system' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
                 title="System theme"
               >
                 <Monitor size={14} />
               </button>
               <button
                 onClick={() => setTheme('dark')}
-                className={`rounded-r-lg p-1.5 transition-colors ${theme === 'dark' ? 'bg-primary-950/[0.06] text-primary-950 dark:bg-white/[0.1] dark:text-white' : 'text-primary-950/40 hover:text-primary-950 dark:text-white/40 dark:hover:text-white'}`}
+                className={`rounded-r-lg p-1.5 transition-colors ${theme === 'dark' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
                 title="Dark mode"
               >
                 <Moon size={14} />
@@ -87,19 +87,19 @@ export function Layout() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-primary-950/60 dark:text-white/60 transition-colors hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-primary-950/60 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950"
                 >
                   <User size={14} />
                   {user?.full_name || user?.email}
                   <ChevronDown size={14} className={`transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {userMenuOpen && (
-                  <div className="absolute right-0 z-50 mt-2 w-48 rounded-xl border border-primary-950/[0.08] dark:border-white/[0.08] bg-white dark:bg-primary-900 py-1 shadow-elevated backdrop-blur-xl animate-scale-in">
+                  <div className="absolute right-0 z-50 mt-2 w-48 rounded-xl border border-primary-950/[0.08] bg-white py-1 shadow-elevated backdrop-blur-xl animate-scale-in">
                     {user?.role && ['admin', 'cofounder'].includes(user.role) && (
                       <Link
                         to="/admin"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                       >
                         {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                         Admin Dashboard
@@ -109,7 +109,7 @@ export function Layout() {
                       <Link
                         to="/admin/analytics"
                         onClick={() => setUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                       >
                         <BarChart3 size={14} />
                         Analytics
@@ -118,15 +118,15 @@ export function Layout() {
                     <Link
                       to="/settings/password"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                     >
                       <KeyRound size={14} />
                       Change Password
                     </Link>
-                    <div className="my-1 border-t border-primary-950/[0.06] dark:border-white/[0.06]" />
+                    <div className="my-1 border-t border-primary-950/[0.06]" />
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                     >
                       <LogOut size={14} />
                       Sign out
@@ -137,7 +137,7 @@ export function Layout() {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] px-3 py-1.5 text-sm font-medium text-primary-950/70 dark:text-white/70 transition-colors hover:bg-primary-950/[0.04]"
+                className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] px-3 py-1.5 text-sm font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04]"
               >
                 <LogIn size={14} />
                 Sign in
@@ -148,7 +148,7 @@ export function Layout() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen((v) => !v)}
-            className="rounded-lg p-2 text-primary-950/60 dark:text-white/60 transition-colors hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white sm:hidden"
+            className="rounded-lg p-2 text-primary-950/60 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 sm:hidden"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -157,11 +157,11 @@ export function Layout() {
 
         {/* Mobile dropdown */}
         {mobileMenuOpen && (
-          <div className="border-t border-primary-950/[0.06] dark:border-white/[0.06] bg-accent-50/95 dark:bg-primary-950/95 px-4 pb-4 pt-2 backdrop-blur-xl sm:hidden">
+          <div className="border-t border-primary-950/[0.06] bg-accent-50/95 px-4 pb-4 pt-2 backdrop-blur-xl sm:hidden">
             <Link
               to="/projects"
               onClick={() => setMobileMenuOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
             >
               Projects
             </Link>
@@ -169,7 +169,7 @@ export function Layout() {
               <Link
                 to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
               >
                 {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
@@ -179,7 +179,7 @@ export function Layout() {
               <Link
                 to="/admin/analytics"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
               >
                 <BarChart3 size={14} />
                 Analytics
@@ -187,21 +187,21 @@ export function Layout() {
             )}
             {isAuthenticated ? (
               <>
-                <div className="flex items-center gap-1.5 px-3 py-2 text-sm text-primary-950/40 dark:text-white/40">
+                <div className="flex items-center gap-1.5 px-3 py-2 text-sm text-primary-950/40">
                   <User size={14} />
                   {user?.full_name || user?.email}
                 </div>
                 <Link
                   to="/settings/password"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                 >
                   <KeyRound size={14} />
                   Change Password
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.06] hover:text-primary-950 dark:hover:text-white"
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                 >
                   <LogOut size={14} />
                   Sign out

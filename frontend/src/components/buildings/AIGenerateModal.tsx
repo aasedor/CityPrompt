@@ -215,14 +215,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-950/60 backdrop-blur-sm">
-      <div className="mx-4 flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl bg-white/95 backdrop-blur-xl border border-primary-950/[0.08] dark:border-white/[0.08] shadow-elevated animate-scale-in">
+      <div className="mx-4 flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl bg-white/95 backdrop-blur-xl border border-primary-950/[0.08] shadow-elevated animate-scale-in">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-primary-950/[0.08] dark:border-white/[0.08] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-primary-950/[0.08] px-6 py-4">
           <div className="flex items-center gap-2">
             <Sparkles size={20} className="text-purple-500" />
             <div>
-              <h2 className="text-lg font-bold text-primary-950 dark:text-accent-50">AI 3D Generation</h2>
-              <p className="text-xs text-primary-950/50 dark:text-white/50">
+              <h2 className="text-lg font-bold text-primary-950">AI 3D Generation</h2>
+              <p className="text-xs text-primary-950/50">
                 {buildingName ? `Generating for "${buildingName}"` : 'Generate a 3D model'}
                 {initialPrompt && ' — prompt pre-filled from zone properties'}
               </p>
@@ -231,12 +231,12 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           <div className="flex items-center gap-2">
             {/* Engine selector (only shown when 2+ engines available) */}
             {availableEngines.length >= 2 && (
-              <div className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] px-2 py-1">
-                <Cpu size={12} className="text-primary-950/50 dark:text-white/50" />
+              <div className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.08] px-2 py-1">
+                <Cpu size={12} className="text-primary-950/50" />
                 <select
                   value={selectedEngine || ''}
                   onChange={(e) => setSelectedEngine(e.target.value || undefined)}
-                  className="border-none bg-transparent text-xs font-medium text-primary-950/60 dark:text-white/60 focus:outline-none"
+                  className="border-none bg-transparent text-xs font-medium text-primary-950/60 focus:outline-none"
                 >
                   <option value="">Auto</option>
                   {availableEngines.map((eng) => (
@@ -249,7 +249,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
             )}
             <button
               onClick={onClose}
-              className="rounded-md p-1.5 text-primary-950/50 dark:text-white/50 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950/60"
+              className="rounded-md p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/60"
             >
               <X size={20} />
             </button>
@@ -257,9 +257,9 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
         </div>
 
         {/* Style selector bar */}
-        <div className="border-b border-primary-950/[0.08] dark:border-white/[0.08] px-6 py-2.5">
+        <div className="border-b border-primary-950/[0.08] px-6 py-2.5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-primary-950/50 dark:text-white/50">Style:</span>
+            <span className="text-xs font-medium text-primary-950/50">Style:</span>
             <StyleSelector
               selectedStyle={selectedStyle}
               onSelect={setSelectedStyle}
@@ -273,7 +273,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
             </button>
           </div>
           {showStylePicker && (
-            <div className="mt-2.5 max-h-48 overflow-y-auto rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] p-3">
+            <div className="mt-2.5 max-h-48 overflow-y-auto rounded-lg border border-primary-950/[0.08] p-3">
               <StyleSelector
                 selectedStyle={selectedStyle}
                 onSelect={(id) => {
@@ -287,8 +287,8 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
 
         {/* Engine info banner */}
         {selectedEngine && (
-          <div className="border-b border-primary-950/[0.08] dark:border-white/[0.08] bg-primary-950/[0.02] dark:bg-white/[0.02] px-6 py-2">
-            <p className="text-xs text-primary-950/50 dark:text-white/50">
+          <div className="border-b border-primary-950/[0.08] bg-primary-950/[0.02] px-6 py-2">
+            <p className="text-xs text-primary-950/50">
               <span className="font-medium">{engines.find((e) => e.id === selectedEngine)?.name}:</span>{' '}
               {engines.find((e) => e.id === selectedEngine)?.description}
             </p>
@@ -349,7 +349,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
         )}
 
         {/* Tabs */}
-        <div className="flex border-b border-primary-950/[0.08] dark:border-white/[0.08]">
+        <div className="flex border-b border-primary-950/[0.08]">
           {TABS.map((tab) => (
             <button
               key={tab.id}
@@ -358,7 +358,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               className={`flex flex-1 items-center justify-center gap-1.5 px-4 py-3 text-sm font-medium transition-all ${
                 activeTab === tab.id
                   ? 'border-b-2 border-purple-500 text-purple-400'
-                  : 'text-primary-950/50 dark:text-white/50 hover:text-primary-950/60'
+                  : 'text-primary-950/50 hover:text-primary-950/60'
               } disabled:opacity-50`}
             >
               {tab.icon}
@@ -380,7 +380,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                     className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                       categoryFilter === cat.id
                         ? 'bg-purple-500/20 text-purple-400'
-                        : 'bg-primary-950/[0.04] dark:bg-white/[0.04] text-primary-950/50 dark:text-white/50 hover:bg-primary-950/[0.08] dark:hover:bg-white/[0.08]'
+                        : 'bg-primary-950/[0.04] text-primary-950/50 hover:bg-primary-950/[0.08]'
                     }`}
                   >
                     {cat.label}
@@ -399,16 +399,16 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                     className={`rounded-lg border p-3 text-left transition-all ${
                       selectedTemplate?.id === template.id
                         ? 'border-purple-400/40 bg-purple-500/15 ring-2 ring-purple-400/20'
-                        : 'border-primary-950/[0.08] dark:border-white/[0.08] hover:border-primary-950/[0.12] hover:bg-white'
+                        : 'border-primary-950/[0.08] hover:border-primary-950/[0.12] hover:bg-white'
                     }`}
                   >
                     <div className="mb-1 flex items-center gap-1.5">
-                      <span className="inline-block rounded bg-white/[0.12] px-1.5 py-0.5 text-[10px] font-medium capitalize text-primary-950/50 dark:text-white/50">
+                      <span className="inline-block rounded bg-white/[0.12] px-1.5 py-0.5 text-[10px] font-medium capitalize text-primary-950/50">
                         {template.category}
                       </span>
                     </div>
-                    <p className="text-sm font-medium text-primary-950 dark:text-accent-50">{template.name}</p>
-                    <p className="mt-0.5 line-clamp-2 text-xs text-primary-950/50 dark:text-white/50">{template.prompt}</p>
+                    <p className="text-sm font-medium text-primary-950">{template.name}</p>
+                    <p className="mt-0.5 line-clamp-2 text-xs text-primary-950/50">{template.prompt}</p>
                   </button>
                 ))}
               </div>
@@ -422,12 +422,12 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                     value={templatePrompt}
                     onChange={(e) => setTemplatePrompt(e.target.value)}
                     rows={2}
-                    className="w-full rounded-lg border border-purple-400/30 bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                    className="w-full rounded-lg border border-purple-400/30 bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                   />
                   <button
                     onClick={() => handleGenerateText(templatePrompt)}
                     disabled={generating || !templatePrompt.trim()}
-                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-700 disabled:opacity-50"
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
                   >
                     <Sparkles size={14} />
                     {generating ? 'Generating...' : 'Generate 3D Model'}
@@ -441,22 +441,22 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           {activeTab === 'text' && (
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">Prompt</label>
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">Prompt</label>
                 <textarea
                   value={textPrompt}
                   onChange={(e) => setTextPrompt(e.target.value)}
                   placeholder="Describe the 3D model you want to generate..."
                   rows={3}
-                  className="w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">Art Style</label>
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">Art Style</label>
                 <select
                   value={artStyle}
                   onChange={(e) => setArtStyle(e.target.value)}
-                  className="w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 >
                   <option value="realistic">Realistic</option>
                   <option value="cartoon">Cartoon</option>
@@ -468,7 +468,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               <div>
                 <button
                   onClick={() => setShowNegative(!showNegative)}
-                  className="text-xs font-medium text-primary-950/50 dark:text-white/50 hover:text-primary-950/60"
+                  className="text-xs font-medium text-primary-950/50 hover:text-primary-950/60"
                 >
                   {showNegative ? 'Hide' : 'Show'} negative prompt
                 </button>
@@ -478,7 +478,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                     onChange={(e) => setNegativePrompt(e.target.value)}
                     placeholder="What to avoid (e.g., blurry, low quality)..."
                     rows={2}
-                    className="mt-1 w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                    className="mt-1 w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                   />
                 )}
               </div>
@@ -486,7 +486,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               <button
                 onClick={() => handleGenerateText(textPrompt)}
                 disabled={generating || !textPrompt.trim()}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-700 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
               >
                 <Sparkles size={14} />
                 {generating ? 'Generating...' : 'Generate 3D Model'}
@@ -498,15 +498,15 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           {activeTab === 'image' && (
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">Upload Image</label>
-                <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary-950/[0.12] dark:border-white/[0.12] p-6 transition-all hover:border-purple-400/50 hover:bg-purple-500/10">
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">Upload Image</label>
+                <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary-950/[0.12] p-6 transition-all hover:border-purple-400/50 hover:bg-purple-500/10">
                   {imagePreview ? (
                     <img src={imagePreview} alt="Preview" className="max-h-40 rounded-lg object-contain" />
                   ) : (
                     <>
-                      <Upload size={32} className="mb-2 text-primary-950/50 dark:text-white/50" />
-                      <p className="text-sm text-primary-950/50 dark:text-white/50">Click to upload an image</p>
-                      <p className="text-xs text-primary-950/40 dark:text-white/40">PNG, JPG up to 10MB</p>
+                      <Upload size={32} className="mb-2 text-primary-950/50" />
+                      <p className="text-sm text-primary-950/50">Click to upload an image</p>
+                      <p className="text-xs text-primary-950/40">PNG, JPG up to 10MB</p>
                     </>
                   )}
                   <input
@@ -520,15 +520,15 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-primary-950/[0.08] dark:border-white/[0.08]" />
+                  <div className="w-full border-t border-primary-950/[0.08]" />
                 </div>
                 <div className="relative flex justify-center">
-                  <span className="bg-white/95 px-2 text-xs text-primary-950/50 dark:text-white/50">or</span>
+                  <span className="bg-white/95 px-2 text-xs text-primary-950/50">or</span>
                 </div>
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">Image URL</label>
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">Image URL</label>
                 <input
                   type="url"
                   value={imageUrl.startsWith('data:') ? '' : imageUrl}
@@ -537,14 +537,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                     setImagePreview(null);
                   }}
                   placeholder="https://example.com/building-photo.jpg"
-                  className="w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 />
               </div>
 
               <button
                 onClick={handleGenerateImage}
                 disabled={generating || !imageUrl.trim()}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-primary-950 dark:text-accent-50 hover:bg-purple-700 disabled:opacity-50"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-4 py-2.5 text-sm font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
               >
                 <Sparkles size={14} />
                 {generating ? 'Generating...' : 'Generate from Image'}
@@ -556,7 +556,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
           {activeTab === 'preview' && (
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">
                   Render Preview Prompt
                 </label>
                 <textarea
@@ -564,9 +564,9 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                   onChange={(e) => setPreviewPrompt(e.target.value)}
                   placeholder="Describe the architectural visualization you want..."
                   rows={3}
-                  className="w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="w-full rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-neutral-100 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
                 />
-                <p className="mt-1 text-xs text-primary-950/50 dark:text-white/50">
+                <p className="mt-1 text-xs text-primary-950/50">
                   Generates a photorealistic 2D render preview using Stability AI.
                   {selectedStyle && ` Style "${selectedStyle}" will be applied to the prompt.`}
                 </p>
@@ -593,14 +593,14 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               {/* Render preview gallery */}
               {renderPreviews.length > 0 && (
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold text-primary-950/50 dark:text-white/50 uppercase">
+                  <h4 className="mb-2 text-xs font-semibold text-primary-950/50 uppercase">
                     Render Previews ({renderPreviews.length})
                   </h4>
                   <div className="grid grid-cols-2 gap-3">
                     {renderPreviews.map((preview) => (
                       <div
                         key={preview.id}
-                        className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08]"
+                        className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08]"
                       >
                         <img
                           src={preview.image_url}
@@ -608,11 +608,11 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
                           className="h-40 w-full object-cover"
                         />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                          <p className="line-clamp-1 text-[10px] text-primary-950 dark:text-accent-50">
+                          <p className="line-clamp-1 text-[10px] text-primary-950">
                             {preview.prompt}
                           </p>
                           {preview.style && (
-                            <span className="mt-0.5 inline-block rounded bg-primary-950/[0.06] dark:bg-white/[0.06] px-1 py-0.5 text-[9px] text-primary-950 dark:text-accent-50">
+                            <span className="mt-0.5 inline-block rounded bg-primary-950/[0.06] px-1 py-0.5 text-[9px] text-primary-950">
                               {preview.style}
                             </span>
                           )}
@@ -624,7 +624,7 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
               )}
 
               {renderPreviews.length === 0 && !previewGenerating && (
-                <p className="text-center text-xs text-primary-950/50 dark:text-white/50">
+                <p className="text-center text-xs text-primary-950/50">
                   No render previews yet. Generate one above to see a photorealistic visualization.
                 </p>
               )}
@@ -633,8 +633,8 @@ export function AIGenerateModal({ buildingId, buildingName, initialPrompt, onClo
         </div>
 
         {/* Footer */}
-        <div className="border-t border-primary-950/[0.08] dark:border-white/[0.08] px-6 py-3">
-          <p className="text-center text-xs text-primary-950/50 dark:text-white/50">
+        <div className="border-t border-primary-950/[0.08] px-6 py-3">
+          <p className="text-center text-xs text-primary-950/50">
             {activeTab === 'preview'
               ? 'Powered by Stability AI'
               : `Powered by ${selectedEngine === 'tripo' ? 'Tripo3D' : 'Meshy.ai'}`}
