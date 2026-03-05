@@ -22,7 +22,7 @@ import type {
   BoundaryAnalysisResponse,
 } from '@/types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -588,6 +588,10 @@ export const siteZonesApi = {
   getBoundaryAnalysis: async (zoneId: string): Promise<BoundaryAnalysisResponse> => {
     const { data } = await api.get(`/api/v1/site-zones/${zoneId}/boundary-analysis`);
     return data;
+  },
+
+  saveLayout: async (zoneId: string, layout: LayoutOption): Promise<void> => {
+    await api.put(`/api/v1/site-zones/${zoneId}/save-layout`, { layout });
   },
 
   generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {

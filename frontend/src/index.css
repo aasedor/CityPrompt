@@ -7,7 +7,7 @@
     @apply antialiased;
   }
   body {
-    @apply bg-primary-950 text-neutral-100;
+    @apply bg-accent-50 text-primary-950;
   }
 }
 
@@ -19,9 +19,9 @@
 @layer components {
   /* ── Buttons ──────────────────────────────────────────────────── */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-primary-500 px-4 py-2.5
-           text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all duration-200
-           hover:bg-primary-400 hover:shadow-glow-sm
+    @apply inline-flex items-center justify-center rounded-xl bg-primary-400 px-4 py-2.5
+           text-sm font-semibold text-white shadow-lg shadow-primary-400/25 transition-all duration-200
+           hover:bg-primary-300 hover:shadow-glow
            focus:outline-none focus:ring-2 focus:ring-primary-400/30
            active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
   }
@@ -34,10 +34,10 @@
            active:scale-[0.97];
   }
   .btn-accent {
-    @apply inline-flex items-center justify-center rounded-xl bg-accent-300 px-4 py-2.5
-           text-sm font-semibold text-primary-950 shadow-lg shadow-accent-300/20 transition-all duration-200
-           hover:bg-accent-200 hover:shadow-glow-accent
-           focus:outline-none focus:ring-2 focus:ring-accent-300/30
+    @apply inline-flex items-center justify-center rounded-xl bg-accent-500 px-4 py-2.5
+           text-sm font-semibold text-white shadow-lg shadow-accent-500/20 transition-all duration-200
+           hover:bg-coral-400 hover:shadow-glow-accent
+           focus:outline-none focus:ring-2 focus:ring-accent-500/30
            active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
@@ -52,7 +52,7 @@
            hover:border-white/[0.15] hover:bg-white/[0.07] hover:shadow-glow;
   }
   .card-glow {
-    @apply rounded-2xl border border-primary-500/20 bg-gradient-card p-4 shadow-card
+    @apply rounded-2xl border border-primary-400/20 bg-gradient-card p-4 shadow-card
            backdrop-blur-xl sm:p-6 transition-all duration-300
            hover:border-primary-400/30 hover:shadow-glow;
   }
@@ -83,7 +83,7 @@
     @apply h-px bg-gradient-to-r from-transparent via-primary-400/50 to-transparent;
   }
   .glow-line-accent {
-    @apply h-px bg-gradient-to-r from-transparent via-accent-400/40 to-transparent;
+    @apply h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent;
   }
 
   /* ── Dividers ─────────────────────────────────────────────────── */
