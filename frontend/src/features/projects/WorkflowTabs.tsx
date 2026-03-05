@@ -54,8 +54,8 @@ export function WorkflowTabs({
                 isActive
                   ? 'bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-400/30'
                   : isEnabled
-                    ? 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
-                    : 'cursor-not-allowed text-primary-950/25'
+                    ? 'text-primary-950/80 hover:bg-primary-950/[0.04] hover:text-primary-950'
+                    : 'cursor-not-allowed text-primary-950/40'
               }`}
               title={tab.description}
             >
@@ -64,8 +64,8 @@ export function WorkflowTabs({
                 isActive
                   ? 'bg-indigo-500 text-white'
                   : isEnabled
-                    ? 'bg-primary-950/10 text-primary-950/60'
-                    : 'bg-primary-950/5 text-primary-950/20'
+                    ? 'bg-primary-950/10 text-primary-950/80'
+                    : 'bg-primary-950/5 text-primary-950/35'
               }`}>
                 {idx + 1}
               </span>
