@@ -120,7 +120,7 @@ export function ProjectListPage() {
   };
 
   const statusColors: Record<string, string> = {
-    draft: 'bg-primary-950/[0.06] text-primary-950/50',
+    draft: 'bg-primary-950/[0.06] dark:bg-white/[0.06] text-primary-950/50 dark:text-white/50',
     processing: 'bg-amber-500/15 text-amber-400',
     ready: 'bg-emerald-500/15 text-emerald-400',
     archived: 'bg-primary-500/15 text-primary-400',
@@ -130,8 +130,8 @@ export function ProjectListPage() {
     <div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold text-primary-950 sm:text-2xl">Projects</h1>
-          <p className="mt-1 text-sm text-primary-950/50">Manage your 3D development visualizations</p>
+          <h1 className="text-xl font-bold text-primary-950 dark:text-accent-50 sm:text-2xl">Projects</h1>
+          <p className="mt-1 text-sm text-primary-950/50 dark:text-white/50">Manage your 3D development visualizations</p>
         </div>
         {!showCreate && (
           <button onClick={() => setShowCreate(true)} className="btn-primary self-start">
@@ -145,13 +145,13 @@ export function ProjectListPage() {
         <div className="card mt-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Create New Project</h2>
-            <button onClick={handleCancel} className="text-primary-950/40 hover:text-primary-950/70">
+            <button onClick={handleCancel} className="text-primary-950/40 dark:text-white/40 hover:text-primary-950/70">
               <X size={20} />
             </button>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-primary-950/70 mb-1">Project Name *</label>
+              <label className="block text-sm font-medium text-primary-950/70 dark:text-white/70 mb-1">Project Name *</label>
               <input
                 type="text"
                 placeholder="e.g., Riverside Development Phase 1"
@@ -163,7 +163,7 @@ export function ProjectListPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-primary-950/70 mb-1">Description</label>
+              <label className="block text-sm font-medium text-primary-950/70 dark:text-white/70 mb-1">Description</label>
               <textarea
                 placeholder="Brief description of the development project..."
                 value={newDescription}
@@ -173,9 +173,9 @@ export function ProjectListPage() {
               />
             </div>
             <div className="relative" ref={suggestionsRef}>
-              <label className="block text-sm font-medium text-primary-950/70 mb-1">Location</label>
+              <label className="block text-sm font-medium text-primary-950/70 dark:text-white/70 mb-1">Location</label>
               <div className="relative">
-                <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/30" />
+                <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/30 dark:text-white/30" />
                 <input
                   type="text"
                   placeholder={MAPBOX_TOKEN ? 'Search for an address...' : 'Set VITE_MAPBOX_TOKEN to enable'}
@@ -191,12 +191,12 @@ export function ProjectListPage() {
                 />
               </div>
               {showSuggestions && addressSuggestions.length > 0 && (
-                <div className="absolute z-10 mt-1 w-full rounded-lg border border-primary-950/[0.08] bg-white shadow-elevated max-h-48 overflow-y-auto animate-fade-in">
+                <div className="absolute z-10 mt-1 w-full rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] bg-white dark:bg-primary-900 shadow-elevated max-h-48 overflow-y-auto animate-fade-in">
                   {addressSuggestions.map((s, i) => (
                     <button
                       key={i}
                       type="button"
-                      className="w-full text-left px-3 py-2 text-sm text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-400 border-b border-primary-950/[0.04] last:border-0"
+                      className="w-full text-left px-3 py-2 text-sm text-primary-950/70 dark:text-white/70 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-400 border-b border-primary-950/[0.04] dark:border-white/[0.04] last:border-0"
                       onClick={() => {
                         setAddressQuery(s.place_name);
                         setSelectedLocation({
@@ -207,7 +207,7 @@ export function ProjectListPage() {
                         setShowSuggestions(false);
                       }}
                     >
-                      <MapPin size={12} className="inline mr-2 text-primary-950/30" />
+                      <MapPin size={12} className="inline mr-2 text-primary-950/30 dark:text-white/30" />
                       {s.place_name}
                     </button>
                   ))}
@@ -231,12 +231,12 @@ export function ProjectListPage() {
       )}
 
       {isLoading ? (
-        <div className="mt-8 text-center text-primary-950/40">Loading projects...</div>
+        <div className="mt-8 text-center text-primary-950/40 dark:text-white/40">Loading projects...</div>
       ) : !projects?.length && !showCreate ? (
         <div className="mt-16 text-center">
-          <FolderOpen className="mx-auto h-12 w-12 text-primary-950/20" />
-          <h3 className="mt-4 text-lg font-medium text-primary-950">No projects yet</h3>
-          <p className="mt-2 text-sm text-primary-950/50">Create your first project to start visualizing developments in 3D.</p>
+          <FolderOpen className="mx-auto h-12 w-12 text-primary-950/20 dark:text-white/20" />
+          <h3 className="mt-4 text-lg font-medium text-primary-950 dark:text-accent-50">No projects yet</h3>
+          <p className="mt-2 text-sm text-primary-950/50 dark:text-white/50">Create your first project to start visualizing developments in 3D.</p>
           <button onClick={() => setShowCreate(true)} className="btn-primary mt-6 inline-flex">
             <Plus size={16} className="mr-2" />
             Create Project
@@ -247,17 +247,17 @@ export function ProjectListPage() {
           {projects?.map((project: Project) => (
             <Link key={project.id} to={`/projects/${project.id}`} className="card-hover group">
               <div className="flex items-start justify-between">
-                <h3 className="font-semibold text-primary-950 group-hover:text-coral-500">{project.name}</h3>
+                <h3 className="font-semibold text-primary-950 dark:text-accent-50 group-hover:text-coral-500">{project.name}</h3>
                 <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
               </div>
-              {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50">{project.description}</p>}
+              {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50 dark:text-white/50">{project.description}</p>}
               {project.location?.address && (
-                <div className="mt-2 flex items-center text-xs text-primary-950/40">
+                <div className="mt-2 flex items-center text-xs text-primary-950/40 dark:text-white/40">
                   <MapPin size={11} className="mr-1 flex-shrink-0" />
                   <span className="truncate">{project.location.address}</span>
                 </div>
               )}
-              <div className="mt-4 flex items-center text-xs text-primary-950/40">
+              <div className="mt-4 flex items-center text-xs text-primary-950/40 dark:text-white/40">
                 <Clock size={12} className="mr-1" />
                 Updated {new Date(project.updated_at).toLocaleDateString()}
               </div>

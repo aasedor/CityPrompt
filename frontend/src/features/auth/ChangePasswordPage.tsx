@@ -39,7 +39,7 @@ export function ChangePasswordPage() {
 
   return (
     <div className="mx-auto max-w-md">
-      <h1 className="mb-6 text-2xl font-bold text-primary-950">Change Password</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary-950 dark:text-accent-50">Change Password</h1>
 
       <form onSubmit={handleSubmit} className="card space-y-4">
         {error && (
@@ -47,7 +47,7 @@ export function ChangePasswordPage() {
         )}
 
         <div>
-          <label htmlFor="currentPassword" className="mb-1 block text-sm font-medium text-primary-950/60">
+          <label htmlFor="currentPassword" className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
             Current password
           </label>
           <div className="relative">
@@ -62,7 +62,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowCurrent((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 dark:text-white/40 hover:text-primary-950/60"
               tabIndex={-1}
             >
               {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -71,7 +71,7 @@ export function ChangePasswordPage() {
         </div>
 
         <div>
-          <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-primary-950/60">
+          <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
             New password
           </label>
           <div className="relative">
@@ -88,7 +88,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowNew((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 dark:text-white/40 hover:text-primary-950/60"
               tabIndex={-1}
             >
               {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -97,7 +97,7 @@ export function ChangePasswordPage() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-primary-950/60">
+          <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
             Confirm new password
           </label>
           <div className="relative">
@@ -114,7 +114,7 @@ export function ChangePasswordPage() {
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 dark:text-white/40 hover:text-primary-950/60"
               tabIndex={-1}
             >
               {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}

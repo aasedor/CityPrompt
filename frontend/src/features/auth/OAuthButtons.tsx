@@ -30,7 +30,7 @@ export function OAuthButtons() {
         type="button"
         disabled={loadingProvider !== null}
         onClick={() => handleOAuth('google')}
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-primary-950/[0.1] bg-accent-50 px-3 py-2 text-sm font-medium text-primary-950/70 shadow-sm transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:ring-offset-1 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-3 rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-accent-50 dark:bg-primary-950 px-3 py-2 text-sm font-medium text-primary-950/70 dark:text-white/70 shadow-sm transition-colors hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50 focus:outline-none focus:ring-2 focus:ring-primary-400/30 focus:ring-offset-1 disabled:opacity-50"
       >
         {loadingProvider === 'google' ? (
           <Loader2 size={18} className="animate-spin" />

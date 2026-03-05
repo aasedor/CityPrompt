@@ -27,7 +27,7 @@ export function GenerationStatsWidget({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-primary-950/60">3D Generation Stats</h3>
+      <h3 className="mb-4 text-sm font-semibold text-primary-950/60 dark:text-white/60">3D Generation Stats</h3>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Pie chart */}
@@ -57,17 +57,17 @@ export function GenerationStatsWidget({ data }: Props) {
 
         {/* Stat cards */}
         <div className="flex flex-col justify-center gap-3">
-          <div className="rounded-lg bg-white px-4 py-3">
-            <p className="text-xs text-primary-950/50">Total Generations</p>
-            <p className="text-xl font-bold text-primary-950">{data.total_generations}</p>
+          <div className="rounded-lg bg-white dark:bg-primary-900 px-4 py-3">
+            <p className="text-xs text-primary-950/50 dark:text-white/50">Total Generations</p>
+            <p className="text-xl font-bold text-primary-950 dark:text-accent-50">{data.total_generations}</p>
           </div>
           <div className="rounded-lg bg-green-500/15 px-4 py-3">
             <p className="text-xs text-green-400">Success Rate</p>
             <p className="text-xl font-bold text-green-400">{data.success_rate}%</p>
           </div>
-          <div className="rounded-lg bg-white px-4 py-3">
-            <p className="text-xs text-primary-950/50">Engines Active</p>
-            <p className="text-xl font-bold text-primary-950">{Object.keys(data.by_engine).length}</p>
+          <div className="rounded-lg bg-white dark:bg-primary-900 px-4 py-3">
+            <p className="text-xs text-primary-950/50 dark:text-white/50">Engines Active</p>
+            <p className="text-xl font-bold text-primary-950 dark:text-accent-50">{Object.keys(data.by_engine).length}</p>
           </div>
         </div>
       </div>
@@ -75,14 +75,14 @@ export function GenerationStatsWidget({ data }: Props) {
       {/* Per-engine breakdown */}
       {Object.keys(data.by_engine).length > 0 && (
         <div className="mt-4 space-y-2">
-          <p className="text-xs font-medium text-primary-950/50">By Engine</p>
+          <p className="text-xs font-medium text-primary-950/50 dark:text-white/50">By Engine</p>
           {Object.entries(data.by_engine).map(([engine, statuses]) => (
-            <div key={engine} className="flex items-center justify-between rounded-md bg-white px-3 py-2">
-              <span className="text-sm font-medium capitalize text-primary-950/60">{engine}</span>
+            <div key={engine} className="flex items-center justify-between rounded-md bg-white dark:bg-primary-900 px-3 py-2">
+              <span className="text-sm font-medium capitalize text-primary-950/60 dark:text-white/60">{engine}</span>
               <div className="flex gap-3">
                 {Object.entries(statuses).map(([status, count]) => (
-                  <span key={status} className="text-xs text-primary-950/50">
-                    <span className="capitalize">{status}</span>: <span className="font-medium text-primary-950/60">{count}</span>
+                  <span key={status} className="text-xs text-primary-950/50 dark:text-white/50">
+                    <span className="capitalize">{status}</span>: <span className="font-medium text-primary-950/60 dark:text-white/60">{count}</span>
                   </span>
                 ))}
               </div>

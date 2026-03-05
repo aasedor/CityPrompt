@@ -23,8 +23,8 @@ export function UserGrowthChart({ data }: Props) {
   return (
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-primary-950/60">User Growth</h3>
-        <span className="text-xs text-primary-950/50">{data.total_in_range} new users</span>
+        <h3 className="text-sm font-semibold text-primary-950/60 dark:text-white/60">User Growth</h3>
+        <span className="text-xs text-primary-950/50 dark:text-white/50">{data.total_in_range} new users</span>
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">

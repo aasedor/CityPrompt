@@ -117,27 +117,27 @@ export function AdminUsersPage() {
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
-        <Link to="/admin" className="rounded-lg p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/70">
+        <Link to="/admin" className="rounded-lg p-1.5 text-primary-950/50 dark:text-white/50 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950/70">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-primary-950">Manage Users</h1>
+        <h1 className="text-2xl font-bold text-primary-950 dark:text-accent-50">Manage Users</h1>
       </div>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/50" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/50 dark:text-white/50" />
           <input
             type="text"
             placeholder="Search by email or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-primary-950/[0.1] bg-white py-2 pl-9 pr-3 text-sm text-primary-950 placeholder:text-primary-950/40 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            className="w-full rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 py-2 pl-9 pr-3 text-sm text-primary-950 dark:text-accent-50 placeholder:text-primary-950/40 dark:placeholder:text-white/40 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-primary-950 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+          className="rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-3 py-2 text-sm text-primary-950 dark:text-accent-50 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
         >
           <option value="">All roles</option>
           <option value="viewer">Viewer</option>
@@ -152,12 +152,12 @@ export function AdminUsersPage() {
           <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
         </div>
       ) : users.length === 0 ? (
-        <p className="py-8 text-center text-sm text-primary-950/50">No users found.</p>
+        <p className="py-8 text-center text-sm text-primary-950/50 dark:text-white/50">No users found.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
+              <tr className="border-b border-primary-950/[0.08] dark:border-white/[0.08] text-left text-xs font-medium uppercase text-primary-950/50 dark:text-white/50">
                 <th className="px-4 py-3">User</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
@@ -171,15 +171,15 @@ export function AdminUsersPage() {
               {users.map((u) => (
                 <tr key={u.id} className="hover:bg-white">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-primary-950">{u.full_name || '-'}</div>
-                    <div className="text-xs text-primary-950/50">{u.email}</div>
+                    <div className="font-medium text-primary-950 dark:text-accent-50">{u.full_name || '-'}</div>
+                    <div className="text-xs text-primary-950/50 dark:text-white/50">{u.email}</div>
                   </td>
                   <td className="px-4 py-3">
                     <select
                       value={u.role}
                       onChange={(e) => handleRoleChange(u.id, e.target.value)}
                       disabled={!isCofounder && ['admin', 'cofounder'].includes(u.role)}
-                      className="rounded border border-primary-950/[0.1] bg-white px-2 py-1 text-xs text-primary-950 focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="rounded border border-primary-950/[0.1] dark:border-white/[0.1] bg-white dark:bg-primary-900 px-2 py-1 text-xs text-primary-950 dark:text-accent-50 focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <option value="viewer">Viewer</option>
                       <option value="editor">Editor</option>
@@ -187,7 +187,7 @@ export function AdminUsersPage() {
                       {isCofounder && <option value="cofounder">Cofounder</option>}
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-primary-950/50">{u.project_count}</td>
+                  <td className="px-4 py-3 text-primary-950/50 dark:text-white/50">{u.project_count}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -199,12 +199,12 @@ export function AdminUsersPage() {
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-primary-950/50">
+                  <td className="px-4 py-3 text-primary-950/50 dark:text-white/50">
                     {u.last_login_at
                       ? new Date(u.last_login_at).toLocaleDateString()
-                      : <span className="text-primary-950/40">Never</span>}
+                      : <span className="text-primary-950/40 dark:text-white/40">Never</span>}
                   </td>
-                  <td className="px-4 py-3 text-primary-950/50">
+                  <td className="px-4 py-3 text-primary-950/50 dark:text-white/50">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 flex items-center gap-1">
@@ -220,7 +220,7 @@ export function AdminUsersPage() {
                     </button>
                     <button
                       onClick={() => handleDeleteUser(u.id, u.email)}
-                      className="rounded p-1 text-primary-950/50 hover:bg-red-500/15 hover:text-red-600"
+                      className="rounded p-1 text-primary-950/50 dark:text-white/50 hover:bg-red-500/15 hover:text-red-600"
                       title="Delete user"
                     >
                       <Trash2 size={14} />
@@ -236,7 +236,7 @@ export function AdminUsersPage() {
       {/* Role change confirmation modal */}
       {roleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="mx-4 w-full max-w-md rounded-xl bg-white border border-primary-950/[0.08] p-6 shadow-xl backdrop-blur-xl">
+          <div className="mx-4 w-full max-w-md rounded-xl bg-white dark:bg-primary-900 border border-primary-950/[0.08] dark:border-white/[0.08] p-6 shadow-xl backdrop-blur-xl">
             <div className="mb-4 flex items-center gap-3">
               {roleModal.type === 'promotion' ? (
                 roleModal.newRole === 'cofounder' ? (
@@ -253,7 +253,7 @@ export function AdminUsersPage() {
                   <ShieldAlert className="h-5 w-5 text-red-600" />
                 </div>
               )}
-              <h3 className="text-lg font-semibold text-primary-950">
+              <h3 className="text-lg font-semibold text-primary-950 dark:text-accent-50">
                 {roleModal.type === 'promotion'
                   ? roleModal.newRole === 'cofounder'
                     ? 'Grant Cofounder Access?'
@@ -263,14 +263,14 @@ export function AdminUsersPage() {
                     : 'Remove Admin Access?'}
               </h3>
             </div>
-            <p className="mb-2 text-sm text-primary-950/50">
+            <p className="mb-2 text-sm text-primary-950/50 dark:text-white/50">
               {roleModal.type === 'promotion' ? (
-                <>You are about to promote <strong className="text-primary-950">{roleModal.email}</strong> to <strong className="text-primary-950 capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to promote <strong className="text-primary-950 dark:text-accent-50">{roleModal.email}</strong> to <strong className="text-primary-950 dark:text-accent-50 capitalize">{roleModal.newRole}</strong>.</>
               ) : (
-                <>You are about to demote <strong className="text-primary-950">{roleModal.email}</strong> to <strong className="text-primary-950 capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to demote <strong className="text-primary-950 dark:text-accent-50">{roleModal.email}</strong> to <strong className="text-primary-950 dark:text-accent-50 capitalize">{roleModal.newRole}</strong>.</>
               )}
             </p>
-            <p className="mb-6 text-sm text-primary-950/50">
+            <p className="mb-6 text-sm text-primary-950/50 dark:text-white/50">
               {roleModal.type === 'promotion'
                 ? roleModal.newRole === 'cofounder'
                   ? 'This will grant the highest level of access, including the ability to manage admins. Are you sure?'
@@ -280,7 +280,7 @@ export function AdminUsersPage() {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setRoleModal(null)}
-                className="rounded-lg border border-primary-950/[0.1] px-4 py-2 text-sm font-medium text-primary-950/60 hover:bg-white"
+                className="rounded-lg border border-primary-950/[0.1] dark:border-white/[0.1] px-4 py-2 text-sm font-medium text-primary-950/60 dark:text-white/60 hover:bg-white"
               >
                 Cancel
               </button>

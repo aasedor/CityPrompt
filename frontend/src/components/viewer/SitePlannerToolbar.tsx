@@ -93,8 +93,8 @@ function PresetSummary({ preset }: { preset: RoadPresetConfig | BuildingPresetCo
   const width = preset.properties.width as number | undefined;
   const floors = preset.properties.floors as number | undefined;
 
-  if (width) return <span className="ml-auto text-[10px] text-primary-950/50 group-hover:text-primary-950/50">{width}m</span>;
-  if (floors) return <span className="ml-auto text-[10px] text-primary-950/50 group-hover:text-primary-950/50">{floors}F</span>;
+  if (width) return <span className="ml-auto text-[10px] text-primary-950/50 dark:text-white/50 group-hover:text-primary-950/50">{width}m</span>;
+  if (floors) return <span className="ml-auto text-[10px] text-primary-950/50 dark:text-white/50 group-hover:text-primary-950/50">{floors}F</span>;
   return null;
 }
 
@@ -131,8 +131,8 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                     }}
                     className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-primary-950/[0.06] text-primary-950 ring-1 ring-white/40'
-                        : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
+                        ? 'bg-primary-950/[0.06] dark:bg-white/[0.06] text-primary-950 dark:text-accent-50 ring-1 ring-white/40'
+                        : 'text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50'
                     }`}
                     title={hasPresets ? `Expand ${config.label} presets` : `Draw ${config.label} zone`}
                   >
@@ -156,7 +156,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
 
                   {/* Preset sub-menu (road, building, residential) */}
                   {hasPresets && isExpanded && presets && (
-                    <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-primary-950/[0.08] pl-2">
+                    <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-primary-950/[0.08] dark:border-white/[0.08] pl-2">
                       {presets.map((preset) => (
                         <button
                           key={preset.label}
@@ -164,7 +164,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                             onSelectTool(type, preset.properties);
                             setExpandedType(null);
                           }}
-                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-primary-950/60 transition-all hover:bg-primary-950/[0.04] hover:text-primary-950"
+                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-primary-950/60 dark:text-white/60 transition-all hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50"
                           title={`${preset.label} — ${preset.description}`}
                         >
                           <PresetIndicator preset={preset} color={config.color} />
@@ -186,10 +186,10 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
         onClick={onToggle}
         className={`flex items-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-all sm:px-3 sm:py-1.5 ${
           isOpen
-            ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
+            ? 'bg-primary-950/[0.06] dark:bg-white/[0.06] text-primary-950 dark:text-accent-50 ring-2 ring-white/40'
             : activeChild
-              ? 'bg-white/15 text-primary-950'
-              : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
+              ? 'bg-white/15 text-primary-950 dark:text-accent-50'
+              : 'text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50'
         }`}
         title={label}
       >
@@ -253,8 +253,8 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
           onClick={() => { setActiveSitePlannerTool(null); setOpenGroup(null); }}
           className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all sm:py-1.5 ${
             activeSitePlannerTool === null
-              ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
-              : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
+              ? 'bg-primary-950/[0.06] dark:bg-white/[0.06] text-primary-950 dark:text-accent-50 ring-2 ring-white/40'
+              : 'text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50'
           }`}
           title="Select / Move zones"
         >
@@ -308,7 +308,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
         {onShowGuide && (
           <button
             onClick={onShowGuide}
-            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950 sm:py-1.5"
+            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-primary-950/60 dark:text-white/60 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04] hover:text-primary-950 dark:hover:text-accent-50 sm:py-1.5"
             title="Show quick-start guide"
           >
             <HelpCircle size={14} />

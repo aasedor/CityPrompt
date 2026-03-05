@@ -21,43 +21,43 @@ export function PlatformHealthWidget({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-primary-950/60">Platform Health</h3>
+      <h3 className="mb-4 text-sm font-semibold text-primary-950/60 dark:text-white/60">Platform Health</h3>
 
       <div className="grid gap-3 sm:grid-cols-2">
         {/* API stats */}
-        <div className="rounded-lg border border-primary-950/[0.08] p-3">
+        <div className="rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] p-3">
           <div className="mb-2 flex items-center gap-2 text-blue-400">
             <Activity size={16} />
             <span className="text-xs font-semibold">API Performance</span>
           </div>
           <div className="space-y-1.5">
             <div className="flex justify-between text-sm">
-              <span className="text-primary-950/50">Avg Response</span>
-              <span className="font-medium text-primary-950">{data.api.avg_response_ms.toFixed(1)} ms</span>
+              <span className="text-primary-950/50 dark:text-white/50">Avg Response</span>
+              <span className="font-medium text-primary-950 dark:text-accent-50">{data.api.avg_response_ms.toFixed(1)} ms</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-primary-950/50">P95 Response</span>
-              <span className="font-medium text-primary-950">{data.api.p95_response_ms.toFixed(1)} ms</span>
+              <span className="text-primary-950/50 dark:text-white/50">P95 Response</span>
+              <span className="font-medium text-primary-950 dark:text-accent-50">{data.api.p95_response_ms.toFixed(1)} ms</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-primary-950/50">Total Requests</span>
-              <span className="font-medium text-primary-950">{data.api.total_requests.toLocaleString()}</span>
+              <span className="text-primary-950/50 dark:text-white/50">Total Requests</span>
+              <span className="font-medium text-primary-950 dark:text-accent-50">{data.api.total_requests.toLocaleString()}</span>
             </div>
           </div>
         </div>
 
         {/* Uptime */}
-        <div className="rounded-lg border border-primary-950/[0.08] p-3">
+        <div className="rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] p-3">
           <div className="mb-2 flex items-center gap-2 text-green-400">
             <Clock size={16} />
             <span className="text-xs font-semibold">Uptime</span>
           </div>
-          <p className="text-2xl font-bold text-primary-950">{formatUptime(data.api.uptime_seconds)}</p>
-          <p className="text-xs text-primary-950/50">{data.api.recent_samples} recent samples</p>
+          <p className="text-2xl font-bold text-primary-950 dark:text-accent-50">{formatUptime(data.api.uptime_seconds)}</p>
+          <p className="text-xs text-primary-950/50 dark:text-white/50">{data.api.recent_samples} recent samples</p>
         </div>
 
         {/* Queue */}
-        <div className="rounded-lg border border-primary-950/[0.08] p-3">
+        <div className="rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] p-3">
           <div className="mb-2 flex items-center gap-2 text-purple-400">
             <HardDrive size={16} />
             <span className="text-xs font-semibold">Task Queue</span>
@@ -65,25 +65,25 @@ export function PlatformHealthWidget({ data }: Props) {
           {data.queue.available ? (
             <div className="space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-primary-950/50">Active</span>
-                <span className="font-medium text-primary-950">{data.queue.active}</span>
+                <span className="text-primary-950/50 dark:text-white/50">Active</span>
+                <span className="font-medium text-primary-950 dark:text-accent-50">{data.queue.active}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-primary-950/50">Reserved</span>
-                <span className="font-medium text-primary-950">{data.queue.reserved}</span>
+                <span className="text-primary-950/50 dark:text-white/50">Reserved</span>
+                <span className="font-medium text-primary-950 dark:text-accent-50">{data.queue.reserved}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-primary-950/50">Scheduled</span>
-                <span className="font-medium text-primary-950">{data.queue.scheduled}</span>
+                <span className="text-primary-950/50 dark:text-white/50">Scheduled</span>
+                <span className="font-medium text-primary-950 dark:text-accent-50">{data.queue.scheduled}</span>
               </div>
             </div>
           ) : (
-            <p className="text-sm text-primary-950/50">Queue unavailable</p>
+            <p className="text-sm text-primary-950/50 dark:text-white/50">Queue unavailable</p>
           )}
         </div>
 
         {/* Documents pipeline */}
-        <div className="rounded-lg border border-primary-950/[0.08] p-3">
+        <div className="rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] p-3">
           <div className="mb-2 flex items-center gap-2 text-orange-400">
             <FileText size={16} />
             <span className="text-xs font-semibold">Doc Pipeline ({docTotal})</span>
@@ -91,12 +91,12 @@ export function PlatformHealthWidget({ data }: Props) {
           <div className="space-y-1.5">
             {Object.entries(data.documents).map(([status, count]) => (
               <div key={status} className="flex justify-between text-sm">
-                <span className="capitalize text-primary-950/50">{status}</span>
-                <span className="font-medium text-primary-950">{count}</span>
+                <span className="capitalize text-primary-950/50 dark:text-white/50">{status}</span>
+                <span className="font-medium text-primary-950 dark:text-accent-50">{count}</span>
               </div>
             ))}
             {Object.keys(data.documents).length === 0 && (
-              <p className="text-sm text-primary-950/50">No documents</p>
+              <p className="text-sm text-primary-950/50 dark:text-white/50">No documents</p>
             )}
           </div>
         </div>

@@ -33,11 +33,11 @@ export function ConfirmRoleChangePage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white border border-primary-950/[0.08] p-8 shadow-elevated text-center backdrop-blur-xl">
+      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-primary-900 border border-primary-950/[0.08] dark:border-white/[0.08] p-8 shadow-elevated text-center backdrop-blur-xl">
         {status === 'loading' && (
           <>
             <Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600" />
-            <p className="mt-4 text-sm text-primary-950/50">Confirming role change...</p>
+            <p className="mt-4 text-sm text-primary-950/50 dark:text-white/50">Confirming role change...</p>
           </>
         )}
 
@@ -46,8 +46,8 @@ export function ConfirmRoleChangePage() {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-500/15">
               <CheckCircle className="h-7 w-7 text-green-400" />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-primary-950">Role Change Confirmed</h2>
-            <p className="mt-2 text-sm text-primary-950/50">{message}</p>
+            <h2 className="mt-4 text-lg font-semibold text-primary-950 dark:text-accent-50">Role Change Confirmed</h2>
+            <p className="mt-2 text-sm text-primary-950/50 dark:text-white/50">{message}</p>
           </>
         )}
 
@@ -56,8 +56,8 @@ export function ConfirmRoleChangePage() {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15">
               <XCircle className="h-7 w-7 text-red-600" />
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-primary-950">Confirmation Failed</h2>
-            <p className="mt-2 text-sm text-primary-950/50">{message}</p>
+            <h2 className="mt-4 text-lg font-semibold text-primary-950 dark:text-accent-50">Confirmation Failed</h2>
+            <p className="mt-2 text-sm text-primary-950/50 dark:text-white/50">{message}</p>
           </>
         )}
 

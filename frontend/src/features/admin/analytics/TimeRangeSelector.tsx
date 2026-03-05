@@ -14,7 +14,7 @@ interface Props {
 
 export function TimeRangeSelector({ value, onChange }: Props) {
   return (
-    <div className="inline-flex rounded-lg border border-primary-950/[0.08] bg-white p-1">
+    <div className="inline-flex rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] bg-white dark:bg-primary-900 p-1">
       {ranges.map((r) => (
         <button
           key={r}
@@ -22,7 +22,7 @@ export function TimeRangeSelector({ value, onChange }: Props) {
           className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
             value === r
               ? 'bg-primary-600 text-white'
-              : 'text-primary-950/50 hover:bg-primary-950/[0.04]'
+              : 'text-primary-950/50 dark:text-white/50 hover:bg-primary-950/[0.04] dark:hover:bg-white/[0.04]'
           }`}
         >
           {labels[r]}

@@ -49,15 +49,15 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
         className={`cursor-pointer rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
           isDragActive
             ? 'border-primary-400/50 bg-primary-500/10'
-            : 'border-primary-950/[0.12] hover:border-primary-950/[0.1]'
+            : 'border-primary-950/[0.12] dark:border-white/[0.12] hover:border-primary-950/[0.1]'
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto mb-3 h-10 w-10 text-primary-950/50" />
-        <p className="text-sm font-medium text-primary-950/60">
+        <Upload className="mx-auto mb-3 h-10 w-10 text-primary-950/50 dark:text-white/50" />
+        <p className="text-sm font-medium text-primary-950/60 dark:text-white/60">
           {isDragActive ? 'Drop files here...' : 'Drag & drop files, or click to browse'}
         </p>
-        <p className="mt-1 text-xs text-primary-950/50">
+        <p className="mt-1 text-xs text-primary-950/50 dark:text-white/50">
           PDF, Images, CAD (DXF), Excel, CSV, GeoJSON — up to 100MB
         </p>
       </div>
@@ -67,12 +67,12 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
           {files.map((f) => (
             <div
               key={f.id}
-              className="flex items-center gap-3 rounded-lg border border-primary-950/[0.08] bg-white px-4 py-3"
+              className="flex items-center gap-3 rounded-lg border border-primary-950/[0.08] dark:border-white/[0.08] bg-white dark:bg-primary-900 px-4 py-3"
             >
               {fileIcon(f.file.type)}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-primary-950">{f.file.name}</p>
-                <p className="text-xs text-primary-950/50">
+                <p className="truncate text-sm font-medium text-primary-950 dark:text-accent-50">{f.file.name}</p>
+                <p className="text-xs text-primary-950/50 dark:text-white/50">
                   {(f.file.size / 1024 / 1024).toFixed(1)} MB
                   {f.status !== 'pending' && (
                     <span className={`ml-2 capitalize ${
@@ -95,7 +95,7 @@ export function FileUploadZone({ projectId, onUpload }: FileUploadZoneProps) {
               )}
               <button
                 onClick={() => removeFile(f.id)}
-                className="text-primary-950/50 hover:text-primary-950/60"
+                className="text-primary-950/50 dark:text-white/50 hover:text-primary-950/60"
               >
                 <X size={16} />
               </button>

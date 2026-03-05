@@ -53,9 +53,9 @@ export function ResetPasswordPage() {
         </div>
         <div>
           <h2 className="text-3xl font-bold text-white">Almost there.<br />Set your new password.</h2>
-          <p className="mt-4 text-lg text-primary-950/60">Choose a strong password to secure your account.</p>
+          <p className="mt-4 text-lg text-primary-950/60 dark:text-white/60">Choose a strong password to secure your account.</p>
         </div>
-        <p className="text-sm text-primary-950/50">&copy; 2026 SiteForge</p>
+        <p className="text-sm text-primary-950/50 dark:text-white/50">&copy; 2026 SiteForge</p>
       </div>
 
       {/* Right form panel */}
@@ -66,7 +66,7 @@ export function ResetPasswordPage() {
           <div className="mb-8 text-center">
             <Building2 size={40} className="mx-auto text-primary-400" />
             <h1 className="mt-4 text-2xl font-bold text-white">Set new password</h1>
-            <p className="mt-1 text-sm text-primary-950/50">Enter your new password below.</p>
+            <p className="mt-1 text-sm text-primary-950/50 dark:text-white/50">Enter your new password below.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="card space-y-4">
@@ -75,7 +75,7 @@ export function ResetPasswordPage() {
             )}
 
             <div>
-              <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-primary-950/60">
+              <label htmlFor="newPassword" className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
                 New password
               </label>
               <div className="relative">
@@ -92,7 +92,7 @@ export function ResetPasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowNew((v) => !v)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 dark:text-white/40 hover:text-primary-950/60"
                   tabIndex={-1}
                 >
                   {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -101,7 +101,7 @@ export function ResetPasswordPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-primary-950/60">
+              <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-primary-950/60 dark:text-white/60">
                 Confirm password
               </label>
               <div className="relative">
@@ -118,7 +118,7 @@ export function ResetPasswordPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 hover:text-primary-950/60"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary-950/40 dark:text-white/40 hover:text-primary-950/60"
                   tabIndex={-1}
                 >
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -135,7 +135,7 @@ export function ResetPasswordPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-primary-950/50">
+          <p className="mt-4 text-center text-sm text-primary-950/50 dark:text-white/50">
             <Link to="/login" className="font-medium text-primary-500 hover:text-primary-400">
               Back to sign in
             </Link>
