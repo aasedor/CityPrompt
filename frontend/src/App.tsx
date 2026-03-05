@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { GenerationProgressBar } from '@/components/GenerationProgressBar';
+import { useGenerationPolling } from '@/hooks/useGenerationPolling';
 import { LandingPage } from '@/features/landing/LandingPage';
 import { ProjectListPage } from '@/features/projects/ProjectListPage';
 import { ProjectViewPage } from '@/features/projects/ProjectViewPage';
@@ -18,11 +20,15 @@ import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
 import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
 import { ConfirmRoleChangePage } from '@/features/admin/ConfirmRoleChangePage';
 import { CofounderAnalyticsPage } from '@/features/admin/CofounderAnalyticsPage';
+import { BlockEditorPage } from '@/features/block-editor/BlockEditorPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
 export default function App() {
   const { setUser, setLoading } = useAuthStore();
+
+  // Global generation progress polling — runs on all pages
+  useGenerationPolling();
 
   // On mount, check if we have a valid token and load user
   useEffect(() => {
@@ -43,6 +49,7 @@ export default function App() {
   }, [setUser, setLoading]);
 
   return (
+    <>
     <Routes>
       {/* Public landing page */}
       <Route path="/" element={<LandingPage />} />
@@ -66,10 +73,14 @@ export default function App() {
         <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="cofounder"><CofounderAnalyticsPage /></ProtectedRoute>} />
         <Route path="/admin/confirm-role-change" element={<ProtectedRoute requiredRole="admin"><ConfirmRoleChangePage /></ProtectedRoute>} />
       </Route>
+      {/* Block Editor - full-screen interactive layout editor */}
+      <Route path="/projects/:id/block-editor/:zoneId" element={<ProtectedRoute><BlockEditorPage /></ProtectedRoute>} />
       {/* Viewer is full-screen, no layout wrapper */}
       <Route path="/projects/:id/viewer" element={<ProtectedRoute><ViewerPage /></ProtectedRoute>} />
       {/* Shared project view (public link) */}
       <Route path="/shared/:token" element={<SharedProjectPage />} />
     </Routes>
+    <GenerationProgressBar />
+    </>
   );
 }

@@ -129,6 +129,9 @@ export interface LayoutBuildingData {
   building_type: string;
   setback_front_m: number;
   setback_side_m: number;
+  name?: string;
+  description?: string;
+  style?: string;
 }
 
 export interface LayoutOption {
@@ -534,6 +537,7 @@ export interface SceneObject {
 export interface GenerationStatus {
   status: string;
   progress?: number;
+  step?: string;
   model_url?: string;
   error?: string;
   meshy_task_id?: string;
