@@ -351,6 +351,9 @@ class LayoutBuilding(BaseModel):
     building_type: str = Field(default="residential", description="Building type: residential, commercial, mixed_use")
     setback_front_m: float = Field(default=3.0, description="Front setback in meters")
     setback_side_m: float = Field(default=1.5, description="Side setback in meters")
+    name: Optional[str] = Field(None, description="Custom building name")
+    description: Optional[str] = Field(None, description="Building description for 3D generation prompt")
+    style: Optional[str] = Field(None, description="Architectural style override")
 
 
 class LayoutRoad(BaseModel):
@@ -490,6 +493,7 @@ class GenerationStatusResponse(BaseModel):
     """Status of an AI 3D generation task."""
     status: str = Field(description="Generation status: idle, generating, completed, failed")
     progress: Optional[float] = Field(None, description="Progress percentage (0-100)")
+    step: Optional[str] = Field(None, description="Current generation step: calling_meshy, polling, refining, downloading, etc.")
     model_url: Optional[str] = Field(None, description="URL to the generated GLB model when completed")
     error: Optional[str] = Field(None, description="Error message if generation failed")
     meshy_task_id: Optional[str] = Field(None, description="Meshy task ID for external tracking")

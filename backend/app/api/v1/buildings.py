@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import require_auth
+from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
 from app.schemas.schemas import (
@@ -463,10 +464,14 @@ async def generate_from_text(
 
     # Queue Celery task
     from app.tasks.processing import generate_3d_model_ai
-    generate_3d_model_ai.delay(
+    task = generate_3d_model_ai.delay(
         str(building_id), enriched_prompt, "text",
         None, True, engine, style_id, negative,
     )
+
+    # Store Celery task ID for progress tracking
+    building.specifications = {**(building.specifications or {}), "celery_task_id": task.id}
+    await db.flush()
 
     return GenerationStatusResponse(
         status="generating",
@@ -512,10 +517,14 @@ async def generate_from_image(
     await db.flush()
 
     from app.tasks.processing import generate_3d_model_ai
-    generate_3d_model_ai.delay(
+    task = generate_3d_model_ai.delay(
         str(building_id), "", "image", req.image_url,
         True, engine, None, None,
     )
+
+    # Store Celery task ID for progress tracking
+    building.specifications = {**(building.specifications or {}), "celery_task_id": task.id}
+    await db.flush()
 
     return GenerationStatusResponse(
         status="generating",
@@ -535,14 +544,21 @@ async def get_generation_status(
     if not building:
         raise HTTPException(status_code=404, detail="Building not found")
 
-    # Try to get progress from Celery task
+    # Try to get real progress from Celery task
     progress = None
-    if building.generation_status == "generating" and building.meshy_task_id:
-        progress = 50  # Approximate progress when we know it's running
+    step = None
+    if building.generation_status == "generating":
+        celery_task_id = (building.specifications or {}).get("celery_task_id")
+        if celery_task_id:
+            result = celery_app.AsyncResult(celery_task_id)
+            meta = result.info if isinstance(result.info, dict) else {}
+            progress = int((meta.get("progress", 0) or 0) * 100)
+            step = meta.get("step", "")
 
     return GenerationStatusResponse(
         status=building.generation_status or "idle",
         progress=progress,
+        step=step,
         model_url=building.model_url if building.generation_status == "completed" else None,
         meshy_task_id=building.meshy_task_id,
     )

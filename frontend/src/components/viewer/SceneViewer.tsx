@@ -2497,6 +2497,29 @@ function ReferenceImage({ document: doc, index }: { document: Document; index: n
 }
 
 // =============================================================================
+
+// Compute building width/depth from footprint coordinates or specifications
+function useBuildingDimensions(building: Building): { width: number; depth: number } {
+  return useMemo(() => {
+    if (building.footprint_coordinates && building.footprint_coordinates.length >= 3) {
+      const coords = building.footprint_coordinates;
+      const lats = coords.map(c => c[1]);
+      const lngs = coords.map(c => c[0]);
+      const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+      const metersPerDegLat = 111320;
+      const metersPerDegLon = 111320 * Math.cos((centerLat * Math.PI) / 180);
+      const w = (Math.max(...lngs) - Math.min(...lngs)) * metersPerDegLon;
+      const d = (Math.max(...lats) - Math.min(...lats)) * metersPerDegLat;
+      return { width: Math.max(3, w), depth: Math.max(3, d) };
+    }
+    const specs = building.specifications || {};
+    return {
+      width: (specs.width_m as number) || 20,
+      depth: (specs.depth_m as number) || 15,
+    };
+  }, [building.footprint_coordinates, building.specifications]);
+}
+
 // Building Mesh — Three rendering paths
 // =============================================================================
 
@@ -2590,6 +2613,8 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
     }
   }, [isPhaseVisible, settings.showMeasurements, measurementMode, position, height, addHeightMeasurement, onClick]);
 
+  const { width: bldgW, depth: bldgD } = useBuildingDimensions(building);
+
   const hasGLB = !!building.model_url;
   const hasBuildingData = !!(building.floor_count || building.roof_type);
 
@@ -2631,6 +2656,8 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
         // Path C: Minimal fallback gray box
         <FallbackBuildingMesh
           height={height}
+          width={bldgW}
+          depth={bldgD}
           isSelected={isSelected}
           isHovered={isHovered}
           onClick={handleClick}
@@ -2906,8 +2933,7 @@ function ProceduralBuildingMesh({
   const floors = building.floor_count || 3;
   const floorHeight = building.floor_height_meters || height / floors;
   const roofType = building.roof_type || 'flat';
-  const width = 20;
-  const depth = 15;
+  const { width, depth } = useBuildingDimensions(building);
 
   const facadeMaterial = (building.specifications?.facade_material as string) || '';
   const defaultColor = MATERIAL_COLORS[facadeMaterial] || BUILDING_COLORS[colorIndex % BUILDING_COLORS.length];
@@ -3041,6 +3067,8 @@ function ProceduralBuildingMesh({
 
 function FallbackBuildingMesh({
   height,
+  width = 20,
+  depth = 15,
   isSelected,
   isHovered,
   onClick,
@@ -3050,6 +3078,8 @@ function FallbackBuildingMesh({
   height: number;
   isSelected: boolean;
   isHovered: boolean;
+  width?: number;
+  depth?: number;
   onClick?: () => void;
   onPointerOver?: () => void;
   onPointerOut?: () => void;
@@ -3062,7 +3092,7 @@ function FallbackBuildingMesh({
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      <boxGeometry args={[20, height, 15]} />
+      <boxGeometry args={[width, height, depth]} />
       <meshStandardMaterial
         color={isSelected ? '#3b82f6' : isHovered ? '#60a5fa' : '#94a3b8'}
         roughness={0.6}

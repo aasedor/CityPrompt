@@ -954,12 +954,16 @@ async def apply_layout(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # If zone already has linked buildings, return the first one
-    if zone.building_id:
-        existing = await db.execute(select(Building).where(Building.id == zone.building_id))
-        building = existing.scalar_one_or_none()
-        if building:
-            return _building_to_response(building)
+    # If zone already has linked buildings, delete them first (re-applying layout)
+    if zone.building_ids:
+        for old_bid in zone.building_ids:
+            old_result = await db.execute(select(Building).where(Building.id == old_bid))
+            old_building = old_result.scalar_one_or_none()
+            if old_building:
+                await db.delete(old_building)
+        zone.building_id = None
+        zone.building_ids = []
+        await db.flush()
 
     layout = body.layout
     props = zone.properties or {}
@@ -982,19 +986,21 @@ async def apply_layout(
 
         building = Building(
             project_id=zone.project_id,
-            name=f"{zone.name or 'Unit'} #{i + 1}",
+            name=lb.name or f"{zone.name or 'Unit'} #{i + 1}",
             footprint=WKTElement(footprint_wkt, srid=4326),
             height_meters=lb.height_m or props.get("height"),
             floor_count=lb.floors or props.get("floors"),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
+            generation_prompt=lb.description or props.get("description_text") or "",
             specifications={
                 "development_type": props.get("development_type"),
                 "development_aesthetic": props.get("development_aesthetic"),
-                "description_text": props.get("description_text"),
+                "description_text": lb.description or props.get("description_text"),
                 "facade_material": props.get("facade_material"),
                 "roof_style": props.get("roof_style"),
                 "building_type": lb.building_type,
+                "style": lb.style,
             },
         )
         db.add(building)
@@ -1129,7 +1135,7 @@ async def create_building_from_zone(
     if not zone:
         raise HTTPException(status_code=404, detail="Zone not found")
 
-    if zone.zone_type not in ("building", "residential"):
+    if zone.zone_type not in ("building", "residential", "development_area"):
         raise HTTPException(status_code=400, detail="Only building or residential zones can create buildings")
 
     # Check editor permission on parent project (admins bypass)
@@ -1656,33 +1662,37 @@ async def generate_all(
     total_zones = len(all_zones)
 
     for zone in all_zones:
-        if zone.zone_type not in ("building", "residential"):
+        if zone.zone_type not in ("building", "residential", "development_area"):
             continue
 
         zone_props = zone.properties or {}
         ref_images = zone_props.get("reference_images") or []
 
-        # If zone already has a linked building, skip creation
-        if zone.building_id:
-            existing = await db.execute(select(Building).where(Building.id == zone.building_id))
-            building = existing.scalar_one_or_none()
-            if building:
-                # Queue generation if not currently in progress
-                if building.generation_status != "generating":
-                    prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
-                    building.generation_status = "generating"
-                    building.generation_prompt = prompt
-                    await db.flush()
-                    try:
-                        from app.tasks.processing import generate_3d_model_ai
-                        if ref_images:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
-                        else:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "text")
-                        generations_queued += 1
-                    except Exception as e:
-                        logger.warning("Failed to queue generation for building %s: %s", building.id, e)
-                continue
+        # If zone already has linked buildings, queue generation for all of them
+        if zone.building_ids:
+            bid_list = zone.building_ids if isinstance(zone.building_ids, list) else [zone.building_ids]
+            for bid in bid_list:
+                existing = await db.execute(select(Building).where(Building.id == bid))
+                building = existing.scalar_one_or_none()
+                if not building:
+                    continue
+                if building.generation_status == "generating":
+                    continue
+                # Use existing per-block prompt if set (from block editor), otherwise compose from zone
+                prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+                building.generation_status = "generating"
+                building.generation_prompt = prompt
+                await db.flush()
+                try:
+                    from app.tasks.processing import generate_3d_model_ai
+                    if ref_images:
+                        generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                    else:
+                        generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                    generations_queued += 1
+                except Exception as e:
+                    logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+            continue
 
         # Determine unit count for this zone
         unit_count = _resolve_unit_count(zone)
@@ -1840,4 +1850,140 @@ async def generate_all(
         "total_zones": total_zones,
         "buildings_created": buildings_created,
         "generations_queued": generations_queued,
+    }
+
+
+# =============================================================================
+# Save Layout (persist edited layout without creating buildings)
+# =============================================================================
+
+
+from pydantic import BaseModel as _BaseModel
+
+class SaveLayoutRequest(_BaseModel):
+    """Request to save an edited layout to zone properties."""
+    layout: SiteLayoutResponse
+
+
+@router.put("/{zone_id}/save-layout")
+async def save_layout(
+    zone_id: uuid.UUID,
+    body: SaveLayoutRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
+    """Save an edited layout to zone properties AND sync building records."""
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    # 1. Save layout to zone properties
+    props = zone.properties or {}
+    props["_saved_layout"] = body.layout.model_dump()
+    zone.properties = props
+    flag_modified(zone, "properties")
+
+    # 2. Sync building records with layout blocks
+    shape = to_shape(zone.geometry)
+    centroid = shape.centroid
+    center_lat = centroid.y
+
+    bid_list = (zone.building_ids or []) if isinstance(zone.building_ids, list) else ([zone.building_ids] if zone.building_ids else [])
+    layout_buildings = body.layout.buildings
+    buildings_updated = 0
+    buildings_created = 0
+    buildings_deleted = 0
+
+    # Update existing buildings that still have a corresponding layout block
+    for i, bid in enumerate(bid_list):
+        if i >= len(layout_buildings):
+            # Extra building record with no layout block - delete it
+            bld_result = await db.execute(select(Building).where(Building.id == bid))
+            building = bld_result.scalar_one_or_none()
+            if building:
+                await db.delete(building)
+                buildings_deleted += 1
+            continue
+
+        lb = layout_buildings[i]
+        bld_result = await db.execute(select(Building).where(Building.id == bid))
+        building = bld_result.scalar_one_or_none()
+        if not building:
+            continue
+
+        # Update footprint geometry
+        abs_cx = centroid.x + lb.center_x
+        abs_cy = centroid.y + lb.center_y
+        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
+        half_h = _m_to_deg_lat(lb.depth_m / 2)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+        building.footprint = WKTElement(footprint_wkt, srid=4326)
+
+        # Update building metadata from block editor (always sync all fields)
+        building.name = lb.name or building.name
+        building.height_meters = lb.height_m or building.height_meters
+        building.floor_count = lb.floors or building.floor_count
+        building.rotation_degrees = lb.rotation_deg
+        building.generation_prompt = lb.description or props.get("description_text") or building.generation_prompt or ""
+        specs = building.specifications or {}
+        specs["description_text"] = lb.description or props.get("description_text") or specs.get("description_text")
+        specs["style"] = lb.style or specs.get("style")
+        specs["building_type"] = lb.building_type
+        specs["width_m"] = lb.width_m
+        specs["depth_m"] = lb.depth_m
+        building.specifications = specs
+        flag_modified(building, "specifications")
+
+        buildings_updated += 1
+
+    # Create new buildings for layout blocks beyond existing building_ids
+    new_bid_list = [bid for i, bid in enumerate(bid_list) if i < len(layout_buildings)]
+    for i in range(len(bid_list), len(layout_buildings)):
+        lb = layout_buildings[i]
+        abs_cx = centroid.x + lb.center_x
+        abs_cy = centroid.y + lb.center_y
+        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
+        half_h = _m_to_deg_lat(lb.depth_m / 2)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+
+        building = Building(
+            project_id=zone.project_id,
+            name=lb.name or f"{zone.name or 'Unit'} #{i + 1}",
+            footprint=WKTElement(footprint_wkt, srid=4326),
+            height_meters=lb.height_m or props.get("height"),
+            floor_count=lb.floors or props.get("floors"),
+            roof_type=props.get("roof_style"),
+            rotation_degrees=lb.rotation_deg,
+            generation_prompt=lb.description or props.get("description_text") or "",
+            specifications={
+                "development_type": props.get("development_type"),
+                "development_aesthetic": props.get("development_aesthetic"),
+                "description_text": lb.description or props.get("description_text"),
+                "facade_material": props.get("facade_material"),
+                "roof_style": props.get("roof_style"),
+                "building_type": lb.building_type,
+                "style": lb.style,
+            },
+        )
+        db.add(building)
+        await db.flush()
+        await db.refresh(building)
+        new_bid_list.append(str(building.id))
+        buildings_created += 1
+
+    # Update zone building_ids to match the current layout
+    zone.building_ids = new_bid_list
+    if new_bid_list:
+        zone.building_id = new_bid_list[0]
+    flag_modified(zone, "building_ids")
+
+    await db.commit()
+
+    return {
+        "status": "saved",
+        "zone_id": str(zone_id),
+        "buildings_updated": buildings_updated,
+        "buildings_created": buildings_created,
+        "buildings_deleted": buildings_deleted,
     }

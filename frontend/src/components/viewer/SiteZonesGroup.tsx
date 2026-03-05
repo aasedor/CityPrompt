@@ -566,8 +566,8 @@ function PolygonWindows({
 
         for (let w = 0; w < numWins; w++) {
           const t = edgeMargin + (w + 0.5) * actualSpacing;
-          const wx = wall.startX + wall.dirX * t + wall.normalX * 0.02;
-          const wz = wall.startZ + wall.dirZ * t + wall.normalZ * 0.02;
+          const wx = wall.startX + wall.dirX * t + wall.normalX * 0.05;
+          const wz = wall.startZ + wall.dirZ * t + wall.normalZ * 0.05;
 
           result.push({
             pos: [wx, y, wz],
@@ -591,6 +591,9 @@ function PolygonWindows({
             transparent
             opacity={0.6}
             side={THREE.DoubleSide}
+            polygonOffset
+            polygonOffsetFactor={-1}
+            polygonOffsetUnits={-1}
           />
         </mesh>
       ))}
@@ -609,8 +612,8 @@ function PolygonDoor({ wall }: { wall: WallSegment }) {
   const frameHeight = 2.35;
 
   // Place door at the center of the wall, at ground level
-  const x = wall.midX + wall.normalX * 0.02;
-  const z = wall.midZ + wall.normalZ * 0.02;
+  const x = wall.midX + wall.normalX * 0.05;
+  const z = wall.midZ + wall.normalZ * 0.05;
   const y = doorHeight / 2;
 
   return (
@@ -618,15 +621,15 @@ function PolygonDoor({ wall }: { wall: WallSegment }) {
       {/* Door frame (behind door) */}
       <mesh position={[x, y, z]} rotation={[0, wall.angle, 0]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
-        <meshStandardMaterial color="#3d2815" roughness={0.8} metalness={0.05} side={THREE.DoubleSide} />
+        <meshStandardMaterial color="#3d2815" roughness={0.8} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-1} polygonOffsetUnits={-1} />
       </mesh>
       {/* Door panel */}
       <mesh
-        position={[x + wall.normalX * 0.005, y, z + wall.normalZ * 0.005]}
+        position={[x + wall.normalX * 0.02, y, z + wall.normalZ * 0.02]}
         rotation={[0, wall.angle, 0]}
       >
         <planeGeometry args={[doorWidth, doorHeight]} />
-        <meshStandardMaterial color="#5c3a1e" roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
+        <meshStandardMaterial color="#5c3a1e" roughness={0.7} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
       </mesh>
     </group>
   );
@@ -661,7 +664,7 @@ function PolygonFloorDividers({
       const y = f * floorHeight;
       for (const wall of walls) {
         result.push({
-          pos: [wall.midX + wall.normalX * 0.03, y, wall.midZ + wall.normalZ * 0.03],
+          pos: [wall.midX + wall.normalX * 0.06, y, wall.midZ + wall.normalZ * 0.06],
           rotY: wall.angle,
           width: wall.length + 0.1,
         });
@@ -675,7 +678,7 @@ function PolygonFloorDividers({
       {dividers.map((d, i) => (
         <mesh key={i} position={d.pos} rotation={[0, d.rotY, 0]}>
           <planeGeometry args={[d.width, 0.08]} />
-          <meshStandardMaterial color={dividerColor} roughness={0.9} side={THREE.DoubleSide} />
+          <meshStandardMaterial color={dividerColor} roughness={0.9} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-1} polygonOffsetUnits={-1} />
         </mesh>
       ))}
     </>
