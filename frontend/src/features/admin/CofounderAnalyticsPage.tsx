@@ -25,7 +25,7 @@ import { ApiUsageChart } from './analytics/ApiUsageChart';
 function SectionSpinner() {
   return (
     <div className="flex items-center justify-center py-12">
-      <Loader2 className="h-6 w-6 animate-spin text-neutral-400" />
+      <Loader2 className="h-6 w-6 animate-spin text-primary-950/50" />
     </div>
   );
 }
@@ -155,11 +155,11 @@ export function CofounderAnalyticsPage() {
         <div className="flex items-center gap-3">
           <Link
             to="/admin"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-neutral-400 hover:bg-white/10 hover:text-neutral-200"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/70"
           >
             <ArrowLeft size={18} />
           </Link>
-          <h1 className="text-2xl font-bold text-white">Analytics</h1>
+          <h1 className="text-2xl font-bold text-primary-950">Analytics</h1>
         </div>
         <TimeRangeSelector value={range} onChange={setRange} />
       </div>
@@ -187,14 +187,14 @@ export function CofounderAnalyticsPage() {
         {settingsLoading && !platformSettings ? (
           <SectionSpinner />
         ) : platformSettings ? (
-          <div className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-6 shadow-card">
+          <div className="rounded-xl border border-primary-950/[0.08] bg-white p-6 shadow-card">
             <h2 className="mb-4 text-lg font-semibold text-neutral-100">Platform Settings</h2>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="flex-1">
-                <label className="mb-1 block text-sm font-medium text-neutral-300">
+                <label className="mb-1 block text-sm font-medium text-primary-950/60">
                   Layout AI Provider
                 </label>
-                <p className="text-xs text-neutral-400">
+                <p className="text-xs text-primary-950/50">
                   Controls which AI provider generates site layouts for multi-unit zones.
                 </p>
               </div>
@@ -203,7 +203,7 @@ export function CofounderAnalyticsPage() {
                   value={platformSettings.layout_ai_provider}
                   onChange={(e) => handleProviderChange(e.target.value)}
                   disabled={settingsSaving}
-                  className="rounded-lg border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white shadow-card focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:opacity-50"
+                  className="rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-primary-950 shadow-card focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:opacity-50"
                 >
                   <option value="claude" disabled={!platformSettings.claude_configured}>
                     Claude {!platformSettings.claude_configured ? '(not configured)' : ''}
@@ -213,14 +213,14 @@ export function CofounderAnalyticsPage() {
                   </option>
                   <option value="algorithmic">Algorithmic (no AI)</option>
                 </select>
-                {settingsSaving && <Loader2 className="h-4 w-4 animate-spin text-neutral-400" />}
+                {settingsSaving && <Loader2 className="h-4 w-4 animate-spin text-primary-950/50" />}
               </div>
             </div>
-            <div className="mt-3 flex gap-4 text-xs text-neutral-400">
-              <span className={platformSettings.claude_configured ? 'text-green-400' : 'text-neutral-500'}>
+            <div className="mt-3 flex gap-4 text-xs text-primary-950/50">
+              <span className={platformSettings.claude_configured ? 'text-green-400' : 'text-primary-950/40'}>
                 Claude: {platformSettings.claude_configured ? 'configured' : 'not configured'}
               </span>
-              <span className={platformSettings.gemini_configured ? 'text-green-400' : 'text-neutral-500'}>
+              <span className={platformSettings.gemini_configured ? 'text-green-400' : 'text-primary-950/40'}>
                 Gemini: {platformSettings.gemini_configured ? 'configured' : 'not configured'}
               </span>
             </div>

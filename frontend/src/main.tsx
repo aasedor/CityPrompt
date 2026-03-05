@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Sentry.ErrorBoundary fallback={({ error, resetError }) => (
       <div className="flex h-screen flex-col items-center justify-center gap-4 bg-primary-950 p-8 text-neutral-300">
         <p className="text-lg font-semibold text-white">Something went wrong</p>
-        <pre className="max-w-2xl overflow-auto rounded-xl border border-white/[0.08] bg-red-500/10 p-4 text-sm text-red-400">{error?.toString()}{'\n'}{(error as Error)?.stack}</pre>
+        <pre className="max-w-2xl overflow-auto rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">{error?.toString()}{'\n'}{(error as Error)?.stack}</pre>
         <button onClick={resetError} className="btn-primary rounded-xl px-5 py-2.5">Try Again</button>
       </div>
     )}>

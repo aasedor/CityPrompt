@@ -55,17 +55,17 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-primary-950/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
-      <div className="w-full max-w-md rounded-t-2xl bg-primary-900/95 backdrop-blur-xl border border-white/[0.1] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md rounded-t-2xl bg-white/95 backdrop-blur-xl border border-primary-950/[0.08] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Add Building</h2>
-          <button onClick={onClose} className="text-neutral-400 hover:text-neutral-300">
+          <h2 className="text-lg font-semibold text-primary-950">Add Building</h2>
+          <button onClick={onClose} className="text-primary-950/50 hover:text-primary-950/60">
             <X size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-300">Building Name</label>
+            <label className="block text-sm font-medium text-primary-950/60">Building Name</label>
             <input
               type="text"
               value={form.name || ''}
@@ -78,7 +78,7 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-300">Height (m)</label>
+              <label className="block text-sm font-medium text-primary-950/60">Height (m)</label>
               <input
                 type="number"
                 value={form.height_meters || ''}
@@ -89,7 +89,7 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-300">Floors</label>
+              <label className="block text-sm font-medium text-primary-950/60">Floors</label>
               <input
                 type="number"
                 value={form.floor_count || ''}
@@ -102,7 +102,7 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-300">Floor Height (m)</label>
+              <label className="block text-sm font-medium text-primary-950/60">Floor Height (m)</label>
               <input
                 type="number"
                 value={form.floor_height_meters || ''}
@@ -114,7 +114,7 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-300">Roof Type</label>
+              <label className="block text-sm font-medium text-primary-950/60">Roof Type</label>
               <select
                 value={form.roof_type || 'flat'}
                 onChange={(e) => setForm({ ...form, roof_type: e.target.value })}
@@ -129,11 +129,11 @@ export function AddBuildingModal({ projectId, projectLocation, onClose }: AddBui
           </div>
 
           {mutation.isError && (
-            <p className="text-sm text-red-400">Failed to create building. Please try again.</p>
+            <p className="text-sm text-red-600">Failed to create building. Please try again.</p>
           )}
 
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10">
+            <button type="button" onClick={onClose} className="rounded-lg px-4 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04]">
               Cancel
             </button>
             <button

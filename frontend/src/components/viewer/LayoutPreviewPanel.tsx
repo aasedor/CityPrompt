@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { Loader2, LayoutGrid, RefreshCw, Check, Lock, Unlock, ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -15,6 +16,7 @@ interface LayoutPreviewPanelProps {
 }
 
 export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZones }: LayoutPreviewPanelProps) {
+  const navigate = useNavigate();
   const {
     layoutPreview, setLayoutPreview, clearLayoutPreview, setActivePreviewIndex,
     setPreviewImageUrl, setLightboxImage,
@@ -155,7 +157,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-neutral-300">Layout Options</span>
+        <span className="text-xs font-semibold text-primary-950/60">Layout Options</span>
         <div className="flex items-center gap-2">
           {renderingCount > 0 && (
             <span className="flex items-center gap-1 text-[10px] text-purple-400">
@@ -166,7 +168,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
           <button
             onClick={handlePreview}
             disabled={loading}
-            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-400 hover:bg-white/10"
+            className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] text-indigo-400 hover:bg-primary-950/[0.04]"
             title="Regenerate options"
           >
             <RefreshCw size={10} className={loading ? 'animate-spin' : ''} />
@@ -204,19 +206,19 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
               onClick={() => setLightboxImage(previewImages[activeIndex])}
             />
           ) : renderingIndices.has(activeIndex) ? (
-            <div className="flex h-[200px] items-center justify-center rounded bg-white/[0.04]">
+            <div className="flex h-[200px] items-center justify-center rounded bg-white">
               <div className="flex flex-col items-center gap-2">
                 <Loader2 size={20} className="animate-spin text-purple-400" />
-                <span className="text-[10px] text-neutral-400">Rendering realistic preview...</span>
+                <span className="text-[10px] text-primary-950/50">Rendering realistic preview...</span>
               </div>
             </div>
           ) : failedIndices.has(activeIndex) ? (
-            <div className="flex h-[200px] items-center justify-center rounded bg-red-500/10">
+            <div className="flex h-[200px] items-center justify-center rounded bg-red-50">
               <div className="flex flex-col items-center gap-2">
-                <span className="text-[10px] text-red-400">Render failed</span>
+                <span className="text-[10px] text-red-600">Render failed</span>
                 <button
                   onClick={() => renderOption(activeIndex, activeOption)}
-                  className="flex items-center gap-1 rounded bg-white/10 px-2 py-1 text-[10px] text-white hover:bg-white/20"
+                  className="flex items-center gap-1 rounded bg-primary-950/[0.04] px-2 py-1 text-[10px] text-primary-950 hover:bg-primary-950/[0.06]"
                 >
                   <RefreshCw size={9} />
                   Retry
@@ -241,8 +243,8 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
       {/* Layer Lock Controls */}
       {activeOption && (
-        <div className="rounded-lg border border-white/[0.08] bg-white/[0.04] p-2 space-y-1.5">
-          <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wide">Lock Layers</span>
+        <div className="rounded-lg border border-primary-950/[0.08] bg-white p-2 space-y-1.5">
+          <span className="text-[10px] font-semibold text-primary-950/50 uppercase tracking-wide">Lock Layers</span>
           <div className="flex gap-1.5">
             <LayerLockButton
               label="Roads"
@@ -286,6 +288,14 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       )}
 
       <button
+        onClick={() => navigate(`/projects/${zone.project_id}/block-editor/${zone.id}`)}
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-400"
+      >
+        <LayoutGrid size={12} />
+        Edit & Finalize in Block Editor
+      </button>
+
+      <button
         onClick={handleApply}
         disabled={applying}
         className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-green-600/25 hover:bg-green-500 disabled:opacity-50"
@@ -296,7 +306,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
       <button
         onClick={() => { clearLayoutPreview(); clearLockedLayers(); }}
-        className="w-full rounded-lg border border-white/[0.08] px-3 py-1.5 text-xs text-neutral-400 hover:bg-white/[0.06]"
+        className="w-full rounded-lg border border-primary-950/[0.08] px-3 py-1.5 text-xs text-primary-950/50 hover:bg-white"
       >
         Cancel Preview
       </button>
@@ -337,14 +347,14 @@ function OptionCard({
       className={`w-full cursor-pointer rounded-lg border p-2 text-left transition-all ${
         isActive
           ? 'border-indigo-400/40 bg-indigo-500/15 ring-1 ring-indigo-400/30'
-          : 'border-white/[0.08] bg-white/[0.04] hover:border-white/[0.15] hover:bg-white/[0.07]'
+          : 'border-primary-950/[0.08] bg-white hover:border-primary-950/[0.12] hover:bg-white'
       }`}
     >
       <div className="flex items-center justify-between mb-1.5">
-        <span className={`text-xs font-semibold ${isActive ? 'text-indigo-300' : 'text-neutral-200'}`}>
+        <span className={`text-xs font-semibold ${isActive ? 'text-indigo-300' : 'text-primary-950/70'}`}>
           {option.option_label}
         </span>
-        <span className="text-[10px] text-neutral-500">
+        <span className="text-[10px] text-primary-950/40">
           {option.buildings.length} units
         </span>
       </div>
@@ -364,13 +374,13 @@ function OptionCard({
               if (p?.dataset.placeholder) p.style.display = 'flex';
             }}
           />
-          <div data-placeholder="true" className="h-[140px] items-center justify-center rounded bg-red-500/10 text-[9px] text-red-400" style={{ display: 'none' }}>
+          <div data-placeholder="true" className="h-[140px] items-center justify-center rounded bg-red-50 text-[9px] text-red-600" style={{ display: 'none' }}>
             Image failed to load
           </div>
           {onRerender && (
             <button
               onClick={(e) => { e.stopPropagation(); onRerender(); }}
-              className="absolute bottom-1 right-1 rounded bg-black/50 p-1 text-white/80 hover:bg-black/70 hover:text-white"
+              className="absolute bottom-1 right-1 rounded bg-black/50 p-1 text-primary-950/80 hover:bg-black/70 hover:text-primary-950"
               title="Re-render preview"
             >
               <RefreshCw size={10} />
@@ -378,20 +388,20 @@ function OptionCard({
           )}
         </div>
       ) : isRendering ? (
-        <div className="flex h-[140px] items-center justify-center rounded bg-white/[0.04]">
+        <div className="flex h-[140px] items-center justify-center rounded bg-white">
           <div className="flex flex-col items-center gap-1.5">
             <Loader2 size={16} className="animate-spin text-purple-400" />
-            <span className="text-[9px] text-neutral-500">Rendering...</span>
+            <span className="text-[9px] text-primary-950/40">Rendering...</span>
           </div>
         </div>
       ) : hasFailed ? (
-        <div className="flex h-[140px] items-center justify-center rounded bg-red-500/10">
+        <div className="flex h-[140px] items-center justify-center rounded bg-red-50">
           <div className="flex flex-col items-center gap-1.5">
-            <span className="text-[9px] text-red-400">Failed</span>
+            <span className="text-[9px] text-red-600">Failed</span>
             {onRerender && (
               <button
                 onClick={(e) => { e.stopPropagation(); onRerender(); }}
-                className="flex items-center gap-1 rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-white hover:bg-white/20"
+                className="flex items-center gap-1 rounded bg-primary-950/[0.04] px-1.5 py-0.5 text-[9px] text-primary-950 hover:bg-primary-950/[0.06]"
               >
                 <RefreshCw size={8} />
                 Retry
@@ -415,7 +425,7 @@ function OptionCard({
           {onRerender && (
             <button
               onClick={(e) => { e.stopPropagation(); onRerender(); }}
-              className="absolute bottom-1 right-1 flex items-center gap-1 rounded bg-purple-500/80 px-1.5 py-0.5 text-[9px] font-medium text-white hover:bg-purple-500"
+              className="absolute bottom-1 right-1 flex items-center gap-1 rounded bg-purple-500/80 px-1.5 py-0.5 text-[9px] font-medium text-primary-950 hover:bg-purple-500"
             >
               <ImageIcon size={9} />
               Render
@@ -425,11 +435,11 @@ function OptionCard({
       )}
 
       {option.density_achieved && (
-        <div className="mt-1 text-[10px] text-neutral-500">
+        <div className="mt-1 text-[10px] text-primary-950/40">
           {option.density_achieved} units/ha
         </div>
       )}
-      <p className="mt-0.5 text-[10px] leading-tight text-neutral-400 line-clamp-2">
+      <p className="mt-0.5 text-[10px] leading-tight text-primary-950/50 line-clamp-2">
         {option.reasoning}
       </p>
     </div>
@@ -454,7 +464,7 @@ function LayerLockButton({
       className={`flex items-center gap-1 rounded px-2 py-1 text-[10px] font-medium transition-colors ${
         isLocked
           ? 'bg-amber-500/20 text-amber-400 border border-amber-400/30'
-          : 'bg-white/[0.06] text-neutral-400 border border-white/[0.08] hover:bg-white/10'
+          : 'bg-white text-primary-950/50 border border-primary-950/[0.08] hover:bg-primary-950/[0.04]'
       }`}
     >
       {isLocked ? <Lock size={9} /> : <Unlock size={9} />}

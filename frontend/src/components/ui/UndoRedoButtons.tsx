@@ -14,7 +14,7 @@ export function UndoRedoButtons() {
       <button
         onClick={() => undo()}
         disabled={!canUndo || isUndoing}
-        className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white disabled:cursor-default disabled:text-white/25 disabled:hover:bg-transparent"
+        className="rounded-lg p-1.5 text-primary-950/50 hover:bg-primary-950/[0.06] hover:text-primary-950 disabled:cursor-default disabled:text-primary-950/20 disabled:hover:bg-transparent"
         title="Undo (Ctrl+Z)"
       >
         <Undo2 size={16} />
@@ -22,7 +22,7 @@ export function UndoRedoButtons() {
       <button
         onClick={() => redo()}
         disabled={!canRedo || isRedoing}
-        className="rounded-lg p-1.5 text-white/70 hover:bg-white/10 hover:text-white disabled:cursor-default disabled:text-white/25 disabled:hover:bg-transparent"
+        className="rounded-lg p-1.5 text-primary-950/50 hover:bg-primary-950/[0.06] hover:text-primary-950 disabled:cursor-default disabled:text-primary-950/20 disabled:hover:bg-transparent"
         title="Redo (Ctrl+Shift+Z)"
       >
         <Redo2 size={16} />

@@ -36,7 +36,7 @@ export function CreationTrendsChart({ data }: Props) {
 
   return (
     <div className="card">
-      <h3 className="mb-4 text-sm font-semibold text-neutral-300">Creation Trends</h3>
+      <h3 className="mb-4 text-sm font-semibold text-primary-950/60">Creation Trends</h3>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>

@@ -28,7 +28,7 @@ export function AdminDashboardPage() {
   }
 
   if (error) {
-    return <div className="rounded-lg bg-red-500/15 px-4 py-3 text-sm text-red-400">{error}</div>;
+    return <div className="rounded-lg bg-red-500/15 px-4 py-3 text-sm text-red-600">{error}</div>;
   }
 
   if (!stats) return null;
@@ -42,7 +42,7 @@ export function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-white">Admin Dashboard</h1>
+      <h1 className="mb-6 text-2xl font-bold text-primary-950">Admin Dashboard</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => {
@@ -53,9 +53,9 @@ export function AdminDashboardPage() {
                 <Icon size={24} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{card.value}</p>
-                <p className="text-sm text-neutral-400">{card.label}</p>
-                {card.sub && <p className="text-xs text-neutral-400">{card.sub}</p>}
+                <p className="text-2xl font-bold text-primary-950">{card.value}</p>
+                <p className="text-sm text-primary-950/50">{card.label}</p>
+                {card.sub && <p className="text-xs text-primary-950/50">{card.sub}</p>}
               </div>
             </div>
           );
@@ -71,13 +71,13 @@ export function AdminDashboardPage() {
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <div className="card">
-          <h2 className="mb-3 text-sm font-semibold text-neutral-300">Users by Role</h2>
+          <h2 className="mb-3 text-sm font-semibold text-primary-950/60">Users by Role</h2>
           <div className="space-y-2">
             {Object.entries(stats.users_by_role).map(([role, count]) => {
               const n = count as number;
               return (
                 <div key={role} className="flex items-center justify-between">
-                  <span className="text-sm capitalize text-neutral-400">{role}</span>
+                  <span className="text-sm capitalize text-primary-950/50">{role}</span>
                   <div className="flex items-center gap-2">
                     <div className="h-2 rounded-full bg-primary-500/15" style={{ width: `${Math.max(20, (n / stats.total_users) * 200)}px` }}>
                       <div
@@ -85,7 +85,7 @@ export function AdminDashboardPage() {
                         style={{ width: '100%' }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-white">{n}</span>
+                    <span className="text-sm font-medium text-primary-950">{n}</span>
                   </div>
                 </div>
               );
@@ -94,7 +94,7 @@ export function AdminDashboardPage() {
         </div>
 
         <div className="card">
-          <h2 className="mb-3 text-sm font-semibold text-neutral-300">Projects by Status</h2>
+          <h2 className="mb-3 text-sm font-semibold text-primary-950/60">Projects by Status</h2>
           <div className="space-y-2">
             {Object.entries(stats.projects_by_status).map(([s, count]) => {
               const n = count as number;
@@ -106,15 +106,15 @@ export function AdminDashboardPage() {
               };
               return (
                 <div key={s} className="flex items-center justify-between">
-                  <span className="text-sm capitalize text-neutral-400">{s}</span>
+                  <span className="text-sm capitalize text-primary-950/50">{s}</span>
                   <div className="flex items-center gap-2">
-                    <div className="h-2 rounded-full bg-white/10" style={{ width: `${Math.max(20, (n / Math.max(stats.total_projects, 1)) * 200)}px` }}>
+                    <div className="h-2 rounded-full bg-primary-950/[0.04]" style={{ width: `${Math.max(20, (n / Math.max(stats.total_projects, 1)) * 200)}px` }}>
                       <div
                         className={`h-2 rounded-full ${statusColors[s] || 'bg-neutral-400'}`}
                         style={{ width: '100%' }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-white">{n}</span>
+                    <span className="text-sm font-medium text-primary-950">{n}</span>
                   </div>
                 </div>
               );

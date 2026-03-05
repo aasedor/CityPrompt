@@ -142,7 +142,7 @@ export function Layout() {
               <Link
                 to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10 hover:text-white"
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
               >
                 {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
@@ -152,7 +152,7 @@ export function Layout() {
               <Link
                 to="/admin/analytics"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10 hover:text-white"
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
               >
                 <BarChart3 size={14} />
                 Analytics
@@ -167,14 +167,14 @@ export function Layout() {
                 <Link
                   to="/settings/password"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10 hover:text-white"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                 >
                   <KeyRound size={14} />
                   Change Password
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-300 hover:bg-white/10 hover:text-white"
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
                 >
                   <LogOut size={14} />
                   Sign out

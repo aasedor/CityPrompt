@@ -34,9 +34,9 @@ export function ForgotPasswordPage() {
         </div>
         <div>
           <h2 className="text-3xl font-bold text-white">No worries,<br />we've got you.</h2>
-          <p className="mt-4 text-lg text-neutral-300">We'll send a reset link to your email so you can get back to building.</p>
+          <p className="mt-4 text-lg text-primary-950/60">We'll send a reset link to your email so you can get back to building.</p>
         </div>
-        <p className="text-sm text-neutral-400">&copy; 2026 SiteForge</p>
+        <p className="text-sm text-primary-950/50">&copy; 2026 SiteForge</p>
       </div>
 
       {/* Right form panel */}
@@ -47,7 +47,7 @@ export function ForgotPasswordPage() {
           <div className="mb-8 text-center">
             <Building2 size={40} className="mx-auto text-primary-400" />
             <h1 className="mt-4 text-2xl font-bold text-white">Reset password</h1>
-            <p className="mt-1 text-sm text-neutral-400">
+            <p className="mt-1 text-sm text-primary-950/50">
               Enter your email and we'll send you a reset link.
             </p>
           </div>
@@ -67,11 +67,11 @@ export function ForgotPasswordPage() {
           ) : (
             <form onSubmit={handleSubmit} className="card space-y-4">
               {error && (
-                <div className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-400">{error}</div>
+                <div className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600">{error}</div>
               )}
 
               <div>
-                <label htmlFor="email" className="mb-1 block text-sm font-medium text-neutral-300">
+                <label htmlFor="email" className="mb-1 block text-sm font-medium text-primary-950/60">
                   Email
                 </label>
                 <input
@@ -95,7 +95,7 @@ export function ForgotPasswordPage() {
             </form>
           )}
 
-          <p className="mt-4 text-center text-sm text-neutral-400">
+          <p className="mt-4 text-center text-sm text-primary-950/50">
             Remember your password?{' '}
             <Link to="/login" className="font-medium text-primary-500 hover:text-primary-400">
               Sign in

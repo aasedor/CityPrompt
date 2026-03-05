@@ -117,27 +117,27 @@ export function AdminUsersPage() {
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
-        <Link to="/admin" className="rounded-lg p-1.5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200">
+        <Link to="/admin" className="rounded-lg p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/70">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-white">Manage Users</h1>
+        <h1 className="text-2xl font-bold text-primary-950">Manage Users</h1>
       </div>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/50" />
           <input
             type="text"
             placeholder="Search by email or name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-white/[0.12] bg-white/[0.06] py-2 pl-9 pr-3 text-sm text-white placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            className="w-full rounded-lg border border-primary-950/[0.1] bg-white py-2 pl-9 pr-3 text-sm text-primary-950 placeholder:text-primary-950/40 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="rounded-lg border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+          className="rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-primary-950 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
         >
           <option value="">All roles</option>
           <option value="viewer">Viewer</option>
@@ -152,12 +152,12 @@ export function AdminUsersPage() {
           <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
         </div>
       ) : users.length === 0 ? (
-        <p className="py-8 text-center text-sm text-neutral-400">No users found.</p>
+        <p className="py-8 text-center text-sm text-primary-950/50">No users found.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/[0.08] text-left text-xs font-medium uppercase text-neutral-400">
+              <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
                 <th className="px-4 py-3">User</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
@@ -167,19 +167,19 @@ export function AdminUsersPage() {
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.08]">
+            <tbody className="divide-y divide-primary-950/[0.06]">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-white/[0.04]">
+                <tr key={u.id} className="hover:bg-white">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-white">{u.full_name || '-'}</div>
-                    <div className="text-xs text-neutral-400">{u.email}</div>
+                    <div className="font-medium text-primary-950">{u.full_name || '-'}</div>
+                    <div className="text-xs text-primary-950/50">{u.email}</div>
                   </td>
                   <td className="px-4 py-3">
                     <select
                       value={u.role}
                       onChange={(e) => handleRoleChange(u.id, e.target.value)}
                       disabled={!isCofounder && ['admin', 'cofounder'].includes(u.role)}
-                      className="rounded border border-white/[0.12] bg-white/[0.06] px-2 py-1 text-xs text-white focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="rounded border border-primary-950/[0.1] bg-white px-2 py-1 text-xs text-primary-950 focus:border-primary-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <option value="viewer">Viewer</option>
                       <option value="editor">Editor</option>
@@ -187,24 +187,24 @@ export function AdminUsersPage() {
                       {isCofounder && <option value="cofounder">Cofounder</option>}
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-neutral-400">{u.project_count}</td>
+                  <td className="px-4 py-3 text-primary-950/50">{u.project_count}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                         u.is_active
                           ? 'bg-green-500/15 text-green-400'
-                          : 'bg-red-500/15 text-red-400'
+                          : 'bg-red-500/15 text-red-600'
                       }`}
                     >
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-neutral-400">
+                  <td className="px-4 py-3 text-primary-950/50">
                     {u.last_login_at
                       ? new Date(u.last_login_at).toLocaleDateString()
-                      : <span className="text-neutral-500">Never</span>}
+                      : <span className="text-primary-950/40">Never</span>}
                   </td>
-                  <td className="px-4 py-3 text-neutral-400">
+                  <td className="px-4 py-3 text-primary-950/50">
                     {new Date(u.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3 flex items-center gap-1">
@@ -212,7 +212,7 @@ export function AdminUsersPage() {
                       onClick={() => handleToggleActive(u.id, u.is_active)}
                       className={`rounded px-2 py-1 text-xs font-medium ${
                         u.is_active
-                          ? 'text-red-400 hover:bg-red-500/15'
+                          ? 'text-red-600 hover:bg-red-500/15'
                           : 'text-green-400 hover:bg-green-500/15'
                       }`}
                     >
@@ -220,7 +220,7 @@ export function AdminUsersPage() {
                     </button>
                     <button
                       onClick={() => handleDeleteUser(u.id, u.email)}
-                      className="rounded p-1 text-neutral-400 hover:bg-red-500/15 hover:text-red-400"
+                      className="rounded p-1 text-primary-950/50 hover:bg-red-500/15 hover:text-red-600"
                       title="Delete user"
                     >
                       <Trash2 size={14} />
@@ -236,7 +236,7 @@ export function AdminUsersPage() {
       {/* Role change confirmation modal */}
       {roleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="mx-4 w-full max-w-md rounded-xl bg-white/[0.04] border border-white/[0.08] p-6 shadow-xl backdrop-blur-xl">
+          <div className="mx-4 w-full max-w-md rounded-xl bg-white border border-primary-950/[0.08] p-6 shadow-xl backdrop-blur-xl">
             <div className="mb-4 flex items-center gap-3">
               {roleModal.type === 'promotion' ? (
                 roleModal.newRole === 'cofounder' ? (
@@ -250,10 +250,10 @@ export function AdminUsersPage() {
                 )
               ) : (
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/15">
-                  <ShieldAlert className="h-5 w-5 text-red-400" />
+                  <ShieldAlert className="h-5 w-5 text-red-600" />
                 </div>
               )}
-              <h3 className="text-lg font-semibold text-white">
+              <h3 className="text-lg font-semibold text-primary-950">
                 {roleModal.type === 'promotion'
                   ? roleModal.newRole === 'cofounder'
                     ? 'Grant Cofounder Access?'
@@ -263,14 +263,14 @@ export function AdminUsersPage() {
                     : 'Remove Admin Access?'}
               </h3>
             </div>
-            <p className="mb-2 text-sm text-neutral-400">
+            <p className="mb-2 text-sm text-primary-950/50">
               {roleModal.type === 'promotion' ? (
-                <>You are about to promote <strong className="text-white">{roleModal.email}</strong> to <strong className="text-white capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to promote <strong className="text-primary-950">{roleModal.email}</strong> to <strong className="text-primary-950 capitalize">{roleModal.newRole}</strong>.</>
               ) : (
-                <>You are about to demote <strong className="text-white">{roleModal.email}</strong> to <strong className="text-white capitalize">{roleModal.newRole}</strong>.</>
+                <>You are about to demote <strong className="text-primary-950">{roleModal.email}</strong> to <strong className="text-primary-950 capitalize">{roleModal.newRole}</strong>.</>
               )}
             </p>
-            <p className="mb-6 text-sm text-neutral-400">
+            <p className="mb-6 text-sm text-primary-950/50">
               {roleModal.type === 'promotion'
                 ? roleModal.newRole === 'cofounder'
                   ? 'This will grant the highest level of access, including the ability to manage admins. Are you sure?'
@@ -280,13 +280,13 @@ export function AdminUsersPage() {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setRoleModal(null)}
-                className="rounded-lg border border-white/[0.12] px-4 py-2 text-sm font-medium text-neutral-300 hover:bg-white/[0.06]"
+                className="rounded-lg border border-primary-950/[0.1] px-4 py-2 text-sm font-medium text-primary-950/60 hover:bg-white"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmRoleChange}
-                className={`rounded-lg px-4 py-2 text-sm font-medium text-white ${
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-primary-950 ${
                   roleModal.type === 'promotion'
                     ? roleModal.newRole === 'cofounder'
                       ? 'bg-yellow-600 hover:bg-yellow-700'

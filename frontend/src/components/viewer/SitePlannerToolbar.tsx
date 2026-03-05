@@ -93,8 +93,8 @@ function PresetSummary({ preset }: { preset: RoadPresetConfig | BuildingPresetCo
   const width = preset.properties.width as number | undefined;
   const floors = preset.properties.floors as number | undefined;
 
-  if (width) return <span className="ml-auto text-[10px] text-neutral-400 group-hover:text-neutral-400">{width}m</span>;
-  if (floors) return <span className="ml-auto text-[10px] text-neutral-400 group-hover:text-neutral-400">{floors}F</span>;
+  if (width) return <span className="ml-auto text-[10px] text-primary-950/50 group-hover:text-primary-950/50">{width}m</span>;
+  if (floors) return <span className="ml-auto text-[10px] text-primary-950/50 group-hover:text-primary-950/50">{floors}F</span>;
   return null;
 }
 
@@ -131,8 +131,8 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                     }}
                     className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-white/20 text-white ring-1 ring-white/40'
-                        : 'text-neutral-300 hover:bg-white/10 hover:text-white'
+                        ? 'bg-primary-950/[0.06] text-primary-950 ring-1 ring-white/40'
+                        : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
                     }`}
                     title={hasPresets ? `Expand ${config.label} presets` : `Draw ${config.label} zone`}
                   >
@@ -148,7 +148,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                       />
                     )}
                     {isActive && !hasPresets && (
-                      <span className="ml-auto rounded bg-white/20 px-1.5 py-0.5 text-[10px] leading-none">
+                      <span className="ml-auto rounded bg-primary-950/[0.06] px-1.5 py-0.5 text-[10px] leading-none">
                         Active
                       </span>
                     )}
@@ -156,7 +156,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
 
                   {/* Preset sub-menu (road, building, residential) */}
                   {hasPresets && isExpanded && presets && (
-                    <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-white/10 pl-2">
+                    <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-primary-950/[0.08] pl-2">
                       {presets.map((preset) => (
                         <button
                           key={preset.label}
@@ -164,7 +164,7 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
                             onSelectTool(type, preset.properties);
                             setExpandedType(null);
                           }}
-                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-neutral-300 transition-all hover:bg-white/10 hover:text-white"
+                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-primary-950/60 transition-all hover:bg-primary-950/[0.04] hover:text-primary-950"
                           title={`${preset.label} — ${preset.description}`}
                         >
                           <PresetIndicator preset={preset} color={config.color} />
@@ -186,10 +186,10 @@ function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }
         onClick={onToggle}
         className={`flex items-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-all sm:px-3 sm:py-1.5 ${
           isOpen
-            ? 'bg-white/20 text-white ring-2 ring-white/40'
+            ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
             : activeChild
-              ? 'bg-white/15 text-white'
-              : 'text-neutral-300 hover:bg-white/10 hover:text-white'
+              ? 'bg-white/15 text-primary-950'
+              : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
         }`}
         title={label}
       >
@@ -245,7 +245,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
   };
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-1.5 rounded-xl bg-primary-900/90 px-3 py-2 shadow-2xl backdrop-blur-sm sm:flex-row sm:items-center sm:justify-center sm:gap-2">
+    <div className="flex w-full flex-col items-stretch gap-1.5 rounded-xl bg-white/95 px-3 py-2 shadow-2xl backdrop-blur-sm sm:flex-row sm:items-center sm:justify-center sm:gap-2">
       {/* Zone tools row — wraps on mobile */}
       <div ref={groupsRef} className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
         {/* Select / Move tool */}
@@ -253,8 +253,8 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
           onClick={() => { setActiveSitePlannerTool(null); setOpenGroup(null); }}
           className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all sm:py-1.5 ${
             activeSitePlannerTool === null
-              ? 'bg-white/20 text-white ring-2 ring-white/40'
-              : 'text-neutral-300 hover:bg-white/10 hover:text-white'
+              ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
+              : 'text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950'
           }`}
           title="Select / Move zones"
         >
@@ -262,11 +262,11 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
           <span>Select</span>
         </button>
 
-        <div className="mx-0.5 hidden h-6 w-px bg-white/20 sm:block" />
+        <div className="mx-0.5 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
 
         <UndoRedoButtons />
 
-        <div className="mx-0.5 hidden h-6 w-px bg-white/20 sm:block" />
+        <div className="mx-0.5 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
 
         {ZONE_GROUPS.map((group) => (
           <ZoneGroupDropdown
@@ -281,9 +281,9 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
       </div>
 
       {/* Divider — visible only on desktop between zone tools and action buttons */}
-      <div className="mx-1 hidden h-6 w-px bg-white/20 sm:block" />
+      <div className="mx-1 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
       {/* Thin horizontal divider on mobile */}
-      <div className="h-px w-full bg-white/10 sm:hidden" />
+      <div className="h-px w-full bg-primary-950/[0.04] sm:hidden" />
 
       {/* Action buttons row */}
       <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
@@ -308,7 +308,7 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
         {onShowGuide && (
           <button
             onClick={onShowGuide}
-            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-neutral-300 hover:bg-white/10 hover:text-white sm:py-1.5"
+            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950 sm:py-1.5"
             title="Show quick-start guide"
           >
             <HelpCircle size={14} />

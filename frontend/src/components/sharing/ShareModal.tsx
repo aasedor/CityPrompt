@@ -77,10 +77,10 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-primary-950/60 backdrop-blur-sm sm:items-center" onClick={onClose}>
-      <div className="w-full max-w-md rounded-t-2xl bg-primary-900/95 backdrop-blur-xl border border-white/[0.1] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md rounded-t-2xl bg-white/95 backdrop-blur-xl border border-primary-950/[0.08] p-5 shadow-elevated animate-slide-up sm:rounded-2xl sm:p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Share "{projectName}"</h2>
-          <button onClick={onClose} className="rounded-md p-1 text-neutral-400 hover:bg-white/10 hover:text-neutral-300">
+          <h2 className="text-lg font-semibold text-primary-950">Share "{projectName}"</h2>
+          <button onClick={onClose} className="rounded-md p-1 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/60">
             <X size={20} />
           </button>
         </div>
@@ -112,13 +112,13 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               {shareMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : <UserPlus size={16} />}
             </button>
           </div>
-          {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+          {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
         </div>
 
         {/* Shared users list */}
         {emailShares.length > 0 && (
           <div className="mt-4 space-y-2">
-            <h3 className="text-xs font-semibold uppercase text-neutral-400">Shared with</h3>
+            <h3 className="text-xs font-semibold uppercase text-primary-950/50">Shared with</h3>
             {emailShares.map((share) => (
               <ShareRow key={share.id} share={share} onRevoke={() => revokeMutation.mutate(share.id)} revoking={revokeMutation.isPending} />
             ))}
@@ -126,17 +126,17 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
         )}
 
         {/* Public link section */}
-        <div className="mt-5 border-t border-white/[0.08] pt-4">
+        <div className="mt-5 border-t border-primary-950/[0.08] pt-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Link2 size={16} className="text-neutral-400" />
-              <span className="text-sm font-medium text-neutral-300">Public link</span>
+              <Link2 size={16} className="text-primary-950/50" />
+              <span className="text-sm font-medium text-primary-950/60">Public link</span>
             </div>
             {publicLink ? (
               <button
                 onClick={() => revokePublicLinkMutation.mutate()}
                 disabled={revokePublicLinkMutation.isPending}
-                className="text-xs font-medium text-red-400 hover:text-red-300"
+                className="text-xs font-medium text-red-600 hover:text-red-300"
               >
                 Disable
               </button>
@@ -155,11 +155,11 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
               <input
                 readOnly
                 value={`${window.location.origin}/shared/${publicLink.invite_token}`}
-                className="flex-1 truncate rounded-lg bg-white/[0.03] px-3 py-1.5 text-xs text-neutral-400"
+                className="flex-1 truncate rounded-lg bg-primary-950/[0.02] px-3 py-1.5 text-xs text-primary-950/50"
               />
               <button
                 onClick={handleCopyLink}
-                className="rounded-lg bg-white/10 p-1.5 text-neutral-400 hover:bg-white/[0.15]"
+                className="rounded-lg bg-primary-950/[0.04] p-1.5 text-primary-950/50 hover:bg-primary-950/[0.08]"
               >
                 {copied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
               </button>
@@ -168,7 +168,7 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
         </div>
 
         {isLoading && (
-          <div className="mt-4 text-center text-sm text-neutral-400">
+          <div className="mt-4 text-center text-sm text-primary-950/50">
             <Loader2 size={16} className="mx-auto animate-spin" />
           </div>
         )}
@@ -179,15 +179,15 @@ export function ShareModal({ projectId, projectName, onClose }: ShareModalProps)
 
 function ShareRow({ share, onRevoke, revoking }: { share: ProjectShareInfo; onRevoke: () => void; revoking: boolean }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-white/[0.08] px-3 py-2">
+    <div className="flex items-center justify-between rounded-lg border border-primary-950/[0.08] px-3 py-2">
       <div>
-        <p className="text-sm font-medium text-neutral-300">{share.email}</p>
-        <p className="text-xs capitalize text-neutral-400">{share.permission}</p>
+        <p className="text-sm font-medium text-primary-950/60">{share.email}</p>
+        <p className="text-xs capitalize text-primary-950/50">{share.permission}</p>
       </div>
       <button
         onClick={onRevoke}
         disabled={revoking}
-        className="rounded-md p-1 text-neutral-400 hover:bg-red-500/10 hover:text-red-500"
+        className="rounded-md p-1 text-primary-950/50 hover:bg-red-50 hover:text-red-500"
       >
         <Trash2 size={14} />
       </button>

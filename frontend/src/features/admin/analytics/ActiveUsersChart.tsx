@@ -23,8 +23,8 @@ export function ActiveUsersChart({ data }: Props) {
   return (
     <div className="card">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-neutral-300">Active Users</h3>
-        <span className="text-xs text-neutral-400">{data.total_in_range} active</span>
+        <h3 className="text-sm font-semibold text-primary-950/60">Active Users</h3>
+        <span className="text-xs text-primary-950/50">{data.total_in_range} active</span>
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">

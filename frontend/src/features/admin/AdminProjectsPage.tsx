@@ -6,10 +6,10 @@ import { adminApi } from '@/services/api';
 import type { AdminProject } from '@/services/api';
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-white/10 text-neutral-300',
+  draft: 'bg-primary-950/[0.04] text-primary-950/60',
   processing: 'bg-amber-500/15 text-amber-400',
   ready: 'bg-green-500/15 text-green-400',
-  archived: 'bg-red-500/15 text-red-400',
+  archived: 'bg-red-500/15 text-red-600',
 };
 
 export function AdminProjectsPage() {
@@ -41,27 +41,27 @@ export function AdminProjectsPage() {
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
-        <Link to="/admin" className="rounded-lg p-1.5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200">
+        <Link to="/admin" className="rounded-lg p-1.5 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/70">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-white">All Projects</h1>
+        <h1 className="text-2xl font-bold text-primary-950">All Projects</h1>
       </div>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/50" />
           <input
             type="text"
             placeholder="Search by project name or owner..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-white/[0.12] bg-white/[0.06] py-2 pl-9 pr-3 text-sm text-white placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            className="w-full rounded-lg border border-primary-950/[0.1] bg-white py-2 pl-9 pr-3 text-sm text-primary-950 placeholder:text-primary-950/40 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-lg border border-white/[0.12] bg-white/[0.06] px-3 py-2 text-sm text-white focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+          className="rounded-lg border border-primary-950/[0.1] bg-white px-3 py-2 text-sm text-primary-950 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
         >
           <option value="">All statuses</option>
           <option value="draft">Draft</option>
@@ -76,12 +76,12 @@ export function AdminProjectsPage() {
           <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
         </div>
       ) : projects.length === 0 ? (
-        <p className="py-8 text-center text-sm text-neutral-400">No projects found.</p>
+        <p className="py-8 text-center text-sm text-primary-950/50">No projects found.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/[0.08] text-left text-xs font-medium uppercase text-neutral-400">
+              <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
                 <th className="px-4 py-3">Project</th>
                 <th className="px-4 py-3">Owner</th>
                 <th className="px-4 py-3">Status</th>
@@ -89,9 +89,9 @@ export function AdminProjectsPage() {
                 <th className="px-4 py-3">Updated</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.08]">
+            <tbody className="divide-y divide-primary-950/[0.06]">
               {projects.map((p) => (
-                <tr key={p.id} className="hover:bg-white/[0.04]">
+                <tr key={p.id} className="hover:bg-white">
                   <td className="px-4 py-3">
                     <Link
                       to={`/projects/${p.id}`}
@@ -100,24 +100,24 @@ export function AdminProjectsPage() {
                       {p.name}
                     </Link>
                     {p.description && (
-                      <p className="mt-0.5 truncate text-xs text-neutral-400" style={{ maxWidth: 300 }}>
+                      <p className="mt-0.5 truncate text-xs text-primary-950/50" style={{ maxWidth: 300 }}>
                         {p.description}
                       </p>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <div className="text-white">{p.owner_name || '-'}</div>
-                    <div className="text-xs text-neutral-400">{p.owner_email}</div>
+                    <div className="text-primary-950">{p.owner_name || '-'}</div>
+                    <div className="text-xs text-primary-950/50">{p.owner_email}</div>
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[p.status] || 'bg-white/10 text-neutral-300'}`}
+                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[p.status] || 'bg-primary-950/[0.04] text-primary-950/60'}`}
                     >
                       {p.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-neutral-400">{p.building_count}</td>
-                  <td className="px-4 py-3 text-neutral-400">
+                  <td className="px-4 py-3 text-primary-950/50">{p.building_count}</td>
+                  <td className="px-4 py-3 text-primary-950/50">
                     {new Date(p.updated_at).toLocaleDateString()}
                   </td>
                 </tr>
