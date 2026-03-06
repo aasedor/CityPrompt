@@ -2701,6 +2701,8 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
           buildingId={building.id}
           lodUrls={building.lod_urls}
           targetHeight={height}
+          targetWidth={bldgW}
+          targetDepth={bldgD}
           footprintCoordinates={building.footprint_coordinates}
           isSelected={isSelected}
           isHovered={isHovered}
@@ -2754,6 +2756,8 @@ function GLBBuildingMesh({
   buildingId,
   lodUrls,
   targetHeight,
+  targetWidth,
+  targetDepth,
   footprintCoordinates,
   isSelected,
   isHovered,
@@ -2764,6 +2768,8 @@ function GLBBuildingMesh({
   buildingId: string;
   lodUrls?: Record<string, string>;
   targetHeight: number;
+  targetWidth?: number;
+  targetDepth?: number;
   footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
@@ -2831,6 +2837,8 @@ function GLBBuildingMesh({
       <GLBModel
         url={modelUrl}
         targetHeight={targetHeight}
+        targetWidth={targetWidth}
+        targetDepth={targetDepth}
         footprintCoordinates={footprintCoordinates}
         isSelected={isSelected}
         isHovered={isHovered}
@@ -2846,6 +2854,8 @@ function GLBBuildingMesh({
 function GLBModel({
   url,
   targetHeight,
+  targetWidth,
+  targetDepth,
   footprintCoordinates,
   isSelected,
   isHovered,
@@ -2855,6 +2865,8 @@ function GLBModel({
 }: {
   url: string;
   targetHeight: number;
+  targetWidth?: number;
+  targetDepth?: number;
   footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
@@ -2865,7 +2877,7 @@ function GLBModel({
   const { scene } = useGLTF(url);
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
-  // Compute per-axis scale to fit the model within the zone footprint
+  // Compute per-axis scale to fit the model within the target dimensions
   const { scaleX, scaleY, scaleZ, offsetY } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(clonedScene);
     const modelWidth = box.max.x - box.min.x;
@@ -2874,19 +2886,24 @@ function GLBModel({
 
     const sY = modelHeight > 0.01 ? targetHeight / modelHeight : 1;
 
-    // Derive target width/depth from footprint coordinates (in meters)
+    // Prefer authoritative dimensions from specifications (set by block editor)
+    // over footprint bounding box which is inflated for rotated buildings
     let sX = sY;
     let sZ = sY;
-    if (footprintCoordinates && footprintCoordinates.length >= 3) {
+    if (targetWidth && targetWidth > 0.1 && targetDepth && targetDepth > 0.1) {
+      if (modelWidth > 0.01) sX = targetWidth / modelWidth;
+      if (modelDepth > 0.01) sZ = targetDepth / modelDepth;
+    } else if (footprintCoordinates && footprintCoordinates.length >= 3) {
+      // Fallback: derive from footprint coordinates (bounding box — less accurate for rotated buildings)
       const xs = footprintCoordinates.map(c => c[0]);
       const ys = footprintCoordinates.map(c => c[1]);
       const lat = footprintCoordinates[0][1];
       const metersPerDegLon = 111320 * Math.cos((lat * Math.PI) / 180);
       const metersPerDegLat = 111320;
-      const targetWidth = (Math.max(...xs) - Math.min(...xs)) * metersPerDegLon;
-      const targetDepth = (Math.max(...ys) - Math.min(...ys)) * metersPerDegLat;
-      if (modelWidth > 0.01 && targetWidth > 0.1) sX = targetWidth / modelWidth;
-      if (modelDepth > 0.01 && targetDepth > 0.1) sZ = targetDepth / modelDepth;
+      const fpWidth = (Math.max(...xs) - Math.min(...xs)) * metersPerDegLon;
+      const fpDepth = (Math.max(...ys) - Math.min(...ys)) * metersPerDegLat;
+      if (modelWidth > 0.01 && fpWidth > 0.1) sX = fpWidth / modelWidth;
+      if (modelDepth > 0.01 && fpDepth > 0.1) sZ = fpDepth / modelDepth;
     }
 
     const oY = -box.min.y * sY;
@@ -2913,14 +2930,25 @@ function GLBModel({
             cloned.needsUpdate = true;
             return cloned;
           }
-          // Check if the texture map actually has loaded image data —
-          // some Meshy models (especially image-to-3D) have a map property
-          // set but the texture image didn't actually load/embed in the GLB
+          // Check if the material has any usable color/texture data.
+          // Meshy refined models embed PBR textures; image-to-3D may use
+          // vertex colors or a base color without a diffuse map.
           const hasLoadedTexture = mat.map && mat.map.image &&
             (mat.map.image.width > 0 || mat.map.image.data);
-          // If the model has no usable texture AND no vertex colors,
-          // apply a warm architectural material as fallback
-          if (!hasLoadedTexture && !hasVertexColors) {
+          const hasAnyPBRMap = !!(mat.normalMap || mat.roughnessMap ||
+            mat.metalnessMap || mat.emissiveMap || mat.aoMap);
+          const hasNonDefaultColor = mat.color &&
+            !(mat.color.r === 1 && mat.color.g === 1 && mat.color.b === 1);
+
+          // Ensure diffuse textures use sRGB color space for correct color
+          if (hasLoadedTexture && mat.map) {
+            mat.map.colorSpace = THREE.SRGBColorSpace;
+          }
+
+          // Only apply the sandstone fallback when the material truly has
+          // no color information at all (no texture, no PBR maps, no vertex
+          // colors, and default white base color).
+          if (!hasLoadedTexture && !hasVertexColors && !hasAnyPBRMap && !hasNonDefaultColor) {
             const cloned = mat.clone();
             cloned.color.set('#c8a882');   // warm sandstone
             cloned.roughness = 0.8;
