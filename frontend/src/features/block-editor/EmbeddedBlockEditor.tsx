@@ -92,35 +92,38 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
         setLoading(false);
         return;
       }
+
+      // Check all caches BEFORE showing loading spinner
+
+      // 1. Saved layout in zone properties
+      const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
+      if (savedLayout) {
+        layoutCacheRef.current[activeZoneId] = [savedLayout];
+        initEditor(projectId, zoneForLoad, [savedLayout]);
+        return;
+      }
+
+      // 2. Local session cache (previously generated)
+      if (layoutCacheRef.current[activeZoneId]?.length) {
+        initEditor(projectId, zoneForLoad, layoutCacheRef.current[activeZoneId]);
+        return;
+      }
+
+      // 3. Cached layout in zustand viewer store
+      const cachedOptions = layoutPreview?.zoneId === activeZoneId ? layoutPreview.options : [];
+      if (cachedOptions.length > 0) {
+        layoutCacheRef.current[activeZoneId] = cachedOptions;
+        initEditor(projectId, zoneForLoad, cachedOptions);
+        return;
+      }
+
+      // No cache — need to call the API (slow path)
       setLoading(true);
       try {
-        // 1. Check for saved layout in zone properties
-        const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
-        if (savedLayout) {
-          layoutCacheRef.current[activeZoneId] = [savedLayout];
-          initEditor(projectId, zoneForLoad, [savedLayout]);
-          setLoading(false);
-          return;
-        }
-
-        // 2. Check local cache (previously generated during this session)
-        if (layoutCacheRef.current[activeZoneId]?.length) {
-          initEditor(projectId, zoneForLoad, layoutCacheRef.current[activeZoneId]);
-          setLoading(false);
-          return;
-        }
-
-        // 3. Check for cached layout in zustand viewer store
-        let options = layoutPreview?.zoneId === activeZoneId ? layoutPreview.options : [];
-
-        // 4. Only call previewLayouts if nothing cached
-        if (options.length === 0) {
-          const response = await siteZonesApi.previewLayouts(activeZoneId);
-          options = response.options;
-        }
+        const response = await siteZonesApi.previewLayouts(activeZoneId);
+        const options = response.options;
         if (options.length === 0) {
           toast.error('No layout options generated');
-          setLoading(false);
           return;
         }
         layoutCacheRef.current[activeZoneId] = options;

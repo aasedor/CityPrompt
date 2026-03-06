@@ -419,7 +419,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
         break  # A building belongs to at most one zone
 
 
-@celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2)
+@celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2, soft_time_limit=900, time_limit=960)
 def generate_3d_model_ai(
     self, building_id: str, prompt: str, mode: str = "text",
     image_url: str = None, refine: bool = True,
