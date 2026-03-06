@@ -24,6 +24,9 @@ const DRACO_DECODER_PATH =
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
 
+/** Shared ref so other components (TerrainMesh) can raycast against the tiles. */
+export const tilesGroupRef: { current: THREE.Group | null } = { current: null };
+
 interface Google3DTilesProps {
   latitude: number;
   longitude: number;
@@ -71,12 +74,14 @@ export function Google3DTiles({
     scene.add(tiles.group);
 
     tilesRef.current = tiles;
+    tilesGroupRef.current = tiles.group;
     alignedRef.current = false;
 
     return () => {
       scene.remove(tiles.group);
       tiles.dispose();
       tilesRef.current = null;
+      tilesGroupRef.current = null;
       alignedRef.current = false;
     };
   }, [latitude, longitude, apiKey, scene, camera, gl]);
