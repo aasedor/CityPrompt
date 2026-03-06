@@ -10,16 +10,19 @@ export function StatsPanel() {
   // Zone area estimate from coordinates
   const coords = zone.coordinates;
   let zoneArea = 0;
+  let zoneWidthM = 0;
+  let zoneDepthM = 0;
   if (coords.length >= 3) {
     const mlon = 111320 * Math.abs(Math.cos((coords[0][1] * Math.PI) / 180));
     const mlat = 111320;
+    const mCoords = coords.map((c) => [(c[0] - coords[0][0]) * mlon, (c[1] - coords[0][1]) * mlat]);
+    const xs = mCoords.map((c) => c[0]);
+    const ys = mCoords.map((c) => c[1]);
+    zoneWidthM = Math.max(...xs) - Math.min(...xs);
+    zoneDepthM = Math.max(...ys) - Math.min(...ys);
     for (let i = 0; i < coords.length; i++) {
       const j = (i + 1) % coords.length;
-      const xi = (coords[i][0] - coords[0][0]) * mlon;
-      const yi = (coords[i][1] - coords[0][1]) * mlat;
-      const xj = (coords[j][0] - coords[0][0]) * mlon;
-      const yj = (coords[j][1] - coords[0][1]) * mlat;
-      zoneArea += xi * yj - xj * yi;
+      zoneArea += mCoords[i][0] * mCoords[j][1] - mCoords[j][0] * mCoords[i][1];
     }
     zoneArea = Math.abs(zoneArea) / 2;
   }
@@ -30,6 +33,7 @@ export function StatsPanel() {
   return (
     <div className="absolute bottom-4 left-4 rounded-xl border border-white/[0.08] bg-primary-950/90 backdrop-blur-xl px-4 py-3 shadow-xl">
       <div className="flex items-center gap-6 text-[11px]">
+        <Stat label="Zone" value={`${Math.round(zoneWidthM)}\u00D7${Math.round(zoneDepthM)}m`} />
         <Stat label="Blocks" value={String(buildings.length)} />
         <Stat label="Coverage" value={`${coverage}%`} />
         <Stat label="Density" value={`${density}/ha`} />

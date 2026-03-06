@@ -19,6 +19,7 @@ interface GenerationState {
   updateBuilding: (id: string, progress: number, step: string) => void;
   markCompleted: (id: string) => void;
   markFailed: (id: string) => void;
+  cancelOne: (id: string) => Promise<void>;
   cancelAll: () => Promise<void>;
   clearAll: () => void;
   // Derived
@@ -89,6 +90,34 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
     if (entry) {
       map.set(id, { ...entry, status: 'failed', step: '' });
       set({ buildings: map });
+    }
+  },
+
+  cancelOne: async (id) => {
+    const map = new Map(get().buildings);
+    const entry = map.get(id);
+    if (!entry || entry.status !== 'generating') return;
+
+    try {
+      await buildingsApi.cancelGeneration(id);
+    } catch {
+      // Best effort
+    }
+    // Re-read in case state changed during await
+    const updated = new Map(get().buildings);
+    const current = updated.get(id);
+    if (current && current.status === 'generating') {
+      updated.set(id, { ...current, status: 'cancelled', step: '' });
+      set({ buildings: updated });
+    }
+    // Auto-clear when all done
+    const allDone = Array.from(get().buildings.values()).every((b) => b.status !== 'generating');
+    if (allDone) {
+      setTimeout(() => {
+        if (Array.from(get().buildings.values()).every((b) => b.status !== 'generating')) {
+          set({ buildings: new Map(), projectId: null, startedAt: null });
+        }
+      }, 5000);
     }
   },
 

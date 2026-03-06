@@ -20,6 +20,52 @@ function getStepLabel(step: string): string {
   return STEP_LABELS[step] || 'Processing...';
 }
 
+function BuildingRow({ building: b, onCancel }: { building: { buildingId: string; buildingName: string; status: string; step: string }; onCancel: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  const [stopping, setStopping] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`group flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs ${
+        b.status === 'completed'
+          ? 'bg-emerald-500/10 text-emerald-300'
+          : b.status === 'failed'
+          ? 'bg-red-500/10 text-red-300'
+          : b.status === 'cancelled'
+          ? 'bg-amber-500/10 text-amber-300'
+          : 'bg-white/[0.04] text-neutral-300'
+      }`}
+    >
+      {b.status === 'completed' ? (
+        <CheckCircle2 size={12} className="shrink-0 text-emerald-400" />
+      ) : b.status === 'failed' ? (
+        <X size={12} className="shrink-0 text-red-400" />
+      ) : b.status === 'cancelled' ? (
+        <Ban size={12} className="shrink-0 text-amber-400" />
+      ) : (
+        <Loader2 size={12} className="shrink-0 animate-spin text-purple-400" />
+      )}
+      <span className="truncate flex-1">{b.buildingName}</span>
+      {b.status === 'generating' && hovered && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setStopping(true);
+            onCancel();
+          }}
+          disabled={stopping}
+          className="shrink-0 rounded p-0.5 text-red-400 hover:bg-red-500/20 hover:text-red-300 disabled:opacity-50 transition-colors"
+          title={`Stop ${b.buildingName}`}
+        >
+          <Square size={10} fill="currentColor" />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function GenerationProgressBar() {
   const navigate = useNavigate();
   const [dismissed, setDismissed] = useState(false);
@@ -151,29 +197,7 @@ export function GenerationProgressBar() {
           {allBuildings.length > 0 && allBuildings.length <= 12 && (
             <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto">
               {allBuildings.map((b) => (
-                <div
-                  key={b.buildingId}
-                  className={`flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs ${
-                    b.status === 'completed'
-                      ? 'bg-emerald-500/10 text-emerald-300'
-                      : b.status === 'failed'
-                      ? 'bg-red-500/10 text-red-300'
-                      : b.status === 'cancelled'
-                      ? 'bg-amber-500/10 text-amber-300'
-                      : 'bg-white/[0.04] text-neutral-300'
-                  }`}
-                >
-                  {b.status === 'completed' ? (
-                    <CheckCircle2 size={12} className="shrink-0 text-emerald-400" />
-                  ) : b.status === 'failed' ? (
-                    <X size={12} className="shrink-0 text-red-400" />
-                  ) : b.status === 'cancelled' ? (
-                    <Ban size={12} className="shrink-0 text-amber-400" />
-                  ) : (
-                    <Loader2 size={12} className="shrink-0 animate-spin text-purple-400" />
-                  )}
-                  <span className="truncate">{b.buildingName}</span>
-                </div>
+                <BuildingRow key={b.buildingId} building={b} onCancel={() => store.cancelOne(b.buildingId)} />
               ))}
             </div>
           )}

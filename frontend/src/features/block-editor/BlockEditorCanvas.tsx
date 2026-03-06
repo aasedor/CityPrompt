@@ -7,8 +7,8 @@ import { useSnapLines } from './hooks/useSnapLines';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
-// Fetch satellite imagery covering 4x the zone area so zooming out still shows map
-const SATELLITE_EXPAND = 4;
+// Fetch satellite imagery covering more area than the zone so zooming out still shows map
+const SATELLITE_EXPAND = 12;
 
 interface BlockEditorCanvasProps {
   width: number;
@@ -23,7 +23,14 @@ interface SatelliteInfo {
 
 /**
  * Compute Mapbox Static API URL and the exact geographic extent of the image.
- * The geographic extent is used to position the image precisely in SVG via toSVG().
+ *
+ * Key insight: the Mapbox Static API with @2x returns an image with 2× the
+ * pixels but covering the SAME geographic area as the non-@2x version.
+ * The geographic extent is determined by (imgW, imgH) "CSS pixels" at the
+ * given zoom, NOT the actual pixel count of the returned image.
+ *
+ * We derive the zoom so that 1 CSS-pixel ≈ SATELLITE_EXPAND / baseScale meters,
+ * giving a wider satellite coverage for zoom-out headroom.
  */
 function getSatelliteInfo(
   baseTransform: Transform,
@@ -32,27 +39,64 @@ function getSatelliteInfo(
 ): SatelliteInfo | null {
   if (!MAPBOX_TOKEN) return null;
 
-  const { cx, cy, scale, mlon, mlat } = baseTransform;
-  const cosLat = Math.cos((cy * Math.PI) / 180);
+  const { cx, cy, mlon, mlat } = baseTransform;
 
-  // Compute zoom where 1 Mapbox pixel = 1/scale meters (matching SVG),
-  // then reduce by SATELLITE_EXPAND to cover a wider area
+  // Mapbox static images max 1280x1280 CSS pixels
+  const imgW = Math.min(1280, Math.round(svgWidth));
+  const imgH = Math.min(1280, Math.round(svgHeight));
+
+  // Use exact Mapbox tile-math: at zoom z, the full world is 256·2^z pixels wide.
+  // So W CSS-pixels of a static image span  W · 360 / (256·2^z)  degrees of longitude.
+  // For latitude (Mercator), the local degrees-per-pixel at lat φ is:
+  //   dLat/px ≈ 360·cos(φ) / (256·2^z)
+  //
+  // We want the satellite to cover SATELLITE_EXPAND times the viewport area.
+  // At the base SVG transform, the viewport shows roughly svgW/scale meters.
+  // So we want the satellite to cover svgW/scale * SATELLITE_EXPAND meters.
+  //
+  // Solving for zoom:
+  //   imgW · 360 / (256·2^z) · mlon = imgW · metersPerCSSPx
+  //   metersPerCSSPx should = SATELLITE_EXPAND / baseScale
+  //   → 2^z = 360 · mlon / (256 · metersPerCSSPx)   ... but this is complex.
+  //
+  // Simpler: just use the standard formula and compute extent from the ACTUAL zoom.
+
+  const cosLat = Math.cos((cy * Math.PI) / 180);
+  const scale = baseTransform.scale;
+
+  // Zoom where 1 CSS-pixel = 1/scale meters, then back off by SATELLITE_EXPAND
   const zoom = Math.min(22, Math.max(0,
     Math.log2(156543.03392 * cosLat * scale) - Math.log2(SATELLITE_EXPAND),
   ));
 
-  // Mapbox static images max 1280x1280
-  const imgW = Math.min(1280, Math.round(svgWidth));
-  const imgH = Math.min(1280, Math.round(svgHeight));
+  // Mapbox Static API uses 512-pixel tiles (like Mapbox GL v2), not 256.
+  // At zoom z, the full world is 512·2^z pixels wide.
+  // So imgW CSS-pixels span: imgW * 360 / (512 * 2^z) degrees of longitude.
+  const TILE_SIZE = 512;
 
-  // Exact meters per pixel at the computed zoom
-  const metersPerPx = 156543.03392 * cosLat / Math.pow(2, zoom);
+  const halfLonDeg = (imgW / 2) * 360 / (TILE_SIZE * Math.pow(2, zoom));
 
-  // Geographic half-extents of the image in degrees
-  const halfLonDeg = (imgW / 2) * metersPerPx / mlon;
-  const halfLatDeg = (imgH / 2) * metersPerPx / mlat;
+  // For latitude, use the Mercator inverse to get EXACT top/bottom latitudes
+  const latRad = (cy * Math.PI) / 180;
+  const worldPx = TILE_SIZE * Math.pow(2, zoom);
+  const mercY_center = worldPx * (1 - Math.log(Math.tan(Math.PI / 4 + latRad / 2)) / Math.PI) / 2;
+  const mercY_top = mercY_center - imgH / 2;
+  const mercY_bottom = mercY_center + imgH / 2;
+  const latTop = (2 * Math.atan(Math.exp(Math.PI * (1 - 2 * mercY_top / worldPx))) - Math.PI / 2) * 180 / Math.PI;
+  const latBottom = (2 * Math.atan(Math.exp(Math.PI * (1 - 2 * mercY_bottom / worldPx))) - Math.PI / 2) * 180 / Math.PI;
+  const halfLatDeg = (latTop - latBottom) / 2;
 
   const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${cx.toFixed(6)},${cy.toFixed(6)},${zoom.toFixed(4)},0/${imgW}x${imgH}@2x?access_token=${MAPBOX_TOKEN}`;
+
+  console.log('[Satellite Debug]', {
+    zoom: zoom.toFixed(4),
+    imgW, imgH, TILE_SIZE,
+    halfLonDeg: halfLonDeg.toFixed(6),
+    halfLatDeg: halfLatDeg.toFixed(6),
+    coverageW_m: (2 * halfLonDeg * mlon).toFixed(1),
+    coverageH_m: (2 * halfLatDeg * mlat).toFixed(1),
+    scale: scale.toFixed(2),
+  });
 
   return { url, halfLonDeg, halfLatDeg };
 }
@@ -72,6 +116,31 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
     () => zone ? computeTransform(zone.coordinates, width, height, 40) : null,
     [zone, width, height],
   );
+
+  // Debug: log zone dimensions and satellite info for alignment verification
+  useEffect(() => {
+    if (!zone || !baseTransform) return;
+    const coords = zone.coordinates;
+    const mlon = baseTransform.mlon;
+    const mlat = baseTransform.mlat;
+    const mCoords = coords.map((c) => [(c[0] - baseTransform.cx) * mlon, (c[1] - baseTransform.cy) * mlat]);
+    const xs = mCoords.map((c) => c[0]);
+    const ys = mCoords.map((c) => c[1]);
+    const zoneW = Math.max(...xs) - Math.min(...xs);
+    const zoneD = Math.max(...ys) - Math.min(...ys);
+    console.log('[BlockEditor Debug]', {
+      zoneId: zone.id,
+      numCoords: coords.length,
+      centroid: [baseTransform.cx.toFixed(6), baseTransform.cy.toFixed(6)],
+      zoneWidthM: zoneW.toFixed(1),
+      zoneDepthM: zoneD.toFixed(1),
+      zoneAreaM2: (zoneW * zoneD).toFixed(0),
+      svgScale: baseTransform.scale.toFixed(2),
+      canvasSize: `${width}x${height}`,
+      firstCoord: coords[0],
+      lastCoord: coords[coords.length - 1],
+    });
+  }, [zone, baseTransform, width, height]);
 
   // Satellite info — URL + geographic extent (stable, doesn't change with zoom/pan)
   const satelliteInfo = useMemo(
@@ -241,14 +310,23 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
         />
       ))}
 
-      {/* Zone boundary */}
+      {/* Zone boundary — filled overlay matching master plan appearance */}
       <polygon
         points={boundaryPoints}
-        fill="rgba(245,158,11,0.05)"
-        stroke="#f59e0b"
-        strokeWidth={2}
-        strokeDasharray="8,4"
-        strokeOpacity={0.6}
+        fill={zone.color || 'rgba(245,158,11,0.3)'}
+        fillOpacity={0.35}
+        stroke={zone.color || '#f59e0b'}
+        strokeWidth={2.5}
+        strokeOpacity={0.8}
+      />
+      {/* Dashed inner outline for precision */}
+      <polygon
+        points={boundaryPoints}
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth={1}
+        strokeDasharray="6,4"
+        strokeOpacity={0.4}
       />
 
       {/* Green spaces */}
@@ -327,6 +405,29 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
           style={{ pointerEvents: 'none' }}
         />
       ))}
+
+      {/* Scale bar — 10m reference */}
+      {(() => {
+        const barMeters = 10;
+        const barPx = metersToPixels(barMeters, transform);
+        const barY = height - 40;
+        const barX = width - 20 - barPx;
+        return (
+          <g>
+            <line x1={barX} y1={barY} x2={barX + barPx} y2={barY}
+              stroke="white" strokeWidth={2} />
+            <line x1={barX} y1={barY - 4} x2={barX} y2={barY + 4}
+              stroke="white" strokeWidth={2} />
+            <line x1={barX + barPx} y1={barY - 4} x2={barX + barPx} y2={barY + 4}
+              stroke="white" strokeWidth={2} />
+            <text x={barX + barPx / 2} y={barY - 8}
+              fill="white" fontSize={11} fontWeight="bold" textAnchor="middle"
+              style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}>
+              {barMeters}m
+            </text>
+          </g>
+        );
+      })()}
 
       {/* Buildings (blocks) */}
       {editedLayout.buildings.map((bldg, i) => (
