@@ -23,6 +23,7 @@ import { SatelliteGroundPlane } from './SatelliteGroundPlane';
 import { AmbientAudio } from './AmbientAudio';
 import type { ThreeEvent } from '@react-three/fiber';
 import { ContextBuildingsGroup as EnhancedContextBuildingsGroup } from './ContextBuildings';
+import { Google3DTiles } from './Google3DTiles';
 
 /**
  * Calculate sun position based on time of day and date.
@@ -850,6 +851,15 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       {/* Context buildings from OSM */}
       {settings.showExistingBuildings && filteredContextBuildings && filteredContextBuildings.length > 0 && (
         <EnhancedContextBuildingsGroup buildings={filteredContextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} />
+      )}
+
+      {/* Google Photorealistic 3D Tiles */}
+      {settings.show3DTiles && latitude && longitude && (
+        <Google3DTiles
+          latitude={latitude}
+          longitude={longitude}
+          apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}
+        />
       )}
 
       {/* Roads from OSM — hidden when map is active (map shows real roads) */}
@@ -2899,8 +2909,7 @@ function GLBModel({
     // Ground the bounding box bottom at Y=0, then push the model down
     // slightly so the decorative base plate (common in Meshy/AI models)
     // sits below the ground plane instead of floating above it.
-    // The base plate is typically ~8% of the model height.
-    const basePlateRatio = 0.08;
+    const basePlateRatio = 0.02;
     const oY = -box.min.y * sY - targetHeight * basePlateRatio;
 
     // Prefer authoritative dimensions from specifications (set by block editor)
