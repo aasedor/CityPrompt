@@ -628,38 +628,29 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
             })(),
             1,
           );
-          if (unitCount > 1) {
-            return (
-              <LayoutPreviewPanel
-                zone={zone}
-                onApplied={() => {
-                  // Refresh by triggering a re-fetch — the parent will pick up building_ids
-                }}
-                onAIGenerate={onAIGenerate}
-                referenceContext={osmContext}
-                siblingZones={allZones?.filter((z) => z.id !== zone.id)}
-              />
-            );
-          }
-          return <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />;
+          return (
+            <LayoutPreviewPanel
+              zone={zone}
+              onApplied={() => {
+                // Refresh by triggering a re-fetch — the parent will pick up building_ids
+              }}
+              onAIGenerate={onAIGenerate}
+              referenceContext={osmContext}
+              siblingZones={allZones?.filter((z) => z.id !== zone.id)}
+            />
+          );
         })()}
 
         {/* Development Area Layout Preview */}
-        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (() => {
-          const unitCount = (props.unit_count as number) || 10;
-          if (unitCount > 1) {
-            return (
-              <LayoutPreviewPanel
-                zone={zone}
-                onApplied={() => {}}
-                onAIGenerate={onAIGenerate}
-                referenceContext={osmContext}
-                siblingZones={allZones?.filter((z) => z.id !== zone.id)}
-              />
-            );
-          }
-          return null;
-        })()}
+        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (
+          <LayoutPreviewPanel
+            zone={zone}
+            onApplied={() => {}}
+            onAIGenerate={onAIGenerate}
+            referenceContext={osmContext}
+            siblingZones={allZones?.filter((z) => z.id !== zone.id)}
+          />
+        )}
 
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && onAIGenerate && zone.building_id && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
@@ -941,17 +932,11 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
   const handlePreviewAll = async () => {
     if (!analysis) return;
-    // Use previewableZones (unit_count > 1) — computed in the render scope.
-    // Fall back to re-computing if called before render (shouldn't happen, but safe).
     const zonesToPreview = analysis.contained_zones.filter((z) => {
-      if (z.zone_type !== 'building' && z.zone_type !== 'residential' && z.zone_type !== 'development_area') return false;
-      const zp = z.properties || {};
-      const defaultUc = z.zone_type === 'development_area' ? 10 : 1;
-      const uc = (zp.unit_count as number) || defaultUc;
-      return uc > 1;
+      return z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area';
     });
     if (zonesToPreview.length === 0) {
-      toast.error('No zones with unit_count > 1 — set unit count on each zone first');
+      toast.error('No buildable zones found — add building or residential zones first');
       return;
     }
 
@@ -1053,13 +1038,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
     (z) => buildableTypes.includes(z.zone_type)
   );
   const hasBuildableZones = buildableZones.length > 0;
-  // Only include zones with effective unit_count > 1 for preview
-  const previewableZones = buildableZones.filter((z) => {
-    const zp = z.properties || {};
-    const defaultUc = z.zone_type === 'development_area' ? 10 : 1;
-    const uc = (zp.unit_count as number) || defaultUc;
-    return uc > 1;
-  });
+  const previewableZones = buildableZones;
   const osmBuildings = analysis.osm_context?.buildings;
   const osmRoads = analysis.osm_context?.roads;
   const hasOsm = (osmBuildings?.count ?? 0) > 0 || (osmRoads?.count ?? 0) > 0;

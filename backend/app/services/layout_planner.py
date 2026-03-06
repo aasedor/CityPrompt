@@ -529,18 +529,18 @@ class LayoutPlanner:
 {locked_section}
 
 ## Layout Strategies to Generate
-Each layout must use a DIFFERENT road/building arrangement strategy:
-1. **Cul-de-sac** — buildings arranged around a turning circle at the end of a dead-end road
-2. **Loop Road** — buildings arranged along both sides of an oval/loop road
+Each layout must use a DIFFERENT building arrangement strategy:
+1. **Buildings Only** — buildings arranged in a clean grid or cluster pattern with NO roads and NO green_spaces. The "roads" array MUST be empty []. The "green_spaces" array MUST be empty []. This is the DEFAULT option.
+2. **Loop Road** — buildings arranged along both sides of an oval/loop road with green buffers
 3. **Grid / Diagonal** — buildings in a grid pattern with connecting roads
 
+IMPORTANT: The first option (Buildings Only) must have an EMPTY roads array and an EMPTY green_spaces array. Do NOT add any roads or green spaces to it.
+
 ## Urban Planning Rules
-- Front setback: minimum 3m from road
 - Side setback: minimum 1.5m between buildings
-- Buildings should face the nearest road
+- For options WITH roads: front setback minimum 3m from road, realistic road widths (6m for local, 8m for collector), add green buffer spaces
+- For the Buildings Only option: just evenly space buildings with proper setbacks, NO roads, NO green spaces
 - Vary building orientations for visual interest
-- Include realistic road widths (6m for local, 8m for collector)
-- Add green buffer spaces between road and buildings
 - All building positions must be INSIDE the zone polygon
 - Position values are DEGREE OFFSETS from zone centroid ({centroid.x:.8f}, {centroid.y:.8f})
 
@@ -615,12 +615,14 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             logger.info("Option %d: %d/%d buildings passed validation", idx, len(valid_buildings), len(layout.buildings))
             layout.buildings = valid_buildings
 
+            # Strip auto-generated roads and green spaces — roads should only
+            # come from user-drawn road zones, not from layout generation.
             option = SiteLayoutOption(
                 option_index=idx,
                 option_label=item.get("option_label", layout.layout_strategy.replace("_", " ").title()),
                 buildings=layout.buildings,
-                roads=layout.roads,
-                green_spaces=layout.green_spaces,
+                roads=[],
+                green_spaces=[],
                 layout_strategy=layout.layout_strategy,
                 reasoning=layout.reasoning,
                 density_achieved=layout.density_achieved,
@@ -673,41 +675,25 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         angle_diagonal = angle_long + math.pi / 4
 
-        # First option: buildings only (no road) — uses longest axis for orientation
-        buildings_only_layout = self._generate_algorithmic_buildings_only(
-            zone_polygon, zone_type, unit_count, properties, angle_long,
-        )
-        options: list[SiteLayoutOption] = [
-            SiteLayoutOption(
-                option_index=0,
-                option_label="Buildings Only",
-                buildings=buildings_only_layout.buildings,
-                roads=buildings_only_layout.roads,
-                green_spaces=buildings_only_layout.green_spaces,
-                layout_strategy=buildings_only_layout.layout_strategy,
-                reasoning=buildings_only_layout.reasoning,
-                density_achieved=buildings_only_layout.density_achieved,
-            )
+        # Generate buildings-only options with different orientations (no roads)
+        strategies = [
+            ("along_longest", "Along Longest Axis", angle_long),
+            ("along_shortest", "Along Shortest Axis", angle_short),
+            ("diagonal", "Diagonal", angle_diagonal),
         ]
 
-        # Road-based options
-        road_strategies = [
-            ("longest_axis", "Road Along Longest Axis", angle_long),
-            ("shortest_axis", "Road Along Shortest Axis", angle_short),
-            ("diagonal", "Diagonal Road", angle_diagonal),
-        ]
-
-        for idx, (strategy_name, label, road_angle_rad) in enumerate(road_strategies[:count - 1], start=1):
-            layout = self._generate_algorithmic_with_angle(
-                zone_polygon, zone_type, unit_count, properties, road_angle_rad, strategy_name
+        options: list[SiteLayoutOption] = []
+        for idx, (strategy_name, label, orientation_rad) in enumerate(strategies[:count]):
+            layout = self._generate_algorithmic_buildings_only(
+                zone_polygon, zone_type, unit_count, properties, orientation_rad,
             )
             option = SiteLayoutOption(
                 option_index=idx,
                 option_label=label,
                 buildings=layout.buildings,
-                roads=layout.roads,
-                green_spaces=layout.green_spaces,
-                layout_strategy=layout.layout_strategy,
+                roads=[],
+                green_spaces=[],
+                layout_strategy=strategy_name,
                 reasoning=layout.reasoning,
                 density_achieved=layout.density_achieved,
             )
@@ -730,12 +716,21 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         orientation_deg = math.degrees(orientation_rad)
 
         setback_side_m = 1.5
-        building_width_m = float(properties.get("building_width", 10))
-        building_depth_m = float(properties.get("building_depth", 12))
+        setback_front_m = 3.0
 
         bounds = zone_polygon.bounds
         zone_width_m = abs(bounds[2] - bounds[0]) * mlon
         zone_depth_m = abs(bounds[3] - bounds[1]) * METERS_PER_DEG_LAT
+
+        # When only 1 unit, size the building to fill the zone (minus setbacks)
+        if unit_count == 1:
+            usable_w = zone_width_m - setback_side_m * 2
+            usable_d = zone_depth_m - setback_front_m * 2
+            building_width_m = float(properties.get("building_width") or max(5, round(usable_w, 1)))
+            building_depth_m = float(properties.get("building_depth") or max(5, round(usable_d, 1)))
+        else:
+            building_width_m = float(properties.get("building_width", 10))
+            building_depth_m = float(properties.get("building_depth", 12))
 
         cos_a = math.cos(orientation_rad)
         sin_a = math.sin(orientation_rad)
@@ -786,7 +781,7 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                     height_m=properties.get("height"),
                     floors=properties.get("floors"),
                     building_type=properties.get("development_type", "residential"),
-                    setback_front_m=3.0,
+                    setback_front_m=setback_front_m,
                     setback_side_m=setback_side_m,
                 ))
                 placed += 1
@@ -982,17 +977,17 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         # Zone-type-specific strategy hints
         if dev_type in ("residential",) and unit_count <= 8:
-            strategy_hint = "Use a cul-de-sac layout with buildings arranged around a turning circle."
+            strategy_hint = "Arrange buildings in a clean cluster or grid with proper spacing. Do NOT add internal roads or green spaces unless the user description explicitly mentions them."
         elif dev_type in ("residential",) and unit_count <= 20:
-            strategy_hint = "Use a loop road layout with buildings along both sides."
+            strategy_hint = "Arrange buildings in rows or a grid pattern with proper spacing. Only add roads if the user description explicitly requests them."
         elif dev_type in ("residential",):
-            strategy_hint = "Use a grid with a collector road connecting to local streets."
+            strategy_hint = "Arrange buildings in a grid pattern. Only add internal roads if the user description explicitly requests them."
         elif dev_type in ("commercial",):
-            strategy_hint = "Place buildings around the perimeter with interior parking."
+            strategy_hint = "Place buildings around the perimeter or in a grid. Only add internal roads if the user description explicitly requests them."
         elif dev_type in ("mixed_use",):
-            strategy_hint = "Place retail street-fronting along the main road, residential behind."
+            strategy_hint = "Arrange buildings appropriately for mixed use. Only add internal roads if the user description explicitly requests them."
         else:
-            strategy_hint = "Use a layout appropriate for the development type."
+            strategy_hint = "Use a layout appropriate for the development type. Only add internal roads if the user description explicitly requests them."
 
         neighbor_text = ""
         if neighbors:
@@ -1015,14 +1010,11 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 {strategy_hint}
 
 ## Urban Planning Rules
-- Front setback: minimum 3m from road
 - Side setback: minimum 1.5m between buildings
-- Buildings should face the nearest road
 - Vary building orientations for visual interest (avoid perfect grid alignment)
-- Include realistic road widths (6m for local, 8m for collector)
-- Add green buffer spaces between road and buildings
 - All building positions must be INSIDE the zone polygon
 - Position values are DEGREE OFFSETS from zone centroid ({centroid.x:.8f}, {centroid.y:.8f})
+- IMPORTANT: Do NOT generate roads or green_spaces unless the user description explicitly asks for them. Return empty arrays for "roads" and "green_spaces" by default.
 
 ## Conversion Reference
 - 1 meter east/west = {_m_to_deg_lon(1, center_lat):.10f} degrees longitude
@@ -1043,19 +1035,8 @@ Return ONLY valid JSON matching this schema:
       "setback_side_m": 1.5
     }}
   ],
-  "roads": [
-    {{
-      "centerline": [[<x_offset_deg>, <y_offset_deg>], ...],
-      "width_m": 6.0,
-      "road_type": "local"
-    }}
-  ],
-  "green_spaces": [
-    {{
-      "polygon": [[<x_offset_deg>, <y_offset_deg>], ...],
-      "space_type": "buffer"
-    }}
-  ],
+  "roads": [],
+  "green_spaces": [],
   "layout_strategy": "<strategy_name>",
   "reasoning": "<brief explanation of layout decisions>",
   "density_achieved": <float: units per hectare>
@@ -1170,6 +1151,11 @@ Return ONLY valid JSON matching this schema:
                 logger.warning("AI placed building outside zone polygon, skipping: (%f, %f)", b.center_x, b.center_y)
         layout.buildings = valid_buildings
 
+        # Strip auto-generated roads and green spaces — roads should only
+        # come from user-drawn road zones, not from layout generation.
+        layout.roads = []
+        layout.green_spaces = []
+
         return layout
 
     # -------------------------------------------------------------------------
@@ -1183,11 +1169,10 @@ Return ONLY valid JSON matching this schema:
         unit_count: int,
         properties: dict[str, Any],
     ) -> SiteLayoutResponse:
-        """Improved algorithmic layout: road-oriented placement with staggered offsets.
+        """Algorithmic layout: buildings-only grid placement (no road).
 
         Uses zone polygon's oriented bounding box for natural orientation,
-        places a main road along the longest axis, positions buildings
-        along both sides with realistic setbacks and varied rotations.
+        places buildings in a grid pattern without generating roads.
         """
         centroid = zone_polygon.centroid
         center_lat = centroid.y
@@ -1197,7 +1182,7 @@ Return ONLY valid JSON matching this schema:
         obb = minimum_rotated_rectangle(zone_polygon)
         obb_coords = list(obb.exterior.coords)
 
-        # Find the longest edge to determine road direction
+        # Find the longest edge to determine orientation
         edges = []
         for i in range(len(obb_coords) - 1):
             dx = (obb_coords[i + 1][0] - obb_coords[i][0]) * mlon
@@ -1207,180 +1192,15 @@ Return ONLY valid JSON matching this schema:
         edges.sort(reverse=True)
         longest_idx = edges[0][1]
 
-        # Road runs along the longest edge through the center
         p1 = obb_coords[longest_idx]
         p2 = obb_coords[longest_idx + 1]
-        road_angle_rad = math.atan2(
+        orientation_rad = math.atan2(
             (p2[1] - p1[1]) * METERS_PER_DEG_LAT,
             (p2[0] - p1[0]) * mlon,
         )
-        road_angle_deg = math.degrees(road_angle_rad)
 
-        # Road parameters
-        road_width_m = 6.0
-        setback_front_m = 3.0
-        setback_side_m = 1.5
-        building_width_m = float(properties.get("building_width", 10))
-        building_depth_m = float(properties.get("building_depth", 12))
-
-        # Build road centerline through the zone center
-        bounds = zone_polygon.bounds
-        zone_width_m = abs(bounds[2] - bounds[0]) * mlon
-        zone_depth_m = abs(bounds[3] - bounds[1]) * METERS_PER_DEG_LAT
-
-        # Road centerline as offsets from centroid
-        cos_a = math.cos(road_angle_rad)
-        sin_a = math.sin(road_angle_rad)
-        road_half_len = max(zone_width_m, zone_depth_m) / 2 * 0.85
-
-        road_start = [
-            _m_to_deg_lon(-road_half_len * cos_a, center_lat),
-            _m_to_deg_lat(-road_half_len * sin_a),
-        ]
-        road_end = [
-            _m_to_deg_lon(road_half_len * cos_a, center_lat),
-            _m_to_deg_lat(road_half_len * sin_a),
-        ]
-
-        # Clip road to zone polygon
-        road_line = LineString([
-            (centroid.x + road_start[0], centroid.y + road_start[1]),
-            (centroid.x + road_end[0], centroid.y + road_end[1]),
-        ])
-        clipped = road_line.intersection(zone_polygon)
-        if clipped.is_empty:
-            # Fallback: just use start/end
-            road_centerline = [road_start, road_end]
-        elif clipped.geom_type == "LineString":
-            road_centerline = [
-                [c[0] - centroid.x, c[1] - centroid.y]
-                for c in clipped.coords
-            ]
-        else:
-            road_centerline = [road_start, road_end]
-
-        road = LayoutRoad(
-            centerline=road_centerline,
-            width_m=road_width_m,
-            road_type="local" if unit_count <= 20 else "collector",
-        )
-
-        # Place buildings along both sides of road
-        buildings: list[LayoutBuilding] = []
-        perpendicular_rad = road_angle_rad + math.pi / 2
-
-        # Distance from road center to building center
-        offset_from_road_m = road_width_m / 2 + setback_front_m + building_depth_m / 2
-
-        # Spacing along road
-        spacing_m = building_width_m + setback_side_m * 2
-        total_road_len = road_half_len * 2
-
-        # Compute how many buildings per side
-        buildings_per_side = math.ceil(unit_count / 2)
-        actual_spacing = min(spacing_m, total_road_len / max(buildings_per_side, 1))
-
-        placed = 0
-        for side in [1, -1]:  # right side, then left side
-            for i in range(buildings_per_side):
-                if placed >= unit_count:
-                    break
-
-                # Position along road
-                t = (i + 0.5) / buildings_per_side
-                along_m = -road_half_len + t * total_road_len
-
-                # Stagger offset: alternate slightly closer/farther
-                stagger_m = (1.5 if i % 2 == 0 else 0) * side
-                actual_offset = offset_from_road_m + stagger_m
-
-                # Convert to degree offsets
-                bx_m = along_m * cos_a + side * actual_offset * math.cos(perpendicular_rad)
-                by_m = along_m * sin_a + side * actual_offset * math.sin(perpendicular_rad)
-
-                cx = _m_to_deg_lon(bx_m, center_lat)
-                cy = _m_to_deg_lat(by_m)
-
-                # Verify inside zone
-                pt = Point(centroid.x + cx, centroid.y + cy)
-                if not zone_polygon.contains(pt):
-                    # Try without stagger
-                    actual_offset = offset_from_road_m
-                    bx_m = along_m * cos_a + side * actual_offset * math.cos(perpendicular_rad)
-                    by_m = along_m * sin_a + side * actual_offset * math.sin(perpendicular_rad)
-                    cx = _m_to_deg_lon(bx_m, center_lat)
-                    cy = _m_to_deg_lat(by_m)
-                    pt = Point(centroid.x + cx, centroid.y + cy)
-                    if not zone_polygon.contains(pt):
-                        continue
-
-                # Building faces the road (perpendicular rotation + small variation)
-                face_angle = road_angle_deg + 90 * side
-                rotation_variation = (i % 3 - 1) * 3  # -3, 0, or +3 degrees
-                building_rotation = face_angle + rotation_variation
-
-                buildings.append(LayoutBuilding(
-                    center_x=cx,
-                    center_y=cy,
-                    width_m=building_width_m,
-                    depth_m=building_depth_m,
-                    rotation_deg=building_rotation % 360,
-                    height_m=properties.get("height"),
-                    floors=properties.get("floors"),
-                    building_type=properties.get("development_type", "residential"),
-                    setback_front_m=setback_front_m,
-                    setback_side_m=setback_side_m,
-                ))
-                placed += 1
-
-        # Green buffer strips along road
-        green_spaces: list[LayoutGreenSpace] = []
-        buffer_width_m = setback_front_m * 0.6
-        for side in [1, -1]:
-            buffer_offset = road_width_m / 2 + buffer_width_m / 2
-            pts = []
-            for endpoint in [road_start, road_end]:
-                ex_m = endpoint[0] * mlon
-                ey_m = endpoint[1] * METERS_PER_DEG_LAT
-                # Doesn't need to be exact — just approximate rectangle
-                pass
-
-            # Simple rectangular buffer
-            buf_start_x = road_start[0] + _m_to_deg_lon(side * buffer_offset * math.cos(perpendicular_rad), center_lat)
-            buf_start_y = road_start[1] + _m_to_deg_lat(side * buffer_offset * math.sin(perpendicular_rad))
-            buf_end_x = road_end[0] + _m_to_deg_lon(side * buffer_offset * math.cos(perpendicular_rad), center_lat)
-            buf_end_y = road_end[1] + _m_to_deg_lat(side * buffer_offset * math.sin(perpendicular_rad))
-
-            hw = _m_to_deg_lon(buffer_width_m / 2 * abs(math.cos(perpendicular_rad)), center_lat)
-            hh = _m_to_deg_lat(buffer_width_m / 2 * abs(math.sin(perpendicular_rad)))
-
-            green_spaces.append(LayoutGreenSpace(
-                polygon=[
-                    [buf_start_x - hw, buf_start_y - hh],
-                    [buf_end_x - hw, buf_end_y - hh],
-                    [buf_end_x + hw, buf_end_y + hh],
-                    [buf_start_x + hw, buf_start_y + hh],
-                ],
-                space_type="buffer",
-            ))
-
-        strategy = "road_oriented"
-        if unit_count <= 8:
-            strategy = "cul_de_sac_algorithmic"
-        elif unit_count <= 20:
-            strategy = "loop_road_algorithmic"
-        else:
-            strategy = "grid_collector_algorithmic"
-
-        area_ha = zone_polygon.area * mlon * METERS_PER_DEG_LAT / 10000
-
-        return SiteLayoutResponse(
-            buildings=buildings,
-            roads=[road],
-            green_spaces=green_spaces,
-            layout_strategy=strategy,
-            reasoning=f"Algorithmic fallback: placed {len(buildings)} of {unit_count} buildings along a main road oriented to zone geometry",
-            density_achieved=round(len(buildings) / max(area_ha, 0.01), 1),
+        return self._generate_algorithmic_buildings_only(
+            zone_polygon, zone_type, unit_count, properties, orientation_rad,
         )
 
     # -------------------------------------------------------------------------

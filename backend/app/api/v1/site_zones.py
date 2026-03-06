@@ -612,9 +612,7 @@ async def preview_layouts(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    unit_count = _resolve_unit_count(zone)
-    if unit_count <= 1:
-        raise HTTPException(status_code=400, detail="Layout preview requires unit_count > 1")
+    unit_count = max(_resolve_unit_count(zone), 1)
 
     # Generate layout options
     shape = to_shape(zone.geometry)
