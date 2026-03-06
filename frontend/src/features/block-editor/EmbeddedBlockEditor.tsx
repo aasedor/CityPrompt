@@ -173,6 +173,17 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
   const handleGenerate3D = useCallback(async () => {
     if (!editedLayout || !activeZoneId || !projectId) return;
+
+    // Check if any buildings already have 3D models
+    const projectData = queryClient.getQueryData<{ buildings?: { model_url?: string; name?: string }[] }>(['project', projectId]);
+    const existingModels = projectData?.buildings?.filter((b) => b.model_url) ?? [];
+    if (existingModels.length > 0) {
+      const confirmed = window.confirm(
+        `${existingModels.length} building${existingModels.length > 1 ? 's' : ''} already ${existingModels.length > 1 ? 'have' : 'has'} 3D models. Regenerating will replace them and use additional credits.\n\nContinue?`
+      );
+      if (!confirmed) return;
+    }
+
     setIsGenerating(true);
     try {
       // Save layout first to ensure buildings are created/synced
