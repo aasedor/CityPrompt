@@ -1,9 +1,10 @@
 import { create } from 'zustand';
+import { buildingsApi } from '@/services/api';
 
 interface BuildingGenState {
   buildingId: string;
   buildingName: string;
-  status: 'generating' | 'completed' | 'failed';
+  status: 'generating' | 'completed' | 'failed' | 'cancelled';
   progress: number; // 0-100
   step: string; // e.g. "calling_meshy", "polling", "refining"
 }
@@ -12,11 +13,13 @@ interface GenerationState {
   projectId: string | null;
   buildings: Map<string, BuildingGenState>;
   startedAt: number | null;
+  cancelling: boolean;
   // Actions
   startBatch: (projectId: string, buildings: { id: string; name: string }[]) => void;
   updateBuilding: (id: string, progress: number, step: string) => void;
   markCompleted: (id: string) => void;
   markFailed: (id: string) => void;
+  cancelAll: () => Promise<void>;
   clearAll: () => void;
   // Derived
   isActive: () => boolean;
@@ -30,6 +33,7 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
   projectId: null,
   buildings: new Map(),
   startedAt: null,
+  cancelling: false,
 
   startBatch: (projectId, buildings) => {
     const map = new Map(get().buildings);
@@ -88,7 +92,31 @@ export const useGenerationStore = create<GenerationState>((set, get) => ({
     }
   },
 
-  clearAll: () => set({ buildings: new Map(), projectId: null, startedAt: null }),
+  cancelAll: async () => {
+    set({ cancelling: true });
+    const generatingIds = Array.from(get().buildings.values())
+      .filter((b) => b.status === 'generating')
+      .map((b) => b.buildingId);
+
+    if (generatingIds.length > 0) {
+      try {
+        await buildingsApi.batchCancelGeneration(generatingIds);
+      } catch {
+        // Best effort — even if API fails, clear local state
+      }
+    }
+
+    // Mark all generating buildings as cancelled
+    const map = new Map(get().buildings);
+    for (const [id, entry] of map) {
+      if (entry.status === 'generating') {
+        map.set(id, { ...entry, status: 'cancelled', step: '' });
+      }
+    }
+    set({ buildings: map, cancelling: false, startedAt: null });
+  },
+
+  clearAll: () => set({ buildings: new Map(), projectId: null, startedAt: null, cancelling: false }),
 
   isActive: () => Array.from(get().buildings.values()).some((b) => b.status === 'generating'),
   activeCount: () => Array.from(get().buildings.values()).filter((b) => b.status === 'generating').length,

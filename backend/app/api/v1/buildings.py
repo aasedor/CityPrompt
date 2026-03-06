@@ -564,6 +564,65 @@ async def get_generation_status(
     )
 
 
+@router.post("/{building_id}/cancel-generation")
+async def cancel_generation(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Cancel an in-progress 3D model generation for a building."""
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    if building.generation_status != "generating":
+        return {"status": "not_generating", "building_id": str(building_id)}
+
+    # Revoke the Celery task
+    celery_task_id = (building.specifications or {}).get("celery_task_id")
+    if celery_task_id:
+        celery_app.control.revoke(celery_task_id, terminate=True)
+
+    # Reset building generation state
+    building.generation_status = "idle"
+    building.meshy_task_id = None
+    await db.commit()
+
+    return {"status": "cancelled", "building_id": str(building_id)}
+
+
+@router.post("/batch-cancel-generation")
+async def batch_cancel_generation(
+    body: dict,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Cancel in-progress 3D generation for multiple buildings at once."""
+    building_ids = body.get("building_ids", [])
+    cancelled = 0
+
+    for bid in building_ids:
+        try:
+            result = await db.execute(select(Building).where(Building.id == uuid.UUID(bid)))
+            building = result.scalar_one_or_none()
+            if not building or building.generation_status != "generating":
+                continue
+
+            celery_task_id = (building.specifications or {}).get("celery_task_id")
+            if celery_task_id:
+                celery_app.control.revoke(celery_task_id, terminate=True)
+
+            building.generation_status = "idle"
+            building.meshy_task_id = None
+            cancelled += 1
+        except Exception:
+            continue
+
+    await db.commit()
+    return {"status": "cancelled", "cancelled_count": cancelled}
+
+
 @router.get("/ai/templates", response_model=list[AITemplate])
 async def get_ai_templates():
     """Get the list of pre-built AI generation templates."""

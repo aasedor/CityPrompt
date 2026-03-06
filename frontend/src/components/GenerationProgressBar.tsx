@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, X, CheckCircle2, Wand2 } from 'lucide-react';
+import { Loader2, X, CheckCircle2, Wand2, Square, Ban } from 'lucide-react';
 import { useGenerationStore } from '@/store/generationStore';
 
 const STEP_LABELS: Record<string, string> = {
@@ -33,6 +33,12 @@ export function GenerationProgressBar() {
   const overallProgress = store.overallProgress();
   const projectId = store.projectId;
   const startedAt = store.startedAt;
+  const cancelling = store.cancelling;
+
+  const handleStop = useCallback(async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await store.cancelAll();
+  }, [store]);
 
   // Reset dismissed state when a new batch starts
   useEffect(() => {
@@ -52,9 +58,20 @@ export function GenerationProgressBar() {
     return () => clearInterval(tick);
   }, [startedAt]);
 
-  if (!isActive || dismissed) return null;
-
   const allBuildings = Array.from(store.buildings.values());
+  const hasCancelled = allBuildings.some((b) => b.status === 'cancelled');
+
+  // Auto-dismiss after cancellation
+  useEffect(() => {
+    if (hasCancelled && !isActive) {
+      const timer = setTimeout(() => setDismissed(true), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasCancelled, isActive]);
+
+  if ((!isActive && !hasCancelled) || dismissed) return null;
+  if (allBuildings.length === 0) return null;
+
   const currentStep = allBuildings.find((b) => b.status === 'generating')?.step || '';
 
   const minutes = Math.floor(elapsedSeconds / 60);
@@ -84,14 +101,27 @@ export function GenerationProgressBar() {
                 <Wand2 size={20} className="text-purple-400 animate-pulse" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">Generating 3D Models</h3>
-                <p className="text-xs text-purple-300">{getStepLabel(currentStep)}</p>
+                <h3 className="text-sm font-bold text-white">
+                  {hasCancelled && !isActive ? 'Generation Stopped' : 'Generating 3D Models'}
+                </h3>
+                <p className="text-xs text-purple-300">
+                  {hasCancelled && !isActive ? `${completedCount} of ${totalCount} completed` : getStepLabel(currentStep)}
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <span className="tabular-nums text-sm font-medium text-purple-300">
                 {minutes}:{seconds.toString().padStart(2, '0')}
               </span>
+              <button
+                onClick={handleStop}
+                disabled={cancelling}
+                className="flex items-center gap-1.5 rounded-lg bg-red-500/15 px-2.5 py-1.5 text-xs font-medium text-red-300 ring-1 ring-red-500/30 hover:bg-red-500/25 hover:text-red-200 disabled:opacity-50 transition-colors"
+                title="Stop all generation"
+              >
+                <Square size={10} fill="currentColor" />
+                {cancelling ? 'Stopping...' : 'Stop'}
+              </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -128,6 +158,8 @@ export function GenerationProgressBar() {
                       ? 'bg-emerald-500/10 text-emerald-300'
                       : b.status === 'failed'
                       ? 'bg-red-500/10 text-red-300'
+                      : b.status === 'cancelled'
+                      ? 'bg-amber-500/10 text-amber-300'
                       : 'bg-white/[0.04] text-neutral-300'
                   }`}
                 >
@@ -135,6 +167,8 @@ export function GenerationProgressBar() {
                     <CheckCircle2 size={12} className="shrink-0 text-emerald-400" />
                   ) : b.status === 'failed' ? (
                     <X size={12} className="shrink-0 text-red-400" />
+                  ) : b.status === 'cancelled' ? (
+                    <Ban size={12} className="shrink-0 text-amber-400" />
                   ) : (
                     <Loader2 size={12} className="shrink-0 animate-spin text-purple-400" />
                   )}

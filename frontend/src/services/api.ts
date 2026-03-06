@@ -279,6 +279,14 @@ export const buildingsApi = {
     return data;
   },
 
+  cancelGeneration: async (id: string): Promise<void> => {
+    await api.post(`/api/v1/buildings/${id}/cancel-generation`);
+  },
+
+  batchCancelGeneration: async (buildingIds: string[]): Promise<void> => {
+    await api.post('/api/v1/buildings/batch-cancel-generation', { building_ids: buildingIds });
+  },
+
   getTemplates: async (): Promise<AITemplate[]> => {
     const { data } = await api.get('/api/v1/buildings/ai/templates');
     return data;
