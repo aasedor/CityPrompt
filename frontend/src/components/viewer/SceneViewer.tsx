@@ -804,7 +804,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       <SunLight settings={settings} latitude={latitude} />
 
       {/* Ground — hide grid when map is active */}
-      {settings.showGrid && !showMapBackground && (
+      {settings.showGrid && !showMapBackground && !settings.show3DTiles && (
         <Grid
           infiniteGrid
           cellSize={5}
@@ -853,7 +853,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
 
       {/* Context buildings from OSM */}
       {settings.showExistingBuildings && filteredContextBuildings && filteredContextBuildings.length > 0 && (
-        <EnhancedContextBuildingsGroup buildings={filteredContextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} />
+        <EnhancedContextBuildingsGroup buildings={filteredContextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} getTerrainY={settings.show3DTiles ? getTerrainHeight : undefined} />
       )}
 
       {/* Google Photorealistic 3D Tiles */}
@@ -878,8 +878,8 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       {/* Landscaping — trees and green spaces (hidden when map is active) */}
       {settings.showLandscaping && !showMapBackground && buildings.length > 0 && (
         <>
-          <LandscapingGroup buildingCount={buildings.length} />
-          <SiteFurnitureGroup buildingCount={buildings.length} />
+          <LandscapingGroup buildingCount={buildings.length} terrainActive={settings.show3DTiles} />
+          <SiteFurnitureGroup buildingCount={buildings.length} terrainActive={settings.show3DTiles} />
         </>
       )}
 
@@ -1839,6 +1839,7 @@ const ROAD_COLORS: Record<string, string> = {
 const MAJOR_ROAD_TYPES = new Set(['motorway', 'trunk', 'primary', 'secondary']);
 
 function RoadSegment({ road, origin }: { road: ContextRoadData; origin: { lat: number; lon: number } }) {
+  const { settings } = useViewerStore();
   const { roadGeometry, centerLineGeometry } = useMemo(() => {
     const metersPerDegLat = 111320;
     const metersPerDegLon = metersPerDegLat * Math.cos((origin.lat * Math.PI) / 180);
@@ -1900,6 +1901,26 @@ function RoadSegment({ road, origin }: { road: ContextRoadData; origin: { lat: n
     return { roadGeometry: roadGeom, centerLineGeometry: centerLineGeom };
   }, [road, origin]);
 
+  // Adjust road vertex Y to follow terrain
+  useFrame(() => {
+    if (!settings.show3DTiles || !roadGeometry) return;
+    const pos = roadGeometry.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i);
+      const z = pos.getZ(i);
+      pos.setY(i, getTerrainHeight(x, z) + 0.05);
+    }
+    pos.needsUpdate = true;
+    roadGeometry.computeVertexNormals();
+    if (centerLineGeometry) {
+      const cpos = centerLineGeometry.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < cpos.count; i++) {
+        cpos.setY(i, getTerrainHeight(cpos.getX(i), cpos.getZ(i)) + 0.08);
+      }
+      cpos.needsUpdate = true;
+    }
+  });
+
   if (!roadGeometry) return null;
 
   const color = ROAD_COLORS[road.highway_type] || '#757575';
@@ -1926,7 +1947,7 @@ function RoadSegment({ road, origin }: { road: ContextRoadData; origin: { lat: n
 // Landscaping — procedural trees and green spaces
 // =============================================================================
 
-function LandscapingGroup({ buildingCount }: { buildingCount: number }) {
+function LandscapingGroup({ buildingCount, terrainActive }: { buildingCount: number; terrainActive?: boolean }) {
   const treeData = useMemo(() => {
     // Seeded pseudo-random for deterministic tree placement
     const seed = buildingCount * 137;
@@ -1952,7 +1973,7 @@ function LandscapingGroup({ buildingCount }: { buildingCount: number }) {
   return (
     <group>
       {treeData.map((t, i) => (
-        <group key={i} position={[t.x, 0, t.z]} scale={t.scale}>
+        <group key={i} position={[t.x, terrainActive ? getTerrainHeight(t.x, t.z) : 0, t.z]} scale={t.scale}>
           {/* Trunk */}
           <mesh position={[0, 1.5, 0]} castShadow>
             <cylinderGeometry args={[0.15, 0.2, 3, 6]} />
@@ -1978,7 +1999,7 @@ function LandscapingGroup({ buildingCount }: { buildingCount: number }) {
         { x: 25, z: -25, w: 12, d: 8 },
         { x: -10, z: -35, w: 20, d: 6 },
       ].map((patch, i) => (
-        <mesh key={`patch-${i}`} position={[patch.x, 0.02, patch.z]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <mesh key={`patch-${i}`} position={[patch.x, (terrainActive ? getTerrainHeight(patch.x, patch.z) : 0) + 0.02, patch.z]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[patch.w, patch.d]} />
           <meshStandardMaterial color="#4a8c3f" roughness={1} />
         </mesh>
@@ -1991,7 +2012,7 @@ function LandscapingGroup({ buildingCount }: { buildingCount: number }) {
  * Site furniture: benches, light poles, bollards, and a parking lot.
  * Uses seeded pseudo-random for deterministic placement.
  */
-function SiteFurnitureGroup({ buildingCount }: { buildingCount: number }) {
+function SiteFurnitureGroup({ buildingCount, terrainActive }: { buildingCount: number; terrainActive?: boolean }) {
   const items = useMemo(() => {
     const seed = buildingCount * 251;
     const rand = (i: number) => {
@@ -2050,7 +2071,7 @@ function SiteFurnitureGroup({ buildingCount }: { buildingCount: number }) {
     <group>
       {/* Benches */}
       {items.benches.map((b, i) => (
-        <group key={`bench-${i}`} position={[b.x, 0, b.z]} rotation={[0, b.rot, 0]}>
+        <group key={`bench-${i}`} position={[b.x, terrainActive ? getTerrainHeight(b.x, b.z) : 0, b.z]} rotation={[0, b.rot, 0]}>
           {/* Seat */}
           <mesh position={[0, 0.45, 0]} castShadow>
             <boxGeometry args={[1.2, 0.06, 0.4]} />
@@ -2073,7 +2094,7 @@ function SiteFurnitureGroup({ buildingCount }: { buildingCount: number }) {
 
       {/* Light poles */}
       {items.lights.map((l, i) => (
-        <group key={`light-${i}`} position={[l.x, 0, l.z]}>
+        <group key={`light-${i}`} position={[l.x, terrainActive ? getTerrainHeight(l.x, l.z) : 0, l.z]}>
           {/* Pole */}
           <mesh position={[0, 2.5, 0]} castShadow>
             <cylinderGeometry args={[0.04, 0.06, 5, 6]} />
@@ -2094,7 +2115,7 @@ function SiteFurnitureGroup({ buildingCount }: { buildingCount: number }) {
 
       {/* Bollards */}
       {items.bollards.map((b, i) => (
-        <mesh key={`bollard-${i}`} position={[b.x, 0.35, b.z]} castShadow>
+        <mesh key={`bollard-${i}`} position={[b.x, (terrainActive ? getTerrainHeight(b.x, b.z) : 0) + 0.35, b.z]} castShadow>
           <cylinderGeometry args={[0.08, 0.08, 0.7, 8]} />
           <meshStandardMaterial color="#555555" roughness={0.4} metalness={0.7} />
         </mesh>
@@ -2102,7 +2123,7 @@ function SiteFurnitureGroup({ buildingCount }: { buildingCount: number }) {
 
       {/* Parking lot */}
       {buildingCount > 0 && (
-        <ParkingLot position={[parkingPos.x, 0.03, parkingPos.z]} spaces={8} />
+        <ParkingLot position={[parkingPos.x, (terrainActive ? getTerrainHeight(parkingPos.x, parkingPos.z) : 0) + 0.03, parkingPos.z]} spaces={8} />
       )}
     </group>
   );

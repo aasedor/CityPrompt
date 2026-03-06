@@ -46,11 +46,12 @@ const CONTEXT_BUILDING_COLORS: Record<string, string> = {
   yes: '#b0a898',
 };
 
-export function ContextBuildingsGroup({ buildings, roads, projectLat, projectLng }: {
+export function ContextBuildingsGroup({ buildings, roads, projectLat, projectLng, getTerrainY }: {
   buildings: ContextBuildingData[];
   roads?: ContextRoadData[];
   projectLat?: number;
   projectLng?: number;
+  getTerrainY?: (x: number, z: number) => number;
 }) {
   const originRef = useMemo(() => {
     if (projectLat != null && projectLng != null) {
@@ -78,9 +79,12 @@ export function ContextBuildingsGroup({ buildings, roads, projectLat, projectLng
         const z = (p[1] - originRef.lat) * metersPerDegLat;
         return new THREE.Vector2(x, z);
       });
+      // Centroid in scene XZ for terrain lookups
+      const cx = points2D.reduce((s, p) => s + p.x, 0) / (points2D.length || 1);
+      const cz = points2D.reduce((s, p) => s + p.y, 0) / (points2D.length || 1);
       const roofShape = resolveRoofShape(b as any);
       const levels = b.levels ?? Math.max(1, Math.round(b.height / 3));
-      return { building: b, points2D, roofShape, levels };
+      return { building: b, points2D, roofShape, levels, cx, cz };
     });
   }, [buildings, originRef]);
 
@@ -102,50 +106,59 @@ export function ContextBuildingsGroup({ buildings, roads, projectLat, projectLng
     return segs;
   }, [roads, originRef]);
 
-  // Batched window instances across ALL buildings
-  const { windowData, windowCount } = useMemo(() => {
+  // Batched window instances across ALL buildings (with centroid for terrain offset)
+  const { windowData, windowCount, windowCentroids } = useMemo(() => {
     const allWindows: ctxGeo.WindowInstance[] = [];
-    for (const { points2D, building, roofShape, levels } of precomputed) {
+    const centroids: { cx: number; cz: number }[] = [];
+    for (const { points2D, building, roofShape, levels, cx, cz } of precomputed) {
       if (points2D.length < 3 || levels < 1) continue;
       const floorH = building.height / Math.max(1, levels);
       const roofH = roofShape === 'flat' ? 0 : Math.min(building.height * 0.15, floorH * 0.8, 2.5);
       const wallH = roofShape === 'flat' ? building.height : building.height - roofH;
-      allWindows.push(...ctxGeo.computeWindowPositions(points2D, wallH, levels, floorH, building.building_type, building.height));
+      const windows = ctxGeo.computeWindowPositions(points2D, wallH, levels, floorH, building.building_type, building.height);
+      for (const w of windows) centroids.push({ cx, cz });
+      allWindows.push(...windows);
     }
-    return { windowData: allWindows, windowCount: allWindows.length };
+    return { windowData: allWindows, windowCount: allWindows.length, windowCentroids: centroids };
   }, [precomputed]);
 
   // Batched door instances across ALL buildings (regular doors + garage doors)
-  const { doorData, doorCount, garageDoorData, garageDoorCount } = useMemo(() => {
+  const { doorData, doorCount, doorCentroids, garageDoorData, garageDoorCount, garageDoorCentroids } = useMemo(() => {
     const doors: ctxGeo.DoorInstance[] = [];
     const garageDoors: ctxGeo.DoorInstance[] = [];
-    for (const { points2D, building } of precomputed) {
+    const dCentroids: { cx: number; cz: number }[] = [];
+    const gdCentroids: { cx: number; cz: number }[] = [];
+    for (const { points2D, building, cx, cz } of precomputed) {
       if (points2D.length < 3) continue;
       const instances = ctxGeo.computeDoorPositions(points2D, building.building_type, building.height, roadSegments);
       for (const inst of instances) {
-        if (inst.kind === 'garage') garageDoors.push(inst);
-        else doors.push(inst);
+        if (inst.kind === 'garage') { garageDoors.push(inst); gdCentroids.push({ cx, cz }); }
+        else { doors.push(inst); dCentroids.push({ cx, cz }); }
       }
     }
-    return { doorData: doors, doorCount: doors.length, garageDoorData: garageDoors, garageDoorCount: garageDoors.length };
+    return { doorData: doors, doorCount: doors.length, doorCentroids: dCentroids, garageDoorData: garageDoors, garageDoorCount: garageDoors.length, garageDoorCentroids: gdCentroids };
   }, [precomputed, roadSegments]);
 
   // Batched floor lines across ALL buildings
   const floorLineGeometry = useMemo(() => {
     const allSegments: number[] = [];
-    for (const { points2D, building, roofShape, levels } of precomputed) {
+    for (const { points2D, building, roofShape, levels, cx, cz } of precomputed) {
       if (points2D.length < 3 || levels <= 1) continue;
       const floorH = building.height / Math.max(1, levels);
       const roofH = roofShape === 'flat' ? 0 : Math.min(building.height * 0.15, floorH * 0.8, 2.5);
       const wallH = roofShape === 'flat' ? building.height : building.height - roofH;
       const segs = ctxGeo.computeFloorLines(points2D, wallH, levels, floorH);
-      for (let j = 0; j < segs.length; j++) allSegments.push(segs[j]);
+      const ty = getTerrainY ? getTerrainY(cx, cz) : 0;
+      // Floor line segments are triples (x, y, z) — offset Y by terrain
+      for (let j = 0; j < segs.length; j++) {
+        allSegments.push(j % 3 === 1 ? segs[j] + ty : segs[j]);
+      }
     }
     if (allSegments.length === 0) return null;
     const geom = new THREE.BufferGeometry();
     geom.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(allSegments), 3));
     return geom;
-  }, [precomputed]);
+  }, [precomputed, getTerrainY]);
 
   // Window geometry + material
   const windowMeshRef = useRef<THREE.InstancedMesh>(null);
@@ -179,62 +192,69 @@ export function ContextBuildingsGroup({ buildings, roads, projectLat, projectLng
     side: THREE.DoubleSide,
   }), []);
 
-  // Set window instance matrices
+  // Set window instance matrices (with terrain Y offset)
   useEffect(() => {
     if (!windowMeshRef.current || windowCount === 0) return;
     const dummy = new THREE.Object3D();
     for (let i = 0; i < windowCount; i++) {
       const w = windowData[i];
       dummy.position.copy(w.position);
+      if (getTerrainY) dummy.position.y += getTerrainY(windowCentroids[i].cx, windowCentroids[i].cz);
       dummy.quaternion.copy(w.quaternion);
       dummy.scale.set(1, 1, 1);
       dummy.updateMatrix();
       windowMeshRef.current.setMatrixAt(i, dummy.matrix);
     }
     windowMeshRef.current.instanceMatrix.needsUpdate = true;
-  }, [windowData, windowCount]);
+  }, [windowData, windowCount, getTerrainY, windowCentroids]);
 
-  // Set door instance matrices
+  // Set door instance matrices (with terrain Y offset)
   useEffect(() => {
     if (!doorMeshRef.current || doorCount === 0) return;
     const dummy = new THREE.Object3D();
     for (let i = 0; i < doorCount; i++) {
       const d = doorData[i];
       dummy.position.copy(d.position);
+      if (getTerrainY) dummy.position.y += getTerrainY(doorCentroids[i].cx, doorCentroids[i].cz);
       dummy.quaternion.copy(d.quaternion);
       dummy.scale.set(1, 1, 1);
       dummy.updateMatrix();
       doorMeshRef.current.setMatrixAt(i, dummy.matrix);
     }
     doorMeshRef.current.instanceMatrix.needsUpdate = true;
-  }, [doorData, doorCount]);
+  }, [doorData, doorCount, getTerrainY, doorCentroids]);
 
-  // Set garage door instance matrices
+  // Set garage door instance matrices (with terrain Y offset)
   useEffect(() => {
     if (!garageDoorMeshRef.current || garageDoorCount === 0) return;
     const dummy = new THREE.Object3D();
     for (let i = 0; i < garageDoorCount; i++) {
       const d = garageDoorData[i];
       dummy.position.copy(d.position);
+      if (getTerrainY) dummy.position.y += getTerrainY(garageDoorCentroids[i].cx, garageDoorCentroids[i].cz);
       dummy.quaternion.copy(d.quaternion);
       dummy.scale.set(1, 1, 1);
       dummy.updateMatrix();
       garageDoorMeshRef.current.setMatrixAt(i, dummy.matrix);
     }
     garageDoorMeshRef.current.instanceMatrix.needsUpdate = true;
-  }, [garageDoorData, garageDoorCount]);
+  }, [garageDoorData, garageDoorCount, getTerrainY, garageDoorCentroids]);
 
   return (
     <group>
-      {precomputed.map(({ building, points2D, roofShape, levels }) => (
-        <ContextBuildingMesh
-          key={building.osm_id}
-          building={building}
-          points2D={points2D}
-          roofShape={roofShape}
-          levels={levels}
-        />
-      ))}
+      {precomputed.map(({ building, points2D, roofShape, levels, cx, cz }) => {
+        const ty = getTerrainY ? getTerrainY(cx, cz) : 0;
+        return (
+          <group key={building.osm_id} position={[0, ty, 0]}>
+            <ContextBuildingMesh
+              building={building}
+              points2D={points2D}
+              roofShape={roofShape}
+              levels={levels}
+            />
+          </group>
+        );
+      })}
 
       {/* All windows — single InstancedMesh */}
       {windowCount > 0 && (
