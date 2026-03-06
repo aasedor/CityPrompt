@@ -1659,6 +1659,7 @@ async def generate_all(
 
     buildings_created = 0
     generations_queued = 0
+    queued_buildings = []
     total_zones = len(all_zones)
 
     for zone in all_zones:
@@ -1690,6 +1691,7 @@ async def generate_all(
                     else:
                         generate_3d_model_ai.delay(str(building.id), prompt, "text")
                     generations_queued += 1
+                    queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
                 except Exception as e:
                     logger.warning("Failed to queue generation for building %s: %s", building.id, e)
             continue
@@ -1771,6 +1773,7 @@ async def generate_all(
                         generate_3d_model_ai.delay(str(building.id), prompt, "text")
                     generations_queued += 1
                 except Exception as e:
+                    queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
                     logger.warning("Failed to queue generation for building %s: %s", building.id, e)
                 continue
 
@@ -1844,12 +1847,14 @@ async def generate_all(
                 generate_3d_model_ai.delay(str(building.id), prompt, "text")
             generations_queued += 1
         except Exception as e:
+            queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
             logger.warning("Failed to queue generation for building %s: %s", building.id, e)
 
     return {
         "total_zones": total_zones,
         "buildings_created": buildings_created,
         "generations_queued": generations_queued,
+        "queued_buildings": queued_buildings,
     }
 
 

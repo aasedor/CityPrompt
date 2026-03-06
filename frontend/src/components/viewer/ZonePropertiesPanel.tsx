@@ -17,9 +17,10 @@ interface ZonePropertiesPanelProps {
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
   buildings?: Building[];
   allZones?: SiteZone[];
+  onOpenBlockEditor?: () => void;
 }
 
-export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
@@ -1143,25 +1144,18 @@ function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: Si
         </div>
       )}
 
-      {/* Step 1: Preview 2D Layouts */}
-      {hasBuildableZones && !isSitePreviewActive && (
+      {/* Open Block Editor */}
+      {hasBuildableZones && onOpenBlockEditor && (
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-primary-950/60">
-            Step 1: Preview 2D Layouts
-          </label>
           <button
-            onClick={handlePreviewAll}
-            disabled={previewingAll || previewableZones.length === 0}
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-            title="Generate AI 2D layout options for each buildable zone"
+            onClick={onOpenBlockEditor}
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-indigo-500/20 hover:from-indigo-500 hover:to-purple-500 transition-all"
           >
-            {previewingAll ? <Loader2 size={12} className="animate-spin" /> : <LayoutGrid size={12} />}
-            {previewingAll ? 'Generating previews...' : `Preview Layouts (${previewableZones.length} zone${previewableZones.length > 1 ? 's' : ''})`}
+            <LayoutGrid size={13} />
+            Open Block Editor
           </button>
           <p className="text-[10px] text-primary-950/50 text-center">
-            {previewableZones.length < buildableZones.length
-              ? `${buildableZones.length - previewableZones.length} zone${buildableZones.length - previewableZones.length > 1 ? 's' : ''} skipped (set unit_count > 1 to include)`
-              : 'AI generates comprehensive site layout options — one image per option'}
+            Edit building layouts, add descriptions, then generate 3D
           </p>
         </div>
       )}

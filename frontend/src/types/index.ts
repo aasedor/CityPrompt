@@ -91,11 +91,15 @@ export interface LayoutRoadData {
   centerline: number[][];  // [[x_offset_deg, y_offset_deg], ...]
   width_m: number;
   road_type: string;
+  name?: string;
+  description?: string;
 }
 
 export interface LayoutGreenSpaceData {
   polygon: number[][];  // [[x_offset_deg, y_offset_deg], ...]
   space_type: string;
+  name?: string;
+  description?: string;
 }
 
 export interface SiteZoneProperties {

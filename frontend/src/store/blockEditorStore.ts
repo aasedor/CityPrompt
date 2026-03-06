@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { SiteZone, LayoutOption, LayoutBuildingData } from '@/types';
+import type { SiteZone, LayoutOption, LayoutBuildingData, LayoutRoadData, LayoutGreenSpaceData } from '@/types';
 
 export type DragType = 'move' | 'resize-nw' | 'resize-ne' | 'resize-se' | 'resize-sw'
   | 'resize-n' | 'resize-e' | 'resize-s' | 'resize-w' | 'rotate';
@@ -24,6 +24,8 @@ interface BlockEditorState {
   activeOptionIndex: number;
   editedLayout: LayoutOption | null;
   selectedBlockIndex: number | null;
+  selectedElementType: 'building' | 'road' | 'green_space' | null;
+  selectedElementIndex: number | null;
   hoveredBlockIndex: number | null;
   dragState: DragState | null;
   zoom: number;
@@ -41,6 +43,9 @@ interface BlockEditorState {
   switchOption: (index: number) => void;
   setDragState: (state: DragState | null) => void;
   selectBlock: (index: number | null) => void;
+  selectElement: (type: 'building' | 'road' | 'green_space' | null, index: number | null) => void;
+  updateRoadProperties: (index: number, props: Partial<LayoutRoadData>) => void;
+  updateGreenSpaceProperties: (index: number, props: Partial<LayoutGreenSpaceData>) => void;
   hoverBlock: (index: number | null) => void;
   moveBlock: (index: number, newCenterX: number, newCenterY: number) => void;
   resizeBlock: (index: number, newWidthM: number, newDepthM: number) => void;
@@ -71,6 +76,8 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
   activeOptionIndex: 0,
   editedLayout: null,
   selectedBlockIndex: null,
+  selectedElementType: null,
+  selectedElementIndex: null,
   hoveredBlockIndex: null,
   dragState: null,
   zoom: 1,
@@ -88,7 +95,7 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
     set({
       projectId, zoneId: zone.id, zone, options,
       activeOptionIndex: 0, editedLayout,
-      selectedBlockIndex: null, hoveredBlockIndex: null, dragState: null,
+      selectedBlockIndex: null, selectedElementType: null, selectedElementIndex: null, hoveredBlockIndex: null, dragState: null,
       undoStack: [], redoStack: [],
       zoom: 1, panX: 0, panY: 0,
     });
@@ -97,7 +104,7 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
   resetEditor: () => set({
     zoneId: null, zone: null, projectId: null, options: [],
     activeOptionIndex: 0, editedLayout: null,
-    selectedBlockIndex: null, hoveredBlockIndex: null, dragState: null,
+    selectedBlockIndex: null, selectedElementType: null, selectedElementIndex: null, hoveredBlockIndex: null, dragState: null,
     undoStack: [], redoStack: [],
   }),
 
@@ -113,7 +120,24 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
   },
 
   setDragState: (dragState) => set({ dragState }),
-  selectBlock: (index) => set({ selectedBlockIndex: index }),
+  selectBlock: (index) => set({ selectedBlockIndex: index, selectedElementType: index !== null ? 'building' : null, selectedElementIndex: index }),
+  selectElement: (type, index) => set({ selectedElementType: type, selectedElementIndex: index, selectedBlockIndex: type === 'building' ? index : null }),
+  updateRoadProperties: (index, props) => {
+    const { editedLayout } = get();
+    if (!editedLayout) return;
+    get().pushUndoSnapshot();
+    const layout = cloneLayout(editedLayout);
+    layout.roads[index] = { ...layout.roads[index], ...props };
+    set({ editedLayout: layout });
+  },
+  updateGreenSpaceProperties: (index, props) => {
+    const { editedLayout } = get();
+    if (!editedLayout) return;
+    get().pushUndoSnapshot();
+    const layout = cloneLayout(editedLayout);
+    layout.green_spaces[index] = { ...layout.green_spaces[index], ...props };
+    set({ editedLayout: layout });
+  },
   hoverBlock: (index) => set({ hoveredBlockIndex: index }),
 
   pushUndoSnapshot: () => {

@@ -538,7 +538,7 @@ export const siteZonesApi = {
     return data;
   },
 
-  generateAll: async (projectId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {
+  generateAll: async (projectId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number; queued_buildings?: { id: string; name: string }[] }> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all`);
     return data;
   },
@@ -595,7 +595,7 @@ export const siteZonesApi = {
     return data;
   },
 
-  generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number }> => {
+  generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number; queued_buildings?: { id: string; name: string }[] }> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all?boundary_zone_id=${boundaryZoneId}`);
     return data;
   },

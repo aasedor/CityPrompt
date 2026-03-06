@@ -48,8 +48,7 @@ export function ProjectViewPage() {
 
   // Workflow tab enablement
   const hasEditableZones = siteZones.some((z) =>
-    (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area') &&
-    z.properties?.description_text
+    (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area')
   );
   const hasFinalizedLayout = siteZones.some((z) => (z.properties as any)?._saved_layout);
 
@@ -231,6 +230,7 @@ export function ProjectViewPage() {
                   onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
                   buildings={project.buildings}
                   allZones={siteZones}
+                  onOpenBlockEditor={() => setWorkflowTab('block-editor')}
                 />
               )}
             </div>

@@ -1,9 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, ChevronDown, Undo2, Redo2, Save, Wand2, Grid3X3, Ruler } from 'lucide-react';
+import { Loader2, ChevronDown, Undo2, Redo2, Save, Wand2, Grid3X3, Ruler, Lightbulb } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useBlockEditorStore } from '@/store/blockEditorStore';
+import { useGenerationStore } from '@/store/generationStore';
 import { useViewerStore } from '@/store';
 import { siteZonesApi } from '@/services/api';
 import { BlockEditorCanvas } from './BlockEditorCanvas';
@@ -34,14 +35,17 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
   useBlockEditorKeyboard();
 
-  // Find zones that can be edited (building/residential/development_area with descriptions)
+  // Find zones that can be edited (building/residential/development_area)
   const editableZones = useMemo(() =>
     zones.filter((z) =>
-      (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area') &&
-      z.properties?.description_text
+      (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area')
     ),
     [zones],
   );
+
+  // Check if selected zone needs a description before layout generation
+  const selectedZone = editableZones.find((z) => z.id === activeZoneId);
+  const needsDescription = selectedZone && !selectedZone.properties?.description_text;
 
   // Auto-select first editable zone
   useEffect(() => {
@@ -53,16 +57,21 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
   // Load layout options for selected zone
   useEffect(() => {
     if (!activeZoneId) return;
-    const selectedZone = zones.find((z) => z.id === activeZoneId);
-    if (!selectedZone) return;
+    const zoneForLoad = zones.find((z) => z.id === activeZoneId);
+    if (!zoneForLoad) return;
 
     const loadData = async () => {
+      if (!zoneForLoad?.properties?.description_text) {
+        // Zone has no description yet — don't try to generate layouts
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       try {
         // 1. Check for saved layout in zone properties
-        const savedLayout = selectedZone.properties?._saved_layout as LayoutOption | undefined;
+        const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
         if (savedLayout) {
-          initEditor(projectId, selectedZone, [savedLayout]);
+          initEditor(projectId, zoneForLoad, [savedLayout]);
           setLoading(false);
           return;
         }
@@ -80,7 +89,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
           setLoading(false);
           return;
         }
-        initEditor(projectId, selectedZone, options);
+        initEditor(projectId, zoneForLoad, options);
       } catch (err: any) {
         toast.error(err?.response?.data?.detail || 'Failed to generate layouts');
       } finally {
@@ -130,11 +139,18 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     if (!editedLayout || !activeZoneId || !projectId) return;
     setIsGenerating(true);
     try {
-      await siteZonesApi.applyLayout(activeZoneId, 0, editedLayout);
+      // Save layout first to ensure buildings are created/synced
+      await siteZonesApi.saveLayout(activeZoneId, editedLayout);
       const result = await siteZonesApi.generateAll(projectId);
       clearLayoutPreview();
       clearLockedLayers();
-      toast.success(`${result.buildings_created} buildings created, ${result.generations_queued} queued for 3D generation`);
+      // Seed generation store so the progress bar shows prominently
+      if (result.queued_buildings && result.queued_buildings.length > 0) {
+        useGenerationStore.getState().startBatch(projectId, result.queued_buildings);
+      }
+      toast.success(`${result.generations_queued} buildings queued for 3D generation`);
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       onFinalized?.();
       navigate(`/projects/${projectId}/viewer`);
     } catch (err: any) {
@@ -142,12 +158,12 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     } finally {
       setIsGenerating(false);
     }
-  }, [editedLayout, activeZoneId, projectId, navigate, clearLayoutPreview, clearLockedLayers, onFinalized]);
+  }, [editedLayout, activeZoneId, projectId, navigate, clearLayoutPreview, clearLockedLayers, onFinalized, queryClient]);
 
   if (editableZones.length === 0) {
     return (
       <div className="flex h-[500px] items-center justify-center text-neutral-400 text-sm">
-        No editable zones found. Draw building or residential zones with descriptions in the Master Plan first.
+        No editable zones found. Draw a building, residential, or development area zone in the Master Plan first.
       </div>
     );
   }
@@ -186,6 +202,28 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
             isSaving={isSaving}
             isGenerating={isGenerating}
           />
+        </div>
+      )}
+
+      {/* Nudge: zone needs a description */}
+      {needsDescription && !loading && !editedLayout && (
+        <div className="flex flex-1 items-center justify-center">
+          <div className="flex flex-col items-center gap-4 max-w-md text-center px-8">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/10 ring-1 ring-amber-500/20">
+              <Lightbulb size={28} className="text-amber-400" />
+            </div>
+            <h3 className="text-base font-semibold text-white">Add a Description to Get Started</h3>
+            <p className="text-sm text-neutral-400 leading-relaxed">
+              Go back to the <span className="text-indigo-300 font-medium">Master Plan</span> tab, select the
+              <span className="text-white font-medium"> {selectedZone?.name || 'zone'}</span>, and add a description
+              (e.g. "Modern residential complex with 8 units, shared courtyard, underground parking").
+              The AI will use it to generate building layout options.
+            </p>
+            <div className="flex items-center gap-2 rounded-lg bg-white/[0.04] border border-white/[0.08] px-4 py-2.5 text-xs text-neutral-300">
+              <span className="text-amber-400 font-bold">Tip:</span>
+              The more detail you provide, the better the AI layout will be.
+            </div>
+          </div>
         </div>
       )}
 

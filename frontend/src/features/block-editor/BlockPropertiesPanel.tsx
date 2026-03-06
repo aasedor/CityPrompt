@@ -1,12 +1,109 @@
-import { Trash2, Copy, RotateCw, MapPin } from 'lucide-react';
+import { Trash2, Copy, RotateCw, MapPin, TreePine, Route } from 'lucide-react';
 import { useBlockEditorStore } from '@/store/blockEditorStore';
 
 export function BlockPropertiesPanel() {
   const {
     editedLayout, selectedBlockIndex, zone,
+    selectedElementType, selectedElementIndex,
     updateBlockProperties, deleteBlock, duplicateBlock,
+    updateRoadProperties, updateGreenSpaceProperties,
   } = useBlockEditorStore();
 
+  // Road properties panel
+  if (selectedElementType === 'road' && selectedElementIndex !== null && editedLayout) {
+    const road = editedLayout.roads?.[selectedElementIndex];
+    if (!road) return null;
+    return (
+      <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <Route size={14} className="text-amber-400" />
+            <h3 className="text-sm font-semibold text-white">Road</h3>
+          </div>
+
+          <Field label="Name">
+            <input type="text" value={road.name || ''}
+              onChange={(e) => updateRoadProperties(selectedElementIndex, { name: e.target.value })}
+              placeholder="Main Street"
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none" />
+          </Field>
+
+          <Field label="Road Type">
+            <select value={road.road_type || 'access'}
+              onChange={(e) => updateRoadProperties(selectedElementIndex, { road_type: e.target.value })}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white focus:border-indigo-400/50 focus:outline-none">
+              <option value="main">Main Road</option>
+              <option value="collector">Collector</option>
+              <option value="access">Access Road</option>
+              <option value="pedestrian">Pedestrian</option>
+              <option value="service">Service Road</option>
+            </select>
+          </Field>
+
+          <Field label="Width (m)">
+            <input type="number" value={road.width_m || ''}
+              onChange={(e) => updateRoadProperties(selectedElementIndex, { width_m: parseFloat(e.target.value) || 6 })}
+              min={2} step={0.5}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white focus:border-indigo-400/50 focus:outline-none" />
+          </Field>
+
+          <Field label="3D Description">
+            <textarea value={road.description || ''}
+              onChange={(e) => updateRoadProperties(selectedElementIndex, { description: e.target.value })}
+              placeholder="Describe this road for 3D generation..."
+              rows={3}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none resize-none" />
+          </Field>
+        </div>
+      </div>
+    );
+  }
+
+  // Green space properties panel
+  if (selectedElementType === 'green_space' && selectedElementIndex !== null && editedLayout) {
+    const gs = editedLayout.green_spaces?.[selectedElementIndex];
+    if (!gs) return null;
+    return (
+      <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center gap-2">
+            <TreePine size={14} className="text-emerald-400" />
+            <h3 className="text-sm font-semibold text-white">Green Space</h3>
+          </div>
+
+          <Field label="Name">
+            <input type="text" value={gs.name || ''}
+              onChange={(e) => updateGreenSpaceProperties(selectedElementIndex, { name: e.target.value })}
+              placeholder="Central Park"
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none" />
+          </Field>
+
+          <Field label="Space Type">
+            <select value={gs.space_type || 'park'}
+              onChange={(e) => updateGreenSpaceProperties(selectedElementIndex, { space_type: e.target.value })}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white focus:border-indigo-400/50 focus:outline-none">
+              <option value="park">Park</option>
+              <option value="plaza">Plaza</option>
+              <option value="courtyard">Courtyard</option>
+              <option value="garden">Garden</option>
+              <option value="playground">Playground</option>
+              <option value="buffer">Buffer / Setback</option>
+            </select>
+          </Field>
+
+          <Field label="3D Description">
+            <textarea value={gs.description || ''}
+              onChange={(e) => updateGreenSpaceProperties(selectedElementIndex, { description: e.target.value })}
+              placeholder="Describe this green space for 3D generation..."
+              rows={3}
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none resize-none" />
+          </Field>
+        </div>
+      </div>
+    );
+  }
+
+  // No selection
   if (selectedBlockIndex === null || !editedLayout) {
     return (
       <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
@@ -15,13 +112,15 @@ export function BlockPropertiesPanel() {
             <div className="text-neutral-600 mb-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
             </div>
-            <p className="text-xs text-neutral-500">Click a block to edit its properties</p>
+            <p className="text-xs text-neutral-500">Click a block, road, or green space to edit</p>
             <p className="text-[10px] text-neutral-600 mt-1">Edit name, style, dimensions, and 3D description</p>
           </div>
         </div>
       </div>
     );
   }
+
+  // Building properties
   const block = editedLayout.buildings[selectedBlockIndex];
   if (!block) return null;
 
@@ -48,7 +147,6 @@ export function BlockPropertiesPanel() {
           </div>
         </div>
 
-        {/* Zone description context */}
         {zoneDescription && (
           <div className="rounded-lg border border-white/[0.06] bg-white/[0.03] p-2.5 space-y-1">
             <div className="flex items-center gap-1.5">

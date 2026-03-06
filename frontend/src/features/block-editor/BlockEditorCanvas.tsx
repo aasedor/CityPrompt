@@ -52,8 +52,8 @@ function getMapboxStaticUrl(
 
 export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
   const {
-    zone, editedLayout, selectedBlockIndex, hoveredBlockIndex,
-    selectBlock, hoverBlock, zoom, panX, panY, setZoom, setPan, dragState,
+    zone, editedLayout, selectedBlockIndex, hoveredBlockIndex, selectedElementType, selectedElementIndex,
+    selectBlock, selectElement, hoverBlock, zoom, panX, panY, setZoom, setPan, dragState,
     showGrid, gridSizeMeters, showDimensions,
   } = useBlockEditorStore();
 
@@ -240,10 +240,12 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
             key={`gs-${i}`}
             points={pts}
             fill="#22c55e"
-            fillOpacity={0.25}
-            stroke="#16a34a"
-            strokeWidth={1}
-            strokeOpacity={0.5}
+            fillOpacity={selectedElementType === 'green_space' && selectedElementIndex === i ? 0.5 : 0.25}
+            stroke={selectedElementType === 'green_space' && selectedElementIndex === i ? '#4ade80' : '#16a34a'}
+            strokeWidth={selectedElementType === 'green_space' && selectedElementIndex === i ? 2.5 : 1}
+            strokeOpacity={0.7}
+            style={{ cursor: 'pointer' }}
+            onPointerDown={(e) => { e.stopPropagation(); selectElement('green_space', i); }}
           />
         );
       })}
@@ -260,11 +262,13 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
             key={`road-${i}`}
             points={pts}
             fill="none"
-            stroke="#374151"
+            stroke={selectedElementType === 'road' && selectedElementIndex === i ? '#60a5fa' : '#374151'}
             strokeWidth={strokeW}
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeOpacity={0.7}
+            strokeOpacity={selectedElementType === 'road' && selectedElementIndex === i ? 1 : 0.7}
+            style={{ cursor: 'pointer' }}
+            onPointerDown={(e) => { e.stopPropagation(); selectElement('road', i); }}
           />
         );
       })}
