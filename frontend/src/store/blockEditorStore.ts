@@ -37,9 +37,12 @@ interface BlockEditorState {
   showDimensions: boolean;
   undoStack: LayoutOption[];
   redoStack: LayoutOption[];
+  layoutCache: Record<string, LayoutOption[]>;
 
   initEditor: (projectId: string, zone: SiteZone, options: LayoutOption[]) => void;
   resetEditor: () => void;
+  getCachedLayout: (zoneId: string) => LayoutOption[] | null;
+  cacheLayout: (zoneId: string, options: LayoutOption[]) => void;
   switchOption: (index: number) => void;
   setDragState: (state: DragState | null) => void;
   selectBlock: (index: number | null) => void;
@@ -89,6 +92,7 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
   showDimensions: true,
   undoStack: [],
   redoStack: [],
+  layoutCache: {},
 
   initEditor: (projectId, zone, options) => {
     const editedLayout = options.length > 0 ? cloneLayout(options[0]) : null;
@@ -107,6 +111,15 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
     selectedBlockIndex: null, selectedElementType: null, selectedElementIndex: null, hoveredBlockIndex: null, dragState: null,
     undoStack: [], redoStack: [],
   }),
+
+  getCachedLayout: (zoneId) => {
+    const cached = get().layoutCache[zoneId];
+    return cached?.length ? cached : null;
+  },
+
+  cacheLayout: (zoneId, options) => {
+    set({ layoutCache: { ...get().layoutCache, [zoneId]: options } });
+  },
 
   switchOption: (index) => {
     const { options } = get();

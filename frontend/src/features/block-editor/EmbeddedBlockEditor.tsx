@@ -71,9 +71,6 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     }
   }, [editableZones, activeZoneId]);
 
-  // Cache generated layouts per zone so switching between zones is instant
-  const layoutCacheRef = useRef<Record<string, LayoutOption[]>>({});
-
   // Load layout options for selected zone
   useEffect(() => {
     if (!activeZoneId) return;
@@ -81,8 +78,9 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     if (!zoneForLoad) return;
 
     const loadData = async () => {
-      // Skip if the store already has this zone's layout (e.g. tab switch back)
       const store = useBlockEditorStore.getState();
+
+      // Skip if the store already has this zone's layout (e.g. tab switch back)
       if (store.zoneId === activeZoneId && store.editedLayout) {
         setLoading(false);
         return;
@@ -98,21 +96,22 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       // 1. Saved layout in zone properties
       const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
       if (savedLayout) {
-        layoutCacheRef.current[activeZoneId] = [savedLayout];
+        store.cacheLayout(activeZoneId, [savedLayout]);
         initEditor(projectId, zoneForLoad, [savedLayout]);
         return;
       }
 
-      // 2. Local session cache (previously generated)
-      if (layoutCacheRef.current[activeZoneId]?.length) {
-        initEditor(projectId, zoneForLoad, layoutCacheRef.current[activeZoneId]);
+      // 2. Zustand store cache (persists across component unmounts)
+      const cached = store.getCachedLayout(activeZoneId);
+      if (cached) {
+        initEditor(projectId, zoneForLoad, cached);
         return;
       }
 
       // 3. Cached layout in zustand viewer store
       const cachedOptions = layoutPreview?.zoneId === activeZoneId ? layoutPreview.options : [];
       if (cachedOptions.length > 0) {
-        layoutCacheRef.current[activeZoneId] = cachedOptions;
+        store.cacheLayout(activeZoneId, cachedOptions);
         initEditor(projectId, zoneForLoad, cachedOptions);
         return;
       }
@@ -126,7 +125,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
           toast.error('No layout options generated');
           return;
         }
-        layoutCacheRef.current[activeZoneId] = options;
+        store.cacheLayout(activeZoneId, options);
         initEditor(projectId, zoneForLoad, options);
       } catch (err: any) {
         toast.error(err?.response?.data?.detail || 'Failed to generate layouts');
