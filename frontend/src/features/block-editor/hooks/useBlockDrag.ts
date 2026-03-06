@@ -51,8 +51,18 @@ export function useBlockDrag(transform: Transform | null) {
       const angleDelta = dx * 0.5; // 0.5 degrees per pixel
       rotateBlock(dragState.blockIndex, dragState.startRotation + angleDelta);
     } else if (dragState.type.startsWith('resize')) {
-      const metersDx = pixelsToMeters(dx, transform);
-      const metersDy = pixelsToMeters(dy, transform);
+      // Rotate screen-space delta into the block's local coordinate system
+      // so resizing works correctly regardless of block rotation.
+      // SVG renders with rotate(-rotation_deg), so local-to-screen rotation angle is -rotation_deg.
+      const rotRad = dragState.startRotation * Math.PI / 180;
+      const cos = Math.cos(rotRad);
+      const sin = Math.sin(rotRad);
+      // Project screen delta onto block-local axes
+      const localDx = dx * cos - dy * sin;
+      const localDy = dx * sin + dy * cos;
+
+      const metersDx = pixelsToMeters(localDx, transform);
+      const metersDy = pixelsToMeters(localDy, transform);
       let newW = dragState.startWidthM;
       let newD = dragState.startDepthM;
 
