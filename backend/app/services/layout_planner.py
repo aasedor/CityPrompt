@@ -125,6 +125,23 @@ def _m_to_deg_lat(m: float) -> float:
     return m / METERS_PER_DEG_LAT
 
 
+def _building_footprint(
+    cx_deg: float, cy_deg: float,
+    width_m: float, depth_m: float,
+    rotation_deg: float, mlon: float,
+) -> Polygon:
+    """Return the rotated rectangle footprint of a building as a Shapely Polygon in degree-space."""
+    hw = (width_m / 2) / mlon
+    hd = (depth_m / 2) / METERS_PER_DEG_LAT
+    rect = Polygon([
+        (cx_deg - hw, cy_deg - hd),
+        (cx_deg + hw, cy_deg - hd),
+        (cx_deg + hw, cy_deg + hd),
+        (cx_deg - hw, cy_deg + hd),
+    ])
+    return rotate(rect, -rotation_deg, origin=(cx_deg, cy_deg))
+
+
 class LayoutPlanner:
     """Generates realistic site layouts using AI or algorithmic fallback."""
 
@@ -765,12 +782,18 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 cx = _m_to_deg_lon(bx_m, center_lat)
                 cy = _m_to_deg_lat(by_m)
 
-                pt = Point(centroid.x + cx, centroid.y + cy)
-                if not zone_polygon.contains(pt):
-                    continue
-
                 rotation_variation = ((row + col) % 3 - 1) * 3
                 building_rotation = orientation_deg + rotation_variation
+
+                # Check that the building footprint is mostly inside the zone
+                bldg_rect = _building_footprint(
+                    centroid.x + cx, centroid.y + cy,
+                    building_width_m, building_depth_m,
+                    building_rotation, mlon,
+                )
+                overlap = bldg_rect.intersection(zone_polygon).area
+                if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
+                    continue
 
                 buildings.append(LayoutBuilding(
                     center_x=cx,
@@ -878,20 +901,31 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 cx = _m_to_deg_lon(bx_m, center_lat)
                 cy = _m_to_deg_lat(by_m)
 
-                pt = Point(centroid.x + cx, centroid.y + cy)
-                if not zone_polygon.contains(pt):
+                face_angle = road_angle_deg + 90 * side
+                rotation_variation = (i % 3 - 1) * 3
+                building_rotation = face_angle + rotation_variation
+
+                bldg_rect = _building_footprint(
+                    centroid.x + cx, centroid.y + cy,
+                    building_width_m, building_depth_m,
+                    building_rotation, mlon,
+                )
+                overlap = bldg_rect.intersection(zone_polygon).area
+                if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
+                    # Try without stagger
                     actual_offset = offset_from_road_m
                     bx_m = along_m * cos_a + side * actual_offset * math.cos(perpendicular_rad)
                     by_m = along_m * sin_a + side * actual_offset * math.sin(perpendicular_rad)
                     cx = _m_to_deg_lon(bx_m, center_lat)
                     cy = _m_to_deg_lat(by_m)
-                    pt = Point(centroid.x + cx, centroid.y + cy)
-                    if not zone_polygon.contains(pt):
+                    bldg_rect = _building_footprint(
+                        centroid.x + cx, centroid.y + cy,
+                        building_width_m, building_depth_m,
+                        building_rotation, mlon,
+                    )
+                    overlap = bldg_rect.intersection(zone_polygon).area
+                    if bldg_rect.area > 0 and overlap / bldg_rect.area < 0.85:
                         continue
-
-                face_angle = road_angle_deg + 90 * side
-                rotation_variation = (i % 3 - 1) * 3
-                building_rotation = face_angle + rotation_variation
 
                 buildings.append(LayoutBuilding(
                     center_x=cx,

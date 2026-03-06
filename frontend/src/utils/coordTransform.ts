@@ -47,8 +47,8 @@ export function computeTransform(
   const rangeX = maxX - minX || 1;
   const rangeY = maxY - minY || 1;
 
-  const usableW = svgW - padding * 2;
-  const usableH = svgH - padding * 2;
+  const usableW = Math.max(1, svgW - padding * 2);
+  const usableH = Math.max(1, svgH - padding * 2);
   const scale = Math.min(usableW / rangeX, usableH / rangeY);
 
   const offsetX = svgW / 2 - ((minX + maxX) / 2) * scale;

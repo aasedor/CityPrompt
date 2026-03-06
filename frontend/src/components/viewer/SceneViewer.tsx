@@ -2685,7 +2685,8 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
   const hasGLB = !!building.model_url;
   const hasBuildingData = !!(building.floor_count || building.roof_type);
 
-  // GLB models have their own geometry — place at ground level (y=0), not y=h/2
+  // GLB models ground themselves via offsetY inside GLBModel — place parent at y=0.
+  // Procedural buildings are centered boxes, so they need y=h/2.
   const effectivePosition: [number, number, number] = hasGLB
     ? [position[0], 0, position[2]]
     : position;
@@ -2889,6 +2890,13 @@ function GLBModel({
 
     const sY = modelHeight > 0.01 ? targetHeight / modelHeight : 1;
 
+    // Ground the bounding box bottom at Y=0, then push the model down
+    // slightly so the decorative base plate (common in Meshy/AI models)
+    // sits below the ground plane instead of floating above it.
+    // The base plate is typically ~8% of the model height.
+    const basePlateRatio = 0.08;
+    const oY = -box.min.y * sY - targetHeight * basePlateRatio;
+
     // Prefer authoritative dimensions from specifications (set by block editor)
     // over footprint bounding box which is inflated for rotated buildings
     let sX = sY;
@@ -2908,11 +2916,6 @@ function GLBModel({
       if (modelWidth > 0.01 && fpWidth > 0.1) sX = fpWidth / modelWidth;
       if (modelDepth > 0.01 && fpDepth > 0.1) sZ = fpDepth / modelDepth;
     }
-
-    // Ground the model: the group applies position in parent space, then
-    // scale to children.  Child at local y = box.min.y ends up at
-    // worldY = offsetY + sY * box.min.y.  Solve for worldY = 0.
-    const oY = -box.min.y * sY;
 
     return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: oY };
   }, [clonedScene, targetHeight, footprintCoordinates]);
@@ -3000,27 +3003,8 @@ function GLBModel({
     });
   }, [clonedScene, isSelected, isHovered]);
 
-  // After mounting, measure the world-space bounding box and snap the
-  // model's bottom to y=0. This catches any residual offset that the
-  // pre-computed offsetY missed (e.g. stale GLTF root transforms).
-  const modelGroupRef = useRef<THREE.Group>(null);
-  const correctionRef = useRef(0);
-  const [, forceUpdate] = useState(0);
-
-  useEffect(() => {
-    correctionRef.current = 0;
-    if (!modelGroupRef.current) return;
-    modelGroupRef.current.position.y = offsetY;
-    modelGroupRef.current.updateMatrixWorld(true);
-    const worldBox = new THREE.Box3().setFromObject(modelGroupRef.current);
-    if (Math.abs(worldBox.min.y) > 0.05) {
-      correctionRef.current = -worldBox.min.y;
-      forceUpdate((n) => n + 1);
-    }
-  }, [scaleX, scaleY, scaleZ, offsetY, clonedScene]);
-
   return (
-    <group ref={modelGroupRef} scale={[scaleX, scaleY, scaleZ]} position={[0, offsetY + correctionRef.current, 0]}>
+    <group scale={[scaleX, scaleY, scaleZ]} position={[0, offsetY, 0]}>
       <primitive
         object={clonedScene}
         onClick={onClick}

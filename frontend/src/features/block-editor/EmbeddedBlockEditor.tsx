@@ -73,6 +73,11 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     if (!zoneForLoad) return;
 
     const loadData = async () => {
+      console.log('[BlockEditor] Loading zone', activeZoneId, {
+        name: zoneForLoad.name,
+        hasDescription: !!zoneForLoad.properties?.description_text,
+        hasSavedLayout: !!zoneForLoad.properties?._saved_layout,
+      });
       if (!zoneForLoad?.properties?.description_text) {
         // Zone has no description yet — don't try to generate layouts
         setLoading(false);

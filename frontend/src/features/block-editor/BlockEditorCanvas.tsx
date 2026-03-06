@@ -39,7 +39,7 @@ function getSatelliteInfo(
   svgWidth: number,
   svgHeight: number,
 ): SatelliteInfo | null {
-  if (!MAPBOX_TOKEN) return null;
+  if (!MAPBOX_TOKEN || baseTransform.scale <= 0) return null;
 
   const { cx, cy, mlon, mlat } = baseTransform;
 

@@ -53,6 +53,8 @@ export function WorkflowTabs({
               className={`group relative flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-medium transition-all ${
                 isActive
                   ? 'bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-400/30'
+                  : isEnabled && tab.id === 'block-editor' && activeTab === 'master-plan'
+                    ? 'text-indigo-600 bg-indigo-500/5 ring-1 ring-indigo-400/20 shadow-[0_0_12px_rgba(99,102,241,0.3)] animate-pulse hover:bg-indigo-500/10'
                   : isEnabled
                     ? 'text-primary-950/80 hover:bg-primary-950/[0.04] hover:text-primary-950'
                     : 'cursor-not-allowed text-primary-950/40'
