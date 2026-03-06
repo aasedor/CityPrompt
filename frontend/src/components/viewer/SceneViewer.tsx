@@ -2906,64 +2906,80 @@ function GLBModel({
       if (modelDepth > 0.01 && fpDepth > 0.1) sZ = fpDepth / modelDepth;
     }
 
+    // Ground the model by pushing its lowest point to y=0.
+    // Since the group applies scale to children first, offset needs the
+    // scale factor: worldY = offsetY + sY * localY, solve for bottom=0.
     const oY = -box.min.y * sY;
-    return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: oY };
+
+    // Meshy/AI-generated models often include a decorative base plate that
+    // extends well below the model's natural origin (y=0 in model space).
+    // If the origin is already near the bottom, honour it; otherwise if
+    // the base plate pushes the visual building far above ground, clamp
+    // the lift so the model's origin stays near ground level.
+    // Heuristic: if the offset would lift the origin above 10% of the
+    // target height, limit it.
+    const maxLift = targetHeight * 0.1;
+    const clampedOY = oY > maxLift ? maxLift : oY;
+
+    return { scaleX: sX, scaleY: sY, scaleZ: sZ, offsetY: clampedOY };
   }, [clonedScene, targetHeight, footprintCoordinates]);
 
-  // Fix materials: enable vertex colors if present, or apply a warm default
-  // color to models that have no usable texture/color data (Meshy preview
-  // models, or image-to-3D models where textures failed to embed in the GLB).
+  // Fix materials: only intervene when the model has NO usable visual data at all.
+  // Meshy refined models embed PBR textures that Three.js handles correctly —
+  // we should not override them.
   const originalMaterials = useRef<Map<THREE.Mesh, THREE.Material | THREE.Material[]>>(new Map());
   useEffect(() => {
+    // First pass: check if the entire model has ANY color/texture data
+    let modelHasAnyVisualData = false;
     clonedScene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const mesh = child as THREE.Mesh;
-        const hasVertexColors = !!mesh.geometry.attributes.color;
-        const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-        const newMats = mats.map((m) => {
-          const mat = m as THREE.MeshStandardMaterial;
-          if (!mat.isMeshStandardMaterial) return mat;
-          // If the model has vertex colors, enable them
-          if (hasVertexColors && !mat.vertexColors) {
-            const cloned = mat.clone();
-            cloned.vertexColors = true;
-            cloned.needsUpdate = true;
-            return cloned;
-          }
-          // Check if the material has any usable color/texture data.
-          // Meshy refined models embed PBR textures; image-to-3D may use
-          // vertex colors or a base color without a diffuse map.
-          const hasLoadedTexture = mat.map && mat.map.image &&
-            (mat.map.image.width > 0 || mat.map.image.data);
-          const hasAnyPBRMap = !!(mat.normalMap || mat.roughnessMap ||
-            mat.metalnessMap || mat.emissiveMap || mat.aoMap);
-          const hasNonDefaultColor = mat.color &&
-            !(mat.color.r === 1 && mat.color.g === 1 && mat.color.b === 1);
-
-          // Ensure diffuse textures use sRGB color space for correct color
-          if (hasLoadedTexture && mat.map) {
-            mat.map.colorSpace = THREE.SRGBColorSpace;
-          }
-
-          // Only apply the sandstone fallback when the material truly has
-          // no color information at all (no texture, no PBR maps, no vertex
-          // colors, and default white base color).
-          if (!hasLoadedTexture && !hasVertexColors && !hasAnyPBRMap && !hasNonDefaultColor) {
-            const cloned = mat.clone();
-            cloned.color.set('#c8a882');   // warm sandstone
-            cloned.roughness = 0.8;
-            cloned.metalness = 0.05;
-            cloned.map = null;             // clear broken texture reference
-            cloned.needsUpdate = true;
-            return cloned;
-          }
-          return mat;
-        });
-        mesh.material = Array.isArray(mesh.material) ? newMats : newMats[0];
-        originalMaterials.current.set(mesh, Array.isArray(mesh.material) ? [...newMats] : newMats[0]);
-        mesh.castShadow = false;
-        mesh.receiveShadow = true;
+      if (!(child as THREE.Mesh).isMesh) return;
+      const mesh = child as THREE.Mesh;
+      if (mesh.geometry.attributes.color) { modelHasAnyVisualData = true; return; }
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const m of mats) {
+        const mat = m as THREE.MeshStandardMaterial;
+        if (!mat.isMeshStandardMaterial) continue;
+        if (mat.map || mat.normalMap || mat.roughnessMap || mat.metalnessMap || mat.emissiveMap || mat.aoMap) {
+          modelHasAnyVisualData = true; return;
+        }
+        if (mat.color && !(mat.color.r === 1 && mat.color.g === 1 && mat.color.b === 1)) {
+          modelHasAnyVisualData = true; return;
+        }
       }
+    });
+
+    // Second pass: apply fixes
+    clonedScene.traverse((child) => {
+      if (!(child as THREE.Mesh).isMesh) return;
+      const mesh = child as THREE.Mesh;
+      const hasVertexColors = !!mesh.geometry.attributes.color;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      const newMats = mats.map((m) => {
+        const mat = m as THREE.MeshStandardMaterial;
+        if (!mat.isMeshStandardMaterial) return mat;
+        // Enable vertex colors if present
+        if (hasVertexColors && !mat.vertexColors) {
+          const cloned = mat.clone();
+          cloned.vertexColors = true;
+          cloned.needsUpdate = true;
+          return cloned;
+        }
+        // Only apply sandstone fallback if the ENTIRE model has no visual data
+        if (!modelHasAnyVisualData) {
+          const cloned = mat.clone();
+          cloned.color.set('#c8a882');
+          cloned.roughness = 0.8;
+          cloned.metalness = 0.05;
+          cloned.map = null;
+          cloned.needsUpdate = true;
+          return cloned;
+        }
+        return mat;
+      });
+      mesh.material = Array.isArray(mesh.material) ? newMats : newMats[0];
+      originalMaterials.current.set(mesh, Array.isArray(mesh.material) ? [...newMats] : newMats[0]);
+      mesh.castShadow = false;
+      mesh.receiveShadow = true;
     });
   }, [clonedScene]);
 
