@@ -31,7 +31,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeZoneId, setActiveZoneId] = useState<string | null>(null);
 
-  const { initEditor, resetEditor, editedLayout, zone } = useBlockEditorStore();
+  const { initEditor, resetEditor, editedLayout, zone, zoneId: storeZoneId } = useBlockEditorStore();
   const { layoutPreview, clearLayoutPreview, clearLockedLayers } = useViewerStore();
 
   useBlockEditorKeyboard();
@@ -78,6 +78,11 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     if (!zoneForLoad) return;
 
     const loadData = async () => {
+      // Skip if the store already has this zone's layout (e.g. tab switch back)
+      if (storeZoneId === activeZoneId && editedLayout) {
+        setLoading(false);
+        return;
+      }
       console.log('[BlockEditor] Loading zone', activeZoneId, {
         name: zoneForLoad.name,
         hasDescription: !!zoneForLoad.properties?.description_text,
@@ -105,6 +110,8 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
         if (options.length === 0) {
           const response = await siteZonesApi.previewLayouts(activeZoneId);
           options = response.options;
+          console.log('[BlockEditor] previewLayouts returned', options.length, 'options',
+            options.map(o => ({ buildings: o.buildings?.length, label: o.option_label })));
         }
         if (options.length === 0) {
           toast.error('No layout options generated');
@@ -120,7 +127,8 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     };
 
     loadData();
-    return () => resetEditor();
+    // Don't resetEditor on unmount — preserve state across tab switches.
+    // Only reset when switching to a different zone (handled by initEditor).
   }, [activeZoneId, projectId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Track container size
