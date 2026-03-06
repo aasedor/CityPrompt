@@ -520,6 +520,7 @@ export interface ViewerSettings {
   showCrosshair: boolean;    // crosshair dot in walk/fly modes
   enablePostProcessing: boolean;
   enableFog: boolean;
+  show3DTiles: boolean;
 }
 
 export interface SceneObject {

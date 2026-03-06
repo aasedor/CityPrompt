@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sun, Layers, Ruler, TreePine, Building2, Route, Grid3x3, HardHat, Trash2, Settings, X, Video, ArrowUpDown, Move, Maximize, Circle, Square, Play, Pause, Activity, Triangle, SplitSquareVertical, Sparkles, CloudFog } from 'lucide-react';
+import { Sun, Layers, Ruler, TreePine, Building2, Route, Grid3x3, HardHat, Trash2, Settings, X, Video, ArrowUpDown, Move, Maximize, Circle, Square, Play, Pause, Activity, Triangle, SplitSquareVertical, Sparkles, CloudFog, Globe } from 'lucide-react';
 import { useViewerStore, CAMERA_PRESETS } from '@/store';
 import type { ConstructionPhase, CameraPreset, MeasurementMode } from '@/types';
 
@@ -167,6 +167,7 @@ export function ViewerControls({ constructionPhases, buildings }: ViewerControls
           <h3 className="mb-2 text-xs font-semibold uppercase text-white/60">Layers</h3>
           <div className="flex flex-col gap-1.5">
             <Toggle icon={<Building2 size={14} />} label="Existing Buildings" active={settings.showExistingBuildings} onClick={() => updateSettings({ showExistingBuildings: !settings.showExistingBuildings })} />
+            <Toggle icon={<Globe size={14} />} label="3D Buildings (Google)" active={settings.show3DTiles} onClick={() => updateSettings({ show3DTiles: !settings.show3DTiles })} />
             <Toggle icon={<TreePine size={14} />} label="Landscaping" active={settings.showLandscaping} onClick={() => updateSettings({ showLandscaping: !settings.showLandscaping })} />
             <Toggle icon={<Route size={14} />} label="Roads" active={settings.showRoads} onClick={() => updateSettings({ showRoads: !settings.showRoads })} />
             <Toggle icon={<Grid3x3 size={14} />} label="Grid" active={settings.showGrid} onClick={() => updateSettings({ showGrid: !settings.showGrid })} />

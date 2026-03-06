@@ -81,6 +81,7 @@ const defaultViewerSettings: ViewerSettings = {
   showCrosshair: true,
   enablePostProcessing: true,
   enableFog: true,
+  show3DTiles: false,
 };
 
 export interface CameraKeyframe {
