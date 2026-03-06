@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo, type RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, ChevronDown, Undo2, Redo2, Save, Wand2, Grid3X3, Ruler, Lightbulb } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -23,6 +23,7 @@ interface EmbeddedBlockEditorProps {
 export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedBlockEditorProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ width: 800, height: 500 });
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,15 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
   const { layoutPreview, clearLayoutPreview, clearLockedLayers } = useViewerStore();
 
   useBlockEditorKeyboard();
+
+  // Prevent page scroll when mouse is anywhere over the block editor
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => { e.preventDefault(); };
+    el.addEventListener('wheel', handler, { passive: false });
+    return () => el.removeEventListener('wheel', handler);
+  }, []);
 
   // Find zones that can be edited (building/residential/development_area)
   const editableZones = useMemo(() =>
@@ -171,7 +181,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
   }
 
   return (
-    <div className="flex h-[500px] flex-col bg-primary-950 rounded-b-xl overflow-hidden">
+    <div ref={wrapperRef} className="flex h-[500px] flex-col bg-primary-950 rounded-b-xl overflow-hidden">
       {/* Editor header with zone picker integrated */}
       {!loading && editedLayout && (
         <div className="flex items-center justify-between border-b border-white/[0.08] bg-primary-950/95 backdrop-blur-xl px-4 py-2">
@@ -243,6 +253,8 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
             <BlockEditorCanvas
               width={containerSize.width}
               height={containerSize.height}
+              allZones={editableZones}
+              onSelectZone={setActiveZoneId}
             />
             <StatsPanel />
             <EditorToolbar />
