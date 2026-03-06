@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { buildingsApi } from '@/services/api';
 import { useGenerationStore } from '@/store/generationStore';
 
-const POLL_INTERVAL = 8000;
+const POLL_INTERVAL = 5000;
 
 export function useGenerationPolling() {
   const queryClient = useQueryClient();
@@ -38,7 +38,16 @@ export function useGenerationPolling() {
             markFailed(b.buildingId);
             toast.error(`${b.buildingName} generation failed`);
           } else {
+            const prevStep = b.step;
             updateBuilding(b.buildingId, status.progress ?? 0, status.step ?? '');
+            // When preview model becomes available, refresh so 3D viewer shows it
+            if (status.preview_model_url && prevStep !== 'preview_ready' && status.step === 'preview_ready' && projectId) {
+              queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+            }
+            // Also refresh when refining starts (preview model is saved at that point)
+            if (status.preview_model_url && prevStep !== 'refining' && status.step === 'refining' && projectId) {
+              queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+            }
           }
         } catch {
           // Ignore individual polling errors

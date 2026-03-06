@@ -537,9 +537,25 @@ def generate_3d_model_ai(
             result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
             logger.info(f"Meshy preview result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
 
+            # Save preview model immediately so the viewer can show it while refining
+            preview_glb_url = (result.get("model_urls") or {}).get("glb")
+            if preview_glb_url:
+                try:
+                    import httpx as httpx_dl
+                    preview_data = httpx_dl.get(preview_glb_url, timeout=60.0).content
+                    preview_key = f"projects/{building.project_id}/models/{building_id}_preview.glb"
+                    preview_s3_url = _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
+                    building.model_url = preview_s3_url
+                    building.lod_urls = {"0": preview_s3_url}
+                    session.commit()
+                    logger.info(f"Preview model saved for building {building_id}: {preview_s3_url}")
+                    self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "preview_ready"})
+                except Exception as prev_err:
+                    logger.warning(f"Failed to save preview model (non-fatal): {prev_err}")
+
             # For text mode, run refine step to get PBR textures (preview has no textures)
             if mode == "text" and refine:
-                self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "refining"})
+                self.update_state(state="GENERATING", meta={"progress": 0.55, "step": "refining"})
                 try:
                     refine_task_id = asyncio.run(client.text_to_3d_refine(
                         task_id,

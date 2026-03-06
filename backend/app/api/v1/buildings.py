@@ -555,11 +555,17 @@ async def get_generation_status(
             progress = int((meta.get("progress", 0) or 0) * 100)
             step = meta.get("step", "")
 
+    # If still generating but model_url exists, it's the preview model
+    preview_url = None
+    if building.generation_status == "generating" and building.model_url:
+        preview_url = building.model_url
+
     return GenerationStatusResponse(
         status=building.generation_status or "idle",
         progress=progress,
         step=step,
         model_url=building.model_url if building.generation_status == "completed" else None,
+        preview_model_url=preview_url,
         meshy_task_id=building.meshy_task_id,
     )
 

@@ -495,6 +495,7 @@ class GenerationStatusResponse(BaseModel):
     progress: Optional[float] = Field(None, description="Progress percentage (0-100)")
     step: Optional[str] = Field(None, description="Current generation step: calling_meshy, polling, refining, downloading, etc.")
     model_url: Optional[str] = Field(None, description="URL to the generated GLB model when completed")
+    preview_model_url: Optional[str] = Field(None, description="URL to preview model available during refinement")
     error: Optional[str] = Field(None, description="Error message if generation failed")
     meshy_task_id: Optional[str] = Field(None, description="Meshy task ID for external tracking")
 

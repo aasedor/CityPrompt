@@ -543,6 +543,7 @@ export interface GenerationStatus {
   progress?: number;
   step?: string;
   model_url?: string;
+  preview_model_url?: string;
   error?: string;
   meshy_task_id?: string;
 }

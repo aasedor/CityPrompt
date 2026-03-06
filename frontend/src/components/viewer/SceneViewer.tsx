@@ -2707,6 +2707,7 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
           footprintCoordinates={building.footprint_coordinates}
           isSelected={isSelected}
           isHovered={isHovered}
+          isRefining={building.generation_status === 'generating'}
           onClick={handleClick}
           onPointerOver={onPointerOver}
           onPointerOut={onPointerOut}
@@ -2762,6 +2763,7 @@ function GLBBuildingMesh({
   footprintCoordinates,
   isSelected,
   isHovered,
+  isRefining = false,
   onClick,
   onPointerOver,
   onPointerOut,
@@ -2774,6 +2776,7 @@ function GLBBuildingMesh({
   footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
+  isRefining?: boolean;
   onClick?: () => void;
   onPointerOver?: () => void;
   onPointerOut?: () => void;
@@ -2843,6 +2846,7 @@ function GLBBuildingMesh({
         footprintCoordinates={footprintCoordinates}
         isSelected={isSelected}
         isHovered={isHovered}
+        isRefining={isRefining}
         onClick={onClick}
         onPointerOver={onPointerOver}
         onPointerOut={onPointerOut}
@@ -2860,6 +2864,7 @@ function GLBModel({
   footprintCoordinates,
   isSelected,
   isHovered,
+  isRefining = false,
   onClick,
   onPointerOver,
   onPointerOut,
@@ -2871,6 +2876,7 @@ function GLBModel({
   footprintCoordinates?: number[][];
   isSelected: boolean;
   isHovered: boolean;
+  isRefining?: boolean;
   onClick?: () => void;
   onPointerOver?: () => void;
   onPointerOut?: () => void;
@@ -3002,6 +3008,22 @@ function GLBModel({
       }
     });
   }, [clonedScene, isSelected, isHovered]);
+
+  // Pulsing shimmer effect while the model is being refined
+  useFrame(({ clock }) => {
+    if (!isRefining) return;
+    const pulse = (Math.sin(clock.getElapsedTime() * 3) + 1) / 2; // 0 to 1
+    const emissiveColor = new THREE.Color('#6366f1').multiplyScalar(pulse * 0.4);
+    clonedScene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mat = (child as THREE.Mesh).material as THREE.MeshStandardMaterial;
+        if (mat.isMeshStandardMaterial) {
+          mat.emissive = emissiveColor;
+          mat.emissiveIntensity = 1;
+        }
+      }
+    });
+  });
 
   return (
     <group scale={[scaleX, scaleY, scaleZ]} position={[0, offsetY, 0]}>
