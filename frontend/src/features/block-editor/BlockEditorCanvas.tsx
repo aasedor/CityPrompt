@@ -225,20 +225,31 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
     return lines;
   }, [transform, showGrid, gridSizeMeters, width, height, zone]);
 
-  // Attach native wheel listener with { passive: false } so preventDefault
-  // actually stops the page from scrolling when the mouse is over the canvas.
-  // React's onWheel is passive by default and cannot prevent scroll.
+  // Zoom toward the mouse cursor: adjust pan so the point under the cursor
+  // stays fixed, like Mapbox / Google Maps behavior.
+  // Uses native wheel listener with { passive: false } to prevent page scroll.
+  const zoomStateRef = useRef({ zoom, panX, panY });
+  zoomStateRef.current = { zoom, panX, panY };
   useEffect(() => {
     const el = svgRef.current;
     if (!el) return;
     const handler = (e: WheelEvent) => {
       e.preventDefault();
+      const { zoom: z, panX: px, panY: py } = zoomStateRef.current;
       const factor = e.deltaY > 0 ? 0.9 : 1.1;
-      setZoom(zoom * factor);
+      const rect = el.getBoundingClientRect();
+      // Mouse position relative to SVG center
+      const mx = e.clientX - rect.left - rect.width / 2;
+      const my = e.clientY - rect.top - rect.height / 2;
+      // Adjust pan so the world-point under the cursor stays fixed
+      const newPanX = mx - factor * (mx - px);
+      const newPanY = my - factor * (my - py);
+      setZoom(z * factor);
+      setPan(newPanX, newPanY);
     };
     el.addEventListener('wheel', handler, { passive: false });
     return () => el.removeEventListener('wheel', handler);
-  }, [zoom, setZoom]);
+  }, [setZoom, setPan]);
 
   const handleCanvasPointerDown = useCallback((e: React.PointerEvent) => {
     if (isDragging) return;
@@ -276,7 +287,7 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
     }
   }, [isDragging, endDrag]);
 
-  if (!zone || !transform || !editedLayout) {
+  if (!zone || !transform || !zoneTransform || !editedLayout) {
     return (
       <div className="flex items-center justify-center h-full text-neutral-500">
         No layout data available
