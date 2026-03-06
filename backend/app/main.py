@@ -37,14 +37,9 @@ if settings.sentry_dsn:
 async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     logger.info("Starting 3D Development Platform API...")
-    # Startup: ensure admin users exist
-    try:
-        from scripts.ensure_admins import ensure_admins
-        await ensure_admins()
-    except Exception as e:
-        logger.warning(f"Admin seeding skipped: {e}")
+    # Admin seeding is handled by start.sh — not here, to avoid
+    # blocking uvicorn startup while waiting for DB connection.
     yield
-    # Shutdown: cleanup resources
     logger.info("Shutting down 3D Development Platform API...")
 
 

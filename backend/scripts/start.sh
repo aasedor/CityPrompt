@@ -3,34 +3,35 @@ set -e
 
 echo "=== 3D Platform — Render Startup ==="
 
-# --- 1. Enable PostGIS and uuid-ossp extensions ---
-# Derive a sync (psycopg2) URL from DATABASE_URL
-SYNC_URL="${DATABASE_URL}"
-# Render gives postgres:// — psycopg2 needs postgresql://
-SYNC_URL="${SYNC_URL/postgres:\/\//postgresql:\/\/}"
-# Strip any +asyncpg driver suffix if present
-SYNC_URL="${SYNC_URL/postgresql+asyncpg:\/\//postgresql:\/\/}"
+PORT="${PORT:-8000}"
 
-echo "Enabling PostGIS and uuid-ossp extensions..."
-python -c "
+# --- Run DB setup (extensions + migrations + admin seeding) in background ---
+# This lets uvicorn start immediately so health checks pass on cold start.
+(
+    SYNC_URL="${DATABASE_URL}"
+    SYNC_URL="${SYNC_URL/postgres:\/\//postgresql:\/\/}"
+    SYNC_URL="${SYNC_URL/postgresql+asyncpg:\/\//postgresql:\/\/}"
+
+    echo "[bg] Enabling PostGIS and uuid-ossp extensions..."
+    python -c "
 import sqlalchemy
 engine = sqlalchemy.create_engine('${SYNC_URL}')
 with engine.connect() as conn:
     conn.execute(sqlalchemy.text('CREATE EXTENSION IF NOT EXISTS postgis'))
     conn.execute(sqlalchemy.text('CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"'))
     conn.commit()
-print('Extensions enabled.')
-"
+print('[bg] Extensions enabled.')
+" || echo "[bg] WARNING: Extension creation failed"
 
-# --- 2. Run Alembic migrations (handles all table creation) ---
-echo "Running Alembic migrations..."
-alembic upgrade head
+    echo "[bg] Running Alembic migrations..."
+    alembic upgrade head || echo "[bg] WARNING: Migrations failed"
 
-# --- 4. Ensure admin users exist ---
-echo "Ensuring admin users..."
-python -m scripts.ensure_admins
+    echo "[bg] Ensuring admin users..."
+    python -m scripts.ensure_admins || echo "[bg] WARNING: Admin seeding skipped"
 
-# --- 5. Start uvicorn ---
-PORT="${PORT:-8000}"
+    echo "[bg] DB setup complete."
+) &
+
+# --- Start uvicorn immediately ---
 echo "Starting uvicorn on port $PORT..."
 exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT" --proxy-headers --forwarded-allow-ips="*"
