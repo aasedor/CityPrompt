@@ -24,6 +24,7 @@ import { AmbientAudio } from './AmbientAudio';
 import type { ThreeEvent } from '@react-three/fiber';
 import { ContextBuildingsGroup as EnhancedContextBuildingsGroup } from './ContextBuildings';
 import { Google3DTiles } from './Google3DTiles';
+import { TerrainMesh, getTerrainHeight } from './TerrainMesh';
 
 /**
  * Calculate sun position based on time of day and date.
@@ -815,6 +816,8 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       )}
       {showMapBackground ? (
         <SatelliteGroundPlane projectLat={latitude || 51.045} projectLng={longitude || -114.07} mapLayer={settings.mapLayer} />
+      ) : settings.show3DTiles ? (
+        <TerrainMesh />
       ) : (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
           <planeGeometry args={[1000, 1000]} />
@@ -1312,21 +1315,23 @@ function FirstPersonControls() {
         camera.position.add(move);
       }
       // Head bob effect
+      const groundY = settings.show3DTiles ? getTerrainHeight(camera.position.x, camera.position.z) : 0;
       if (settings.headBobEnabled) {
         const bobSpeed = isSprinting ? 0.25 : 0.15;
         bobPhase.current += bobSpeed;
-        camera.position.y = walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
+        camera.position.y = groundY + walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
       } else {
-        camera.position.y = walkHeight;
+        camera.position.y = groundY + walkHeight;
       }
     } else {
       // Smoothly decay bob when stationary
+      const groundY = settings.show3DTiles ? getTerrainHeight(camera.position.x, camera.position.z) : 0;
       if (bobPhase.current !== 0 && settings.headBobEnabled) {
         bobPhase.current *= 0.85;
         if (Math.abs(bobPhase.current) < 0.01) bobPhase.current = 0;
-        camera.position.y = walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
+        camera.position.y = groundY + walkHeight + Math.sin(bobPhase.current) * bobAmplitude;
       } else {
-        camera.position.y = walkHeight;
+        camera.position.y = groundY + walkHeight;
       }
     }
   });
@@ -2662,6 +2667,11 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
       visibilityRef.current += (target - current) * Math.min(1, delta * 5);
     }
     if (groupRef.current) {
+      // Adjust Y for terrain elevation when 3D tiles are active
+      if (settings.show3DTiles) {
+        const terrainY = getTerrainHeight(position[0], position[2]);
+        groupRef.current.position.y = baseY + terrainY;
+      }
       const v = visibilityRef.current;
       const s = 0.01 + v * 0.99; // scale 0.01 → 1
       groupRef.current.scale.set(s, s, s);
@@ -2697,9 +2707,8 @@ function BuildingMesh({ building, position, colorIndex, onClick, onPointerOver, 
 
   // GLB models ground themselves via offsetY inside GLBModel — place parent at y=0.
   // Procedural buildings are centered boxes, so they need y=h/2.
-  const effectivePosition: [number, number, number] = hasGLB
-    ? [position[0], 0, position[2]]
-    : position;
+  const baseY = hasGLB ? 0 : position[1];
+  const effectivePosition: [number, number, number] = [position[0], baseY, position[2]];
 
   // Y-axis rotation from building.rotation_degrees
   const rotationY = ((building.rotation_degrees ?? 0) * Math.PI) / 180;
