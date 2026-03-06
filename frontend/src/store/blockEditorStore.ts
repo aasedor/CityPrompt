@@ -236,7 +236,7 @@ export const useBlockEditorStore = create<BlockEditorState>((set, get) => ({
     });
   },
 
-  setZoom: (zoom) => set({ zoom: Math.max(0.2, Math.min(5, zoom)) }),
+  setZoom: (zoom) => set({ zoom: Math.max(0.1, Math.min(5, zoom)) }),
   setPan: (panX, panY) => set({ panX, panY }),
   toggleGrid: () => set((s) => ({ showGrid: !s.showGrid })),
   toggleSnapToGrid: () => set((s) => ({ snapToGrid: !s.snapToGrid })),

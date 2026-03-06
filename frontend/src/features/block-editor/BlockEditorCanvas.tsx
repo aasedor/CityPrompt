@@ -1,43 +1,60 @@
 import { useMemo, useRef, useCallback, useState, useEffect } from 'react';
 import { useBlockEditorStore } from '@/store/blockEditorStore';
-import { computeTransform, toSVG, offsetToSVG, metersToPixels } from '@/utils/coordTransform';
+import { computeTransform, toSVG, offsetToSVG, metersToPixels, type Transform } from '@/utils/coordTransform';
 import { BlockGroup } from './components/BlockGroup';
 import { useBlockDrag } from './hooks/useBlockDrag';
 import { useSnapLines } from './hooks/useSnapLines';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
+// Fetch satellite imagery covering 4x the zone area so zooming out still shows map
+const SATELLITE_EXPAND = 4;
+
 interface BlockEditorCanvasProps {
   width: number;
   height: number;
 }
 
+interface SatelliteInfo {
+  url: string;
+  halfLonDeg: number; // half-width of image in degrees longitude
+  halfLatDeg: number; // half-height of image in degrees latitude
+}
+
 /**
- * Compute Mapbox Static API URL aligned with the SVG coordinate transform.
- * Derives center and zoom from the transform so satellite pixels match SVG pixels.
+ * Compute Mapbox Static API URL and the exact geographic extent of the image.
+ * The geographic extent is used to position the image precisely in SVG via toSVG().
  */
-function getMapboxStaticUrl(
-  transform: import('@/utils/coordTransform').Transform | null,
-  width: number,
-  height: number,
-): string | null {
-  if (!MAPBOX_TOKEN || !transform) return null;
+function getSatelliteInfo(
+  baseTransform: Transform,
+  svgWidth: number,
+  svgHeight: number,
+): SatelliteInfo | null {
+  if (!MAPBOX_TOKEN) return null;
 
-  const { cx, cy, scale } = transform;
-
-  // Mapbox static: at zoom z, 1 pixel = 156543.03392 * cos(lat) / 2^z meters
-  // SVG transform: 1 pixel = 1/scale meters
-  // Match them: 2^z = 156543.03392 * cos(lat * pi/180) * scale
+  const { cx, cy, scale, mlon, mlat } = baseTransform;
   const cosLat = Math.cos((cy * Math.PI) / 180);
-  const zoom = Math.min(22, Math.max(10,
-    Math.log2(156543.03392 * cosLat * scale),
+
+  // Compute zoom where 1 Mapbox pixel = 1/scale meters (matching SVG),
+  // then reduce by SATELLITE_EXPAND to cover a wider area
+  const zoom = Math.min(22, Math.max(0,
+    Math.log2(156543.03392 * cosLat * scale) - Math.log2(SATELLITE_EXPAND),
   ));
 
   // Mapbox static images max 1280x1280
-  const imgW = Math.min(1280, Math.round(width));
-  const imgH = Math.min(1280, Math.round(height));
+  const imgW = Math.min(1280, Math.round(svgWidth));
+  const imgH = Math.min(1280, Math.round(svgHeight));
 
-  return `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${cx.toFixed(6)},${cy.toFixed(6)},${zoom.toFixed(4)},0/${imgW}x${imgH}@2x?access_token=${MAPBOX_TOKEN}`;
+  // Exact meters per pixel at the computed zoom
+  const metersPerPx = 156543.03392 * cosLat / Math.pow(2, zoom);
+
+  // Geographic half-extents of the image in degrees
+  const halfLonDeg = (imgW / 2) * metersPerPx / mlon;
+  const halfLatDeg = (imgH / 2) * metersPerPx / mlat;
+
+  const url = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${cx.toFixed(6)},${cy.toFixed(6)},${zoom.toFixed(4)},0/${imgW}x${imgH}@2x?access_token=${MAPBOX_TOKEN}`;
+
+  return { url, halfLonDeg, halfLatDeg };
 }
 
 export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
@@ -56,11 +73,12 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
     [zone, width, height],
   );
 
-  // Satellite background URL — derived from SVG transform so pixels align
-  const satelliteUrl = useMemo(
-    () => baseTransform ? getMapboxStaticUrl(baseTransform, width, height) : null,
+  // Satellite info — URL + geographic extent (stable, doesn't change with zoom/pan)
+  const satelliteInfo = useMemo(
+    () => baseTransform ? getSatelliteInfo(baseTransform, width, height) : null,
     [baseTransform, width, height],
   );
+  const satelliteUrl = satelliteInfo?.url ?? null;
   const [satelliteLoaded, setSatelliteLoaded] = useState(false);
   const [satelliteError, setSatelliteError] = useState(false);
 
@@ -178,28 +196,40 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
       onPointerMove={handleCanvasPointerMove}
       onPointerUp={handleCanvasPointerUp}
     >
-      {/* Satellite map background — wrapped in a group that zooms/pans with everything else */}
-      <g transform={baseTransform ? `translate(${baseTransform.offsetX + panX}, ${baseTransform.offsetY + panY}) scale(${zoom}) translate(${-baseTransform.offsetX}, ${-baseTransform.offsetY})` : undefined}>
-        {satelliteUrl && !satelliteError && (
-          <image
-            href={satelliteUrl}
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            preserveAspectRatio="xMidYMid slice"
-            opacity={satelliteLoaded ? 0.7 : 0}
-            onLoad={() => setSatelliteLoaded(true)}
-            onError={() => setSatelliteError(true)}
-            style={{ pointerEvents: 'none' }}
-          />
-        )}
-
-        {/* Dark overlay on top of satellite for contrast */}
-        {satelliteLoaded && !satelliteError && (
-          <rect x={0} y={0} width={width} height={height} fill="rgba(15, 15, 26, 0.4)" style={{ pointerEvents: 'none' }} />
-        )}
-      </g>
+      {/* Satellite map background — positioned using the same geographic transform as everything else */}
+      {satelliteUrl && !satelliteError && satelliteInfo && transform && (() => {
+        const cx = baseTransform!.cx;
+        const cy = baseTransform!.cy;
+        const [x1, y1] = toSVG(cx - satelliteInfo.halfLonDeg, cy + satelliteInfo.halfLatDeg, transform);
+        const [x2, y2] = toSVG(cx + satelliteInfo.halfLonDeg, cy - satelliteInfo.halfLatDeg, transform);
+        return (
+          <>
+            <image
+              href={satelliteUrl}
+              x={x1}
+              y={y1}
+              width={x2 - x1}
+              height={y2 - y1}
+              preserveAspectRatio="none"
+              opacity={satelliteLoaded ? 0.7 : 0}
+              onLoad={() => setSatelliteLoaded(true)}
+              onError={() => setSatelliteError(true)}
+              style={{ pointerEvents: 'none' }}
+            />
+            {/* Dark overlay on top of satellite for contrast */}
+            {satelliteLoaded && (
+              <rect
+                x={x1}
+                y={y1}
+                width={x2 - x1}
+                height={y2 - y1}
+                fill="rgba(15, 15, 26, 0.4)"
+                style={{ pointerEvents: 'none' }}
+              />
+            )}
+          </>
+        );
+      })()}
 
       {/* Grid */}
       {gridLines.map((line, i) => (

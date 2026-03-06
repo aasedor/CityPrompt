@@ -223,9 +223,14 @@ export function BlockPropertiesPanel() {
         </Field>
 
         <Field label="3D Generation Prompt">
-          <textarea value={(block as any).description || ''}
+          <textarea value={(block as any).description || zoneDescription || ''}
+            onFocus={() => {
+              if (!(block as any).description && zoneDescription) {
+                update({ description: zoneDescription });
+              }
+            }}
             onChange={(e) => update({ description: e.target.value })}
-            placeholder={zoneDescription ? zoneDescription.substring(0, 200) : 'Describe this building for 3D generation...'}
+            placeholder="Describe this building for 3D generation..."
             rows={3}
             className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none resize-none" />
         </Field>
