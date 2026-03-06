@@ -112,6 +112,7 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
 
   const svgRef = useRef<SVGSVGElement>(null);
   const isPanningRef = useRef(false);
+  const panDidMoveRef = useRef(false);
   const lastPanRef = useRef({ x: 0, y: 0 });
 
   // When multiple zones exist, fit ALL zone coordinates so neighbors are visible
@@ -253,15 +254,14 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
 
   const handleCanvasPointerDown = useCallback((e: React.PointerEvent) => {
     if (isDragging) return;
-    if (e.button === 1 || (e.button === 0 && (e.ctrlKey || e.metaKey))) {
+    if (e.button === 1 || e.button === 0) {
       isPanningRef.current = true;
+      panDidMoveRef.current = false;
       lastPanRef.current = { x: e.clientX, y: e.clientY };
       (e.target as Element).setPointerCapture(e.pointerId);
       e.preventDefault();
-    } else if (e.button === 0 && !e.ctrlKey && !e.metaKey) {
-      selectBlock(null);
     }
-  }, [isDragging, selectBlock]);
+  }, [isDragging]);
 
   const handleCanvasPointerMove = useCallback((e: React.PointerEvent) => {
     if (isDragging) {
@@ -271,6 +271,7 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
     if (isPanningRef.current) {
       const dx = e.clientX - lastPanRef.current.x;
       const dy = e.clientY - lastPanRef.current.y;
+      if (Math.abs(dx) > 2 || Math.abs(dy) > 2) panDidMoveRef.current = true;
       lastPanRef.current = { x: e.clientX, y: e.clientY };
       setPan(panX + dx, panY + dy);
     }
@@ -282,10 +283,14 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
       return;
     }
     if (isPanningRef.current) {
+      const wasDrag = panDidMoveRef.current;
       isPanningRef.current = false;
+      panDidMoveRef.current = false;
       (e.target as Element).releasePointerCapture(e.pointerId);
+      // Only deselect if it was a click (no drag movement)
+      if (!wasDrag) selectBlock(null);
     }
-  }, [isDragging, endDrag]);
+  }, [isDragging, endDrag, selectBlock]);
 
   if (!zone || !transform || !zoneTransform || !editedLayout) {
     return (
@@ -302,7 +307,7 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       className="select-none"
-      style={{ background: '#1a1a2e' }}
+      style={{ background: '#1a1a2e', cursor: isPanningRef.current ? 'grabbing' : 'grab' }}
       onPointerDown={handleCanvasPointerDown}
       onPointerMove={handleCanvasPointerMove}
       onPointerUp={handleCanvasPointerUp}
