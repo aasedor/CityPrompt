@@ -811,6 +811,12 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         area_ha = zone_polygon.area * mlon * METERS_PER_DEG_LAT / 10000
 
+        logger.info(
+            "buildings_only: placed %d of %d in zone %.1fx%.1fm (building %.1fx%.1fm, orientation %.1f°)",
+            len(buildings), unit_count, zone_width_m, zone_depth_m,
+            building_width_m, building_depth_m, orientation_deg,
+        )
+
         return SiteLayoutResponse(
             buildings=buildings,
             roads=[],

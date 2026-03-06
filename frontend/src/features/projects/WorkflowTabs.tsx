@@ -54,7 +54,7 @@ export function WorkflowTabs({
                 isActive
                   ? 'bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-400/30'
                   : isEnabled && tab.id === 'block-editor' && activeTab === 'master-plan'
-                    ? 'text-indigo-600 bg-indigo-500/5 ring-1 ring-indigo-400/20 shadow-[0_0_12px_rgba(99,102,241,0.3)] animate-pulse hover:bg-indigo-500/10'
+                    ? 'text-red-600 bg-red-500/10 ring-2 ring-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.5),0_0_40px_rgba(239,68,68,0.25)] animate-pulse hover:bg-red-500/15'
                   : isEnabled
                     ? 'text-primary-950/80 hover:bg-primary-950/[0.04] hover:text-primary-950'
                     : 'cursor-not-allowed text-primary-950/40'
