@@ -484,30 +484,38 @@ def _make_footprint_polygon(cx: float, cy: float, cell_w: float, cell_h: float, 
 
 
 def _make_rotated_footprint(
-    cx: float, cy: float, half_w_deg: float, half_h_deg: float, rotation_deg: float
+    cx: float, cy: float, half_w_m: float, half_h_m: float, rotation_deg: float,
+    center_lat: float = 0.0,
 ) -> str:
     """Create a WKT POLYGON for a rotated rectangular footprint centered at (cx, cy).
 
-    half_w_deg/half_h_deg are half-dimensions in degrees.
-    rotation_deg is clockwise rotation from north (0=north-aligned).
+    half_w_m/half_h_m are half-dimensions in METERS.
+    Rotation is performed in meter space to avoid distortion from non-uniform
+    degree scaling at high latitudes, then converted to degree offsets.
     """
-    # Build corners in local space then rotate
-    corners = [
-        (-half_w_deg, -half_h_deg),
-        ( half_w_deg, -half_h_deg),
-        ( half_w_deg,  half_h_deg),
-        (-half_w_deg,  half_h_deg),
+    # Build corners in meter space and rotate there
+    corners_m = [
+        (-half_w_m, -half_h_m),
+        ( half_w_m, -half_h_m),
+        ( half_w_m,  half_h_m),
+        (-half_w_m,  half_h_m),
     ]
 
     rad = math.radians(rotation_deg)
     cos_r = math.cos(rad)
     sin_r = math.sin(rad)
 
+    m_per_deg_lon = METERS_PER_DEG_LAT * abs(math.cos(math.radians(center_lat or cy)))
+
     rotated = []
-    for dx, dy in corners:
-        rx = dx * cos_r - dy * sin_r
-        ry = dx * sin_r + dy * cos_r
-        rotated.append(f"{cx + rx} {cy + ry}")
+    for dx_m, dy_m in corners_m:
+        # Rotate in meter space
+        rx_m = dx_m * cos_r - dy_m * sin_r
+        ry_m = dx_m * sin_r + dy_m * cos_r
+        # Convert rotated meter offsets to degree offsets
+        d_lon = rx_m / m_per_deg_lon
+        d_lat = ry_m / METERS_PER_DEG_LAT
+        rotated.append(f"{cx + d_lon} {cy + d_lat}")
     # Close polygon
     rotated.append(rotated[0])
 
@@ -979,10 +987,7 @@ async def apply_layout(
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
 
-        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
-        half_h = _m_to_deg_lat(lb.depth_m / 2)
-
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
 
         building = Building(
             project_id=zone.project_id,
@@ -1001,6 +1006,8 @@ async def apply_layout(
                 "roof_style": props.get("roof_style"),
                 "building_type": lb.building_type,
                 "style": lb.style,
+                "width_m": lb.width_m,
+                "depth_m": lb.depth_m,
             },
         )
         db.add(building)
@@ -1224,10 +1231,7 @@ async def create_building_from_zone(
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
 
-        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
-        half_h = _m_to_deg_lat(lb.depth_m / 2)
-
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
 
         building = Building(
             project_id=zone.project_id,
@@ -1787,9 +1791,7 @@ async def generate_all(
             for i, lb in enumerate(layout.buildings):
                 abs_cx = centroid.x + lb.center_x
                 abs_cy = centroid.y + lb.center_y
-                half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
-                half_h = _m_to_deg_lat(lb.depth_m / 2)
-                footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+                footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
 
                 b = Building(
                     project_id=zone.project_id,
@@ -1806,6 +1808,8 @@ async def generate_all(
                         "facade_material": zone_props.get("facade_material"),
                         "roof_style": zone_props.get("roof_style"),
                         "building_type": lb.building_type,
+                        "width_m": lb.width_m,
+                        "depth_m": lb.depth_m,
                     },
                 )
                 db.add(b)
@@ -1920,9 +1924,7 @@ async def save_layout(
         # Update footprint geometry
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
-        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
-        half_h = _m_to_deg_lat(lb.depth_m / 2)
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
         building.footprint = WKTElement(footprint_wkt, srid=4326)
 
         # Update building metadata from block editor (always sync all fields)
@@ -1948,9 +1950,7 @@ async def save_layout(
         lb = layout_buildings[i]
         abs_cx = centroid.x + lb.center_x
         abs_cy = centroid.y + lb.center_y
-        half_w = _m_to_deg_lon(lb.width_m / 2, center_lat)
-        half_h = _m_to_deg_lat(lb.depth_m / 2)
-        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, half_w, half_h, lb.rotation_deg)
+        footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
 
         building = Building(
             project_id=zone.project_id,
@@ -1969,6 +1969,8 @@ async def save_layout(
                 "roof_style": props.get("roof_style"),
                 "building_type": lb.building_type,
                 "style": lb.style,
+                "width_m": lb.width_m,
+                "depth_m": lb.depth_m,
             },
         )
         db.add(building)

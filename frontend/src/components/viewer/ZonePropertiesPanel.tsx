@@ -122,7 +122,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* SITE BOUNDARY — analysis + generate                           */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
-          <SiteBoundarySection zone={zone} allZones={allZones} />
+          <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
         )}
 
         {/* ============================================================= */}
@@ -833,7 +833,7 @@ async function captureMapScreenshots(
   }
 }
 
-function SiteBoundarySection({ zone, allZones }: { zone: SiteZone; allZones?: SiteZone[] }) {
+function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: SiteZone; allZones?: SiteZone[]; onOpenBlockEditor?: () => void }) {
   const queryClient = useQueryClient();
   const [analysis, setAnalysis] = useState<BoundaryAnalysisResponse | null>(null);
   const [loading, setLoading] = useState(false);

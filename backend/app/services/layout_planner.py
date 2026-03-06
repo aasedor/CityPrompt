@@ -673,14 +673,31 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
 
         angle_diagonal = angle_long + math.pi / 4
 
-        strategies = [
+        # First option: buildings only (no road) — uses longest axis for orientation
+        buildings_only_layout = self._generate_algorithmic_buildings_only(
+            zone_polygon, zone_type, unit_count, properties, angle_long,
+        )
+        options: list[SiteLayoutOption] = [
+            SiteLayoutOption(
+                option_index=0,
+                option_label="Buildings Only",
+                buildings=buildings_only_layout.buildings,
+                roads=buildings_only_layout.roads,
+                green_spaces=buildings_only_layout.green_spaces,
+                layout_strategy=buildings_only_layout.layout_strategy,
+                reasoning=buildings_only_layout.reasoning,
+                density_achieved=buildings_only_layout.density_achieved,
+            )
+        ]
+
+        # Road-based options
+        road_strategies = [
             ("longest_axis", "Road Along Longest Axis", angle_long),
             ("shortest_axis", "Road Along Shortest Axis", angle_short),
             ("diagonal", "Diagonal Road", angle_diagonal),
         ]
 
-        options: list[SiteLayoutOption] = []
-        for idx, (strategy_name, label, road_angle_rad) in enumerate(strategies[:count]):
+        for idx, (strategy_name, label, road_angle_rad) in enumerate(road_strategies[:count - 1], start=1):
             layout = self._generate_algorithmic_with_angle(
                 zone_polygon, zone_type, unit_count, properties, road_angle_rad, strategy_name
             )
@@ -697,6 +714,93 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             options.append(option)
 
         return options
+
+    def _generate_algorithmic_buildings_only(
+        self,
+        zone_polygon: Polygon,
+        zone_type: str,
+        unit_count: int,
+        properties: dict[str, Any],
+        orientation_rad: float,
+    ) -> SiteLayoutResponse:
+        """Generate a layout with buildings only — no internal road."""
+        centroid = zone_polygon.centroid
+        center_lat = centroid.y
+        mlon = _meters_per_deg_lon(center_lat)
+        orientation_deg = math.degrees(orientation_rad)
+
+        setback_side_m = 1.5
+        building_width_m = float(properties.get("building_width", 10))
+        building_depth_m = float(properties.get("building_depth", 12))
+
+        bounds = zone_polygon.bounds
+        zone_width_m = abs(bounds[2] - bounds[0]) * mlon
+        zone_depth_m = abs(bounds[3] - bounds[1]) * METERS_PER_DEG_LAT
+
+        cos_a = math.cos(orientation_rad)
+        sin_a = math.sin(orientation_rad)
+        perp_rad = orientation_rad + math.pi / 2
+
+        # Grid-based placement along and across the orientation axis
+        spacing_along = building_width_m + setback_side_m * 2
+        spacing_across = building_depth_m + setback_side_m * 2
+        half_extent = max(zone_width_m, zone_depth_m) / 2
+
+        buildings: list[LayoutBuilding] = []
+        placed = 0
+
+        # Determine how many rows/cols we need
+        max_cols = max(1, int(half_extent * 2 / spacing_along))
+        max_rows = max(1, int(half_extent * 2 / spacing_across))
+
+        for row in range(max_rows):
+            if placed >= unit_count:
+                break
+            for col in range(max_cols):
+                if placed >= unit_count:
+                    break
+
+                along_m = -half_extent * 0.8 + (col + 0.5) * spacing_along
+                across_m = -half_extent * 0.8 + (row + 0.5) * spacing_across
+
+                # Offset to center the grid
+                bx_m = along_m * cos_a + across_m * math.cos(perp_rad)
+                by_m = along_m * sin_a + across_m * math.sin(perp_rad)
+
+                cx = _m_to_deg_lon(bx_m, center_lat)
+                cy = _m_to_deg_lat(by_m)
+
+                pt = Point(centroid.x + cx, centroid.y + cy)
+                if not zone_polygon.contains(pt):
+                    continue
+
+                rotation_variation = ((row + col) % 3 - 1) * 3
+                building_rotation = orientation_deg + rotation_variation
+
+                buildings.append(LayoutBuilding(
+                    center_x=cx,
+                    center_y=cy,
+                    width_m=building_width_m,
+                    depth_m=building_depth_m,
+                    rotation_deg=building_rotation % 360,
+                    height_m=properties.get("height"),
+                    floors=properties.get("floors"),
+                    building_type=properties.get("development_type", "residential"),
+                    setback_front_m=3.0,
+                    setback_side_m=setback_side_m,
+                ))
+                placed += 1
+
+        area_ha = zone_polygon.area * mlon * METERS_PER_DEG_LAT / 10000
+
+        return SiteLayoutResponse(
+            buildings=buildings,
+            roads=[],
+            green_spaces=[],
+            layout_strategy="buildings_only",
+            reasoning=f"Buildings only (no road) — placed {len(buildings)} of {unit_count} buildings in a grid",
+            density_achieved=round(len(buildings) / max(area_ha, 0.01), 1),
+        )
 
     def _generate_algorithmic_with_angle(
         self,

@@ -13,41 +13,31 @@ interface BlockEditorCanvasProps {
 }
 
 /**
- * Compute Mapbox Static API URL from zone coordinates.
- * Calculates center and zoom from bounding box.
+ * Compute Mapbox Static API URL aligned with the SVG coordinate transform.
+ * Derives center and zoom from the transform so satellite pixels match SVG pixels.
  */
 function getMapboxStaticUrl(
-  coordinates: number[][],
+  transform: import('@/utils/coordTransform').Transform | null,
   width: number,
   height: number,
 ): string | null {
-  if (!MAPBOX_TOKEN || coordinates.length < 3) return null;
+  if (!MAPBOX_TOKEN || !transform) return null;
 
-  let minLng = Infinity, maxLng = -Infinity;
-  let minLat = Infinity, maxLat = -Infinity;
-  for (const [lng, lat] of coordinates) {
-    if (lng < minLng) minLng = lng;
-    if (lng > maxLng) maxLng = lng;
-    if (lat < minLat) minLat = lat;
-    if (lat > maxLat) maxLat = lat;
-  }
+  const { cx, cy, scale } = transform;
 
-  const centerLng = (minLng + maxLng) / 2;
-  const centerLat = (minLat + maxLat) / 2;
-
-  const lngSpan = maxLng - minLng;
-  const latSpan = maxLat - minLat;
-  const maxSpan = Math.max(lngSpan, latSpan);
-
-  // Approximate zoom: 360 / 2^zoom ~ span in degrees, with padding
-  let zoom = Math.floor(Math.log2(360 / (maxSpan * 1.5)));
-  zoom = Math.max(10, Math.min(20, zoom));
+  // Mapbox static: at zoom z, 1 pixel = 156543.03392 * cos(lat) / 2^z meters
+  // SVG transform: 1 pixel = 1/scale meters
+  // Match them: 2^z = 156543.03392 * cos(lat * pi/180) * scale
+  const cosLat = Math.cos((cy * Math.PI) / 180);
+  const zoom = Math.min(22, Math.max(10,
+    Math.log2(156543.03392 * cosLat * scale),
+  ));
 
   // Mapbox static images max 1280x1280
   const imgW = Math.min(1280, Math.round(width));
   const imgH = Math.min(1280, Math.round(height));
 
-  return `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${centerLng.toFixed(6)},${centerLat.toFixed(6)},${zoom},0/${imgW}x${imgH}@2x?access_token=${MAPBOX_TOKEN}`;
+  return `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/${cx.toFixed(6)},${cy.toFixed(6)},${zoom.toFixed(4)},0/${imgW}x${imgH}@2x?access_token=${MAPBOX_TOKEN}`;
 }
 
 export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
@@ -61,10 +51,15 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
   const isPanningRef = useRef(false);
   const lastPanRef = useRef({ x: 0, y: 0 });
 
-  // Satellite background URL
-  const satelliteUrl = useMemo(
-    () => zone ? getMapboxStaticUrl(zone.coordinates, width, height) : null,
+  const baseTransform = useMemo(
+    () => zone ? computeTransform(zone.coordinates, width, height, 40) : null,
     [zone, width, height],
+  );
+
+  // Satellite background URL — derived from SVG transform so pixels align
+  const satelliteUrl = useMemo(
+    () => baseTransform ? getMapboxStaticUrl(baseTransform, width, height) : null,
+    [baseTransform, width, height],
   );
   const [satelliteLoaded, setSatelliteLoaded] = useState(false);
   const [satelliteError, setSatelliteError] = useState(false);
@@ -74,11 +69,6 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
     setSatelliteLoaded(false);
     setSatelliteError(false);
   }, [satelliteUrl]);
-
-  const baseTransform = useMemo(
-    () => zone ? computeTransform(zone.coordinates, width, height, 40) : null,
-    [zone, width, height],
-  );
 
   const transform = useMemo(() => {
     if (!baseTransform) return null;

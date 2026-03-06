@@ -47,10 +47,12 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
   const selectedZone = editableZones.find((z) => z.id === activeZoneId);
   const needsDescription = selectedZone && !selectedZone.properties?.description_text;
 
-  // Auto-select first editable zone
+  // Auto-select first editable zone that has a description (ready for layout),
+  // falling back to the first editable zone if none have descriptions
   useEffect(() => {
     if (editableZones.length > 0 && !activeZoneId) {
-      setActiveZoneId(editableZones[0].id);
+      const withDesc = editableZones.find((z) => z.properties?.description_text);
+      setActiveZoneId((withDesc || editableZones[0]).id);
     }
   }, [editableZones, activeZoneId]);
 
