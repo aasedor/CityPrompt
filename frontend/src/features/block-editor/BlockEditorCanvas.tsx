@@ -13,6 +13,8 @@ const SATELLITE_EXPAND = 12;
 interface BlockEditorCanvasProps {
   width: number;
   height: number;
+  allZones?: import('@/types').SiteZone[];
+  onSelectZone?: (zoneId: string) => void;
 }
 
 interface SatelliteInfo {
@@ -101,7 +103,7 @@ function getSatelliteInfo(
   return { url, halfLonDeg, halfLatDeg };
 }
 
-export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
+export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: BlockEditorCanvasProps) {
   const {
     zone, editedLayout, selectedBlockIndex, hoveredBlockIndex, selectedElementType, selectedElementIndex,
     selectBlock, selectElement, hoverBlock, zoom, panX, panY, setZoom, setPan, dragState,
@@ -112,10 +114,17 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
   const isPanningRef = useRef(false);
   const lastPanRef = useRef({ x: 0, y: 0 });
 
-  const baseTransform = useMemo(
-    () => zone ? computeTransform(zone.coordinates, width, height, 40) : null,
-    [zone, width, height],
-  );
+  // When multiple zones exist, fit ALL zone coordinates so neighbors are visible
+  const baseTransform = useMemo(() => {
+    if (!zone) return null;
+    const otherZones = allZones?.filter((z) => z.id !== zone.id && z.coordinates.length >= 3) ?? [];
+    if (otherZones.length > 0) {
+      const allCoords = [...zone.coordinates, ...otherZones.flatMap((z) => z.coordinates)];
+      return computeTransform(allCoords, width, height, 40);
+    }
+    return computeTransform(zone.coordinates, width, height, 40);
+  }, [zone, allZones, width, height]);
+
 
   // Debug: log zone dimensions and satellite info for alignment verification
   useEffect(() => {
@@ -167,12 +176,26 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
     };
   }, [baseTransform, zoom, panX, panY]);
 
-  const { startDrag, onDrag, endDrag, isDragging } = useBlockDrag(transform);
+  // Transform for building/road/greenspace positions, which are stored as
+  // degree offsets from the active zone's centroid. We adjust offsetX/offsetY
+  // so that offsetToSVG(0,0) maps to the zone centroid's position on screen.
+  const zoneTransform = useMemo(() => {
+    if (!transform || !zone) return null;
+    const zcx = zone.coordinates.reduce((s, c) => s + c[0], 0) / zone.coordinates.length;
+    const zcy = zone.coordinates.reduce((s, c) => s + c[1], 0) / zone.coordinates.length;
+    // toSVG(zcx, zcy) using the combined transform gives the zone centroid's SVG position.
+    // offsetToSVG(0, 0, zt) should equal that, i.e. zt.offsetX = that x, zt.offsetY = that y.
+    const zoneOriginX = (zcx - transform.cx) * transform.mlon * transform.scale + transform.offsetX;
+    const zoneOriginY = -(zcy - transform.cy) * transform.mlat * transform.scale + transform.offsetY;
+    return { ...transform, cx: zcx, cy: zcy, offsetX: zoneOriginX, offsetY: zoneOriginY };
+  }, [transform, zone]);
+
+  const { startDrag, onDrag, endDrag, isDragging } = useBlockDrag(zoneTransform);
 
   const snapLines = useSnapLines(
     editedLayout?.buildings ?? [],
     dragState,
-    transform,
+    zoneTransform,
     width,
     height,
   );
@@ -202,10 +225,19 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
     return lines;
   }, [transform, showGrid, gridSizeMeters, width, height, zone]);
 
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const factor = e.deltaY > 0 ? 0.9 : 1.1;
-    setZoom(zoom * factor);
+  // Attach native wheel listener with { passive: false } so preventDefault
+  // actually stops the page from scrolling when the mouse is over the canvas.
+  // React's onWheel is passive by default and cannot prevent scroll.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      const factor = e.deltaY > 0 ? 0.9 : 1.1;
+      setZoom(zoom * factor);
+    };
+    el.addEventListener('wheel', handler, { passive: false });
+    return () => el.removeEventListener('wheel', handler);
   }, [zoom, setZoom]);
 
   const handleCanvasPointerDown = useCallback((e: React.PointerEvent) => {
@@ -260,7 +292,6 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
       viewBox={`0 0 ${width} ${height}`}
       className="select-none"
       style={{ background: '#1a1a2e' }}
-      onWheel={handleWheel}
       onPointerDown={handleCanvasPointerDown}
       onPointerMove={handleCanvasPointerMove}
       onPointerUp={handleCanvasPointerUp}
@@ -310,14 +341,36 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
         />
       ))}
 
-      {/* Zone boundary — filled overlay matching master plan appearance */}
+      {/* Neighboring zones — clickable to switch */}
+      {allZones?.filter((z) => z.id !== zone.id && z.coordinates.length >= 3).map((z) => {
+        const pts = z.coordinates
+          .map((c) => toSVG(c[0], c[1], transform))
+          .map(([x, y]) => `${x},${y}`)
+          .join(' ');
+        return (
+          <polygon
+            key={z.id}
+            points={pts}
+            fill={z.color || '#6366f1'}
+            fillOpacity={0.15}
+            stroke={z.color || '#6366f1'}
+            strokeWidth={1.5}
+            strokeOpacity={0.5}
+            strokeDasharray="6,4"
+            style={{ cursor: 'pointer' }}
+            onPointerDown={(e) => { e.stopPropagation(); onSelectZone?.(z.id); }}
+          />
+        );
+      })}
+
+      {/* Active zone boundary */}
       <polygon
         points={boundaryPoints}
         fill={zone.color || 'rgba(245,158,11,0.3)'}
-        fillOpacity={0.35}
+        fillOpacity={0.15}
         stroke={zone.color || '#f59e0b'}
-        strokeWidth={2.5}
-        strokeOpacity={0.8}
+        strokeWidth={2}
+        strokeOpacity={0.7}
       />
       {/* Dashed inner outline for precision */}
       <polygon
@@ -326,13 +379,13 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
         stroke="#ffffff"
         strokeWidth={1}
         strokeDasharray="6,4"
-        strokeOpacity={0.4}
+        strokeOpacity={0.3}
       />
 
       {/* Green spaces */}
       {editedLayout.green_spaces.map((gs, i) => {
         const pts = gs.polygon
-          .map(([dx, dy]) => offsetToSVG(dx, dy, transform))
+          .map(([dx, dy]) => offsetToSVG(dx, dy, zoneTransform!))
           .map(([x, y]) => `${x},${y}`)
           .join(' ');
         return (
@@ -353,10 +406,10 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
       {/* Roads */}
       {editedLayout.roads.map((road, i) => {
         const pts = road.centerline
-          .map(([dx, dy]) => offsetToSVG(dx, dy, transform))
+          .map(([dx, dy]) => offsetToSVG(dx, dy, zoneTransform!))
           .map(([x, y]) => `${x},${y}`)
           .join(' ');
-        const strokeW = Math.max(3, metersToPixels(road.width_m, transform));
+        const strokeW = Math.max(3, metersToPixels(road.width_m, zoneTransform!));
         return (
           <polyline
             key={`road-${i}`}
@@ -376,7 +429,7 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
       {/* Road centerlines */}
       {editedLayout.roads.map((road, i) => {
         const pts = road.centerline
-          .map(([dx, dy]) => offsetToSVG(dx, dy, transform))
+          .map(([dx, dy]) => offsetToSVG(dx, dy, zoneTransform!))
           .map(([x, y]) => `${x},${y}`)
           .join(' ');
         return (
@@ -435,7 +488,7 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
           key={i}
           block={bldg}
           index={i}
-          transform={transform}
+          transform={zoneTransform!}
           isSelected={selectedBlockIndex === i}
           isHovered={hoveredBlockIndex === i}
           showDimensions={showDimensions}
