@@ -61,6 +61,7 @@ class MeshyClient:
                 "mode": "refine",
                 "preview_task_id": preview_task_id,
                 "enable_pbr": True,
+                "texture_richness": "high",
             }
             if texture_prompt:
                 payload["texture_prompt"] = texture_prompt
