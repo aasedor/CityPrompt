@@ -33,14 +33,15 @@ export function getTerrainHeight(x: number, z: number): number {
   if (!heightDataReady) return 0;
 
   const halfSize = TERRAIN_SIZE / 2;
-  const gx = ((x + halfSize) / TERRAIN_SIZE) * TERRAIN_SEGMENTS;
-  const gz = ((z + halfSize) / TERRAIN_SIZE) * TERRAIN_SEGMENTS;
+  // Clamp to grid bounds to avoid wild extrapolation outside the sampled area
+  const gx = Math.max(0, Math.min(TERRAIN_SEGMENTS, ((x + halfSize) / TERRAIN_SIZE) * TERRAIN_SEGMENTS));
+  const gz = Math.max(0, Math.min(TERRAIN_SEGMENTS, ((z + halfSize) / TERRAIN_SIZE) * TERRAIN_SEGMENTS));
 
   const ix = Math.max(0, Math.min(TERRAIN_SEGMENTS - 1, Math.floor(gx)));
   const iz = Math.max(0, Math.min(TERRAIN_SEGMENTS - 1, Math.floor(gz)));
 
-  const fx = gx - ix;
-  const fz = gz - iz;
+  const fx = Math.min(1, gx - ix);
+  const fz = Math.min(1, gz - iz);
 
   const h00 = heightData[iz * TERRAIN_CELLS + ix];
   const h10 = heightData[iz * TERRAIN_CELLS + ix + 1];
