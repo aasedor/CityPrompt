@@ -974,6 +974,7 @@ export function ViewerPage() {
                 onZoneClick={selectZone}
                 onBuildingMove={handleBuildingMove}
                 buildingStatuses={generationStatuses}
+                projectId={id}
                 remoteUsers={collaboration.users
                   .filter((u) => u.id !== collaboration.connectionId)
                   .map((u) => {

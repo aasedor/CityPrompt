@@ -307,6 +307,8 @@ interface SceneViewerProps {
   remoteUsers?: { id: string; name: string; color: string; position: [number, number, number]; target: [number, number, number] }[];
   /** Building generation statuses for overlay indicators */
   buildingStatuses?: Map<string, { status: string; progress?: number }>;
+  /** Project ID for persisting camera position across viewer sessions */
+  projectId?: string;
 }
 
 // Warm color palette for buildings
@@ -724,7 +726,7 @@ function polygonCentroid(pts: number[][]): [number, number] {
  * Renders buildings using React Three Fiber with orbit controls,
  * environment lighting, and shadow support.
  */
-export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones, onZoneClick, onBuildingMove, remoteUsers, buildingStatuses }: SceneViewerProps) {
+export function SceneViewer({ buildings, documents, contextBuildings, contextRoads, onBuildingClick, onBuildingHover, showMapBackground, latitude, longitude, annotations, onAnnotationClick, onResolveAnnotation, onDeleteAnnotation, onCameraMove, followCamera, siteZones, onZoneClick, onBuildingMove, remoteUsers, buildingStatuses, projectId }: SceneViewerProps) {
   const { settings, isAnnotating, isMovingBuilding, selectedBuildingId } = useViewerStore();
 
   // Compute grid positions for buildings so they don't stack
@@ -914,6 +916,9 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
         />
       )}
 
+      {/* Persist camera position across viewer sessions */}
+      {projectId && <CameraPersistence projectId={projectId} />}
+
       {/* Controls */}
       <CameraControls />
 
@@ -962,6 +967,63 @@ function computeBuildingPositions(buildings: Building[]): [number, number, numbe
     const height = b.height_meters || 10;
     return [col * spacing, height / 2, row * spacing];
   });
+}
+
+/** Persists camera position/target to sessionStorage per project.
+ *  On re-entry, restores the camera slightly above the saved position (fly-above safety). */
+function CameraPersistence({ projectId }: { projectId: string }) {
+  const { camera } = useThree();
+  const { setCameraTarget } = useViewerStore();
+  const lastSave = useRef(0);
+  const dirVec = useRef(new THREE.Vector3());
+  const hasRestored = useRef(false);
+  const SAFE_HEIGHT_OFFSET = 15; // meters above saved position
+
+  // Restore saved camera on mount via a smooth transition
+  useEffect(() => {
+    if (hasRestored.current) return;
+    hasRestored.current = true;
+    try {
+      const raw = sessionStorage.getItem(`viewer-camera-${projectId}`);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.position && saved.target) {
+        const safePos: [number, number, number] = [
+          saved.position[0],
+          Math.max(saved.position[1], 5) + SAFE_HEIGHT_OFFSET,
+          saved.position[2],
+        ];
+        // Use setCameraTarget to trigger a smooth transition that also updates OrbitControls target
+        setCameraTarget({
+          position: safePos,
+          target: saved.target,
+          label: 'Restored',
+        });
+      }
+    } catch {
+      // Ignore corrupt data
+    }
+  }, [projectId, setCameraTarget]);
+
+  // Save camera position every ~2 seconds when it moves
+  useFrame(() => {
+    const now = performance.now();
+    if (now - lastSave.current < 2000) return;
+    lastSave.current = now;
+    camera.getWorldDirection(dirVec.current);
+    const d = dirVec.current;
+    const data = {
+      position: [camera.position.x, camera.position.y, camera.position.z],
+      target: [camera.position.x + d.x * 50, camera.position.y + d.y * 50, camera.position.z + d.z * 50],
+    };
+    try {
+      sessionStorage.setItem(`viewer-camera-${projectId}`, JSON.stringify(data));
+    } catch {
+      // sessionStorage full or unavailable
+    }
+  });
+
+  return null;
 }
 
 /** Broadcasts local camera position to collaborators at ~10fps */
@@ -2501,6 +2563,12 @@ function ReferenceImage({ document: doc, index }: { document: Document; index: n
 // Compute building width/depth from footprint coordinates or specifications
 function useBuildingDimensions(building: Building): { width: number; depth: number } {
   return useMemo(() => {
+    // Prefer authoritative dimensions from specifications (set by block editor).
+    // This avoids bounding-box inflation for rotated footprints.
+    const specs = building.specifications || {};
+    if ((specs.width_m as number) > 0 && (specs.depth_m as number) > 0) {
+      return { width: specs.width_m as number, depth: specs.depth_m as number };
+    }
     if (building.footprint_coordinates && building.footprint_coordinates.length >= 3) {
       const coords = building.footprint_coordinates;
       const lats = coords.map(c => c[1]);
@@ -2512,7 +2580,6 @@ function useBuildingDimensions(building: Building): { width: number; depth: numb
       const d = (Math.max(...lats) - Math.min(...lats)) * metersPerDegLat;
       return { width: Math.max(3, w), depth: Math.max(3, d) };
     }
-    const specs = building.specifications || {};
     return {
       width: (specs.width_m as number) || 20,
       depth: (specs.depth_m as number) || 15,

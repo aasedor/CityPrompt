@@ -188,26 +188,28 @@ export function BlockEditorCanvas({ width, height }: BlockEditorCanvasProps) {
       onPointerMove={handleCanvasPointerMove}
       onPointerUp={handleCanvasPointerUp}
     >
-      {/* Satellite map background */}
-      {satelliteUrl && !satelliteError && (
-        <image
-          href={satelliteUrl}
-          x={0}
-          y={0}
-          width={width}
-          height={height}
-          preserveAspectRatio="xMidYMid slice"
-          opacity={satelliteLoaded ? 0.7 : 0}
-          onLoad={() => setSatelliteLoaded(true)}
-          onError={() => setSatelliteError(true)}
-          style={{ pointerEvents: 'none' }}
-        />
-      )}
+      {/* Satellite map background — wrapped in a group that zooms/pans with everything else */}
+      <g transform={baseTransform ? `translate(${baseTransform.offsetX + panX}, ${baseTransform.offsetY + panY}) scale(${zoom}) translate(${-baseTransform.offsetX}, ${-baseTransform.offsetY})` : undefined}>
+        {satelliteUrl && !satelliteError && (
+          <image
+            href={satelliteUrl}
+            x={0}
+            y={0}
+            width={width}
+            height={height}
+            preserveAspectRatio="xMidYMid slice"
+            opacity={satelliteLoaded ? 0.7 : 0}
+            onLoad={() => setSatelliteLoaded(true)}
+            onError={() => setSatelliteError(true)}
+            style={{ pointerEvents: 'none' }}
+          />
+        )}
 
-      {/* Dark overlay on top of satellite for contrast */}
-      {satelliteLoaded && !satelliteError && (
-        <rect x={0} y={0} width={width} height={height} fill="rgba(15, 15, 26, 0.4)" style={{ pointerEvents: 'none' }} />
-      )}
+        {/* Dark overlay on top of satellite for contrast */}
+        {satelliteLoaded && !satelliteError && (
+          <rect x={0} y={0} width={width} height={height} fill="rgba(15, 15, 26, 0.4)" style={{ pointerEvents: 'none' }} />
+        )}
+      </g>
 
       {/* Grid */}
       {gridLines.map((line, i) => (
