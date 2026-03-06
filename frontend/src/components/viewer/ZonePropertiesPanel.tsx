@@ -618,40 +618,6 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           </button>
         )}
 
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential') && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (() => {
-          const unitCount = Math.max(
-            (props.unit_count as number) || 1,
-            (() => {
-              const desc = (props.description_text as string) || '';
-              const m = desc.match(/(\d+)\s*(homes?|houses?|units?|buildings?|townhomes?|condos?)/i);
-              return m ? parseInt(m[1]) : 0;
-            })(),
-            1,
-          );
-          return (
-            <LayoutPreviewPanel
-              zone={zone}
-              onApplied={() => {
-                // Refresh by triggering a re-fetch — the parent will pick up building_ids
-              }}
-              onAIGenerate={onAIGenerate}
-              referenceContext={osmContext}
-              siblingZones={allZones?.filter((z) => z.id !== zone.id)}
-            />
-          );
-        })()}
-
-        {/* Development Area Layout Preview */}
-        {zone.zone_type === 'development_area' && onAIGenerate && !zone.building_id && layoutPreview?.zoneId !== zone.id && (
-          <LayoutPreviewPanel
-            zone={zone}
-            onApplied={() => {}}
-            onAIGenerate={onAIGenerate}
-            referenceContext={osmContext}
-            siblingZones={allZones?.filter((z) => z.id !== zone.id)}
-          />
-        )}
-
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && onAIGenerate && zone.building_id && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
         )}
