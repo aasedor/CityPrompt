@@ -36,11 +36,16 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
   useBlockEditorKeyboard();
 
-  // Prevent page scroll when mouse is anywhere over the block editor
+  // Prevent page scroll when mouse is over the block editor, but allow
+  // native scroll inside the properties panel (which has overflow-y-auto).
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
-    const handler = (e: WheelEvent) => { e.preventDefault(); };
+    const handler = (e: WheelEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-scrollable]')) return;
+      e.preventDefault();
+    };
     el.addEventListener('wheel', handler, { passive: false });
     return () => el.removeEventListener('wheel', handler);
   }, []);

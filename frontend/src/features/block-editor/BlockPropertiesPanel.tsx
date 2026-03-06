@@ -14,7 +14,7 @@ export function BlockPropertiesPanel() {
     const road = editedLayout.roads?.[selectedElementIndex];
     if (!road) return null;
     return (
-      <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+      <div data-scrollable className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2">
             <Route size={14} className="text-amber-400" />
@@ -64,7 +64,7 @@ export function BlockPropertiesPanel() {
     const gs = editedLayout.green_spaces?.[selectedElementIndex];
     if (!gs) return null;
     return (
-      <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+      <div data-scrollable className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2">
             <TreePine size={14} className="text-emerald-400" />
@@ -106,7 +106,7 @@ export function BlockPropertiesPanel() {
   // No selection
   if (selectedBlockIndex === null || !editedLayout) {
     return (
-      <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+      <div data-scrollable className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
         <div className="flex h-full items-center justify-center p-6">
           <div className="text-center">
             <div className="text-neutral-600 mb-2">
@@ -131,7 +131,7 @@ export function BlockPropertiesPanel() {
   };
 
   return (
-    <div className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+    <div data-scrollable className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-white">Block #{selectedBlockIndex + 1}</h3>
