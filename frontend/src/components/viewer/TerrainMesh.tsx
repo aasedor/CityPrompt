@@ -118,7 +118,9 @@ export function TerrainMesh() {
 
       const hits = raycaster.current.intersectObjects(meshes, false);
       if (hits.length > 0) {
-        const y = hits[0].point.y;
+        // Use the lowest hit (last in the sorted array) to get the ground
+        // surface rather than rooftops of 3D buildings
+        const y = hits[hits.length - 1].point.y;
         positions.setY(i, y);
 
         // Store in height map for getTerrainHeight lookups
