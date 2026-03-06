@@ -71,6 +71,9 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     }
   }, [editableZones, activeZoneId]);
 
+  // Cache generated layouts per zone so switching between zones is instant
+  const layoutCacheRef = useRef<Record<string, LayoutOption[]>>({});
+
   // Load layout options for selected zone
   useEffect(() => {
     if (!activeZoneId) return;
@@ -79,17 +82,13 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
     const loadData = async () => {
       // Skip if the store already has this zone's layout (e.g. tab switch back)
-      if (storeZoneId === activeZoneId && editedLayout) {
+      const store = useBlockEditorStore.getState();
+      if (store.zoneId === activeZoneId && store.editedLayout) {
         setLoading(false);
         return;
       }
-      console.log('[BlockEditor] Loading zone', activeZoneId, {
-        name: zoneForLoad.name,
-        hasDescription: !!zoneForLoad.properties?.description_text,
-        hasSavedLayout: !!zoneForLoad.properties?._saved_layout,
-      });
+
       if (!zoneForLoad?.properties?.description_text) {
-        // Zone has no description yet — don't try to generate layouts
         setLoading(false);
         return;
       }
@@ -98,26 +97,33 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
         // 1. Check for saved layout in zone properties
         const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
         if (savedLayout) {
+          layoutCacheRef.current[activeZoneId] = [savedLayout];
           initEditor(projectId, zoneForLoad, [savedLayout]);
           setLoading(false);
           return;
         }
 
-        // 2. Check for cached layout in zustand store
+        // 2. Check local cache (previously generated during this session)
+        if (layoutCacheRef.current[activeZoneId]?.length) {
+          initEditor(projectId, zoneForLoad, layoutCacheRef.current[activeZoneId]);
+          setLoading(false);
+          return;
+        }
+
+        // 3. Check for cached layout in zustand viewer store
         let options = layoutPreview?.zoneId === activeZoneId ? layoutPreview.options : [];
 
-        // 3. Only call previewLayouts if no saved or cached layout
+        // 4. Only call previewLayouts if nothing cached
         if (options.length === 0) {
           const response = await siteZonesApi.previewLayouts(activeZoneId);
           options = response.options;
-          console.log('[BlockEditor] previewLayouts returned', options.length, 'options',
-            options.map(o => ({ buildings: o.buildings?.length, label: o.option_label })));
         }
         if (options.length === 0) {
           toast.error('No layout options generated');
           setLoading(false);
           return;
         }
+        layoutCacheRef.current[activeZoneId] = options;
         initEditor(projectId, zoneForLoad, options);
       } catch (err: any) {
         toast.error(err?.response?.data?.detail || 'Failed to generate layouts');
@@ -127,8 +133,6 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     };
 
     loadData();
-    // Don't resetEditor on unmount — preserve state across tab switches.
-    // Only reset when switching to a different zone (handled by initEditor).
   }, [activeZoneId, projectId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Track container size
@@ -222,8 +226,8 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
             <span className="text-[10px] text-neutral-500">{editedLayout.buildings.length} blocks</span>
           </div>
 
-          {/* Center: Option tabs */}
-          <OptionTabs />
+          {/* Spacer */}
+          <div />
 
           {/* Right: Tools + Actions */}
           <EditorControls
