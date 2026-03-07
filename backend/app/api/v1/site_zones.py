@@ -431,6 +431,46 @@ def _resolve_unit_count(zone: SiteZone) -> int:
     return max(prop_count, parsed_count, 1)
 
 
+def _is_orientation_window_zone(zone: SiteZone, unit_count: int) -> bool:
+    """Return True when this zone should expose orientation-window options."""
+    if unit_count < 6:
+        return False
+    props = zone.properties or {}
+    zone_type = str(zone.zone_type or "").lower()
+    dev_type = str(props.get("development_type", zone_type) or zone_type).lower()
+    return (
+        zone_type in ("residential", "development_area")
+        or dev_type in ("residential", "mixed_use", "park_plaza")
+    )
+
+
+def _estimate_zone_area_m2(zone: SiteZone) -> float:
+    """Estimate zone area from geometry bounds (meters squared)."""
+    try:
+        shape = to_shape(zone.geometry)
+        minx, miny, maxx, maxy = shape.bounds
+        center_lat = (miny + maxy) / 2
+        meters_per_deg_lon = METERS_PER_DEG_LAT * abs(math.cos(math.radians(center_lat)))
+        width_m = abs(maxx - minx) * meters_per_deg_lon
+        depth_m = abs(maxy - miny) * METERS_PER_DEG_LAT
+        return width_m * depth_m
+    except Exception:
+        return 0.0
+
+
+def _resolve_layout_option_count(zone: SiteZone, unit_count: int) -> int:
+    """Choose number of preview options based on zone scale/type."""
+    if not _is_orientation_window_zone(zone, unit_count):
+        return 3
+
+    area_ha = _estimate_zone_area_m2(zone) / 10000.0
+    if unit_count >= 24 or area_ha >= 4.0:
+        return 8
+    if unit_count >= 12 or area_ha >= 2.0:
+        return 6
+    return 5
+
+
 def compute_unit_positions(zone_geometry, unit_count: int):
     """Compute grid positions for N units within zone bounding box.
 
@@ -587,7 +627,7 @@ async def preview_layouts(
 ):
     """Generate multiple layout options for a multi-unit zone without creating buildings.
 
-    Returns 3 layout strategies for the user to compare and choose from.
+    Returns multiple layout strategies for the user to compare and choose from.
     Pure read-only preview — does NOT modify any records.
     """
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
@@ -613,6 +653,7 @@ async def preview_layouts(
             raise HTTPException(status_code=403, detail="Not authorized")
 
     unit_count = max(_resolve_unit_count(zone), 1)
+    option_count = _resolve_layout_option_count(zone, unit_count)
 
     # Generate layout options
     shape = to_shape(zone.geometry)
@@ -644,7 +685,7 @@ async def preview_layouts(
         unit_count=unit_count,
         properties=props,
         neighbors=neighbors if neighbors else None,
-        count=3,
+        count=option_count,
         reference_context=reference_context,
     )
 
@@ -748,6 +789,8 @@ async def render_layout_preview(
                 "layout_strategy": option.layout_strategy,
                 "reasoning": option.reasoning,
                 "density_achieved": option.density_achieved,
+                "orientation_deg": option.orientation_deg,
+                "orientation_mode": option.orientation_mode,
             },
         )
         await db.commit()
@@ -904,6 +947,8 @@ async def render_site_preview(
                     "layout_strategy": opt.layout_strategy,
                     "reasoning": opt.reasoning,
                     "density_achieved": opt.density_achieved,
+                    "orientation_deg": opt.orientation_deg,
+                    "orientation_mode": opt.orientation_mode,
                 }
             except Exception:
                 pass
@@ -1072,6 +1117,7 @@ async def regenerate_layout(
             raise HTTPException(status_code=403, detail="Not authorized")
 
     unit_count = _resolve_unit_count(zone)
+    option_count = _resolve_layout_option_count(zone, unit_count)
     shape = to_shape(zone.geometry)
     props = zone.properties or {}
 
@@ -1112,7 +1158,7 @@ async def regenerate_layout(
         unit_count=unit_count,
         properties=props,
         neighbors=neighbors if neighbors else None,
-        count=3,
+        count=option_count,
         reference_context=reference_context,
         locked_layers=locked_layers,
     )

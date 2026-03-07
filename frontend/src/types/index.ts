@@ -147,6 +147,8 @@ export interface LayoutOption {
   layout_strategy: string;
   reasoning: string;
   density_achieved?: number;
+  orientation_deg?: number;
+  orientation_mode?: string;
 }
 
 export interface LayoutPreviewResponse {

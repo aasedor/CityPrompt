@@ -383,6 +383,8 @@ class SiteLayoutOption(SiteLayoutResponse):
     """A single layout option in a multi-option preview response."""
     option_index: int = Field(description="Index of this option (0-based)")
     option_label: str = Field(default="", description="Human-readable label, e.g. 'Cul-de-sac', 'Loop Road'")
+    orientation_deg: Optional[float] = Field(None, description="Primary site orientation angle in degrees (for orientation explorer options)")
+    orientation_mode: Optional[str] = Field(None, description="Option family identifier, e.g. 'site_orientation'")
 
 
 class LayoutPreviewResponse(BaseModel):

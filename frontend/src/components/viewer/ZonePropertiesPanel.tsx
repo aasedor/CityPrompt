@@ -31,85 +31,375 @@ const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
   {
     id: 'new_york_brownstone',
     label: 'New York Brownstone',
-    description: 'Rowhouse stoops, masonry facades, and classic urban rhythm',
-    photoUrl: 'https://images.unsplash.com/photo-1762216454185-71127f1d4a95?auto=format&fit=crop&w=1000&q=80',
+    description: 'Park Slope rowhouses with stoops, masonry, and a tight streetwall',
+    photoUrl: 'https://source.unsplash.com/yfmkBgAQpzQ/1200x900',
   },
   {
     id: 'parisian_haussmann',
     label: 'Parisian Haussmann',
-    description: 'Stone facades, iron balconies, and elegant boulevard edges',
-    photoUrl: 'https://images.unsplash.com/photo-1762419371724-62026e913a70?auto=format&fit=crop&w=1000&q=80',
+    description: 'Stone facades, iron balconies, and consistent boulevard frontage',
+    photoUrl: 'https://source.unsplash.com/yyb5HOnHfus/1200x900',
   },
   {
     id: 'historic_traditional',
     label: 'Historic / Traditional',
-    description: 'Brick, stone, and detailed facades',
-    photoUrl: 'https://images.unsplash.com/photo-1763236685709-e0af42e75d7d?auto=format&fit=crop&w=1000&q=80',
+    description: 'Ornate historic fabric with masonry detailing and arched openings',
+    photoUrl: 'https://source.unsplash.com/FzDTX62A2hk/1200x900',
   },
   {
     id: 'modern',
     label: 'Modern',
-    description: 'Clean lines, glass, and contemporary forms',
-    photoUrl: 'https://images.unsplash.com/photo-1760350617916-f31a61153bd5?auto=format&fit=crop&w=1000&q=80',
+    description: 'Contemporary mid/high-rise residential with glass and clean geometry',
+    photoUrl: 'https://source.unsplash.com/IEMvQU4i1KU/1200x900',
   },
   {
     id: 'futuristic',
     label: 'Futuristic',
-    description: 'High-tech, angular, and expressive structures',
-    photoUrl: 'https://images.unsplash.com/photo-1744168915654-580f2cfc213b?auto=format&fit=crop&w=1000&q=80',
+    description: 'Expressive form language with advanced facades and landmark massing',
+    photoUrl: 'https://source.unsplash.com/mpCSquAKaCc/1200x900',
   },
   {
     id: 'other',
     label: 'Other',
-    description: 'Custom direction guided by your prompt',
-    photoUrl: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80',
+    description: 'Custom architectural direction guided by your prompt',
+    photoUrl: 'https://source.unsplash.com/kZVQsLOxQgw/1200x900',
   },
 ];
 
 const ROADWAY_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
   {
     id: 'kyoto_philosophers_path',
-    label: 'Kyoto Philosopher\'s Path',
-    description: 'Pedestrian canal edge, cherry trees, and intimate paving',
-    photoUrl: 'https://images.unsplash.com/photo-1765692089840-97414f5b74fe?auto=format&fit=crop&w=1000&q=80',
+    label: "Kyoto Philosopher's Path",
+    description: 'Canal-side pedestrian realm with blossom canopy and intimate paving',
+    photoUrl: 'https://source.unsplash.com/0mufRTPZxsc/1200x900',
+  },
+  {
+    id: 'shared_street_woonerf',
+    label: 'Shared Street (Woonerf)',
+    description: 'Low-speed shared space blending walking, cycling, and access vehicles',
+    photoUrl: 'https://source.unsplash.com/RxqyHdbEZsc/1200x900',
+  },
+  {
+    id: 'complete_street',
+    label: 'Complete Street',
+    description: 'Balanced corridor for transit, bikes, walking, and automobiles',
+    photoUrl: 'https://source.unsplash.com/STFjn2S4bjY/1200x900',
+  },
+  {
+    id: 'cycle_priority_corridor',
+    label: 'Cycle Priority Corridor',
+    description: 'Protected cycling emphasis with calmer vehicle throughput',
+    photoUrl: 'https://source.unsplash.com/qn0XY1LkccI/1200x900',
   },
   {
     id: 'grand_boulevard',
     label: 'Grand Boulevard',
-    description: 'Wide right-of-way with planted medians and formal edges',
-    photoUrl: 'https://images.unsplash.com/photo-1764583885299-22fe11a24234?auto=format&fit=crop&w=1000&q=80',
+    description: 'Tree-lined multiway boulevard with planted medians and formal edges',
+    photoUrl: 'https://source.unsplash.com/X2cgJGE8UyU/1200x900',
   },
   {
     id: 'neighborhood_high_street',
     label: 'Neighborhood High Street',
-    description: 'Slow street with active ground floor and generous sidewalks',
-    photoUrl: 'https://images.unsplash.com/photo-1704603399202-83212ba5c9b5?auto=format&fit=crop&w=1000&q=80',
+    description: 'Active mixed-use frontage with generous sidewalks and slower speeds',
+    photoUrl: 'https://source.unsplash.com/IXd81kBAmLA/1200x900',
   },
   {
-    id: 'pedestrian_focused',
-    label: 'Pedestrian Focused',
-    description: 'Walk-first corridor with minimal or no car throughput',
-    photoUrl: 'https://images.unsplash.com/photo-1759548845703-638bd43de21c?auto=format&fit=crop&w=1000&q=80',
-  },
-  {
-    id: 'water_centric',
-    label: 'Water-Centric Promenade',
-    description: 'Canal or waterfront promenade with active walking edges',
-    photoUrl: 'https://images.unsplash.com/photo-1765652583591-f5723a02a670?auto=format&fit=crop&w=1000&q=80',
+    id: 'transit_avenue',
+    label: 'Transit Avenue',
+    description: 'Frequent transit street with strong pedestrian connections',
+    photoUrl: 'https://source.unsplash.com/hEL-9dgbfL0/1200x900',
   },
   {
     id: 'industrial_collector',
     label: 'Industrial Collector',
-    description: 'Durable roadway with heavier service and freight function',
-    photoUrl: 'https://images.unsplash.com/photo-1548188756-52031def9bd5?auto=format&fit=crop&w=1000&q=80',
+    description: 'Durable freight-supportive corridor with service and loading access',
+    photoUrl: 'https://source.unsplash.com/NL2Tx5LxT1M/1200x900',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom transportation mood directed by your prompt',
-    photoUrl: 'https://images.unsplash.com/photo-1508798179027-a00aa5326443?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://source.unsplash.com/XPslUk17CUM/1200x900',
   },
 ];
+
+const GREEN_SPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
+  {
+    id: 'high_line_linear_park',
+    label: 'Linear Elevated Park',
+    description: 'High Line-inspired promenade with layered planting and seating pockets',
+    photoUrl: 'https://source.unsplash.com/Ln26aeNeJdk/1200x900',
+  },
+  {
+    id: 'superkilen_cultural_park',
+    label: 'Cultural Activity Park',
+    description: 'Superkilen-like social park with bold surfaces and active edges',
+    photoUrl: 'https://source.unsplash.com/TuAZPj1uaZs/1200x900',
+  },
+  {
+    id: 'philosophers_path_garden',
+    label: 'Canal Garden Walk',
+    description: 'Tree-lined water edge focused on strolling and quiet recreation',
+    photoUrl: 'https://source.unsplash.com/KDjYIvQF1YI/1200x900',
+  },
+  {
+    id: 'wetland_boardwalk_park',
+    label: 'Ecological Wetland Park',
+    description: 'Sponge-park boardwalk system for habitat and stormwater retention',
+    photoUrl: 'https://source.unsplash.com/bdh-sY4KneM/1200x900',
+  },
+  {
+    id: 'civic_lawn_commons',
+    label: 'Civic Lawn Commons',
+    description: 'Flexible event lawn with shade trees and everyday social use',
+    photoUrl: 'https://source.unsplash.com/EhjTCDVEqOc/1200x900',
+  },
+  {
+    id: 'botanical_garden',
+    label: 'Botanical Garden',
+    description: 'Curated planting collections with formal paths and rest zones',
+    photoUrl: 'https://source.unsplash.com/tl0uMsO7xIs/1200x900',
+  },
+  {
+    id: 'other',
+    label: 'Other',
+    description: 'Custom landscape concept guided by your prompt',
+    photoUrl: 'https://source.unsplash.com/3DDjse_nQco/1200x900',
+  },
+];
+
+const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
+  {
+    id: 'civic_fountain_square',
+    label: 'Civic Fountain Square',
+    description: 'Formal public square with iconic fountain as social anchor',
+    photoUrl: 'https://source.unsplash.com/U7YsOUPYgYw/1200x900',
+  },
+  {
+    id: 'market_plaza',
+    label: 'Market Plaza',
+    description: 'Flexible hardscape for kiosks, events, and daily commerce',
+    photoUrl: 'https://source.unsplash.com/F0sSRtZfwPA/1200x900',
+  },
+  {
+    id: 'festival_plaza',
+    label: 'Festival Plaza',
+    description: 'Large gathering forecourt for civic and cultural programming',
+    photoUrl: 'https://source.unsplash.com/awiQebTjbNU/1200x900',
+  },
+  {
+    id: 'garden_plaza',
+    label: 'Garden Plaza',
+    description: 'Softened plaza with trees, seating bands, and cooler microclimate',
+    photoUrl: 'https://source.unsplash.com/CprOa-VNeLw/1200x900',
+  },
+  {
+    id: 'waterfront_boardwalk_plaza',
+    label: 'Waterfront Boardwalk Plaza',
+    description: 'Edge plaza with boardwalk terraces and promenade character',
+    photoUrl: 'https://source.unsplash.com/3DDjse_nQco/1200x900',
+  },
+  {
+    id: 'other',
+    label: 'Other',
+    description: 'Custom plaza identity guided by your prompt',
+    photoUrl: 'https://source.unsplash.com/8-nDXKy2Vz8/1200x900',
+  },
+];
+
+const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
+  kyoto_philosophers_path: {
+    mobility_profile: 'walking_only',
+    width: 6,
+    lane_count: 1,
+    volume: 'low',
+    road_surface: 'paver',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 1,
+    priority_cycling: 2,
+    priority_transit: 4,
+    priority_auto: 4,
+  },
+  shared_street_woonerf: {
+    mobility_profile: 'pedestrian_first',
+    width: 7,
+    lane_count: 1,
+    volume: 'low',
+    road_surface: 'paver',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 1,
+    priority_cycling: 2,
+    priority_transit: 4,
+    priority_auto: 4,
+  },
+  complete_street: {
+    mobility_profile: 'balanced',
+    width: 18,
+    lane_count: 2,
+    volume: 'medium',
+    road_surface: 'asphalt',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 2,
+    priority_cycling: 2,
+    priority_transit: 2,
+    priority_auto: 3,
+  },
+  cycle_priority_corridor: {
+    mobility_profile: 'pedestrian_first',
+    width: 12,
+    lane_count: 2,
+    volume: 'low',
+    road_surface: 'asphalt',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 2,
+    priority_cycling: 1,
+    priority_transit: 3,
+    priority_auto: 4,
+  },
+  grand_boulevard: {
+    mobility_profile: 'balanced',
+    width: 28,
+    lane_count: 4,
+    volume: 'high',
+    road_surface: 'asphalt',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 2,
+    priority_cycling: 3,
+    priority_transit: 1,
+    priority_auto: 3,
+  },
+  neighborhood_high_street: {
+    mobility_profile: 'pedestrian_first',
+    width: 14,
+    lane_count: 2,
+    volume: 'low',
+    road_surface: 'paver',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 1,
+    priority_cycling: 2,
+    priority_transit: 3,
+    priority_auto: 4,
+  },
+  transit_avenue: {
+    mobility_profile: 'balanced',
+    width: 22,
+    lane_count: 4,
+    volume: 'high',
+    road_surface: 'asphalt',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 2,
+    priority_cycling: 3,
+    priority_transit: 1,
+    priority_auto: 3,
+  },
+  industrial_collector: {
+    mobility_profile: 'vehicle_access',
+    width: 20,
+    lane_count: 4,
+    volume: 'high',
+    road_surface: 'concrete',
+    sidewalks: 'both',
+    has_sidewalks: true,
+    priority_pedestrian: 4,
+    priority_cycling: 4,
+    priority_transit: 3,
+    priority_auto: 1,
+  },
+};
+
+const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
+  high_line_linear_park: {
+    tree_density_level: 'medium',
+    tree_density: 0.45,
+    has_paths: true,
+    has_benches: true,
+    shade_strategy: 'layered_canopy',
+  },
+  superkilen_cultural_park: {
+    tree_density_level: 'sparse',
+    tree_density: 0.25,
+    has_paths: true,
+    has_benches: true,
+    shade_strategy: 'open_active',
+  },
+  philosophers_path_garden: {
+    tree_density_level: 'dense',
+    tree_density: 0.65,
+    has_paths: true,
+    has_benches: true,
+    water_feature: 'canal_edge',
+    shade_strategy: 'continuous_canopy',
+  },
+  wetland_boardwalk_park: {
+    tree_density_level: 'medium',
+    tree_density: 0.5,
+    has_paths: true,
+    has_benches: true,
+    water_feature: 'wetland',
+    shade_strategy: 'ecological_mosaic',
+  },
+  civic_lawn_commons: {
+    tree_density_level: 'medium',
+    tree_density: 0.35,
+    has_paths: true,
+    has_benches: true,
+    shade_strategy: 'event_lawn_edge_trees',
+  },
+  botanical_garden: {
+    tree_density_level: 'dense',
+    tree_density: 0.7,
+    has_paths: true,
+    has_benches: true,
+    shade_strategy: 'curated_species_mix',
+  },
+};
+
+const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
+  civic_fountain_square: {
+    parking_layout: 'parallel',
+    covered: false,
+    paving_material: 'stone',
+    shade_strategy: 'edge_trees',
+    water_feature: 'fountain',
+  },
+  market_plaza: {
+    parking_layout: 'parallel',
+    covered: false,
+    paving_material: 'paver',
+    shade_strategy: 'tree_grove',
+    plaza_program: 'market',
+  },
+  festival_plaza: {
+    parking_layout: 'perpendicular',
+    covered: false,
+    paving_material: 'concrete',
+    shade_strategy: 'flexible_shade_structures',
+    plaza_program: 'events',
+  },
+  garden_plaza: {
+    parking_layout: 'parallel',
+    covered: false,
+    paving_material: 'stone',
+    shade_strategy: 'garden_canopy',
+    plaza_program: 'leisure',
+  },
+  waterfront_boardwalk_plaza: {
+    parking_layout: 'parallel',
+    covered: false,
+    paving_material: 'wood_deck',
+    shade_strategy: 'linear_trees',
+    water_feature: 'waterfront',
+    plaza_program: 'promenade',
+  },
+};
+
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
@@ -140,16 +430,20 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   };
 
   const applyAestheticSelection = (
-    key: 'development_aesthetic' | 'road_aesthetic',
+    key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
     next: string | undefined,
-    imageUrl?: string,
+    options: DevelopmentAestheticOption[],
+    presets?: Record<string, Partial<SiteZoneProperties>>,
   ) => {
     setProps((p) => {
       const nextProps: SiteZoneProperties = { ...p, [key]: next || undefined };
       const existing = Array.isArray(p.reference_images) ? (p.reference_images as string[]) : [];
-      const optionImages = (
-        key === 'development_aesthetic' ? DEVELOPMENT_AESTHETIC_OPTIONS : ROADWAY_AESTHETIC_OPTIONS
-      ).map((o) => o.photoUrl);
+      const optionImages = options.map((o) => o.photoUrl);
+      const imageUrl = options.find((o) => o.id === next)?.photoUrl;
+
+      if (next && presets?.[next]) {
+        Object.assign(nextProps, presets[next]);
+      }
 
       if (imageUrl) {
         const deduped = existing.filter((img) => img && img !== imageUrl);
@@ -161,6 +455,22 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
       return nextProps;
     });
+  };
+
+  const applyBuildingAesthetic = (next: string | undefined) => {
+    applyAestheticSelection('development_aesthetic', next, DEVELOPMENT_AESTHETIC_OPTIONS);
+  };
+
+  const applyRoadAesthetic = (next: string | undefined) => {
+    applyAestheticSelection('road_aesthetic', next, ROADWAY_AESTHETIC_OPTIONS, ROADWAY_AESTHETIC_PRESETS);
+  };
+
+  const applyGreenSpaceAesthetic = (next: string | undefined) => {
+    applyAestheticSelection('green_space_aesthetic', next, GREEN_SPACE_AESTHETIC_OPTIONS, GREEN_SPACE_AESTHETIC_PRESETS);
+  };
+
+  const applyPlazaAesthetic = (next: string | undefined) => {
+    applyAestheticSelection('plaza_aesthetic', next, PLAZA_AESTHETIC_OPTIONS, PLAZA_AESTHETIC_PRESETS);
   };
 
   const applyRoadMobilityProfile = (profile: 'walking_only' | 'pedestrian_first' | 'balanced' | 'vehicle_access') => {
@@ -306,7 +616,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
-                  onChange={(next) => applyAestheticSelection('development_aesthetic', next, DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === next)?.photoUrl)}
+                  onChange={applyBuildingAesthetic}
                 />
               </div>
             </div>
@@ -391,6 +701,15 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'green_space' && (
           <>
             <div>
+              <label className="block text-xs text-primary-950/50">Park Typology</label>
+              <div className="mt-1">
+                <GreenSpaceAestheticPicker
+                  value={(props.green_space_aesthetic as string) || undefined}
+                  onChange={applyGreenSpaceAesthetic}
+                />
+              </div>
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Tree Density</label>
               <select
                 value={(props.tree_density_level as string) || 'medium'}
@@ -446,7 +765,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <div className="mt-1">
                 <RoadwayAestheticPicker
                   value={(props.road_aesthetic as string) || undefined}
-                  onChange={(next) => applyAestheticSelection('road_aesthetic', next, ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next)?.photoUrl)}
+                  onChange={applyRoadAesthetic}
                 />
               </div>
             </div>
@@ -643,6 +962,15 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'parking' && (
           <>
             <div>
+              <label className="block text-xs text-primary-950/50">Plaza Typology</label>
+              <div className="mt-1">
+                <PlazaAestheticPicker
+                  value={(props.plaza_aesthetic as string) || undefined}
+                  onChange={applyPlazaAesthetic}
+                />
+              </div>
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Parking Layout</label>
               <select
                 value={(props.parking_layout as string) || 'perpendicular'}
@@ -662,6 +990,19 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 onChange={(e) => setProps((p) => ({ ...p, covered: e.target.checked }))}
                 className="rounded border-primary-950/[0.1]"
               />
+            </div>
+            <div>
+              <label className="block text-xs text-primary-950/50">Paving Material</label>
+              <select
+                value={(props.paving_material as string) || 'paver'}
+                onChange={(e) => setProps((p) => ({ ...p, paving_material: e.target.value }))}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="paver">Paver</option>
+                <option value="stone">Stone</option>
+                <option value="concrete">Concrete</option>
+                <option value="wood_deck">Wood Deck</option>
+              </select>
             </div>
           </>
         )}
@@ -722,7 +1063,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
-                  onChange={(next) => applyAestheticSelection('development_aesthetic', next, DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === next)?.photoUrl)}
+                  onChange={applyBuildingAesthetic}
                 />
               </div>
             </div>
@@ -1012,7 +1353,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
   const siteImageUrls = isSitePreviewActive ? sitePreview!.imageUrls : {};
   const siteActiveIndex = isSitePreviewActive ? sitePreview!.activeIndex : 0;
 
-  // Figure out how many option sets we have (max across zones, typically 3)
+  // Figure out how many option sets we have (max across zones)
   const optionCount = Object.values(siteOptions).reduce(
     (max, opts) => Math.max(max, opts.length), 0
   );
@@ -1673,6 +2014,114 @@ function RoadwayAestheticPicker({
 // Reference Images sub-component
 // =============================================================================
 
+function GreenSpaceAestheticPicker({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange: (next: string | undefined) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        {GREEN_SPACE_AESTHETIC_OPTIONS.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            onClick={() => onChange(option.id)}
+            className={`overflow-hidden rounded-lg border text-left transition-all ${
+              value === option.id
+                ? 'border-primary-500 ring-2 ring-primary-500/25'
+                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+            }`}
+          >
+            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+              <img
+                src={option.photoUrl}
+                alt={option.label}
+                className="h-full w-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-2">
+                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+              </div>
+            </div>
+            <div className="px-2 py-1.5">
+              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(undefined)}
+        disabled={!value}
+        className="w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-[11px] font-medium text-primary-950/60 hover:bg-primary-950/[0.08] disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Clear Park Typology
+      </button>
+    </div>
+  );
+}
+
+function PlazaAestheticPicker({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange: (next: string | undefined) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 gap-2">
+        {PLAZA_AESTHETIC_OPTIONS.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            onClick={() => onChange(option.id)}
+            className={`overflow-hidden rounded-lg border text-left transition-all ${
+              value === option.id
+                ? 'border-primary-500 ring-2 ring-primary-500/25'
+                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+            }`}
+          >
+            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+              <img
+                src={option.photoUrl}
+                alt={option.label}
+                className="h-full w-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-2">
+                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+              </div>
+            </div>
+            <div className="px-2 py-1.5">
+              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(undefined)}
+        disabled={!value}
+        className="w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-[11px] font-medium text-primary-950/60 hover:bg-primary-950/[0.08] disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Clear Plaza Typology
+      </button>
+    </div>
+  );
+}
+
 function ReferenceImagesSection({
   images,
   onChange,
@@ -2109,8 +2558,4 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
-
-
-
-
 

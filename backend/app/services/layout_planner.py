@@ -530,6 +530,28 @@ class LayoutPlanner:
 - Generate new unlocked elements that work around the locked ones
 - Ensure new buildings don't overlap with locked roads or green spaces
 """
+        is_orientation_window = (
+            count > 3
+            and unit_count >= 6
+            and (dev_type in ("residential", "mixed_use", "park_plaza") or zone_type in ("residential", "development_area"))
+        )
+        if is_orientation_window:
+            layout_strategy_text = f"""## Layout Strategies to Generate
+This zone qualifies for an orientation window. Return {count} options that keep approximately similar density/coverage while rotating the primary block orientation across options.
+- Option 1 should align with the site's longest axis
+- Progressively rotate the orientation in each following option
+- Keep roads and green_spaces arrays empty unless the user explicitly asks for them
+- Include \"orientation_deg\" and set \"orientation_mode\" to \"site_orientation\" for each option
+"""
+        else:
+            layout_strategy_text = """## Layout Strategies to Generate
+Each layout must use a DIFFERENT building arrangement strategy:
+1. **Buildings Only** - buildings arranged in a clean grid or cluster pattern with NO roads and NO green_spaces. The "roads" array MUST be empty []. The "green_spaces" array MUST be empty []. This is the DEFAULT option.
+2. **Loop Road** - buildings arranged along both sides of an oval/loop road with green buffers
+3. **Grid / Diagonal** - buildings in a grid pattern with connecting roads
+
+IMPORTANT: The first option (Buildings Only) must have an EMPTY roads array and an EMPTY green_spaces array. Do NOT add any roads or green spaces to it.
+"""
 
         prompt = f"""You are an expert urban planner. Generate {count} DIFFERENT layout strategies for the same zone.
 
@@ -545,13 +567,7 @@ class LayoutPlanner:
 {reference_section}
 {locked_section}
 
-## Layout Strategies to Generate
-Each layout must use a DIFFERENT building arrangement strategy:
-1. **Buildings Only** — buildings arranged in a clean grid or cluster pattern with NO roads and NO green_spaces. The "roads" array MUST be empty []. The "green_spaces" array MUST be empty []. This is the DEFAULT option.
-2. **Loop Road** — buildings arranged along both sides of an oval/loop road with green buffers
-3. **Grid / Diagonal** — buildings in a grid pattern with connecting roads
-
-IMPORTANT: The first option (Buildings Only) must have an EMPTY roads array and an EMPTY green_spaces array. Do NOT add any roads or green spaces to it.
+{layout_strategy_text}
 
 ## Urban Planning Rules
 - Side setback: minimum 1.5m between buildings
@@ -571,6 +587,8 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
   {{
     "layout_strategy": "<strategy_name>",
     "option_label": "<human readable label, e.g. Cul-de-sac>",
+    "orientation_deg": <optional float>,
+    "orientation_mode": "<optional string, e.g. site_orientation>",
     "reasoning": "<brief explanation>",
     "density_achieved": <float>,
     "buildings": [
@@ -643,6 +661,8 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 layout_strategy=layout.layout_strategy,
                 reasoning=layout.reasoning,
                 density_achieved=layout.density_achieved,
+                orientation_deg=item.get("orientation_deg"),
+                orientation_mode=item.get("orientation_mode"),
             )
             options.append(option)
 
@@ -656,7 +676,11 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
         properties: dict[str, Any],
         count: int = 3,
     ) -> list[SiteLayoutOption]:
-        """Generate free algorithmic layout variations by rotating road orientation."""
+        """Generate algorithmic layout variations.
+
+        For large multi-unit residential/development areas, generate an
+        orientation-window set (multiple site orientations).
+        """
         centroid = zone_polygon.centroid
         center_lat = centroid.y
         mlon = _meters_per_deg_lon(center_lat)
@@ -690,20 +714,59 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
             (p2_short[0] - p1_short[0]) * mlon,
         )
 
-        angle_diagonal = angle_long + math.pi / 4
+        dev_type = str(properties.get("development_type", zone_type) or zone_type).lower()
+        is_residential_like = (
+            zone_type in ("residential", "development_area")
+            or dev_type in ("residential", "mixed_use", "park_plaza")
+        )
+        orientation_window = is_residential_like and unit_count >= 6
 
-        # Generate buildings-only options with different orientations (no roads)
+        options: list[SiteLayoutOption] = []
+
+        if orientation_window:
+            max_count = max(3, min(count, 8))
+            span_deg = 72.0 if max_count >= 6 else 54.0
+            if max_count == 1:
+                offsets_deg = [0.0]
+            else:
+                step = span_deg / (max_count - 1)
+                offsets_deg = [(-span_deg / 2.0) + step * i for i in range(max_count)]
+
+            for idx, offset_deg in enumerate(offsets_deg):
+                orientation_rad = angle_long + math.radians(offset_deg)
+                layout = self._generate_algorithmic_buildings_only(
+                    zone_polygon, zone_type, unit_count, properties, orientation_rad,
+                )
+                orientation_deg = (math.degrees(orientation_rad) + 360.0) % 360.0
+                option = SiteLayoutOption(
+                    option_index=idx,
+                    option_label=f"Orientation {idx + 1} ({offset_deg:+.0f} deg)",
+                    buildings=layout.buildings,
+                    roads=[],
+                    green_spaces=[],
+                    layout_strategy=f"orientation_{idx + 1}",
+                    reasoning=layout.reasoning,
+                    density_achieved=layout.density_achieved,
+                    orientation_deg=round(orientation_deg, 1),
+                    orientation_mode="site_orientation",
+                )
+                options.append(option)
+
+            return options
+
+        # Default smaller set
+        angle_diagonal = angle_long + math.pi / 4
         strategies = [
             ("along_longest", "Along Longest Axis", angle_long),
             ("along_shortest", "Along Shortest Axis", angle_short),
             ("diagonal", "Diagonal", angle_diagonal),
         ]
 
-        options: list[SiteLayoutOption] = []
         for idx, (strategy_name, label, orientation_rad) in enumerate(strategies[:count]):
             layout = self._generate_algorithmic_buildings_only(
                 zone_polygon, zone_type, unit_count, properties, orientation_rad,
             )
+            orientation_deg = (math.degrees(orientation_rad) + 360.0) % 360.0
             option = SiteLayoutOption(
                 option_index=idx,
                 option_label=label,
@@ -713,6 +776,8 @@ Return ONLY a JSON array of {count} layout objects. Each object has this schema:
                 layout_strategy=strategy_name,
                 reasoning=layout.reasoning,
                 density_achieved=layout.density_achieved,
+                orientation_deg=round(orientation_deg, 1),
+                orientation_mode="strategy_mix",
             )
             options.append(option)
 
@@ -1719,6 +1784,19 @@ Requirements:
                     details.append("walking paths")
                 if props.get("has_benches"):
                     details.append("benches")
+
+                park_typology = props.get("green_space_aesthetic") or props.get("park_typology")
+                if park_typology:
+                    details.append(f"typology: {str(park_typology).replace('_', ' ')}")
+
+                shade_strategy = props.get("shade_strategy")
+                if shade_strategy:
+                    details.append(f"shade: {str(shade_strategy).replace('_', ' ')}")
+
+                water_feature = props.get("water_feature")
+                if water_feature:
+                    details.append(f"water feature: {str(water_feature).replace('_', ' ')}")
+
             elif zt == "water":
                 wtype = props.get("water_type", "pond")
                 details.append(wtype)
@@ -1727,6 +1805,26 @@ Requirements:
                 details.append(f"{layout} layout")
                 if props.get("covered"):
                     details.append("covered")
+
+                plaza_typology = props.get("plaza_aesthetic")
+                if plaza_typology:
+                    details.append(f"plaza typology: {str(plaza_typology).replace('_', ' ')}")
+
+                paving_material = props.get("paving_material")
+                if paving_material:
+                    details.append(f"paving: {str(paving_material).replace('_', ' ')}")
+
+                shade_strategy = props.get("shade_strategy")
+                if shade_strategy:
+                    details.append(f"shade: {str(shade_strategy).replace('_', ' ')}")
+
+                plaza_program = props.get("plaza_program")
+                if plaza_program:
+                    details.append(f"program: {str(plaza_program).replace('_', ' ')}")
+
+                water_feature = props.get("water_feature")
+                if water_feature:
+                    details.append(f"water feature: {str(water_feature).replace('_', ' ')}")
 
             desc_text = props.get("description_text", "")
             desc_suffix = ""
@@ -1902,4 +2000,3 @@ OUTPUT RULES:
             for p in response.candidates[0].content.parts
         ]
         raise RuntimeError(f"Gemini did not return an image for site preview. Parts received: {part_types}")
-

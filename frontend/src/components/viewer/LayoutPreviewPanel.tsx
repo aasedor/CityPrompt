@@ -33,6 +33,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   const options = isPreviewActive ? layoutPreview!.options : [];
   const activeIndex = isPreviewActive ? layoutPreview!.activeIndex : 0;
   const activeOption = options[activeIndex];
+  const isOrientationExplorer = options.length > 3 && options.some((opt) => opt.orientation_mode === 'site_orientation');
   // Image URLs persisted in Zustand store (survives navigation)
   const previewImages = isPreviewActive ? layoutPreview!.imageUrls : {};
 
@@ -157,7 +158,14 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-primary-950/60">Layout Options</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-semibold text-primary-950/60">Layout Options</span>
+          {isOrientationExplorer && (
+            <span className="rounded-full bg-indigo-500/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-indigo-400">
+              Orientation Window
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-2">
           {renderingCount > 0 && (
             <span className="flex items-center gap-1 text-[10px] text-purple-400">
@@ -238,6 +246,12 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
               showDimensions
             />
           )}
+        </div>
+      )}
+
+      {activeOption && activeOption.orientation_deg !== undefined && (
+        <div className="rounded border border-indigo-400/20 bg-indigo-500/10 px-2 py-1 text-[10px] text-indigo-300">
+          Primary orientation: {formatOrientation(activeOption.orientation_deg)}
         </div>
       )}
 
@@ -354,9 +368,16 @@ function OptionCard({
         <span className={`text-xs font-semibold ${isActive ? 'text-indigo-300' : 'text-primary-950/70'}`}>
           {option.option_label}
         </span>
-        <span className="text-[10px] text-primary-950/40">
-          {option.buildings.length} units
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] text-primary-950/40">
+            {option.buildings.length} units
+          </span>
+          {option.orientation_deg !== undefined && (
+            <span className="rounded bg-primary-950/[0.04] px-1 py-0.5 text-[9px] font-medium text-primary-950/60">
+              {formatOrientation(option.orientation_deg)}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Primary: AI-rendered image. Fallback: SVG diagram while rendering */}
@@ -439,11 +460,23 @@ function OptionCard({
           {option.density_achieved} units/ha
         </div>
       )}
+      {option.orientation_mode && (
+        <div className="mt-1 text-[10px] text-primary-950/40">
+          {option.orientation_mode === 'site_orientation' ? 'Orientation study' : option.orientation_mode.replace(/_/g, ' ')}
+        </div>
+      )}
       <p className="mt-0.5 text-[10px] leading-tight text-primary-950/50 line-clamp-2">
         {option.reasoning}
       </p>
     </div>
   );
+}
+
+function formatOrientation(deg: number) {
+  const normalized = ((deg % 360) + 360) % 360;
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const dir = directions[Math.round(normalized / 45) % 8];
+  return `${Math.round(normalized)} deg ${dir}`;
 }
 
 function LayerLockButton({
