@@ -198,7 +198,7 @@ export function ProjectViewPage() {
           </Link>
         </div>
       </div>
-      <section className="mt-6 overflow-hidden rounded-xl border border-primary-950/[0.08] shadow-card">
+      <section className="relative left-1/2 mt-6 w-screen max-w-none -translate-x-1/2 overflow-hidden border-y border-primary-950/[0.08] shadow-card sm:rounded-xl sm:border">
         {/* Workflow Tabs */}
         <WorkflowTabs
           activeTab={workflowTab}
@@ -210,7 +210,7 @@ export function ProjectViewPage() {
         {/* Tab 1: Master Plan */}
         {workflowTab === 'master-plan' && (
           <>
-            <div className="relative h-[350px] sm:h-[400px] lg:h-[500px]">
+            <div className="relative h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh]">
               <SitePlannerMap
                 latitude={project.location?.latitude}
                 longitude={project.location?.longitude}
@@ -579,3 +579,4 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
     </div>
   );
 }
+
