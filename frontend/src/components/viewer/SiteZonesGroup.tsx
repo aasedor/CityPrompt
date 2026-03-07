@@ -117,6 +117,101 @@ function pointInPolygon(x: number, y: number, polygon: THREE.Vector2[]): boolean
   return inside;
 }
 
+type TreeVariant = 'deciduous' | 'conifer' | 'ornamental';
+
+interface PolygonBounds {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  width: number;
+  height: number;
+  area: number;
+}
+
+function computePolygonBounds(points2D: THREE.Vector2[]): PolygonBounds {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  for (const p of points2D) {
+    minX = Math.min(minX, p.x);
+    maxX = Math.max(maxX, p.x);
+    minY = Math.min(minY, p.y);
+    maxY = Math.max(maxY, p.y);
+  }
+  const width = Math.max(0, maxX - minX);
+  const height = Math.max(0, maxY - minY);
+  return {
+    minX,
+    maxX,
+    minY,
+    maxY,
+    width,
+    height,
+    area: width * height,
+  };
+}
+
+function polylineLength(points: { x: number; z: number }[]): number {
+  let total = 0;
+  for (let i = 1; i < points.length; i++) {
+    const dx = points[i].x - points[i - 1].x;
+    const dz = points[i].z - points[i - 1].z;
+    total += Math.sqrt(dx * dx + dz * dz);
+  }
+  return total;
+}
+
+function sampleCenterlineAtDistance(
+  centerPoints: { x: number; z: number }[],
+  targetDistance: number,
+): PlacementPoint | null {
+  if (centerPoints.length < 2) return null;
+  const total = polylineLength(centerPoints);
+  const clamped = Math.max(0, Math.min(total, targetDistance));
+
+  let acc = 0;
+  for (let i = 1; i < centerPoints.length; i++) {
+    const a = centerPoints[i - 1];
+    const b = centerPoints[i];
+    const dx = b.x - a.x;
+    const dz = b.z - a.z;
+    const len = Math.sqrt(dx * dx + dz * dz);
+    if (len < 0.001) continue;
+
+    if (acc + len >= clamped) {
+      const t = (clamped - acc) / len;
+      const dirX = dx / len;
+      const dirZ = dz / len;
+      const nx = -dirZ;
+      const nz = dirX;
+      return {
+        x: a.x + dx * t,
+        z: a.z + dz * t,
+        nx,
+        nz,
+        angle: Math.atan2(dirX, dirZ),
+      };
+    }
+    acc += len;
+  }
+
+  const tailA = centerPoints[Math.max(0, centerPoints.length - 2)];
+  const tailB = centerPoints[centerPoints.length - 1];
+  const tdx = tailB.x - tailA.x;
+  const tdz = tailB.z - tailA.z;
+  const tlen = Math.sqrt(tdx * tdx + tdz * tdz) || 1;
+  const tDirX = tdx / tlen;
+  const tDirZ = tdz / tlen;
+  return {
+    x: tailB.x,
+    z: tailB.z,
+    nx: -tDirZ,
+    nz: tDirX,
+    angle: Math.atan2(tDirX, tDirZ),
+  };
+}
 // =============================================================================
 // Polygon edge utilities
 // =============================================================================
@@ -1003,11 +1098,237 @@ const ROAD_AESTHETIC_CONFIGS: Record<string, AestheticConfig> = {
       { type: 'railing', side: 'left', spacing: 1.5 },
     ],
   },
+  copenhagen_stroget: {
+    furniture: [
+      { type: 'bollard', side: 'both', spacing: 3.2 },
+      { type: 'bench', side: 'both', spacing: 16 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+    ],
+  },
+  barcelona_la_rambla: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 8 },
+      { type: 'bench', side: 'both', spacing: 18 },
+      { type: 'lightpole', side: 'both', spacing: 16 },
+    ],
+  },
+  venice_fondamenta_walk: {
+    furniture: [
+      { type: 'bench', side: 'both', spacing: 18 },
+      { type: 'lightpole', side: 'both', spacing: 15 },
+      { type: 'railing', side: 'both', spacing: 2.2 },
+    ],
+  },
+  amsterdam_canal_street: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 9 },
+      { type: 'bench', side: 'right', spacing: 16 },
+      { type: 'railing', side: 'left', spacing: 2.4 },
+      { type: 'lightpole', side: 'both', spacing: 16 },
+    ],
+  },
+  copenhagen_cycle_superhighway: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 11 },
+      { type: 'lightpole', side: 'both', spacing: 18 },
+      { type: 'bollard', side: 'both', spacing: 4.5 },
+    ],
+  },
+  bogota_cicloruta: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 10 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+    ],
+    median: true,
+  },
+  utrecht_fietsstraat: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 11 },
+      { type: 'bench', side: 'right', spacing: 20 },
+      { type: 'lightpole', side: 'both', spacing: 18 },
+    ],
+  },
+  seville_protected_cycle_track: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 9 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+      { type: 'bollard', side: 'both', spacing: 5 },
+    ],
+  },
+  curitiba_brt_axis: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 12 },
+      { type: 'lightpole', side: 'both', spacing: 15 },
+      { type: 'bench', side: 'both', spacing: 24 },
+    ],
+    median: true,
+  },
+  bogota_transmilenio_avenue: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 11 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+    ],
+    median: true,
+  },
+  hong_kong_tram_street: {
+    furniture: [
+      { type: 'lightpole', side: 'both', spacing: 12 },
+      { type: 'bench', side: 'right', spacing: 20 },
+      { type: 'tree', side: 'both', spacing: 13 },
+    ],
+  },
+  zurich_tram_boulevard: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 10 },
+      { type: 'lightpole', side: 'both', spacing: 13 },
+    ],
+    median: true,
+  },
+  portland_complete_street: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 10 },
+      { type: 'bench', side: 'both', spacing: 18 },
+      { type: 'lightpole', side: 'both', spacing: 15 },
+      { type: 'bollard', side: 'both', spacing: 6 },
+    ],
+  },
+  barcelona_superblock: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 8 },
+      { type: 'bench', side: 'both', spacing: 14 },
+      { type: 'bollard', side: 'both', spacing: 3.5 },
+      { type: 'lightpole', side: 'both', spacing: 16 },
+    ],
+  },
+  london_exhibition_road: {
+    furniture: [
+      { type: 'bollard', side: 'both', spacing: 3.5 },
+      { type: 'bench', side: 'both', spacing: 17 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+      { type: 'tree', side: 'both', spacing: 12 },
+    ],
+  },
+  paris_champs_elysees: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 9 },
+      { type: 'lightpole', side: 'both', spacing: 14 },
+      { type: 'bench', side: 'both', spacing: 20 },
+    ],
+    median: true,
+  },
+  mexico_city_reforma: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 9 },
+      { type: 'lightpole', side: 'both', spacing: 13 },
+      { type: 'bench', side: 'both', spacing: 18 },
+    ],
+    median: true,
+  },
+  tokyo_local_service_lane: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 14 },
+      { type: 'lightpole', side: 'both', spacing: 16 },
+      { type: 'bench', side: 'right', spacing: 20 },
+    ],
+  },
+  industrial_freight_collector: {
+    furniture: [
+      { type: 'lightpole', side: 'both', spacing: 24 },
+    ],
+  },
   industrial_collector: {
-    furniture: [],
+    furniture: [
+      { type: 'lightpole', side: 'both', spacing: 24 },
+    ],
   },
 };
 
+
+function DetailedTree({
+  position,
+  scale = 1,
+  variant = 'deciduous',
+}: {
+  position: [number, number, number];
+  scale?: number;
+  variant?: TreeVariant;
+}) {
+  const canopyColor =
+    variant === 'ornamental' ? '#d79ac8' :
+    variant === 'conifer' ? '#2f6f35' :
+    '#3c8743';
+
+  return (
+    <group position={position} scale={scale}>
+      <mesh position={[0, 1.55, 0]} castShadow>
+        <cylinderGeometry args={[0.14, 0.2, 3.1, 10]} />
+        <meshStandardMaterial color="#6a4526" roughness={0.88} metalness={0.02} />
+      </mesh>
+
+      {variant === 'conifer' ? (
+        <>
+          <mesh position={[0, 2.9, 0]} castShadow>
+            <coneGeometry args={[1.0, 2.2, 10]} />
+            <meshStandardMaterial color="#2f6f35" roughness={0.82} />
+          </mesh>
+          <mesh position={[0, 3.8, 0]} castShadow>
+            <coneGeometry args={[0.82, 2.0, 10]} />
+            <meshStandardMaterial color="#316f39" roughness={0.82} />
+          </mesh>
+          <mesh position={[0, 4.6, 0]} castShadow>
+            <coneGeometry args={[0.62, 1.6, 10]} />
+            <meshStandardMaterial color="#2a6131" roughness={0.82} />
+          </mesh>
+        </>
+      ) : (
+        <>
+          <mesh position={[0, 3.7, 0]} castShadow>
+            <sphereGeometry args={[1.45, 14, 12]} />
+            <meshStandardMaterial color={canopyColor} roughness={0.82} />
+          </mesh>
+          <mesh position={[0.95, 4.1, 0.2]} castShadow>
+            <sphereGeometry args={[1.05, 12, 10]} />
+            <meshStandardMaterial color={variant === 'ornamental' ? '#e4add6' : '#4a9550'} roughness={0.82} />
+          </mesh>
+          <mesh position={[-0.85, 4.0, -0.15]} castShadow>
+            <sphereGeometry args={[0.95, 12, 10]} />
+            <meshStandardMaterial color={variant === 'ornamental' ? '#d18ec1' : '#4f9654'} roughness={0.82} />
+          </mesh>
+        </>
+      )}
+    </group>
+  );
+}
+
+function ZebraCrosswalk({
+  position,
+  angle,
+  span,
+  stripeCount = 7,
+}: {
+  position: [number, number, number];
+  angle: number;
+  span: number;
+  stripeCount?: number;
+}) {
+  const stripeDepth = 0.34;
+  const stripeGap = 0.26;
+  const totalDepth = stripeCount * stripeDepth + (stripeCount - 1) * stripeGap;
+
+  return (
+    <group position={position} rotation={[0, angle, 0]}>
+      {Array.from({ length: stripeCount }).map((_, idx) => {
+        const z = -totalDepth / 2 + stripeDepth / 2 + idx * (stripeDepth + stripeGap);
+        return (
+          <mesh key={idx} position={[0, 0.176, z]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[span, stripeDepth]} />
+            <meshStandardMaterial color="#f8f8f4" roughness={0.45} metalness={0.0} transparent opacity={0.86} depthWrite={false} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
 function RoadZone({
   zone,
   points2D,
@@ -1021,6 +1342,7 @@ function RoadZone({
     gutterLeftGeo, gutterRightGeo, leftJointGeo, rightJointGeo, surfacePatternGeo,
     hasLeftSidewalk, hasRightSidewalk,
     centerPoints, halfWidth, laneCount, sidewalkWidth,
+    crosswalkDescriptors,
   } = useMemo(() => {
     const n = points2D.length;
     if (n < 4) return {
@@ -1030,6 +1352,7 @@ function RoadZone({
       leftJointGeo: null, rightJointGeo: null, surfacePatternGeo: null,
       hasLeftSidewalk: false, hasRightSidewalk: false,
       centerPoints: [] as { x: number; z: number }[], halfWidth: 0, laneCount: 0, sidewalkWidth: 0,
+      crosswalkDescriptors: [] as { position: [number, number, number]; angle: number; span: number }[],
     };
 
     // Reconstruct centerline from the buffered polygon:
@@ -1057,6 +1380,7 @@ function RoadZone({
       leftJointGeo: null, rightJointGeo: null, surfacePatternGeo: null,
       hasLeftSidewalk: false, hasRightSidewalk: false,
       centerPoints: [] as { x: number; z: number }[], halfWidth: 0, laneCount: 0, sidewalkWidth: 0,
+      crosswalkDescriptors: [] as { position: [number, number, number]; angle: number; span: number }[],
     };
 
     // Use the actual polygon width (average of opposing vertex distances)
@@ -1431,6 +1755,20 @@ function RoadZone({
       surfacePatternGeo = buildSurfacePattern(centerPoints, halfWidth, 0.165, surface);
     }
 
+    // Crosswalk anchors near each road end for better pedestrian readability.
+    const crosswalkDescriptors: { position: [number, number, number]; angle: number; span: number }[] = [];
+    const totalLen = polylineLength(centerPoints);
+    if (style.showLaneMarkings && totalLen > 12 && (hasLeftSidewalk || hasRightSidewalk)) {
+      const edgeInset = Math.min(Math.max(2.2, roadWidth * 0.32), totalLen / 3);
+      const first = sampleCenterlineAtDistance(centerPoints, edgeInset);
+      const last = sampleCenterlineAtDistance(centerPoints, Math.max(edgeInset, totalLen - edgeInset));
+      const span = Math.max(2.4, roadWidth * 0.88);
+      if (first) crosswalkDescriptors.push({ position: [first.x, 0, first.z], angle: first.angle, span });
+      if (last && (!first || Math.hypot(last.x - first.x, last.z - first.z) > 4)) {
+        crosswalkDescriptors.push({ position: [last.x, 0, last.z], angle: last.angle, span });
+      }
+    }
+
     return {
       roadGeometry: roadGeom,
       centerLineGeometry: centerLineGeom,
@@ -1452,6 +1790,7 @@ function RoadZone({
       halfWidth,
       laneCount,
       sidewalkWidth,
+      crosswalkDescriptors,
     };
   }, [points2D, zone.properties]);
 
@@ -1535,6 +1874,17 @@ function RoadZone({
         </line>
       )}
 
+      {/* End crosswalks */}
+      {crosswalkDescriptors.map((cw, i) => (
+        <ZebraCrosswalk
+          key={`crosswalk-${i}`}
+          position={cw.position}
+          angle={cw.angle}
+          span={cw.span}
+        />
+      ))}
+
+
       {/* Sidewalks — per-side based on sidewalks property */}
       {leftSidewalk && (
         <mesh geometry={leftSidewalk} receiveShadow>
@@ -1602,10 +1952,10 @@ function RoadAestheticFurniture({
   hasRightSidewalk: boolean;
 }) {
   const elements = useMemo(() => {
-    const config = ROAD_AESTHETIC_CONFIGS[aesthetic];
-    if (!config || centerPoints.length < 2) return null;
+    const config = ROAD_AESTHETIC_CONFIGS[aesthetic] || ROAD_AESTHETIC_CONFIGS.neighborhood_high_street;
+    if (centerPoints.length < 2) return null;
 
-    const trees: { pos: [number, number, number]; scale: number; type: 'deciduous' | 'conifer' }[] = [];
+    const trees: { pos: [number, number, number]; scale: number; type: TreeVariant }[] = [];
     const poles: [number, number, number][] = [];
     const bollards: [number, number, number][] = [];
     const benches: { pos: [number, number, number]; rot: number }[] = [];
@@ -1641,7 +1991,7 @@ function RoadAestheticFurniture({
             trees.push({
               pos: [pt.x + pt.nx * offset, 0, pt.z + pt.nz * offset],
               scale: 0.7 + rand() * 0.5,
-              type: rand() > 0.35 ? 'deciduous' : 'conifer',
+              type: aesthetic === 'kyoto_philosophers_path' ? (rand() > 0.45 ? 'ornamental' : 'deciduous') : (rand() > 0.35 ? 'deciduous' : 'conifer'),
             });
           } else if (slot.type === 'lightpole') {
             const offset = swOuter * sign;
@@ -1669,7 +2019,7 @@ function RoadAestheticFurniture({
 
     // Median strip (grand_boulevard with 4+ lanes)
     let medianGeo: THREE.BufferGeometry | null = null;
-    const medianTrees: { pos: [number, number, number]; scale: number; type: 'deciduous' | 'conifer' }[] = [];
+    const medianTrees: { pos: [number, number, number]; scale: number; type: TreeVariant }[] = [];
     if (config.median && laneCount >= 4) {
       const medianHalf = 0.8;
       medianGeo = buildOffsetRibbon(centerPoints, -medianHalf, medianHalf, 0.18);
@@ -1698,23 +2048,7 @@ function RoadAestheticFurniture({
     <group>
       {/* Street trees */}
       {trees.map((t, i) => (
-        <group key={`st-${i}`} position={t.pos} scale={t.scale}>
-          <mesh position={[0, 1.5, 0]} castShadow>
-            <cylinderGeometry args={[0.15, 0.2, 3, 6]} />
-            <meshStandardMaterial color="#6b4423" roughness={0.9} />
-          </mesh>
-          {t.type === 'conifer' ? (
-            <mesh position={[0, 4, 0]} castShadow>
-              <coneGeometry args={[1.5, 4, 6]} />
-              <meshStandardMaterial color="#2d5a27" />
-            </mesh>
-          ) : (
-            <mesh position={[0, 4.5, 0]} castShadow>
-              <sphereGeometry args={[2, 8, 6]} />
-              <meshStandardMaterial color="#3a7d32" />
-            </mesh>
-          )}
-        </group>
+        <DetailedTree key={`st-${i}`} position={t.pos} scale={t.scale} variant={t.type} />
       ))}
 
       {/* Light poles */}
@@ -1755,16 +2089,7 @@ function RoadAestheticFurniture({
         </mesh>
       )}
       {medianTrees.map((t, i) => (
-        <group key={`mt-${i}`} position={t.pos} scale={t.scale}>
-          <mesh position={[0, 1.2, 0]} castShadow>
-            <cylinderGeometry args={[0.1, 0.14, 2.4, 6]} />
-            <meshStandardMaterial color="#6b4423" roughness={0.9} />
-          </mesh>
-          <mesh position={[0, 3.2, 0]} castShadow>
-            <sphereGeometry args={[1.4, 8, 6]} />
-            <meshStandardMaterial color="#3a7d32" />
-          </mesh>
-        </group>
+        <DetailedTree key={`mt-${i}`} position={t.pos} scale={t.scale} variant={t.type} />
       ))}
     </group>
   );
@@ -1858,6 +2183,289 @@ function RoadCurbs({
   );
 }
 
+interface GreenSpaceVisualConfig {
+  groundColor: string;
+  groundAccentColor: string;
+  pathColor: string;
+  shrubColor: string;
+  pathPattern: 'organic' | 'formal' | 'linear' | 'boardwalk';
+  pathCount: number;
+  treeVariants: TreeVariant[];
+  shrubDensity: number;
+}
+
+const GREEN_SPACE_VISUAL_CONFIGS: Record<string, GreenSpaceVisualConfig> = {
+  default: {
+    groundColor: '#4a8c3f',
+    groundAccentColor: '#6ba35d',
+    pathColor: '#c5b59a',
+    shrubColor: '#4e8c48',
+    pathPattern: 'organic',
+    pathCount: 2,
+    treeVariants: ['deciduous', 'conifer'],
+    shrubDensity: 1,
+  },
+  central_park_english_landscape: {
+    groundColor: '#5b9648',
+    groundAccentColor: '#7bbd63',
+    pathColor: '#ccb997',
+    shrubColor: '#4f8e45',
+    pathPattern: 'organic',
+    pathCount: 3,
+    treeVariants: ['deciduous', 'deciduous', 'conifer'],
+    shrubDensity: 1.2,
+  },
+  versailles_formal_garden: {
+    groundColor: '#75a35a',
+    groundAccentColor: '#8fc072',
+    pathColor: '#d8c8a8',
+    shrubColor: '#6d984f',
+    pathPattern: 'formal',
+    pathCount: 3,
+    treeVariants: ['deciduous'],
+    shrubDensity: 1.4,
+  },
+  high_line_linear_park: {
+    groundColor: '#5f8f4d',
+    groundAccentColor: '#7dad66',
+    pathColor: '#8f8b7a',
+    shrubColor: '#4f8452',
+    pathPattern: 'linear',
+    pathCount: 2,
+    treeVariants: ['deciduous', 'ornamental'],
+    shrubDensity: 1.25,
+  },
+  philosophers_path_garden: {
+    groundColor: '#5f944f',
+    groundAccentColor: '#84b76e',
+    pathColor: '#b8b1a2',
+    shrubColor: '#5b904f',
+    pathPattern: 'linear',
+    pathCount: 2,
+    treeVariants: ['ornamental', 'ornamental', 'deciduous'],
+    shrubDensity: 1.1,
+  },
+  superkilen_cultural_park: {
+    groundColor: '#5d8d46',
+    groundAccentColor: '#75aa5f',
+    pathColor: '#8f3e3e',
+    shrubColor: '#5f8a4a',
+    pathPattern: 'linear',
+    pathCount: 2,
+    treeVariants: ['deciduous'],
+    shrubDensity: 0.75,
+  },
+  civic_lawn_commons: {
+    groundColor: '#63a24f',
+    groundAccentColor: '#7ac55f',
+    pathColor: '#c8c1ab',
+    shrubColor: '#4b8a45',
+    pathPattern: 'organic',
+    pathCount: 1,
+    treeVariants: ['deciduous', 'conifer'],
+    shrubDensity: 0.8,
+  },
+  houtan_ecological_park: {
+    groundColor: '#557f43',
+    groundAccentColor: '#6ea45b',
+    pathColor: '#a58a63',
+    shrubColor: '#507c48',
+    pathPattern: 'boardwalk',
+    pathCount: 2,
+    treeVariants: ['conifer', 'deciduous'],
+    shrubDensity: 1.35,
+  },
+  bishan_river_park: {
+    groundColor: '#5a8b48',
+    groundAccentColor: '#74b561',
+    pathColor: '#ad997a',
+    shrubColor: '#4d7f47',
+    pathPattern: 'organic',
+    pathCount: 2,
+    treeVariants: ['deciduous', 'conifer'],
+    shrubDensity: 1.2,
+  },
+  wetland_boardwalk_park: {
+    groundColor: '#4f7a3f',
+    groundAccentColor: '#669b52',
+    pathColor: '#9a7c57',
+    shrubColor: '#4f7a44',
+    pathPattern: 'boardwalk',
+    pathCount: 3,
+    treeVariants: ['conifer', 'deciduous'],
+    shrubDensity: 1.4,
+  },
+  botanical_garden: {
+    groundColor: '#5f944e',
+    groundAccentColor: '#83c169',
+    pathColor: '#c6ba9b',
+    shrubColor: '#4f8a4c',
+    pathPattern: 'organic',
+    pathCount: 3,
+    treeVariants: ['ornamental', 'deciduous', 'conifer'],
+    shrubDensity: 1.6,
+  },
+};
+
+function resolveGreenSpaceVisualConfig(aesthetic?: string): GreenSpaceVisualConfig {
+  if (!aesthetic) return GREEN_SPACE_VISUAL_CONFIGS.default;
+  return GREEN_SPACE_VISUAL_CONFIGS[aesthetic] || GREEN_SPACE_VISUAL_CONFIGS.default;
+}
+
+function ParkPathNetwork({
+  points2D,
+  visual,
+  enabled,
+}: {
+  points2D: THREE.Vector2[];
+  visual: GreenSpaceVisualConfig;
+  enabled: boolean;
+}) {
+  const pathGeometries = useMemo(() => {
+    if (!enabled || points2D.length < 3) return [] as THREE.BufferGeometry[];
+
+    const bounds = computePolygonBounds(points2D);
+    if (bounds.area < 140) return [] as THREE.BufferGeometry[];
+
+    const majorAxisIsX = bounds.width >= bounds.height;
+    const crossSpan = majorAxisIsX ? bounds.height : bounds.width;
+    const alongSpan = majorAxisIsX ? bounds.width : bounds.height;
+    const padding = 1.2;
+    const pathHalfW = visual.pathPattern === 'boardwalk' ? 1.05 : visual.pathPattern === 'formal' ? 0.9 : 0.8;
+    const pathCount = Math.max(1, Math.min(visual.pathCount, 1 + Math.floor(crossSpan / 18)));
+    const steps = Math.max(8, Math.floor(alongSpan / 5));
+    const geos: THREE.BufferGeometry[] = [];
+
+    const pushClippedPolyline = (raw: THREE.Vector2[]) => {
+      let chunk: { x: number; z: number }[] = [];
+      for (const p of raw) {
+        if (pointInPolygon(p.x, p.y, points2D)) {
+          chunk.push({ x: p.x, z: -p.y });
+        } else {
+          if (chunk.length >= 2) {
+            const g = buildOffsetRibbon(chunk, -pathHalfW, pathHalfW, 0.145);
+            if (g) geos.push(g);
+          }
+          chunk = [];
+        }
+      }
+      if (chunk.length >= 2) {
+        const g = buildOffsetRibbon(chunk, -pathHalfW, pathHalfW, 0.145);
+        if (g) geos.push(g);
+      }
+    };
+
+    for (let i = 0; i < pathCount; i++) {
+      const frac = pathCount === 1 ? 0.5 : i / (pathCount - 1);
+      const points: THREE.Vector2[] = [];
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        const wave =
+          visual.pathPattern === 'organic'
+            ? Math.sin(t * Math.PI * 2 + i * 0.75) * crossSpan * 0.08
+            : 0;
+
+        if (majorAxisIsX) {
+          const x = bounds.minX + padding + t * (bounds.width - padding * 2);
+          const yBase = bounds.minY + padding + frac * (bounds.height - padding * 2);
+          points.push(new THREE.Vector2(x, yBase + wave));
+        } else {
+          const y = bounds.minY + padding + t * (bounds.height - padding * 2);
+          const xBase = bounds.minX + padding + frac * (bounds.width - padding * 2);
+          points.push(new THREE.Vector2(xBase + wave, y));
+        }
+      }
+      pushClippedPolyline(points);
+    }
+
+    if (pathCount > 1 && visual.pathPattern !== 'boardwalk' && crossSpan > 10) {
+      const connector: THREE.Vector2[] = [];
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        if (majorAxisIsX) {
+          const x = bounds.minX + padding + (bounds.width - padding * 2) * 0.5;
+          const y = bounds.minY + padding + t * (bounds.height - padding * 2);
+          connector.push(new THREE.Vector2(x, y));
+        } else {
+          const x = bounds.minX + padding + t * (bounds.width - padding * 2);
+          const y = bounds.minY + padding + (bounds.height - padding * 2) * 0.5;
+          connector.push(new THREE.Vector2(x, y));
+        }
+      }
+      pushClippedPolyline(connector);
+    }
+
+    return geos;
+  }, [points2D, visual, enabled]);
+
+  if (pathGeometries.length === 0) return null;
+
+  return (
+    <group>
+      {pathGeometries.map((geo, i) => (
+        <mesh key={`park-path-${i}`} geometry={geo} receiveShadow>
+          <meshStandardMaterial color={visual.pathColor} roughness={0.88} metalness={0.03} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function ParkShrubClusters({
+  points2D,
+  density,
+  visual,
+}: {
+  points2D: THREE.Vector2[];
+  density: number;
+  visual: GreenSpaceVisualConfig;
+}) {
+  const shrubs = useMemo(() => {
+    const bounds = computePolygonBounds(points2D);
+    if (bounds.area < 80) return [] as { pos: [number, number, number]; scale: number; color: string }[];
+
+    const clusterCount = Math.min(80, Math.max(6, Math.floor(bounds.area * Math.max(0.1, density) * 0.003 * visual.shrubDensity)));
+    const rand = makeRand(points2D.length * 777 + Math.abs(Math.round(bounds.minX * 10)) + Math.round(bounds.minY * 10));
+    const base = new THREE.Color(visual.shrubColor);
+
+    const result: { pos: [number, number, number]; scale: number; color: string }[] = [];
+    for (let i = 0; i < clusterCount; i++) {
+      const cx = bounds.minX + rand() * bounds.width;
+      const cy = bounds.minY + rand() * bounds.height;
+      if (!pointInPolygon(cx, cy, points2D)) continue;
+
+      const localCount = 2 + Math.floor(rand() * 3);
+      for (let j = 0; j < localCount; j++) {
+        const ang = rand() * Math.PI * 2;
+        const dist = 0.35 + rand() * 1.15;
+        const px = cx + Math.cos(ang) * dist;
+        const py = cy + Math.sin(ang) * dist;
+        if (!pointInPolygon(px, py, points2D)) continue;
+
+        const color = base.clone();
+        color.offsetHSL((rand() - 0.5) * 0.04, 0, (rand() - 0.5) * 0.08);
+        result.push({
+          pos: [px, 0.08, -py],
+          scale: 0.35 + rand() * 0.55,
+          color: `#${color.getHexString()}`,
+        });
+      }
+    }
+
+    return result;
+  }, [points2D, density, visual]);
+
+  return (
+    <>
+      {shrubs.map((s, i) => (
+        <mesh key={`shrub-${i}`} position={s.pos} scale={s.scale} castShadow>
+          <icosahedronGeometry args={[0.8, 1]} />
+          <meshStandardMaterial color={s.color} roughness={0.86} metalness={0.0} />
+        </mesh>
+      ))}
+    </>
+  );
+}
 // =============================================================================
 // 3. GREEN SPACE ZONE — Mixed trees + benches + light poles
 // =============================================================================
@@ -1870,17 +2478,42 @@ function GreenSpaceZone({
   points2D: THREE.Vector2[];
 }) {
   const density = zone.properties?.tree_density ?? 0.3;
+  const greenAesthetic = (zone.properties?.green_space_aesthetic as string) || '';
+  const visual = useMemo(() => resolveGreenSpaceVisualConfig(greenAesthetic), [greenAesthetic]);
+  const hasPaths = zone.properties?.has_paths !== false;
+  const hasBenches = zone.properties?.has_benches !== false;
 
   const groundGeometry = useMemo(() => {
     try {
       const shape = new THREE.Shape(points2D);
       const geom = new THREE.ShapeGeometry(shape);
       geom.rotateX(-Math.PI / 2);
+
+      const posAttr = geom.getAttribute('position');
+      const colors = new Float32Array(posAttr.count * 3);
+      const base = new THREE.Color(visual.groundColor);
+      const accent = new THREE.Color(visual.groundAccentColor);
+      const color = new THREE.Color();
+
+      for (let i = 0; i < posAttr.count; i++) {
+        const x = posAttr.getX(i);
+        const z = posAttr.getZ(i);
+        const noise = (Math.sin(x * 0.08) + Math.cos(z * 0.06)) * 0.5;
+        const blend = 0.35 + ((noise + 1) * 0.5) * 0.45;
+        const shade = 0.95 + Math.sin((x + z) * 0.03) * 0.05;
+
+        color.copy(base).lerp(accent, blend).multiplyScalar(shade);
+        colors[i * 3] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+      }
+
+      geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       return geom;
     } catch {
       return null;
     }
-  }, [points2D]);
+  }, [points2D, visual]);
 
   if (!groundGeometry) return null;
 
@@ -1888,14 +2521,27 @@ function GreenSpaceZone({
     <group position={[0, 0.12, 0]}>
       {/* Green ground surface */}
       <mesh geometry={groundGeometry} receiveShadow>
-        <meshStandardMaterial color="#4a8c3f" roughness={0.95} metalness={0.0} polygonOffset polygonOffsetFactor={2} polygonOffsetUnits={2} />
+        <meshStandardMaterial
+          vertexColors
+          roughness={0.95}
+          metalness={0.0}
+          polygonOffset
+          polygonOffsetFactor={2}
+          polygonOffsetUnits={2}
+        />
       </mesh>
 
+      {/* Primary path network */}
+      <ParkPathNetwork points2D={points2D} visual={visual} enabled={hasPaths} />
+
+      {/* Low planting and shrub structure */}
+      <ParkShrubClusters points2D={points2D} density={density} visual={visual} />
+
       {/* Mixed trees */}
-      <GreenSpaceTrees points2D={points2D} density={density} />
+      <GreenSpaceTrees points2D={points2D} density={density} aesthetic={greenAesthetic} />
 
       {/* Park benches */}
-      <ParkBenches points2D={points2D} density={density} />
+      {hasBenches && <ParkBenches points2D={points2D} density={density} />}
 
       {/* Light poles along perimeter */}
       <PerimeterLightPoles points2D={points2D} />
@@ -1906,71 +2552,41 @@ function GreenSpaceZone({
 function GreenSpaceTrees({
   points2D,
   density,
+  aesthetic,
 }: {
   points2D: THREE.Vector2[];
   density: number;
+  aesthetic?: string;
 }) {
   const trees = useMemo(() => {
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (const p of points2D) {
-      minX = Math.min(minX, p.x);
-      maxX = Math.max(maxX, p.x);
-      minY = Math.min(minY, p.y);
-      maxY = Math.max(maxY, p.y);
+    const bounds = computePolygonBounds(points2D);
+    if (bounds.area < 40) return [] as { pos: [number, number, number]; scale: number; type: TreeVariant }[];
+
+    const visual = resolveGreenSpaceVisualConfig(aesthetic);
+    const variantPool: TreeVariant[] = visual.treeVariants.length > 0 ? visual.treeVariants : ['deciduous', 'conifer'];
+    const count = Math.min(260, Math.max(4, Math.floor(bounds.area * (0.004 + Math.max(0.1, density) * 0.02))));
+    const rand = makeRand(points2D.length * 1000 + Math.abs(Math.round(bounds.minX * 100)));
+
+    const result: { pos: [number, number, number]; scale: number; type: TreeVariant }[] = [];
+    for (let i = 0; i < count; i++) {
+      const px = bounds.minX + rand() * bounds.width;
+      const py = bounds.minY + rand() * bounds.height;
+      if (!pointInPolygon(px, py, points2D)) continue;
+
+      const type: TreeVariant = variantPool[Math.floor(rand() * variantPool.length)] || 'deciduous';
+      result.push({
+        pos: [px, 0, -py],
+        scale: 0.62 + rand() * 0.72,
+        type,
+      });
     }
-
-    const width = maxX - minX;
-    const height = maxY - minY;
-    const area = width * height;
-    const count = Math.floor(area * density * 0.01);
-
-    const rand = makeRand(points2D.length * 1000 + Math.abs(Math.round(minX * 100)));
-
-    const result: {
-      pos: [number, number, number];
-      scale: number;
-      type: 'conifer' | 'deciduous';
-    }[] = [];
-
-    for (let i = 0; i < Math.min(count, 200); i++) {
-      const px = minX + rand() * width;
-      const py = minY + rand() * height;
-
-      if (pointInPolygon(px, py, points2D)) {
-        // Shape (x, y) → 3D (x, 0, -y) to match rotated ShapeGeometry
-        result.push({
-          pos: [px, 0, -py],
-          scale: 0.7 + rand() * 0.6,
-          type: rand() > 0.4 ? 'deciduous' : 'conifer',
-        });
-      }
-    }
-
     return result;
-  }, [points2D, density]);
+  }, [points2D, density, aesthetic]);
 
   return (
     <>
       {trees.map((t, i) => (
-        <group key={i} position={t.pos} scale={t.scale}>
-          {/* Trunk */}
-          <mesh position={[0, 1.5, 0]} castShadow>
-            <cylinderGeometry args={[0.15, 0.2, 3, 6]} />
-            <meshStandardMaterial color="#6b4423" roughness={0.9} />
-          </mesh>
-          {/* Canopy */}
-          {t.type === 'conifer' ? (
-            <mesh position={[0, 4, 0]} castShadow>
-              <coneGeometry args={[1.5, 4, 6]} />
-              <meshStandardMaterial color="#2d5a27" roughness={0.8} />
-            </mesh>
-          ) : (
-            <mesh position={[0, 4.5, 0]} castShadow>
-              <sphereGeometry args={[2, 8, 6]} />
-              <meshStandardMaterial color="#3a7d32" roughness={0.8} />
-            </mesh>
-          )}
-        </group>
+        <DetailedTree key={`park-tree-${i}`} position={t.pos} scale={t.scale} variant={t.type} />
       ))}
     </>
   );
@@ -2302,22 +2918,40 @@ function Bench({
 }) {
   return (
     <group position={position} rotation={[0, rotation, 0]}>
-      {/* Seat */}
-      <mesh position={[0, 0.45, 0]} castShadow>
-        <boxGeometry args={[1.2, 0.06, 0.4]} />
-        <meshStandardMaterial color="#8B6914" roughness={0.7} />
+      {/* Steel frame */}
+      <mesh position={[0, 0.2, 0]} castShadow>
+        <boxGeometry args={[1.18, 0.08, 0.42]} />
+        <meshStandardMaterial color="#4d4f57" roughness={0.45} metalness={0.55} />
       </mesh>
-      {/* Backrest */}
-      <mesh position={[0, 0.7, -0.18]} rotation={[0.15, 0, 0]} castShadow>
-        <boxGeometry args={[1.2, 0.35, 0.04]} />
-        <meshStandardMaterial color="#8B6914" roughness={0.7} />
-      </mesh>
-      {/* Legs */}
-      {[-0.45, 0.45].map((lx) => (
-        <mesh key={lx} position={[lx, 0.22, 0]} castShadow>
-          <boxGeometry args={[0.05, 0.44, 0.4]} />
-          <meshStandardMaterial color="#4a4a4a" roughness={0.5} metalness={0.6} />
+
+      {/* Seat slats */}
+      {[-0.24, -0.12, 0, 0.12, 0.24].map((z) => (
+        <mesh key={`seat-${z}`} position={[0, 0.45, z]} castShadow>
+          <boxGeometry args={[1.18, 0.04, 0.06]} />
+          <meshStandardMaterial color="#8f6a3f" roughness={0.74} metalness={0.05} />
         </mesh>
+      ))}
+
+      {/* Backrest rails */}
+      {[-0.2, -0.05, 0.1, 0.25].map((y) => (
+        <mesh key={`back-${y}`} position={[0, 0.62 + y, -0.22]} rotation={[0.16, 0, 0]} castShadow>
+          <boxGeometry args={[1.16, 0.035, 0.06]} />
+          <meshStandardMaterial color="#8f6a3f" roughness={0.74} metalness={0.05} />
+        </mesh>
+      ))}
+
+      {/* Legs */}
+      {[-0.5, 0.5].map((lx) => (
+        <group key={`legs-${lx}`}>
+          <mesh position={[lx, 0.24, 0.13]} castShadow>
+            <boxGeometry args={[0.06, 0.48, 0.06]} />
+            <meshStandardMaterial color="#4d4f57" roughness={0.45} metalness={0.55} />
+          </mesh>
+          <mesh position={[lx, 0.24, -0.13]} castShadow>
+            <boxGeometry args={[0.06, 0.48, 0.06]} />
+            <meshStandardMaterial color="#4d4f57" roughness={0.45} metalness={0.55} />
+          </mesh>
+        </group>
       ))}
     </group>
   );
@@ -2326,24 +2960,34 @@ function Bench({
 function LightPole({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
-      {/* Pole */}
-      <mesh position={[0, 2.5, 0]} castShadow>
-        <cylinderGeometry args={[0.04, 0.06, 5, 6]} />
-        <meshStandardMaterial color="#6a6a6a" roughness={0.3} metalness={0.8} />
+      {/* Base */}
+      <mesh position={[0, 0.08, 0]} castShadow>
+        <cylinderGeometry args={[0.16, 0.18, 0.16, 10]} />
+        <meshStandardMaterial color="#51545c" roughness={0.42} metalness={0.6} />
       </mesh>
-      {/* Lamp fixture */}
-      <mesh position={[0, 5.1, 0]}>
-        <sphereGeometry args={[0.2, 8, 6]} />
-        <meshStandardMaterial
-          color="#fff8e0"
-          emissive="#fff8e0"
-          emissiveIntensity={0.3}
-        />
+
+      {/* Main shaft */}
+      <mesh position={[0, 2.7, 0]} castShadow>
+        <cylinderGeometry args={[0.035, 0.055, 5.3, 10]} />
+        <meshStandardMaterial color="#676a73" roughness={0.34} metalness={0.75} />
       </mesh>
+
       {/* Arm */}
-      <mesh position={[0.15, 4.8, 0]} rotation={[0, 0, -0.4]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.6, 4]} />
-        <meshStandardMaterial color="#6a6a6a" roughness={0.3} metalness={0.8} />
+      <mesh position={[0.2, 4.85, 0]} rotation={[0, 0, -0.42]} castShadow>
+        <cylinderGeometry args={[0.02, 0.025, 0.72, 8]} />
+        <meshStandardMaterial color="#676a73" roughness={0.34} metalness={0.75} />
+      </mesh>
+
+      {/* Fixture housing */}
+      <mesh position={[0.38, 4.56, 0]} castShadow>
+        <boxGeometry args={[0.24, 0.12, 0.16]} />
+        <meshStandardMaterial color="#5e6169" roughness={0.45} metalness={0.65} />
+      </mesh>
+
+      {/* Lens */}
+      <mesh position={[0.38, 4.5, 0]}>
+        <sphereGeometry args={[0.08, 10, 8]} />
+        <meshStandardMaterial color="#fff6cf" emissive="#fff1b8" emissiveIntensity={0.34} roughness={0.2} metalness={0.0} />
       </mesh>
     </group>
   );
@@ -2646,5 +3290,29 @@ function PreviewBuildingFootprint({
 
   return <primitive object={mesh} />;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
