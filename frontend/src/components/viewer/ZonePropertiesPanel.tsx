@@ -32,37 +32,37 @@ const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     id: 'new_york_brownstone',
     label: 'New York Brownstone',
     description: 'Rowhouse stoops, masonry facades, and classic urban rhythm',
-    photoUrl: 'https://images.unsplash.com/photo-1567696153798-9111f9cd3d0d?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1762216454185-71127f1d4a95?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'parisian_haussmann',
     label: 'Parisian Haussmann',
     description: 'Stone facades, iron balconies, and elegant boulevard edges',
-    photoUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1762419371724-62026e913a70?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'historic_traditional',
     label: 'Historic / Traditional',
     description: 'Brick, stone, and detailed facades',
-    photoUrl: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1763236685709-e0af42e75d7d?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'modern',
     label: 'Modern',
     description: 'Clean lines, glass, and contemporary forms',
-    photoUrl: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1760350617916-f31a61153bd5?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'futuristic',
     label: 'Futuristic',
     description: 'High-tech, angular, and expressive structures',
-    photoUrl: 'https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1744168915654-580f2cfc213b?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom direction guided by your prompt',
-    photoUrl: 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80',
   },
 ];
 
@@ -71,43 +71,43 @@ const ROADWAY_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     id: 'kyoto_philosophers_path',
     label: 'Kyoto Philosopher\'s Path',
     description: 'Pedestrian canal edge, cherry trees, and intimate paving',
-    photoUrl: 'https://images.unsplash.com/photo-1526481280695-3c4691f7f22d?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1765692089840-97414f5b74fe?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'grand_boulevard',
     label: 'Grand Boulevard',
     description: 'Wide right-of-way with planted medians and formal edges',
-    photoUrl: 'https://images.unsplash.com/photo-1470004914212-05527e49370b?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1764583885299-22fe11a24234?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'neighborhood_high_street',
     label: 'Neighborhood High Street',
     description: 'Slow street with active ground floor and generous sidewalks',
-    photoUrl: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1704603399202-83212ba5c9b5?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'pedestrian_focused',
     label: 'Pedestrian Focused',
     description: 'Walk-first corridor with minimal or no car throughput',
-    photoUrl: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1759548845703-638bd43de21c?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'water_centric',
     label: 'Water-Centric Promenade',
     description: 'Canal or waterfront promenade with active walking edges',
-    photoUrl: 'https://images.unsplash.com/photo-1439405326854-014607f694d7?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1765652583591-f5723a02a670?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'industrial_collector',
     label: 'Industrial Collector',
     description: 'Durable roadway with heavier service and freight function',
-    photoUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1548188756-52031def9bd5?auto=format&fit=crop&w=1000&q=80',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom transportation mood directed by your prompt',
-    photoUrl: 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=1000&q=80',
+    photoUrl: 'https://images.unsplash.com/photo-1508798179027-a00aa5326443?auto=format&fit=crop&w=1000&q=80',
   },
 ];
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
@@ -2109,6 +2109,8 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
+
+
 
 
 
