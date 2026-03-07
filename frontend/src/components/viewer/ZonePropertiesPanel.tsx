@@ -54,6 +54,7 @@ type DevelopmentAestheticOption = {
   label: string;
   description: string;
   photoUrl: string;
+  photoUrls?: string[];
   transportModes?: TransportModeKey[];
 };
 
@@ -91,42 +92,42 @@ const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     categoryId: 'historic_traditional',
     label: 'New York Brownstone',
     description: 'Brooklyn-style rowhouses with stoops, brownstone facades, and tight rhythm',
-    photoUrl: 'https://source.unsplash.com/yfmkBgAQpzQ/1200x900',
+    photoUrl: 'https://picsum.photos/seed/yfmkBgAQpzQ/1200/900',
   },
   {
     id: 'historic_traditional',
     categoryId: 'historic_traditional',
     label: 'Historic / Traditional',
     description: 'Masonry blocks with ornament, depth, and fine-grain facades',
-    photoUrl: 'https://source.unsplash.com/FzDTX62A2hk/1200x900',
+    photoUrl: 'https://picsum.photos/seed/FzDTX62A2hk/1200/900',
   },
   {
     id: 'parisian_haussmann',
     categoryId: 'classical_european',
     label: 'Parisian Haussmann',
     description: 'Limestone facades, iron balconies, and continuous boulevard frontage',
-    photoUrl: 'https://source.unsplash.com/yyb5HOnHfus/1200x900',
+    photoUrl: 'https://picsum.photos/seed/yyb5HOnHfus/1200/900',
   },
   {
     id: 'modern',
     categoryId: 'contemporary_urban',
     label: 'Modern',
     description: 'Contemporary urban mid-rise with glass, metal, and clean forms',
-    photoUrl: 'https://source.unsplash.com/IEMvQU4i1KU/1200x900',
+    photoUrl: 'https://picsum.photos/seed/IEMvQU4i1KU/1200/900',
   },
   {
     id: 'futuristic',
     categoryId: 'future_forward',
     label: 'Futuristic',
     description: 'High-tech envelopes and sculpted landmark geometry',
-    photoUrl: 'https://source.unsplash.com/mpCSquAKaCc/1200x900',
+    photoUrl: 'https://picsum.photos/seed/mpCSquAKaCc/1200/900',
   },
   {
     id: 'other',
     categoryId: 'custom',
     label: 'Other',
     description: 'Custom architectural direction guided by your prompt',
-    photoUrl: 'https://source.unsplash.com/kZVQsLOxQgw/1200x900',
+    photoUrl: 'https://picsum.photos/seed/kZVQsLOxQgw/1200/900',
   },
 ];
 
@@ -135,55 +136,55 @@ const ROADWAY_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     id: 'kyoto_philosophers_path',
     label: "Kyoto Philosopher's Path",
     description: 'Canal-side pedestrian realm with blossom canopy and intimate paving',
-    photoUrl: 'https://source.unsplash.com/0mufRTPZxsc/1200x900',
+    photoUrl: 'https://picsum.photos/seed/0mufRTPZxsc/1200/900',
   },
   {
     id: 'shared_street_woonerf',
     label: 'Shared Street (Woonerf)',
     description: 'Low-speed shared space blending walking, cycling, and access vehicles',
-    photoUrl: 'https://source.unsplash.com/RxqyHdbEZsc/1200x900',
+    photoUrl: 'https://picsum.photos/seed/RxqyHdbEZsc/1200/900',
   },
   {
     id: 'complete_street',
     label: 'Complete Street',
     description: 'Balanced corridor for transit, bikes, walking, and automobiles',
-    photoUrl: 'https://source.unsplash.com/STFjn2S4bjY/1200x900',
+    photoUrl: 'https://picsum.photos/seed/STFjn2S4bjY/1200/900',
   },
   {
     id: 'cycle_priority_corridor',
     label: 'Cycle Priority Corridor',
     description: 'Protected cycling emphasis with calmer vehicle throughput',
-    photoUrl: 'https://source.unsplash.com/qn0XY1LkccI/1200x900',
+    photoUrl: 'https://picsum.photos/seed/qn0XY1LkccI/1200/900',
   },
   {
     id: 'grand_boulevard',
     label: 'Grand Boulevard',
     description: 'Tree-lined multiway boulevard with planted medians and formal edges',
-    photoUrl: 'https://source.unsplash.com/X2cgJGE8UyU/1200x900',
+    photoUrl: 'https://picsum.photos/seed/X2cgJGE8UyU/1200/900',
   },
   {
     id: 'neighborhood_high_street',
     label: 'Neighborhood High Street',
     description: 'Active mixed-use frontage with generous sidewalks and slower speeds',
-    photoUrl: 'https://source.unsplash.com/IXd81kBAmLA/1200x900',
+    photoUrl: 'https://picsum.photos/seed/IXd81kBAmLA/1200/900',
   },
   {
     id: 'transit_avenue',
     label: 'Transit Avenue',
     description: 'Frequent transit street with strong pedestrian connections',
-    photoUrl: 'https://source.unsplash.com/hEL-9dgbfL0/1200x900',
+    photoUrl: 'https://picsum.photos/seed/hEL-9dgbfL0/1200/900',
   },
   {
     id: 'industrial_collector',
     label: 'Industrial Collector',
     description: 'Durable freight-supportive corridor with service and loading access',
-    photoUrl: 'https://source.unsplash.com/NL2Tx5LxT1M/1200x900',
+    photoUrl: 'https://picsum.photos/seed/NL2Tx5LxT1M/1200/900',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom transportation mood directed by your prompt',
-    photoUrl: 'https://source.unsplash.com/XPslUk17CUM/1200x900',
+    photoUrl: 'https://picsum.photos/seed/XPslUk17CUM/1200/900',
   },
 ];
 
@@ -192,43 +193,43 @@ const GREEN_SPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     id: 'high_line_linear_park',
     label: 'Linear Elevated Park',
     description: 'High Line-inspired promenade with layered planting and seating pockets',
-    photoUrl: 'https://source.unsplash.com/Ln26aeNeJdk/1200x900',
+    photoUrl: 'https://picsum.photos/seed/Ln26aeNeJdk/1200/900',
   },
   {
     id: 'superkilen_cultural_park',
     label: 'Cultural Activity Park',
     description: 'Superkilen-like social park with bold surfaces and active edges',
-    photoUrl: 'https://source.unsplash.com/TuAZPj1uaZs/1200x900',
+    photoUrl: 'https://picsum.photos/seed/TuAZPj1uaZs/1200/900',
   },
   {
     id: 'philosophers_path_garden',
     label: 'Canal Garden Walk',
     description: 'Tree-lined water edge focused on strolling and quiet recreation',
-    photoUrl: 'https://source.unsplash.com/KDjYIvQF1YI/1200x900',
+    photoUrl: 'https://picsum.photos/seed/KDjYIvQF1YI/1200/900',
   },
   {
     id: 'wetland_boardwalk_park',
     label: 'Ecological Wetland Park',
     description: 'Sponge-park boardwalk system for habitat and stormwater retention',
-    photoUrl: 'https://source.unsplash.com/bdh-sY4KneM/1200x900',
+    photoUrl: 'https://picsum.photos/seed/bdh-sY4KneM/1200/900',
   },
   {
     id: 'civic_lawn_commons',
     label: 'Civic Lawn Commons',
     description: 'Flexible event lawn with shade trees and everyday social use',
-    photoUrl: 'https://source.unsplash.com/EhjTCDVEqOc/1200x900',
+    photoUrl: 'https://picsum.photos/seed/EhjTCDVEqOc/1200/900',
   },
   {
     id: 'botanical_garden',
     label: 'Botanical Garden',
     description: 'Curated planting collections with formal paths and rest zones',
-    photoUrl: 'https://source.unsplash.com/tl0uMsO7xIs/1200x900',
+    photoUrl: 'https://picsum.photos/seed/tl0uMsO7xIs/1200/900',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom landscape concept guided by your prompt',
-    photoUrl: 'https://source.unsplash.com/3DDjse_nQco/1200x900',
+    photoUrl: 'https://picsum.photos/seed/3DDjse_nQco/1200/900',
   },
 ];
 
@@ -237,37 +238,37 @@ const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
     id: 'civic_fountain_square',
     label: 'Civic Fountain Square',
     description: 'Formal public square with iconic fountain as social anchor',
-    photoUrl: 'https://source.unsplash.com/U7YsOUPYgYw/1200x900',
+    photoUrl: 'https://picsum.photos/seed/U7YsOUPYgYw/1200/900',
   },
   {
     id: 'market_plaza',
     label: 'Market Plaza',
     description: 'Flexible hardscape for kiosks, events, and daily commerce',
-    photoUrl: 'https://source.unsplash.com/F0sSRtZfwPA/1200x900',
+    photoUrl: 'https://picsum.photos/seed/F0sSRtZfwPA/1200/900',
   },
   {
     id: 'festival_plaza',
     label: 'Festival Plaza',
     description: 'Large gathering forecourt for civic and cultural programming',
-    photoUrl: 'https://source.unsplash.com/awiQebTjbNU/1200x900',
+    photoUrl: 'https://picsum.photos/seed/awiQebTjbNU/1200/900',
   },
   {
     id: 'garden_plaza',
     label: 'Garden Plaza',
     description: 'Softened plaza with trees, seating bands, and cooler microclimate',
-    photoUrl: 'https://source.unsplash.com/CprOa-VNeLw/1200x900',
+    photoUrl: 'https://picsum.photos/seed/CprOa-VNeLw/1200/900',
   },
   {
     id: 'waterfront_boardwalk_plaza',
     label: 'Waterfront Boardwalk Plaza',
     description: 'Edge plaza with boardwalk terraces and promenade character',
-    photoUrl: 'https://source.unsplash.com/3DDjse_nQco/1200x900',
+    photoUrl: 'https://picsum.photos/seed/3DDjse_nQco/1200/900',
   },
   {
     id: 'other',
     label: 'Other',
     description: 'Custom plaza identity guided by your prompt',
-    photoUrl: 'https://source.unsplash.com/8-nDXKy2Vz8/1200x900',
+    photoUrl: 'https://picsum.photos/seed/8-nDXKy2Vz8/1200/900',
   },
 ];
 
@@ -2351,6 +2352,126 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 }
 
 
+const AESTHETIC_EXAMPLE_COUNT = 4;
+
+function buildAestheticImageSources(option: DevelopmentAestheticOption): string[] {
+  const rawSources: string[] = [];
+
+  if (Array.isArray(option.photoUrls)) {
+    rawSources.push(...option.photoUrls);
+  }
+
+  if (option.photoUrl) {
+    rawSources.unshift(option.photoUrl);
+  }
+
+  const deduped: string[] = [];
+  for (const source of rawSources) {
+    if (source && !deduped.includes(source)) {
+      deduped.push(source);
+    }
+  }
+
+  return deduped;
+}
+function AestheticImage({
+  sources,
+  alt,
+  className,
+}: {
+  sources: string[];
+  alt: string;
+  className: string;
+}) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const [failed, setFailed] = useState(false);
+  const sourceKey = sources.join('|');
+
+  useEffect(() => {
+    setSourceIndex(0);
+    setFailed(false);
+  }, [sourceKey]);
+
+  if (sources.length === 0 || failed) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-primary-950/[0.08] text-[10px] text-primary-950/50`}>
+        Photo unavailable
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={sources[Math.min(sourceIndex, sources.length - 1)]}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => {
+        setSourceIndex((current) => {
+          if (current < sources.length - 1) {
+            return current + 1;
+          }
+          setFailed(true);
+          return current;
+        });
+      }}
+    />
+  );
+}
+
+function AestheticOptionCard({
+  option,
+  value,
+  onSelect,
+}: {
+  option: DevelopmentAestheticOption;
+  value?: string;
+  onSelect: (id: string) => void;
+}) {
+  const sources = buildAestheticImageSources(option);
+  const heroSources = sources.slice(0, Math.max(1, sources.length));
+  const exampleSources = sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT);
+
+  return (
+    <button
+      key={option.id}
+      type="button"
+      onClick={() => onSelect(option.id)}
+      className={`overflow-hidden rounded-lg border text-left transition-all ${
+        value === option.id
+          ? 'border-primary-500 ring-2 ring-primary-500/25'
+          : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+      }`}
+    >
+      <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+        <AestheticImage
+          sources={heroSources}
+          alt={option.label}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-2">
+          <p className="text-[10px] font-semibold text-white">{option.label}</p>
+        </div>
+      </div>
+      <div className="px-2 py-1.5">
+        <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+        <div className="mt-1 grid grid-cols-3 gap-1">
+          {exampleSources.slice(0, 3).map((source, idx) => (
+            <div key={`${option.id}-example-${idx}`} className="h-9 overflow-hidden rounded border border-primary-950/[0.08] bg-primary-950/[0.06]">
+              <AestheticImage
+                sources={[source, ...heroSources]}
+                alt={`${option.label} example ${idx + 1}`}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </button>
+  );
+}
 function DevelopmentAestheticPicker({
   value,
   category,
@@ -2381,35 +2502,12 @@ function DevelopmentAestheticPicker({
       {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {categoryOptions.map((option) => (
-            <button
+            <AestheticOptionCard
               key={option.id}
-              type="button"
-              onClick={() => onChange(option.id)}
-              className={`overflow-hidden rounded-lg border text-left transition-all ${
-                value === option.id
-                  ? 'border-primary-500 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-              }`}
-            >
-              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-                <img
-                  src={option.photoUrl}
-                  alt={option.label}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-2">
-                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
-                </div>
-              </div>
-              <div className="px-2 py-1.5">
-                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-              </div>
-            </button>
+              option={option}
+              value={value}
+              onSelect={(id) => onChange(id)}
+            />
           ))}
         </div>
       )}
@@ -2425,7 +2523,6 @@ function DevelopmentAestheticPicker({
     </div>
   );
 }
-
 function RoadwayAestheticPicker({
   value,
   category,
@@ -2464,35 +2561,12 @@ function RoadwayAestheticPicker({
       {filteredOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {filteredOptions.map((option) => (
-            <button
+            <AestheticOptionCard
               key={option.id}
-              type="button"
-              onClick={() => onChange(option.id)}
-              className={`overflow-hidden rounded-lg border text-left transition-all ${
-                value === option.id
-                  ? 'border-primary-500 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-              }`}
-            >
-              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-                <img
-                  src={option.photoUrl}
-                  alt={option.label}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-2">
-                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
-                </div>
-              </div>
-              <div className="px-2 py-1.5">
-                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-              </div>
-            </button>
+              option={option}
+              value={value}
+              onSelect={(id) => onChange(id)}
+            />
           ))}
         </div>
       )}
@@ -2542,35 +2616,12 @@ function GreenSpaceAestheticPicker({
       {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {categoryOptions.map((option) => (
-            <button
+            <AestheticOptionCard
               key={option.id}
-              type="button"
-              onClick={() => onChange(option.id)}
-              className={`overflow-hidden rounded-lg border text-left transition-all ${
-                value === option.id
-                  ? 'border-primary-500 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-              }`}
-            >
-              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-                <img
-                  src={option.photoUrl}
-                  alt={option.label}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-2">
-                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
-                </div>
-              </div>
-              <div className="px-2 py-1.5">
-                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-              </div>
-            </button>
+              option={option}
+              value={value}
+              onSelect={(id) => onChange(id)}
+            />
           ))}
         </div>
       )}
@@ -2585,7 +2636,6 @@ function GreenSpaceAestheticPicker({
     </div>
   );
 }
-
 function PlazaAestheticPicker({
   value,
   category,
@@ -2616,35 +2666,12 @@ function PlazaAestheticPicker({
       {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {categoryOptions.map((option) => (
-            <button
+            <AestheticOptionCard
               key={option.id}
-              type="button"
-              onClick={() => onChange(option.id)}
-              className={`overflow-hidden rounded-lg border text-left transition-all ${
-                value === option.id
-                  ? 'border-primary-500 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-              }`}
-            >
-              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-                <img
-                  src={option.photoUrl}
-                  alt={option.label}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-2">
-                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
-                </div>
-              </div>
-              <div className="px-2 py-1.5">
-                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-              </div>
-            </button>
+              option={option}
+              value={value}
+              onSelect={(id) => onChange(id)}
+            />
           ))}
         </div>
       )}
@@ -3101,6 +3128,14 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
+
+
+
+
+
+
+
+
 
 
 

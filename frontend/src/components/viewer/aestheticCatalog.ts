@@ -14,6 +14,7 @@ export type AestheticOption = {
   label: string;
   description: string;
   photoUrl: string;
+  photoUrls?: string[];
   transportModes?: TransportModeKey[];
 };
 
@@ -41,7 +42,70 @@ export const TRANSPORT_MODE_OPTIONS: Array<{ id: TransportModeKey; label: string
     description: 'Vehicle access for daily circulation and servicing',
   },
 ];
+const UNSPLASH_BUILDING_POOL = [
+  'https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1479510318569-1e327f2b55e3?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&h=900&q=80',
+];
 
+const UNSPLASH_TRANSPORT_POOL = [
+  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1479510318569-1e327f2b55e3?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&h=900&q=80',
+];
+
+const UNSPLASH_GREEN_SPACE_POOL = [
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&h=900&q=80',
+];
+
+const UNSPLASH_PLAZA_POOL = [
+  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&h=900&q=80',
+  'https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&h=900&q=80',
+];
+
+function assignPhotoExamples(options: AestheticOption[], pool: string[]): void {
+  if (pool.length === 0) return;
+
+  options.forEach((option, index) => {
+    const first = pool[index % pool.length];
+    const photoUrls = Array.from({ length: 4 }, (_, offset) => pool[(index + offset) % pool.length]);
+    option.photoUrl = first;
+    option.photoUrls = photoUrls;
+  });
+}
 export const BUILDING_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   {
     id: 'residential',
@@ -81,147 +145,147 @@ export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'residential',
     label: 'New York Brownstone',
     description: 'Brooklyn-style masonry rowhouses with stoops and rhythmic facades',
-    photoUrl: 'https://source.unsplash.com/1200x900/?brooklyn,brownstone,rowhouse,facade',
+    photoUrl: 'https://loremflickr.com/1200/900/brooklyn,brownstone,rowhouse,facade',
   },
   {
     id: 'historic_traditional',
     categoryId: 'residential',
     label: 'Historic / Traditional',
     description: 'Fine-grain brick and stone residential streets with articulated entries',
-    photoUrl: 'https://source.unsplash.com/1200x900/?historic,rowhouse,architecture,street',
+    photoUrl: 'https://loremflickr.com/1200/900/historic,rowhouse,architecture,street',
   },
   {
     id: 'london_georgian_terrace',
     categoryId: 'residential',
     label: 'London Georgian Terrace',
     description: 'Uniform terrace fronts, sash windows, and formal stoop sequences',
-    photoUrl: 'https://source.unsplash.com/1200x900/?london,georgian,terrace,houses',
+    photoUrl: 'https://loremflickr.com/1200/900/london,georgian,terrace,houses',
   },
   {
     id: 'modern_midrise_residential',
     categoryId: 'residential',
     label: 'Modern Mid-Rise Residential',
     description: '5-10 storey apartment blocks with active podium and urban balconies',
-    photoUrl: 'https://source.unsplash.com/1200x900/?midrise,apartment,building,urban',
+    photoUrl: 'https://loremflickr.com/1200/900/midrise,apartment,building,urban',
   },
   {
     id: 'vancouver_townhome_courtyard',
     categoryId: 'residential',
     label: 'Townhome Courtyard Cluster',
     description: 'Stacked townhomes around shared green courts and walk-up entries',
-    photoUrl: 'https://source.unsplash.com/1200x900/?townhouse,courtyard,residential,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/townhouse,courtyard,residential,architecture',
   },
   {
     id: 'parisian_haussmann',
     categoryId: 'commercial',
     label: 'Parisian Haussmann',
     description: 'Limestone blocks with iron balconies and elegant boulevard frontage',
-    photoUrl: 'https://source.unsplash.com/1200x900/?paris,haussmann,building,facade',
+    photoUrl: 'https://loremflickr.com/1200/900/paris,haussmann,building,facade',
   },
   {
     id: 'main_street_retail',
     categoryId: 'commercial',
     label: 'Main Street Retail',
     description: 'Narrow-bay storefront rhythm with upper office or residential floors',
-    photoUrl: 'https://source.unsplash.com/1200x900/?main,street,retail,building,facade',
+    photoUrl: 'https://loremflickr.com/1200/900/main,street,retail,building,facade',
   },
   {
     id: 'office_tower_glass',
     categoryId: 'commercial',
     label: 'Glass Office Tower',
     description: 'High-performance curtain wall office profile with urban plaza edge',
-    photoUrl: 'https://source.unsplash.com/1200x900/?office,tower,glass,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/office,tower,glass,architecture',
   },
   {
     id: 'innovation_campus',
     categoryId: 'commercial',
     label: 'Innovation Campus',
     description: 'Low-to-mid rise tech blocks with shared atria and collaborative courts',
-    photoUrl: 'https://source.unsplash.com/1200x900/?technology,campus,architecture,office',
+    photoUrl: 'https://loremflickr.com/1200/900/technology,campus,architecture,office',
   },
   {
     id: 'podium_mixed_use',
     categoryId: 'mixed_use',
     label: 'Podium Mixed-Use',
     description: 'Retail podium with residential or office towers above',
-    photoUrl: 'https://source.unsplash.com/1200x900/?mixed,use,podium,tower,city',
+    photoUrl: 'https://loremflickr.com/1200/900/mixed,use,podium,tower,city',
   },
   {
     id: 'barcelona_eixample_block',
     categoryId: 'mixed_use',
     label: 'Eixample Perimeter Block',
     description: 'Perimeter block urban form with interior courtyards and active corners',
-    photoUrl: 'https://source.unsplash.com/1200x900/?barcelona,eixample,block,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/barcelona,eixample,block,architecture',
   },
   {
     id: 'transit_oriented_mixed_use',
     categoryId: 'mixed_use',
     label: 'Transit-Oriented Mixed Use',
     description: 'Station-adjacent density with walkable podium and fine-grain frontage',
-    photoUrl: 'https://source.unsplash.com/1200x900/?transit,oriented,development,mixed,use',
+    photoUrl: 'https://loremflickr.com/1200/900/transit,oriented,development,mixed,use',
   },
   {
     id: 'collegiate_campus_quads',
     categoryId: 'institutional',
     label: 'Collegiate Campus Quads',
     description: 'Academic buildings framing courtyards, lawns, and pedestrian spines',
-    photoUrl: 'https://source.unsplash.com/1200x900/?university,campus,quad,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/university,campus,quad,architecture',
   },
   {
     id: 'civic_library_modern',
     categoryId: 'institutional',
     label: 'Contemporary Civic Library',
     description: 'Public-facing civic architecture with transparent edges and gathering stair',
-    photoUrl: 'https://source.unsplash.com/1200x900/?public,library,architecture,modern',
+    photoUrl: 'https://loremflickr.com/1200/900/public,library,architecture,modern',
   },
   {
     id: 'healthcare_campus',
     categoryId: 'institutional',
     label: 'Healthcare Campus',
     description: 'Human-scaled clinical blocks with healing gardens and clear wayfinding',
-    photoUrl: 'https://source.unsplash.com/1200x900/?hospital,campus,architecture,healthcare',
+    photoUrl: 'https://loremflickr.com/1200/900/hospital,campus,architecture,healthcare',
   },
   {
     id: 'logistics_warehouse_campus',
     categoryId: 'industrial',
     label: 'Logistics Warehouse Campus',
     description: 'Large-format logistics sheds with service yards and truck circulation',
-    photoUrl: 'https://source.unsplash.com/1200x900/?warehouse,distribution,center,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/warehouse,distribution,center,architecture',
   },
   {
     id: 'maker_district_brick_loft',
     categoryId: 'industrial',
     label: 'Maker District Loft',
     description: 'Adaptive industrial blocks with brick facades and workshop frontage',
-    photoUrl: 'https://source.unsplash.com/1200x900/?industrial,brick,loft,district',
+    photoUrl: 'https://loremflickr.com/1200/900/industrial,brick,loft,district',
   },
   {
     id: 'clean_tech_industrial',
     categoryId: 'industrial',
     label: 'Clean-Tech Industrial',
     description: 'Advanced manufacturing buildings with daylighted envelopes and clean yards',
-    photoUrl: 'https://source.unsplash.com/1200x900/?modern,industrial,facility,architecture',
+    photoUrl: 'https://loremflickr.com/1200/900/modern,industrial,facility,architecture',
   },
   {
     id: 'modern',
     categoryId: 'mixed_use',
     label: 'Modern',
     description: 'Contemporary urban architecture with clean geometry and glass/metal skin',
-    photoUrl: 'https://source.unsplash.com/1200x900/?modern,urban,building,facade',
+    photoUrl: 'https://loremflickr.com/1200/900/modern,urban,building,facade',
   },
   {
     id: 'futuristic',
     categoryId: 'mixed_use',
     label: 'Futuristic',
     description: 'Expressive high-tech massing with landmark-ready architectural language',
-    photoUrl: 'https://source.unsplash.com/1200x900/?futuristic,architecture,city,building',
+    photoUrl: 'https://loremflickr.com/1200/900/futuristic,architecture,city,building',
   },
   {
     id: 'other',
     categoryId: 'other',
     label: 'Other',
     description: 'Custom building direction guided by your text prompt and references',
-    photoUrl: 'https://source.unsplash.com/1200x900/?architecture,building,facade,city',
+    photoUrl: 'https://loremflickr.com/1200/900/architecture,building,facade,city',
   },
 ];
 
@@ -269,7 +333,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'pedestrian_realm',
     label: "Kyoto Philosopher's Path",
     description: 'Canal-side pedestrian corridor with blossom canopy and intimate paving',
-    photoUrl: 'https://source.unsplash.com/1200x900/?kyoto,philosophers,path,canal,walkway',
+    photoUrl: 'https://loremflickr.com/1200/900/kyoto,philosophers,path,canal,walkway',
     transportModes: ['walking'],
   },
   {
@@ -277,7 +341,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'pedestrian_realm',
     label: 'Copenhagen Stroget',
     description: 'Car-free retail spine with active frontages and generous walking space',
-    photoUrl: 'https://source.unsplash.com/1200x900/?copenhagen,stroget,pedestrian,street',
+    photoUrl: 'https://loremflickr.com/1200/900/copenhagen,stroget,pedestrian,street',
     transportModes: ['walking'],
   },
   {
@@ -285,7 +349,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'pedestrian_realm',
     label: 'Barcelona La Rambla',
     description: 'Tree-lined promenade with central pedestrian flow and edge access',
-    photoUrl: 'https://source.unsplash.com/1200x900/?barcelona,la,rambla,pedestrian',
+    photoUrl: 'https://loremflickr.com/1200/900/barcelona,la,rambla,pedestrian',
     transportModes: ['walking', 'transit'],
   },
   {
@@ -293,7 +357,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'pedestrian_realm',
     label: 'Venice Fondamenta Walk',
     description: 'Water-edge walkways with narrow carriageways and high pedestrian priority',
-    photoUrl: 'https://source.unsplash.com/1200x900/?venice,canal,walkway,street',
+    photoUrl: 'https://loremflickr.com/1200/900/venice,canal,walkway,street',
     transportModes: ['walking'],
   },
   {
@@ -301,7 +365,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'cycling_network',
     label: 'Amsterdam Canal Street',
     description: 'Cycling-first canal corridor with calm local vehicle access',
-    photoUrl: 'https://source.unsplash.com/1200x900/?amsterdam,canal,street,bicycle',
+    photoUrl: 'https://loremflickr.com/1200/900/amsterdam,canal,street,bicycle',
     transportModes: ['walking', 'bicycle', 'automobile'],
   },
   {
@@ -309,7 +373,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'cycling_network',
     label: 'Copenhagen Cycle Superhighway',
     description: 'Protected long-distance bike corridor with smooth intersections',
-    photoUrl: 'https://source.unsplash.com/1200x900/?copenhagen,cycle,track,street',
+    photoUrl: 'https://loremflickr.com/1200/900/copenhagen,cycle,track,street',
     transportModes: ['walking', 'bicycle'],
   },
   {
@@ -317,7 +381,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'cycling_network',
     label: 'Bogota Cicloruta',
     description: 'High-coverage cycle route integrated with green median systems',
-    photoUrl: 'https://source.unsplash.com/1200x900/?bogota,bicycle,lane,street',
+    photoUrl: 'https://loremflickr.com/1200/900/bogota,bicycle,lane,street',
     transportModes: ['walking', 'bicycle'],
   },
   {
@@ -325,7 +389,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'cycling_network',
     label: 'Utrecht Fietsstraat',
     description: 'Bicycle-priority shared street where cars are guests',
-    photoUrl: 'https://source.unsplash.com/1200x900/?utrecht,bicycle,street,netherlands',
+    photoUrl: 'https://loremflickr.com/1200/900/utrecht,bicycle,street,netherlands',
     transportModes: ['walking', 'bicycle', 'automobile'],
   },
   {
@@ -333,7 +397,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'cycling_network',
     label: 'Seville Protected Cycle Track',
     description: 'Physically protected curbside cycleway with shaded sidewalks',
-    photoUrl: 'https://source.unsplash.com/1200x900/?seville,cycle,track,street',
+    photoUrl: 'https://loremflickr.com/1200/900/seville,cycle,track,street',
     transportModes: ['walking', 'bicycle'],
   },
   {
@@ -341,7 +405,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'transit_corridor',
     label: 'Curitiba BRT Axis',
     description: 'Median-running bus rapid transit with linear station sequence',
-    photoUrl: 'https://source.unsplash.com/1200x900/?curitiba,brt,bus,corridor',
+    photoUrl: 'https://loremflickr.com/1200/900/curitiba,brt,bus,corridor',
     transportModes: ['walking', 'transit', 'automobile'],
   },
   {
@@ -349,7 +413,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'transit_corridor',
     label: 'Bogota TransMilenio Avenue',
     description: 'Dedicated bus lanes and platform stations on a high-volume avenue',
-    photoUrl: 'https://source.unsplash.com/1200x900/?transmilenio,bogota,bus,rapid,transit',
+    photoUrl: 'https://loremflickr.com/1200/900/transmilenio,bogota,bus,rapid,transit',
     transportModes: ['walking', 'transit', 'automobile'],
   },
   {
@@ -357,7 +421,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'transit_corridor',
     label: 'Hong Kong Tram Street',
     description: 'Dense mixed corridor where tram movement shapes public street life',
-    photoUrl: 'https://source.unsplash.com/1200x900/?hong,kong,tram,street',
+    photoUrl: 'https://loremflickr.com/1200/900/hong,kong,tram,street',
     transportModes: ['walking', 'transit', 'automobile'],
   },
   {
@@ -365,7 +429,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'transit_corridor',
     label: 'Zurich Tram Boulevard',
     description: 'Transit-forward boulevard with strong pedestrian crossings and calm traffic',
-    photoUrl: 'https://source.unsplash.com/1200x900/?zurich,tram,boulevard,street',
+    photoUrl: 'https://loremflickr.com/1200/900/zurich,tram,boulevard,street',
     transportModes: ['walking', 'transit', 'automobile'],
   },
   {
@@ -373,7 +437,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'complete_street',
     label: 'Portland Complete Street',
     description: 'Balanced street section with transit, cycling, autos, and large sidewalks',
-    photoUrl: 'https://source.unsplash.com/1200x900/?portland,complete,street,urban',
+    photoUrl: 'https://loremflickr.com/1200/900/portland,complete,street,urban',
     transportModes: ['walking', 'bicycle', 'transit', 'automobile'],
   },
   {
@@ -381,7 +445,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'complete_street',
     label: 'Barcelona Superblock Street',
     description: 'Low-speed local grid with reclaimed pedestrian and social space',
-    photoUrl: 'https://source.unsplash.com/1200x900/?barcelona,superblock,street,public,space',
+    photoUrl: 'https://loremflickr.com/1200/900/barcelona,superblock,street,public,space',
     transportModes: ['walking', 'bicycle', 'automobile'],
   },
   {
@@ -389,7 +453,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'complete_street',
     label: 'London Exhibition Road',
     description: 'Shared-surface civic street with coordinated multimodal movement',
-    photoUrl: 'https://source.unsplash.com/1200x900/?london,exhibition,road,shared,street',
+    photoUrl: 'https://loremflickr.com/1200/900/london,exhibition,road,shared,street',
     transportModes: ['walking', 'bicycle', 'automobile'],
   },
   {
@@ -397,7 +461,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'boulevard_avenue',
     label: 'Paris Champs-Elysees',
     description: 'Monumental boulevard section with formal tree canopy and median structure',
-    photoUrl: 'https://source.unsplash.com/1200x900/?paris,champs,elysees,boulevard',
+    photoUrl: 'https://loremflickr.com/1200/900/paris,champs,elysees,boulevard',
     transportModes: ['walking', 'transit', 'automobile'],
   },
   {
@@ -405,7 +469,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'boulevard_avenue',
     label: 'Paseo de la Reforma',
     description: 'Large mixed-mobility avenue with events, monuments, and transit presence',
-    photoUrl: 'https://source.unsplash.com/1200x900/?mexico,city,paseo,reforma,avenue',
+    photoUrl: 'https://loremflickr.com/1200/900/mexico,city,paseo,reforma,avenue',
     transportModes: ['walking', 'bicycle', 'transit', 'automobile'],
   },
   {
@@ -413,7 +477,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'boulevard_avenue',
     label: 'Tokyo Local Service Lane',
     description: 'Fine-grain neighborhood service street with compact multimodal coexistence',
-    photoUrl: 'https://source.unsplash.com/1200x900/?tokyo,local,street,lane',
+    photoUrl: 'https://loremflickr.com/1200/900/tokyo,local,street,lane',
     transportModes: ['walking', 'bicycle', 'automobile'],
   },
   {
@@ -421,7 +485,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'service_freight',
     label: 'Industrial Freight Collector',
     description: 'Durable heavy-duty industrial corridor with turning radii for goods movement',
-    photoUrl: 'https://source.unsplash.com/1200x900/?industrial,freight,road,warehouse',
+    photoUrl: 'https://loremflickr.com/1200/900/industrial,freight,road,warehouse',
     transportModes: ['automobile', 'transit'],
   },
   {
@@ -429,7 +493,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'other',
     label: 'Other',
     description: 'Custom transportation aesthetic and right-of-way direction',
-    photoUrl: 'https://source.unsplash.com/1200x900/?street,urban,transport,corridor',
+    photoUrl: 'https://loremflickr.com/1200/900/street,urban,transport,corridor',
   },
 ];
 export const GREEN_SPACE_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
@@ -471,77 +535,77 @@ export const GREEN_SPACE_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'historic_landscape',
     label: 'English Landscape Garden (Central Park)',
     description: 'Large picturesque park with meadows, winding paths, and layered tree canopy',
-    photoUrl: 'https://source.unsplash.com/1200x900/?central,park,new,york,landscape',
+    photoUrl: 'https://loremflickr.com/1200/900/central,park,new,york,landscape',
   },
   {
     id: 'versailles_formal_garden',
     categoryId: 'historic_landscape',
     label: 'French Formal Garden (Versailles)',
     description: 'Axis-driven formal gardens, parterres, and ceremonial tree alignments',
-    photoUrl: 'https://source.unsplash.com/1200x900/?versailles,garden,formal,landscape',
+    photoUrl: 'https://loremflickr.com/1200/900/versailles,garden,formal,landscape',
   },
   {
     id: 'high_line_linear_park',
     categoryId: 'urban_linear',
     label: 'Linear Elevated Park (High Line)',
     description: 'Elevated promenade with layered planting, overlooks, and seating pockets',
-    photoUrl: 'https://source.unsplash.com/1200x900/?high,line,new,york,park',
+    photoUrl: 'https://loremflickr.com/1200/900/high,line,new,york,park',
   },
   {
     id: 'philosophers_path_garden',
     categoryId: 'urban_linear',
     label: 'Canal Garden Walk',
     description: 'Canal-edge strolling park with seasonal tree canopy and intimate paving',
-    photoUrl: 'https://source.unsplash.com/1200x900/?kyoto,canal,garden,path',
+    photoUrl: 'https://loremflickr.com/1200/900/kyoto,canal,garden,path',
   },
   {
     id: 'superkilen_cultural_park',
     categoryId: 'civic_recreation',
     label: 'Cultural Activity Park (Superkilen)',
     description: 'Program-rich social landscape with bold surfaces and active edges',
-    photoUrl: 'https://source.unsplash.com/1200x900/?superkilen,copenhagen,park',
+    photoUrl: 'https://loremflickr.com/1200/900/superkilen,copenhagen,park',
   },
   {
     id: 'civic_lawn_commons',
     categoryId: 'civic_recreation',
     label: 'Civic Lawn Commons',
     description: 'Flexible event lawn framed by shade trees, play, and social seating',
-    photoUrl: 'https://source.unsplash.com/1200x900/?urban,lawn,park,city',
+    photoUrl: 'https://loremflickr.com/1200/900/urban,lawn,park,city',
   },
   {
     id: 'houtan_ecological_park',
     categoryId: 'ecological_restoration',
     label: 'Ecological Wetland Park (Houtan)',
     description: 'Productive wetland terraces and boardwalks for stormwater polishing',
-    photoUrl: 'https://source.unsplash.com/1200x900/?wetland,boardwalk,urban,park',
+    photoUrl: 'https://loremflickr.com/1200/900/wetland,boardwalk,urban,park',
   },
   {
     id: 'bishan_river_park',
     categoryId: 'ecological_restoration',
     label: 'River Restoration Park (Bishan)',
     description: 'Naturalized river corridor with floodable lawns and habitat mosaics',
-    photoUrl: 'https://source.unsplash.com/1200x900/?river,restoration,park,landscape',
+    photoUrl: 'https://loremflickr.com/1200/900/river,restoration,park,landscape',
   },
   {
     id: 'wetland_boardwalk_park',
     categoryId: 'ecological_restoration',
     label: 'Wetland Boardwalk Park',
     description: 'Sponge-park edge conditions with elevated pathways and riparian planting',
-    photoUrl: 'https://source.unsplash.com/1200x900/?wetland,park,boardwalk,water',
+    photoUrl: 'https://loremflickr.com/1200/900/wetland,park,boardwalk,water',
   },
   {
     id: 'botanical_garden',
     categoryId: 'botanic_horticultural',
     label: 'Botanical Garden',
     description: 'Curated planting collections with educational routes and seasonal color',
-    photoUrl: 'https://source.unsplash.com/1200x900/?botanical,garden,landscape,park',
+    photoUrl: 'https://loremflickr.com/1200/900/botanical,garden,landscape,park',
   },
   {
     id: 'other',
     categoryId: 'other',
     label: 'Other',
     description: 'Custom park concept guided by your prompt and reference imagery',
-    photoUrl: 'https://source.unsplash.com/1200x900/?landscape,architecture,park',
+    photoUrl: 'https://loremflickr.com/1200/900/landscape,architecture,park',
   },
 ];
 
@@ -584,80 +648,83 @@ export const PLAZA_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     categoryId: 'civic_formal',
     label: 'Civic Fountain Square',
     description: 'Formal plaza armature anchored by an iconic fountain and civic frontages',
-    photoUrl: 'https://source.unsplash.com/1200x900/?civic,square,fountain,plaza',
+    photoUrl: 'https://loremflickr.com/1200/900/civic,square,fountain,plaza',
   },
   {
     id: 'piazza_del_campo',
     categoryId: 'civic_formal',
     label: 'Piazza del Campo',
     description: 'Shell-shaped civic plaza with radial paving and active perimeter edges',
-    photoUrl: 'https://source.unsplash.com/1200x900/?piazza,del,campo,siena',
+    photoUrl: 'https://loremflickr.com/1200/900/piazza,del,campo,siena',
   },
   {
     id: 'trafalgar_square',
     categoryId: 'civic_formal',
     label: 'Trafalgar Square',
     description: 'Monumental public square with stairs, fountains, and civic intensity',
-    photoUrl: 'https://source.unsplash.com/1200x900/?trafalgar,square,london',
+    photoUrl: 'https://loremflickr.com/1200/900/trafalgar,square,london',
   },
   {
     id: 'market_plaza',
     categoryId: 'market_social',
     label: 'Market Plaza',
     description: 'Flexible market hardscape for kiosks, pop-ups, and daily retail activity',
-    photoUrl: 'https://source.unsplash.com/1200x900/?market,plaza,urban,public,space',
+    photoUrl: 'https://loremflickr.com/1200/900/market,plaza,urban,public,space',
   },
   {
     id: 'times_square_pedestrian',
     categoryId: 'market_social',
     label: 'Times Square Pedestrian Plaza',
     description: 'High-intensity pedestrianized plaza with media facades and seating bands',
-    photoUrl: 'https://source.unsplash.com/1200x900/?times,square,pedestrian,plaza',
+    photoUrl: 'https://loremflickr.com/1200/900/times,square,pedestrian,plaza',
   },
   {
     id: 'festival_plaza',
     categoryId: 'event_cultural',
     label: 'Festival Plaza',
     description: 'Large event forecourt designed for cultural programming and gatherings',
-    photoUrl: 'https://source.unsplash.com/1200x900/?festival,plaza,public,square',
+    photoUrl: 'https://loremflickr.com/1200/900/festival,plaza,public,square',
   },
   {
     id: 'federation_square',
     categoryId: 'event_cultural',
     label: 'Federation Square',
     description: 'Angular cultural plaza with event staging and layered social terraces',
-    photoUrl: 'https://source.unsplash.com/1200x900/?federation,square,melbourne',
+    photoUrl: 'https://loremflickr.com/1200/900/federation,square,melbourne',
   },
   {
     id: 'garden_plaza',
     categoryId: 'green_cooling',
     label: 'Garden Plaza',
     description: 'Shaded plaza with integrated planting, seating bands, and cooling comfort',
-    photoUrl: 'https://source.unsplash.com/1200x900/?garden,plaza,trees,urban',
+    photoUrl: 'https://loremflickr.com/1200/900/garden,plaza,trees,urban',
   },
   {
     id: 'waterfront_boardwalk_plaza',
     categoryId: 'waterfront',
     label: 'Waterfront Boardwalk Plaza',
     description: 'Promenade plaza with boardwalk terraces and edge activation',
-    photoUrl: 'https://source.unsplash.com/1200x900/?waterfront,boardwalk,plaza',
+    photoUrl: 'https://loremflickr.com/1200/900/waterfront,boardwalk,plaza',
   },
   {
     id: 'harbour_edge_plaza',
     categoryId: 'waterfront',
     label: 'Harbour Edge Plaza',
     description: 'Public waterfront forecourt blending seating steps and shoreline access',
-    photoUrl: 'https://source.unsplash.com/1200x900/?harbour,waterfront,public,plaza',
+    photoUrl: 'https://loremflickr.com/1200/900/harbour,waterfront,public,plaza',
   },
   {
     id: 'other',
     categoryId: 'other',
     label: 'Other',
     description: 'Custom plaza identity guided by your prompt and reference imagery',
-    photoUrl: 'https://source.unsplash.com/1200x900/?urban,plaza,public,space',
+    photoUrl: 'https://loremflickr.com/1200/900/urban,plaza,public,space',
   },
 ];
-
+assignPhotoExamples(BUILDING_AESTHETIC_OPTIONS_V2, UNSPLASH_BUILDING_POOL);
+assignPhotoExamples(ROADWAY_AESTHETIC_OPTIONS_V2, UNSPLASH_TRANSPORT_POOL);
+assignPhotoExamples(GREEN_SPACE_AESTHETIC_OPTIONS_V2, UNSPLASH_GREEN_SPACE_POOL);
+assignPhotoExamples(PLAZA_AESTHETIC_OPTIONS_V2, UNSPLASH_PLAZA_POOL);
 export const ROADWAY_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = {
   kyoto_philosophers_path: {
     mobility_profile: 'walking_only',
@@ -1195,3 +1262,5 @@ export function mapDevelopmentTypeToCategory(value?: string): string | undefined
   if (value === 'industrial') return 'industrial';
   return 'other';
 }
+
+
