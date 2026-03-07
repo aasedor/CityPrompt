@@ -43,6 +43,71 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _safe_int(value, default: int) -> int:
+    """Best-effort integer parsing with fallback."""
+    try:
+        if value is None:
+            return default
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, str):
+            stripped = value.strip()
+            if not stripped:
+                return default
+            return int(float(stripped))
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _normalize_building_ids(raw_ids) -> list[uuid.UUID]:
+    """Normalize zone building_ids payloads into valid UUID objects."""
+    if raw_ids is None:
+        return []
+
+    candidates = raw_ids if isinstance(raw_ids, list) else [raw_ids]
+    normalized: list[uuid.UUID] = []
+    for item in candidates:
+        try:
+            normalized.append(item if isinstance(item, uuid.UUID) else uuid.UUID(str(item)))
+        except (TypeError, ValueError, AttributeError):
+            logger.warning("Skipping invalid building id in zone payload: %r", item)
+    return normalized
+
+
+def _safe_optional_int(value) -> int | None:
+    """Best-effort optional integer parsing."""
+    if value is None:
+        return None
+    try:
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, str):
+            stripped = value.strip()
+            if not stripped:
+                return None
+            return int(float(stripped))
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _safe_optional_float(value) -> float | None:
+    """Best-effort optional float parsing."""
+    if value is None:
+        return None
+    try:
+        if isinstance(value, bool):
+            return float(int(value))
+        if isinstance(value, str):
+            stripped = value.strip()
+            if not stripped:
+                return None
+            return float(stripped)
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
 def _build_neighbor_list(zones: list) -> list[dict]:
     """Build a neighbor list with geometry for AI layout context.
 
@@ -138,7 +203,7 @@ def _zone_to_response(zone: SiteZone) -> dict:
         "properties": zone.properties,
         "sort_order": zone.sort_order,
         "building_id": zone.building_id,
-        "building_ids": [uuid.UUID(bid) for bid in zone.building_ids] if zone.building_ids else None,
+        "building_ids": _normalize_building_ids(zone.building_ids) or None,
         "created_at": zone.created_at,
         "updated_at": zone.updated_at,
     }
@@ -425,7 +490,7 @@ def _resolve_unit_count(zone: SiteZone) -> int:
     props = zone.properties or {}
     # Zone-type-aware default: development_area is inherently multi-unit
     default = 10 if zone.zone_type == "development_area" else 1
-    prop_count = int(props.get("unit_count", default))
+    prop_count = _safe_int(props.get("unit_count"), default)
     desc = props.get("description_text", "") or ""
     parsed_count = _parse_unit_count_from_text(desc)
     return max(prop_count, parsed_count, 1)
@@ -1007,7 +1072,7 @@ async def apply_layout(
 
     # If zone already has linked buildings, delete them first (re-applying layout)
     if zone.building_ids:
-        for old_bid in zone.building_ids:
+        for old_bid in _normalize_building_ids(zone.building_ids):
             old_result = await db.execute(select(Building).where(Building.id == old_bid))
             old_building = old_result.scalar_one_or_none()
             if old_building:
@@ -1036,8 +1101,8 @@ async def apply_layout(
             project_id=zone.project_id,
             name=lb.name or f"{zone.name or 'Unit'} #{i + 1}",
             footprint=WKTElement(footprint_wkt, srid=4326),
-            height_meters=lb.height_m or props.get("height"),
-            floor_count=lb.floors or props.get("floors"),
+            height_meters=lb.height_m if lb.height_m is not None else _safe_optional_float(props.get("height")),
+            floor_count=lb.floors if lb.floors is not None else _safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
             generation_prompt=lb.description or props.get("description_text") or "",
@@ -1220,8 +1285,8 @@ async def create_building_from_zone(
             project_id=zone.project_id,
             name=zone.name or "Building from Zone",
             footprint=zone.geometry,
-            height_meters=props.get("height"),
-            floor_count=props.get("floors"),
+            height_meters=_safe_optional_float(props.get("height")),
+            floor_count=_safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
         )
         db.add(building)
@@ -1249,8 +1314,8 @@ async def create_building_from_zone(
                 project_id=zone.project_id,
                 name=f"{zone.name or 'Unit'} #{i + 1}",
                 footprint=WKTElement(footprint_wkt, srid=4326),
-                height_meters=props.get("height"),
-                floor_count=props.get("floors"),
+                height_meters=_safe_optional_float(props.get("height")),
+                floor_count=_safe_optional_int(props.get("floors")),
                 roof_type=props.get("roof_style"),
             )
             db.add(building)
@@ -1281,8 +1346,8 @@ async def create_building_from_zone(
             project_id=zone.project_id,
             name=f"{zone.name or 'Unit'} #{i + 1}",
             footprint=WKTElement(footprint_wkt, srid=4326),
-            height_meters=lb.height_m or props.get("height"),
-            floor_count=lb.floors or props.get("floors"),
+            height_meters=lb.height_m if lb.height_m is not None else _safe_optional_float(props.get("height")),
+            floor_count=lb.floors if lb.floors is not None else _safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
         )
@@ -1709,200 +1774,222 @@ async def generate_all(
     generations_queued = 0
     queued_buildings = []
     total_zones = len(all_zones)
+    failed_zones = []
 
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
             continue
 
-        zone_props = zone.properties or {}
-        ref_images = zone_props.get("reference_images") or []
+        try:
+            zone_props = zone.properties or {}
+            ref_images = zone_props.get("reference_images") or []
+            if not isinstance(ref_images, list):
+                ref_images = []
 
-        # If zone already has linked buildings, queue generation for all of them
-        if zone.building_ids:
-            bid_list = zone.building_ids if isinstance(zone.building_ids, list) else [zone.building_ids]
-            for bid in bid_list:
-                existing = await db.execute(select(Building).where(Building.id == bid))
-                building = existing.scalar_one_or_none()
-                if not building:
-                    continue
-                if building.generation_status == "generating":
-                    continue
-                # Use existing per-block prompt if set (from block editor), otherwise compose from zone
-                prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
-                building.generation_status = "generating"
-                building.generation_prompt = prompt
-                await db.flush()
-                try:
-                    from app.tasks.processing import generate_3d_model_ai
-                    if ref_images:
-                        generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
-                    else:
-                        generate_3d_model_ai.delay(str(building.id), prompt, "text")
-                    generations_queued += 1
-                    queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
-                except Exception as e:
-                    logger.warning("Failed to queue generation for building %s: %s", building.id, e)
-            continue
+            # If zone already has linked buildings, queue generation for all valid IDs.
+            existing_ids = _normalize_building_ids(zone.building_ids)
+            if existing_ids:
+                for bid in existing_ids:
+                    existing = await db.execute(select(Building).where(Building.id == bid))
+                    building = existing.scalar_one_or_none()
+                    if not building:
+                        continue
+                    if building.generation_status == "generating":
+                        continue
 
-        # Determine unit count for this zone
-        unit_count = _resolve_unit_count(zone)
-
-        if unit_count <= 1:
-            # Single building — original behavior
-            building = Building(
-                project_id=zone.project_id,
-                name=zone.name or "Building from Zone",
-                footprint=zone.geometry,
-                height_meters=zone_props.get("height"),
-                floor_count=zone_props.get("floors"),
-                roof_type=zone_props.get("roof_style"),
-                specifications={
-                    "development_type": zone_props.get("development_type"),
-                    "development_aesthetic": zone_props.get("development_aesthetic"),
-                    "description_text": zone_props.get("description_text"),
-                    "facade_material": zone_props.get("facade_material"),
-                    "roof_style": zone_props.get("roof_style"),
-                },
-            )
-            db.add(building)
-            await db.flush()
-            await db.refresh(building)
-
-            zone.building_id = building.id
-            zone.building_ids = [str(building.id)]
-            await db.flush()
-            buildings_created += 1
-        else:
-            # Multi-unit: generate AI-powered layout
-            try:
-                layout = await _generate_layout_for_zone(zone, unit_count, all_zones)
-            except Exception as layout_err:
-                logger.warning("Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err)
-                grid_positions = compute_unit_positions(zone.geometry, unit_count)
-                all_building_ids_fb: list[str] = []
-                first_building_fb = None
-                for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
-                    footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
-                    b = Building(
-                        project_id=zone.project_id,
-                        name=f"{zone.name or 'Unit'} #{i + 1}",
-                        footprint=WKTElement(footprint_wkt, srid=4326),
-                        height_meters=zone_props.get("height"),
-                        floor_count=zone_props.get("floors"),
-                        roof_type=zone_props.get("roof_style"),
-                        specifications={
-                            "development_type": zone_props.get("development_type"),
-                            "development_aesthetic": zone_props.get("development_aesthetic"),
-                            "description_text": zone_props.get("description_text"),
-                            "facade_material": zone_props.get("facade_material"),
-                            "roof_style": zone_props.get("roof_style"),
-                        },
-                    )
-                    db.add(b)
+                    prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+                    building.generation_status = "generating"
+                    building.generation_prompt = prompt
                     await db.flush()
-                    await db.refresh(b)
-                    all_building_ids_fb.append(str(b.id))
-                    if i == 0:
-                        first_building_fb = b
-                zone.building_id = first_building_fb.id
-                zone.building_ids = all_building_ids_fb
-                await db.flush()
-                buildings_created += unit_count
-                building = first_building_fb
-                prompt = compose_zone_prompt(zone, all_zones)
-                building.generation_status = "generating"
-                building.generation_prompt = prompt
-                await db.flush()
-                try:
-                    from app.tasks.processing import generate_3d_model_ai
-                    if ref_images:
-                        generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
-                    else:
-                        generate_3d_model_ai.delay(str(building.id), prompt, "text")
-                    generations_queued += 1
-                except Exception as e:
-                    queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
-                    logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+
+                    try:
+                        from app.tasks.processing import generate_3d_model_ai
+                        if ref_images:
+                            generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                        else:
+                            generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                        generations_queued += 1
+                        queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
+                    except Exception as e:
+                        logger.warning("Failed to queue generation for building %s: %s", building.id, e)
                 continue
+            elif zone.building_ids:
+                logger.warning("Zone %s had invalid building_ids payload; regenerating from zone geometry", zone.id)
+                zone.building_id = None
+                zone.building_ids = []
+                await db.flush()
 
-            # Use AI layout to create buildings
-            shape = to_shape(zone.geometry)
-            centroid = shape.centroid
-            center_lat = centroid.y
-            all_building_ids: list[str] = []
-            first_building = None
+            # Determine unit count for this zone
+            unit_count = _resolve_unit_count(zone)
 
-            for i, lb in enumerate(layout.buildings):
-                abs_cx = centroid.x + lb.center_x
-                abs_cy = centroid.y + lb.center_y
-                footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
-
-                b = Building(
+            if unit_count <= 1:
+                # Single building
+                building = Building(
                     project_id=zone.project_id,
-                    name=f"{zone.name or 'Unit'} #{i + 1}",
-                    footprint=WKTElement(footprint_wkt, srid=4326),
-                    height_meters=lb.height_m or zone_props.get("height"),
-                    floor_count=lb.floors or zone_props.get("floors"),
+                    name=zone.name or "Building from Zone",
+                    footprint=zone.geometry,
+                    height_meters=_safe_optional_float(zone_props.get("height")),
+                    floor_count=_safe_optional_int(zone_props.get("floors")),
                     roof_type=zone_props.get("roof_style"),
-                    rotation_degrees=lb.rotation_deg,
                     specifications={
                         "development_type": zone_props.get("development_type"),
                         "development_aesthetic": zone_props.get("development_aesthetic"),
                         "description_text": zone_props.get("description_text"),
                         "facade_material": zone_props.get("facade_material"),
                         "roof_style": zone_props.get("roof_style"),
-                        "building_type": lb.building_type,
-                        "width_m": lb.width_m,
-                        "depth_m": lb.depth_m,
                     },
                 )
-                db.add(b)
+                db.add(building)
                 await db.flush()
-                await db.refresh(b)
-                all_building_ids.append(str(b.id))
-                if i == 0:
-                    first_building = b
+                await db.refresh(building)
 
-            if not first_building:
-                continue
-
-            # Store layout metadata in zone properties
-            updated_props = dict(zone_props)
-            updated_props["_layout_strategy"] = layout.layout_strategy
-            updated_props["_layout_reasoning"] = layout.reasoning
-            updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
-            updated_props["_layout_green_spaces"] = [g.model_dump() for g in layout.green_spaces]
-            if layout.density_achieved:
-                updated_props["_layout_density"] = layout.density_achieved
-            zone.properties = updated_props
-
-            zone.building_id = first_building.id
-            zone.building_ids = all_building_ids
-            await db.flush()
-            buildings_created += len(layout.buildings)
-            building = first_building
-
-        # Compose prompt and queue generation (only for first building)
-        prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
-        building.generation_status = "generating"
-        building.generation_prompt = prompt
-        await db.flush()
-        try:
-            from app.tasks.processing import generate_3d_model_ai
-            if ref_images:
-                generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                zone.building_id = building.id
+                zone.building_ids = [str(building.id)]
+                await db.flush()
+                buildings_created += 1
             else:
-                generate_3d_model_ai.delay(str(building.id), prompt, "text")
-            generations_queued += 1
-        except Exception as e:
-            queued_buildings.append({"id": str(building.id), "name": building.name or f"Building"})
-            logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+                # Multi-unit: generate AI-powered layout
+                try:
+                    layout = await _generate_layout_for_zone(zone, unit_count, all_zones)
+                except Exception as layout_err:
+                    logger.warning("Layout gen failed for zone %s in batch, falling back to grid: %s", zone.id, layout_err)
+                    grid_positions = compute_unit_positions(zone.geometry, unit_count)
+                    all_building_ids_fb: list[str] = []
+                    first_building_fb = None
+
+                    for i, (cx, cy, cell_w, cell_h) in enumerate(grid_positions):
+                        footprint_wkt = _make_footprint_polygon(cx, cy, cell_w, cell_h)
+                        b = Building(
+                            project_id=zone.project_id,
+                            name=f"{zone.name or 'Unit'} #{i + 1}",
+                            footprint=WKTElement(footprint_wkt, srid=4326),
+                            height_meters=_safe_optional_float(zone_props.get("height")),
+                            floor_count=_safe_optional_int(zone_props.get("floors")),
+                            roof_type=zone_props.get("roof_style"),
+                            specifications={
+                                "development_type": zone_props.get("development_type"),
+                                "development_aesthetic": zone_props.get("development_aesthetic"),
+                                "description_text": zone_props.get("description_text"),
+                                "facade_material": zone_props.get("facade_material"),
+                                "roof_style": zone_props.get("roof_style"),
+                            },
+                        )
+                        db.add(b)
+                        await db.flush()
+                        await db.refresh(b)
+                        all_building_ids_fb.append(str(b.id))
+                        if i == 0:
+                            first_building_fb = b
+
+                    if not first_building_fb:
+                        raise ValueError("Fallback layout produced no buildings")
+
+                    zone.building_id = first_building_fb.id
+                    zone.building_ids = all_building_ids_fb
+                    await db.flush()
+                    buildings_created += len(all_building_ids_fb)
+
+                    building = first_building_fb
+                    prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+                    building.generation_status = "generating"
+                    building.generation_prompt = prompt
+                    await db.flush()
+
+                    try:
+                        from app.tasks.processing import generate_3d_model_ai
+                        if ref_images:
+                            generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                        else:
+                            generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                        generations_queued += 1
+                        queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
+                    except Exception as e:
+                        logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+                    continue
+
+                # Use AI layout to create buildings
+                shape = to_shape(zone.geometry)
+                centroid = shape.centroid
+                center_lat = centroid.y
+                all_building_ids: list[str] = []
+                first_building = None
+
+                for i, lb in enumerate(layout.buildings):
+                    abs_cx = centroid.x + lb.center_x
+                    abs_cy = centroid.y + lb.center_y
+                    footprint_wkt = _make_rotated_footprint(abs_cx, abs_cy, lb.width_m / 2, lb.depth_m / 2, lb.rotation_deg, center_lat)
+
+                    b = Building(
+                        project_id=zone.project_id,
+                        name=f"{zone.name or 'Unit'} #{i + 1}",
+                        footprint=WKTElement(footprint_wkt, srid=4326),
+                        height_meters=lb.height_m if lb.height_m is not None else _safe_optional_float(zone_props.get("height")),
+                        floor_count=lb.floors if lb.floors is not None else _safe_optional_int(zone_props.get("floors")),
+                        roof_type=zone_props.get("roof_style"),
+                        rotation_degrees=lb.rotation_deg,
+                        specifications={
+                            "development_type": zone_props.get("development_type"),
+                            "development_aesthetic": zone_props.get("development_aesthetic"),
+                            "description_text": zone_props.get("description_text"),
+                            "facade_material": zone_props.get("facade_material"),
+                            "roof_style": zone_props.get("roof_style"),
+                            "building_type": lb.building_type,
+                            "width_m": lb.width_m,
+                            "depth_m": lb.depth_m,
+                        },
+                    )
+                    db.add(b)
+                    await db.flush()
+                    await db.refresh(b)
+                    all_building_ids.append(str(b.id))
+                    if i == 0:
+                        first_building = b
+
+                if not first_building:
+                    raise ValueError("Layout generation produced no valid buildings")
+
+                updated_props = dict(zone_props)
+                updated_props["_layout_strategy"] = layout.layout_strategy
+                updated_props["_layout_reasoning"] = layout.reasoning
+                updated_props["_layout_roads"] = [r.model_dump() for r in layout.roads]
+                updated_props["_layout_green_spaces"] = [g.model_dump() for g in layout.green_spaces]
+                if layout.density_achieved:
+                    updated_props["_layout_density"] = layout.density_achieved
+                zone.properties = updated_props
+
+                zone.building_id = first_building.id
+                zone.building_ids = all_building_ids
+                await db.flush()
+                buildings_created += len(layout.buildings)
+                building = first_building
+
+            # Compose prompt and queue generation (single building for this zone)
+            prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+            building.generation_status = "generating"
+            building.generation_prompt = prompt
+            await db.flush()
+            try:
+                from app.tasks.processing import generate_3d_model_ai
+                if ref_images:
+                    generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                else:
+                    generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                generations_queued += 1
+                queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
+            except Exception as e:
+                logger.warning("Failed to queue generation for building %s: %s", building.id, e)
+
+        except Exception as zone_err:
+            logger.exception("Batch generation failed for zone %s: %s", zone.id, zone_err)
+            failed_zones.append({"zone_id": str(zone.id), "zone_name": zone.name, "error": str(zone_err)})
+            continue
 
     return {
         "total_zones": total_zones,
         "buildings_created": buildings_created,
         "generations_queued": generations_queued,
         "queued_buildings": queued_buildings,
+        "failed_zones": failed_zones,
     }
 
 
@@ -1942,7 +2029,7 @@ async def save_layout(
     centroid = shape.centroid
     center_lat = centroid.y
 
-    bid_list = (zone.building_ids or []) if isinstance(zone.building_ids, list) else ([zone.building_ids] if zone.building_ids else [])
+    bid_list = _normalize_building_ids(zone.building_ids)
     layout_buildings = body.layout.buildings
     buildings_updated = 0
     buildings_created = 0
@@ -1989,7 +2076,7 @@ async def save_layout(
         buildings_updated += 1
 
     # Create new buildings for layout blocks beyond existing building_ids
-    new_bid_list = [bid for i, bid in enumerate(bid_list) if i < len(layout_buildings)]
+    new_bid_list = [str(bid) for i, bid in enumerate(bid_list) if i < len(layout_buildings)]
     for i in range(len(bid_list), len(layout_buildings)):
         lb = layout_buildings[i]
         abs_cx = centroid.x + lb.center_x
@@ -2000,8 +2087,8 @@ async def save_layout(
             project_id=zone.project_id,
             name=lb.name or f"{zone.name or 'Unit'} #{i + 1}",
             footprint=WKTElement(footprint_wkt, srid=4326),
-            height_meters=lb.height_m or props.get("height"),
-            floor_count=lb.floors or props.get("floors"),
+            height_meters=lb.height_m if lb.height_m is not None else _safe_optional_float(props.get("height")),
+            floor_count=lb.floors if lb.floors is not None else _safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
             generation_prompt=lb.description or props.get("description_text") or "",
@@ -2026,7 +2113,7 @@ async def save_layout(
     # Update zone building_ids to match the current layout
     zone.building_ids = new_bid_list
     if new_bid_list:
-        zone.building_id = new_bid_list[0]
+        zone.building_id = uuid.UUID(new_bid_list[0])
     flag_modified(zone, "building_ids")
 
     await db.commit()
@@ -2038,3 +2125,4 @@ async def save_layout(
         "buildings_created": buildings_created,
         "buildings_deleted": buildings_deleted,
     }
+
