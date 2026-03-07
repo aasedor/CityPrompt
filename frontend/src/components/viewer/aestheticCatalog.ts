@@ -42,21 +42,6 @@ export const TRANSPORT_MODE_OPTIONS: Array<{ id: TransportModeKey; label: string
     description: 'Vehicle access for daily circulation and servicing',
   },
 ];
-const UNSPLASH_BUILDING_POOL = [
-  'https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1479510318569-1e327f2b55e3?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&h=900&q=80',
-  'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&h=900&q=80',
-];
-
 const UNSPLASH_TRANSPORT_POOL = [
   'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&h=900&q=80',
   'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=900&q=80',
@@ -289,6 +274,146 @@ export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
   },
 ];
 
+
+const BUILDING_SUBCATEGORY_PHOTO_SETS: Record<string, string[]> = {
+  new_york_brownstone: [
+    'https://upload.wikimedia.org/wikipedia/commons/2/20/Brooklyn_Heights_Townhouses.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bf/17_E._126th_St%2C_Harlem.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e4/ParkSlope.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tribeca%2C_New_York_%2851521771723%29.jpg',
+  ],
+  historic_traditional: [
+    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Gooderham.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/5e/57_The_Close%2C_Salisbury.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Grosvenor_Square_entrance.jpg',
+  ],
+  london_georgian_terrace: [
+    'https://upload.wikimedia.org/wikipedia/commons/3/31/Royal.crescent.aerial.bath.arp.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/5e/57_The_Close%2C_Salisbury.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Grosvenor_Square_entrance.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
+  ],
+  modern_midrise_residential: [
+    'https://upload.wikimedia.org/wikipedia/commons/f/fb/Blue_building_from_above_%2865768p%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/2019.07.10_metro_California-housing_Blog-post_related.webp/2713px-2019.07.10_metro_California-housing_Blog-post_related.webp.png',
+    'https://upload.wikimedia.org/wikipedia/commons/e/ed/4%E2%80%93over%E2%80%931s.webp',
+    'https://upload.wikimedia.org/wikipedia/commons/9/94/Kirkland_Vertical_mixed_use_%284575235975%29.jpg',
+  ],
+  vancouver_townhome_courtyard: [
+    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tribeca%2C_New_York_%2851521771723%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/20/Brooklyn_Heights_Townhouses.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e4/ParkSlope.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bf/17_E._126th_St%2C_Harlem.jpg',
+  ],
+  parisian_haussmann: [
+    'https://upload.wikimedia.org/wikipedia/commons/f/f8/Blv-haussmann-lafayette.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1c/Avenue_de_l%27Op%C3%A9ra_Paris.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/fe/P1010244_Paris_Ier_Rue_de_Rivoli_reductwk.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
+  ],
+  main_street_retail: [
+    'https://upload.wikimedia.org/wikipedia/commons/4/48/Oxford_Street_%28geograph_4949395%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9e/BourkeStreetMall-rain.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0e/Photograph_of_Fifth_Avenue_from_the_Metropolitan%E2%80%94New_York_City.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2b/Stadsschouwburg%2C_Amsterdam_2335.jpg',
+  ],
+  office_tower_glass: [
+    'https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Shard_at_sunset_2017_%28cropped%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e7/Bank_of_America_Tower_in_Manhattan_2015.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bd/Hearst_Tower_%28August_2024%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/8e/30_St_Mary_Axe%2C_%27Gherkin%27.JPG',
+  ],
+  innovation_campus: [
+    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Google_Campus%2C_Mountain_View%2C_CA.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/5a/Aerial_view_of_Apple_Park_dllu.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/6c/1601californiaavelobby.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/ef/2008-07-25_Research_Triangle_Park_Headquarters.jpg',
+  ],
+  podium_mixed_use: [
+    'https://upload.wikimedia.org/wikipedia/commons/9/94/Kirkland_Vertical_mixed_use_%284575235975%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/61/Battery_Park_City_2020.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/18/Barbican_towers.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0a/150328_Namba_Parks_Osaka_Japan01bs3.jpg',
+  ],
+  barcelona_eixample_block: [
+    'https://upload.wikimedia.org/wikipedia/commons/1/19/Eixample_aire_cropped.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e3/Via_Barcelona_Casa_Mil%C3%A0.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/d/de/Casa_Mil%C3%A0%2C_general_view.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/ed/050529_Barcelona_130.jpg',
+  ],
+  transit_oriented_mixed_use: [
+    'https://upload.wikimedia.org/wikipedia/commons/6/67/Leidsestraat_met_tram.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/3a/Shibuya_skyline_from_Tokyu_Plaza_in_Omotesando%2C_Harajuku%2C_Tokyo%2C_2024_May.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0a/150328_Namba_Parks_Osaka_Japan01bs3.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/59/Rosslyn_Skyline_from_Theodore_Roosevelt_Bridge.png',
+  ],
+  collegiate_campus_quads: [
+    'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Lawn%2C_University_of_Virginia.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/cf/Harvard_Yard_in_autumn%2C_Boston%2C_Massachusetts%2C_2015.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/94/Trinity_College_-_Great_Court_02.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2a/Joseph_Ram%C3%A9e_Union_College_USA.jpg',
+  ],
+  civic_library_modern: [
+    'https://upload.wikimedia.org/wikipedia/commons/2/2c/Seattle_Library_01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e5/Oodi_Library_%28Helsinki%2C_Finland%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1e/StadtBibliothekStuttgart-pjt3-18.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/c5/Calgary_Central_Library%2C_Canada%3B_October_2019_%28cropped%29.jpg',
+  ],
+  healthcare_campus: [
+    'https://upload.wikimedia.org/wikipedia/commons/d/d3/Karolinska_Solna%2C_huvudentr%C3%A9_01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/f0/Cleveland_Clinic_Miller_Family_Pavilion_%282021%29.png',
+    'https://upload.wikimedia.org/wikipedia/commons/5/55/Addenbrooke%27s_hospital.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d3/St.thomas.hospital.arp.750pix.jpg',
+  ],
+  logistics_warehouse_campus: [
+    'https://upload.wikimedia.org/wikipedia/commons/c/c7/Warehouse_in_New_Jersey_where_trucks_deliver_granite_slabs.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/de/Distribution_centre_%28J_Sainsbury%27s%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/7/75/014_Queenstown_business_and_industrial_area_at_Glenda_Drive_-_Queenstown%2C_New_Zealand_NZ.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/7/71/Wolfsburg_VW-Werk.jpg',
+  ],
+  maker_district_brick_loft: [
+    'https://upload.wikimedia.org/wikipedia/commons/4/40/400SGreenLoft.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Gooderham.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/90/Navy_Yard%2C_Brooklyn._New_York._1918_-_NH_117794.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bc/VW_Werk_Altes_Heizkraftwerk.jpg',
+  ],
+  clean_tech_industrial: [
+    'https://upload.wikimedia.org/wikipedia/commons/9/98/New_Teslas_at_the_factory.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tesla_Gigafactory_1_-_December_2019.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/14/Datacenter_de_ARSAT.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bc/VW_Werk_Altes_Heizkraftwerk.jpg',
+  ],
+  modern: [
+    'https://upload.wikimedia.org/wikipedia/en/3/3c/VillaSavoye.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/67/6265_Dessau.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0b/Farnsworth_House_by_Mies_Van_Der_Rohe_-_exterior-8.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e7/Bank_of_America_Tower_in_Manhattan_2015.jpg',
+  ],
+  futuristic: [
+    'https://upload.wikimedia.org/wikipedia/commons/0/02/Galaxy_Soho.jpg',
+    'https://upload.wikimedia.org/wikipedia/en/d/d3/Heydar_Aliyev_Cultural_Center.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/c7/Marina_Bay_Sands_%28I%29.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Lloyds_building_taken_2011.jpg',
+  ],
+  other: [
+    'https://upload.wikimedia.org/wikipedia/commons/8/8e/30_St_Mary_Axe%2C_%27Gherkin%27.JPG',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Lloyds_building_taken_2011.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/cb/HMS_Tamar_sailing_past_Canary_Wharf_as_it_leaves_London_September_2020..jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Shard_at_sunset_2017_%28cropped%29.jpg',
+  ],
+};
+
+function assignCuratedPhotoExamples(options: AestheticOption[], photoSets: Record<string, string[]>): void {
+  options.forEach((option) => {
+    const curated = photoSets[option.id];
+    if (!curated || curated.length === 0) return;
+    option.photoUrl = curated[0];
+    option.photoUrls = curated;
+  });
+}
+
+assignCuratedPhotoExamples(BUILDING_AESTHETIC_OPTIONS_V2, BUILDING_SUBCATEGORY_PHOTO_SETS);
 export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   {
     id: 'pedestrian_realm',
@@ -721,7 +846,6 @@ export const PLAZA_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
     photoUrl: 'https://loremflickr.com/1200/900/urban,plaza,public,space',
   },
 ];
-assignPhotoExamples(BUILDING_AESTHETIC_OPTIONS_V2, UNSPLASH_BUILDING_POOL);
 assignPhotoExamples(ROADWAY_AESTHETIC_OPTIONS_V2, UNSPLASH_TRANSPORT_POOL);
 assignPhotoExamples(GREEN_SPACE_AESTHETIC_OPTIONS_V2, UNSPLASH_GREEN_SPACE_POOL);
 assignPhotoExamples(PLAZA_AESTHETIC_OPTIONS_V2, UNSPLASH_PLAZA_POOL);
@@ -1262,5 +1386,4 @@ export function mapDevelopmentTypeToCategory(value?: string): string | undefined
   if (value === 'industrial') return 'industrial';
   return 'other';
 }
-
 
