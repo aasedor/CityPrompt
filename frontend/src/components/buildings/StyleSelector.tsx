@@ -22,6 +22,34 @@ const TAG_COLORS: Record<string, string> = {
   steel: 'bg-slate-500/20 text-slate-400',
 };
 
+const STYLE_PHOTOS: Record<string, string> = {
+  modern: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=900&q=80',
+  classical: 'https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=900&q=80',
+  brutalist: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80',
+  art_deco: 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=900&q=80',
+  industrial: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=900&q=80',
+  victorian: 'https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=900&q=80',
+  mediterranean: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80',
+  scandinavian: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80',
+  colonial: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=900&q=80',
+  japanese_modern: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=900&q=80',
+  neo_gothic: 'https://images.unsplash.com/photo-1479510318569-1e327f2b55e3?auto=format&fit=crop&w=900&q=80',
+  mid_century_modern: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=900&q=80',
+  tropical: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80',
+  high_tech: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80',
+  postmodern: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=900&q=80',
+  deconstructivist: 'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?auto=format&fit=crop&w=900&q=80',
+  organic: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=900&q=80',
+  minimalist: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=900&q=80',
+  cottage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
+  warehouse: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80',
+};
+
+function getStyleImage(style: ArchitecturalStyle): string | undefined {
+  if (style.thumbnail_url) return style.thumbnail_url;
+  return STYLE_PHOTOS[style.id];
+}
+
 export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelectorProps) {
   const [styles, setStyles] = useState<ArchitecturalStyle[]>([]);
   const [search, setSearch] = useState('');
@@ -31,7 +59,6 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
     buildingsApi.getStyles().then(setStyles).catch(() => {});
   }, []);
 
-  // Collect all unique tags
   const allTags = [...new Set(styles.flatMap((s) => s.tags))].sort();
 
   const filtered = styles.filter((s) => {
@@ -80,7 +107,6 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
 
   return (
     <div>
-      {/* Search + tag filters */}
       <div className="mb-3 flex items-center gap-2">
         <div className="relative flex-1">
           <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-primary-950/50" />
@@ -94,7 +120,6 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
         </div>
       </div>
 
-      {/* Tag filter chips */}
       <div className="mb-3 flex flex-wrap gap-1">
         <button
           onClick={() => setTagFilter(null)}
@@ -119,9 +144,7 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
         ))}
       </div>
 
-      {/* Style grid */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {/* Default / None option */}
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         <button
           onClick={() => onSelect(null)}
           className={`rounded-lg border p-2.5 text-left transition-all ${
@@ -130,36 +153,56 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
               : 'border-primary-950/[0.08] hover:border-primary-950/[0.12] hover:bg-white'
           }`}
         >
+          <div className="mb-2 flex aspect-[4/3] items-center justify-center rounded-md border border-dashed border-primary-950/[0.12] bg-primary-950/[0.04]">
+            <p className="text-xs text-primary-950/50">No photo preset</p>
+          </div>
           <p className="text-xs font-semibold text-neutral-100">Default</p>
           <p className="mt-0.5 text-[10px] text-primary-950/50">No style applied</p>
         </button>
 
-        {filtered.map((style) => (
-          <button
-            key={style.id}
-            onClick={() => onSelect(style.id)}
-            className={`rounded-lg border p-2.5 text-left transition-all ${
-              selectedStyle === style.id
-                ? 'border-purple-400/40 bg-purple-500/15 ring-1 ring-purple-400/20'
-                : 'border-primary-950/[0.08] hover:border-primary-950/[0.12] hover:bg-white'
-            }`}
-          >
-            <p className="text-xs font-semibold text-neutral-100">{style.name}</p>
-            <p className="mt-0.5 line-clamp-2 text-[10px] text-primary-950/50">{style.description}</p>
-            <div className="mt-1.5 flex flex-wrap gap-0.5">
-              {style.tags.slice(0, 2).map((tag) => (
-                <span
-                  key={tag}
-                  className={`rounded px-1 py-0.5 text-[9px] font-medium ${
-                    TAG_COLORS[tag] || 'bg-primary-950/[0.04] text-primary-950/50'
-                  }`}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </button>
-        ))}
+        {filtered.map((style) => {
+          const imageUrl = getStyleImage(style);
+          return (
+            <button
+              key={style.id}
+              onClick={() => onSelect(style.id)}
+              className={`rounded-lg border p-2.5 text-left transition-all ${
+                selectedStyle === style.id
+                  ? 'border-purple-400/40 bg-purple-500/15 ring-1 ring-purple-400/20'
+                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.12] hover:bg-white'
+              }`}
+            >
+              <div className="relative mb-2 aspect-[4/3] overflow-hidden rounded-md bg-primary-950/[0.06]">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={style.name}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                ) : null}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <p className="absolute bottom-1.5 left-2 text-[11px] font-semibold text-white">{style.name}</p>
+              </div>
+              <p className="line-clamp-2 text-[10px] text-primary-950/50">{style.description}</p>
+              <div className="mt-1.5 flex flex-wrap gap-0.5">
+                {style.tags.slice(0, 2).map((tag) => (
+                  <span
+                    key={tag}
+                    className={`rounded px-1 py-0.5 text-[9px] font-medium ${
+                      TAG_COLORS[tag] || 'bg-primary-950/[0.04] text-primary-950/50'
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {filtered.length === 0 && (
@@ -168,3 +211,4 @@ export function StyleSelector({ selectedStyle, onSelect, compact }: StyleSelecto
     </div>
   );
 }
+

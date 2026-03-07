@@ -1677,6 +1677,11 @@ Requirements:
                 aesthetic = props.get("road_aesthetic", "")
                 if aesthetic:
                     details.append(aesthetic.replace("_", " "))
+
+                mobility_profile = props.get("mobility_profile", "")
+                if mobility_profile:
+                    details.append(f"mobility profile: {str(mobility_profile).replace('_', ' ')}")
+
                 priorities = []
                 if props.get("priority_pedestrian"):
                     priorities.append(f"pedestrian={props['priority_pedestrian']}")
@@ -1688,6 +1693,24 @@ Requirements:
                     priorities.append(f"auto={props['priority_auto']}")
                 if priorities:
                     details.append(f"priorities: {', '.join(priorities)}")
+
+                ped_rank = props.get("priority_pedestrian")
+                transit_rank = props.get("priority_transit")
+                auto_rank = props.get("priority_auto")
+                is_walk_only = False
+                try:
+                    ped_i = int(ped_rank) if ped_rank is not None else None
+                    tr_i = int(transit_rank) if transit_rank is not None else None
+                    auto_i = int(auto_rank) if auto_rank is not None else None
+                    is_walk_only = (
+                        str(mobility_profile) == "walking_only"
+                        or (ped_i == 1 and (tr_i is None or tr_i >= 4) and (auto_i is None or auto_i >= 4))
+                    )
+                except Exception:
+                    is_walk_only = str(mobility_profile) == "walking_only"
+
+                if is_walk_only:
+                    details.append("pedestrian-only public realm (no private car lanes)")
             elif zt == "green_space":
                 density = props.get("tree_density_level", "medium")
                 tree_val = props.get("tree_density")
@@ -1879,3 +1902,4 @@ OUTPUT RULES:
             for p in response.candidates[0].content.parts
         ]
         raise RuntimeError(f"Gemini did not return an image for site preview. Parts received: {part_types}")
+

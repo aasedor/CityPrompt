@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData, LayoutOption } from '@/types';
+import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData, LayoutOption, Building } from '@/types';
 import { useViewerStore } from '@/store';
 
 // =============================================================================
@@ -23,7 +23,7 @@ interface SiteZonesGroupProps {
   onZoneClick?: (id: string) => void;
 }
 
-export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses, buildings, onZoneClick }: SiteZonesGroupProps) {
+export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses, onZoneClick }: SiteZonesGroupProps) {
   if (!projectLat || !projectLng || zones.length === 0) return null;
 
   const origin = { lat: projectLat, lon: projectLng };
@@ -987,6 +987,14 @@ const ROAD_AESTHETIC_CONFIGS: Record<string, AestheticConfig> = {
       { type: 'lightpole', side: 'both', spacing: 10 },
       { type: 'bollard', side: 'both', spacing: 3 },
       { type: 'bench', side: 'right', spacing: 15 },
+    ],
+  },
+  kyoto_philosophers_path: {
+    furniture: [
+      { type: 'tree', side: 'both', spacing: 8 },
+      { type: 'bench', side: 'both', spacing: 18 },
+      { type: 'lightpole', side: 'both', spacing: 16 },
+      { type: 'railing', side: 'left', spacing: 2 },
     ],
   },
   water_centric: {
@@ -2638,3 +2646,5 @@ function PreviewBuildingFootprint({
 
   return <primitive object={mesh} />;
 }
+
+
