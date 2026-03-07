@@ -21,8 +21,8 @@ const STEPS = [
   },
   {
     Icon: Sparkles,
-    title: 'Generate Neighborhood',
-    description: 'Select the Site Boundary and click "Generate Neighborhood" to create 3D models.',
+    title: 'Generate Community',
+    description: 'Select the Site Boundary and click "Generate Community" to generate the integrated 3D community.',
   },
   {
     Icon: Eye,
@@ -103,3 +103,4 @@ export function SitePlannerGuide({ forceShow, onDismiss }: SitePlannerGuideProps
     </div>
   );
 }
+

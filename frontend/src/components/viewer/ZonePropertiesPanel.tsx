@@ -8,6 +8,26 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
+import {
+  BUILDING_AESTHETIC_CATEGORIES_V2,
+  BUILDING_AESTHETIC_OPTIONS_V2,
+  ROADWAY_AESTHETIC_CATEGORIES_V2,
+  ROADWAY_AESTHETIC_OPTIONS_V2,
+  GREEN_SPACE_AESTHETIC_CATEGORIES_V2,
+  GREEN_SPACE_AESTHETIC_OPTIONS_V2,
+  PLAZA_AESTHETIC_CATEGORIES_V2,
+  PLAZA_AESTHETIC_OPTIONS_V2,
+  ROADWAY_AESTHETIC_PRESETS_V2,
+  GREEN_SPACE_AESTHETIC_PRESETS_V2,
+  PLAZA_AESTHETIC_PRESETS_V2,
+  TRANSPORT_MODE_OPTIONS,
+  TRANSPORT_MODE_ORDER,
+  mapDevelopmentTypeToCategory,
+  inferTransportModesFromProperties,
+  applyModeDrivenRoadDefaults,
+  normalizeTransportModes,
+  type TransportModeKey as CatalogTransportModeKey,
+} from './aestheticCatalog';
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
@@ -20,46 +40,90 @@ interface ZonePropertiesPanelProps {
   onOpenBlockEditor?: () => void;
 }
 
-type DevelopmentAestheticOption = {
+type DevelopmentAestheticCategory = {
   id: string;
   label: string;
   description: string;
-  photoUrl: string;
 };
+
+type TransportModeKey = CatalogTransportModeKey;
+
+type DevelopmentAestheticOption = {
+  id: string;
+  categoryId?: string;
+  label: string;
+  description: string;
+  photoUrl: string;
+  transportModes?: TransportModeKey[];
+};
+
+const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = [
+  {
+    id: 'historic_traditional',
+    label: 'Historic & Traditional',
+    description: 'Contextual masonry and legacy streetwall character',
+  },
+  {
+    id: 'classical_european',
+    label: 'Classical European',
+    description: 'Formal facades and boulevard-scale urbanism',
+  },
+  {
+    id: 'contemporary_urban',
+    label: 'Contemporary Urban',
+    description: 'Current mixed-use and apartment typologies',
+  },
+  {
+    id: 'future_forward',
+    label: 'Future Forward',
+    description: 'Expressive and innovation-led building language',
+  },
+  {
+    id: 'custom',
+    label: 'Custom / Other',
+    description: 'Manual style direction from your prompt',
+  },
+];
 
 const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
   {
     id: 'new_york_brownstone',
+    categoryId: 'historic_traditional',
     label: 'New York Brownstone',
-    description: 'Park Slope rowhouses with stoops, masonry, and a tight streetwall',
+    description: 'Brooklyn-style rowhouses with stoops, brownstone facades, and tight rhythm',
     photoUrl: 'https://source.unsplash.com/yfmkBgAQpzQ/1200x900',
   },
   {
-    id: 'parisian_haussmann',
-    label: 'Parisian Haussmann',
-    description: 'Stone facades, iron balconies, and consistent boulevard frontage',
-    photoUrl: 'https://source.unsplash.com/yyb5HOnHfus/1200x900',
-  },
-  {
     id: 'historic_traditional',
+    categoryId: 'historic_traditional',
     label: 'Historic / Traditional',
-    description: 'Ornate historic fabric with masonry detailing and arched openings',
+    description: 'Masonry blocks with ornament, depth, and fine-grain facades',
     photoUrl: 'https://source.unsplash.com/FzDTX62A2hk/1200x900',
   },
   {
+    id: 'parisian_haussmann',
+    categoryId: 'classical_european',
+    label: 'Parisian Haussmann',
+    description: 'Limestone facades, iron balconies, and continuous boulevard frontage',
+    photoUrl: 'https://source.unsplash.com/yyb5HOnHfus/1200x900',
+  },
+  {
     id: 'modern',
+    categoryId: 'contemporary_urban',
     label: 'Modern',
-    description: 'Contemporary mid/high-rise residential with glass and clean geometry',
+    description: 'Contemporary urban mid-rise with glass, metal, and clean forms',
     photoUrl: 'https://source.unsplash.com/IEMvQU4i1KU/1200x900',
   },
   {
     id: 'futuristic',
+    categoryId: 'future_forward',
     label: 'Futuristic',
-    description: 'Expressive form language with advanced facades and landmark massing',
+    description: 'High-tech envelopes and sculpted landmark geometry',
     photoUrl: 'https://source.unsplash.com/mpCSquAKaCc/1200x900',
   },
   {
     id: 'other',
+    categoryId: 'custom',
     label: 'Other',
     description: 'Custom architectural direction guided by your prompt',
     photoUrl: 'https://source.unsplash.com/kZVQsLOxQgw/1200x900',
@@ -400,6 +464,24 @@ const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
   },
 };
 
+const ROADWAY_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = ROADWAY_AESTHETIC_CATEGORIES_V2;
+const GREEN_SPACE_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = GREEN_SPACE_AESTHETIC_CATEGORIES_V2;
+const PLAZA_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = PLAZA_AESTHETIC_CATEGORIES_V2;
+
+// Replace seed data with the full v2 taxonomy from the shared catalog.
+DEVELOPMENT_AESTHETIC_CATEGORIES.splice(0, DEVELOPMENT_AESTHETIC_CATEGORIES.length, ...BUILDING_AESTHETIC_CATEGORIES_V2);
+DEVELOPMENT_AESTHETIC_OPTIONS.splice(0, DEVELOPMENT_AESTHETIC_OPTIONS.length, ...BUILDING_AESTHETIC_OPTIONS_V2);
+ROADWAY_AESTHETIC_OPTIONS.splice(0, ROADWAY_AESTHETIC_OPTIONS.length, ...ROADWAY_AESTHETIC_OPTIONS_V2);
+GREEN_SPACE_AESTHETIC_OPTIONS.splice(0, GREEN_SPACE_AESTHETIC_OPTIONS.length, ...GREEN_SPACE_AESTHETIC_OPTIONS_V2);
+PLAZA_AESTHETIC_OPTIONS.splice(0, PLAZA_AESTHETIC_OPTIONS.length, ...PLAZA_AESTHETIC_OPTIONS_V2);
+
+Object.keys(ROADWAY_AESTHETIC_PRESETS).forEach((key) => delete ROADWAY_AESTHETIC_PRESETS[key]);
+Object.assign(ROADWAY_AESTHETIC_PRESETS, ROADWAY_AESTHETIC_PRESETS_V2);
+Object.keys(GREEN_SPACE_AESTHETIC_PRESETS).forEach((key) => delete GREEN_SPACE_AESTHETIC_PRESETS[key]);
+Object.assign(GREEN_SPACE_AESTHETIC_PRESETS, GREEN_SPACE_AESTHETIC_PRESETS_V2);
+Object.keys(PLAZA_AESTHETIC_PRESETS).forEach((key) => delete PLAZA_AESTHETIC_PRESETS[key]);
+Object.assign(PLAZA_AESTHETIC_PRESETS, PLAZA_AESTHETIC_PRESETS_V2);
+
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
@@ -429,88 +511,318 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
-  const applyAestheticSelection = (
+  const buildAestheticSelectionProps = (
+    current: SiteZoneProperties,
     key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
     next: string | undefined,
     options: DevelopmentAestheticOption[],
     presets?: Record<string, Partial<SiteZoneProperties>>,
-  ) => {
-    setProps((p) => {
-      const nextProps: SiteZoneProperties = { ...p, [key]: next || undefined };
-      const existing = Array.isArray(p.reference_images) ? (p.reference_images as string[]) : [];
-      const optionImages = options.map((o) => o.photoUrl);
-      const imageUrl = options.find((o) => o.id === next)?.photoUrl;
+  ): SiteZoneProperties => {
+    const nextProps: SiteZoneProperties = { ...current, [key]: next || undefined };
+    const existing = Array.isArray(current.reference_images) ? (current.reference_images as string[]) : [];
+    const optionImages = options.map((o) => o.photoUrl);
+    const imageUrl = options.find((o) => o.id === next)?.photoUrl;
 
-      if (next && presets?.[next]) {
-        Object.assign(nextProps, presets[next]);
+    if (next && presets?.[next]) {
+      Object.assign(nextProps, presets[next]);
+    }
+
+    if (imageUrl) {
+      const deduped = existing.filter((img) => img && img !== imageUrl);
+      nextProps.reference_images = [imageUrl, ...deduped].slice(0, 3);
+    } else {
+      const cleaned = existing.filter((img) => !optionImages.includes(img));
+      nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
+    }
+
+    return nextProps;
+  };
+
+  const resolveOptionCategory = (
+    options: DevelopmentAestheticOption[],
+    aestheticId?: string,
+  ): string | undefined => {
+    if (!aestheticId) return undefined;
+    return options.find((o) => o.id === aestheticId)?.categoryId;
+  };
+
+  const resolveBuildingAestheticCategory = (
+    aestheticId?: string,
+    developmentType?: string,
+  ): string | undefined => {
+    return (
+      resolveOptionCategory(DEVELOPMENT_AESTHETIC_OPTIONS, aestheticId)
+      || mapDevelopmentTypeToCategory(developmentType)
+    );
+  };
+
+  const selectedBuildingAestheticCategory =
+    (props.development_aesthetic_category as string)
+    || resolveBuildingAestheticCategory(
+      (props.development_aesthetic as string) || undefined,
+      (props.development_type as string) || undefined,
+    );
+
+  const selectedRoadAestheticCategory =
+    (props.road_aesthetic_category as string)
+    || resolveOptionCategory(ROADWAY_AESTHETIC_OPTIONS, (props.road_aesthetic as string) || undefined);
+
+  const selectedGreenSpaceCategory =
+    (props.green_space_aesthetic_category as string)
+    || resolveOptionCategory(GREEN_SPACE_AESTHETIC_OPTIONS, (props.green_space_aesthetic as string) || undefined);
+
+  const selectedPlazaCategory =
+    (props.plaza_aesthetic_category as string)
+    || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined);
+
+  const selectedTransportModes = inferTransportModesFromProperties(props);
+
+  const applyBuildingDevelopmentType = (nextDevelopmentType: string | undefined) => {
+    setProps((p) => {
+      const nextProps: SiteZoneProperties = { ...p, development_type: nextDevelopmentType || undefined };
+      const mappedCategory = mapDevelopmentTypeToCategory(nextDevelopmentType);
+      if (mappedCategory) {
+        nextProps.development_aesthetic_category = mappedCategory;
       }
 
-      if (imageUrl) {
-        const deduped = existing.filter((img) => img && img !== imageUrl);
-        nextProps.reference_images = [imageUrl, ...deduped].slice(0, 3);
-      } else {
-        const cleaned = existing.filter((img) => !optionImages.includes(img));
-        nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
+      const currentAesthetic = (p.development_aesthetic as string) || undefined;
+      if (!currentAesthetic) {
+        return nextProps;
+      }
+
+      const allowed = mappedCategory
+        ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((o) => o.categoryId === mappedCategory)
+        : DEVELOPMENT_AESTHETIC_OPTIONS;
+
+      if (allowed.some((o) => o.id === currentAesthetic)) {
+        return nextProps;
+      }
+
+      return buildAestheticSelectionProps(
+        nextProps,
+        'development_aesthetic',
+        undefined,
+        DEVELOPMENT_AESTHETIC_OPTIONS,
+      );
+    });
+  };
+
+  const applyBuildingAestheticCategory = (nextCategory: string | undefined) => {
+    setProps((p) => {
+      const selectedCategory = nextCategory || undefined;
+      const nextProps: SiteZoneProperties = {
+        ...p,
+        development_aesthetic_category: selectedCategory,
+      };
+
+      const currentAesthetic = (p.development_aesthetic as string) || undefined;
+      if (!currentAesthetic) {
+        return nextProps;
+      }
+
+      const optionsForCategory = selectedCategory
+        ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
+        : DEVELOPMENT_AESTHETIC_OPTIONS;
+
+      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
+        return nextProps;
+      }
+
+      return buildAestheticSelectionProps(
+        nextProps,
+        'development_aesthetic',
+        undefined,
+        DEVELOPMENT_AESTHETIC_OPTIONS,
+      );
+    });
+  };
+
+  const applyBuildingAesthetic = (next: string | undefined) => {
+    setProps((p) => {
+      const nextProps = buildAestheticSelectionProps(
+        p,
+        'development_aesthetic',
+        next,
+        DEVELOPMENT_AESTHETIC_OPTIONS,
+      );
+      const selectedOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === next);
+      if (selectedOption?.categoryId) {
+        nextProps.development_aesthetic_category = selectedOption.categoryId;
+      }
+      return nextProps;
+    });
+  };
+
+  const applyRoadAestheticCategory = (nextCategory: string | undefined) => {
+    setProps((p) => {
+      const selectedCategory = nextCategory || undefined;
+      const nextProps: SiteZoneProperties = {
+        ...p,
+        road_aesthetic_category: selectedCategory,
+      };
+
+      const currentAesthetic = (p.road_aesthetic as string) || undefined;
+      if (!currentAesthetic) {
+        return nextProps;
+      }
+
+      const optionsForCategory = selectedCategory
+        ? ROADWAY_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
+        : ROADWAY_AESTHETIC_OPTIONS;
+
+      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
+        return nextProps;
+      }
+
+      return buildAestheticSelectionProps(nextProps, 'road_aesthetic', undefined, ROADWAY_AESTHETIC_OPTIONS);
+    });
+  };
+
+  const applyRoadAesthetic = (next: string | undefined) => {
+    setProps((p) => {
+      let nextProps = buildAestheticSelectionProps(
+        p,
+        'road_aesthetic',
+        next,
+        ROADWAY_AESTHETIC_OPTIONS,
+        ROADWAY_AESTHETIC_PRESETS,
+      );
+
+      const selectedOption = ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next);
+      if (selectedOption?.categoryId) {
+        nextProps.road_aesthetic_category = selectedOption.categoryId;
+      }
+
+      const modeDefaults = normalizeTransportModes(selectedOption?.transportModes);
+      if (modeDefaults.length > 0) {
+        nextProps = applyModeDrivenRoadDefaults(nextProps, modeDefaults, (nextProps.volume as string) || undefined);
       }
 
       return nextProps;
     });
   };
 
-  const applyBuildingAesthetic = (next: string | undefined) => {
-    applyAestheticSelection('development_aesthetic', next, DEVELOPMENT_AESTHETIC_OPTIONS);
-  };
+  const applyGreenSpaceCategory = (nextCategory: string | undefined) => {
+    setProps((p) => {
+      const selectedCategory = nextCategory || undefined;
+      const nextProps: SiteZoneProperties = {
+        ...p,
+        green_space_aesthetic_category: selectedCategory,
+      };
 
-  const applyRoadAesthetic = (next: string | undefined) => {
-    applyAestheticSelection('road_aesthetic', next, ROADWAY_AESTHETIC_OPTIONS, ROADWAY_AESTHETIC_PRESETS);
+      const currentAesthetic = (p.green_space_aesthetic as string) || undefined;
+      if (!currentAesthetic) {
+        return nextProps;
+      }
+
+      const optionsForCategory = selectedCategory
+        ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
+        : GREEN_SPACE_AESTHETIC_OPTIONS;
+
+      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
+        return nextProps;
+      }
+
+      return buildAestheticSelectionProps(nextProps, 'green_space_aesthetic', undefined, GREEN_SPACE_AESTHETIC_OPTIONS);
+    });
   };
 
   const applyGreenSpaceAesthetic = (next: string | undefined) => {
-    applyAestheticSelection('green_space_aesthetic', next, GREEN_SPACE_AESTHETIC_OPTIONS, GREEN_SPACE_AESTHETIC_PRESETS);
+    setProps((p) => {
+      const nextProps = buildAestheticSelectionProps(
+        p,
+        'green_space_aesthetic',
+        next,
+        GREEN_SPACE_AESTHETIC_OPTIONS,
+        GREEN_SPACE_AESTHETIC_PRESETS,
+      );
+
+      const selectedOption = GREEN_SPACE_AESTHETIC_OPTIONS.find((o) => o.id === next);
+      if (selectedOption?.categoryId) {
+        nextProps.green_space_aesthetic_category = selectedOption.categoryId;
+      }
+      return nextProps;
+    });
+  };
+
+  const applyPlazaCategory = (nextCategory: string | undefined) => {
+    setProps((p) => {
+      const selectedCategory = nextCategory || undefined;
+      const nextProps: SiteZoneProperties = {
+        ...p,
+        plaza_aesthetic_category: selectedCategory,
+      };
+
+      const currentAesthetic = (p.plaza_aesthetic as string) || undefined;
+      if (!currentAesthetic) {
+        return nextProps;
+      }
+
+      const optionsForCategory = selectedCategory
+        ? PLAZA_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
+        : PLAZA_AESTHETIC_OPTIONS;
+
+      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
+        return nextProps;
+      }
+
+      return buildAestheticSelectionProps(nextProps, 'plaza_aesthetic', undefined, PLAZA_AESTHETIC_OPTIONS);
+    });
   };
 
   const applyPlazaAesthetic = (next: string | undefined) => {
-    applyAestheticSelection('plaza_aesthetic', next, PLAZA_AESTHETIC_OPTIONS, PLAZA_AESTHETIC_PRESETS);
+    setProps((p) => {
+      const nextProps = buildAestheticSelectionProps(
+        p,
+        'plaza_aesthetic',
+        next,
+        PLAZA_AESTHETIC_OPTIONS,
+        PLAZA_AESTHETIC_PRESETS,
+      );
+      const selectedOption = PLAZA_AESTHETIC_OPTIONS.find((o) => o.id === next);
+      if (selectedOption?.categoryId) {
+        nextProps.plaza_aesthetic_category = selectedOption.categoryId;
+      }
+      return nextProps;
+    });
+  };
+
+  const toggleTransportMode = (mode: TransportModeKey) => {
+    setProps((p) => {
+      const currentModes = inferTransportModesFromProperties(p);
+      const nextModes = currentModes.includes(mode)
+        ? currentModes.filter((m) => m !== mode)
+        : [...currentModes, mode];
+      const deduped = TRANSPORT_MODE_ORDER.filter((m) => nextModes.includes(m));
+      return applyModeDrivenRoadDefaults({ ...p }, deduped, (p.volume as string) || undefined);
+    });
+  };
+
+  const applyRoadVolume = (nextVolume: string | undefined) => {
+    setProps((p) => {
+      const nextProps: SiteZoneProperties = { ...p, volume: nextVolume || undefined };
+      return applyModeDrivenRoadDefaults(nextProps, inferTransportModesFromProperties(nextProps), nextVolume);
+    });
   };
 
   const applyRoadMobilityProfile = (profile: 'walking_only' | 'pedestrian_first' | 'balanced' | 'vehicle_access') => {
     setProps((p) => {
-      const next: SiteZoneProperties = { ...p, mobility_profile: profile };
-
+      const profileModes: Record<typeof profile, TransportModeKey[]> = {
+        walking_only: ['walking'],
+        pedestrian_first: ['walking', 'bicycle'],
+        balanced: ['walking', 'bicycle', 'transit', 'automobile'],
+        vehicle_access: ['automobile', 'transit'],
+      };
+      const base = { ...p, mobility_profile: profile };
+      const volume = profile === 'walking_only' ? 'low' : ((p.volume as string) || undefined);
+      const next = applyModeDrivenRoadDefaults(base, profileModes[profile], volume);
+      next.mobility_profile = profile;
       if (profile === 'walking_only') {
-        next.priority_pedestrian = 1;
-        next.priority_cycling = 2;
-        next.priority_transit = 4;
-        next.priority_auto = 4;
         next.volume = 'low';
-        next.lane_count = 1;
-        next.width = 6;
-        next.sidewalks = 'both';
-        next.has_sidewalks = true;
-      } else if (profile === 'pedestrian_first') {
-        next.priority_pedestrian = 1;
-        next.priority_cycling = 2;
-        next.priority_transit = 3;
-        next.priority_auto = 4;
-        next.volume = (p.volume as string) || 'low';
-        next.sidewalks = 'both';
-        next.has_sidewalks = true;
-      } else if (profile === 'balanced') {
-        next.priority_pedestrian = 2;
-        next.priority_cycling = 2;
-        next.priority_transit = 3;
-        next.priority_auto = 3;
-      } else if (profile === 'vehicle_access') {
-        next.priority_pedestrian = 3;
-        next.priority_cycling = 3;
-        next.priority_transit = 2;
-        next.priority_auto = 1;
       }
-
       return next;
     });
   };
-
   // Compute approximate area from coordinates (in square meters)
   const area = computePolygonAreaM2(zone.coordinates);
 
@@ -597,7 +909,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <label className="block text-xs text-primary-950/50">Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
-                onChange={(e) => setProps((p) => ({ ...p, development_type: e.target.value || undefined }))}
+                onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select --</option>
@@ -612,10 +924,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
             </div>
             {/* Development Aesthetic */}
             <div>
-              <label className="block text-xs text-primary-950/50">Development Aesthetic</label>
+              <label className="block text-xs text-primary-950/50">Aesthetic Category</label>
+              <select
+                value={selectedBuildingAestheticCategory || ''}
+                onChange={(e) => applyBuildingAestheticCategory(e.target.value || undefined)}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="">-- Select Category --</option>
+                {DEVELOPMENT_AESTHETIC_CATEGORIES.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              {selectedBuildingAestheticCategory && (
+                <p className="mt-0.5 text-[10px] text-primary-950/50">
+                  {DEVELOPMENT_AESTHETIC_CATEGORIES.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
+                  category={selectedBuildingAestheticCategory}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -701,10 +1034,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'green_space' && (
           <>
             <div>
+              <label className="block text-xs text-primary-950/50">Park Category</label>
+              <select
+                value={selectedGreenSpaceCategory || ''}
+                onChange={(e) => applyGreenSpaceCategory(e.target.value || undefined)}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="">-- Select Category --</option>
+                {GREEN_SPACE_AESTHETIC_CATEGORIES.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              {selectedGreenSpaceCategory && (
+                <p className="mt-0.5 text-[10px] text-primary-950/50">
+                  {GREEN_SPACE_AESTHETIC_CATEGORIES.find((item) => item.id === selectedGreenSpaceCategory)?.description}
+                </p>
+              )}
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Park Typology</label>
               <div className="mt-1">
                 <GreenSpaceAestheticPicker
                   value={(props.green_space_aesthetic as string) || undefined}
+                  category={selectedGreenSpaceCategory}
                   onChange={applyGreenSpaceAesthetic}
                 />
               </div>
@@ -759,12 +1113,64 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* ============================================================= */}
         {zone.zone_type === 'road' && (
           <>
-            {/* Roadway Aesthetic */}
+            {/* Transportation Modes */}
             <div>
-              <label className="block text-xs text-primary-950/50">Roadway Aesthetic</label>
+              <label className="block text-xs text-primary-950/50">Transportation Modes</label>
+              <div className="mt-1 grid grid-cols-2 gap-1.5">
+                {TRANSPORT_MODE_OPTIONS.map((mode) => {
+                  const active = selectedTransportModes.includes(mode.id);
+                  return (
+                    <button
+                      key={mode.id}
+                      type="button"
+                      onClick={() => toggleTransportMode(mode.id)}
+                      className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
+                        active
+                          ? 'border-primary-500 bg-primary-500/15 text-primary-500'
+                          : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
+                      }`}
+                      title={mode.description}
+                    >
+                      {mode.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-1 text-[10px] text-primary-950/50">
+                Select one or more modes. Intersections and widths are auto-adjusted for functional design.
+              </p>
+            </div>
+
+            {/* Transportation Aesthetic Category */}
+            <div>
+              <label className="block text-xs text-primary-950/50">Transportation Category</label>
+              <select
+                value={selectedRoadAestheticCategory || ''}
+                onChange={(e) => applyRoadAestheticCategory(e.target.value || undefined)}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="">-- Select Category --</option>
+                {ROADWAY_AESTHETIC_CATEGORIES.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              {selectedRoadAestheticCategory && (
+                <p className="mt-0.5 text-[10px] text-primary-950/50">
+                  {ROADWAY_AESTHETIC_CATEGORIES.find((item) => item.id === selectedRoadAestheticCategory)?.description}
+                </p>
+              )}
+            </div>
+
+            {/* Transportation Aesthetic */}
+            <div>
+              <label className="block text-xs text-primary-950/50">Transportation Aesthetic (Top 20)</label>
               <div className="mt-1">
                 <RoadwayAestheticPicker
                   value={(props.road_aesthetic as string) || undefined}
+                  category={selectedRoadAestheticCategory}
+                  selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
               </div>
@@ -881,10 +1287,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Volume */}
             <div>
-              <label className="block text-xs text-primary-950/50">Volume</label>
+              <label className="block text-xs text-primary-950/50">Transportation Volume</label>
               <select
                 value={(props.volume as string) || ''}
-                onChange={(e) => setProps((p) => ({ ...p, volume: e.target.value || undefined }))}
+                onChange={(e) => applyRoadVolume(e.target.value || undefined)}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select --</option>
@@ -962,10 +1368,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {zone.zone_type === 'parking' && (
           <>
             <div>
+              <label className="block text-xs text-primary-950/50">Plaza Category</label>
+              <select
+                value={selectedPlazaCategory || ''}
+                onChange={(e) => applyPlazaCategory(e.target.value || undefined)}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="">-- Select Category --</option>
+                {PLAZA_AESTHETIC_CATEGORIES.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              {selectedPlazaCategory && (
+                <p className="mt-0.5 text-[10px] text-primary-950/50">
+                  {PLAZA_AESTHETIC_CATEGORIES.find((item) => item.id === selectedPlazaCategory)?.description}
+                </p>
+              )}
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Plaza Typology</label>
               <div className="mt-1">
                 <PlazaAestheticPicker
                   value={(props.plaza_aesthetic as string) || undefined}
+                  category={selectedPlazaCategory}
                   onChange={applyPlazaAesthetic}
                 />
               </div>
@@ -1034,7 +1461,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <label className="block text-xs text-primary-950/50">Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
-                onChange={(e) => setProps((p) => ({ ...p, development_type: e.target.value || undefined }))}
+                onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select --</option>
@@ -1059,10 +1486,31 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
               <span className="text-[10px] text-primary-950/50">Number of buildings to generate within this development area</span>
             </div>
             <div>
-              <label className="block text-xs text-primary-950/50">Development Aesthetic</label>
+              <label className="block text-xs text-primary-950/50">Aesthetic Category</label>
+              <select
+                value={selectedBuildingAestheticCategory || ''}
+                onChange={(e) => applyBuildingAestheticCategory(e.target.value || undefined)}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              >
+                <option value="">-- Select Category --</option>
+                {DEVELOPMENT_AESTHETIC_CATEGORIES.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              {selectedBuildingAestheticCategory && (
+                <p className="mt-0.5 text-[10px] text-primary-950/50">
+                  {DEVELOPMENT_AESTHETIC_CATEGORIES.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
+                  category={selectedBuildingAestheticCategory}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -1743,7 +2191,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                               `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
                             );
                           },
-                          applyLabel: 'Generate 3D Neighborhood',
+                          applyLabel: 'Generate Community',
                         });
                       }}
                     />
@@ -1843,7 +2291,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
                         `${result.buildings_created} buildings created, ${result.generations_queued} generations queued`,
                       );
                     },
-                    applyLabel: 'Generate 3D Neighborhood',
+                    applyLabel: 'Generate Community',
                   })}
                 />
                 <button
@@ -1872,20 +2320,20 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
         </div>
       )}
 
-      {/* Step 2: Generate 3D */}
+      {/* Step 2: Generate Community */}
       {hasBuildableZones && (
         <div className="space-y-1.5">
           <label className="block text-xs font-medium text-primary-950/60">
-            {isSitePreviewActive ? 'Step 2: ' : ''}Generate 3D Models
+            {isSitePreviewActive ? 'Step 2: ' : ''}Generate Community
           </label>
           <button
             onClick={handleGenerate}
             disabled={generating}
             className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
-            title="Generate 3D models for zones within this boundary"
+            title="Generate a coordinated community and 3D models for this boundary"
           >
             {generating ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-            {generating ? 'Generating...' : 'Generate 3D Neighborhood'}
+            {generating ? 'Generating...' : 'Generate Community'}
           </button>
         </div>
       )}
@@ -1905,46 +2353,67 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
 function DevelopmentAestheticPicker({
   value,
+  category,
   onChange,
 }: {
   value?: string;
+  category?: string;
   onChange: (next: string | undefined) => void;
 }) {
+  const categoryOptions = category
+    ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    : [];
+
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-2">
-        {DEVELOPMENT_AESTHETIC_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            onClick={() => onChange(option.id)}
-            className={`overflow-hidden rounded-lg border text-left transition-all ${
-              value === option.id
-                ? 'border-primary-500 ring-2 ring-primary-500/25'
-                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-            }`}
-          >
-            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-              <img
-                src={option.photoUrl}
-                alt={option.label}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-2">
-                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+      {!category && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          Select an aesthetic category to view matching building sub-categories.
+        </div>
+      )}
+
+      {category && categoryOptions.length === 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          No sub-categories found for this category.
+        </div>
+      )}
+
+      {categoryOptions.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {categoryOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onChange(option.id)}
+              className={`overflow-hidden rounded-lg border text-left transition-all ${
+                value === option.id
+                  ? 'border-primary-500 ring-2 ring-primary-500/25'
+                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+              }`}
+            >
+              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+                <img
+                  src={option.photoUrl}
+                  alt={option.label}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-2">
+                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
+                </div>
               </div>
-            </div>
-            <div className="px-2 py-1.5">
-              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+              <div className="px-2 py-1.5">
+                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -1959,46 +2428,75 @@ function DevelopmentAestheticPicker({
 
 function RoadwayAestheticPicker({
   value,
+  category,
+  selectedModes,
   onChange,
 }: {
   value?: string;
+  category?: string;
+  selectedModes: TransportModeKey[];
   onChange: (next: string | undefined) => void;
 }) {
+  const categoryOptions = category
+    ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    : [];
+
+  const filteredOptions = categoryOptions.filter((option) => {
+    if (option.id === 'other') return true;
+    if (!option.transportModes || option.transportModes.length === 0) return true;
+    return option.transportModes.some((mode) => selectedModes.includes(mode));
+  });
+
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-2">
-        {ROADWAY_AESTHETIC_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            onClick={() => onChange(option.id)}
-            className={`overflow-hidden rounded-lg border text-left transition-all ${
-              value === option.id
-                ? 'border-primary-500 ring-2 ring-primary-500/25'
-                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-            }`}
-          >
-            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-              <img
-                src={option.photoUrl}
-                alt={option.label}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-2">
-                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+      {!category && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          Select a transportation category to view typologies.
+        </div>
+      )}
+
+      {category && filteredOptions.length === 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          No transportation typologies match the selected mode combination.
+        </div>
+      )}
+
+      {filteredOptions.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {filteredOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onChange(option.id)}
+              className={`overflow-hidden rounded-lg border text-left transition-all ${
+                value === option.id
+                  ? 'border-primary-500 ring-2 ring-primary-500/25'
+                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+              }`}
+            >
+              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+                <img
+                  src={option.photoUrl}
+                  alt={option.label}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-2">
+                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
+                </div>
               </div>
-            </div>
-            <div className="px-2 py-1.5">
-              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+              <div className="px-2 py-1.5">
+                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -2016,46 +2514,66 @@ function RoadwayAestheticPicker({
 
 function GreenSpaceAestheticPicker({
   value,
+  category,
   onChange,
 }: {
   value?: string;
+  category?: string;
   onChange: (next: string | undefined) => void;
 }) {
+  const categoryOptions = category
+    ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    : [];
+
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-2">
-        {GREEN_SPACE_AESTHETIC_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            onClick={() => onChange(option.id)}
-            className={`overflow-hidden rounded-lg border text-left transition-all ${
-              value === option.id
-                ? 'border-primary-500 ring-2 ring-primary-500/25'
-                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-            }`}
-          >
-            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-              <img
-                src={option.photoUrl}
-                alt={option.label}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-2">
-                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+      {!category && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          Select a park category to view typologies.
+        </div>
+      )}
+
+      {category && categoryOptions.length === 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          No park typologies found for this category.
+        </div>
+      )}
+
+      {categoryOptions.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {categoryOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onChange(option.id)}
+              className={`overflow-hidden rounded-lg border text-left transition-all ${
+                value === option.id
+                  ? 'border-primary-500 ring-2 ring-primary-500/25'
+                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+              }`}
+            >
+              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+                <img
+                  src={option.photoUrl}
+                  alt={option.label}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-2">
+                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
+                </div>
               </div>
-            </div>
-            <div className="px-2 py-1.5">
-              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+              <div className="px-2 py-1.5">
+                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -2070,46 +2588,66 @@ function GreenSpaceAestheticPicker({
 
 function PlazaAestheticPicker({
   value,
+  category,
   onChange,
 }: {
   value?: string;
+  category?: string;
   onChange: (next: string | undefined) => void;
 }) {
+  const categoryOptions = category
+    ? PLAZA_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    : [];
+
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-2 gap-2">
-        {PLAZA_AESTHETIC_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            type="button"
-            onClick={() => onChange(option.id)}
-            className={`overflow-hidden rounded-lg border text-left transition-all ${
-              value === option.id
-                ? 'border-primary-500 ring-2 ring-primary-500/25'
-                : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
-            }`}
-          >
-            <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
-              <img
-                src={option.photoUrl}
-                alt={option.label}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-2">
-                <p className="text-[10px] font-semibold text-white">{option.label}</p>
+      {!category && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          Select a plaza category to view typologies.
+        </div>
+      )}
+
+      {category && categoryOptions.length === 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          No plaza typologies found for this category.
+        </div>
+      )}
+
+      {categoryOptions.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {categoryOptions.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onChange(option.id)}
+              className={`overflow-hidden rounded-lg border text-left transition-all ${
+                value === option.id
+                  ? 'border-primary-500 ring-2 ring-primary-500/25'
+                  : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
+              }`}
+            >
+              <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+                <img
+                  src={option.photoUrl}
+                  alt={option.label}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-2">
+                  <p className="text-[10px] font-semibold text-white">{option.label}</p>
+                </div>
               </div>
-            </div>
-            <div className="px-2 py-1.5">
-              <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-            </div>
-          </button>
-        ))}
-      </div>
+              <div className="px-2 py-1.5">
+                <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
       <button
         type="button"
         onClick={() => onChange(undefined)}
@@ -2121,7 +2659,6 @@ function PlazaAestheticPicker({
     </div>
   );
 }
-
 function ReferenceImagesSection({
   images,
   onChange,
@@ -2248,7 +2785,7 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
         toast.success('Layout applied — buildings created');
       };
     } else if (entry.preview_type === 'site' && zone.zone_type === 'site_boundary') {
-      applyLabel = 'Generate 3D Neighborhood';
+      applyLabel = 'Generate Community';
       apply = async () => {
         // If this history entry has stored zone layouts, apply them first
         const zoneLayouts = entry.layout_data && 'zone_layouts' in entry.layout_data
@@ -2452,6 +2989,7 @@ function composeZonePrompt(zone: SiteZone): string {
 
   // 1. Building type + aesthetic
   const aesthetic = ((props.development_aesthetic as string) || '').replace(/_/g, ' ').trim();
+  const aestheticCategory = ((props.development_aesthetic_category as string) || '').replace(/_/g, ' ').trim();
   const devType = ((props.development_type as string) || zone.zone_type).replace(/_/g, ' ');
   const typeLabel = devType.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   if (unitCount > 1) {
@@ -2466,6 +3004,11 @@ function composeZonePrompt(zone: SiteZone): string {
     parts.push(`A ${aestheticLabel} ${typeLabel} building`);
   } else {
     parts.push(`A ${typeLabel} building`);
+  }
+
+  if (aestheticCategory) {
+    const categoryLabel = aestheticCategory.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    parts.push(`Aesthetic category: ${categoryLabel}`);
   }
 
   // 2. Approximate dimensions from coordinates
@@ -2558,4 +3101,23 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
