@@ -63,11 +63,14 @@ export function Google3DTiles({
       recenter: true,
     }));
 
-    tiles.errorTarget = 2;
-    tiles.maxDepth = 50;
-    tiles.loadSiblings = false;
-    tiles.lruCache.maxSize = 800;
-    tiles.lruCache.minSize = 400;
+    // Lower errorTarget = higher detail (more tiles loaded at finer LODs).
+    // loadSiblings ensures neighbouring tiles at the same LOD are fetched
+    // together, preventing the "blob vs detailed" patchwork.
+    tiles.errorTarget = 1;
+    tiles.maxDepth = 100;
+    tiles.loadSiblings = true;
+    tiles.lruCache.maxSize = 1500;
+    tiles.lruCache.minSize = 800;
 
     tiles.setCamera(camera);
     tiles.setResolutionFromRenderer(camera, gl);
