@@ -41,6 +41,7 @@ export function Google3DTiles({
   const { scene, camera, gl } = useThree();
   const tilesRef = useRef<InstanceType<typeof TilesRenderer> | null>(null);
   const alignedRef = useRef(false);
+  const warmupRef = useRef(0);
 
   useEffect(() => {
     if (!apiKey) return;
@@ -63,11 +64,13 @@ export function Google3DTiles({
       recenter: true,
     }));
 
-    tiles.errorTarget = 2;
+    // Start with a loose errorTarget so base tiles load fast, then
+    // progressively tighten in useFrame for sharper detail.
+    tiles.errorTarget = 12;
     tiles.maxDepth = 50;
-    tiles.loadSiblings = false;
-    tiles.lruCache.maxSize = 800;
-    tiles.lruCache.minSize = 400;
+    tiles.loadSiblings = true;
+    tiles.lruCache.maxSize = 1200;
+    tiles.lruCache.minSize = 600;
 
     tiles.setCamera(camera);
     tiles.setResolutionFromRenderer(camera, gl);
@@ -97,6 +100,16 @@ export function Google3DTiles({
       perspCam.far = 100000;
       perspCam.near = 1;
       perspCam.updateProjectionMatrix();
+    }
+
+    // Progressive refinement: ramp errorTarget from 12 → 2 over ~3 seconds
+    // so base tiles load fast, then detail sharpens automatically.
+    if (tiles.errorTarget > 2) {
+      warmupRef.current += 1;
+      // Every 10 frames, step down by 1 (at 60fps ≈ every 0.17s)
+      if (warmupRef.current % 10 === 0) {
+        tiles.errorTarget = Math.max(2, tiles.errorTarget - 1);
+      }
     }
 
     camera.updateMatrixWorld();
