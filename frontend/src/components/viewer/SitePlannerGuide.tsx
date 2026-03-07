@@ -7,12 +7,12 @@ const STEPS = [
   {
     Icon: MapPin,
     title: 'Draw a Site Boundary',
-    description: 'Select Site Boundary from Planning tools and draw around your development area.',
+    description: 'Select Site Boundary from the main creation tools and draw around your development area.',
   },
   {
     Icon: Layers,
     title: 'Add Zones Inside',
-    description: 'Add Building, Residential, Roads, Green Spaces, and other zones within the boundary.',
+    description: 'Use Buildings, Streets and Paths, and Parks / Plazas to lay out the community inside the boundary.',
   },
   {
     Icon: Settings,

@@ -253,7 +253,7 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
     defaultProperties: { height: 12, floors: 4, floor_height: 3 },
   },
   road: {
-    label: 'Road',
+    label: 'Streets and Paths',
     color: '#444444',
     icon: 'D',
     defaultProperties: { width: 10 },
@@ -635,3 +635,4 @@ export interface BoundaryAnalysisResponse {
     };
   };
 }
+

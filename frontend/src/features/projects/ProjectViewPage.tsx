@@ -52,10 +52,10 @@ export function ProjectViewPage() {
   );
   const hasFinalizedLayout = siteZones.some((z) => (z.properties as any)?._saved_layout);
 
-  // Activate site planner on mount, pre-select residential tool
+  // Activate site planner on mount, pre-select buildings tool
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool('residential');
+    setActiveSitePlannerTool('building');
     return () => {
       setSitePlannerActive(false);
       setActiveSitePlannerTool(null);

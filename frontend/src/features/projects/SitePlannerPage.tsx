@@ -27,10 +27,10 @@ export function SitePlannerPage() {
   useUndoRedoKeyboard();
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
 
-  // Activate site planner on mount, set residential as default tool
+  // Activate site planner on mount, set buildings as default tool
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool('residential');
+    setActiveSitePlannerTool('building');
     return () => {
       setSitePlannerActive(false);
       setActiveSitePlannerTool(null);
@@ -162,8 +162,6 @@ export function SitePlannerPage() {
       <SitePlannerToolbar
         onViewIn3D={handleViewIn3D}
         onWalkThrough={handleWalkThrough}
-        projectId={id}
-        zones={siteZones}
       />
 
       {/* AI Generate modal */}
@@ -178,3 +176,4 @@ export function SitePlannerPage() {
     </div>
   );
 }
+

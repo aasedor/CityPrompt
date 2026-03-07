@@ -1114,9 +1114,9 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         {/* ============================================================= */}
         {zone.zone_type === 'road' && (
           <>
-            {/* Transportation Modes */}
+            {/* Streets and Paths Modes */}
             <div>
-              <label className="block text-xs text-primary-950/50">Transportation Modes</label>
+              <label className="block text-xs text-primary-950/50">Streets and Paths Modes</label>
               <div className="mt-1 grid grid-cols-2 gap-1.5">
                 {TRANSPORT_MODE_OPTIONS.map((mode) => {
                   const active = selectedTransportModes.includes(mode.id);
@@ -1144,7 +1144,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Transportation Aesthetic Category */}
             <div>
-              <label className="block text-xs text-primary-950/50">Transportation Category</label>
+              <label className="block text-xs text-primary-950/50">Streets and Paths Category</label>
               <select
                 value={selectedRoadAestheticCategory || ''}
                 onChange={(e) => applyRoadAestheticCategory(e.target.value || undefined)}
@@ -1166,7 +1166,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Transportation Aesthetic */}
             <div>
-              <label className="block text-xs text-primary-950/50">Transportation Aesthetic (Top 20)</label>
+              <label className="block text-xs text-primary-950/50">Streets and Paths Aesthetic (Top 20)</label>
               <div className="mt-1">
                 <RoadwayAestheticPicker
                   value={(props.road_aesthetic as string) || undefined}
@@ -1288,7 +1288,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
             {/* Volume */}
             <div>
-              <label className="block text-xs text-primary-950/50">Transportation Volume</label>
+              <label className="block text-xs text-primary-950/50">Streets and Paths Volume</label>
               <select
                 value={(props.volume as string) || ''}
                 onChange={(e) => applyRoadVolume(e.target.value || undefined)}
@@ -2577,7 +2577,7 @@ function RoadwayAestheticPicker({
         disabled={!value}
         className="w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-[11px] font-medium text-primary-950/60 hover:bg-primary-950/[0.08] disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Clear Transportation Aesthetic
+        Clear Streets and Paths Aesthetic
       </button>
     </div>
   );
@@ -3128,31 +3128,4 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

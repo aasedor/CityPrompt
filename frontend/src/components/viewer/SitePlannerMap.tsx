@@ -65,6 +65,14 @@ function minPointsForTool(tool: SiteZoneType | null): number {
   return isLinearTool(tool) ? 2 : 3;
 }
 
+function getToolDisplayLabel(tool: SiteZoneType): string {
+  if (tool === 'site_boundary') return 'Site Boundary';
+  if (tool === 'building' || tool === 'residential') return 'Buildings';
+  if (tool === 'road') return 'Streets and Paths';
+  if (tool === 'green_space' || tool === 'parking') return 'Parks / Plazas';
+  return ZONE_TYPE_CONFIG[tool]?.label || tool;
+}
+
 /**
  * From overlapping features at a click point, pick the one with the smallest
  * polygon area (the innermost / most specific zone). Uses the shoelace formula
@@ -874,8 +882,8 @@ export function SitePlannerMap({
         <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           {drawingPoints.length === 0
             ? linear
-              ? `Click to start drawing a ${ZONE_TYPE_CONFIG[activeSitePlannerTool].label} path`
-              : `Click to start drawing a ${ZONE_TYPE_CONFIG[activeSitePlannerTool].label} zone`
+              ? `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Line)`
+              : `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Polygon)`
             : drawingPoints.length < minPts
             ? linear
               ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
@@ -894,3 +902,4 @@ export function SitePlannerMap({
     </>
   );
 }
+

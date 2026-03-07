@@ -1,215 +1,54 @@
-import { useState, useRef, useEffect } from 'react';
-import { Eye, MousePointer, Footprints, Building2, Route, TreePine, Map as MapIcon, ChevronUp, HelpCircle } from 'lucide-react';
-import type { SiteZoneType, SiteZoneProperties, RoadPresetConfig, BuildingPresetConfig } from '@/types';
-import { ZONE_TYPE_CONFIG, ROAD_PRESETS, BUILDING_PRESETS } from '@/types';
+import { useMemo, useState } from 'react';
+import { Eye, MousePointer, Footprints, HelpCircle, Layers3 } from 'lucide-react';
+import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
+import siteBoundaryIcon from '@/assets/site-planner-tools/site-boundary.svg';
+import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
+import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
+import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
 
-/** Logical groupings for zone types */
-const ZONE_GROUPS = [
+type CoreToolId = 'siteBoundary' | 'buildings' | 'streetsPaths' | 'parksPlazas';
+type ParksSubtype = 'park' | 'plaza';
+
+interface CoreToolDef {
+  id: CoreToolId;
+  label: string;
+  drawType: 'Polygon' | 'Line';
+  description: string;
+  icon: string;
+}
+
+const CORE_TOOLS: CoreToolDef[] = [
   {
-    key: 'structures',
-    label: 'Structures',
-    Icon: Building2,
-    types: ['building', 'residential'] as SiteZoneType[],
+    id: 'siteBoundary',
+    label: 'Site Boundary',
+    drawType: 'Polygon',
+    description: 'Define the generation area',
+    icon: siteBoundaryIcon,
   },
   {
-    key: 'infrastructure',
-    label: 'Infra',
-    Icon: Route,
-    types: ['road', 'parking'] as SiteZoneType[],
+    id: 'buildings',
+    label: 'Buildings',
+    drawType: 'Polygon',
+    description: 'Place building development zones',
+    icon: buildingsIcon,
   },
   {
-    key: 'natural',
-    label: 'Natural',
-    Icon: TreePine,
-    types: ['green_space', 'water'] as SiteZoneType[],
+    id: 'streetsPaths',
+    label: 'Streets and Paths',
+    drawType: 'Line',
+    description: 'Draw streets, routes, and corridors',
+    icon: streetsPathsIcon,
   },
   {
-    key: 'planning',
-    label: 'Planning',
-    Icon: MapIcon,
-    types: ['site_boundary', 'development_area'] as SiteZoneType[],
+    id: 'parksPlazas',
+    label: 'Parks / Plazas',
+    drawType: 'Polygon',
+    description: 'Create park and plaza public spaces',
+    icon: parksPlazasIcon,
   },
-] as const;
-
-/** Maximum width across all road presets — used to scale visual width bars */
-const MAX_ROAD_WIDTH = Math.max(...ROAD_PRESETS.map((p) => (p.properties.width as number) || 0));
-
-interface ZoneGroupDropdownProps {
-  group: (typeof ZONE_GROUPS)[number];
-  isOpen: boolean;
-  onToggle: () => void;
-  activeTool: SiteZoneType | null;
-  onSelectTool: (type: SiteZoneType, properties?: SiteZoneProperties) => void;
-}
-
-/** Returns the presets list for zone types that have them */
-function getPresetsForType(type: SiteZoneType): (RoadPresetConfig | BuildingPresetConfig)[] | null {
-  if (type === 'road') return ROAD_PRESETS;
-  if (type === 'building' || type === 'residential') return BUILDING_PRESETS;
-  return null;
-}
-
-/** Compact indicator shown next to each preset label */
-function PresetIndicator({ preset, color }: { preset: RoadPresetConfig | BuildingPresetConfig; color: string }) {
-  const width = preset.properties.width as number | undefined;
-  const floors = preset.properties.floors as number | undefined;
-
-  if (width) {
-    // Road: width-proportional bar
-    return (
-      <span
-        className="inline-block h-2 flex-shrink-0 rounded-sm"
-        style={{
-          width: `${Math.max(8, (width / MAX_ROAD_WIDTH) * 48)}px`,
-          backgroundColor: color,
-        }}
-      />
-    );
-  }
-  if (floors) {
-    // Building: small floors badge
-    return (
-      <span
-        className="inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-[9px] font-bold leading-none"
-        style={{ backgroundColor: color, color: '#fff' }}
-      >
-        {floors}
-      </span>
-    );
-  }
-  // Fallback: colored dot
-  return (
-    <span
-      className="inline-block h-3 w-3 flex-shrink-0 rounded-full"
-      style={{ backgroundColor: color }}
-    />
-  );
-}
-
-/** Compact summary shown on the right side of a preset button */
-function PresetSummary({ preset }: { preset: RoadPresetConfig | BuildingPresetConfig }) {
-  const width = preset.properties.width as number | undefined;
-  const floors = preset.properties.floors as number | undefined;
-
-  if (width) return <span className="ml-auto text-[10px] text-white/50 group-hover:text-white/70">{width}m</span>;
-  if (floors) return <span className="ml-auto text-[10px] text-white/50 group-hover:text-white/70">{floors}F</span>;
-  return null;
-}
-
-function ZoneGroupDropdown({ group, isOpen, onToggle, activeTool, onSelectTool }: ZoneGroupDropdownProps) {
-  const { Icon, label, types } = group;
-  const activeChild = types.find((t) => t === activeTool);
-  const activeColor = activeChild ? ZONE_TYPE_CONFIG[activeChild].color : undefined;
-
-  // Track which zone type is expanded to show sub-presets
-  const [expandedType, setExpandedType] = useState<SiteZoneType | null>(null);
-
-  return (
-    <div className="relative">
-      {/* Upward flyout */}
-      {isOpen && (
-        <div className="absolute bottom-full left-1/2 z-30 mb-2 -translate-x-1/2 rounded-lg bg-primary-950 p-1.5 shadow-xl ring-1 ring-white/10">
-          <div className="flex flex-col gap-1">
-            {types.map((type) => {
-              const config = ZONE_TYPE_CONFIG[type];
-              const isActive = activeTool === type;
-              const presets = getPresetsForType(type);
-              const hasPresets = presets !== null;
-              const isExpanded = expandedType === type;
-
-              return (
-                <div key={type} className="flex flex-col">
-                  <button
-                    onClick={() => {
-                      if (hasPresets) {
-                        setExpandedType(isExpanded ? null : type);
-                      } else {
-                        onSelectTool(type);
-                      }
-                    }}
-                    className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
-                      isActive
-                        ? 'bg-white/15 text-white ring-1 ring-white/40'
-                        : 'text-white/70 hover:bg-white/10 hover:text-white'
-                    }`}
-                    title={hasPresets ? `Expand ${config.label} presets` : `Draw ${config.label} zone`}
-                  >
-                    <span
-                      className="inline-block h-3 w-3 flex-shrink-0 rounded-sm border border-white/30"
-                      style={{ backgroundColor: config.color }}
-                    />
-                    <span>{config.label}</span>
-                    {hasPresets && (
-                      <ChevronUp
-                        size={10}
-                        className={`ml-auto transition-transform ${isExpanded ? '' : 'rotate-180'}`}
-                      />
-                    )}
-                    {isActive && !hasPresets && (
-                      <span className="ml-auto rounded bg-white/15 px-1.5 py-0.5 text-[10px] leading-none">
-                        Active
-                      </span>
-                    )}
-                  </button>
-
-                  {/* Preset sub-menu (road, building, residential) */}
-                  {hasPresets && isExpanded && presets && (
-                    <div className="ml-2 mt-1 flex flex-col gap-1 border-l border-white/20 pl-2">
-                      {presets.map((preset) => (
-                        <button
-                          key={preset.label}
-                          onClick={() => {
-                            onSelectTool(type, preset.properties);
-                            setExpandedType(null);
-                          }}
-                          className="group flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-xs text-white/70 transition-all hover:bg-white/10 hover:text-white"
-                          title={`${preset.label} — ${preset.description}`}
-                        >
-                          <PresetIndicator preset={preset} color={config.color} />
-                          <span className="font-medium">{preset.label}</span>
-                          <PresetSummary preset={preset} />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Category trigger button */}
-      <button
-        onClick={onToggle}
-        className={`flex items-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition-all sm:px-3 sm:py-1.5 ${
-          isOpen
-            ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
-            : activeChild
-              ? 'bg-white/15 text-primary-950'
-              : 'text-primary-950/80 hover:bg-primary-950/[0.04] hover:text-primary-950'
-        }`}
-        title={label}
-      >
-        {activeColor ? (
-          <span
-            className="inline-block h-3 w-3 rounded-sm border border-white/30"
-            style={{ backgroundColor: activeColor }}
-          />
-        ) : (
-          <Icon size={14} />
-        )}
-        <span>{label}</span>
-        <ChevronUp
-          size={12}
-          className={`transition-transform ${isOpen ? '' : 'rotate-180'}`}
-        />
-      </button>
-    </div>
-  );
-}
+];
 
 interface SitePlannerToolbarProps {
   onViewIn3D: () => void;
@@ -217,104 +56,193 @@ interface SitePlannerToolbarProps {
   onShowGuide?: () => void;
 }
 
+function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
+  if (tool === 'site_boundary') return 'siteBoundary';
+  if (tool === 'building') return 'buildings';
+  if (tool === 'road') return 'streetsPaths';
+  if (tool === 'green_space' || tool === 'parking') return 'parksPlazas';
+  return null;
+}
+
+function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype): SiteZoneType {
+  if (id === 'siteBoundary') return 'site_boundary';
+  if (id === 'buildings') return 'building';
+  if (id === 'streetsPaths') return 'road';
+  return parksSubtype === 'plaza' ? 'parking' : 'green_space';
+}
+
 export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
-  const groupsRef = useRef<HTMLDivElement>(null);
+  const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (groupsRef.current && !groupsRef.current.contains(e.target as Node)) {
-        setOpenGroup(null);
-      }
-    }
-    if (openGroup) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [openGroup]);
+  const activeCoreTool = useMemo(
+    () => mapToolToCoreTool(activeSitePlannerTool),
+    [activeSitePlannerTool],
+  );
 
-  const handleSelectTool = (type: SiteZoneType, properties?: SiteZoneProperties) => {
-    if (!properties && activeSitePlannerTool === type) {
+  const activateCoreTool = (id: CoreToolId) => {
+    const zoneType = resolveZoneTypeForCoreTool(id, parksSubtype);
+    if (activeSitePlannerTool === zoneType) {
       setActiveSitePlannerTool(null);
-    } else {
-      setActiveSitePlannerTool(type, properties);
+      return;
     }
-    setOpenGroup(null);
+    setActiveSitePlannerTool(zoneType);
+  };
+
+  const handleSelectMode = () => {
+    setActiveSitePlannerTool(null);
+  };
+
+  const onChangeParksSubtype = (next: ParksSubtype) => {
+    setParksSubtype(next);
+    if (activeCoreTool === 'parksPlazas') {
+      setActiveSitePlannerTool(next === 'plaza' ? 'parking' : 'green_space');
+    }
   };
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-1.5 rounded-xl bg-white/95 px-3 py-2 shadow-2xl backdrop-blur-sm sm:flex-row sm:items-center sm:justify-center sm:gap-2">
-      {/* Zone tools row — wraps on mobile */}
-      <div ref={groupsRef} className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-        {/* Select / Move tool */}
-        <button
-          onClick={() => { setActiveSitePlannerTool(null); setOpenGroup(null); }}
-          className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all sm:py-1.5 ${
-            activeSitePlannerTool === null
-              ? 'bg-primary-950/[0.06] text-primary-950 ring-2 ring-white/40'
-              : 'text-primary-950/80 hover:bg-primary-950/[0.04] hover:text-primary-950'
-          }`}
-          title="Select / Move zones"
-        >
-          <MousePointer size={14} />
-          <span>Select</span>
-        </button>
-
-        <div className="mx-0.5 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
-
-        <UndoRedoButtons />
-
-        <div className="mx-0.5 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
-
-        {ZONE_GROUPS.map((group) => (
-          <ZoneGroupDropdown
-            key={group.key}
-            group={group}
-            isOpen={openGroup === group.key}
-            onToggle={() => setOpenGroup(openGroup === group.key ? null : group.key)}
-            activeTool={activeSitePlannerTool}
-            onSelectTool={handleSelectTool}
-          />
-        ))}
+    <div className="flex w-full flex-col gap-2 rounded-xl bg-white/95 px-3 py-2 shadow-2xl backdrop-blur-sm">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {CORE_TOOLS.map((tool) => {
+          const isActive = activeCoreTool === tool.id;
+          return (
+            <button
+              key={tool.id}
+              onClick={() => activateCoreTool(tool.id)}
+              className={`group flex min-h-[86px] flex-col items-start rounded-xl border px-3 py-2 text-left transition-all ${
+                isActive
+                  ? 'border-primary-500 bg-primary-500/10 ring-2 ring-primary-500/25'
+                  : 'border-primary-950/[0.08] bg-white hover:border-primary-300 hover:bg-primary-950/[0.03]'
+              }`}
+              title={`${tool.label} (${tool.drawType})`}
+            >
+              <img
+                src={tool.icon}
+                alt=""
+                className="h-9 w-9 rounded-md object-cover"
+                aria-hidden
+              />
+              <span className="mt-2 text-sm font-semibold text-primary-950">{tool.label}</span>
+              <span className="mt-0.5 text-[11px] text-primary-950/60">{tool.drawType}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Divider — visible only on desktop between zone tools and action buttons */}
-      <div className="mx-1 hidden h-6 w-px bg-primary-950/[0.06] sm:block" />
-      {/* Thin horizontal divider on mobile */}
-      <div className="h-px w-full bg-primary-950/[0.04] sm:hidden" />
-
-      {/* Action buttons row */}
-      <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-        <button
-          onClick={onWalkThrough}
-          className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white hover:bg-emerald-700 sm:px-4 sm:py-1.5"
-          title="Walk through the site at street level"
-        >
-          <Footprints size={14} />
-          <span className="hidden sm:inline">Explore</span>
-        </button>
-
-        <button
-          onClick={onViewIn3D}
-          className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-2 text-xs font-medium text-white hover:bg-primary-700 sm:px-4 sm:py-1.5"
-        >
-          <Eye size={14} />
-          <span className="sm:hidden">3D</span>
-          <span className="hidden sm:inline">View in 3D</span>
-        </button>
-
-        {onShowGuide && (
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-primary-950/[0.03] px-2 py-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
-            onClick={onShowGuide}
-            className="flex items-center gap-1 rounded-lg px-2 py-2 text-xs text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950 sm:py-1.5"
-            title="Show quick-start guide"
+            onClick={handleSelectMode}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              activeSitePlannerTool === null
+                ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
+                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            }`}
+            title="Select and edit existing zones"
           >
-            <HelpCircle size={14} />
+            <MousePointer size={14} />
+            Select
           </button>
-        )}
+
+          <UndoRedoButtons />
+
+          <button
+            onClick={() => setShowAdvanced((v) => !v)}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              showAdvanced
+                ? 'bg-primary-950/[0.08] text-primary-950'
+                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            }`}
+            title="Show additional technical tools"
+          >
+            <Layers3 size={14} />
+            More Tools
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5">
+          {activeCoreTool === 'parksPlazas' && (
+            <div className="mr-1 inline-flex rounded-lg border border-primary-950/[0.1] bg-white p-0.5 text-xs">
+              <button
+                onClick={() => onChangeParksSubtype('park')}
+                className={`rounded-md px-2 py-1 font-medium ${
+                  parksSubtype === 'park' ? 'bg-emerald-500/15 text-emerald-700' : 'text-primary-950/60 hover:text-primary-950'
+                }`}
+                title="Draw park zones"
+              >
+                Parks
+              </button>
+              <button
+                onClick={() => onChangeParksSubtype('plaza')}
+                className={`rounded-md px-2 py-1 font-medium ${
+                  parksSubtype === 'plaza' ? 'bg-sky-500/15 text-sky-700' : 'text-primary-950/60 hover:text-primary-950'
+                }`}
+                title="Draw plaza zones"
+              >
+                Plazas
+              </button>
+            </div>
+          )}
+
+          <button
+            onClick={onWalkThrough}
+            className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+            title="Walk through the site at street level"
+          >
+            <Footprints size={14} />
+            <span className="hidden sm:inline">Explore</span>
+          </button>
+
+          <button
+            onClick={onViewIn3D}
+            className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
+            title="Open 3D viewer"
+          >
+            <Eye size={14} />
+            <span className="sm:hidden">3D</span>
+            <span className="hidden sm:inline">View in 3D</span>
+          </button>
+
+          {onShowGuide && (
+            <button
+              onClick={onShowGuide}
+              className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-primary-950/60 hover:bg-primary-950/[0.05] hover:text-primary-950"
+              title="Show quick-start guide"
+            >
+              <HelpCircle size={14} />
+            </button>
+          )}
+        </div>
       </div>
+
+      {showAdvanced && (
+        <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-primary-950/[0.08] bg-white px-2 py-1.5">
+          <span className="text-[11px] font-medium uppercase tracking-wide text-primary-950/50">Advanced</span>
+          <button
+            onClick={() => setActiveSitePlannerTool('residential')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Residential (Polygon)"
+          >
+            Residential
+          </button>
+          <button
+            onClick={() => setActiveSitePlannerTool('development_area')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Development Area (Polygon)"
+          >
+            Development Area
+          </button>
+          <button
+            onClick={() => setActiveSitePlannerTool('water')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Water (Polygon)"
+          >
+            Water
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
