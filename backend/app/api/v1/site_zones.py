@@ -108,6 +108,47 @@ def _safe_optional_float(value) -> float | None:
     except (TypeError, ValueError):
         return None
 
+def _compact_spec_values(values: dict) -> dict:
+    """Drop None/empty-string values while preserving False/0/list/dict payloads."""
+    return {
+        key: value
+        for key, value in values.items()
+        if value is not None and (not isinstance(value, str) or value.strip() != "")
+    }
+
+
+STYLE_METADATA_KEYS = (
+    "development_subcategory",
+    "development_aesthetic_category",
+    "development_selected_reference",
+    "development_archetype_id",
+    "development_archetype_label",
+    "development_archetype_image",
+    "development_archetype_images",
+    "development_style_profile",
+    "generation_style_input",
+)
+
+
+def _extract_building_style_metadata(props: dict) -> dict:
+    """Extract structured building style metadata from zone properties."""
+    return _compact_spec_values({key: props.get(key) for key in STYLE_METADATA_KEYS})
+
+
+def _base_building_specifications(props: dict, description_text: Optional[str] = None) -> dict:
+    """Create a consistent baseline specifications payload for building records."""
+    specs = {
+        "development_type": props.get("development_type"),
+        "development_aesthetic": props.get("development_aesthetic"),
+        "development_aesthetic_category": props.get("development_aesthetic_category"),
+        "description_text": description_text if description_text is not None else props.get("description_text"),
+        "facade_material": props.get("facade_material"),
+        "roof_style": props.get("roof_style"),
+    }
+    specs.update(_extract_building_style_metadata(props))
+    return _compact_spec_values(specs)
+
+
 def _build_neighbor_list(zones: list) -> list[dict]:
     """Build a neighbor list with geometry for AI layout context.
 
@@ -1107,11 +1148,7 @@ async def apply_layout(
             rotation_degrees=lb.rotation_deg,
             generation_prompt=lb.description or props.get("description_text") or "",
             specifications={
-                "development_type": props.get("development_type"),
-                "development_aesthetic": props.get("development_aesthetic"),
-                "description_text": lb.description or props.get("description_text"),
-                "facade_material": props.get("facade_material"),
-                "roof_style": props.get("roof_style"),
+                **_base_building_specifications(props, lb.description or props.get("description_text")),
                 "building_type": lb.building_type,
                 "style": lb.style,
                 "width_m": lb.width_m,
@@ -1280,7 +1317,7 @@ async def create_building_from_zone(
     unit_count = _resolve_unit_count(zone)
 
     if unit_count <= 1:
-        # Single building — original behavior
+        # Single building - original behavior
         building = Building(
             project_id=zone.project_id,
             name=zone.name or "Building from Zone",
@@ -1288,6 +1325,7 @@ async def create_building_from_zone(
             height_meters=_safe_optional_float(props.get("height")),
             floor_count=_safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
+            specifications=_base_building_specifications(props),
         )
         db.add(building)
         await db.flush()
@@ -1317,6 +1355,7 @@ async def create_building_from_zone(
                 height_meters=_safe_optional_float(props.get("height")),
                 floor_count=_safe_optional_int(props.get("floors")),
                 roof_type=props.get("roof_style"),
+                specifications=_base_building_specifications(props),
             )
             db.add(building)
             await db.flush()
@@ -1350,6 +1389,12 @@ async def create_building_from_zone(
             floor_count=lb.floors if lb.floors is not None else _safe_optional_int(props.get("floors")),
             roof_type=props.get("roof_style"),
             rotation_degrees=lb.rotation_deg,
+            specifications={
+                **_base_building_specifications(props),
+                "building_type": lb.building_type,
+                "width_m": lb.width_m,
+                "depth_m": lb.depth_m,
+            },
         )
         db.add(building)
         await db.flush()
@@ -1419,6 +1464,45 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         parts.append(f"A {aesthetic_label} {type_label} building")
     else:
         parts.append(f"A {type_label} building")
+
+    aesthetic_category = props.get("development_aesthetic_category", "")
+    if isinstance(aesthetic_category, str) and aesthetic_category.strip():
+        parts.append(f"Aesthetic category: {aesthetic_category.replace('_', ' ').title()}")
+
+    selected_reference = props.get("development_selected_reference")
+    if isinstance(selected_reference, dict):
+        ref_label = selected_reference.get("label")
+        if isinstance(ref_label, str) and ref_label.strip():
+            parts.append(f"Archetype reference: {ref_label}")
+
+    archetype_label = props.get("development_archetype_label")
+    if isinstance(archetype_label, str) and archetype_label.strip():
+        parts.append(f"Archetype profile: {archetype_label}")
+
+    style_profile = props.get("development_style_profile")
+    if isinstance(style_profile, dict):
+        materials = style_profile.get("materials")
+        if isinstance(materials, list):
+            valid_materials = [str(item).strip() for item in materials if str(item).strip()]
+            if valid_materials:
+                parts.append(f"Style materials: {', '.join(valid_materials)}")
+        for key, label in (
+            ("massing", "Style massing"),
+            ("facadeRhythm", "Facade rhythm"),
+            ("roofForm", "Roof form"),
+            ("frontageType", "Frontage type"),
+            ("articulation", "Articulation"),
+            ("publicRealm", "Public realm intent"),
+        ):
+            value = style_profile.get(key)
+            if isinstance(value, str) and value.strip():
+                parts.append(f"{label}: {value.strip()}")
+
+    generation_style_input = props.get("generation_style_input")
+    if isinstance(generation_style_input, dict):
+        subcategory = generation_style_input.get("buildingSubcategory")
+        if isinstance(subcategory, str) and subcategory.strip():
+            parts.append(f"Building subcategory: {subcategory.replace('_', ' ')}")
 
     # 2. Dimensions from PostGIS geometry
     try:
@@ -1783,7 +1867,12 @@ async def generate_all(
         try:
             zone_props = zone.properties or {}
             ref_images = zone_props.get("reference_images") or []
-            if not isinstance(ref_images, list):
+            if isinstance(ref_images, list):
+                ref_images = [
+                    img for img in ref_images
+                    if isinstance(img, str) and img.lower().startswith(("http://", "https://"))
+                ]
+            else:
                 ref_images = []
 
             # If zone already has linked buildings, queue generation for all valid IDs.
@@ -1797,7 +1886,7 @@ async def generate_all(
                     if building.generation_status == "generating":
                         continue
 
-                    prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+                    prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
                     building.generation_status = "generating"
                     building.generation_prompt = prompt
                     await db.flush()
@@ -1831,13 +1920,7 @@ async def generate_all(
                     height_meters=_safe_optional_float(zone_props.get("height")),
                     floor_count=_safe_optional_int(zone_props.get("floors")),
                     roof_type=zone_props.get("roof_style"),
-                    specifications={
-                        "development_type": zone_props.get("development_type"),
-                        "development_aesthetic": zone_props.get("development_aesthetic"),
-                        "description_text": zone_props.get("description_text"),
-                        "facade_material": zone_props.get("facade_material"),
-                        "roof_style": zone_props.get("roof_style"),
-                    },
+                    specifications=_base_building_specifications(zone_props),
                 )
                 db.add(building)
                 await db.flush()
@@ -1866,13 +1949,7 @@ async def generate_all(
                             height_meters=_safe_optional_float(zone_props.get("height")),
                             floor_count=_safe_optional_int(zone_props.get("floors")),
                             roof_type=zone_props.get("roof_style"),
-                            specifications={
-                                "development_type": zone_props.get("development_type"),
-                                "development_aesthetic": zone_props.get("development_aesthetic"),
-                                "description_text": zone_props.get("description_text"),
-                                "facade_material": zone_props.get("facade_material"),
-                                "roof_style": zone_props.get("roof_style"),
-                            },
+                            specifications=_base_building_specifications(zone_props),
                         )
                         db.add(b)
                         await db.flush()
@@ -1890,7 +1967,7 @@ async def generate_all(
                     buildings_created += len(all_building_ids_fb)
 
                     building = first_building_fb
-                    prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+                    prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
                     building.generation_status = "generating"
                     building.generation_prompt = prompt
                     await db.flush()
@@ -1928,11 +2005,7 @@ async def generate_all(
                         roof_type=zone_props.get("roof_style"),
                         rotation_degrees=lb.rotation_deg,
                         specifications={
-                            "development_type": zone_props.get("development_type"),
-                            "development_aesthetic": zone_props.get("development_aesthetic"),
-                            "description_text": zone_props.get("description_text"),
-                            "facade_material": zone_props.get("facade_material"),
-                            "roof_style": zone_props.get("roof_style"),
+                            **_base_building_specifications(zone_props),
                             "building_type": lb.building_type,
                             "width_m": lb.width_m,
                             "depth_m": lb.depth_m,
@@ -1964,7 +2037,7 @@ async def generate_all(
                 building = first_building
 
             # Compose prompt and queue generation (single building for this zone)
-            prompt = building.generation_prompt if building.generation_prompt else compose_zone_prompt(zone, all_zones, site_context=site_context)
+            prompt = compose_zone_prompt(zone, all_zones, site_context=site_context)
             building.generation_status = "generating"
             building.generation_prompt = prompt
             await db.flush()
@@ -2065,12 +2138,12 @@ async def save_layout(
         building.rotation_degrees = lb.rotation_deg
         building.generation_prompt = lb.description or props.get("description_text") or building.generation_prompt or ""
         specs = building.specifications or {}
-        specs["description_text"] = lb.description or props.get("description_text") or specs.get("description_text")
+        specs.update(_base_building_specifications(props, lb.description or props.get("description_text") or specs.get("description_text")))
         specs["style"] = lb.style or specs.get("style")
         specs["building_type"] = lb.building_type
         specs["width_m"] = lb.width_m
         specs["depth_m"] = lb.depth_m
-        building.specifications = specs
+        building.specifications = _compact_spec_values(specs)
         flag_modified(building, "specifications")
 
         buildings_updated += 1
@@ -2093,11 +2166,7 @@ async def save_layout(
             rotation_degrees=lb.rotation_deg,
             generation_prompt=lb.description or props.get("description_text") or "",
             specifications={
-                "development_type": props.get("development_type"),
-                "development_aesthetic": props.get("development_aesthetic"),
-                "description_text": lb.description or props.get("description_text"),
-                "facade_material": props.get("facade_material"),
-                "roof_style": props.get("roof_style"),
+                **_base_building_specifications(props, lb.description or props.get("description_text")),
                 "building_type": lb.building_type,
                 "style": lb.style,
                 "width_m": lb.width_m,

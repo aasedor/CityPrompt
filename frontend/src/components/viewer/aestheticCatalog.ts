@@ -8,6 +8,36 @@ export type AestheticCategory = {
 
 export type TransportModeKey = 'walking' | 'bicycle' | 'transit' | 'automobile';
 
+export type StyleProfile = {
+  materials: string[];
+  massing: string;
+  facadeRhythm: string;
+  roofForm: string;
+  frontageType: string;
+  articulation: string;
+  publicRealm: string;
+};
+
+export type ArchetypeImage = {
+  id: string;
+  label: string;
+  description: string;
+  camera: 'street' | 'corner' | 'promenade' | 'courtyard';
+  imageUrl: string;
+};
+
+export type GenerationStyleInput = {
+  developmentType?: string;
+  buildingSubcategory?: string;
+  aestheticCategoryId?: string;
+  aestheticCategoryLabel?: string;
+  archetypeId: string;
+  archetypeLabel: string;
+  archetypeImageUrl: string;
+  archetypeImageIds?: string[];
+  styleProfile: StyleProfile;
+};
+
 export type AestheticOption = {
   id: string;
   categoryId?: string;
@@ -16,6 +46,9 @@ export type AestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  archetypeImages?: ArchetypeImage[];
+  styleProfile?: StyleProfile;
+  generationStyleInput?: Partial<GenerationStyleInput>;
 };
 
 export const TRANSPORT_MODE_ORDER: TransportModeKey[] = ['walking', 'bicycle', 'transit', 'automobile'];
@@ -93,327 +126,422 @@ function assignPhotoExamples(options: AestheticOption[], pool: string[]): void {
 }
 export const BUILDING_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   {
-    id: 'residential',
-    label: 'Residential',
-    description: 'Housing-driven forms from townhomes to mid/high-rise living',
+    id: 'historical',
+    label: 'Historical',
+    description: 'Heritage urban forms with masonry texture, ornament, and streetwall continuity',
   },
   {
-    id: 'commercial',
-    label: 'Commercial',
-    description: 'Employment, retail, and office-focused building patterns',
+    id: 'contemporary_urban',
+    label: 'Contemporary Urban',
+    description: 'Current mixed-use and residential urban forms with active podiums',
   },
   {
-    id: 'mixed_use',
-    label: 'Mixed Use',
-    description: 'Combined living, retail, and workplace urban blocks',
+    id: 'modernist',
+    label: 'Modernist',
+    description: 'Clear geometric composition with restrained detailing',
   },
   {
-    id: 'institutional',
-    label: 'Institutional',
-    description: 'Civic, academic, and public-service architecture',
+    id: 'classical',
+    label: 'Classical',
+    description: 'Formal symmetry, proportion, and civic facade order',
   },
   {
-    id: 'industrial',
-    label: 'Industrial',
-    description: 'Production, logistics, and maker-oriented building typologies',
+    id: 'industrial_brick',
+    label: 'Industrial Brick',
+    description: 'Loft and warehouse language with masonry and steel expression',
+  },
+  {
+    id: 'scandinavian_nordic',
+    label: 'Scandinavian / Nordic',
+    description: 'Warm minimal palettes and human-scaled contemporary blocks',
+  },
+  {
+    id: 'mediterranean',
+    label: 'Mediterranean',
+    description: 'Arcades, stucco and stone palettes, and shaded public edges',
+  },
+  {
+    id: 'futuristic',
+    label: 'Futuristic',
+    description: 'Expressive forward-looking forms and advanced envelope language',
+  },
+  {
+    id: 'art_deco',
+    label: 'Art Deco',
+    description: 'Stepped vertical composition with ornamental crown detailing',
+  },
+  {
+    id: 'traditional_vernacular',
+    label: 'Traditional / Vernacular',
+    description: 'Regionally rooted forms and local material expression',
+  },
+  {
+    id: 'minimalist',
+    label: 'Minimalist',
+    description: 'Reduced form language with disciplined proportion',
+  },
+  {
+    id: 'parisian',
+    label: 'Parisian',
+    description: 'Boulevard-scaled stone facades with balcony continuity',
+  },
+  {
+    id: 'brownstone_rowhouse',
+    label: 'Brownstone / Rowhouse',
+    description: 'Stoop-fronted rowhouse rhythm and fine-grain streetwall',
+  },
+  {
+    id: 'mountain_alpine',
+    label: 'Mountain / Alpine',
+    description: 'Climate-adapted mountain forms with sloped roofs and heavy bases',
+  },
+  {
+    id: 'transit_oriented_contemporary',
+    label: 'Transit-Oriented Contemporary',
+    description: 'Station-area density with active, walkable frontage systems',
+  },
+  {
+    id: 'glass_tower_modern',
+    label: 'Glass Tower Modern',
+    description: 'High-rise curtain-wall towers integrated with podium streetwalls',
+  },
+  {
+    id: 'civic_monumental',
+    label: 'Civic Monumental',
+    description: 'Symbolic institutional forms with durable civic presence',
+  },
+  {
+    id: 'japanese_contemporary',
+    label: 'Japanese Contemporary',
+    description: 'Precise massing, layered thresholds, and refined material transitions',
+  },
+  {
+    id: 'eco_urban_green_architecture',
+    label: 'Eco-Urban / Green Architecture',
+    description: 'Biophilic envelopes and climate-responsive building systems',
+  },
+  {
+    id: 'coastal_resort_contemporary',
+    label: 'Coastal / Resort Contemporary',
+    description: 'Light-toned forms with terraces, breezeways, and waterfront identity',
   },
   {
     id: 'other',
     label: 'Custom / Other',
-    description: 'Manual design direction from your prompt and references',
+    description: 'Custom style direction from prompt with structured metadata support',
   },
 ];
 
-export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = [
-  {
-    id: 'new_york_brownstone',
-    categoryId: 'residential',
-    label: 'New York Brownstone',
-    description: 'Brooklyn-style masonry rowhouses with stoops and rhythmic facades',
-    photoUrl: 'https://loremflickr.com/1200/900/brooklyn,brownstone,rowhouse,facade',
-  },
-  {
-    id: 'historic_traditional',
-    categoryId: 'residential',
-    label: 'Historic / Traditional',
-    description: 'Fine-grain brick and stone residential streets with articulated entries',
-    photoUrl: 'https://loremflickr.com/1200/900/historic,rowhouse,architecture,street',
-  },
-  {
-    id: 'london_georgian_terrace',
-    categoryId: 'residential',
-    label: 'London Georgian Terrace',
-    description: 'Uniform terrace fronts, sash windows, and formal stoop sequences',
-    photoUrl: 'https://loremflickr.com/1200/900/london,georgian,terrace,houses',
-  },
-  {
-    id: 'modern_midrise_residential',
-    categoryId: 'residential',
-    label: 'Modern Mid-Rise Residential',
-    description: '5-10 storey apartment blocks with active podium and urban balconies',
-    photoUrl: 'https://loremflickr.com/1200/900/midrise,apartment,building,urban',
-  },
-  {
-    id: 'vancouver_townhome_courtyard',
-    categoryId: 'residential',
-    label: 'Townhome Courtyard Cluster',
-    description: 'Stacked townhomes around shared green courts and walk-up entries',
-    photoUrl: 'https://loremflickr.com/1200/900/townhouse,courtyard,residential,architecture',
-  },
-  {
-    id: 'parisian_haussmann',
-    categoryId: 'commercial',
-    label: 'Parisian Haussmann',
-    description: 'Limestone blocks with iron balconies and elegant boulevard frontage',
-    photoUrl: 'https://loremflickr.com/1200/900/paris,haussmann,building,facade',
-  },
-  {
-    id: 'main_street_retail',
-    categoryId: 'commercial',
-    label: 'Main Street Retail',
-    description: 'Narrow-bay storefront rhythm with upper office or residential floors',
-    photoUrl: 'https://loremflickr.com/1200/900/main,street,retail,building,facade',
-  },
-  {
-    id: 'office_tower_glass',
-    categoryId: 'commercial',
-    label: 'Glass Office Tower',
-    description: 'High-performance curtain wall office profile with urban plaza edge',
-    photoUrl: 'https://loremflickr.com/1200/900/office,tower,glass,architecture',
-  },
-  {
-    id: 'innovation_campus',
-    categoryId: 'commercial',
-    label: 'Innovation Campus',
-    description: 'Low-to-mid rise tech blocks with shared atria and collaborative courts',
-    photoUrl: 'https://loremflickr.com/1200/900/technology,campus,architecture,office',
-  },
-  {
-    id: 'podium_mixed_use',
-    categoryId: 'mixed_use',
-    label: 'Podium Mixed-Use',
-    description: 'Retail podium with residential or office towers above',
-    photoUrl: 'https://loremflickr.com/1200/900/mixed,use,podium,tower,city',
-  },
-  {
-    id: 'barcelona_eixample_block',
-    categoryId: 'mixed_use',
-    label: 'Eixample Perimeter Block',
-    description: 'Perimeter block urban form with interior courtyards and active corners',
-    photoUrl: 'https://loremflickr.com/1200/900/barcelona,eixample,block,architecture',
-  },
-  {
-    id: 'transit_oriented_mixed_use',
-    categoryId: 'mixed_use',
-    label: 'Transit-Oriented Mixed Use',
-    description: 'Station-adjacent density with walkable podium and fine-grain frontage',
-    photoUrl: 'https://loremflickr.com/1200/900/transit,oriented,development,mixed,use',
-  },
-  {
-    id: 'collegiate_campus_quads',
-    categoryId: 'institutional',
-    label: 'Collegiate Campus Quads',
-    description: 'Academic buildings framing courtyards, lawns, and pedestrian spines',
-    photoUrl: 'https://loremflickr.com/1200/900/university,campus,quad,architecture',
-  },
-  {
-    id: 'civic_library_modern',
-    categoryId: 'institutional',
-    label: 'Contemporary Civic Library',
-    description: 'Public-facing civic architecture with transparent edges and gathering stair',
-    photoUrl: 'https://loremflickr.com/1200/900/public,library,architecture,modern',
-  },
-  {
-    id: 'healthcare_campus',
-    categoryId: 'institutional',
-    label: 'Healthcare Campus',
-    description: 'Human-scaled clinical blocks with healing gardens and clear wayfinding',
-    photoUrl: 'https://loremflickr.com/1200/900/hospital,campus,architecture,healthcare',
-  },
-  {
-    id: 'logistics_warehouse_campus',
-    categoryId: 'industrial',
-    label: 'Logistics Warehouse Campus',
-    description: 'Large-format logistics sheds with service yards and truck circulation',
-    photoUrl: 'https://loremflickr.com/1200/900/warehouse,distribution,center,architecture',
-  },
-  {
-    id: 'maker_district_brick_loft',
-    categoryId: 'industrial',
-    label: 'Maker District Loft',
-    description: 'Adaptive industrial blocks with brick facades and workshop frontage',
-    photoUrl: 'https://loremflickr.com/1200/900/industrial,brick,loft,district',
-  },
-  {
-    id: 'clean_tech_industrial',
-    categoryId: 'industrial',
-    label: 'Clean-Tech Industrial',
-    description: 'Advanced manufacturing buildings with daylighted envelopes and clean yards',
-    photoUrl: 'https://loremflickr.com/1200/900/modern,industrial,facility,architecture',
-  },
-  {
-    id: 'modern',
-    categoryId: 'mixed_use',
-    label: 'Modern',
-    description: 'Contemporary urban architecture with clean geometry and glass/metal skin',
-    photoUrl: 'https://loremflickr.com/1200/900/modern,urban,building,facade',
-  },
-  {
-    id: 'futuristic',
-    categoryId: 'mixed_use',
-    label: 'Futuristic',
-    description: 'Expressive high-tech massing with landmark-ready architectural language',
-    photoUrl: 'https://loremflickr.com/1200/900/futuristic,architecture,city,building',
-  },
-  {
-    id: 'other',
-    categoryId: 'other',
-    label: 'Other',
-    description: 'Custom building direction guided by your text prompt and references',
-    photoUrl: 'https://loremflickr.com/1200/900/architecture,building,facade,city',
-  },
-];
-
-
-const BUILDING_SUBCATEGORY_PHOTO_SETS: Record<string, string[]> = {
-  new_york_brownstone: [
-    'https://upload.wikimedia.org/wikipedia/commons/2/20/Brooklyn_Heights_Townhouses.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bf/17_E._126th_St%2C_Harlem.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e4/ParkSlope.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tribeca%2C_New_York_%2851521771723%29.jpg',
-  ],
-  historic_traditional: [
-    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Gooderham.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5e/57_The_Close%2C_Salisbury.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Grosvenor_Square_entrance.jpg',
-  ],
-  london_georgian_terrace: [
-    'https://upload.wikimedia.org/wikipedia/commons/3/31/Royal.crescent.aerial.bath.arp.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5e/57_The_Close%2C_Salisbury.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Grosvenor_Square_entrance.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
-  ],
-  modern_midrise_residential: [
-    'https://upload.wikimedia.org/wikipedia/commons/f/fb/Blue_building_from_above_%2865768p%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/2019.07.10_metro_California-housing_Blog-post_related.webp/2713px-2019.07.10_metro_California-housing_Blog-post_related.webp.png',
-    'https://upload.wikimedia.org/wikipedia/commons/e/ed/4%E2%80%93over%E2%80%931s.webp',
-    'https://upload.wikimedia.org/wikipedia/commons/9/94/Kirkland_Vertical_mixed_use_%284575235975%29.jpg',
-  ],
-  vancouver_townhome_courtyard: [
-    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tribeca%2C_New_York_%2851521771723%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/2/20/Brooklyn_Heights_Townhouses.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e4/ParkSlope.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bf/17_E._126th_St%2C_Harlem.jpg',
-  ],
-  parisian_haussmann: [
-    'https://upload.wikimedia.org/wikipedia/commons/f/f8/Blv-haussmann-lafayette.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1c/Avenue_de_l%27Op%C3%A9ra_Paris.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/f/fe/P1010244_Paris_Ier_Rue_de_Rivoli_reductwk.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/6/64/Place_Vosges_Paris_Mai_2006_011.jpg',
-  ],
-  main_street_retail: [
-    'https://upload.wikimedia.org/wikipedia/commons/4/48/Oxford_Street_%28geograph_4949395%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/9/9e/BourkeStreetMall-rain.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/0/0e/Photograph_of_Fifth_Avenue_from_the_Metropolitan%E2%80%94New_York_City.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/2/2b/Stadsschouwburg%2C_Amsterdam_2335.jpg',
-  ],
-  office_tower_glass: [
-    'https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Shard_at_sunset_2017_%28cropped%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e7/Bank_of_America_Tower_in_Manhattan_2015.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bd/Hearst_Tower_%28August_2024%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/8/8e/30_St_Mary_Axe%2C_%27Gherkin%27.JPG',
-  ],
-  innovation_campus: [
-    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Google_Campus%2C_Mountain_View%2C_CA.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5a/Aerial_view_of_Apple_Park_dllu.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/6/6c/1601californiaavelobby.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/ef/2008-07-25_Research_Triangle_Park_Headquarters.jpg',
-  ],
-  podium_mixed_use: [
-    'https://upload.wikimedia.org/wikipedia/commons/9/94/Kirkland_Vertical_mixed_use_%284575235975%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/6/61/Battery_Park_City_2020.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/18/Barbican_towers.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/0/0a/150328_Namba_Parks_Osaka_Japan01bs3.jpg',
-  ],
-  barcelona_eixample_block: [
-    'https://upload.wikimedia.org/wikipedia/commons/1/19/Eixample_aire_cropped.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e3/Via_Barcelona_Casa_Mil%C3%A0.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/d/de/Casa_Mil%C3%A0%2C_general_view.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/ed/050529_Barcelona_130.jpg',
-  ],
-  transit_oriented_mixed_use: [
-    'https://upload.wikimedia.org/wikipedia/commons/6/67/Leidsestraat_met_tram.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/3/3a/Shibuya_skyline_from_Tokyu_Plaza_in_Omotesando%2C_Harajuku%2C_Tokyo%2C_2024_May.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/0/0a/150328_Namba_Parks_Osaka_Japan01bs3.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/59/Rosslyn_Skyline_from_Theodore_Roosevelt_Bridge.png',
-  ],
-  collegiate_campus_quads: [
-    'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Lawn%2C_University_of_Virginia.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/c/cf/Harvard_Yard_in_autumn%2C_Boston%2C_Massachusetts%2C_2015.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/9/94/Trinity_College_-_Great_Court_02.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/2/2a/Joseph_Ram%C3%A9e_Union_College_USA.jpg',
-  ],
-  civic_library_modern: [
-    'https://upload.wikimedia.org/wikipedia/commons/2/2c/Seattle_Library_01.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e5/Oodi_Library_%28Helsinki%2C_Finland%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1e/StadtBibliothekStuttgart-pjt3-18.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/c/c5/Calgary_Central_Library%2C_Canada%3B_October_2019_%28cropped%29.jpg',
-  ],
-  healthcare_campus: [
-    'https://upload.wikimedia.org/wikipedia/commons/d/d3/Karolinska_Solna%2C_huvudentr%C3%A9_01.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/f/f0/Cleveland_Clinic_Miller_Family_Pavilion_%282021%29.png',
-    'https://upload.wikimedia.org/wikipedia/commons/5/55/Addenbrooke%27s_hospital.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/d/d3/St.thomas.hospital.arp.750pix.jpg',
-  ],
-  logistics_warehouse_campus: [
-    'https://upload.wikimedia.org/wikipedia/commons/c/c7/Warehouse_in_New_Jersey_where_trucks_deliver_granite_slabs.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/d/de/Distribution_centre_%28J_Sainsbury%27s%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/7/75/014_Queenstown_business_and_industrial_area_at_Glenda_Drive_-_Queenstown%2C_New_Zealand_NZ.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/7/71/Wolfsburg_VW-Werk.jpg',
-  ],
-  maker_district_brick_loft: [
-    'https://upload.wikimedia.org/wikipedia/commons/4/40/400SGreenLoft.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e2/Gooderham.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/9/90/Navy_Yard%2C_Brooklyn._New_York._1918_-_NH_117794.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bc/VW_Werk_Altes_Heizkraftwerk.jpg',
-  ],
-  clean_tech_industrial: [
-    'https://upload.wikimedia.org/wikipedia/commons/9/98/New_Teslas_at_the_factory.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/8/8d/Tesla_Gigafactory_1_-_December_2019.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/14/Datacenter_de_ARSAT.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bc/VW_Werk_Altes_Heizkraftwerk.jpg',
-  ],
-  modern: [
-    'https://upload.wikimedia.org/wikipedia/en/3/3c/VillaSavoye.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/6/67/6265_Dessau.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/0/0b/Farnsworth_House_by_Mies_Van_Der_Rohe_-_exterior-8.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e7/Bank_of_America_Tower_in_Manhattan_2015.jpg',
-  ],
-  futuristic: [
-    'https://upload.wikimedia.org/wikipedia/commons/0/02/Galaxy_Soho.jpg',
-    'https://upload.wikimedia.org/wikipedia/en/d/d3/Heydar_Aliyev_Cultural_Center.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/c/c7/Marina_Bay_Sands_%28I%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Lloyds_building_taken_2011.jpg',
-  ],
-  other: [
-    'https://upload.wikimedia.org/wikipedia/commons/8/8e/30_St_Mary_Axe%2C_%27Gherkin%27.JPG',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1f/Lloyds_building_taken_2011.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/c/cb/HMS_Tamar_sailing_past_Canary_Wharf_as_it_leaves_London_September_2020..jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/9/9a/The_Shard_at_sunset_2017_%28cropped%29.jpg',
-  ],
+type BuildingArchetypeVariant = {
+  id: string;
+  label: string;
+  description: string;
+  camera: ArchetypeImage['camera'];
 };
 
-function assignCuratedPhotoExamples(options: AestheticOption[], photoSets: Record<string, string[]>): void {
-  options.forEach((option) => {
-    const curated = photoSets[option.id];
-    if (!curated || curated.length === 0) return;
-    option.photoUrl = curated[0];
-    option.photoUrls = curated;
-  });
+type BuildingStyleSeed = {
+  id: string;
+  categoryId: string;
+  label: string;
+  description: string;
+  palette: {
+    skyTop: string;
+    skyBottom: string;
+    facadePrimary: string;
+    facadeSecondary: string;
+    accent: string;
+    window: string;
+    ground: string;
+    street: string;
+    landscape: string;
+  };
+  styleProfile: StyleProfile;
+};
+
+const BUILDING_ARCHETYPE_VARIANTS: BuildingArchetypeVariant[] = [
+  { id: 'street_front', label: 'Street Front Archetype', description: 'Primary facade view for street presence and frontage language', camera: 'street' },
+  { id: 'corner_view', label: 'Corner Massing Archetype', description: 'Corner perspective for massing transitions and edge behavior', camera: 'corner' },
+  { id: 'promenade_view', label: 'Promenade Archetype', description: 'Pedestrian perspective for public realm and ground-floor condition', camera: 'promenade' },
+  { id: 'courtyard_view', label: 'Courtyard Archetype', description: 'Inner-block perspective for depth and facade rhythm continuity', camera: 'courtyard' },
+];
+
+const BUILDING_STYLE_SEEDS: BuildingStyleSeed[] = [
+  {
+    id: 'heritage_brick_main_street',
+    categoryId: 'historical',
+    label: 'Heritage Brick Main Street',
+    description: 'Canonical heritage mid-rise streetwall with traditional masonry articulation',
+    palette: { skyTop: '#95a9bf', skyBottom: '#e7edf5', facadePrimary: '#97523f', facadeSecondary: '#b66a4f', accent: '#5e372b', window: '#dbf1ff', ground: '#d6c5b2', street: '#55504b', landscape: '#7f9f72' },
+    styleProfile: { materials: ['red brick', 'stone trim', 'ornamental metal'], massing: '3-6 storey continuous streetwall', facadeRhythm: 'fine vertical bays', roofForm: 'flat roof with decorative cornice', frontageType: 'active main-street edge', articulation: 'recessed entries and lintel hierarchy', publicRealm: 'generous sidewalks with street trees' },
+  },
+  {
+    id: 'urban_podium_midrise',
+    categoryId: 'contemporary_urban',
+    label: 'Urban Podium Mid-Rise',
+    description: 'Contemporary mixed-use podium and mid-rise block archetype',
+    palette: { skyTop: '#8ea6bf', skyBottom: '#ecf3fb', facadePrimary: '#8f9da9', facadeSecondary: '#c2cdd9', accent: '#425469', window: '#d8efff', ground: '#d4d8de', street: '#4d5866', landscape: '#7ca085' },
+    styleProfile: { materials: ['fiber cement', 'metal panel', 'clear glazing'], massing: '5-12 storey podium-based form', facadeRhythm: 'regular balcony and mullion cadence', roofForm: 'flat roof with screened mechanical zone', frontageType: 'mixed-use podium frontage', articulation: 'setback upper floors and expressed podium', publicRealm: 'active retail sidewalk interface' },
+  },
+  {
+    id: 'bauhaus_modernist_block',
+    categoryId: 'modernist',
+    label: 'Bauhaus Modernist Block',
+    description: 'Modernist archetype with planar surfaces and rational window ordering',
+    palette: { skyTop: '#95abc1', skyBottom: '#edf3f9', facadePrimary: '#c7ccd2', facadeSecondary: '#aeb7c2', accent: '#303845', window: '#ddf0ff', ground: '#d9dde2', street: '#525d6a', landscape: '#7f9785' },
+    styleProfile: { materials: ['smooth stucco', 'steel', 'ribbon glazing'], massing: 'rectilinear slab and bar composition', facadeRhythm: 'horizontal emphasis with modular bays', roofForm: 'flat roof', frontageType: 'civic lobby setback', articulation: 'clean reveals and cantilevered slab edges', publicRealm: 'minimal hardscape and curated planting bands' },
+  },
+  {
+    id: 'neoclassical_civic_block',
+    categoryId: 'classical',
+    label: 'Neoclassical Civic Block',
+    description: 'Classical archetype with formal proportion, base-middle-top hierarchy, and ceremonial entry',
+    palette: { skyTop: '#9ba9b9', skyBottom: '#eef1f5', facadePrimary: '#d8ceb9', facadeSecondary: '#c7b99f', accent: '#6f6758', window: '#d9ecff', ground: '#d4cab8', street: '#5a5651', landscape: '#81986f' },
+    styleProfile: { materials: ['limestone', 'cast stone', 'ornamental metal'], massing: '3-8 storey formal civic frontage', facadeRhythm: 'symmetrical pilaster-led bays', roofForm: 'cornice-capped flat roof', frontageType: 'ceremonial public frontage', articulation: 'colonnades and hierarchical entry framing', publicRealm: 'formal forecourt and allee tree rows' },
+  },
+  {
+    id: 'warehouse_loft_block',
+    categoryId: 'industrial_brick',
+    label: 'Warehouse Loft Block',
+    description: 'Industrial brick loft archetype with large openings and heavy masonry character',
+    palette: { skyTop: '#8b9dad', skyBottom: '#e4eaf0', facadePrimary: '#804c3d', facadeSecondary: '#a8644d', accent: '#3d2d28', window: '#dcefff', ground: '#ccb9a7', street: '#4f4b47', landscape: '#729366' },
+    styleProfile: { materials: ['reclaimed brick', 'blackened steel', 'concrete bands'], massing: '4-8 storey robust block', facadeRhythm: 'large repetitive industrial bays', roofForm: 'flat roof with utility penthouse', frontageType: 'maker and production frontage', articulation: 'deep reveals and expressed structural frame', publicRealm: 'service-ready curb and adaptable frontage' },
+  },
+  {
+    id: 'nordic_timber_midrise',
+    categoryId: 'scandinavian_nordic',
+    label: 'Nordic Timber Mid-Rise',
+    description: 'Scandinavian archetype with warm timber expression and calm contemporary rhythm',
+    palette: { skyTop: '#95aec6', skyBottom: '#f0f6fb', facadePrimary: '#c6b39f', facadeSecondary: '#e0d1c2', accent: '#5d6f75', window: '#e4f4ff', ground: '#d8dace', street: '#5a6166', landscape: '#80a287' },
+    styleProfile: { materials: ['thermally treated timber', 'light render', 'powder-coated metal'], massing: '5-9 storey courtyard/perimeter form', facadeRhythm: 'calm modular timber-grid bays', roofForm: 'flat roof with soft parapet', frontageType: 'residential stoop and shared lobby edge', articulation: 'recessed balconies and timber frame depth', publicRealm: 'rain-garden edges and walkable courtyards' },
+  },
+  {
+    id: 'mediterranean_arcade_block',
+    categoryId: 'mediterranean',
+    label: 'Mediterranean Arcade Block',
+    description: 'Mediterranean archetype with shaded arcades and warm textured facades',
+    palette: { skyTop: '#85adc8', skyBottom: '#ebf7ff', facadePrimary: '#d8af8b', facadeSecondary: '#efd3b3', accent: '#8c5c42', window: '#ddf3ff', ground: '#d0bf9c', street: '#5d5953', landscape: '#8ca76f' },
+    styleProfile: { materials: ['lime plaster', 'terracotta', 'natural stone'], massing: '3-6 storey arcade-lined block', facadeRhythm: 'arched bay cadence', roofForm: 'tile and flat parapet hybrid', frontageType: 'arcaded mixed-use frontage', articulation: 'loggias and balcony overhangs', publicRealm: 'shaded plazas and drought-resilient planting' },
+  },
+  {
+    id: 'parametric_future_hub',
+    categoryId: 'futuristic',
+    label: 'Parametric Future Hub',
+    description: 'Futuristic archetype with sculpted envelope transitions and high-tech frontage',
+    palette: { skyTop: '#7394b9', skyBottom: '#e2eeff', facadePrimary: '#8190a7', facadeSecondary: '#b5c7dd', accent: '#3ec4ff', window: '#dcf4ff', ground: '#c9d5e0', street: '#434c5b', landscape: '#719889' },
+    styleProfile: { materials: ['advanced composites', 'high-performance glass', 'anodized metal'], massing: 'sculpted mid/high-rise hybrid', facadeRhythm: 'adaptive panel rhythm', roofForm: 'integrated roofscape system', frontageType: 'innovation district frontage', articulation: 'parametric folds and tapered corners', publicRealm: 'interactive plazas and integrated lighting' },
+  },
+  {
+    id: 'art_deco_setback_tower',
+    categoryId: 'art_deco',
+    label: 'Art Deco Setback Tower',
+    description: 'Art Deco archetype with stepped profile and strong vertical emphasis',
+    palette: { skyTop: '#8d9fb6', skyBottom: '#e8eef6', facadePrimary: '#b09063', facadeSecondary: '#d2b585', accent: '#5b4432', window: '#daeeff', ground: '#cdbca6', street: '#57514b', landscape: '#80966e' },
+    styleProfile: { materials: ['buff stone', 'decorative metal', 'spandrel glazing'], massing: 'setback tower on urban base', facadeRhythm: 'vertical pilaster rhythm', roofForm: 'stepped crown profile', frontageType: 'grand lobby and corner retail frontage', articulation: 'ornamental relief and sculpted crown line', publicRealm: 'formal sidewalks and ceremonial lighting' },
+  },
+  {
+    id: 'vernacular_market_lane',
+    categoryId: 'traditional_vernacular',
+    label: 'Vernacular Market Lane',
+    description: 'Traditional archetype with local materials and narrow incremental frontage',
+    palette: { skyTop: '#9eb0b8', skyBottom: '#eff4f6', facadePrimary: '#9f7554', facadeSecondary: '#c5976d', accent: '#654a36', window: '#dbeef9', ground: '#cfc0ac', street: '#5b554f', landscape: '#80946f' },
+    styleProfile: { materials: ['local brick', 'timber lintels', 'lime render'], massing: '2-5 storey incremental street edge', facadeRhythm: 'narrow shopfront cadence', roofForm: 'mixed gable and parapet roofs', frontageType: 'market lane active frontage', articulation: 'porches and painted trim layers', publicRealm: 'small plazas and market spillout' },
+  },
+  {
+    id: 'minimalist_courtyard_block',
+    categoryId: 'minimalist',
+    label: 'Minimalist Courtyard Block',
+    description: 'Minimalist archetype with precise openings and reduced material palette',
+    palette: { skyTop: '#a7b3c1', skyBottom: '#f4f7fb', facadePrimary: '#c5c9cf', facadeSecondary: '#e2e6eb', accent: '#4c5663', window: '#e3f2ff', ground: '#d9dde2', street: '#59626f', landscape: '#88a28d' },
+    styleProfile: { materials: ['light concrete', 'clear glazing', 'powder-coated metal'], massing: 'orthogonal courtyard perimeter block', facadeRhythm: 'strict modular opening grid', roofForm: 'flat roof', frontageType: 'quiet residential frontage', articulation: 'shadow joints and subtle recesses', publicRealm: 'minimal hardscape with controlled planting' },
+  },
+  {
+    id: 'haussmann_boulevard_block',
+    categoryId: 'parisian',
+    label: 'Parisian Boulevard Block',
+    description: 'Parisian archetype with elegant stone facade continuity and balcony belts',
+    palette: { skyTop: '#94a8bd', skyBottom: '#edf3fa', facadePrimary: '#d6c9b1', facadeSecondary: '#e7dbc4', accent: '#6f5d4b', window: '#deedff', ground: '#d5cab5', street: '#58544f', landscape: '#809a72' },
+    styleProfile: { materials: ['cut limestone', 'wrought iron', 'painted timber'], massing: '5-7 storey boulevard-aligned block', facadeRhythm: 'regular bay rhythm with balcony bands', roofForm: 'mansard-inspired crown over flat slab', frontageType: 'retail base with formal residential entries', articulation: 'cornices and wrought iron balcony detailing', publicRealm: 'formal boulevards with aligned tree canopy' },
+  },
+  {
+    id: 'brownstone_rowhouse_stoop',
+    categoryId: 'brownstone_rowhouse',
+    label: 'Brownstone Stoop Rowhouse',
+    description: 'Brownstone archetype with stoops, tight bays, and attached townhouse character',
+    palette: { skyTop: '#8ca3bc', skyBottom: '#e8f0f9', facadePrimary: '#7f4c3b', facadeSecondary: '#a8664f', accent: '#4d2f26', window: '#ddefff', ground: '#ccb7a4', street: '#524c46', landscape: '#749767' },
+    styleProfile: { materials: ['brownstone', 'ornamental railings', 'painted wood doors'], massing: '3-5 storey attached rowhouses', facadeRhythm: 'tight vertical townhouse bays', roofForm: 'flat roof with cornice', frontageType: 'stoop-front residential edge', articulation: 'stoops, lintels, and layered door surrounds', publicRealm: 'tree-lined sidewalks with shallow setbacks' },
+  },
+  {
+    id: 'alpine_village_edge',
+    categoryId: 'mountain_alpine',
+    label: 'Alpine Village Edge',
+    description: 'Mountain archetype with weather-ready envelope and pitched roof silhouette',
+    palette: { skyTop: '#87a3c0', skyBottom: '#e5effa', facadePrimary: '#a18468', facadeSecondary: '#c3a486', accent: '#5b4536', window: '#e0f3ff', ground: '#c9b8a0', street: '#55504a', landscape: '#709064' },
+    styleProfile: { materials: ['stone plinth', 'timber cladding', 'metal roof'], massing: '2-5 storey alpine streetfront cluster', facadeRhythm: 'mixed bay widths and balconies', roofForm: 'steep gable and shed roofs', frontageType: 'village high-street frontage', articulation: 'balcony projection and roof overhangs', publicRealm: 'compact streets with conifer planting' },
+  },
+  {
+    id: 'tod_station_streetwall',
+    categoryId: 'transit_oriented_contemporary',
+    label: 'TOD Station Streetwall',
+    description: 'Transit-oriented archetype with dense podium form and multimodal frontage',
+    palette: { skyTop: '#8ea8c2', skyBottom: '#ebf4ff', facadePrimary: '#8999a9', facadeSecondary: '#b9c5d3', accent: '#2f6ca5', window: '#dbefff', ground: '#d4d9df', street: '#4f5a67', landscape: '#7ea086' },
+    styleProfile: { materials: ['brick veneer', 'glass storefront systems', 'metal canopies'], massing: '6-14 storey station-area block', facadeRhythm: 'active podium with modular bays', roofForm: 'flat roof with terrace setbacks', frontageType: 'transit plaza and retail frontage', articulation: 'podium-tower transitions and corner entries', publicRealm: 'frequent doors, bike parking, transit-ready sidewalks' },
+  },
+  {
+    id: 'glass_tower_podium',
+    categoryId: 'glass_tower_modern',
+    label: 'Glass Tower Podium',
+    description: 'Glass tower archetype with streetwall podium and high-rise verticality',
+    palette: { skyTop: '#7c9bc2', skyBottom: '#e4f1ff', facadePrimary: '#6f859b', facadeSecondary: '#9eb6cd', accent: '#31506f', window: '#d9f2ff', ground: '#ccd7e2', street: '#495664', landscape: '#799c8a' },
+    styleProfile: { materials: ['curtain wall glazing', 'aluminum mullions', 'stone podium base'], massing: 'point tower on 3-6 storey podium', facadeRhythm: 'vertical mullion rhythm and slab lines', roofForm: 'flat roof with screened crown', frontageType: 'retail and lobby podium frontage', articulation: 'chamfered corners and podium terraces', publicRealm: 'expanded corners and urban plaza edges' },
+  },
+  {
+    id: 'civic_monumental_institution',
+    categoryId: 'civic_monumental',
+    label: 'Civic Monumental Institution',
+    description: 'Monumental civic archetype with clear hierarchy and durable public identity',
+    palette: { skyTop: '#95a8ba', skyBottom: '#ecf1f6', facadePrimary: '#c8c1b4', facadeSecondary: '#ddd7ca', accent: '#5a5b60', window: '#d8ecff', ground: '#d6d0c5', street: '#5b5b59', landscape: '#829371' },
+    styleProfile: { materials: ['stone cladding', 'bronze details', 'high-durability glazing'], massing: 'institutional campus blocks and pavilions', facadeRhythm: 'ordered civic bay spacing', roofForm: 'flat roof with expressed parapet', frontageType: 'civic forecourt frontage', articulation: 'monumental base and ceremonial entry axis', publicRealm: 'formal squares and shaded gathering steps' },
+  },
+  {
+    id: 'japanese_contemporary_lanehouse',
+    categoryId: 'japanese_contemporary',
+    label: 'Japanese Contemporary Lanehouse',
+    description: 'Japanese contemporary archetype with layered screens and refined thresholds',
+    palette: { skyTop: '#95aec4', skyBottom: '#edf5fc', facadePrimary: '#b8b3a7', facadeSecondary: '#d4cec2', accent: '#4d5058', window: '#e2f3ff', ground: '#d6d4cc', street: '#555a63', landscape: '#819d87' },
+    styleProfile: { materials: ['textured plaster', 'charred timber accents', 'fine metal screens'], massing: 'compact mid-rise lanehouse blocks', facadeRhythm: 'screen-layered opening cadence', roofForm: 'flat and shallow-pitch hybrid roofs', frontageType: 'recessed lane frontage', articulation: 'voids, screens, and precision shadow lines', publicRealm: 'small courts and narrow pedestrian pathways' },
+  },
+  {
+    id: 'eco_urban_bioclimatic_block',
+    categoryId: 'eco_urban_green_architecture',
+    label: 'Eco-Urban Bioclimatic Block',
+    description: 'Eco-urban archetype with planted facades, passive systems, and climate-smart form',
+    palette: { skyTop: '#83a8ba', skyBottom: '#e6f8ff', facadePrimary: '#7f9e90', facadeSecondary: '#aac5b8', accent: '#3d6f60', window: '#daf3ff', ground: '#c9dacd', street: '#4b5e58', landscape: '#6ea680' },
+    styleProfile: { materials: ['engineered timber', 'green facade systems', 'high-performance glazing'], massing: 'terraced mid-rise with vegetated setbacks', facadeRhythm: 'modular bays with integrated planting', roofForm: 'green roofs and solar canopy zones', frontageType: 'biophilic mixed-use frontage', articulation: 'terracing, fins, and planted balconies', publicRealm: 'bioswales, rain gardens, and shaded loops' },
+  },
+  {
+    id: 'coastal_resort_contemporary_block',
+    categoryId: 'coastal_resort_contemporary',
+    label: 'Coastal Resort Contemporary Block',
+    description: 'Coastal archetype with terraces, breezeways, and light waterfront material palette',
+    palette: { skyTop: '#84adc8', skyBottom: '#e7f8ff', facadePrimary: '#d6ddd9', facadeSecondary: '#edf2ef', accent: '#4c809e', window: '#def6ff', ground: '#d7d9d2', street: '#5a6770', landscape: '#79a593' },
+    styleProfile: { materials: ['light stucco', 'salt-resistant metal', 'glass guardrails'], massing: 'stepped terrace blocks with view corridors', facadeRhythm: 'wide bays with horizontal balcony layers', roofForm: 'flat roof with pergola terraces', frontageType: 'promenade and hospitality frontage', articulation: 'deep balconies and breezeway cuts', publicRealm: 'coastal planting and shaded promenade seating' },
+  },
+  {
+    id: 'custom_style_archetype',
+    categoryId: 'other',
+    label: 'Custom Style Archetype',
+    description: 'Structured custom archetype for user-directed style prompts',
+    palette: { skyTop: '#8ea2c2', skyBottom: '#e9effa', facadePrimary: '#9094a0', facadeSecondary: '#bac0cb', accent: '#434957', window: '#e0f1ff', ground: '#d2d6df', street: '#505765', landscape: '#7e9484' },
+    styleProfile: { materials: ['user-defined primary material', 'supporting cladding', 'context detailing'], massing: 'user-defined massing envelope', facadeRhythm: 'user-defined facade rhythm', roofForm: 'user-defined roof strategy', frontageType: 'user-defined frontage behavior', articulation: 'user-defined articulation language', publicRealm: 'user-defined public realm integration' },
+  },
+];
+
+function hashSeed(value: string): number {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = ((hash << 5) - hash + value.charCodeAt(index)) | 0;
+  }
+  return Math.abs(hash);
 }
 
-assignCuratedPhotoExamples(BUILDING_AESTHETIC_OPTIONS_V2, BUILDING_SUBCATEGORY_PHOTO_SETS);
+function buildBuildingArchetypeDataUri(seed: BuildingStyleSeed, variant: BuildingArchetypeVariant): string {
+  const hashed = hashSeed(`${seed.id}:${variant.id}`);
+  const cameraOffset: Record<ArchetypeImage['camera'], number> = { street: 0, corner: -70, promenade: 52, courtyard: 22 };
+  const baseX = 180 + (hashed % 72) + cameraOffset[variant.camera];
+  const baseY = 210 + (hashed % 44);
+  const width = 560 + (hashed % 112);
+  const height = 360 + ((hashed >> 2) % 156);
+  const wingWidth = 160 + ((hashed >> 4) % 68);
+  const wingHeight = 290 + ((hashed >> 5) % 120);
+  const windowCols = 7 + (hashed % 3);
+  const windowRows = 5 + ((hashed >> 3) % 3);
+  const windowGutterX = 14;
+  const windowGutterY = 12;
+  const windowWidth = Math.max(14, Math.floor((width - 62 - windowGutterX * (windowCols - 1)) / windowCols));
+  const windowHeight = Math.max(14, Math.floor((height - 70 - windowGutterY * (windowRows - 1)) / windowRows));
+
+  const windows: string[] = [];
+  const startX = baseX + 30;
+  const startY = baseY + 38;
+  for (let row = 0; row < windowRows; row += 1) {
+    for (let col = 0; col < windowCols; col += 1) {
+      const x = startX + col * (windowWidth + windowGutterX);
+      const y = startY + row * (windowHeight + windowGutterY);
+      windows.push(`<rect x="${x}" y="${y}" width="${windowWidth}" height="${windowHeight}" rx="3" fill="${seed.palette.window}" fill-opacity="0.92" />`);
+    }
+  }
+
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="${seed.label} ${variant.label}">
+  <defs>
+    <linearGradient id="sky-${seed.id}-${variant.id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${seed.palette.skyTop}" />
+      <stop offset="100%" stop-color="${seed.palette.skyBottom}" />
+    </linearGradient>
+    <linearGradient id="facade-${seed.id}-${variant.id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${seed.palette.facadeSecondary}" />
+      <stop offset="100%" stop-color="${seed.palette.facadePrimary}" />
+    </linearGradient>
+    <linearGradient id="street-${seed.id}-${variant.id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${seed.palette.street}" />
+      <stop offset="100%" stop-color="#3a3f49" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky-${seed.id}-${variant.id})" />
+  <rect y="620" width="1200" height="170" fill="${seed.palette.ground}" />
+  <rect y="740" width="1200" height="160" fill="url(#street-${seed.id}-${variant.id})" />
+  <rect x="${baseX}" y="${baseY}" width="${width}" height="${height}" rx="10" fill="url(#facade-${seed.id}-${variant.id})" />
+  <rect x="${baseX + width - wingWidth + 14}" y="${baseY + 30}" width="${wingWidth}" height="${wingHeight}" rx="8" fill="${seed.palette.facadeSecondary}" fill-opacity="0.95" />
+  <rect x="${baseX + 22}" y="${baseY + height - 92}" width="${Math.max(120, Math.floor(width * 0.28))}" height="86" rx="6" fill="${seed.palette.accent}" fill-opacity="0.92" />
+  ${windows.join('\n  ')}
+  <rect x="${baseX - 18}" y="${baseY - 16}" width="${width + 36}" height="18" rx="6" fill="${seed.palette.accent}" fill-opacity="0.86" />
+  <rect x="88" y="662" width="196" height="56" rx="28" fill="${seed.palette.landscape}" />
+  <rect x="896" y="650" width="220" height="58" rx="29" fill="${seed.palette.landscape}" />
+  <text x="64" y="82" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">${seed.label}</text>
+  <text x="64" y="114" fill="#dbeafe" font-family="Inter, Arial, sans-serif" font-size="18">${variant.label}</text>
+</svg>`.trim();
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function toArchetypeImage(seed: BuildingStyleSeed, variant: BuildingArchetypeVariant): ArchetypeImage {
+  return {
+    id: `${seed.id}_${variant.id}`,
+    label: variant.label,
+    description: variant.description,
+    camera: variant.camera,
+    imageUrl: buildBuildingArchetypeDataUri(seed, variant),
+  };
+}
+
+function toBuildingAestheticOption(seed: BuildingStyleSeed): AestheticOption {
+  const archetypeImages = BUILDING_ARCHETYPE_VARIANTS.map((variant) => toArchetypeImage(seed, variant));
+  const primary = archetypeImages[0];
+  const categoryLabel = BUILDING_AESTHETIC_CATEGORIES_V2.find((category) => category.id === seed.categoryId)?.label;
+
+  return {
+    id: seed.id,
+    categoryId: seed.categoryId,
+    label: seed.label,
+    description: seed.description,
+    photoUrl: primary.imageUrl,
+    photoUrls: archetypeImages.map((image) => image.imageUrl),
+    archetypeImages,
+    styleProfile: seed.styleProfile,
+    generationStyleInput: {
+      buildingSubcategory: seed.id,
+      aestheticCategoryId: seed.categoryId,
+      aestheticCategoryLabel: categoryLabel,
+      archetypeId: primary.id,
+      archetypeLabel: primary.label,
+      archetypeImageUrl: primary.imageUrl,
+      archetypeImageIds: archetypeImages.map((image) => image.id),
+      styleProfile: seed.styleProfile,
+    },
+  };
+}
+
+export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_STYLE_SEEDS.map((seed) => toBuildingAestheticOption(seed));
 export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   {
     id: 'pedestrian_realm',
@@ -1377,13 +1505,9 @@ export function applyModeDrivenRoadDefaults(
   return next;
 }
 
-export function mapDevelopmentTypeToCategory(value?: string): string | undefined {
-  if (!value) return undefined;
-  if (value === 'residential') return 'residential';
-  if (value === 'commercial') return 'commercial';
-  if (value === 'mixed_use') return 'mixed_use';
-  if (value === 'institutional') return 'institutional';
-  if (value === 'industrial') return 'industrial';
-  return 'other';
+export function mapDevelopmentTypeToCategory(_value?: string): string | undefined {
+  // Legacy helper kept for compatibility. Building aesthetics are style-based and
+  // should never be auto-derived from use/program development types.
+  return undefined;
 }
 

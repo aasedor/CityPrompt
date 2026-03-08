@@ -22,10 +22,12 @@ import {
   PLAZA_AESTHETIC_PRESETS_V2,
   TRANSPORT_MODE_OPTIONS,
   TRANSPORT_MODE_ORDER,
-  mapDevelopmentTypeToCategory,
   inferTransportModesFromProperties,
   applyModeDrivenRoadDefaults,
   normalizeTransportModes,
+  type ArchetypeImage as CatalogArchetypeImage,
+  type GenerationStyleInput as CatalogGenerationStyleInput,
+  type StyleProfile as CatalogStyleProfile,
   type TransportModeKey as CatalogTransportModeKey,
 } from './aestheticCatalog';
 
@@ -56,6 +58,9 @@ type DevelopmentAestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  archetypeImages?: CatalogArchetypeImage[];
+  styleProfile?: CatalogStyleProfile;
+  generationStyleInput?: Partial<CatalogGenerationStyleInput>;
 };
 
 const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = [
@@ -512,6 +517,19 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
+  const isRemoteReferenceImage = (value: string): boolean => /^https?:\/\//i.test(value);
+
+  const clearBuildingStyleFields = (target: SiteZoneProperties): void => {
+    target.development_subcategory = undefined;
+    target.development_selected_reference = undefined;
+    target.development_archetype_id = undefined;
+    target.development_archetype_label = undefined;
+    target.development_archetype_image = undefined;
+    target.development_archetype_images = undefined;
+    target.development_style_profile = undefined;
+    target.generation_style_input = undefined;
+  };
+
   const buildAestheticSelectionProps = (
     current: SiteZoneProperties,
     key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
@@ -521,17 +539,68 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   ): SiteZoneProperties => {
     const nextProps: SiteZoneProperties = { ...current, [key]: next || undefined };
     const existing = Array.isArray(current.reference_images) ? (current.reference_images as string[]) : [];
-    const optionImages = options.map((o) => o.photoUrl);
-    const imageUrl = options.find((o) => o.id === next)?.photoUrl;
+    const optionImages = options.map((option) => option.photoUrl);
+    const selectedOption = options.find((option) => option.id === next);
+    const imageUrl = selectedOption?.photoUrl;
 
     if (next && presets?.[next]) {
       Object.assign(nextProps, presets[next]);
     }
 
-    if (imageUrl) {
+    if (key === 'development_aesthetic') {
+      if (selectedOption) {
+        const archetypeImages = Array.isArray(selectedOption.archetypeImages) ? selectedOption.archetypeImages : [];
+        const primaryArchetype = archetypeImages[0];
+        const resolvedArchetypeImage = primaryArchetype?.imageUrl || selectedOption.photoUrl;
+        const resolvedCategoryLabel = DEVELOPMENT_AESTHETIC_CATEGORIES.find((category) => category.id === selectedOption.categoryId)?.label;
+        const resolvedStyleProfile = selectedOption.styleProfile || selectedOption.generationStyleInput?.styleProfile;
+
+        nextProps.development_subcategory = selectedOption.id;
+        nextProps.development_aesthetic_category = selectedOption.categoryId || nextProps.development_aesthetic_category;
+        nextProps.development_archetype_id = primaryArchetype?.id || selectedOption.id;
+        nextProps.development_archetype_label = primaryArchetype?.label || selectedOption.label;
+        nextProps.development_archetype_image = resolvedArchetypeImage;
+        nextProps.development_archetype_images = archetypeImages.map((image) => ({
+          id: image.id,
+          label: image.label,
+          description: image.description,
+          camera: image.camera,
+          imageUrl: image.imageUrl,
+        }));
+        nextProps.development_selected_reference = {
+          id: nextProps.development_archetype_id,
+          label: nextProps.development_archetype_label,
+          imageUrl: nextProps.development_archetype_image,
+          description: primaryArchetype?.description || selectedOption.description,
+          camera: primaryArchetype?.camera,
+        };
+        if (resolvedStyleProfile) {
+          nextProps.development_style_profile = resolvedStyleProfile;
+        }
+
+        const baseGenerationInput = selectedOption.generationStyleInput || {};
+        const generationStyleInput: Partial<CatalogGenerationStyleInput> = {
+          ...baseGenerationInput,
+          developmentType: typeof current.development_type === 'string' ? (current.development_type as string) : undefined,
+          buildingSubcategory: selectedOption.id,
+          aestheticCategoryId: selectedOption.categoryId,
+          aestheticCategoryLabel: resolvedCategoryLabel,
+          archetypeId: nextProps.development_archetype_id as string,
+          archetypeLabel: nextProps.development_archetype_label as string,
+          archetypeImageUrl: nextProps.development_archetype_image as string,
+          archetypeImageIds: archetypeImages.map((image) => image.id),
+          styleProfile: (resolvedStyleProfile || baseGenerationInput.styleProfile) as CatalogStyleProfile,
+        };
+        nextProps.generation_style_input = generationStyleInput;
+      } else {
+        clearBuildingStyleFields(nextProps);
+      }
+    }
+
+    if (imageUrl && isRemoteReferenceImage(imageUrl)) {
       const deduped = existing.filter((img) => img && img !== imageUrl);
       nextProps.reference_images = [imageUrl, ...deduped].slice(0, 3);
-    } else {
+    } else if (!imageUrl) {
       const cleaned = existing.filter((img) => !optionImages.includes(img));
       nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
     }
@@ -547,22 +616,13 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     return options.find((o) => o.id === aestheticId)?.categoryId;
   };
 
-  const resolveBuildingAestheticCategory = (
-    aestheticId?: string,
-    developmentType?: string,
-  ): string | undefined => {
-    return (
-      resolveOptionCategory(DEVELOPMENT_AESTHETIC_OPTIONS, aestheticId)
-      || mapDevelopmentTypeToCategory(developmentType)
-    );
+  const resolveBuildingAestheticCategory = (aestheticId?: string): string | undefined => {
+    return resolveOptionCategory(DEVELOPMENT_AESTHETIC_OPTIONS, aestheticId);
   };
 
   const selectedBuildingAestheticCategory =
     (props.development_aesthetic_category as string)
-    || resolveBuildingAestheticCategory(
-      (props.development_aesthetic as string) || undefined,
-      (props.development_type as string) || undefined,
-    );
+    || resolveBuildingAestheticCategory((props.development_aesthetic as string) || undefined);
 
   const selectedRoadAestheticCategory =
     (props.road_aesthetic_category as string)
@@ -580,31 +640,20 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const applyBuildingDevelopmentType = (nextDevelopmentType: string | undefined) => {
     setProps((p) => {
-      const nextProps: SiteZoneProperties = { ...p, development_type: nextDevelopmentType || undefined };
-      const mappedCategory = mapDevelopmentTypeToCategory(nextDevelopmentType);
-      if (mappedCategory) {
-        nextProps.development_aesthetic_category = mappedCategory;
+      const nextProps: SiteZoneProperties = {
+        ...p,
+        development_type: nextDevelopmentType || undefined,
+      };
+
+      const currentGenerationInput = p.generation_style_input as Record<string, unknown> | undefined;
+      if (currentGenerationInput && typeof currentGenerationInput === 'object') {
+        nextProps.generation_style_input = {
+          ...currentGenerationInput,
+          developmentType: nextDevelopmentType || undefined,
+        };
       }
 
-      const currentAesthetic = (p.development_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const allowed = mappedCategory
-        ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((o) => o.categoryId === mappedCategory)
-        : DEVELOPMENT_AESTHETIC_OPTIONS;
-
-      if (allowed.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(
-        nextProps,
-        'development_aesthetic',
-        undefined,
-        DEVELOPMENT_AESTHETIC_OPTIONS,
-      );
+      return nextProps;
     });
   };
 
@@ -2357,6 +2406,10 @@ const AESTHETIC_EXAMPLE_COUNT = 4;
 function buildAestheticImageSources(option: DevelopmentAestheticOption): string[] {
   const rawSources: string[] = [];
 
+  if (Array.isArray(option.archetypeImages)) {
+    rawSources.push(...option.archetypeImages.map((image) => image.imageUrl));
+  }
+
   if (Array.isArray(option.photoUrls)) {
     rawSources.push(...option.photoUrls);
   }
@@ -3036,6 +3089,53 @@ function composeZonePrompt(zone: SiteZone): string {
   if (aestheticCategory) {
     const categoryLabel = aestheticCategory.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     parts.push(`Aesthetic category: ${categoryLabel}`);
+  }
+  const archetypeLabel = (props.development_archetype_label as string) || ((props.development_selected_reference as { label?: string } | undefined)?.label || '');
+  const archetypeId = (props.development_archetype_id as string) || '';
+  if (archetypeLabel) {
+    parts.push(`Archetype reference: ${archetypeLabel}${archetypeId ? ` (${archetypeId.replace(/_/g, ' ')})` : ''}`);
+  }
+
+  const styleProfile = props.development_style_profile as {
+    materials?: unknown;
+    massing?: unknown;
+    facadeRhythm?: unknown;
+    roofForm?: unknown;
+    frontageType?: unknown;
+    articulation?: unknown;
+    publicRealm?: unknown;
+  } | undefined;
+
+  if (styleProfile) {
+    const materials = Array.isArray(styleProfile.materials)
+      ? styleProfile.materials.filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
+      : [];
+    if (materials.length > 0) {
+      parts.push(`Style materials: ${materials.join(', ')}`);
+    }
+    if (typeof styleProfile.massing === 'string' && styleProfile.massing.trim().length > 0) {
+      parts.push(`Style massing: ${styleProfile.massing}`);
+    }
+    if (typeof styleProfile.facadeRhythm === 'string' && styleProfile.facadeRhythm.trim().length > 0) {
+      parts.push(`Facade rhythm: ${styleProfile.facadeRhythm}`);
+    }
+    if (typeof styleProfile.roofForm === 'string' && styleProfile.roofForm.trim().length > 0) {
+      parts.push(`Roof form: ${styleProfile.roofForm}`);
+    }
+    if (typeof styleProfile.frontageType === 'string' && styleProfile.frontageType.trim().length > 0) {
+      parts.push(`Frontage type: ${styleProfile.frontageType}`);
+    }
+    if (typeof styleProfile.articulation === 'string' && styleProfile.articulation.trim().length > 0) {
+      parts.push(`Articulation: ${styleProfile.articulation}`);
+    }
+    if (typeof styleProfile.publicRealm === 'string' && styleProfile.publicRealm.trim().length > 0) {
+      parts.push(`Public realm intent: ${styleProfile.publicRealm}`);
+    }
+  }
+
+  const generationStyleInput = props.generation_style_input as { buildingSubcategory?: string; aestheticCategoryLabel?: string } | undefined;
+  if (generationStyleInput?.buildingSubcategory) {
+    parts.push(`Building subcategory: ${generationStyleInput.buildingSubcategory.replace(/_/g, ' ')}`);
   }
 
   // 2. Approximate dimensions from coordinates
