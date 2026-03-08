@@ -605,6 +605,30 @@ export interface GenerationEngine {
 }
 
 // =============================================================================
+// Model Library Types
+// =============================================================================
+
+export interface ModelLibraryEntry {
+  id: string;
+  owner_id: string;
+  source_building_id?: string;
+  source_project_id?: string;
+  name: string;
+  description?: string;
+  category: string;
+  tags?: string[];
+  model_url: string;
+  lod_urls?: Record<string, string>;
+  thumbnail_url?: string;
+  generation_prompt?: string;
+  generation_engine?: string;
+  architectural_style?: string;
+  is_public: boolean;
+  use_count: number;
+  created_at: string;
+}
+
+// =============================================================================
 // Boundary Analysis Types
 // =============================================================================
 

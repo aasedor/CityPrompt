@@ -238,6 +238,34 @@ class PendingRoleChange(Base):
     requested_by: Mapped["User"] = relationship(foreign_keys=[requested_by_id])
 
 
+class ModelLibraryEntry(Base):
+    __tablename__ = "model_library"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    owner_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    source_building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
+    source_project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="SET NULL"), nullable=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    category: Mapped[str] = mapped_column(String(50), nullable=False, default="other")
+    tags: Mapped[list | None] = mapped_column(JSONB, nullable=True, default=list)
+    model_url: Mapped[str] = mapped_column(String(500), nullable=False)
+    lod_urls: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    thumbnail_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
+    generation_engine: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    architectural_style: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    is_public: Mapped[bool] = mapped_column(default=False)
+    use_count: Mapped[int] = mapped_column(Integer, default=0)
+    metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    owner: Mapped["User"] = relationship()
+    source_building: Mapped["Building | None"] = relationship()
+    source_project: Mapped["Project | None"] = relationship()
+
+
 class ApiUsageLog(Base):
     __tablename__ = "api_usage_logs"
 

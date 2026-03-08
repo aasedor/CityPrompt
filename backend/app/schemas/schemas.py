@@ -569,6 +569,45 @@ class GenerationEngineInfo(BaseModel):
 
 
 # =============================================================================
+# Model Library Schemas
+# =============================================================================
+
+class ModelLibrarySaveRequest(BaseModel):
+    """Save a building's 3D model to the reusable model library."""
+    name: str = Field(max_length=255, description="Display name for the library entry")
+    description: Optional[str] = Field(None, description="Optional description")
+    category: str = Field(default="other", description="Category: commercial, residential, infrastructure, landscaping, other")
+    tags: list[str] = Field(default=[], description="Searchable tags")
+
+
+class ModelLibraryApplyRequest(BaseModel):
+    """Apply a library model to a target building."""
+    building_id: str = Field(description="Target building ID to apply the model to")
+
+
+class ModelLibraryResponse(BaseModel):
+    """A saved model in the library."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    owner_id: uuid.UUID
+    source_building_id: Optional[uuid.UUID] = None
+    source_project_id: Optional[uuid.UUID] = None
+    name: str
+    description: Optional[str] = None
+    category: str
+    tags: Optional[list[str]] = None
+    model_url: str
+    lod_urls: Optional[dict[str, str]] = None
+    thumbnail_url: Optional[str] = None
+    generation_prompt: Optional[str] = None
+    generation_engine: Optional[str] = None
+    architectural_style: Optional[str] = None
+    is_public: bool = False
+    use_count: int = 0
+    created_at: datetime
+
+
+# =============================================================================
 # Admin Schemas
 # =============================================================================
 

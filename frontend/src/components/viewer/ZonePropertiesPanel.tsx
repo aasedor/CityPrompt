@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { siteZonesApi, buildingsApi, resolveApiFileUrl } from '@/services/api';
+import { siteZonesApi, buildingsApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import {
@@ -1660,6 +1660,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           );
         })()}
 
+        {/* Model Library — browse & apply saved models */}
+        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (
+          <ModelLibrarySection buildingId={zone.building_id} />
+        )}
+
         {/* Preview History — buildable zones */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
           <PreviewHistorySection zone={zone} />
@@ -2973,12 +2978,130 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
 }
 
 // =============================================================================
+// Model Library section
+// =============================================================================
+
+function ModelLibrarySection({ buildingId }: { buildingId: string }) {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<import('@/types').ModelLibraryEntry[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [applying, setApplying] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const queryClient = useQueryClient();
+
+  const loadLibrary = async () => {
+    setLoading(true);
+    try {
+      const data = await modelLibraryApi.list(search ? { search } : undefined);
+      setItems(data);
+    } catch {
+      toast.error('Failed to load model library');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open) loadLibrary();
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleApply = async (itemId: string) => {
+    setApplying(itemId);
+    try {
+      await modelLibraryApi.applyToBuilding(itemId, buildingId);
+      toast.success('Model applied from library!');
+      queryClient.invalidateQueries({ queryKey: ['project'] });
+      setOpen(false);
+    } catch {
+      toast.error('Failed to apply model');
+    } finally {
+      setApplying(null);
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    loadLibrary();
+  };
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100"
+      >
+        <Library size={12} />
+        Browse Model Library
+      </button>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5">
+      <div className="mb-2 flex items-center justify-between">
+        <label className="text-[11px] font-medium text-emerald-700">Model Library</label>
+        <button onClick={() => setOpen(false)} className="text-emerald-500 hover:text-emerald-700">
+          <X size={12} />
+        </button>
+      </div>
+
+      <form onSubmit={handleSearch} className="mb-2 flex gap-1">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search models..."
+          className="flex-1 rounded border border-emerald-200 bg-white px-2 py-1 text-xs text-primary-950 focus:border-emerald-400 focus:outline-none"
+        />
+        <button type="submit" className="rounded bg-emerald-500 px-2 py-1 text-xs text-white hover:bg-emerald-600">
+          Search
+        </button>
+      </form>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-4">
+          <Loader2 size={16} className="animate-spin text-emerald-500" />
+        </div>
+      ) : items.length === 0 ? (
+        <p className="py-3 text-center text-[10px] text-emerald-600/70">
+          No models saved yet. Generate a 3D model and click "Save" to add it here.
+        </p>
+      ) : (
+        <div className="max-h-[200px] space-y-1 overflow-y-auto">
+          {items.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center gap-2 rounded border border-emerald-100 bg-white p-1.5"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="truncate text-[11px] font-medium text-primary-950">{item.name}</p>
+                <p className="truncate text-[9px] text-primary-950/60">
+                  {item.generation_engine || 'unknown'} {item.use_count > 0 && `· used ${item.use_count}x`}
+                </p>
+              </div>
+              <button
+                onClick={() => handleApply(item.id)}
+                disabled={applying === item.id}
+                className="shrink-0 rounded bg-emerald-500 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
+              >
+                {applying === item.id ? <Loader2 size={10} className="animate-spin" /> : 'Apply'}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// =============================================================================
 // Quick Regenerate section
 // =============================================================================
 
 function QuickRegenerateSection({ building }: { building: Building }) {
   const [prompt, setPrompt] = useState(building.generation_prompt || '');
   const [regenerating, setRegenerating] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setPrompt(building.generation_prompt || '');
@@ -2997,6 +3120,25 @@ function QuickRegenerateSection({ building }: { building: Building }) {
     }
   };
 
+  const handleSaveToLibrary = async () => {
+    setSaving(true);
+    try {
+      const name = building.name || building.generation_prompt?.slice(0, 60) || 'Untitled Model';
+      await modelLibraryApi.saveFromBuilding(
+        building.id,
+        name,
+        building.generation_prompt || undefined,
+        building.architectural_style ? 'other' : 'other',
+        [],
+      );
+      toast.success('Model saved to library!');
+    } catch {
+      toast.error('Failed to save model');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="rounded-lg border border-purple-200 bg-purple-50/50 p-2.5">
       <label className="mb-1 block text-[11px] font-medium text-purple-700">Regenerate with modified prompt</label>
@@ -3006,14 +3148,25 @@ function QuickRegenerateSection({ building }: { building: Building }) {
         rows={3}
         className="mb-1.5 w-full rounded border border-purple-200 bg-primary-950/[0.04] px-2 py-1 text-xs text-primary-950 focus:border-purple-400 focus:outline-none"
       />
-      <button
-        onClick={handleRegenerate}
-        disabled={regenerating || !prompt.trim()}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-500 px-3 py-1.5 text-xs font-medium text-primary-950 hover:bg-purple-600 disabled:opacity-50"
-      >
-        {regenerating ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
-        {regenerating ? 'Regenerating...' : 'Regenerate'}
-      </button>
+      <div className="flex gap-1.5">
+        <button
+          onClick={handleRegenerate}
+          disabled={regenerating || !prompt.trim()}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-purple-500 px-3 py-1.5 text-xs font-medium text-primary-950 hover:bg-purple-600 disabled:opacity-50"
+        >
+          {regenerating ? <Loader2 size={12} className="animate-spin" /> : <RefreshCw size={12} />}
+          {regenerating ? 'Regenerating...' : 'Regenerate'}
+        </button>
+        <button
+          onClick={handleSaveToLibrary}
+          disabled={saving}
+          title="Save this model to your library for reuse"
+          className="flex items-center justify-center gap-1 rounded-lg bg-emerald-500 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
+        >
+          {saving ? <Loader2 size={12} className="animate-spin" /> : <BookmarkPlus size={12} />}
+          Save
+        </button>
+      </div>
     </div>
   );
 }

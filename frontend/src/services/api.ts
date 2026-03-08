@@ -20,6 +20,7 @@ import type {
   OSMContext,
   LockedLayers,
   BoundaryAnalysisResponse,
+  ModelLibraryEntry,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -879,6 +880,69 @@ export const settingsApi = {
   updatePlatformSettings: async (update: { layout_ai_provider?: string }): Promise<PlatformSettings> => {
     const { data } = await api.put('/api/v1/settings/platform-settings', update);
     return data;
+  },
+};
+
+// =============================================================================
+// Model Library
+// =============================================================================
+
+export const modelLibraryApi = {
+  list: async (params?: {
+    category?: string;
+    search?: string;
+    include_public?: boolean;
+  }): Promise<ModelLibraryEntry[]> => {
+    const { data } = await api.get('/api/v1/model-library/items', { params });
+    return data;
+  },
+
+  get: async (itemId: string): Promise<ModelLibraryEntry> => {
+    const { data } = await api.get(`/api/v1/model-library/items/${itemId}`);
+    return data;
+  },
+
+  saveFromBuilding: async (
+    buildingId: string,
+    name: string,
+    description?: string,
+    category = 'other',
+    tags: string[] = [],
+  ): Promise<ModelLibraryEntry> => {
+    const { data } = await api.post(`/api/v1/model-library/buildings/${buildingId}/save`, {
+      name,
+      description,
+      category,
+      tags,
+    });
+    return data;
+  },
+
+  applyToBuilding: async (itemId: string, buildingId: string): Promise<{
+    status: string;
+    building_id: string;
+    model_url: string;
+    library_item_id: string;
+  }> => {
+    const { data } = await api.post(`/api/v1/model-library/items/${itemId}/apply`, {
+      building_id: buildingId,
+    });
+    return data;
+  },
+
+  update: async (itemId: string, update: {
+    name?: string;
+    description?: string;
+    category?: string;
+    tags?: string[];
+    is_public?: boolean;
+  }): Promise<ModelLibraryEntry> => {
+    const { data } = await api.put(`/api/v1/model-library/items/${itemId}`, null, { params: update });
+    return data;
+  },
+
+  delete: async (itemId: string): Promise<void> => {
+    await api.delete(`/api/v1/model-library/items/${itemId}`);
   },
 };
 
