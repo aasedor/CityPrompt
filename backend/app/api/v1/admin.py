@@ -394,6 +394,7 @@ async def backfill_thumbnails(
 
 def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | None]]):
     """Background task that fetches thumbnails from Meshy/Tripo for existing buildings."""
+    import time
     import httpx
     from app.tasks.processing import _get_sync_session, _upload_to_storage
 
@@ -401,32 +402,44 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
     session = _get_sync_session()
     success = 0
     failed = 0
+    retries_left = 3  # Global retry budget for rate-limit backoff
 
-    for building_id, meshy_task_id, project_id, engine in building_entries:
+    # Use a persistent client with connection pooling
+    client = httpx.Client(timeout=30.0)
+    headers = {"Authorization": f"Bearer {settings.meshy_api_key}"}
+    base = settings.meshy_api_base.rstrip("/")
+
+    for i, (building_id, meshy_task_id, project_id, engine) in enumerate(building_entries):
         try:
-            # Determine which API endpoint to query
             if engine == "tripo":
-                # Tripo doesn't store thumbnails in the same way — skip
                 logger.info(f"Skipping Tripo building {building_id} (no thumbnail API)")
                 continue
 
-            # Default: query Meshy text-to-3D endpoint
-            headers = {
-                "Authorization": f"Bearer {settings.meshy_api_key}",
-            }
-            base = settings.meshy_api_base.rstrip("/")
+            # Rate-limit: pause between Meshy API calls
+            if i > 0:
+                time.sleep(1.0)
 
             # Try text-to-3D first, fall back to image-to-3D
-            resp = httpx.get(
+            resp = client.get(
                 f"{base}/openapi/v2/text-to-3d/{meshy_task_id}",
                 headers=headers,
-                timeout=30.0,
             )
             if resp.status_code == 404:
-                resp = httpx.get(
+                resp = client.get(
                     f"{base}/openapi/v2/image-to-3d/{meshy_task_id}",
                     headers=headers,
-                    timeout=30.0,
+                )
+
+            # Handle rate limiting with backoff
+            if resp.status_code == 429 and retries_left > 0:
+                retry_after = int(resp.headers.get("Retry-After", "10"))
+                logger.warning(f"Rate limited by Meshy, sleeping {retry_after}s ({retries_left} retries left)")
+                time.sleep(retry_after)
+                retries_left -= 1
+                # Retry this one
+                resp = client.get(
+                    f"{base}/openapi/v2/text-to-3d/{meshy_task_id}",
+                    headers=headers,
                 )
 
             if resp.status_code != 200:
@@ -441,28 +454,40 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
                 failed += 1
                 continue
 
-            # Download and upload thumbnail
-            thumb_resp = httpx.get(thumbnail_url, timeout=30.0)
-            thumb_resp.raise_for_status()
+            # Download thumbnail
+            thumb_resp = client.get(thumbnail_url)
+            if thumb_resp.status_code != 200:
+                logger.warning(f"Failed to download thumbnail for {building_id}: {thumb_resp.status_code}")
+                failed += 1
+                continue
+
             thumb_key = f"projects/{project_id}/thumbnails/{building_id}.png"
             _upload_to_storage(thumb_key, thumb_resp.content, "image/png")
 
-            # Store as proxy URL so the browser can access it
             proxy_url = f"/api/v1/files/{thumb_key}"
 
-            # Update building record
             building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
             if building:
                 building.preview_url = proxy_url
                 building.preview_status = "completed"
                 session.commit()
                 success += 1
-                logger.info(f"Backfilled thumbnail for building {building_id}")
+                logger.info(f"Backfilled thumbnail for building {building_id} ({success}/{len(building_entries)})")
 
         except Exception as e:
             logger.warning(f"Failed to backfill thumbnail for building {building_id}: {e}")
-            session.rollback()
+            try:
+                session.rollback()
+            except Exception:
+                # Session is broken, create a new one
+                try:
+                    session.close()
+                except Exception:
+                    pass
+                session = _get_sync_session()
             failed += 1
+
+    client.close()
 
     # Second pass: propagate thumbnails to sibling buildings that share the same
     # model_url but have no preview_url (these were created via zone propagation).
@@ -475,7 +500,6 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
         ).all()
 
         for sibling in siblings:
-            # Find another building with the same model_url that has a preview
             source = session.query(Building).filter(
                 Building.model_url == sibling.model_url,
                 Building.preview_url.isnot(None),
