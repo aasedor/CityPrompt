@@ -667,6 +667,22 @@ class AdminProjectListResponse(BaseModel):
     building_count: int
 
 
+class AdminBuildingListResponse(BaseModel):
+    """Building info for admin buildings overview."""
+    id: uuid.UUID
+    name: Optional[str]
+    project_id: uuid.UUID
+    project_name: str
+    owner_email: str
+    generation_status: Optional[str]
+    generation_engine: Optional[str]
+    architectural_style: Optional[str]
+    model_url: Optional[str]
+    preview_url: Optional[str]
+    generation_prompt: Optional[str]
+    created_at: datetime
+
+
 # =============================================================================
 # Cofounder Analytics Schemas
 # =============================================================================

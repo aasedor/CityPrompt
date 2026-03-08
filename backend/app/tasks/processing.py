@@ -381,7 +381,7 @@ def process_document(self, document_id: str):
             pass
 
 
-def _propagate_model_to_siblings(session: Session, building_id: str, model_url: str, lod_urls: dict):
+def _propagate_model_to_siblings(session: Session, building_id: str, model_url: str, lod_urls: dict, preview_url: str | None = None):
     """Copy generated model to all sibling buildings in the same zone.
 
     Finds the zone that contains this building_id in its building_ids list,
@@ -409,6 +409,9 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
                 sibling.model_url = model_url
                 sibling.lod_urls = lod_urls
                 sibling.generation_status = "completed"
+                if preview_url:
+                    sibling.preview_url = preview_url
+                    sibling.preview_status = "completed"
                 sibling_count += 1
 
         if sibling_count > 0:
@@ -601,11 +604,26 @@ def generate_3d_model_ai(
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
+
+        # Save Meshy thumbnail as preview_url if available
+        thumbnail = result.get("thumbnail_url")
+        if thumbnail:
+            try:
+                import httpx as httpx_thumb
+                thumb_data = httpx_thumb.get(thumbnail, timeout=30.0).content
+                thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
+                _upload_to_storage(thumb_key, thumb_data, "image/png")
+                building.preview_url = f"/api/v1/files/{thumb_key}"
+                building.preview_status = "completed"
+                logger.info(f"Thumbnail saved for building {building_id}")
+            except Exception as thumb_err:
+                logger.warning(f"Failed to save thumbnail (non-fatal): {thumb_err}")
+
         session.commit()
 
         # Propagate model to sibling buildings in the same zone (multi-unit)
         try:
-            _propagate_model_to_siblings(session, building_id, model_url, lod_urls)
+            _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
         except Exception as prop_err:
             logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
 

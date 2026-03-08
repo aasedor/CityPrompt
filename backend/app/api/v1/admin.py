@@ -2,11 +2,12 @@
 Admin API endpoints for platform management.
 """
 
+import asyncio
 import logging
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,6 +19,7 @@ from app.models.models import Building, Document, Project, User
 
 logger = logging.getLogger(__name__)
 from app.schemas.schemas import (
+    AdminBuildingListResponse,
     AdminDashboardStats,
     AdminProjectListResponse,
     AdminUserListResponse,
@@ -232,6 +234,65 @@ async def delete_user(
     await db.flush()
 
 
+@router.get("/buildings", response_model=list[AdminBuildingListResponse])
+async def list_all_buildings(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    search: Optional[str] = Query(None),
+    status: Optional[str] = Query(
+        None, pattern="^(idle|generating|completed|failed)$"
+    ),
+    engine: Optional[str] = Query(None),
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all buildings across all projects with owner info and optional filters."""
+    query = (
+        select(
+            Building,
+            Project.name.label("project_name"),
+            User.email.label("owner_email"),
+        )
+        .join(Project, Project.id == Building.project_id)
+        .join(User, User.id == Project.owner_id)
+    )
+
+    if search:
+        pattern = f"%{search}%"
+        query = query.where(
+            or_(
+                Building.name.ilike(pattern),
+                Building.generation_prompt.ilike(pattern),
+                Project.name.ilike(pattern),
+            )
+        )
+    if status:
+        query = query.where(Building.generation_status == status)
+    if engine:
+        query = query.where(Building.generation_engine == engine)
+
+    query = query.order_by(Building.created_at.desc()).offset(skip).limit(limit)
+    rows = (await db.execute(query)).all()
+
+    return [
+        AdminBuildingListResponse(
+            id=b.id,
+            name=b.name,
+            project_id=b.project_id,
+            project_name=proj_name,
+            owner_email=email,
+            generation_status=b.generation_status,
+            generation_engine=b.generation_engine,
+            architectural_style=b.architectural_style,
+            model_url=b.model_url,
+            preview_url=b.preview_url,
+            generation_prompt=b.generation_prompt,
+            created_at=b.created_at,
+        )
+        for b, proj_name, email in rows
+    ]
+
+
 @router.get("/projects", response_model=list[AdminProjectListResponse])
 async def list_all_projects(
     skip: int = Query(0, ge=0),
@@ -282,3 +343,155 @@ async def list_all_projects(
         )
         for proj, email, name, bcount in rows
     ]
+
+
+@router.post("/buildings/backfill-thumbnails")
+async def backfill_thumbnails(
+    background_tasks: BackgroundTasks,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Backfill thumbnails for completed buildings missing preview_url.
+
+    Fetches from Meshy API for buildings with a task ID, then propagates
+    thumbnails to sibling buildings that share the same model_url.
+    Runs in the background — returns immediately.
+    """
+    # Find buildings with meshy_task_id that need thumbnails fetched
+    result = await db.execute(
+        select(Building).where(
+            Building.generation_status == "completed",
+            Building.meshy_task_id.isnot(None),
+            (Building.preview_url.is_(None))
+            | (Building.preview_url == "")
+            | (~Building.preview_url.like("/api/%")),
+        )
+    )
+    buildings = result.scalars().all()
+
+    # Also count siblings that will be handled in the propagation pass
+    sibling_result = await db.execute(
+        select(func.count(Building.id)).where(
+            Building.generation_status == "completed",
+            Building.model_url.isnot(None),
+            Building.meshy_task_id.is_(None),
+            (Building.preview_url.is_(None)) | (Building.preview_url == ""),
+        )
+    )
+    sibling_count = sibling_result.scalar() or 0
+
+    if not buildings and sibling_count == 0:
+        return {"status": "nothing_to_do", "queued": 0}
+
+    # Collect IDs to process in background
+    building_ids = [(str(b.id), b.meshy_task_id, str(b.project_id), b.generation_engine) for b in buildings]
+
+    background_tasks.add_task(_backfill_thumbnails_task, building_ids)
+
+    total = len(building_ids) + sibling_count
+    return {"status": "started", "queued": total}
+
+
+def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | None]]):
+    """Background task that fetches thumbnails from Meshy/Tripo for existing buildings."""
+    import httpx
+    from app.tasks.processing import _get_sync_session, _upload_to_storage
+
+    settings = get_settings()
+    session = _get_sync_session()
+    success = 0
+    failed = 0
+
+    for building_id, meshy_task_id, project_id, engine in building_entries:
+        try:
+            # Determine which API endpoint to query
+            if engine == "tripo":
+                # Tripo doesn't store thumbnails in the same way — skip
+                logger.info(f"Skipping Tripo building {building_id} (no thumbnail API)")
+                continue
+
+            # Default: query Meshy text-to-3D endpoint
+            headers = {
+                "Authorization": f"Bearer {settings.meshy_api_key}",
+            }
+            base = settings.meshy_api_base.rstrip("/")
+
+            # Try text-to-3D first, fall back to image-to-3D
+            resp = httpx.get(
+                f"{base}/openapi/v2/text-to-3d/{meshy_task_id}",
+                headers=headers,
+                timeout=30.0,
+            )
+            if resp.status_code == 404:
+                resp = httpx.get(
+                    f"{base}/openapi/v2/image-to-3d/{meshy_task_id}",
+                    headers=headers,
+                    timeout=30.0,
+                )
+
+            if resp.status_code != 200:
+                logger.warning(f"Meshy task lookup failed for {meshy_task_id}: {resp.status_code}")
+                failed += 1
+                continue
+
+            data = resp.json()
+            thumbnail_url = data.get("thumbnail_url")
+            if not thumbnail_url:
+                logger.info(f"No thumbnail_url in Meshy response for task {meshy_task_id}")
+                failed += 1
+                continue
+
+            # Download and upload thumbnail
+            thumb_resp = httpx.get(thumbnail_url, timeout=30.0)
+            thumb_resp.raise_for_status()
+            thumb_key = f"projects/{project_id}/thumbnails/{building_id}.png"
+            _upload_to_storage(thumb_key, thumb_resp.content, "image/png")
+
+            # Store as proxy URL so the browser can access it
+            proxy_url = f"/api/v1/files/{thumb_key}"
+
+            # Update building record
+            building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+            if building:
+                building.preview_url = proxy_url
+                building.preview_status = "completed"
+                session.commit()
+                success += 1
+                logger.info(f"Backfilled thumbnail for building {building_id}")
+
+        except Exception as e:
+            logger.warning(f"Failed to backfill thumbnail for building {building_id}: {e}")
+            session.rollback()
+            failed += 1
+
+    # Second pass: propagate thumbnails to sibling buildings that share the same
+    # model_url but have no preview_url (these were created via zone propagation).
+    propagated = 0
+    try:
+        siblings = session.query(Building).filter(
+            Building.generation_status == "completed",
+            Building.model_url.isnot(None),
+            (Building.preview_url.is_(None)) | (Building.preview_url == ""),
+        ).all()
+
+        for sibling in siblings:
+            # Find another building with the same model_url that has a preview
+            source = session.query(Building).filter(
+                Building.model_url == sibling.model_url,
+                Building.preview_url.isnot(None),
+                Building.preview_url != "",
+                Building.preview_url.like("/api/%"),
+            ).first()
+            if source:
+                sibling.preview_url = source.preview_url
+                sibling.preview_status = "completed"
+                propagated += 1
+
+        if propagated > 0:
+            session.commit()
+    except Exception as e:
+        logger.warning(f"Sibling thumbnail propagation failed: {e}")
+        session.rollback()
+
+    session.close()
+    logger.info(f"Thumbnail backfill complete: {success} fetched, {propagated} propagated to siblings, {failed} failed")

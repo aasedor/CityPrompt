@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import type { AdminBuilding } from '@/services/api';
@@ -26,6 +26,7 @@ export function AdminBuildingsPage() {
   const [engineFilter, setEngineFilter] = useState('');
   const [viewMode, setViewMode] = useState<'gallery' | 'table'>('gallery');
   const [savingToLibrary, setSavingToLibrary] = useState<string | null>(null);
+  const [backfilling, setBackfilling] = useState(false);
 
   const fetchBuildings = useCallback(async () => {
     setLoading(true);
@@ -62,7 +63,24 @@ export function AdminBuildingsPage() {
     }
   };
 
+  const handleBackfillThumbnails = async () => {
+    setBackfilling(true);
+    try {
+      const result = await adminApi.backfillThumbnails();
+      if (result.queued === 0) {
+        toast.success('All buildings already have thumbnails!');
+      } else {
+        toast.success(`Fetching thumbnails for ${result.queued} building${result.queued !== 1 ? 's' : ''}... This runs in the background.`);
+      }
+    } catch {
+      toast.error('Failed to start thumbnail backfill');
+    } finally {
+      setBackfilling(false);
+    }
+  };
+
   const completedCount = buildings.length;
+  const missingThumbnails = buildings.filter((b) => !b.preview_url && b.generation_status === 'completed').length;
 
   return (
     <div>
@@ -79,6 +97,17 @@ export function AdminBuildingsPage() {
             </p>
           </div>
         </div>
+        <div className="flex items-center gap-3">
+        {missingThumbnails > 0 && (
+          <button
+            onClick={handleBackfillThumbnails}
+            disabled={backfilling}
+            className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.1] px-3 py-1.5 text-xs font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 disabled:opacity-50"
+          >
+            {backfilling ? <Loader2 size={14} className="animate-spin" /> : <ImageDown size={14} />}
+            Fetch Thumbnails ({missingThumbnails})
+          </button>
+        )}
         <div className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] p-0.5">
           <button
             onClick={() => setViewMode('gallery')}
@@ -94,6 +123,7 @@ export function AdminBuildingsPage() {
           >
             <List size={16} />
           </button>
+        </div>
         </div>
       </div>
 

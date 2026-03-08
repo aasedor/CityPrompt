@@ -641,6 +641,21 @@ export interface AdminDashboardStats {
   projects_by_status: Record<string, number>;
 }
 
+export interface AdminBuilding {
+  id: string;
+  name?: string;
+  project_id: string;
+  project_name: string;
+  owner_email: string;
+  generation_status?: string;
+  generation_engine?: string;
+  architectural_style?: string;
+  model_url?: string;
+  preview_url?: string;
+  generation_prompt?: string;
+  created_at: string;
+}
+
 export interface AdminProject {
   id: string;
   name: string;
@@ -677,6 +692,22 @@ export const adminApi = {
 
   deleteUser: async (userId: string): Promise<void> => {
     await api.delete(`/api/v1/admin/users/${userId}`);
+  },
+
+  listAllBuildings: async (params?: {
+    skip?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+    engine?: string;
+  }): Promise<AdminBuilding[]> => {
+    const { data } = await api.get('/api/v1/admin/buildings', { params });
+    return data;
+  },
+
+  backfillThumbnails: async (): Promise<{ status: string; queued: number }> => {
+    const { data } = await api.post('/api/v1/admin/buildings/backfill-thumbnails');
+    return data;
   },
 
   listAllProjects: async (params?: {
