@@ -36,7 +36,7 @@ export function AdminDashboardPage() {
   const cards = [
     { label: 'Total Users', value: stats.total_users, sub: `${stats.active_users} active`, icon: Users, color: 'text-primary-400 bg-primary-500/15', to: '/admin/users' },
     { label: 'Projects', value: stats.total_projects, icon: FolderOpen, color: 'text-emerald-400 bg-emerald-500/15', to: '/admin/projects' },
-    { label: 'Buildings', value: stats.total_buildings, icon: Box, color: 'text-accent-400 bg-accent-500/15' },
+    { label: 'Buildings', value: stats.total_buildings, icon: Box, color: 'text-accent-400 bg-accent-500/15', to: '/admin/buildings' },
     { label: 'Documents', value: stats.total_documents, icon: FileText, color: 'text-amber-400 bg-amber-500/15' },
   ];
 
@@ -60,7 +60,7 @@ export function AdminDashboardPage() {
             </div>
           );
           return card.to ? (
-            <Link key={card.label} to={card.to} className="transition-transform hover:scale-[1.02]">
+            <Link key={card.label} to={card.to} className="cursor-pointer transition-transform hover:scale-[1.02]">
               {content}
             </Link>
           ) : (
