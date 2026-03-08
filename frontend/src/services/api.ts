@@ -944,6 +944,11 @@ export const modelLibraryApi = {
   delete: async (itemId: string): Promise<void> => {
     await api.delete(`/api/v1/model-library/items/${itemId}`);
   },
+
+  bulkImport: async (): Promise<{ status: string; imported: number; skipped: number; total_buildings_with_models: number }> => {
+    const { data } = await api.post('/api/v1/model-library/bulk-import', {}, { timeout: 120000 });
+    return data;
+  },
 };
 
 export default api;

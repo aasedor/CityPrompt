@@ -287,6 +287,93 @@ async def update_library_item(
     return entry
 
 
+@router.post("/bulk-import", response_model=dict)
+async def bulk_import_to_library(
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Import all existing AI-generated models into the library.
+
+    Finds every building with a completed model_url that isn't already
+    in the library and copies it in.
+    """
+    # Get all buildings with completed models
+    result = await db.execute(
+        select(Building).where(
+            Building.model_url.isnot(None),
+            Building.generation_status == "completed",
+        )
+    )
+    buildings = result.scalars().all()
+
+    # Get existing library entries to avoid duplicates
+    existing = await db.execute(
+        select(ModelLibraryEntry.source_building_id).where(
+            ModelLibraryEntry.owner_id == user.id,
+        )
+    )
+    existing_ids = {row for row in existing.scalars().all() if row is not None}
+
+    imported = 0
+    skipped = 0
+
+    for building in buildings:
+        if building.id in existing_ids:
+            skipped += 1
+            continue
+
+        entry_id = uuid.uuid4()
+        library_key = f"library/{user.id}/{entry_id}.glb"
+
+        try:
+            library_url = _copy_s3_object(building.model_url, library_key)
+        except Exception:
+            skipped += 1
+            continue
+
+        # Copy LOD variants
+        lod_urls = None
+        if building.lod_urls:
+            lod_urls = {}
+            for lod_level, lod_source_url in building.lod_urls.items():
+                lod_key = f"library/{user.id}/{entry_id}_lod{lod_level}.glb"
+                try:
+                    lod_urls[lod_level] = _copy_s3_object(lod_source_url, lod_key)
+                except Exception:
+                    pass
+
+        name = building.name or building.generation_prompt or "Imported Model"
+        if len(name) > 255:
+            name = name[:252] + "..."
+
+        entry = ModelLibraryEntry(
+            id=entry_id,
+            owner_id=user.id,
+            source_building_id=building.id,
+            source_project_id=building.project_id,
+            name=name,
+            description=building.generation_prompt,
+            category="other",
+            tags=[],
+            model_url=library_url,
+            lod_urls=lod_urls,
+            generation_prompt=building.generation_prompt,
+            generation_engine=building.generation_engine,
+            architectural_style=building.architectural_style,
+        )
+        db.add(entry)
+        imported += 1
+
+    await db.flush()
+
+    return {
+        "status": "done",
+        "imported": imported,
+        "skipped": skipped,
+        "total_buildings_with_models": len(buildings),
+    }
+
+
 @router.delete("/items/{item_id}", status_code=204)
 async def delete_library_item(
     item_id: uuid.UUID,

@@ -2986,6 +2986,7 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const [items, setItems] = useState<import('@/types').ModelLibraryEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [applying, setApplying] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
   const [search, setSearch] = useState('');
   const queryClient = useQueryClient();
 
@@ -2998,6 +2999,19 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
       toast.error('Failed to load model library');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleBulkImport = async () => {
+    setImporting(true);
+    try {
+      const result = await modelLibraryApi.bulkImport();
+      toast.success(`Imported ${result.imported} models (${result.skipped} skipped)`);
+      loadLibrary();
+    } catch {
+      toast.error('Failed to import models');
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -3063,9 +3077,19 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
           <Loader2 size={16} className="animate-spin text-emerald-500" />
         </div>
       ) : items.length === 0 ? (
-        <p className="py-3 text-center text-[10px] text-emerald-600/70">
-          No models saved yet. Generate a 3D model and click "Save" to add it here.
-        </p>
+        <div className="py-3 text-center">
+          <p className="text-[10px] text-emerald-600/70 mb-2">
+            No models saved yet. Import existing models or generate a new one and click "Save".
+          </p>
+          <button
+            onClick={handleBulkImport}
+            disabled={importing}
+            className="inline-flex items-center gap-1 rounded bg-emerald-500 px-3 py-1 text-[10px] font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
+          >
+            {importing ? <Loader2 size={10} className="animate-spin" /> : <ArrowDownToLine size={10} />}
+            {importing ? 'Importing...' : 'Import All Existing Models'}
+          </button>
+        </div>
       ) : (
         <div className="max-h-[200px] space-y-1 overflow-y-auto">
           {items.map((item) => (
