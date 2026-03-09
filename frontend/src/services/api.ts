@@ -710,6 +710,16 @@ export const adminApi = {
     return data;
   },
 
+  uploadBuildingThumbnail: async (buildingId: string, imageBlob: Blob): Promise<{ status: string; preview_url: string }> => {
+    const form = new FormData();
+    form.append('file', imageBlob, 'thumbnail.png');
+    const { data } = await api.post(`/api/v1/admin/buildings/${buildingId}/upload-thumbnail`, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 30000,
+    });
+    return data;
+  },
+
   listAllProjects: async (params?: {
     skip?: number;
     limit?: number;

@@ -1,7 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { adminApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import type { AdminBuilding } from '@/services/api';
 
@@ -18,6 +20,86 @@ const ENGINE_LABELS: Record<string, string> = {
   procedural: 'Procedural',
 };
 
+const THUMB_SIZE = 512;
+
+/**
+ * Render a GLB model to a PNG blob using an offscreen Three.js renderer.
+ */
+async function renderGlbThumbnail(glbUrl: string): Promise<Blob> {
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.setSize(THUMB_SIZE, THUMB_SIZE);
+  renderer.setPixelRatio(1);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f2f5);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  dirLight.position.set(5, 8, 5);
+  scene.add(dirLight);
+
+  const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+  fillLight.position.set(-3, 2, -3);
+  scene.add(fillLight);
+
+  // Load the model
+  const loader = new GLTFLoader();
+  const gltf = await new Promise<THREE.Group>((resolve, reject) => {
+    loader.load(
+      glbUrl,
+      (result) => resolve(result.scene),
+      undefined,
+      reject,
+    );
+  });
+
+  scene.add(gltf);
+
+  // Compute bounding box and center/fit camera
+  const box = new THREE.Box3().setFromObject(gltf);
+  const center = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const maxDim = Math.max(size.x, size.y, size.z);
+
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.01, maxDim * 20);
+  const distance = maxDim * 1.8;
+
+  // Position camera at a nice 3/4 angle
+  camera.position.set(
+    center.x + distance * 0.7,
+    center.y + distance * 0.5,
+    center.z + distance * 0.7,
+  );
+  camera.lookAt(center);
+
+  // Render
+  renderer.render(scene, camera);
+
+  // Extract as blob
+  const canvas = renderer.domElement;
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png');
+  });
+
+  // Cleanup
+  renderer.dispose();
+  scene.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
+      obj.geometry.dispose();
+      if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
+      else obj.material.dispose();
+    }
+  });
+
+  return blob;
+}
+
 export function AdminBuildingsPage() {
   const [buildings, setBuildings] = useState<AdminBuilding[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +108,8 @@ export function AdminBuildingsPage() {
   const [engineFilter, setEngineFilter] = useState('');
   const [viewMode, setViewMode] = useState<'gallery' | 'table'>('gallery');
   const [savingToLibrary, setSavingToLibrary] = useState<string | null>(null);
-  const [backfilling, setBackfilling] = useState(false);
+  const [renderProgress, setRenderProgress] = useState<{ current: number; total: number; name: string } | null>(null);
+  const cancelRef = useRef(false);
 
   const fetchBuildings = useCallback(async () => {
     setLoading(true);
@@ -63,24 +146,53 @@ export function AdminBuildingsPage() {
     }
   };
 
-  const handleBackfillThumbnails = async () => {
-    setBackfilling(true);
-    try {
-      const result = await adminApi.backfillThumbnails();
-      if (result.queued === 0) {
-        toast.success('All buildings already have thumbnails!');
-      } else {
-        toast.success(`Fetching thumbnails for ${result.queued} building${result.queued !== 1 ? 's' : ''}... This runs in the background.`);
+  const handleRenderThumbnails = async () => {
+    const missing = buildings.filter((b) => !b.preview_url && b.model_url && b.generation_status === 'completed');
+    if (missing.length === 0) {
+      toast.success('All buildings already have thumbnails!');
+      return;
+    }
+
+    cancelRef.current = false;
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    let success = 0;
+    let failed = 0;
+
+    for (let i = 0; i < missing.length; i++) {
+      if (cancelRef.current) {
+        toast('Thumbnail rendering cancelled', { icon: '⏹' });
+        break;
       }
-    } catch {
-      toast.error('Failed to start thumbnail backfill');
-    } finally {
-      setBackfilling(false);
+
+      const b = missing[i];
+      setRenderProgress({ current: i + 1, total: missing.length, name: b.name || 'Unnamed' });
+
+      try {
+        const modelUrl = `${apiBase}/api/v1/buildings/${b.id}/model/file`;
+        const blob = await renderGlbThumbnail(modelUrl);
+        await adminApi.uploadBuildingThumbnail(b.id, blob);
+
+        // Update local state so the thumbnail shows immediately
+        setBuildings((prev) =>
+          prev.map((pb) =>
+            pb.id === b.id ? { ...pb, preview_url: `/api/v1/files/projects/${b.project_id}/thumbnails/${b.id}.png` } : pb,
+          ),
+        );
+        success++;
+      } catch (err) {
+        console.warn(`Failed to render thumbnail for ${b.id}:`, err);
+        failed++;
+      }
+    }
+
+    setRenderProgress(null);
+    if (success > 0 || failed > 0) {
+      toast.success(`Rendered ${success} thumbnail${success !== 1 ? 's' : ''}${failed > 0 ? `, ${failed} failed` : ''}`);
     }
   };
 
   const completedCount = buildings.length;
-  const missingThumbnails = buildings.filter((b) => !b.preview_url && b.generation_status === 'completed').length;
+  const missingThumbnails = buildings.filter((b) => !b.preview_url && b.model_url && b.generation_status === 'completed').length;
 
   return (
     <div>
@@ -98,34 +210,61 @@ export function AdminBuildingsPage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-        {missingThumbnails > 0 && (
-          <button
-            onClick={handleBackfillThumbnails}
-            disabled={backfilling}
-            className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.1] px-3 py-1.5 text-xs font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 disabled:opacity-50"
-          >
-            {backfilling ? <Loader2 size={14} className="animate-spin" /> : <ImageDown size={14} />}
-            Fetch Thumbnails ({missingThumbnails})
-          </button>
-        )}
-        <div className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] p-0.5">
-          <button
-            onClick={() => setViewMode('gallery')}
-            className={`rounded-md p-1.5 ${viewMode === 'gallery' ? 'bg-primary-600 text-white' : 'text-primary-950/50 hover:text-primary-950'}`}
-            title="Gallery view"
-          >
-            <LayoutGrid size={16} />
-          </button>
-          <button
-            onClick={() => setViewMode('table')}
-            className={`rounded-md p-1.5 ${viewMode === 'table' ? 'bg-primary-600 text-white' : 'text-primary-950/50 hover:text-primary-950'}`}
-            title="Table view"
-          >
-            <List size={16} />
-          </button>
-        </div>
+          {missingThumbnails > 0 && !renderProgress && (
+            <button
+              onClick={handleRenderThumbnails}
+              className="flex items-center gap-1.5 rounded-lg border border-primary-500/30 bg-primary-500/10 px-3 py-1.5 text-xs font-medium text-primary-600 transition-colors hover:bg-primary-500/20"
+            >
+              <Camera size={14} />
+              Render Thumbnails ({missingThumbnails})
+            </button>
+          )}
+          {renderProgress && (
+            <button
+              onClick={() => { cancelRef.current = true; }}
+              className="flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-500/20"
+            >
+              Stop
+            </button>
+          )}
+          <div className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] p-0.5">
+            <button
+              onClick={() => setViewMode('gallery')}
+              className={`rounded-md p-1.5 ${viewMode === 'gallery' ? 'bg-primary-600 text-white' : 'text-primary-950/50 hover:text-primary-950'}`}
+              title="Gallery view"
+            >
+              <LayoutGrid size={16} />
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              className={`rounded-md p-1.5 ${viewMode === 'table' ? 'bg-primary-600 text-white' : 'text-primary-950/50 hover:text-primary-950'}`}
+              title="Table view"
+            >
+              <List size={16} />
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Render progress bar */}
+      {renderProgress && (
+        <div className="mb-5 rounded-lg border border-primary-500/20 bg-primary-500/5 p-3">
+          <div className="mb-1.5 flex items-center justify-between text-xs">
+            <span className="font-medium text-primary-700">
+              Rendering: {renderProgress.name} ({renderProgress.current}/{renderProgress.total})
+            </span>
+            <span className="text-primary-500">
+              {Math.round((renderProgress.current / renderProgress.total) * 100)}%
+            </span>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-primary-500/10">
+            <div
+              className="h-full rounded-full bg-primary-500 transition-all duration-300"
+              style={{ width: `${(renderProgress.current / renderProgress.total) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="mb-5 flex flex-col gap-3 sm:flex-row">

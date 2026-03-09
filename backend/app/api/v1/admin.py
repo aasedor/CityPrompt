@@ -7,7 +7,7 @@ import logging
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -343,6 +343,204 @@ async def list_all_projects(
         )
         for proj, email, name, bcount in rows
     ]
+
+
+@router.get("/buildings/thumbnail-debug")
+async def thumbnail_debug(
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Debug endpoint: show thumbnail status for all completed buildings."""
+    import httpx
+
+    settings = get_settings()
+    result = await db.execute(
+        select(
+            Building.id,
+            Building.name,
+            Building.meshy_task_id,
+            Building.generation_engine,
+            Building.preview_url,
+            Building.model_url,
+        ).where(Building.generation_status == "completed").order_by(Building.created_at.desc())
+    )
+    rows = result.all()
+
+    buildings = []
+    for bid, name, meshy_id, engine, preview_url, model_url in rows:
+        status = "ok" if preview_url and preview_url.startswith("/api/") else "missing"
+        if preview_url and not preview_url.startswith("/api/"):
+            status = f"stale_url ({preview_url[:60]}...)"
+
+        buildings.append({
+            "id": str(bid),
+            "name": name,
+            "engine": engine,
+            "meshy_task_id": meshy_id,
+            "preview_url": preview_url,
+            "has_model": bool(model_url),
+            "thumbnail_status": status,
+        })
+
+    ok = sum(1 for b in buildings if b["thumbnail_status"] == "ok")
+    missing = sum(1 for b in buildings if b["thumbnail_status"] == "missing")
+    stale = sum(1 for b in buildings if b["thumbnail_status"].startswith("stale"))
+    with_meshy_id = sum(1 for b in buildings if b["meshy_task_id"] and b["thumbnail_status"] != "ok")
+
+    return {
+        "summary": {
+            "total": len(buildings),
+            "ok": ok,
+            "missing": missing,
+            "stale": stale,
+            "fetchable_from_meshy": with_meshy_id,
+        },
+        "buildings": buildings,
+    }
+
+
+@router.post("/buildings/backfill-thumbnail-test/{building_id}")
+async def backfill_single_thumbnail(
+    building_id: uuid.UUID,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Test endpoint: try to fetch thumbnail for ONE building and return detailed results."""
+    import httpx
+
+    settings = get_settings()
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    info = {
+        "building_id": str(building_id),
+        "name": building.name,
+        "engine": building.generation_engine,
+        "meshy_task_id": building.meshy_task_id,
+        "current_preview_url": building.preview_url,
+        "model_url": building.model_url[:80] if building.model_url else None,
+        "steps": [],
+    }
+
+    if not building.meshy_task_id:
+        # Try sibling approach
+        info["steps"].append("No meshy_task_id — trying sibling lookup")
+        if building.model_url:
+            sibling_result = await db.execute(
+                select(Building.id, Building.preview_url).where(
+                    Building.model_url == building.model_url,
+                    Building.preview_url.like("/api/%"),
+                    Building.id != building_id,
+                )
+            )
+            sibling = sibling_result.first()
+            if sibling:
+                building.preview_url = sibling.preview_url
+                building.preview_status = "completed"
+                info["steps"].append(f"Copied from sibling {sibling.id}: {sibling.preview_url}")
+                info["result"] = "success_from_sibling"
+                return info
+            else:
+                info["steps"].append("No sibling with valid thumbnail found")
+
+                # Check what siblings exist
+                all_siblings = await db.execute(
+                    select(Building.id, Building.preview_url, Building.meshy_task_id).where(
+                        Building.model_url == building.model_url,
+                    )
+                )
+                info["siblings"] = [
+                    {"id": str(s.id), "preview_url": s.preview_url, "meshy_task_id": s.meshy_task_id}
+                    for s in all_siblings.all()
+                ]
+        info["result"] = "no_source_available"
+        return info
+
+    # Has meshy_task_id — try fetching from Meshy API
+    info["steps"].append(f"Querying Meshy API for task {building.meshy_task_id}")
+    headers = {"Authorization": f"Bearer {settings.meshy_api_key}"}
+    base = settings.meshy_api_base.rstrip("/")
+
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        resp = await client.get(
+            f"{base}/openapi/v2/text-to-3d/{building.meshy_task_id}",
+            headers=headers,
+        )
+        info["steps"].append(f"text-to-3d response: {resp.status_code}")
+
+        if resp.status_code == 404:
+            resp = await client.get(
+                f"{base}/openapi/v2/image-to-3d/{building.meshy_task_id}",
+                headers=headers,
+            )
+            info["steps"].append(f"image-to-3d response: {resp.status_code}")
+
+        if resp.status_code != 200:
+            info["result"] = f"meshy_api_error_{resp.status_code}"
+            info["response_body"] = resp.text[:500]
+            return info
+
+        data = resp.json()
+        info["meshy_status"] = data.get("status")
+        info["meshy_thumbnail_url"] = data.get("thumbnail_url")
+        info["meshy_model_urls"] = list((data.get("model_urls") or {}).keys())
+
+        thumbnail_url = data.get("thumbnail_url")
+        if not thumbnail_url:
+            info["result"] = "no_thumbnail_in_meshy_response"
+            return info
+
+        info["steps"].append(f"Downloading thumbnail from {thumbnail_url[:80]}")
+        thumb_resp = await client.get(thumbnail_url)
+        info["steps"].append(f"Thumbnail download: {thumb_resp.status_code}, {len(thumb_resp.content)} bytes")
+
+        if thumb_resp.status_code != 200 or len(thumb_resp.content) < 100:
+            info["result"] = "thumbnail_download_failed"
+            return info
+
+        # Upload to S3
+        from app.tasks.processing import _upload_to_storage
+        thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
+        _upload_to_storage(thumb_key, thumb_resp.content, "image/png")
+        proxy_url = f"/api/v1/files/{thumb_key}"
+
+        building.preview_url = proxy_url
+        building.preview_status = "completed"
+        info["steps"].append(f"Saved as {proxy_url}")
+        info["result"] = "success"
+
+    return info
+
+
+@router.post("/buildings/{building_id}/upload-thumbnail")
+async def upload_building_thumbnail(
+    building_id: uuid.UUID,
+    file: UploadFile = File(...),
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Upload a rendered thumbnail image for a building (from client-side 3D render)."""
+    from app.tasks.processing import _upload_to_storage
+
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    contents = await file.read()
+    if len(contents) < 100:
+        raise HTTPException(status_code=400, detail="Image too small")
+
+    thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
+    _upload_to_storage(thumb_key, contents, "image/png")
+    proxy_url = f"/api/v1/files/{thumb_key}"
+
+    building.preview_url = proxy_url
+    building.preview_status = "completed"
+
+    return {"status": "ok", "preview_url": proxy_url}
 
 
 @router.post("/buildings/backfill-thumbnails")
