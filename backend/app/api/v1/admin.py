@@ -369,27 +369,29 @@ async def backfill_thumbnails(
     )
     buildings = result.scalars().all()
 
-    # Also count siblings that will be handled in the propagation pass
-    sibling_result = await db.execute(
+    # Count all completed buildings without a valid /api/ preview_url
+    # (includes siblings with NULL, empty, or stale S3 URLs)
+    all_missing_result = await db.execute(
         select(func.count(Building.id)).where(
             Building.generation_status == "completed",
             Building.model_url.isnot(None),
-            Building.meshy_task_id.is_(None),
-            (Building.preview_url.is_(None)) | (Building.preview_url == ""),
+            (Building.preview_url.is_(None))
+            | (Building.preview_url == "")
+            | (~Building.preview_url.like("/api/%")),
         )
     )
-    sibling_count = sibling_result.scalar() or 0
+    total_missing = all_missing_result.scalar() or 0
 
-    if not buildings and sibling_count == 0:
+    if not buildings and total_missing == 0:
         return {"status": "nothing_to_do", "queued": 0}
 
-    # Collect IDs to process in background
+    # Collect IDs to process in background (only buildings with meshy_task_id)
     building_ids = [(str(b.id), b.meshy_task_id, str(b.project_id), b.generation_engine) for b in buildings]
 
+    # Always run — even with 0 Meshy entries, the sibling propagation pass is needed
     background_tasks.add_task(_backfill_thumbnails_task, building_ids)
 
-    total = len(building_ids) + sibling_count
-    return {"status": "started", "queued": total}
+    return {"status": "started", "queued": total_missing}
 
 
 def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | None]]):
@@ -490,29 +492,43 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
     client.close()
 
     # Second pass: propagate thumbnails to sibling buildings that share the same
-    # model_url but have no preview_url (these were created via zone propagation).
+    # model_url but have no valid preview_url (created via zone propagation).
+    # Catches: NULL, empty string, and stale S3 URLs that don't start with /api/
     propagated = 0
     try:
         siblings = session.query(Building).filter(
             Building.generation_status == "completed",
             Building.model_url.isnot(None),
-            (Building.preview_url.is_(None)) | (Building.preview_url == ""),
+            ~Building.preview_url.like("/api/%") if Building.preview_url.isnot(None) else True,
         ).all()
 
-        for sibling in siblings:
-            source = session.query(Building).filter(
-                Building.model_url == sibling.model_url,
-                Building.preview_url.isnot(None),
-                Building.preview_url != "",
-                Building.preview_url.like("/api/%"),
-            ).first()
-            if source:
-                sibling.preview_url = source.preview_url
-                sibling.preview_status = "completed"
-                propagated += 1
+        # Filter in Python to handle NULL/empty/stale URLs cleanly
+        siblings = [
+            s for s in siblings
+            if not s.preview_url or not s.preview_url.startswith("/api/")
+        ]
 
-        if propagated > 0:
-            session.commit()
+        logger.info(f"Sibling propagation pass: {len(siblings)} buildings need thumbnails")
+
+        # Build a lookup: model_url -> valid preview_url (from buildings that have one)
+        if siblings:
+            model_urls = {s.model_url for s in siblings if s.model_url}
+            sources = session.query(Building).filter(
+                Building.model_url.in_(model_urls),
+                Building.preview_url.like("/api/%"),
+            ).all()
+            preview_map = {s.model_url: s.preview_url for s in sources}
+
+            for sibling in siblings:
+                preview = preview_map.get(sibling.model_url)
+                if preview:
+                    sibling.preview_url = preview
+                    sibling.preview_status = "completed"
+                    propagated += 1
+
+            if propagated > 0:
+                session.commit()
+                logger.info(f"Propagated thumbnails to {propagated} sibling buildings")
     except Exception as e:
         logger.warning(f"Sibling thumbnail propagation failed: {e}")
         session.rollback()
