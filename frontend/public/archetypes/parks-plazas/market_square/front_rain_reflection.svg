@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Market Square Front Rain Reflection">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a4b6c5" />
+      <stop offset="100%" stop-color="#eff3f7" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="504" width="1200" height="396" fill="#b6aa9c" />
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="#c2b5a6" />
+
+  <path d="M 240 389 Q 600 365 984 393" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 456 510 Q 600 498 898 514" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 672 631 Q 600 631 811 635" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <circle cx="373" cy="766" r="15" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="470" cy="329" r="16" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="567" cy="396" r="17" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="664" cy="463" r="10" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="761" cy="530" r="11" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="858" cy="597" r="12" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="955" cy="664" r="13" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="1052" cy="731" r="14" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="237" cy="294" r="15" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="334" cy="361" r="16" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="431" cy="428" r="17" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="528" cy="495" r="10" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="600" cy="540" r="47" fill="#6890a9" fill-opacity="0.55" />
+
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="none" stroke="#8e867d" stroke-opacity="0.45" stroke-width="2" />
+</svg>

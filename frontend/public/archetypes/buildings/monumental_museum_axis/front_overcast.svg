@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Monumental Museum Axis Front Overcast">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a0b0c3" />
+      <stop offset="100%" stop-color="#eef3f9" />
+    </linearGradient>
+    <linearGradient id="facade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8b0a4" />
+      <stop offset="100%" stop-color="#47c143" />
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c5854" />
+      <stop offset="100%" stop-color="#3b3834" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9e6f2" />
+      <stop offset="100%" stop-color="#7f9fb9" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="666" width="1200" height="54" fill="#d2c3b3" />
+  <rect x="0" y="711" width="1200" height="189" fill="url(#street)" />
+  
+
+  <ellipse cx="168" cy="603" rx="42" ry="58" fill="#779665" fill-opacity="0.86" />
+  <ellipse cx="1032" cy="594" rx="46" ry="62" fill="#779665" fill-opacity="0.84" />
+
+  <rect x="312" y="164" width="576" height="266" rx="8" fill="url(#facade)" />
+  <rect x="312" y="430" width="576" height="103" rx="5" fill="#3ca238" />
+  <rect x="302" y="150" width="596" height="16" rx="6" fill="#32373d" fill-opacity="0.94" />
+
+  <rect x="334" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.42" />
+  <rect x="424" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.44" />
+  <rect x="514" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.46" />
+  <rect x="604" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.36" />
+  <rect x="694" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.38" />
+  <rect x="784" y="182" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.41" />
+  <rect x="334" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.44" />
+  <rect x="424" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.46" />
+  <rect x="514" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.36" />
+  <rect x="604" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.38" />
+  <rect x="694" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.40" />
+  <rect x="784" y="304" width="80" height="112" rx="3" fill="#e0f1ff" fill-opacity="0.42" />
+  <rect x="330" y="446" width="100" height="64" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="440" y="446" width="100" height="64" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="550" y="446" width="100" height="64" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="660" y="446" width="100" height="64" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="770" y="446" width="100" height="64" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+
+  <rect x="300" y="146" width="600" height="395" fill="none" stroke="#2e3338" stroke-opacity="0.35" stroke-width="2" />
+</svg>

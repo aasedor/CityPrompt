@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.617Z",
+  "domain": "parks_plazas",
+  "archetype": {
+    "id": "climate_resilience_sponge_park",
+    "title": "Climate Resilience Sponge Park",
+    "aestheticCategoryId": "ecological_resilience",
+    "aestheticCategoryLabel": "Ecological Resilience",
+    "spaceType": "park"
+  },
+  "variant": {
+    "id": "front_overcast",
+    "title": "Front Overcast",
+    "lighting": "overcast"
+  },
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "imageRefs": {
+    "svg": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.svg",
+    "png": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.png",
+    "prompt": "/archetypes/parks-plazas/prompts/climate_resilience_sponge_park/front_overcast.json",
+    "metadata": "/archetypes/parks-plazas/metadata/climate_resilience_sponge_park/front_overcast.json"
+  },
+  "generationTags": [
+    "park",
+    "ecological-resilience",
+    "climate"
+  ],
+  "styleProfile": {
+    "landscapeCharacter": "Climate Resilience Sponge Park park character",
+    "pavingType": "Mixed path and landscape paving",
+    "plantingType": "Layered canopy, understory, and meadow planting",
+    "seatingRealm": "Integrated social seating edges",
+    "waterFeatures": "Optional pond, stream, or rain garden",
+    "opennessEnclosure": "Balanced openness with framed landscape rooms"
+  },
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "park_plaza",
+    "subtype": "park",
+    "aestheticCategoryId": "ecological_resilience",
+    "aestheticCategoryLabel": "Ecological Resilience",
+    "archetypeId": "climate_resilience_sponge_park",
+    "archetypeLabel": "Climate Resilience Sponge Park",
+    "archetypeImageId": "climate_resilience_sponge_park_front_overcast",
+    "archetypeImageVariantId": "front_overcast",
+    "archetypeImageVariantLabel": "Front Overcast",
+    "archetypeImageUrl": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.svg",
+    "archetypeImagePath": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.png",
+    "generationTags": [
+      "park",
+      "ecological-resilience",
+      "climate"
+    ],
+    "imagePrompt": {
+      "positive": "Centered Climate Resilience Sponge Park park archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Climate Resilience Sponge Park park character. pavingType: Mixed path and landscape paving. plantingType: Layered canopy, understory, and meadow planting. seatingRealm: Integrated social seating edges. waterFeatures: Optional pond, stream, or rain garden. opennessEnclosure: Balanced openness with framed landscape rooms",
+      "negative": "No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "landscapeCharacter": "Climate Resilience Sponge Park park character",
+      "pavingType": "Mixed path and landscape paving",
+      "plantingType": "Layered canopy, understory, and meadow planting",
+      "seatingRealm": "Integrated social seating edges",
+      "waterFeatures": "Optional pond, stream, or rain garden",
+      "opennessEnclosure": "Balanced openness with framed landscape rooms"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "park",
+        "ecological-resilience",
+        "climate"
+      ],
+      "materialDirection": [
+        "Mixed path and landscape paving",
+        "Layered canopy, understory, and meadow planting"
+      ],
+      "reuseKeys": [
+        "parks_plazas",
+        "ecological_resilience",
+        "climate_resilience_sponge_park",
+        "front_overcast",
+        "park"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "parks_plazas:climate_resilience_sponge_park:front_overcast",
+    "targetDomain": "park_plaza",
+    "assetCategory": "parks_plazas",
+    "subtype": "park",
+    "geometryStrategy": "terrain_patch_with_surface_zones",
+    "parametricInputs": [
+      "path_density",
+      "canopy_density",
+      "openness_ratio",
+      "water_feature_scale",
+      "seating_density"
+    ],
+    "materialSlots": [
+      "paving_primary",
+      "paving_secondary",
+      "groundcover",
+      "canopy",
+      "water",
+      "site_furniture"
+    ],
+    "sceneElements": [
+      "planting_layers",
+      "site_furniture",
+      "water_features",
+      "lighting"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.svg",
+      "png": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_overcast.png",
+      "prompt": "/archetypes/parks-plazas/prompts/climate_resilience_sponge_park/front_overcast.json",
+      "metadata": "/archetypes/parks-plazas/metadata/climate_resilience_sponge_park/front_overcast.json"
+    },
+    "reuseSignature": {
+      "domain": "park_plaza",
+      "asset_category": "parks_plazas",
+      "archetype_id": "climate_resilience_sponge_park",
+      "archetype_label": "Climate Resilience Sponge Park",
+      "aesthetic_category_id": "ecological_resilience",
+      "aesthetic_category_label": "Ecological Resilience",
+      "building_subcategory": null,
+      "subtype": "park",
+      "generation_tags": [
+        "park",
+        "ecological-resilience",
+        "climate"
+      ],
+      "style_profile": {
+        "landscapeCharacter": "Climate Resilience Sponge Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      }
+    }
+  }
+}

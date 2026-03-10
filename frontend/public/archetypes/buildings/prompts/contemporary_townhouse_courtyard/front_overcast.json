@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T01:07:17.348Z",
+  "domain": "buildings",
+  "assetCategory": "building",
+  "archetypeId": "contemporary_townhouse_courtyard",
+  "archetypeTitle": "Contemporary Townhouse Courtyard",
+  "variantId": "front_overcast",
+  "variantTitle": "Front Overcast",
+  "variantLighting": "overcast",
+  "prompt": "Create exactly one high-fidelity image for a public-facing urban planning archetype selector. Front-facing canonical architectural archetype of Contemporary Townhouse Courtyard. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. materials: contemporary urban material palette, durable exterior materials, high-quality glazing. facadeRhythm: Contemporary Urban facade rhythm. roofForm: Contemporary Urban roof expression. frontageType: Contemporary Townhouse frontage. windowStyle: Contemporary Urban window proportioning. massing: Contemporary Townhouse massing profile. heightTendency: Low-mid to mid rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating Negative guidance: No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text.",
+  "positive": "Front-facing canonical architectural archetype of Contemporary Townhouse Courtyard. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. materials: contemporary urban material palette, durable exterior materials, high-quality glazing. facadeRhythm: Contemporary Urban facade rhythm. roofForm: Contemporary Urban roof expression. frontageType: Contemporary Townhouse frontage. windowStyle: Contemporary Urban window proportioning. massing: Contemporary Townhouse massing profile. heightTendency: Low-mid to mid rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+  "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "styleProfile": {
+    "materials": [
+      "contemporary urban material palette",
+      "durable exterior materials",
+      "high-quality glazing"
+    ],
+    "facadeRhythm": "Contemporary Urban facade rhythm",
+    "roofForm": "Contemporary Urban roof expression",
+    "frontageType": "Contemporary Townhouse frontage",
+    "windowStyle": "Contemporary Urban window proportioning",
+    "massing": "Contemporary Townhouse massing profile",
+    "heightTendency": "Low-mid to mid rise",
+    "streetRelationship": "Clear streetwall and pedestrian interface",
+    "renderingMood": "Photoreal architectural benchmark mood",
+    "articulation": "Legible depth, frame, and entry hierarchy",
+    "publicRealm": "Walkable active edge with planting and seating"
+  },
+  "generationTags": [
+    "contemporary_urban",
+    "contemporary_townhouse",
+    "contemporary",
+    "townhouse",
+    "courtyard"
+  ],
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "building",
+    "developmentType": "residential",
+    "buildingSubcategory": "Contemporary Townhouse",
+    "subtype": "Contemporary Townhouse",
+    "aestheticCategoryId": "contemporary_urban",
+    "aestheticCategoryLabel": "Contemporary Urban",
+    "archetypeId": "contemporary_townhouse_courtyard",
+    "archetypeLabel": "Contemporary Townhouse Courtyard",
+    "archetypeImageId": "contemporary_townhouse_courtyard_front_overcast",
+    "archetypeImageVariantId": "front_overcast",
+    "archetypeImageVariantLabel": "Front Overcast",
+    "archetypeImageUrl": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.svg",
+    "archetypeImagePath": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.png",
+    "generationTags": [
+      "contemporary_urban",
+      "contemporary_townhouse",
+      "contemporary",
+      "townhouse",
+      "courtyard"
+    ],
+    "imagePrompt": {
+      "positive": "Front-facing canonical architectural archetype of Contemporary Townhouse Courtyard. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. materials: contemporary urban material palette, durable exterior materials, high-quality glazing. facadeRhythm: Contemporary Urban facade rhythm. roofForm: Contemporary Urban roof expression. frontageType: Contemporary Townhouse frontage. windowStyle: Contemporary Urban window proportioning. massing: Contemporary Townhouse massing profile. heightTendency: Low-mid to mid rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+      "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "materials": [
+        "contemporary urban material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "facadeRhythm": "Contemporary Urban facade rhythm",
+      "roofForm": "Contemporary Urban roof expression",
+      "frontageType": "Contemporary Townhouse frontage",
+      "windowStyle": "Contemporary Urban window proportioning",
+      "massing": "Contemporary Townhouse massing profile",
+      "heightTendency": "Low-mid to mid rise",
+      "streetRelationship": "Clear streetwall and pedestrian interface",
+      "renderingMood": "Photoreal architectural benchmark mood",
+      "articulation": "Legible depth, frame, and entry hierarchy",
+      "publicRealm": "Walkable active edge with planting and seating"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "contemporary_urban",
+        "contemporary_townhouse",
+        "contemporary",
+        "townhouse",
+        "courtyard"
+      ],
+      "materialDirection": [
+        "contemporary urban material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "reuseKeys": [
+        "buildings",
+        "contemporary_urban",
+        "contemporary_townhouse_courtyard",
+        "front_overcast",
+        "Contemporary Townhouse"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "buildings:contemporary_townhouse_courtyard:front_overcast",
+    "targetDomain": "building",
+    "assetCategory": "building",
+    "subtype": "Contemporary Townhouse",
+    "geometryStrategy": "facade_extrusion_with_roof_profile",
+    "parametricInputs": [
+      "width_m",
+      "depth_m",
+      "height_m",
+      "floor_count",
+      "setback_front_m",
+      "setback_side_m"
+    ],
+    "materialSlots": [
+      "facade_primary",
+      "facade_secondary",
+      "trim",
+      "glazing",
+      "roof",
+      "ground"
+    ],
+    "sceneElements": [
+      "street_trees",
+      "lighting",
+      "street_furniture"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.svg",
+      "png": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.png",
+      "prompt": "/archetypes/buildings/prompts/contemporary_townhouse_courtyard/front_overcast.json",
+      "metadata": "/archetypes/buildings/metadata/contemporary_townhouse_courtyard/front_overcast.json"
+    },
+    "reuseSignature": {
+      "domain": "building",
+      "asset_category": "building",
+      "archetype_id": "contemporary_townhouse_courtyard",
+      "archetype_label": "Contemporary Townhouse Courtyard",
+      "aesthetic_category_id": "contemporary_urban",
+      "aesthetic_category_label": "Contemporary Urban",
+      "building_subcategory": "Contemporary Townhouse",
+      "subtype": "Contemporary Townhouse",
+      "generation_tags": [
+        "contemporary_urban",
+        "contemporary_townhouse",
+        "contemporary",
+        "townhouse",
+        "courtyard"
+      ],
+      "style_profile": {
+        "materials": [
+          "contemporary urban material palette",
+          "durable exterior materials",
+          "high-quality glazing"
+        ],
+        "facadeRhythm": "Contemporary Urban facade rhythm",
+        "roofForm": "Contemporary Urban roof expression",
+        "frontageType": "Contemporary Townhouse frontage",
+        "windowStyle": "Contemporary Urban window proportioning",
+        "massing": "Contemporary Townhouse massing profile",
+        "heightTendency": "Low-mid to mid rise",
+        "streetRelationship": "Clear streetwall and pedestrian interface",
+        "renderingMood": "Photoreal architectural benchmark mood",
+        "articulation": "Legible depth, frame, and entry hierarchy",
+        "publicRealm": "Walkable active edge with planting and seating"
+      }
+    }
+  },
+  "imageRefs": {
+    "svg": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.svg",
+    "png": "/archetypes/buildings/contemporary_townhouse_courtyard/front_overcast.png",
+    "prompt": "/archetypes/buildings/prompts/contemporary_townhouse_courtyard/front_overcast.json",
+    "metadata": "/archetypes/buildings/metadata/contemporary_townhouse_courtyard/front_overcast.json"
+  }
+}

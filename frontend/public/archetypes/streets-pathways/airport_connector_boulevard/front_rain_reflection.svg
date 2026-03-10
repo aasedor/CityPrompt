@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Airport Connector Boulevard Front Rain Reflection">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a7b6c7" />
+      <stop offset="100%" stop-color="#edf2f7" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4e4f0" />
+      <stop offset="100%" stop-color="#7d9fbc" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="522" width="1200" height="378" fill="#ccc2b4" />
+
+  <polygon points="414,270 450,270 360,828 318,828" fill="#989590" />
+  <polygon points="750,270 786,270 882,828 840,828" fill="#989590" />
+
+  <polygon points="450,270 750,270 840,828 360,828" fill="#545459" />
+  <polygon points="450,270 750,270 840,828 360,828" fill="url(#wet)" fill-opacity="0.45" />
+  <polygon points="422,270 460,270 384,828 336,828" fill="#b14c4c" fill-opacity="0.45" />
+     <polygon points="740,270 778,270 864,828 816,828" fill="#b14c4c" fill-opacity="0.45" />
+  <line x1="600" y1="276" x2="600" y2="828" stroke="#f4f1d9" stroke-width="4" stroke-dasharray="16 12" />
+
+  <circle cx="372" cy="264" r="18" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="828" cy="264" r="18" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="363" cy="326" r="17" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="837" cy="326" r="17" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="354" cy="388" r="16" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="846" cy="388" r="16" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="345" cy="450" r="15" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="855" cy="450" r="15" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="336" cy="512" r="14" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="864" cy="512" r="14" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="328" cy="574" r="12" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="872" cy="574" r="12" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="319" cy="636" r="11" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="881" cy="636" r="11" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="310" cy="698" r="10" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="890" cy="698" r="10" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="301" cy="760" r="9" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="899" cy="760" r="9" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="292" cy="822" r="8" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="908" cy="822" r="8" fill="#6c8661" fill-opacity="0.84" />
+</svg>

@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.235Z",
+  "domain": "buildings",
+  "assetCategory": "building",
+  "archetypeId": "coastal_breezeway_mixed_use",
+  "archetypeTitle": "Coastal Breezeway Mixed Use",
+  "variantId": "front_golden_hour",
+  "variantTitle": "Front Golden Hour",
+  "variantLighting": "golden hour",
+  "prompt": "Create exactly one high-fidelity image for a public-facing urban planning archetype selector. Front-facing canonical architectural archetype of Coastal Breezeway Mixed Use. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Golden Hour using golden hour. Target output 1200x900 (4:3). Style profile guidance:. materials: coastal / resort contemporary material palette, durable exterior materials, high-quality glazing. facadeRhythm: Coastal / Resort Contemporary facade rhythm. roofForm: Coastal / Resort Contemporary roof expression. frontageType: Waterfront Mixed Use frontage. windowStyle: Coastal / Resort Contemporary window proportioning. massing: Waterfront Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating Negative guidance: No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text.",
+  "positive": "Front-facing canonical architectural archetype of Coastal Breezeway Mixed Use. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Golden Hour using golden hour. Target output 1200x900 (4:3). Style profile guidance:. materials: coastal / resort contemporary material palette, durable exterior materials, high-quality glazing. facadeRhythm: Coastal / Resort Contemporary facade rhythm. roofForm: Coastal / Resort Contemporary roof expression. frontageType: Waterfront Mixed Use frontage. windowStyle: Coastal / Resort Contemporary window proportioning. massing: Waterfront Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+  "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "styleProfile": {
+    "materials": [
+      "coastal / resort contemporary material palette",
+      "durable exterior materials",
+      "high-quality glazing"
+    ],
+    "facadeRhythm": "Coastal / Resort Contemporary facade rhythm",
+    "roofForm": "Coastal / Resort Contemporary roof expression",
+    "frontageType": "Waterfront Mixed Use frontage",
+    "windowStyle": "Coastal / Resort Contemporary window proportioning",
+    "massing": "Waterfront Mixed Use massing profile",
+    "heightTendency": "Mid to high rise",
+    "streetRelationship": "Clear streetwall and pedestrian interface",
+    "renderingMood": "Photoreal architectural benchmark mood",
+    "articulation": "Legible depth, frame, and entry hierarchy",
+    "publicRealm": "Walkable active edge with planting and seating"
+  },
+  "generationTags": [
+    "coastal_resort_contemporary",
+    "waterfront_mixed_use",
+    "coastal",
+    "breezeway",
+    "mixed"
+  ],
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "building",
+    "developmentType": "mixed_use",
+    "buildingSubcategory": "Waterfront Mixed Use",
+    "subtype": "Waterfront Mixed Use",
+    "aestheticCategoryId": "coastal_resort_contemporary",
+    "aestheticCategoryLabel": "Coastal / Resort Contemporary",
+    "archetypeId": "coastal_breezeway_mixed_use",
+    "archetypeLabel": "Coastal Breezeway Mixed Use",
+    "archetypeImageId": "coastal_breezeway_mixed_use_front_golden_hour",
+    "archetypeImageVariantId": "front_golden_hour",
+    "archetypeImageVariantLabel": "Front Golden Hour",
+    "archetypeImageUrl": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.svg",
+    "archetypeImagePath": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.png",
+    "generationTags": [
+      "coastal_resort_contemporary",
+      "waterfront_mixed_use",
+      "coastal",
+      "breezeway",
+      "mixed"
+    ],
+    "imagePrompt": {
+      "positive": "Front-facing canonical architectural archetype of Coastal Breezeway Mixed Use. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Golden Hour using golden hour. Target output 1200x900 (4:3). Style profile guidance:. materials: coastal / resort contemporary material palette, durable exterior materials, high-quality glazing. facadeRhythm: Coastal / Resort Contemporary facade rhythm. roofForm: Coastal / Resort Contemporary roof expression. frontageType: Waterfront Mixed Use frontage. windowStyle: Coastal / Resort Contemporary window proportioning. massing: Waterfront Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+      "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "materials": [
+        "coastal / resort contemporary material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "facadeRhythm": "Coastal / Resort Contemporary facade rhythm",
+      "roofForm": "Coastal / Resort Contemporary roof expression",
+      "frontageType": "Waterfront Mixed Use frontage",
+      "windowStyle": "Coastal / Resort Contemporary window proportioning",
+      "massing": "Waterfront Mixed Use massing profile",
+      "heightTendency": "Mid to high rise",
+      "streetRelationship": "Clear streetwall and pedestrian interface",
+      "renderingMood": "Photoreal architectural benchmark mood",
+      "articulation": "Legible depth, frame, and entry hierarchy",
+      "publicRealm": "Walkable active edge with planting and seating"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "coastal_resort_contemporary",
+        "waterfront_mixed_use",
+        "coastal",
+        "breezeway",
+        "mixed"
+      ],
+      "materialDirection": [
+        "coastal / resort contemporary material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "reuseKeys": [
+        "buildings",
+        "coastal_resort_contemporary",
+        "coastal_breezeway_mixed_use",
+        "front_golden_hour",
+        "Waterfront Mixed Use"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "buildings:coastal_breezeway_mixed_use:front_golden_hour",
+    "targetDomain": "building",
+    "assetCategory": "building",
+    "subtype": "Waterfront Mixed Use",
+    "geometryStrategy": "facade_extrusion_with_roof_profile",
+    "parametricInputs": [
+      "width_m",
+      "depth_m",
+      "height_m",
+      "floor_count",
+      "setback_front_m",
+      "setback_side_m"
+    ],
+    "materialSlots": [
+      "facade_primary",
+      "facade_secondary",
+      "trim",
+      "glazing",
+      "roof",
+      "ground"
+    ],
+    "sceneElements": [
+      "street_trees",
+      "lighting",
+      "street_furniture"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.svg",
+      "png": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.png",
+      "prompt": "/archetypes/buildings/prompts/coastal_breezeway_mixed_use/front_golden_hour.json",
+      "metadata": "/archetypes/buildings/metadata/coastal_breezeway_mixed_use/front_golden_hour.json"
+    },
+    "reuseSignature": {
+      "domain": "building",
+      "asset_category": "building",
+      "archetype_id": "coastal_breezeway_mixed_use",
+      "archetype_label": "Coastal Breezeway Mixed Use",
+      "aesthetic_category_id": "coastal_resort_contemporary",
+      "aesthetic_category_label": "Coastal / Resort Contemporary",
+      "building_subcategory": "Waterfront Mixed Use",
+      "subtype": "Waterfront Mixed Use",
+      "generation_tags": [
+        "coastal_resort_contemporary",
+        "waterfront_mixed_use",
+        "coastal",
+        "breezeway",
+        "mixed"
+      ],
+      "style_profile": {
+        "materials": [
+          "coastal / resort contemporary material palette",
+          "durable exterior materials",
+          "high-quality glazing"
+        ],
+        "facadeRhythm": "Coastal / Resort Contemporary facade rhythm",
+        "roofForm": "Coastal / Resort Contemporary roof expression",
+        "frontageType": "Waterfront Mixed Use frontage",
+        "windowStyle": "Coastal / Resort Contemporary window proportioning",
+        "massing": "Waterfront Mixed Use massing profile",
+        "heightTendency": "Mid to high rise",
+        "streetRelationship": "Clear streetwall and pedestrian interface",
+        "renderingMood": "Photoreal architectural benchmark mood",
+        "articulation": "Legible depth, frame, and entry hierarchy",
+        "publicRealm": "Walkable active edge with planting and seating"
+      }
+    }
+  },
+  "imageRefs": {
+    "svg": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.svg",
+    "png": "/archetypes/buildings/coastal_breezeway_mixed_use/front_golden_hour.png",
+    "prompt": "/archetypes/buildings/prompts/coastal_breezeway_mixed_use/front_golden_hour.json",
+    "metadata": "/archetypes/buildings/metadata/coastal_breezeway_mixed_use/front_golden_hour.json"
+  }
+}

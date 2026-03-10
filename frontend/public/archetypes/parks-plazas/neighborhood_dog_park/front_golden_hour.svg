@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Neighborhood Dog Park Front Golden Hour">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#95aabc" />
+      <stop offset="100%" stop-color="#eef2f6" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="504" width="1200" height="396" fill="#849e76" />
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="#8ca87d" />
+
+  <path d="M 240 389 Q 600 365 984 393" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 456 510 Q 600 498 898 514" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 672 631 Q 600 631 811 635" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <circle cx="271" cy="651" r="17" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="368" cy="718" r="10" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="465" cy="785" r="11" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="562" cy="348" r="12" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="659" cy="415" r="13" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="756" cy="482" r="14" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="853" cy="549" r="15" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="950" cy="616" r="16" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="1047" cy="683" r="17" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="232" cy="750" r="10" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="329" cy="313" r="11" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="426" cy="380" r="12" fill="#6f8a64" fill-opacity="0.80" />
+  <ellipse cx="636" cy="540" rx="89" ry="41" fill="#6a93ad" fill-opacity="0.45" />
+
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="none" stroke="#a0988a" stroke-opacity="0.45" stroke-width="2" />
+</svg>

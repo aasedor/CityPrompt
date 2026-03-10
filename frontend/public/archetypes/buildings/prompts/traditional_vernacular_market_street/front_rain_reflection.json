@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.108Z",
+  "domain": "buildings",
+  "assetCategory": "building",
+  "archetypeId": "traditional_vernacular_market_street",
+  "archetypeTitle": "Traditional Vernacular Market Street",
+  "variantId": "front_rain_reflection",
+  "variantTitle": "Front Rain Reflection",
+  "variantLighting": "rainy twilight",
+  "prompt": "Create exactly one high-fidelity image for a public-facing urban planning archetype selector. Front-facing canonical architectural archetype of Traditional Vernacular Market Street. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. materials: traditional / vernacular material palette, durable exterior materials, high-quality glazing. facadeRhythm: Traditional / Vernacular facade rhythm. roofForm: Traditional / Vernacular roof expression. frontageType: Main Street Mixed Use frontage. windowStyle: Traditional / Vernacular window proportioning. massing: Main Street Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating Negative guidance: No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text.",
+  "positive": "Front-facing canonical architectural archetype of Traditional Vernacular Market Street. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. materials: traditional / vernacular material palette, durable exterior materials, high-quality glazing. facadeRhythm: Traditional / Vernacular facade rhythm. roofForm: Traditional / Vernacular roof expression. frontageType: Main Street Mixed Use frontage. windowStyle: Traditional / Vernacular window proportioning. massing: Main Street Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+  "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "styleProfile": {
+    "materials": [
+      "traditional / vernacular material palette",
+      "durable exterior materials",
+      "high-quality glazing"
+    ],
+    "facadeRhythm": "Traditional / Vernacular facade rhythm",
+    "roofForm": "Traditional / Vernacular roof expression",
+    "frontageType": "Main Street Mixed Use frontage",
+    "windowStyle": "Traditional / Vernacular window proportioning",
+    "massing": "Main Street Mixed Use massing profile",
+    "heightTendency": "Mid to high rise",
+    "streetRelationship": "Clear streetwall and pedestrian interface",
+    "renderingMood": "Photoreal architectural benchmark mood",
+    "articulation": "Legible depth, frame, and entry hierarchy",
+    "publicRealm": "Walkable active edge with planting and seating"
+  },
+  "generationTags": [
+    "traditional_vernacular",
+    "main_street_mixed_use",
+    "traditional",
+    "vernacular",
+    "market"
+  ],
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "building",
+    "developmentType": "mixed_use",
+    "buildingSubcategory": "Main Street Mixed Use",
+    "subtype": "Main Street Mixed Use",
+    "aestheticCategoryId": "traditional_vernacular",
+    "aestheticCategoryLabel": "Traditional / Vernacular",
+    "archetypeId": "traditional_vernacular_market_street",
+    "archetypeLabel": "Traditional Vernacular Market Street",
+    "archetypeImageId": "traditional_vernacular_market_street_front_rain_reflection",
+    "archetypeImageVariantId": "front_rain_reflection",
+    "archetypeImageVariantLabel": "Front Rain Reflection",
+    "archetypeImageUrl": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.svg",
+    "archetypeImagePath": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.png",
+    "generationTags": [
+      "traditional_vernacular",
+      "main_street_mixed_use",
+      "traditional",
+      "vernacular",
+      "market"
+    ],
+    "imagePrompt": {
+      "positive": "Front-facing canonical architectural archetype of Traditional Vernacular Market Street. Centered subject with restrained perspective. Facade language, massing, and frontage must be clearly legible. Premium photoreal architectural rendering style. Facade language and massing must be legible. Street frontage should read clearly. Maintain premium architectural visualization quality. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. materials: traditional / vernacular material palette, durable exterior materials, high-quality glazing. facadeRhythm: Traditional / Vernacular facade rhythm. roofForm: Traditional / Vernacular roof expression. frontageType: Main Street Mixed Use frontage. windowStyle: Traditional / Vernacular window proportioning. massing: Main Street Mixed Use massing profile. heightTendency: Mid to high rise. streetRelationship: Clear streetwall and pedestrian interface. renderingMood: Photoreal architectural benchmark mood. articulation: Legible depth, frame, and entry hierarchy. publicRealm: Walkable active edge with planting and seating",
+      "negative": "No side-angle hero perspective. No text inside image. No fantasy distortions. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "materials": [
+        "traditional / vernacular material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "facadeRhythm": "Traditional / Vernacular facade rhythm",
+      "roofForm": "Traditional / Vernacular roof expression",
+      "frontageType": "Main Street Mixed Use frontage",
+      "windowStyle": "Traditional / Vernacular window proportioning",
+      "massing": "Main Street Mixed Use massing profile",
+      "heightTendency": "Mid to high rise",
+      "streetRelationship": "Clear streetwall and pedestrian interface",
+      "renderingMood": "Photoreal architectural benchmark mood",
+      "articulation": "Legible depth, frame, and entry hierarchy",
+      "publicRealm": "Walkable active edge with planting and seating"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "traditional_vernacular",
+        "main_street_mixed_use",
+        "traditional",
+        "vernacular",
+        "market"
+      ],
+      "materialDirection": [
+        "traditional / vernacular material palette",
+        "durable exterior materials",
+        "high-quality glazing"
+      ],
+      "reuseKeys": [
+        "buildings",
+        "traditional_vernacular",
+        "traditional_vernacular_market_street",
+        "front_rain_reflection",
+        "Main Street Mixed Use"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "buildings:traditional_vernacular_market_street:front_rain_reflection",
+    "targetDomain": "building",
+    "assetCategory": "building",
+    "subtype": "Main Street Mixed Use",
+    "geometryStrategy": "facade_extrusion_with_roof_profile",
+    "parametricInputs": [
+      "width_m",
+      "depth_m",
+      "height_m",
+      "floor_count",
+      "setback_front_m",
+      "setback_side_m"
+    ],
+    "materialSlots": [
+      "facade_primary",
+      "facade_secondary",
+      "trim",
+      "glazing",
+      "roof",
+      "ground"
+    ],
+    "sceneElements": [
+      "street_trees",
+      "lighting",
+      "street_furniture"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.svg",
+      "png": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.png",
+      "prompt": "/archetypes/buildings/prompts/traditional_vernacular_market_street/front_rain_reflection.json",
+      "metadata": "/archetypes/buildings/metadata/traditional_vernacular_market_street/front_rain_reflection.json"
+    },
+    "reuseSignature": {
+      "domain": "building",
+      "asset_category": "building",
+      "archetype_id": "traditional_vernacular_market_street",
+      "archetype_label": "Traditional Vernacular Market Street",
+      "aesthetic_category_id": "traditional_vernacular",
+      "aesthetic_category_label": "Traditional / Vernacular",
+      "building_subcategory": "Main Street Mixed Use",
+      "subtype": "Main Street Mixed Use",
+      "generation_tags": [
+        "traditional_vernacular",
+        "main_street_mixed_use",
+        "traditional",
+        "vernacular",
+        "market"
+      ],
+      "style_profile": {
+        "materials": [
+          "traditional / vernacular material palette",
+          "durable exterior materials",
+          "high-quality glazing"
+        ],
+        "facadeRhythm": "Traditional / Vernacular facade rhythm",
+        "roofForm": "Traditional / Vernacular roof expression",
+        "frontageType": "Main Street Mixed Use frontage",
+        "windowStyle": "Traditional / Vernacular window proportioning",
+        "massing": "Main Street Mixed Use massing profile",
+        "heightTendency": "Mid to high rise",
+        "streetRelationship": "Clear streetwall and pedestrian interface",
+        "renderingMood": "Photoreal architectural benchmark mood",
+        "articulation": "Legible depth, frame, and entry hierarchy",
+        "publicRealm": "Walkable active edge with planting and seating"
+      }
+    }
+  },
+  "imageRefs": {
+    "svg": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.svg",
+    "png": "/archetypes/buildings/traditional_vernacular_market_street/front_rain_reflection.png",
+    "prompt": "/archetypes/buildings/prompts/traditional_vernacular_market_street/front_rain_reflection.json",
+    "metadata": "/archetypes/buildings/metadata/traditional_vernacular_market_street/front_rain_reflection.json"
+  }
+}

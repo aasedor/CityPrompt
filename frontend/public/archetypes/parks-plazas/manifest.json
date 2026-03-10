@@ -1,0 +1,1400 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T02:40:38.618Z",
+  "domain": "parks_plazas",
+  "provider": "openai",
+  "model": "gpt-image-1",
+  "quality": "high",
+  "size": "1536x1024",
+  "requestedOutput": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "output": {
+    "width": 1200,
+    "height": 900,
+    "aspectRatio": "4:3"
+  },
+  "categories": [
+    {
+      "id": "landscape_parks",
+      "label": "Landscape Parks",
+      "description": "Large and medium parks with layered planting and recreation"
+    },
+    {
+      "id": "civic_plazas",
+      "label": "Civic Plazas",
+      "description": "Formal and contemporary hardscape plazas for gathering"
+    },
+    {
+      "id": "social_event_spaces",
+      "label": "Social / Event Spaces",
+      "description": "Flexible open spaces for markets and events"
+    },
+    {
+      "id": "ecological_resilience",
+      "label": "Ecological Resilience",
+      "description": "Nature-based systems and climate-adaptive landscapes"
+    },
+    {
+      "id": "waterfront_spaces",
+      "label": "Waterfront Spaces",
+      "description": "Promenades and open spaces anchored by water edges"
+    },
+    {
+      "id": "neighborhood_public_realm",
+      "label": "Neighborhood Public Realm",
+      "description": "Everyday community parks and pocket spaces"
+    },
+    {
+      "id": "custom",
+      "label": "Custom / Other",
+      "description": "User-directed open-space identity for special contexts"
+    }
+  ],
+  "archetypes": [
+    {
+      "id": "english_landscape_park",
+      "title": "English Landscape Park",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "English Landscape Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "english"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "English Landscape Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "english_landscape_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/english_landscape_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/english_landscape_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/english_landscape_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/english_landscape_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "english_landscape_park",
+            "archetypeImageId": "english_landscape_park_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "english"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:english_landscape_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "central_park_inspired_urban_park",
+      "title": "Central Park-Inspired Urban Park",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Central Park-Inspired Urban Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "central"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Central Park-Inspired Urban Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "central_park_inspired_urban_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/central_park_inspired_urban_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/central_park_inspired_urban_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/central_park_inspired_urban_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/central_park_inspired_urban_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "central_park_inspired_urban_park",
+            "archetypeImageId": "central_park_inspired_urban_park_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "central"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:central_park_inspired_urban_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "formal_civic_plaza",
+      "title": "Formal Civic Plaza",
+      "aestheticCategory": "civic_plazas",
+      "aestheticCategoryLabel": "Civic Plazas",
+      "description": "Formal Civic Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "formal"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Formal Civic Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "formal_civic_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/formal_civic_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/formal_civic_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/formal_civic_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/formal_civic_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "formal_civic_plaza",
+            "archetypeImageId": "formal_civic_plaza_front_day",
+            "aestheticCategoryId": "civic_plazas",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "civic-plazas",
+              "formal"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:formal_civic_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "contemporary_urban_square",
+      "title": "Contemporary Urban Square",
+      "aestheticCategory": "civic_plazas",
+      "aestheticCategoryLabel": "Civic Plazas",
+      "description": "Contemporary Urban Square open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "contemporary"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Contemporary Urban Square plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "contemporary_urban_square_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/contemporary_urban_square/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/contemporary_urban_square/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/contemporary_urban_square/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/contemporary_urban_square/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "contemporary_urban_square",
+            "archetypeImageId": "contemporary_urban_square_front_day",
+            "aestheticCategoryId": "civic_plazas",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "civic-plazas",
+              "contemporary"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:contemporary_urban_square:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "parisian_garden_square",
+      "title": "Parisian Garden Square",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Parisian Garden Square open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "parisian"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Parisian Garden Square park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "parisian_garden_square_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/parisian_garden_square/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/parisian_garden_square/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/parisian_garden_square/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/parisian_garden_square/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "parisian_garden_square",
+            "archetypeImageId": "parisian_garden_square_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "parisian"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:parisian_garden_square:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "japanese_zen_court",
+      "title": "Japanese Zen Court",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Japanese Zen Court open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "japanese"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Japanese Zen Court park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "japanese_zen_court_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/japanese_zen_court/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/japanese_zen_court/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/japanese_zen_court/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/japanese_zen_court/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "japanese_zen_court",
+            "archetypeImageId": "japanese_zen_court_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "japanese"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:japanese_zen_court:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "neighborhood_playground_park",
+      "title": "Neighborhood Playground Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Neighborhood Playground Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "neighborhood"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Neighborhood Playground Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "neighborhood_playground_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/neighborhood_playground_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/neighborhood_playground_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/neighborhood_playground_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/neighborhood_playground_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "neighborhood_playground_park",
+            "archetypeImageId": "neighborhood_playground_park_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "neighborhood"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:neighborhood_playground_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "riverfront_park",
+      "title": "Riverfront Park",
+      "aestheticCategory": "waterfront_spaces",
+      "aestheticCategoryLabel": "Waterfront Spaces",
+      "description": "Riverfront Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "waterfront-spaces",
+        "riverfront"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Riverfront Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "riverfront_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/riverfront_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/riverfront_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/riverfront_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/riverfront_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "riverfront_park",
+            "archetypeImageId": "riverfront_park_front_day",
+            "aestheticCategoryId": "waterfront_spaces",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "waterfront-spaces",
+              "riverfront"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:riverfront_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "festival_plaza",
+      "title": "Festival Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "aestheticCategoryLabel": "Social / Event Spaces",
+      "description": "Festival Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "festival"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Festival Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "festival_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/festival_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/festival_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/festival_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/festival_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "festival_plaza",
+            "archetypeImageId": "festival_plaza_front_day",
+            "aestheticCategoryId": "social_event_spaces",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "social-event-spaces",
+              "festival"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:festival_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "mediterranean_courtyard_plaza",
+      "title": "Mediterranean Courtyard Plaza",
+      "aestheticCategory": "civic_plazas",
+      "aestheticCategoryLabel": "Civic Plazas",
+      "description": "Mediterranean Courtyard Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "mediterranean"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Mediterranean Courtyard Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "mediterranean_courtyard_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/mediterranean_courtyard_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/mediterranean_courtyard_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/mediterranean_courtyard_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/mediterranean_courtyard_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "mediterranean_courtyard_plaza",
+            "archetypeImageId": "mediterranean_courtyard_plaza_front_day",
+            "aestheticCategoryId": "civic_plazas",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "civic-plazas",
+              "mediterranean"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:mediterranean_courtyard_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "scandinavian_minimal_park",
+      "title": "Scandinavian Minimal Park",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Scandinavian Minimal Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "scandinavian"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Scandinavian Minimal Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "scandinavian_minimal_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/scandinavian_minimal_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/scandinavian_minimal_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/scandinavian_minimal_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/scandinavian_minimal_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "scandinavian_minimal_park",
+            "archetypeImageId": "scandinavian_minimal_park_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "scandinavian"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:scandinavian_minimal_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "ecological_wetland_park",
+      "title": "Ecological Wetland Park",
+      "aestheticCategory": "ecological_resilience",
+      "aestheticCategoryLabel": "Ecological Resilience",
+      "description": "Ecological Wetland Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "ecological"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Ecological Wetland Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "ecological_wetland_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/ecological_wetland_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/ecological_wetland_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/ecological_wetland_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/ecological_wetland_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "ecological_wetland_park",
+            "archetypeImageId": "ecological_wetland_park_front_day",
+            "aestheticCategoryId": "ecological_resilience",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "ecological-resilience",
+              "ecological"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:ecological_wetland_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "market_square",
+      "title": "Market Square",
+      "aestheticCategory": "social_event_spaces",
+      "aestheticCategoryLabel": "Social / Event Spaces",
+      "description": "Market Square open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "market"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Market Square plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "market_square_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/market_square/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/market_square/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/market_square/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/market_square/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "market_square",
+            "archetypeImageId": "market_square_front_day",
+            "aestheticCategoryId": "social_event_spaces",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "social-event-spaces",
+              "market"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:market_square:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "memorial_garden",
+      "title": "Memorial Garden",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Memorial Garden open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "memorial"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Memorial Garden park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "memorial_garden_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/memorial_garden/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/memorial_garden/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/memorial_garden/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/memorial_garden/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "memorial_garden",
+            "archetypeImageId": "memorial_garden_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "memorial"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:memorial_garden:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "campus_green",
+      "title": "Campus Green",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Campus Green open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "campus"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Campus Green park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "campus_green_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/campus_green/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/campus_green/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/campus_green/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/campus_green/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "campus_green",
+            "archetypeImageId": "campus_green_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "campus"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:campus_green:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "urban_pocket_park",
+      "title": "Urban Pocket Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Urban Pocket Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "urban"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Urban Pocket Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "urban_pocket_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/urban_pocket_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/urban_pocket_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/urban_pocket_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/urban_pocket_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "urban_pocket_park",
+            "archetypeImageId": "urban_pocket_park_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "urban"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:urban_pocket_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "natural_play_park",
+      "title": "Natural Play Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Natural Play Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "natural"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Natural Play Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "natural_play_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/natural_play_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/natural_play_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/natural_play_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/natural_play_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "natural_play_park",
+            "archetypeImageId": "natural_play_park_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "natural"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:natural_play_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "grand_fountain_plaza",
+      "title": "Grand Fountain Plaza",
+      "aestheticCategory": "civic_plazas",
+      "aestheticCategoryLabel": "Civic Plazas",
+      "description": "Grand Fountain Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "grand"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Grand Fountain Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "grand_fountain_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/grand_fountain_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/grand_fountain_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/grand_fountain_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/grand_fountain_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "grand_fountain_plaza",
+            "archetypeImageId": "grand_fountain_plaza_front_day",
+            "aestheticCategoryId": "civic_plazas",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "civic-plazas",
+              "grand"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:grand_fountain_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "industrial_heritage_plaza",
+      "title": "Industrial Heritage Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "aestheticCategoryLabel": "Social / Event Spaces",
+      "description": "Industrial Heritage Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "industrial"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Industrial Heritage Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "industrial_heritage_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/industrial_heritage_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/industrial_heritage_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/industrial_heritage_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/industrial_heritage_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "industrial_heritage_plaza",
+            "archetypeImageId": "industrial_heritage_plaza_front_day",
+            "aestheticCategoryId": "social_event_spaces",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "social-event-spaces",
+              "industrial"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:industrial_heritage_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "forest_edge_park",
+      "title": "Forest Edge Park",
+      "aestheticCategory": "ecological_resilience",
+      "aestheticCategoryLabel": "Ecological Resilience",
+      "description": "Forest Edge Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "forest"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Forest Edge Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "forest_edge_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/forest_edge_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/forest_edge_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/forest_edge_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/forest_edge_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "forest_edge_park",
+            "archetypeImageId": "forest_edge_park_front_day",
+            "aestheticCategoryId": "ecological_resilience",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "ecological-resilience",
+              "forest"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:forest_edge_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "botanical_conservatory_garden",
+      "title": "Botanical Conservatory Garden",
+      "aestheticCategory": "landscape_parks",
+      "aestheticCategoryLabel": "Landscape Parks",
+      "description": "Botanical Conservatory Garden open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "botanical"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Botanical Conservatory Garden park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "botanical_conservatory_garden_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/botanical_conservatory_garden/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/botanical_conservatory_garden/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/botanical_conservatory_garden/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/botanical_conservatory_garden/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "botanical_conservatory_garden",
+            "archetypeImageId": "botanical_conservatory_garden_front_day",
+            "aestheticCategoryId": "landscape_parks",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "landscape-parks",
+              "botanical"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:botanical_conservatory_garden:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "climate_resilience_sponge_park",
+      "title": "Climate Resilience Sponge Park",
+      "aestheticCategory": "ecological_resilience",
+      "aestheticCategoryLabel": "Ecological Resilience",
+      "description": "Climate Resilience Sponge Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "climate"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Climate Resilience Sponge Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "climate_resilience_sponge_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/climate_resilience_sponge_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/climate_resilience_sponge_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/climate_resilience_sponge_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "climate_resilience_sponge_park",
+            "archetypeImageId": "climate_resilience_sponge_park_front_day",
+            "aestheticCategoryId": "ecological_resilience",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "ecological-resilience",
+              "climate"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:climate_resilience_sponge_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "childrens_discovery_plaza",
+      "title": "Children's Discovery Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "aestheticCategoryLabel": "Social / Event Spaces",
+      "description": "Children's Discovery Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "childrens"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Children's Discovery Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "childrens_discovery_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/childrens_discovery_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/childrens_discovery_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/childrens_discovery_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/childrens_discovery_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "childrens_discovery_plaza",
+            "archetypeImageId": "childrens_discovery_plaza_front_day",
+            "aestheticCategoryId": "social_event_spaces",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "social-event-spaces",
+              "childrens"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:childrens_discovery_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "waterfront_boardwalk_plaza",
+      "title": "Waterfront Boardwalk Plaza",
+      "aestheticCategory": "waterfront_spaces",
+      "aestheticCategoryLabel": "Waterfront Spaces",
+      "description": "Waterfront Boardwalk Plaza open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "waterfront-spaces",
+        "waterfront"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Waterfront Boardwalk Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "waterfront_boardwalk_plaza_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/waterfront_boardwalk_plaza/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/waterfront_boardwalk_plaza/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/waterfront_boardwalk_plaza/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/waterfront_boardwalk_plaza/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "waterfront_boardwalk_plaza",
+            "archetypeImageId": "waterfront_boardwalk_plaza_front_day",
+            "aestheticCategoryId": "waterfront_spaces",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "waterfront-spaces",
+              "waterfront"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:waterfront_boardwalk_plaza:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "civic_art_court",
+      "title": "Civic Art Court",
+      "aestheticCategory": "civic_plazas",
+      "aestheticCategoryLabel": "Civic Plazas",
+      "description": "Civic Art Court open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "plaza",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "civic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Civic Art Court plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "conversionSubtype": "plaza",
+      "images": [
+        {
+          "id": "civic_art_court_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/civic_art_court/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/civic_art_court/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/civic_art_court/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/civic_art_court/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "civic_art_court",
+            "archetypeImageId": "civic_art_court_front_day",
+            "aestheticCategoryId": "civic_plazas",
+            "subtype": "plaza",
+            "generationTags": [
+              "plaza",
+              "civic-plazas",
+              "civic"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:civic_art_court:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "sports_activity_green",
+      "title": "Sports Activity Green",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Sports Activity Green open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "sports"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Sports Activity Green park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "sports_activity_green_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/sports_activity_green/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/sports_activity_green/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/sports_activity_green/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/sports_activity_green/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "sports_activity_green",
+            "archetypeImageId": "sports_activity_green_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "sports"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:sports_activity_green:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "neighborhood_dog_park",
+      "title": "Neighborhood Dog Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "aestheticCategoryLabel": "Neighborhood Public Realm",
+      "description": "Neighborhood Dog Park open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "neighborhood"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Neighborhood Dog Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "neighborhood_dog_park_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/neighborhood_dog_park/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/neighborhood_dog_park/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/neighborhood_dog_park/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/neighborhood_dog_park/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "neighborhood_dog_park",
+            "archetypeImageId": "neighborhood_dog_park_front_day",
+            "aestheticCategoryId": "neighborhood_public_realm",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "neighborhood-public-realm",
+              "neighborhood"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:neighborhood_dog_park:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "custom_parks_plazas",
+      "title": "Custom Parks / Plazas",
+      "aestheticCategory": "custom",
+      "aestheticCategoryLabel": "Custom / Other",
+      "description": "Custom Parks / Plazas open-space archetype with premium landscape/urban design clarity",
+      "spaceType": "park",
+      "generationTags": [
+        "park",
+        "custom"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Custom Parks / Plazas park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "conversionSubtype": "park",
+      "images": [
+        {
+          "id": "custom_parks_plazas_front_day",
+          "title": "Front Elevation Day",
+          "lighting": "soft daytime",
+          "imagePath": "/archetypes/parks-plazas/custom_parks_plazas/front_day.svg",
+          "rasterPath": "/archetypes/parks-plazas/custom_parks_plazas/front_day.png",
+          "promptPath": "/archetypes/parks-plazas/prompts/custom_parks_plazas/front_day.json",
+          "metadataPath": "/archetypes/parks-plazas/metadata/custom_parks_plazas/front_day.json",
+          "generationStyleInput": {
+            "domain": "park_plaza",
+            "archetypeId": "custom_parks_plazas",
+            "archetypeImageId": "custom_parks_plazas_front_day",
+            "aestheticCategoryId": "custom",
+            "subtype": "park",
+            "generationTags": [
+              "park",
+              "custom"
+            ]
+          },
+          "modelConversionProfile": "parks_plazas:custom_parks_plazas:front_day",
+          "status": "generated",
+          "error": null
+        }
+      ]
+    }
+  ]
+}

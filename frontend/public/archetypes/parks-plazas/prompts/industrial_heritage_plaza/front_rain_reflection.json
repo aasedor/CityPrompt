@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.595Z",
+  "domain": "parks_plazas",
+  "assetCategory": "parks_plazas",
+  "archetypeId": "industrial_heritage_plaza",
+  "archetypeTitle": "Industrial Heritage Plaza",
+  "variantId": "front_rain_reflection",
+  "variantTitle": "Front Rain Reflection",
+  "variantLighting": "rainy twilight",
+  "prompt": "Create exactly one high-fidelity image for a public-facing urban planning archetype selector. Centered Industrial Heritage Plaza plaza archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Industrial Heritage Plaza plaza character. pavingType: Stone or paver civic hardscape. plantingType: Framing tree canopy and planters. seatingRealm: Integrated social seating edges. waterFeatures: Optional fountain or rill. opennessEnclosure: Civic enclosure with active edges Negative guidance: No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text.",
+  "positive": "Centered Industrial Heritage Plaza plaza archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Industrial Heritage Plaza plaza character. pavingType: Stone or paver civic hardscape. plantingType: Framing tree canopy and planters. seatingRealm: Integrated social seating edges. waterFeatures: Optional fountain or rill. opennessEnclosure: Civic enclosure with active edges",
+  "negative": "No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "styleProfile": {
+    "landscapeCharacter": "Industrial Heritage Plaza plaza character",
+    "pavingType": "Stone or paver civic hardscape",
+    "plantingType": "Framing tree canopy and planters",
+    "seatingRealm": "Integrated social seating edges",
+    "waterFeatures": "Optional fountain or rill",
+    "opennessEnclosure": "Civic enclosure with active edges"
+  },
+  "generationTags": [
+    "plaza",
+    "social-event-spaces",
+    "industrial"
+  ],
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "park_plaza",
+    "subtype": "plaza",
+    "aestheticCategoryId": "social_event_spaces",
+    "aestheticCategoryLabel": "Social / Event Spaces",
+    "archetypeId": "industrial_heritage_plaza",
+    "archetypeLabel": "Industrial Heritage Plaza",
+    "archetypeImageId": "industrial_heritage_plaza_front_rain_reflection",
+    "archetypeImageVariantId": "front_rain_reflection",
+    "archetypeImageVariantLabel": "Front Rain Reflection",
+    "archetypeImageUrl": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.svg",
+    "archetypeImagePath": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.png",
+    "generationTags": [
+      "plaza",
+      "social-event-spaces",
+      "industrial"
+    ],
+    "imagePrompt": {
+      "positive": "Centered Industrial Heritage Plaza plaza archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Rain Reflection using rainy twilight. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Industrial Heritage Plaza plaza character. pavingType: Stone or paver civic hardscape. plantingType: Framing tree canopy and planters. seatingRealm: Integrated social seating edges. waterFeatures: Optional fountain or rill. opennessEnclosure: Civic enclosure with active edges",
+      "negative": "No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "landscapeCharacter": "Industrial Heritage Plaza plaza character",
+      "pavingType": "Stone or paver civic hardscape",
+      "plantingType": "Framing tree canopy and planters",
+      "seatingRealm": "Integrated social seating edges",
+      "waterFeatures": "Optional fountain or rill",
+      "opennessEnclosure": "Civic enclosure with active edges"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "plaza",
+        "social-event-spaces",
+        "industrial"
+      ],
+      "materialDirection": [
+        "Stone or paver civic hardscape",
+        "Framing tree canopy and planters"
+      ],
+      "reuseKeys": [
+        "parks_plazas",
+        "social_event_spaces",
+        "industrial_heritage_plaza",
+        "front_rain_reflection",
+        "plaza"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "parks_plazas:industrial_heritage_plaza:front_rain_reflection",
+    "targetDomain": "park_plaza",
+    "assetCategory": "parks_plazas",
+    "subtype": "plaza",
+    "geometryStrategy": "terrain_patch_with_surface_zones",
+    "parametricInputs": [
+      "path_density",
+      "canopy_density",
+      "openness_ratio",
+      "water_feature_scale",
+      "seating_density"
+    ],
+    "materialSlots": [
+      "paving_primary",
+      "paving_secondary",
+      "groundcover",
+      "canopy",
+      "water",
+      "site_furniture"
+    ],
+    "sceneElements": [
+      "planting_layers",
+      "site_furniture",
+      "water_features",
+      "lighting"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.svg",
+      "png": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.png",
+      "prompt": "/archetypes/parks-plazas/prompts/industrial_heritage_plaza/front_rain_reflection.json",
+      "metadata": "/archetypes/parks-plazas/metadata/industrial_heritage_plaza/front_rain_reflection.json"
+    },
+    "reuseSignature": {
+      "domain": "park_plaza",
+      "asset_category": "parks_plazas",
+      "archetype_id": "industrial_heritage_plaza",
+      "archetype_label": "Industrial Heritage Plaza",
+      "aesthetic_category_id": "social_event_spaces",
+      "aesthetic_category_label": "Social / Event Spaces",
+      "building_subcategory": null,
+      "subtype": "plaza",
+      "generation_tags": [
+        "plaza",
+        "social-event-spaces",
+        "industrial"
+      ],
+      "style_profile": {
+        "landscapeCharacter": "Industrial Heritage Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      }
+    }
+  },
+  "imageRefs": {
+    "svg": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.svg",
+    "png": "/archetypes/parks-plazas/industrial_heritage_plaza/front_rain_reflection.png",
+    "prompt": "/archetypes/parks-plazas/prompts/industrial_heritage_plaza/front_rain_reflection.json",
+    "metadata": "/archetypes/parks-plazas/metadata/industrial_heritage_plaza/front_rain_reflection.json"
+  }
+}

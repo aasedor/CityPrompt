@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.568Z",
+  "domain": "parks_plazas",
+  "archetype": {
+    "id": "urban_pocket_park",
+    "title": "Urban Pocket Park",
+    "aestheticCategoryId": "neighborhood_public_realm",
+    "aestheticCategoryLabel": "Neighborhood Public Realm",
+    "spaceType": "park"
+  },
+  "variant": {
+    "id": "front_golden_hour",
+    "title": "Front Golden Hour",
+    "lighting": "golden hour"
+  },
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "imageRefs": {
+    "svg": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.svg",
+    "png": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.png",
+    "prompt": "/archetypes/parks-plazas/prompts/urban_pocket_park/front_golden_hour.json",
+    "metadata": "/archetypes/parks-plazas/metadata/urban_pocket_park/front_golden_hour.json"
+  },
+  "generationTags": [
+    "park",
+    "neighborhood-public-realm",
+    "urban"
+  ],
+  "styleProfile": {
+    "landscapeCharacter": "Urban Pocket Park park character",
+    "pavingType": "Mixed path and landscape paving",
+    "plantingType": "Layered canopy, understory, and meadow planting",
+    "seatingRealm": "Integrated social seating edges",
+    "waterFeatures": "Optional pond, stream, or rain garden",
+    "opennessEnclosure": "Balanced openness with framed landscape rooms"
+  },
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "park_plaza",
+    "subtype": "park",
+    "aestheticCategoryId": "neighborhood_public_realm",
+    "aestheticCategoryLabel": "Neighborhood Public Realm",
+    "archetypeId": "urban_pocket_park",
+    "archetypeLabel": "Urban Pocket Park",
+    "archetypeImageId": "urban_pocket_park_front_golden_hour",
+    "archetypeImageVariantId": "front_golden_hour",
+    "archetypeImageVariantLabel": "Front Golden Hour",
+    "archetypeImageUrl": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.svg",
+    "archetypeImagePath": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.png",
+    "generationTags": [
+      "park",
+      "neighborhood-public-realm",
+      "urban"
+    ],
+    "imagePrompt": {
+      "positive": "Centered Urban Pocket Park park archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Golden Hour using golden hour. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Urban Pocket Park park character. pavingType: Mixed path and landscape paving. plantingType: Layered canopy, understory, and meadow planting. seatingRealm: Integrated social seating edges. waterFeatures: Optional pond, stream, or rain garden. opennessEnclosure: Balanced openness with framed landscape rooms",
+      "negative": "No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "landscapeCharacter": "Urban Pocket Park park character",
+      "pavingType": "Mixed path and landscape paving",
+      "plantingType": "Layered canopy, understory, and meadow planting",
+      "seatingRealm": "Integrated social seating edges",
+      "waterFeatures": "Optional pond, stream, or rain garden",
+      "opennessEnclosure": "Balanced openness with framed landscape rooms"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "park",
+        "neighborhood-public-realm",
+        "urban"
+      ],
+      "materialDirection": [
+        "Mixed path and landscape paving",
+        "Layered canopy, understory, and meadow planting"
+      ],
+      "reuseKeys": [
+        "parks_plazas",
+        "neighborhood_public_realm",
+        "urban_pocket_park",
+        "front_golden_hour",
+        "park"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "parks_plazas:urban_pocket_park:front_golden_hour",
+    "targetDomain": "park_plaza",
+    "assetCategory": "parks_plazas",
+    "subtype": "park",
+    "geometryStrategy": "terrain_patch_with_surface_zones",
+    "parametricInputs": [
+      "path_density",
+      "canopy_density",
+      "openness_ratio",
+      "water_feature_scale",
+      "seating_density"
+    ],
+    "materialSlots": [
+      "paving_primary",
+      "paving_secondary",
+      "groundcover",
+      "canopy",
+      "water",
+      "site_furniture"
+    ],
+    "sceneElements": [
+      "planting_layers",
+      "site_furniture",
+      "water_features",
+      "lighting"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.svg",
+      "png": "/archetypes/parks-plazas/urban_pocket_park/front_golden_hour.png",
+      "prompt": "/archetypes/parks-plazas/prompts/urban_pocket_park/front_golden_hour.json",
+      "metadata": "/archetypes/parks-plazas/metadata/urban_pocket_park/front_golden_hour.json"
+    },
+    "reuseSignature": {
+      "domain": "park_plaza",
+      "asset_category": "parks_plazas",
+      "archetype_id": "urban_pocket_park",
+      "archetype_label": "Urban Pocket Park",
+      "aesthetic_category_id": "neighborhood_public_realm",
+      "aesthetic_category_label": "Neighborhood Public Realm",
+      "building_subcategory": null,
+      "subtype": "park",
+      "generation_tags": [
+        "park",
+        "neighborhood-public-realm",
+        "urban"
+      ],
+      "style_profile": {
+        "landscapeCharacter": "Urban Pocket Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      }
+    }
+  }
+}

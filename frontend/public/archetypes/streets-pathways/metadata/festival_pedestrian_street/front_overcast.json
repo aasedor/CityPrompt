@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.413Z",
+  "domain": "streets_pathways",
+  "archetype": {
+    "id": "festival_pedestrian_street",
+    "title": "Festival Pedestrian Street",
+    "aestheticCategoryId": "historic_walkways",
+    "aestheticCategoryLabel": "Historic Walkways",
+    "transportModes": [
+      "walking",
+      "bicycle"
+    ],
+    "volume": "medium"
+  },
+  "variant": {
+    "id": "front_overcast",
+    "title": "Front Overcast",
+    "lighting": "overcast"
+  },
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "imageRefs": {
+    "svg": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.svg",
+    "png": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.png",
+    "prompt": "/archetypes/streets-pathways/prompts/festival_pedestrian_street/front_overcast.json",
+    "metadata": "/archetypes/streets-pathways/metadata/festival_pedestrian_street/front_overcast.json"
+  },
+  "generationTags": [
+    "festival",
+    "streets-pathways",
+    "historic-walkways"
+  ],
+  "styleProfile": {
+    "corridorCharacter": "Festival Pedestrian Street corridor identity",
+    "movementHierarchy": "Modes: walking, bicycle",
+    "surfaceType": "stone dominant section",
+    "plantingCharacter": "Structured canopy and edge planting",
+    "edgeConditions": "Active, walkable frontage edges",
+    "publicRealm": "Comfortable and legible corridor for daily use"
+  },
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "street_pathway",
+    "subtype": "medium",
+    "aestheticCategoryId": "historic_walkways",
+    "aestheticCategoryLabel": "Historic Walkways",
+    "archetypeId": "festival_pedestrian_street",
+    "archetypeLabel": "Festival Pedestrian Street",
+    "archetypeImageId": "festival_pedestrian_street_front_overcast",
+    "archetypeImageVariantId": "front_overcast",
+    "archetypeImageVariantLabel": "Front Overcast",
+    "archetypeImageUrl": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.svg",
+    "archetypeImagePath": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.png",
+    "generationTags": [
+      "festival",
+      "streets-pathways",
+      "historic-walkways"
+    ],
+    "imagePrompt": {
+      "positive": "Strongly centered Festival Pedestrian Street corridor archetype. Movement hierarchy must be legible. Paving and edge conditions should be clear. Premium, believable urban design visualization quality. Movement hierarchy and lane logic must be clear. Paving, planting, and edge conditions should be legible. Public-realm character must be the visual focus. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. corridorCharacter: Festival Pedestrian Street corridor identity. movementHierarchy: Modes: walking, bicycle. surfaceType: stone dominant section. plantingCharacter: Structured canopy and edge planting. edgeConditions: Active, walkable frontage edges. publicRealm: Comfortable and legible corridor for daily use",
+      "negative": "No exaggerated perspective distortion. No cluttered unrelated backgrounds. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "corridorCharacter": "Festival Pedestrian Street corridor identity",
+      "movementHierarchy": "Modes: walking, bicycle",
+      "surfaceType": "stone dominant section",
+      "plantingCharacter": "Structured canopy and edge planting",
+      "edgeConditions": "Active, walkable frontage edges",
+      "publicRealm": "Comfortable and legible corridor for daily use"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "festival",
+        "streets-pathways",
+        "historic-walkways"
+      ],
+      "materialDirection": [
+        "stone dominant section",
+        "Festival Pedestrian Street corridor identity"
+      ],
+      "reuseKeys": [
+        "streets_pathways",
+        "historic_walkways",
+        "festival_pedestrian_street",
+        "front_overcast",
+        "medium"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "streets_pathways:festival_pedestrian_street:front_overcast",
+    "targetDomain": "street_pathway",
+    "assetCategory": "streets_paths",
+    "subtype": "medium",
+    "geometryStrategy": "corridor_ribbon_with_edge_system",
+    "parametricInputs": [
+      "corridor_width_m",
+      "lane_count",
+      "mode_allocation",
+      "sidewalk_width_m",
+      "median_width_m"
+    ],
+    "materialSlots": [
+      "carriageway",
+      "cycleway",
+      "sidewalk",
+      "curb",
+      "lane_markings",
+      "street_furniture"
+    ],
+    "sceneElements": [
+      "trees",
+      "lighting",
+      "signage",
+      "crossings",
+      "seating"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.svg",
+      "png": "/archetypes/streets-pathways/festival_pedestrian_street/front_overcast.png",
+      "prompt": "/archetypes/streets-pathways/prompts/festival_pedestrian_street/front_overcast.json",
+      "metadata": "/archetypes/streets-pathways/metadata/festival_pedestrian_street/front_overcast.json"
+    },
+    "reuseSignature": {
+      "domain": "street_pathway",
+      "asset_category": "streets_paths",
+      "archetype_id": "festival_pedestrian_street",
+      "archetype_label": "Festival Pedestrian Street",
+      "aesthetic_category_id": "historic_walkways",
+      "aesthetic_category_label": "Historic Walkways",
+      "building_subcategory": null,
+      "subtype": "medium",
+      "generation_tags": [
+        "festival",
+        "streets-pathways",
+        "historic-walkways"
+      ],
+      "style_profile": {
+        "corridorCharacter": "Festival Pedestrian Street corridor identity",
+        "movementHierarchy": "Modes: walking, bicycle",
+        "surfaceType": "stone dominant section",
+        "plantingCharacter": "Structured canopy and edge planting",
+        "edgeConditions": "Active, walkable frontage edges",
+        "publicRealm": "Comfortable and legible corridor for daily use"
+      }
+    }
+  }
+}

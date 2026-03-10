@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, ModelLibraryRecommendation } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { siteZonesApi, buildingsApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
@@ -58,435 +58,82 @@ type DevelopmentAestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  generationTags?: string[];
   archetypeImages?: CatalogArchetypeImage[];
   styleProfile?: CatalogStyleProfile;
   generationStyleInput?: Partial<CatalogGenerationStyleInput>;
 };
 
-const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = [
-  {
-    id: 'historic_traditional',
-    label: 'Historic & Traditional',
-    description: 'Contextual masonry and legacy streetwall character',
-  },
-  {
-    id: 'classical_european',
-    label: 'Classical European',
-    description: 'Formal facades and boulevard-scale urbanism',
-  },
-  {
-    id: 'contemporary_urban',
-    label: 'Contemporary Urban',
-    description: 'Current mixed-use and apartment typologies',
-  },
-  {
-    id: 'future_forward',
-    label: 'Future Forward',
-    description: 'Expressive and innovation-led building language',
-  },
-  {
-    id: 'custom',
-    label: 'Custom / Other',
-    description: 'Manual style direction from your prompt',
-  },
-];
-
-const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
-  {
-    id: 'new_york_brownstone',
-    categoryId: 'historic_traditional',
-    label: 'New York Brownstone',
-    description: 'Brooklyn-style rowhouses with stoops, brownstone facades, and tight rhythm',
-    photoUrl: 'https://picsum.photos/seed/yfmkBgAQpzQ/1200/900',
-  },
-  {
-    id: 'historic_traditional',
-    categoryId: 'historic_traditional',
-    label: 'Historic / Traditional',
-    description: 'Masonry blocks with ornament, depth, and fine-grain facades',
-    photoUrl: 'https://picsum.photos/seed/FzDTX62A2hk/1200/900',
-  },
-  {
-    id: 'parisian_haussmann',
-    categoryId: 'classical_european',
-    label: 'Parisian Haussmann',
-    description: 'Limestone facades, iron balconies, and continuous boulevard frontage',
-    photoUrl: 'https://picsum.photos/seed/yyb5HOnHfus/1200/900',
-  },
-  {
-    id: 'modern',
-    categoryId: 'contemporary_urban',
-    label: 'Modern',
-    description: 'Contemporary urban mid-rise with glass, metal, and clean forms',
-    photoUrl: 'https://picsum.photos/seed/IEMvQU4i1KU/1200/900',
-  },
-  {
-    id: 'futuristic',
-    categoryId: 'future_forward',
-    label: 'Futuristic',
-    description: 'High-tech envelopes and sculpted landmark geometry',
-    photoUrl: 'https://picsum.photos/seed/mpCSquAKaCc/1200/900',
-  },
-  {
-    id: 'other',
-    categoryId: 'custom',
-    label: 'Other',
-    description: 'Custom architectural direction guided by your prompt',
-    photoUrl: 'https://picsum.photos/seed/kZVQsLOxQgw/1200/900',
-  },
-];
-
-const ROADWAY_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
-  {
-    id: 'kyoto_philosophers_path',
-    label: "Kyoto Philosopher's Path",
-    description: 'Canal-side pedestrian realm with blossom canopy and intimate paving',
-    photoUrl: 'https://picsum.photos/seed/0mufRTPZxsc/1200/900',
-  },
-  {
-    id: 'shared_street_woonerf',
-    label: 'Shared Street (Woonerf)',
-    description: 'Low-speed shared space blending walking, cycling, and access vehicles',
-    photoUrl: 'https://picsum.photos/seed/RxqyHdbEZsc/1200/900',
-  },
-  {
-    id: 'complete_street',
-    label: 'Complete Street',
-    description: 'Balanced corridor for transit, bikes, walking, and automobiles',
-    photoUrl: 'https://picsum.photos/seed/STFjn2S4bjY/1200/900',
-  },
-  {
-    id: 'cycle_priority_corridor',
-    label: 'Cycle Priority Corridor',
-    description: 'Protected cycling emphasis with calmer vehicle throughput',
-    photoUrl: 'https://picsum.photos/seed/qn0XY1LkccI/1200/900',
-  },
-  {
-    id: 'grand_boulevard',
-    label: 'Grand Boulevard',
-    description: 'Tree-lined multiway boulevard with planted medians and formal edges',
-    photoUrl: 'https://picsum.photos/seed/X2cgJGE8UyU/1200/900',
-  },
-  {
-    id: 'neighborhood_high_street',
-    label: 'Neighborhood High Street',
-    description: 'Active mixed-use frontage with generous sidewalks and slower speeds',
-    photoUrl: 'https://picsum.photos/seed/IXd81kBAmLA/1200/900',
-  },
-  {
-    id: 'transit_avenue',
-    label: 'Transit Avenue',
-    description: 'Frequent transit street with strong pedestrian connections',
-    photoUrl: 'https://picsum.photos/seed/hEL-9dgbfL0/1200/900',
-  },
-  {
-    id: 'industrial_collector',
-    label: 'Industrial Collector',
-    description: 'Durable freight-supportive corridor with service and loading access',
-    photoUrl: 'https://picsum.photos/seed/NL2Tx5LxT1M/1200/900',
-  },
-  {
-    id: 'other',
-    label: 'Other',
-    description: 'Custom transportation mood directed by your prompt',
-    photoUrl: 'https://picsum.photos/seed/XPslUk17CUM/1200/900',
-  },
-];
-
-const GREEN_SPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
-  {
-    id: 'high_line_linear_park',
-    label: 'Linear Elevated Park',
-    description: 'High Line-inspired promenade with layered planting and seating pockets',
-    photoUrl: 'https://picsum.photos/seed/Ln26aeNeJdk/1200/900',
-  },
-  {
-    id: 'superkilen_cultural_park',
-    label: 'Cultural Activity Park',
-    description: 'Superkilen-like social park with bold surfaces and active edges',
-    photoUrl: 'https://picsum.photos/seed/TuAZPj1uaZs/1200/900',
-  },
-  {
-    id: 'philosophers_path_garden',
-    label: 'Canal Garden Walk',
-    description: 'Tree-lined water edge focused on strolling and quiet recreation',
-    photoUrl: 'https://picsum.photos/seed/KDjYIvQF1YI/1200/900',
-  },
-  {
-    id: 'wetland_boardwalk_park',
-    label: 'Ecological Wetland Park',
-    description: 'Sponge-park boardwalk system for habitat and stormwater retention',
-    photoUrl: 'https://picsum.photos/seed/bdh-sY4KneM/1200/900',
-  },
-  {
-    id: 'civic_lawn_commons',
-    label: 'Civic Lawn Commons',
-    description: 'Flexible event lawn with shade trees and everyday social use',
-    photoUrl: 'https://picsum.photos/seed/EhjTCDVEqOc/1200/900',
-  },
-  {
-    id: 'botanical_garden',
-    label: 'Botanical Garden',
-    description: 'Curated planting collections with formal paths and rest zones',
-    photoUrl: 'https://picsum.photos/seed/tl0uMsO7xIs/1200/900',
-  },
-  {
-    id: 'other',
-    label: 'Other',
-    description: 'Custom landscape concept guided by your prompt',
-    photoUrl: 'https://picsum.photos/seed/3DDjse_nQco/1200/900',
-  },
-];
-
-const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = [
-  {
-    id: 'civic_fountain_square',
-    label: 'Civic Fountain Square',
-    description: 'Formal public square with iconic fountain as social anchor',
-    photoUrl: 'https://picsum.photos/seed/U7YsOUPYgYw/1200/900',
-  },
-  {
-    id: 'market_plaza',
-    label: 'Market Plaza',
-    description: 'Flexible hardscape for kiosks, events, and daily commerce',
-    photoUrl: 'https://picsum.photos/seed/F0sSRtZfwPA/1200/900',
-  },
-  {
-    id: 'festival_plaza',
-    label: 'Festival Plaza',
-    description: 'Large gathering forecourt for civic and cultural programming',
-    photoUrl: 'https://picsum.photos/seed/awiQebTjbNU/1200/900',
-  },
-  {
-    id: 'garden_plaza',
-    label: 'Garden Plaza',
-    description: 'Softened plaza with trees, seating bands, and cooler microclimate',
-    photoUrl: 'https://picsum.photos/seed/CprOa-VNeLw/1200/900',
-  },
-  {
-    id: 'waterfront_boardwalk_plaza',
-    label: 'Waterfront Boardwalk Plaza',
-    description: 'Edge plaza with boardwalk terraces and promenade character',
-    photoUrl: 'https://picsum.photos/seed/3DDjse_nQco/1200/900',
-  },
-  {
-    id: 'other',
-    label: 'Other',
-    description: 'Custom plaza identity guided by your prompt',
-    photoUrl: 'https://picsum.photos/seed/8-nDXKy2Vz8/1200/900',
-  },
-];
-
-const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
-  kyoto_philosophers_path: {
-    mobility_profile: 'walking_only',
-    width: 6,
-    lane_count: 1,
-    volume: 'low',
-    road_surface: 'paver',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 1,
-    priority_cycling: 2,
-    priority_transit: 4,
-    priority_auto: 4,
-  },
-  shared_street_woonerf: {
-    mobility_profile: 'pedestrian_first',
-    width: 7,
-    lane_count: 1,
-    volume: 'low',
-    road_surface: 'paver',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 1,
-    priority_cycling: 2,
-    priority_transit: 4,
-    priority_auto: 4,
-  },
-  complete_street: {
-    mobility_profile: 'balanced',
-    width: 18,
-    lane_count: 2,
-    volume: 'medium',
-    road_surface: 'asphalt',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 2,
-    priority_cycling: 2,
-    priority_transit: 2,
-    priority_auto: 3,
-  },
-  cycle_priority_corridor: {
-    mobility_profile: 'pedestrian_first',
-    width: 12,
-    lane_count: 2,
-    volume: 'low',
-    road_surface: 'asphalt',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 2,
-    priority_cycling: 1,
-    priority_transit: 3,
-    priority_auto: 4,
-  },
-  grand_boulevard: {
-    mobility_profile: 'balanced',
-    width: 28,
-    lane_count: 4,
-    volume: 'high',
-    road_surface: 'asphalt',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 2,
-    priority_cycling: 3,
-    priority_transit: 1,
-    priority_auto: 3,
-  },
-  neighborhood_high_street: {
-    mobility_profile: 'pedestrian_first',
-    width: 14,
-    lane_count: 2,
-    volume: 'low',
-    road_surface: 'paver',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 1,
-    priority_cycling: 2,
-    priority_transit: 3,
-    priority_auto: 4,
-  },
-  transit_avenue: {
-    mobility_profile: 'balanced',
-    width: 22,
-    lane_count: 4,
-    volume: 'high',
-    road_surface: 'asphalt',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 2,
-    priority_cycling: 3,
-    priority_transit: 1,
-    priority_auto: 3,
-  },
-  industrial_collector: {
-    mobility_profile: 'vehicle_access',
-    width: 20,
-    lane_count: 4,
-    volume: 'high',
-    road_surface: 'concrete',
-    sidewalks: 'both',
-    has_sidewalks: true,
-    priority_pedestrian: 4,
-    priority_cycling: 4,
-    priority_transit: 3,
-    priority_auto: 1,
-  },
-};
-
-const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
-  high_line_linear_park: {
-    tree_density_level: 'medium',
-    tree_density: 0.45,
-    has_paths: true,
-    has_benches: true,
-    shade_strategy: 'layered_canopy',
-  },
-  superkilen_cultural_park: {
-    tree_density_level: 'sparse',
-    tree_density: 0.25,
-    has_paths: true,
-    has_benches: true,
-    shade_strategy: 'open_active',
-  },
-  philosophers_path_garden: {
-    tree_density_level: 'dense',
-    tree_density: 0.65,
-    has_paths: true,
-    has_benches: true,
-    water_feature: 'canal_edge',
-    shade_strategy: 'continuous_canopy',
-  },
-  wetland_boardwalk_park: {
-    tree_density_level: 'medium',
-    tree_density: 0.5,
-    has_paths: true,
-    has_benches: true,
-    water_feature: 'wetland',
-    shade_strategy: 'ecological_mosaic',
-  },
-  civic_lawn_commons: {
-    tree_density_level: 'medium',
-    tree_density: 0.35,
-    has_paths: true,
-    has_benches: true,
-    shade_strategy: 'event_lawn_edge_trees',
-  },
-  botanical_garden: {
-    tree_density_level: 'dense',
-    tree_density: 0.7,
-    has_paths: true,
-    has_benches: true,
-    shade_strategy: 'curated_species_mix',
-  },
-};
-
-const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = {
-  civic_fountain_square: {
-    parking_layout: 'parallel',
-    covered: false,
-    paving_material: 'stone',
-    shade_strategy: 'edge_trees',
-    water_feature: 'fountain',
-  },
-  market_plaza: {
-    parking_layout: 'parallel',
-    covered: false,
-    paving_material: 'paver',
-    shade_strategy: 'tree_grove',
-    plaza_program: 'market',
-  },
-  festival_plaza: {
-    parking_layout: 'perpendicular',
-    covered: false,
-    paving_material: 'concrete',
-    shade_strategy: 'flexible_shade_structures',
-    plaza_program: 'events',
-  },
-  garden_plaza: {
-    parking_layout: 'parallel',
-    covered: false,
-    paving_material: 'stone',
-    shade_strategy: 'garden_canopy',
-    plaza_program: 'leisure',
-  },
-  waterfront_boardwalk_plaza: {
-    parking_layout: 'parallel',
-    covered: false,
-    paving_material: 'wood_deck',
-    shade_strategy: 'linear_trees',
-    water_feature: 'waterfront',
-    plaza_program: 'promenade',
-  },
-};
+const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = BUILDING_AESTHETIC_CATEGORIES_V2;
+const DEVELOPMENT_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = BUILDING_AESTHETIC_OPTIONS_V2;
 
 const ROADWAY_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = ROADWAY_AESTHETIC_CATEGORIES_V2;
+const ROADWAY_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = ROADWAY_AESTHETIC_OPTIONS_V2;
+
 const GREEN_SPACE_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = GREEN_SPACE_AESTHETIC_CATEGORIES_V2;
+const GREEN_SPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = GREEN_SPACE_AESTHETIC_OPTIONS_V2;
+
 const PLAZA_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = PLAZA_AESTHETIC_CATEGORIES_V2;
+const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = PLAZA_AESTHETIC_OPTIONS_V2;
 
-// Replace seed data with the full v2 taxonomy from the shared catalog.
-DEVELOPMENT_AESTHETIC_CATEGORIES.splice(0, DEVELOPMENT_AESTHETIC_CATEGORIES.length, ...BUILDING_AESTHETIC_CATEGORIES_V2);
-DEVELOPMENT_AESTHETIC_OPTIONS.splice(0, DEVELOPMENT_AESTHETIC_OPTIONS.length, ...BUILDING_AESTHETIC_OPTIONS_V2);
-ROADWAY_AESTHETIC_OPTIONS.splice(0, ROADWAY_AESTHETIC_OPTIONS.length, ...ROADWAY_AESTHETIC_OPTIONS_V2);
-GREEN_SPACE_AESTHETIC_OPTIONS.splice(0, GREEN_SPACE_AESTHETIC_OPTIONS.length, ...GREEN_SPACE_AESTHETIC_OPTIONS_V2);
-PLAZA_AESTHETIC_OPTIONS.splice(0, PLAZA_AESTHETIC_OPTIONS.length, ...PLAZA_AESTHETIC_OPTIONS_V2);
+const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
+const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
+const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = PLAZA_AESTHETIC_PRESETS_V2;
 
-Object.keys(ROADWAY_AESTHETIC_PRESETS).forEach((key) => delete ROADWAY_AESTHETIC_PRESETS[key]);
-Object.assign(ROADWAY_AESTHETIC_PRESETS, ROADWAY_AESTHETIC_PRESETS_V2);
-Object.keys(GREEN_SPACE_AESTHETIC_PRESETS).forEach((key) => delete GREEN_SPACE_AESTHETIC_PRESETS[key]);
-Object.assign(GREEN_SPACE_AESTHETIC_PRESETS, GREEN_SPACE_AESTHETIC_PRESETS_V2);
-Object.keys(PLAZA_AESTHETIC_PRESETS).forEach((key) => delete PLAZA_AESTHETIC_PRESETS[key]);
-Object.assign(PLAZA_AESTHETIC_PRESETS, PLAZA_AESTHETIC_PRESETS_V2);
+const FRONT_DAY_VARIANT_ID = 'front_day';
+
+const LEGACY_CATEGORY_ALIASES: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', Record<string, string>> = {
+  development_aesthetic: {
+    historic: 'historical',
+    contemporary: 'contemporary_urban',
+    glass_modern: 'glass_tower_modern',
+  },
+  road_aesthetic: {
+    transportation: 'complete_streets',
+    transit_corridor: 'transit_priority',
+    complete_street: 'complete_streets',
+    walkable_street: 'historic_walkways',
+  },
+  green_space_aesthetic: {
+    historic_landscape: 'landscape_parks',
+    historic_landscape_park: 'landscape_parks',
+    historic_gardens: 'landscape_parks',
+    english_landscape: 'landscape_parks',
+    ecological_park: 'ecological_resilience',
+    ecological_landscape: 'ecological_resilience',
+    neighborhood_park: 'neighborhood_public_realm',
+    waterfront: 'waterfront_spaces',
+  },
+  plaza_aesthetic: {
+    civic_square: 'civic_plazas',
+    urban_square: 'civic_plazas',
+    event_plaza: 'social_event_spaces',
+    festival_space: 'social_event_spaces',
+  },
+};
+
+function normalizeLegacyCategoryValue(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s\-\/]+/g, '_')
+    .replace(/[^a-z0-9_]/g, '');
+}
+
+function normalizeAestheticCategory(
+  key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
+  value: string | undefined,
+): string | undefined {
+  if (!value) return undefined;
+
+  const normalized = normalizeLegacyCategoryValue(value);
+  const aliases = LEGACY_CATEGORY_ALIASES[key] || {};
+  return aliases[normalized] || value;
+}
+
+function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArchetypeImage | undefined {
+  return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
+}
 
 export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
@@ -502,8 +149,8 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     panelRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [zone.id]);
 
-  // Sync when zone changes — only on zone.id since key={zone.id} forces remount.
-  // Do NOT depend on zone.properties — React Query background refetches would
+  // Sync when zone changes ? only on zone.id since key={zone.id} forces remount.
+  // Do NOT depend on zone.properties ? React Query background refetches would
   // overwrite the user's unsaved edits (e.g. reference images added but not yet saved).
   useEffect(() => {
     setName(zone.name || '');
@@ -519,96 +166,197 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const isRemoteReferenceImage = (value: string): boolean => /^https?:\/\//i.test(value);
 
-  const clearBuildingStyleFields = (target: SiteZoneProperties): void => {
-    target.development_subcategory = undefined;
-    target.development_selected_reference = undefined;
-    target.development_archetype_id = undefined;
-    target.development_archetype_label = undefined;
-    target.development_archetype_image = undefined;
-    target.development_archetype_images = undefined;
-    target.development_style_profile = undefined;
+  const DOMAIN_STYLE_FIELD_PREFIX: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', string> = {
+  development_aesthetic: 'development',
+  road_aesthetic: 'road',
+  green_space_aesthetic: 'green_space',
+  plaza_aesthetic: 'plaza',
+};
+
+const DOMAIN_STYLE_INPUT_KEY: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', string> = {
+  development_aesthetic: 'building',
+  road_aesthetic: 'streets_paths',
+  green_space_aesthetic: 'parks',
+  plaza_aesthetic: 'plazas',
+};
+
+const DOMAIN_GENERATION_DOMAIN: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', CatalogGenerationStyleInput['domain']> = {
+  development_aesthetic: 'building',
+  road_aesthetic: 'street_pathway',
+  green_space_aesthetic: 'park_plaza',
+  plaza_aesthetic: 'park_plaza',
+};
+
+const clearDomainStyleFields = (
+  target: SiteZoneProperties,
+  key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
+): void => {
+  const prefix = DOMAIN_STYLE_FIELD_PREFIX[key];
+  target[`${prefix}_subcategory`] = undefined;
+  target[`${prefix}_selected_reference`] = undefined;
+  target[`${prefix}_archetype_id`] = undefined;
+  target[`${prefix}_archetype_label`] = undefined;
+  target[`${prefix}_archetype_image`] = undefined;
+  target[`${prefix}_archetype_images`] = undefined;
+  target[`${prefix}_archetype_prompt`] = undefined;
+  target[`${prefix}_generation_tags`] = undefined;
+  target[`${prefix}_style_profile`] = undefined;
+
+  if (key === 'development_aesthetic') {
     target.generation_style_input = undefined;
-  };
+  }
 
-  const buildAestheticSelectionProps = (
-    current: SiteZoneProperties,
-    key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
-    next: string | undefined,
-    options: DevelopmentAestheticOption[],
-    presets?: Record<string, Partial<SiteZoneProperties>>,
-  ): SiteZoneProperties => {
-    const nextProps: SiteZoneProperties = { ...current, [key]: next || undefined };
-    const existing = Array.isArray(current.reference_images) ? (current.reference_images as string[]) : [];
-    const optionImages = options.map((option) => option.photoUrl);
-    const selectedOption = options.find((option) => option.id === next);
-    const imageUrl = selectedOption?.photoUrl;
+  const domainInputKey = DOMAIN_STYLE_INPUT_KEY[key];
+  const currentGenerationMap = target.generation_style_inputs;
+  if (currentGenerationMap && typeof currentGenerationMap === 'object' && !Array.isArray(currentGenerationMap)) {
+    const nextMap = { ...(currentGenerationMap as Record<string, unknown>) };
+    delete nextMap[domainInputKey];
+    target.generation_style_inputs = Object.keys(nextMap).length > 0 ? nextMap : undefined;
+  }
+};
 
-    if (next && presets?.[next]) {
-      Object.assign(nextProps, presets[next]);
+const buildAestheticSelectionProps = (
+  current: SiteZoneProperties,
+  key: 'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic',
+  next: string | undefined,
+  options: DevelopmentAestheticOption[],
+  presets?: Record<string, Partial<SiteZoneProperties>>,
+  selectedArchetypeImageId?: string,
+): SiteZoneProperties => {
+  const nextProps: SiteZoneProperties = { ...current, [key]: next || undefined };
+  const existing = Array.isArray(current.reference_images) ? (current.reference_images as string[]) : [];
+  const optionImages = options.map((option) => option.photoUrl);
+  const selectedOption = options.find((option) => option.id === next);
+  const imageUrl = selectedOption?.photoUrl;
+
+  if (next && presets?.[next]) {
+    Object.assign(nextProps, presets[next]);
+  }
+
+  if (selectedOption) {
+    const stylePrefix = DOMAIN_STYLE_FIELD_PREFIX[key];
+    const inputMapKey = DOMAIN_STYLE_INPUT_KEY[key];
+    const generationDomain = DOMAIN_GENERATION_DOMAIN[key];
+    const archetypeImages = Array.isArray(selectedOption.archetypeImages) ? selectedOption.archetypeImages : [];
+    const frontDayArchetype = getFrontDayArchetypeImage(archetypeImages);
+    const resolvedArchetype = archetypeImages.find((image) => image.id === selectedArchetypeImageId) || frontDayArchetype || archetypeImages[0];
+    const resolvedArchetypeImage = resolvedArchetype?.imageUrl || selectedOption.photoUrl;
+
+    const categoriesForKey = key === 'development_aesthetic'
+      ? DEVELOPMENT_AESTHETIC_CATEGORIES
+      : key === 'road_aesthetic'
+        ? ROADWAY_AESTHETIC_CATEGORIES
+        : key === 'green_space_aesthetic'
+          ? GREEN_SPACE_AESTHETIC_CATEGORIES
+          : PLAZA_AESTHETIC_CATEGORIES;
+
+    const resolvedCategoryLabel = categoriesForKey.find((category) => category.id === selectedOption.categoryId)?.label;
+    const resolvedStyleProfile = selectedOption.styleProfile || selectedOption.generationStyleInput?.styleProfile;
+    const resolvedGenerationTags = Array.isArray(selectedOption.generationTags)
+      ? selectedOption.generationTags
+      : (Array.isArray(selectedOption.generationStyleInput?.generationTags) ? selectedOption.generationStyleInput?.generationTags : []);
+
+    const archetypeId = resolvedArchetype?.id || selectedOption.id;
+    const archetypeLabel = resolvedArchetype?.label || selectedOption.label;
+
+    nextProps[`${stylePrefix}_subcategory`] = selectedOption.id;
+    nextProps[`${stylePrefix}_aesthetic_category`] = selectedOption.categoryId || nextProps[`${stylePrefix}_aesthetic_category`];
+    nextProps[`${stylePrefix}_archetype_id`] = archetypeId;
+    nextProps[`${stylePrefix}_archetype_label`] = archetypeLabel;
+    nextProps[`${stylePrefix}_archetype_image`] = resolvedArchetypeImage;
+    nextProps[`${stylePrefix}_archetype_prompt`] = resolvedArchetype?.prompt;
+    nextProps[`${stylePrefix}_generation_tags`] = resolvedGenerationTags;
+    nextProps[`${stylePrefix}_archetype_images`] = archetypeImages.map((image) => ({
+      id: image.id,
+      label: image.label,
+      description: image.description,
+      camera: image.camera,
+      lighting: image.lighting,
+      imagePath: image.imagePath,
+      imageUrl: image.imageUrl,
+      prompt: image.prompt,
+    }));
+
+    nextProps[`${stylePrefix}_selected_reference`] = {
+      id: archetypeId,
+      label: archetypeLabel,
+      imageUrl: resolvedArchetypeImage,
+      imagePath: resolvedArchetype?.imagePath,
+      description: resolvedArchetype?.description || selectedOption.description,
+      camera: resolvedArchetype?.camera,
+      lighting: resolvedArchetype?.lighting,
+      prompt: resolvedArchetype?.prompt,
+    };
+
+    if (resolvedStyleProfile) {
+      nextProps[`${stylePrefix}_style_profile`] = resolvedStyleProfile;
     }
+
+    const baseGenerationInput = selectedOption.generationStyleInput || {};
+    const generationStyleInput: Partial<CatalogGenerationStyleInput> = {
+      ...baseGenerationInput,
+      domain: generationDomain,
+      developmentType: key === 'development_aesthetic' && typeof current.development_type === 'string'
+        ? (current.development_type as string)
+        : baseGenerationInput.developmentType,
+      buildingSubcategory: key === 'development_aesthetic'
+        ? selectedOption.id
+        : (baseGenerationInput.buildingSubcategory || selectedOption.id),
+      subtype: key === 'green_space_aesthetic'
+        ? 'park'
+        : key === 'plaza_aesthetic'
+          ? 'plaza'
+          : (baseGenerationInput.subtype || selectedOption.id),
+      aestheticCategoryId: selectedOption.categoryId,
+      aestheticCategoryLabel: resolvedCategoryLabel,
+      archetypeId,
+      archetypeLabel,
+      archetypeImageUrl: resolvedArchetypeImage,
+      archetypeImagePath: resolvedArchetype?.imagePath || baseGenerationInput.archetypeImagePath,
+      archetypeImageIds: archetypeImages.map((image) => image.id),
+      generationTags: resolvedGenerationTags,
+      imagePrompt: resolvedArchetype?.prompt || baseGenerationInput.imagePrompt,
+      styleProfile: (resolvedStyleProfile || baseGenerationInput.styleProfile) as CatalogStyleProfile,
+      downstreamHints: {
+        sceneDressing: resolvedGenerationTags,
+        materialDirection: Array.isArray((resolvedStyleProfile as CatalogStyleProfile | undefined)?.materials)
+          ? ((resolvedStyleProfile as CatalogStyleProfile).materials as string[])
+          : [],
+        reuseKeys: [
+          selectedOption.id,
+          selectedOption.categoryId,
+          key,
+          archetypeId,
+        ].filter(Boolean) as string[],
+      },
+    };
 
     if (key === 'development_aesthetic') {
-      if (selectedOption) {
-        const archetypeImages = Array.isArray(selectedOption.archetypeImages) ? selectedOption.archetypeImages : [];
-        const primaryArchetype = archetypeImages[0];
-        const resolvedArchetypeImage = primaryArchetype?.imageUrl || selectedOption.photoUrl;
-        const resolvedCategoryLabel = DEVELOPMENT_AESTHETIC_CATEGORIES.find((category) => category.id === selectedOption.categoryId)?.label;
-        const resolvedStyleProfile = selectedOption.styleProfile || selectedOption.generationStyleInput?.styleProfile;
-
-        nextProps.development_subcategory = selectedOption.id;
-        nextProps.development_aesthetic_category = selectedOption.categoryId || nextProps.development_aesthetic_category;
-        nextProps.development_archetype_id = primaryArchetype?.id || selectedOption.id;
-        nextProps.development_archetype_label = primaryArchetype?.label || selectedOption.label;
-        nextProps.development_archetype_image = resolvedArchetypeImage;
-        nextProps.development_archetype_images = archetypeImages.map((image) => ({
-          id: image.id,
-          label: image.label,
-          description: image.description,
-          camera: image.camera,
-          imageUrl: image.imageUrl,
-        }));
-        nextProps.development_selected_reference = {
-          id: nextProps.development_archetype_id,
-          label: nextProps.development_archetype_label,
-          imageUrl: nextProps.development_archetype_image,
-          description: primaryArchetype?.description || selectedOption.description,
-          camera: primaryArchetype?.camera,
-        };
-        if (resolvedStyleProfile) {
-          nextProps.development_style_profile = resolvedStyleProfile;
-        }
-
-        const baseGenerationInput = selectedOption.generationStyleInput || {};
-        const generationStyleInput: Partial<CatalogGenerationStyleInput> = {
-          ...baseGenerationInput,
-          developmentType: typeof current.development_type === 'string' ? (current.development_type as string) : undefined,
-          buildingSubcategory: selectedOption.id,
-          aestheticCategoryId: selectedOption.categoryId,
-          aestheticCategoryLabel: resolvedCategoryLabel,
-          archetypeId: nextProps.development_archetype_id as string,
-          archetypeLabel: nextProps.development_archetype_label as string,
-          archetypeImageUrl: nextProps.development_archetype_image as string,
-          archetypeImageIds: archetypeImages.map((image) => image.id),
-          styleProfile: (resolvedStyleProfile || baseGenerationInput.styleProfile) as CatalogStyleProfile,
-        };
-        nextProps.generation_style_input = generationStyleInput;
-      } else {
-        clearBuildingStyleFields(nextProps);
-      }
+      nextProps.generation_style_input = generationStyleInput;
     }
 
-    if (imageUrl && isRemoteReferenceImage(imageUrl)) {
-      const deduped = existing.filter((img) => img && img !== imageUrl);
-      nextProps.reference_images = [imageUrl, ...deduped].slice(0, 3);
-    } else if (!imageUrl) {
-      const cleaned = existing.filter((img) => !optionImages.includes(img));
-      nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
-    }
+    const generationInputs = current.generation_style_inputs;
+    const generationInputsMap = generationInputs && typeof generationInputs === 'object' && !Array.isArray(generationInputs)
+      ? { ...(generationInputs as Record<string, unknown>) }
+      : {};
+    generationInputsMap[inputMapKey] = generationStyleInput;
+    nextProps.generation_style_inputs = generationInputsMap;
+  } else {
+    clearDomainStyleFields(nextProps, key);
+  }
 
-    return nextProps;
-  };
+  if (imageUrl && isRemoteReferenceImage(imageUrl)) {
+    const deduped = existing.filter((img) => img && img !== imageUrl);
+    nextProps.reference_images = [imageUrl, ...deduped].slice(0, 3);
+  } else if (!imageUrl) {
+    const cleaned = existing.filter((img) => !optionImages.includes(img));
+    nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
+  }
 
-  const resolveOptionCategory = (
+  return nextProps;
+};
+
+const resolveOptionCategory = (
     options: DevelopmentAestheticOption[],
     aestheticId?: string,
   ): string | undefined => {
@@ -620,21 +368,33 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     return resolveOptionCategory(DEVELOPMENT_AESTHETIC_OPTIONS, aestheticId);
   };
 
-  const selectedBuildingAestheticCategory =
+  const selectedBuildingAestheticCategory = normalizeAestheticCategory(
+    'development_aesthetic',
     (props.development_aesthetic_category as string)
-    || resolveBuildingAestheticCategory((props.development_aesthetic as string) || undefined);
+      || resolveBuildingAestheticCategory((props.development_aesthetic as string) || undefined),
+  );
 
-  const selectedRoadAestheticCategory =
+  const selectedRoadAestheticCategory = normalizeAestheticCategory(
+    'road_aesthetic',
     (props.road_aesthetic_category as string)
-    || resolveOptionCategory(ROADWAY_AESTHETIC_OPTIONS, (props.road_aesthetic as string) || undefined);
+      || resolveOptionCategory(ROADWAY_AESTHETIC_OPTIONS, (props.road_aesthetic as string) || undefined),
+  );
 
-  const selectedGreenSpaceCategory =
+  const selectedGreenSpaceCategory = normalizeAestheticCategory(
+    'green_space_aesthetic',
     (props.green_space_aesthetic_category as string)
-    || resolveOptionCategory(GREEN_SPACE_AESTHETIC_OPTIONS, (props.green_space_aesthetic as string) || undefined);
+      || resolveOptionCategory(GREEN_SPACE_AESTHETIC_OPTIONS, (props.green_space_aesthetic as string) || undefined),
+  );
 
-  const selectedPlazaCategory =
+  const selectedPlazaCategory = normalizeAestheticCategory(
+    'plaza_aesthetic',
     (props.plaza_aesthetic_category as string)
-    || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined);
+      || resolveOptionCategory(PLAZA_AESTHETIC_OPTIONS, (props.plaza_aesthetic as string) || undefined),
+  );
+
+  const selectedRoadReferenceId = (props.road_archetype_id as string) || ((props.road_selected_reference as { id?: string } | undefined)?.id) || undefined;
+  const selectedGreenSpaceReferenceId = (props.green_space_archetype_id as string) || ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || undefined;
+  const selectedPlazaReferenceId = (props.plaza_archetype_id as string) || ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || undefined;
 
   const selectedTransportModes = inferTransportModesFromProperties(props);
 
@@ -653,13 +413,26 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         };
       }
 
+      const generationInputs = p.generation_style_inputs;
+      if (generationInputs && typeof generationInputs === 'object' && !Array.isArray(generationInputs)) {
+        const nextGenerationInputs = { ...(generationInputs as Record<string, unknown>) };
+        const buildingInput = nextGenerationInputs.building;
+        if (buildingInput && typeof buildingInput === 'object') {
+          nextGenerationInputs.building = {
+            ...(buildingInput as Record<string, unknown>),
+            developmentType: nextDevelopmentType || undefined,
+          };
+        }
+        nextProps.generation_style_inputs = nextGenerationInputs;
+      }
+
       return nextProps;
     });
   };
 
   const applyBuildingAestheticCategory = (nextCategory: string | undefined) => {
     setProps((p) => {
-      const selectedCategory = nextCategory || undefined;
+      const selectedCategory = normalizeAestheticCategory('development_aesthetic', nextCategory || undefined);
       const nextProps: SiteZoneProperties = {
         ...p,
         development_aesthetic_category: selectedCategory,
@@ -687,13 +460,15 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
-  const applyBuildingAesthetic = (next: string | undefined) => {
+  const applyBuildingAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
         'development_aesthetic',
         next,
         DEVELOPMENT_AESTHETIC_OPTIONS,
+        undefined,
+        selectedArchetypeImageId,
       );
       const selectedOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === next);
       if (selectedOption?.categoryId) {
@@ -705,7 +480,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const applyRoadAestheticCategory = (nextCategory: string | undefined) => {
     setProps((p) => {
-      const selectedCategory = nextCategory || undefined;
+      const selectedCategory = normalizeAestheticCategory('road_aesthetic', nextCategory || undefined);
       const nextProps: SiteZoneProperties = {
         ...p,
         road_aesthetic_category: selectedCategory,
@@ -728,7 +503,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
-  const applyRoadAesthetic = (next: string | undefined) => {
+  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
         p,
@@ -736,6 +511,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         next,
         ROADWAY_AESTHETIC_OPTIONS,
         ROADWAY_AESTHETIC_PRESETS,
+        selectedArchetypeImageId,
       );
 
       const selectedOption = ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -754,7 +530,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const applyGreenSpaceCategory = (nextCategory: string | undefined) => {
     setProps((p) => {
-      const selectedCategory = nextCategory || undefined;
+      const selectedCategory = normalizeAestheticCategory('green_space_aesthetic', nextCategory || undefined);
       const nextProps: SiteZoneProperties = {
         ...p,
         green_space_aesthetic_category: selectedCategory,
@@ -777,7 +553,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
-  const applyGreenSpaceAesthetic = (next: string | undefined) => {
+  const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -785,6 +561,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         next,
         GREEN_SPACE_AESTHETIC_OPTIONS,
         GREEN_SPACE_AESTHETIC_PRESETS,
+        selectedArchetypeImageId,
       );
 
       const selectedOption = GREEN_SPACE_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -797,7 +574,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const applyPlazaCategory = (nextCategory: string | undefined) => {
     setProps((p) => {
-      const selectedCategory = nextCategory || undefined;
+      const selectedCategory = normalizeAestheticCategory('plaza_aesthetic', nextCategory || undefined);
       const nextProps: SiteZoneProperties = {
         ...p,
         plaza_aesthetic_category: selectedCategory,
@@ -820,7 +597,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     });
   };
 
-  const applyPlazaAesthetic = (next: string | undefined) => {
+  const applyPlazaAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -828,6 +605,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         next,
         PLAZA_AESTHETIC_OPTIONS,
         PLAZA_AESTHETIC_PRESETS,
+        selectedArchetypeImageId,
       );
       const selectedOption = PLAZA_AESTHETIC_OPTIONS.find((o) => o.id === next);
       if (selectedOption?.categoryId) {
@@ -878,13 +656,13 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   return (
     <>
-      {/* Backdrop overlay — mobile only */}
+      {/* Backdrop overlay ? mobile only */}
       <div
         className="fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
       <div ref={panelRef} className="glass fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl p-4 shadow-2xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
-        {/* Drag handle — mobile visual cue */}
+        {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-primary-950/[0.06]" />
         </div>
@@ -928,7 +706,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         </div>
 
         {/* ============================================================= */}
-        {/* LAYOUT PREVIEW — shown at top when preview is active           */}
+        {/* LAYOUT PREVIEW ? shown at top when preview is active           */}
         {/* ============================================================= */}
         {layoutPreview?.zoneId === zone.id &&
           (zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') &&
@@ -943,7 +721,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
         )}
 
         {/* ============================================================= */}
-        {/* SITE BOUNDARY — analysis + generate                           */}
+        {/* SITE BOUNDARY ? analysis + generate                           */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
           <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
@@ -999,6 +777,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
                   category={selectedBuildingAestheticCategory}
+                  selectedReferenceId={(props.development_archetype_id as string) || undefined}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -1109,6 +888,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 <GreenSpaceAestheticPicker
                   value={(props.green_space_aesthetic as string) || undefined}
                   category={selectedGreenSpaceCategory}
+                  selectedReferenceId={selectedGreenSpaceReferenceId}
                   onChange={applyGreenSpaceAesthetic}
                 />
               </div>
@@ -1220,6 +1000,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 <RoadwayAestheticPicker
                   value={(props.road_aesthetic as string) || undefined}
                   category={selectedRoadAestheticCategory}
+                  selectedReferenceId={selectedRoadReferenceId}
                   selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
@@ -1443,6 +1224,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 <PlazaAestheticPicker
                   value={(props.plaza_aesthetic as string) || undefined}
                   category={selectedPlazaCategory}
+                  selectedReferenceId={selectedPlazaReferenceId}
                   onChange={applyPlazaAesthetic}
                 />
               </div>
@@ -1561,6 +1343,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
                   category={selectedBuildingAestheticCategory}
+                  selectedReferenceId={(props.development_archetype_id as string) || undefined}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -1649,7 +1432,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
         )}
 
-        {/* Quick Regenerate — visible when zone already has a generated building */}
+        {/* Quick Regenerate ? visible when zone already has a generated building */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (() => {
           const linkedBuilding = buildings?.find((b) => b.id === zone.building_id);
           if (!linkedBuilding || linkedBuilding.generation_status !== 'completed') return null;
@@ -1660,12 +1443,12 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
           );
         })()}
 
-        {/* Model Library — browse & apply saved models */}
+        {/* Model Library ? browse & apply saved models */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (
           <ModelLibrarySection buildingId={zone.building_id} />
         )}
 
-        {/* Preview History — buildable zones */}
+        {/* Preview History ? buildable zones */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
           <PreviewHistorySection zone={zone} />
         )}
@@ -1730,7 +1513,7 @@ async function captureMapScreenshots(
     });
 
   try {
-    // 0. Fit the map EXACTLY to the inner zones — zero padding.
+    // 0. Fit the map EXACTLY to the inner zones ? zero padding.
     //    Gemini receives ONLY the development area filling the entire frame.
     const innerZones = (allZones || []).filter((z) => z.zone_type !== 'site_boundary');
     const cropCoords = innerZones.length > 0
@@ -1745,7 +1528,7 @@ async function captureMapScreenshots(
         if (lat < minLat) minLat = lat;
         if (lat > maxLat) maxLat = lat;
       }
-      // Zero expand — the zones should fill the entire frame
+      // Zero expand ? the zones should fill the entire frame
       map.fitBounds(
         [[minLng, minLat], [maxLng, maxLat]],
         { padding: 10, animate: false },
@@ -1789,7 +1572,7 @@ async function captureMapScreenshots(
       const cropW = Math.round(pxMaxX - pxMinX);
       const cropH = Math.round(pxMaxY - pxMinY);
 
-      // Account for devicePixelRatio — canvas pixels != CSS pixels
+      // Account for devicePixelRatio ? canvas pixels != CSS pixels
       const dpr = window.devicePixelRatio || 1;
       const offscreen = document.createElement('canvas');
       offscreen.width = Math.round(cropW * dpr);
@@ -1888,7 +1671,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       return next;
     });
     try {
-      // Build a map of zoneId → chosen option for this index
+      // Build a map of zoneId -> chosen option for this index
       const zoneLayoutsForOption: Record<string, LayoutOption> = {};
       for (const [zid, opts] of Object.entries(siteOptions)) {
         if (opts[idx]) {
@@ -1934,7 +1717,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       return z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area';
     });
     if (zonesToPreview.length === 0) {
-      toast.error('No buildable zones found — add building or residential zones first');
+      toast.error('No buildable zones found ? add building or residential zones first');
       return;
     }
 
@@ -1961,9 +1744,9 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       }
       clearLockedLayers();
       if (generated > 0) {
-        // Store site-wide preview — stay on boundary
+        // Store site-wide preview ? stay on boundary
         setSitePreview(zone.id, allZoneLayouts);
-        toast.success(`Generated layouts for ${generated} zone${generated > 1 ? 's' : ''} — rendering site previews...`);
+        toast.success(`Generated layouts for ${generated} zone${generated > 1 ? 's' : ''} ? rendering site previews...`);
       } else {
         toast.error('No layout previews could be generated');
       }
@@ -2044,7 +1827,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
   return (
     <div className="space-y-2">
-      {/* Contained zones — clickable to select */}
+      {/* Contained zones ? clickable to select */}
       <div>
         <label className="block text-xs font-medium text-primary-950/60 mb-1">
           Contained Zones ({analysis.total_contained})
@@ -2399,7 +2182,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
         </p>
       )}
 
-      {/* Preview History — site boundary */}
+      {/* Preview History ? site boundary */}
       <PreviewHistorySection zone={zone} />
     </div>
   );
@@ -2412,7 +2195,13 @@ function buildAestheticImageSources(option: DevelopmentAestheticOption): string[
   const rawSources: string[] = [];
 
   if (Array.isArray(option.archetypeImages)) {
-    rawSources.push(...option.archetypeImages.map((image) => image.imageUrl));
+    const orderedArchetypeImages = [...option.archetypeImages].sort((a, b) => {
+      const aFrontDay = a.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`);
+      const bFrontDay = b.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`);
+      if (aFrontDay === bFrontDay) return 0;
+      return aFrontDay ? -1 : 1;
+    });
+    rawSources.push(...orderedArchetypeImages.map((image) => image.imageUrl));
   }
 
   if (Array.isArray(option.photoUrls)) {
@@ -2478,24 +2267,40 @@ function AestheticImage({
   );
 }
 
+
 function AestheticOptionCard({
   option,
   value,
+  selectedReferenceId,
   onSelect,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
-  onSelect: (id: string) => void;
+  selectedReferenceId?: string;
+  onSelect: (id: string, archetypeImageId?: string) => void;
 }) {
   const sources = buildAestheticImageSources(option);
-  const heroSources = sources.slice(0, Math.max(1, sources.length));
-  const exampleSources = sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT);
+    const archetypeImages = Array.isArray(option.archetypeImages) ? option.archetypeImages : [];
+  const defaultArchetype = getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
+  const selectedArchetype = value === option.id
+    ? archetypeImages.find((image) => image.id === selectedReferenceId) || defaultArchetype
+    : defaultArchetype;
+  const heroSources = selectedArchetype
+    ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
+    : sources.slice(0, Math.max(1, sources.length));
+  const exampleSources = archetypeImages.length > 0
+    ? archetypeImages.slice(0, AESTHETIC_EXAMPLE_COUNT)
+    : sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT).map((source, idx) => ({
+      id: `${option.id}-example-${idx}`,
+      imageUrl: source,
+      label: `${option.label} example ${idx + 1}`,
+    }));
 
   return (
     <button
       key={option.id}
       type="button"
-      onClick={() => onSelect(option.id)}
+      onClick={() => onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id)}
       className={`overflow-hidden rounded-lg border text-left transition-all ${
         value === option.id
           ? 'border-primary-500 ring-2 ring-primary-500/25'
@@ -2515,16 +2320,32 @@ function AestheticOptionCard({
       </div>
       <div className="px-2 py-1.5">
         <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-        <div className="mt-1 grid grid-cols-3 gap-1">
-          {exampleSources.slice(0, 3).map((source, idx) => (
-            <div key={`${option.id}-example-${idx}`} className="h-9 overflow-hidden rounded border border-primary-950/[0.08] bg-primary-950/[0.06]">
-              <AestheticImage
-                sources={[source, ...heroSources]}
-                alt={`${option.label} example ${idx + 1}`}
-                className="h-full w-full object-cover"
-              />
-            </div>
-          ))}
+        <div className="mt-1 grid grid-cols-4 gap-1">
+          {exampleSources.slice(0, 4).map((image, idx) => {
+            const isSelected = value === option.id && selectedReferenceId === image.id;
+            return (
+              <button
+                key={`${option.id}-example-${idx}`}
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onSelect(option.id, image.id);
+                }}
+                className={`h-9 overflow-hidden rounded border ${
+                  isSelected
+                    ? 'border-primary-500 ring-2 ring-primary-500/35'
+                    : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
+                }`}
+                title={image.label}
+              >
+                <AestheticImage
+                  sources={[image.imageUrl, ...heroSources]}
+                  alt={`${option.label} example ${idx + 1}`}
+                  className="h-full w-full object-cover"
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
     </button>
@@ -2533,11 +2354,13 @@ function AestheticOptionCard({
 function DevelopmentAestheticPicker({
   value,
   category,
+  selectedReferenceId,
   onChange,
 }: {
   value?: string;
   category?: string;
-  onChange: (next: string | undefined) => void;
+  selectedReferenceId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2564,7 +2387,8 @@ function DevelopmentAestheticPicker({
               key={option.id}
               option={option}
               value={value}
-              onSelect={(id) => onChange(id)}
+              selectedReferenceId={selectedReferenceId}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2584,13 +2408,15 @@ function DevelopmentAestheticPicker({
 function RoadwayAestheticPicker({
   value,
   category,
+  selectedReferenceId,
   selectedModes,
   onChange,
 }: {
   value?: string;
   category?: string;
+  selectedReferenceId?: string;
   selectedModes: TransportModeKey[];
-  onChange: (next: string | undefined) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2623,7 +2449,8 @@ function RoadwayAestheticPicker({
               key={option.id}
               option={option}
               value={value}
-              onSelect={(id) => onChange(id)}
+              selectedReferenceId={selectedReferenceId}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2647,11 +2474,13 @@ function RoadwayAestheticPicker({
 function GreenSpaceAestheticPicker({
   value,
   category,
+  selectedReferenceId,
   onChange,
 }: {
   value?: string;
   category?: string;
-  onChange: (next: string | undefined) => void;
+  selectedReferenceId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2678,7 +2507,8 @@ function GreenSpaceAestheticPicker({
               key={option.id}
               option={option}
               value={value}
-              onSelect={(id) => onChange(id)}
+              selectedReferenceId={selectedReferenceId}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2697,11 +2527,13 @@ function GreenSpaceAestheticPicker({
 function PlazaAestheticPicker({
   value,
   category,
+  selectedReferenceId,
   onChange,
 }: {
   value?: string;
   category?: string;
-  onChange: (next: string | undefined) => void;
+  selectedReferenceId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? PLAZA_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2728,7 +2560,8 @@ function PlazaAestheticPicker({
               key={option.id}
               option={option}
               value={value}
-              onSelect={(id) => onChange(id)}
+              selectedReferenceId={selectedReferenceId}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2845,7 +2678,7 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
     setApplyingIdx(idx);
     try {
       await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
-      toast.success('Layout applied — buildings created');
+      toast.success('Layout applied ? buildings created');
     } catch {
       toast.error('Failed to apply layout');
     } finally {
@@ -2867,7 +2700,7 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
     if (entry.layout_data && entry.preview_type === 'layout') {
       apply = async () => {
         await siteZonesApi.applyLayout(zone.id, entry.option_index, entry.layout_data as LayoutOption);
-        toast.success('Layout applied — buildings created');
+        toast.success('Layout applied ? buildings created');
       };
     } else if (entry.preview_type === 'site' && zone.zone_type === 'site_boundary') {
       applyLabel = 'Generate Community';
@@ -2981,10 +2814,18 @@ function PreviewHistorySection({ zone }: { zone: SiteZone }) {
 // Model Library section
 // =============================================================================
 
+function formatReuseReason(reason: string): string {
+  const normalized = reason.replace(/_/g, ' ').trim();
+  if (!normalized) return 'match';
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
 function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState<import('@/types').ModelLibraryEntry[]>([]);
+  const [items, setItems] = useState<ModelLibraryEntry[]>([]);
+  const [recommended, setRecommended] = useState<ModelLibraryRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingRecommended, setLoadingRecommended] = useState(false);
   const [applying, setApplying] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [search, setSearch] = useState('');
@@ -3002,12 +2843,27 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
     }
   };
 
+  const loadRecommendations = async () => {
+    setLoadingRecommended(true);
+    try {
+      const data = await modelLibraryApi.recommendForBuilding(buildingId, {
+        limit: 6,
+        min_score: 0.45,
+      });
+      setRecommended(data);
+    } catch {
+      setRecommended([]);
+    } finally {
+      setLoadingRecommended(false);
+    }
+  };
+
   const handleBulkImport = async () => {
     setImporting(true);
     try {
       const result = await modelLibraryApi.bulkImport();
-      toast.success(`Imported ${result.imported} models (${result.skipped} skipped)`);
-      loadLibrary();
+      toast.success('Imported ' + result.imported + ' models (' + result.skipped + ' skipped)');
+      await Promise.all([loadLibrary(), loadRecommendations()]);
     } catch {
       toast.error('Failed to import models');
     } finally {
@@ -3016,14 +2872,16 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   };
 
   useEffect(() => {
-    if (open) loadLibrary();
+    if (!open) return;
+    loadLibrary();
+    loadRecommendations();
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApply = async (itemId: string) => {
     setApplying(itemId);
     try {
       await modelLibraryApi.applyToBuilding(itemId, buildingId);
-      toast.success('Model applied from library!');
+      toast.success('Model applied from library');
       queryClient.invalidateQueries({ queryKey: ['project'] });
       setOpen(false);
     } catch {
@@ -3033,9 +2891,9 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    loadLibrary();
+    await loadLibrary();
   };
 
   if (!open) {
@@ -3053,10 +2911,44 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   return (
     <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-2.5">
       <div className="mb-2 flex items-center justify-between">
-        <label className="text-[11px] font-medium text-emerald-700">Model Library</label>
+        <label className="text-[11px] font-medium text-emerald-700">Reusable 3D Asset Library</label>
         <button onClick={() => setOpen(false)} className="text-emerald-500 hover:text-emerald-700">
           <X size={12} />
         </button>
+      </div>
+
+      <div className="mb-2 rounded-md border border-emerald-100 bg-white/80 p-2">
+        <div className="mb-1.5 flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">Recommended Matches</p>
+          {loadingRecommended && <Loader2 size={10} className="animate-spin text-emerald-500" />}
+        </div>
+
+        {!loadingRecommended && recommended.length === 0 ? (
+          <p className="text-[10px] text-emerald-700/70">
+            No close reusable match found yet. Generate a model and save it to improve future reuse.
+          </p>
+        ) : (
+          <div className="space-y-1">
+            {recommended.map((rec) => (
+              <div key={rec.item.id} className="flex items-center gap-2 rounded border border-emerald-100 bg-white p-1.5">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[11px] font-medium text-primary-950">{rec.item.name}</p>
+                  <p className="truncate text-[9px] text-primary-950/60">
+                    {'Score ' + Math.round(rec.score * 100) + '%'}
+                    {(rec.reasons || []).length > 0 ? ' - ' + (rec.reasons || []).slice(0, 3).map(formatReuseReason).join(', ') : ''}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleApply(rec.item.id)}
+                  disabled={applying === rec.item.id}
+                  className="shrink-0 rounded bg-emerald-500 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
+                >
+                  {applying === rec.item.id ? <Loader2 size={10} className="animate-spin" /> : 'Reuse'}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSearch} className="mb-2 flex gap-1">
@@ -3064,7 +2956,7 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search models..."
+          placeholder="Search all saved assets..."
           className="flex-1 rounded border border-emerald-200 bg-white px-2 py-1 text-xs text-primary-950 focus:border-emerald-400 focus:outline-none"
         />
         <button type="submit" className="rounded bg-emerald-500 px-2 py-1 text-xs text-white hover:bg-emerald-600">
@@ -3078,8 +2970,8 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
         </div>
       ) : items.length === 0 ? (
         <div className="py-3 text-center">
-          <p className="text-[10px] text-emerald-600/70 mb-2">
-            No models saved yet. Import existing models or generate a new one and click "Save".
+          <p className="mb-2 text-[10px] text-emerald-600/70">
+            No saved assets yet. Import existing models or generate and save a new one.
           </p>
           <button
             onClick={handleBulkImport}
@@ -3087,20 +2979,17 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
             className="inline-flex items-center gap-1 rounded bg-emerald-500 px-3 py-1 text-[10px] font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
           >
             {importing ? <Loader2 size={10} className="animate-spin" /> : <ArrowDownToLine size={10} />}
-            {importing ? 'Importing...' : 'Import All Existing Models'}
+            {importing ? 'Importing...' : 'Import Existing Models'}
           </button>
         </div>
       ) : (
         <div className="max-h-[200px] space-y-1 overflow-y-auto">
           {items.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center gap-2 rounded border border-emerald-100 bg-white p-1.5"
-            >
-              <div className="flex-1 min-w-0">
+            <div key={item.id} className="flex items-center gap-2 rounded border border-emerald-100 bg-white p-1.5">
+              <div className="min-w-0 flex-1">
                 <p className="truncate text-[11px] font-medium text-primary-950">{item.name}</p>
                 <p className="truncate text-[9px] text-primary-950/60">
-                  {item.generation_engine || 'unknown'} {item.use_count > 0 && `· used ${item.use_count}x`}
+                  {item.generation_engine || 'unknown'} {item.use_count > 0 ? ' - used ' + item.use_count + 'x' : ''}
                 </p>
               </div>
               <button
@@ -3279,6 +3168,10 @@ function composeZonePrompt(zone: SiteZone): string {
     facadeRhythm?: unknown;
     roofForm?: unknown;
     frontageType?: unknown;
+    windowStyle?: unknown;
+    heightTendency?: unknown;
+    streetRelationship?: unknown;
+    renderingMood?: unknown;
     articulation?: unknown;
     publicRealm?: unknown;
   } | undefined;
@@ -3302,6 +3195,18 @@ function composeZonePrompt(zone: SiteZone): string {
     if (typeof styleProfile.frontageType === 'string' && styleProfile.frontageType.trim().length > 0) {
       parts.push(`Frontage type: ${styleProfile.frontageType}`);
     }
+    if (typeof styleProfile.windowStyle === 'string' && styleProfile.windowStyle.trim().length > 0) {
+      parts.push(`Window style: ${styleProfile.windowStyle}`);
+    }
+    if (typeof styleProfile.heightTendency === 'string' && styleProfile.heightTendency.trim().length > 0) {
+      parts.push(`Height tendency: ${styleProfile.heightTendency}`);
+    }
+    if (typeof styleProfile.streetRelationship === 'string' && styleProfile.streetRelationship.trim().length > 0) {
+      parts.push(`Street relationship: ${styleProfile.streetRelationship}`);
+    }
+    if (typeof styleProfile.renderingMood === 'string' && styleProfile.renderingMood.trim().length > 0) {
+      parts.push(`Rendering mood: ${styleProfile.renderingMood}`);
+    }
     if (typeof styleProfile.articulation === 'string' && styleProfile.articulation.trim().length > 0) {
       parts.push(`Articulation: ${styleProfile.articulation}`);
     }
@@ -3310,9 +3215,20 @@ function composeZonePrompt(zone: SiteZone): string {
     }
   }
 
-  const generationStyleInput = props.generation_style_input as { buildingSubcategory?: string; aestheticCategoryLabel?: string } | undefined;
+  const generationStyleInput = props.generation_style_input as {
+    buildingSubcategory?: string;
+    aestheticCategoryLabel?: string;
+    generationTags?: string[];
+    imagePrompt?: { positive?: string; negative?: string };
+  } | undefined;
   if (generationStyleInput?.buildingSubcategory) {
     parts.push(`Building subcategory: ${generationStyleInput.buildingSubcategory.replace(/_/g, ' ')}`);
+  }
+  if (Array.isArray(generationStyleInput?.generationTags) && generationStyleInput.generationTags.length > 0) {
+    parts.push(`Generation tags: ${generationStyleInput.generationTags.join(', ')}`);
+  }
+  if (typeof generationStyleInput?.imagePrompt?.positive === 'string' && generationStyleInput.imagePrompt.positive.trim().length > 0) {
+    parts.push(`Canonical style prompt: ${generationStyleInput.imagePrompt.positive}`);
   }
 
   // 2. Approximate dimensions from coordinates
@@ -3405,4 +3321,10 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
+
+
+
+
+
+
 

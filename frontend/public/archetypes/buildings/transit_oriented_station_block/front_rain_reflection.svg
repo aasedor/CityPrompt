@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Transit-Oriented Station Block Front Rain Reflection">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a7b6c7" />
+      <stop offset="100%" stop-color="#eff4f9" />
+    </linearGradient>
+    <linearGradient id="facade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b7aea3" />
+      <stop offset="100%" stop-color="#bfbf4f" />
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#55514d" />
+      <stop offset="100%" stop-color="#35322f" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9e6f2" />
+      <stop offset="100%" stop-color="#7f9fb9" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="666" width="1200" height="54" fill="#d1c3b2" />
+  <rect x="0" y="711" width="1200" height="189" fill="url(#street)" />
+  <rect x="0" y="711" width="1200" height="189" fill="url(#wet)" fill-opacity="0.58" />
+
+  <ellipse cx="168" cy="603" rx="42" ry="58" fill="#769565" fill-opacity="0.86" />
+  <ellipse cx="1032" cy="594" rx="46" ry="62" fill="#769565" fill-opacity="0.84" />
+
+  <rect x="342" y="197" width="516" height="343" rx="8" fill="url(#facade)" />
+  <rect x="342" y="540" width="516" height="134" rx="5" fill="#a0a042" />
+  <rect x="332" y="183" width="536" height="16" rx="6" fill="#32363c" fill-opacity="0.94" />
+
+  <rect x="364" y="215" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.46" />
+  <rect x="460" y="215" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.49" />
+  <rect x="556" y="215" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.35" />
+  <rect x="652" y="215" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.38" />
+  <rect x="748" y="215" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.41" />
+  <rect x="364" y="295" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.48" />
+  <rect x="460" y="295" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.51" />
+  <rect x="556" y="295" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.37" />
+  <rect x="652" y="295" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.40" />
+  <rect x="748" y="295" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.43" />
+  <rect x="364" y="375" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.50" />
+  <rect x="460" y="375" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.37" />
+  <rect x="556" y="375" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.39" />
+  <rect x="652" y="375" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.42" />
+  <rect x="748" y="375" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.45" />
+  <rect x="364" y="455" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.36" />
+  <rect x="460" y="455" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.39" />
+  <rect x="556" y="455" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.42" />
+  <rect x="652" y="455" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.44" />
+  <rect x="748" y="455" width="86" height="70" rx="3" fill="#e1f1ff" fill-opacity="0.47" />
+  <rect x="360" y="556" width="112" height="83" rx="3" fill="#e3f2ff" fill-opacity="0.51" />
+  <rect x="482" y="556" width="112" height="83" rx="3" fill="#e3f2ff" fill-opacity="0.51" />
+  <rect x="604" y="556" width="112" height="83" rx="3" fill="#e3f2ff" fill-opacity="0.51" />
+  <rect x="726" y="556" width="112" height="83" rx="3" fill="#e3f2ff" fill-opacity="0.51" />
+
+  <rect x="330" y="179" width="540" height="503" fill="none" stroke="#2e3237" stroke-opacity="0.35" stroke-width="2" />
+</svg>

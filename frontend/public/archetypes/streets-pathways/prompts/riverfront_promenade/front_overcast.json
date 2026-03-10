@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T00:18:49.383Z",
+  "domain": "streets_pathways",
+  "assetCategory": "streets_paths",
+  "archetypeId": "riverfront_promenade",
+  "archetypeTitle": "Riverfront Promenade",
+  "variantId": "front_overcast",
+  "variantTitle": "Front Overcast",
+  "variantLighting": "overcast",
+  "prompt": "Create exactly one high-fidelity image for a public-facing urban planning archetype selector. Strongly centered Riverfront Promenade corridor archetype. Movement hierarchy must be legible. Paving and edge conditions should be clear. Premium, believable urban design visualization quality. Movement hierarchy and lane logic must be clear. Paving, planting, and edge conditions should be legible. Public-realm character must be the visual focus. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. corridorCharacter: Riverfront Promenade corridor identity. movementHierarchy: Modes: walking, bicycle. surfaceType: paver dominant section. plantingCharacter: Structured canopy and edge planting. edgeConditions: Active, walkable frontage edges. publicRealm: Comfortable and legible corridor for daily use Negative guidance: No exaggerated perspective distortion. No cluttered unrelated backgrounds. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text.",
+  "positive": "Strongly centered Riverfront Promenade corridor archetype. Movement hierarchy must be legible. Paving and edge conditions should be clear. Premium, believable urban design visualization quality. Movement hierarchy and lane logic must be clear. Paving, planting, and edge conditions should be legible. Public-realm character must be the visual focus. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. corridorCharacter: Riverfront Promenade corridor identity. movementHierarchy: Modes: walking, bicycle. surfaceType: paver dominant section. plantingCharacter: Structured canopy and edge planting. edgeConditions: Active, walkable frontage edges. publicRealm: Comfortable and legible corridor for daily use",
+  "negative": "No exaggerated perspective distortion. No cluttered unrelated backgrounds. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "styleProfile": {
+    "corridorCharacter": "Riverfront Promenade corridor identity",
+    "movementHierarchy": "Modes: walking, bicycle",
+    "surfaceType": "paver dominant section",
+    "plantingCharacter": "Structured canopy and edge planting",
+    "edgeConditions": "Active, walkable frontage edges",
+    "publicRealm": "Comfortable and legible corridor for daily use"
+  },
+  "generationTags": [
+    "riverfront",
+    "streets-pathways",
+    "scenic-greenways"
+  ],
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "street_pathway",
+    "subtype": "medium",
+    "aestheticCategoryId": "scenic_greenways",
+    "aestheticCategoryLabel": "Scenic Greenways",
+    "archetypeId": "riverfront_promenade",
+    "archetypeLabel": "Riverfront Promenade",
+    "archetypeImageId": "riverfront_promenade_front_overcast",
+    "archetypeImageVariantId": "front_overcast",
+    "archetypeImageVariantLabel": "Front Overcast",
+    "archetypeImageUrl": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.svg",
+    "archetypeImagePath": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.png",
+    "generationTags": [
+      "riverfront",
+      "streets-pathways",
+      "scenic-greenways"
+    ],
+    "imagePrompt": {
+      "positive": "Strongly centered Riverfront Promenade corridor archetype. Movement hierarchy must be legible. Paving and edge conditions should be clear. Premium, believable urban design visualization quality. Movement hierarchy and lane logic must be clear. Paving, planting, and edge conditions should be legible. Public-realm character must be the visual focus. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Overcast using overcast. Target output 1200x900 (4:3). Style profile guidance:. corridorCharacter: Riverfront Promenade corridor identity. movementHierarchy: Modes: walking, bicycle. surfaceType: paver dominant section. plantingCharacter: Structured canopy and edge planting. edgeConditions: Active, walkable frontage edges. publicRealm: Comfortable and legible corridor for daily use",
+      "negative": "No exaggerated perspective distortion. No cluttered unrelated backgrounds. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "corridorCharacter": "Riverfront Promenade corridor identity",
+      "movementHierarchy": "Modes: walking, bicycle",
+      "surfaceType": "paver dominant section",
+      "plantingCharacter": "Structured canopy and edge planting",
+      "edgeConditions": "Active, walkable frontage edges",
+      "publicRealm": "Comfortable and legible corridor for daily use"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "riverfront",
+        "streets-pathways",
+        "scenic-greenways"
+      ],
+      "materialDirection": [
+        "paver dominant section",
+        "Riverfront Promenade corridor identity"
+      ],
+      "reuseKeys": [
+        "streets_pathways",
+        "scenic_greenways",
+        "riverfront_promenade",
+        "front_overcast",
+        "medium"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "streets_pathways:riverfront_promenade:front_overcast",
+    "targetDomain": "street_pathway",
+    "assetCategory": "streets_paths",
+    "subtype": "medium",
+    "geometryStrategy": "corridor_ribbon_with_edge_system",
+    "parametricInputs": [
+      "corridor_width_m",
+      "lane_count",
+      "mode_allocation",
+      "sidewalk_width_m",
+      "median_width_m"
+    ],
+    "materialSlots": [
+      "carriageway",
+      "cycleway",
+      "sidewalk",
+      "curb",
+      "lane_markings",
+      "street_furniture"
+    ],
+    "sceneElements": [
+      "trees",
+      "lighting",
+      "signage",
+      "crossings",
+      "seating"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.svg",
+      "png": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.png",
+      "prompt": "/archetypes/streets-pathways/prompts/riverfront_promenade/front_overcast.json",
+      "metadata": "/archetypes/streets-pathways/metadata/riverfront_promenade/front_overcast.json"
+    },
+    "reuseSignature": {
+      "domain": "street_pathway",
+      "asset_category": "streets_paths",
+      "archetype_id": "riverfront_promenade",
+      "archetype_label": "Riverfront Promenade",
+      "aesthetic_category_id": "scenic_greenways",
+      "aesthetic_category_label": "Scenic Greenways",
+      "building_subcategory": null,
+      "subtype": "medium",
+      "generation_tags": [
+        "riverfront",
+        "streets-pathways",
+        "scenic-greenways"
+      ],
+      "style_profile": {
+        "corridorCharacter": "Riverfront Promenade corridor identity",
+        "movementHierarchy": "Modes: walking, bicycle",
+        "surfaceType": "paver dominant section",
+        "plantingCharacter": "Structured canopy and edge planting",
+        "edgeConditions": "Active, walkable frontage edges",
+        "publicRealm": "Comfortable and legible corridor for daily use"
+      }
+    }
+  },
+  "imageRefs": {
+    "svg": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.svg",
+    "png": "/archetypes/streets-pathways/riverfront_promenade/front_overcast.png",
+    "prompt": "/archetypes/streets-pathways/prompts/riverfront_promenade/front_overcast.json",
+    "metadata": "/archetypes/streets-pathways/metadata/riverfront_promenade/front_overcast.json"
+  }
+}

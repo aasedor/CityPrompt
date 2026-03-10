@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "archetype-image-v2",
+  "generatedAt": "2026-03-10T02:42:29.712Z",
+  "domain": "parks_plazas",
+  "archetype": {
+    "id": "formal_civic_plaza",
+    "title": "Formal Civic Plaza",
+    "aestheticCategoryId": "civic_plazas",
+    "aestheticCategoryLabel": "Civic Plazas",
+    "spaceType": "plaza"
+  },
+  "variant": {
+    "id": "front_day",
+    "title": "Front Elevation Day",
+    "lighting": "soft daytime"
+  },
+  "output": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "1536:1024"
+  },
+  "imageRefs": {
+    "svg": "/archetypes/parks-plazas/formal_civic_plaza/front_day.svg",
+    "png": "/archetypes/parks-plazas/formal_civic_plaza/front_day.png",
+    "prompt": "/archetypes/parks-plazas/prompts/formal_civic_plaza/front_day.json",
+    "metadata": "/archetypes/parks-plazas/metadata/formal_civic_plaza/front_day.json"
+  },
+  "generationTags": [
+    "plaza",
+    "civic-plazas",
+    "formal"
+  ],
+  "styleProfile": {
+    "landscapeCharacter": "Formal Civic Plaza plaza character",
+    "pavingType": "Stone or paver civic hardscape",
+    "plantingType": "Framing tree canopy and planters",
+    "seatingRealm": "Integrated social seating edges",
+    "waterFeatures": "Optional fountain or rill",
+    "opennessEnclosure": "Civic enclosure with active edges"
+  },
+  "generationStyleInput": {
+    "schemaVersion": "archetype-image-v2",
+    "source": "archetype_image_library",
+    "domain": "park_plaza",
+    "subtype": "plaza",
+    "aestheticCategoryId": "civic_plazas",
+    "aestheticCategoryLabel": "Civic Plazas",
+    "archetypeId": "formal_civic_plaza",
+    "archetypeLabel": "Formal Civic Plaza",
+    "archetypeImageId": "formal_civic_plaza_front_day",
+    "archetypeImageVariantId": "front_day",
+    "archetypeImageVariantLabel": "Front Elevation Day",
+    "archetypeImageUrl": "/archetypes/parks-plazas/formal_civic_plaza/front_day.svg",
+    "archetypeImagePath": "/archetypes/parks-plazas/formal_civic_plaza/front_day.png",
+    "generationTags": [
+      "plaza",
+      "civic-plazas",
+      "formal"
+    ],
+    "imagePrompt": {
+      "positive": "Centered Formal Civic Plaza plaza archetype. Primary landscape and paving logic should read clearly. Public use pattern should be visually legible. Premium, believable material realism. Landscape character and paving system must be legible. Seating, water, and planting strategy should be clear. Public gathering function should read at first glance. Centered subject dominance. Front-facing or strongly centered composition. Street-level eye-height camera. Restrained perspective distortion. Consistent framing and crop. No collage layout. No text overlays inside image. Photoreal architectural and urban design rendering. Believable material richness and detailing. Grounded cinematic atmosphere. Consistent lighting and weather mood. Controlled, low-clutter background. Benchmark visual direction: premium photoreal architectural visualization cards. Front-facing or strongly centered composition. Subject is centered and dominant in frame. Restrained perspective distortion and balanced verticals. Consistent lighting mood and atmospheric realism. Believable material richness and facade/landscape detail. Minimal clutter and no unrelated distracting background elements. No text, labels, logos, or watermarks in image. No collage layout and no fantasy distortions. Front Elevation Day using soft daytime. Target output 1200x900 (4:3). Style profile guidance:. landscapeCharacter: Formal Civic Plaza plaza character. pavingType: Stone or paver civic hardscape. plantingType: Framing tree canopy and planters. seatingRealm: Integrated social seating edges. waterFeatures: Optional fountain or rill. opennessEnclosure: Civic enclosure with active edges",
+      "negative": "No text overlays. No fantasy impossible geometry. No fantasy geometry. No extreme fisheye perspective. No dominant crowds obscuring the subject. No random unrelated backgrounds. No watermark or logo text",
+      "compositionRules": [],
+      "renderingRules": [],
+      "output": {
+        "width": 1200,
+        "height": 900,
+        "aspectRatio": "4:3"
+      }
+    },
+    "styleProfile": {
+      "landscapeCharacter": "Formal Civic Plaza plaza character",
+      "pavingType": "Stone or paver civic hardscape",
+      "plantingType": "Framing tree canopy and planters",
+      "seatingRealm": "Integrated social seating edges",
+      "waterFeatures": "Optional fountain or rill",
+      "opennessEnclosure": "Civic enclosure with active edges"
+    },
+    "downstreamHints": {
+      "sceneDressing": [
+        "plaza",
+        "civic-plazas",
+        "formal"
+      ],
+      "materialDirection": [
+        "Stone or paver civic hardscape",
+        "Framing tree canopy and planters"
+      ],
+      "reuseKeys": [
+        "parks_plazas",
+        "civic_plazas",
+        "formal_civic_plaza",
+        "front_day",
+        "plaza"
+      ]
+    }
+  },
+  "modelConversionHints": {
+    "profileVersion": "archetype-image-v2",
+    "profileId": "parks_plazas:formal_civic_plaza:front_day",
+    "targetDomain": "park_plaza",
+    "assetCategory": "parks_plazas",
+    "subtype": "plaza",
+    "geometryStrategy": "terrain_patch_with_surface_zones",
+    "parametricInputs": [
+      "path_density",
+      "canopy_density",
+      "openness_ratio",
+      "water_feature_scale",
+      "seating_density"
+    ],
+    "materialSlots": [
+      "paving_primary",
+      "paving_secondary",
+      "groundcover",
+      "canopy",
+      "water",
+      "site_furniture"
+    ],
+    "sceneElements": [
+      "planting_layers",
+      "site_furniture",
+      "water_features",
+      "lighting"
+    ],
+    "qualityTarget": "premium_photoreal",
+    "lodTargets": {
+      "lod0TriangleBudget": 180000,
+      "lod1TriangleBudget": 80000,
+      "lod2TriangleBudget": 30000
+    },
+    "imageReferences": {
+      "svg": "/archetypes/parks-plazas/formal_civic_plaza/front_day.svg",
+      "png": "/archetypes/parks-plazas/formal_civic_plaza/front_day.png",
+      "prompt": "/archetypes/parks-plazas/prompts/formal_civic_plaza/front_day.json",
+      "metadata": "/archetypes/parks-plazas/metadata/formal_civic_plaza/front_day.json"
+    },
+    "reuseSignature": {
+      "domain": "park_plaza",
+      "asset_category": "parks_plazas",
+      "archetype_id": "formal_civic_plaza",
+      "archetype_label": "Formal Civic Plaza",
+      "aesthetic_category_id": "civic_plazas",
+      "aesthetic_category_label": "Civic Plazas",
+      "building_subcategory": null,
+      "subtype": "plaza",
+      "generation_tags": [
+        "plaza",
+        "civic-plazas",
+        "formal"
+      ],
+      "style_profile": {
+        "landscapeCharacter": "Formal Civic Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      }
+    }
+  }
+}

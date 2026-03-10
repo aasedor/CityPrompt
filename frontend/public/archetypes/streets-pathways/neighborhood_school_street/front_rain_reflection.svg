@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Neighborhood School Street Front Rain Reflection">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a7b6c7" />
+      <stop offset="100%" stop-color="#edf2f7" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4e4f0" />
+      <stop offset="100%" stop-color="#7d9fbc" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="522" width="1200" height="378" fill="#ccc2b4" />
+
+  <polygon points="444,270 480,270 300,828 258,828" fill="#989590" />
+  <polygon points="720,270 756,270 942,828 900,828" fill="#989590" />
+
+  <polygon points="480,270 720,270 900,828 300,828" fill="#545459" />
+  <polygon points="480,270 720,270 900,828 300,828" fill="url(#wet)" fill-opacity="0.45" />
+  
+  <line x1="600" y1="276" x2="600" y2="828" stroke="#f4f1d9" stroke-width="4" stroke-dasharray="16 12" />
+
+  <circle cx="402" cy="264" r="18" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="798" cy="264" r="18" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="393" cy="326" r="17" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="807" cy="326" r="17" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="384" cy="388" r="16" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="816" cy="388" r="16" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="375" cy="450" r="15" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="825" cy="450" r="15" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="366" cy="512" r="14" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="834" cy="512" r="14" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="358" cy="574" r="12" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="842" cy="574" r="12" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="349" cy="636" r="11" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="851" cy="636" r="11" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="340" cy="698" r="10" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="860" cy="698" r="10" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="331" cy="760" r="9" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="869" cy="760" r="9" fill="#6c8661" fill-opacity="0.84" />
+    <circle cx="322" cy="822" r="8" fill="#6c8661" fill-opacity="0.86" />
+    <circle cx="878" cy="822" r="8" fill="#6c8661" fill-opacity="0.84" />
+</svg>

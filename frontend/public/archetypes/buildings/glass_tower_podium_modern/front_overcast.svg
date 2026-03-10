@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Glass Tower Modern Front Overcast">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a0b0c3" />
+      <stop offset="100%" stop-color="#eef3f9" />
+    </linearGradient>
+    <linearGradient id="facade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8b0a4" />
+      <stop offset="100%" stop-color="#624365" />
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c5854" />
+      <stop offset="100%" stop-color="#3b3834" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9e6f2" />
+      <stop offset="100%" stop-color="#7f9fb9" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="666" width="1200" height="54" fill="#d2c3b3" />
+  <rect x="0" y="711" width="1200" height="189" fill="url(#street)" />
+  
+
+  <ellipse cx="168" cy="603" rx="42" ry="58" fill="#779665" fill-opacity="0.86" />
+  <ellipse cx="1032" cy="594" rx="46" ry="62" fill="#779665" fill-opacity="0.84" />
+
+  <rect x="324" y="163" width="552" height="311" rx="8" fill="url(#facade)" />
+  <rect x="324" y="474" width="552" height="121" rx="5" fill="#523855" />
+  <rect x="314" y="149" width="572" height="16" rx="6" fill="#32373d" fill-opacity="0.94" />
+
+  <rect x="346" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.38" />
+  <rect x="410" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.40" />
+  <rect x="474" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.42" />
+  <rect x="538" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.44" />
+  <rect x="602" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.46" />
+  <rect x="666" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.36" />
+  <rect x="730" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.38" />
+  <rect x="794" y="181" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.40" />
+  <rect x="346" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.39" />
+  <rect x="410" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.41" />
+  <rect x="474" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.43" />
+  <rect x="538" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.45" />
+  <rect x="602" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.35" />
+  <rect x="666" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.38" />
+  <rect x="730" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.40" />
+  <rect x="794" y="277" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.42" />
+  <rect x="346" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.41" />
+  <rect x="410" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.43" />
+  <rect x="474" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.45" />
+  <rect x="538" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.35" />
+  <rect x="602" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.37" />
+  <rect x="666" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.39" />
+  <rect x="730" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.41" />
+  <rect x="794" y="373" width="54" height="86" rx="3" fill="#e0f1ff" fill-opacity="0.43" />
+  <rect x="342" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="417" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="492" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="567" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="642" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="717" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+  <rect x="792" y="490" width="65" height="75" rx="3" fill="#e2f2ff" fill-opacity="0.49" />
+
+  <rect x="312" y="145" width="576" height="458" fill="none" stroke="#2e3338" stroke-opacity="0.35" stroke-width="2" />
+</svg>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Urban Pocket Park Front Golden Hour">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#95aabc" />
+      <stop offset="100%" stop-color="#eef2f6" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="504" width="1200" height="396" fill="#849e76" />
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="#8ca87d" />
+
+  <path d="M 240 389 Q 600 365 984 393" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 456 510 Q 600 498 898 514" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 672 631 Q 600 631 811 635" stroke="#c8bead" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <circle cx="837" cy="362" r="15" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="934" cy="429" r="16" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="1031" cy="496" r="17" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="216" cy="563" r="10" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="313" cy="630" r="11" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="410" cy="697" r="12" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="507" cy="764" r="13" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="604" cy="327" r="14" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="701" cy="394" r="15" fill="#6f8a64" fill-opacity="0.80" />
+  <circle cx="798" cy="461" r="16" fill="#6f8a64" fill-opacity="0.64" />
+  <circle cx="895" cy="528" r="17" fill="#6f8a64" fill-opacity="0.72" />
+  <circle cx="992" cy="595" r="10" fill="#6f8a64" fill-opacity="0.80" />
+  <ellipse cx="636" cy="540" rx="79" ry="49" fill="#6a93ad" fill-opacity="0.45" />
+
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="none" stroke="#a0988a" stroke-opacity="0.45" stroke-width="2" />
+</svg>

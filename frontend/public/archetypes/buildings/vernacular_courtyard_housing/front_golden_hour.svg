@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Vernacular Courtyard Housing Front Golden Hour">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9bacc0" />
+      <stop offset="100%" stop-color="#edf3f8" />
+    </linearGradient>
+    <linearGradient id="facade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bdb5a9" />
+      <stop offset="100%" stop-color="#464846" />
+    </linearGradient>
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c5854" />
+      <stop offset="100%" stop-color="#3b3834" />
+    </linearGradient>
+    <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9e6f2" />
+      <stop offset="100%" stop-color="#7f9fb9" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="666" width="1200" height="54" fill="#d6c7b6" />
+  <rect x="0" y="711" width="1200" height="189" fill="url(#street)" />
+  
+
+  <ellipse cx="168" cy="603" rx="42" ry="58" fill="#7a9a68" fill-opacity="0.86" />
+  <ellipse cx="1032" cy="594" rx="46" ry="62" fill="#7a9a68" fill-opacity="0.84" />
+
+  <rect x="294" y="178" width="612" height="292" rx="8" fill="url(#facade)" />
+  <rect x="294" y="470" width="612" height="113" rx="5" fill="#3b3c3b" />
+  <rect x="284" y="164" width="632" height="16" rx="6" fill="#34393f" fill-opacity="0.94" />
+
+  <rect x="316" y="196" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.41" />
+  <rect x="431" y="196" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.45" />
+  <rect x="546" y="196" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.50" />
+  <rect x="661" y="196" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.55" />
+  <rect x="776" y="196" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.60" />
+  <rect x="316" y="286" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.44" />
+  <rect x="431" y="286" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.49" />
+  <rect x="546" y="286" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.54" />
+  <rect x="661" y="286" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.59" />
+  <rect x="776" y="286" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.35" />
+  <rect x="316" y="376" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.48" />
+  <rect x="431" y="376" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.53" />
+  <rect x="546" y="376" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.57" />
+  <rect x="661" y="376" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.62" />
+  <rect x="776" y="376" width="105" height="80" rx="3" fill="#e0f0ff" fill-opacity="0.39" />
+  <rect x="312" y="486" width="136" height="70" rx="3" fill="#e2f1ff" fill-opacity="0.57" />
+  <rect x="458" y="486" width="136" height="70" rx="3" fill="#e2f1ff" fill-opacity="0.57" />
+  <rect x="604" y="486" width="136" height="70" rx="3" fill="#e2f1ff" fill-opacity="0.57" />
+  <rect x="750" y="486" width="136" height="70" rx="3" fill="#e2f1ff" fill-opacity="0.57" />
+
+  <rect x="282" y="160" width="636" height="431" fill="none" stroke="#30343a" stroke-opacity="0.35" stroke-width="2" />
+</svg>

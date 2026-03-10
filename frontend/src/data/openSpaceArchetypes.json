@@ -1,0 +1,1134 @@
+{
+  "domain": "parks_plazas",
+  "title": "Parks and Plazas Archetype Library",
+  "categories": [
+    {
+      "id": "landscape_parks",
+      "label": "Landscape Parks",
+      "description": "Large and medium parks with layered planting and recreation"
+    },
+    {
+      "id": "civic_plazas",
+      "label": "Civic Plazas",
+      "description": "Formal and contemporary hardscape plazas for gathering"
+    },
+    {
+      "id": "social_event_spaces",
+      "label": "Social / Event Spaces",
+      "description": "Flexible open spaces for markets and events"
+    },
+    {
+      "id": "ecological_resilience",
+      "label": "Ecological Resilience",
+      "description": "Nature-based systems and climate-adaptive landscapes"
+    },
+    {
+      "id": "waterfront_spaces",
+      "label": "Waterfront Spaces",
+      "description": "Promenades and open spaces anchored by water edges"
+    },
+    {
+      "id": "neighborhood_public_realm",
+      "label": "Neighborhood Public Realm",
+      "description": "Everyday community parks and pocket spaces"
+    },
+    {
+      "id": "custom",
+      "label": "Custom / Other",
+      "description": "User-directed open-space identity for special contexts"
+    }
+  ],
+  "archetypes": [
+    {
+      "id": "english_landscape_park",
+      "title": "English Landscape Park",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "English Landscape Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "english"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "English Landscape Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered English Landscape Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "central_park_inspired_urban_park",
+      "title": "Central Park-Inspired Urban Park",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Central Park-Inspired Urban Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "central"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Central Park-Inspired Urban Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Central Park-Inspired Urban Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "formal_civic_plaza",
+      "title": "Formal Civic Plaza",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "Formal Civic Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "formal"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Formal Civic Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Formal Civic Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "contemporary_urban_square",
+      "title": "Contemporary Urban Square",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "Contemporary Urban Square open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "contemporary"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Contemporary Urban Square plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Contemporary Urban Square plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "parisian_garden_square",
+      "title": "Parisian Garden Square",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Parisian Garden Square open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "parisian"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Parisian Garden Square park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Parisian Garden Square park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "japanese_zen_court",
+      "title": "Japanese Zen Court",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Japanese Zen Court open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "japanese"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Japanese Zen Court park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Japanese Zen Court park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "neighborhood_playground_park",
+      "title": "Neighborhood Playground Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Neighborhood Playground Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "neighborhood"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Neighborhood Playground Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Neighborhood Playground Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "riverfront_park",
+      "title": "Riverfront Park",
+      "aestheticCategory": "waterfront_spaces",
+      "spaceType": "park",
+      "description": "Riverfront Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "waterfront-spaces",
+        "riverfront"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Riverfront Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Riverfront Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "festival_plaza",
+      "title": "Festival Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "plaza",
+      "description": "Festival Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "festival"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Festival Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Festival Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "events"
+      }
+    },
+    {
+      "id": "mediterranean_courtyard_plaza",
+      "title": "Mediterranean Courtyard Plaza",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "Mediterranean Courtyard Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "mediterranean"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Mediterranean Courtyard Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Mediterranean Courtyard Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "scandinavian_minimal_park",
+      "title": "Scandinavian Minimal Park",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Scandinavian Minimal Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "scandinavian"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Scandinavian Minimal Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Scandinavian Minimal Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "ecological_wetland_park",
+      "title": "Ecological Wetland Park",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Ecological Wetland Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "ecological"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Ecological Wetland Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Ecological Wetland Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "dense",
+        "tree_density": 0.7,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "ecological_mosaic"
+      }
+    },
+    {
+      "id": "market_square",
+      "title": "Market Square",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "plaza",
+      "description": "Market Square open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "market"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Market Square plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Market Square plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "events"
+      }
+    },
+    {
+      "id": "memorial_garden",
+      "title": "Memorial Garden",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Memorial Garden open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "memorial"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Memorial Garden park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Memorial Garden park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "campus_green",
+      "title": "Campus Green",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Campus Green open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "campus"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Campus Green park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Campus Green park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "urban_pocket_park",
+      "title": "Urban Pocket Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Urban Pocket Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "urban"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Urban Pocket Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Urban Pocket Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "natural_play_park",
+      "title": "Natural Play Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Natural Play Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "natural"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Natural Play Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Natural Play Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "grand_fountain_plaza",
+      "title": "Grand Fountain Plaza",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "Grand Fountain Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "grand"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Grand Fountain Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Grand Fountain Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "industrial_heritage_plaza",
+      "title": "Industrial Heritage Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "plaza",
+      "description": "Industrial Heritage Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "industrial"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Industrial Heritage Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Industrial Heritage Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "events"
+      }
+    },
+    {
+      "id": "forest_edge_park",
+      "title": "Forest Edge Park",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Forest Edge Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "forest"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Forest Edge Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Forest Edge Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "dense",
+        "tree_density": 0.7,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "ecological_mosaic"
+      }
+    },
+    {
+      "id": "botanical_conservatory_garden",
+      "title": "Botanical Conservatory Garden",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "Botanical Conservatory Garden open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "landscape-parks",
+        "botanical"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Botanical Conservatory Garden park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Botanical Conservatory Garden park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "climate_resilience_sponge_park",
+      "title": "Climate Resilience Sponge Park",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Climate Resilience Sponge Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "ecological-resilience",
+        "climate"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Climate Resilience Sponge Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Climate Resilience Sponge Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "dense",
+        "tree_density": 0.7,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "ecological_mosaic"
+      }
+    },
+    {
+      "id": "childrens_discovery_plaza",
+      "title": "Children's Discovery Plaza",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "plaza",
+      "description": "Children's Discovery Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "social-event-spaces",
+        "childrens"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Children's Discovery Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Children's Discovery Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "events"
+      }
+    },
+    {
+      "id": "waterfront_boardwalk_plaza",
+      "title": "Waterfront Boardwalk Plaza",
+      "aestheticCategory": "waterfront_spaces",
+      "spaceType": "plaza",
+      "description": "Waterfront Boardwalk Plaza open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "waterfront-spaces",
+        "waterfront"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Waterfront Boardwalk Plaza plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Waterfront Boardwalk Plaza plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "civic_art_court",
+      "title": "Civic Art Court",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "Civic Art Court open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "plaza",
+        "civic-plazas",
+        "civic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Civic Art Court plaza character",
+        "pavingType": "Stone or paver civic hardscape",
+        "plantingType": "Framing tree canopy and planters",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional fountain or rill",
+        "opennessEnclosure": "Civic enclosure with active edges"
+      },
+      "prompt": {
+        "subject": "Centered Civic Art Court plaza archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "stone",
+        "shade_strategy": "tree_grove",
+        "plaza_program": "civic"
+      }
+    },
+    {
+      "id": "sports_activity_green",
+      "title": "Sports Activity Green",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Sports Activity Green open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "sports"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Sports Activity Green park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Sports Activity Green park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "neighborhood_dog_park",
+      "title": "Neighborhood Dog Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Neighborhood Dog Park open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "neighborhood-public-realm",
+        "neighborhood"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Neighborhood Dog Park park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Neighborhood Dog Park park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    },
+    {
+      "id": "custom_parks_plazas",
+      "title": "Custom Parks / Plazas",
+      "aestheticCategory": "custom",
+      "spaceType": "park",
+      "description": "Custom Parks / Plazas open-space archetype with premium landscape/urban design clarity",
+      "generationTags": [
+        "park",
+        "custom"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Custom Parks / Plazas park character",
+        "pavingType": "Mixed path and landscape paving",
+        "plantingType": "Layered canopy, understory, and meadow planting",
+        "seatingRealm": "Integrated social seating edges",
+        "waterFeatures": "Optional pond, stream, or rain garden",
+        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+      },
+      "prompt": {
+        "subject": "Centered Custom Parks / Plazas park archetype",
+        "details": [
+          "Primary landscape and paving logic should read clearly",
+          "Public use pattern should be visually legible",
+          "Premium, believable material realism"
+        ],
+        "negative": [
+          "No text overlays",
+          "No fantasy impossible geometry"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      }
+    }
+  ]
+}

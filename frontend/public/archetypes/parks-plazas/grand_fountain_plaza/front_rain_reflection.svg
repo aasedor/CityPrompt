@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Grand Fountain Plaza Front Rain Reflection">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a4b6c5" />
+      <stop offset="100%" stop-color="#eff3f7" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="900" fill="url(#sky)" />
+  <rect x="0" y="504" width="1200" height="396" fill="#b6aa9c" />
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="#c2b5a6" />
+
+  <path d="M 240 389 Q 600 365 984 393" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 456 510 Q 600 498 898 514" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <path d="M 672 631 Q 600 631 811 635" stroke="#b2a79c" stroke-width="18" stroke-linecap="round" fill="none" opacity="0.88" />
+  <circle cx="1019" cy="361" r="13" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="204" cy="428" r="14" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="301" cy="495" r="15" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="398" cy="562" r="16" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="495" cy="629" r="17" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="592" cy="696" r="10" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="689" cy="763" r="11" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="786" cy="326" r="12" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="883" cy="393" r="13" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="980" cy="460" r="14" fill="#6b8561" fill-opacity="0.64" />
+  <circle cx="165" cy="527" r="15" fill="#6b8561" fill-opacity="0.72" />
+  <circle cx="262" cy="594" r="16" fill="#6b8561" fill-opacity="0.80" />
+  <circle cx="600" cy="540" r="51" fill="#6890a9" fill-opacity="0.55" />
+
+  <rect x="144" y="288" width="912" height="504" rx="26" fill="none" stroke="#8e867d" stroke-opacity="0.45" stroke-width="2" />
+</svg>
