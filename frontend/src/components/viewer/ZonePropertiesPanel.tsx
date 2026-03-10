@@ -2225,10 +2225,12 @@ function AestheticImage({
   sources,
   alt,
   className,
+  onDoubleClick,
 }: {
   sources: string[];
   alt: string;
   className: string;
+  onDoubleClick?: (activeSource: string) => void;
 }) {
   const [sourceIndex, setSourceIndex] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -2254,6 +2256,12 @@ function AestheticImage({
       className={className}
       loading="lazy"
       referrerPolicy="no-referrer"
+      onDoubleClick={() => {
+        const activeSource = sources[Math.min(sourceIndex, sources.length - 1)];
+        if (activeSource && onDoubleClick) {
+          onDoubleClick(activeSource);
+        }
+      }}
       onError={() => {
         setSourceIndex((current) => {
           if (current < sources.length - 1) {
@@ -2279,8 +2287,9 @@ function AestheticOptionCard({
   selectedReferenceId?: string;
   onSelect: (id: string, archetypeImageId?: string) => void;
 }) {
+  const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
-    const archetypeImages = Array.isArray(option.archetypeImages) ? option.archetypeImages : [];
+  const archetypeImages = Array.isArray(option.archetypeImages) ? option.archetypeImages : [];
   const defaultArchetype = getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
   const selectedArchetype = value === option.id
     ? archetypeImages.find((image) => image.id === selectedReferenceId) || defaultArchetype
@@ -2296,6 +2305,19 @@ function AestheticOptionCard({
       label: `${option.label} example ${idx + 1}`,
     }));
 
+  const openImageLightbox = (imageUrl: string, label: string) => {
+    const resolvedUrl = resolveApiFileUrl(imageUrl);
+    const safeName = label.replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    setLightboxImage(resolvedUrl, {
+      onDownload: () => {
+        const link = document.createElement('a');
+        link.href = resolvedUrl;
+        link.download = `${safeName || 'archetype_reference'}.png`;
+        link.click();
+      },
+    });
+  };
+
   return (
     <button
       key={option.id}
@@ -2307,11 +2329,12 @@ function AestheticOptionCard({
           : 'border-primary-950/[0.08] hover:border-primary-950/[0.2]'
       }`}
     >
-      <div className="relative aspect-[4/3] bg-primary-950/[0.06]">
+      <div className="relative aspect-[4/3] bg-primary-950/[0.06]" title="Double-click image to enlarge">
         <AestheticImage
           sources={heroSources}
           alt={option.label}
           className="h-full w-full object-cover"
+          onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-2">
@@ -2336,12 +2359,13 @@ function AestheticOptionCard({
                     ? 'border-primary-500 ring-2 ring-primary-500/35'
                     : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
                 }`}
-                title={image.label}
+                title={`${image.label} (double-click to enlarge)`}
               >
                 <AestheticImage
                   sources={[image.imageUrl, ...heroSources]}
                   alt={`${option.label} example ${idx + 1}`}
                   className="h-full w-full object-cover"
+                  onDoubleClick={(activeSource) => openImageLightbox(activeSource, image.label || option.label)}
                 />
               </button>
             );
@@ -3321,10 +3345,3 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
-
-
-
-
-
-
-
