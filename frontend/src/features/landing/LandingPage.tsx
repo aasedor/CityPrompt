@@ -327,7 +327,7 @@ function ShareIllustration() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Teaching step layout — alternates illustration left/right          */
+/*  Teaching step layout — text centered on top, wide image below      */
 /* ------------------------------------------------------------------ */
 
 interface TeachingStepProps {
@@ -350,53 +350,50 @@ function TeachingStep({
   description,
   details,
   illustration,
-  reverse = false,
   accentColor,
 }: TeachingStepProps) {
   return (
     <section
       id={id}
-      className="relative min-h-[80vh] flex items-center px-6 py-20 sm:py-28"
+      className="relative px-6 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-6xl w-full">
-        <div className={`grid items-center gap-12 lg:grid-cols-2 lg:gap-16 ${reverse ? 'lg:[direction:rtl]' : ''}`}>
-          {/* Text side */}
-          <div className={reverse ? 'lg:[direction:ltr]' : ''}>
-            <RevealSection>
-              <div className={`mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold tracking-wide uppercase ${accentColor}`}>
-                <span className="text-base font-bold">{stepNumber}</span>
-                {stepLabel}
-              </div>
-            </RevealSection>
-            <RevealSection delay={100}>
-              <h2 className="text-3xl font-bold leading-tight text-primary-950 sm:text-4xl">
-                {title}
-              </h2>
-            </RevealSection>
-            <RevealSection delay={200}>
-              <p className="mt-5 text-lg leading-relaxed text-primary-950/50">
-                {description}
-              </p>
-            </RevealSection>
-            <RevealSection delay={300}>
-              <ul className="mt-8 space-y-3">
-                {details.map((detail, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-primary-950/60">
-                    <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-coral-500" />
-                    {detail}
-                  </li>
-                ))}
-              </ul>
-            </RevealSection>
-          </div>
-
-          {/* Illustration side */}
-          <RevealSection delay={150} className={reverse ? 'lg:[direction:ltr]' : ''}>
-            <div className="rounded-2xl border border-primary-950/[0.06] bg-white p-4 shadow-sm sm:p-6">
-              {illustration}
+        {/* Text — centered */}
+        <div className="mx-auto max-w-2xl text-center">
+          <RevealSection>
+            <div className={`mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-semibold tracking-wide uppercase ${accentColor}`}>
+              <span className="text-base font-bold">{stepNumber}</span>
+              {stepLabel}
             </div>
           </RevealSection>
+          <RevealSection delay={100}>
+            <h2 className="text-3xl font-bold leading-tight text-primary-950 sm:text-4xl">
+              {title}
+            </h2>
+          </RevealSection>
+          <RevealSection delay={200}>
+            <p className="mt-5 text-lg leading-relaxed text-primary-950/50">
+              {description}
+            </p>
+          </RevealSection>
+          <RevealSection delay={300}>
+            <ul className="mt-6 inline-flex flex-wrap justify-center gap-x-6 gap-y-2">
+              {details.map((detail, i) => (
+                <li key={i} className="flex items-center gap-2 text-sm text-primary-950/60">
+                  <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-coral-500" />
+                  {detail}
+                </li>
+              ))}
+            </ul>
+          </RevealSection>
         </div>
+
+        {/* Image — full width below */}
+        <RevealSection delay={250}>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-primary-950/[0.06] bg-white shadow-lg sm:mt-14">
+            {illustration}
+          </div>
+        </RevealSection>
       </div>
     </section>
   );
@@ -563,7 +560,6 @@ export function LandingPage() {
             className="w-full rounded-lg"
           />
         }
-        reverse
         accentColor="bg-coral-500/15 text-coral-500"
       />
 
@@ -602,7 +598,6 @@ export function LandingPage() {
           'Realistic shadows and atmospheric effects bring scenes to life',
         ]}
         illustration={<ViewerIllustration />}
-        reverse
         accentColor="bg-primary-400/15 text-primary-500"
       />
 

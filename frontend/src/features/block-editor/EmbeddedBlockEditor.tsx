@@ -38,11 +38,13 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
   // Prevent page scroll when mouse is over the block editor, but allow
   // native scroll inside the properties panel (which has overflow-y-auto).
+  // The SVG canvas has its own wheel handler for zoom, so we just block
+  // the default scroll behavior here without interfering with it.
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
     const handler = (e: WheelEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target as HTMLElement | SVGElement;
       if (target.closest('[data-scrollable]')) return;
       e.preventDefault();
     };
@@ -71,11 +73,18 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
     }
   }, [editableZones, activeZoneId]);
 
+  // Stable reference to the description_text of the selected zone so the
+  // effect re-fires when the user adds a description and comes back.
+  const selectedZoneDescription = zones.find((z) => z.id === activeZoneId)?.properties?.description_text || '';
+
   // Load layout options for selected zone
   useEffect(() => {
     if (!activeZoneId) return;
     const zoneForLoad = zones.find((z) => z.id === activeZoneId);
     if (!zoneForLoad) return;
+
+    // Track whether this effect invocation has been superseded
+    let cancelled = false;
 
     const loadData = async () => {
       const store = useBlockEditorStore.getState();
@@ -84,6 +93,12 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       if (store.zoneId === activeZoneId && store.editedLayout) {
         setLoading(false);
         return;
+      }
+
+      // Zone switched — immediately clear stale layout so the canvas
+      // doesn't keep showing the previous zone's buildings.
+      if (store.zoneId !== activeZoneId) {
+        resetEditor();
       }
 
       if (!zoneForLoad?.properties?.description_text) {
@@ -96,6 +111,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       // 1. Saved layout in zone properties
       const savedLayout = zoneForLoad.properties?._saved_layout as LayoutOption | undefined;
       if (savedLayout) {
+        if (cancelled) return;
         store.cacheLayout(activeZoneId, [savedLayout]);
         initEditor(projectId, zoneForLoad, [savedLayout]);
         return;
@@ -104,6 +120,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       // 2. Zustand store cache (persists across component unmounts)
       const cached = store.getCachedLayout(activeZoneId);
       if (cached) {
+        if (cancelled) return;
         initEditor(projectId, zoneForLoad, cached);
         return;
       }
@@ -111,6 +128,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       // 3. Cached layout in zustand viewer store
       const cachedOptions = layoutPreview?.zoneId === activeZoneId ? layoutPreview.options : [];
       if (cachedOptions.length > 0) {
+        if (cancelled) return;
         store.cacheLayout(activeZoneId, cachedOptions);
         initEditor(projectId, zoneForLoad, cachedOptions);
         return;
@@ -120,6 +138,7 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
       setLoading(true);
       try {
         const response = await siteZonesApi.previewLayouts(activeZoneId);
+        if (cancelled) return;
         const options = response.options;
         if (options.length === 0) {
           toast.error('No layout options generated');
@@ -128,14 +147,16 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
         store.cacheLayout(activeZoneId, options);
         initEditor(projectId, zoneForLoad, options);
       } catch (err: any) {
+        if (cancelled) return;
         toast.error(err?.response?.data?.detail || 'Failed to generate layouts');
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadData();
-  }, [activeZoneId, projectId]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => { cancelled = true; };
+  }, [activeZoneId, projectId, selectedZoneDescription]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Track container size
   useEffect(() => {
@@ -209,48 +230,49 @@ export function EmbeddedBlockEditor({ projectId, zones, onFinalized }: EmbeddedB
 
   if (editableZones.length === 0) {
     return (
-      <div className="flex h-[500px] items-center justify-center text-neutral-400 text-sm">
+      <div className="flex h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh] items-center justify-center text-neutral-400 text-sm">
         No editable zones found. Draw a building, residential, or development area zone in the Master Plan first.
       </div>
     );
   }
 
   return (
-    <div ref={wrapperRef} className="flex h-[500px] flex-col bg-primary-950 rounded-b-xl overflow-hidden">
-      {/* Editor header with zone picker integrated */}
-      {!loading && editedLayout && (
-        <div className="flex items-center justify-between border-b border-white/[0.08] bg-primary-950/95 backdrop-blur-xl px-4 py-2">
-          {/* Left: Zone picker + info */}
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <select
-                value={activeZoneId || ''}
-                onChange={(e) => setActiveZoneId(e.target.value)}
-                className="appearance-none rounded-lg border border-white/[0.1] bg-white/[0.05] pl-3 pr-7 py-1.5 text-xs text-white font-medium focus:border-indigo-400/50 focus:outline-none cursor-pointer"
-              >
-                {editableZones.map((z) => (
-                  <option key={z.id} value={z.id} className="bg-primary-950 text-white">
-                    {z.name || z.zone_type}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={12} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400" />
-            </div>
-            <span className="text-[10px] text-neutral-500">{editedLayout.buildings.length} blocks</span>
+    <div ref={wrapperRef} className="flex h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh] flex-col bg-primary-950 rounded-b-xl overflow-hidden">
+      {/* Editor header — always show zone picker so you can switch zones */}
+      <div className="flex items-center justify-between border-b border-white/[0.08] bg-primary-950/95 backdrop-blur-xl px-4 py-2">
+        {/* Left: Zone picker + info */}
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <select
+              value={activeZoneId || ''}
+              onChange={(e) => setActiveZoneId(e.target.value)}
+              className="appearance-none rounded-lg border border-white/[0.1] bg-white/[0.05] pl-3 pr-7 py-1.5 text-xs text-white font-medium focus:border-indigo-400/50 focus:outline-none cursor-pointer"
+            >
+              {editableZones.map((z) => (
+                <option key={z.id} value={z.id} className="bg-primary-950 text-white">
+                  {z.name || z.zone_type}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={12} className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-400" />
           </div>
+          {editedLayout && (
+            <span className="text-[10px] text-neutral-500">{editedLayout.buildings.length} blocks</span>
+          )}
+        </div>
 
-          {/* Spacer */}
-          <div />
-
-          {/* Right: Tools + Actions */}
+        {/* Right: Tools + Actions (only when layout is loaded) */}
+        {!loading && editedLayout ? (
           <EditorControls
             onSave={handleSave}
             onGenerate3D={handleGenerate3D}
             isSaving={isSaving}
             isGenerating={isGenerating}
           />
-        </div>
-      )}
+        ) : (
+          <div />
+        )}
+      </div>
 
       {/* Nudge: zone needs a description */}
       {needsDescription && !loading && !editedLayout && (

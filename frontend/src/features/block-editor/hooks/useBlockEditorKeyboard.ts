@@ -11,8 +11,13 @@ const MOVE_KEYS = new Set(['w', 'a', 's', 'd', 'ArrowUp', 'ArrowDown', 'ArrowLef
 
 export function useBlockEditorKeyboard() {
   const {
-    selectedBlockIndex, deleteBlock, duplicateBlock, undo, redo, selectBlock,
-    editedLayout, moveBlock, pushUndoSnapshot, panX, panY, setPan, zone,
+    selectedBlockIndex, selectedBlockIndices,
+    deleteBlock, deleteSelectedBlocks,
+    duplicateBlock, duplicateSelectedBlocks,
+    copyBlock, copySelectedBlocks, pasteBlock,
+    undo, redo, selectBlock,
+    editedLayout, moveBlock, moveSelectedBlocks, pushUndoSnapshot,
+    panX, panY, setPan, zone,
   } = useBlockEditorStore();
 
   // Track whether we've already pushed an undo snapshot for the current key-move sequence
@@ -36,18 +41,55 @@ export function useBlockEditorKeyboard() {
       }
 
       if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (selectedBlockIndex !== null) {
+        if (selectedBlockIndices.length > 1) {
+          e.preventDefault();
+          deleteSelectedBlocks();
+        } else if (selectedBlockIndex !== null) {
           e.preventDefault();
           deleteBlock(selectedBlockIndex);
         }
         return;
       }
 
+      // Ctrl+A — select all blocks
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+        if (editedLayout && editedLayout.buildings.length > 0) {
+          const allIndices = editedLayout.buildings.map((_, i) => i);
+          useBlockEditorStore.setState({
+            selectedBlockIndices: allIndices,
+            selectedBlockIndex: allIndices[allIndices.length - 1],
+            selectedElementType: 'building',
+            selectedElementIndex: allIndices[allIndices.length - 1],
+          });
+        }
+        return;
+      }
+
       if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
         e.preventDefault();
-        if (selectedBlockIndex !== null) {
+        if (selectedBlockIndices.length > 1) {
+          duplicateSelectedBlocks();
+        } else if (selectedBlockIndex !== null) {
           duplicateBlock(selectedBlockIndex);
         }
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+        if (selectedBlockIndices.length > 1) {
+          e.preventDefault();
+          copySelectedBlocks();
+        } else if (selectedBlockIndex !== null) {
+          e.preventDefault();
+          copyBlock(selectedBlockIndex);
+        }
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        e.preventDefault();
+        pasteBlock();
         return;
       }
 
@@ -67,7 +109,7 @@ export function useBlockEditorKeyboard() {
         return;
       }
 
-      // WASD and Arrow keys: move selected block or pan map
+      // WASD and Arrow keys: move selected block(s) or pan map
       if (MOVE_KEYS.has(e.key) && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
 
@@ -79,10 +121,10 @@ export function useBlockEditorKeyboard() {
         if (e.key === 'ArrowUp' || e.key === 'w') dy = -1;
         if (e.key === 'ArrowDown' || e.key === 's') dy = 1;
 
-        if (selectedBlockIndex !== null && editedLayout) {
-          // Move the selected block
-          const bldg = editedLayout.buildings[selectedBlockIndex];
-          if (!bldg) return;
+        if (selectedBlockIndices.length > 0 && editedLayout) {
+          // Move selected block(s)
+          const refBlock = editedLayout.buildings[selectedBlockIndices[0]];
+          if (!refBlock) return;
 
           // Push undo only once per key-hold sequence
           if (!moveUndoPushedRef.current) {
@@ -90,10 +132,16 @@ export function useBlockEditorKeyboard() {
             moveUndoPushedRef.current = true;
           }
 
-          const lat = zone?.coordinates?.[0]?.[1] ?? bldg.center_y;
+          const lat = zone?.coordinates?.[0]?.[1] ?? refBlock.center_y;
           const degX = (BLOCK_MOVE_STEP_METERS * dx) / metersPerDegLon(lat);
-          const degY = (BLOCK_MOVE_STEP_METERS * -dy) / METERS_PER_DEG_LAT; // screen-down is lat-negative
-          moveBlock(selectedBlockIndex, bldg.center_x + degX, bldg.center_y + degY);
+          const degY = (BLOCK_MOVE_STEP_METERS * -dy) / METERS_PER_DEG_LAT;
+
+          if (selectedBlockIndices.length > 1) {
+            moveSelectedBlocks(degX, degY);
+          } else if (selectedBlockIndex !== null) {
+            const bldg = editedLayout.buildings[selectedBlockIndex];
+            if (bldg) moveBlock(selectedBlockIndex, bldg.center_x + degX, bldg.center_y + degY);
+          }
         } else {
           // Pan the map
           setPan(panX - dx * PAN_STEP_PX, panY - dy * PAN_STEP_PX);
@@ -108,6 +156,11 @@ export function useBlockEditorKeyboard() {
       window.removeEventListener('keydown', handler);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [selectedBlockIndex, deleteBlock, duplicateBlock, undo, redo, selectBlock,
-      editedLayout, moveBlock, pushUndoSnapshot, panX, panY, setPan, zone]);
+  }, [selectedBlockIndex, selectedBlockIndices,
+      deleteBlock, deleteSelectedBlocks,
+      duplicateBlock, duplicateSelectedBlocks,
+      copyBlock, copySelectedBlocks, pasteBlock,
+      undo, redo, selectBlock,
+      editedLayout, moveBlock, moveSelectedBlocks, pushUndoSnapshot,
+      panX, panY, setPan, zone]);
 }

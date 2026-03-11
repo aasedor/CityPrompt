@@ -8,7 +8,7 @@ import { useSnapLines } from './hooks/useSnapLines';
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
 // Fetch satellite imagery covering more area than the zone so zooming out still shows map
-const SATELLITE_EXPAND = 12;
+const SATELLITE_EXPAND = 8;
 
 interface BlockEditorCanvasProps {
   width: number;
@@ -105,8 +105,10 @@ function getSatelliteInfo(
 
 export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: BlockEditorCanvasProps) {
   const {
-    zone, editedLayout, selectedBlockIndex, hoveredBlockIndex, selectedElementType, selectedElementIndex,
-    selectBlock, selectElement, hoverBlock, zoom, panX, panY, setZoom, setPan, dragState,
+    zone, editedLayout, selectedBlockIndices, hoveredBlockIndex,
+    selectedElementType, selectedElementIndex,
+    selectBlock, toggleBlockSelection, selectElement, hoverBlock,
+    zoom, panX, panY, setZoom, setPan, dragState,
     showGrid, gridSizeMeters, showDimensions,
   } = useBlockEditorStore();
 
@@ -250,7 +252,7 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
     };
     el.addEventListener('wheel', handler, { passive: false });
     return () => el.removeEventListener('wheel', handler);
-  }, [setZoom, setPan]);
+  }, [setZoom, setPan, editedLayout]);
 
   const handleCanvasPointerDown = useCallback((e: React.PointerEvent) => {
     if (isDragging) return;
@@ -505,12 +507,18 @@ export function BlockEditorCanvas({ width, height, allZones, onSelectZone }: Blo
           block={bldg}
           index={i}
           transform={zoneTransform!}
-          isSelected={selectedBlockIndex === i}
+          isSelected={selectedBlockIndices.includes(i)}
           isHovered={hoveredBlockIndex === i}
           showDimensions={showDimensions}
           onPointerDown={startDrag}
           onHover={hoverBlock}
-          onClick={selectBlock}
+          onClick={(e, idx) => {
+            if (e.shiftKey || e.ctrlKey || e.metaKey) {
+              toggleBlockSelection(idx);
+            } else {
+              selectBlock(idx);
+            }
+          }}
         />
       ))}
     </svg>

@@ -1,11 +1,11 @@
 import { useCallback, useRef } from 'react';
 import { useBlockEditorStore, type DragType } from '@/store/blockEditorStore';
-import { pixelsToMeters, type Transform } from '@/utils/coordTransform';
+import { offsetToSVG, pixelsToMeters, type Transform } from '@/utils/coordTransform';
 
 export function useBlockDrag(transform: Transform | null) {
   const {
     dragState, setDragState, moveBlock, resizeBlock, rotateBlock,
-    pushUndoSnapshot, editedLayout,
+    pushUndoSnapshot, editedLayout, selectedBlockIndices, moveSelectedBlocks,
   } = useBlockEditorStore();
   const hasDraggedRef = useRef(false);
 
@@ -23,6 +23,15 @@ export function useBlockDrag(transform: Transform | null) {
     pushUndoSnapshot();
     hasDraggedRef.current = false;
 
+    // Capture starting positions of all selected blocks for multi-move
+    const isMulti = type === 'move' && selectedBlockIndices.length > 1 && selectedBlockIndices.includes(blockIndex);
+    const multiStartPositions = isMulti
+      ? selectedBlockIndices.map((i) => ({
+          cx: editedLayout.buildings[i].center_x,
+          cy: editedLayout.buildings[i].center_y,
+        }))
+      : undefined;
+
     setDragState({
       type,
       blockIndex,
@@ -33,8 +42,9 @@ export function useBlockDrag(transform: Transform | null) {
       startWidthM: bldg.width_m,
       startDepthM: bldg.depth_m,
       startRotation: bldg.rotation_deg,
+      multiStartPositions,
     });
-  }, [editedLayout, transform, pushUndoSnapshot, setDragState]);
+  }, [editedLayout, transform, pushUndoSnapshot, setDragState, selectedBlockIndices]);
 
   const onDrag = useCallback((e: React.PointerEvent) => {
     if (!dragState || !transform) return;
@@ -46,18 +56,45 @@ export function useBlockDrag(transform: Transform | null) {
       // Convert pixel delta to degree delta
       const degDx = dx / (transform.scale * transform.mlon);
       const degDy = -dy / (transform.scale * transform.mlat);
-      moveBlock(dragState.blockIndex, dragState.startCenterX + degDx, dragState.startCenterY + degDy);
+
+      if (dragState.multiStartPositions && selectedBlockIndices.length > 1) {
+        // Multi-select move: apply same delta to all selected blocks
+        // We use moveSelectedBlocks which applies a delta, but we need absolute positioning
+        // since drag accumulates. Use the start positions + current delta.
+        const { editedLayout: layout } = useBlockEditorStore.getState();
+        if (!layout) return;
+        const cloned = JSON.parse(JSON.stringify(layout)) as typeof layout;
+        for (let si = 0; si < selectedBlockIndices.length; si++) {
+          const idx = selectedBlockIndices[si];
+          const start = dragState.multiStartPositions[si];
+          if (start && cloned.buildings[idx]) {
+            cloned.buildings[idx].center_x = start.cx + degDx;
+            cloned.buildings[idx].center_y = start.cy + degDy;
+          }
+        }
+        useBlockEditorStore.setState({ editedLayout: cloned });
+      } else {
+        moveBlock(dragState.blockIndex, dragState.startCenterX + degDx, dragState.startCenterY + degDy);
+      }
     } else if (dragState.type === 'rotate') {
-      const angleDelta = dx * 0.5; // 0.5 degrees per pixel
-      rotateBlock(dragState.blockIndex, dragState.startRotation + angleDelta);
+      // Compute angle from block center to cursor using atan2
+      // so rotation follows the cursor naturally in all directions.
+      const bldg = useBlockEditorStore.getState().editedLayout?.buildings[dragState.blockIndex];
+      if (!bldg) return;
+      const [cx, cy] = offsetToSVG(bldg.center_x, bldg.center_y, transform);
+      const svgRect = (e.currentTarget as Element).closest('svg')?.getBoundingClientRect();
+      if (!svgRect) return;
+      const cursorX = e.clientX - svgRect.left;
+      const cursorY = e.clientY - svgRect.top;
+      // atan2: angle from block center to cursor, 0° = up (north)
+      const angle = Math.atan2(-(cursorX - cx), -(cursorY - cy)) * (180 / Math.PI);
+      rotateBlock(dragState.blockIndex, ((angle % 360) + 360) % 360);
     } else if (dragState.type.startsWith('resize')) {
       // Rotate screen-space delta into the block's local coordinate system
       // so resizing works correctly regardless of block rotation.
-      // SVG renders with rotate(-rotation_deg), so local-to-screen rotation angle is -rotation_deg.
       const rotRad = dragState.startRotation * Math.PI / 180;
       const cos = Math.cos(rotRad);
       const sin = Math.sin(rotRad);
-      // Project screen delta onto block-local axes
       const localDx = dx * cos - dy * sin;
       const localDy = dx * sin + dy * cos;
 
@@ -74,7 +111,7 @@ export function useBlockDrag(transform: Transform | null) {
 
       resizeBlock(dragState.blockIndex, newW, newD);
     }
-  }, [dragState, transform, moveBlock, resizeBlock, rotateBlock]);
+  }, [dragState, transform, moveBlock, resizeBlock, rotateBlock, selectedBlockIndices, moveSelectedBlocks]);
 
   const endDrag = useCallback((e: React.PointerEvent) => {
     if (!dragState) return;

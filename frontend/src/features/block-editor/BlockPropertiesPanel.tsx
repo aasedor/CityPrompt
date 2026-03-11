@@ -1,11 +1,13 @@
-import { Trash2, Copy, RotateCw, MapPin, TreePine, Route } from 'lucide-react';
+import { Trash2, Copy, RotateCw, MapPin, TreePine, Route, Layers } from 'lucide-react';
 import { useBlockEditorStore } from '@/store/blockEditorStore';
 
 export function BlockPropertiesPanel() {
   const {
-    editedLayout, selectedBlockIndex, zone,
+    editedLayout, selectedBlockIndex, selectedBlockIndices, zone,
     selectedElementType, selectedElementIndex,
-    updateBlockProperties, deleteBlock, duplicateBlock,
+    updateBlockProperties, deleteBlock, deleteSelectedBlocks,
+    duplicateBlock, duplicateSelectedBlocks,
+    copySelectedBlocks,
     updateRoadProperties, updateGreenSpaceProperties,
   } = useBlockEditorStore();
 
@@ -103,6 +105,49 @@ export function BlockPropertiesPanel() {
     );
   }
 
+  // Multi-selection panel
+  if (selectedBlockIndices.length > 1 && editedLayout) {
+    const totalArea = selectedBlockIndices.reduce((sum, i) => {
+      const b = editedLayout.buildings[i];
+      return b ? sum + b.width_m * b.depth_m : sum;
+    }, 0);
+    return (
+      <div data-scrollable className="w-72 border-l border-white/[0.08] bg-primary-950/95 backdrop-blur-xl overflow-y-auto">
+        <div className="p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Layers size={14} className="text-indigo-400" />
+              <h3 className="text-sm font-semibold text-white">{selectedBlockIndices.length} Blocks Selected</h3>
+            </div>
+            <div className="flex gap-1">
+              <button onClick={() => copySelectedBlocks()}
+                className="rounded p-1.5 text-neutral-400 hover:bg-white/10 hover:text-white" title="Copy (Ctrl+C)">
+                <Copy size={13} />
+              </button>
+              <button onClick={() => duplicateSelectedBlocks()}
+                className="rounded p-1.5 text-neutral-400 hover:bg-white/10 hover:text-white" title="Duplicate (Ctrl+D)">
+                <Copy size={13} />
+              </button>
+              <button onClick={() => deleteSelectedBlocks()}
+                className="rounded p-1.5 text-red-400 hover:bg-red-500/10 hover:text-red-300" title="Delete (Del)">
+                <Trash2 size={13} />
+              </button>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-white/[0.06] bg-white/[0.03] p-3 space-y-1">
+            <InfoRow label="Blocks" value={String(selectedBlockIndices.length)} />
+            <InfoRow label="Total area" value={`${Math.round(totalArea).toLocaleString()} m\u00B2`} />
+          </div>
+
+          <p className="text-[10px] text-neutral-500 leading-relaxed">
+            Use arrow keys or drag to move all selected blocks together. Press Escape to deselect.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // No selection
   if (selectedBlockIndex === null || !editedLayout) {
     return (
@@ -194,17 +239,25 @@ export function BlockPropertiesPanel() {
         </div>
 
         <div className="grid grid-cols-2 gap-2">
+          <Field label="Floors">
+            <input type="number" value={block.floors ?? ''}
+              onChange={(e) => {
+                const floors = parseInt(e.target.value) || undefined;
+                if (!floors) { update({ floors: undefined }); return; }
+                const floorH = block.height_m && block.floors ? block.height_m / block.floors : 3;
+                update({ floors, height_m: Math.round(floors * floorH * 10) / 10 });
+              }}
+              min={1} max={100} placeholder="Auto"
+              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none" />
+          </Field>
           <Field label="Height (m)">
             <input type="number" value={block.height_m ?? ''}
               onChange={(e) => update({ height_m: parseFloat(e.target.value) || undefined })}
               min={3} step={1} placeholder="Auto"
               className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none" />
-          </Field>
-          <Field label="Floors">
-            <input type="number" value={block.floors ?? ''}
-              onChange={(e) => update({ floors: parseInt(e.target.value) || undefined })}
-              min={1} max={100} placeholder="Auto"
-              className="w-full rounded-lg border border-white/[0.1] bg-white/[0.05] px-3 py-1.5 text-xs text-white placeholder-neutral-500 focus:border-indigo-400/50 focus:outline-none" />
+            {block.floors && block.height_m ? (
+              <p className="mt-0.5 text-[10px] text-neutral-500">{(block.height_m / block.floors).toFixed(1)}m per floor</p>
+            ) : null}
           </Field>
         </div>
 

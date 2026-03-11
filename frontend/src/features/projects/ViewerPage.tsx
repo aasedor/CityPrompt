@@ -1111,24 +1111,42 @@ export function ViewerPage() {
           {editingBuilding ? (
             <div className="mt-3 space-y-2 text-sm">
               <div>
+                <label className="block text-xs text-primary-950/40">Floors</label>
+                <input
+                  type="number"
+                  step="1"
+                  min={1}
+                  value={editValues.floor_count ?? ''}
+                  onChange={(e) => {
+                    const floors = parseInt(e.target.value) || undefined;
+                    if (!floors) { setEditValues((v) => ({ ...v, floor_count: undefined })); return; }
+                    setEditValues((v) => {
+                      const floorH = (v.floor_height_meters) || 3;
+                      return { ...v, floor_count: floors, height_meters: Math.round(floors * floorH * 10) / 10 };
+                    });
+                  }}
+                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
+                />
+              </div>
+              <div>
                 <label className="block text-xs text-primary-950/40">Height (m)</label>
                 <input
                   type="number"
                   step="0.1"
                   value={editValues.height_meters ?? ''}
-                  onChange={(e) => setEditValues((v) => ({ ...v, height_meters: parseFloat(e.target.value) || undefined }))}
+                  onChange={(e) => {
+                    const height = parseFloat(e.target.value) || undefined;
+                    if (!height) { setEditValues((v) => ({ ...v, height_meters: undefined })); return; }
+                    setEditValues((v) => {
+                      const floors = v.floor_count || 1;
+                      return { ...v, height_meters: height, floor_height_meters: Math.round((height / floors) * 100) / 100 };
+                    });
+                  }}
                   className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
                 />
-              </div>
-              <div>
-                <label className="block text-xs text-primary-950/40">Floors</label>
-                <input
-                  type="number"
-                  step="1"
-                  value={editValues.floor_count ?? ''}
-                  onChange={(e) => setEditValues((v) => ({ ...v, floor_count: parseInt(e.target.value) || undefined }))}
-                  className="mt-0.5 w-full rounded border border-neutral-200 px-2 py-1 text-sm"
-                />
+                {editValues.floor_count && editValues.height_meters ? (
+                  <p className="mt-0.5 text-[10px] text-primary-950/40">{(editValues.height_meters / editValues.floor_count).toFixed(1)}m per floor</p>
+                ) : null}
               </div>
               <div>
                 <label className="block text-xs text-primary-950/40">Floor Height (m)</label>

@@ -783,24 +783,47 @@ const resolveOptionCategory = (
               </div>
             </div>
             <div>
+              <label className="block text-xs text-primary-950/50">Floors</label>
+              <input
+                type="number"
+                step="1"
+                min={1}
+                value={props.floors ?? config?.defaultProperties.floors ?? ''}
+                onChange={(e) => {
+                  const floors = parseInt(e.target.value) || undefined;
+                  setProps((p) => {
+                    if (!floors) return { ...p, floors: undefined };
+                    const floorH = (p.floor_height as number) || 3;
+                    return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
+                  });
+                }}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              />
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Height (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.height ?? config?.defaultProperties.height ?? ''}
-                onChange={(e) => setProps((p) => ({ ...p, height: parseFloat(e.target.value) || undefined }))}
+                onChange={(e) => {
+                  const height = parseFloat(e.target.value) || undefined;
+                  setProps((p) => {
+                    if (!height) return { ...p, height: undefined };
+                    const floors = (p.floors as number) || (config?.defaultProperties.floors as number) || 1;
+                    return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
+                  });
+                }}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Floors</label>
-              <input
-                type="number"
-                step="1"
-                value={props.floors ?? config?.defaultProperties.floors ?? ''}
-                onChange={(e) => setProps((p) => ({ ...p, floors: parseInt(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
+              {(() => {
+                const floors = (props.floors as number) || (config?.defaultProperties.floors as number);
+                const height = (props.height as number) || (config?.defaultProperties.height as number);
+                if (floors && height) {
+                  return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
+                }
+                return null;
+              })()}
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Facade Material</label>
@@ -1349,24 +1372,47 @@ const resolveOptionCategory = (
               </div>
             </div>
             <div>
+              <label className="block text-xs text-primary-950/50">Floors</label>
+              <input
+                type="number"
+                step="1"
+                min={1}
+                value={props.floors ?? ''}
+                onChange={(e) => {
+                  const floors = parseInt(e.target.value) || undefined;
+                  setProps((p) => {
+                    if (!floors) return { ...p, floors: undefined };
+                    const floorH = (p.floor_height as number) || 3;
+                    return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
+                  });
+                }}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+              />
+            </div>
+            <div>
               <label className="block text-xs text-primary-950/50">Height (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.height ?? ''}
-                onChange={(e) => setProps((p) => ({ ...p, height: parseFloat(e.target.value) || undefined }))}
+                onChange={(e) => {
+                  const height = parseFloat(e.target.value) || undefined;
+                  setProps((p) => {
+                    if (!height) return { ...p, height: undefined };
+                    const floors = (p.floors as number) || 1;
+                    return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
+                  });
+                }}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Floors</label>
-              <input
-                type="number"
-                step="1"
-                value={props.floors ?? ''}
-                onChange={(e) => setProps((p) => ({ ...p, floors: parseInt(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
+              {(() => {
+                const floors = (props.floors as number);
+                const height = (props.height as number);
+                if (floors && height) {
+                  return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
+                }
+                return null;
+              })()}
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Ground Texture</label>

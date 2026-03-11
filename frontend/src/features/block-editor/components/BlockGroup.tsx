@@ -11,7 +11,7 @@ interface BlockGroupProps {
   showDimensions: boolean;
   onPointerDown: (e: React.PointerEvent, index: number, type: DragType) => void;
   onHover: (index: number | null) => void;
-  onClick: (index: number) => void;
+  onClick: (e: React.PointerEvent, index: number) => void;
 }
 
 const BUILDING_COLORS: Record<string, { fill: string; stroke: string }> = {
@@ -52,7 +52,7 @@ export function BlockGroup({
         rx={2}
         onPointerDown={(e) => {
           e.stopPropagation();
-          onClick(index);
+          onClick(e, index);
           onPointerDown(e, index, 'move');
         }}
       />
