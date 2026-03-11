@@ -16,6 +16,77 @@ function isLinearTool(tool: SiteZoneType | null): boolean {
 }
 
 /**
+ * Haversine distance between two [lng, lat] points in meters.
+ */
+function haversineDistance(a: number[], b: number[]): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const R = 6371000;
+  const dLat = toRad(b[1] - a[1]);
+  const dLon = toRad(b[0] - a[0]);
+  const sinLat = Math.sin(dLat / 2);
+  const sinLon = Math.sin(dLon / 2);
+  const h = sinLat * sinLat + Math.cos(toRad(a[1])) * Math.cos(toRad(b[1])) * sinLon * sinLon;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/** Total polyline length in meters */
+function polylineLength(pts: number[][]): number {
+  let total = 0;
+  for (let i = 1; i < pts.length; i++) {
+    total += haversineDistance(pts[i - 1], pts[i]);
+  }
+  return total;
+}
+
+/** Format meters into a human-readable string */
+function formatDistance(meters: number): string {
+  if (meters < 1000) return `${Math.round(meters)} m`;
+  return `${(meters / 1000).toFixed(2)} km`;
+}
+
+/**
+ * Catmull-Rom spline interpolation for smooth road curves.
+ * Takes raw waypoints and returns a denser set of smoothly interpolated points.
+ */
+function smoothPolyline(points: number[][], segmentsPerSpan = 8): number[][] {
+  if (points.length < 3) return points;
+
+  const result: number[][] = [points[0]];
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[Math.max(0, i - 1)];
+    const p1 = points[i];
+    const p2 = points[Math.min(points.length - 1, i + 1)];
+    const p3 = points[Math.min(points.length - 1, i + 2)];
+
+    for (let s = 1; s <= segmentsPerSpan; s++) {
+      const t = s / segmentsPerSpan;
+      const t2 = t * t;
+      const t3 = t2 * t;
+
+      const lng =
+        0.5 * (
+          (2 * p1[0]) +
+          (-p0[0] + p2[0]) * t +
+          (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 +
+          (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3
+        );
+      const lat =
+        0.5 * (
+          (2 * p1[1]) +
+          (-p0[1] + p2[1]) * t +
+          (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 +
+          (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3
+        );
+
+      result.push([lng, lat]);
+    }
+  }
+
+  return result;
+}
+
+/**
  * Buffer a polyline into a polygon strip of given width in meters.
  * Coordinates are [lng, lat]. Width is in meters.
  */
@@ -178,16 +249,17 @@ export function SitePlannerMap({
     }
 
     if (linear) {
-      // Road: open polyline (no closing back to start)
+      // Road: open polyline (no closing back to start) — smoothed
       if (pts.length >= 2) {
+        const smooth = smoothPolyline(pts);
         features.push({
           type: 'Feature',
           properties: {},
-          geometry: { type: 'LineString', coordinates: pts },
+          geometry: { type: 'LineString', coordinates: smooth },
         });
-        // Show buffered polygon preview
+        // Show buffered polygon preview using smoothed line
         const width = activeToolPropertiesRef.current?.width ?? ZONE_TYPE_CONFIG[tool!]?.defaultProperties?.width ?? 10;
-        const buffered = bufferLineToPolygon(pts, width);
+        const buffered = bufferLineToPolygon(smooth, width);
         features.push({
           type: 'Feature',
           properties: {},
@@ -286,7 +358,8 @@ export function SitePlannerMap({
     let coords: number[][];
     if (isLinearTool(tool)) {
       const width = (props?.width as number) ?? ZONE_TYPE_CONFIG[tool]?.defaultProperties?.width ?? 10;
-      coords = bufferLineToPolygon(pts, width);
+      const smooth = smoothPolyline(pts);
+      coords = bufferLineToPolygon(smooth, width);
     } else {
       coords = [...pts];
     }
@@ -873,6 +946,7 @@ export function SitePlannerMap({
 
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);
+  const currentLength = linear && drawingPoints.length >= 2 ? polylineLength(drawingPoints) : 0;
 
   return (
     <>
@@ -889,8 +963,14 @@ export function SitePlannerMap({
               ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
               : `Click to add points (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
             : linear
-            ? `${drawingPoints.length} waypoints — Double-click or Enter to finish — Esc to cancel`
+            ? `${drawingPoints.length} waypoints · ${formatDistance(currentLength)} — Double-click or Enter to finish — Esc to cancel`
             : `${drawingPoints.length} points — Double-click or Enter to finish — Esc to cancel`}
+        </div>
+      )}
+      {/* Live distance badge for roads */}
+      {activeSitePlannerTool && linear && currentLength > 0 && (
+        <div className="absolute left-1/2 top-[6.5rem] z-30 -translate-x-1/2 rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
+          {formatDistance(currentLength)}
         </div>
       )}
       {/* Select mode hint */}

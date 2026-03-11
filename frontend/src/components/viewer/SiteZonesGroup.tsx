@@ -4,6 +4,8 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import type { SiteZone, LayoutRoadData, LayoutGreenSpaceData, LayoutOption, Building } from '@/types';
 import { useViewerStore } from '@/store';
+import { mapStyleToGeometry, type ProceduralBuildingStyle } from './proceduralStyleMapper';
+import type { StyleProfile } from './aestheticCatalog';
 
 // =============================================================================
 // Public API
@@ -533,11 +535,22 @@ function DetailedBuildingZone({
   points2D: THREE.Vector2[];
   generationStatus?: BuildingGenerationStatus;
 }) {
-  const height = zone.properties?.height ?? getDefaultHeight(zone.zone_type);
-  const floors = zone.properties?.floors ?? Math.max(1, Math.round(height / 3));
-  const floorHeight = zone.properties?.floor_height ?? height / floors;
+  const props = zone.properties || {};
+  const height = props.height ?? getDefaultHeight(zone.zone_type);
+  const categoryId = (props.development_aesthetic_category as string) || '';
+  const styleProfile = (props.development_style_profile as StyleProfile) || undefined;
+  const hasArchetype = !!(categoryId || styleProfile);
+
+  const style = useMemo(
+    () => hasArchetype ? mapStyleToGeometry(categoryId || undefined, styleProfile) : null,
+    [categoryId, styleProfile, hasArchetype],
+  );
+
+  const preferredFloorH = style?.preferredFloorHeight || 3;
+  const floors = props.floors ?? Math.max(1, Math.round(height / preferredFloorH));
+  const floorHeight = props.floor_height ?? height / floors;
   const isResidential = zone.zone_type === 'residential';
-  const color = zone.color;
+  const wallColor = style?.wallColor || zone.color;
 
   const { mainGeometry, roofGeometry } = useMemo(() => {
     try {
@@ -562,10 +575,11 @@ function DetailedBuildingZone({
   const walls = useMemo(() => computeWallSegments(points2D), [points2D]);
 
   const roofColor = useMemo(() => {
-    const c = new THREE.Color(color);
+    if (style) return style.roofColor;
+    const c = new THREE.Color(zone.color);
     c.multiplyScalar(0.75);
     return '#' + c.getHexString();
-  }, [color]);
+  }, [zone.color, style]);
 
   // Find longest wall for door + balconies
   const longestWallIdx = useMemo(() => {
@@ -586,7 +600,11 @@ function DetailedBuildingZone({
     <group>
       {/* Main extruded body */}
       <mesh geometry={mainGeometry} receiveShadow castShadow>
-        <meshStandardMaterial color={color} roughness={0.7} metalness={0.05} />
+        <meshStandardMaterial
+          color={wallColor}
+          roughness={style?.wallRoughness ?? 0.7}
+          metalness={style?.wallMetalness ?? 0.05}
+        />
       </mesh>
 
       {/* Roof cap */}
@@ -594,27 +612,29 @@ function DetailedBuildingZone({
         <meshStandardMaterial color={roofColor} roughness={0.6} metalness={0.05} />
       </mesh>
 
-      {/* Windows on every wall segment */}
-      <PolygonWindows walls={walls} height={height} floors={floors} floorHeight={floorHeight} />
+      {/* Windows on every wall segment — style-aware */}
+      <PolygonWindows walls={walls} height={height} floors={floors} floorHeight={floorHeight} style={style} />
 
       {/* Front door on longest wall */}
       {walls.length > 0 && (
-        <PolygonDoor wall={walls[longestWallIdx]} />
+        <PolygonDoor wall={walls[longestWallIdx]} doorColor={style?.accentColor} frameColor={style?.windowFrameColor} />
       )}
 
       {/* Floor divider lines */}
-      <PolygonFloorDividers walls={walls} height={height} floors={floors} floorHeight={floorHeight} color={color} />
+      <PolygonFloorDividers walls={walls} height={height} floors={floors} floorHeight={floorHeight} color={wallColor} />
 
       {/* Cornice at roofline */}
-      <PolygonCornice walls={walls} height={height} />
+      <PolygonCornice walls={walls} height={height} corniceColor={style?.corniceColor} corniceWeight={style?.corniceWeight} />
 
-      {/* Balconies for residential on longest wall, upper floors */}
-      {isResidential && walls.length > 0 && (
+      {/* Balconies (style-driven or residential fallback) */}
+      {((style?.hasBalconies) || (!style && isResidential)) && walls.length > 0 && (
         <PolygonBalconies
           wall={walls[longestWallIdx]}
           height={height}
           floors={floors}
           floorHeight={floorHeight}
+          slabColor={style?.trimColor}
+          railColor={style?.accentColor}
         />
       )}
 
@@ -635,19 +655,25 @@ function PolygonWindows({
   height,
   floors,
   floorHeight,
+  style,
 }: {
   walls: WallSegment[];
   height: number;
   floors: number;
   floorHeight: number;
+  style?: ProceduralBuildingStyle | null;
 }) {
-  const winWidth = 1.2;
-  const winHeight = 1.4;
-  const spacing = 3.5;
-  const edgeMargin = 1.5;
+  const winWidth = style?.windowWidth ?? 1.2;
+  const winHeight = style?.windowHeight ?? 1.4;
+  const spacing = style?.windowSpacing ?? 3.5;
+  const edgeMargin = style?.windowEdgeMargin ?? 1.5;
+  const winColor = style?.windowColor ?? '#87ceeb';
+  const winOpacity = style?.windowOpacity ?? 0.6;
+  const frameColor = style?.windowFrameColor ?? undefined;
+  const recessed = style?.windowRecessed ?? false;
 
   const windowData = useMemo(() => {
-    const result: { pos: [number, number, number]; rotY: number }[] = [];
+    const result: { pos: [number, number, number]; rotY: number; isGround: boolean }[] = [];
 
     for (const wall of walls) {
       const usableLength = wall.length - edgeMargin * 2;
@@ -667,31 +693,56 @@ function PolygonWindows({
           result.push({
             pos: [wx, y, wz],
             rotY: wall.angle,
+            isGround: floor === 0,
           });
         }
       }
     }
     return result;
-  }, [walls, height, floors, floorHeight]);
+  }, [walls, height, floors, floorHeight, spacing, edgeMargin]);
+
+  const sfW = style?.groundFloorStorefront ? Math.min(winWidth * 1.5, spacing - 0.4) : winWidth;
+  const sfH = style?.groundFloorStorefront ? Math.min((style.storefrontHeight || 3.2) - 0.5, floorHeight * 0.85) : winHeight;
 
   return (
     <>
-      {windowData.map((win, i) => (
-        <mesh key={i} position={win.pos} rotation={[0, win.rotY, 0]}>
-          <planeGeometry args={[winWidth, winHeight]} />
-          <meshStandardMaterial
-            color="#87ceeb"
-            roughness={0.1}
-            metalness={0.8}
-            transparent
-            opacity={0.6}
-            side={THREE.DoubleSide}
-            polygonOffset
-            polygonOffsetFactor={-1}
-            polygonOffsetUnits={-1}
-          />
-        </mesh>
-      ))}
+      {windowData.map((win, i) => {
+        const isSf = win.isGround && !!style?.groundFloorStorefront;
+        const wW = isSf ? sfW : winWidth;
+        const wH = isSf ? sfH : winHeight;
+        return (
+          <group key={i}>
+            {recessed && frameColor && (
+              <mesh position={win.pos} rotation={[0, win.rotY, 0]}>
+                <planeGeometry args={[wW + 0.15, wH + 0.15]} />
+                <meshStandardMaterial
+                  color={frameColor}
+                  roughness={0.8}
+                  metalness={0.05}
+                  side={THREE.DoubleSide}
+                  polygonOffset
+                  polygonOffsetFactor={-0.5}
+                  polygonOffsetUnits={-0.5}
+                />
+              </mesh>
+            )}
+            <mesh position={win.pos} rotation={[0, win.rotY, 0]}>
+              <planeGeometry args={[wW, wH]} />
+              <meshStandardMaterial
+                color={isSf ? (style?.groundFloorColor ?? winColor) : winColor}
+                roughness={0.1}
+                metalness={0.8}
+                transparent
+                opacity={isSf ? 0.45 : winOpacity}
+                side={THREE.DoubleSide}
+                polygonOffset
+                polygonOffsetFactor={-1}
+                polygonOffsetUnits={-1}
+              />
+            </mesh>
+          </group>
+        );
+      })}
     </>
   );
 }
@@ -700,7 +751,7 @@ function PolygonWindows({
 // Front door on a wall segment
 // =============================================================================
 
-function PolygonDoor({ wall }: { wall: WallSegment }) {
+function PolygonDoor({ wall, doorColor, frameColor }: { wall: WallSegment; doorColor?: string; frameColor?: string }) {
   const doorWidth = 1.2;
   const doorHeight = 2.2;
   const frameWidth = 1.35;
@@ -716,7 +767,7 @@ function PolygonDoor({ wall }: { wall: WallSegment }) {
       {/* Door frame (behind door) */}
       <mesh position={[x, y, z]} rotation={[0, wall.angle, 0]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
-        <meshStandardMaterial color="#3d2815" roughness={0.8} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-1} polygonOffsetUnits={-1} />
+        <meshStandardMaterial color={frameColor || '#3d2815'} roughness={0.8} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-1} polygonOffsetUnits={-1} />
       </mesh>
       {/* Door panel */}
       <mesh
@@ -724,7 +775,7 @@ function PolygonDoor({ wall }: { wall: WallSegment }) {
         rotation={[0, wall.angle, 0]}
       >
         <planeGeometry args={[doorWidth, doorHeight]} />
-        <meshStandardMaterial color="#5c3a1e" roughness={0.7} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
+        <meshStandardMaterial color={doorColor || '#5c3a1e'} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
       </mesh>
     </group>
   );
@@ -787,24 +838,32 @@ function PolygonFloorDividers({
 function PolygonCornice({
   walls,
   height,
+  corniceColor,
+  corniceWeight,
 }: {
   walls: WallSegment[];
   height: number;
+  corniceColor?: string;
+  corniceWeight?: 'none' | 'light' | 'heavy';
 }) {
+  if (corniceWeight === 'none') return null;
+  const cH = corniceWeight === 'heavy' ? 0.4 : 0.3;
+  const cD = corniceWeight === 'heavy' ? 0.4 : 0.3;
+
   return (
     <>
       {walls.map((wall, i) => (
         <mesh
           key={i}
           position={[
-            wall.midX + wall.normalX * 0.15,
-            height + 0.15,
-            wall.midZ + wall.normalZ * 0.15,
+            wall.midX + wall.normalX * (cD / 2 + 0.01),
+            height + cH / 2,
+            wall.midZ + wall.normalZ * (cD / 2 + 0.01),
           ]}
           rotation={[0, wall.angle, 0]}
         >
-          <boxGeometry args={[wall.length + 0.3, 0.3, 0.3]} />
-          <meshStandardMaterial color="#c0b8ac" roughness={0.8} />
+          <boxGeometry args={[wall.length + cD, cH, cD]} />
+          <meshStandardMaterial color={corniceColor || '#c0b8ac'} roughness={0.8} />
         </mesh>
       ))}
     </>
@@ -817,14 +876,18 @@ function PolygonCornice({
 
 function PolygonBalconies({
   wall,
-  height,
+  height: _height,
   floors,
   floorHeight,
+  slabColor,
+  railColor,
 }: {
   wall: WallSegment;
   height: number;
   floors: number;
   floorHeight: number;
+  slabColor?: string;
+  railColor?: string;
 }) {
   const balconyWidth = Math.min(2.5, wall.length * 0.3);
   const balconyDepth = 1.2;
@@ -852,12 +915,12 @@ function PolygonBalconies({
           {/* Slab */}
           <mesh castShadow>
             <boxGeometry args={[balconyWidth, 0.15, balconyDepth]} />
-            <meshStandardMaterial color="#b0a898" roughness={0.85} />
+            <meshStandardMaterial color={slabColor || '#b0a898'} roughness={0.85} />
           </mesh>
           {/* Railing */}
           <mesh position={[0, 0.5, balconyDepth / 2]}>
             <boxGeometry args={[balconyWidth, 1.0, 0.05]} />
-            <meshStandardMaterial color="#888888" roughness={0.6} metalness={0.3} />
+            <meshStandardMaterial color={railColor || '#888888'} roughness={0.6} metalness={0.3} />
           </mesh>
         </group>
       ))}
@@ -1383,9 +1446,13 @@ function RoadZone({
       crosswalkDescriptors: [] as { position: [number, number, number]; angle: number; span: number }[],
     };
 
-    // Use the actual polygon width (average of opposing vertex distances)
-    // instead of zone.properties.width which may not be saved/loaded correctly
-    const roadWidth = half > 0 ? totalWidth / half : (zone.properties?.width ?? 10);
+    // Use properties width as the authoritative value; fall back to measured polygon width.
+    // Lane count should enforce a minimum road width (3.5m per lane).
+    const measuredW = half > 0 ? totalWidth / half : 10;
+    const propsWidth = (zone.properties?.width as number) || measuredW;
+    const laneCountRaw = (zone.properties?.lane_count as number) || 2;
+    const minWidthForLanes = laneCountRaw * 3.5;
+    const roadWidth = Math.max(propsWidth, minWidthForLanes);
     const halfWidth = roadWidth / 2;
     const sidewalkWidth = 2.0;
 
@@ -1701,7 +1768,7 @@ function RoadZone({
     const rightSW = hasRightSidewalk ? buildOffsetRibbon(centerPoints, rightInner, rightOuter, 0.20) : null;
 
     // --- Detail layers ---
-    const laneCount = (zone.properties?.lane_count as number) || 2;
+    const laneCount = laneCountRaw;
 
     // Edge lines: solid white ribbons along left and right road edges
     let edgeLineLeftGeo: THREE.BufferGeometry | null = null;

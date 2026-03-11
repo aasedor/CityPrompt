@@ -25,6 +25,8 @@ import type { ThreeEvent } from '@react-three/fiber';
 import { ContextBuildingsGroup as EnhancedContextBuildingsGroup } from './ContextBuildings';
 import { Google3DTiles } from './Google3DTiles';
 import { TerrainMesh, getTerrainHeight } from './TerrainMesh';
+import { mapStyleToGeometry, massingImpliesPodium, type ProceduralBuildingStyle } from './proceduralStyleMapper';
+import type { StyleProfile } from './aestheticCatalog';
 
 /**
  * Calculate sun position based on time of day and date.
@@ -313,8 +315,8 @@ interface SceneViewerProps {
   projectId?: string;
 }
 
-// Warm color palette for buildings
-const BUILDING_COLORS = [
+// Warm color palette for buildings (retained for fallback path)
+const _BUILDING_COLORS = [
   '#d4a574', // sandstone
   '#c9b99a', // warm beige
   '#a8927d', // taupe
@@ -325,8 +327,8 @@ const BUILDING_COLORS = [
   '#c8b8a0', // wheat
 ];
 
-// Material-to-color mapping for facade materials
-const MATERIAL_COLORS: Record<string, string> = {
+// Material-to-color mapping for facade materials (retained for fallback path)
+const _MATERIAL_COLORS: Record<string, string> = {
   concrete: '#c7bfb5',
   glass: '#8cbbd6',
   brick: '#b8724a',
@@ -3082,7 +3084,7 @@ function GLBModel({
 
 function ProceduralBuildingMesh({
   building,
-  colorIndex,
+  colorIndex: _colorIndex,
   isSelected,
   isHovered,
   onClick,
@@ -3097,23 +3099,40 @@ function ProceduralBuildingMesh({
   onPointerOver?: () => void;
   onPointerOut?: () => void;
 }) {
+  const specs = building.specifications || {};
+  const categoryId = (specs.development_aesthetic_category as string) || '';
+  const styleProfile = (specs.development_style_profile as StyleProfile) || undefined;
+
+  const style = useMemo(
+    () => mapStyleToGeometry(categoryId || undefined, styleProfile),
+    [categoryId, styleProfile],
+  );
+
   const height = building.height_meters || 10;
-  const floors = building.floor_count || 3;
+  const floors = building.floor_count || Math.max(1, Math.round(height / (style.preferredFloorHeight || 3)));
   const floorHeight = building.floor_height_meters || height / floors;
-  const roofType = building.roof_type || 'flat';
+  const roofType = building.roof_type || style.roofForm || 'flat';
   const { width, depth } = useBuildingDimensions(building);
 
-  const facadeMaterial = (building.specifications?.facade_material as string) || '';
-  const defaultColor = MATERIAL_COLORS[facadeMaterial] || BUILDING_COLORS[colorIndex % BUILDING_COLORS.length];
-  const baseColor = isSelected ? '#3b82f6' : isHovered ? '#60a5fa' : defaultColor;
+  // Podium/tower split
+  const usePodium = style.hasPodium && massingImpliesPodium(styleProfile?.massing) && floors > (style.podiumFloors + 2);
+  const podiumFloors = usePodium ? Math.min(style.podiumFloors, floors - 2) : 0;
+  const podiumHeight = podiumFloors * floorHeight;
+  const towerHeight = height - podiumHeight;
+  const towerSetback = usePodium ? style.podiumSetback : 0;
+  const towerWidth = Math.max(width * 0.4, width - towerSetback * 2);
+  const towerDepth = Math.max(depth * 0.4, depth - towerSetback * 2);
 
-  // Generate procedural texture for the facade material
+  const facadeMaterial = (specs.facade_material as string) || style.textureType || '';
+  const wallColor = isSelected ? '#3b82f6' : isHovered ? '#60a5fa' : style.wallColor;
+
   const facadeTexture = useMemo(() => {
-    if (!facadeMaterial || isSelected || isHovered) return null;
+    const matType = style.textureType || facadeMaterial;
+    if (!matType || isSelected || isHovered) return null;
     const tilesX = Math.max(1, Math.round(width / 5));
     const tilesY = Math.max(1, Math.round(height / 5));
-    return getProceduralTexture(facadeMaterial, [tilesX, tilesY]);
-  }, [facadeMaterial, width, height, isSelected, isHovered]);
+    return getProceduralTexture(matType, [tilesX, tilesY]);
+  }, [style.textureType, facadeMaterial, width, height, isSelected, isHovered]);
 
   return (
     <group
@@ -3121,110 +3140,264 @@ function ProceduralBuildingMesh({
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      {/* Main building body */}
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[width, height, depth]} />
-        <meshStandardMaterial
-          color={baseColor}
-          map={facadeTexture}
-          roughness={facadeMaterial === 'glass' ? 0.05 : facadeMaterial === 'metal' ? 0.35 : 0.7}
-          metalness={facadeMaterial === 'glass' ? 0.9 : facadeMaterial === 'metal' ? 0.85 : 0.05}
-          transparent={isHovered || facadeMaterial === 'glass'}
-          opacity={facadeMaterial === 'glass' ? 0.6 : isHovered ? 0.9 : 1}
-        />
-      </mesh>
-
-      {/* Floor line dividers */}
-      {Array.from({ length: floors - 1 }, (_, i) => {
-        const y = -height / 2 + (i + 1) * floorHeight;
-        return (
-          <mesh key={`floor-${i}`} position={[0, y, 0]}>
-            <boxGeometry args={[width + 0.1, 0.08, depth + 0.1]} />
-            <meshStandardMaterial color="#8b7d6b" roughness={0.9} />
+      {/* === Podium base (when applicable) === */}
+      {usePodium && podiumHeight > 0 && (
+        <group position={[0, -height / 2 + podiumHeight / 2, 0]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[width, podiumHeight, depth]} />
+            <meshStandardMaterial
+              color={isSelected ? '#3b82f6' : isHovered ? '#60a5fa' : style.groundFloorColor}
+              roughness={style.wallRoughness + 0.1}
+              metalness={style.wallMetalness}
+              transparent={isHovered}
+              opacity={isHovered ? 0.9 : 1}
+            />
           </mesh>
-        );
-      })}
-
-      {/* Roof */}
-      {roofType === 'gabled' && <GabledRoof width={width} depth={depth} height={height} />}
-      {roofType === 'hipped' && <HippedRoof width={width} depth={depth} height={height} />}
-
-      {/* Green roof overlay — vegetated surface on flat roofs */}
-      {facadeMaterial === 'green_roof' && roofType === 'flat' && (
-        <GreenRoofOverlay width={width} depth={depth} height={height} />
+          {/* Podium windows */}
+          <StyledProceduralWindows
+            width={width}
+            depth={depth}
+            height={podiumHeight}
+            floors={podiumFloors}
+            floorHeight={floorHeight}
+            style={style}
+            isGroundFloor
+          />
+          {/* Podium banding at top */}
+          <mesh position={[0, podiumHeight / 2, 0]}>
+            <boxGeometry args={[width + 0.15, 0.12, depth + 0.15]} />
+            <meshStandardMaterial color={style.trimColor} roughness={0.7} />
+          </mesh>
+        </group>
       )}
 
-      {/* Procedural windows on all 4 facades */}
-      <ProceduralWindows
-        width={width}
-        depth={depth}
-        height={height}
-        floors={floors}
-        floorHeight={floorHeight}
-      />
+      {/* === Tower / main body === */}
+      <group position={[0, usePodium ? (-height / 2 + podiumHeight + towerHeight / 2) : 0, 0]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[usePodium ? towerWidth : width, towerHeight, usePodium ? towerDepth : depth]} />
+          <meshStandardMaterial
+            color={wallColor}
+            map={facadeTexture}
+            roughness={style.wallRoughness}
+            metalness={style.wallMetalness}
+            transparent={isHovered || style.textureType === 'glass'}
+            opacity={style.textureType === 'glass' ? 0.6 : isHovered ? 0.9 : 1}
+          />
+        </mesh>
 
-      {/* Front door */}
-      <mesh position={[0, -height / 2 + 1.1, -depth / 2 - 0.02]}>
-        <planeGeometry args={[1.2, 2.2]} />
-        <meshStandardMaterial
-          color="#5c3a1e"
-          roughness={0.7}
-          metalness={0.05}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-      {/* Door frame */}
-      <mesh position={[0, -height / 2 + 1.1, -depth / 2 - 0.01]}>
-        <planeGeometry args={[1.35, 2.35]} />
-        <meshStandardMaterial
-          color="#3d2815"
-          roughness={0.8}
-          metalness={0.05}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* Balconies on upper floors — front facade */}
-      {floors > 1 &&
-        Array.from({ length: floors - 1 }, (_, i) => {
-          const floorIdx = i + 1;
-          const z = -height / 2 + floorIdx * floorHeight;
-          const balconyW = Math.min(2.5, width * 0.3);
+        {/* Floor dividers */}
+        {Array.from({ length: (floors - podiumFloors) - 1 }, (_, i) => {
+          const y = -towerHeight / 2 + (i + 1) * floorHeight;
+          const bw = usePodium ? towerWidth : width;
+          const bd = usePodium ? towerDepth : depth;
           return (
-            <group key={`balcony-${floorIdx}`}>
-              {/* Slab */}
-              <mesh position={[0, z, -depth / 2 - 0.6]} castShadow>
-                <boxGeometry args={[balconyW, 0.15, 1.2]} />
-                <meshStandardMaterial color="#b0a898" roughness={0.85} metalness={0.0} />
-              </mesh>
-              {/* Railing */}
-              <mesh position={[0, z + 0.5, -depth / 2 - 1.2]}>
-                <boxGeometry args={[balconyW, 1.0, 0.05]} />
-                <meshStandardMaterial color="#888" roughness={0.6} metalness={0.3} />
-              </mesh>
-            </group>
+            <mesh key={`floor-${i}`} position={[0, y, 0]}>
+              <boxGeometry args={[bw + 0.1, 0.08, bd + 0.1]} />
+              <meshStandardMaterial color={style.trimColor} roughness={0.9} />
+            </mesh>
           );
         })}
 
-      {/* Cornice — decorative ledge at roofline */}
-      {/* Front and back */}
-      <mesh position={[0, height / 2 + 0.15, -depth / 2 - 0.1]}>
-        <boxGeometry args={[width + 0.4, 0.3, 0.3]} />
-        <meshStandardMaterial color="#c0b8ac" roughness={0.8} />
+        {/* Facade banding (horizontal accent stripes) */}
+        {style.hasFacadeBanding && !isSelected && !isHovered &&
+          Array.from({ length: Math.max(0, (floors - podiumFloors) - 1) }, (_, i) => {
+            const y = -towerHeight / 2 + (i + 1) * floorHeight + floorHeight * 0.85;
+            const bw = usePodium ? towerWidth : width;
+            const bd = usePodium ? towerDepth : depth;
+            return (
+              <mesh key={`band-${i}`} position={[0, y, 0]}>
+                <boxGeometry args={[bw + 0.05, style.bandingHeight, bd + 0.05]} />
+                <meshStandardMaterial color={style.bandingColor} roughness={0.6} metalness={0.1} />
+              </mesh>
+            );
+          })}
+
+        {/* Windows on tower */}
+        <StyledProceduralWindows
+          width={usePodium ? towerWidth : width}
+          depth={usePodium ? towerDepth : depth}
+          height={towerHeight}
+          floors={floors - podiumFloors}
+          floorHeight={floorHeight}
+          style={style}
+          isGroundFloor={!usePodium}
+        />
+
+        {/* Roof */}
+        {roofType === 'gabled' && <GabledRoof width={usePodium ? towerWidth : width} depth={usePodium ? towerDepth : depth} height={towerHeight} />}
+        {roofType === 'hipped' && <HippedRoof width={usePodium ? towerWidth : width} depth={usePodium ? towerDepth : depth} height={towerHeight} />}
+        {roofType === 'mansard' && <MansardRoof width={usePodium ? towerWidth : width} depth={usePodium ? towerDepth : depth} height={towerHeight} roofColor={style.roofColor} />}
+        {roofType === 'stepped' && <SteppedParapet width={usePodium ? towerWidth : width} depth={usePodium ? towerDepth : depth} height={towerHeight} color={style.accentColor} />}
+
+        {/* Green roof overlay */}
+        {facadeMaterial === 'green_roof' && roofType === 'flat' && (
+          <GreenRoofOverlay width={usePodium ? towerWidth : width} depth={usePodium ? towerDepth : depth} height={towerHeight} />
+        )}
+
+        {/* Front door (on ground floor of tower, or podium) */}
+        {!usePodium && (
+          <>
+            <mesh position={[0, -towerHeight / 2 + 1.1, -depth / 2 - 0.02]}>
+              <planeGeometry args={[1.2, 2.2]} />
+              <meshStandardMaterial color={style.accentColor} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
+            </mesh>
+            <mesh position={[0, -towerHeight / 2 + 1.1, -depth / 2 - 0.01]}>
+              <planeGeometry args={[1.35, 2.35]} />
+              <meshStandardMaterial color={style.windowFrameColor} roughness={0.8} metalness={0.05} side={THREE.DoubleSide} />
+            </mesh>
+          </>
+        )}
+
+        {/* Balconies */}
+        {style.hasBalconies && floors > 1 &&
+          Array.from({ length: floors - podiumFloors - 1 }, (_, i) => {
+            // Use pseudo-random based on index to skip some balconies
+            if (((i * 7 + 3) % 10) / 10 > style.balconyProbability) return null;
+            const floorIdx = i + 1;
+            const bw = usePodium ? towerWidth : width;
+            const bd = usePodium ? towerDepth : depth;
+            const z = -towerHeight / 2 + floorIdx * floorHeight;
+            const balconyW = Math.min(2.5, bw * 0.3);
+            return (
+              <group key={`balcony-${floorIdx}`}>
+                <mesh position={[0, z, -bd / 2 - 0.6]} castShadow>
+                  <boxGeometry args={[balconyW, 0.15, 1.2]} />
+                  <meshStandardMaterial color={style.trimColor} roughness={0.85} metalness={0.0} />
+                </mesh>
+                <mesh position={[0, z + 0.5, -bd / 2 - 1.2]}>
+                  <boxGeometry args={[balconyW, 1.0, 0.05]} />
+                  <meshStandardMaterial color={style.accentColor} roughness={0.6} metalness={0.3} />
+                </mesh>
+              </group>
+            );
+          })}
+
+        {/* Cornice */}
+        {style.corniceWeight !== 'none' && (() => {
+          const cH = style.corniceWeight === 'heavy' ? 0.4 : 0.2;
+          const cD = style.corniceWeight === 'heavy' ? 0.35 : 0.2;
+          const bw = usePodium ? towerWidth : width;
+          const bd = usePodium ? towerDepth : depth;
+          return (
+            <>
+              <mesh position={[0, towerHeight / 2 + cH / 2, -bd / 2 - cD / 2]}>
+                <boxGeometry args={[bw + cD * 2, cH, cD]} />
+                <meshStandardMaterial color={style.corniceColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[0, towerHeight / 2 + cH / 2, bd / 2 + cD / 2]}>
+                <boxGeometry args={[bw + cD * 2, cH, cD]} />
+                <meshStandardMaterial color={style.corniceColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[-bw / 2 - cD / 2, towerHeight / 2 + cH / 2, 0]}>
+                <boxGeometry args={[cD, cH, bd + cD * 2]} />
+                <meshStandardMaterial color={style.corniceColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[bw / 2 + cD / 2, towerHeight / 2 + cH / 2, 0]}>
+                <boxGeometry args={[cD, cH, bd + cD * 2]} />
+                <meshStandardMaterial color={style.corniceColor} roughness={0.8} />
+              </mesh>
+            </>
+          );
+        })()}
+
+        {/* Parapet wall for flat roofs */}
+        {roofType === 'flat' && style.parapetHeight > 0 && style.corniceWeight === 'none' && (() => {
+          const pH = style.parapetHeight;
+          const bw = usePodium ? towerWidth : width;
+          const bd = usePodium ? towerDepth : depth;
+          return (
+            <>
+              <mesh position={[0, towerHeight / 2 + pH / 2, -bd / 2]}>
+                <boxGeometry args={[bw, pH, 0.15]} />
+                <meshStandardMaterial color={style.trimColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[0, towerHeight / 2 + pH / 2, bd / 2]}>
+                <boxGeometry args={[bw, pH, 0.15]} />
+                <meshStandardMaterial color={style.trimColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[-bw / 2, towerHeight / 2 + pH / 2, 0]}>
+                <boxGeometry args={[0.15, pH, bd]} />
+                <meshStandardMaterial color={style.trimColor} roughness={0.8} />
+              </mesh>
+              <mesh position={[bw / 2, towerHeight / 2 + pH / 2, 0]}>
+                <boxGeometry args={[0.15, pH, bd]} />
+                <meshStandardMaterial color={style.trimColor} roughness={0.8} />
+              </mesh>
+            </>
+          );
+        })()}
+      </group>
+    </group>
+  );
+}
+
+/** Mansard roof — steep lower slope + flat/shallow top, classic Parisian form */
+function MansardRoof({ width, depth, height, roofColor }: { width: number; depth: number; height: number; roofColor: string }) {
+  const mansardHeight = Math.min(width * 0.3, 4);
+  const topInset = width * 0.15;
+  const topY = height / 2;
+
+  const geometry = useMemo(() => {
+    const geom = new THREE.BufferGeometry();
+    const hw = width / 2;
+    const hd = depth / 2;
+    const inset = topInset;
+    const mh = mansardHeight;
+
+    const vertices = new Float32Array([
+      // Front slope
+      -hw, topY, -hd, hw, topY, -hd, hw - inset, topY + mh, -hd + inset,
+      -hw, topY, -hd, hw - inset, topY + mh, -hd + inset, -hw + inset, topY + mh, -hd + inset,
+      // Back slope
+      hw, topY, hd, -hw, topY, hd, -hw + inset, topY + mh, hd - inset,
+      hw, topY, hd, -hw + inset, topY + mh, hd - inset, hw - inset, topY + mh, hd - inset,
+      // Left slope
+      -hw, topY, hd, -hw, topY, -hd, -hw + inset, topY + mh, -hd + inset,
+      -hw, topY, hd, -hw + inset, topY + mh, -hd + inset, -hw + inset, topY + mh, hd - inset,
+      // Right slope
+      hw, topY, -hd, hw, topY, hd, hw - inset, topY + mh, hd - inset,
+      hw, topY, -hd, hw - inset, topY + mh, hd - inset, hw - inset, topY + mh, -hd + inset,
+      // Top cap
+      -hw + inset, topY + mh, -hd + inset, hw - inset, topY + mh, -hd + inset, hw - inset, topY + mh, hd - inset,
+      -hw + inset, topY + mh, -hd + inset, hw - inset, topY + mh, hd - inset, -hw + inset, topY + mh, hd - inset,
+    ]);
+
+    geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    geom.computeVertexNormals();
+    return geom;
+  }, [width, depth, height, mansardHeight, topInset, topY]);
+
+  return (
+    <mesh geometry={geometry} castShadow>
+      <meshStandardMaterial color={roofColor} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
+    </mesh>
+  );
+}
+
+/** Stepped parapet — Art Deco setback crown */
+function SteppedParapet({ width, depth, height, color }: { width: number; depth: number; height: number; color: string }) {
+  const stepH = 1.2;
+  const stepInset = 1.5;
+  const topY = height / 2;
+  return (
+    <group>
+      {/* Step 1 — full width parapet */}
+      <mesh position={[0, topY + stepH / 2, 0]}>
+        <boxGeometry args={[width + 0.3, stepH, depth + 0.3]} />
+        <meshStandardMaterial color={color} roughness={0.6} metalness={0.1} />
       </mesh>
-      <mesh position={[0, height / 2 + 0.15, depth / 2 + 0.1]}>
-        <boxGeometry args={[width + 0.4, 0.3, 0.3]} />
-        <meshStandardMaterial color="#c0b8ac" roughness={0.8} />
+      {/* Step 2 — inset */}
+      <mesh position={[0, topY + stepH + stepH / 2, 0]}>
+        <boxGeometry args={[width - stepInset, stepH, depth - stepInset]} />
+        <meshStandardMaterial color={color} roughness={0.6} metalness={0.1} />
       </mesh>
-      {/* Left and right */}
-      <mesh position={[-width / 2 - 0.1, height / 2 + 0.15, 0]}>
-        <boxGeometry args={[0.3, 0.3, depth + 0.4]} />
-        <meshStandardMaterial color="#c0b8ac" roughness={0.8} />
-      </mesh>
-      <mesh position={[width / 2 + 0.1, height / 2 + 0.15, 0]}>
-        <boxGeometry args={[0.3, 0.3, depth + 0.4]} />
-        <meshStandardMaterial color="#c0b8ac" roughness={0.8} />
-      </mesh>
+      {/* Step 3 — crown */}
+      {width > stepInset * 4 && (
+        <mesh position={[0, topY + stepH * 2 + stepH * 0.4, 0]}>
+          <boxGeometry args={[width - stepInset * 2, stepH * 0.8, depth - stepInset * 2]} />
+          <meshStandardMaterial color={color} roughness={0.6} metalness={0.15} />
+        </mesh>
+      )}
     </group>
   );
 }
@@ -3537,78 +3710,121 @@ function AnnotationMarkers({
 // Sub-component: Procedural Windows
 // =============================================================================
 
-function ProceduralWindows({
+/** Style-aware procedural windows for buildings */
+function StyledProceduralWindows({
   width,
   depth,
   height,
   floors,
   floorHeight,
+  style,
+  isGroundFloor = false,
 }: {
   width: number;
   depth: number;
   height: number;
   floors: number;
   floorHeight: number;
+  style: ProceduralBuildingStyle;
+  isGroundFloor?: boolean;
 }) {
-  const winWidth = 1.2;
-  const winHeight = 1.4;
-
   const windows = useMemo(() => {
-    const result: { pos: [number, number, number]; rot: number; w: number; h: number }[] = [];
-    const spacing = 3.5;
+    const result: { pos: [number, number, number]; rot: number; w: number; h: number; isStorefront: boolean }[] = [];
+    const spacing = style.windowSpacing;
+    const margin = style.windowEdgeMargin;
+    const wW = style.windowWidth;
+    const wH = style.windowHeight;
 
-    // Front and back facades (along width)
-    const nWidthWins = Math.max(1, Math.floor((width - 2) / spacing));
-    // Left and right facades (along depth)
-    const nDepthWins = Math.max(1, Math.floor((depth - 2) / spacing));
+    const nWidthWins = Math.max(1, Math.floor((width - margin * 2) / spacing));
+    const nDepthWins = Math.max(1, Math.floor((depth - margin * 2) / spacing));
 
     for (let floor = 0; floor < floors; floor++) {
       const baseY = -height / 2 + floor * floorHeight + floorHeight * 0.45;
+      const isGround = isGroundFloor && floor === 0;
+      const sfW = isGround && style.groundFloorStorefront ? Math.min(wW * 1.6, spacing - 0.4) : wW;
+      const sfH = isGround && style.groundFloorStorefront ? Math.min(style.storefrontHeight - 0.5, floorHeight * 0.85) : wH;
 
-      // Front facade (z = -depth/2)
+      const addWin = (pos: [number, number, number], rot: number) => {
+        result.push({ pos, rot, w: sfW, h: sfH, isStorefront: isGround && style.groundFloorStorefront });
+      };
+
+      // Front facade
       for (let w = 0; w < nWidthWins; w++) {
-        const x = -width / 2 + 1.5 + (w + 0.5) * ((width - 3) / nWidthWins);
-        result.push({ pos: [x, baseY, -depth / 2 - 0.01], rot: 0, w: winWidth, h: winHeight });
+        const x = -width / 2 + margin + (w + 0.5) * ((width - margin * 2) / nWidthWins);
+        addWin([x, baseY, -depth / 2 - 0.01], 0);
       }
-      // Back facade (z = depth/2)
+      // Back facade
       for (let w = 0; w < nWidthWins; w++) {
-        const x = -width / 2 + 1.5 + (w + 0.5) * ((width - 3) / nWidthWins);
-        result.push({ pos: [x, baseY, depth / 2 + 0.01], rot: Math.PI, w: winWidth, h: winHeight });
+        const x = -width / 2 + margin + (w + 0.5) * ((width - margin * 2) / nWidthWins);
+        addWin([x, baseY, depth / 2 + 0.01], Math.PI);
       }
-      // Left facade (x = -width/2)
+      // Left facade
       for (let w = 0; w < nDepthWins; w++) {
-        const z = -depth / 2 + 1.5 + (w + 0.5) * ((depth - 3) / nDepthWins);
-        result.push({ pos: [-width / 2 - 0.01, baseY, z], rot: -Math.PI / 2, w: winWidth, h: winHeight });
+        const z = -depth / 2 + margin + (w + 0.5) * ((depth - margin * 2) / nDepthWins);
+        addWin([-width / 2 - 0.01, baseY, z], -Math.PI / 2);
       }
-      // Right facade (x = width/2)
+      // Right facade
       for (let w = 0; w < nDepthWins; w++) {
-        const z = -depth / 2 + 1.5 + (w + 0.5) * ((depth - 3) / nDepthWins);
-        result.push({ pos: [width / 2 + 0.01, baseY, z], rot: Math.PI / 2, w: winWidth, h: winHeight });
+        const z = -depth / 2 + margin + (w + 0.5) * ((depth - margin * 2) / nDepthWins);
+        addWin([width / 2 + 0.01, baseY, z], Math.PI / 2);
       }
     }
 
     return result;
-  }, [width, depth, height, floors, floorHeight]);
+  }, [width, depth, height, floors, floorHeight, style, isGroundFloor]);
 
   return (
     <>
       {windows.map((win, i) => (
-        <mesh
-          key={i}
-          position={win.pos}
-          rotation={[0, win.rot, 0]}
-        >
-          <planeGeometry args={[win.w, win.h]} />
-          <meshStandardMaterial
-            color="#87ceeb"
-            roughness={0.1}
-            metalness={0.8}
-            transparent
-            opacity={0.6}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
+        <group key={i}>
+          {/* Window frame (recessed look) */}
+          {style.windowRecessed && (
+            <mesh position={win.pos} rotation={[0, win.rot, 0]}>
+              <planeGeometry args={[win.w + 0.15, win.h + 0.15]} />
+              <meshStandardMaterial
+                color={style.windowFrameColor}
+                roughness={0.8}
+                metalness={0.05}
+                side={THREE.DoubleSide}
+                polygonOffset
+                polygonOffsetFactor={-0.5}
+                polygonOffsetUnits={-0.5}
+              />
+            </mesh>
+          )}
+          {/* Glass pane */}
+          <mesh position={win.pos} rotation={[0, win.rot, 0]}>
+            <planeGeometry args={[win.w, win.h]} />
+            <meshStandardMaterial
+              color={win.isStorefront ? style.groundFloorColor : style.windowColor}
+              roughness={win.isStorefront ? 0.05 : 0.1}
+              metalness={0.8}
+              transparent
+              opacity={win.isStorefront ? 0.45 : style.windowOpacity}
+              side={THREE.DoubleSide}
+              polygonOffset
+              polygonOffsetFactor={-1}
+              polygonOffsetUnits={-1}
+            />
+          </mesh>
+          {/* Vertical mullions on storefront */}
+          {style.hasVerticalMullions && win.isStorefront && (
+            <mesh position={win.pos} rotation={[0, win.rot, 0]}>
+              <planeGeometry args={[0.04, win.h]} />
+              <meshStandardMaterial
+                color={style.windowFrameColor}
+                roughness={0.6}
+                metalness={0.2}
+                side={THREE.DoubleSide}
+                polygonOffset
+                polygonOffsetFactor={-1.5}
+                polygonOffsetUnits={-1.5}
+              />
+            </mesh>
+          )}
+        </group>
       ))}
     </>
   );
 }
+

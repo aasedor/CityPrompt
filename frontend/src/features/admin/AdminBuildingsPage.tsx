@@ -1,11 +1,15 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown, Camera } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown, Camera, Tag } from 'lucide-react';
 import toast from 'react-hot-toast';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { adminApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import type { AdminBuilding } from '@/services/api';
+import {
+  BUILDING_AESTHETIC_OPTIONS_V2,
+  BUILDING_AESTHETIC_CATEGORIES_V2,
+} from '@/components/viewer/aestheticCatalog';
 
 const STATUS_COLORS: Record<string, string> = {
   idle: 'bg-primary-950/[0.04] text-primary-950/60',
@@ -316,6 +320,15 @@ export function AdminBuildingsPage() {
           buildings={buildings}
           onSaveToLibrary={handleSaveToLibrary}
           savingId={savingToLibrary}
+          onArchetypeAssigned={(buildingId, _archetypeId, categoryId) => {
+            setBuildings((prev) =>
+              prev.map((b) =>
+                b.id === buildingId
+                  ? { ...b, architectural_style: categoryId }
+                  : b,
+              ),
+            );
+          }}
         />
       ) : (
         <TableView buildings={buildings} />
@@ -324,14 +337,120 @@ export function AdminBuildingsPage() {
   );
 }
 
+// Group archetypes by category for the dropdown
+const CATEGORY_ARCHETYPES = (() => {
+  const map: Record<string, { id: string; label: string }[]> = {};
+  for (const opt of BUILDING_AESTHETIC_OPTIONS_V2) {
+    const cat = opt.categoryId || 'other';
+    if (!map[cat]) map[cat] = [];
+    map[cat].push({ id: opt.id, label: opt.label });
+  }
+  return map;
+})();
+
+function ArchetypeAssigner({
+  buildingId,
+  onAssigned,
+}: {
+  buildingId: string;
+  onAssigned: (archetypeId: string, categoryId: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState('');
+  const [archetypeId, setArchetypeId] = useState('');
+  const [saving, setSaving] = useState(false);
+
+  const archetypes = categoryId ? (CATEGORY_ARCHETYPES[categoryId] || []) : [];
+
+  const handleSave = async () => {
+    if (!archetypeId || !categoryId) return;
+    setSaving(true);
+    try {
+      await adminApi.assignArchetype(buildingId, archetypeId, categoryId);
+      toast.success('Archetype assigned!');
+      onAssigned(archetypeId, categoryId);
+      setOpen(false);
+    } catch {
+      toast.error('Failed to assign archetype');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-1 rounded-md bg-primary-950/[0.04] px-2 py-1 text-[10px] font-medium text-primary-950/60 transition-colors hover:bg-primary-950/[0.08] hover:text-primary-950/80"
+      >
+        <Tag size={10} />
+        Assign Archetype
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-2 space-y-1.5 rounded-lg border border-primary-500/20 bg-primary-50/50 p-2">
+      <select
+        value={categoryId}
+        onChange={(e) => {
+          setCategoryId(e.target.value);
+          setArchetypeId('');
+        }}
+        className="w-full rounded border border-primary-950/[0.1] bg-white px-2 py-1 text-[11px] text-primary-950 focus:border-primary-500 focus:outline-none"
+      >
+        <option value="">Select category...</option>
+        {BUILDING_AESTHETIC_CATEGORIES_V2.map((cat) => (
+          <option key={cat.id} value={cat.id}>
+            {cat.label}
+          </option>
+        ))}
+      </select>
+
+      {categoryId && (
+        <select
+          value={archetypeId}
+          onChange={(e) => setArchetypeId(e.target.value)}
+          className="w-full rounded border border-primary-950/[0.1] bg-white px-2 py-1 text-[11px] text-primary-950 focus:border-primary-500 focus:outline-none"
+        >
+          <option value="">Select archetype...</option>
+          {archetypes.map((a) => (
+            <option key={a.id} value={a.id}>
+              {a.label}
+            </option>
+          ))}
+        </select>
+      )}
+
+      <div className="flex gap-1.5">
+        <button
+          onClick={handleSave}
+          disabled={!archetypeId || saving}
+          className="flex-1 rounded bg-primary-600 px-2 py-1 text-[10px] font-medium text-white transition-colors hover:bg-primary-700 disabled:opacity-40"
+        >
+          {saving ? 'Saving...' : 'Save'}
+        </button>
+        <button
+          onClick={() => setOpen(false)}
+          className="rounded px-2 py-1 text-[10px] text-primary-950/50 hover:bg-primary-950/[0.04]"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function GalleryView({
   buildings,
   onSaveToLibrary,
   savingId,
+  onArchetypeAssigned,
 }: {
   buildings: AdminBuilding[];
   onSaveToLibrary: (b: AdminBuilding) => void;
   savingId: string | null;
+  onArchetypeAssigned: (buildingId: string, archetypeId: string, categoryId: string) => void;
 }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -426,6 +545,11 @@ function GalleryView({
                 </span>
               </div>
             )}
+
+            <ArchetypeAssigner
+              buildingId={b.id}
+              onAssigned={(archetypeId, categoryId) => onArchetypeAssigned(b.id, archetypeId, categoryId)}
+            />
           </div>
         </div>
       ))}

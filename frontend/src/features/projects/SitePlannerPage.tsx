@@ -13,6 +13,7 @@ import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { useState } from 'react';
+import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 
 export function SitePlannerPage() {
   const { id } = useParams<{ id: string }>();
@@ -146,7 +147,10 @@ export function SitePlannerPage() {
         <ZonePropertiesPanel
           key={selectedZone.id}
           zone={selectedZone}
-          onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+          onUpdate={(zoneId, data) => {
+            rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+            updateZone.mutate({ zoneId, data });
+          }}
           onDelete={(zoneId) => deleteZone.mutate(zoneId)}
           onClose={() => selectZone(null)}
           onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}

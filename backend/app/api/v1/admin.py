@@ -592,6 +592,42 @@ async def backfill_thumbnails(
     return {"status": "started", "queued": total_missing}
 
 
+@router.put("/buildings/{building_id}/assign-archetype")
+async def assign_archetype(
+    building_id: uuid.UUID,
+    archetype_id: str = Query(..., description="Archetype seed ID (e.g. 'brownstone_rowhouse_frontage')"),
+    category_id: str = Query(..., description="Aesthetic category ID (e.g. 'brownstone_rowhouse')"),
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Assign an archetype to a building (updates its specifications).
+
+    Sets development_archetype_id, development_aesthetic_category, and
+    development_subcategory in the building's specifications JSON so that
+    the archetype preview system can match it.
+    """
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    specs = dict(building.specifications or {})
+    specs["development_archetype_id"] = f"{archetype_id}_front_day"
+    specs["development_aesthetic_category"] = category_id
+    specs["development_subcategory"] = archetype_id
+    building.specifications = specs
+
+    await db.flush()
+    await db.refresh(building)
+
+    return {
+        "status": "ok",
+        "building_id": str(building.id),
+        "archetype_id": archetype_id,
+        "category_id": category_id,
+    }
+
+
 def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | None]]):
     """Background task that fetches thumbnails from Meshy/Tripo for existing buildings."""
     import time

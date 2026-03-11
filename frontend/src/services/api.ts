@@ -720,6 +720,19 @@ export const adminApi = {
     return data;
   },
 
+  assignArchetype: async (
+    buildingId: string,
+    archetypeId: string,
+    categoryId: string,
+  ): Promise<{ status: string; building_id: string; archetype_id: string; category_id: string }> => {
+    const { data } = await api.put(
+      `/api/v1/admin/buildings/${buildingId}/assign-archetype`,
+      null,
+      { params: { archetype_id: archetypeId, category_id: categoryId } },
+    );
+    return data;
+  },
+
   listAllProjects: async (params?: {
     skip?: number;
     limit?: number;
@@ -988,6 +1001,12 @@ export const modelLibraryApi = {
 
   bulkImport: async (): Promise<{ status: string; imported: number; skipped: number; total_buildings_with_models: number }> => {
     const { data } = await api.post('/api/v1/model-library/bulk-import', {}, { timeout: 120000 });
+    return data;
+  },
+
+  /** Get building preview thumbnails grouped by archetype ID. */
+  archetypePreviews: async (): Promise<Record<string, Array<{ id: string; name: string; preview_url: string; model_url: string; project_id?: string }>>> => {
+    const { data } = await api.get('/api/v1/model-library/archetype-previews');
     return data;
   },
 };

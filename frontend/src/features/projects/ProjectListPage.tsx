@@ -24,6 +24,7 @@ export function ProjectListPage() {
   const [addressSuggestions, setAddressSuggestions] = useState<GeocodeSuggestion[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [error, setError] = useState('');
   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -46,12 +47,48 @@ export function ProjectListPage() {
             data.features.map((f: any) => ({ place_name: f.place_name, center: f.center }))
           );
           setShowSuggestions(true);
+          setHighlightedIndex(-1);
         }
       } catch {
         setAddressSuggestions([]);
       }
     }, 350);
   }, []);
+
+  const selectSuggestion = (s: GeocodeSuggestion) => {
+    setAddressQuery(s.place_name);
+    setSelectedLocation({
+      latitude: s.center[1],
+      longitude: s.center[0],
+      address: s.place_name,
+    });
+    setShowSuggestions(false);
+    setHighlightedIndex(-1);
+  };
+
+  const handleAddressKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions || addressSuggestions.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev < addressSuggestions.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightedIndex((prev) =>
+        prev > 0 ? prev - 1 : addressSuggestions.length - 1
+      );
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlightedIndex >= 0) {
+        selectSuggestion(addressSuggestions[highlightedIndex]);
+      }
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+      setHighlightedIndex(-1);
+    }
+  };
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -187,6 +224,7 @@ export function ProjectListPage() {
                     geocodeAddress(e.target.value);
                   }}
                   onFocus={() => addressSuggestions.length > 0 && setShowSuggestions(true)}
+                  onKeyDown={handleAddressKeyDown}
                   className="input-base w-full pl-9 disabled:bg-primary-950/[0.02] disabled:text-primary-950/30"
                 />
               </div>
@@ -196,16 +234,12 @@ export function ProjectListPage() {
                     <button
                       key={i}
                       type="button"
-                      className="w-full text-left px-3 py-2 text-sm text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-400 border-b border-primary-950/[0.04] last:border-0"
-                      onClick={() => {
-                        setAddressQuery(s.place_name);
-                        setSelectedLocation({
-                          latitude: s.center[1],
-                          longitude: s.center[0],
-                          address: s.place_name,
-                        });
-                        setShowSuggestions(false);
-                      }}
+                      className={`w-full text-left px-3 py-2 text-sm border-b border-primary-950/[0.04] last:border-0 ${
+                        i === highlightedIndex
+                          ? 'bg-primary-950/[0.06] text-primary-400'
+                          : 'text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-400'
+                      }`}
+                      onClick={() => selectSuggestion(s)}
                     >
                       <MapPin size={12} className="inline mr-2 text-primary-950/30" />
                       {s.place_name}

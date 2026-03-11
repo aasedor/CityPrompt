@@ -406,3 +406,56 @@ async def delete_library_item(
         pass  # Don't fail deletion if S3 cleanup fails
 
     await db.delete(entry)
+
+
+@router.get("/archetype-previews", response_model=dict)
+async def archetype_previews(
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Return buildings with preview thumbnails grouped by archetype ID.
+
+    Scans completed buildings that have both a preview_url and an archetype ID
+    stored in their specifications. Returns a dict mapping archetype_id to a
+    list of {id, name, preview_url, model_url} objects (max 4 per archetype).
+    """
+    from sqlalchemy import cast, String, text
+
+    result = await db.execute(
+        select(Building).where(
+            Building.preview_url.isnot(None),
+            Building.model_url.isnot(None),
+            Building.generation_status == "completed",
+            Building.specifications.isnot(None),
+        ).order_by(Building.created_at.desc())
+    )
+    buildings = result.scalars().all()
+
+    archetype_map: dict[str, list[dict]] = {}
+    for b in buildings:
+        specs = b.specifications or {}
+        # The archetype_id stored during zone creation follows the
+        # format "{seed_id}_front_day" — extract the seed portion.
+        raw_id = specs.get("development_archetype_id", "") or ""
+        archetype_id = raw_id.replace("_front_day", "") if raw_id else ""
+        if not archetype_id:
+            # Try the subcategory as fallback
+            archetype_id = specs.get("development_subcategory", "") or ""
+        if not archetype_id:
+            continue
+
+        if archetype_id not in archetype_map:
+            archetype_map[archetype_id] = []
+
+        if len(archetype_map[archetype_id]) >= 4:
+            continue
+
+        archetype_map[archetype_id].append({
+            "id": str(b.id),
+            "name": b.name,
+            "preview_url": b.preview_url,
+            "model_url": b.model_url,
+            "project_id": str(b.project_id) if b.project_id else None,
+        })
+
+    return archetype_map

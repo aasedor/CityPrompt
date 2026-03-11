@@ -2191,6 +2191,41 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
 
 const AESTHETIC_EXAMPLE_COUNT = 4;
 
+// ---------------------------------------------------------------------------
+// Archetype model previews — cached fetch of real 3D model thumbnails
+// ---------------------------------------------------------------------------
+
+type ArchetypeModelPreview = { id: string; name: string; preview_url: string; model_url: string; project_id?: string };
+
+let _archetypePreviewsCache: Record<string, ArchetypeModelPreview[]> | null = null;
+let _archetypePreviewsFetching = false;
+
+function useArchetypeModelPreviews(): Record<string, ArchetypeModelPreview[]> {
+  const [previews, setPreviews] = useState<Record<string, ArchetypeModelPreview[]>>(_archetypePreviewsCache || {});
+
+  useEffect(() => {
+    if (_archetypePreviewsCache) {
+      setPreviews(_archetypePreviewsCache);
+      return;
+    }
+    if (_archetypePreviewsFetching) return;
+    _archetypePreviewsFetching = true;
+    modelLibraryApi.archetypePreviews()
+      .then((data) => {
+        _archetypePreviewsCache = data;
+        setPreviews(data);
+      })
+      .catch(() => {
+        // Silently fail — just means no model thumbnails
+      })
+      .finally(() => {
+        _archetypePreviewsFetching = false;
+      });
+  }, []);
+
+  return previews;
+}
+
 function buildAestheticImageSources(option: DevelopmentAestheticOption): string[] {
   const rawSources: string[] = [];
 
@@ -2281,11 +2316,13 @@ function AestheticOptionCard({
   value,
   selectedReferenceId,
   onSelect,
+  modelPreviews,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
   selectedReferenceId?: string;
   onSelect: (id: string, archetypeImageId?: string) => void;
+  modelPreviews?: ArchetypeModelPreview[];
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
@@ -2297,13 +2334,20 @@ function AestheticOptionCard({
   const heroSources = selectedArchetype
     ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
     : sources.slice(0, Math.max(1, sources.length));
-  const exampleSources = archetypeImages.length > 0
+
+  // Build the 4 thumbnail slots: fill with model previews first, then archetype lighting variants
+  const modelSlots = (modelPreviews || []).slice(0, AESTHETIC_EXAMPLE_COUNT);
+  const archetypeSlots = archetypeImages.length > 0
     ? archetypeImages.slice(0, AESTHETIC_EXAMPLE_COUNT)
     : sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT).map((source, idx) => ({
       id: `${option.id}-example-${idx}`,
       imageUrl: source,
       label: `${option.label} example ${idx + 1}`,
     }));
+
+  // Merge: model previews take priority, remaining slots filled by archetype variants
+  const totalSlots = AESTHETIC_EXAMPLE_COUNT;
+  const remainingArchetypeSlots = archetypeSlots.slice(0, totalSlots - modelSlots.length);
 
   const openImageLightbox = (imageUrl: string, label: string) => {
     const resolvedUrl = resolveApiFileUrl(imageUrl);
@@ -2344,7 +2388,33 @@ function AestheticOptionCard({
       <div className="px-2 py-1.5">
         <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
         <div className="mt-1 grid grid-cols-4 gap-1">
-          {exampleSources.slice(0, 4).map((image, idx) => {
+          {/* Model preview thumbnails (from real Meshy-generated buildings) */}
+          {modelSlots.map((model, idx) => (
+            <button
+              key={`${option.id}-model-${idx}`}
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                openImageLightbox(model.preview_url, model.name || option.label);
+              }}
+              className="relative h-9 overflow-hidden rounded border border-amber-500/40 bg-primary-950/[0.06] hover:border-amber-500/70"
+              title={`${model.name || 'Generated model'} — click to preview`}
+            >
+              <img
+                src={resolveApiFileUrl(model.preview_url)}
+                alt={model.name || 'Model preview'}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+              {/* 3D badge */}
+              <span className="absolute bottom-0 right-0 rounded-tl bg-amber-500/80 px-0.5 text-[7px] font-bold leading-tight text-white">
+                3D
+              </span>
+            </button>
+          ))}
+
+          {/* Archetype lighting variant thumbnails (fill remaining slots) */}
+          {remainingArchetypeSlots.map((image, idx) => {
             const isSelected = value === option.id && selectedReferenceId === image.id;
             return (
               <button
@@ -2389,6 +2459,7 @@ function DevelopmentAestheticPicker({
   const categoryOptions = category
     ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
     : [];
+  const archetypeModelPreviews = useArchetypeModelPreviews();
 
   return (
     <div className="space-y-2">
@@ -2413,6 +2484,7 @@ function DevelopmentAestheticPicker({
               value={value}
               selectedReferenceId={selectedReferenceId}
               onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              modelPreviews={archetypeModelPreviews[option.id]}
             />
           ))}
         </div>

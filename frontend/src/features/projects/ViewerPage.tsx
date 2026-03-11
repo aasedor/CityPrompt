@@ -17,6 +17,7 @@ import {
 } from '@/store/undoActions';
 // Annotation type used implicitly via annotationsApi
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { SceneViewer } from '@/components/viewer/SceneViewer';
 import { ViewerControls } from '@/components/viewer/ViewerControls';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
@@ -933,7 +934,10 @@ export function ViewerPage() {
               <ZonePropertiesPanel
                 key={selectedZone.id}
                 zone={selectedZone}
-                onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+                onUpdate={(zoneId, data) => {
+                  rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+                  updateZone.mutate({ zoneId, data });
+                }}
                 onDelete={(zoneId) => deleteZone.mutate(zoneId)}
                 onClose={() => selectZone(null)}
                 onAIGenerate={(buildingId, initialPrompt) => {
@@ -1022,7 +1026,10 @@ export function ViewerPage() {
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
-              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+              onUpdate={(zoneId, data) => {
+                  rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+                  updateZone.mutate({ zoneId, data });
+                }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId, initialPrompt) => {
