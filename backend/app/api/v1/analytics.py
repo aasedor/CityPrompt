@@ -3,6 +3,7 @@ Cofounder-only analytics endpoints for deep platform insights.
 """
 
 import asyncio
+import os
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -478,6 +479,11 @@ async def api_balances(
             provider="google_oauth",
             configured=bool(cfg.google_client_id and cfg.google_client_secret),
             description="Google sign-in",
+        ),
+        ServiceStatus(
+            provider="openai",
+            configured=bool(getattr(cfg, "openai_api_key", "") or os.getenv("OPENAI_API_KEY", "")),
+            description="OpenAI API key",
         ),
     ]
 

@@ -2,6 +2,7 @@
 Platform settings endpoints for cofounder-level configuration.
 """
 
+import os
 import redis as redis_lib
 from fastapi import APIRouter, Depends
 
@@ -20,11 +21,16 @@ class PlatformSettingsResponse(BaseModel):
     layout_ai_provider: str
     claude_configured: bool
     gemini_configured: bool
+    openai_configured: bool
 
 
 class PlatformSettingsUpdate(BaseModel):
     """Update platform settings."""
     layout_ai_provider: Optional[str] = None
+
+
+def _openai_configured() -> bool:
+    return bool(getattr(settings, "openai_api_key", "") or os.getenv("OPENAI_API_KEY", ""))
 
 
 @router.get("/platform-settings", response_model=PlatformSettingsResponse)
@@ -46,6 +52,7 @@ async def get_platform_settings(
         layout_ai_provider=current_provider,
         claude_configured=bool(settings.anthropic_api_key),
         gemini_configured=bool(settings.gemini_api_key),
+        openai_configured=_openai_configured(),
     )
 
 
@@ -79,4 +86,5 @@ async def update_platform_settings(
         layout_ai_provider=current_provider,
         claude_configured=bool(settings.anthropic_api_key),
         gemini_configured=bool(settings.gemini_api_key),
+        openai_configured=_openai_configured(),
     )
