@@ -17,6 +17,7 @@ import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import type { Document } from '@/types';
 import { WorkflowTabs, type WorkflowTab } from './WorkflowTabs';
 import { EmbeddedBlockEditor } from '@/features/block-editor/EmbeddedBlockEditor';
+import { MasterPlan2DPanel } from './MasterPlan2DPanel';
 
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,7 @@ export function ProjectViewPage() {
     setActiveSitePlannerTool,
     selectedZoneId,
     selectZone,
+    masterPlan3D,
   } = useViewerStore();
 
   const {
@@ -50,7 +52,10 @@ export function ProjectViewPage() {
   const hasEditableZones = siteZones.some((z) =>
     (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area')
   );
+  const hasSiteGeometry = siteZones.some((z) => z.zone_type === 'site_boundary');
   const hasFinalizedLayout = siteZones.some((z) => (z.properties as any)?._saved_layout);
+  const activeMasterPlan3D = masterPlan3D?.projectId === id ? masterPlan3D : null;
+  const hasMasterPlan3DReady = Boolean(activeMasterPlan3D?.status === 'ready' && activeMasterPlan3D.packages.length > 0);
 
   // Activate site planner on mount, pre-select buildings tool
   useEffect(() => {
@@ -100,7 +105,7 @@ export function ProjectViewPage() {
       const prev = prevStatusMap.current[doc.id];
       if (prev && prev !== doc.processing_status) {
         if (doc.processing_status === 'completed') {
-          toast.success(`"${doc.filename}" processed — buildings extracted`);
+          toast.success(`"${doc.filename}" processed - buildings extracted`);
         } else if (doc.processing_status === 'failed') {
           toast.error(`"${doc.filename}" processing failed`);
         }
@@ -204,7 +209,9 @@ export function ProjectViewPage() {
           activeTab={workflowTab}
           onTabChange={setWorkflowTab}
           hasEditableZones={hasEditableZones}
+          hasSiteGeometry={hasSiteGeometry}
           hasFinalizedLayout={hasFinalizedLayout}
+          hasMasterPlan3DReady={hasMasterPlan3DReady}
         />
 
         {/* Tab 1: Master Plan */}
@@ -250,14 +257,63 @@ export function ProjectViewPage() {
           />
         )}
 
-        {/* Tab 3: 3D Viewer placeholder */}
+        {/* Tab 3: 2D Master Plan Generator */}
+        {workflowTab === 'master-plan-2d' && id && (
+          <MasterPlan2DPanel
+            projectId={id}
+            siteZones={siteZones}
+            hasSiteGeometry={hasSiteGeometry}
+          />
+        )}
+
+        {/* Tab 4: 3D Viewer placeholder */}
         {workflowTab === '3d-viewer' && (
           <div className="flex h-[500px] items-center justify-center rounded-b-xl bg-primary-950">
-            <div className="text-center">
-              <p className="text-sm text-neutral-400 mb-3">Your 3D environment is being generated</p>
+            <div className="max-w-xl px-6 text-center">
+              {activeMasterPlan3D?.status === 'ready' ? (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-200">3D Packages Ready</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">{activeMasterPlan3D.packages.length} geometry-locked scene packages are prepared.</p>
+                  <p className="mt-3 text-sm text-neutral-300">
+                    Source board: {activeMasterPlan3D.sourceOptionLabel || '2D master plan'} | {activeMasterPlan3D.selectedPerspective.replace(/_/g, ' ')} | {activeMasterPlan3D.lightingVariant.replace(/_/g, ' ')}
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-400">
+                    The downstream renderer handoff is ready, and the original 2D footprints remain authoritative.
+                  </p>
+                  {activeMasterPlan3D.globalStyleNotes && (
+                    <p className="mt-3 text-sm text-neutral-300">Shared direction: {activeMasterPlan3D.globalStyleNotes}</p>
+                  )}
+                  {activeMasterPlan3D.packages.length > 0 && (
+                    <div className="mt-5 grid gap-2 text-left sm:grid-cols-2">
+                      {activeMasterPlan3D.packages.slice(0, 4).map((pkg) => (
+                        <div key={pkg.scene_id} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-indigo-200">{pkg.zone_label}</p>
+                          <p className="mt-1 text-sm font-medium text-white">{pkg.archetype_title}</p>
+                          <p className="mt-1 text-xs text-neutral-300">
+                            {pkg.height_m > 0 && pkg.floor_count > 0
+                              ? `${pkg.height_m}m over ${pkg.floor_count} levels`
+                              : pkg.zone_type.replace(/_/g, ' ')}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {activeMasterPlan3D.rendererAdapter?.notes && (
+                    <p className="mt-3 text-xs text-neutral-400">{activeMasterPlan3D.rendererAdapter.notes}</p>
+                  )}
+                </>
+              ) : activeMasterPlan3D?.status === 'generating' ? (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-200">Preparing 3D</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">Your 2D master plan is being packaged for 3D rendering.</p>
+                  <p className="mt-3 text-sm text-neutral-400">We are preserving footprint geometry, archetype metadata, and scene directives for the renderer handoff.</p>
+                </>
+              ) : (
+                <p className="text-sm text-neutral-400">Your 3D environment is being generated</p>
+              )}
               <button
                 onClick={handleViewIn3D}
-                className="rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-400 hover:to-purple-400"
+                className="mt-6 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:from-indigo-400 hover:to-purple-400"
               >
                 Open 3D Viewer
               </button>
@@ -326,8 +382,8 @@ export function ProjectViewPage() {
                       <p className="font-medium text-primary-950">{b.name || 'Unnamed Building'}</p>
                       <p className="text-sm text-primary-950/50">
                         {b.floor_count && `${b.floor_count} floors`}
-                        {b.height_meters && ` · ${b.height_meters}m tall`}
-                        {b.roof_type && ` · ${b.roof_type} roof`}
+                        {b.height_meters && ` | ${b.height_meters}m tall`}
+                        {b.roof_type && ` | ${b.roof_type} roof`}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -542,8 +598,8 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
         <div className="flex-1 min-w-0">
           <p className="truncate text-sm font-medium text-primary-950/60">{doc.filename}</p>
           <p className="text-xs text-primary-950/50">
-            {formatSize(doc.file_size_bytes)} · {doc.file_type.toUpperCase()}
-            {doc.processed_at && ` · Processed ${new Date(doc.processed_at).toLocaleDateString()}`}
+            {formatSize(doc.file_size_bytes)} | {doc.file_type.toUpperCase()}
+            {doc.processed_at && ` | Processed ${new Date(doc.processed_at).toLocaleDateString()}`}
           </p>
         </div>
         <span className={`flex items-center gap-1 badge ${status.color}`}>
@@ -579,4 +635,14 @@ function DocumentRow({ document: doc, onDelete }: { document: Document; onDelete
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
 

@@ -21,6 +21,13 @@ import type {
   LockedLayers,
   BoundaryAnalysisResponse,
   ModelLibraryEntry,
+  MasterPlan2DGenerateRequest,
+  MasterPlan2DGenerateResponse,
+  MasterPlan2DOption,
+  MasterPlan2DSelectResponse,
+  MasterPlan2DExportResponse,
+  MasterPlan3DGenerateRequest,
+  MasterPlan3DGenerateResponse,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -45,6 +52,42 @@ export function resolveApiFileUrl(url: string): string {
   return url;
 }
 
+function formatApiDetail(detail: unknown): string | null {
+  if (typeof detail === 'string') {
+    const trimmed = detail.trim();
+    return trimmed || null;
+  }
+  if (Array.isArray(detail)) {
+    const parts = detail
+      .map((item) => formatApiDetail(item))
+      .filter((item): item is string => Boolean(item));
+    return parts.length > 0 ? parts.join('; ') : null;
+  }
+  if (detail && typeof detail === 'object') {
+    const record = detail as Record<string, unknown>;
+    const location = Array.isArray(record.loc)
+      ? record.loc.map((part) => String(part)).join(' > ')
+      : null;
+    const message = typeof record.msg === 'string'
+      ? record.msg.trim()
+      : typeof record.message === 'string'
+        ? record.message.trim()
+        : null;
+    if (location && message) return `${location}: ${message}`;
+    if (message) return message;
+  }
+  return null;
+}
+
+export function getApiErrorMessage(error: unknown, fallback = 'Something went wrong'): string {
+  const response = (error as any)?.response?.data;
+  return (
+    formatApiDetail(response?.detail)
+    || formatApiDetail(response?.message)
+    || formatApiDetail((error as any)?.message)
+    || fallback
+  );
+}
 // Request interceptor for auth token
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
@@ -161,7 +204,7 @@ export const authApi = {
 
 export const projectsApi = {
   list: async (skip = 0, limit = 20): Promise<Project[]> => {
-    const { data } = await api.get(`/api/v1/projects?skip=${skip}&limit=${limit}`);
+    const { data } = await api.get(`/api/v1/projects/?skip=${skip}&limit=${limit}`);
     return data;
   },
 
@@ -171,7 +214,7 @@ export const projectsApi = {
   },
 
   create: async (project: CreateProjectRequest): Promise<Project> => {
-    const { data } = await api.post('/api/v1/projects', project);
+    const { data } = await api.post('/api/v1/projects/', project);
     return data;
   },
 
@@ -589,7 +632,7 @@ export const siteZonesApi = {
         }),
         ...(zoneMeta && { zone_meta: zoneMeta }),
       },
-      { timeout: 120000 },
+      { timeout: 240000 },
     );
     return { ...data, image_url: resolveApiFileUrl(data.image_url) };
   },
@@ -610,6 +653,72 @@ export const siteZonesApi = {
   },
 };
 
+
+// =============================================================================
+// 2D Master Plan Generator
+// =============================================================================
+
+function normalizeMasterPlan2DOption(option: MasterPlan2DOption): MasterPlan2DOption {
+  return {
+    ...option,
+    preview_url: resolveApiFileUrl(option.preview_url),
+    preview_png_url: resolveApiFileUrl(option.preview_png_url || option.preview_url),
+    full_png_url: option.full_png_url ? resolveApiFileUrl(option.full_png_url) : undefined,
+    svg_url: option.svg_url ? resolveApiFileUrl(option.svg_url) : undefined,
+    plan_preview_png_url: option.plan_preview_png_url ? resolveApiFileUrl(option.plan_preview_png_url) : undefined,
+    plan_full_png_url: option.plan_full_png_url ? resolveApiFileUrl(option.plan_full_png_url) : undefined,
+    plan_svg_url: option.plan_svg_url ? resolveApiFileUrl(option.plan_svg_url) : undefined,
+    debug_png_url: option.debug_png_url ? resolveApiFileUrl(option.debug_png_url) : undefined,
+  };
+}
+
+function normalizeMasterPlan2DResponse(response: MasterPlan2DGenerateResponse): MasterPlan2DGenerateResponse {
+  return {
+    ...response,
+    options: response.options.map(normalizeMasterPlan2DOption),
+  };
+}
+
+export const masterPlan2DApi = {
+  list: async (projectId: string): Promise<MasterPlan2DOption[]> => {
+    const { data } = await api.get(`/api/v1/master-plan-2d/projects/${projectId}/options`);
+    return data.map(normalizeMasterPlan2DOption);
+  },
+
+  generate: async (projectId: string, request: MasterPlan2DGenerateRequest): Promise<MasterPlan2DGenerateResponse> => {
+    const { data } = await api.post(`/api/v1/master-plan-2d/projects/${projectId}/generate`, request, { timeout: 240000 });
+    return normalizeMasterPlan2DResponse(data);
+  },
+
+  regenerate: async (projectId: string, request: MasterPlan2DGenerateRequest): Promise<MasterPlan2DGenerateResponse> => {
+    const { data } = await api.post(`/api/v1/master-plan-2d/projects/${projectId}/regenerate`, request, { timeout: 240000 });
+    return normalizeMasterPlan2DResponse(data);
+  },
+
+  select: async (optionId: string): Promise<MasterPlan2DSelectResponse> => {
+    const { data } = await api.post(`/api/v1/master-plan-2d/options/${optionId}/select`);
+    return data;
+  },
+
+  export: async (optionId: string, width = 4200): Promise<MasterPlan2DExportResponse> => {
+    const { data } = await api.get(`/api/v1/master-plan-2d/options/${optionId}/export?width=${width}`);
+    return {
+      ...data,
+      preview_png_url: data.preview_png_url ? resolveApiFileUrl(data.preview_png_url) : undefined,
+      full_png_url: data.full_png_url ? resolveApiFileUrl(data.full_png_url) : undefined,
+      svg_url: data.svg_url ? resolveApiFileUrl(data.svg_url) : undefined,
+      plan_preview_png_url: data.plan_preview_png_url ? resolveApiFileUrl(data.plan_preview_png_url) : undefined,
+      plan_full_png_url: data.plan_full_png_url ? resolveApiFileUrl(data.plan_full_png_url) : undefined,
+      plan_svg_url: data.plan_svg_url ? resolveApiFileUrl(data.plan_svg_url) : undefined,
+      debug_png_url: data.debug_png_url ? resolveApiFileUrl(data.debug_png_url) : undefined,
+    };
+  },
+
+  generate3D: async (optionId: string, request: MasterPlan3DGenerateRequest): Promise<MasterPlan3DGenerateResponse> => {
+    const { data } = await api.post(`/api/v1/master-plan-2d/options/${optionId}/generate-3d`, request, { timeout: 120000 });
+    return data;
+  },
+};
 // =============================================================================
 // Admin
 // =============================================================================
@@ -923,6 +1032,7 @@ export interface PlatformSettings {
   layout_ai_provider: string;
   claude_configured: boolean;
   gemini_configured: boolean;
+  openai_configured: boolean;
 }
 
 export const settingsApi = {

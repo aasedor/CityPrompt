@@ -155,6 +155,232 @@ export interface LayoutPreviewResponse {
   options: LayoutOption[];
   zone_id: string;
 }
+export type MasterPlan2DStylePreset = 'auto' | 'rendered_sales_plan' | 'hybrid_annotated_master_plan' | 'illustrative_landscape_plan';
+export type MasterPlan2DQualityLevel = 'draft' | 'presentation' | 'board_ready';
+export type MasterPlan2DStylePassProvider = 'auto' | 'gemini' | 'stability';
+export type MasterPlanRenderStylePreset = 'photorealistic_aerial' | 'photoreal_orthographic_aerial' | 'digital_watercolor_map';
+export type MasterPlanLightingAtmospherePreset = 'crisp_summer_day' | 'golden_hour' | 'overcast_soft' | 'winter_snow';
+export type MasterPlanImageProvider = 'vertex' | 'stability' | 'gemini';
+
+export interface MasterPlan2DReferenceMetadata {
+  reference_id?: string;
+  zone_id: string;
+  zone_name?: string;
+  zone_type: string;
+  domain?: string;
+  category?: string;
+  subcategory?: string;
+  archetype_name?: string;
+  asset_id?: string;
+  image_url: string;
+  image_path?: string;
+  source: 'zone_prompt' | 'archetype' | 'reference_image';
+  source_label: string;
+  prompt_text?: string;
+  caption?: string;
+  tags?: string[];
+  selection_order?: number;
+  style_profile?: Record<string, unknown>;
+  generation_style?: Record<string, unknown>;
+}
+
+export interface MasterPlan2DGenerateRequest {
+  prompt?: string;
+  render_style_preset?: MasterPlanRenderStylePreset;
+  lighting_atmosphere_preset?: MasterPlanLightingAtmospherePreset;
+  specific_overrides?: string;
+  option_count?: number;
+  style_preset?: MasterPlan2DStylePreset;
+  quality_level?: MasterPlan2DQualityLevel;
+  show_legend?: boolean;
+  show_north_arrow?: boolean;
+  show_scale_bar?: boolean;
+  show_callout_markers?: boolean;
+  show_surrounding_context?: boolean;
+  export_width?: number;
+  map_screenshot_satellite?: string;
+  reference_images?: string[];
+  reference_metadata?: MasterPlan2DReferenceMetadata[];
+  selected_image_urls?: string[];
+  ai_style_pass_enabled?: boolean;
+  ai_style_pass_provider?: MasterPlan2DStylePassProvider;
+  compose_board?: boolean;
+  board_template?: 'master_plan_board_v1';
+  include_photo_strip?: boolean;
+  debug?: boolean;
+}
+
+export interface MasterPlan2DOption {
+  id: string;
+  project_id: string;
+  label: string;
+  style_preset: Exclude<MasterPlan2DStylePreset, 'auto'>;
+  style_name: string;
+  variant_index: number;
+  preview_url: string;
+  preview_png_url: string;
+  full_png_url?: string;
+  svg_url?: string;
+  plan_preview_png_url?: string;
+  plan_full_png_url?: string;
+  plan_svg_url?: string;
+  debug_png_url?: string;
+  is_selected: boolean;
+  metadata?: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface MasterPlan2DGenerateResponse {
+  project_id: string;
+  options: MasterPlan2DOption[];
+}
+
+export interface MasterPlan2DSelectResponse {
+  status: string;
+  project_id: string;
+  selected_option_id: string;
+}
+
+export interface MasterPlan2DExportResponse {
+  option_id: string;
+  project_id: string;
+  label: string;
+  style_preset: Exclude<MasterPlan2DStylePreset, 'auto'>;
+  style_name: string;
+  width: number;
+  height: number;
+  svg: string;
+  preview_png_url?: string;
+  full_png_url?: string;
+  svg_url?: string;
+  plan_preview_png_url?: string;
+  plan_full_png_url?: string;
+  plan_svg_url?: string;
+  debug_png_url?: string;
+}
+
+export type MasterPlan3DScenePerspective = 'aerial_oblique' | 'street_level_eye_height' | 'corner_perspective' | 'promenade_view';
+export type MasterPlan3DLightingVariant = 'golden_hour' | 'clear_daylight' | 'overcast_soft_light' | 'blue_hour_dusk';
+export type MasterPlan3DScope = 'full_site' | 'selected_zones' | 'focused_frontage';
+
+export interface MasterPlan3DZoneSnapshot {
+  zone_id: string;
+  zone_label?: string;
+  zone_type: SiteZoneType;
+  color?: string;
+  polygon: number[][];
+  height_m?: number;
+  floor_count?: number;
+  archetype_title?: string;
+  archetype_metadata?: Record<string, unknown>;
+  user_notes?: string;
+}
+export interface MasterPlan3DGenerateRequest {
+  render_style_preset?: MasterPlanRenderStylePreset;
+  lighting_atmosphere_preset?: MasterPlanLightingAtmospherePreset;
+  specific_overrides?: string;
+  selected_perspective?: MasterPlan3DScenePerspective;
+  lighting_variant?: MasterPlan3DLightingVariant;
+  scope?: MasterPlan3DScope;
+  selected_zone_ids?: string[];
+  zones?: MasterPlan3DZoneSnapshot[];
+  global_style_notes?: string;
+}
+
+export interface MasterPlan3DFootprintReference {
+  source_zone_label: string;
+  geometry_type: string;
+}
+
+export interface MasterPlan3DFootprintGeometry {
+  type: 'Polygon';
+  coordinates: number[][][];
+}
+
+export interface MasterPlan3DRendererNotes {
+  keep_footprint_alignment: boolean;
+  recommended_condition_strength: number;
+  geometry_priority: 'high';
+  style_override_applied: boolean;
+  avoid: string[];
+}
+
+export interface MasterPlan3DConditioningAssets {
+  structure_image_url?: string;
+  depth_map_url?: string;
+  segmentation_map_url?: string;
+  massing_image_url?: string;
+  perspective_structure_image_url?: string;
+  perspective_depth_map_url?: string;
+  perspective_segmentation_map_url?: string;
+  perspective_massing_image_url?: string;
+  camera_perspective?: string;
+  control_mode?: string;
+  control_strength?: number;
+}
+
+export interface MasterPlan3DRenderPackage {
+  scene_id: string;
+  zone_id: string;
+  zone_label: string;
+  zone_type: SiteZoneType;
+  archetype_title: string;
+  height_m: number;
+  floor_count: number;
+  footprint_reference: MasterPlan3DFootprintReference;
+  footprint_geometry: MasterPlan3DFootprintGeometry;
+  archetype_metadata: Record<string, unknown>;
+  user_notes?: string;
+  render_prompt: string;
+  renderer_notes: MasterPlan3DRendererNotes;
+  source_concept_image_url?: string;
+  source_concept_asset_id?: string;
+  conditioning_assets?: MasterPlan3DConditioningAssets;
+  provider: MasterPlanImageProvider;
+  model: string;
+  prompt_type: string;
+  job_type: '3d';
+  render_image_url?: string;
+}
+
+export interface MasterPlan3DPackageWarning {
+  zone_id?: string;
+  zone_label?: string;
+  reason: string;
+}
+
+export interface MasterPlan3DRendererAdapter {
+  status: string;
+  provider: string;
+  integration_status: string;
+  notes: string;
+}
+
+export interface MasterPlanProviderRouting {
+  two_d_image_provider: MasterPlanImageProvider;
+  three_d_image_provider: MasterPlanImageProvider;
+}
+
+export interface MasterPlan3DGenerateResponse {
+  site_id: string;
+  option_id: string;
+  source_option_label: string;
+  selected_perspective: MasterPlan3DScenePerspective;
+  lighting_variant: MasterPlan3DLightingVariant;
+  scope: MasterPlan3DScope;
+  selected_zone_ids: string[];
+  global_style_notes?: string;
+  render_style_preset: MasterPlanRenderStylePreset;
+  lighting_atmosphere_preset: MasterPlanLightingAtmospherePreset;
+  specific_overrides?: string;
+  global_style_payload?: string;
+  source_concept_image_url?: string;
+  provider_routing: MasterPlanProviderRouting;
+  render_packages: MasterPlan3DRenderPackage[];
+  skipped_zones: MasterPlan3DPackageWarning[];
+  renderer_adapter: MasterPlan3DRendererAdapter;
+  created_at: string;
+}
 
 // =============================================================================
 // OSM Context Types
@@ -659,4 +885,22 @@ export interface BoundaryAnalysisResponse {
     };
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

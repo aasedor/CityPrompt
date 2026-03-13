@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Plus, FolderOpen, Clock, X, MapPin } from 'lucide-react';
-import { projectsApi } from '@/services/api';
+import { getApiErrorMessage, projectsApi } from '@/services/api';
 import type { Project, Location } from '@/types';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
@@ -135,7 +135,7 @@ export function ProjectListPage() {
       }
     },
     onError: (err: any) => {
-      setError(err?.response?.data?.detail || 'Failed to create project. Check that the backend is running.');
+      setError(getApiErrorMessage(err, 'Failed to create project. Check that the backend is running.'));
     },
   });
 
@@ -302,3 +302,4 @@ export function ProjectListPage() {
     </div>
   );
 }
+

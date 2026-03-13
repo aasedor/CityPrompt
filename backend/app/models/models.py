@@ -71,6 +71,7 @@ class Project(Base):
     documents: Mapped[list["Document"]] = relationship(back_populates="project", cascade="all, delete-orphan")
     shares: Mapped[list["ProjectShare"]] = relationship(back_populates="project", cascade="all, delete-orphan")
     site_zones: Mapped[list["SiteZone"]] = relationship(back_populates="project", cascade="all, delete-orphan")
+    master_plan_2d_options: Mapped[list["MasterPlan2DOption"]] = relationship(back_populates="project", cascade="all, delete-orphan")
 
 
 class Building(Base):
@@ -205,6 +206,23 @@ class RenderPreview(Base):
 
     # Relationships
     building: Mapped["Building"] = relationship(back_populates="render_previews")
+
+
+class MasterPlan2DOption(Base):
+    __tablename__ = "master_plan_2d_options"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    label: Mapped[str] = mapped_column(String(120), nullable=False)
+    style_preset: Mapped[str] = mapped_column(String(80), nullable=False)
+    variant_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    preview_url: Mapped[str] = mapped_column(Text, nullable=False)
+    plan_svg: Mapped[str] = mapped_column(Text, nullable=False)
+    metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
+    is_selected: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    project: Mapped["Project"] = relationship(back_populates="master_plan_2d_options")
 
 
 class ActivityLog(Base):

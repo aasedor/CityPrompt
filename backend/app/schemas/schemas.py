@@ -7,9 +7,9 @@ including input validation, serialization, and OpenAPI documentation.
 
 import uuid
 from datetime import date, datetime
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 
 # =============================================================================
@@ -449,6 +449,379 @@ class RegenerateLayoutRequest(BaseModel):
     locked_green_spaces: list[int] = Field(default=[], description="Indices of green spaces to keep locked")
 
 
+class MasterPlan2DReferenceMetadata(BaseModel):
+    """Structured reference metadata passed into the 2D generator."""
+    reference_id: Optional[str] = Field(None, description="Stable client-side reference identifier")
+    zone_id: str = Field(description="Source zone ID")
+    zone_name: Optional[str] = Field(None, description="Source zone name")
+    zone_type: str = Field(description="Source zone type")
+    domain: Optional[str] = Field(None, description="Semantic domain such as building, parks, plazas, or streets_paths")
+    category: Optional[str] = Field(None, description="Selected category")
+    subcategory: Optional[str] = Field(None, description="Selected subcategory or typology")
+    archetype_name: Optional[str] = Field(None, description="Selected archetype or hero image name")
+    asset_id: Optional[str] = Field(None, description="Image asset identifier when available")
+    image_url: str = Field(description="Resolved image URL")
+    image_path: Optional[str] = Field(None, description="Internal image path when available")
+    source: str = Field(description="Reference source: zone_prompt, archetype, or reference_image")
+    source_label: str = Field(description="Human-readable source label")
+    prompt_text: Optional[str] = Field(None, description="Prompt or caption text attached to the reference")
+    caption: Optional[str] = Field(None, description="Reference caption")
+    tags: Optional[list[str]] = Field(None, description="Generation tags or keywords")
+    selection_order: Optional[int] = Field(None, description="Client-side selection order")
+    style_profile: Optional[dict[str, Any]] = Field(None, description="Saved style profile for the selected reference")
+    generation_style: Optional[dict[str, Any]] = Field(None, description="Saved generation style input for the selected reference")
+
+
+RenderStylePreset = Literal["photorealistic_aerial", "photoreal_orthographic_aerial", "digital_watercolor_map"]
+LightingAtmospherePreset = Literal["crisp_summer_day", "golden_hour", "overcast_soft", "winter_snow"]
+MasterPlanImageProvider = Literal["vertex", "stability", "gemini"]
+
+
+class MasterPlan2DGenerateRequest(BaseModel):
+    """Request to generate 2D aerial master-plan options."""
+    prompt: Optional[str] = Field(None, max_length=2000, description="Legacy free-text style direction. Prefer render_style_preset + lighting_atmosphere_preset + specific_overrides.")
+    render_style_preset: RenderStylePreset = Field('photorealistic_aerial', description="High-level visual style preset for hidden prompt matrix compilation")
+    lighting_atmosphere_preset: LightingAtmospherePreset = Field('crisp_summer_day', description="Lighting and atmosphere preset for hidden prompt matrix compilation")
+    specific_overrides: Optional[str] = Field(None, max_length=500, description="Optional specific directive appended to internal prompt matrix output")
+    option_count: int = Field(default=3, ge=1, le=6, description="Number of options to generate")
+    style_preset: Optional[str] = Field(
+        None,
+        pattern="^(auto|rendered_sales_plan|hybrid_annotated_master_plan|illustrative_landscape_plan)$",
+        description="Optional style preset selection",
+    )
+    quality_level: Optional[str] = Field(
+        'presentation',
+        pattern="^(draft|presentation|board_ready)$",
+        description="Renderer quality level",
+    )
+    show_legend: Optional[bool] = Field(None, description="Override legend visibility")
+    show_north_arrow: Optional[bool] = Field(None, description="Override north-arrow visibility")
+    show_scale_bar: Optional[bool] = Field(None, description="Override scale-bar visibility")
+    show_callout_markers: Optional[bool] = Field(None, description="Override callout marker visibility")
+    show_surrounding_context: Optional[bool] = Field(None, description="Override muted context visibility")
+    export_width: int = Field(default=4200, ge=3000, le=5000, description="High-resolution export width in pixels")
+    map_screenshot_satellite: Optional[str] = Field(None, description="Optional satellite basemap screenshot data URI used as a real-context underlay for 2D renders")
+    reference_images: Optional[list[str]] = Field(None, description="Structured reference image URLs selected for the 2D generator")
+    reference_metadata: Optional[list[MasterPlan2DReferenceMetadata]] = Field(None, description="Structured reference metadata bundle")
+    selected_image_urls: Optional[list[str]] = Field(None, description="Deprecated alias for selected reference image URLs")
+    ai_style_pass_enabled: Optional[bool] = Field(False, description="Run an optional AI texture pass on top of the geometry-locked 2D render")
+    ai_style_pass_provider: Optional[str] = Field(
+        "auto",
+        pattern="^(auto|gemini|stability)$",
+        description="AI style-pass provider preference: auto, gemini, or stability",
+    )
+    compose_board: Optional[bool] = Field(True, description="Compose a deterministic presentation board in code after plan imagery generation")
+    board_template: Optional[str] = Field('master_plan_board_v1', description="Deterministic board template key")
+    include_photo_strip: Optional[bool] = Field(True, description="Whether to include a deterministic reference/photo strip panel")
+    debug: Optional[bool] = Field(False, description="Whether to emit QA debug overlays alongside the final outputs")
+
+
+class MasterPlan2DOptionResponse(BaseModel):
+    """Saved 2D master-plan option."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID = Field(description="Unique option ID")
+    project_id: uuid.UUID = Field(description="Parent project ID")
+    label: str = Field(description="Version label, e.g. Version A")
+    style_preset: str = Field(description="Preset slug")
+    style_name: str = Field(description="Preset display name")
+    variant_index: int = Field(description="0-based index inside the generated set")
+    preview_url: str = Field(description="Preview image URL/data URI")
+    preview_png_url: str = Field(description="Preview PNG URL")
+    full_png_url: Optional[str] = Field(None, description="Full-resolution PNG URL")
+    svg_url: Optional[str] = Field(None, description="Downloadable SVG URL")
+    plan_preview_png_url: Optional[str] = Field(None, description="Plan-layer preview PNG URL (imagery pass output)")
+    plan_full_png_url: Optional[str] = Field(None, description="Plan-layer full PNG URL (imagery pass output)")
+    plan_svg_url: Optional[str] = Field(None, description="Plan-layer SVG URL (imagery pass output)")
+    debug_png_url: Optional[str] = Field(None, description="Optional debug overlay PNG URL")
+    is_selected: bool = Field(description="Whether this option is selected")
+    metadata: Optional[dict[str, Any]] = Field(None, description="Render metadata")
+    created_at: datetime = Field(description="Creation timestamp")
+
+
+class MasterPlan2DGenerateResponse(BaseModel):
+    """Response for generation/regeneration of 2D options."""
+    project_id: str = Field(description="Project ID")
+    options: list[MasterPlan2DOptionResponse] = Field(description="Generated options")
+
+
+class MasterPlan2DSelectResponse(BaseModel):
+    """Response after selecting the preferred 2D option."""
+    status: str = Field(description="Operation status")
+    project_id: str = Field(description="Project ID")
+    selected_option_id: str = Field(description="Selected option ID")
+
+
+class MasterPlan2DExportResponse(BaseModel):
+    """High-resolution export payload for a generated 2D option."""
+    option_id: str = Field(description="Option ID")
+    project_id: str = Field(description="Project ID")
+    label: str = Field(description="Option label")
+    style_preset: str = Field(description="Preset slug")
+    style_name: str = Field(description="Preset display name")
+    width: int = Field(description="Export width in pixels")
+    height: int = Field(description="Export height in pixels")
+    svg: str = Field(description="High-resolution SVG markup")
+    preview_png_url: Optional[str] = Field(None, description="Preview PNG URL")
+    full_png_url: Optional[str] = Field(None, description="Full-resolution PNG URL")
+    svg_url: Optional[str] = Field(None, description="Downloadable SVG URL")
+    plan_preview_png_url: Optional[str] = Field(None, description="Plan-layer preview PNG URL (imagery pass output)")
+    plan_full_png_url: Optional[str] = Field(None, description="Plan-layer full PNG URL (imagery pass output)")
+    plan_svg_url: Optional[str] = Field(None, description="Plan-layer SVG URL (imagery pass output)")
+    debug_png_url: Optional[str] = Field(None, description="Optional debug overlay PNG URL")
+
+
+
+BoardZoneKind = Literal["site_boundary", "building", "residential", "road", "green_space", "parking", "water", "development_area"]
+
+
+class MasterPlanBoardLegendItem(BaseModel):
+    chip_id: str = Field(description="Legend chip identifier")
+    label: str = Field(description="Legend label")
+    color: str = Field(description="Legend color")
+
+
+class MasterPlanBoardCopyItem(BaseModel):
+    chip_id: str = Field(description="Chip identifier for right panel copy")
+    title: str = Field(description="Right panel item title")
+    body: str = Field(description="Right panel item body copy")
+
+
+class MasterPlanBoardZone(BaseModel):
+    zone_id: str = Field(description="Stable zone identifier")
+    zone_label: str = Field(description="Human readable zone label")
+    chip_id: str = Field(description="Board chip ID such as A1 or R2")
+    zone_kind: BoardZoneKind = Field(description="Normalized zone kind")
+    color: str = Field(description="Zone color")
+    polygon: list[list[float]] = Field(default_factory=list, description="Zone polygon coordinates [lng, lat]")
+    label_anchor: Optional[list[float]] = Field(None, description="Optional label anchor [lng, lat]")
+    height_m: Optional[float] = Field(None, ge=0, description="Optional zone height in meters")
+    floor_count: Optional[int] = Field(None, ge=0, description="Optional floor count")
+    archetype_title: Optional[str] = Field(None, description="Optional archetype title")
+    archetype_metadata: Optional[dict[str, Any]] = Field(None, description="Optional archetype metadata")
+    user_notes: Optional[str] = Field(None, description="Optional user notes")
+
+    @field_validator('polygon')
+    @classmethod
+    def _validate_polygon(cls, value: list[list[float]]) -> list[list[float]]:
+        for point in value:
+            if not isinstance(point, list) or len(point) != 2:
+                raise ValueError('polygon points must be [lng, lat] pairs')
+        return value
+
+    @field_validator('label_anchor')
+    @classmethod
+    def _validate_label_anchor(cls, value: Optional[list[float]]) -> Optional[list[float]]:
+        if value is None:
+            return value
+        if len(value) != 2:
+            raise ValueError('label_anchor must be [lng, lat]')
+        return value
+
+
+class MasterPlanBoardExportSettings(BaseModel):
+    width: int = Field(default=4200, ge=1200, le=10000, description="Board export width in pixels")
+    height: int = Field(default=2800, ge=900, le=10000, description="Board export height in pixels")
+
+
+class MasterPlanBoardSpec(BaseModel):
+    site_id: str = Field(description="Site identifier")
+    project_title: str = Field(description="Board title")
+    subtitle: Optional[str] = Field(None, description="Board subtitle")
+    board_variant: str = Field(default='master_plan_board_v1', description="Board template key")
+    zones: list[MasterPlanBoardZone] = Field(default_factory=list, description="Board zones")
+    legend_items: list[MasterPlanBoardLegendItem] = Field(default_factory=list, description="Legend items")
+    right_panel_copy: list[MasterPlanBoardCopyItem] = Field(default_factory=list, description="Right panel copy items")
+    annotation_items: list[dict[str, Any]] = Field(default_factory=list, description="Optional annotation items")
+    export_settings: MasterPlanBoardExportSettings = Field(default_factory=MasterPlanBoardExportSettings, description="Export settings")
+
+    @model_validator(mode='after')
+    def _validate_chip_consistency(self) -> 'MasterPlanBoardSpec':
+        zone_chips = [zone.chip_id for zone in self.zones]
+        if len(zone_chips) != len(set(zone_chips)):
+            raise ValueError('zones must use unique chip_id values')
+        legend_chips = [item.chip_id for item in self.legend_items]
+        if len(legend_chips) != len(set(legend_chips)):
+            raise ValueError('legend_items must use unique chip_id values')
+        return self
+# =============================================================================
+# 2D to 3D Master Plan Schemas
+# =============================================================================
+
+class MasterPlan3DZoneSnapshot(BaseModel):
+    """Client-side zone snapshot carried with the Generate-to-3D request for unsaved canvas state."""
+    zone_id: str = Field(description="Client or persisted zone identifier")
+    zone_label: Optional[str] = Field(None, description="Display label for the zone")
+    zone_type: str = Field(description="Zone type")
+    color: Optional[str] = Field(None, description="Zone display color")
+    polygon: list[list[float]] = Field(default_factory=list, description="Authoritative polygon in WGS84 [lng, lat] pairs")
+    height_m: Optional[float] = Field(None, ge=0, description="Optional override height in meters")
+    floor_count: Optional[int] = Field(None, ge=0, description="Optional override floor count")
+    archetype_title: Optional[str] = Field(None, description="Optional archetype title")
+    archetype_metadata: Optional[dict[str, Any]] = Field(None, description="Optional archetype metadata")
+    user_notes: Optional[str] = Field(None, description="Optional user note for this zone")
+
+    @field_validator('polygon')
+    @classmethod
+    def _validate_polygon(cls, value: list[list[float]]) -> list[list[float]]:
+        if not value or len(value) < 4:
+            raise ValueError('polygon must include at least 4 coordinate pairs')
+        for point in value:
+            if not isinstance(point, list) or len(point) != 2:
+                raise ValueError('polygon points must be [lng, lat] pairs')
+        return value
+
+class MasterPlan3DGenerateRequest(BaseModel):
+    """Request to convert a generated 2D master plan into structured 3D render packages."""
+    render_style_preset: RenderStylePreset = Field(
+        default='photorealistic_aerial',
+        description="High-level render style preset resolved through hidden prompt matrix",
+    )
+    lighting_atmosphere_preset: LightingAtmospherePreset = Field(
+        default='crisp_summer_day',
+        description="Lighting and atmosphere preset resolved through hidden prompt matrix",
+    )
+    specific_overrides: Optional[str] = Field(None, max_length=500, description="Optional specific directive appended after preset matrix payload")
+    selected_perspective: Literal["aerial_oblique", "street_level_eye_height", "corner_perspective", "promenade_view"] = Field(
+        default="aerial_oblique",
+        description="Preferred camera framing for downstream 3D renders",
+    )
+    lighting_variant: Literal["golden_hour", "clear_daylight", "overcast_soft_light", "blue_hour_dusk"] = Field(
+        default="golden_hour",
+        description="Lighting mood to apply to the 3D scene prompts",
+    )
+    scope: Literal["full_site", "selected_zones", "focused_frontage"] = Field(
+        default="full_site",
+        description="Whether to package the full site, selected zones only, or a focused frontage study",
+    )
+    selected_zone_ids: list[str] = Field(default_factory=list, description="Explicit zone IDs to include for selected or focused scope")
+    zones: list[MasterPlan3DZoneSnapshot] = Field(default_factory=list, description="Optional active-canvas zone snapshot for unsaved geometry state")
+    global_style_notes: Optional[str] = Field(None, max_length=2000, description="Legacy global notes. Retained for compatibility and merged into compiled style payload.")
+
+    @field_validator('selected_zone_ids', mode='before')
+    @classmethod
+    def _normalize_selected_zone_ids(cls, value: Any) -> list[str]:
+        if value is None:
+            return []
+        values = value if isinstance(value, list) else [value]
+        normalized: list[str] = []
+        seen: set[str] = set()
+        for item in values:
+            token = str(item or '').strip()
+            if not token or token in seen:
+                continue
+            seen.add(token)
+            normalized.append(token)
+        return normalized
+
+    @model_validator(mode='after')
+    def _validate_scope_selection(self) -> 'MasterPlan3DGenerateRequest':
+        if self.scope in {'selected_zones', 'focused_frontage'} and not self.selected_zone_ids:
+            raise ValueError('selected_zone_ids must include at least one zone for selected_zones or focused_frontage scope')
+        return self
+
+class MasterPlan3DFootprintReference(BaseModel):
+    """Reference back to the authoritative 2D source geometry."""
+    source_zone_label: str = Field(description="Original zone label")
+    geometry_type: str = Field(description="Authoritative geometry type")
+
+
+class MasterPlan3DFootprintGeometry(BaseModel):
+    """Serializable authoritative footprint geometry for downstream renderers."""
+    type: Literal["Polygon"] = Field(description="GeoJSON geometry type")
+    coordinates: list[list[list[float]]] = Field(description="Polygon coordinates in WGS84 lon/lat order")
+
+
+class MasterPlan3DRendererNotes(BaseModel):
+    """Structured guidance for the downstream image renderer."""
+    keep_footprint_alignment: bool = Field(description="Whether footprint alignment is mandatory")
+    recommended_condition_strength: float = Field(description="Recommended geometry conditioning strength")
+    geometry_priority: Literal["high"] = Field(description="Priority of geometry fidelity")
+    style_override_applied: bool = Field(description="Whether user or global style overrides were applied")
+    avoid: list[str] = Field(description="Negative constraints for the renderer")
+
+
+class MasterPlan3DConditioningAssets(BaseModel):
+    """Optional control images/maps for conditioned downstream inference."""
+    structure_image_url: Optional[str] = Field(None, description="Orthographic structure-control image URL")
+    depth_map_url: Optional[str] = Field(None, description="Orthographic depth-map image URL")
+    segmentation_map_url: Optional[str] = Field(None, description="Orthographic segmentation-map image URL")
+    massing_image_url: Optional[str] = Field(None, description="Orthographic clay/massing image URL")
+    perspective_structure_image_url: Optional[str] = Field(None, description="Perspective structure-control image URL")
+    perspective_depth_map_url: Optional[str] = Field(None, description="Perspective depth-map image URL")
+    perspective_segmentation_map_url: Optional[str] = Field(None, description="Perspective segmentation-map image URL")
+    perspective_massing_image_url: Optional[str] = Field(None, description="Perspective clay/massing image URL")
+    camera_perspective: Optional[str] = Field(None, description="Perspective preset used to derive the camera-aware control images")
+    control_mode: Optional[str] = Field(None, description="Conditioning mode for the target renderer")
+    control_strength: Optional[float] = Field(None, description="Recommended conditioning strength")
+
+
+class MasterPlan3DRenderPackage(BaseModel):
+    """A single renderer-ready 3D prompt package derived from a 2D zone."""
+    scene_id: str = Field(description="Stable scene/package identifier")
+    zone_id: str = Field(description="Source zone ID")
+    zone_label: str = Field(description="Source zone label")
+    zone_type: str = Field(description="Source zone type")
+    archetype_title: str = Field(description="Resolved archetype or precinct title")
+    height_m: float = Field(description="Resolved massing height in meters")
+    floor_count: int = Field(description="Resolved floor count")
+    footprint_reference: MasterPlan3DFootprintReference = Field(description="Link back to the authoritative 2D footprint")
+    footprint_geometry: MasterPlan3DFootprintGeometry = Field(description="Authoritative polygon geometry")
+    archetype_metadata: dict[str, Any] = Field(default_factory=dict, description="Resolved archetype/style metadata for the zone")
+    user_notes: Optional[str] = Field(None, description="High-priority descriptive note from the user")
+    render_prompt: str = Field(description="Downstream image-render prompt")
+    renderer_notes: MasterPlan3DRendererNotes = Field(description="Renderer guardrails and conditioning hints")
+    source_concept_image_url: Optional[str] = Field(None, description="Selected 2D concept image used as structural control source")
+    source_concept_asset_id: Optional[str] = Field(None, description="Stable source image asset id when available")
+    conditioning_assets: Optional[MasterPlan3DConditioningAssets] = Field(None, description="Optional control images/maps for conditioned inference")
+    provider: MasterPlanImageProvider = Field(description="Provider routed for this render package")
+    model: str = Field(description="Model identifier used for this package")
+    prompt_type: str = Field(description="Prompt compiler type for this package")
+    job_type: Literal['3d'] = Field(description="Render job type")
+    render_image_url: Optional[str] = Field(None, description="Optional generated 3D render image URL when renderer execution is enabled")
+
+
+class MasterPlan3DPackageWarning(BaseModel):
+    """Skipped-zone warning during 2D to 3D package generation."""
+    zone_id: Optional[str] = Field(None, description="Zone ID when available")
+    zone_label: Optional[str] = Field(None, description="Zone label when available")
+    reason: str = Field(description="Why the zone was skipped or defaulted")
+
+
+class MasterPlan3DRendererAdapter(BaseModel):
+    """Future-facing adapter metadata for downstream renderer integration."""
+    status: str = Field(description="Adapter status")
+    provider: str = Field(description="Target downstream renderer provider")
+    integration_status: str = Field(description="Implementation state for the adapter")
+    notes: str = Field(description="Next-step note for renderer integration")
+
+
+class MasterPlanProviderRouting(BaseModel):
+    """Provider routing metadata for the hybrid 2D->3D pipeline."""
+    two_d_image_provider: MasterPlanImageProvider = Field(description="Provider used for 2D site-image generation")
+    three_d_image_provider: MasterPlanImageProvider = Field(description="Provider used for 3D-from-2D rendering")
+
+
+class MasterPlan3DGenerateResponse(BaseModel):
+    """Structured 3D render packages prepared from a generated 2D master plan option."""
+    site_id: str = Field(description="Project/site ID")
+    option_id: str = Field(description="Source 2D option ID")
+    source_option_label: str = Field(description="Source 2D option label")
+    selected_perspective: str = Field(description="Perspective used for package generation")
+    lighting_variant: str = Field(description="Lighting variant used for package generation")
+    scope: str = Field(description="Generation scope")
+    selected_zone_ids: list[str] = Field(default_factory=list, description="Zone IDs explicitly selected for this package run")
+    global_style_notes: Optional[str] = Field(None, description="Legacy global notes applied to every package")
+    render_style_preset: RenderStylePreset = Field(description="Resolved render style preset")
+    lighting_atmosphere_preset: LightingAtmospherePreset = Field(description="Resolved lighting and atmosphere preset")
+    specific_overrides: Optional[str] = Field(None, description="Optional specific overrides passed by the user")
+    global_style_payload: Optional[str] = Field(None, description="Compiled hidden style matrix payload used across prompts")
+    source_concept_image_url: Optional[str] = Field(None, description="Selected approved 2D image used as concept/control source")
+    provider_routing: MasterPlanProviderRouting = Field(description="Configured image provider routing for 2D and 3D stages")
+    render_packages: list[MasterPlan3DRenderPackage] = Field(description="Structured render packages")
+    skipped_zones: list[MasterPlan3DPackageWarning] = Field(default_factory=list, description="Skipped or defaulted zones")
+    renderer_adapter: MasterPlan3DRendererAdapter = Field(description="Downstream renderer integration metadata")
+    created_at: datetime = Field(description="Creation timestamp")
+
 # =============================================================================
 # 3D Generation Schemas
 # =============================================================================
@@ -819,3 +1192,16 @@ class ApiUsageResponse(BaseModel):
     providers: list[ApiUsageByProvider]
     daily: list[DailyUsage]
     range: str
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,6 +16,16 @@ export function OAuthCallbackPage() {
   const { setUser } = useAuthStore();
 
   useEffect(() => {
+    const oauthError = searchParams.get('oauth_error')
+      || searchParams.get('error_description')
+      || searchParams.get('error');
+
+    if (oauthError) {
+      toast.error(`OAuth login failed: ${oauthError}`);
+      navigate('/login', { replace: true });
+      return;
+    }
+
     const accessToken = searchParams.get('access_token');
     const refreshToken = searchParams.get('refresh_token');
 

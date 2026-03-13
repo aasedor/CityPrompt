@@ -36,7 +36,7 @@ class Settings(BaseSettings):
         - postgresql:// for sync (Alembic / Celery)
         """
         url = self.database_url
-        # Render gives postgres:// â€” SQLAlchemy needs postgresql://
+        # Render gives postgres:// — SQLAlchemy needs postgresql://
         if url.startswith("postgres://"):
             url = url.replace("postgres://", "postgresql://", 1)
         # Ensure async driver is present
@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_access_token_expire_minutes: int = 30
     jwt_refresh_token_expire_days: int = 7
-    allowed_origins: str = "http://localhost:5173,http://localhost:5174,http://localhost:3000,http://localhost:3001"
+    allowed_origins: str = "http://localhost:5173,http://localhost:5174,http://localhost:5175,http://localhost:3000,http://localhost:3001"
 
     @property
     def cors_origins(self) -> List[str]:
@@ -75,10 +75,11 @@ class Settings(BaseSettings):
     microsoft_client_id: str = ""
     microsoft_client_secret: str = ""
     microsoft_redirect_uri: str = "http://localhost:8000/api/v1/auth/oauth/microsoft/callback"
-    frontend_url: str = "http://localhost:5173"
+    frontend_url: str = "http://localhost:5175"
 
     # --- API Keys ---
     anthropic_api_key: str = ""
+    openai_api_key: str = ""
     mapbox_access_token: str = ""
     meshy_api_key: str = ""
     meshy_api_base: str = "https://api.meshy.ai"
@@ -88,6 +89,10 @@ class Settings(BaseSettings):
     tripo_api_base: str = "https://api.tripo3d.ai"
     default_generation_engine: str = "meshy"
     gemini_api_key: str = ""
+    gemini_2d_image_model: str = "gemini-3-pro-image-preview"
+    master_plan_2d_style_model: str = "gemini-3.1-flash-image-preview"
+    master_plan_2d_image_provider: str = "vertex"
+    master_plan_3d_image_provider: str = "stability"
     layout_ai_provider: str = "claude"
 
     # --- Object Storage ---
@@ -113,3 +118,4 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
+

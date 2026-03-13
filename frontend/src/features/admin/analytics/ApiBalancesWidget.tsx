@@ -81,10 +81,12 @@ function ServiceCard({ service }: { service: ServiceStatus }) {
   const LABELS: Record<string, string> = {
     mapbox: 'Mapbox',
     google_oauth: 'Google OAuth',
+    openai: 'OpenAI',
   };
   const ICONS: Record<string, typeof Globe> = {
     mapbox: Globe,
     google_oauth: KeyRound,
+    openai: Bot,
   };
   const Icon = ICONS[service.provider] || Globe;
   const label = LABELS[service.provider] || service.provider;

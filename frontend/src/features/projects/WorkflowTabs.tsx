@@ -1,16 +1,18 @@
-import { Map, LayoutGrid, Box } from 'lucide-react';
+import { ImageIcon, Map, LayoutGrid, Box } from 'lucide-react';
 
-export type WorkflowTab = 'master-plan' | 'block-editor' | '3d-viewer';
+export type WorkflowTab = 'master-plan' | 'block-editor' | 'master-plan-2d' | '3d-viewer';
 
 interface WorkflowTabsProps {
   activeTab: WorkflowTab;
   onTabChange: (tab: WorkflowTab) => void;
   hasEditableZones: boolean;
+  hasSiteGeometry: boolean;
   hasFinalizedLayout: boolean;
+  hasMasterPlan3DReady: boolean;
 }
 
 export function WorkflowTabs({
-  activeTab, onTabChange, hasEditableZones, hasFinalizedLayout,
+  activeTab, onTabChange, hasEditableZones, hasSiteGeometry, hasFinalizedLayout, hasMasterPlan3DReady,
 }: WorkflowTabsProps) {
   const tabs: { id: WorkflowTab; label: string; Icon: typeof Map; enabled: boolean; description: string }[] = [
     {
@@ -28,11 +30,18 @@ export function WorkflowTabs({
       description: hasEditableZones ? 'Edit building layouts' : 'Create zones with descriptions first',
     },
     {
+      id: 'master-plan-2d',
+      label: '2D Master Plan Generator',
+      Icon: ImageIcon,
+      enabled: hasSiteGeometry,
+      description: hasSiteGeometry ? 'Generate presentation-grade orthographic plan boards' : 'Create site geometry first',
+    },
+    {
       id: '3d-viewer',
       label: '3D Viewer',
       Icon: Box,
-      enabled: hasFinalizedLayout,
-      description: hasFinalizedLayout ? 'View your 3D environment' : 'Finalize layout in Block Editor first',
+      enabled: hasFinalizedLayout || hasMasterPlan3DReady,
+      description: hasMasterPlan3DReady ? 'Review prepared 3D render packages and viewer handoff' : hasFinalizedLayout ? 'View your 3D environment' : 'Finalize layout in Block Editor first',
     },
   ];
 
@@ -61,7 +70,6 @@ export function WorkflowTabs({
               }`}
               title={tab.description}
             >
-              {/* Step number */}
               <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
                 isActive
                   ? 'bg-indigo-500 text-white'
@@ -80,3 +88,4 @@ export function WorkflowTabs({
     </div>
   );
 }
+

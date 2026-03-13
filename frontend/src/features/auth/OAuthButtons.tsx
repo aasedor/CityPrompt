@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -9,23 +10,31 @@ export function OAuthButtons() {
   const handleOAuth = async (provider: 'google' | 'microsoft') => {
     setLoadingProvider(provider);
     try {
-      const response = await fetch(`${API_BASE}/api/v1/auth/oauth/${provider}`);
+      const url = new URL(`${API_BASE}/api/v1/auth/oauth/${provider}`);
+      url.searchParams.set('frontend_origin', window.location.origin);
+
+      const response = await fetch(url.toString());
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.detail || `Failed to initiate ${provider} login`);
       }
 
-      // Redirect browser to the OAuth provider's authorization page
+      // Redirect browser to the OAuth provider's authorization page.
       window.location.href = data.authorization_url;
-    } catch {
+    } catch (error) {
+      const message = error instanceof Error ? error.message : `Failed to initiate ${provider} login`;
+      toast.error(
+        message === 'Failed to fetch'
+          ? `Could not reach the API at ${API_BASE}. Start the backend and try again.`
+          : message,
+      );
       setLoadingProvider(null);
     }
   };
 
   return (
     <div className="space-y-3">
-      {/* Google Button */}
       <button
         type="button"
         disabled={loadingProvider !== null}

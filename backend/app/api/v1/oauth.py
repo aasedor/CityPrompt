@@ -2,12 +2,15 @@
 OAuth2 social login endpoints for Google and Microsoft.
 """
 
+import base64
+import json
+import logging
 import secrets
 from datetime import datetime, timezone
 from urllib.parse import urlencode
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +22,7 @@ from app.models.models import User
 
 router = APIRouter()
 settings = get_settings()
+logger = logging.getLogger(__name__)
 
 # =============================================================================
 # Google OAuth2
@@ -29,8 +33,52 @@ GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
 
 
+def _allowed_frontend_origins() -> set[str]:
+    allowed = {settings.frontend_url.rstrip("/")}
+    allowed.update(origin.rstrip("/") for origin in settings.cors_origins if origin)
+    return {origin for origin in allowed if origin}
+
+
+def _is_allowed_frontend_origin(frontend_origin: str | None) -> bool:
+    if not frontend_origin:
+        return False
+    normalized = frontend_origin.rstrip("/")
+    return normalized in _allowed_frontend_origins()
+
+
+def _build_oauth_state(frontend_origin: str | None) -> str:
+    payload = {"csrf": secrets.token_urlsafe(32)}
+    if _is_allowed_frontend_origin(frontend_origin):
+        payload["frontend_origin"] = frontend_origin.rstrip("/")
+    encoded = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+    return base64.urlsafe_b64encode(encoded).decode("utf-8")
+
+
+def _resolve_frontend_redirect_origin(state: str | None) -> str:
+    fallback = settings.frontend_url.rstrip("/")
+    if not state:
+        return fallback
+
+    try:
+        padded = state + "=" * (-len(state) % 4)
+        decoded = base64.urlsafe_b64decode(padded.encode("utf-8")).decode("utf-8")
+        payload = json.loads(decoded)
+    except Exception:
+        return fallback
+
+    frontend_origin = payload.get("frontend_origin")
+    if isinstance(frontend_origin, str) and _is_allowed_frontend_origin(frontend_origin):
+        return frontend_origin.rstrip("/")
+    return fallback
+
+
+def _oauth_error_redirect(frontend_origin: str, message: str) -> RedirectResponse:
+    params = urlencode({"oauth_error": message})
+    return RedirectResponse(url=f"{frontend_origin}/oauth/callback?{params}", status_code=302)
+
+
 @router.get("/google")
-async def google_login():
+async def google_login(frontend_origin: str | None = Query(default=None)):
     """Return the Google OAuth2 authorization URL for the client to redirect to."""
     if not settings.google_client_id:
         raise HTTPException(
@@ -45,7 +93,7 @@ async def google_login():
         "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "select_account",
-        "state": secrets.token_urlsafe(32),
+        "state": _build_oauth_state(frontend_origin),
     }
     authorization_url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
     return {"authorization_url": authorization_url}
@@ -53,16 +101,26 @@ async def google_login():
 
 @router.get("/google/callback")
 async def google_callback(
-    code: str,
+    code: str | None = None,
     state: str | None = None,
+    error: str | None = None,
+    error_description: str | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Google OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
+    frontend_origin = _resolve_frontend_redirect_origin(state)
+
+    if error:
+        reason = error_description or error
+        logger.warning("Google OAuth callback returned provider error: %s", reason)
+        return _oauth_error_redirect(frontend_origin, f"Google OAuth error: {reason}")
+
+    if not code:
+        logger.warning("Google OAuth callback missing authorization code")
+        return _oauth_error_redirect(frontend_origin, "Google OAuth callback missing authorization code")
+
     if not settings.google_client_id or not settings.google_client_secret:
-        raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="Google OAuth is not configured",
-        )
+        return _oauth_error_redirect(frontend_origin, "Google OAuth is not configured on the backend")
 
     # Exchange authorization code for tokens
     async with httpx.AsyncClient() as client:
@@ -78,19 +136,23 @@ async def google_callback(
         )
 
         if token_response.status_code != 200:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Failed to exchange authorization code with Google",
-            )
+            provider_reason = None
+            try:
+                token_error = token_response.json()
+                if isinstance(token_error, dict):
+                    provider_reason = token_error.get("error_description") or token_error.get("error")
+            except Exception:
+                provider_reason = None
+            reason = provider_reason or token_response.text[:220] or f"HTTP {token_response.status_code}"
+            logger.warning("Google token exchange failed (%s): %s", token_response.status_code, reason)
+            return _oauth_error_redirect(frontend_origin, f"Google token exchange failed: {reason}")
 
         token_data = token_response.json()
         google_access_token = token_data.get("access_token")
 
         if not google_access_token:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="No access token received from Google",
-            )
+            logger.warning("Google token exchange returned no access_token")
+            return _oauth_error_redirect(frontend_origin, "No access token received from Google")
 
         # Fetch user info from Google
         userinfo_response = await client.get(
@@ -99,19 +161,24 @@ async def google_callback(
         )
 
         if userinfo_response.status_code != 200:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Failed to fetch user info from Google",
-            )
+            provider_reason = None
+            try:
+                userinfo_error = userinfo_response.json()
+                if isinstance(userinfo_error, dict):
+                    error_obj = userinfo_error.get("error")
+                    if isinstance(error_obj, dict):
+                        provider_reason = error_obj.get("message")
+            except Exception:
+                provider_reason = None
+            reason = provider_reason or userinfo_response.text[:220] or f"HTTP {userinfo_response.status_code}"
+            logger.warning("Google userinfo fetch failed (%s): %s", userinfo_response.status_code, reason)
+            return _oauth_error_redirect(frontend_origin, f"Failed to fetch Google user profile: {reason}")
 
         userinfo = userinfo_response.json()
 
     email = userinfo.get("email")
     if not email:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Google account does not have an email address",
-        )
+        return _oauth_error_redirect(frontend_origin, "Google account does not have an email address")
 
     full_name = userinfo.get("name")
 
@@ -137,10 +204,7 @@ async def google_callback(
             await db.flush()
 
     if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is disabled",
-        )
+        return _oauth_error_redirect(frontend_origin, "Account is disabled")
 
     user.last_login_at = datetime.now(timezone.utc)
     await db.flush()
@@ -155,7 +219,7 @@ async def google_callback(
         "refresh_token": refresh_token,
     })
     return RedirectResponse(
-        url=f"{settings.frontend_url}/oauth/callback?{redirect_params}",
+        url=f"{frontend_origin}/oauth/callback?{redirect_params}",
         status_code=302,
     )
 
@@ -170,7 +234,7 @@ MICROSOFT_USERINFO_URL = "https://graph.microsoft.com/v1.0/me"
 
 
 @router.get("/microsoft")
-async def microsoft_login():
+async def microsoft_login(frontend_origin: str | None = Query(default=None)):
     """Return the Microsoft OAuth2 authorization URL for the client to redirect to."""
     if not settings.microsoft_client_id:
         raise HTTPException(
@@ -185,7 +249,7 @@ async def microsoft_login():
         "scope": "openid profile email User.Read",
         "response_mode": "query",
         "prompt": "select_account",
-        "state": secrets.token_urlsafe(32),
+        "state": _build_oauth_state(frontend_origin),
     }
     authorization_url = f"{MICROSOFT_AUTH_URL}?{urlencode(params)}"
     return {"authorization_url": authorization_url}
@@ -292,11 +356,13 @@ async def microsoft_callback(
     refresh_token = create_refresh_token(str(user.id))
 
     # Redirect to frontend with tokens as query params
+    frontend_origin = _resolve_frontend_redirect_origin(state)
     redirect_params = urlencode({
         "access_token": access_token,
         "refresh_token": refresh_token,
     })
     return RedirectResponse(
-        url=f"{settings.frontend_url}/oauth/callback?{redirect_params}",
+        url=f"{frontend_origin}/oauth/callback?{redirect_params}",
         status_code=302,
     )
+

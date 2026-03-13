@@ -74,10 +74,23 @@ npm run dev
 
 ### 4. Access
 
-- **Frontend**: http://localhost:5173
+- **Frontend (Docker Compose)**: http://localhost:5175
+- **Frontend (npm run dev)**: http://localhost:5174
 - **API Docs**: http://localhost:8000/docs
 - **API ReDoc**: http://localhost:8000/redoc
 
+
+### 5. Configure Stability AI (Render Previews)
+
+1. Add your key to `.env`:
+   ```bash
+   STABILITY_API_KEY=your-stability-key
+   ```
+2. Restart backend and Celery after updating environment variables.
+3. Generate a building render preview from the UI, or call:
+   - `POST /api/v1/buildings/{building_id}/render-preview`
+4. Verify configuration and credits in cofounder analytics:
+   - `GET /api/v1/analytics/api-balances`
 ## Project Structure
 
 ```

@@ -223,6 +223,9 @@ export function CofounderAnalyticsPage() {
               <span className={platformSettings.gemini_configured ? 'text-green-400' : 'text-primary-950/40'}>
                 Gemini: {platformSettings.gemini_configured ? 'configured' : 'not configured'}
               </span>
+              <span className={platformSettings.openai_configured ? 'text-green-400' : 'text-primary-950/40'}>
+                OpenAI: {platformSettings.openai_configured ? 'configured' : 'not configured'}
+              </span>
             </div>
           </div>
         ) : null}

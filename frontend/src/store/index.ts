@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers } from '@/types';
+import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // Re-export undo/redo store
@@ -104,6 +104,23 @@ export const CAMERA_PRESETS: Record<CameraPreset, CameraPresetConfig> = {
   front: { position: [0, 20, 80], target: [0, 10, 0], label: 'Front' },
 };
 
+interface MasterPlan3DState {
+  projectId: string;
+  optionId: string | null;
+  sourceOptionLabel?: string;
+  status: 'generating' | 'ready' | 'failed';
+  selectedPerspective: MasterPlan3DScenePerspective;
+  lightingVariant: MasterPlan3DLightingVariant;
+  scope: MasterPlan3DScope;
+  selectedZoneIds: string[];
+  globalStyleNotes?: string;
+  packages: MasterPlan3DGenerateResponse['render_packages'];
+  skippedZones: MasterPlan3DGenerateResponse['skipped_zones'];
+  rendererAdapter: MasterPlan3DGenerateResponse['renderer_adapter'] | null;
+  error: string | null;
+  updatedAt: string;
+}
+
 interface ViewerState {
   settings: ViewerSettings;
   selectedBuildingId: string | null;
@@ -191,6 +208,12 @@ interface ViewerState {
   clearSitePreview: () => void;
   setActiveSitePreviewIndex: (index: number) => void;
   setSitePreviewImageUrl: (index: number, url: string) => void;
+  // 2D master plan -> 3D handoff
+  masterPlan3D: MasterPlan3DState | null;
+  startMasterPlan3DGeneration: (payload: { projectId: string; optionId: string; sourceOptionLabel: string; selectedPerspective: MasterPlan3DScenePerspective; lightingVariant: MasterPlan3DLightingVariant; scope: MasterPlan3DScope; selectedZoneIds: string[]; globalStyleNotes?: string }) => void;
+  setMasterPlan3DResult: (projectId: string, response: MasterPlan3DGenerateResponse) => void;
+  setMasterPlan3DError: (projectId: string, optionId: string | null, message: string) => void;
+  clearMasterPlan3D: () => void;
   // Lightbox for expanded image view
   lightboxImageUrl: string | null;
   lightboxActions: { onDownload?: () => void; onApply?: () => void; applyLabel?: string } | null;
@@ -419,6 +442,66 @@ export const useViewerStore = create<ViewerState>((set) => ({
       if (!state.sitePreview) return {};
       return { sitePreview: { ...state.sitePreview, imageUrls: { ...state.sitePreview.imageUrls, [index]: url } } };
     }),
+  // 2D master plan -> 3D handoff
+  masterPlan3D: null,
+  startMasterPlan3DGeneration: ({ projectId, optionId, sourceOptionLabel, selectedPerspective, lightingVariant, scope, selectedZoneIds, globalStyleNotes }) =>
+    set({
+      masterPlan3D: {
+        projectId,
+        optionId,
+        sourceOptionLabel,
+        status: 'generating',
+        selectedPerspective,
+        lightingVariant,
+        scope,
+        selectedZoneIds,
+        globalStyleNotes,
+        packages: [],
+        skippedZones: [],
+        rendererAdapter: null,
+        error: null,
+        updatedAt: new Date().toISOString(),
+      },
+    }),
+  setMasterPlan3DResult: (projectId, response) =>
+    set({
+      masterPlan3D: {
+        projectId,
+        optionId: response.option_id,
+        sourceOptionLabel: response.source_option_label,
+        status: 'ready',
+        selectedPerspective: response.selected_perspective,
+        lightingVariant: response.lighting_variant,
+        scope: response.scope,
+        selectedZoneIds: response.selected_zone_ids,
+        globalStyleNotes: response.global_style_notes,
+        packages: response.render_packages,
+        skippedZones: response.skipped_zones,
+        rendererAdapter: response.renderer_adapter,
+        error: null,
+        updatedAt: response.created_at,
+      },
+    }),
+  setMasterPlan3DError: (projectId, optionId, message) =>
+    set((state) => ({
+      masterPlan3D: {
+        projectId,
+        optionId,
+        sourceOptionLabel: state.masterPlan3D?.sourceOptionLabel,
+        status: 'failed',
+        selectedPerspective: state.masterPlan3D?.selectedPerspective || 'aerial_oblique',
+        lightingVariant: state.masterPlan3D?.lightingVariant || 'golden_hour',
+        scope: state.masterPlan3D?.scope || 'full_site',
+        selectedZoneIds: state.masterPlan3D?.selectedZoneIds || [],
+        globalStyleNotes: state.masterPlan3D?.globalStyleNotes,
+        packages: state.masterPlan3D?.packages || [],
+        skippedZones: state.masterPlan3D?.skippedZones || [],
+        rendererAdapter: state.masterPlan3D?.rendererAdapter || null,
+        error: message,
+        updatedAt: new Date().toISOString(),
+      },
+    })),
+  clearMasterPlan3D: () => set({ masterPlan3D: null }),
   // Lightbox
   lightboxImageUrl: null,
   lightboxActions: null,
@@ -486,3 +569,7 @@ export const useUploadStore = create<UploadState>((set) => ({
   clearCompleted: () =>
     set((state) => ({ files: state.files.filter((f) => f.status !== 'completed') })),
 }));
+
+
+
+

@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, ModelLibraryRecommendation } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { siteZonesApi, buildingsApi, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
+import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import {
@@ -1744,7 +1744,7 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
       );
       setSitePreviewImageUrl(idx, result.image_url);
     } catch (err: any) {
-      const detail = err?.response?.data?.detail || err?.message || 'Unknown error';
+      const detail = getApiErrorMessage(err, 'Unknown error');
       console.error('[renderSiteOption] Failed for index', idx, detail, err);
       setFailedSiteRenderIndices((prev) => new Set(prev).add(idx));
       toast.error(`Site preview ${idx + 1}: ${detail}`, { duration: 8000 });
@@ -3463,3 +3463,4 @@ function computePolygonAreaM2(coords: number[][]): number {
   }
   return Math.abs(area) / 2;
 }
+
