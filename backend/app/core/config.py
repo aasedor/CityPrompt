@@ -36,7 +36,7 @@ class Settings(BaseSettings):
         - postgresql:// for sync (Alembic / Celery)
         """
         url = self.database_url
-        # Render gives postgres:// — SQLAlchemy needs postgresql://
+        # Render gives postgres:// â€” SQLAlchemy needs postgresql://
         if url.startswith("postgres://"):
             url = url.replace("postgres://", "postgresql://", 1)
         # Ensure async driver is present
@@ -89,10 +89,12 @@ class Settings(BaseSettings):
     tripo_api_base: str = "https://api.tripo3d.ai"
     default_generation_engine: str = "meshy"
     gemini_api_key: str = ""
+    fal_key: str = ""
+    fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"
     gemini_2d_image_model: str = "gemini-3-pro-image-preview"
     master_plan_2d_style_model: str = "gemini-3.1-flash-image-preview"
     master_plan_2d_image_provider: str = "vertex"
-    master_plan_3d_image_provider: str = "stability"
+    master_plan_3d_image_provider: str = "vertex"
     layout_ai_provider: str = "claude"
 
     # --- Object Storage ---
@@ -118,4 +120,3 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
-

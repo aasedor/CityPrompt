@@ -25,6 +25,7 @@ import { BlockEditorPage } from '@/features/block-editor/BlockEditorPage';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
 
+
 export default function App() {
   const { setUser, setLoading } = useAuthStore();
 

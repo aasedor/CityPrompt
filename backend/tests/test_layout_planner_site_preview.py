@@ -147,12 +147,15 @@ def test_site_preview_generation_uses_planimetric_prompt_and_skips_reference_ima
     inline_data_parts = [item for item in contents if getattr(item, 'inline_data', None) is not None]
 
     assert len(inline_data_parts) == 1
-    assert prompt.startswith('90-degree direct overhead planimetric master plan. True top-down view only. No side views. No elevations.')
-    assert 'Render a professional illustrative master plan, not a drone photo' in prompt
+    assert inline_data_parts[0].inline_data.data != b'geometry-guide'
+    assert inline_data_parts[0].inline_data.data.startswith(b'\x89PNG')
+    assert prompt.startswith('Photoreal orthographic district master plan. True top-down view only. No side views. No elevations.')
+    assert 'Render a photoreal orthographic district visualization, not an illustrative board and not a perspective hero shot' in prompt
     assert 'ARCHETYPE METADATA RULE:' in prompt
     assert 'Do not paste, reproduce, or collage any source imagery into the master plan.' in prompt
     assert 'front elevation' not in lowered
     assert 'street-level' not in lowered
     assert 'facade sheet' not in lowered
-    assert 'roof plans and footprints only' in lowered
+    assert 'roof plan and building footprints' in lowered
     assert 'reference image(s) attached' not in lowered
+    assert 'synthetic geometry guide' in ''.join(str(item) for item in contents).lower()

@@ -95,6 +95,25 @@ def _apply_styled_material(mesh: trimesh.Trimesh, material_name: str, style=None
 
 class BuildingGenerator:
     """Generates 3D building geometry from normalized data."""
+    def _normalize_footprint(self, footprint: Any) -> np.ndarray:
+        """Return a closed Nx2+ footprint array for downstream facade iteration.
+
+        Raises ValueError if input cannot be coerced to a valid 2D polygon.
+        """
+        pts = np.array(footprint, dtype=float)
+        if pts.ndim == 1 and len(pts) >= 4:
+            # Flat list of coordinates — try reshaping to Nx2
+            pts = pts.reshape(-1, 2)
+        if pts.ndim != 2 or pts.shape[0] < 3 or pts.shape[1] < 2:
+            raise ValueError(
+                f"Invalid footprint: expected Nx2+ array with >=3 points, "
+                f"got shape {pts.shape}"
+            )
+        if not np.array_equal(pts[0, :2], pts[-1, :2]):
+            pts = np.vstack([pts, pts[0]])
+        return pts
+
+
 
     def generate_building(self, building_data: dict[str, Any], style=None) -> trimesh.Scene:
         """
@@ -110,9 +129,9 @@ class BuildingGenerator:
         """
         scene = trimesh.Scene()
 
-        footprint = np.array(building_data["footprint"])
+        footprint = self._normalize_footprint(building_data["footprint"])
         height = building_data.get("height", 10.0)
-        floors = building_data.get("floors", 3)
+        floors = max(1, building_data.get("floors", 3))
         floor_height = building_data.get("floor_height", height / floors)
         roof_type = building_data.get("roof_type", "flat")
 
@@ -194,10 +213,7 @@ class BuildingGenerator:
                 logger.error("Footprint must have at least 3 points")
                 return None
 
-            # Close polygon if not closed
-            if not np.array_equal(footprint[0], footprint[-1]):
-                footprint = np.vstack([footprint, footprint[0]])
-
+            footprint = self._normalize_footprint(footprint)
             # Create 2D path and extrude
             from shapely.geometry import Polygon
             poly = Polygon(footprint[:, :2])
@@ -260,6 +276,9 @@ class BuildingGenerator:
             center_x = (min_pt[0] + max_pt[0]) / 2
             width = max_pt[0] - min_pt[0]
             depth = max_pt[1] - min_pt[1]
+            if width < 0.1 or depth < 0.1:
+                logger.warning("Footprint too small for gabled roof (%.2f x %.2f)", width, depth)
+                return None
             ridge_height = width * 0.3  # 30% of width
 
             # Create ridge vertices
@@ -294,6 +313,10 @@ class BuildingGenerator:
             max_pt = footprint[:, :2].max(axis=0)
             center = (min_pt + max_pt) / 2
             width = max_pt[0] - min_pt[0]
+            depth = max_pt[1] - min_pt[1]
+            if width < 0.1 or depth < 0.1:
+                logger.warning("Footprint too small for hipped roof (%.2f x %.2f)", width, depth)
+                return None
             ridge_height = width * 0.25
 
             vertices = np.array([
@@ -323,6 +346,9 @@ class BuildingGenerator:
         """Generate a door on the longest ground-floor facade edge."""
         try:
             pts = footprint[:, :2]
+            if len(pts) < 2:
+                return None
+
             # Find the longest edge (front facade)
             best_idx = 0
             best_len = 0.0
@@ -374,7 +400,7 @@ class BuildingGenerator:
         """Generate procedural window geometry on building facades."""
         windows = []
         try:
-            # Spacing inversely proportional to density (0.3→4.5m, 0.75→2.0m)
+            # Spacing inversely proportional to density (0.3->4.5m, 0.75->2.0m)
             spacing = max(1.5, 4.5 - density * 4.0)
 
             # Get facade edges from footprint
@@ -437,6 +463,9 @@ class BuildingGenerator:
         balconies = []
         try:
             pts = footprint[:, :2]
+            if len(pts) < 2:
+                return balconies
+
             # Find the longest edge (front facade)
             best_idx = 0
             best_len = 0.0

@@ -27,6 +27,10 @@ dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
 /** Shared ref so other components (TerrainMesh) can raycast against the tiles. */
 export const tilesGroupRef: { current: THREE.Group | null } = { current: null };
 
+/** Maximum horizontal distance (metres) from site origin to render tiles. */
+const MAX_TILE_RADIUS = 1000; // 1 km
+const MAX_TILE_RADIUS_SQ = MAX_TILE_RADIUS * MAX_TILE_RADIUS;
+
 interface Google3DTilesProps {
   latitude: number;
   longitude: number;
@@ -69,8 +73,8 @@ export function Google3DTiles({
     tiles.errorTarget = 12;
     tiles.maxDepth = 50;
     tiles.loadSiblings = true;
-    tiles.lruCache.maxSize = 1200;
-    tiles.lruCache.minSize = 600;
+    tiles.lruCache.maxSize = 600;
+    tiles.lruCache.minSize = 300;
 
     tiles.setCamera(camera);
     tiles.setResolutionFromRenderer(camera, gl);
@@ -90,6 +94,7 @@ export function Google3DTiles({
   }, [latitude, longitude, apiKey, scene, camera, gl]);
 
   const raycaster = useRef(new THREE.Raycaster());
+  const tempVec3 = useRef(new THREE.Vector3());
 
   useFrame(() => {
     const tiles = tilesRef.current;
@@ -116,8 +121,16 @@ export function Google3DTiles({
     tiles.setResolutionFromRenderer(camera, gl);
     tiles.update();
 
+    // Hide tile meshes beyond 1 km from site centre to cut GPU cost.
+    const pos = tempVec3.current;
     tiles.group.traverse((obj: any) => {
-      if (obj.isMesh) obj.frustumCulled = false;
+      if (obj.isMesh) {
+        obj.frustumCulled = false;
+        obj.getWorldPosition(pos);
+        // Horizontal distance only (ignore Y / elevation).
+        const distSq = pos.x * pos.x + pos.z * pos.z;
+        obj.visible = distSq <= MAX_TILE_RADIUS_SQ;
+      }
     });
 
     // Auto-align: raycast downward from above origin to find the tile

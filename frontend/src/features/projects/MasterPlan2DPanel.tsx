@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { Box, CheckCircle2, Compass, Download, Eye, ImageIcon, Layers3, List, Loader2, RefreshCcw, Ruler, Sparkles } from 'lucide-react';
 import { getApiErrorMessage, masterPlan2DApi } from '@/services/api';
 import { useViewerStore } from '@/store';
-import type { MasterPlan2DGenerateRequest, MasterPlan2DOption, MasterPlan2DQualityLevel, MasterPlan2DStylePassProvider, MasterPlan2DStylePreset, MasterPlan3DGenerateRequest, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, MasterPlanLightingAtmospherePreset, MasterPlanRenderStylePreset, SiteZone } from '@/types';
+import type { MasterPlan2DGenerateRequest, MasterPlan2DOption, MasterPlan2DQualityLevel, MasterPlan2DRenderMode, MasterPlan2DStylePassProvider, MasterPlan2DStylePreset, MasterPlan3DGenerateRequest, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, MasterPlanLightingAtmospherePreset, MasterPlanMapBounds, MasterPlanRenderStylePreset, SiteZone } from '@/types';
 import { collectMasterPlan2DReferences } from './masterPlan2DReferences';
 
 interface MasterPlan2DPanelProps {
@@ -27,15 +27,24 @@ const QUALITY_OPTIONS: { value: MasterPlan2DQualityLevel; label: string; descrip
 ];
 
 const STYLE_PASS_PROVIDER_OPTIONS: { value: MasterPlan2DStylePassProvider; label: string; description: string }[] = [
-  { value: 'auto', label: 'Auto', description: 'Try Gemini first, then fallback to Stability.' },
-  { value: 'gemini', label: 'Gemini (Nano Banana 2)', description: 'Use Gemini for texture finish only.' },
-  { value: 'stability', label: 'Stability AI', description: 'Use Stability SD3 image-to-image finish.' },
+  { value: 'gemini', label: 'Gemini (Nano Banana 2)', description: 'Use Nano Banana for the image finish pass.' },
 ];
 
-const RENDER_STYLE_OPTIONS: { value: MasterPlanRenderStylePreset; label: string; description: string }[] = [
-  { value: 'photoreal_orthographic_aerial', label: 'Photoreal Orthographic Aerial', description: 'True overhead orthographic aerial with realistic roofs, paving, planting, and subdued context.' },
-  { value: 'photorealistic_aerial', label: 'Photorealistic Aerial', description: 'Premium aerial rendering with stronger color, shadow, and developer-board clarity.' },
-  { value: 'digital_watercolor_map', label: 'Digital Watercolor Map', description: 'Illustrative planimetric rendering with textured paper and softer graphic stylization.' },
+const RENDER_STYLE_OPTIONS: { value: MasterPlanRenderStylePreset; label: string; description: string; category: string }[] = [
+  // Realistic
+  { value: 'photoreal_orthographic_aerial', label: 'Orthographic Aerial', description: 'True overhead plan view with photorealistic materials and crisp shadows.', category: 'Realistic' },
+  { value: 'photorealistic_aerial', label: 'Photorealistic Aerial', description: 'Drone-photograph realism with accurate materials and natural lighting.', category: 'Realistic' },
+  { value: 'cinematic_dusk', label: 'Cinematic Dusk', description: 'Dramatic blue hour with warm interior glows and wet reflections.', category: 'Realistic' },
+  { value: 'lush_landscape', label: 'Lush Landscape', description: 'Nature-forward with dense vegetation, green roofs, and sunlit canopy.', category: 'Realistic' },
+  // Artistic
+  { value: 'watercolor_wash', label: 'Watercolor Wash', description: 'Soft hand-painted washes with visible brushwork — warm and approachable.', category: 'Artistic' },
+  { value: 'ink_line_drawing', label: 'Ink Line Drawing', description: 'Black ink on white paper with hatching — precise yet human.', category: 'Artistic' },
+  { value: 'marker_render', label: 'Marker Render', description: 'Bold Prismacolor/Copic marker strokes with saturated fills.', category: 'Artistic' },
+  { value: 'digital_watercolor_map', label: 'Digital Watercolor Map', description: 'Elegant vellum-textured plan with architectural color palette.', category: 'Artistic' },
+  { value: 'collage_mixed_media', label: 'Collage / Mixed Media', description: 'Layered photographic cutouts with flat color and hand-drawn marks.', category: 'Artistic' },
+  // Technical
+  { value: 'white_massing_model', label: 'White Massing Model', description: 'Monochrome clay/foam model emphasizing pure form and shadow.', category: 'Technical' },
+  { value: 'flat_diagrammatic', label: 'Flat Diagrammatic', description: 'Bold infographic colors, clean zones, no gradients — data-forward.', category: 'Technical' },
 ];
 
 const LIGHTING_ATMOSPHERE_OPTIONS: { value: MasterPlanLightingAtmospherePreset; label: string; description: string }[] = [
@@ -77,7 +86,9 @@ const MASTER_PLAN_ZONE_LAYER_IDS = [
   'drawing-preview-line',
 ];
 
-async function captureMasterPlanSatelliteUnderlay(mapInstance: unknown): Promise<string | undefined> {
+const ORTHOGRAPHIC_SITE_INSERT_MODE: MasterPlan2DRenderMode = 'orthographic_aerial_site_insert';
+
+async function captureMasterPlanSatelliteUnderlay(mapInstance: unknown): Promise<{ imageDataUrl?: string; bounds?: MasterPlanMapBounds }> {
   const map = mapInstance as {
     getCanvas?: () => HTMLCanvasElement;
     getLayer?: (id: string) => unknown;
@@ -85,9 +96,15 @@ async function captureMasterPlanSatelliteUnderlay(mapInstance: unknown): Promise
     setLayoutProperty?: (id: string, name: string, value: string) => void;
     once?: (event: string, handler: () => void) => void;
     triggerRepaint?: () => void;
+    getBounds?: () => {
+      getWest?: () => number;
+      getSouth?: () => number;
+      getEast?: () => number;
+      getNorth?: () => number;
+    };
   } | null;
   if (!map || typeof map.getCanvas !== 'function') {
-    return undefined;
+    return {};
   }
 
   const previousVisibility: Record<string, string> = {};
@@ -111,9 +128,24 @@ async function captureMasterPlanSatelliteUnderlay(mapInstance: unknown): Promise
       }
     }
     await waitForRender();
-    return map.getCanvas().toDataURL('image/jpeg', 0.92);
+    const imageDataUrl = map.getCanvas().toDataURL('image/jpeg', 0.92);
+    const boundsLike = map.getBounds?.();
+    const west = boundsLike?.getWest?.();
+    const south = boundsLike?.getSouth?.();
+    const east = boundsLike?.getEast?.();
+    const north = boundsLike?.getNorth?.();
+    const hasFiniteBounds = [west, south, east, north].every((value) => typeof value === 'number' && Number.isFinite(value));
+    const bounds = hasFiniteBounds
+      ? {
+          west: Number(west),
+          south: Number(south),
+          east: Number(east),
+          north: Number(north),
+        }
+      : undefined;
+    return { imageDataUrl, bounds };
   } catch {
-    return undefined;
+    return {};
   } finally {
     for (const layerId of MASTER_PLAN_ZONE_LAYER_IDS) {
       if (!(layerId in previousVisibility)) continue;
@@ -125,7 +157,6 @@ async function captureMasterPlanSatelliteUnderlay(mapInstance: unknown): Promise
     }
   }
 }
-
 export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: MasterPlan2DPanelProps) {
   const queryClient = useQueryClient();
   const [renderStylePreset, setRenderStylePreset] = useState<MasterPlanRenderStylePreset>('photoreal_orthographic_aerial');
@@ -140,13 +171,13 @@ export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: Mas
   const [showCalloutMarkers, setShowCalloutMarkers] = useState(true);
   const [showSurroundingContext, setShowSurroundingContext] = useState(true);
   const [aiStylePassEnabled, setAiStylePassEnabled] = useState(true);
-  const [aiStylePassProvider, setAiStylePassProvider] = useState<MasterPlan2DStylePassProvider>('auto');
+  const [aiStylePassProvider, setAiStylePassProvider] = useState<MasterPlan2DStylePassProvider>('gemini');
   const [selectedImageUrls, setSelectedImageUrls] = useState<string[]>([]);
   const [generating, setGenerating] = useState(false);
   const [previewOption, setPreviewOption] = useState<MasterPlan2DOption | null>(null);
   const [exportingOptionId, setExportingOptionId] = useState<string | null>(null);
   const [threeDPerspective, setThreeDPerspective] = useState<MasterPlan3DScenePerspective>('aerial_oblique');
-  const [threeDLighting, setThreeDLighting] = useState<MasterPlan3DLightingVariant>('golden_hour');
+  const [threeDLighting, setThreeDLighting] = useState<MasterPlan3DLightingVariant>('clear_daylight');
   const [threeDScope, setThreeDScope] = useState<MasterPlan3DScope>('full_site');
   const [selected3DZoneIds, setSelected3DZoneIds] = useState<string[]>([]);
   const [generating3DForOptionId, setGenerating3DForOptionId] = useState<string | null>(null);
@@ -209,11 +240,17 @@ export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: Mas
   });
 
   const buildRequest = async (): Promise<MasterPlan2DGenerateRequest> => {
-    const mapScreenshotSatellite = renderStylePreset === 'digital_watercolor_map'
-      ? undefined
+    const noUnderlayStyles: MasterPlanRenderStylePreset[] = [
+      'digital_watercolor_map', 'ink_line_drawing', 'white_massing_model', 'flat_diagrammatic',
+    ];
+    const underlayCapture = noUnderlayStyles.includes(renderStylePreset)
+      ? {}
       : await captureMasterPlanSatelliteUnderlay(mapInstance);
+    const mapScreenshotSatellite = underlayCapture.imageDataUrl;
+    const mapScreenshotBounds = underlayCapture.bounds;
 
     return {
+      render_mode: ORTHOGRAPHIC_SITE_INSERT_MODE,
       render_style_preset: renderStylePreset,
       lighting_atmosphere_preset: lightingAtmospherePreset,
       specific_overrides: specificOverrides.trim() || undefined,
@@ -227,6 +264,7 @@ export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: Mas
       show_surrounding_context: showSurroundingContext,
       export_width: exportWidth,
       map_screenshot_satellite: mapScreenshotSatellite,
+      map_screenshot_bounds: mapScreenshotBounds,
       reference_images: selectedReferences.length ? selectedReferences.map((image) => image.url) : undefined,
       reference_metadata: selectedReferences.length ? selectedReferences.map((image) => image.metadata) : undefined,
       selected_image_urls: selectedReferences.length ? selectedReferences.map((image) => image.url) : undefined,
@@ -379,7 +417,7 @@ export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: Mas
         optionId: option.id,
         sourceOptionLabel: option.label,
         selectedPerspective: request.selected_perspective || 'aerial_oblique',
-        lightingVariant: request.lighting_variant || 'golden_hour',
+        lightingVariant: request.lighting_variant || 'clear_daylight',
         scope: request.scope || 'full_site',
         selectedZoneIds: request.selected_zone_ids || [],
         globalStyleNotes: request.global_style_notes,
@@ -465,15 +503,27 @@ export function MasterPlan2DPanel({ projectId, siteZones, hasSiteGeometry }: Mas
           <div className="space-y-4 rounded-2xl border border-primary-950/10 bg-[#f7f2e8] p-4">
             <div>
               <label className="text-sm font-medium text-primary-950">Render Style</label>
-              <select
-                value={renderStylePreset}
-                onChange={(event) => setRenderStylePreset(event.target.value as MasterPlanRenderStylePreset)}
-                className="mt-2 w-full rounded-xl border border-primary-950/10 bg-white px-3 py-2 text-sm text-primary-950 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
-              >
-                {RENDER_STYLE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
+              {(['Realistic', 'Artistic', 'Technical'] as const).map((category) => (
+                <div key={category} className="mt-3">
+                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-primary-950/40">{category}</p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {RENDER_STYLE_OPTIONS.filter((o) => o.category === category).map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setRenderStylePreset(option.value)}
+                        className={`rounded-lg border px-2.5 py-2 text-left text-xs transition-all ${
+                          renderStylePreset === option.value
+                            ? 'border-primary-500 bg-primary-50 text-primary-900 ring-1 ring-primary-500/30'
+                            : 'border-primary-950/8 bg-white text-primary-950/70 hover:border-primary-300 hover:bg-primary-50/50'
+                        }`}
+                      >
+                        <span className="block font-medium leading-tight">{option.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
               <p className="mt-2 text-xs text-primary-950/55">
                 {RENDER_STYLE_OPTIONS.find((option) => option.value === renderStylePreset)?.description}
               </p>
@@ -948,39 +998,6 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 function slugify(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'master-plan';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

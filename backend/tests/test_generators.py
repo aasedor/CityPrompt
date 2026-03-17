@@ -19,6 +19,13 @@ class TestBuildingGenerator:
             [0, 0], [20, 0], [20, 15], [0, 15], [0, 0]
         ], dtype=float)
 
+    def _edge_dominant_footprint(self, closed=True):
+        pts = np.array([[0, 0], [4, 0], [4, 2], [0, 10]], dtype=float)
+        if closed:
+            pts = np.vstack([pts, pts[0]])
+        return pts
+
+
     def test_extrude_footprint_creates_mesh(self):
         gen = self._make_generator()
         mesh = gen._extrude_footprint(self._simple_footprint(), 10.0)
@@ -29,7 +36,7 @@ class TestBuildingGenerator:
 
     def test_extrude_footprint_rejects_degenerate(self):
         gen = self._make_generator()
-        # Only 2 points — not a valid polygon
+        # Only 2 points - not a valid polygon
         degenerate = np.array([[0, 0], [10, 0]], dtype=float)
         result = gen._extrude_footprint(degenerate, 10.0)
         assert result is None
@@ -75,7 +82,7 @@ class TestBuildingGenerator:
     def test_generate_balconies(self):
         gen = self._make_generator()
         balconies = gen._generate_balconies(self._simple_footprint(), 3, 3.33)
-        # 2 upper floors × 2 meshes (slab + railing) = 4
+        # 2 upper floors x 2 meshes (slab + railing) = 4
         assert len(balconies) == 4
 
     def test_generate_building_scene(self):
@@ -95,6 +102,41 @@ class TestBuildingGenerator:
         assert "roof" in names
         assert any(n.startswith("window_") for n in names)
         assert any(n.startswith("balcony_") for n in names)
+
+
+    def test_generate_building_normalizes_unclosed_footprint(self):
+        gen = self._make_generator()
+        base_data = {
+            "height": 12.0,
+            "floors": 3,
+            "floor_height": 4.0,
+            "roof_type": "flat",
+            "features": {"windows": True, "balconies": True},
+        }
+        closed_scene = gen.generate_building({
+            **base_data,
+            "footprint": self._edge_dominant_footprint(closed=True).tolist(),
+        })
+        open_scene = gen.generate_building({
+            **base_data,
+            "footprint": self._edge_dominant_footprint(closed=False).tolist(),
+        })
+
+        closed_windows = [name for name in closed_scene.geometry if name.startswith("window_")]
+        open_windows = [name for name in open_scene.geometry if name.startswith("window_")]
+
+        assert len(open_windows) == len(closed_windows)
+        np.testing.assert_allclose(
+            open_scene.geometry["door"].centroid,
+            closed_scene.geometry["door"].centroid,
+            atol=1e-6,
+        )
+        np.testing.assert_allclose(
+            open_scene.geometry["balcony_0"].centroid,
+            closed_scene.geometry["balcony_0"].centroid,
+            atol=1e-6,
+        )
+        assert len(open_scene.geometry["cornice"].faces) == len(closed_scene.geometry["cornice"].faces)
 
 
 class TestGLBExporter:

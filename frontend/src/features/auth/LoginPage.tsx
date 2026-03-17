@@ -28,7 +28,14 @@ export function LoginPage() {
       toast.success(`Welcome back, ${result.user.full_name || result.user.email}!`);
       navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed');
+      const detail = err?.response?.data?.detail;
+      if (typeof detail === 'string' && detail.trim()) {
+        setError(detail);
+      } else if (err?.code === 'ERR_NETWORK' || !err?.response) {
+        setError('Unable to reach the API server. Make sure backend is running on http://localhost:8000.');
+      } else {
+        setError('Login failed');
+      }
     } finally {
       setLoading(false);
     }

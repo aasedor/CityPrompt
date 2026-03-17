@@ -102,6 +102,25 @@ describe('LoginPage', () => {
     });
   });
 
+  it('shows a helpful message when API is unreachable', async () => {
+    const { authApi } = await import('@/services/api');
+    (authApi.login as ReturnType<typeof vi.fn>).mockRejectedValue({
+      code: 'ERR_NETWORK',
+    });
+
+    renderLogin();
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('Email'), 'bad@example.com');
+    await user.type(screen.getByLabelText('Password'), 'wrongpassword');
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Unable to reach the API server. Make sure backend is running on http://localhost:8000.')
+      ).toBeDefined();
+    });
+  });
+
   it('disables submit button while loading', async () => {
     const { authApi } = await import('@/services/api');
     let resolveLogin: (v: unknown) => void;

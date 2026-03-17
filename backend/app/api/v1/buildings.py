@@ -16,6 +16,7 @@ from app.core.security import require_auth
 from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
+from app.services.generation_queue import queue_ai_generation_task
 from app.schemas.schemas import (
     ArchitecturalStyleResponse,
     BuildingCreate, BuildingResponse, BuildingUpdate,
@@ -229,7 +230,7 @@ async def update_building(
 
     update_data = building_in.model_dump(exclude_unset=True)
 
-    # Handle footprint_coordinates → geometry conversion
+    # Handle footprint_coordinates to geometry conversion
     if "footprint_coordinates" in update_data:
         coords = update_data.pop("footprint_coordinates")
         if coords and len(coords) >= 3:
@@ -462,16 +463,15 @@ async def generate_from_text(
     building.generation_engine = engine
     await db.flush()
 
-    # Queue Celery task
-    from app.tasks.processing import generate_3d_model_ai
-    task = generate_3d_model_ai.delay(
-        str(building_id), enriched_prompt, "text",
-        None, True, engine, style_id, negative,
+    await queue_ai_generation_task(
+        db,
+        building,
+        enriched_prompt,
+        mode="text",
+        engine=engine,
+        style_id=style_id,
+        negative_prompt=negative,
     )
-
-    # Store Celery task ID for progress tracking
-    building.specifications = {**(building.specifications or {}), "celery_task_id": task.id}
-    await db.flush()
 
     return GenerationStatusResponse(
         status="generating",
@@ -516,15 +516,14 @@ async def generate_from_image(
     building.generation_engine = engine
     await db.flush()
 
-    from app.tasks.processing import generate_3d_model_ai
-    task = generate_3d_model_ai.delay(
-        str(building_id), "", "image", req.image_url,
-        True, engine, None, None,
+    await queue_ai_generation_task(
+        db,
+        building,
+        "",
+        mode="image",
+        image_url=req.image_url,
+        engine=engine,
     )
-
-    # Store Celery task ID for progress tracking
-    building.specifications = {**(building.specifications or {}), "celery_task_id": task.id}
-    await db.flush()
 
     return GenerationStatusResponse(
         status="generating",

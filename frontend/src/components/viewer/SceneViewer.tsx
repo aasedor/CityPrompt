@@ -76,12 +76,12 @@ function SunLight({ settings, latitude }: { settings: import('@/types').ViewerSe
 
   return (
     <>
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.5} color="#f5f0e8" />
       <directionalLight
         position={sunPos}
         intensity={1.2}
         castShadow={settings.showShadows}
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
         shadow-camera-far={500}
         shadow-camera-left={-100}
         shadow-camera-right={100}
@@ -636,27 +636,25 @@ function PostProcessingEffects({ settings }: { settings: ViewerSettings }) {
   const isHigh = settings.quality === 'high';
 
   return (
-    <EffectComposer multisampling={isHigh ? 4 : 0}>
-      {isHigh && (
-        <SSAO
-          samples={32}
-          rings={7}
-          intensity={20}
-          luminanceInfluence={0.6}
-          radius={0.05}
-          bias={0.025}
-          blendFunction={BlendFunction.MULTIPLY}
-        />
-      )}
+    <EffectComposer multisampling={isHigh ? 4 : 2}>
+      <SSAO
+        samples={isHigh ? 32 : 16}
+        rings={isHigh ? 7 : 4}
+        intensity={isHigh ? 20 : 12}
+        luminanceInfluence={0.6}
+        radius={0.05}
+        bias={0.025}
+        blendFunction={BlendFunction.MULTIPLY}
+      />
       <Bloom
-        intensity={0.15}
-        luminanceThreshold={0.9}
-        luminanceSmoothing={0.025}
+        intensity={0.2}
+        luminanceThreshold={0.75}
+        luminanceSmoothing={0.04}
         mipmapBlur
       />
       <Vignette
-        offset={0.3}
-        darkness={0.5}
+        offset={0.35}
+        darkness={0.4}
         blendFunction={BlendFunction.NORMAL}
       />
     </EffectComposer>
@@ -800,7 +798,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
         glRef.current = gl;
       }}
     >
-      <PerspectiveCamera makeDefault position={[50, 50, 50]} fov={60} />
+      <PerspectiveCamera makeDefault position={[60, 140, 60]} fov={60} />
 
       {/* Lighting — sun position from time + date */}
       <SunLight settings={settings} latitude={latitude} />
@@ -816,7 +814,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
           sectionColor="#9ca3af"
         />
       )}
-      {showMapBackground ? (
+      {showMapBackground && !settings.show3DTiles ? (
         <SatelliteGroundPlane projectLat={latitude || 51.045} projectLng={longitude || -114.07} mapLayer={settings.mapLayer} />
       ) : settings.show3DTiles ? (
         <TerrainMesh />
@@ -854,7 +852,7 @@ export function SceneViewer({ buildings, documents, contextBuildings, contextRoa
       </Suspense>
 
       {/* Context buildings from OSM */}
-      {settings.showExistingBuildings && filteredContextBuildings && filteredContextBuildings.length > 0 && (
+      {settings.showExistingBuildings && !settings.show3DTiles && filteredContextBuildings && filteredContextBuildings.length > 0 && (
         <EnhancedContextBuildingsGroup buildings={filteredContextBuildings} roads={contextRoads} projectLat={latitude} projectLng={longitude} getTerrainY={settings.show3DTiles ? getTerrainHeight : undefined} />
       )}
 
@@ -1978,32 +1976,46 @@ function LandscapingGroup({ buildingCount, terrainActive }: { buildingCount: num
         <group key={i} position={[t.x, terrainActive ? getTerrainHeight(t.x, t.z) : 0, t.z]} scale={t.scale}>
           {/* Trunk */}
           <mesh position={[0, 1.5, 0]} castShadow>
-            <cylinderGeometry args={[0.15, 0.2, 3, 6]} />
+            <cylinderGeometry args={[0.15, 0.2, 3, 8]} />
             <meshStandardMaterial color="#6b4423" roughness={0.9} />
           </mesh>
           {/* Canopy */}
           {t.type === 'conifer' ? (
-            <mesh position={[0, 4, 0]} castShadow>
-              <coneGeometry args={[1.5, 4, 6]} />
-              <meshStandardMaterial color="#2d5a27" roughness={0.8} />
-            </mesh>
+            <>
+              <mesh position={[0, 3.2, 0]} castShadow>
+                <coneGeometry args={[2.0, 2.5, 12]} />
+                <meshStandardMaterial color="#2d5a27" roughness={0.85} />
+              </mesh>
+              <mesh position={[0, 4.8, 0]} castShadow>
+                <coneGeometry args={[1.4, 2.5, 12]} />
+                <meshStandardMaterial color="#357030" roughness={0.85} />
+              </mesh>
+            </>
           ) : (
-            <mesh position={[0, 4.5, 0]} castShadow>
-              <sphereGeometry args={[2, 8, 6]} />
-              <meshStandardMaterial color="#3a7d32" roughness={0.8} />
-            </mesh>
+            <>
+              <mesh position={[0, 4.2, 0]} castShadow>
+                <sphereGeometry args={[2.2, 16, 12]} />
+                <meshStandardMaterial color="#3a7d32" roughness={0.85} />
+              </mesh>
+              <mesh position={[0.5, 5.0, 0.3]} castShadow>
+                <sphereGeometry args={[1.4, 12, 10]} />
+                <meshStandardMaterial color="#4a9040" roughness={0.85} />
+              </mesh>
+            </>
           )}
         </group>
       ))}
       {/* Green space patches */}
       {[
-        { x: -30, z: 20, w: 15, d: 10 },
-        { x: 25, z: -25, w: 12, d: 8 },
-        { x: -10, z: -35, w: 20, d: 6 },
+        { x: -30, z: 20, w: 15, d: 10, c: '#4a8c3f' },
+        { x: 25, z: -25, w: 12, d: 8, c: '#3e7a35' },
+        { x: -10, z: -35, w: 20, d: 6, c: '#528f48' },
+        { x: 15, z: 30, w: 10, d: 12, c: '#467d3a' },
+        { x: -25, z: -15, w: 8, d: 14, c: '#4f8840' },
       ].map((patch, i) => (
         <mesh key={`patch-${i}`} position={[patch.x, (terrainActive ? getTerrainHeight(patch.x, patch.z) : 0) + 0.02, patch.z]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[patch.w, patch.d]} />
-          <meshStandardMaterial color="#4a8c3f" roughness={1} />
+          <meshStandardMaterial color={patch.c} roughness={0.95} />
         </mesh>
       ))}
     </group>
@@ -2104,9 +2116,10 @@ function SiteFurnitureGroup({ buildingCount, terrainActive }: { buildingCount: n
           </mesh>
           {/* Lamp fixture */}
           <mesh position={[0, 5.1, 0]}>
-            <sphereGeometry args={[0.2, 8, 6]} />
-            <meshStandardMaterial color="#fff8e0" emissive="#fff8e0" emissiveIntensity={0.3} />
+            <sphereGeometry args={[0.2, 10, 8]} />
+            <meshStandardMaterial color="#fff8e0" emissive="#fff8e0" emissiveIntensity={0.5} />
           </mesh>
+          <pointLight position={[0, 5.0, 0]} intensity={0.6} distance={15} decay={2} color="#fff0d0" />
           {/* Arm */}
           <mesh position={[0.15, 4.8, 0]} rotation={[0, 0, -0.4]}>
             <cylinderGeometry args={[0.02, 0.02, 0.6, 4]} />

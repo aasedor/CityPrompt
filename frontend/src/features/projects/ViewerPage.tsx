@@ -17,6 +17,7 @@ import {
 } from '@/store/undoActions';
 // Annotation type used implicitly via annotationsApi
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { ZONE_TYPE_CONFIG } from '@/types';
 import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { SceneViewer } from '@/components/viewer/SceneViewer';
 import { ViewerControls } from '@/components/viewer/ViewerControls';
@@ -1019,6 +1020,8 @@ export function ViewerPage() {
             activePhase={settings.activePhase}
             showMeasurements={settings.showMeasurements}
             showExistingBuildings={settings.showExistingBuildings}
+            siteZones={siteZones}
+            show3DTiles={settings.show3DTiles}
           />
 
           {/* Zone properties panel — shown when a zone is clicked in 3D */}
@@ -1580,13 +1583,18 @@ function ViewerLegend({
   activePhase,
   showMeasurements,
   showExistingBuildings,
+  siteZones,
+  show3DTiles,
 }: {
   phases?: import('@/types').ConstructionPhase[];
   activePhase: number | null;
   showMeasurements: boolean;
   showExistingBuildings: boolean;
+  siteZones?: import('@/types').SiteZone[];
+  show3DTiles?: boolean;
 }) {
-  const [collapsed, setCollapsed] = useState(true);
+  const hasZones = siteZones && siteZones.length > 0;
+  const [collapsed, setCollapsed] = useState(!(show3DTiles && hasZones));
 
   return (
     <div className="absolute bottom-4 left-4 z-20 hidden sm:block">
@@ -1599,6 +1607,30 @@ function ViewerLegend({
       {!collapsed && (
         <div className="mt-2 rounded-lg bg-white/90 p-3 shadow-card backdrop-blur-sm" style={{ minWidth: 160 }}>
           <div className="space-y-2 text-[11px]">
+            {/* Zone use types */}
+            {hasZones && (() => {
+              const SKIP_TYPES = new Set(['site_boundary', 'development_area']);
+              const uniqueTypes = [...new Set(siteZones!.map((z) => z.zone_type))].filter((t) => !SKIP_TYPES.has(t));
+              if (uniqueTypes.length === 0) return null;
+              return (
+                <div>
+                  <div className="mb-1 font-semibold text-primary-950/30">Zone Types</div>
+                  {uniqueTypes.map((type) => {
+                    const config = ZONE_TYPE_CONFIG[type];
+                    return (
+                      <div key={type} className="flex items-center gap-2 py-0.5">
+                        <span
+                          className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-200"
+                          style={{ backgroundColor: config?.color || '#94a3b8' }}
+                        />
+                        <span className="text-primary-950/40">{config?.label || type}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+
             {/* Phase colors */}
             {phases && phases.length > 0 && (
               <div>

@@ -1,66 +1,65 @@
 from __future__ import annotations
 
+import re
 from typing import Any, Sequence
 
-MASTER_PLAN_KNOWLEDGE_BASE_VERSION = '2026-03-11'
+MASTER_PLAN_KNOWLEDGE_BASE_VERSION = '2026-03-13'
 
 MASTER_PLAN_KNOWLEDGE_SOURCES = [
-    'Gensler - City Centre Deira Master Plan (official project page)',
-    'Sasaki - Brookline High School Master Plan (official project page)',
-    'SOM - Stavanger University Hospital and Campus (official project page)',
-    'AECOM - Yonge North Subway Extension: Landscape and Public Realm (official project page)',
-    'Stantec - Landscape Architecture (official practice page)',
-    'User-supplied 2D master plan references showing landscape-led orthographic plans with muted context',
-    'User-supplied prompt heuristics for rendered illustrative plans, digital watercolor, gradient layering, formal allees, annotated typography, and integrated context',
+    'Official master-plan and district-visualization precedent pages from Gensler, Sasaki, SOM, AECOM, and Stantec',
+    'User-supplied 2D orthographic district references with photoreal roofs, paved ground planes, and subdued suburban context',
+    'User-supplied 3D aerial-oblique and street-level references showing mixed-use districts, civic parks, and real-world neighborhood continuity',
+    'Current SiteForge rendering architecture: deterministic geometry, hidden prompt matrix, aerial underlay registration, and board overlays kept outside image generation',
 ]
 
 REFERENCE_PLAN_SIGNALS = [
-    'landscape reads as the connective structure of the plan rather than a residual fill between buildings',
-    'streets, promenades, and multimodal corridors form a clear hierarchy with civic nodes at key junctions',
-    'buildings reinforce the public realm through disciplined frontage, courtyard definition, and calibrated spacing',
-    'context is quieter and less saturated so the site plan reads as the primary figure on the board',
-    'graphics feel presentation-grade: restrained materials, orthographic clarity, and elegant annotation rather than heavy outlines',
+    'the project reads as a complete district rather than isolated building objects',
+    'the ground plane carries real information through curbs, asphalt, sidewalks, parking courts, promenades, planting beds, and water edges',
+    'buildings define streets, courtyards, and open space through perimeter alignment and coherent frontage',
+    'existing neighborhood context stays visible and geographically believable but subdued relative to the proposal',
+    'large sites contain at least one primary civic or landscape anchor that organizes the district composition',
 ]
 
 TWO_D_RENDER_DIRECTIVES = [
-    'Preserve figure-ground clarity so the site reads immediately against muted surrounding context.',
-    'Show circulation as a hierarchy: primary boulevards first, secondary streets next, then paths, promenades, and plazas.',
-    'Let landscape organize the composition with canopy bands, groves, lawn rooms, buffers, and courtyard planting.',
-    'Keep buildings mostly light in tone with restrained roof shadows so orthographic massing remains legible.',
-    'Use overlays like legend, north arrow, and callouts as presentation-board elements that sit beside the plan rather than drawing new geometry lines.',
+    'Construct a photoreal orthographic district visualization rather than an annotated board or abstract land-use diagram.',
+    'Fill the site intentionally so every residual area becomes hardscape, softscape, water, or programmed open space instead of undefined blank ground.',
+    'Keep the proposal registered to real roads, neighboring houses, and surrounding block structure while maintaining the proposal as the visual priority.',
+    'Use realistic roof planes, paving variation, lane geometry, curb definition, parking logic, tree cadence, and landscape texture.',
+    'Keep text, legends, scale bars, north arrows, and other editorial graphics out of the generated image entirely.',
 ]
 
 THREE_D_SCENE_DIRECTIVES = [
-    'Use parks, water, and public streets as the structural framework of the district rather than decorative afterthoughts.',
-    'Favor coherent massing families and repeated planting rhythms over object-by-object novelty.',
-    'Match references at the level of material tone, canopy rhythm, edge treatment, and public-realm mood.',
-    'Treat water edges, promenades, civic greens, and active main streets as high-value frontage with stronger detailing and activation.',
+    'Render the district as one coherent neighborhood with realistic edges, circulation, and public realm instead of isolated hero buildings.',
+    'Preserve the approved 2D site composition, especially block hierarchy, water or civic anchors, podium edges, and street alignment.',
+    'For aerial-oblique views, keep surrounding suburban or urban fabric visible so the district feels registered to a real place.',
+    'For main-street views, prioritize podium frontage, retail animation, street trees, furnishing, sidewalks, and believable pedestrian scale.',
+    'Use clear daylight realism first: balanced contrast, crisp materials, readable planting, and no collage or board overlays.',
 ]
 
 PRESENTATION_PROMPT_HINTS = {
-    'schematic_render_terms': ['Illustrative Rendered', 'Digital Watercolor', 'watercolor and ink', 'textured paper background'],
-    'massing_terms': ['Gradient Layering', 'Soft Shadows'],
-    'vegetation_terms': ['Detailed Vegetation Texture', 'Formal Allee'],
-    'annotation_terms': ['Annotated Typography', 'Integrated Context'],
-    'typology_examples': ['Whistler-Style Alpine', 'Classic Haussmannian Parisian', 'Adaptive Reuse Warehouse Lofts', 'Kyoto Philosopher Walk'],
+    'orthographic_terms': ['Photoreal Orthographic Aerial', 'district visualization', 'true top-down', 'roof clarity'],
+    'district_terms': ['street wall', 'civic anchor', 'perimeter block', 'public realm hierarchy'],
+    'ground_plane_terms': ['curb definition', 'parking geometry', 'sidewalk network', 'paved apron', 'landscape framework'],
+    'context_terms': ['subdued existing neighborhood', 'registered roads', 'real-world context alignment'],
+    'three_d_terms': ['district aerial oblique', 'main street eye level', 'clear daylight mixed-use district'],
 }
 
 TYPOLOGY_TOKENS = {
-    'Whistler-Style Alpine': ['whistler', 'alpine'],
-    'Classic Haussmannian Parisian': ['haussmann', 'haussmannian', 'parisian', 'paris jardin', 'parisian garden'],
-    'Adaptive Reuse Warehouse Lofts': ['adaptive reuse', 'warehouse loft', 'warehouse', 'brick loft'],
-    'Kyoto Philosopher Walk': ['kyoto', 'philosopher', 'reflecting path', 'path of reflection'],
+    'Perimeter Mid-Rise Block': ['perimeter block', 'courtyard block', 'mid-rise block'],
+    'Townhouse Edge': ['townhouse', 'rowhouse', 'row house'],
+    'Mixed-Use Podium Tower': ['mixed-use', 'mixed use', 'podium', 'tower'],
+    'Civic Park District': ['civic park', 'central park', 'pond', 'water feature', 'public realm'],
 }
 
 LBCS_COLOR_LOGIC = {
-    'residential': 'yellow/warm neutral family',
-    'commercial': 'red/warm accent family',
-    'industrial': 'purple family',
-    'civic_institutional': 'blue family',
-    'mobility': 'gray/neutral family',
-    'assembly_open_space': 'light green family',
-    'leisure': 'dark cyan family',
-    'natural_systems': 'forest green family',
+    'residential': 'warm neutral / stone / roof gray family',
+    'commercial': 'deeper neutral / active mixed-use frontage family',
+    'industrial': 'dark neutral utility family',
+    'civic_institutional': 'light civic stone family',
+    'mobility': 'asphalt / curb / concrete family',
+    'assembly_open_space': 'green open-space family',
+    'leisure': 'amenity landscape family',
+    'natural_systems': 'deep green / water-edge family',
 }
 
 
@@ -84,6 +83,21 @@ def _detected_typologies(text: str) -> list[str]:
         if _has_any(text, tokens)
     ]
 
+def _extract_specific_typologies(prompt_text: str) -> list[str]:
+    matches = re.findall(r"specific\s+typology\s*:\s*([^\n,;]+)", prompt_text, flags=re.IGNORECASE)
+    output: list[str] = []
+    seen: set[str] = set()
+    for raw in matches:
+        value = str(raw).strip()
+        if not value:
+            continue
+        token = value.lower()
+        if token in seen:
+            continue
+        seen.add(token)
+        output.append(value)
+    return output
+
 
 def build_master_plan_style_guide(
     style_key: str,
@@ -92,50 +106,50 @@ def build_master_plan_style_guide(
     prompt: str | None,
     reference_images: Sequence[str] | None = None,
 ) -> dict[str, Any]:
-    text = (prompt or '').lower()
+    prompt_text = prompt or ''
+    text = prompt_text.lower()
     references = list(reference_images or [])
 
-    softer = _has_any(text, ['soft', 'illustrative', 'watercolor', 'wash', 'digital watercolor', 'illustrative rendered'])
-    green_structure = _has_any(text, ['green', 'lush', 'park', 'landscape', 'garden', 'courtyard', 'greenway', 'campus'])
-    waterfront = _has_any(text, ['waterfront', 'river', 'canal', 'lake', 'pond', 'shore', 'wetland', 'marina', 'reflecting pool'])
+    softer = _has_any(text, ['soft', 'illustrative', 'wash', 'watercolor'])
+    gradient_layering = _has_any(text, ['gradient layering'])
+    formal_allee = _has_any(text, ['formal allee'])
+    annotated_typography = _has_any(text, ['annotated typography'])
+    orthographic = _has_any(text, ['orthographic', 'plan', 'master plan', 'top-down', 'top down'])
+    aerial_realism = _has_any(text, ['photoreal', 'aerial', 'district visualization', 'realistic roofs', 'drone'])
+    green_structure = _has_any(text, ['green', 'park', 'landscape', 'garden', 'courtyard', 'greenway', 'civic'])
+    waterfront = _has_any(text, ['waterfront', 'river', 'canal', 'lake', 'pond', 'shore', 'wetland', 'basin'])
     civic_space = _has_any(text, ['community', 'civic', 'plaza', 'promenade', 'boulevard', 'main street', 'public realm'])
-    orthographic = _has_any(text, ['orthographic', 'plan', 'diagram', 'master plan', 'top-down', 'top down'])
-    gradient_layering = _has_any(text, ['gradient layering', 'soft shadows', 'sunlight', 'massing'])
-    vegetation_detail = _has_any(text, ['detailed vegetation texture', 'formal allee', 'allee', 'canopy rhythm', 'tree-lined'])
-    formal_allee = _has_any(text, ['formal allee', 'allee', 'haussmann', 'haussmannian', 'parterres', 'symmetrical geometry'])
-    annotated_typography = _has_any(text, ['annotated typography', 'annotated', 'callout', 'legend', 'typography', 'label'])
-    integrated_context = _has_any(text, ['integrated context', 'blend', 'desaturated aerial', 'aerial perspective', 'real world beneath'])
     typologies = _detected_typologies(text)
+    typologies.extend(label for label in _extract_specific_typologies(prompt_text) if label not in typologies)
 
     reference_bonus = min(len(references), 3) * 0.04
     emphasis = {
         'green_structure': 1.0 + (0.14 if green_structure else 0.0) + reference_bonus,
         'waterfront': 1.0 + (0.16 if waterfront else 0.0),
-        'civic_space': 1.0 + (0.10 if civic_space else 0.0),
+        'civic_space': 1.0 + (0.14 if civic_space else 0.0),
         'context_softness': 1.0 + (0.08 if softer else 0.0) + reference_bonus,
-        'roof_clarity': 1.0 + (0.10 if orthographic else 0.0) + (0.03 if softer else 0.0),
-        'illustrative_render': 1.0 + (0.16 if softer else 0.0) + reference_bonus * 0.5,
-        'gradient_layering': 1.0 + (0.16 if gradient_layering else 0.0),
-        'vegetation_detail': 1.0 + (0.16 if vegetation_detail else 0.0) + reference_bonus * 0.5,
-        'formal_allee': 1.0 + (0.18 if formal_allee else 0.0),
-        'annotated_typography': 1.0 + (0.12 if annotated_typography else 0.0),
-        'integrated_context': 1.0 + (0.16 if integrated_context else 0.0),
+        'roof_clarity': 1.0 + (0.16 if orthographic else 0.0) + (0.08 if aerial_realism else 0.0),
+        'ground_plane_clarity': 1.0 + (0.18 if aerial_realism or orthographic else 0.0),
+        'district_fill': 1.0 + (0.16 if civic_space or green_structure else 0.0),
+        'context_alignment': 1.0 + (0.14 if aerial_realism else 0.0),
         'typology_specificity': 1.0 + (0.08 if typologies else 0.0),
+        'illustrative_render': 1.0 + (0.08 if softer else 0.0),
+        'gradient_layering': 1.0 + (0.08 if gradient_layering else 0.0),
+        'formal_allee': 1.0 + (0.08 if formal_allee else 0.0),
+        'annotated_typography': 1.0 + (0.08 if annotated_typography else 0.0),
     }
 
     presentation_keywords: list[str] = []
-    if softer or style_key == 'illustrative_landscape_plan':
-        presentation_keywords.extend(['Illustrative Rendered', 'Digital Watercolor'])
-    if gradient_layering:
-        presentation_keywords.extend(['Gradient Layering', 'Soft Shadows'])
-    if vegetation_detail:
-        presentation_keywords.append('Detailed Vegetation Texture')
-    if formal_allee:
-        presentation_keywords.append('Formal Allee')
-    if annotated_typography:
-        presentation_keywords.append('Annotated Typography')
-    if integrated_context:
-        presentation_keywords.append('Integrated Context')
+    if orthographic or aerial_realism:
+        presentation_keywords.extend(['Photoreal Orthographic Aerial', 'District Visualization'])
+    if _has_any(text, ['digital watercolor']):
+        presentation_keywords.append('Digital Watercolor')
+    if civic_space:
+        presentation_keywords.append('Civic Anchor')
+    if green_structure:
+        presentation_keywords.append('Landscape Framework')
+    if waterfront:
+        presentation_keywords.append('Water Edge')
 
     return {
         'knowledge_base_version': MASTER_PLAN_KNOWLEDGE_BASE_VERSION,
@@ -148,11 +162,11 @@ def build_master_plan_style_guide(
         'typology_hints': typologies,
         'palette': _palette_summary(palette),
         'composition': {
-            'site_vs_context': 'Muted, desaturated context should recede behind the site composition.',
-            'street_hierarchy': 'Primary boulevards, secondary streets, promenades, and pedestrian paths should be distinguishable at a glance.',
-            'landscape_structure': 'Green space should connect blocks, edges, courtyards, and water rather than appear as leftover filler.',
-            'building_readability': 'Roofs should stay light with restrained shadows so orthographic massing remains legible.',
-            'presentation_schema': 'Rendered illustrative boards should use digital watercolor texture, gradient layering, and elegant annotations rather than flat fills and generic symbols.',
+            'site_vs_context': 'Keep existing neighborhood context visible but quieter so the proposal reads as the primary figure.',
+            'street_hierarchy': 'Primary streets, secondary drives, sidewalks, promenades, and civic paths should be distinguishable at a glance.',
+            'landscape_structure': 'Landscape should organize blocks, edges, courtyards, and water anchors rather than filling leftover space.',
+            'building_readability': 'Roofs should remain crisp and light enough to read clearly in orthographic view without turning diagrammatic.',
+            'presentation_schema': 'Generated imagery should stay image-only; board layout, annotations, legends, and scales belong in deterministic overlays.',
         },
         'land_use_color_logic': LBCS_COLOR_LOGIC,
         'two_d_render_directives': TWO_D_RENDER_DIRECTIVES,
@@ -169,17 +183,18 @@ def build_site_preview_design_brief(
     has_reference_images: bool,
 ) -> list[str]:
     directives = [
-        'Keep the overall plan legible from above: major streets first, secondary lanes second, open-space connectors third.',
-        'Let the site read as the figure against a quieter surrounding context with a restrained material palette.',
-        'Favor tree-lined edges, planted buffers, and readable courtyards over leftover hardscape.',
-        'Push the output toward a rendered-illustrative board with soft shadows, digital watercolor texture, and integrated annotations rather than a flat schematic.',
+        'Keep the overall plan strictly top-down and orthographic, with one coherent light direction and one continuous material world.',
+        'Construct a district, not isolated footprints: if an area is not a building, it must read clearly as street, hardscape, landscape, or water.',
+        'Make the ground plane legible through roads, sidewalks, parking courts, curbs, plazas, promenades, and planted edges so buildings do not float in blank space.',
+        'Keep real-world surrounding houses, roads, and context visible but subdued so the proposal stays aligned to place without losing focus.',
+        'Preserve hard site geometry and major zone placement while enriching the district with coherent frontage, block structure, and public realm continuity.',
     ]
     if has_parks:
-        directives.append('Use parks and courtyards as connective green structure that links blocks and civic destinations.')
+        directives.append('Use parks and courtyards as connective landscape structure, and give larger sites at least one strong civic green anchor.')
     if has_water:
-        directives.append('Treat water edges as premium public realm with promenades, planting buffers, and clearly defined embankments.')
+        directives.append('Treat water edges as premium public realm with promenades, embankments, and layered planting rather than leftover voids.')
     if has_reference_images:
-        directives.append('Translate any selected archetype or precedent references into plan-view cues like massing softness, canopy rhythm, and material tone instead of copying or pasting imagery literally.')
+        directives.append('Translate selected references into district-level cues such as typology mix, planting rhythm, material tone, digital watercolor plan-view cues, and public-realm character without copying or pasting imagery literally.')
     return directives
 
 

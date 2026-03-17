@@ -402,9 +402,8 @@ def test_ai_style_pass_falls_back_to_base_render_when_no_provider_keys(monkeypat
     assert rendered['ai_style_pass']['requested'] is True
     assert rendered['ai_style_pass']['applied'] is False
     assert rendered['ai_style_pass']['requested_provider'] == 'auto'
-    assert rendered['ai_style_pass']['attempted_providers'] == ['gemini', 'stability']
+    assert rendered['ai_style_pass']['attempted_providers'] == ['gemini']
     assert 'GEMINI_API_KEY not configured' in rendered['ai_style_pass']['reason']
-    assert 'STABILITY_API_KEY not configured' in rendered['ai_style_pass']['reason']
     assert rendered['full_png']
 
 
@@ -925,3 +924,57 @@ def test_build_master_plan_3d_response_carries_conditioning_assets_from_selected
     assert package['conditioning_assets']['control_mode'] == 'orthographic_source_plus_camera_controls'
     assert package['conditioning_assets']['control_strength'] == 0.88
     assert response['renderer_adapter']['integration_status'] == 'camera_conditioned_packages_ready'
+
+
+
+def test_render_plan_image_preserves_underlay_through_site_center():
+    scene = _prepare_scene(_sample_payload(), 2400, _toggles())
+    underlay = Image.new('RGBA', (2400, 1600), (62, 118, 84, 255))
+
+    rendered = master_plan_2d._render_plan_image(
+        scene,
+        style_preset='rendered_sales_plan',
+        variant=master_plan_2d._make_variant_profile('rendered_sales_plan', 'board_ready', 0, scene['geometry_hash'], render_style_preset='photoreal_orthographic_aerial'),
+        toggles=_toggles(),
+        context_underlay=underlay,
+    )
+
+    center = rendered.getpixel((rendered.width // 2, rendered.height // 2))
+    assert center[1] > center[0]
+    assert sum(center[:3]) < 690
+
+
+def test_collect_scene_payload_generates_internal_precinct_site_features():
+    boundary = Polygon([
+        (-114.0710, 51.0440),
+        (-114.0685, 51.0440),
+        (-114.0685, 51.0458),
+        (-114.0710, 51.0458),
+        (-114.0710, 51.0440),
+    ])
+    zone = SimpleNamespace(
+        id=uuid.uuid4(),
+        zone_type='development_area',
+        name='Mixed Use Precinct',
+        color='#9b59b6',
+        sort_order=0,
+        created_at=0,
+        geometry=from_shape(boundary, srid=4326),
+        properties={
+            'height': 26,
+            'floors': 8,
+            'description_text': 'Mixed-use district with retail frontage, parking access, promenades, and a central courtyard',
+            'development_type': 'mixed_use',
+            'generation_style_input': {'subtype': 'mixed-use precinct'},
+        },
+        building_id=None,
+        building_ids=None,
+    )
+    project = SimpleNamespace(id=uuid.uuid4())
+
+    payload = master_plan_2d._collect_scene_payload(project, [zone], [])
+
+    assert len(payload['building_footprints']) >= 2
+    assert len(payload['paths']) >= 1
+    assert len(payload['parks']) >= 1
+    assert len(payload['plazas']) >= 1

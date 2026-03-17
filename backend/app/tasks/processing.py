@@ -11,20 +11,93 @@ from datetime import datetime, timezone
 import boto3
 from botocore.config import Config
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import get_settings
 from app.core.usage_logger import log_api_usage_sync
+from app.generation.engine import get_engine
 from app.tasks.worker import celery_app
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
+_sync_engine = None
+_sync_session_factory = None
+_sync_pool_size = 5 if settings.app_env == "production" else 20
+_sync_max_overflow = 3 if settings.app_env == "production" else 10
+
+
+def _get_sync_engine():
+    global _sync_engine
+    if _sync_engine is None:
+        _sync_engine = create_engine(
+            settings.database_url_sync,
+            echo=settings.app_debug,
+            pool_size=_sync_pool_size,
+            max_overflow=_sync_max_overflow,
+            pool_pre_ping=True,
+        )
+    return _sync_engine
+
 
 def _get_sync_session() -> Session:
     """Create a sync SQLAlchemy session for use in Celery tasks."""
-    engine = create_engine(settings.database_url_sync)
-    return Session(engine)
+    global _sync_session_factory
+    if _sync_session_factory is None:
+        _sync_session_factory = sessionmaker(
+            bind=_get_sync_engine(),
+            class_=Session,
+            expire_on_commit=False,
+        )
+    return _sync_session_factory()
+
+
+def _merge_building_specifications(building, updates: dict) -> None:
+    specs = dict(building.specifications or {})
+    specs.update(updates)
+    building.specifications = specs
+
+
+def _queue_procedural_generation_jobs(session: Session, document, jobs: list[tuple[object, dict]]) -> list[dict]:
+    """Queue committed procedural generation jobs and persist task metadata best-effort."""
+    queue_failures: list[dict] = []
+
+    for building, building_data in jobs:
+        try:
+            task = generate_3d_model.delay(str(building.id), building_data)
+        except Exception as exc:
+            logger.error(
+                "Failed to queue procedural generation for building %s: %s",
+                building.id,
+                exc,
+            )
+            building.generation_status = "failed"
+            _merge_building_specifications(
+                building,
+                {"generation_error": f"Failed to queue procedural generation: {exc}"},
+            )
+            queue_failures.append({"building_id": str(building.id), "error": str(exc)})
+            continue
+
+        task_id = getattr(task, "id", None)
+        if task_id:
+            _merge_building_specifications(building, {"celery_task_id": task_id})
+
+    if queue_failures:
+        extracted = dict(document.extracted_data or {})
+        extracted["generation_queue_failures"] = queue_failures
+        document.extracted_data = extracted
+
+    if not jobs:
+        return queue_failures
+
+    try:
+        session.commit()
+    except Exception as exc:
+        session.rollback()
+        logger.warning("Failed to persist procedural queue metadata: %s", exc)
+
+    return queue_failures
 
 
 def _get_s3_client():
@@ -58,8 +131,8 @@ def _upload_to_storage(key: str, data: bytes, content_type: str) -> str:
     except Exception:
         try:
             s3.create_bucket(Bucket=settings.s3_bucket_name)
-        except Exception:
-            pass  # Bucket exists or auto-creation not supported (R2)
+        except Exception as bucket_err:
+            logger.debug("Bucket creation skipped (may already exist): %s", bucket_err)
     s3.put_object(
         Bucket=settings.s3_bucket_name,
         Key=key,
@@ -127,7 +200,7 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
             width = ab.get("width", 20)
             depth = ab.get("depth", 15)
             height = ab.get("height_meters") or 10.0
-            floors = ab.get("floor_count") or max(1, int(height / 3.0))
+            floors = max(1, ab.get("floor_count") or int(height / 3.0))
             floor_height = ab.get("floor_height_meters") or (height / floors)
 
             # Generate a simple rectangular footprint if no coordinates available
@@ -160,7 +233,7 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
                 },
             })
     elif extraction_dict.get("coordinates"):
-        # No AI interpretation — build from extracted coordinates
+        # No AI interpretation - build from extracted coordinates
         for i, coords in enumerate(extraction_dict["coordinates"]):
             buildings.append({
                 "name": f"Building {chr(65 + i)}",
@@ -172,7 +245,7 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
                 "specifications": {},
             })
     else:
-        # Minimal fallback — create a single default building
+        # Minimal fallback - create a single default building
         buildings.append({
             "name": "Building A",
             "height_meters": 10.0,
@@ -233,7 +306,7 @@ def process_document(self, document_id: str):
 
         self.update_state(state="PROCESSING", meta={"progress": 0.5, "step": "interpreting"})
 
-        # Step 4: AI interpretation using Claude — prioritize floor plans & elevations
+        # Step 4: AI interpretation using Claude - prioritize floor plans & elevations
         interpretation_result = {}
         try:
             from app.processing.analyzers.claude_interpreter import ClaudeInterpreter
@@ -252,7 +325,7 @@ def process_document(self, document_id: str):
                     if img_idx < len(classifications):
                         page_type = classifications[img_idx].get("type", "unknown")
 
-                    # Skip text-only and schedule pages — no architectural drawings
+                    # Skip text-only and schedule pages - no architectural drawings
                     if page_type in ("text", "schedule"):
                         logger.info(
                             f"Skipping page {img_idx + 1}/{total_images} "
@@ -275,7 +348,7 @@ def process_document(self, document_id: str):
                         elif page_type == "elevation":
                             result = asyncio.run(interpreter.interpret_elevation(image_data))
                         else:
-                            # Unknown — try floor plan first, fall back to elevation
+                            # Unknown - try floor plan first, fall back to elevation
                             result = asyncio.run(interpreter.interpret_floor_plan(image_data))
                             if not result or not result.get("buildings") and not result.get("building_dimensions"):
                                 result = asyncio.run(interpreter.interpret_elevation(image_data))
@@ -291,7 +364,7 @@ def process_document(self, document_id: str):
                                 b.setdefault("_confidence", img_confidence)
                             all_buildings.extend(result["buildings"])
                         elif result.get("building_dimensions"):
-                            # Single building from floor plan — tag with confidence
+                            # Single building from floor plan - tag with confidence
                             result["_confidence"] = img_confidence
                             all_buildings.append(result)
 
@@ -317,6 +390,7 @@ def process_document(self, document_id: str):
 
         # Step 6: Create building records and trigger 3D generation
         created_building_ids = []
+        queued_generation_jobs: list[tuple[object, dict]] = []
         for bdata in normalized_buildings:
             building = Building(
                 project_id=document.project_id,
@@ -326,6 +400,7 @@ def process_document(self, document_id: str):
                 floor_height_meters=bdata["floor_height_meters"],
                 roof_type=bdata["roof_type"],
                 specifications=bdata.get("specifications"),
+                generation_status="generating",
             )
 
             # Set footprint if coordinates available
@@ -340,9 +415,7 @@ def process_document(self, document_id: str):
             session.add(building)
             session.flush()
             created_building_ids.append(str(building.id))
-
-            # Trigger 3D model generation for this building
-            generate_3d_model.delay(str(building.id), bdata)
+            queued_generation_jobs.append((building, bdata))
 
         self.update_state(state="PROCESSING", meta={"progress": 1.0, "step": "complete"})
 
@@ -355,9 +428,14 @@ def process_document(self, document_id: str):
             "building_ids": created_building_ids,
         }
         session.commit()
-
+        queue_failures = _queue_procedural_generation_jobs(session, document, queued_generation_jobs)
         logger.info(f"Document processing complete: {document_id}, created {len(created_building_ids)} buildings")
-        return {"status": "completed", "document_id": document_id, "building_ids": created_building_ids}
+        return {
+            "status": "completed",
+            "document_id": document_id,
+            "building_ids": created_building_ids,
+            "generation_queue_failures": queue_failures,
+        }
 
     except Exception as exc:
         logger.error(f"Document processing failed: {document_id} - {exc}")
@@ -368,17 +446,20 @@ def process_document(self, document_id: str):
                 document.processing_status = "failed"
                 document.extracted_data = {"error": str(exc)}
                 session.commit()
-        except Exception:
+        except Exception as inner_exc:
             session.rollback()
+            logger.warning("Failed to mark document %s as failed: %s", document_id, inner_exc)
         raise self.retry(exc=exc, countdown=60)
     finally:
         session.close()
-        # Clean up temp file
+        # Clean up temp file (runs on both success and error paths)
         import os
         try:
             os.unlink(tmp_path)
-        except Exception:
-            pass
+        except (NameError, TypeError):
+            pass  # tmp_path was never assigned (download failed before temp file creation)
+        except OSError as cleanup_err:
+            logger.debug("Temp file cleanup: %s", cleanup_err)
 
 
 def _propagate_model_to_siblings(session: Session, building_id: str, model_url: str, lod_urls: dict, preview_url: str | None = None):
@@ -399,7 +480,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
         if building_id not in bid_list and str(building_id) not in [str(b) for b in bid_list]:
             continue
 
-        # Found the zone — propagate to siblings
+        # Found the zone - propagate to siblings
         sibling_count = 0
         for bid_str in bid_list:
             if str(bid_str) == str(building_id):
@@ -430,28 +511,30 @@ def generate_3d_model_ai(
     negative_prompt: str = None,
 ):
     """
-    Generate a 3D model via AI API (Meshy or Tripo3D).
+    Generate a 3D model via an AI provider adapter.
 
-    Pipeline:
-    1. Call AI API (text-to-3d or image-to-3d)
-    2. Poll until complete
-    3. Download GLB file
-    4. Upload to MinIO
-    5. Update building.model_url in DB
-    6. Update building.generation_status = 'completed'
+    Processing owns orchestration, persistence, and storage. Provider adapters own
+    the provider-specific API choreography.
     """
     logger.info(f"AI generating 3D model for building: {building_id} (mode={mode}, engine={engine})")
     session = _get_sync_session()
+    building = None
+    provider = None
 
     try:
         from app.models.models import Building
+
         building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
         if not building:
             raise ValueError(f"Building not found: {building_id}")
 
+        provider = get_engine(engine)
+        if not provider.is_available():
+            raise RuntimeError(f"AI generation engine '{engine}' is not configured")
+
         building.generation_status = "generating"
         building.generation_prompt = prompt
-        building.generation_engine = engine
+        building.generation_engine = provider.engine_id
         if style_id:
             building.architectural_style = style_id
         session.commit()
@@ -461,156 +544,57 @@ def generate_3d_model_ai(
             "background, people, vehicles, cartoon, anime, stylized, miniature"
         )
 
-        # --- Tripo3D engine ---
-        if engine == "tripo":
-            self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "calling_tripo"})
+        def _progress_callback(progress: float, step: str) -> None:
+            self.update_state(state="GENERATING", meta={"progress": progress, "step": step})
 
-            from app.generation.tripo_client import TripoClient
-            tripo = TripoClient()
-
-            if mode == "image" and image_url:
-                task_id = asyncio.run(tripo.image_to_3d(image_url))
-                log_api_usage_sync(provider="tripo", operation="image_to_3d", credits_used=30, task_id=task_id, building_id=building_id)
-            else:
-                task_id = asyncio.run(tripo.text_to_3d(prompt, negative_prompt=architectural_negative_prompt))
-                log_api_usage_sync(provider="tripo", operation="text_to_3d", credits_used=30, task_id=task_id, building_id=building_id)
-
+        def _task_callback(task_id: str) -> None:
             building.meshy_task_id = task_id
             session.commit()
 
-            self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling_tripo"})
-            result = asyncio.run(tripo.poll_until_done(task_id, timeout=120))
-
-            model_url_remote = result.get("model_url") or result.get("output", {}).get("model", {}).get("url")
-            if not model_url_remote:
-                raise RuntimeError("No model URL in Tripo result")
-
-            # Optionally run smart_low_poly for web-ready LOD
-            lod_model_url_remote = None
-            try:
-                self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "smart_low_poly"})
-                lp_task_id = asyncio.run(tripo.smart_low_poly(task_id))
-                lp_result = asyncio.run(tripo.poll_until_done(lp_task_id, timeout=120))
-                lod_model_url_remote = lp_result.get("model_url") or lp_result.get("output", {}).get("model", {}).get("url")
-                log_api_usage_sync(provider="tripo", operation="retopology", credits_used=10, task_id=lp_task_id, building_id=building_id)
-            except Exception as lp_err:
-                logger.warning(f"Tripo smart_low_poly failed (non-fatal): {lp_err}")
-
-            self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
-            glb_data = asyncio.run(tripo.download_model(model_url_remote))
-
-            self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
-            project_id = building.project_id
-            model_key = f"projects/{project_id}/models/{building_id}_tripo.glb"
-            model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
-
-            lod_urls = {"0": model_url}
-            if lod_model_url_remote:
-                try:
-                    lod_glb = asyncio.run(tripo.download_model(lod_model_url_remote))
-                    lod_key = f"projects/{project_id}/models/{building_id}_tripo_lod1.glb"
-                    lod_url = _upload_to_storage(lod_key, lod_glb, "model/gltf-binary")
-                    lod_urls["1"] = lod_url
-                except Exception:
-                    pass
-
-        # --- Meshy engine (default) ---
-        else:
-            self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "calling_meshy"})
-
-            from app.generation.meshy_client import MeshyClient
-            client = MeshyClient()
-
-            if mode == "image" and image_url:
-                task_id = asyncio.run(client.image_to_3d(image_url))
-                task_type = "image"
-                log_api_usage_sync(provider="meshy", operation="image_to_3d", credits_used=20, task_id=task_id, building_id=building_id)
-            else:
-                task_id = asyncio.run(client.text_to_3d_preview(
-                    prompt, negative_prompt=architectural_negative_prompt
-                ))
-                task_type = "text"
-                log_api_usage_sync(provider="meshy", operation="text_to_3d_preview", credits_used=10, task_id=task_id, building_id=building_id)
-
-            building.meshy_task_id = task_id
+        def _preview_callback(preview_data: bytes) -> None:
+            preview_key = f"projects/{building.project_id}/models/{building_id}_preview.glb"
+            preview_s3_url = _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
+            building.model_url = preview_s3_url
+            building.lod_urls = {"0": preview_s3_url}
             session.commit()
+            logger.info(f"Preview model saved for building {building_id}: {preview_s3_url}")
+            _progress_callback(0.5, "preview_ready")
 
-            self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "polling"})
+        result = asyncio.run(provider.run_generation(
+            prompt=prompt,
+            mode=mode,
+            image_url=image_url,
+            refine=refine,
+            negative_prompt=architectural_negative_prompt,
+            building_id=building_id,
+            progress_callback=_progress_callback,
+            task_callback=_task_callback,
+            preview_callback=_preview_callback,
+        ))
 
-            result = asyncio.run(client.poll_until_done(task_id, timeout=300, task_type=task_type))
-            logger.info(f"Meshy preview result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
+        _progress_callback(0.85, "uploading")
 
-            # Save preview model immediately so the viewer can show it while refining
-            preview_glb_url = (result.get("model_urls") or {}).get("glb")
-            if preview_glb_url:
-                try:
-                    import httpx as httpx_dl
-                    preview_data = httpx_dl.get(preview_glb_url, timeout=60.0).content
-                    preview_key = f"projects/{building.project_id}/models/{building_id}_preview.glb"
-                    preview_s3_url = _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
-                    building.model_url = preview_s3_url
-                    building.lod_urls = {"0": preview_s3_url}
-                    session.commit()
-                    logger.info(f"Preview model saved for building {building_id}: {preview_s3_url}")
-                    self.update_state(state="GENERATING", meta={"progress": 0.5, "step": "preview_ready"})
-                except Exception as prev_err:
-                    logger.warning(f"Failed to save preview model (non-fatal): {prev_err}")
+        project_id = building.project_id
+        model_suffix = "tripo" if provider.engine_id == "tripo" else "ai"
+        model_key = f"projects/{project_id}/models/{building_id}_{model_suffix}.glb"
+        model_url = _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
 
-            # For text mode, run refine step to get PBR textures (preview has no textures)
-            if mode == "text" and refine:
-                self.update_state(state="GENERATING", meta={"progress": 0.55, "step": "refining"})
-                try:
-                    refine_task_id = asyncio.run(client.text_to_3d_refine(
-                        task_id,
-                        texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}"
-                    ))
-                    logger.info(f"Refine task started: {refine_task_id} (from preview {task_id})")
-                    building.meshy_task_id = refine_task_id
-                    session.commit()
-                    result = asyncio.run(client.poll_until_done(refine_task_id, timeout=600, task_type="text"))
-                    logger.info(f"Meshy refine result keys: {list(result.keys())}, model_urls: {result.get('model_urls', {}).keys() if result.get('model_urls') else 'NONE'}")
-                    log_api_usage_sync(provider="meshy", operation="text_to_3d_refine", credits_used=10, task_id=refine_task_id, building_id=building_id)
-                except Exception as refine_err:
-                    logger.error(f"Refine step FAILED for building {building_id}: {refine_err}", exc_info=True)
-                    logger.warning("Falling back to preview model (will lack textures)")
-            elif mode == "text":
-                logger.info(f"Refine disabled for building {building_id} — using preview model")
+        lod_urls = {"0": model_url}
+        for level, lod_glb_data in (result.lod_glb_data or {}).items():
+            lod_key = f"projects/{project_id}/models/{building_id}_{provider.engine_id}_lod{level}.glb"
+            lod_urls[str(level)] = _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
 
-            self.update_state(state="GENERATING", meta={"progress": 0.7, "step": "downloading"})
+        _progress_callback(0.95, "updating")
 
-            # Extract the GLB URL from result
-            glb_url = None
-            model_urls = result.get("model_urls", {})
-            glb_url = model_urls.get("glb") or model_urls.get("obj")
-
-            if not glb_url:
-                raise RuntimeError("No GLB model URL in Meshy result")
-
-            # Download the GLB file
-            import httpx as httpx_sync
-            glb_data = httpx_sync.get(glb_url, timeout=60.0).content
-
-            self.update_state(state="GENERATING", meta={"progress": 0.85, "step": "uploading"})
-
-            project_id = building.project_id
-            model_key = f"projects/{project_id}/models/{building_id}_ai.glb"
-            model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
-
-            lod_urls = {"0": model_url}
-
-        self.update_state(state="GENERATING", meta={"progress": 0.95, "step": "updating"})
-
-        # Update building record
         building.model_url = model_url
         building.lod_urls = lod_urls
         building.generation_status = "completed"
+        building.meshy_task_id = result.task_id
 
-        # Save Meshy thumbnail as preview_url if available
-        thumbnail = result.get("thumbnail_url")
-        if thumbnail:
+        if result.thumbnail_url:
             try:
                 import httpx as httpx_thumb
-                thumb_data = httpx_thumb.get(thumbnail, timeout=30.0).content
+                thumb_data = httpx_thumb.get(result.thumbnail_url, timeout=30.0).content
                 thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
                 _upload_to_storage(thumb_key, thumb_data, "image/png")
                 building.preview_url = f"/api/v1/files/{thumb_key}"
@@ -621,7 +605,6 @@ def generate_3d_model_ai(
 
         session.commit()
 
-        # Propagate model to sibling buildings in the same zone (multi-unit)
         try:
             _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
         except Exception as prop_err:
@@ -636,19 +619,25 @@ def generate_3d_model_ai(
 
     except Exception as exc:
         logger.error(f"AI 3D generation failed for building {building_id}: {exc}")
-        log_api_usage_sync(provider=engine, operation=f"{mode}_to_3d", status="failed", building_id=building_id)
+        log_api_usage_sync(
+            provider=provider.engine_id if provider else engine,
+            operation=f"{mode}_to_3d",
+            status="failed",
+            building_id=building_id,
+        )
         try:
-            from app.models.models import Building
-            building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+            if building is None:
+                from app.models.models import Building
+                building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
             if building:
                 building.generation_status = "failed"
                 session.commit()
-        except Exception:
+        except Exception as inner_exc:
             session.rollback()
+            logger.warning("Failed to mark building %s as failed: %s", building_id, inner_exc)
         raise self.retry(exc=exc, countdown=30)
     finally:
         session.close()
-
 
 @celery_app.task(bind=True, name="generate_3d_model")
 def generate_3d_model(self, building_id: str, building_data: dict):
@@ -664,9 +653,19 @@ def generate_3d_model(self, building_id: str, building_data: dict):
     """
     logger.info(f"Generating 3D model for building: {building_id}")
     session = _get_sync_session()
+    building = None
 
     try:
         self.update_state(state="GENERATING", meta={"progress": 0.1, "step": "geometry"})
+
+        from app.models.models import Building
+
+        building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+        if not building:
+            raise ValueError(f"Building not found: {building_id}")
+
+        building.generation_status = "generating"
+        session.commit()
 
         # Step 1: Generate building geometry
         from app.generation.geometry.building_generator import (
@@ -676,7 +675,7 @@ def generate_3d_model(self, building_id: str, building_data: dict):
 
         generator = BuildingGenerator()
 
-        # Prepare data for generator — ensure footprint is available
+        # Prepare data for generator - ensure footprint is available
         gen_data = {
             "footprint": building_data.get("footprint", [[0, 0], [20, 0], [20, 15], [0, 15], [0, 0]]),
             "height": building_data.get("height_meters", 10.0),
@@ -689,15 +688,16 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         # Load architectural style if set on building
         style = None
         try:
-            from app.models.models import Building as BuildingModel
-            building_record = session.query(BuildingModel).filter_by(id=uuid.UUID(building_id)).first()
-            if building_record and building_record.architectural_style:
+            if building.architectural_style:
                 from app.generation.styles import get_style
-                style = get_style(building_record.architectural_style)
-        except Exception:
-            pass
+                style = get_style(building.architectural_style)
+        except Exception as style_err:
+            logger.warning("Failed to load style '%s' for building %s: %s", building.architectural_style, building_id, style_err)
 
         scene = generator.generate_building(gen_data, style=style)
+
+        if not scene.geometry:
+            raise ValueError(f"Building generation produced empty scene for {building_id}")
 
         self.update_state(state="GENERATING", meta={"progress": 0.3, "step": "exporting"})
 
@@ -730,12 +730,6 @@ def generate_3d_model(self, building_id: str, building_data: dict):
 
         self.update_state(state="GENERATING", meta={"progress": 0.6, "step": "uploading"})
 
-        # Step 4: Upload all GLBs to S3/MinIO
-        from app.models.models import Building
-        building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
-        if not building:
-            raise ValueError(f"Building not found: {building_id}")
-
         project_id = building.project_id
 
         # Upload full-detail model (LOD 0)
@@ -755,6 +749,7 @@ def generate_3d_model(self, building_id: str, building_data: dict):
         # Step 5: Update building record with model URL + LOD URLs
         building.model_url = model_url
         building.lod_urls = lod_urls
+        building.generation_status = "completed"
         session.commit()
 
         logger.info(
@@ -770,7 +765,18 @@ def generate_3d_model(self, building_id: str, building_data: dict):
 
     except Exception as exc:
         logger.error(f"3D generation failed for building {building_id}: {exc}")
-        session.rollback()
+        try:
+            session.rollback()
+            if building is None:
+                from app.models.models import Building
+                building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
+            if building:
+                building.generation_status = "failed"
+                session.commit()
+        except Exception as inner_exc:
+            session.rollback()
+            logger.warning("Failed to mark building %s as failed: %s", building_id, inner_exc)
         raise
     finally:
         session.close()
+
