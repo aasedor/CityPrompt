@@ -463,8 +463,11 @@ export function ProjectViewPage() {
                         Rendering... {aiRender.progress > 0 ? `${aiRender.progress}%` : ''}
                       </div>
                     )}
-                    {aiRender.error && (
+                    {aiRender.error && !aiRender.error.includes('VITE_FAL_KEY') && (
                       <p className="text-red-400 text-xs">{aiRender.error}</p>
+                    )}
+                    {!import.meta.env.VITE_FAL_KEY && (
+                      <p className="text-red-400 text-xs">VITE_FAL_KEY is not set. Add it to your .env file.</p>
                     )}
                   </div>
                 </div>

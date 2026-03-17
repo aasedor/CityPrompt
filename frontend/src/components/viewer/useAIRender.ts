@@ -192,9 +192,8 @@ const DEFAULT_STYLE = 'modern-glass';
 
 /** Read the fal.ai API key from Vite env */
 function getFalKey(): string {
-  return (
-    (typeof import.meta !== 'undefined' && (import.meta as any)?.env?.VITE_FAL_KEY) || ''
-  );
+  // Vite replaces import.meta.env.VITE_FAL_KEY at compile time
+  return import.meta.env.VITE_FAL_KEY || '';
 }
 
 /** Capture the Mapbox canvas as a PNG data-URI */
