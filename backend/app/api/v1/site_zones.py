@@ -2233,7 +2233,7 @@ async def generate_site_massing(
     project = await db.get(Project, project_id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    if project.user_id != current_user.id:
+    if project.owner_id != current_user.id:
         share = await db.execute(
             select(ProjectShare).where(
                 ProjectShare.project_id == project_id,
@@ -2285,11 +2285,18 @@ async def generate_site_massing(
             detail="At least one building/residential zone is required for massing generation",
         )
 
-    planner = LayoutPlanner()
-    response = await planner.generate_site_massing_options(
-        zones=zones_for_planner,
-        project_id=str(project_id),
-        count=3,
-    )
-    return response
+    try:
+        planner = LayoutPlanner()
+        response = await planner.generate_site_massing_options(
+            zones=zones_for_planner,
+            project_id=str(project_id),
+            count=3,
+        )
+        return response
+    except Exception as e:
+        logger.error("Site massing generation failed for project %s: %s", project_id, e, exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Massing generation failed: {str(e)[:200]}",
+        )
 

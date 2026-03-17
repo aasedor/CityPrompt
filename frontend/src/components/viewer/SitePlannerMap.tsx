@@ -778,8 +778,12 @@ export function SitePlannerMap({
         });
       } else {
         // Selection mode — but only if not coming from a drag
+        // Query both flat fill and extruded layers so building zones (with height) are clickable
+        const queryLayers = ['site-zones-fill', 'site-zones-extrusion'].filter(
+          (l) => map.getLayer(l),
+        );
         const features = map.queryRenderedFeatures(e.point, {
-          layers: ['site-zones-fill'],
+          layers: queryLayers,
         });
         if (features.length > 0) {
           const zoneId = pickSmallestFeature(features).properties?.id;

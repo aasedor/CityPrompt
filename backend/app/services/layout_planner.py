@@ -2191,6 +2191,10 @@ Return ONLY a JSON array of {count} option objects:
                 center_lat = centroid.y
                 mlon = _meters_per_deg_lon(center_lat)
 
+                if zone_type == "site_boundary":
+                    # Site boundary is just a reference outline — skip entirely
+                    continue
+
                 if zone_type in ("green_space", "park", "water", "parking"):
                     # Green space, park, water, parking → define as landscape/hardscape polygon
                     gs_coords = [
