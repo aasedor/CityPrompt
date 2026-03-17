@@ -188,6 +188,7 @@ interface SitePlannerMapProps {
   latitude?: number;
   longitude?: number;
   siteZones: SiteZone[];
+  massingFeatures?: GeoJSON.FeatureCollection;
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
@@ -198,6 +199,7 @@ export function SitePlannerMap({
   latitude,
   longitude,
   siteZones,
+  massingFeatures,
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
@@ -385,6 +387,7 @@ export function SitePlannerMap({
         if (closed.length > 0 && (closed[0][0] !== closed[closed.length - 1][0] || closed[0][1] !== closed[closed.length - 1][1])) {
           closed.push(closed[0]);
         }
+        const zoneHeight = typeof zone.properties?.height === 'number' ? zone.properties.height : undefined;
         return {
           type: 'Feature' as const,
           properties: {
@@ -392,6 +395,7 @@ export function SitePlannerMap({
             color: zone.color,
             label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
             zone_type: zone.zone_type,
+            ...(zoneHeight != null && { height: zoneHeight }),
           },
           geometry: {
             type: 'Polygon' as const,
@@ -408,6 +412,7 @@ export function SitePlannerMap({
       ) {
         zoneCoords.push(zoneCoords[0]);
       }
+      const height = typeof zone.properties?.height === 'number' ? zone.properties.height : undefined;
       return {
         type: 'Feature' as const,
         properties: {
@@ -415,6 +420,7 @@ export function SitePlannerMap({
           color: zone.color,
           label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
           zone_type: zone.zone_type,
+          ...(height != null && { height }),
         },
         geometry: {
           type: 'Polygon' as const,
@@ -456,6 +462,29 @@ export function SitePlannerMap({
     const features = buildZoneFeatures(zones);
     source.setData({ type: 'FeatureCollection', features });
   }, [buildZoneFeatures]);
+
+  // Update massing preview layer when massingFeatures prop changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    const src = map.getSource('massing-preview') as mapboxgl.GeoJSONSource | undefined;
+    if (!src) return;
+
+    if (massingFeatures && massingFeatures.features.length > 0) {
+      src.setData(massingFeatures);
+      // Hide zone extrusion to avoid overlap with massing blocks
+      if (map.getLayer('site-zones-extrusion')) {
+        map.setLayoutProperty('site-zones-extrusion', 'visibility', 'none');
+      }
+    } else {
+      src.setData({ type: 'FeatureCollection', features: [] });
+      // Restore zone extrusion when massing is cleared
+      if (map.getLayer('site-zones-extrusion')) {
+        map.setLayoutProperty('site-zones-extrusion', 'visibility', 'visible');
+      }
+    }
+  }, [massingFeatures]);
 
   /** Update vertex handles for the selected zone */
   const updateVertexHandles = useCallback((zoneId: string | null, zones: SiteZone[], overrideCoords?: number[][]) => {
@@ -499,8 +528,9 @@ export function SitePlannerMap({
       zoom: 16,
       minZoom: 2,
       maxZoom: 22,
-      pitch: 0,
-      bearing: 0,
+      pitch: 60,
+      bearing: -30,
+      maxPitch: 85,
       doubleClickZoom: false,
       preserveDrawingBuffer: true, // Needed for canvas screenshot capture
     });
@@ -512,16 +542,87 @@ export function SitePlannerMap({
     map.on('load', () => {
       mapLoadedRef.current = true;
 
+      // --- 3D Terrain ---
+      map.addSource('mapbox-dem', {
+        type: 'raster-dem',
+        url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+        tileSize: 512,
+        maxzoom: 14,
+      });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.2 });
+
+      // --- 3D Buildings from Mapbox composite source ---
+      const layers = map.getStyle().layers;
+      // Find the first symbol layer to insert buildings below labels
+      let labelLayerId: string | undefined;
+      if (layers) {
+        for (const layer of layers) {
+          if (layer.type === 'symbol' && (layer as any).layout?.['text-field']) {
+            labelLayerId = layer.id;
+            break;
+          }
+        }
+      }
+      map.addLayer(
+        {
+          id: '3d-buildings',
+          source: 'composite',
+          'source-layer': 'building',
+          filter: ['==', 'extrude', 'true'],
+          type: 'fill-extrusion',
+          minzoom: 13,
+          paint: {
+            // Height-based color: short buildings warm beige, tall buildings cool steel blue
+            'fill-extrusion-color': [
+              'interpolate', ['linear'], ['get', 'height'],
+              0, '#e8dcc8',    // warm beige (low-rise)
+              15, '#c9bfb0',   // tan (mid-rise)
+              40, '#a8b4bf',   // cool grey-blue (high-rise)
+              100, '#8a9bab',  // steel blue (towers)
+            ],
+            'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'height']],
+            'fill-extrusion-base': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'min_height']],
+            'fill-extrusion-opacity': 0.8,
+          },
+        },
+        labelLayerId,
+      );
+
+      // --- Atmosphere / fog for depth ---
+      map.setFog({
+        color: 'rgb(186, 210, 235)',
+        'high-color': 'rgb(36, 92, 223)',
+        'horizon-blend': 0.02,
+        'space-color': 'rgb(11, 11, 25)',
+        'star-intensity': 0.6,
+      });
+
       // --- Existing zones source + layers ---
       map.addSource('site-zones', {
         type: 'geojson',
         data: { type: 'FeatureCollection', features: [] },
       });
 
+      // Extruded 3D zone massing blocks (for building/residential zones with height)
+      map.addLayer({
+        id: 'site-zones-extrusion',
+        type: 'fill-extrusion',
+        source: 'site-zones',
+        filter: ['has', 'height'],
+        paint: {
+          'fill-extrusion-color': ['get', 'color'],
+          'fill-extrusion-height': ['get', 'height'],
+          'fill-extrusion-base': 0,
+          'fill-extrusion-opacity': 0.75,
+        },
+      });
+
+      // Flat fill for zones without height (green space, roads, site boundary, etc.)
       map.addLayer({
         id: 'site-zones-fill',
         type: 'fill',
         source: 'site-zones',
+        filter: ['!', ['has', 'height']],
         paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.5 },
       });
 
@@ -554,6 +655,36 @@ export function SitePlannerMap({
           'text-color': '#ffffff',
           'text-halo-color': 'rgba(0,0,0,0.7)',
           'text-halo-width': 1,
+        },
+      });
+
+      // --- Massing preview source + layer (for AI-generated massing blocks) ---
+      map.addSource('massing-preview', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] },
+      });
+
+      map.addLayer({
+        id: 'massing-preview-extrusion',
+        type: 'fill-extrusion',
+        source: 'massing-preview',
+        filter: ['==', ['get', 'type'], 'building'],
+        paint: {
+          'fill-extrusion-color': ['get', 'color'],
+          'fill-extrusion-height': ['get', 'height'],
+          'fill-extrusion-base': 0,
+          'fill-extrusion-opacity': 0.85,
+        },
+      });
+
+      map.addLayer({
+        id: 'massing-preview-green',
+        type: 'fill',
+        source: 'massing-preview',
+        filter: ['==', ['get', 'type'], 'green_space'],
+        paint: {
+          'fill-color': ['get', 'color'],
+          'fill-opacity': 0.6,
         },
       });
 

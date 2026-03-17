@@ -436,6 +436,9 @@ export function useAIRender(): UseAIRenderReturn {
         const successful = results.filter((r): r is AIRenderResult => r !== null);
 
         setPreviews(successful);
+        // Clear `result` — individual render() calls set it, but we don't want
+        // previews to show as "full render result" in the UI.
+        setResult(null);
         setProgress(100);
         setIsRendering(false);
         return successful;

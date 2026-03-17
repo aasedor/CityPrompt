@@ -28,6 +28,7 @@ import type {
   MasterPlan2DExportResponse,
   MasterPlan3DGenerateRequest,
   MasterPlan3DGenerateResponse,
+  SiteMassingResponse,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -649,6 +650,11 @@ export const siteZonesApi = {
 
   generateForBoundary: async (projectId: string, boundaryZoneId: string): Promise<{ total_zones: number; buildings_created: number; generations_queued: number; queued_buildings?: { id: string; name: string }[] }> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-all?boundary_zone_id=${boundaryZoneId}`);
+    return data;
+  },
+
+  generateSiteMassing: async (projectId: string): Promise<SiteMassingResponse> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-site-massing`, {}, { timeout: 90000 });
     return data;
   },
 };

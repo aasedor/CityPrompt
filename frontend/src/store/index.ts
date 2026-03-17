@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective } from '@/types';
+import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, SiteMassingOption } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // Re-export undo/redo store
@@ -81,7 +81,7 @@ const defaultViewerSettings: ViewerSettings = {
   showCrosshair: true,
   enablePostProcessing: true,
   enableFog: true,
-  show3DTiles: false,
+  show3DTiles: true,
 };
 
 export interface CameraKeyframe {
@@ -225,6 +225,14 @@ interface ViewerState {
   lockedLayers: LockedLayers | null;
   toggleLayerLock: (layer: keyof LockedLayers, indices: number[]) => void;
   clearLockedLayers: () => void;
+  // Site-wide massing (3-step workflow)
+  siteMassing: { options: SiteMassingOption[]; activeIndex: number; projectId: string } | null;
+  setSiteMassing: (projectId: string, options: SiteMassingOption[]) => void;
+  setActiveMassingIndex: (index: number) => void;
+  clearSiteMassing: () => void;
+  // Workflow step
+  workflowStep: number;
+  setWorkflowStep: (step: number) => void;
 }
 
 // Compute area of a 3D polygon projected onto the XZ plane (Shoelace formula)
@@ -523,6 +531,15 @@ export const useViewerStore = create<ViewerState>((set) => ({
       return { lockedLayers: { ...current, [layer]: updated } };
     }),
   clearLockedLayers: () => set({ lockedLayers: null }),
+  // Site massing
+  siteMassing: null,
+  setSiteMassing: (projectId, options) => set({ siteMassing: { projectId, options, activeIndex: 0 } }),
+  setActiveMassingIndex: (index) =>
+    set((state) => state.siteMassing ? { siteMassing: { ...state.siteMassing, activeIndex: index } } : {}),
+  clearSiteMassing: () => set({ siteMassing: null }),
+  // Workflow step
+  workflowStep: 1,
+  setWorkflowStep: (step) => set({ workflowStep: step }),
 }));
 
 // =============================================================================

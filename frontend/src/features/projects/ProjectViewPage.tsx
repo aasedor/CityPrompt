@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Eye, Upload, Building2, FileText, Plus, Loader2, CheckCircle, AlertCircle, Clock, Image, FileSpreadsheet, Trash2, Share2, MapPin, FileDown, Sparkles } from 'lucide-react';
+import { ArrowLeft, Eye, Upload, Building2, FileText, Plus, Loader2, CheckCircle, AlertCircle, Clock, Image, FileSpreadsheet, Trash2, Share2, MapPin, FileDown, Sparkles, RefreshCw } from 'lucide-react';
 import { projectsApi, documentsApi, activityApi, buildingsApi } from '@/services/api';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { FileUpload } from '@/components/upload/FileUpload';
@@ -11,6 +11,12 @@ import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
+import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { MassingOptionPicker } from '@/components/viewer/MassingOptionPicker';
+import { massingOptionToGeoJSON } from '@/components/viewer/massingUtils';
+import { useAIRender, AI_RENDER_STYLES } from '@/components/viewer/useAIRender';
+import { collectArchetypeRenderInputs } from '@/components/viewer/collectArchetypeRenderInputs';
+import { siteZonesApi } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
@@ -36,6 +42,13 @@ export function ProjectViewPage() {
     selectedZoneId,
     selectZone,
     masterPlan3D,
+    siteMassing,
+    setSiteMassing,
+    setActiveMassingIndex,
+    clearSiteMassing,
+    workflowStep,
+    setWorkflowStep,
+    mapInstance,
   } = useViewerStore();
 
   const {
@@ -61,12 +74,19 @@ export function ProjectViewPage() {
   useEffect(() => {
     setSitePlannerActive(true);
     setActiveSitePlannerTool('building');
+    // Reset workflow state for this project
+    setWorkflowStep(1);
+    clearSiteMassing();
     return () => {
       setSitePlannerActive(false);
       setActiveSitePlannerTool(null);
       selectZone(null);
+      // Clean up workflow state on unmount
+      setWorkflowStep(1);
+      clearSiteMassing();
     };
-  }, [setSitePlannerActive, setActiveSitePlannerTool, selectZone]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setSitePlannerActive, setActiveSitePlannerTool, selectZone, id]);
 
   const handleZoneSelected = useCallback((zoneId: string | null) => {
     selectZone(zoneId);
@@ -79,6 +99,90 @@ export function ProjectViewPage() {
   const handleWalkThrough = useCallback(() => {
     navigate(`/projects/${id}/viewer`);
   }, [navigate, id]);
+
+  // ── Massing generation ───────────────────────────────────────────────
+  const [massingLoading, setMassingLoading] = useState(false);
+
+  const handleGenerateMassing = useCallback(async () => {
+    if (!id) return;
+    setMassingLoading(true);
+    try {
+      const response = await siteZonesApi.generateSiteMassing(id);
+      if (!response.options || response.options.length === 0) {
+        toast.error('No massing options were generated — try adjusting zones');
+        return;
+      }
+      setSiteMassing(id, response.options);
+      setWorkflowStep(2);
+      toast.success(`Generated ${response.options.length} massing options`);
+    } catch (err: any) {
+      console.error('Massing generation failed:', err);
+      toast.error(err?.response?.data?.detail || 'Failed to generate massing options');
+    } finally {
+      setMassingLoading(false);
+    }
+  }, [id, setSiteMassing, setWorkflowStep]);
+
+  const handleConfirmMassing = useCallback(() => {
+    setWorkflowStep(3);
+  }, [setWorkflowStep]);
+
+  // Compute GeoJSON features for the active massing option
+  const massingFeatures = useMemo(() => {
+    if (!siteMassing || siteMassing.projectId !== id || siteMassing.options.length === 0) return undefined;
+    const activeOption = siteMassing.options[siteMassing.activeIndex];
+    if (!activeOption) return undefined;
+    return massingOptionToGeoJSON(activeOption, siteZones);
+  }, [siteMassing, siteZones, id]);
+
+  // ── AI Render (Step 3) ──────────────────────────────────────────────
+  const [selectedRenderStyle, setSelectedRenderStyle] = useState('modern-glass');
+  const aiRender = useAIRender();
+  // Destructure stable callbacks to avoid re-render loops in useCallback deps
+  const { renderPreviews: aiRenderPreviews, renderFull: aiRenderFull } = aiRender;
+
+  const handleRenderPreviews = useCallback(async () => {
+    if (!mapInstance) {
+      toast.error('Map not ready — please wait');
+      return;
+    }
+    // Collect archetype prompts from zone selections
+    const archetypeInputs = collectArchetypeRenderInputs(siteZones);
+    // Only pass archetype prompts if zones actually have them — otherwise let
+    // the style preset (selected via renderStyleId) drive the prompt alone.
+    const archetypePrompt = archetypeInputs.positivePrompts.join(', ');
+    const archetypeNegative = archetypeInputs.negativePrompts.join(', ');
+
+    try {
+      await aiRenderPreviews(mapInstance, {
+        renderStyleId: selectedRenderStyle,
+        archetypePrompt,
+        archetypeNegative,
+        referenceImageUrls: archetypeInputs.referenceImageUrls,
+      });
+    } catch (err: any) {
+      console.error('AI render failed:', err);
+      toast.error('AI render failed — check console');
+    }
+  }, [mapInstance, siteZones, aiRenderPreviews, selectedRenderStyle]);
+
+  const handleRenderFull = useCallback(async (seed: number) => {
+    if (!mapInstance) return;
+    const archetypeInputs = collectArchetypeRenderInputs(siteZones);
+    const archetypePrompt = archetypeInputs.positivePrompts.join(', ');
+    const archetypeNegative = archetypeInputs.negativePrompts.join(', ');
+
+    try {
+      await aiRenderFull(mapInstance, {
+        renderStyleId: selectedRenderStyle,
+        archetypePrompt,
+        archetypeNegative,
+        referenceImageUrls: archetypeInputs.referenceImageUrls,
+      }, seed);
+    } catch (err: any) {
+      console.error('AI render full failed:', err);
+    }
+  }, [mapInstance, siteZones, aiRenderFull, selectedRenderStyle]);
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
@@ -217,17 +321,37 @@ export function ProjectViewPage() {
         {/* Tab 1: Master Plan */}
         {workflowTab === 'master-plan' && (
           <>
+            {/* Workflow stepper bar */}
+            <WorkflowStepper
+              currentStep={workflowStep}
+              onStepClick={(step) => {
+                if (step < workflowStep) {
+                  setWorkflowStep(step);
+                  // Clear downstream state when stepping back
+                  if (step <= 1) {
+                    clearSiteMassing();
+                    aiRender.reset();
+                  }
+                  if (step <= 2) {
+                    aiRender.reset();
+                  }
+                }
+              }}
+            />
+
             <div className="relative h-[56vh] min-h-[430px] sm:h-[62vh] lg:h-[68vh]">
               <SitePlannerMap
                 latitude={project.location?.latitude}
                 longitude={project.location?.longitude}
                 siteZones={siteZones}
+                massingFeatures={massingFeatures}
                 onZoneCreated={handleZoneCreated}
                 onZoneUpdated={handleZoneUpdated}
                 onZoneSelected={handleZoneSelected}
                 onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
               />
-              {selectedZone && (
+              {/* Step 1: Zone properties panel */}
+              {workflowStep === 1 && selectedZone && (
                 <ZonePropertiesPanel
                   key={selectedZone.id}
                   zone={selectedZone}
@@ -240,11 +364,146 @@ export function ProjectViewPage() {
                   onOpenBlockEditor={() => setWorkflowTab('block-editor')}
                 />
               )}
+              {/* Step 2: Massing option picker overlay */}
+              {workflowStep === 2 && siteMassing && siteMassing.projectId === id && siteMassing.options.length > 0 && (
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-gray-900/90 backdrop-blur-sm border-t border-gray-700">
+                  <MassingOptionPicker
+                    options={siteMassing.options}
+                    activeIndex={siteMassing.activeIndex}
+                    onSelect={setActiveMassingIndex}
+                    onConfirm={handleConfirmMassing}
+                  />
+                </div>
+              )}
+              {/* Step 3: AI Render controls */}
+              {workflowStep === 3 && (
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-gray-900/90 backdrop-blur-sm border-t border-gray-700 p-4">
+                  {/* Style selector */}
+                  <div className="mb-3 flex items-center gap-3">
+                    <label className="text-xs text-gray-400 whitespace-nowrap">Render Style:</label>
+                    <select
+                      value={selectedRenderStyle}
+                      onChange={(e) => setSelectedRenderStyle(e.target.value)}
+                      disabled={aiRender.isRendering}
+                      className="flex-1 max-w-xs bg-gray-800 border border-gray-700 text-gray-200 text-xs rounded-lg px-3 py-1.5 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 disabled:opacity-50"
+                    >
+                      {AI_RENDER_STYLES.map((s) => (
+                        <option key={s.id} value={s.id}>{s.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Render previews grid */}
+                  {aiRender.previews.length > 0 && (
+                    <div className="mb-3">
+                      <p className="text-xs text-gray-400 mb-2">Select a preview to render at full quality:</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {aiRender.previews.map((preview, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => {
+                              aiRender.setSelectedPreviewIndex(idx);
+                              if (preview.seed != null) handleRenderFull(preview.seed);
+                            }}
+                            className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                              aiRender.selectedPreviewIndex === idx
+                                ? 'border-purple-500 shadow-lg shadow-purple-500/30'
+                                : 'border-gray-700 hover:border-gray-500'
+                            }`}
+                          >
+                            <img
+                              src={preview.imageUrl}
+                              alt={`Preview ${idx + 1}`}
+                              className="w-full aspect-video object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Full render result */}
+                  {aiRender.result && (
+                    <div className="mb-3 text-center">
+                      <img
+                        src={aiRender.result.imageUrl}
+                        alt="Full AI Render"
+                        className="max-h-48 mx-auto rounded-lg shadow-xl border border-gray-700"
+                      />
+                      <p className="text-xs text-green-400 mt-1">Full-quality render complete</p>
+                    </div>
+                  )}
+
+                  {/* Action buttons */}
+                  <div className="flex items-center justify-center gap-3">
+                    {!aiRender.isRendering && aiRender.previews.length === 0 && (
+                      <button
+                        onClick={handleRenderPreviews}
+                        className="px-6 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-lg transition-colors"
+                      >
+                        <Sparkles size={14} className="inline mr-2" />
+                        Generate AI Render
+                      </button>
+                    )}
+                    {!aiRender.isRendering && aiRender.previews.length > 0 && (
+                      <button
+                        onClick={() => {
+                          aiRender.reset();
+                          handleRenderPreviews();
+                        }}
+                        className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5"
+                      >
+                        <RefreshCw size={12} />
+                        Regenerate Previews
+                      </button>
+                    )}
+                    {aiRender.isRendering && (
+                      <div className="flex items-center gap-2 text-purple-400 text-sm">
+                        <Loader2 size={14} className="animate-spin" />
+                        Rendering... {aiRender.progress > 0 ? `${aiRender.progress}%` : ''}
+                      </div>
+                    )}
+                    {aiRender.error && (
+                      <p className="text-red-400 text-xs">{aiRender.error}</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-            <SitePlannerToolbar
-              onViewIn3D={handleViewIn3D}
-              onWalkThrough={handleWalkThrough}
-            />
+            {/* Bottom toolbar with Generate button */}
+            <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
+              <div className="flex-1 min-w-0">
+                <SitePlannerToolbar
+                  onViewIn3D={handleViewIn3D}
+                  onWalkThrough={handleWalkThrough}
+                />
+              </div>
+              {workflowStep === 1 && (
+                <button
+                  onClick={handleGenerateMassing}
+                  disabled={!hasEditableZones || massingLoading}
+                  className={`
+                    flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all
+                    ${hasEditableZones && !massingLoading
+                      ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                      : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  {massingLoading ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={14} />
+                      Generate Options
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </>
         )}
 

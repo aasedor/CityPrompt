@@ -348,7 +348,9 @@ class LayoutBuilding(BaseModel):
     rotation_deg: float = Field(default=0, description="Rotation in degrees (0=north-facing)")
     height_m: Optional[float] = Field(None, description="Building height override in meters")
     floors: Optional[int] = Field(None, description="Number of floors override")
-    building_type: str = Field(default="residential", description="Building type: residential, commercial, mixed_use")
+    building_type: str = Field(default="residential", description="Building type: residential, commercial, mixed_use, retail, civic, institutional")
+    building_typology: Optional[str] = Field(None, description="Building typology: townhouse_row, mid_rise_apartment, apartment_block, mixed_use_podium, retail_liner, office_block")
+    block_id: Optional[int] = Field(None, description="Block ID grouping buildings that share a street frontage")
     setback_front_m: float = Field(default=3.0, description="Front setback in meters")
     setback_side_m: float = Field(default=1.5, description="Side setback in meters")
     name: Optional[str] = Field(None, description="Custom building name")
@@ -366,7 +368,7 @@ class LayoutRoad(BaseModel):
 class LayoutGreenSpace(BaseModel):
     """A green/open space in the AI-generated layout."""
     polygon: list[list[float]] = Field(description="Polygon as [[x_offset, y_offset], ...] in degrees")
-    space_type: str = Field(default="buffer", description="Space type: buffer, park, setback, courtyard")
+    space_type: str = Field(default="buffer", description="Space type: buffer, park, setback, courtyard, civic_green, entry_plaza, planted_verge, pocket_park")
 
 
 class SiteLayoutResponse(BaseModel):
@@ -397,6 +399,37 @@ class ApplyLayoutRequest(BaseModel):
     """Request to apply a chosen layout option to a zone."""
     option_index: int = Field(description="Index of the chosen layout option")
     layout: SiteLayoutResponse = Field(description="The full layout data to apply")
+
+
+# =============================================================================
+# Site-Wide Massing Schemas
+# =============================================================================
+
+class SiteMassingZone(BaseModel):
+    """Layout data for a single zone within a site-wide massing option."""
+    zone_id: str = Field(description="ID of the source site zone")
+    zone_type: str = Field(description="Zone type: building, residential, green_space, road, parking, etc.")
+    zone_label: str = Field(default="", description="Human-readable zone label")
+    buildings: list[LayoutBuilding] = Field(default=[], description="Building placements for this zone")
+    roads: list[LayoutRoad] = Field(default=[], description="Internal roads for this zone")
+    green_spaces: list[LayoutGreenSpace] = Field(default=[], description="Green/open spaces for this zone")
+
+
+class SiteMassingOption(BaseModel):
+    """A single holistic site massing configuration."""
+    option_index: int = Field(description="Index of this option (0-based)")
+    option_label: str = Field(description="Human-readable label, e.g. 'High Density Cluster'")
+    zones: list[SiteMassingZone] = Field(description="Layout data for each zone in this option")
+    reasoning: str = Field(default="", description="AI reasoning for this configuration")
+    total_building_count: int = Field(default=0, description="Total buildings across all zones")
+    total_floor_area_m2: Optional[float] = Field(None, description="Estimated total gross floor area")
+    density_achieved: Optional[float] = Field(None, description="Achieved density in units per hectare")
+
+
+class SiteMassingResponse(BaseModel):
+    """Response containing 3 site-wide massing options."""
+    project_id: str = Field(description="Project ID")
+    options: list[SiteMassingOption] = Field(description="3 massing options to choose from")
 
 
 # =============================================================================
@@ -472,15 +505,40 @@ class MasterPlan2DReferenceMetadata(BaseModel):
     generation_style: Optional[dict[str, Any]] = Field(None, description="Saved generation style input for the selected reference")
 
 
-RenderStylePreset = Literal["photorealistic_aerial", "photoreal_orthographic_aerial", "digital_watercolor_map"]
+RenderStylePreset = Literal[
+    "photorealistic_aerial",
+    "photoreal_orthographic_aerial",
+    "digital_watercolor_map",
+    "watercolor_wash",
+    "ink_line_drawing",
+    "marker_render",
+    "cinematic_dusk",
+    "collage_mixed_media",
+    "lush_landscape",
+    "white_massing_model",
+    "flat_diagrammatic",
+]
 LightingAtmospherePreset = Literal["crisp_summer_day", "golden_hour", "overcast_soft", "winter_snow"]
 MasterPlanImageProvider = Literal["vertex", "stability", "gemini"]
+MasterPlan2DRenderMode = Literal["orthographic_aerial_site_insert", "legacy_prompt_first"]
+
+
+class MasterPlanMapBounds(BaseModel):
+    """Viewport bounds associated with a captured map screenshot."""
+    west: float = Field(ge=-180, le=180, description="Western longitude bound")
+    south: float = Field(ge=-90, le=90, description="Southern latitude bound")
+    east: float = Field(ge=-180, le=180, description="Eastern longitude bound")
+    north: float = Field(ge=-90, le=90, description="Northern latitude bound")
 
 
 class MasterPlan2DGenerateRequest(BaseModel):
     """Request to generate 2D aerial master-plan options."""
+    render_mode: MasterPlan2DRenderMode = Field(
+        default="orthographic_aerial_site_insert",
+        description="Primary 2D render mode. orthographic_aerial_site_insert is the deterministic site-insert path.",
+    )
     prompt: Optional[str] = Field(None, max_length=2000, description="Legacy free-text style direction. Prefer render_style_preset + lighting_atmosphere_preset + specific_overrides.")
-    render_style_preset: RenderStylePreset = Field('photorealistic_aerial', description="High-level visual style preset for hidden prompt matrix compilation")
+    render_style_preset: RenderStylePreset = Field('photoreal_orthographic_aerial', description="High-level visual style preset for hidden prompt matrix compilation")
     lighting_atmosphere_preset: LightingAtmospherePreset = Field('crisp_summer_day', description="Lighting and atmosphere preset for hidden prompt matrix compilation")
     specific_overrides: Optional[str] = Field(None, max_length=500, description="Optional specific directive appended to internal prompt matrix output")
     option_count: int = Field(default=3, ge=1, le=6, description="Number of options to generate")
@@ -501,14 +559,15 @@ class MasterPlan2DGenerateRequest(BaseModel):
     show_surrounding_context: Optional[bool] = Field(None, description="Override muted context visibility")
     export_width: int = Field(default=4200, ge=3000, le=5000, description="High-resolution export width in pixels")
     map_screenshot_satellite: Optional[str] = Field(None, description="Optional satellite basemap screenshot data URI used as a real-context underlay for 2D renders")
+    map_screenshot_bounds: Optional[MasterPlanMapBounds] = Field(None, description="Optional map bounds for the screenshot underlay")
     reference_images: Optional[list[str]] = Field(None, description="Structured reference image URLs selected for the 2D generator")
     reference_metadata: Optional[list[MasterPlan2DReferenceMetadata]] = Field(None, description="Structured reference metadata bundle")
     selected_image_urls: Optional[list[str]] = Field(None, description="Deprecated alias for selected reference image URLs")
     ai_style_pass_enabled: Optional[bool] = Field(False, description="Run an optional AI texture pass on top of the geometry-locked 2D render")
     ai_style_pass_provider: Optional[str] = Field(
-        "auto",
+        "gemini",
         pattern="^(auto|gemini|stability)$",
-        description="AI style-pass provider preference: auto, gemini, or stability",
+        description="AI style-pass provider preference. Gemini/Nano Banana is the default image finish path.",
     )
     compose_board: Optional[bool] = Field(True, description="Compose a deterministic presentation board in code after plan imagery generation")
     board_template: Optional[str] = Field('master_plan_board_v1', description="Deterministic board template key")
@@ -673,7 +732,7 @@ class MasterPlan3DZoneSnapshot(BaseModel):
 class MasterPlan3DGenerateRequest(BaseModel):
     """Request to convert a generated 2D master plan into structured 3D render packages."""
     render_style_preset: RenderStylePreset = Field(
-        default='photorealistic_aerial',
+        default='photoreal_orthographic_aerial',
         description="High-level render style preset resolved through hidden prompt matrix",
     )
     lighting_atmosphere_preset: LightingAtmospherePreset = Field(
@@ -686,7 +745,7 @@ class MasterPlan3DGenerateRequest(BaseModel):
         description="Preferred camera framing for downstream 3D renders",
     )
     lighting_variant: Literal["golden_hour", "clear_daylight", "overcast_soft_light", "blue_hour_dusk"] = Field(
-        default="golden_hour",
+        default="clear_daylight",
         description="Lighting mood to apply to the 3D scene prompts",
     )
     scope: Literal["full_site", "selected_zones", "focused_frontage"] = Field(
@@ -1192,6 +1251,8 @@ class ApiUsageResponse(BaseModel):
     providers: list[ApiUsageByProvider]
     daily: list[DailyUsage]
     range: str
+
+
 
 
 

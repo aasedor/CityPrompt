@@ -30,11 +30,13 @@ from app.schemas.schemas import (
     RegenerateLayoutRequest,
     SiteLayoutResponse,
     SiteLayoutOption,
+    SiteMassingResponse,
     SiteZoneCreate,
     SiteZoneResponse,
     SiteZoneUpdate,
 )
 from app.api.v1.buildings import _building_to_response
+from app.services.generation_queue import queue_ai_generation_task
 from app.services.layout_planner import LayoutPlanner
 from app.services.osm_context import OSMContextFetcher
 
@@ -443,7 +445,7 @@ async def update_zone(
 
     update_data = zone_in.model_dump(exclude_unset=True)
 
-    # Handle coordinates → geometry conversion
+    # Handle coordinates to geometry conversion
     if "coordinates" in update_data:
         coords = update_data.pop("coordinates")
         if coords and len(coords) >= 3:
@@ -580,7 +582,7 @@ def _resolve_layout_option_count(zone: SiteZone, unit_count: int) -> int:
 def compute_unit_positions(zone_geometry, unit_count: int):
     """Compute grid positions for N units within zone bounding box.
 
-    Returns list of (cx, cy, cell_w, cell_h) tuples — center coordinates
+    Returns list of (cx, cy, cell_w, cell_h) tuples - center coordinates
     and cell dimensions in degrees.
     """
     shape = to_shape(zone_geometry)
@@ -734,7 +736,7 @@ async def preview_layouts(
     """Generate multiple layout options for a multi-unit zone without creating buildings.
 
     Returns multiple layout strategies for the user to compare and choose from.
-    Pure read-only preview — does NOT modify any records.
+    Pure read-only preview - does NOT modify any records.
     """
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = result.scalar_one_or_none()
@@ -994,7 +996,7 @@ async def render_site_preview(
             except Exception:
                 pass
         elif z.zone_type in ("building", "residential", "development_area") and str(z.id) not in layout_zone_ids:
-            # Buildable zone without a generated layout — still include its properties
+            # Buildable zone without a generated layout - still include its properties
             try:
                 shape = to_shape(z.geometry)
                 buildable_without_layouts.append({
@@ -1087,7 +1089,7 @@ async def apply_layout(
     """Apply a chosen layout option to a zone, creating Building records.
 
     Takes the chosen layout from a preview and creates Building records.
-    Does NOT queue 3D generation — user triggers that separately.
+    Does NOT queue 3D generation - user triggers that separately.
     """
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = result.scalar_one_or_none()
@@ -1614,7 +1616,7 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
             by_type = osm_buildings.get("by_type", {})
             if by_type:
                 type_parts = [f"{v} {k}" for k, v in sorted(by_type.items(), key=lambda x: -x[1])[:5]]
-                osm_desc += f" — {', '.join(type_parts)}"
+                osm_desc += f" - {', '.join(type_parts)}"
             ctx_parts.append(osm_desc)
         # OSM roads summary
         osm_roads = site_context.get("osm_roads", {})
@@ -1693,7 +1695,7 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
 
 
 def _compute_zone_area(zone: SiteZone) -> float:
-    """Compute approximate area in m² from zone geometry."""
+    """Compute approximate area in m^2 from zone geometry."""
     try:
         shape = to_shape(zone.geometry)
         bounds = shape.bounds
@@ -1819,7 +1821,7 @@ async def generate_all(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
-    # Build zone list — scoped to boundary if provided
+    # Build zone list - scoped to boundary if provided
     site_context: dict | None = None
 
     if boundary_zone_id:
@@ -1892,11 +1894,16 @@ async def generate_all(
                     await db.flush()
 
                     try:
-                        from app.tasks.processing import generate_3d_model_ai
                         if ref_images:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                            await queue_ai_generation_task(
+                                db,
+                                building,
+                                prompt,
+                                mode="image",
+                                image_url=ref_images[0],
+                            )
                         else:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                            await queue_ai_generation_task(db, building, prompt)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -1973,11 +1980,16 @@ async def generate_all(
                     await db.flush()
 
                     try:
-                        from app.tasks.processing import generate_3d_model_ai
                         if ref_images:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                            await queue_ai_generation_task(
+                                db,
+                                building,
+                                prompt,
+                                mode="image",
+                                image_url=ref_images[0],
+                            )
                         else:
-                            generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                            await queue_ai_generation_task(db, building, prompt)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2042,11 +2054,16 @@ async def generate_all(
             building.generation_prompt = prompt
             await db.flush()
             try:
-                from app.tasks.processing import generate_3d_model_ai
                 if ref_images:
-                    generate_3d_model_ai.delay(str(building.id), prompt, "image", ref_images[0])
+                    await queue_ai_generation_task(
+                        db,
+                        building,
+                        prompt,
+                        mode="image",
+                        image_url=ref_images[0],
+                    )
                 else:
-                    generate_3d_model_ai.delay(str(building.id), prompt, "text")
+                    await queue_ai_generation_task(db, building, prompt)
                 generations_queued += 1
                 queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
             except Exception as e:
@@ -2194,4 +2211,85 @@ async def save_layout(
         "buildings_created": buildings_created,
         "buildings_deleted": buildings_deleted,
     }
+
+
+# ── Site-wide massing generation ─────────────────────────────────────────
+
+
+@router.post(
+    "/projects/{project_id}/generate-site-massing",
+    response_model=SiteMassingResponse,
+    summary="Generate holistic site massing options for all zones",
+)
+async def generate_site_massing(
+    project_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
+    """Generate 3 whole-site massing configurations varying heights,
+    arrangement, density, and park/plaza design across ALL zones."""
+
+    # Verify project access
+    project = await db.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    if project.user_id != current_user.id:
+        share = await db.execute(
+            select(ProjectShare).where(
+                ProjectShare.project_id == project_id,
+                ProjectShare.user_id == current_user.id,
+            )
+        )
+        if not share.scalar_one_or_none():
+            raise HTTPException(status_code=403, detail="Access denied")
+
+    # Load all zones for this project
+    result = await db.execute(
+        select(SiteZone).where(SiteZone.project_id == project_id)
+    )
+    zones_db = result.scalars().all()
+    if not zones_db:
+        raise HTTPException(status_code=400, detail="No zones defined for this project")
+
+    # Build zone dicts with geometry + properties
+    zones_for_planner: list[dict] = []
+    for z in zones_db:
+        shape = to_shape(z.geometry) if z.geometry else None
+        if not shape or not isinstance(shape, Polygon):
+            logger.warning("Zone %s has no valid Polygon geometry (type=%s), skipping", z.id, type(shape).__name__ if shape else "None")
+            continue
+        coords = list(shape.exterior.coords)
+        zones_for_planner.append({
+            "id": str(z.id),
+            "zone_type": z.zone_type or "building",
+            "name": z.name or "",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[c[0], c[1]] for c in coords]],
+            },
+            "properties": z.properties or {},
+        })
+
+    if not zones_for_planner:
+        raise HTTPException(status_code=400, detail="No zones with valid geometry")
+
+    # Check at least one non-infrastructure zone exists for building placement
+    NON_BUILDING_TYPES = {"road", "green_space", "park", "water", "site_boundary"}
+    building_zones = [
+        z for z in zones_for_planner
+        if z["zone_type"] not in NON_BUILDING_TYPES
+    ]
+    if not building_zones:
+        raise HTTPException(
+            status_code=400,
+            detail="At least one building/residential zone is required for massing generation",
+        )
+
+    planner = LayoutPlanner()
+    response = await planner.generate_site_massing_options(
+        zones=zones_for_planner,
+        project_id=str(project_id),
+        count=3,
+    )
+    return response
 

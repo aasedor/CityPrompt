@@ -131,6 +131,8 @@ export interface LayoutBuildingData {
   height_m?: number;
   floors?: number;
   building_type: string;
+  building_typology?: string;
+  block_id?: number;
   setback_front_m: number;
   setback_side_m: number;
   name?: string;
@@ -155,12 +157,60 @@ export interface LayoutPreviewResponse {
   options: LayoutOption[];
   zone_id: string;
 }
+
+// =============================================================================
+// Site Massing Types (whole-site, multi-zone)
+// =============================================================================
+
+export interface SiteMassingZone {
+  zone_id: string;
+  zone_type: string;
+  zone_label: string;
+  buildings: LayoutBuildingData[];
+  roads: LayoutRoadData[];
+  green_spaces: LayoutGreenSpaceData[];
+}
+
+export interface SiteMassingOption {
+  option_index: number;
+  option_label: string;
+  zones: SiteMassingZone[];
+  reasoning: string;
+  total_building_count: number;
+  total_floor_area_m2?: number;
+  density_achieved?: number;
+}
+
+export interface SiteMassingResponse {
+  project_id: string;
+  options: SiteMassingOption[];
+}
+
 export type MasterPlan2DStylePreset = 'auto' | 'rendered_sales_plan' | 'hybrid_annotated_master_plan' | 'illustrative_landscape_plan';
 export type MasterPlan2DQualityLevel = 'draft' | 'presentation' | 'board_ready';
 export type MasterPlan2DStylePassProvider = 'auto' | 'gemini' | 'stability';
-export type MasterPlanRenderStylePreset = 'photorealistic_aerial' | 'photoreal_orthographic_aerial' | 'digital_watercolor_map';
+export type MasterPlan2DRenderMode = 'orthographic_aerial_site_insert' | 'legacy_prompt_first';
+export type MasterPlanRenderStylePreset =
+  | 'photorealistic_aerial'
+  | 'photoreal_orthographic_aerial'
+  | 'digital_watercolor_map'
+  | 'watercolor_wash'
+  | 'ink_line_drawing'
+  | 'marker_render'
+  | 'cinematic_dusk'
+  | 'collage_mixed_media'
+  | 'lush_landscape'
+  | 'white_massing_model'
+  | 'flat_diagrammatic';
 export type MasterPlanLightingAtmospherePreset = 'crisp_summer_day' | 'golden_hour' | 'overcast_soft' | 'winter_snow';
 export type MasterPlanImageProvider = 'vertex' | 'stability' | 'gemini';
+
+export interface MasterPlanMapBounds {
+  west: number;
+  south: number;
+  east: number;
+  north: number;
+}
 
 export interface MasterPlan2DReferenceMetadata {
   reference_id?: string;
@@ -185,6 +235,7 @@ export interface MasterPlan2DReferenceMetadata {
 }
 
 export interface MasterPlan2DGenerateRequest {
+  render_mode?: MasterPlan2DRenderMode;
   prompt?: string;
   render_style_preset?: MasterPlanRenderStylePreset;
   lighting_atmosphere_preset?: MasterPlanLightingAtmospherePreset;
@@ -199,6 +250,7 @@ export interface MasterPlan2DGenerateRequest {
   show_surrounding_context?: boolean;
   export_width?: number;
   map_screenshot_satellite?: string;
+  map_screenshot_bounds?: MasterPlanMapBounds;
   reference_images?: string[];
   reference_metadata?: MasterPlan2DReferenceMetadata[];
   selected_image_urls?: string[];
@@ -885,6 +937,7 @@ export interface BoundaryAnalysisResponse {
     };
   };
 }
+
 
 
 
