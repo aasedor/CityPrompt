@@ -128,12 +128,14 @@ services:
       - API_PROXY_TARGET=http://backend:8000
       - VITE_MAPBOX_TOKEN=${MAPBOX_ACCESS_TOKEN}
       - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY:-}
+      - VITE_FAL_KEY=${VITE_FAL_KEY:-}
       - VITE_SENTRY_DSN=${SENTRY_DSN_FRONTEND:-}
     ports:
       - "5175:5174"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - ./.env:/app/.env:ro
 
 volumes:
   postgres_data:
