@@ -413,75 +413,6 @@ function loadImage(src: string | Blob): Promise<HTMLImageElement> {
 }
 
 /**
- * Composite the AI-rendered image onto the original screenshot,
- * using the site boundary polygon as a mask.
- *
- * Only pixels INSIDE the polygon are replaced with the rendered image.
- * Everything outside the boundary stays exactly as the original.
- *
- * @returns A Blob of the composited PNG image.
- */
-async function compositeSiteBoundary(
-  originalBlob: Blob,
-  renderedImageUrl: string,
-  boundaryPixels: { x: number; y: number }[],
-): Promise<Blob> {
-  if (!boundaryPixels.length) {
-    throw new Error('Site boundary polygon has no points');
-  }
-
-  const [originalImg, renderedImg] = await Promise.all([
-    loadImage(originalBlob),
-    loadImage(renderedImageUrl),
-  ]);
-
-  const w = originalImg.naturalWidth;
-  const h = originalImg.naturalHeight;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d')!;
-
-  // Step 1: Draw the original (untouched) screenshot as the base
-  ctx.drawImage(originalImg, 0, 0, w, h);
-
-  // Step 2: Clip to the site boundary polygon and draw the rendered image
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
-  for (let i = 1; i < boundaryPixels.length; i++) {
-    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
-  }
-  ctx.closePath();
-  ctx.clip();
-
-  // Draw the rendered image only within the clipped region
-  ctx.drawImage(renderedImg, 0, 0, w, h);
-  ctx.restore();
-
-  // Step 3: Optionally draw a subtle boundary outline for visual clarity
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
-  for (let i = 1; i < boundaryPixels.length; i++) {
-    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
-  }
-  ctx.closePath();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.restore();
-
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) resolve(blob);
-      else reject(new Error('Failed to export composited canvas'));
-    }, 'image/png');
-  });
-}
-
-/**
  * Convert site boundary geographic coordinates to pixel coordinates
  * on the Mapbox canvas.
  */
@@ -492,6 +423,112 @@ function siteBoundaryToPixels(
   return coords.map(([lng, lat]) => {
     const point = map.project([lng, lat]);
     return { x: point.x, y: point.y };
+  });
+}
+
+/**
+ * Create a cropped version of the screenshot containing just the site boundary area.
+ * The area outside the boundary polygon is filled with the average color of the
+ * surrounding satellite imagery (to avoid confusing the AI with black edges).
+ *
+ * Returns the cropped blob AND the crop rectangle so we can stitch it back.
+ */
+async function cropToSiteBoundary(
+  originalBlob: Blob,
+  boundaryPixels: { x: number; y: number }[],
+  padding = 40,
+): Promise<{
+  croppedBlob: Blob;
+  cropRect: { x: number; y: number; w: number; h: number };
+}> {
+  const img = await loadImage(originalBlob);
+  const fullW = img.naturalWidth;
+  const fullH = img.naturalHeight;
+
+  // Compute bounding box of the boundary polygon with padding
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const p of boundaryPixels) {
+    if (p.x < minX) minX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y > maxY) maxY = p.y;
+  }
+  // Add padding and clamp
+  const cropX = Math.max(0, Math.floor(minX - padding));
+  const cropY = Math.max(0, Math.floor(minY - padding));
+  const cropW = Math.min(fullW - cropX, Math.ceil(maxX - minX + padding * 2));
+  const cropH = Math.min(fullH - cropY, Math.ceil(maxY - minY + padding * 2));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = cropW;
+  canvas.height = cropH;
+  const ctx = canvas.getContext('2d')!;
+
+  // Draw the cropped region from the original
+  ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((b) => {
+      if (b) resolve(b);
+      else reject(new Error('Failed to crop canvas'));
+    }, 'image/png');
+  });
+
+  return {
+    croppedBlob: blob,
+    cropRect: { x: cropX, y: cropY, w: cropW, h: cropH },
+  };
+}
+
+/**
+ * Stitch a rendered crop back into the original screenshot at the correct position,
+ * using the site boundary polygon as a mask.
+ */
+async function stitchRenderedCrop(
+  originalBlob: Blob,
+  renderedCropUrl: string,
+  cropRect: { x: number; y: number; w: number; h: number },
+  boundaryPixels: { x: number; y: number }[],
+): Promise<Blob> {
+  const [originalImg, renderedImg] = await Promise.all([
+    loadImage(originalBlob),
+    loadImage(renderedCropUrl),
+  ]);
+
+  const w = originalImg.naturalWidth;
+  const h = originalImg.naturalHeight;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+
+  // Step 1: Draw the original screenshot (untouched)
+  ctx.drawImage(originalImg, 0, 0, w, h);
+
+  // Step 2: Clip to the site boundary polygon
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+  for (let i = 1; i < boundaryPixels.length; i++) {
+    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+  }
+  ctx.closePath();
+  ctx.clip();
+
+  // Step 3: Draw the rendered crop at its original position within the clip
+  ctx.drawImage(
+    renderedImg,
+    0, 0, renderedImg.naturalWidth, renderedImg.naturalHeight,
+    cropRect.x, cropRect.y, cropRect.w, cropRect.h,
+  );
+  ctx.restore();
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((b) => {
+      if (b) resolve(b);
+      else reject(new Error('Failed to stitch canvas'));
+    }, 'image/png');
   });
 }
 
@@ -727,34 +764,53 @@ export function useAIRender(): UseAIRenderReturn {
           ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
           : undefined;
 
-        const blob = await captureMapCanvasBlob(map);
-        const file = new File([blob], 'map-capture.png', { type: 'image/png' });
-        const screenshotUrl = await fal.storage.upload(file);
+        const fullBlob = await captureMapCanvasBlob(map);
         const bounds = getMapBounds(map);
+        setProgress(10);
+
+        // ── CROP to site boundary for focused rendering ──
+        let renderBlob: Blob;
+        let cropRect: { x: number; y: number; w: number; h: number } | undefined;
+
+        if (boundaryPixels?.length) {
+          setStatusMessage('Cropping to site boundary...');
+          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+          renderBlob = cropped.croppedBlob;
+          cropRect = cropped.cropRect;
+        } else {
+          renderBlob = fullBlob;
+        }
+
+        const renderFile = new File([renderBlob], 'render-input.png', { type: 'image/png' });
+        const renderUrl = await fal.storage.upload(renderFile);
         setProgress(20);
         setStatusMessage('Rendering...');
 
+        // Boost strength for cropped images
+        const croppedOptions = cropRect
+          ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
+          : options;
+
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingleFace(screenshotUrl, bounds, options, seed);
+        const renderResult = await renderSingleFace(renderUrl, bounds, croppedOptions, seed);
 
         if (!renderResult) throw new Error('fal.ai returned no images');
 
-        // ── Site boundary compositing: only replace inside the boundary ──
+        // ── STITCH rendered crop back into the original screenshot ──
         let finalResult = renderResult;
-        if (boundaryPixels?.length) {
-          setStatusMessage('Compositing within site boundary...');
+        if (cropRect && boundaryPixels?.length) {
+          setStatusMessage('Stitching into original view...');
           setProgress(90);
           try {
-            const compositedBlob = await compositeSiteBoundary(
-              blob, renderResult.imageUrl, boundaryPixels,
+            const stitchedBlob = await stitchRenderedCrop(
+              fullBlob, renderResult.imageUrl, cropRect, boundaryPixels,
             );
-            const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
-            const compositedUrl = await fal.storage.upload(compositedFile);
-            finalResult = { ...renderResult, imageUrl: compositedUrl };
-            console.log('[AIRender] Composited within site boundary');
+            const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
+            const stitchedUrl = await fal.storage.upload(stitchedFile);
+            finalResult = { ...renderResult, imageUrl: stitchedUrl };
+            console.log('[AIRender] Stitched render into original view');
           } catch (compErr) {
-            console.warn('[AIRender] Compositing failed, using raw render:', compErr);
-            // Fall back to raw render if compositing fails
+            console.warn('[AIRender] Stitch failed, using raw render:', compErr);
           }
         }
 
@@ -903,42 +959,67 @@ export function useAIRender(): UseAIRenderReturn {
           ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
           : undefined;
 
-        const blob = await captureMapCanvasBlob(map);
-        const file = new File([blob], 'map-capture.png', { type: 'image/png' });
-        const screenshotUrl = await fal.storage.upload(file);
+        const fullBlob = await captureMapCanvasBlob(map);
         const bounds = getMapBounds(map);
+        setProgress(10);
+
+        // ── CROP to site boundary for focused rendering ──
+        let renderBlob: Blob;
+        let cropRect: { x: number; y: number; w: number; h: number } | undefined;
+
+        if (boundaryPixels?.length) {
+          setStatusMessage('Cropping to site boundary...');
+          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+          renderBlob = cropped.croppedBlob;
+          cropRect = cropped.cropRect;
+          console.log('[AIRender] Cropped to site boundary:', cropRect);
+        } else {
+          renderBlob = fullBlob;
+        }
+
+        // Upload the (possibly cropped) image for rendering
+        const renderFile = new File([renderBlob], 'render-input.png', { type: 'image/png' });
+        const renderUrl = await fal.storage.upload(renderFile);
+
         setProgress(15);
         setStatusMessage('Generating 3 previews...');
+
+        // Boost strength when rendering a crop (the colored blocks are a bigger
+        // proportion of the image, so the AI needs more freedom to transform them)
+        const croppedOptions = cropRect
+          ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
+          : options;
 
         const seeds = Array.from({ length: 3 }, () => Math.floor(Math.random() * 2147483647));
 
         const promises = seeds.map((seed) =>
-          renderSingleFace(screenshotUrl, bounds, options, seed),
+          renderSingleFace(renderUrl, bounds, croppedOptions, seed),
         );
 
         const rawResults = await Promise.all(promises);
         const successful = rawResults.filter((r): r is AIRenderResult => r !== null);
 
-        // ── Site boundary compositing for each preview ──
+        // ── STITCH rendered crops back into the original screenshot ──
         let finalResults = successful;
-        if (boundaryPixels?.length && successful.length > 0) {
-          setStatusMessage('Compositing within site boundary...');
+        if (cropRect && boundaryPixels?.length && successful.length > 0) {
+          setStatusMessage('Stitching into original view...');
           setProgress(85);
           finalResults = await Promise.all(
             successful.map(async (r) => {
               try {
-                const compositedBlob = await compositeSiteBoundary(
-                  blob, r.imageUrl, boundaryPixels,
+                const stitchedBlob = await stitchRenderedCrop(
+                  fullBlob, r.imageUrl, cropRect!, boundaryPixels!,
                 );
-                const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
-                const compositedUrl = await fal.storage.upload(compositedFile);
-                return { ...r, imageUrl: compositedUrl };
-              } catch {
-                return r; // fall back to raw render
+                const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
+                const stitchedUrl = await fal.storage.upload(stitchedFile);
+                return { ...r, imageUrl: stitchedUrl };
+              } catch (e) {
+                console.warn('[AIRender] Stitch failed, using raw:', e);
+                return r;
               }
             }),
           );
-          console.log('[AIRender] Composited', finalResults.length, 'previews within site boundary');
+          console.log('[AIRender] Stitched', finalResults.length, 'previews into original view');
         }
 
         setPreviews(finalResults);
@@ -990,26 +1071,44 @@ export function useAIRender(): UseAIRenderReturn {
             : undefined;
 
           setStatusMessage('Capturing current view...');
-          const blob = await captureMapCanvasBlob(map);
-          const file = new File([blob], 'full-render-capture.png', { type: 'image/png' });
-          const screenshotUrl = await fal.storage.upload(file);
+          const fullBlob = await captureMapCanvasBlob(map);
           const bounds = getMapBounds(map);
+          setProgress(15);
+
+          // Crop to site boundary
+          let renderBlob: Blob;
+          let cropRect: { x: number; y: number; w: number; h: number } | undefined;
+          if (boundaryPixels?.length) {
+            setStatusMessage('Cropping to site boundary...');
+            const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+            renderBlob = cropped.croppedBlob;
+            cropRect = cropped.cropRect;
+          } else {
+            renderBlob = fullBlob;
+          }
+
+          const renderFile = new File([renderBlob], 'full-render-input.png', { type: 'image/png' });
+          const renderUrl = await fal.storage.upload(renderFile);
           setProgress(25);
           setStatusMessage('Rendering full quality...');
 
-          let fullResult = await renderSingleFace(screenshotUrl, bounds, options, seed);
+          const croppedOptions = cropRect
+            ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
+            : options;
+
+          let fullResult = await renderSingleFace(renderUrl, bounds, croppedOptions, seed);
           if (!fullResult) throw new Error('fal.ai returned no images');
 
-          // Composite within site boundary
-          if (boundaryPixels?.length) {
-            setStatusMessage('Compositing within site boundary...');
+          // Stitch back into original
+          if (cropRect && boundaryPixels?.length) {
+            setStatusMessage('Stitching into original view...');
             try {
-              const compositedBlob = await compositeSiteBoundary(
-                blob, fullResult.imageUrl, boundaryPixels,
+              const stitchedBlob = await stitchRenderedCrop(
+                fullBlob, fullResult.imageUrl, cropRect, boundaryPixels,
               );
-              const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
-              const compositedUrl = await fal.storage.upload(compositedFile);
-              fullResult = { ...fullResult, imageUrl: compositedUrl };
+              const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
+              const stitchedUrl = await fal.storage.upload(stitchedFile);
+              fullResult = { ...fullResult, imageUrl: stitchedUrl };
             } catch { /* fall back to raw */ }
           }
 
