@@ -208,19 +208,24 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Nano Banana 2 Edit — Google's Gemini-based image editor that semantically
- *  understands what to change vs. preserve. No mask needed — the model reasons
- *  about which regions to transform based on the prompt. */
-const FAL_MODEL_ID = 'fal-ai/nano-banana-2/edit';
-/** Legacy FLUX model ID — kept for reference / fallback */
-const _LEGACY_FLUX_MODEL_ID = 'fal-ai/flux/dev/image-to-image';
-void _LEGACY_FLUX_MODEL_ID;
+/** Primary model — FLUX dev image-to-image. Reliable, fast, good at
+ *  transforming colored massing blocks into photorealistic buildings while
+ *  preserving surrounding satellite imagery via the strength parameter. */
+const FLUX_MODEL_ID = 'fal-ai/flux/dev/image-to-image';
+
+/** Fallback model — Nano Banana 2 Edit. Gemini-based semantic editor,
+ *  no mask needed but can be slower and less reliable. */
+const NANO_BANANA_MODEL_ID = 'fal-ai/nano-banana-2/edit';
 
 const DEFAULT_STRENGTH = 0.58;
-const DEFAULT_STEPS = 28;    // Used by legacy FLUX model
-const DEFAULT_GUIDANCE = 3.5; // Used by legacy FLUX model
-void DEFAULT_STEPS; void DEFAULT_GUIDANCE; // suppress unused warnings — kept for FLUX fallback
+const DEFAULT_STEPS = 28;
+const DEFAULT_GUIDANCE = 3.5;
 const DEFAULT_STYLE = 'modern-glass';
+
+/** Max retries per model before falling back */
+const MAX_RETRIES = 2;
+/** Timeout for a single render attempt (ms) */
+const RENDER_TIMEOUT = 120_000;
 
 /** The 4 face bearings */
 const FACE_BEARINGS: { label: 'front' | 'right' | 'rear' | 'left'; bearing: number }[] = [
@@ -320,7 +325,7 @@ function buildPrompt(options: AIRenderOptions): string {
 }
 
 /** Build the negative prompt (reserved for future use with models that support it) */
-function _buildNegative(options: AIRenderOptions): string {
+function buildNegative(options: AIRenderOptions): string {
   // Use map-overlay negative prompt if available
   if (options.mapOverlayNegative?.trim()) {
     return options.mapOverlayNegative.trim() + ', changing background, modifying surroundings, altering satellite imagery outside the development area';
@@ -334,7 +339,7 @@ function _buildNegative(options: AIRenderOptions): string {
   negative += ', changing background, modifying surroundings, altering satellite imagery outside the development area';
   return negative;
 }
-void _buildNegative; // suppress unused warning
+void buildNegative; // reserved for future use with models supporting negative prompts
 
 /** Determine which face should be visible based on current map bearing */
 function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left' {
@@ -382,84 +387,171 @@ export function useAIRender(): UseAIRenderReturn {
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
 
-      // Build the edit prompt — Nano Banana 2 Edit semantically understands
-      // what to change vs. preserve, so we describe the edit explicitly.
-      // The prompt describes replacing flat colored overlay shapes with realistic development.
-      const editInstruction = options.mapOverlayPrompt
-        ? `This is a satellite/aerial photo of a real neighbourhood with colored overlay shapes drawn on top marking development zones. Replace the colored overlay shapes with ${prompt}. The colored shapes should become photorealistic buildings, houses, parks, and streets as seen from above in satellite imagery. Keep everything outside the colored shapes exactly the same — preserve all existing roads, houses, trees, and terrain. The result should look like a real Google Earth satellite photo of a completed development.`
-        : `This is a satellite/aerial photo of a real neighbourhood with colored overlay shapes drawn on top marking development zones. Replace every colored overlay shape with photorealistic development matching its color: yellow shapes become residential houses with rooftops and gardens, red/orange shapes become commercial buildings with flat roofs and parking, purple shapes become mixed-use mid-rise buildings, green shapes become landscaped parks with trees and paths, blue shapes become institutional buildings. ${prompt}. Keep everything outside the colored shapes exactly the same — preserve all existing roads, houses, trees, and terrain. The result should look like a real Google Earth satellite photo of a completed development.`;
-
-      // Collect reference images: screenshot + any archetype reference images
-      const imageUrls = [screenshotUrl];
-      if (options.referenceImageUrls?.length) {
-        // Add archetype reference images (Nano Banana 2 supports up to 14)
-        for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
-          imageUrls.push(refUrl);
+      // ── Try FLUX dev img2img first (reliable, fast) ──
+      console.log('[AIRender] Attempting FLUX dev img2img...');
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+          const fluxResult = await callFluxImg2Img(screenshotUrl, prompt, options, seed);
+          if (fluxResult) {
+            return { imageUrl: fluxResult.url, bounds, seed: fluxResult.seed ?? seed, prompt };
+          }
+        } catch (fluxErr) {
+          console.warn(`[AIRender] FLUX attempt ${attempt + 1} failed:`, fluxErr);
+          if (attempt < MAX_RETRIES - 1) {
+            await new Promise(r => setTimeout(r, 1000));
+          }
         }
-      } else if (options.referenceImageUrl) {
-        imageUrls.push(options.referenceImageUrl);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const body: Record<string, any> = {
-        prompt: editInstruction,
-        image_urls: imageUrls,
-        resolution: '2K',
-        aspect_ratio: 'auto',
-        seed,
-        output_format: 'png',
-        safety_tolerance: '6',
-        num_images: 1,
-        thinking_level: 'high',
-      };
-
-      console.log('[AIRender] Nano Banana 2 Edit request:', {
-        model: FAL_MODEL_ID,
-        prompt: editInstruction.slice(0, 200) + '...',
-        imageCount: imageUrls.length,
-        imageUrls: imageUrls.map(u => u.slice(0, 80) + '...'),
-        seed,
-      });
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let data: any;
-      try {
-        data = await fal.subscribe(FAL_MODEL_ID, {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          input: body as any,
-          logs: true,
-          onQueueUpdate: (update) => {
-            console.log('[AIRender] Queue update:', update.status);
-          },
-        });
-      } catch (falErr) {
-        console.error('[AIRender] fal.ai API error:', falErr);
-        throw falErr;
+      // ── Fallback: Nano Banana 2 Edit ──
+      console.log('[AIRender] FLUX failed, falling back to Nano Banana 2 Edit...');
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+          const nbResult = await callNanoBanana(screenshotUrl, prompt, options, seed);
+          if (nbResult) {
+            return { imageUrl: nbResult.url, bounds, seed: nbResult.seed ?? seed, prompt };
+          }
+        } catch (nbErr) {
+          console.warn(`[AIRender] Nano Banana attempt ${attempt + 1} failed:`, nbErr);
+          if (attempt < MAX_RETRIES - 1) {
+            await new Promise(r => setTimeout(r, 1000));
+          }
+        }
       }
 
-      console.log('[AIRender] Raw response keys:', Object.keys(data ?? {}));
-      console.log('[AIRender] Raw response data keys:', Object.keys(data?.data ?? {}));
-
-      const images = data?.data?.images ?? data?.images;
-      if (!images || !Array.isArray(images) || images.length === 0) {
-        console.error('[AIRender] No images in response. Full response:', JSON.stringify(data).slice(0, 500));
-        return null;
-      }
-      const imageUrl = images[0]?.url;
-      if (!imageUrl) {
-        console.error('[AIRender] Image object has no url:', images[0]);
-        return null;
-      }
-
-      return {
-        imageUrl,
-        bounds,
-        seed: data?.data?.seed ?? data?.seed ?? seed,
-        prompt,
-      };
+      console.error('[AIRender] All models failed after retries');
+      return null;
     },
     [],
   );
+
+  // ── FLUX dev image-to-image call ─────────────────────────────────
+  async function callFluxImg2Img(
+    imageUrl: string,
+    prompt: string,
+    options: AIRenderOptions,
+    seed: number,
+  ): Promise<{ url: string; seed?: number } | null> {
+    const strength = options.controlStrength ?? DEFAULT_STRENGTH;
+    const steps = options.steps ?? DEFAULT_STEPS;
+    const guidance = options.guidanceScale ?? DEFAULT_GUIDANCE;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body: Record<string, any> = {
+      image_url: imageUrl,
+      prompt: `${prompt}. Replace the colored overlay blocks with photorealistic buildings while preserving all surrounding satellite imagery, roads, and terrain exactly as they appear.`,
+      strength,
+      num_inference_steps: steps,
+      guidance_scale: guidance,
+      num_images: 1,
+      seed,
+      output_format: 'png',
+    };
+
+    // Add image_size if specified
+    if (options.imageSize) {
+      body.image_size = options.imageSize;
+    }
+
+    console.log('[AIRender] FLUX request:', {
+      model: FLUX_MODEL_ID,
+      prompt: body.prompt.slice(0, 150) + '...',
+      strength,
+      steps,
+      guidance,
+      seed,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await Promise.race([
+      fal.subscribe(FLUX_MODEL_ID, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: body as any,
+        logs: true,
+        onQueueUpdate: (update) => {
+          console.log('[AIRender] FLUX queue:', update.status);
+        },
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX timeout')), RENDER_TIMEOUT)),
+    ]);
+
+    const images = data?.data?.images ?? data?.images;
+    if (!images?.length) {
+      console.warn('[AIRender] FLUX returned no images:', JSON.stringify(data).slice(0, 300));
+      return null;
+    }
+    const url = images[0]?.url;
+    if (!url) return null;
+
+    console.log('[AIRender] FLUX success:', url.slice(0, 80));
+    return { url, seed: data?.data?.seed ?? data?.seed };
+  }
+
+  // ── Nano Banana 2 Edit call ──────────────────────────────────────
+  async function callNanoBanana(
+    screenshotUrl: string,
+    prompt: string,
+    options: AIRenderOptions,
+    seed: number,
+  ): Promise<{ url: string; seed?: number } | null> {
+    // Build edit instruction for Nano Banana's semantic understanding
+    const editInstruction = options.mapOverlayPrompt
+      ? `This is a satellite/aerial photo with colored overlay shapes marking development zones. Replace the colored overlay shapes with ${prompt}. The colored shapes should become photorealistic buildings, houses, parks, and streets as seen from above in satellite imagery. Keep everything outside the colored shapes exactly the same.`
+      : `This is a satellite/aerial photo with colored overlay shapes. Replace every colored overlay shape with photorealistic development: yellow shapes become residential houses, red/orange become commercial buildings, purple become mixed-use, green become parks, blue become institutional. ${prompt}. Keep everything outside the shapes the same.`;
+
+    // Collect reference images
+    const imageUrls = [screenshotUrl];
+    if (options.referenceImageUrls?.length) {
+      for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
+        imageUrls.push(refUrl);
+      }
+    } else if (options.referenceImageUrl) {
+      imageUrls.push(options.referenceImageUrl);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body: Record<string, any> = {
+      prompt: editInstruction,
+      image_urls: imageUrls,
+      resolution: '1K',
+      aspect_ratio: 'auto',
+      seed,
+      output_format: 'png',
+      safety_tolerance: '6',
+      num_images: 1,
+    };
+
+    console.log('[AIRender] Nano Banana request:', {
+      model: NANO_BANANA_MODEL_ID,
+      prompt: editInstruction.slice(0, 150) + '...',
+      imageCount: imageUrls.length,
+      seed,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await Promise.race([
+      fal.subscribe(NANO_BANANA_MODEL_ID, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: body as any,
+        logs: true,
+        onQueueUpdate: (update) => {
+          console.log('[AIRender] Nano Banana queue:', update.status);
+        },
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Nano Banana timeout')), RENDER_TIMEOUT)),
+    ]);
+
+    const images = data?.data?.images ?? data?.images;
+    if (!images?.length) {
+      console.warn('[AIRender] Nano Banana returned no images:', JSON.stringify(data).slice(0, 300));
+      return null;
+    }
+    const url = images[0]?.url;
+    if (!url) return null;
+
+    console.log('[AIRender] Nano Banana success:', url.slice(0, 80));
+    return { url, seed: data?.data?.seed ?? data?.seed };
+  }
 
   // ── Single render (current camera position) ────────────────────────
 
