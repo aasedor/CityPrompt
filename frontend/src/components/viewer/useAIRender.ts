@@ -118,89 +118,105 @@ export interface UseAIRenderReturn {
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
+  // ── Photorealistic Renders (industry standard for approvals & marketing) ──
   {
-    id: 'modern-glass',
-    label: 'Modern Glass',
+    id: 'photorealistic',
+    label: 'Photorealistic',
     prompt:
-      'aerial oblique photograph of a modern glass and steel mixed-use development, floor-to-ceiling glazing, reflective facades, rooftop terraces with greenery, high-end urban architecture, sunny day, sharp shadows, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
+      'ultra-photorealistic aerial photograph of a completed urban development, accurate building materials and textures, precise shadows from natural sunlight, mature landscaping, realistic street furniture and parked vehicles, clear blue sky, architectural photography quality, commercial real-estate marketing standard, 8k',
+    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, low quality, blurry, text, watermark',
   },
   {
-    id: 'warm-brick',
-    label: 'Warm Brick',
+    id: 'drone-photography',
+    label: 'Drone Photo',
     prompt:
-      'aerial oblique photograph of a contemporary brick and timber residential development, warm red brick facades, timber balconies, courtyard gardens, Scandinavian architecture style, golden hour light, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'campus-green',
-    label: 'Green Campus',
-    prompt:
-      'aerial oblique photograph of a sustainable green campus development, extensive green roofs, solar panels, mature trees, bioswale landscaping, LEED-certified architecture, bright daylight, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'urban-mixed',
-    label: 'Urban Mixed-Use',
-    prompt:
-      'aerial oblique photograph of a vibrant urban mixed-use district, retail podiums with residential towers above, active street frontage, outdoor dining areas, street trees, pedestrian plazas, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'waterfront',
-    label: 'Waterfront',
-    prompt:
-      'aerial oblique photograph of a luxury waterfront development, marina promenade, curved glass facades reflecting water, boardwalk with restaurants, sailing boats, blue sky, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'heritage-modern',
-    label: 'Heritage Modern',
-    prompt:
-      'aerial oblique photograph of a heritage-inspired modern development, stone and glass facades, arched windows, pitched roofs with contemporary dormers, cobblestone plaza, warm afternoon light, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'hyper-realistic',
-    label: 'Hyper Realistic',
-    prompt:
-      'ultra-photorealistic DSLR photograph of a modern urban development, shallow depth of field, 85mm lens, tilt-shift bokeh, natural sunlight, crisp detail, architectural photography, commercial real-estate quality, 8k',
-    negative: 'cartoon, illustration, sketch, painting, low quality, blurry, text, watermark, artistic, stylized',
-  },
-  {
-    id: 'watercolour',
-    label: 'Watercolour',
-    prompt:
-      'delicate watercolour illustration of an urban development, soft colour washes, visible paper texture, hand-painted architectural rendering, loose brushwork, muted earth tones, professional presentation board style',
-    negative: 'photorealistic, photograph, 3D render, sharp edges, digital, neon, low quality, blurry',
-  },
-  {
-    id: 'architectural-sketch',
-    label: 'Arch Sketch',
-    prompt:
-      'architectural pencil sketch of an urban development, hand-drawn line work, cross-hatching shading, fine detail, vellum paper, professional design sketch, entourage figures, ink and graphite, presentation quality',
-    negative: 'photorealistic, photograph, colour, painting, 3D render, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'cinematic-dusk',
-    label: 'Cinematic Dusk',
-    prompt:
-      'cinematic golden hour photograph of an urban development, dramatic warm lighting, long amber shadows, glowing interior lights, reflective wet pavement, volumetric atmosphere, film grain, anamorphic lens flare, 8k',
-    negative: 'cartoon, illustration, sketch, midday, flat lighting, low quality, blurry, text, watermark',
+      'professional UAV drone photograph of a completed urban development, DJI Mavic camera quality, slight wide-angle lens distortion, natural daylight, crisp detail with atmospheric haze in distance, real estate aerial survey style, construction-complete documentation, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, painting, fish-eye, low quality, blurry, text, watermark',
   },
   {
     id: 'photomontage',
     label: 'Photomontage',
     prompt:
-      'professional architectural photomontage of a development inserted into real urban context, composite photography, matched lighting and perspective, surrounding neighbourhood visible, planning application quality, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, painting, floating, disconnected, low quality, blurry, text, watermark',
+      'professional architectural photomontage compositing proposed buildings into existing satellite context, matched lighting direction and color temperature, seamless blending with surrounding neighbourhood, accurate material rendering, planning application submission quality, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, painting, floating buildings, mismatched lighting, low quality, blurry, text, watermark',
+  },
+
+  // ── Lighting & Atmosphere Variations ──
+  {
+    id: 'golden-hour',
+    label: 'Golden Hour',
+    prompt:
+      'cinematic golden hour aerial photograph of a completed development, warm amber sunlight casting long dramatic shadows, glowing building facades, interior lights beginning to show, reflective glass catching sunset colors, volumetric atmosphere, architectural marketing photography, 8k',
+    negative: 'cartoon, illustration, sketch, midday lighting, flat lighting, overcast, low quality, blurry, text, watermark',
   },
   {
-    id: 'planning-diagram',
-    label: 'Planning Diagram',
+    id: 'night-scene',
+    label: 'Night Scene',
     prompt:
-      'clean urban planning diagram of a development site, flat colours, labelled zones, axonometric projection, massing study, colour-coded land use, minimal shadow, professional planning document, vector-style clarity',
-    negative: 'photorealistic, photograph, painterly, sketch, low quality, blurry, noisy, text overlay, watermark',
+      'aerial night photograph of a completed urban development, buildings illuminated from within showing warm interior lighting, street lights casting pools of light, subtle blue twilight sky, lit pathways and landscaping, ambient city glow, architectural night photography, 8k',
+    negative: 'cartoon, illustration, sketch, daytime, bright sunlight, low quality, blurry, text, watermark',
+  },
+  {
+    id: 'overcast-soft',
+    label: 'Overcast',
+    prompt:
+      'aerial photograph of a completed development under soft overcast sky, even diffused lighting with no harsh shadows, accurate material colors without sun glare, neutral planning-document quality, clean and clear visibility of all building details, professional survey photography, 8k',
+    negative: 'cartoon, illustration, sketch, dramatic lighting, lens flare, golden hour, low quality, blurry, text, watermark',
+  },
+
+  // ── Seasonal Variations ──
+  {
+    id: 'summer',
+    label: 'Summer',
+    prompt:
+      'aerial photograph of a completed development in midsummer, lush green mature tree canopy, vibrant landscaped gardens, people enjoying outdoor spaces, bright clear sky, sharp shadows, fully occupied and active neighbourhood, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, winter, snow, bare trees, autumn, low quality, blurry, text, watermark',
+  },
+  {
+    id: 'autumn',
+    label: 'Autumn',
+    prompt:
+      'aerial photograph of a completed development in autumn, trees with rich red orange and gold foliage, fallen leaves on pathways, warm low-angle afternoon sunlight, cozy atmosphere, seasonal landscaping, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, summer, snow, bare trees, low quality, blurry, text, watermark',
+  },
+
+  // ── Technical / Planning Renders ──
+  {
+    id: 'massing-study',
+    label: 'Massing Study',
+    prompt:
+      'clean architectural massing study of an urban development, white clay model volumes with soft ambient occlusion shadows, no material textures, pure geometric forms showing building mass and proportions, neutral grey ground plane, professional design review presentation style',
+    negative: 'photorealistic, materials, textures, colors, vegetation, people, cars, low quality, blurry, text, watermark',
+  },
+  {
+    id: 'site-plan',
+    label: 'Site Plan',
+    prompt:
+      'professional architectural site plan rendering viewed from directly above, clean orthographic projection, colour-coded building footprints, detailed landscape plan with tree symbols, paving patterns, parking layouts, setback lines, clear figure-ground relationship, planning submission document quality',
+    negative: 'perspective, 3D, photorealistic, oblique angle, low quality, blurry, noisy, text, watermark',
+  },
+
+  // ── Artistic / Competition Styles ──
+  {
+    id: 'watercolour',
+    label: 'Watercolour',
+    prompt:
+      'delicate watercolour architectural rendering of an urban development, soft colour washes with visible paper texture, hand-painted quality with loose brushwork, muted earth tones and gentle greens, professional architecture competition presentation board style',
+    negative: 'photorealistic, photograph, 3D render, sharp edges, digital, neon, low quality, blurry',
+  },
+  {
+    id: 'pencil-sketch',
+    label: 'Pencil Sketch',
+    prompt:
+      'professional architectural pencil sketch of an urban development, confident hand-drawn line work with cross-hatching for shadow, fine detail on building facades, entourage figures for scale, ink and graphite on vellum paper, early design concept presentation quality',
+    negative: 'photorealistic, photograph, colour, painting, 3D render, low quality, blurry, text, watermark',
+  },
+  {
+    id: 'collage',
+    label: 'Collage',
+    prompt:
+      'architectural collage rendering of an urban development, mixed media composition combining cut-out photographs with drawn elements, textured overlays, visible layering technique, contemporary architecture school presentation style, conceptual and atmospheric',
+    negative: 'photorealistic, clean render, 3D software, smooth gradients, low quality, blurry',
   },
 ];
 
@@ -220,7 +236,7 @@ const NANO_BANANA_MODEL_ID = 'fal-ai/nano-banana-2/edit';
 const DEFAULT_STRENGTH = 0.58;
 const DEFAULT_STEPS = 28;
 const DEFAULT_GUIDANCE = 3.5;
-const DEFAULT_STYLE = 'modern-glass';
+const DEFAULT_STYLE = 'photorealistic';
 
 /** Max retries per model before falling back */
 const MAX_RETRIES = 2;

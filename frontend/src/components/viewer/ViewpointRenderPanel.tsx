@@ -93,7 +93,7 @@ export default function ViewpointRenderPanel({
 
     try {
       const res = await render(map, {
-        style: renderStyleId || 'modern-glass',
+        style: renderStyleId || 'photorealistic',
         customPrompt: fullPrompt,
         controlStrength: 0.8,
         archetypePrompt: archetype.archetypePrompt || undefined,
