@@ -19,6 +19,8 @@ export interface AIRenderStyle {
   prompt: string;
   /** Optional negative prompt fragments */
   negative?: string;
+  /** img2img strength override for this style (0–1). Higher = more transformation. */
+  strength?: number;
 }
 
 export interface AIRenderOptions {
@@ -57,6 +59,12 @@ export interface AIRenderOptions {
   mapOverlayPrompt?: string;
   /** Negative prompt from enriched archetype renderPrompt */
   mapOverlayNegative?: string;
+  /**
+   * Site boundary polygon in geographic coordinates [[lng, lat], ...].
+   * When provided, the AI render result is composited onto the original screenshot,
+   * ONLY replacing pixels inside this polygon. Everything outside stays untouched.
+   */
+  siteBoundaryCoords?: number[][];
 }
 
 export interface AIRenderResult {
@@ -118,105 +126,118 @@ export interface UseAIRenderReturn {
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
-  // ── Photorealistic Renders (industry standard for approvals & marketing) ──
+  // ── Photorealistic Renders ──────────────────────────────────────────────
   {
     id: 'photorealistic',
     label: 'Photorealistic',
+    strength: 0.55,
     prompt:
-      'ultra-photorealistic aerial photograph of a completed urban development, accurate building materials and textures, precise shadows from natural sunlight, mature landscaping, realistic street furniture and parked vehicles, clear blue sky, architectural photography quality, commercial real-estate marketing standard, 8k',
-    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, low quality, blurry, text, watermark',
+      'ultra-photorealistic DSLR aerial photograph of a completed urban development, sharp focus, accurate brick stone glass and concrete materials with visible grain and texture, precise cast shadows from midday sun at 60 degrees, mature trees with individual leaf clusters, parked cars and street furniture, clear blue sky with small cumulus clouds, neutral 5500K white balance, high dynamic range, architectural photography, 8k',
+    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark',
   },
   {
     id: 'drone-photography',
     label: 'Drone Photo',
+    strength: 0.58,
     prompt:
-      'professional UAV drone photograph of a completed urban development, DJI Mavic camera quality, slight wide-angle lens distortion, natural daylight, crisp detail with atmospheric haze in distance, real estate aerial survey style, construction-complete documentation, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, painting, fish-eye, low quality, blurry, text, watermark',
+      'professional DJI Mavic 3 drone photograph of completed urban development from 80 meters altitude, slight wide-angle barrel distortion at edges, deep depth of field with everything sharp, subtle atmospheric haze on distant objects, desaturated color from atmospheric scattering, comprehensive site context showing neighboring streets and buildings, real-estate aerial survey documentation style, construction-complete, 8k',
+    negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark',
   },
   {
     id: 'photomontage',
     label: 'Photomontage',
+    strength: 0.52,
     prompt:
-      'professional architectural photomontage compositing proposed buildings into existing satellite context, matched lighting direction and color temperature, seamless blending with surrounding neighbourhood, accurate material rendering, planning application submission quality, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, painting, floating buildings, mismatched lighting, low quality, blurry, text, watermark',
+      'professional architectural photomontage, proposed buildings seamlessly composited into real satellite photograph, matched sun direction and color temperature with surrounding context, building slightly sharper and cleaner than photographic surroundings, realistic ground plane contact with existing pavement, planning application submission quality, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, painting, floating buildings, mismatched shadows, low quality, blurry, text, watermark',
   },
 
-  // ── Lighting & Atmosphere Variations ──
+  // ── Lighting & Atmosphere ──────────────────────────────────────────────
   {
     id: 'golden-hour',
     label: 'Golden Hour',
+    strength: 0.62,
     prompt:
-      'cinematic golden hour aerial photograph of a completed development, warm amber sunlight casting long dramatic shadows, glowing building facades, interior lights beginning to show, reflective glass catching sunset colors, volumetric atmosphere, architectural marketing photography, 8k',
-    negative: 'cartoon, illustration, sketch, midday lighting, flat lighting, overcast, low quality, blurry, text, watermark',
+      'cinematic golden hour aerial photograph, warm 3000K amber-orange sunlight from extremely low angle 10 degrees above horizon, very long dramatic shadows stretching across entire ground plane, building facades glowing warm orange, windows reflecting sunset colors, interior warm yellow lights visible through glass, sky gradient from deep orange at horizon through pink to dark blue at zenith, rim lighting on tree edges, wet-look reflective pavement, 8k',
+    negative: 'cartoon, illustration, sketch, midday sun, overhead lighting, flat lighting, overcast, cool blue tones, low quality, blurry, text, watermark',
   },
   {
     id: 'night-scene',
     label: 'Night Scene',
+    strength: 0.68,
     prompt:
-      'aerial night photograph of a completed urban development, buildings illuminated from within showing warm interior lighting, street lights casting pools of light, subtle blue twilight sky, lit pathways and landscaping, ambient city glow, architectural night photography, 8k',
-    negative: 'cartoon, illustration, sketch, daytime, bright sunlight, low quality, blurry, text, watermark',
+      'aerial night photograph with dark navy-black sky, buildings defined entirely by warm interior lighting glowing through window rectangles, exterior uplighting on key facades, street lamps casting isolated pools of warm light on pavement, dramatic high-contrast between bright windows and dark silhouetted walls, wet reflective pavement with light reflections, subtle blue-hour ambient fill, cool moonlight rim on rooftops, architectural night photography, 8k',
+    negative: 'cartoon, illustration, sketch, daytime, bright sunlight, blue sky, green vegetation, flat lighting, low quality, blurry, text, watermark',
   },
   {
     id: 'overcast-soft',
     label: 'Overcast',
+    strength: 0.52,
     prompt:
-      'aerial photograph of a completed development under soft overcast sky, even diffused lighting with no harsh shadows, accurate material colors without sun glare, neutral planning-document quality, clean and clear visibility of all building details, professional survey photography, 8k',
-    negative: 'cartoon, illustration, sketch, dramatic lighting, lens flare, golden hour, low quality, blurry, text, watermark',
+      'aerial photograph under uniform white-grey overcast sky, completely diffused flat lighting with zero harsh shadows, all surfaces evenly illuminated, cool 6500K color temperature with subtle blue-grey cast, saturation reduced 25 percent, accurate material colors without glare or specular highlights, calm muted atmosphere, clean professional survey documentation quality, 8k',
+    negative: 'cartoon, illustration, sketch, dramatic lighting, lens flare, golden hour, warm tones, strong shadows, colorful sky, low quality, blurry, text, watermark',
   },
 
-  // ── Seasonal Variations ──
+  // ── Seasonal ──────────────────────────────────────────────────────────
   {
     id: 'summer',
     label: 'Summer',
+    strength: 0.58,
     prompt:
-      'aerial photograph of a completed development in midsummer, lush green mature tree canopy, vibrant landscaped gardens, people enjoying outdoor spaces, bright clear sky, sharp shadows, fully occupied and active neighbourhood, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, winter, snow, bare trees, autumn, low quality, blurry, text, watermark',
+      'aerial photograph of completed development in peak midsummer, dense fully-leafed deciduous tree canopy in deep saturated greens, lush maintained lawns, vivid blue sky with white cumulus clouds, strong high-angle sun with short crisp shadows, vibrant flower beds, people in summer clothing using outdoor terraces and plazas, active occupied neighbourhood full of life, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, winter, snow, bare trees, autumn colors, orange leaves, dead grass, low quality, blurry, text, watermark',
   },
   {
     id: 'autumn',
     label: 'Autumn',
+    strength: 0.65,
     prompt:
-      'aerial photograph of a completed development in autumn, trees with rich red orange and gold foliage, fallen leaves on pathways, warm low-angle afternoon sunlight, cozy atmosphere, seasonal landscaping, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, summer, snow, bare trees, low quality, blurry, text, watermark',
+      'aerial photograph of completed development in peak autumn, deciduous trees in rich mix of burnt orange deep red gold amber and russet foliage, scattered fallen leaves covering pathways and lawns, warm low-angle golden sunlight with long afternoon shadows, slight atmospheric haze, warm earth-tone color palette dominating, some trees partially bare showing branch structure, cozy inviting atmosphere, photorealistic, 8k',
+    negative: 'cartoon, illustration, sketch, summer green, snow, bare trees only, spring blossoms, low quality, blurry, text, watermark',
   },
 
-  // ── Technical / Planning Renders ──
+  // ── Technical / Planning ──────────────────────────────────────────────
   {
     id: 'massing-study',
     label: 'Massing Study',
+    strength: 0.48,
     prompt:
-      'clean architectural massing study of an urban development, white clay model volumes with soft ambient occlusion shadows, no material textures, pure geometric forms showing building mass and proportions, neutral grey ground plane, professional design review presentation style',
-    negative: 'photorealistic, materials, textures, colors, vegetation, people, cars, low quality, blurry, text, watermark',
+      'architectural white massing model, every surface is uniform matte white plaster with zero material texture, no windows no doors no detail, pure clean geometric volumes showing only mass and proportion, soft studio lighting from upper left, gentle ambient occlusion shadows where forms meet, flat light grey ground plane, no trees no cars no people no color, white foam-board scale model under diffused light, design review presentation',
+    negative: 'photorealistic, color, materials, brick, glass, wood, vegetation, trees, people, cars, detailed, textured, realistic, low quality, blurry',
   },
   {
     id: 'site-plan',
     label: 'Site Plan',
+    strength: 0.62,
     prompt:
-      'professional architectural site plan rendering viewed from directly above, clean orthographic projection, colour-coded building footprints, detailed landscape plan with tree symbols, paving patterns, parking layouts, setback lines, clear figure-ground relationship, planning submission document quality',
-    negative: 'perspective, 3D, photorealistic, oblique angle, low quality, blurry, noisy, text, watermark',
+      'professional architectural site plan rendered from directly above in perfect nadir top-down orthographic projection, buildings shown as flat roof footprints with subtle shadow indicating height, trees as circular dark-green canopy blobs viewed from above, roads as clean grey strips, landscaping areas in matte green, water features in blue, paving patterns visible, clear figure-ground contrast, planning document quality',
+    negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, low quality, blurry, noisy, text, watermark',
   },
 
-  // ── Artistic / Competition Styles ──
+  // ── Artistic / Competition ────────────────────────────────────────────
   {
     id: 'watercolour',
     label: 'Watercolour',
+    strength: 0.85,
     prompt:
-      'delicate watercolour architectural rendering of an urban development, soft colour washes with visible paper texture, hand-painted quality with loose brushwork, muted earth tones and gentle greens, professional architecture competition presentation board style',
-    negative: 'photorealistic, photograph, 3D render, sharp edges, digital, neon, low quality, blurry',
+      'watercolour painting on cold-pressed textured paper, transparent pigment washes with white paper showing through as highlights, soft bleeding edges where wet paint meets wet paint, visible paper grain texture under all paint, pigment granulation and sedimentation, selective detail at building focal point dissolving into loose washes at periphery, muted earth tones with sage green and ochre, underlying pencil guidelines visible, wet-on-wet bloom effects, hand-painted architectural competition entry style',
+    negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, low quality, blurry',
   },
   {
     id: 'pencil-sketch',
     label: 'Pencil Sketch',
+    strength: 0.88,
     prompt:
-      'professional architectural pencil sketch of an urban development, confident hand-drawn line work with cross-hatching for shadow, fine detail on building facades, entourage figures for scale, ink and graphite on vellum paper, early design concept presentation quality',
-    negative: 'photorealistic, photograph, colour, painting, 3D render, low quality, blurry, text, watermark',
+      'monochrome graphite pencil architectural sketch on white paper, zero color purely grey tones, confident hand-drawn lines with varying pressure and weight, heavy bold lines for building profile and ground plane, lighter lines for detail, parallel hatching and cross-hatching for shadow areas, white paper left blank for sky and highlights, slightly uneven hand-drawn imperfection, corners slightly overshooting, vegetation suggested as loose scribbled clusters, freehand architectural concept drawing quality',
+    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, perfect lines, computer generated, low quality, blurry',
   },
   {
     id: 'collage',
     label: 'Collage',
+    strength: 0.80,
     prompt:
-      'architectural collage rendering of an urban development, mixed media composition combining cut-out photographs with drawn elements, textured overlays, visible layering technique, contemporary architecture school presentation style, conceptual and atmospheric',
-    negative: 'photorealistic, clean render, 3D software, smooth gradients, low quality, blurry',
+      'architectural digital collage visualization, visibly assembled from disparate photographic fragments with different image qualities and white balances, flat photographic textures applied to building surfaces without perspectival correction, cut-out people figures at slightly wrong scales, intentional visible seams between image sources, mix of hand-drawn linework and photographic elements, eclectic layered composition, contemporary architecture school post-digital aesthetic',
+    negative: 'photorealistic, seamless, clean render, 3D software, smooth uniform, consistent lighting, low quality, blurry',
   },
 ];
 
@@ -368,6 +389,113 @@ function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left
 }
 
 // ---------------------------------------------------------------------------
+// Site boundary compositing — only replace pixels inside the boundary
+// ---------------------------------------------------------------------------
+
+/**
+ * Load an image from a URL or Blob into an HTMLImageElement.
+ * Works with fal.media URLs and blob: URLs.
+ */
+function loadImage(src: string | Blob): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = (e) => reject(new Error(`Failed to load image: ${e}`));
+    if (src instanceof Blob) {
+      const url = URL.createObjectURL(src);
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.src = url;
+    } else {
+      img.src = src;
+    }
+  });
+}
+
+/**
+ * Composite the AI-rendered image onto the original screenshot,
+ * using the site boundary polygon as a mask.
+ *
+ * Only pixels INSIDE the polygon are replaced with the rendered image.
+ * Everything outside the boundary stays exactly as the original.
+ *
+ * @returns A Blob of the composited PNG image.
+ */
+async function compositeSiteBoundary(
+  originalBlob: Blob,
+  renderedImageUrl: string,
+  boundaryPixels: { x: number; y: number }[],
+): Promise<Blob> {
+  if (!boundaryPixels.length) {
+    throw new Error('Site boundary polygon has no points');
+  }
+
+  const [originalImg, renderedImg] = await Promise.all([
+    loadImage(originalBlob),
+    loadImage(renderedImageUrl),
+  ]);
+
+  const w = originalImg.naturalWidth;
+  const h = originalImg.naturalHeight;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+
+  // Step 1: Draw the original (untouched) screenshot as the base
+  ctx.drawImage(originalImg, 0, 0, w, h);
+
+  // Step 2: Clip to the site boundary polygon and draw the rendered image
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+  for (let i = 1; i < boundaryPixels.length; i++) {
+    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+  }
+  ctx.closePath();
+  ctx.clip();
+
+  // Draw the rendered image only within the clipped region
+  ctx.drawImage(renderedImg, 0, 0, w, h);
+  ctx.restore();
+
+  // Step 3: Optionally draw a subtle boundary outline for visual clarity
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+  for (let i = 1; i < boundaryPixels.length; i++) {
+    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+  }
+  ctx.closePath();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Failed to export composited canvas'));
+    }, 'image/png');
+  });
+}
+
+/**
+ * Convert site boundary geographic coordinates to pixel coordinates
+ * on the Mapbox canvas.
+ */
+function siteBoundaryToPixels(
+  map: MapboxMap,
+  coords: number[][],
+): { x: number; y: number }[] {
+  return coords.map(([lng, lat]) => {
+    const point = map.project([lng, lat]);
+    return { x: point.x, y: point.y };
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Hook
 // ---------------------------------------------------------------------------
 
@@ -448,14 +576,17 @@ export function useAIRender(): UseAIRenderReturn {
     options: AIRenderOptions,
     seed: number,
   ): Promise<{ url: string; seed?: number } | null> {
-    const strength = options.controlStrength ?? DEFAULT_STRENGTH;
+    // Resolve strength: explicit option > style preset > default
+    const styleId = options.renderStyleId || options.style || DEFAULT_STYLE;
+    const stylePreset = AI_RENDER_STYLES.find((s) => s.id === styleId);
+    const strength = options.controlStrength ?? stylePreset?.strength ?? DEFAULT_STRENGTH;
     const steps = options.steps ?? DEFAULT_STEPS;
     const guidance = options.guidanceScale ?? DEFAULT_GUIDANCE;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const body: Record<string, any> = {
       image_url: imageUrl,
-      prompt: `${prompt}. Replace the colored overlay blocks with photorealistic buildings while preserving all surrounding satellite imagery, roads, and terrain exactly as they appear.`,
+      prompt: `${prompt}. The colored shapes in this image represent proposed buildings and development zones. Transform them into the described style while keeping the surrounding context intact.`,
       strength,
       num_inference_steps: steps,
       guidance_scale: guidance,
@@ -590,6 +721,12 @@ export function useAIRender(): UseAIRenderReturn {
 
       try {
         fal.config({ credentials: falKey });
+
+        // Compute site boundary pixel coords BEFORE capture (while map state is stable)
+        const boundaryPixels = options.siteBoundaryCoords?.length
+          ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
+          : undefined;
+
         const blob = await captureMapCanvasBlob(map);
         const file = new File([blob], 'map-capture.png', { type: 'image/png' });
         const screenshotUrl = await fal.storage.upload(file);
@@ -598,15 +735,34 @@ export function useAIRender(): UseAIRenderReturn {
         setStatusMessage('Rendering...');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const result = await renderSingleFace(screenshotUrl, bounds, options, seed);
+        const renderResult = await renderSingleFace(screenshotUrl, bounds, options, seed);
 
-        if (!result) throw new Error('fal.ai returned no images');
+        if (!renderResult) throw new Error('fal.ai returned no images');
 
-        setResult(result);
+        // ── Site boundary compositing: only replace inside the boundary ──
+        let finalResult = renderResult;
+        if (boundaryPixels?.length) {
+          setStatusMessage('Compositing within site boundary...');
+          setProgress(90);
+          try {
+            const compositedBlob = await compositeSiteBoundary(
+              blob, renderResult.imageUrl, boundaryPixels,
+            );
+            const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
+            const compositedUrl = await fal.storage.upload(compositedFile);
+            finalResult = { ...renderResult, imageUrl: compositedUrl };
+            console.log('[AIRender] Composited within site boundary');
+          } catch (compErr) {
+            console.warn('[AIRender] Compositing failed, using raw render:', compErr);
+            // Fall back to raw render if compositing fails
+          }
+        }
+
+        setResult(finalResult);
         setProgress(100);
         setStatusMessage('Complete');
         setIsRendering(false);
-        return result;
+        return finalResult;
       } catch (err: unknown) {
         if ((err as Error)?.name === 'AbortError') {
           setIsRendering(false);
@@ -741,6 +897,12 @@ export function useAIRender(): UseAIRenderReturn {
 
       try {
         fal.config({ credentials: falKey });
+
+        // Compute site boundary pixels before capture
+        const boundaryPixels = options.siteBoundaryCoords?.length
+          ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
+          : undefined;
+
         const blob = await captureMapCanvasBlob(map);
         const file = new File([blob], 'map-capture.png', { type: 'image/png' });
         const screenshotUrl = await fal.storage.upload(file);
@@ -754,15 +916,37 @@ export function useAIRender(): UseAIRenderReturn {
           renderSingleFace(screenshotUrl, bounds, options, seed),
         );
 
-        const results = await Promise.all(promises);
-        const successful = results.filter((r): r is AIRenderResult => r !== null);
+        const rawResults = await Promise.all(promises);
+        const successful = rawResults.filter((r): r is AIRenderResult => r !== null);
 
-        setPreviews(successful);
+        // ── Site boundary compositing for each preview ──
+        let finalResults = successful;
+        if (boundaryPixels?.length && successful.length > 0) {
+          setStatusMessage('Compositing within site boundary...');
+          setProgress(85);
+          finalResults = await Promise.all(
+            successful.map(async (r) => {
+              try {
+                const compositedBlob = await compositeSiteBoundary(
+                  blob, r.imageUrl, boundaryPixels,
+                );
+                const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
+                const compositedUrl = await fal.storage.upload(compositedFile);
+                return { ...r, imageUrl: compositedUrl };
+              } catch {
+                return r; // fall back to raw render
+              }
+            }),
+          );
+          console.log('[AIRender] Composited', finalResults.length, 'previews within site boundary');
+        }
+
+        setPreviews(finalResults);
         setResult(null);
         setProgress(100);
         setStatusMessage('Select a preview');
         setIsRendering(false);
-        return successful;
+        return finalResults;
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         setError(msg);
@@ -800,6 +984,11 @@ export function useAIRender(): UseAIRenderReturn {
 
         // ── Single-view mode: render from user's current perspective ──
         if (singleView) {
+          // Compute boundary pixels before capture
+          const boundaryPixels = options.siteBoundaryCoords?.length
+            ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
+            : undefined;
+
           setStatusMessage('Capturing current view...');
           const blob = await captureMapCanvasBlob(map);
           const file = new File([blob], 'full-render-capture.png', { type: 'image/png' });
@@ -808,8 +997,21 @@ export function useAIRender(): UseAIRenderReturn {
           setProgress(25);
           setStatusMessage('Rendering full quality...');
 
-          const fullResult = await renderSingleFace(screenshotUrl, bounds, options, seed);
+          let fullResult = await renderSingleFace(screenshotUrl, bounds, options, seed);
           if (!fullResult) throw new Error('fal.ai returned no images');
+
+          // Composite within site boundary
+          if (boundaryPixels?.length) {
+            setStatusMessage('Compositing within site boundary...');
+            try {
+              const compositedBlob = await compositeSiteBoundary(
+                blob, fullResult.imageUrl, boundaryPixels,
+              );
+              const compositedFile = new File([compositedBlob], 'composited.png', { type: 'image/png' });
+              const compositedUrl = await fal.storage.upload(compositedFile);
+              fullResult = { ...fullResult, imageUrl: compositedUrl };
+            } catch { /* fall back to raw */ }
+          }
 
           setResult(fullResult);
           setProgress(100);

@@ -90,6 +90,12 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       ? mergeArchetypePrompts(archetypeInputs)
       : { archetypePrompt: undefined, archetypeNegative: undefined };
 
+    // Find the site boundary zone to pass for masking
+    const siteBoundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    const siteBoundaryCoords = siteBoundary?.coordinates?.length
+      ? siteBoundary.coordinates
+      : undefined;
+
     return {
       style: selectedStyle,
       customPrompt: customPrompt.trim() || undefined,
@@ -102,8 +108,10 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       // Pass enriched archetype render prompts — these replace the generic style preset when present
       mapOverlayPrompt: useArchetypes ? archetypeInputs.renderPrompt?.mapOverlay ?? undefined : undefined,
       mapOverlayNegative: useArchetypes ? archetypeInputs.renderPrompt?.negative ?? undefined : undefined,
+      // Site boundary for compositing — render only changes pixels inside this polygon
+      siteBoundaryCoords,
     };
-  }, [selectedStyle, customPrompt, controlStrength, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs]);
+  }, [selectedStyle, customPrompt, controlStrength, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
 
   /** Generate 3 preview renders in parallel */
   const handleGeneratePreviews = useCallback(async () => {
