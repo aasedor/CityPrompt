@@ -5,8 +5,19 @@ import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
+import { getColourForDevelopmentType } from '@/data/landUseColours';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+
+/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config */
+function resolveZoneColor(zone: SiteZone): string {
+  const devType = zone.properties?.development_type as string | undefined;
+  if (devType) {
+    const apaColor = getColourForDevelopmentType(devType);
+    if (apaColor.label !== 'Unclassified') return apaColor.fill;
+  }
+  return ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
+}
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
 const LINEAR_ZONE_TYPES: SiteZoneType[] = ['road'];
@@ -392,7 +403,7 @@ export function SitePlannerMap({
           type: 'Feature' as const,
           properties: {
             id: zone.id,
-            color: zone.color,
+            color: resolveZoneColor(zone),
             label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
             zone_type: zone.zone_type,
             ...(zoneHeight != null && { height: zoneHeight }),
@@ -417,7 +428,7 @@ export function SitePlannerMap({
         type: 'Feature' as const,
         properties: {
           id: zone.id,
-          color: zone.color,
+          color: resolveZoneColor(zone),
           label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
           zone_type: zone.zone_type,
           ...(height != null && { height }),
@@ -604,6 +615,7 @@ export function SitePlannerMap({
       });
 
       // Extruded 3D zone massing blocks (for building/residential zones with height)
+      // Uses GIS standard land-use colors from ZONE_TYPE_CONFIG
       map.addLayer({
         id: 'site-zones-extrusion',
         type: 'fill-extrusion',
@@ -613,7 +625,7 @@ export function SitePlannerMap({
           'fill-extrusion-color': ['get', 'color'],
           'fill-extrusion-height': ['get', 'height'],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.75,
+          'fill-extrusion-opacity': 0.85,
         },
       });
 

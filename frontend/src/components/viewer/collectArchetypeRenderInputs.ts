@@ -5,8 +5,12 @@
  * Iterates zone properties using the same domain-prefix pattern as
  * masterPlan2DReferences.ts to pull positive/negative prompts and
  * reference image URLs from archetype selections.
+ *
+ * Also loads enriched metadata (facadeDetail, roofDetail, renderPrompt)
+ * from the archetype catalog for map-overlay rendering.
  */
 import type { SiteZone } from '@/types';
+import archetypeCatalog from '@/data/buildingArchetypes.json';
 
 // ---------------------------------------------------------------------------
 // Domain prefix config (mirrors masterPlan2DReferences.ts)
@@ -18,6 +22,30 @@ const DOMAIN_PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const
 // Types
 // ---------------------------------------------------------------------------
 
+/** Enriched facade/roof/render metadata from the archetype catalog */
+export interface ArchetypeFacadeDetail {
+  primaryMaterial?: string;
+  secondaryMaterial?: string;
+  accentMaterial?: string;
+  groundFloor?: string;
+  upperFloors?: string;
+  cornice?: string;
+  colorScheme?: string;
+}
+
+export interface ArchetypeRoofDetail {
+  form?: string;
+  material?: string;
+  features?: string;
+  aerialAppearance?: string;
+}
+
+export interface ArchetypeRenderPrompt {
+  mapOverlay?: string;
+  roofView?: string;
+  negative?: string;
+}
+
 export interface ArchetypeRenderInputs {
   /** Positive prompt fragments extracted from archetype imagePrompt.positive */
   positivePrompts: string[];
@@ -25,6 +53,14 @@ export interface ArchetypeRenderInputs {
   negativePrompts: string[];
   /** Reference image URLs from archetype selections */
   referenceImageUrls: string[];
+  /** Enriched facade detail from the archetype catalog (first match) */
+  facadeDetail?: ArchetypeFacadeDetail;
+  /** Enriched roof detail from the archetype catalog (first match) */
+  roofDetail?: ArchetypeRoofDetail;
+  /** Map-overlay-specific render prompt from the archetype catalog (first match) */
+  renderPrompt?: ArchetypeRenderPrompt;
+  /** The archetype ID that was matched */
+  matchedArchetypeId?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -58,12 +94,35 @@ export function collectArchetypeRenderInputs(siteZones: SiteZone[]): ArchetypeRe
   const positiveSet = new Set<string>();
   const negativeSet = new Set<string>();
   const imageUrlSet = new Set<string>();
+  let facadeDetail: ArchetypeFacadeDetail | undefined;
+  let roofDetail: ArchetypeRoofDetail | undefined;
+  let renderPrompt: ArchetypeRenderPrompt | undefined;
+  let matchedArchetypeId: string | undefined;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
 
   for (const zone of siteZones) {
     const props = zone.properties;
     if (!props) continue;
 
     for (const prefix of DOMAIN_PREFIXES) {
+      // --- Look up enriched metadata from the archetype catalog ---
+      const archetypeIdKey = `${prefix}_archetype_id`;
+      const archetypeId = asString(props[archetypeIdKey]);
+      if (archetypeId && !matchedArchetypeId && catalog) {
+        // Match either exact ID or ID with variant suffix (e.g. "industrial_brick_mixed_use_front_day")
+        const catalogEntry = catalog.find((a: any) =>
+          a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
+        );
+        if (catalogEntry) {
+          matchedArchetypeId = catalogEntry.id;
+          if (catalogEntry.facadeDetail) facadeDetail = catalogEntry.facadeDetail;
+          if (catalogEntry.roofDetail) roofDetail = catalogEntry.roofDetail;
+          if (catalogEntry.renderPrompt) renderPrompt = catalogEntry.renderPrompt;
+        }
+      }
+
       // --- Generation style input (contains imagePrompt with positive/negative) ---
       const styleInput = asObject(props[`${prefix}_generation_style_input`]);
       if (styleInput) {
@@ -105,6 +164,10 @@ export function collectArchetypeRenderInputs(siteZones: SiteZone[]): ArchetypeRe
     positivePrompts: [...positiveSet],
     negativePrompts: [...negativeSet],
     referenceImageUrls: [...imageUrlSet],
+    facadeDetail,
+    roofDetail,
+    renderPrompt,
+    matchedArchetypeId,
   };
 }
 

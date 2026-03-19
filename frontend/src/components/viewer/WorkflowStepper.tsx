@@ -1,34 +1,35 @@
 /**
  * WorkflowStepper.tsx
  *
- * 3-step indicator bar for the site generation workflow:
- *   1. Draw & Style
- *   2. Generate Massing
- *   3. AI Render
+ * 2-step indicator bar for the site generation workflow:
+ *   1. Draw & Style — draw zones, pick development types
+ *   2. AI Render — generate photorealistic rendering
  */
 
 interface WorkflowStepperProps {
-  currentStep: number; // 1, 2, or 3
+  currentStep: number; // 1 or 2
   onStepClick: (step: number) => void;
+  /** Whether step 2 has been reached */
+  hasRender?: boolean;
 }
 
 const STEPS = [
-  { num: 1, label: 'Draw & Style' },
-  { num: 2, label: 'Generate Massing' },
-  { num: 3, label: 'AI Render' },
+  { num: 1, label: 'Draw & Style', description: 'Draw zones and choose development types' },
+  { num: 2, label: 'AI Render', description: 'Generate photorealistic rendering' },
 ];
 
-export function WorkflowStepper({ currentStep, onStepClick }: WorkflowStepperProps) {
+export function WorkflowStepper({ currentStep, onStepClick, hasRender }: WorkflowStepperProps) {
   return (
     <div className="flex items-center gap-1 px-4 py-2 bg-gray-900/80 backdrop-blur-sm border-b border-gray-800">
       {STEPS.map((step, idx) => {
         const isActive = step.num === currentStep;
         const isCompleted = step.num < currentStep;
-        const isClickable = step.num <= currentStep; // can go back, not forward
+        const isClickable =
+          step.num <= currentStep ||
+          (step.num === 2 && !!hasRender);
 
         return (
           <div key={step.num} className="flex items-center">
-            {/* Step pill */}
             <button
               onClick={() => isClickable && onStepClick(step.num)}
               disabled={!isClickable}
@@ -38,11 +39,13 @@ export function WorkflowStepper({ currentStep, onStepClick }: WorkflowStepperPro
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
                   : isCompleted
                     ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30 cursor-pointer'
-                    : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                    : isClickable
+                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 cursor-pointer'
+                      : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                 }
               `}
+              title={step.description}
             >
-              {/* Step number / check mark */}
               <span className={`
                 flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold
                 ${isActive
@@ -57,7 +60,6 @@ export function WorkflowStepper({ currentStep, onStepClick }: WorkflowStepperPro
               <span>{step.label}</span>
             </button>
 
-            {/* Connector line between steps */}
             {idx < STEPS.length - 1 && (
               <div className={`
                 w-8 h-0.5 mx-1

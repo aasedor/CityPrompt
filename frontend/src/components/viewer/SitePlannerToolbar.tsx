@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Eye, MousePointer, Footprints, HelpCircle, Layers3 } from 'lucide-react';
+import { MousePointer, HelpCircle, Layers3 } from 'lucide-react';
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
@@ -51,8 +51,6 @@ const CORE_TOOLS: CoreToolDef[] = [
 ];
 
 interface SitePlannerToolbarProps {
-  onViewIn3D: () => void;
-  onWalkThrough: () => void;
   onShowGuide?: () => void;
 }
 
@@ -71,7 +69,7 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
   return parksSubtype === 'plaza' ? 'parking' : 'green_space';
 }
 
-export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: SitePlannerToolbarProps) {
+export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -185,25 +183,6 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
             </div>
           )}
 
-          <button
-            onClick={onWalkThrough}
-            className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
-            title="Walk through the site at street level"
-          >
-            <Footprints size={14} />
-            <span className="hidden sm:inline">Explore</span>
-          </button>
-
-          <button
-            onClick={onViewIn3D}
-            className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
-            title="Open 3D viewer"
-          >
-            <Eye size={14} />
-            <span className="sm:hidden">3D</span>
-            <span className="hidden sm:inline">View in 3D</span>
-          </button>
-
           {onShowGuide && (
             <button
               onClick={onShowGuide}
@@ -245,4 +224,3 @@ export function SitePlannerToolbar({ onViewIn3D, onWalkThrough, onShowGuide }: S
     </div>
   );
 }
-

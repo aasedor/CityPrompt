@@ -21,6 +21,8 @@ interface AIRenderPanelProps {
   mapRef: React.RefObject<MapboxMap | null>;
   /** Called when a render completes so the parent can overlay it on the map */
   onRenderComplete?: (result: AIRenderResult) => void;
+  /** Called when previews are generated — parent can open a full-screen modal */
+  onPreviewsReady?: (previews: AIRenderResult[]) => void;
   /** Called when the user clears the overlay */
   onClearOverlay?: () => void;
   /** Site zones — used to extract archetype prompt data */
@@ -33,7 +35,7 @@ interface AIRenderPanelProps {
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onRenderComplete, onClearOverlay, siteZones = [], onStyleChange }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange }: AIRenderPanelProps) {
   const {
     render,
     renderPreviews,
@@ -97,6 +99,9 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onClearOverlay, siteZo
       archetypePrompt: archetype.archetypePrompt || undefined,
       archetypeNegative: archetype.archetypeNegative || undefined,
       referenceImageUrls: useArchetypes ? archetypeInputs.referenceImageUrls : undefined,
+      // Pass enriched archetype render prompts — these replace the generic style preset when present
+      mapOverlayPrompt: useArchetypes ? archetypeInputs.renderPrompt?.mapOverlay ?? undefined : undefined,
+      mapOverlayNegative: useArchetypes ? archetypeInputs.renderPrompt?.negative ?? undefined : undefined,
     };
   }, [selectedStyle, customPrompt, controlStrength, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs]);
 
@@ -104,8 +109,11 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onClearOverlay, siteZo
   const handleGeneratePreviews = useCallback(async () => {
     const map = mapRef.current;
     if (!map) return;
-    await renderPreviews(map, buildRenderOptions());
-  }, [mapRef, renderPreviews, buildRenderOptions]);
+    const results = await renderPreviews(map, buildRenderOptions());
+    if (results.length > 0) {
+      onPreviewsReady?.(results);
+    }
+  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady]);
 
   /** Select a preview and trigger full-quality render with its seed */
   const handleSelectPreview = useCallback(async (index: number) => {

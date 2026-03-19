@@ -8,7 +8,9 @@
  * We reconstruct the rectangular footprint polygon using meter-to-degree math.
  */
 
-import type { SiteMassingOption, SiteZone } from '@/types';
+import type { SiteMassingOption, SiteZone, SiteZoneType } from '@/types';
+import { ZONE_TYPE_CONFIG } from '@/types';
+import { getColourForDevelopmentType } from '@/data/landUseColours';
 import type { FeatureCollection, Feature, Polygon } from 'geojson';
 
 const METERS_PER_DEG_LAT = 111320;
@@ -17,20 +19,19 @@ function metersPerDegLon(lat: number): number {
   return METERS_PER_DEG_LAT * Math.cos((lat * Math.PI) / 180);
 }
 
-/** Zone type → default color for massing blocks */
-const ZONE_COLORS: Record<string, string> = {
-  building: '#9b59b6',
-  residential: '#e91e8a',
-  commercial: '#3498db',
-  mixed_use: '#e67e22',
-  development_area: '#8e44ad',
-  green_space: '#27ae60',
-  parking: '#95a5a6',
-  road: '#444444',
-};
+/** Resolve zone color: try development_type from zone properties first (granular APA), else zone_type config */
+function resolveZoneColor(zone: SiteZone): string {
+  const devType = zone.properties?.development_type as string | undefined;
+  if (devType) {
+    const apaColor = getColourForDevelopmentType(devType);
+    if (apaColor.label !== 'Unclassified') return apaColor.fill;
+  }
+  return ZONE_TYPE_CONFIG[zone.zone_type as SiteZoneType]?.color ?? '#888888';
+}
 
+/** Look up APA/LBCS standard color from ZONE_TYPE_CONFIG (fallback for massing zones without parent zone) */
 function zoneColor(zoneType: string): string {
-  return ZONE_COLORS[zoneType] ?? '#9b59b6';
+  return ZONE_TYPE_CONFIG[zoneType as SiteZoneType]?.color ?? '#888888';
 }
 
 /**
@@ -98,11 +99,16 @@ export function massingOptionToGeoJSON(
     }
   }
 
+  // Build a zone lookup for resolveZoneColor
+  const zoneMap = new Map<string, SiteZone>();
+  for (const z of zones) zoneMap.set(z.id, z);
+
   for (const mz of option.zones) {
     const centroid = zoneCentroidMap.get(mz.zone_id);
     if (!centroid) continue;
     const [cLng, cLat] = centroid;
-    const color = zoneColor(mz.zone_type);
+    const parentZone = zoneMap.get(mz.zone_id);
+    const color = parentZone ? resolveZoneColor(parentZone) : zoneColor(mz.zone_type);
 
     // Buildings → extruded polygons
     for (const bldg of mz.buildings) {
@@ -159,7 +165,7 @@ export function massingOptionToGeoJSON(
           zone_id: mz.zone_id,
           zone_type: 'green_space',
           height: 0.5,
-          color: '#27ae60',
+          color: ZONE_TYPE_CONFIG.green_space.color,
           space_type: gs.space_type,
         },
         geometry: {

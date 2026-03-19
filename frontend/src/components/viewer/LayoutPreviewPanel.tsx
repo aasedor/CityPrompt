@@ -301,13 +301,6 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
         </div>
       )}
 
-      <button
-        onClick={() => navigate(`/projects/${zone.project_id}/block-editor/${zone.id}`)}
-        className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-400"
-      >
-        <LayoutGrid size={12} />
-        Edit & Finalize in Block Editor
-      </button>
 
       <button
         onClick={handleApply}

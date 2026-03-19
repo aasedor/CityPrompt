@@ -741,12 +741,33 @@ const resolveOptionCategory = (
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select --</option>
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
+                <optgroup label="Residential">
+                  <option value="residential_single_family">Single Family</option>
+                  <option value="residential_duplex">Duplex</option>
+                  <option value="residential_multifamily">Multi-Family</option>
+                  <option value="residential_highrise">High-Rise</option>
+                </optgroup>
+                <optgroup label="Commercial">
+                  <option value="commercial_light">Light Commercial</option>
+                  <option value="commercial_retail">Retail</option>
+                  <option value="commercial_office">Office</option>
+                  <option value="commercial">General Commercial</option>
+                </optgroup>
                 <option value="mixed_use">Mixed Use</option>
+                <optgroup label="Institutional">
+                  <option value="institutional">General Institutional</option>
+                  <option value="institutional_education">Education</option>
+                  <option value="institutional_health">Health Care</option>
+                </optgroup>
+                <optgroup label="Industrial">
+                  <option value="industrial_light">Light Industrial</option>
+                  <option value="industrial">General Industrial</option>
+                  <option value="industrial_heavy">Heavy Industrial</option>
+                  <option value="industrial_warehouse">Warehouse</option>
+                </optgroup>
                 <option value="park_plaza">Park / Plaza</option>
-                <option value="institutional">Institutional</option>
-                <option value="industrial">Industrial</option>
+                <option value="recreational">Recreational</option>
+                <option value="open_space">Open Space</option>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -1320,11 +1341,30 @@ const resolveOptionCategory = (
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select --</option>
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
+                <optgroup label="Residential">
+                  <option value="residential_single_family">Single Family</option>
+                  <option value="residential_duplex">Duplex</option>
+                  <option value="residential_multifamily">Multi-Family</option>
+                  <option value="residential_highrise">High-Rise</option>
+                </optgroup>
+                <optgroup label="Commercial">
+                  <option value="commercial_light">Light Commercial</option>
+                  <option value="commercial_retail">Retail</option>
+                  <option value="commercial_office">Office</option>
+                  <option value="commercial">General Commercial</option>
+                </optgroup>
                 <option value="mixed_use">Mixed Use</option>
-                <option value="institutional">Institutional</option>
-                <option value="industrial">Industrial</option>
+                <optgroup label="Institutional">
+                  <option value="institutional">General Institutional</option>
+                  <option value="institutional_education">Education</option>
+                  <option value="institutional_health">Health Care</option>
+                </optgroup>
+                <optgroup label="Industrial">
+                  <option value="industrial_light">Light Industrial</option>
+                  <option value="industrial">General Industrial</option>
+                  <option value="industrial_heavy">Heavy Industrial</option>
+                  <option value="industrial_warehouse">Warehouse</option>
+                </optgroup>
               </select>
             </div>
             <div>
@@ -1463,16 +1503,6 @@ const resolveOptionCategory = (
           Save Changes
         </button>
 
-        {/* Edit saved layout in Block Editor */}
-        {(zone.properties as any)?._saved_layout && (
-          <button
-            onClick={() => navigate(`/projects/${zone.project_id}/block-editor/${zone.id}`)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-xs font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors"
-          >
-            <LayoutGrid size={12} />
-            Edit Saved Layout
-          </button>
-        )}
 
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && onAIGenerate && zone.building_id && (
           <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
