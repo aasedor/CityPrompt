@@ -48,6 +48,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     setSelectedPreviewIndex,
     error,
     reset,
+    statusMessage,
   } = useAIRender();
 
   // Local form state
@@ -384,14 +385,20 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
         {isRendering && (
           <div>
             <div className="mb-1 flex items-center justify-between">
-              <span className="text-xs text-gray-400">Generating...</span>
-              <span className="text-xs tabular-nums text-gray-500">{progress}%</span>
+              <span className="text-xs text-gray-400">{statusMessage || 'Generating render... Please wait'}</span>
+              {progress > 0 && (
+                <span className="text-xs tabular-nums text-gray-500">{progress}%</span>
+              )}
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div
-                className="h-full rounded-full bg-amber-500 transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
+              {progress <= 0 ? (
+                <div className="h-full w-1/3 animate-pulse rounded-full bg-amber-500" />
+              ) : (
+                <div
+                  className="h-full rounded-full bg-amber-500 transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              )}
             </div>
           </div>
         )}

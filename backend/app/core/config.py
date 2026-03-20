@@ -97,6 +97,11 @@ class Settings(BaseSettings):
     master_plan_3d_image_provider: str = "vertex"
     layout_ai_provider: str = "claude"
 
+    # --- Vertex AI (Imagen 3) ---
+    vertex_ai_project: str = ""
+    vertex_ai_location: str = "northamerica-northeast1"
+    vertex_ai_imagen_model: str = "imagen-3.0-capability-001"
+
     # --- Object Storage ---
     s3_bucket_name: str = "dev-platform-uploads"
     s3_region: str = "us-east-1"

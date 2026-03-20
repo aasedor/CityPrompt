@@ -4,7 +4,7 @@ API v1 router - aggregates all endpoint routers.
 
 from fastapi import APIRouter
 
-from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin, analytics, settings, files, model_library, master_plan_2d
+from app.api.v1 import projects, documents, buildings, auth, oauth, context, shares, annotations, reports, activity, site_zones, admin, analytics, settings, files, model_library, master_plan_2d, render
 
 api_router = APIRouter()
 
@@ -26,4 +26,5 @@ api_router.include_router(files.router, prefix="/files", tags=["Files"])
 api_router.include_router(model_library.router, prefix="/model-library", tags=["Model Library"])
 
 api_router.include_router(master_plan_2d.router, prefix='/master-plan-2d', tags=['2D Master Plan'])
+api_router.include_router(render.router, prefix='/render', tags=['AI Render'])
 

@@ -1,18 +1,16 @@
 /**
- * useAIRender — React hook for the Gemini-based spatial-to-render pipeline.
+ * useAIRender — React hook for the Vertex AI Imagen 3 render pipeline.
  *
- * Uses Gemini (via fal.ai Nano Banana 2 Edit) with structured prompts to
- * transform colored zone polygons on a satellite map into photorealistic
- * buildings, parks, streets, etc. — preserving surrounding satellite imagery.
+ * Sends a map screenshot (with colored zone polygon overlays) and a structured
+ * prompt to the backend, which proxies the request to Google Cloud Vertex AI
+ * Imagen 3 for photorealistic architectural rendering.
  *
- * The pipeline relies on Gemini's visual reasoning: colored polygons in the
- * screenshot serve as spatial guides, and a structured prompt maps each
- * color to its archetype description.
- *
- * No mask/crop/stitch needed — Gemini understands color→content semantically.
+ * The pipeline relies on Imagen 3's native inpaint-insertion mode: colored
+ * polygons in the screenshot serve as spatial guides, and a structured prompt
+ * maps each color to its archetype description.
  */
 import { useState, useCallback, useRef } from 'react';
-import { fal } from '@fal-ai/client';
+import axios from 'axios';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -41,17 +39,17 @@ export interface AIRenderOptions {
   controlStrength?: number;
   /** Number of denoising steps (20–35 recommended) */
   steps?: number;
-  /** Guidance scale — FLUX recommendation is 3.5 */
+  /** Guidance scale */
   guidanceScale?: number;
-  /** Optional reference image URL or data-URI for IP-Adapter style transfer */
+  /** Optional reference image URL or data-URI for style transfer */
   referenceImageUrl?: string;
-  /** IP-Adapter strength (0–1) */
+  /** Reference strength (0–1) */
   referenceStrength?: number;
   /** Archetype positive prompt — appended to the style prompt */
   archetypePrompt?: string;
   /** Archetype negative prompt — appended to the negative prompt */
   archetypeNegative?: string;
-  /** Reference image URLs from archetype selections (first used for IP-Adapter) */
+  /** Reference image URLs from archetype selections */
   referenceImageUrls?: string[];
   /** Explicit seed for reproducibility */
   seed?: number;
@@ -78,7 +76,7 @@ export interface AIRenderOptions {
 }
 
 export interface AIRenderResult {
-  /** URL of the generated image (fal.ai CDN) */
+  /** URL or data-URI of the generated image */
   imageUrl: string;
   /** Geographic bounds at the time of capture: [[W,N],[E,N],[E,S],[W,S]] */
   bounds: [[number, number], [number, number], [number, number], [number, number]];
@@ -111,7 +109,7 @@ export interface UseAIRenderReturn {
   faceRenders: FaceRender[];
   /** Whether a render is currently in flight */
   isRendering: boolean;
-  /** 0–100 progress estimate */
+  /** 0–100 progress estimate (indeterminate: stays at -1 while waiting) */
   progress: number;
   /** Status message for the UI */
   statusMessage: string;
@@ -333,21 +331,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Primary model — Nano Banana 2 Edit (Gemini 3.1 Flash).
- *  Uses Gemini's visual reasoning to understand colored polygons as spatial guides.
- *  No mask needed — prompt-engineering approach. */
-const NANO_BANANA_MODEL_ID = 'fal-ai/nano-banana-2/edit';
+/** Backend render endpoint */
+const RENDER_API_URL = '/api/v1/render/generate';
 
-/** Alternative Gemini model — cheaper but similar quality */
-const GEMINI_25_FLASH_MODEL_ID = 'fal-ai/gemini-25-flash-image/edit';
-
-/** Fallback model — FLUX Pro Fill (mask-based, kept as last resort) */
-const FLUX_PRO_FILL_MODEL_ID = 'fal-ai/flux-pro/v1/fill';
-
-/** Max retries per model before falling back */
-const MAX_RETRIES = 2;
-/** Timeout for a single render attempt (ms) */
-const RENDER_TIMEOUT = 120_000;
+/** Timeout for the backend request (3 minutes — Imagen 3 can be slow) */
+const RENDER_TIMEOUT = 180_000;
 
 /** The 4 face bearings */
 const FACE_BEARINGS: { label: 'front' | 'right' | 'rear' | 'left'; bearing: number }[] = [
@@ -360,11 +348,6 @@ const FACE_BEARINGS: { label: 'front' | 'right' | 'rear' | 'left'; bearing: numb
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-/** Read the fal.ai API key from Vite env */
-function getFalKey(): string {
-  return import.meta.env.VITE_FAL_KEY || '';
-}
 
 /** Compute the geographic bounding box of a polygon [[lng,lat],...] with padding factor */
 function zoneBounds(coords: number[][], padding = 0.3): { west: number; south: number; east: number; north: number } {
@@ -385,13 +368,21 @@ function zoneBounds(coords: number[][], padding = 0.3): { west: number; south: n
   };
 }
 
-/** Capture the Mapbox canvas as a PNG Blob */
-function captureMapCanvasBlob(map: MapboxMap): Promise<Blob> {
+/** Capture the Mapbox canvas as a base64-encoded PNG string (no data-URI prefix) */
+async function captureMapCanvasBase64(map: MapboxMap): Promise<string> {
   const canvas = map.getCanvas();
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      if (blob) resolve(blob);
-      else reject(new Error('Failed to capture map canvas as blob'));
+      if (!blob) return reject(new Error('Failed to capture map canvas'));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUri = reader.result as string;
+        // Strip the "data:image/png;base64," prefix — backend wants raw base64
+        const base64 = dataUri.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = () => reject(new Error('Failed to read canvas blob'));
+      reader.readAsDataURL(blob);
     }, 'image/png');
   });
 }
@@ -657,16 +648,16 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
 
     block2 = [
       '',
-      'ZONE-BY-ZONE TRANSFORMATION:',
+      'ZONE-BY-ZONE INSTRUCTIONS:',
       ...zoneLines,
     ].join('\n');
   } else {
-    // No zone data — fall back to generic color interpretation
+    // No specific zones — provide generic color mapping
     block2 = [
       '',
-      'ZONE-BY-ZONE TRANSFORMATION:',
-      '• RED zones (#E03C31): Replace with photorealistic commercial/mixed-use buildings with glass and concrete facades, ground-floor retail',
-      '• YELLOW zones (#F5D63D): Replace with photorealistic residential buildings — townhouses or apartments with warm materials and balconies',
+      'ZONE-BY-ZONE INSTRUCTIONS:',
+      '• RED zones (#E03C31): Replace with photorealistic commercial or mixed-use buildings with detailed facades, glass and brick materials',
+      '• YELLOW zones (#F5D63D): Replace with residential buildings — townhouses or apartments with warm materials and balconies',
       '• GREEN zones (#4CAF50): Replace with landscaped parks with mature trees, grass lawns, walking paths, and benches',
       '• DARK GRAY zones (#616161): Replace with paved roads with lane markings, sidewalks, street trees, and parked cars',
       '• LIGHT GRAY zones (#9E9E9E): Replace with paved plazas or surface parking with pedestrian paving and street furniture',
@@ -756,203 +747,37 @@ function buildPrompt(options: AIRenderOptions): string {
 }
 
 // ---------------------------------------------------------------------------
-// Model call functions
+// Vertex AI backend call
 // ---------------------------------------------------------------------------
 
-/** Call Nano Banana 2 Edit (Gemini-based — PRIMARY model) */
-async function callNanoBanana(
-  screenshotUrl: string,
-  prompt: string,
-  options: AIRenderOptions,
-  seed: number,
-): Promise<{ url: string; seed?: number } | null> {
-  // Collect reference images (screenshot + optional archetype refs)
-  const imageUrls = [screenshotUrl];
-  if (options.referenceImageUrls?.length) {
-    for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
-      imageUrls.push(refUrl);
-    }
-  } else if (options.referenceImageUrl) {
-    imageUrls.push(options.referenceImageUrl);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const body: Record<string, any> = {
-    prompt,
-    image_urls: imageUrls,
-    resolution: '1K',
-    aspect_ratio: 'auto',
-    seed,
-    output_format: 'png',
-    safety_tolerance: '6',
-    num_images: 1,
-  };
-
-  console.log('[AIRender] Nano Banana 2 (Gemini) request:', {
-    model: NANO_BANANA_MODEL_ID,
-    promptLength: prompt.length,
-    promptPreview: prompt.slice(0, 200) + '...',
-    imageCount: imageUrls.length,
-    seed,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: any = await Promise.race([
-    fal.subscribe(NANO_BANANA_MODEL_ID, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      input: body as any,
-      logs: true,
-      onQueueUpdate: (update) => {
-        console.log('[AIRender] Nano Banana queue:', update.status);
-      },
-    }),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('Nano Banana timeout')), RENDER_TIMEOUT)),
-  ]);
-
-  const images = data?.data?.images ?? data?.images;
-  if (!images?.length) {
-    console.warn('[AIRender] Nano Banana returned no images:', JSON.stringify(data).slice(0, 300));
-    return null;
-  }
-  const url = images[0]?.url;
-  if (!url) return null;
-
-  console.log('[AIRender] Nano Banana success:', url.slice(0, 80));
-  return { url, seed: data?.data?.seed ?? data?.seed };
-}
-
-/** Call Gemini 2.5 Flash (alternative Gemini model) */
-async function callGemini25Flash(
-  screenshotUrl: string,
-  prompt: string,
-  options: AIRenderOptions,
-  seed: number,
-): Promise<{ url: string; seed?: number } | null> {
-  const imageUrls = [screenshotUrl];
-  if (options.referenceImageUrls?.length) {
-    for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
-      imageUrls.push(refUrl);
-    }
-  } else if (options.referenceImageUrl) {
-    imageUrls.push(options.referenceImageUrl);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const body: Record<string, any> = {
-    prompt,
-    image_urls: imageUrls,
-    seed,
-    output_format: 'png',
-    num_images: 1,
-  };
-
-  console.log('[AIRender] Gemini 2.5 Flash request:', {
-    model: GEMINI_25_FLASH_MODEL_ID,
-    promptLength: prompt.length,
-    seed,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: any = await Promise.race([
-    fal.subscribe(GEMINI_25_FLASH_MODEL_ID, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      input: body as any,
-      logs: true,
-      onQueueUpdate: (update) => {
-        console.log('[AIRender] Gemini 2.5 Flash queue:', update.status);
-      },
-    }),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('Gemini 2.5 Flash timeout')), RENDER_TIMEOUT)),
-  ]);
-
-  const images = data?.data?.images ?? data?.images;
-  if (!images?.length) {
-    console.warn('[AIRender] Gemini 2.5 Flash returned no images:', JSON.stringify(data).slice(0, 300));
-    return null;
-  }
-  const url = images[0]?.url;
-  if (!url) return null;
-
-  console.log('[AIRender] Gemini 2.5 Flash success:', url.slice(0, 80));
-  return { url, seed: data?.data?.seed ?? data?.seed };
-}
-
-/** Call FLUX Pro Fill (mask-based fallback — kept as last resort) */
-async function callFluxProFill(
-  imageUrl: string,
+/**
+ * Call our backend endpoint which proxies to Vertex AI Imagen 3.
+ * Returns a data-URI for the rendered image.
+ */
+async function callVertexAI(
+  imageBase64: string,
   prompt: string,
   seed: number,
-  map: MapboxMap,
-  zones: SiteZone[],
-): Promise<{ url: string; seed?: number } | null> {
-  // Generate inpainting mask
-  const mapCanvas = map.getCanvas();
-  const dpr = window.devicePixelRatio || 1;
+  aspectRatio = '4:3',
+): Promise<{ imageDataUri: string; seed: number }> {
+  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length);
 
-  const maskCanvas = document.createElement('canvas');
-  maskCanvas.width = mapCanvas.width;
-  maskCanvas.height = mapCanvas.height;
-  const ctx = maskCanvas.getContext('2d')!;
+  const resp = await axios.post(
+    RENDER_API_URL,
+    {
+      image_base64: imageBase64,
+      prompt,
+      aspect_ratio: aspectRatio,
+      seed,
+    },
+    { timeout: RENDER_TIMEOUT },
+  );
 
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+  const { image_base64: resultBase64, seed: resultSeed } = resp.data;
+  const imageDataUri = `data:image/png;base64,${resultBase64}`;
 
-  ctx.fillStyle = '#ffffff';
-  for (const zone of zones) {
-    if (zone.zone_type === 'site_boundary') continue;
-    if (!zone.coordinates?.length) continue;
-    const pixels = zone.coordinates.map(([lng, lat]) => {
-      const pt = map.project([lng, lat]);
-      return { x: pt.x * dpr, y: pt.y * dpr };
-    });
-    if (pixels.length < 3) continue;
-    ctx.beginPath();
-    ctx.moveTo(pixels[0].x, pixels[0].y);
-    for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  const maskBlob = await new Promise<Blob>((resolve, reject) => {
-    maskCanvas.toBlob((b) => b ? resolve(b) : reject(new Error('mask failed')), 'image/png');
-  });
-
-  const maskFile = new File([maskBlob], 'mask.png', { type: 'image/png' });
-  const maskUrl = await fal.storage.upload(maskFile);
-
-  const inpaintPrompt = `${prompt}. Photorealistic satellite/aerial photograph showing completed urban development. Match lighting and perspective of surrounding imagery.`;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const body: Record<string, any> = {
-    image_url: imageUrl,
-    mask_url: maskUrl,
-    prompt: inpaintPrompt,
-    num_images: 1,
-    seed,
-    output_format: 'png',
-    safety_tolerance: '6',
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: any = await Promise.race([
-    fal.subscribe(FLUX_PRO_FILL_MODEL_ID, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      input: body as any,
-      logs: true,
-      onQueueUpdate: (update) => {
-        console.log('[AIRender] FLUX Pro Fill queue:', update.status);
-      },
-    }),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX Pro Fill timeout')), RENDER_TIMEOUT)),
-  ]);
-
-  const images = data?.data?.images ?? data?.images;
-  if (!images?.length) return null;
-  const url = images[0]?.url;
-  if (!url) return null;
-
-  console.log('[AIRender] FLUX Pro Fill success:', url.slice(0, 80));
-  return { url, seed: data?.data?.seed ?? data?.seed };
+  console.log('[AIRender] Vertex AI success — image size:', resultBase64.length, 'chars');
+  return { imageDataUri, seed: resultSeed ?? seed };
 }
 
 // ---------------------------------------------------------------------------
@@ -980,64 +805,31 @@ export function useAIRender(): UseAIRenderReturn {
     setStatusMessage('');
   }, []);
 
-  // ── Core render function: Gemini with structured prompt ──────────────
+  // ── Core render function: capture → base64 → backend → Vertex AI ──
 
-  const renderWithGemini = useCallback(
+  const renderSingle = useCallback(
     async (
-      screenshotUrl: string,
+      imageBase64: string,
       bounds: [[number, number], [number, number], [number, number], [number, number]],
       options: AIRenderOptions,
       seed: number,
-      map?: MapboxMap,
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
 
-      // ── Primary: Nano Banana 2 (Gemini 3.1 Flash) ──
-      console.log('[AIRender] Using Nano Banana 2 (Gemini) — structured prompt...');
-      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-        try {
-          const result = await callNanoBanana(screenshotUrl, prompt, options, seed);
-          if (result) {
-            return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
-          }
-        } catch (err) {
-          console.warn(`[AIRender] Nano Banana attempt ${attempt + 1} failed:`, err);
-          if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
-        }
+      try {
+        const { imageDataUri, seed: resultSeed } = await callVertexAI(
+          imageBase64,
+          prompt,
+          seed,
+        );
+        return { imageUrl: imageDataUri, bounds, seed: resultSeed, prompt };
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const detail = (err as any)?.response?.data?.detail;
+        console.error('[AIRender] Vertex AI failed:', detail || msg);
+        throw new Error(detail || msg);
       }
-
-      // ── Fallback 1: Gemini 2.5 Flash ──
-      console.log('[AIRender] Nano Banana failed, trying Gemini 2.5 Flash...');
-      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-        try {
-          const result = await callGemini25Flash(screenshotUrl, prompt, options, seed);
-          if (result) {
-            return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
-          }
-        } catch (err) {
-          console.warn(`[AIRender] Gemini 2.5 Flash attempt ${attempt + 1} failed:`, err);
-          if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
-        }
-      }
-
-      // ── Fallback 2: FLUX Pro Fill with mask (last resort) ──
-      if (map && options.siteZones?.length) {
-        console.log('[AIRender] Gemini models failed, falling back to FLUX Pro Fill with mask...');
-        for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-          try {
-            const result = await callFluxProFill(screenshotUrl, prompt, seed, map, options.siteZones);
-            if (result) {
-              return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
-            }
-          } catch (err) {
-            console.warn(`[AIRender] FLUX Pro Fill attempt ${attempt + 1} failed:`, err);
-            if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
-          }
-        }
-      }
-
-      console.error('[AIRender] All models failed after retries');
-      return null;
     },
     [],
   );
@@ -1046,41 +838,25 @@ export function useAIRender(): UseAIRenderReturn {
 
   const render = useCallback(
     async (map: MapboxMap, options: AIRenderOptions = {}): Promise<AIRenderResult | null> => {
-      const falKey = getFalKey();
-      if (!falKey) {
-        setError('VITE_FAL_KEY is not set. Add it to your .env file.');
-        return null;
-      }
-
       if (abortRef.current) abortRef.current.abort();
       const controller = new AbortController();
       abortRef.current = controller;
 
       setIsRendering(true);
-      setProgress(5);
+      setProgress(-1); // indeterminate
       setError(null);
       setStatusMessage('Capturing view...');
 
       try {
-        fal.config({ credentials: falKey });
-
-        // Capture the map canvas — includes colored zone polygons as visual guides
-        const blob = await captureMapCanvasBlob(map);
+        const imageBase64 = await captureMapCanvasBase64(map);
         const bounds = getMapBounds(map);
-        setProgress(10);
 
-        // Upload screenshot to fal.ai storage
-        setStatusMessage('Uploading screenshot...');
-        const file = new File([blob], 'render-input.png', { type: 'image/png' });
-        const screenshotUrl = await fal.storage.upload(file);
-        setProgress(20);
+        setStatusMessage('Generating render... Please wait');
 
-        // Build structured prompt and call Gemini
-        setStatusMessage('Rendering with Gemini...');
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
+        const renderResult = await renderSingle(imageBase64, bounds, options, seed);
 
-        if (!renderResult) throw new Error('All AI models returned no images');
+        if (!renderResult) throw new Error('Vertex AI returned no image');
 
         setResult(renderResult);
         setProgress(100);
@@ -1102,7 +878,7 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderWithGemini],
+    [renderSingle],
   );
 
   // ── Zone-targeted render ──────────────────────────────────────────
@@ -1113,24 +889,16 @@ export function useAIRender(): UseAIRenderReturn {
       zoneCoords: number[][],
       options: AIRenderOptions = {},
     ): Promise<AIRenderResult | null> => {
-      const falKey = getFalKey();
-      if (!falKey) {
-        setError('VITE_FAL_KEY is not set. Add it to your .env file.');
-        return null;
-      }
-
       if (abortRef.current) abortRef.current.abort();
       const controller = new AbortController();
       abortRef.current = controller;
 
       setIsRendering(true);
-      setProgress(5);
+      setProgress(-1);
       setError(null);
       setStatusMessage('Zooming to building zone...');
 
       try {
-        fal.config({ credentials: falKey });
-
         const originalBearing = map.getBearing();
         const zb = zoneBounds(zoneCoords, 0.5);
 
@@ -1144,30 +912,23 @@ export function useAIRender(): UseAIRenderReturn {
           map.on('idle', onIdle);
         });
 
-        setProgress(15);
         setStatusMessage('Capturing zone view...');
 
-        const blob = await captureMapCanvasBlob(map);
-        const file = new File([blob], 'zone-capture.png', { type: 'image/png' });
-        const screenshotUrl = await fal.storage.upload(file);
+        const imageBase64 = await captureMapCanvasBase64(map);
         const bounds = getMapBounds(map);
 
-        setProgress(30);
-        setStatusMessage('Rendering with Gemini...');
+        setStatusMessage('Generating render... Please wait');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const prompt = buildPrompt(options);
-        console.log('[AIRender] Zone render prompt length:', prompt.length);
+        const renderResult = await renderSingle(imageBase64, bounds, options, seed);
 
-        const result = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
+        if (!renderResult) throw new Error('Vertex AI returned no image');
 
-        if (!result) throw new Error('All AI models returned no images');
-
-        setResult(result);
+        setResult(renderResult);
         setProgress(100);
         setStatusMessage('Complete — zone rendered');
         setIsRendering(false);
-        return result;
+        return renderResult;
       } catch (err: unknown) {
         if ((err as Error)?.name === 'AbortError') {
           setIsRendering(false);
@@ -1184,21 +945,15 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderWithGemini],
+    [renderSingle],
   );
 
   // ── Preview renders (3 in parallel) ──────────────────────────────────
 
   const renderPreviews = useCallback(
     async (map: MapboxMap, options: AIRenderOptions = {}): Promise<AIRenderResult[]> => {
-      const falKey = getFalKey();
-      if (!falKey) {
-        setError('VITE_FAL_KEY is not set. Add it to your .env file.');
-        return [];
-      }
-
       setIsRendering(true);
-      setProgress(5);
+      setProgress(-1);
       setError(null);
       setPreviews([]);
       setSelectedPreviewIndex(null);
@@ -1206,26 +961,16 @@ export function useAIRender(): UseAIRenderReturn {
       setStatusMessage('Capturing view...');
 
       try {
-        fal.config({ credentials: falKey });
-
-        // Capture the map canvas with colored zones visible
-        const blob = await captureMapCanvasBlob(map);
+        const imageBase64 = await captureMapCanvasBase64(map);
         const bounds = getMapBounds(map);
-        setProgress(10);
 
-        // Upload screenshot
-        setStatusMessage('Uploading screenshot...');
-        const file = new File([blob], 'render-input.png', { type: 'image/png' });
-        const screenshotUrl = await fal.storage.upload(file);
-
-        setProgress(15);
-        setStatusMessage('Generating 3 previews with Gemini...');
+        setStatusMessage('Generating 3 previews... Please wait');
 
         // Generate 3 renders with different seeds
         const seeds = Array.from({ length: 3 }, () => Math.floor(Math.random() * 2147483647));
 
         const promises = seeds.map((seed) =>
-          renderWithGemini(screenshotUrl, bounds, options, seed, map),
+          renderSingle(imageBase64, bounds, options, seed).catch(() => null),
         );
 
         const rawResults = await Promise.all(promises);
@@ -1246,7 +991,7 @@ export function useAIRender(): UseAIRenderReturn {
         return [];
       }
     },
-    [renderWithGemini],
+    [renderSingle],
   );
 
   // ── Full quality render ─────────────────────────────────────────────
@@ -1258,35 +1003,22 @@ export function useAIRender(): UseAIRenderReturn {
       seed: number,
       singleView = true,
     ): Promise<AIRenderResult | null> => {
-      const falKey = getFalKey();
-      if (!falKey) {
-        setError('VITE_FAL_KEY is not set. Add it to your .env file.');
-        return null;
-      }
-
       setIsRendering(true);
-      setProgress(5);
+      setProgress(-1);
       setError(null);
       setFaceRenders([]);
 
       try {
-        fal.config({ credentials: falKey });
-
         // ── Single-view mode: render from user's current perspective ──
         if (singleView) {
           setStatusMessage('Capturing current view...');
-          const blob = await captureMapCanvasBlob(map);
+          const imageBase64 = await captureMapCanvasBase64(map);
           const bounds = getMapBounds(map);
-          setProgress(15);
 
-          const file = new File([blob], 'full-render-input.png', { type: 'image/png' });
-          const screenshotUrl = await fal.storage.upload(file);
+          setStatusMessage('Rendering full quality... Please wait');
 
-          setProgress(25);
-          setStatusMessage('Rendering full quality with Gemini...');
-
-          const fullResult = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
-          if (!fullResult) throw new Error('All AI models returned no images');
+          const fullResult = await renderSingle(imageBase64, bounds, options, seed);
+          if (!fullResult) throw new Error('Vertex AI returned no image');
 
           setResult(fullResult);
           setProgress(100);
@@ -1303,21 +1035,18 @@ export function useAIRender(): UseAIRenderReturn {
         const originalCenter = map.getCenter();
         const originalZoom = map.getZoom();
 
-        const captures: { label: 'front' | 'right' | 'rear' | 'left'; url: string; bounds: [[number, number], [number, number], [number, number], [number, number]] }[] = [];
+        const captures: { label: 'front' | 'right' | 'rear' | 'left'; base64: string; bounds: [[number, number], [number, number], [number, number], [number, number]] }[] = [];
 
         for (let i = 0; i < FACE_BEARINGS.length; i++) {
           const face = FACE_BEARINGS[i];
           setStatusMessage(`Capturing ${face.label} view (${i + 1}/4)...`);
-          setProgress(5 + i * 10);
 
           await easeMapTo(map, face.bearing, 45);
 
-          const blob = await captureMapCanvasBlob(map);
-          const file = new File([blob], `face-${face.label}.png`, { type: 'image/png' });
-          const url = await fal.storage.upload(file);
+          const base64 = await captureMapCanvasBase64(map);
           const bounds = getMapBounds(map);
 
-          captures.push({ label: face.label, url, bounds });
+          captures.push({ label: face.label, base64, bounds });
         }
 
         // Restore original camera
@@ -1329,11 +1058,10 @@ export function useAIRender(): UseAIRenderReturn {
           duration: 500,
         });
 
-        setProgress(45);
-        setStatusMessage('Rendering all 4 faces with Gemini...');
+        setStatusMessage('Rendering all 4 faces... Please wait');
 
         const renderPromises = captures.map((cap) =>
-          renderWithGemini(cap.url, cap.bounds, options, seed, map)
+          renderSingle(cap.base64, cap.bounds, options, seed)
             .then((result) => result ? { label: cap.label, bearing: FACE_BEARINGS.find(f => f.label === cap.label)!.bearing, result } as FaceRender : null)
             .catch(() => null),
         );
@@ -1341,7 +1069,6 @@ export function useAIRender(): UseAIRenderReturn {
         const faceResults = await Promise.all(renderPromises);
         const successfulFaces = faceResults.filter((f): f is FaceRender => f !== null);
 
-        setProgress(90);
         setStatusMessage('Applying textures...');
 
         setFaceRenders(successfulFaces);
@@ -1364,7 +1091,7 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderWithGemini],
+    [renderSingle],
   );
 
   // ── Bearing-based face swapping ────────────────────────────────────
