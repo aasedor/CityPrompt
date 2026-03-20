@@ -1,16 +1,22 @@
 /**
- * useAIRender — React hook for the fal.ai FLUX inpainting render pipeline.
+ * useAIRender — React hook for the Gemini-based spatial-to-render pipeline.
  *
- * Uses FLUX inpainting (`fal-ai/flux-general/inpainting`) with a binary mask
- * to selectively render photorealistic buildings ONLY where colored zone blocks
- * exist, preserving all surrounding satellite imagery pixel-perfectly.
+ * Uses Gemini (via fal.ai Nano Banana 2 Edit) with structured prompts to
+ * transform colored zone polygons on a satellite map into photorealistic
+ * buildings, parks, streets, etc. — preserving surrounding satellite imagery.
  *
- * Also supports 4-face rotation for multi-view renders.
+ * The pipeline relies on Gemini's visual reasoning: colored polygons in the
+ * screenshot serve as spatial guides, and a structured prompt maps each
+ * color to its archetype description.
+ *
+ * No mask/crop/stitch needed — Gemini understands color→content semantically.
  */
 import { useState, useCallback, useRef } from 'react';
 import { fal } from '@fal-ai/client';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
+import { ZONE_TYPE_CONFIG } from '@/types';
+import archetypeCatalog from '@/data/buildingArchetypes.json';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -56,22 +62,17 @@ export interface AIRenderOptions {
   /**
    * Map-overlay prompt from enriched archetype metadata.
    * When set, this replaces the generic style preset prompt entirely.
-   * Should instruct the AI to replace the pink massing block with a
-   * photorealistic building while keeping surrounding context intact.
    */
   mapOverlayPrompt?: string;
   /** Negative prompt from enriched archetype renderPrompt */
   mapOverlayNegative?: string;
   /**
    * Site boundary polygon in geographic coordinates [[lng, lat], ...].
-   * When provided, the AI render result is composited onto the original screenshot,
-   * ONLY replacing pixels inside this polygon. Everything outside stays untouched.
+   * Used for boundary-aware prompt generation.
    */
   siteBoundaryCoords?: number[][];
   /**
-   * All site zones — used to generate the inpainting mask.
-   * Each non-site_boundary zone's polygon is drawn as white on a black canvas.
-   * The inpainting model only generates content where the mask is white.
+   * All site zones — used for structured zone-by-zone prompt generation.
    */
   siteZones?: SiteZone[];
 }
@@ -104,7 +105,7 @@ export interface UseAIRenderReturn {
   renderZone: (map: MapboxMap, zoneCoords: number[][], options?: AIRenderOptions) => Promise<AIRenderResult | null>;
   /** Generate 3 preview renders in parallel with different seeds */
   renderPreviews: (map: MapboxMap, options?: AIRenderOptions) => Promise<AIRenderResult[]>;
-  /** Generate a full-quality render with a locked seed. By default renders from current view only (single-view). */
+  /** Generate a full-quality render with a locked seed. */
   renderFull: (map: MapboxMap, options: AIRenderOptions, seed: number, singleView?: boolean) => Promise<AIRenderResult | null>;
   /** 4-face render results — one per bearing */
   faceRenders: FaceRender[];
@@ -131,7 +132,7 @@ export interface UseAIRenderReturn {
 }
 
 // ---------------------------------------------------------------------------
-// Style presets
+// Style presets (kept for UI compatibility — the structured prompt overrides)
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
@@ -251,28 +252,97 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Gemini render style modifiers (from the Orchestration Spec)
+// ---------------------------------------------------------------------------
+
+interface GeminiStyleModifier {
+  id: string;
+  label: string;
+  prompt: string;
+}
+
+const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
+  photorealistic: {
+    id: 'photorealistic',
+    label: 'Photorealistic',
+    prompt: 'Photorealistic aerial rendering. Accurate material textures, precise cast shadows, realistic vegetation, parked cars and street furniture. DSLR-quality, sharp focus, neutral white balance, high dynamic range. 8k architectural photography.',
+  },
+  'drone-photography': {
+    id: 'drone-photography',
+    label: 'Drone Photo',
+    prompt: 'Professional DJI drone photograph style. Deep depth of field, subtle atmospheric haze on distant objects, real-estate aerial survey documentation quality. Construction-complete, 8k.',
+  },
+  'photomontage': {
+    id: 'photomontage',
+    label: 'Photomontage',
+    prompt: 'Professional architectural photomontage. Buildings seamlessly composited into real satellite photograph, matched sun direction and color temperature. Planning application submission quality.',
+  },
+  'golden-hour': {
+    id: 'golden-hour',
+    label: 'Golden Hour',
+    prompt: 'Cinematic golden hour. Warm 3000K amber-orange sunlight, long dramatic shadows, building facades glowing warm orange, windows reflecting sunset colors, sky gradient from deep orange through pink to dark blue. Rim lighting on tree edges.',
+  },
+  'night-scene': {
+    id: 'night-scene',
+    label: 'Night Scene',
+    prompt: 'Night photograph. Dark navy sky, buildings defined by warm interior lighting through windows, street lamps casting pools of warm light, wet reflective pavement with light reflections, cool moonlight rim on rooftops.',
+  },
+  'overcast-soft': {
+    id: 'overcast-soft',
+    label: 'Overcast',
+    prompt: 'Overcast conditions. Uniform diffused lighting with zero harsh shadows, cool 6500K color temperature, accurate material colors without glare, calm muted atmosphere.',
+  },
+  'summer': {
+    id: 'summer',
+    label: 'Summer',
+    prompt: 'Peak midsummer. Dense fully-leafed tree canopy in deep saturated greens, lush lawns, vivid blue sky, strong high-angle sun, vibrant flower beds, people using outdoor terraces.',
+  },
+  'autumn': {
+    id: 'autumn',
+    label: 'Autumn',
+    prompt: 'Peak autumn. Trees in rich burnt orange, deep red, gold and amber foliage, scattered fallen leaves, warm low-angle golden sunlight with long shadows, slight atmospheric haze.',
+  },
+  watercolour: {
+    id: 'watercolour',
+    label: 'Watercolour',
+    prompt: 'Watercolour painting style. Transparent pigment washes on textured paper, soft bleeding edges, visible paper grain, selective detail dissolving into loose washes at periphery, muted earth tones.',
+  },
+  'pencil-sketch': {
+    id: 'pencil-sketch',
+    label: 'Pencil Sketch',
+    prompt: 'Monochrome graphite pencil sketch. Confident hand-drawn lines with varying pressure, parallel hatching for shadows, white paper for sky and highlights, freehand architectural concept quality.',
+  },
+  collage: {
+    id: 'collage',
+    label: 'Collage',
+    prompt: 'Architectural digital collage. Photographic fragments with different qualities, flat textures on building surfaces, cut-out people, intentional seams, eclectic layered composition.',
+  },
+  'massing-study': {
+    id: 'massing-study',
+    label: 'Massing Study',
+    prompt: 'White massing model. All surfaces uniform matte white plaster, no texture detail, pure geometric volumes showing mass and proportion, soft studio lighting, ambient occlusion shadows.',
+  },
+  'site-plan': {
+    id: 'site-plan',
+    label: 'Site Plan',
+    prompt: 'Top-down site plan. Buildings as flat roof footprints with subtle shadow, trees as circular green canopy blobs, roads as clean grey strips, planning document quality.',
+  },
+};
+
+// ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Primary model — FLUX Pro Fill. Purpose-built for inpainting, highest quality.
- *  Uses a binary mask to selectively generate photorealistic buildings ONLY
- *  where colored zone blocks exist, preserving surrounding satellite imagery. */
-const FLUX_PRO_FILL_MODEL_ID = 'fal-ai/flux-pro/v1/fill';
-
-/** Fallback model — FLUX general inpainting (dev). Supports LoRA/ControlNet. */
-const FLUX_INPAINT_MODEL_ID = 'fal-ai/flux-general/inpainting';
-
-/** Fallback model — FLUX dev image-to-image. Used when no mask is available. */
-const FLUX_IMG2IMG_MODEL_ID = 'fal-ai/flux/dev/image-to-image';
-
-/** Fallback model — Nano Banana 2 Edit. Gemini-based semantic editor,
- *  no mask needed but can be slower and less reliable. */
+/** Primary model — Nano Banana 2 Edit (Gemini 3.1 Flash).
+ *  Uses Gemini's visual reasoning to understand colored polygons as spatial guides.
+ *  No mask needed — prompt-engineering approach. */
 const NANO_BANANA_MODEL_ID = 'fal-ai/nano-banana-2/edit';
 
-const DEFAULT_STRENGTH = 0.58;
-const DEFAULT_STEPS = 28;
-const DEFAULT_GUIDANCE = 3.5;
-const DEFAULT_STYLE = 'photorealistic';
+/** Alternative Gemini model — cheaper but similar quality */
+const GEMINI_25_FLASH_MODEL_ID = 'fal-ai/gemini-25-flash-image/edit';
+
+/** Fallback model — FLUX Pro Fill (mask-based, kept as last resort) */
+const FLUX_PRO_FILL_MODEL_ID = 'fal-ai/flux-pro/v1/fill';
 
 /** Max retries per model before falling back */
 const MAX_RETRIES = 2;
@@ -305,7 +375,6 @@ function zoneBounds(coords: number[][], padding = 0.3): { west: number; south: n
     if (lat < south) south = lat;
     if (lat > north) north = lat;
   }
-  // Add padding so the building isn't right at the edges
   const lngPad = (east - west) * padding;
   const latPad = (north - south) * padding;
   return {
@@ -345,28 +414,338 @@ function easeMapTo(map: MapboxMap, bearing: number, pitch: number): Promise<void
     map.easeTo({ bearing, pitch, duration: 800 });
     const onIdle = () => {
       map.off('idle', onIdle);
-      // Small extra delay to ensure tiles are rendered
       setTimeout(resolve, 300);
     };
     map.on('idle', onIdle);
   });
 }
 
-/** Build the full prompt from style + archetype + custom additions */
-function buildPrompt(options: AIRenderOptions): string {
-  // If we have a specific map-overlay prompt from the enriched archetype, use it directly
-  if (options.mapOverlayPrompt?.trim()) {
-    let prompt = options.mapOverlayPrompt.trim();
-    if (options.customPrompt?.trim()) {
-      prompt += ', ' + options.customPrompt.trim();
-    }
-    return prompt;
+/** Determine which face should be visible based on current map bearing */
+function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left' {
+  const b = ((bearing % 360) + 360) % 360;
+  if (b >= 315 || b < 45) return 'front';
+  if (b >= 45 && b < 135) return 'right';
+  if (b >= 135 && b < 225) return 'rear';
+  return 'left';
+}
+
+
+// ---------------------------------------------------------------------------
+// Structured prompt builder — Spatial-to-Render Orchestration
+// ---------------------------------------------------------------------------
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
+
+interface ZonePromptEntry {
+  color: string;
+  zoneType: string;
+  zoneName: string;
+  archetypeTitle?: string;
+  facadeDescription?: string;
+  roofDescription?: string;
+  materials?: string;
+  massing?: string;
+  heightTendency?: string;
+  publicRealm?: string;
+  mapOverlayPrompt?: string;
+}
+
+/**
+ * Extract archetype metadata for a single zone by looking up its
+ * `development_archetype_id`, `road_archetype_id`, etc. properties.
+ */
+function getZoneArchetypeInfo(zone: SiteZone): {
+  archetypeTitle?: string;
+  facadeDescription?: string;
+  roofDescription?: string;
+  materials?: string;
+  massing?: string;
+  heightTendency?: string;
+  publicRealm?: string;
+  mapOverlayPrompt?: string;
+} {
+  if (!zone.properties || !catalog) return {};
+
+  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+
+  for (const prefix of PREFIXES) {
+    const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
+    if (!archetypeId) continue;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const entry = catalog.find((a: any) =>
+      a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
+    );
+    if (!entry) continue;
+
+    const sp = entry.styleProfile || {};
+    const fd = entry.facadeDetail || {};
+    const rd = entry.roofDetail || {};
+
+    // Build a rich facade description from facadeDetail
+    const facadeParts: string[] = [];
+    if (fd.primaryMaterial) facadeParts.push(fd.primaryMaterial);
+    if (fd.groundFloor) facadeParts.push(`Ground floor: ${fd.groundFloor}`);
+    if (fd.upperFloors) facadeParts.push(`Upper floors: ${fd.upperFloors}`);
+    if (fd.cornice) facadeParts.push(`Cornice: ${fd.cornice}`);
+    if (fd.colorScheme) facadeParts.push(`Colors: ${fd.colorScheme}`);
+
+    // Build roof description
+    const roofParts: string[] = [];
+    if (rd.form) roofParts.push(rd.form);
+    if (rd.material) roofParts.push(rd.material);
+    if (rd.features) roofParts.push(rd.features);
+    if (rd.aerialAppearance) roofParts.push(`Aerial: ${rd.aerialAppearance}`);
+
+    // Materials list
+    const materials = Array.isArray(sp.materials) ? sp.materials.join(', ') : sp.materials;
+
+    return {
+      archetypeTitle: entry.title,
+      facadeDescription: facadeParts.length > 0 ? facadeParts.join('. ') : undefined,
+      roofDescription: roofParts.length > 0 ? roofParts.join('. ') : undefined,
+      materials: materials || undefined,
+      massing: sp.massing || undefined,
+      heightTendency: sp.heightTendency || undefined,
+      publicRealm: sp.publicRealm || undefined,
+      mapOverlayPrompt: entry.renderPrompt?.mapOverlay || undefined,
+    };
   }
 
-  // Fallback to generic style preset
-  const styleId = options.renderStyleId || options.style || DEFAULT_STYLE;
+  return {};
+}
+
+/**
+ * Build zone-by-zone entries for the structured prompt.
+ * Maps each non-boundary zone to its color, type, and archetype metadata.
+ */
+function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
+  const entries: ZonePromptEntry[] = [];
+
+  for (const zone of zones) {
+    if (zone.zone_type === 'site_boundary') continue;
+    if (!zone.coordinates?.length) continue;
+
+    const config = ZONE_TYPE_CONFIG[zone.zone_type];
+    const color = zone.color || config?.color || '#888888';
+    const archetypeInfo = getZoneArchetypeInfo(zone);
+
+    entries.push({
+      color,
+      zoneType: zone.zone_type,
+      zoneName: zone.name || config?.label || zone.zone_type,
+      ...archetypeInfo,
+    });
+  }
+
+  // Deduplicate by color (multiple zones of same type/color get merged description)
+  const colorMap = new Map<string, ZonePromptEntry>();
+  for (const entry of entries) {
+    if (!colorMap.has(entry.color)) {
+      colorMap.set(entry.color, entry);
+    }
+    // If a later entry has better metadata, prefer it
+    else if (entry.archetypeTitle && !colorMap.get(entry.color)!.archetypeTitle) {
+      colorMap.set(entry.color, entry);
+    }
+  }
+
+  return Array.from(colorMap.values());
+}
+
+/**
+ * Human-readable color name for common hex colors used by zone types.
+ */
+function colorName(hex: string): string {
+  const map: Record<string, string> = {
+    '#E03C31': 'red',
+    '#e03c31': 'red',
+    '#F5D63D': 'yellow',
+    '#f5d63d': 'yellow',
+    '#616161': 'dark gray',
+    '#4CAF50': 'green',
+    '#4caf50': 'green',
+    '#9E9E9E': 'light gray',
+    '#9e9e9e': 'light gray',
+    '#4A90D9': 'blue',
+    '#4a90d9': 'blue',
+    '#C8A02A': 'gold/amber',
+    '#c8a02a': 'gold/amber',
+    '#F59E0B': 'orange/amber',
+    '#f59e0b': 'orange/amber',
+  };
+  return map[hex] || hex;
+}
+
+/**
+ * Build the default description for a zone type when no archetype is assigned.
+ */
+function defaultZoneDescription(zoneType: string): string {
+  switch (zoneType) {
+    case 'building':
+      return 'photorealistic commercial/mixed-use buildings with glass and concrete facades, ground-floor retail, multiple stories';
+    case 'residential':
+      return 'photorealistic residential buildings — townhouses or apartment blocks with warm materials, balconies, and landscaped entries';
+    case 'road':
+      return 'paved road with lane markings, sidewalks, street trees, and parked cars';
+    case 'green_space':
+      return 'landscaped park with mature trees, grass lawns, walking paths, benches, and ornamental planting';
+    case 'parking':
+      return 'paved surface parking or public plaza with pedestrian paving, bollards, and street furniture';
+    case 'water':
+      return 'water feature — pond, fountain, or reflecting pool with clean blue water and stone edges';
+    case 'development_area':
+      return 'mixed-use urban development with varied building heights, active ground floors, and public realm';
+    default:
+      return 'photorealistic urban development appropriate to the zone type';
+  }
+}
+
+/**
+ * Build the complete structured prompt following the 3-block Orchestration Spec:
+ *
+ * Block 1: Anchor Command — strict geometry/footprint adherence
+ * Block 2: Zone Mapping — iterate zones: color → archetype → render details
+ * Block 3: Environmental Context & Style Application
+ */
+function buildStructuredPrompt(options: AIRenderOptions): string {
+  const zones = options.siteZones || [];
+  const zoneEntries = collectZonePromptEntries(zones);
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
+  const styleModifier = GEMINI_STYLE_MODIFIERS[styleId] || GEMINI_STYLE_MODIFIERS['photorealistic'];
+
+  // ── Block 1: Anchor Command ──
+  const block1 = [
+    'You are looking at an aerial/satellite photograph with colored polygon overlays representing a proposed urban development.',
+    'Each colored polygon marks the EXACT footprint of a building, road, park, or other zone.',
+    'CRITICAL RULES:',
+    '- Replace ONLY the colored polygon areas with photorealistic content as described below.',
+    '- Preserve the EXACT footprint, shape, and position of each colored polygon — do not move, resize, or reshape any zone.',
+    '- Keep ALL surrounding satellite imagery, roads, existing buildings, and context EXACTLY as they appear — change NOTHING outside the colored areas.',
+    '- Match the lighting direction, color temperature, and perspective of the surrounding satellite context.',
+    '- The result must look like a seamless photomontage where new development is composited into the real satellite photograph.',
+  ].join('\n');
+
+  // ── Block 2: Zone Mapping ──
+  let block2: string;
+  if (zoneEntries.length > 0) {
+    const zoneLines = zoneEntries.map((entry) => {
+      const color = colorName(entry.color);
+      let desc: string;
+
+      if (entry.mapOverlayPrompt) {
+        // Use the archetype's specific render prompt (best quality)
+        desc = entry.mapOverlayPrompt;
+      } else if (entry.archetypeTitle) {
+        // Build from archetype metadata
+        const parts = [`${entry.archetypeTitle}`];
+        if (entry.facadeDescription) parts.push(`Facade: ${entry.facadeDescription}`);
+        if (entry.roofDescription) parts.push(`Roof: ${entry.roofDescription}`);
+        if (entry.materials) parts.push(`Materials: ${entry.materials}`);
+        if (entry.massing) parts.push(`Massing: ${entry.massing}`);
+        if (entry.heightTendency) parts.push(`Height: ${entry.heightTendency}`);
+        if (entry.publicRealm) parts.push(`Street edge: ${entry.publicRealm}`);
+        desc = parts.join('. ');
+      } else {
+        // Fallback to zone-type default
+        desc = defaultZoneDescription(entry.zoneType);
+      }
+
+      return `• ${color.toUpperCase()} zones (${entry.color}, ${entry.zoneName}): ${desc}`;
+    });
+
+    block2 = [
+      '',
+      'ZONE-BY-ZONE TRANSFORMATION:',
+      ...zoneLines,
+    ].join('\n');
+  } else {
+    // No zone data — fall back to generic color interpretation
+    block2 = [
+      '',
+      'ZONE-BY-ZONE TRANSFORMATION:',
+      '• RED zones (#E03C31): Replace with photorealistic commercial/mixed-use buildings with glass and concrete facades, ground-floor retail',
+      '• YELLOW zones (#F5D63D): Replace with photorealistic residential buildings — townhouses or apartments with warm materials and balconies',
+      '• GREEN zones (#4CAF50): Replace with landscaped parks with mature trees, grass lawns, walking paths, and benches',
+      '• DARK GRAY zones (#616161): Replace with paved roads with lane markings, sidewalks, street trees, and parked cars',
+      '• LIGHT GRAY zones (#9E9E9E): Replace with paved plazas or surface parking with pedestrian paving and street furniture',
+      '• BLUE zones (#4A90D9): Replace with water features — ponds, fountains, or reflecting pools',
+      '• GOLD/AMBER zones (#C8A02A): Replace with mixed-use urban development with varied heights and active ground floors',
+    ].join('\n');
+  }
+
+  // ── Block 3: Environmental Context & Style ──
+  const block3Parts = [
+    '',
+    'STYLE & ENVIRONMENT:',
+    styleModifier.prompt,
+  ];
+
+  // Add custom prompt if provided
+  if (options.customPrompt?.trim()) {
+    block3Parts.push(`Additional direction: ${options.customPrompt.trim()}`);
+  }
+
+  // Add archetype positive prompts if available
+  if (options.archetypePrompt?.trim()) {
+    block3Parts.push(`Archetype style: ${options.archetypePrompt.trim()}`);
+  }
+
+  block3Parts.push(
+    '',
+    'QUALITY: Ultra-high resolution, sharp focus, photorealistic materials with visible texture and grain, realistic shadows consistent with sun position, 8k quality.',
+  );
+
+  const block3 = block3Parts.join('\n');
+
+  return [block1, block2, block3].join('\n');
+}
+
+/**
+ * Build a simpler prompt for when we have a specific mapOverlayPrompt
+ * (single-archetype scenario — the archetype already has a complete prompt).
+ */
+function buildSingleArchetypePrompt(options: AIRenderOptions): string {
+  if (!options.mapOverlayPrompt?.trim()) return buildStructuredPrompt(options);
+
+  const parts = [
+    'You are looking at an aerial/satellite photograph with colored polygon overlays.',
+    'Replace ONLY the colored polygon areas with the following:',
+    '',
+    options.mapOverlayPrompt.trim(),
+    '',
+    'CRITICAL: Keep ALL surrounding satellite imagery exactly as-is. Change NOTHING outside the colored areas.',
+    'Match the lighting, color temperature, and perspective of the surrounding context.',
+  ];
+
+  if (options.customPrompt?.trim()) {
+    parts.push(`Additional: ${options.customPrompt.trim()}`);
+  }
+
+  return parts.join('\n');
+}
+
+/**
+ * Master prompt builder — decides between structured multi-zone prompt
+ * and single-archetype prompt based on available data.
+ */
+function buildPrompt(options: AIRenderOptions): string {
+  // If we have multiple zones with data, use the structured prompt
+  const zones = options.siteZones?.filter(z => z.zone_type !== 'site_boundary') || [];
+  if (zones.length > 0) {
+    return buildStructuredPrompt(options);
+  }
+
+  // If we have a single archetype overlay prompt, use that
+  if (options.mapOverlayPrompt?.trim()) {
+    return buildSingleArchetypePrompt(options);
+  }
+
+  // Final fallback: use generic style preset
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
   const preset = AI_RENDER_STYLES.find((s) => s.id === styleId) || AI_RENDER_STYLES[0];
-  let prompt = preset.prompt;
+  let prompt = `Transform the colored overlay zones in this aerial photograph into photorealistic development. ${preset.prompt}`;
   if (options.archetypePrompt?.trim()) {
     prompt += ', ' + options.archetypePrompt.trim();
   }
@@ -376,264 +755,204 @@ function buildPrompt(options: AIRenderOptions): string {
   return prompt;
 }
 
-/** Build the negative prompt (reserved for future use with models that support it) */
-function buildNegative(options: AIRenderOptions): string {
-  // Use map-overlay negative prompt if available
-  if (options.mapOverlayNegative?.trim()) {
-    return options.mapOverlayNegative.trim() + ', changing background, modifying surroundings, altering satellite imagery outside the development area';
-  }
-  const styleId = options.renderStyleId || options.style || DEFAULT_STYLE;
-  const preset = AI_RENDER_STYLES.find((s) => s.id === styleId) || AI_RENDER_STYLES[0];
-  let negative = preset.negative || 'cartoon, illustration, sketch, low quality, blurry, text, watermark';
-  if (options.archetypeNegative?.trim()) {
-    negative += ', ' + options.archetypeNegative.trim();
-  }
-  negative += ', changing background, modifying surroundings, altering satellite imagery outside the development area';
-  return negative;
-}
-void buildNegative; // reserved for future use with models supporting negative prompts
-
-/** Determine which face should be visible based on current map bearing */
-function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left' {
-  // Normalize bearing to 0-360
-  const b = ((bearing % 360) + 360) % 360;
-  if (b >= 315 || b < 45) return 'front';
-  if (b >= 45 && b < 135) return 'right';
-  if (b >= 135 && b < 225) return 'rear';
-  return 'left';
-}
-
 // ---------------------------------------------------------------------------
-// Site boundary compositing — only replace pixels inside the boundary
+// Model call functions
 // ---------------------------------------------------------------------------
 
-/**
- * Load an image from a URL or Blob into an HTMLImageElement.
- * Works with fal.media URLs and blob: URLs.
- */
-function loadImage(src: string | Blob): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => resolve(img);
-    img.onerror = (e) => reject(new Error(`Failed to load image: ${e}`));
-    if (src instanceof Blob) {
-      const url = URL.createObjectURL(src);
-      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-      img.src = url;
-    } else {
-      img.src = src;
+/** Call Nano Banana 2 Edit (Gemini-based — PRIMARY model) */
+async function callNanoBanana(
+  screenshotUrl: string,
+  prompt: string,
+  options: AIRenderOptions,
+  seed: number,
+): Promise<{ url: string; seed?: number } | null> {
+  // Collect reference images (screenshot + optional archetype refs)
+  const imageUrls = [screenshotUrl];
+  if (options.referenceImageUrls?.length) {
+    for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
+      imageUrls.push(refUrl);
     }
-  });
-}
-
-/**
- * Convert site boundary geographic coordinates to pixel coordinates
- * on the Mapbox canvas (physical pixels, accounting for devicePixelRatio).
- *
- * IMPORTANT: `map.project()` returns CSS pixel coordinates, but the canvas
- * `.toBlob()` and `.width/.height` use physical pixels. On HiDPI/Retina
- * displays (DPR=2), CSS pixel 600 maps to physical pixel 1200.
- */
-function siteBoundaryToPixels(
-  map: MapboxMap,
-  coords: number[][],
-): { x: number; y: number }[] {
-  const dpr = window.devicePixelRatio || 1;
-  return coords.map(([lng, lat]) => {
-    const point = map.project([lng, lat]);
-    return { x: point.x * dpr, y: point.y * dpr };
-  });
-}
-
-/**
- * Create a cropped version of the screenshot containing just the site boundary area.
- * The area outside the boundary polygon is filled with the average color of the
- * surrounding satellite imagery (to avoid confusing the AI with black edges).
- *
- * Returns the cropped blob AND the crop rectangle so we can stitch it back.
- */
-async function cropToSiteBoundary(
-  originalBlob: Blob,
-  boundaryPixels: { x: number; y: number }[],
-  padding = 40,
-): Promise<{
-  croppedBlob: Blob;
-  cropRect: { x: number; y: number; w: number; h: number };
-}> {
-  const img = await loadImage(originalBlob);
-  const fullW = img.naturalWidth;
-  const fullH = img.naturalHeight;
-
-  // Compute bounding box of the boundary polygon with padding
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const p of boundaryPixels) {
-    if (p.x < minX) minX = p.x;
-    if (p.y < minY) minY = p.y;
-    if (p.x > maxX) maxX = p.x;
-    if (p.y > maxY) maxY = p.y;
+  } else if (options.referenceImageUrl) {
+    imageUrls.push(options.referenceImageUrl);
   }
-  // Add padding and clamp
-  const cropX = Math.max(0, Math.floor(minX - padding));
-  const cropY = Math.max(0, Math.floor(minY - padding));
-  const cropW = Math.min(fullW - cropX, Math.ceil(maxX - minX + padding * 2));
-  const cropH = Math.min(fullH - cropY, Math.ceil(maxY - minY + padding * 2));
 
-  const canvas = document.createElement('canvas');
-  canvas.width = cropW;
-  canvas.height = cropH;
-  const ctx = canvas.getContext('2d')!;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const body: Record<string, any> = {
+    prompt,
+    image_urls: imageUrls,
+    resolution: '1K',
+    aspect_ratio: 'auto',
+    seed,
+    output_format: 'png',
+    safety_tolerance: '6',
+    num_images: 1,
+  };
 
-  // Draw the cropped region from the original
-  ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-  const blob = await new Promise<Blob>((resolve, reject) => {
-    canvas.toBlob((b) => {
-      if (b) resolve(b);
-      else reject(new Error('Failed to crop canvas'));
-    }, 'image/png');
+  console.log('[AIRender] Nano Banana 2 (Gemini) request:', {
+    model: NANO_BANANA_MODEL_ID,
+    promptLength: prompt.length,
+    promptPreview: prompt.slice(0, 200) + '...',
+    imageCount: imageUrls.length,
+    seed,
   });
 
-  return {
-    croppedBlob: blob,
-    cropRect: { x: cropX, y: cropY, w: cropW, h: cropH },
-  };
-}
-
-/**
- * Stitch a rendered crop back into the original screenshot at the correct position,
- * using the site boundary polygon as a mask.
- */
-async function stitchRenderedCrop(
-  originalBlob: Blob,
-  renderedCropUrl: string,
-  cropRect: { x: number; y: number; w: number; h: number },
-  boundaryPixels: { x: number; y: number }[],
-): Promise<Blob> {
-  const [originalImg, renderedImg] = await Promise.all([
-    loadImage(originalBlob),
-    loadImage(renderedCropUrl),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: any = await Promise.race([
+    fal.subscribe(NANO_BANANA_MODEL_ID, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      input: body as any,
+      logs: true,
+      onQueueUpdate: (update) => {
+        console.log('[AIRender] Nano Banana queue:', update.status);
+      },
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Nano Banana timeout')), RENDER_TIMEOUT)),
   ]);
 
-  const w = originalImg.naturalWidth;
-  const h = originalImg.naturalHeight;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d')!;
-
-  // Step 1: Draw the original screenshot (untouched)
-  ctx.drawImage(originalImg, 0, 0, w, h);
-
-  // Step 2: Clip to the site boundary polygon
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
-  for (let i = 1; i < boundaryPixels.length; i++) {
-    ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+  const images = data?.data?.images ?? data?.images;
+  if (!images?.length) {
+    console.warn('[AIRender] Nano Banana returned no images:', JSON.stringify(data).slice(0, 300));
+    return null;
   }
-  ctx.closePath();
-  ctx.clip();
+  const url = images[0]?.url;
+  if (!url) return null;
 
-  // Step 3: Draw the rendered crop at its original position within the clip
-  ctx.drawImage(
-    renderedImg,
-    0, 0, renderedImg.naturalWidth, renderedImg.naturalHeight,
-    cropRect.x, cropRect.y, cropRect.w, cropRect.h,
-  );
-  ctx.restore();
-
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => {
-      if (b) resolve(b);
-      else reject(new Error('Failed to stitch canvas'));
-    }, 'image/png');
-  });
+  console.log('[AIRender] Nano Banana success:', url.slice(0, 80));
+  return { url, seed: data?.data?.seed ?? data?.seed };
 }
 
-// ---------------------------------------------------------------------------
-// Inpainting mask generation
-// ---------------------------------------------------------------------------
+/** Call Gemini 2.5 Flash (alternative Gemini model) */
+async function callGemini25Flash(
+  screenshotUrl: string,
+  prompt: string,
+  options: AIRenderOptions,
+  seed: number,
+): Promise<{ url: string; seed?: number } | null> {
+  const imageUrls = [screenshotUrl];
+  if (options.referenceImageUrls?.length) {
+    for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
+      imageUrls.push(refUrl);
+    }
+  } else if (options.referenceImageUrl) {
+    imageUrls.push(options.referenceImageUrl);
+  }
 
-/**
- * Generate a binary inpainting mask from site zones.
- * White (255) = zone polygons where buildings should be generated.
- * Black (0) = everything else that should be preserved.
- *
- * The mask is the same dimensions as the map canvas.
- * All non-site_boundary zones are projected to pixel coordinates and
- * drawn as filled white polygons.
- */
-function generateInpaintMask(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const body: Record<string, any> = {
+    prompt,
+    image_urls: imageUrls,
+    seed,
+    output_format: 'png',
+    num_images: 1,
+  };
+
+  console.log('[AIRender] Gemini 2.5 Flash request:', {
+    model: GEMINI_25_FLASH_MODEL_ID,
+    promptLength: prompt.length,
+    seed,
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: any = await Promise.race([
+    fal.subscribe(GEMINI_25_FLASH_MODEL_ID, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      input: body as any,
+      logs: true,
+      onQueueUpdate: (update) => {
+        console.log('[AIRender] Gemini 2.5 Flash queue:', update.status);
+      },
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Gemini 2.5 Flash timeout')), RENDER_TIMEOUT)),
+  ]);
+
+  const images = data?.data?.images ?? data?.images;
+  if (!images?.length) {
+    console.warn('[AIRender] Gemini 2.5 Flash returned no images:', JSON.stringify(data).slice(0, 300));
+    return null;
+  }
+  const url = images[0]?.url;
+  if (!url) return null;
+
+  console.log('[AIRender] Gemini 2.5 Flash success:', url.slice(0, 80));
+  return { url, seed: data?.data?.seed ?? data?.seed };
+}
+
+/** Call FLUX Pro Fill (mask-based fallback — kept as last resort) */
+async function callFluxProFill(
+  imageUrl: string,
+  prompt: string,
+  seed: number,
   map: MapboxMap,
   zones: SiteZone[],
-  canvasWidth: number,
-  canvasHeight: number,
-): Promise<Blob> {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-  const ctx = canvas.getContext('2d')!;
-
-  // Start with all black (preserve everything)
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-  // Draw each non-site_boundary zone as white (area to inpaint)
-  // IMPORTANT: map.project() returns CSS pixels — must scale by DPR
-  // to match the physical-pixel canvas dimensions.
+): Promise<{ url: string; seed?: number } | null> {
+  // Generate inpainting mask
+  const mapCanvas = map.getCanvas();
   const dpr = window.devicePixelRatio || 1;
+
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = mapCanvas.width;
+  maskCanvas.height = mapCanvas.height;
+  const ctx = maskCanvas.getContext('2d')!;
+
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+
   ctx.fillStyle = '#ffffff';
   for (const zone of zones) {
     if (zone.zone_type === 'site_boundary') continue;
     if (!zone.coordinates?.length) continue;
-
     const pixels = zone.coordinates.map(([lng, lat]) => {
       const pt = map.project([lng, lat]);
       return { x: pt.x * dpr, y: pt.y * dpr };
     });
-
     if (pixels.length < 3) continue;
-
     ctx.beginPath();
     ctx.moveTo(pixels[0].x, pixels[0].y);
-    for (let i = 1; i < pixels.length; i++) {
-      ctx.lineTo(pixels[i].x, pixels[i].y);
-    }
+    for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
     ctx.closePath();
     ctx.fill();
   }
 
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => {
-      if (b) resolve(b);
-      else reject(new Error('Failed to generate inpainting mask'));
-    }, 'image/png');
+  const maskBlob = await new Promise<Blob>((resolve, reject) => {
+    maskCanvas.toBlob((b) => b ? resolve(b) : reject(new Error('mask failed')), 'image/png');
   });
-}
 
-/**
- * Generate a cropped inpainting mask that matches the cropped screenshot.
- * Takes the full-canvas mask and crops it to the same cropRect.
- */
-async function cropMask(
-  fullMaskBlob: Blob,
-  cropRect: { x: number; y: number; w: number; h: number },
-): Promise<Blob> {
-  const img = await loadImage(fullMaskBlob);
-  const canvas = document.createElement('canvas');
-  canvas.width = cropRect.w;
-  canvas.height = cropRect.h;
-  const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(img, cropRect.x, cropRect.y, cropRect.w, cropRect.h, 0, 0, cropRect.w, cropRect.h);
+  const maskFile = new File([maskBlob], 'mask.png', { type: 'image/png' });
+  const maskUrl = await fal.storage.upload(maskFile);
 
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((b) => {
-      if (b) resolve(b);
-      else reject(new Error('Failed to crop mask'));
-    }, 'image/png');
-  });
+  const inpaintPrompt = `${prompt}. Photorealistic satellite/aerial photograph showing completed urban development. Match lighting and perspective of surrounding imagery.`;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const body: Record<string, any> = {
+    image_url: imageUrl,
+    mask_url: maskUrl,
+    prompt: inpaintPrompt,
+    num_images: 1,
+    seed,
+    output_format: 'png',
+    safety_tolerance: '6',
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: any = await Promise.race([
+    fal.subscribe(FLUX_PRO_FILL_MODEL_ID, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      input: body as any,
+      logs: true,
+      onQueueUpdate: (update) => {
+        console.log('[AIRender] FLUX Pro Fill queue:', update.status);
+      },
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX Pro Fill timeout')), RENDER_TIMEOUT)),
+  ]);
+
+  const images = data?.data?.images ?? data?.images;
+  if (!images?.length) return null;
+  const url = images[0]?.url;
+  if (!url) return null;
+
+  console.log('[AIRender] FLUX Pro Fill success:', url.slice(0, 80));
+  return { url, seed: data?.data?.seed ?? data?.seed };
 }
 
 // ---------------------------------------------------------------------------
@@ -661,81 +980,58 @@ export function useAIRender(): UseAIRenderReturn {
     setStatusMessage('');
   }, []);
 
-  // ── Single-face render (used for previews and internal calls) ──────
+  // ── Core render function: Gemini with structured prompt ──────────────
 
-  const renderSingleFace = useCallback(
+  const renderWithGemini = useCallback(
     async (
       screenshotUrl: string,
       bounds: [[number, number], [number, number], [number, number], [number, number]],
       options: AIRenderOptions,
       seed: number,
-      maskUrl?: string,
+      map?: MapboxMap,
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
 
-      // ── If we have a mask, use FLUX Pro Fill first (best quality) ──
-      if (maskUrl) {
-        console.log('[AIRender] Using FLUX Pro Fill with mask...');
+      // ── Primary: Nano Banana 2 (Gemini 3.1 Flash) ──
+      console.log('[AIRender] Using Nano Banana 2 (Gemini) — structured prompt...');
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+          const result = await callNanoBanana(screenshotUrl, prompt, options, seed);
+          if (result) {
+            return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
+          }
+        } catch (err) {
+          console.warn(`[AIRender] Nano Banana attempt ${attempt + 1} failed:`, err);
+          if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      // ── Fallback 1: Gemini 2.5 Flash ──
+      console.log('[AIRender] Nano Banana failed, trying Gemini 2.5 Flash...');
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        try {
+          const result = await callGemini25Flash(screenshotUrl, prompt, options, seed);
+          if (result) {
+            return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
+          }
+        } catch (err) {
+          console.warn(`[AIRender] Gemini 2.5 Flash attempt ${attempt + 1} failed:`, err);
+          if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      // ── Fallback 2: FLUX Pro Fill with mask (last resort) ──
+      if (map && options.siteZones?.length) {
+        console.log('[AIRender] Gemini models failed, falling back to FLUX Pro Fill with mask...');
         for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
           try {
-            const result = await callFluxProFill(screenshotUrl, maskUrl, prompt, seed);
+            const result = await callFluxProFill(screenshotUrl, prompt, seed, map, options.siteZones);
             if (result) {
               return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
             }
           } catch (err) {
             console.warn(`[AIRender] FLUX Pro Fill attempt ${attempt + 1} failed:`, err);
-            if (attempt < MAX_RETRIES - 1) {
-              await new Promise(r => setTimeout(r, 1000));
-            }
-          }
-        }
-
-        // ── Fallback: FLUX general inpainting ──
-        console.log('[AIRender] Pro Fill failed, trying FLUX general inpainting...');
-        for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-          try {
-            const result = await callFluxInpainting(screenshotUrl, maskUrl, prompt, options, seed);
-            if (result) {
-              return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
-            }
-          } catch (err) {
-            console.warn(`[AIRender] General inpainting attempt ${attempt + 1} failed:`, err);
-            if (attempt < MAX_RETRIES - 1) {
-              await new Promise(r => setTimeout(r, 1000));
-            }
-          }
-        }
-        console.warn('[AIRender] All inpainting models failed, falling back to img2img...');
-      }
-
-      // ── Fallback: FLUX dev img2img (no mask) ──
-      console.log('[AIRender] Attempting FLUX dev img2img...');
-      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-        try {
-          const fluxResult = await callFluxImg2Img(screenshotUrl, prompt, options, seed);
-          if (fluxResult) {
-            return { imageUrl: fluxResult.url, bounds, seed: fluxResult.seed ?? seed, prompt };
-          }
-        } catch (fluxErr) {
-          console.warn(`[AIRender] FLUX img2img attempt ${attempt + 1} failed:`, fluxErr);
-          if (attempt < MAX_RETRIES - 1) {
-            await new Promise(r => setTimeout(r, 1000));
-          }
-        }
-      }
-
-      // ── Last resort: Nano Banana 2 Edit ──
-      console.log('[AIRender] FLUX failed, falling back to Nano Banana 2 Edit...');
-      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-        try {
-          const nbResult = await callNanoBanana(screenshotUrl, prompt, options, seed);
-          if (nbResult) {
-            return { imageUrl: nbResult.url, bounds, seed: nbResult.seed ?? seed, prompt };
-          }
-        } catch (nbErr) {
-          console.warn(`[AIRender] Nano Banana attempt ${attempt + 1} failed:`, nbErr);
-          if (attempt < MAX_RETRIES - 1) {
-            await new Promise(r => setTimeout(r, 1000));
+            if (attempt < MAX_RETRIES - 1) await new Promise(r => setTimeout(r, 1000));
           }
         }
       }
@@ -745,260 +1041,6 @@ export function useAIRender(): UseAIRenderReturn {
     },
     [],
   );
-
-  // ── FLUX Pro Fill call (highest quality inpainting) ──────────────
-  async function callFluxProFill(
-    imageUrl: string,
-    maskUrl: string,
-    prompt: string,
-    seed: number,
-  ): Promise<{ url: string; seed?: number } | null> {
-    // FLUX Pro Fill is purpose-built for inpainting — it handles strength
-    // internally and should produce the best results for masked inpainting.
-    const inpaintPrompt = `${prompt}. Photorealistic satellite/aerial photograph showing completed urban development with realistic buildings, streets, landscaping, parks, and infrastructure. Match the lighting, color temperature, and perspective of the surrounding satellite imagery exactly.`;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const body: Record<string, any> = {
-      image_url: imageUrl,
-      mask_url: maskUrl,
-      prompt: inpaintPrompt,
-      num_images: 1,
-      seed,
-      output_format: 'png',
-      safety_tolerance: '6',
-    };
-
-    console.log('[AIRender] FLUX Pro Fill request:', {
-      model: FLUX_PRO_FILL_MODEL_ID,
-      prompt: inpaintPrompt.slice(0, 150) + '...',
-      seed,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await Promise.race([
-      fal.subscribe(FLUX_PRO_FILL_MODEL_ID, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: body as any,
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('[AIRender] FLUX Pro Fill queue:', update.status);
-        },
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX Pro Fill timeout')), RENDER_TIMEOUT)),
-    ]);
-
-    const images = data?.data?.images ?? data?.images;
-    if (!images?.length) {
-      console.warn('[AIRender] FLUX Pro Fill returned no images:', JSON.stringify(data).slice(0, 300));
-      return null;
-    }
-    const url = images[0]?.url;
-    if (!url) return null;
-
-    console.log('[AIRender] FLUX Pro Fill success:', url.slice(0, 80));
-    return { url, seed: data?.data?.seed ?? data?.seed };
-  }
-
-  // ── FLUX general inpainting call (fallback) ──────────────────────
-  async function callFluxInpainting(
-    imageUrl: string,
-    maskUrl: string,
-    prompt: string,
-    options: AIRenderOptions,
-    seed: number,
-  ): Promise<{ url: string; seed?: number } | null> {
-    const styleId = options.renderStyleId || options.style || DEFAULT_STYLE;
-    const stylePreset = AI_RENDER_STYLES.find((s) => s.id === styleId);
-    const strength = options.controlStrength ?? stylePreset?.strength ?? DEFAULT_STRENGTH;
-    const steps = options.steps ?? DEFAULT_STEPS;
-    const guidance = options.guidanceScale ?? DEFAULT_GUIDANCE;
-
-    // For inpainting, the prompt should describe what to generate in the masked area
-    const inpaintPrompt = `${prompt}. Replace the colored massing blocks with photorealistic buildings, streets, landscaping, and urban infrastructure as seen from above in satellite/aerial imagery. Match the lighting, color temperature, and perspective of the surrounding real satellite photograph.`;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const body: Record<string, any> = {
-      image_url: imageUrl,
-      mask_url: maskUrl,
-      prompt: inpaintPrompt,
-      strength,
-      num_inference_steps: steps,
-      guidance_scale: guidance,
-      num_images: 1,
-      seed,
-      output_format: 'png',
-    };
-
-    if (options.imageSize) {
-      body.image_size = options.imageSize;
-    }
-
-    console.log('[AIRender] FLUX inpainting request:', {
-      model: FLUX_INPAINT_MODEL_ID,
-      prompt: inpaintPrompt.slice(0, 150) + '...',
-      strength,
-      steps,
-      guidance,
-      seed,
-      hasImage: !!imageUrl,
-      hasMask: !!maskUrl,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await Promise.race([
-      fal.subscribe(FLUX_INPAINT_MODEL_ID, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: body as any,
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('[AIRender] FLUX inpainting queue:', update.status);
-        },
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX inpainting timeout')), RENDER_TIMEOUT)),
-    ]);
-
-    const images = data?.data?.images ?? data?.images;
-    if (!images?.length) {
-      console.warn('[AIRender] FLUX inpainting returned no images:', JSON.stringify(data).slice(0, 300));
-      return null;
-    }
-    const url = images[0]?.url;
-    if (!url) return null;
-
-    console.log('[AIRender] FLUX inpainting success:', url.slice(0, 80));
-    return { url, seed: data?.data?.seed ?? data?.seed };
-  }
-
-  // ── FLUX dev image-to-image call (fallback when no mask) ──────────
-  async function callFluxImg2Img(
-    imageUrl: string,
-    prompt: string,
-    options: AIRenderOptions,
-    seed: number,
-  ): Promise<{ url: string; seed?: number } | null> {
-    // Resolve strength: explicit option > style preset > default
-    const styleId = options.renderStyleId || options.style || DEFAULT_STYLE;
-    const stylePreset = AI_RENDER_STYLES.find((s) => s.id === styleId);
-    const strength = options.controlStrength ?? stylePreset?.strength ?? DEFAULT_STRENGTH;
-    const steps = options.steps ?? DEFAULT_STEPS;
-    const guidance = options.guidanceScale ?? DEFAULT_GUIDANCE;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const body: Record<string, any> = {
-      image_url: imageUrl,
-      prompt: `${prompt}. The colored shapes in this image represent proposed buildings and development zones. Transform them into the described style while keeping the surrounding context intact.`,
-      strength,
-      num_inference_steps: steps,
-      guidance_scale: guidance,
-      num_images: 1,
-      seed,
-      output_format: 'png',
-    };
-
-    // Add image_size if specified
-    if (options.imageSize) {
-      body.image_size = options.imageSize;
-    }
-
-    console.log('[AIRender] FLUX request:', {
-      model: FLUX_IMG2IMG_MODEL_ID,
-      prompt: body.prompt.slice(0, 150) + '...',
-      strength,
-      steps,
-      guidance,
-      seed,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await Promise.race([
-      fal.subscribe(FLUX_IMG2IMG_MODEL_ID, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: body as any,
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('[AIRender] FLUX queue:', update.status);
-        },
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX timeout')), RENDER_TIMEOUT)),
-    ]);
-
-    const images = data?.data?.images ?? data?.images;
-    if (!images?.length) {
-      console.warn('[AIRender] FLUX returned no images:', JSON.stringify(data).slice(0, 300));
-      return null;
-    }
-    const url = images[0]?.url;
-    if (!url) return null;
-
-    console.log('[AIRender] FLUX success:', url.slice(0, 80));
-    return { url, seed: data?.data?.seed ?? data?.seed };
-  }
-
-  // ── Nano Banana 2 Edit call ──────────────────────────────────────
-  async function callNanoBanana(
-    screenshotUrl: string,
-    prompt: string,
-    options: AIRenderOptions,
-    seed: number,
-  ): Promise<{ url: string; seed?: number } | null> {
-    // Build edit instruction for Nano Banana's semantic understanding
-    const editInstruction = options.mapOverlayPrompt
-      ? `This is a satellite/aerial photo with colored overlay shapes marking development zones. Replace the colored overlay shapes with ${prompt}. The colored shapes should become photorealistic buildings, houses, parks, and streets as seen from above in satellite imagery. Keep everything outside the colored shapes exactly the same.`
-      : `This is a satellite/aerial photo with colored overlay shapes. Replace every colored overlay shape with photorealistic development: yellow shapes become residential houses, red/orange become commercial buildings, purple become mixed-use, green become parks, blue become institutional. ${prompt}. Keep everything outside the shapes the same.`;
-
-    // Collect reference images
-    const imageUrls = [screenshotUrl];
-    if (options.referenceImageUrls?.length) {
-      for (const refUrl of options.referenceImageUrls.slice(0, 4)) {
-        imageUrls.push(refUrl);
-      }
-    } else if (options.referenceImageUrl) {
-      imageUrls.push(options.referenceImageUrl);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const body: Record<string, any> = {
-      prompt: editInstruction,
-      image_urls: imageUrls,
-      resolution: '1K',
-      aspect_ratio: 'auto',
-      seed,
-      output_format: 'png',
-      safety_tolerance: '6',
-      num_images: 1,
-    };
-
-    console.log('[AIRender] Nano Banana request:', {
-      model: NANO_BANANA_MODEL_ID,
-      prompt: editInstruction.slice(0, 150) + '...',
-      imageCount: imageUrls.length,
-      seed,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await Promise.race([
-      fal.subscribe(NANO_BANANA_MODEL_ID, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: body as any,
-        logs: true,
-        onQueueUpdate: (update) => {
-          console.log('[AIRender] Nano Banana queue:', update.status);
-        },
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Nano Banana timeout')), RENDER_TIMEOUT)),
-    ]);
-
-    const images = data?.data?.images ?? data?.images;
-    if (!images?.length) {
-      console.warn('[AIRender] Nano Banana returned no images:', JSON.stringify(data).slice(0, 300));
-      return null;
-    }
-    const url = images[0]?.url;
-    if (!url) return null;
-
-    console.log('[AIRender] Nano Banana success:', url.slice(0, 80));
-    return { url, seed: data?.data?.seed ?? data?.seed };
-  }
 
   // ── Single render (current camera position) ────────────────────────
 
@@ -1022,85 +1064,29 @@ export function useAIRender(): UseAIRenderReturn {
       try {
         fal.config({ credentials: falKey });
 
-        // Compute site boundary pixel coords BEFORE capture (while map state is stable)
-        const boundaryPixels = options.siteBoundaryCoords?.length
-          ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
-          : undefined;
-
-        const fullBlob = await captureMapCanvasBlob(map);
+        // Capture the map canvas — includes colored zone polygons as visual guides
+        const blob = await captureMapCanvasBlob(map);
         const bounds = getMapBounds(map);
-        const mapCanvas = map.getCanvas();
         setProgress(10);
 
-        // ── Generate inpainting mask from zone polygons ──
-        let maskBlob: Blob | undefined;
-        let maskUrl: string | undefined;
-        if (options.siteZones?.length) {
-          setStatusMessage('Generating inpainting mask...');
-          maskBlob = await generateInpaintMask(
-            map, options.siteZones, mapCanvas.width, mapCanvas.height,
-          );
-          const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
-          maskUrl = await fal.storage.upload(maskFile);
-          console.log('[AIRender] Uploaded inpainting mask:', maskUrl);
-        }
-
-        // ── CROP to site boundary for focused rendering ──
-        let renderBlob: Blob;
-        let cropRect: { x: number; y: number; w: number; h: number } | undefined;
-        let croppedMaskUrl: string | undefined = maskUrl;
-
-        if (boundaryPixels?.length) {
-          setStatusMessage('Cropping to site boundary...');
-          const dpr = window.devicePixelRatio || 1;
-          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
-          renderBlob = cropped.croppedBlob;
-          cropRect = cropped.cropRect;
-
-          // Also crop the mask to match (reuse existing maskBlob)
-          if (maskBlob) {
-            const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
-            const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
-            croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
-            console.log('[AIRender] Uploaded cropped mask:', croppedMaskUrl);
-          }
-        } else {
-          renderBlob = fullBlob;
-        }
-
-        const renderFile = new File([renderBlob], 'render-input.png', { type: 'image/png' });
-        const renderUrl = await fal.storage.upload(renderFile);
+        // Upload screenshot to fal.ai storage
+        setStatusMessage('Uploading screenshot...');
+        const file = new File([blob], 'render-input.png', { type: 'image/png' });
+        const screenshotUrl = await fal.storage.upload(file);
         setProgress(20);
-        setStatusMessage('Rendering...');
 
+        // Build structured prompt and call Gemini
+        setStatusMessage('Rendering with Gemini...');
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl);
+        const renderResult = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
 
-        if (!renderResult) throw new Error('fal.ai returned no images');
+        if (!renderResult) throw new Error('All AI models returned no images');
 
-        // ── STITCH rendered crop back into the original screenshot ──
-        let finalResult = renderResult;
-        if (cropRect && boundaryPixels?.length) {
-          setStatusMessage('Stitching into original view...');
-          setProgress(90);
-          try {
-            const stitchedBlob = await stitchRenderedCrop(
-              fullBlob, renderResult.imageUrl, cropRect, boundaryPixels,
-            );
-            const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
-            const stitchedUrl = await fal.storage.upload(stitchedFile);
-            finalResult = { ...renderResult, imageUrl: stitchedUrl };
-            console.log('[AIRender] Stitched render into original view');
-          } catch (compErr) {
-            console.warn('[AIRender] Stitch failed, using raw render:', compErr);
-          }
-        }
-
-        setResult(finalResult);
+        setResult(renderResult);
         setProgress(100);
         setStatusMessage('Complete');
         setIsRendering(false);
-        return finalResult;
+        return renderResult;
       } catch (err: unknown) {
         if ((err as Error)?.name === 'AbortError') {
           setIsRendering(false);
@@ -1116,7 +1102,7 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderSingleFace],
+    [renderWithGemini],
   );
 
   // ── Zone-targeted render ──────────────────────────────────────────
@@ -1145,19 +1131,14 @@ export function useAIRender(): UseAIRenderReturn {
       try {
         fal.config({ credentials: falKey });
 
-        // Save bearing for consistent framing
         const originalBearing = map.getBearing();
-
-        // Compute zone bounding box and zoom the camera to frame it
         const zb = zoneBounds(zoneCoords, 0.5);
 
-        // Fly the camera to frame the zone at 45° pitch
         map.fitBounds(
           [[zb.west, zb.south], [zb.east, zb.north]],
           { padding: 60, pitch: 45, bearing: originalBearing, duration: 0 },
         );
 
-        // Wait for map to settle
         await new Promise<void>((resolve) => {
           const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 500); };
           map.on('idle', onIdle);
@@ -1169,31 +1150,22 @@ export function useAIRender(): UseAIRenderReturn {
         const blob = await captureMapCanvasBlob(map);
         const file = new File([blob], 'zone-capture.png', { type: 'image/png' });
         const screenshotUrl = await fal.storage.upload(file);
-
-        // Use the current (zoomed) viewport bounds for the overlay
         const bounds = getMapBounds(map);
 
         setProgress(30);
-        setStatusMessage('Rendering building facade...');
+        setStatusMessage('Rendering with Gemini...');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-
-        // Log what we're sending
         const prompt = buildPrompt(options);
-        console.log('[AIRender] Zone render prompt:', prompt);
-        console.log('[AIRender] Using mapOverlayPrompt:', !!options.mapOverlayPrompt);
-        console.log('[AIRender] Strength:', options.controlStrength ?? DEFAULT_STRENGTH);
+        console.log('[AIRender] Zone render prompt length:', prompt.length);
 
-        const result = await renderSingleFace(screenshotUrl, bounds, options, seed);
+        const result = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
 
-        if (!result) throw new Error('fal.ai returned no images');
-
-        // Stay zoomed in so the user can see the rendered building
-        // (camera was already positioned by fitBounds above)
+        if (!result) throw new Error('All AI models returned no images');
 
         setResult(result);
         setProgress(100);
-        setStatusMessage('Complete — building rendered');
+        setStatusMessage('Complete — zone rendered');
         setIsRendering(false);
         return result;
       } catch (err: unknown) {
@@ -1212,10 +1184,10 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderSingleFace],
+    [renderWithGemini],
   );
 
-  // ── Preview renders (3 in parallel, single face each) ──────────────
+  // ── Preview renders (3 in parallel) ──────────────────────────────────
 
   const renderPreviews = useCallback(
     async (map: MapboxMap, options: AIRenderOptions = {}): Promise<AIRenderResult[]> => {
@@ -1236,97 +1208,35 @@ export function useAIRender(): UseAIRenderReturn {
       try {
         fal.config({ credentials: falKey });
 
-        // Compute site boundary pixels before capture
-        const boundaryPixels = options.siteBoundaryCoords?.length
-          ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
-          : undefined;
-
-        const fullBlob = await captureMapCanvasBlob(map);
+        // Capture the map canvas with colored zones visible
+        const blob = await captureMapCanvasBlob(map);
         const bounds = getMapBounds(map);
-        const mapCanvas = map.getCanvas();
         setProgress(10);
 
-        // ── Generate inpainting mask from zone polygons ──
-        let maskBlob: Blob | undefined;
-        let maskUrl: string | undefined;
-        if (options.siteZones?.length) {
-          setStatusMessage('Generating inpainting mask...');
-          maskBlob = await generateInpaintMask(
-            map, options.siteZones, mapCanvas.width, mapCanvas.height,
-          );
-          const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
-          maskUrl = await fal.storage.upload(maskFile);
-          console.log('[AIRender] Uploaded inpainting mask for previews');
-        }
-
-        // ── CROP to site boundary for focused rendering ──
-        let renderBlob: Blob;
-        let cropRect: { x: number; y: number; w: number; h: number } | undefined;
-        let croppedMaskUrl: string | undefined = maskUrl;
-
-        if (boundaryPixels?.length) {
-          setStatusMessage('Cropping to site boundary...');
-          const dpr = window.devicePixelRatio || 1;
-          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
-          renderBlob = cropped.croppedBlob;
-          cropRect = cropped.cropRect;
-          console.log('[AIRender] Cropped to site boundary:', cropRect);
-
-          // Also crop the mask to match (reuse existing maskBlob)
-          if (maskBlob) {
-            const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
-            const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
-            croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
-          }
-        } else {
-          renderBlob = fullBlob;
-        }
-
-        // Upload the (possibly cropped) image for rendering
-        const renderFile = new File([renderBlob], 'render-input.png', { type: 'image/png' });
-        const renderUrl = await fal.storage.upload(renderFile);
+        // Upload screenshot
+        setStatusMessage('Uploading screenshot...');
+        const file = new File([blob], 'render-input.png', { type: 'image/png' });
+        const screenshotUrl = await fal.storage.upload(file);
 
         setProgress(15);
-        setStatusMessage('Generating 3 previews...');
+        setStatusMessage('Generating 3 previews with Gemini...');
 
+        // Generate 3 renders with different seeds
         const seeds = Array.from({ length: 3 }, () => Math.floor(Math.random() * 2147483647));
 
         const promises = seeds.map((seed) =>
-          renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl),
+          renderWithGemini(screenshotUrl, bounds, options, seed, map),
         );
 
         const rawResults = await Promise.all(promises);
         const successful = rawResults.filter((r): r is AIRenderResult => r !== null);
 
-        // ── STITCH rendered crops back into the original screenshot ──
-        let finalResults = successful;
-        if (cropRect && boundaryPixels?.length && successful.length > 0) {
-          setStatusMessage('Stitching into original view...');
-          setProgress(85);
-          finalResults = await Promise.all(
-            successful.map(async (r) => {
-              try {
-                const stitchedBlob = await stitchRenderedCrop(
-                  fullBlob, r.imageUrl, cropRect!, boundaryPixels!,
-                );
-                const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
-                const stitchedUrl = await fal.storage.upload(stitchedFile);
-                return { ...r, imageUrl: stitchedUrl };
-              } catch (e) {
-                console.warn('[AIRender] Stitch failed, using raw:', e);
-                return r;
-              }
-            }),
-          );
-          console.log('[AIRender] Stitched', finalResults.length, 'previews into original view');
-        }
-
-        setPreviews(finalResults);
+        setPreviews(successful);
         setResult(null);
         setProgress(100);
         setStatusMessage('Select a preview');
         setIsRendering(false);
-        return finalResults;
+        return successful;
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
         setError(msg);
@@ -1336,10 +1246,10 @@ export function useAIRender(): UseAIRenderReturn {
         return [];
       }
     },
-    [renderSingleFace],
+    [renderWithGemini],
   );
 
-  // ── 4-face full render ─────────────────────────────────────────────
+  // ── Full quality render ─────────────────────────────────────────────
 
   const renderFull = useCallback(
     async (
@@ -1364,71 +1274,19 @@ export function useAIRender(): UseAIRenderReturn {
 
         // ── Single-view mode: render from user's current perspective ──
         if (singleView) {
-          // Compute boundary pixels before capture
-          const boundaryPixels = options.siteBoundaryCoords?.length
-            ? siteBoundaryToPixels(map, options.siteBoundaryCoords)
-            : undefined;
-
           setStatusMessage('Capturing current view...');
-          const fullBlob = await captureMapCanvasBlob(map);
+          const blob = await captureMapCanvasBlob(map);
           const bounds = getMapBounds(map);
-          const mapCanvas = map.getCanvas();
           setProgress(15);
 
-          // Generate inpainting mask
-          let maskBlob: Blob | undefined;
-          let maskUrl: string | undefined;
-          if (options.siteZones?.length) {
-            setStatusMessage('Generating inpainting mask...');
-            maskBlob = await generateInpaintMask(
-              map, options.siteZones, mapCanvas.width, mapCanvas.height,
-            );
-            const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
-            maskUrl = await fal.storage.upload(maskFile);
-          }
+          const file = new File([blob], 'full-render-input.png', { type: 'image/png' });
+          const screenshotUrl = await fal.storage.upload(file);
 
-          // Crop to site boundary
-          let renderBlob: Blob;
-          let cropRect: { x: number; y: number; w: number; h: number } | undefined;
-          let croppedMaskUrl: string | undefined = maskUrl;
-
-          if (boundaryPixels?.length) {
-            setStatusMessage('Cropping to site boundary...');
-            const dpr = window.devicePixelRatio || 1;
-            const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
-            renderBlob = cropped.croppedBlob;
-            cropRect = cropped.cropRect;
-
-            // Also crop the mask (reuse existing maskBlob)
-            if (maskBlob) {
-              const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
-              const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
-              croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
-            }
-          } else {
-            renderBlob = fullBlob;
-          }
-
-          const renderFile = new File([renderBlob], 'full-render-input.png', { type: 'image/png' });
-          const renderUrl = await fal.storage.upload(renderFile);
           setProgress(25);
-          setStatusMessage('Rendering full quality...');
+          setStatusMessage('Rendering full quality with Gemini...');
 
-          let fullResult = await renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl);
-          if (!fullResult) throw new Error('fal.ai returned no images');
-
-          // Stitch back into original
-          if (cropRect && boundaryPixels?.length) {
-            setStatusMessage('Stitching into original view...');
-            try {
-              const stitchedBlob = await stitchRenderedCrop(
-                fullBlob, fullResult.imageUrl, cropRect, boundaryPixels,
-              );
-              const stitchedFile = new File([stitchedBlob], 'stitched.png', { type: 'image/png' });
-              const stitchedUrl = await fal.storage.upload(stitchedFile);
-              fullResult = { ...fullResult, imageUrl: stitchedUrl };
-            } catch { /* fall back to raw */ }
-          }
+          const fullResult = await renderWithGemini(screenshotUrl, bounds, options, seed, map);
+          if (!fullResult) throw new Error('All AI models returned no images');
 
           setResult(fullResult);
           setProgress(100);
@@ -1440,13 +1298,11 @@ export function useAIRender(): UseAIRenderReturn {
         // ── 4-face mode: rotate camera to 4 bearings ──
         setStatusMessage('Capturing 4 views...');
 
-        // Save original camera state
         const originalBearing = map.getBearing();
         const originalPitch = map.getPitch();
         const originalCenter = map.getCenter();
         const originalZoom = map.getZoom();
 
-        // Step 1: Capture 4 face screenshots
         const captures: { label: 'front' | 'right' | 'rear' | 'left'; url: string; bounds: [[number, number], [number, number], [number, number], [number, number]] }[] = [];
 
         for (let i = 0; i < FACE_BEARINGS.length; i++) {
@@ -1474,11 +1330,10 @@ export function useAIRender(): UseAIRenderReturn {
         });
 
         setProgress(45);
-        setStatusMessage('Rendering all 4 faces...');
+        setStatusMessage('Rendering all 4 faces with Gemini...');
 
-        // Step 2: Send all 4 to fal.ai in parallel with the same seed
         const renderPromises = captures.map((cap) =>
-          renderSingleFace(cap.url, cap.bounds, options, seed)
+          renderWithGemini(cap.url, cap.bounds, options, seed, map)
             .then((result) => result ? { label: cap.label, bearing: FACE_BEARINGS.find(f => f.label === cap.label)!.bearing, result } as FaceRender : null)
             .catch(() => null),
         );
@@ -1491,7 +1346,6 @@ export function useAIRender(): UseAIRenderReturn {
 
         setFaceRenders(successfulFaces);
 
-        // Use the front face as the main result
         const frontFace = successfulFaces.find((f) => f.label === 'front') ?? successfulFaces[0];
         if (frontFace) {
           setResult(frontFace.result);
@@ -1510,7 +1364,7 @@ export function useAIRender(): UseAIRenderReturn {
         return null;
       }
     },
-    [renderSingleFace],
+    [renderWithGemini],
   );
 
   // ── Bearing-based face swapping ────────────────────────────────────
@@ -1536,7 +1390,6 @@ export function useAIRender(): UseAIRenderReturn {
         }
       };
 
-      // Add sources and layers for each face
       for (const face of faceRenders) {
         const sourceId = SOURCE_PREFIX + face.label;
         const layerId = LAYER_PREFIX + face.label;
@@ -1564,13 +1417,9 @@ export function useAIRender(): UseAIRenderReturn {
         }
       }
 
-      // Set initial visibility
       updateVisibility();
-
-      // Listen for bearing changes
       map.on('rotate', updateVisibility);
 
-      // Cleanup function
       return () => {
         map.off('rotate', updateVisibility);
         for (const face of faceRenders) {
