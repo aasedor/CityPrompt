@@ -83,7 +83,7 @@ export function useSiteZones(projectId: string | undefined) {
   });
 
   const updateZone = useMutation({
-    mutationFn: (vars: { zoneId: string; data: { name?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; properties?: SiteZoneProperties } }) =>
+    mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; properties?: SiteZoneProperties } }) =>
       siteZonesApi.update(vars.zoneId, vars.data),
     onSuccess: async (_result, vars) => {
       // Await refetch so the cache is fresh before the user can click away

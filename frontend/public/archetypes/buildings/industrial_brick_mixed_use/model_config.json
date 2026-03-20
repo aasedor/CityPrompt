@@ -1,0 +1,178 @@
+{
+  "archetypeId": "industrial_brick_mixed_use",
+  "archetypeLabel": "Industrial Brick Mixed Use",
+  "domain": "building",
+  "version": "1.0",
+
+  "materials": {
+    "primaryBrick": {
+      "colour": "#8B5E3C",
+      "mortar": "#C4A882",
+      "brickWidth": 0.215,
+      "brickHeight": 0.065,
+      "brickDepth": 0.1025,
+      "roughness": 0.85,
+      "metalness": 0.0
+    },
+    "darkBrick": {
+      "colour": "#5C3D2E",
+      "mortar": "#8B7355",
+      "roughness": 0.9,
+      "metalness": 0.0
+    },
+    "steel": {
+      "colour": "#4A4A4A",
+      "roughness": 0.3,
+      "metalness": 0.8
+    },
+    "glass": {
+      "colour": "#2C3E50",
+      "opacity": 0.7,
+      "roughness": 0.05,
+      "metalness": 0.1
+    },
+    "concrete": {
+      "colour": "#8C8C8C",
+      "roughness": 0.7,
+      "metalness": 0.0
+    }
+  },
+
+  "groundFloor": {
+    "height": 4.5,
+    "treatment": "industrial-retail",
+    "facadeMaterial": "darkBrick",
+    "openings": {
+      "style": "arched",
+      "width": 2.8,
+      "height": 3.6,
+      "archHeight": 0.6,
+      "spacing": 5.0,
+      "frameMaterial": "steel",
+      "frameWidth": 0.12,
+      "glazingMaterial": "glass",
+      "sillHeight": 0.0,
+      "lintelDepth": 0.15
+    },
+    "pilasters": {
+      "present": true,
+      "width": 0.4,
+      "depth": 0.15,
+      "spacing": 5.0,
+      "material": "darkBrick"
+    },
+    "plinth": {
+      "present": true,
+      "height": 0.45,
+      "material": "concrete",
+      "colour": "#6B6B6B"
+    }
+  },
+
+  "typicalFloor": {
+    "height": 3.2,
+    "facadeMaterial": "primaryBrick",
+    "openings": {
+      "style": "rectangular",
+      "width": 1.4,
+      "height": 2.0,
+      "spacing": 2.8,
+      "verticalOffset": 0.6,
+      "frameMaterial": "steel",
+      "frameWidth": 0.08,
+      "glazingMaterial": "glass",
+      "sillDepth": 0.1,
+      "sillHeight": 0.08,
+      "lintelDepth": 0.1,
+      "subdivisions": 2
+    },
+    "spandrel": {
+      "present": true,
+      "height": 0.6,
+      "material": "darkBrick"
+    },
+    "pilasters": {
+      "present": true,
+      "width": 0.3,
+      "depth": 0.1,
+      "spacing": 2.8,
+      "material": "primaryBrick"
+    }
+  },
+
+  "topFloor": {
+    "height": 3.2,
+    "facadeMaterial": "primaryBrick",
+    "openings": {
+      "style": "rectangular",
+      "width": 1.2,
+      "height": 1.8,
+      "spacing": 2.8,
+      "verticalOffset": 0.8,
+      "frameMaterial": "steel",
+      "frameWidth": 0.08,
+      "glazingMaterial": "glass"
+    },
+    "cornice": {
+      "present": true,
+      "height": 0.4,
+      "depth": 0.2,
+      "material": "darkBrick",
+      "profile": "stepped"
+    }
+  },
+
+  "roof": {
+    "lowrise": {
+      "maxFloors": 3,
+      "style": "pitched-gabled",
+      "pitch": 30,
+      "material": "darkBrick",
+      "ridgeCapping": true,
+      "overhang": 0.3
+    },
+    "midrise": {
+      "minFloors": 4,
+      "maxFloors": 8,
+      "style": "flat-parapet",
+      "parapetHeight": 0.8,
+      "parapetMaterial": "darkBrick",
+      "parapetCoping": true,
+      "copingDepth": 0.05,
+      "roofSurface": "gravel"
+    },
+    "highrise": {
+      "minFloors": 9,
+      "style": "flat-plant",
+      "parapetHeight": 1.2,
+      "parapetMaterial": "darkBrick",
+      "planterBoxes": true,
+      "planterHeight": 0.6,
+      "planterMaterial": "concrete"
+    }
+  },
+
+  "cornerTreatment": {
+    "style": "pilaster",
+    "width": 0.6,
+    "depth": 0.2,
+    "material": "darkBrick",
+    "wrapsAllFloors": true
+  },
+
+  "scaling": {
+    "minHeight": 6,
+    "maxHeight": 80,
+    "minFootprintWidth": 8,
+    "windowSpacingAdjustment": true,
+    "pilasterSpacingMatchesWindows": true,
+    "groundFloorAlwaysFixed": true,
+    "topFloorAlwaysPresent": true,
+    "minTypicalFloors": 0
+  },
+
+  "renderPrompt": {
+    "mapOverlay": "industrial brick mixed-use building, converted warehouse aesthetic, dark red brick facade with arched ground floor openings, steel window frames, stepped cornice detail, warm brick tones, urban infill context, oblique aerial view, planning render quality, visible window rhythm, recognisable brick character",
+    "negative": "photorealistic, hyperrealistic, blurry, featureless, flat colour, no windows, sketch, watercolour, blob, white render, glass curtain wall"
+  }
+}

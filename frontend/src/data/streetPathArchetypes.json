@@ -46,6 +46,7 @@
   "archetypes": [
     {
       "id": "kyoto_philosophers_walk",
+      "shadeId": "#4d4d4d",
       "title": "Kyoto Philosopher's Walk",
       "aestheticCategory": "historic_walkways",
       "description": "Kyoto Philosopher's Walk corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -97,6 +98,7 @@
     },
     {
       "id": "parisian_boulevard",
+      "shadeId": "#595959",
       "title": "Parisian Boulevard",
       "aestheticCategory": "urban_boulevards",
       "description": "Parisian Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -152,6 +154,7 @@
     },
     {
       "id": "barcelona_rambla",
+      "shadeId": "#666666",
       "title": "Barcelona Rambla",
       "aestheticCategory": "historic_walkways",
       "description": "Barcelona Rambla corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -205,6 +208,7 @@
     },
     {
       "id": "amsterdam_canal_street",
+      "shadeId": "#737373",
       "title": "Amsterdam Canal Street",
       "aestheticCategory": "cycling_first",
       "description": "Amsterdam Canal Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -260,6 +264,7 @@
     },
     {
       "id": "copenhagen_cycle_street",
+      "shadeId": "#808080",
       "title": "Copenhagen Cycle Street",
       "aestheticCategory": "cycling_first",
       "description": "Copenhagen Cycle Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -313,6 +318,7 @@
     },
     {
       "id": "brownstone_residential_street",
+      "shadeId": "#8c8c8c",
       "title": "Brownstone Residential Street",
       "aestheticCategory": "shared_slow_streets",
       "description": "Brownstone Residential Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -368,6 +374,7 @@
     },
     {
       "id": "whistler_village_lane",
+      "shadeId": "#999999",
       "title": "Whistler Village Lane",
       "aestheticCategory": "scenic_greenways",
       "description": "Whistler Village Lane corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -421,6 +428,7 @@
     },
     {
       "id": "english_garden_path",
+      "shadeId": "#4f4a4a",
       "title": "English Garden Path",
       "aestheticCategory": "scenic_greenways",
       "description": "English Garden Path corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -472,6 +480,7 @@
     },
     {
       "id": "central_park_drive",
+      "shadeId": "#5c5757",
       "title": "Central Park Drive",
       "aestheticCategory": "scenic_greenways",
       "description": "Central Park Drive corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -527,6 +536,7 @@
     },
     {
       "id": "tokyo_shared_street",
+      "shadeId": "#696363",
       "title": "Tokyo Shared Street",
       "aestheticCategory": "shared_slow_streets",
       "description": "Tokyo Shared Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -582,6 +592,7 @@
     },
     {
       "id": "scandinavian_green_street",
+      "shadeId": "#767070",
       "title": "Scandinavian Green Street",
       "aestheticCategory": "scenic_greenways",
       "description": "Scandinavian Green Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -637,6 +648,7 @@
     },
     {
       "id": "mediterranean_promenade",
+      "shadeId": "#837c7c",
       "title": "Mediterranean Promenade",
       "aestheticCategory": "scenic_greenways",
       "description": "Mediterranean Promenade corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -690,6 +702,7 @@
     },
     {
       "id": "modern_transit_boulevard",
+      "shadeId": "#8f8989",
       "title": "Modern Transit Boulevard",
       "aestheticCategory": "transit_priority",
       "description": "Modern Transit Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -745,6 +758,7 @@
     },
     {
       "id": "brt_corridor",
+      "shadeId": "#9c9696",
       "title": "Bus Rapid Transit Corridor",
       "aestheticCategory": "transit_priority",
       "description": "Bus Rapid Transit Corridor corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -800,6 +814,7 @@
     },
     {
       "id": "mountain_scenic_parkway",
+      "shadeId": "#514848",
       "title": "Mountain Scenic Parkway",
       "aestheticCategory": "scenic_greenways",
       "description": "Mountain Scenic Parkway corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -853,6 +868,7 @@
     },
     {
       "id": "dutch_woonerf",
+      "shadeId": "#5e5454",
       "title": "Dutch Woonerf",
       "aestheticCategory": "shared_slow_streets",
       "description": "Dutch Woonerf corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -908,6 +924,7 @@
     },
     {
       "id": "campus_pedestrian_spine",
+      "shadeId": "#6b6161",
       "title": "Campus Pedestrian Spine",
       "aestheticCategory": "historic_walkways",
       "description": "Campus Pedestrian Spine corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -961,6 +978,7 @@
     },
     {
       "id": "riverfront_promenade",
+      "shadeId": "#796d6d",
       "title": "Riverfront Promenade",
       "aestheticCategory": "scenic_greenways",
       "description": "Riverfront Promenade corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1014,6 +1032,7 @@
     },
     {
       "id": "industrial_greenway",
+      "shadeId": "#867979",
       "title": "Industrial Greenway",
       "aestheticCategory": "complete_streets",
       "description": "Industrial Greenway corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1071,6 +1090,7 @@
     },
     {
       "id": "main_street_complete_street",
+      "shadeId": "#928686",
       "title": "Main Street Complete Street",
       "aestheticCategory": "complete_streets",
       "description": "Main Street Complete Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1128,6 +1148,7 @@
     },
     {
       "id": "tram_priority_avenue",
+      "shadeId": "#9e9494",
       "title": "Tram Priority Avenue",
       "aestheticCategory": "transit_priority",
       "description": "Tram Priority Avenue corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1183,6 +1204,7 @@
     },
     {
       "id": "festival_pedestrian_street",
+      "shadeId": "#534646",
       "title": "Festival Pedestrian Street",
       "aestheticCategory": "historic_walkways",
       "description": "Festival Pedestrian Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1236,6 +1258,7 @@
     },
     {
       "id": "neighborhood_school_street",
+      "shadeId": "#605252",
       "title": "Neighborhood School Street",
       "aestheticCategory": "shared_slow_streets",
       "description": "Neighborhood School Street corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1291,6 +1314,7 @@
     },
     {
       "id": "civic_esplanade",
+      "shadeId": "#6e5e5e",
       "title": "Civic Esplanade",
       "aestheticCategory": "urban_boulevards",
       "description": "Civic Esplanade corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1346,6 +1370,7 @@
     },
     {
       "id": "eco_mobility_greenway",
+      "shadeId": "#7c6a6a",
       "title": "Eco-Mobility Greenway",
       "aestheticCategory": "scenic_greenways",
       "description": "Eco-Mobility Greenway corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1401,6 +1426,7 @@
     },
     {
       "id": "airport_connector_boulevard",
+      "shadeId": "#8a7575",
       "title": "Airport Connector Boulevard",
       "aestheticCategory": "urban_boulevards",
       "description": "Airport Connector Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1456,6 +1482,7 @@
     },
     {
       "id": "hillside_switchback_road",
+      "shadeId": "#958383",
       "title": "Hillside Switchback Road",
       "aestheticCategory": "scenic_greenways",
       "description": "Hillside Switchback Road corridor archetype with premium public-realm detail and legible multimodal structure",
@@ -1509,6 +1536,7 @@
     },
     {
       "id": "custom_streets_pathways",
+      "shadeId": "#a19191",
       "title": "Custom Streets and Pathways",
       "aestheticCategory": "custom",
       "description": "Custom Streets and Pathways corridor archetype with premium public-realm detail and legible multimodal structure",

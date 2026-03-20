@@ -511,52 +511,63 @@ export interface ZoneTypeConfig {
   defaultProperties: SiteZoneProperties;
 }
 
+/**
+ * GIS Standard Land Use Colors — based on APA/LBCS color conventions
+ * (American Planning Association, "Traditional Color Coding for Land Uses", 1997)
+ *
+ * Residential:   Yellows (#F5D63D)
+ * Commercial:    Reds    (#E03C31)
+ * Open Space:    Greens  (#4CAF50)
+ * Transportation: Grays  (#616161)
+ * Institutional: Blues   (#4A90D9)
+ * Mixed Use:     Purple  (#9C27B0)
+ */
 export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
   site_boundary: {
     label: 'Site Boundary',
-    color: '#f59e0b',
+    color: '#F59E0B',
     icon: 'S',
     defaultProperties: {},
   },
   building: {
     label: 'Building',
-    color: '#9b59b6',
+    color: '#E03C31',       // APA Commercial Red — general/mixed-use buildings
     icon: 'B',
     defaultProperties: { height: 30, floors: 10, floor_height: 3 },
   },
   residential: {
     label: 'Residential',
-    color: '#e91e8a',
+    color: '#F5D63D',       // APA Residential Yellow
     icon: 'R',
     defaultProperties: { height: 12, floors: 4, floor_height: 3 },
   },
   road: {
     label: 'Streets and Paths',
-    color: '#444444',
+    color: '#616161',       // APA Transportation Gray
     icon: 'D',
     defaultProperties: { width: 10 },
   },
   green_space: {
-    label: 'Green Space',
-    color: '#27ae60',
+    label: 'Parks / Green Space',
+    color: '#4CAF50',       // APA Open Space Green
     icon: 'G',
     defaultProperties: { tree_density: 0.3 },
   },
   parking: {
     label: 'Parking/Plaza',
-    color: '#95a5a6',
+    color: '#9E9E9E',       // APA Light Gray — utilities/parking
     icon: 'P',
     defaultProperties: {},
   },
   water: {
     label: 'Water',
-    color: '#3498db',
+    color: '#4A90D9',       // APA Institutional Blue (water)
     icon: 'W',
     defaultProperties: {},
   },
   development_area: {
     label: 'Development Area',
-    color: '#d4a574',
+    color: '#C8A02A',       // APA Duplex/Medium-density Yellow-Brown
     icon: 'A',
     defaultProperties: { ground_texture: 'grass' },
   },

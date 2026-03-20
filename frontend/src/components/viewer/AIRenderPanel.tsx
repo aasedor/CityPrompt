@@ -38,6 +38,7 @@ interface AIRenderPanelProps {
 export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange }: AIRenderPanelProps) {
   const {
     render,
+    renderPerZone,
     renderPreviews,
     renderFull,
     isRendering,
@@ -60,6 +61,8 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [useArchetypes, setUseArchetypes] = useState(true);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [guidanceScale, setGuidanceScale] = useState(15);
+  const [perZoneMode, setPerZoneMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Extract archetype data from zone properties
@@ -101,6 +104,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       style: selectedStyle,
       customPrompt: customPrompt.trim() || undefined,
       controlStrength,
+      guidanceScale,
       referenceImageUrl: referenceImage || undefined,
       referenceStrength,
       archetypePrompt: archetype.archetypePrompt || undefined,
@@ -114,7 +118,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       // Pass all zones for inpainting mask generation
       siteZones: siteZones.length > 0 ? siteZones : undefined,
     };
-  }, [selectedStyle, customPrompt, controlStrength, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
+  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
 
   /** Generate 3 preview renders in parallel */
   const handleGeneratePreviews = useCallback(async () => {
@@ -146,11 +150,14 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     const map = mapRef.current;
     if (!map) return;
 
-    const res = await render(map, buildRenderOptions());
+    const opts = buildRenderOptions();
+    const res = perZoneMode
+      ? await renderPerZone(map, opts)
+      : await render(map, opts);
     if (res) {
       onRenderComplete?.(res);
     }
-  }, [mapRef, render, buildRenderOptions, onRenderComplete]);
+  }, [mapRef, render, renderPerZone, perZoneMode, buildRenderOptions, onRenderComplete]);
 
   const handleClear = useCallback(() => {
     reset();
@@ -317,6 +324,41 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
                 <span>Creative</span>
                 <span>Faithful</span>
               </div>
+            </div>
+
+            {/* Prompt Adherence */}
+            <div>
+              <div className="mb-1 flex items-center justify-between">
+                <label className="text-[11px] font-medium text-gray-400">Prompt Adherence</label>
+                <span className="text-[10px] tabular-nums text-gray-500">{guidanceScale}</span>
+              </div>
+              <input
+                type="range"
+                min={5}
+                max={25}
+                step={1}
+                value={guidanceScale}
+                onChange={(e) => setGuidanceScale(parseInt(e.target.value))}
+                className="w-full accent-amber-500"
+              />
+              <div className="mt-0.5 flex justify-between text-[9px] text-gray-600">
+                <span>Creative</span>
+                <span>Strict</span>
+              </div>
+            </div>
+
+            {/* Per-zone rendering toggle */}
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[11px] font-medium text-gray-400">Per-Zone Rendering</span>
+                <p className="text-[9px] text-gray-600">Slower, higher detail per zone</p>
+              </div>
+              <button
+                onClick={() => setPerZoneMode(!perZoneMode)}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${perZoneMode ? 'bg-amber-500' : 'bg-gray-600'}`}
+              >
+                <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${perZoneMode ? 'translate-x-4' : 'translate-x-0.5'}`} />
+              </button>
             </div>
 
             {/* Reference image */}

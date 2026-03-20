@@ -15,6 +15,7 @@ import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
+import { getArchetypeForShade } from '@/data/archetypeShadeMap';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -125,6 +126,12 @@ export interface UseAIRenderReturn {
   error: string | null;
   /** Clear the current result / error */
   reset: () => void;
+  /**
+   * Per-zone sequential rendering: zoom into each zone individually,
+   * render with zone-specific mask and prompt, composite results.
+   * Higher detail per zone (4-16x more pixels) at the cost of speed.
+   */
+  renderPerZone: (map: MapboxMap, options?: AIRenderOptions) => Promise<AIRenderResult | null>;
   /** Attach bearing-based face swapping to a map */
   attachFaceSwapping: (map: MapboxMap) => () => void;
 }
@@ -387,6 +394,276 @@ async function captureMapCanvasBase64(map: MapboxMap): Promise<string> {
   });
 }
 
+/**
+ * Convert site boundary geographic coordinates to pixel coordinates on the Mapbox canvas.
+ */
+function siteBoundaryToPixels(
+  map: MapboxMap,
+  coords: number[][],
+): { x: number; y: number }[] {
+  return coords.map(([lng, lat]) => {
+    const point = map.project([lng, lat]);
+    return { x: point.x, y: point.y };
+  });
+}
+
+/**
+ * Generate a binary mask from site zone polygons.
+ * White (255) = area to edit (inside zone polygons), Black (0) = keep untouched.
+ * The mask matches the canvas dimensions exactly.
+ */
+function generateBinaryMask(
+  map: MapboxMap,
+  siteZones: SiteZone[],
+): string {
+  const mapCanvas = map.getCanvas();
+  // Use the actual pixel dimensions (accounts for device pixel ratio)
+  const w = mapCanvas.width;
+  const h = mapCanvas.height;
+  const dpr = window.devicePixelRatio || 1;
+
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const ctx = maskCanvas.getContext('2d')!;
+
+  // Fill entirely black (keep everything by default)
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw zone polygons as white (area to edit) in hierarchical order:
+  // 1. site_boundary FIRST (master clipping area)
+  // 2. All other zones on top (redundant but explicit)
+  ctx.fillStyle = '#ffffff';
+  let drawnCount = 0;
+
+  const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary');
+  const others = siteZones.filter(z => z.zone_type !== 'site_boundary');
+
+  for (const zone of [...boundaries, ...others]) {
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+
+    // Scale pixel coords by DPR to match the actual canvas pixel dimensions
+    ctx.beginPath();
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+    ctx.fill();
+    drawnCount++;
+    console.log(`[AIRender] Mask: drew zone "${zone.name || zone.id}" (${zone.zone_type}) — ${pixels.length} vertices`);
+  }
+  console.log(`[AIRender] Mask complete: ${drawnCount}/${siteZones.length} zones drawn on ${w}x${h} canvas (DPR=${dpr})`);
+
+  // Return raw base64 (no data-URI prefix)
+  return maskCanvas.toDataURL('image/png').split(',')[1];
+}
+
+/** Load an image from a URL or Blob and return an HTMLImageElement */
+function loadImage(src: string | Blob): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = (e) => reject(new Error(`Failed to load image: ${e}`));
+    if (src instanceof Blob) {
+      const url = URL.createObjectURL(src);
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.src = url;
+    } else {
+      img.src = src;
+    }
+  });
+}
+
+/**
+ * Stitch the AI-rendered result back onto the original screenshot,
+ * using site zone polygons as a clip mask so only the zone areas change.
+ * Returns a data-URI for the composited image.
+ */
+async function stitchWithBoundaryMask(
+  originalBase64: string,
+  renderedDataUri: string,
+  map: MapboxMap,
+  siteZones: SiteZone[],
+): Promise<string> {
+  const [originalImg, renderedImg] = await Promise.all([
+    loadImage(`data:image/png;base64,${originalBase64}`),
+    loadImage(renderedDataUri),
+  ]);
+
+  const w = originalImg.naturalWidth;
+  const h = originalImg.naturalHeight;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+
+  // Step 1: Draw the original screenshot (untouched background)
+  ctx.drawImage(originalImg, 0, 0, w, h);
+
+  // Step 2: Clip to all zone polygons and draw the rendered image inside
+  const dpr = window.devicePixelRatio || 1;
+  ctx.save();
+  ctx.beginPath();
+  for (const zone of siteZones) {
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+  }
+  ctx.clip();
+
+  // Step 3: Draw the rendered image within the clipped region
+  ctx.drawImage(renderedImg, 0, 0, w, h);
+  ctx.restore();
+
+  return canvas.toDataURL('image/png');
+}
+
+/**
+ * Generate a binary mask for a SINGLE zone polygon.
+ * White (255) = the zone's footprint, Black (0) = everything else.
+ */
+function generateSingleZoneMask(
+  map: MapboxMap,
+  zone: SiteZone,
+): string {
+  const mapCanvas = map.getCanvas();
+  const w = mapCanvas.width;
+  const h = mapCanvas.height;
+  const dpr = window.devicePixelRatio || 1;
+
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const ctx = maskCanvas.getContext('2d')!;
+
+  // Fill entirely black (keep everything)
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw only this zone's polygon as white
+  if (zone.coordinates && zone.coordinates.length >= 3) {
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  return maskCanvas.toDataURL('image/png').split(',')[1];
+}
+
+/**
+ * Build a zone-specific prompt for per-zone rendering.
+ * Uses only this zone's archetype info for a focused, high-detail prompt.
+ */
+function buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions): string {
+  const archetypeInfo = getZoneArchetypeInfo(zone);
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
+  const styleModifier = GEMINI_STYLE_MODIFIERS[styleId] || GEMINI_STYLE_MODIFIERS['photorealistic'];
+
+  const block1 = [
+    'You are looking at an aerial/satellite photograph with a single colored polygon overlay marking a proposed development zone.',
+    'CRITICAL RULES:',
+    '- Replace ONLY the colored polygon area with photorealistic content as described below.',
+    '- Preserve the EXACT footprint, shape, and position of the colored polygon.',
+    '- Keep ALL surrounding imagery EXACTLY as it appears — change NOTHING outside the colored area.',
+    '- Match the lighting direction, color temperature, and perspective of the surrounding context.',
+  ].join('\n');
+
+  // Build zone description
+  const color = colorName(zone.color || '#888888');
+  let desc: string;
+
+  if (archetypeInfo.mapOverlayPrompt) {
+    desc = archetypeInfo.mapOverlayPrompt;
+  } else if (archetypeInfo.archetypeTitle) {
+    const parts = [archetypeInfo.archetypeTitle];
+    if (archetypeInfo.aerialAppearance) parts.push(`Aerial view: ${archetypeInfo.aerialAppearance}`);
+    if (archetypeInfo.facadeDescription) parts.push(`Facade: ${archetypeInfo.facadeDescription}`);
+    if (archetypeInfo.roofDescription) parts.push(`Roof: ${archetypeInfo.roofDescription}`);
+    if (archetypeInfo.materials) parts.push(`Materials: ${archetypeInfo.materials}`);
+    if (archetypeInfo.colorScheme) parts.push(`Colors: ${archetypeInfo.colorScheme}`);
+    if (archetypeInfo.massing) parts.push(`Massing: ${archetypeInfo.massing}`);
+    if (archetypeInfo.heightTendency) parts.push(`Height: ${archetypeInfo.heightTendency}`);
+    if (archetypeInfo.publicRealm) parts.push(`Street edge: ${archetypeInfo.publicRealm}`);
+    desc = parts.join('. ');
+  } else if (zone.zone_type === 'site_boundary') {
+    desc = 'Contextual infill — render realistic urban ground-plane: sidewalks, manicured grass, small street trees, and pedestrian paths that blend with the surrounding satellite imagery.';
+  } else {
+    desc = defaultZoneDescription(zone.zone_type);
+  }
+
+  const block2 = `\nZONE INSTRUCTION:\n• ${color.toUpperCase()} zone (${zone.color || '#888888'}, ${zone.name || zone.zone_type}): ${desc}`;
+
+  const block3 = [
+    '',
+    'STYLE & ENVIRONMENT:',
+    styleModifier.prompt,
+    '',
+    'QUALITY: Ultra-high resolution, sharp focus, photorealistic materials with visible texture and grain, realistic shadows, 8k quality.',
+  ].join('\n');
+
+  return CONSTRAINT_HEADER + [block1, block2, block3].join('\n');
+}
+
+/**
+ * Composite a single zone render onto a cumulative canvas.
+ * Uses the zone polygon as a clip mask — only pixels inside the zone change.
+ */
+async function compositeZoneRender(
+  baseDataUri: string,
+  renderedDataUri: string,
+  map: MapboxMap,
+  zone: SiteZone,
+): Promise<string> {
+  const [baseImg, renderedImg] = await Promise.all([
+    loadImage(baseDataUri),
+    loadImage(renderedDataUri),
+  ]);
+
+  const w = baseImg.naturalWidth;
+  const h = baseImg.naturalHeight;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+
+  // Draw the base (cumulative result so far)
+  ctx.drawImage(baseImg, 0, 0, w, h);
+
+  // Clip to this zone's polygon and draw the rendered image
+  if (zone.coordinates && zone.coordinates.length >= 3) {
+    const dpr = window.devicePixelRatio || 1;
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(renderedImg, 0, 0, w, h);
+    ctx.restore();
+  }
+
+  return canvas.toDataURL('image/png');
+}
+
 /** Get the current visible bounds as image-source coordinates: [[W,N],[E,N],[E,S],[W,S]] */
 function getMapBounds(
   map: MapboxMap,
@@ -440,6 +717,8 @@ interface ZonePromptEntry {
   heightTendency?: string;
   publicRealm?: string;
   mapOverlayPrompt?: string;
+  colorScheme?: string;
+  aerialAppearance?: string;
 }
 
 /**
@@ -455,6 +734,8 @@ function getZoneArchetypeInfo(zone: SiteZone): {
   heightTendency?: string;
   publicRealm?: string;
   mapOverlayPrompt?: string;
+  colorScheme?: string;
+  aerialAppearance?: string;
 } {
   if (!zone.properties || !catalog) return {};
 
@@ -501,6 +782,8 @@ function getZoneArchetypeInfo(zone: SiteZone): {
       heightTendency: sp.heightTendency || undefined,
       publicRealm: sp.publicRealm || undefined,
       mapOverlayPrompt: entry.renderPrompt?.mapOverlay || undefined,
+      colorScheme: fd.colorScheme || undefined,
+      aerialAppearance: rd.aerialAppearance || undefined,
     };
   }
 
@@ -515,8 +798,17 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
   const entries: ZonePromptEntry[] = [];
 
   for (const zone of zones) {
-    if (zone.zone_type === 'site_boundary') continue;
     if (!zone.coordinates?.length) continue;
+
+    // Include site_boundary with a special contextual infill entry
+    if (zone.zone_type === 'site_boundary') {
+      entries.push({
+        color: zone.color || '#F5D63D',
+        zoneType: 'site_boundary',
+        zoneName: 'Site Boundary / Contextual Infill',
+      });
+      continue;
+    }
 
     const config = ZONE_TYPE_CONFIG[zone.zone_type];
     const color = zone.color || config?.color || '#888888';
@@ -546,10 +838,22 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
 }
 
 /**
- * Human-readable color name for common hex colors used by zone types.
+ * Human-readable color name for hex colors — archetype-aware.
+ *
+ * First tries to match the hex to a known archetype shade (unique per archetype).
+ * Falls back to generic zone-type color names for unassigned zones.
  */
 function colorName(hex: string): string {
-  const map: Record<string, string> = {
+  // Try archetype shade match first (unique per archetype)
+  const archetypeId = getArchetypeForShade(hex);
+  if (archetypeId) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const entry = catalog?.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
+    if (entry?.title) return `${entry.title} shade (${hex})`;
+  }
+
+  // Fall back to generic zone-type names
+  const genericMap: Record<string, string> = {
     '#E03C31': 'red',
     '#e03c31': 'red',
     '#F5D63D': 'yellow',
@@ -566,7 +870,7 @@ function colorName(hex: string): string {
     '#F59E0B': 'orange/amber',
     '#f59e0b': 'orange/amber',
   };
-  return map[hex] || hex;
+  return genericMap[hex] || hex;
 }
 
 /**
@@ -625,15 +929,20 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
       const color = colorName(entry.color);
       let desc: string;
 
-      if (entry.mapOverlayPrompt) {
+      if (entry.zoneType === 'site_boundary') {
+        // Special contextual infill description for site boundary zones
+        desc = 'Treat as contextual infill — do NOT add buildings or large structures. Instead, render realistic urban ground-plane context: public sidewalks matching surrounding pavement, manicured grass, small street trees, and pedestrian paths that seamlessly blend the new architectural zones with the surrounding satellite imagery. This zone is the "glue" between buildings and the real neighborhood.';
+      } else if (entry.mapOverlayPrompt) {
         // Use the archetype's specific render prompt (best quality)
         desc = entry.mapOverlayPrompt;
       } else if (entry.archetypeTitle) {
         // Build from archetype metadata
         const parts = [`${entry.archetypeTitle}`];
+        if (entry.aerialAppearance) parts.push(`Aerial view: ${entry.aerialAppearance}`);
         if (entry.facadeDescription) parts.push(`Facade: ${entry.facadeDescription}`);
         if (entry.roofDescription) parts.push(`Roof: ${entry.roofDescription}`);
         if (entry.materials) parts.push(`Materials: ${entry.materials}`);
+        if (entry.colorScheme) parts.push(`Colors: ${entry.colorScheme}`);
         if (entry.massing) parts.push(`Massing: ${entry.massing}`);
         if (entry.heightTendency) parts.push(`Height: ${entry.heightTendency}`);
         if (entry.publicRealm) parts.push(`Street edge: ${entry.publicRealm}`);
@@ -721,22 +1030,24 @@ function buildSingleArchetypePrompt(options: AIRenderOptions): string {
  * Master prompt builder — decides between structured multi-zone prompt
  * and single-archetype prompt based on available data.
  */
+const CONSTRAINT_HEADER = 'Strictly adhere to the provided geometric massing and boundaries. Do not add structures outside the highlighted zone. Paint ONLY inside the masked area. ';
+
 function buildPrompt(options: AIRenderOptions): string {
   // If we have multiple zones with data, use the structured prompt
   const zones = options.siteZones?.filter(z => z.zone_type !== 'site_boundary') || [];
   if (zones.length > 0) {
-    return buildStructuredPrompt(options);
+    return CONSTRAINT_HEADER + buildStructuredPrompt(options);
   }
 
   // If we have a single archetype overlay prompt, use that
   if (options.mapOverlayPrompt?.trim()) {
-    return buildSingleArchetypePrompt(options);
+    return CONSTRAINT_HEADER + buildSingleArchetypePrompt(options);
   }
 
   // Final fallback: use generic style preset
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const preset = AI_RENDER_STYLES.find((s) => s.id === styleId) || AI_RENDER_STYLES[0];
-  let prompt = `Transform the colored overlay zones in this aerial photograph into photorealistic development. ${preset.prompt}`;
+  let prompt = `${CONSTRAINT_HEADER}Transform the colored overlay zones in this aerial photograph into photorealistic development. ${preset.prompt}`;
   if (options.archetypePrompt?.trim()) {
     prompt += ', ' + options.archetypePrompt.trim();
   }
@@ -744,6 +1055,69 @@ function buildPrompt(options: AIRenderOptions): string {
     prompt += ', ' + options.customPrompt.trim();
   }
   return prompt;
+}
+
+// ---------------------------------------------------------------------------
+// Negative prompt builder
+// ---------------------------------------------------------------------------
+
+/**
+ * Aggregate negative prompts from:
+ * 1. The selected style preset's negative prompt
+ * 2. Archetype-level negative prompts (from mapOverlayNegative or archetypeNegative)
+ * 3. Zone-level archetype negatives (extracted from catalog metadata)
+ *
+ * Returns a single de-duplicated negative prompt string, or empty string if none.
+ */
+function buildNegativePrompt(options: AIRenderOptions): string {
+  const parts: string[] = [];
+
+  // 1. Style preset negative
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
+  const stylePreset = AI_RENDER_STYLES.find((s) => s.id === styleId);
+  if (stylePreset?.negative) {
+    parts.push(stylePreset.negative);
+  }
+
+  // 2. Archetype-level negatives passed from the panel
+  if (options.mapOverlayNegative?.trim()) {
+    parts.push(options.mapOverlayNegative.trim());
+  }
+  if (options.archetypeNegative?.trim()) {
+    parts.push(options.archetypeNegative.trim());
+  }
+
+  // 3. Zone-level archetype negatives from catalog
+  const zones = options.siteZones || [];
+  for (const zone of zones) {
+    if (zone.zone_type === 'site_boundary') continue;
+    if (!zone.properties || !catalog) continue;
+
+    const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+    for (const prefix of PREFIXES) {
+      const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
+      if (!archetypeId) continue;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
+      if (entry?.renderPrompt?.negative) {
+        parts.push(entry.renderPrompt.negative);
+      }
+      break;
+    }
+  }
+
+  if (parts.length === 0) return '';
+
+  // De-duplicate fragments (split by comma, trim, unique, rejoin)
+  const allFragments = parts.join(', ').split(',').map(s => s.trim()).filter(Boolean);
+  const unique = [...new Set(allFragments.map(s => s.toLowerCase()))];
+  // Map back to original casing from first occurrence
+  const seen = new Map<string, string>();
+  for (const frag of allFragments) {
+    const key = frag.toLowerCase();
+    if (!seen.has(key)) seen.set(key, frag);
+  }
+  return unique.map(k => seen.get(k)!).join(', ');
 }
 
 // ---------------------------------------------------------------------------
@@ -759,17 +1133,31 @@ async function callVertexAI(
   prompt: string,
   seed: number,
   aspectRatio = '4:3',
+  maskBase64?: string,
+  negativePrompt?: string,
+  guidanceScale?: number,
 ): Promise<{ imageDataUri: string; seed: number }> {
-  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length);
+  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale);
+
+  const body: Record<string, unknown> = {
+    image_base64: imageBase64,
+    prompt,
+    aspect_ratio: aspectRatio,
+    seed,
+  };
+  if (maskBase64) {
+    body.mask_base64 = maskBase64;
+  }
+  if (negativePrompt) {
+    body.negative_prompt = negativePrompt;
+  }
+  if (guidanceScale != null) {
+    body.guidance_scale = guidanceScale;
+  }
 
   const resp = await axios.post(
     RENDER_API_URL,
-    {
-      image_base64: imageBase64,
-      prompt,
-      aspect_ratio: aspectRatio,
-      seed,
-    },
+    body,
     { timeout: RENDER_TIMEOUT },
   );
 
@@ -813,14 +1201,21 @@ export function useAIRender(): UseAIRenderReturn {
       bounds: [[number, number], [number, number], [number, number], [number, number]],
       options: AIRenderOptions,
       seed: number,
+      maskBase64?: string,
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
+      const negativePrompt = buildNegativePrompt(options);
+      const guidanceScale = options.guidanceScale ?? 15;
 
       try {
         const { imageDataUri, seed: resultSeed } = await callVertexAI(
           imageBase64,
           prompt,
           seed,
+          '4:3',
+          maskBase64,
+          negativePrompt || undefined,
+          guidanceScale,
         );
         return { imageUrl: imageDataUri, bounds, seed: resultSeed, prompt };
       } catch (err: unknown) {
@@ -851,12 +1246,24 @@ export function useAIRender(): UseAIRenderReturn {
         const imageBase64 = await captureMapCanvasBase64(map);
         const bounds = getMapBounds(map);
 
+        // Generate binary mask from site zones if available
+        const zones = options.siteZones;
+        const maskBase64 = zones && zones.length > 0
+          ? generateBinaryMask(map, zones)
+          : undefined;
+
         setStatusMessage('Generating render... Please wait');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingle(imageBase64, bounds, options, seed);
+        const renderResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64);
 
         if (!renderResult) throw new Error('Vertex AI returned no image');
+
+        // Stitch: composite AI render onto original using zone polygons as clip mask
+        if (zones && zones.length > 0) {
+          const stitched = await stitchWithBoundaryMask(imageBase64, renderResult.imageUrl, map, zones);
+          renderResult.imageUrl = stitched;
+        }
 
         setResult(renderResult);
         setProgress(100);
@@ -964,17 +1371,33 @@ export function useAIRender(): UseAIRenderReturn {
         const imageBase64 = await captureMapCanvasBase64(map);
         const bounds = getMapBounds(map);
 
-        setStatusMessage('Generating 3 previews... Please wait');
+        // Generate binary mask from site zones if available
+        const zones = options.siteZones;
+        const maskBase64 = zones && zones.length > 0
+          ? generateBinaryMask(map, zones)
+          : undefined;
 
-        // Generate 3 renders with different seeds
-        const seeds = Array.from({ length: 3 }, () => Math.floor(Math.random() * 2147483647));
+        setStatusMessage('Generating preview... Please wait');
+
+        // Generate 1 preview render
+        const seeds = Array.from({ length: 1 }, () => Math.floor(Math.random() * 2147483647));
 
         const promises = seeds.map((seed) =>
-          renderSingle(imageBase64, bounds, options, seed).catch(() => null),
+          renderSingle(imageBase64, bounds, options, seed, maskBase64).catch(() => null),
         );
 
         const rawResults = await Promise.all(promises);
-        const successful = rawResults.filter((r): r is AIRenderResult => r !== null);
+        let successful = rawResults.filter((r): r is AIRenderResult => r !== null);
+
+        // Stitch each preview onto original using zone polygons as clip mask
+        if (zones && zones.length > 0) {
+          successful = await Promise.all(
+            successful.map(async (r) => {
+              const stitched = await stitchWithBoundaryMask(imageBase64, r.imageUrl, map, zones);
+              return { ...r, imageUrl: stitched };
+            }),
+          );
+        }
 
         setPreviews(successful);
         setResult(null);
@@ -1015,10 +1438,21 @@ export function useAIRender(): UseAIRenderReturn {
           const imageBase64 = await captureMapCanvasBase64(map);
           const bounds = getMapBounds(map);
 
+          const zones = options.siteZones;
+          const maskBase64 = zones && zones.length > 0
+            ? generateBinaryMask(map, zones)
+            : undefined;
+
           setStatusMessage('Rendering full quality... Please wait');
 
-          const fullResult = await renderSingle(imageBase64, bounds, options, seed);
+          const fullResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64);
           if (!fullResult) throw new Error('Vertex AI returned no image');
+
+          // Stitch onto original using zone polygons as clip mask
+          if (zones && zones.length > 0) {
+            const stitched = await stitchWithBoundaryMask(imageBase64, fullResult.imageUrl, map, zones);
+            fullResult.imageUrl = stitched;
+          }
 
           setResult(fullResult);
           setProgress(100);
@@ -1094,6 +1528,182 @@ export function useAIRender(): UseAIRenderReturn {
     [renderSingle],
   );
 
+  // ── Per-zone sequential rendering ───────────────────────────────────
+
+  const renderPerZone = useCallback(
+    async (map: MapboxMap, options: AIRenderOptions = {}): Promise<AIRenderResult | null> => {
+      if (abortRef.current) abortRef.current.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      setIsRendering(true);
+      setProgress(0);
+      setError(null);
+      setStatusMessage('Preparing per-zone render...');
+
+      try {
+        const zones = options.siteZones || [];
+        if (zones.length === 0) {
+          // Fall back to standard render if no zones
+          return await render(map, options);
+        }
+
+        // Save original camera state
+        const origCenter = map.getCenter();
+        const origZoom = map.getZoom();
+        const origBearing = map.getBearing();
+        const origPitch = map.getPitch();
+
+        // Capture the full-view original for compositing
+        const originalBase64 = await captureMapCanvasBase64(map);
+        const originalBounds = getMapBounds(map);
+        let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
+
+        // Sort zones: buildings → roads → green_space → other (skip site_boundary for now)
+        const ZONE_ORDER: Record<string, number> = {
+          building: 0, residential: 1, development_area: 2,
+          road: 3, parking: 4, green_space: 5, water: 6,
+        };
+        const renderableZones = zones
+          .filter(z => z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3)
+          .sort((a, b) => (ZONE_ORDER[a.zone_type] ?? 99) - (ZONE_ORDER[b.zone_type] ?? 99));
+
+        // Also include site_boundary for contextual infill (render it last)
+        const boundaryZones = zones.filter(z => z.zone_type === 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
+        const allZonesToRender = [...renderableZones, ...boundaryZones];
+
+        if (allZonesToRender.length === 0) {
+          return await render(map, options);
+        }
+
+        const totalZones = allZonesToRender.length;
+        const successfulZones: string[] = [];
+
+        for (let i = 0; i < allZonesToRender.length; i++) {
+          const zone = allZonesToRender[i];
+          const zoneName = zone.name || zone.zone_type;
+          setStatusMessage(`Rendering zone ${i + 1}/${totalZones}: ${zoneName}...`);
+          setProgress(Math.round((i / totalZones) * 100));
+
+          try {
+            // Zoom into this zone
+            const zb = zoneBounds(zone.coordinates!, 0.4);
+            map.fitBounds(
+              [[zb.west, zb.south], [zb.east, zb.north]],
+              { padding: 40, pitch: 0, bearing: origBearing, duration: 0 },
+            );
+
+            // Wait for map tiles to load
+            await new Promise<void>((resolve) => {
+              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 500); };
+              map.on('idle', onIdle);
+            });
+
+            // Capture zoomed screenshot + generate single-zone mask
+            const zoomedBase64 = await captureMapCanvasBase64(map);
+            const zoneMask = generateSingleZoneMask(map, zone);
+
+            // Build zone-specific prompt
+            const zonePrompt = buildSingleZonePrompt(zone, options);
+            const negativePrompt = buildNegativePrompt(options);
+            const guidanceScale = options.guidanceScale ?? 15;
+
+            console.log(`[AIRender] Per-zone render ${i + 1}/${totalZones}: "${zoneName}" — prompt length: ${zonePrompt.length}`);
+
+            // Call Vertex AI with zoomed image + single-zone mask
+            const { imageDataUri } = await callVertexAI(
+              zoomedBase64,
+              zonePrompt,
+              options.seed ?? Math.floor(Math.random() * 2147483647),
+              '4:3',
+              zoneMask,
+              negativePrompt || undefined,
+              guidanceScale,
+            );
+
+            // Restore camera to original position for compositing
+            map.jumpTo({
+              center: origCenter,
+              zoom: origZoom,
+              bearing: origBearing,
+              pitch: origPitch,
+            });
+
+            // Wait for map to settle at original position
+            await new Promise<void>((resolve) => {
+              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 300); };
+              map.on('idle', onIdle);
+            });
+
+            // Now zoom back to the zone to get correct pixel mappings for compositing
+            map.fitBounds(
+              [[zb.west, zb.south], [zb.east, zb.north]],
+              { padding: 40, pitch: 0, bearing: origBearing, duration: 0 },
+            );
+            await new Promise<void>((resolve) => {
+              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 300); };
+              map.on('idle', onIdle);
+            });
+
+            // Composite this zone's render onto the cumulative result
+            cumulativeDataUri = await compositeZoneRender(
+              cumulativeDataUri,
+              imageDataUri,
+              map,
+              zone,
+            );
+
+            successfulZones.push(zoneName);
+            console.log(`[AIRender] Zone "${zoneName}" rendered successfully (${i + 1}/${totalZones})`);
+          } catch (zoneErr) {
+            // If individual zone fails, log and continue with remaining zones
+            console.warn(`[AIRender] Zone "${zoneName}" failed, skipping:`, zoneErr);
+          }
+        }
+
+        // Restore original camera state
+        map.jumpTo({
+          center: origCenter,
+          zoom: origZoom,
+          bearing: origBearing,
+          pitch: origPitch,
+        });
+
+        if (successfulZones.length === 0) {
+          throw new Error('All per-zone renders failed');
+        }
+
+        const finalResult: AIRenderResult = {
+          imageUrl: cumulativeDataUri,
+          bounds: originalBounds,
+          seed: options.seed,
+          prompt: `Per-zone render: ${successfulZones.length}/${totalZones} zones`,
+        };
+
+        setResult(finalResult);
+        setProgress(100);
+        setStatusMessage(`Complete — ${successfulZones.length}/${totalZones} zones rendered`);
+        setIsRendering(false);
+        return finalResult;
+      } catch (err: unknown) {
+        if ((err as Error)?.name === 'AbortError') {
+          setIsRendering(false);
+          setProgress(0);
+          setStatusMessage('');
+          return null;
+        }
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error('[AIRender] Per-zone render failed:', msg);
+        setError(msg);
+        setIsRendering(false);
+        setProgress(0);
+        setStatusMessage('');
+        return null;
+      }
+    },
+    [render, renderSingle],
+  );
+
   // ── Bearing-based face swapping ────────────────────────────────────
 
   const attachFaceSwapping = useCallback(
@@ -1165,6 +1775,7 @@ export function useAIRender(): UseAIRenderReturn {
   return {
     render,
     renderZone,
+    renderPerZone,
     renderPreviews,
     renderFull,
     faceRenders,

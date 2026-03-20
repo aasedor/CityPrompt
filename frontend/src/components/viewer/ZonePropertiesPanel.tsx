@@ -5,6 +5,7 @@ import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Dr
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, ModelLibraryRecommendation } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
+import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
@@ -33,7 +34,7 @@ import {
 
 interface ZonePropertiesPanelProps {
   zone: SiteZone;
-  onUpdate: (zoneId: string, data: { name?: string; properties?: SiteZoneProperties }) => void;
+  onUpdate: (zoneId: string, data: { name?: string; color?: string; properties?: SiteZoneProperties }) => void;
   onDelete: (zoneId: string) => void;
   onClose: () => void;
   onAIGenerate?: (buildingId: string, initialPrompt?: string) => void;
@@ -158,8 +159,16 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = () => {
+    // Resolve shade color from assigned archetype (if any)
+    const archetypeId = (props.development_archetype_id as string)
+      || (props.road_archetype_id as string)
+      || (props.green_space_archetype_id as string)
+      || (props.plaza_archetype_id as string);
+    const shadeColor = archetypeId ? getShadeForArchetype(archetypeId) : undefined;
+
     onUpdate(zone.id, {
       name: name || undefined,
+      color: shadeColor !== '#888888' ? shadeColor : undefined,
       properties: props,
     });
   };

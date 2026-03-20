@@ -3,18 +3,34 @@ Application configuration using pydantic-settings.
 Loads from environment variables and .env file.
 """
 
+import os
 from functools import lru_cache
+from pathlib import Path
 from typing import List
 
+from dotenv import dotenv_values
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
+
+# Pre-load GOOGLE_APPLICATION_CREDENTIALS from .env into os.environ so that
+# google.auth.default() can discover it before Settings is constructed.
+_dotenv = dotenv_values(_BACKEND_ROOT / ".env")
+if _gac := _dotenv.get("GOOGLE_APPLICATION_CREDENTIALS"):
+    # Resolve relative paths against the backend root directory
+    _gac_path = Path(_gac)
+    if not _gac_path.is_absolute():
+        _gac_path = (_BACKEND_ROOT / _gac_path).resolve()
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(_gac_path)
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(Path(__file__).resolve().parent.parent.parent / ".env"),
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="ignore",
     )
 
     # --- Application ---
@@ -101,6 +117,18 @@ class Settings(BaseSettings):
     vertex_ai_project: str = ""
     vertex_ai_location: str = "northamerica-northeast1"
     vertex_ai_imagen_model: str = "imagen-3.0-capability-001"
+    google_application_credentials: str = ""
+
+    @model_validator(mode="after")
+    def _set_gcloud_credentials_env(self) -> "Settings":
+        """Propagate GOOGLE_APPLICATION_CREDENTIALS to os.environ so that
+        google.auth.default() can discover the service-account key."""
+        if self.google_application_credentials and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+            cred_path = Path(self.google_application_credentials)
+            if not cred_path.is_absolute():
+                cred_path = (_BACKEND_ROOT / cred_path).resolve()
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(cred_path)
+        return self
 
     # --- Object Storage ---
     s3_bucket_name: str = "dev-platform-uploads"

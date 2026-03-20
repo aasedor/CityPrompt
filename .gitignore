@@ -45,3 +45,5 @@ htmlcov/
 uploads/
 nul
 docx_extracted.txt
+# Google Cloud Credentials
+vertex-key.json
