@@ -254,9 +254,12 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Primary model — FLUX inpainting. Uses a binary mask to selectively
- *  generate photorealistic buildings ONLY where colored zone blocks exist,
- *  preserving all surrounding satellite imagery pixel-perfectly. */
+/** Primary model — FLUX Pro Fill. Purpose-built for inpainting, highest quality.
+ *  Uses a binary mask to selectively generate photorealistic buildings ONLY
+ *  where colored zone blocks exist, preserving surrounding satellite imagery. */
+const FLUX_PRO_FILL_MODEL_ID = 'fal-ai/flux-pro/v1/fill';
+
+/** Fallback model — FLUX general inpainting (dev). Supports LoRA/ControlNet. */
 const FLUX_INPAINT_MODEL_ID = 'fal-ai/flux-general/inpainting';
 
 /** Fallback model — FLUX dev image-to-image. Used when no mask is available. */
@@ -426,15 +429,20 @@ function loadImage(src: string | Blob): Promise<HTMLImageElement> {
 
 /**
  * Convert site boundary geographic coordinates to pixel coordinates
- * on the Mapbox canvas.
+ * on the Mapbox canvas (physical pixels, accounting for devicePixelRatio).
+ *
+ * IMPORTANT: `map.project()` returns CSS pixel coordinates, but the canvas
+ * `.toBlob()` and `.width/.height` use physical pixels. On HiDPI/Retina
+ * displays (DPR=2), CSS pixel 600 maps to physical pixel 1200.
  */
 function siteBoundaryToPixels(
   map: MapboxMap,
   coords: number[][],
 ): { x: number; y: number }[] {
+  const dpr = window.devicePixelRatio || 1;
   return coords.map(([lng, lat]) => {
     const point = map.project([lng, lat]);
-    return { x: point.x, y: point.y };
+    return { x: point.x * dpr, y: point.y * dpr };
   });
 }
 
@@ -573,6 +581,9 @@ function generateInpaintMask(
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   // Draw each non-site_boundary zone as white (area to inpaint)
+  // IMPORTANT: map.project() returns CSS pixels — must scale by DPR
+  // to match the physical-pixel canvas dimensions.
+  const dpr = window.devicePixelRatio || 1;
   ctx.fillStyle = '#ffffff';
   for (const zone of zones) {
     if (zone.zone_type === 'site_boundary') continue;
@@ -580,7 +591,7 @@ function generateInpaintMask(
 
     const pixels = zone.coordinates.map(([lng, lat]) => {
       const pt = map.project([lng, lat]);
-      return { x: pt.x, y: pt.y };
+      return { x: pt.x * dpr, y: pt.y * dpr };
     });
 
     if (pixels.length < 3) continue;
@@ -662,9 +673,25 @@ export function useAIRender(): UseAIRenderReturn {
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
 
-      // ── If we have a mask, use FLUX inpainting (primary approach) ──
+      // ── If we have a mask, use FLUX Pro Fill first (best quality) ──
       if (maskUrl) {
-        console.log('[AIRender] Using FLUX inpainting with mask...');
+        console.log('[AIRender] Using FLUX Pro Fill with mask...');
+        for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+          try {
+            const result = await callFluxProFill(screenshotUrl, maskUrl, prompt, seed);
+            if (result) {
+              return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
+            }
+          } catch (err) {
+            console.warn(`[AIRender] FLUX Pro Fill attempt ${attempt + 1} failed:`, err);
+            if (attempt < MAX_RETRIES - 1) {
+              await new Promise(r => setTimeout(r, 1000));
+            }
+          }
+        }
+
+        // ── Fallback: FLUX general inpainting ──
+        console.log('[AIRender] Pro Fill failed, trying FLUX general inpainting...');
         for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
           try {
             const result = await callFluxInpainting(screenshotUrl, maskUrl, prompt, options, seed);
@@ -672,14 +699,13 @@ export function useAIRender(): UseAIRenderReturn {
               return { imageUrl: result.url, bounds, seed: result.seed ?? seed, prompt };
             }
           } catch (err) {
-            console.warn(`[AIRender] Inpainting attempt ${attempt + 1} failed:`, err);
+            console.warn(`[AIRender] General inpainting attempt ${attempt + 1} failed:`, err);
             if (attempt < MAX_RETRIES - 1) {
               await new Promise(r => setTimeout(r, 1000));
             }
           }
         }
-        // Fall through to img2img if inpainting fails
-        console.warn('[AIRender] Inpainting failed, falling back to img2img...');
+        console.warn('[AIRender] All inpainting models failed, falling back to img2img...');
       }
 
       // ── Fallback: FLUX dev img2img (no mask) ──
@@ -720,7 +746,60 @@ export function useAIRender(): UseAIRenderReturn {
     [],
   );
 
-  // ── FLUX inpainting call (primary — mask-based selective rendering) ──
+  // ── FLUX Pro Fill call (highest quality inpainting) ──────────────
+  async function callFluxProFill(
+    imageUrl: string,
+    maskUrl: string,
+    prompt: string,
+    seed: number,
+  ): Promise<{ url: string; seed?: number } | null> {
+    // FLUX Pro Fill is purpose-built for inpainting — it handles strength
+    // internally and should produce the best results for masked inpainting.
+    const inpaintPrompt = `${prompt}. Photorealistic satellite/aerial photograph showing completed urban development with realistic buildings, streets, landscaping, parks, and infrastructure. Match the lighting, color temperature, and perspective of the surrounding satellite imagery exactly.`;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body: Record<string, any> = {
+      image_url: imageUrl,
+      mask_url: maskUrl,
+      prompt: inpaintPrompt,
+      num_images: 1,
+      seed,
+      output_format: 'png',
+      safety_tolerance: '6',
+    };
+
+    console.log('[AIRender] FLUX Pro Fill request:', {
+      model: FLUX_PRO_FILL_MODEL_ID,
+      prompt: inpaintPrompt.slice(0, 150) + '...',
+      seed,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any = await Promise.race([
+      fal.subscribe(FLUX_PRO_FILL_MODEL_ID, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: body as any,
+        logs: true,
+        onQueueUpdate: (update) => {
+          console.log('[AIRender] FLUX Pro Fill queue:', update.status);
+        },
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('FLUX Pro Fill timeout')), RENDER_TIMEOUT)),
+    ]);
+
+    const images = data?.data?.images ?? data?.images;
+    if (!images?.length) {
+      console.warn('[AIRender] FLUX Pro Fill returned no images:', JSON.stringify(data).slice(0, 300));
+      return null;
+    }
+    const url = images[0]?.url;
+    if (!url) return null;
+
+    console.log('[AIRender] FLUX Pro Fill success:', url.slice(0, 80));
+    return { url, seed: data?.data?.seed ?? data?.seed };
+  }
+
+  // ── FLUX general inpainting call (fallback) ──────────────────────
   async function callFluxInpainting(
     imageUrl: string,
     maskUrl: string,
@@ -954,10 +1033,11 @@ export function useAIRender(): UseAIRenderReturn {
         setProgress(10);
 
         // ── Generate inpainting mask from zone polygons ──
+        let maskBlob: Blob | undefined;
         let maskUrl: string | undefined;
         if (options.siteZones?.length) {
           setStatusMessage('Generating inpainting mask...');
-          const maskBlob = await generateInpaintMask(
+          maskBlob = await generateInpaintMask(
             map, options.siteZones, mapCanvas.width, mapCanvas.height,
           );
           const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
@@ -972,16 +1052,14 @@ export function useAIRender(): UseAIRenderReturn {
 
         if (boundaryPixels?.length) {
           setStatusMessage('Cropping to site boundary...');
-          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+          const dpr = window.devicePixelRatio || 1;
+          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
           renderBlob = cropped.croppedBlob;
           cropRect = cropped.cropRect;
 
-          // Also crop the mask to match
-          if (maskUrl) {
-            const fullMaskBlob = await generateInpaintMask(
-              map, options.siteZones!, mapCanvas.width, mapCanvas.height,
-            );
-            const croppedMaskBlob = await cropMask(fullMaskBlob, cropped.cropRect);
+          // Also crop the mask to match (reuse existing maskBlob)
+          if (maskBlob) {
+            const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
             const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
             croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
             console.log('[AIRender] Uploaded cropped mask:', croppedMaskUrl);
@@ -995,13 +1073,8 @@ export function useAIRender(): UseAIRenderReturn {
         setProgress(20);
         setStatusMessage('Rendering...');
 
-        // Boost strength for cropped images (when no mask — with mask, strength is less critical)
-        const croppedOptions = (cropRect && !croppedMaskUrl)
-          ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
-          : options;
-
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingleFace(renderUrl, bounds, croppedOptions, seed, croppedMaskUrl);
+        const renderResult = await renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl);
 
         if (!renderResult) throw new Error('fal.ai returned no images');
 
@@ -1174,10 +1247,11 @@ export function useAIRender(): UseAIRenderReturn {
         setProgress(10);
 
         // ── Generate inpainting mask from zone polygons ──
+        let maskBlob: Blob | undefined;
         let maskUrl: string | undefined;
         if (options.siteZones?.length) {
           setStatusMessage('Generating inpainting mask...');
-          const maskBlob = await generateInpaintMask(
+          maskBlob = await generateInpaintMask(
             map, options.siteZones, mapCanvas.width, mapCanvas.height,
           );
           const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
@@ -1192,17 +1266,15 @@ export function useAIRender(): UseAIRenderReturn {
 
         if (boundaryPixels?.length) {
           setStatusMessage('Cropping to site boundary...');
-          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+          const dpr = window.devicePixelRatio || 1;
+          const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
           renderBlob = cropped.croppedBlob;
           cropRect = cropped.cropRect;
           console.log('[AIRender] Cropped to site boundary:', cropRect);
 
-          // Also crop the mask to match
-          if (maskUrl && options.siteZones?.length) {
-            const fullMaskBlob = await generateInpaintMask(
-              map, options.siteZones, mapCanvas.width, mapCanvas.height,
-            );
-            const croppedMaskBlob = await cropMask(fullMaskBlob, cropped.cropRect);
+          // Also crop the mask to match (reuse existing maskBlob)
+          if (maskBlob) {
+            const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
             const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
             croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
           }
@@ -1217,15 +1289,10 @@ export function useAIRender(): UseAIRenderReturn {
         setProgress(15);
         setStatusMessage('Generating 3 previews...');
 
-        // Boost strength only when no mask is available
-        const croppedOptions = (cropRect && !croppedMaskUrl)
-          ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
-          : options;
-
         const seeds = Array.from({ length: 3 }, () => Math.floor(Math.random() * 2147483647));
 
         const promises = seeds.map((seed) =>
-          renderSingleFace(renderUrl, bounds, croppedOptions, seed, croppedMaskUrl),
+          renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl),
         );
 
         const rawResults = await Promise.all(promises);
@@ -1309,10 +1376,11 @@ export function useAIRender(): UseAIRenderReturn {
           setProgress(15);
 
           // Generate inpainting mask
+          let maskBlob: Blob | undefined;
           let maskUrl: string | undefined;
           if (options.siteZones?.length) {
             setStatusMessage('Generating inpainting mask...');
-            const maskBlob = await generateInpaintMask(
+            maskBlob = await generateInpaintMask(
               map, options.siteZones, mapCanvas.width, mapCanvas.height,
             );
             const maskFile = new File([maskBlob], 'inpaint-mask.png', { type: 'image/png' });
@@ -1326,16 +1394,14 @@ export function useAIRender(): UseAIRenderReturn {
 
           if (boundaryPixels?.length) {
             setStatusMessage('Cropping to site boundary...');
-            const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30);
+            const dpr = window.devicePixelRatio || 1;
+            const cropped = await cropToSiteBoundary(fullBlob, boundaryPixels, 30 * dpr);
             renderBlob = cropped.croppedBlob;
             cropRect = cropped.cropRect;
 
-            // Also crop the mask
-            if (maskUrl && options.siteZones?.length) {
-              const fullMaskBlob = await generateInpaintMask(
-                map, options.siteZones, mapCanvas.width, mapCanvas.height,
-              );
-              const croppedMaskBlob = await cropMask(fullMaskBlob, cropped.cropRect);
+            // Also crop the mask (reuse existing maskBlob)
+            if (maskBlob) {
+              const croppedMaskBlob = await cropMask(maskBlob, cropped.cropRect);
               const croppedMaskFile = new File([croppedMaskBlob], 'mask-cropped.png', { type: 'image/png' });
               croppedMaskUrl = await fal.storage.upload(croppedMaskFile);
             }
@@ -1348,11 +1414,7 @@ export function useAIRender(): UseAIRenderReturn {
           setProgress(25);
           setStatusMessage('Rendering full quality...');
 
-          const croppedOptions = (cropRect && !croppedMaskUrl)
-            ? { ...options, controlStrength: Math.min(0.85, (options.controlStrength ?? 0.65) + 0.15) }
-            : options;
-
-          let fullResult = await renderSingleFace(renderUrl, bounds, croppedOptions, seed, croppedMaskUrl);
+          let fullResult = await renderSingleFace(renderUrl, bounds, options, seed, croppedMaskUrl);
           if (!fullResult) throw new Error('fal.ai returned no images');
 
           // Stitch back into original
