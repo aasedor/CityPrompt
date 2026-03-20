@@ -110,6 +110,8 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       mapOverlayNegative: useArchetypes ? archetypeInputs.renderPrompt?.negative ?? undefined : undefined,
       // Site boundary for compositing — render only changes pixels inside this polygon
       siteBoundaryCoords,
+      // Pass all zones for inpainting mask generation
+      siteZones: siteZones.length > 0 ? siteZones : undefined,
     };
   }, [selectedStyle, customPrompt, controlStrength, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
 
