@@ -112,7 +112,19 @@ export const SHADE_TO_ARCHETYPE: Map<string, string> = new Map(
  * Falls back to a neutral mid-gray (`#888888`) if the ID is unknown.
  */
 export function getShadeForArchetype(archetypeId: string): string {
-  return SHADE_MAP[archetypeId] ?? '#888888';
+  // Exact match first
+  if (SHADE_MAP[archetypeId]) return SHADE_MAP[archetypeId];
+
+  // Prefix match: the stored ID may be an image-level ID like
+  // "parisian_midrise_block_front_day" while the shade map key is the
+  // option-level "parisian_midrise_block".  Try all shade map keys as prefixes.
+  for (const key of Object.keys(SHADE_MAP)) {
+    if (archetypeId.startsWith(key + '_') || archetypeId.startsWith(key)) {
+      return SHADE_MAP[key];
+    }
+  }
+
+  return '#888888';
 }
 
 /**

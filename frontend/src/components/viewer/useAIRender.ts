@@ -11,6 +11,7 @@
  */
 import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
+import mapboxgl from 'mapbox-gl';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -395,6 +396,39 @@ async function captureMapCanvasBase64(map: MapboxMap): Promise<string> {
 }
 
 /**
+ * Compute the nearest standard aspect ratio string from the map canvas dimensions.
+ * Vertex AI Imagen 3 accepts: "1:1", "3:4", "4:3", "9:16", "16:9".
+ */
+function computeAspectRatio(map: MapboxMap): string {
+  const canvas = map.getCanvas();
+  const w = canvas.width;
+  const h = canvas.height;
+  const ratio = w / h;
+
+  const ratios: { label: string; value: number }[] = [
+    { label: '1:1', value: 1 },
+    { label: '3:4', value: 3 / 4 },
+    { label: '4:3', value: 4 / 3 },
+    { label: '9:16', value: 9 / 16 },
+    { label: '16:9', value: 16 / 9 },
+  ];
+
+  let best = ratios[0];
+  let bestDiff = Math.abs(ratio - best.value);
+  for (const r of ratios) {
+    const diff = Math.abs(ratio - r.value);
+    if (diff < bestDiff) {
+      best = r;
+      bestDiff = diff;
+    }
+  }
+
+  console.log(`[AIRender] Canvas ${w}x${h} (ratio ${ratio.toFixed(3)}) → aspect ratio: ${best.label}`);
+  return best.label;
+}
+
+
+/**
  * Convert site boundary geographic coordinates to pixel coordinates on the Mapbox canvas.
  */
 function siteBoundaryToPixels(
@@ -505,13 +539,18 @@ async function stitchWithBoundaryMask(
   // Step 1: Draw the original screenshot (untouched background)
   ctx.drawImage(originalImg, 0, 0, w, h);
 
-  // Step 2: Clip to all zone polygons and draw the rendered image inside
+  // Step 2: Clip to the site boundary (master container) so the AI result
+  // replaces everything inside. Using only site_boundary avoids winding-rule
+  // conflicts where inner zone sub-paths with opposite winding create holes.
   const dpr = window.devicePixelRatio || 1;
+  const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
+  // Fall back to all zones if no site_boundary exists
+  const clipZones = boundaries.length > 0 ? boundaries : siteZones.filter(z => z.coordinates && z.coordinates.length >= 3);
+
   ctx.save();
   ctx.beginPath();
-  for (const zone of siteZones) {
-    if (!zone.coordinates || zone.coordinates.length < 3) continue;
-    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+  for (const zone of clipZones) {
+    const pixels = siteBoundaryToPixels(map, zone.coordinates!);
     ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
     for (let i = 1; i < pixels.length; i++) {
       ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
@@ -562,61 +601,93 @@ function generateSingleZoneMask(
     ctx.fill();
   }
 
+  // Debug: count white pixels to verify mask has actual coverage
+  const imgData = ctx.getImageData(0, 0, w, h).data;
+  let whiteCount = 0;
+  for (let i = 0; i < imgData.length; i += 4) {
+    if (imgData[i] > 128) whiteCount++;
+  }
+  const totalPx = w * h;
+  console.log(`[AIRender] Single-zone mask: ${w}x${h}, white=${whiteCount}/${totalPx} (${((whiteCount / totalPx) * 100).toFixed(1)}%), zone="${zone.name || zone.zone_type}"`);
+
   return maskCanvas.toDataURL('image/png').split(',')[1];
 }
 
 /**
  * Build a zone-specific prompt for per-zone rendering.
- * Uses only this zone's archetype info for a focused, high-detail prompt.
+ * Simple, natural language — Gemini handles spatial reasoning natively.
  */
 function buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions): string {
   const archetypeInfo = getZoneArchetypeInfo(zone);
+  const desc = buildArchetypeDescription(archetypeInfo, zone.zone_type);
+
+  // Resolve the selected render style
   const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const styleModifier = GEMINI_STYLE_MODIFIERS[styleId] || GEMINI_STYLE_MODIFIERS['photorealistic'];
+  const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
+  const styleLabel = styleMod?.label || 'Photorealistic';
+  const stylePrompt = styleMod?.prompt || '';
 
-  const block1 = [
-    'You are looking at an aerial/satellite photograph with a single colored polygon overlay marking a proposed development zone.',
-    'CRITICAL RULES:',
-    '- Replace ONLY the colored polygon area with photorealistic content as described below.',
-    '- Preserve the EXACT footprint, shape, and position of the colored polygon.',
-    '- Keep ALL surrounding imagery EXACTLY as it appears — change NOTHING outside the colored area.',
-    '- Match the lighting direction, color temperature, and perspective of the surrounding context.',
-  ].join('\n');
+  // For non-photorealistic styles, omit "photorealistic" from the base instruction
+  const isPhotoStyle = ['photorealistic', 'drone-photography', 'photomontage', 'golden-hour',
+    'night-scene', 'overcast-soft', 'summer', 'autumn'].includes(styleId);
+  const isSitePlan = styleId === 'site-plan';
+  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
 
-  // Build zone description
-  const color = colorName(zone.color || '#888888');
-  let desc: string;
+  const parts: string[] = [];
 
-  if (archetypeInfo.mapOverlayPrompt) {
-    desc = archetypeInfo.mapOverlayPrompt;
-  } else if (archetypeInfo.archetypeTitle) {
-    const parts = [archetypeInfo.archetypeTitle];
-    if (archetypeInfo.aerialAppearance) parts.push(`Aerial view: ${archetypeInfo.aerialAppearance}`);
-    if (archetypeInfo.facadeDescription) parts.push(`Facade: ${archetypeInfo.facadeDescription}`);
-    if (archetypeInfo.roofDescription) parts.push(`Roof: ${archetypeInfo.roofDescription}`);
-    if (archetypeInfo.materials) parts.push(`Materials: ${archetypeInfo.materials}`);
-    if (archetypeInfo.colorScheme) parts.push(`Colors: ${archetypeInfo.colorScheme}`);
-    if (archetypeInfo.massing) parts.push(`Massing: ${archetypeInfo.massing}`);
-    if (archetypeInfo.heightTendency) parts.push(`Height: ${archetypeInfo.heightTendency}`);
-    if (archetypeInfo.publicRealm) parts.push(`Street edge: ${archetypeInfo.publicRealm}`);
-    desc = parts.join('. ');
-  } else if (zone.zone_type === 'site_boundary') {
-    desc = 'Contextual infill — render realistic urban ground-plane: sidewalks, manicured grass, small street trees, and pedestrian paths that blend with the surrounding satellite imagery.';
+  if (isArtistic) {
+    parts.push(`Replace the colored overlay area with a ${desc}, rendered in ${styleLabel} style.`);
+    parts.push(`RENDER STYLE: ${stylePrompt}`);
   } else {
-    desc = defaultZoneDescription(zone.zone_type);
+    parts.push(`Replace the colored overlay area with a photorealistic ${desc}.`);
+    if (styleId !== 'photorealistic') {
+      parts.push(`RENDER STYLE: ${stylePrompt}`);
+    }
   }
 
-  const block2 = `\nZONE INSTRUCTION:\n• ${color.toUpperCase()} zone (${zone.color || '#888888'}, ${zone.name || zone.zone_type}): ${desc}`;
+  if (isSitePlan) {
+    parts.push('Disable 3D perspective and shadows. Render as a flat 2D orthographic view looking straight down.');
+  }
 
-  const block3 = [
-    '',
-    'STYLE & ENVIRONMENT:',
-    styleModifier.prompt,
-    '',
-    'QUALITY: Ultra-high resolution, sharp focus, photorealistic materials with visible texture and grain, realistic shadows, 8k quality.',
-  ].join('\n');
+  parts.push(
+    'The building or content may extend into the surrounding WHITE area (which is the site boundary) — blend naturally with sidewalks, landscaping, or ground-plane there.',
+    'However, do NOT extend into or overlap any OTHER colored zones. Each colored area is a separate zone with its own purpose.',
+    'Keep all satellite imagery outside the white site boundary EXACTLY as it is.',
+  );
 
-  return CONSTRAINT_HEADER + [block1, block2, block3].join('\n');
+  if (isPhotoStyle) {
+    parts.push('Match the lighting, shadows, and perspective of the surrounding context so it looks like a seamless aerial photomontage.');
+  }
+
+  if (options.customPrompt?.trim()) {
+    parts.push(options.customPrompt.trim());
+  }
+
+  return parts.join(' ');
+}
+
+/**
+ * Build a natural-language description from archetype metadata.
+ * Used by both single-zone and multi-zone prompt builders.
+ */
+function buildArchetypeDescription(
+  info: ReturnType<typeof getZoneArchetypeInfo>,
+  zoneType: string,
+): string {
+  if (info.mapOverlayPrompt) return info.mapOverlayPrompt;
+
+  if (info.archetypeTitle) {
+    const parts = [info.archetypeTitle.toLowerCase() + ' building'];
+    if (info.aerialAppearance) parts.push(info.aerialAppearance);
+    if (info.facadeDescription) parts.push(info.facadeDescription);
+    if (info.roofDescription) parts.push(info.roofDescription);
+    if (info.materials) parts.push(info.materials);
+    if (info.colorScheme) parts.push(info.colorScheme);
+    if (info.heightTendency) parts.push(info.heightTendency);
+    return parts.join('. ');
+  }
+
+  return defaultZoneDescription(zoneType);
 }
 
 /**
@@ -649,6 +720,8 @@ async function compositeZoneRender(
   if (zone.coordinates && zone.coordinates.length >= 3) {
     const dpr = window.devicePixelRatio || 1;
     const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    console.log(`[AIRender] compositeZoneRender: base=${w}x${h}, rendered=${renderedImg.naturalWidth}x${renderedImg.naturalHeight}, dpr=${dpr}, clip pts=${pixels.length}`);
+    console.log(`[AIRender]   Clip polygon (device px):`, pixels.slice(0, 4).map(p => `(${(p.x * dpr).toFixed(0)},${(p.y * dpr).toFixed(0)})`).join(' '));
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
@@ -822,19 +895,28 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
     });
   }
 
-  // Deduplicate by color (multiple zones of same type/color get merged description)
-  const colorMap = new Map<string, ZonePromptEntry>();
+  // With unique shade IDs, each archetype-assigned zone has its own color,
+  // so deduplication only applies to unassigned zones sharing a default color.
+  // Deduplicate by color+zoneType to keep distinct zone types separate.
+  const seen = new Map<string, ZonePromptEntry>();
   for (const entry of entries) {
-    if (!colorMap.has(entry.color)) {
-      colorMap.set(entry.color, entry);
-    }
-    // If a later entry has better metadata, prefer it
-    else if (entry.archetypeTitle && !colorMap.get(entry.color)!.archetypeTitle) {
-      colorMap.set(entry.color, entry);
+    const key = `${entry.color}_${entry.zoneType}`;
+    if (!seen.has(key)) {
+      seen.set(key, entry);
+    } else if (entry.archetypeTitle && !seen.get(key)!.archetypeTitle) {
+      seen.set(key, entry);
     }
   }
 
-  return Array.from(colorMap.values());
+  // Sort: buildings/parks first, site_boundary LAST — so the AI prioritizes
+  // specific zone instructions over the generic infill instruction.
+  const result = Array.from(seen.values());
+  result.sort((a, b) => {
+    if (a.zoneType === 'site_boundary') return 1;
+    if (b.zoneType === 'site_boundary') return -1;
+    return 0;
+  });
+  return result;
 }
 
 /**
@@ -898,163 +980,94 @@ function defaultZoneDescription(zoneType: string): string {
 }
 
 /**
- * Build the complete structured prompt following the 3-block Orchestration Spec:
- *
- * Block 1: Anchor Command — strict geometry/footprint adherence
- * Block 2: Zone Mapping — iterate zones: color → archetype → render details
- * Block 3: Environmental Context & Style Application
+ * Build the multi-zone prompt — simple, natural language for Gemini.
+ * Each zone gets a one-line description built from archetype card metadata.
  */
 function buildStructuredPrompt(options: AIRenderOptions): string {
   const zones = options.siteZones || [];
   const zoneEntries = collectZonePromptEntries(zones);
   const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const styleModifier = GEMINI_STYLE_MODIFIERS[styleId] || GEMINI_STYLE_MODIFIERS['photorealistic'];
+  const style = GEMINI_STYLE_MODIFIERS[styleId];
 
-  // ── Block 1: Anchor Command ──
-  const block1 = [
-    'You are looking at an aerial/satellite photograph with colored polygon overlays representing a proposed urban development.',
-    'Each colored polygon marks the EXACT footprint of a building, road, park, or other zone.',
-    'CRITICAL RULES:',
-    '- Replace ONLY the colored polygon areas with photorealistic content as described below.',
-    '- Preserve the EXACT footprint, shape, and position of each colored polygon — do not move, resize, or reshape any zone.',
-    '- Keep ALL surrounding satellite imagery, roads, existing buildings, and context EXACTLY as they appear — change NOTHING outside the colored areas.',
-    '- Match the lighting direction, color temperature, and perspective of the surrounding satellite context.',
-    '- The result must look like a seamless photomontage where new development is composited into the real satellite photograph.',
-  ].join('\n');
+  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+  const isSitePlan = styleId === 'site-plan';
 
-  // ── Block 2: Zone Mapping ──
-  let block2: string;
+  const parts: string[] = [
+    'This is an aerial/satellite photograph with colored polygon overlays marking proposed development zones.',
+  ];
+
+  if (isArtistic) {
+    parts.push(`Replace each colored area with the described content, rendered in ${style?.label || styleId} style. Keep all surrounding imagery exactly as it is.`);
+  } else {
+    parts.push('Replace each colored area with the following photorealistic content. Keep all surrounding imagery exactly as it is.');
+  }
+
+  // Inject render style
+  if (style) {
+    parts.push(`RENDER STYLE: ${style.prompt}`);
+  }
+
+  if (isSitePlan) {
+    parts.push('Disable 3D perspective and shadows. Render as a flat 2D orthographic view looking straight down.');
+  }
+
   if (zoneEntries.length > 0) {
-    const zoneLines = zoneEntries.map((entry) => {
+    for (const entry of zoneEntries) {
       const color = colorName(entry.color);
       let desc: string;
 
       if (entry.zoneType === 'site_boundary') {
-        // Special contextual infill description for site boundary zones
-        desc = 'Treat as contextual infill — do NOT add buildings or large structures. Instead, render realistic urban ground-plane context: public sidewalks matching surrounding pavement, manicured grass, small street trees, and pedestrian paths that seamlessly blend the new architectural zones with the surrounding satellite imagery. This zone is the "glue" between buildings and the real neighborhood.';
-      } else if (entry.mapOverlayPrompt) {
-        // Use the archetype's specific render prompt (best quality)
-        desc = entry.mapOverlayPrompt;
-      } else if (entry.archetypeTitle) {
-        // Build from archetype metadata
-        const parts = [`${entry.archetypeTitle}`];
-        if (entry.aerialAppearance) parts.push(`Aerial view: ${entry.aerialAppearance}`);
-        if (entry.facadeDescription) parts.push(`Facade: ${entry.facadeDescription}`);
-        if (entry.roofDescription) parts.push(`Roof: ${entry.roofDescription}`);
-        if (entry.materials) parts.push(`Materials: ${entry.materials}`);
-        if (entry.colorScheme) parts.push(`Colors: ${entry.colorScheme}`);
-        if (entry.massing) parts.push(`Massing: ${entry.massing}`);
-        if (entry.heightTendency) parts.push(`Height: ${entry.heightTendency}`);
-        if (entry.publicRealm) parts.push(`Street edge: ${entry.publicRealm}`);
-        desc = parts.join('. ');
+        desc = 'realistic urban ground-plane — sidewalks, grass, small street trees, pedestrian paths blending with surroundings';
       } else {
-        // Fallback to zone-type default
-        desc = defaultZoneDescription(entry.zoneType);
+        desc = buildArchetypeDescription(entry, entry.zoneType);
       }
 
-      return `• ${color.toUpperCase()} zones (${entry.color}, ${entry.zoneName}): ${desc}`;
-    });
+      parts.push(`- ${color.toUpperCase()} area: ${desc}`);
+    }
+  }
 
-    block2 = [
-      '',
-      'ZONE-BY-ZONE INSTRUCTIONS:',
-      ...zoneLines,
-    ].join('\n');
+  if (options.customPrompt?.trim()) {
+    parts.push(options.customPrompt.trim());
+  }
+
+  if (!isArtistic) {
+    parts.push('Make it look like a seamless photomontage — match lighting, shadows, and perspective of the satellite imagery.');
   } else {
-    // No specific zones — provide generic color mapping
-    block2 = [
-      '',
-      'ZONE-BY-ZONE INSTRUCTIONS:',
-      '• RED zones (#E03C31): Replace with photorealistic commercial or mixed-use buildings with detailed facades, glass and brick materials',
-      '• YELLOW zones (#F5D63D): Replace with residential buildings — townhouses or apartments with warm materials and balconies',
-      '• GREEN zones (#4CAF50): Replace with landscaped parks with mature trees, grass lawns, walking paths, and benches',
-      '• DARK GRAY zones (#616161): Replace with paved roads with lane markings, sidewalks, street trees, and parked cars',
-      '• LIGHT GRAY zones (#9E9E9E): Replace with paved plazas or surface parking with pedestrian paving and street furniture',
-      '• BLUE zones (#4A90D9): Replace with water features — ponds, fountains, or reflecting pools',
-      '• GOLD/AMBER zones (#C8A02A): Replace with mixed-use urban development with varied heights and active ground floors',
-    ].join('\n');
-  }
-
-  // ── Block 3: Environmental Context & Style ──
-  const block3Parts = [
-    '',
-    'STYLE & ENVIRONMENT:',
-    styleModifier.prompt,
-  ];
-
-  // Add custom prompt if provided
-  if (options.customPrompt?.trim()) {
-    block3Parts.push(`Additional direction: ${options.customPrompt.trim()}`);
-  }
-
-  // Add archetype positive prompts if available
-  if (options.archetypePrompt?.trim()) {
-    block3Parts.push(`Archetype style: ${options.archetypePrompt.trim()}`);
-  }
-
-  block3Parts.push(
-    '',
-    'QUALITY: Ultra-high resolution, sharp focus, photorealistic materials with visible texture and grain, realistic shadows consistent with sun position, 8k quality.',
-  );
-
-  const block3 = block3Parts.join('\n');
-
-  return [block1, block2, block3].join('\n');
-}
-
-/**
- * Build a simpler prompt for when we have a specific mapOverlayPrompt
- * (single-archetype scenario — the archetype already has a complete prompt).
- */
-function buildSingleArchetypePrompt(options: AIRenderOptions): string {
-  if (!options.mapOverlayPrompt?.trim()) return buildStructuredPrompt(options);
-
-  const parts = [
-    'You are looking at an aerial/satellite photograph with colored polygon overlays.',
-    'Replace ONLY the colored polygon areas with the following:',
-    '',
-    options.mapOverlayPrompt.trim(),
-    '',
-    'CRITICAL: Keep ALL surrounding satellite imagery exactly as-is. Change NOTHING outside the colored areas.',
-    'Match the lighting, color temperature, and perspective of the surrounding context.',
-  ];
-
-  if (options.customPrompt?.trim()) {
-    parts.push(`Additional: ${options.customPrompt.trim()}`);
+    parts.push(`Render the entire scene consistently in ${style?.label || styleId} style.`);
   }
 
   return parts.join('\n');
 }
 
 /**
- * Master prompt builder — decides between structured multi-zone prompt
- * and single-archetype prompt based on available data.
+ * Master prompt builder — generates a simple, natural-language prompt
+ * from zone data and archetype card metadata for Gemini.
  */
-const CONSTRAINT_HEADER = 'Strictly adhere to the provided geometric massing and boundaries. Do not add structures outside the highlighted zone. Paint ONLY inside the masked area. ';
-
 function buildPrompt(options: AIRenderOptions): string {
-  // If we have multiple zones with data, use the structured prompt
   const zones = options.siteZones?.filter(z => z.zone_type !== 'site_boundary') || [];
+
   if (zones.length > 0) {
-    return CONSTRAINT_HEADER + buildStructuredPrompt(options);
+    return buildStructuredPrompt(options);
   }
 
-  // If we have a single archetype overlay prompt, use that
   if (options.mapOverlayPrompt?.trim()) {
-    return CONSTRAINT_HEADER + buildSingleArchetypePrompt(options);
+    const parts = [
+      `Replace the colored overlay areas with: ${options.mapOverlayPrompt.trim()}.`,
+      'Keep all surrounding satellite imagery exactly as it is.',
+      'Match lighting, shadows, and perspective for a seamless photomontage.',
+    ];
+    if (options.customPrompt?.trim()) parts.push(options.customPrompt.trim());
+    return parts.join(' ');
   }
 
-  // Final fallback: use generic style preset
-  const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const preset = AI_RENDER_STYLES.find((s) => s.id === styleId) || AI_RENDER_STYLES[0];
-  let prompt = `${CONSTRAINT_HEADER}Transform the colored overlay zones in this aerial photograph into photorealistic development. ${preset.prompt}`;
-  if (options.archetypePrompt?.trim()) {
-    prompt += ', ' + options.archetypePrompt.trim();
-  }
-  if (options.customPrompt?.trim()) {
-    prompt += ', ' + options.customPrompt.trim();
-  }
-  return prompt;
+  // Fallback: generic
+  const parts = [
+    'Replace the colored overlay areas in this aerial photograph with photorealistic urban development.',
+    'Keep all surrounding imagery exactly as it is.',
+  ];
+  if (options.archetypePrompt?.trim()) parts.push(options.archetypePrompt.trim());
+  if (options.customPrompt?.trim()) parts.push(options.customPrompt.trim());
+  return parts.join(' ');
 }
 
 // ---------------------------------------------------------------------------
@@ -1202,6 +1215,7 @@ export function useAIRender(): UseAIRenderReturn {
       options: AIRenderOptions,
       seed: number,
       maskBase64?: string,
+      aspectRatio = '4:3',
     ): Promise<AIRenderResult | null> => {
       const prompt = buildPrompt(options);
       const negativePrompt = buildNegativePrompt(options);
@@ -1212,7 +1226,7 @@ export function useAIRender(): UseAIRenderReturn {
           imageBase64,
           prompt,
           seed,
-          '4:3',
+          aspectRatio,
           maskBase64,
           negativePrompt || undefined,
           guidanceScale,
@@ -1243,19 +1257,22 @@ export function useAIRender(): UseAIRenderReturn {
       setStatusMessage('Capturing view...');
 
       try {
-        const imageBase64 = await captureMapCanvasBase64(map);
-        const bounds = getMapBounds(map);
-
-        // Generate binary mask from site zones if available
+        // Generate mask FIRST (synchronous) before the async screenshot capture,
+        // so both read canvas dimensions at the same instant. A layout reflow
+        // between calls can shift dimensions by ±1px, which Vertex AI rejects.
         const zones = options.siteZones;
         const maskBase64 = zones && zones.length > 0
           ? generateBinaryMask(map, zones)
           : undefined;
 
+        const imageBase64 = await captureMapCanvasBase64(map);
+        const bounds = getMapBounds(map);
+
         setStatusMessage('Generating render... Please wait');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64);
+        const aspectRatio = computeAspectRatio(map);
+        const renderResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64, aspectRatio);
 
         if (!renderResult) throw new Error('Vertex AI returned no image');
 
@@ -1327,7 +1344,8 @@ export function useAIRender(): UseAIRenderReturn {
         setStatusMessage('Generating render... Please wait');
 
         const seed = options.seed ?? Math.floor(Math.random() * 2147483647);
-        const renderResult = await renderSingle(imageBase64, bounds, options, seed);
+        const aspectRatio = computeAspectRatio(map);
+        const renderResult = await renderSingle(imageBase64, bounds, options, seed, undefined, aspectRatio);
 
         if (!renderResult) throw new Error('Vertex AI returned no image');
 
@@ -1368,22 +1386,23 @@ export function useAIRender(): UseAIRenderReturn {
       setStatusMessage('Capturing view...');
 
       try {
-        const imageBase64 = await captureMapCanvasBase64(map);
-        const bounds = getMapBounds(map);
-
-        // Generate binary mask from site zones if available
+        // Generate mask FIRST (synchronous) to match canvas dimensions exactly
         const zones = options.siteZones;
         const maskBase64 = zones && zones.length > 0
           ? generateBinaryMask(map, zones)
           : undefined;
+
+        const imageBase64 = await captureMapCanvasBase64(map);
+        const bounds = getMapBounds(map);
 
         setStatusMessage('Generating preview... Please wait');
 
         // Generate 1 preview render
         const seeds = Array.from({ length: 1 }, () => Math.floor(Math.random() * 2147483647));
 
+        const aspectRatio = computeAspectRatio(map);
         const promises = seeds.map((seed) =>
-          renderSingle(imageBase64, bounds, options, seed, maskBase64).catch(() => null),
+          renderSingle(imageBase64, bounds, options, seed, maskBase64, aspectRatio).catch(() => null),
         );
 
         const rawResults = await Promise.all(promises);
@@ -1435,17 +1454,20 @@ export function useAIRender(): UseAIRenderReturn {
         // ── Single-view mode: render from user's current perspective ──
         if (singleView) {
           setStatusMessage('Capturing current view...');
-          const imageBase64 = await captureMapCanvasBase64(map);
-          const bounds = getMapBounds(map);
 
+          // Generate mask FIRST (synchronous) to match canvas dimensions exactly
           const zones = options.siteZones;
           const maskBase64 = zones && zones.length > 0
             ? generateBinaryMask(map, zones)
             : undefined;
 
+          const imageBase64 = await captureMapCanvasBase64(map);
+          const bounds = getMapBounds(map);
+
           setStatusMessage('Rendering full quality... Please wait');
 
-          const fullResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64);
+          const aspectRatio = computeAspectRatio(map);
+          const fullResult = await renderSingle(imageBase64, bounds, options, seed, maskBase64, aspectRatio);
           if (!fullResult) throw new Error('Vertex AI returned no image');
 
           // Stitch onto original using zone polygons as clip mask
@@ -1494,8 +1516,9 @@ export function useAIRender(): UseAIRenderReturn {
 
         setStatusMessage('Rendering all 4 faces... Please wait');
 
+        const aspectRatio = computeAspectRatio(map);
         const renderPromises = captures.map((cap) =>
-          renderSingle(cap.base64, cap.bounds, options, seed)
+          renderSingle(cap.base64, cap.bounds, options, seed, undefined, aspectRatio)
             .then((result) => result ? { label: cap.label, bearing: FACE_BEARINGS.find(f => f.label === cap.label)!.bearing, result } as FaceRender : null)
             .catch(() => null),
         );
@@ -1557,20 +1580,22 @@ export function useAIRender(): UseAIRenderReturn {
         // Capture the full-view original for compositing
         const originalBase64 = await captureMapCanvasBase64(map);
         const originalBounds = getMapBounds(map);
+        const aspectRatio = computeAspectRatio(map);
         let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
 
-        // Sort zones: buildings → roads → green_space → other (skip site_boundary for now)
+        // Sort zones: ground-level first (parks, roads), then buildings on top.
+        // This way buildings composite OVER parks, not under them.
         const ZONE_ORDER: Record<string, number> = {
-          building: 0, residential: 1, development_area: 2,
-          road: 3, parking: 4, green_space: 5, water: 6,
+          water: 0, green_space: 1, parking: 2,
+          road: 3, development_area: 4, residential: 5, building: 6,
         };
         const renderableZones = zones
           .filter(z => z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3)
           .sort((a, b) => (ZONE_ORDER[a.zone_type] ?? 99) - (ZONE_ORDER[b.zone_type] ?? 99));
 
-        // Also include site_boundary for contextual infill (render it last)
-        const boundaryZones = zones.filter(z => z.zone_type === 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
-        const allZonesToRender = [...renderableZones, ...boundaryZones];
+        // Skip site_boundary — it's just the container, not renderable content.
+        // Each inner zone already blends into the white site boundary via its prompt.
+        const allZonesToRender = renderableZones;
 
         if (allZonesToRender.length === 0) {
           return await render(map, options);
@@ -1579,6 +1604,14 @@ export function useAIRender(): UseAIRenderReturn {
         const totalZones = allZonesToRender.length;
         const successfulZones: string[] = [];
 
+        // Per-zone rendering: for each zone, hide all OTHER zone layers so Gemini
+        // only sees one colored area on the white site boundary. This prevents
+        // bleed between zones. Each zone gets its own screenshot, mask, and prompt.
+        const ZONE_RENDER_LAYERS = [
+          'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
+          'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+        ];
+
         for (let i = 0; i < allZonesToRender.length; i++) {
           const zone = allZonesToRender[i];
           const zoneName = zone.name || zone.zone_type;
@@ -1586,21 +1619,48 @@ export function useAIRender(): UseAIRenderReturn {
           setProgress(Math.round((i / totalZones) * 100));
 
           try {
-            // Zoom into this zone
-            const zb = zoneBounds(zone.coordinates!, 0.4);
-            map.fitBounds(
-              [[zb.west, zb.south], [zb.east, zb.north]],
-              { padding: 40, pitch: 0, bearing: origBearing, duration: 0 },
-            );
+            // Temporarily update the zone source to show ONLY this zone + site boundary
+            const src = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+            const allFeatures = zones.map(z => {
+              if (!z.coordinates || z.coordinates.length < 3) return null;
+              const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+              return {
+                type: 'Feature' as const,
+                properties: {
+                  id: z.id,
+                  color: z.id === zone.id ? (z.color || '#E03C31') : '#ffffff',
+                  label: z.name || z.zone_type,
+                  zone_type: z.zone_type,
+                  ...(zoneHeight != null && { height: zoneHeight }),
+                },
+                geometry: {
+                  type: 'Polygon' as const,
+                  coordinates: [z.coordinates.map(([lng, lat]) => [lng, lat])],
+                },
+              };
+            }).filter(Boolean);
 
-            // Wait for map tiles to load
-            await new Promise<void>((resolve) => {
-              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 500); };
-              map.on('idle', onIdle);
+            // Show only the current zone colored (others white/hidden)
+            const soloFeatures = allFeatures.filter(f => {
+              if (!f) return false;
+              const fId = f.properties.id;
+              // Keep site_boundary (white background) and the current zone
+              return fId === zone.id || zones.find(z => z.id === fId)?.zone_type === 'site_boundary';
             });
 
-            // Capture zoomed screenshot + generate single-zone mask
-            const zoomedBase64 = await captureMapCanvasBase64(map);
+            if (src) {
+              src.setData({ type: 'FeatureCollection', features: soloFeatures as any[] });
+              // Wait for map to re-render with solo zone
+              await new Promise<void>(resolve => {
+                map.once('idle', resolve);
+                setTimeout(resolve, 500); // fallback
+              });
+            }
+
+            // Capture screenshot with only this zone visible
+            const zoneScreenshot = await captureMapCanvasBase64(map);
+
+            // Generate single-zone mask at the current viewport
             const zoneMask = generateSingleZoneMask(map, zone);
 
             // Build zone-specific prompt
@@ -1608,42 +1668,21 @@ export function useAIRender(): UseAIRenderReturn {
             const negativePrompt = buildNegativePrompt(options);
             const guidanceScale = options.guidanceScale ?? 15;
 
-            console.log(`[AIRender] Per-zone render ${i + 1}/${totalZones}: "${zoneName}" — prompt length: ${zonePrompt.length}`);
+            // Debug logging
+            console.log(`[AIRender] Per-zone render ${i + 1}/${totalZones}: "${zoneName}" (${zone.zone_type})`);
+            console.log(`[AIRender]   Prompt (${zonePrompt.length} chars):\n${zonePrompt}`);
+            console.log(`[AIRender]   Aspect ratio: ${aspectRatio}, guidance: ${guidanceScale}`);
 
-            // Call Vertex AI with zoomed image + single-zone mask
+            // Call Gemini with screenshot showing ONLY this zone
             const { imageDataUri } = await callVertexAI(
-              zoomedBase64,
+              zoneScreenshot,
               zonePrompt,
               options.seed ?? Math.floor(Math.random() * 2147483647),
-              '4:3',
+              aspectRatio,
               zoneMask,
               negativePrompt || undefined,
               guidanceScale,
             );
-
-            // Restore camera to original position for compositing
-            map.jumpTo({
-              center: origCenter,
-              zoom: origZoom,
-              bearing: origBearing,
-              pitch: origPitch,
-            });
-
-            // Wait for map to settle at original position
-            await new Promise<void>((resolve) => {
-              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 300); };
-              map.on('idle', onIdle);
-            });
-
-            // Now zoom back to the zone to get correct pixel mappings for compositing
-            map.fitBounds(
-              [[zb.west, zb.south], [zb.east, zb.north]],
-              { padding: 40, pitch: 0, bearing: origBearing, duration: 0 },
-            );
-            await new Promise<void>((resolve) => {
-              const onIdle = () => { map.off('idle', onIdle); setTimeout(resolve, 300); };
-              map.on('idle', onIdle);
-            });
 
             // Composite this zone's render onto the cumulative result
             cumulativeDataUri = await compositeZoneRender(
@@ -1656,9 +1695,32 @@ export function useAIRender(): UseAIRenderReturn {
             successfulZones.push(zoneName);
             console.log(`[AIRender] Zone "${zoneName}" rendered successfully (${i + 1}/${totalZones})`);
           } catch (zoneErr) {
-            // If individual zone fails, log and continue with remaining zones
             console.warn(`[AIRender] Zone "${zoneName}" failed, skipping:`, zoneErr);
           }
+        }
+
+        // Restore full zone data after per-zone rendering
+        const restoreFeatures = zones.map(z => {
+          if (!z.coordinates || z.coordinates.length < 3) return null;
+          const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+          return {
+            type: 'Feature' as const,
+            properties: {
+              id: z.id,
+              color: z.color || '#E03C31',
+              label: z.name || z.zone_type,
+              zone_type: z.zone_type,
+              ...(zoneHeight != null && { height: zoneHeight }),
+            },
+            geometry: {
+              type: 'Polygon' as const,
+              coordinates: [z.coordinates.map(([lng, lat]) => [lng, lat])],
+            },
+          };
+        }).filter(Boolean);
+        const restoreSrc = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+        if (restoreSrc) {
+          restoreSrc.setData({ type: 'FeatureCollection', features: restoreFeatures as any[] });
         }
 
         // Restore original camera state

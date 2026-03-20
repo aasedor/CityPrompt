@@ -629,13 +629,22 @@ export function SitePlannerMap({
         },
       });
 
-      // Flat fill for zones without height (green space, roads, site boundary, etc.)
+      // Site boundary fill — always renders BELOW other zones, white for sharp AI contrast
+      map.addLayer({
+        id: 'site-zones-boundary-fill',
+        type: 'fill',
+        source: 'site-zones',
+        filter: ['==', ['get', 'zone_type'], 'site_boundary'],
+        paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.9 },
+      });
+
+      // Flat fill for zones without height (green space, roads, etc.) — excludes site_boundary
       map.addLayer({
         id: 'site-zones-fill',
         type: 'fill',
         source: 'site-zones',
-        filter: ['!', ['has', 'height']],
-        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.5 },
+        filter: ['all', ['!', ['has', 'height']], ['!=', ['get', 'zone_type'], 'site_boundary']],
+        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.85 },
       });
 
       map.addLayer({
@@ -791,7 +800,7 @@ export function SitePlannerMap({
       } else {
         // Selection mode — but only if not coming from a drag
         // Query both flat fill and extruded layers so building zones (with height) are clickable
-        const queryLayers = ['site-zones-fill', 'site-zones-extrusion'].filter(
+        const queryLayers = ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(
           (l) => map.getLayer(l),
         );
         const features = map.queryRenderedFeatures(e.point, {
@@ -862,7 +871,7 @@ export function SitePlannerMap({
 
       // Check zone body for zone dragging
       const zoneFeatures = map.queryRenderedFeatures(e.point, {
-        layers: ['site-zones-fill'],
+        layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
       });
       if (zoneFeatures.length > 0) {
         const zoneId = pickSmallestFeature(zoneFeatures).properties?.id as string;
@@ -879,6 +888,83 @@ export function SitePlannerMap({
           map.getCanvas().style.cursor = 'grabbing';
           setDraggingZone(true);
         }
+      }
+    });
+
+    // ─── Right-click: add vertex on nearest edge ───
+    map.on('contextmenu', (e) => {
+      const tool = activeSitePlannerToolRef.current;
+      if (tool) return;
+
+      // Only add vertices when a zone is selected
+      const selId = selectedZoneIdRef.current;
+      if (!selId) return;
+
+      const zone = siteZonesRef.current.find((z) => z.id === selId);
+      if (!zone || !zone.coordinates || zone.coordinates.length < 3) return;
+
+      const clickLng = e.lngLat.lng;
+      const clickLat = e.lngLat.lat;
+      const coords = zone.coordinates;
+
+      // Find the nearest edge segment to insert the vertex
+      let bestDist = Infinity;
+      let bestIdx = -1;
+
+      for (let i = 0; i < coords.length; i++) {
+        const a = coords[i];
+        const b = coords[(i + 1) % coords.length];
+        // Project click point onto the edge segment [a, b]
+        const dx = b[0] - a[0];
+        const dy = b[1] - a[1];
+        const len2 = dx * dx + dy * dy;
+        if (len2 === 0) continue;
+        const t = Math.max(0, Math.min(1, ((clickLng - a[0]) * dx + (clickLat - a[1]) * dy) / len2));
+        const projLng = a[0] + t * dx;
+        const projLat = a[1] + t * dy;
+        const dist = Math.sqrt((clickLng - projLng) ** 2 + (clickLat - projLat) ** 2);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      }
+
+      if (bestIdx >= 0) {
+        e.preventDefault();
+        // Insert the new vertex after bestIdx
+        const newCoords = [...coords.map(c => [...c])];
+        newCoords.splice(bestIdx + 1, 0, [clickLng, clickLat]);
+
+        // Update map visuals
+        const src = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+        if (src) {
+          const features = siteZonesRef.current.map(z => {
+            const c = z.id === selId ? newCoords : z.coordinates;
+            if (!c || c.length < 3) return null;
+            const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+            return {
+              type: 'Feature' as const,
+              properties: {
+                id: z.id,
+                color: z.color || resolveZoneColor(z),
+                label: z.name || ZONE_TYPE_CONFIG[z.zone_type]?.label || z.zone_type,
+                zone_type: z.zone_type,
+                ...(zoneHeight != null && { height: zoneHeight }),
+              },
+              geometry: {
+                type: 'Polygon' as const,
+                coordinates: [c.map(([lng, lat]) => [lng, lat])],
+              },
+            };
+          }).filter(Boolean);
+          src.setData({ type: 'FeatureCollection', features: features as any[] });
+        }
+
+        // Update vertex handles
+        updateVertexHandles(selId, siteZonesRef.current, newCoords);
+
+        // Persist the change
+        onZoneUpdatedRef.current(selId, newCoords);
       }
     });
 
@@ -902,7 +988,7 @@ export function SitePlannerMap({
         }
         // Check if hovering zone body
         const zoneHits = map.queryRenderedFeatures(e.point, {
-          layers: ['site-zones-fill'],
+          layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
         });
         if (zoneHits.length > 0) {
           map.getCanvas().style.cursor = 'grab';

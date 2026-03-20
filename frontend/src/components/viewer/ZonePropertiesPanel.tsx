@@ -159,12 +159,20 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = () => {
-    // Resolve shade color from assigned archetype (if any)
-    const archetypeId = (props.development_archetype_id as string)
+    // Resolve shade color from assigned archetype.
+    // Try subcategory ID first (option-level, e.g. "parisian_midrise_block")
+    // which directly matches shade map keys, then fall back to archetype_id
+    // (image-level, e.g. "parisian_midrise_block_front_day") which uses prefix matching.
+    const archetypeId = (props.development_subcategory as string)
+      || (props.road_subcategory as string)
+      || (props.green_space_subcategory as string)
+      || (props.plaza_subcategory as string)
+      || (props.development_archetype_id as string)
       || (props.road_archetype_id as string)
       || (props.green_space_archetype_id as string)
       || (props.plaza_archetype_id as string);
     const shadeColor = archetypeId ? getShadeForArchetype(archetypeId) : undefined;
+    console.log(`[ZoneProps] Save — archetypeId="${archetypeId}", shade="${shadeColor}"`);
 
     onUpdate(zone.id, {
       name: name || undefined,
@@ -1580,7 +1588,7 @@ async function captureMapScreenshots(
   console.log('[captureMapScreenshots] Starting capture, innerZones:', allZones?.filter(z => z.zone_type !== 'site_boundary').length);
 
   const ZONE_LAYERS = [
-    'site-zones-fill', 'site-zones-outline', 'site-zones-selected',
+    'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-outline', 'site-zones-selected',
     'site-zones-labels', 'zone-edit-vertices-layer',
     'drawing-preview-fill', 'drawing-preview-line',
   ];

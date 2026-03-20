@@ -5,7 +5,7 @@
  * preview card grid, and generate button with summary. Displays progress
  * and the result image with download/clear controls.
  */
-import { useState, useRef, useCallback, useMemo } from 'react';
+import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
@@ -62,8 +62,32 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [useArchetypes, setUseArchetypes] = useState(true);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [guidanceScale, setGuidanceScale] = useState(15);
-  const [perZoneMode, setPerZoneMode] = useState(false);
+  const [perZoneMode, setPerZoneMode] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Hide zone polygon layers when a render result is displayed, restore when cleared
+  const ZONE_LAYERS = [
+    'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
+    'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+  ];
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const visibility = result ? 'none' : 'visible';
+    for (const layerId of ZONE_LAYERS) {
+      if (map.getLayer(layerId)) {
+        map.setLayoutProperty(layerId, 'visibility', visibility);
+      }
+    }
+    // Restore layers on unmount
+    return () => {
+      for (const layerId of ZONE_LAYERS) {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', 'visible');
+        }
+      }
+    };
+  }, [result, mapRef]);
 
   // Extract archetype data from zone properties
   const archetypeInputs = useMemo(
