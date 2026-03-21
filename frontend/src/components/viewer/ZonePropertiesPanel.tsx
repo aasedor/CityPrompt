@@ -26,6 +26,8 @@ import {
   inferTransportModesFromProperties,
   applyModeDrivenRoadDefaults,
   normalizeTransportModes,
+  getAllowedDevelopmentTypes,
+  filterOptionsByDevelopmentType,
   type ArchetypeImage as CatalogArchetypeImage,
   type GenerationStyleInput as CatalogGenerationStyleInput,
   type StyleProfile as CatalogStyleProfile,
@@ -370,6 +372,48 @@ const buildAestheticSelectionProps = (
     nextProps.reference_images = cleaned.length > 0 ? cleaned : undefined;
   }
 
+  // Auto-populate descriptive text from archetype metadata
+  // Only if the user hasn't manually customized it (or it was auto-generated before)
+  if (selectedOption) {
+    const sp = selectedOption.styleProfile || (selectedOption.generationStyleInput?.styleProfile as Record<string, unknown>) || {};
+    const fd = (selectedOption as Record<string, unknown>).facadeDetail as Record<string, string> | undefined;
+    const rd = (selectedOption as Record<string, unknown>).roofDetail as Record<string, string> | undefined;
+    const descParts: string[] = [];
+
+    if (key === 'development_aesthetic') {
+      // Building: facade, materials, roof
+      if (fd?.primaryMaterial) descParts.push(fd.primaryMaterial);
+      if (fd?.groundFloor) descParts.push(`Ground floor: ${fd.groundFloor}`);
+      if (fd?.upperFloors) descParts.push(`Upper floors: ${fd.upperFloors}`);
+      if (rd?.form) descParts.push(`Roof: ${rd.form}`);
+      if (rd?.material) descParts.push(rd.material);
+      if (sp.materials) descParts.push(`Materials: ${Array.isArray(sp.materials) ? (sp.materials as string[]).join(', ') : sp.materials}`);
+      if ((sp as Record<string, unknown>).heightTendency) descParts.push(String((sp as Record<string, unknown>).heightTendency));
+    } else if (key === 'road_aesthetic') {
+      // Road: corridor character, surface, planting
+      if ((sp as Record<string, unknown>).corridorCharacter) descParts.push(String((sp as Record<string, unknown>).corridorCharacter));
+      if ((sp as Record<string, unknown>).surfaceType) descParts.push(`Surface: ${(sp as Record<string, unknown>).surfaceType}`);
+      if ((sp as Record<string, unknown>).plantingCharacter) descParts.push(String((sp as Record<string, unknown>).plantingCharacter));
+      if ((sp as Record<string, unknown>).edgeConditions) descParts.push(`Edges: ${(sp as Record<string, unknown>).edgeConditions}`);
+      if ((sp as Record<string, unknown>).publicRealm) descParts.push(String((sp as Record<string, unknown>).publicRealm));
+    } else if (key === 'green_space_aesthetic' || key === 'plaza_aesthetic') {
+      // Park/plaza: character, planting, public realm
+      if ((sp as Record<string, unknown>).corridorCharacter) descParts.push(String((sp as Record<string, unknown>).corridorCharacter));
+      if ((sp as Record<string, unknown>).plantingCharacter) descParts.push(String((sp as Record<string, unknown>).plantingCharacter));
+      if ((sp as Record<string, unknown>).publicRealm) descParts.push(String((sp as Record<string, unknown>).publicRealm));
+      if (sp.materials) descParts.push(`Materials: ${Array.isArray(sp.materials) ? (sp.materials as string[]).join(', ') : sp.materials}`);
+    }
+
+    // Fall back to the archetype description if no specific fields found
+    if (descParts.length === 0 && selectedOption.description) {
+      descParts.push(selectedOption.description);
+    }
+
+    if (descParts.length > 0) {
+      nextProps.description_text = descParts.join('. ') + '.';
+    }
+  }
+
   return nextProps;
 };
 
@@ -390,6 +434,14 @@ const resolveOptionCategory = (
     (props.development_aesthetic_category as string)
       || resolveBuildingAestheticCategory((props.development_aesthetic as string) || undefined),
   );
+
+  // Filter building archetype options and categories by zone / development type
+  const allowedBuildingDevTypes = getAllowedDevelopmentTypes(zone.zone_type, (props.development_type as string) || undefined);
+  const filteredBuildingOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedBuildingDevTypes);
+  const filteredBuildingCategoryIds = new Set(filteredBuildingOptions.map((o) => o.categoryId).filter(Boolean));
+  const filteredBuildingCategories = allowedBuildingDevTypes
+    ? DEVELOPMENT_AESTHETIC_CATEGORIES.filter((c) => filteredBuildingCategoryIds.has(c.id))
+    : DEVELOPMENT_AESTHETIC_CATEGORIES;
 
   const selectedRoadAestheticCategory = normalizeAestheticCategory(
     'road_aesthetic',
@@ -797,7 +849,7 @@ const resolveOptionCategory = (
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select Category --</option>
-                {DEVELOPMENT_AESTHETIC_CATEGORIES.map((category) => (
+                {filteredBuildingCategories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.label}
                   </option>
@@ -805,7 +857,7 @@ const resolveOptionCategory = (
               </select>
               {selectedBuildingAestheticCategory && (
                 <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {DEVELOPMENT_AESTHETIC_CATEGORIES.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
+                  {filteredBuildingCategories.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
                 </p>
               )}
             </div>
@@ -816,6 +868,8 @@ const resolveOptionCategory = (
                   value={(props.development_aesthetic as string) || undefined}
                   category={selectedBuildingAestheticCategory}
                   selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                  zoneType={zone.zone_type}
+                  developmentType={(props.development_type as string) || undefined}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -1405,7 +1459,7 @@ const resolveOptionCategory = (
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               >
                 <option value="">-- Select Category --</option>
-                {DEVELOPMENT_AESTHETIC_CATEGORIES.map((category) => (
+                {filteredBuildingCategories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.label}
                   </option>
@@ -1413,7 +1467,7 @@ const resolveOptionCategory = (
               </select>
               {selectedBuildingAestheticCategory && (
                 <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {DEVELOPMENT_AESTHETIC_CATEGORIES.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
+                  {filteredBuildingCategories.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
                 </p>
               )}
             </div>
@@ -1424,6 +1478,8 @@ const resolveOptionCategory = (
                   value={(props.development_aesthetic as string) || undefined}
                   category={selectedBuildingAestheticCategory}
                   selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                  zoneType={zone.zone_type}
+                  developmentType={(props.development_type as string) || undefined}
                   onChange={applyBuildingAesthetic}
                 />
               </div>
@@ -2542,15 +2598,21 @@ function DevelopmentAestheticPicker({
   value,
   category,
   selectedReferenceId,
+  zoneType,
+  developmentType,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
+  zoneType?: string;
+  developmentType?: string;
   onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
+  const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
+  const filteredOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
   const categoryOptions = category
-    ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    ? filteredOptions.filter((option) => option.categoryId === category)
     : [];
   const archetypeModelPreviews = useArchetypeModelPreviews();
 

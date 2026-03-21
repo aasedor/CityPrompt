@@ -11,7 +11,6 @@
  */
 import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
-import mapboxgl from 'mapbox-gl';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -567,8 +566,40 @@ async function stitchWithBoundaryMask(
 }
 
 /**
+ * Calculate the upward pixel expansion needed for a building mask
+ * to accommodate 3D perspective height. In an oblique aerial view,
+ * a tall building's roof shifts "up-screen" relative to its footprint.
+ */
+function calculatePerspectiveHeadroom(
+  map: MapboxMap,
+  buildingHeightM: number,
+): number {
+  const pitch = map.getPitch(); // camera pitch in degrees (0=top-down, 60=oblique)
+  if (pitch < 5 || buildingHeightM <= 0) return 0;
+
+  // Estimate pixels-per-meter at current zoom level using map projection
+  // Project two points 100m apart vertically to get screen-space scale
+  const center = map.getCenter();
+  const p1 = map.project(center);
+  const latOffset = 0.0009; // ~100m in latitude
+  const p2 = map.project({ lng: center.lng, lat: center.lat + latOffset });
+  const pixelsPer100m = Math.abs(p2.y - p1.y);
+  const pixelsPerMeter = pixelsPer100m / 100;
+
+  // Vertical shift: building height projected onto screen Y-axis
+  // At higher pitch angles, buildings appear to lean more "up-screen"
+  const verticalShift = buildingHeightM * pixelsPerMeter *
+    Math.sin((90 - pitch) * Math.PI / 180);
+
+  const dpr = window.devicePixelRatio || 1;
+  return verticalShift * dpr;
+}
+
+/**
  * Generate a binary mask for a SINGLE zone polygon.
  * White (255) = the zone's footprint, Black (0) = everything else.
+ * For building zones, the mask is expanded upward to accommodate
+ * the 3D perspective height of the building.
  */
 function generateSingleZoneMask(
   map: MapboxMap,
@@ -591,14 +622,60 @@ function generateSingleZoneMask(
   // Draw only this zone's polygon as white
   if (zone.coordinates && zone.coordinates.length >= 3) {
     const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(zone.zone_type);
+    const buildingHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+      : zone.properties?.height ? Number(zone.properties.height) : 0;
+
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
-    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
-    for (let i = 1; i < pixels.length; i++) {
-      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+
+    if (isBuilding && buildingHeight > 0) {
+      // PERSPECTIVE-EXPANDED MASK: expand the top edge upward to give
+      // Gemini room to render the building's full 3D height.
+      // Bottom and sides stay locked to the polygon; top extends upward.
+      const headroom = calculatePerspectiveHeadroom(map, buildingHeight);
+      console.log(`[AIRender] Building mask headroom: ${headroom.toFixed(0)}px for ${buildingHeight}m height, pitch=${map.getPitch().toFixed(1)}°`);
+
+      // Find the top-most Y coordinate of the polygon
+      const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+      const minY = Math.min(...devicePixels.map(p => p.y));
+
+      // Draw the original polygon
+      ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
+      for (let i = 1; i < devicePixels.length; i++) {
+        ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
+      }
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw an expanded rectangle above the polygon for headroom
+      // This covers from the polygon's top edge up by the headroom amount
+      const minX = Math.min(...devicePixels.map(p => p.x));
+      const maxX = Math.max(...devicePixels.map(p => p.x));
+      const expandedTop = Math.max(0, minY - headroom);
+      ctx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
+
+      // Apply soft feathered edge at the very top (gradient from white to black)
+      // This prevents a hard seam between building roof and background
+      const featherHeight = Math.min(20 * dpr, headroom * 0.3);
+      if (featherHeight > 2) {
+        const gradient = ctx.createLinearGradient(0, expandedTop, 0, expandedTop + featherHeight);
+        gradient.addColorStop(0, 'rgba(0,0,0,1)');   // black (transparent/keep)
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');    // transparent (white shows through)
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = gradient;
+        ctx.fillRect(minX, expandedTop, maxX - minX, featherHeight);
+        ctx.globalCompositeOperation = 'source-over';
+      }
+    } else {
+      // Standard mask: just the polygon footprint
+      ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+      for (let i = 1; i < pixels.length; i++) {
+        ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+      }
+      ctx.closePath();
+      ctx.fill();
     }
-    ctx.closePath();
-    ctx.fill();
   }
 
   // Debug: count white pixels to verify mask has actual coverage
@@ -614,50 +691,102 @@ function generateSingleZoneMask(
 }
 
 /**
+ * Generate a combined binary mask for MULTIPLE zones.
+ * White (255) = union of all provided zone polygons, Black (0) = keep.
+ * Used in Pass 1 to mask all ground-level zones at once.
+ */
+function generateCombinedMask(
+  map: MapboxMap,
+  zones: SiteZone[],
+): string {
+  const mapCanvas = map.getCanvas();
+  const w = mapCanvas.width;
+  const h = mapCanvas.height;
+  const dpr = window.devicePixelRatio || 1;
+
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const ctx = maskCanvas.getContext('2d')!;
+
+  // Fill entirely black (keep everything by default)
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw each zone polygon as white (area to edit)
+  ctx.fillStyle = '#ffffff';
+  let drawnCount = 0;
+
+  for (const zone of zones) {
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+
+    ctx.beginPath();
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+    ctx.fill();
+    drawnCount++;
+  }
+
+  // Debug: count white pixels
+  const imgData = ctx.getImageData(0, 0, w, h).data;
+  let whiteCount = 0;
+  for (let i = 0; i < imgData.length; i += 4) {
+    if (imgData[i] > 128) whiteCount++;
+  }
+  const totalPx = w * h;
+  console.log(`[AIRender] Combined mask: ${w}x${h}, ${drawnCount} zones drawn, white=${whiteCount}/${totalPx} (${((whiteCount / totalPx) * 100).toFixed(1)}%)`);
+
+  return maskCanvas.toDataURL('image/png').split(',')[1];
+}
+
+/**
  * Build a zone-specific prompt for per-zone rendering.
  * Simple, natural language — Gemini handles spatial reasoning natively.
  */
-function buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions): string {
-  const archetypeInfo = getZoneArchetypeInfo(zone);
-  const desc = buildArchetypeDescription(archetypeInfo, zone.zone_type);
-
-  // Resolve the selected render style
+/**
+ * Build a GROUND PLANE prompt for Pass 1 of the two-pass pipeline.
+ * Renders parks, roads, plazas — no vertical structures.
+ */
+function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOptions): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const styleLabel = styleMod?.label || 'Photorealistic';
-  const stylePrompt = styleMod?.prompt || '';
-
-  // For non-photorealistic styles, omit "photorealistic" from the base instruction
-  const isPhotoStyle = ['photorealistic', 'drone-photography', 'photomontage', 'golden-hour',
-    'night-scene', 'overcast-soft', 'summer', 'autumn'].includes(styleId);
-  const isSitePlan = styleId === 'site-plan';
   const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+
+  const zoneDescriptions = groundZones.map(z => {
+    const info = getZoneArchetypeInfo(z);
+    const desc = buildArchetypeDescription(info, z.zone_type);
+    const color = z.color || 'colored';
+    return `The ${color} area is a ${desc}`;
+  });
 
   const parts: string[] = [];
 
-  if (isArtistic) {
-    parts.push(`Replace the colored overlay area with a ${desc}, rendered in ${styleLabel} style.`);
-    parts.push(`RENDER STYLE: ${stylePrompt}`);
-  } else {
-    parts.push(`Replace the colored overlay area with a photorealistic ${desc}.`);
-    if (styleId !== 'photorealistic') {
-      parts.push(`RENDER STYLE: ${stylePrompt}`);
-    }
-  }
-
-  if (isSitePlan) {
-    parts.push('Disable 3D perspective and shadows. Render as a flat 2D orthographic view looking straight down.');
-  }
-
   parts.push(
-    'The building or content may extend into the surrounding WHITE area (which is the site boundary) — blend naturally with sidewalks, landscaping, or ground-plane there.',
-    'However, do NOT extend into or overlap any OTHER colored zones. Each colored area is a separate zone with its own purpose.',
-    'Keep all satellite imagery outside the white site boundary EXACTLY as it is.',
+    'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle.',
+    `In this image, colored polygon overlays mark proposed landscape zones on an empty site (the white area).`,
   );
 
-  if (isPhotoStyle) {
-    parts.push('Match the lighting, shadows, and perspective of the surrounding context so it looks like a seamless aerial photomontage.');
+  // Zone descriptions as narrative
+  parts.push(zoneDescriptions.join('. ') + '.');
+
+  parts.push(
+    'Transform each colored zone into its described landscape, perfectly filling the colored area.',
+    'Maintain strict horizontal containment — treat the boundaries between zones as hard physical curbs.',
+    'The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
+    'Do not generate any buildings, walls, vertical structures, or rooftops.',
+  );
+
+  if (isArtistic && styleMod) {
+    parts.push(`Render in ${styleMod.label} style: ${styleMod.prompt}`);
+  } else if (styleMod && styleId !== 'photorealistic') {
+    parts.push(`Render style: ${styleMod.prompt}`);
   }
+
+  parts.push('Keep all satellite imagery outside the white site boundary exactly as it is.');
 
   if (options.customPrompt?.trim()) {
     parts.push(options.customPrompt.trim());
@@ -665,6 +794,91 @@ function buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions): string
 
   return parts.join(' ');
 }
+
+/**
+ * Build a BUILDING prompt for Pass 2 of the two-pass pipeline.
+ * Renders a single building onto the already-rendered ground plane.
+ * Uses narrative prose following the formula: Subject + Environment + Materials + Lighting + Camera.
+ */
+function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
+  const archetypeInfo = getZoneArchetypeInfo(zone);
+  const zoneColor = getZoneRenderColor(zone.id, zone.color || '#E03C31');
+
+  // Build narrative description from archetype metadata
+  const floors = zone.properties?.floors ?? zone.properties?.num_floors;
+  const heightM = zone.properties?.height_m ?? zone.properties?.height;
+  const floorText = floors ? `${floors}-story` : heightM ? `${heightM}m tall` : 'multi-story';
+
+  // Descriptive text from the zone properties (auto-populated from archetype card)
+  const userDesc = (zone.properties?.description_text as string) || '';
+
+  // Archetype-derived narrative
+  const narrativeParts: string[] = [];
+  if (archetypeInfo.archetypeTitle) {
+    narrativeParts.push(`A completed ${floorText} ${archetypeInfo.archetypeTitle} building`);
+  } else {
+    narrativeParts.push(`A completed ${floorText} commercial building`);
+  }
+  if (archetypeInfo.facadeDescription) narrativeParts.push(`with ${archetypeInfo.facadeDescription.toLowerCase()}`);
+  if (archetypeInfo.roofDescription) narrativeParts.push(`topped by ${archetypeInfo.roofDescription.toLowerCase()}`);
+  if (archetypeInfo.materials) narrativeParts.push(`Materials: ${archetypeInfo.materials}`);
+  if (archetypeInfo.colorScheme) narrativeParts.push(`Color palette: ${archetypeInfo.colorScheme}`);
+
+  const buildingNarrative = narrativeParts.join('. ') + '.';
+
+  // Style
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
+  const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
+  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+
+  const parts: string[] = [];
+
+  // Narrative prose prompt — Subject + Environment + Materials + Lighting + Camera
+  parts.push(
+    `Using the provided landscape image, render a building on the ${zoneColor} colored footprint.`,
+    buildingNarrative,
+  );
+
+  if (userDesc) {
+    parts.push(userDesc);
+  }
+
+  parts.push(
+    `The ${zoneColor} polygon is the building's absolute ground foundation. The building sits on the already-rendered park and streetscape — its base shadows should blend naturally onto the surrounding grass and pathways.`,
+    `Treat the ${zoneColor} footprint as the ground-level base only. Render the full vertical 3D mass and roofline extending naturally into the sky above, respecting aerial perspective. Do not clip the architecture at any boundary line.`,
+    `Replace every ${zoneColor} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.`,
+    `Do not let building materials bleed into the surrounding grass, pathways, or other zones. Keep strict horizontal containment at the foundation level.`,
+    `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the colored polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`,
+  );
+
+  if (isArtistic && styleMod) {
+    parts.push(`Render in ${styleMod.label} style: ${styleMod.prompt}`);
+  } else if (styleMod && styleId !== 'photorealistic') {
+    parts.push(`Render style: ${styleMod.prompt}`);
+  } else {
+    parts.push('Warm afternoon sunlight from the southwest casts crisp architectural shadows. Captured with a DJI drone at 60m altitude, matching the existing satellite imagery perspective and lighting.');
+  }
+
+  parts.push('Keep everything else in the image exactly the same, preserving the original style, lighting, and composition.');
+
+  if (options.customPrompt?.trim()) {
+    parts.push(options.customPrompt.trim());
+  }
+
+  return parts.join(' ');
+}
+
+/**
+ * Legacy single-zone prompt builder (used when two-pass is not applicable).
+ */
+function _buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions, _allZones?: SiteZone[]): string {
+  const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(zone.zone_type);
+  if (isBuilding) {
+    return buildBuildingPrompt(zone, options);
+  }
+  return buildGroundPlanePrompt([zone], options);
+}
+void _buildSingleZonePrompt; // suppress unused warning — kept for fallback use
 
 /**
  * Build a natural-language description from archetype metadata.
@@ -676,7 +890,28 @@ function buildArchetypeDescription(
 ): string {
   if (info.mapOverlayPrompt) return info.mapOverlayPrompt;
 
+  const isRoad = zoneType === 'road' || zoneType === 'street' || zoneType === 'path';
+  const isPark = zoneType === 'green_space' || zoneType === 'park' || zoneType === 'plaza';
+
   if (info.archetypeTitle) {
+    if (isRoad && info.corridorDescription) {
+      // Road/pathway: use corridor-specific metadata
+      const parts = [info.archetypeTitle.toLowerCase() + ' streetscape'];
+      parts.push(info.corridorDescription);
+      if (info.materials) parts.push(`Materials: ${info.materials}`);
+      return parts.join('. ');
+    }
+
+    if (isPark) {
+      // Park/green space: use landscape-oriented description
+      const parts = [info.archetypeTitle.toLowerCase() + ' landscape'];
+      if (info.corridorDescription) parts.push(info.corridorDescription);
+      if (info.publicRealm) parts.push(info.publicRealm);
+      if (info.materials) parts.push(info.materials);
+      return parts.join('. ');
+    }
+
+    // Building: use facade/roof metadata
     const parts = [info.archetypeTitle.toLowerCase() + ' building'];
     if (info.aerialAppearance) parts.push(info.aerialAppearance);
     if (info.facadeDescription) parts.push(info.facadeDescription);
@@ -716,17 +951,74 @@ async function compositeZoneRender(
   // Draw the base (cumulative result so far)
   ctx.drawImage(baseImg, 0, 0, w, h);
 
-  // Clip to this zone's polygon and draw the rendered image
+  // Clip zone render to its polygon. For buildings, expand the clip upward
+  // to accommodate 3D perspective height while still preventing horizontal bleed.
+  const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(zone.zone_type);
+
   if (zone.coordinates && zone.coordinates.length >= 3) {
     const dpr = window.devicePixelRatio || 1;
     const pixels = siteBoundaryToPixels(map, zone.coordinates);
-    console.log(`[AIRender] compositeZoneRender: base=${w}x${h}, rendered=${renderedImg.naturalWidth}x${renderedImg.naturalHeight}, dpr=${dpr}, clip pts=${pixels.length}`);
-    console.log(`[AIRender]   Clip polygon (device px):`, pixels.slice(0, 4).map(p => `(${(p.x * dpr).toFixed(0)},${(p.y * dpr).toFixed(0)})`).join(' '));
+    const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
-    for (let i = 1; i < pixels.length; i++) {
-      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+
+    if (isBuilding) {
+      // Building clip: polygon sides + bottom stay locked, top edge expanded upward
+      // to give room for the building's 3D height in perspective
+      const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+        : zone.properties?.height ? Number(zone.properties.height) : 0;
+      const headroom = bldgHeight > 0 ? calculatePerspectiveHeadroom(map, bldgHeight) : 50 * dpr;
+      const minY = Math.min(...devicePixels.map(p => p.y));
+      console.log(`[AIRender] compositeZoneRender: BUILDING zone — crown clip with ${headroom.toFixed(0)}px headroom`);
+
+      // Identify "top edge" vertices — within the upper 40% of vertical span.
+      const maxY = Math.max(...devicePixels.map(p => p.y));
+      const verticalSpan = maxY - minY;
+      const topThreshold = minY + verticalSpan * 0.4;
+      const topEdgeIndices: number[] = [];
+      for (let i = 0; i < devicePixels.length; i++) {
+        if (devicePixels[i].y <= topThreshold) topEdgeIndices.push(i);
+      }
+      topEdgeIndices.sort((a, b) => devicePixels[a].x - devicePixels[b].x);
+
+      // Draw the original polygon
+      ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
+      for (let i = 1; i < devicePixels.length; i++) {
+        ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
+      }
+      ctx.closePath();
+
+      // Crown shape: follows polygon top contour upward instead of flat bbox rect
+      if (topEdgeIndices.length >= 2) {
+        const leftmost = devicePixels[topEdgeIndices[0]];
+        ctx.moveTo(leftmost.x, leftmost.y);
+        for (let i = 1; i < topEdgeIndices.length; i++) {
+          ctx.lineTo(devicePixels[topEdgeIndices[i]].x, devicePixels[topEdgeIndices[i]].y);
+        }
+        for (let i = topEdgeIndices.length - 1; i >= 0; i--) {
+          const p = devicePixels[topEdgeIndices[i]];
+          ctx.lineTo(p.x, Math.max(0, p.y - headroom));
+        }
+        ctx.closePath();
+      } else {
+        // Fallback for degenerate polygons
+        const minX = Math.min(...devicePixels.map(p => p.x));
+        const maxX = Math.max(...devicePixels.map(p => p.x));
+        const expandedTop = Math.max(0, minY - headroom);
+        ctx.moveTo(minX, expandedTop);
+        ctx.lineTo(maxX, expandedTop);
+        ctx.lineTo(maxX, minY);
+        ctx.lineTo(minX, minY);
+        ctx.closePath();
+      }
+    } else {
+      // Ground-level zones: strict polygon clip
+      console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
+      ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
+      for (let i = 1; i < devicePixels.length; i++) {
+        ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
+      }
     }
     ctx.closePath();
     ctx.clip();
@@ -737,16 +1029,115 @@ async function compositeZoneRender(
   return canvas.toDataURL('image/png');
 }
 
-/** Get the current visible bounds as image-source coordinates: [[W,N],[E,N],[E,S],[W,S]] */
+/** Get the current visible bounds as image-source coordinates: [[W,N],[E,N],[E,S],[W,S]]
+ *  When headroomPixels is provided, the NORTH edge is expanded upward to accommodate
+ *  3D building height in oblique/pitched views, preventing tall buildings from being clipped.
+ */
 function getMapBounds(
   map: MapboxMap,
+  headroomPixels = 0,
 ): [[number, number], [number, number], [number, number], [number, number]] {
   const bounds = map.getBounds()!;
-  const nw: [number, number] = [bounds.getWest(), bounds.getNorth()];
-  const ne: [number, number] = [bounds.getEast(), bounds.getNorth()];
+  let north = bounds.getNorth();
+
+  if (headroomPixels > 0) {
+    // Convert pixel headroom to a latitude offset:
+    // Take the top-center pixel of the viewport, subtract headroomPixels from Y,
+    // then unproject back to lat/lng to get the expanded north latitude.
+    const canvas = map.getCanvas();
+    const topCenterX = canvas.clientWidth / 2;
+    const topCenterY = 0;
+    const expandedPoint = map.unproject([topCenterX, topCenterY - headroomPixels]);
+    north = expandedPoint.lat;
+  }
+
+  const nw: [number, number] = [bounds.getWest(), north];
+  const ne: [number, number] = [bounds.getEast(), north];
   const se: [number, number] = [bounds.getEast(), bounds.getSouth()];
   const sw: [number, number] = [bounds.getWest(), bounds.getSouth()];
   return [nw, ne, se, sw];
+}
+
+/** Calculate the maximum building height from a set of zones, returning pixel headroom needed */
+function getMaxBuildingHeadroom(map: MapboxMap, zones?: SiteZone[]): number {
+  if (!zones || zones.length === 0) return 0;
+
+  const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+  let maxHeight = 0;
+
+  for (const z of zones) {
+    if (!BUILDING_TYPES.includes(z.zone_type)) continue;
+    const h = z.properties?.height_m ? Number(z.properties.height_m)
+      : z.properties?.height ? Number(z.properties.height) : 0;
+    if (h > maxHeight) maxHeight = h;
+  }
+
+  if (maxHeight <= 0) return 0;
+  return calculatePerspectiveHeadroom(map, maxHeight);
+}
+
+/**
+ * Post-composite cleanup: restore original pixels inside OTHER zones' polygons.
+ * Prevents Zone A's render from visually intruding into Zone B.
+ * @param renderedDataUri  The cumulative render after compositing the current zone
+ * @param preRenderDataUri The cumulative render BEFORE compositing (original pixels)
+ * @param map              Mapbox map for coordinate projection
+ * @param currentZone      The zone that was just rendered
+ * @param allZones         All site zones
+ */
+async function cleanupZoneBleed(
+  renderedDataUri: string,
+  preRenderDataUri: string,
+  map: MapboxMap,
+  currentZone: SiteZone,
+  allZones: SiteZone[],
+): Promise<string> {
+  // Collect other zones (not the current one, not site_boundary)
+  const otherZones = allZones.filter(
+    z => z.id !== currentZone.id
+      && z.zone_type !== 'site_boundary'
+      && z.coordinates && z.coordinates.length >= 3
+  );
+  if (otherZones.length === 0) return renderedDataUri;
+
+  const [renderedImg, preRenderImg] = await Promise.all([
+    loadImage(renderedDataUri),
+    loadImage(preRenderDataUri),
+  ]);
+
+  const w = renderedImg.naturalWidth;
+  const h = renderedImg.naturalHeight;
+  const dpr = window.devicePixelRatio || 1;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+
+  // Start with the rendered result
+  ctx.drawImage(renderedImg, 0, 0, w, h);
+
+  // For each other zone, clip to its polygon and draw the pre-render pixels
+  // This restores original content inside neighboring zones
+  for (const otherZone of otherZones) {
+    const pixels = siteBoundaryToPixels(map, otherZone.coordinates!);
+    const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+    if (devicePixels.length < 3) continue;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
+    for (let i = 1; i < devicePixels.length; i++) {
+      ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
+    }
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(preRenderImg, 0, 0, w, h);
+    ctx.restore();
+  }
+
+  console.log(`[AIRender] cleanupZoneBleed: restored ${otherZones.length} neighboring zone(s)`);
+  return canvas.toDataURL('image/png');
 }
 
 /** Ease the map to a specific bearing/pitch and wait for it to finish */
@@ -782,6 +1173,9 @@ interface ZonePromptEntry {
   color: string;
   zoneType: string;
   zoneName: string;
+  descriptionText?: string; // User-editable description from the text box
+  floors?: number;          // Number of stories
+  heightM?: number;         // Building height in meters
   archetypeTitle?: string;
   facadeDescription?: string;
   roofDescription?: string;
@@ -809,6 +1203,11 @@ function getZoneArchetypeInfo(zone: SiteZone): {
   mapOverlayPrompt?: string;
   colorScheme?: string;
   aerialAppearance?: string;
+  // Road/path specific
+  corridorDescription?: string;
+  surfaceType?: string;
+  plantingCharacter?: string;
+  edgeConditions?: string;
 } {
   if (!zone.properties || !catalog) return {};
 
@@ -828,7 +1227,7 @@ function getZoneArchetypeInfo(zone: SiteZone): {
     const fd = entry.facadeDetail || {};
     const rd = entry.roofDetail || {};
 
-    // Build a rich facade description from facadeDetail
+    // Build a rich facade description from facadeDetail (buildings)
     const facadeParts: string[] = [];
     if (fd.primaryMaterial) facadeParts.push(fd.primaryMaterial);
     if (fd.groundFloor) facadeParts.push(`Ground floor: ${fd.groundFloor}`);
@@ -836,7 +1235,7 @@ function getZoneArchetypeInfo(zone: SiteZone): {
     if (fd.cornice) facadeParts.push(`Cornice: ${fd.cornice}`);
     if (fd.colorScheme) facadeParts.push(`Colors: ${fd.colorScheme}`);
 
-    // Build roof description
+    // Build roof description (buildings)
     const roofParts: string[] = [];
     if (rd.form) roofParts.push(rd.form);
     if (rd.material) roofParts.push(rd.material);
@@ -846,6 +1245,15 @@ function getZoneArchetypeInfo(zone: SiteZone): {
     // Materials list
     const materials = Array.isArray(sp.materials) ? sp.materials.join(', ') : sp.materials;
 
+    // Road/corridor specific fields from styleProfile
+    const corridorParts: string[] = [];
+    if (sp.corridorCharacter) corridorParts.push(sp.corridorCharacter);
+    if (sp.movementHierarchy) corridorParts.push(sp.movementHierarchy);
+    if (sp.surfaceType) corridorParts.push(`Surface: ${sp.surfaceType}`);
+    if (sp.plantingCharacter) corridorParts.push(sp.plantingCharacter);
+    if (sp.edgeConditions) corridorParts.push(`Edges: ${sp.edgeConditions}`);
+    if (sp.publicRealm) corridorParts.push(sp.publicRealm);
+
     return {
       archetypeTitle: entry.title,
       facadeDescription: facadeParts.length > 0 ? facadeParts.join('. ') : undefined,
@@ -854,9 +1262,13 @@ function getZoneArchetypeInfo(zone: SiteZone): {
       massing: sp.massing || undefined,
       heightTendency: sp.heightTendency || undefined,
       publicRealm: sp.publicRealm || undefined,
-      mapOverlayPrompt: entry.renderPrompt?.mapOverlay || undefined,
+      mapOverlayPrompt: entry.renderPrompt?.mapOverlay || entry.prompt?.subject || undefined,
       colorScheme: fd.colorScheme || undefined,
       aerialAppearance: rd.aerialAppearance || undefined,
+      corridorDescription: corridorParts.length > 0 ? corridorParts.join('. ') : undefined,
+      surfaceType: sp.surfaceType || undefined,
+      plantingCharacter: sp.plantingCharacter || undefined,
+      edgeConditions: sp.edgeConditions || undefined,
     };
   }
 
@@ -864,21 +1276,63 @@ function getZoneArchetypeInfo(zone: SiteZone): {
 }
 
 /**
+ * Palette of visually distinct variant colors for disambiguating multiple
+ * unassigned building zones that would otherwise share the same default red
+ * (#E03C31). Only used temporarily during AI rendering -- the zone's persisted
+ * color in the database is never modified.
+ */
+const BUILDING_VARIANT_PALETTE = [
+  '#E03C31', // red (original default -- first building keeps this)
+  '#C62828', // dark red
+  '#D84315', // deep orange
+  '#AD1457', // dark pink
+  '#6A1B9A', // deep purple
+  '#4527A0', // indigo
+  '#B71C1C', // crimson
+  '#E65100', // burnt orange
+];
+
+/**
+ * Maps zone IDs to reassigned variant colors for the current render session.
+ * Populated by collectZonePromptEntries and consumed by the screenshot
+ * capture code to ensure the map overlay color matches the prompt text.
+ */
+let _zoneColorOverrides: Map<string, string> = new Map();
+
+/**
+ * Get the render-time color override for a zone, if any.
+ * Returns the variant color assigned during prompt collection, or the
+ * provided fallback if no override was needed.
+ */
+function getZoneRenderColor(zoneId: string, fallback: string): string {
+  return _zoneColorOverrides.get(zoneId) ?? fallback;
+}
+
+/**
  * Build zone-by-zone entries for the structured prompt.
  * Maps each non-boundary zone to its color, type, and archetype metadata.
+ *
+ * When multiple building zones share the same default color, each is assigned
+ * a distinct variant color so Gemini can distinguish them in the prompt.
  */
 function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
-  const entries: ZonePromptEntry[] = [];
+  const rawEntries: { entry: ZonePromptEntry; zoneId: string }[] = [];
+  _zoneColorOverrides = new Map();
+
+  const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
 
   for (const zone of zones) {
     if (!zone.coordinates?.length) continue;
 
     // Include site_boundary with a special contextual infill entry
     if (zone.zone_type === 'site_boundary') {
-      entries.push({
-        color: zone.color || '#F5D63D',
-        zoneType: 'site_boundary',
-        zoneName: 'Site Boundary / Contextual Infill',
+      rawEntries.push({
+        zoneId: zone.id,
+        entry: {
+          color: zone.color || '#F5D63D',
+          zoneType: 'site_boundary',
+          zoneName: 'Site Boundary / Contextual Infill',
+        },
       });
       continue;
     }
@@ -887,28 +1341,74 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
     const color = zone.color || config?.color || '#888888';
     const archetypeInfo = getZoneArchetypeInfo(zone);
 
-    entries.push({
-      color,
-      zoneType: zone.zone_type,
-      zoneName: zone.name || config?.label || zone.zone_type,
-      ...archetypeInfo,
+    // Extract scale info for buildings
+    const floors = zone.properties?.floors ?? zone.properties?.num_floors;
+    const heightM = zone.properties?.height_m ?? zone.properties?.height;
+
+    rawEntries.push({
+      zoneId: zone.id,
+      entry: {
+        color,
+        zoneType: zone.zone_type,
+        zoneName: zone.name || config?.label || zone.zone_type,
+        descriptionText: (zone.properties?.description_text as string) || undefined,
+        floors: floors != null ? Number(floors) : undefined,
+        heightM: heightM != null ? Number(heightM) : undefined,
+        ...archetypeInfo,
+      },
     });
+  }
+
+  // -- Reassign colors for duplicate-colored building zones --
+  // Group building entries by color to find duplicates that need distinct colors
+  const buildingsByColor = new Map<string, { entry: ZonePromptEntry; zoneId: string }[]>();
+  for (const item of rawEntries) {
+    if (!BUILDING_TYPES.includes(item.entry.zoneType)) continue;
+    const c = item.entry.color.toLowerCase();
+    if (!buildingsByColor.has(c)) buildingsByColor.set(c, []);
+    buildingsByColor.get(c)!.push(item);
+  }
+
+  // Track all colors currently in use to avoid collisions
+  const usedColors = new Set(rawEntries.map(e => e.entry.color.toLowerCase()));
+
+  for (const [, group] of buildingsByColor) {
+    if (group.length <= 1) continue; // No conflict -- skip
+
+    // First building keeps its original color; reassign the rest
+    let variantIdx = 0;
+    for (let gi = 1; gi < group.length; gi++) {
+      const item = group[gi];
+      // Find the next unused variant color
+      while (variantIdx < BUILDING_VARIANT_PALETTE.length &&
+             usedColors.has(BUILDING_VARIANT_PALETTE[variantIdx].toLowerCase())) {
+        variantIdx++;
+      }
+      if (variantIdx < BUILDING_VARIANT_PALETTE.length) {
+        const variantColor = BUILDING_VARIANT_PALETTE[variantIdx];
+        item.entry.color = variantColor;
+        _zoneColorOverrides.set(item.zoneId, variantColor);
+        usedColors.add(variantColor.toLowerCase());
+        variantIdx++;
+        console.log(`[AIRender] Zone "${item.entry.zoneName}" (${item.zoneId}) color reassigned to ${variantColor} to avoid duplicate`);
+      }
+    }
   }
 
   // With unique shade IDs, each archetype-assigned zone has its own color,
   // so deduplication only applies to unassigned zones sharing a default color.
-  // Deduplicate by color+zoneType to keep distinct zone types separate.
+  // After variant reassignment, duplicates should be rare, but keep the guard.
   const seen = new Map<string, ZonePromptEntry>();
-  for (const entry of entries) {
-    const key = `${entry.color}_${entry.zoneType}`;
+  for (const item of rawEntries) {
+    const key = `${item.entry.color}_${item.entry.zoneType}`;
     if (!seen.has(key)) {
-      seen.set(key, entry);
-    } else if (entry.archetypeTitle && !seen.get(key)!.archetypeTitle) {
-      seen.set(key, entry);
+      seen.set(key, item.entry);
+    } else if (item.entry.archetypeTitle && !seen.get(key)!.archetypeTitle) {
+      seen.set(key, item.entry);
     }
   }
 
-  // Sort: buildings/parks first, site_boundary LAST — so the AI prioritizes
+  // Sort: buildings/parks first, site_boundary LAST -- so the AI prioritizes
   // specific zone instructions over the generic infill instruction.
   const result = Array.from(seen.values());
   result.sort((a, b) => {
@@ -938,6 +1438,20 @@ function colorName(hex: string): string {
   const genericMap: Record<string, string> = {
     '#E03C31': 'red',
     '#e03c31': 'red',
+    '#C62828': 'dark red',
+    '#c62828': 'dark red',
+    '#D84315': 'deep orange',
+    '#d84315': 'deep orange',
+    '#AD1457': 'dark pink',
+    '#ad1457': 'dark pink',
+    '#6A1B9A': 'deep purple',
+    '#6a1b9a': 'deep purple',
+    '#4527A0': 'indigo',
+    '#4527a0': 'indigo',
+    '#B71C1C': 'crimson',
+    '#b71c1c': 'crimson',
+    '#E65100': 'burnt orange',
+    '#e65100': 'burnt orange',
     '#F5D63D': 'yellow',
     '#f5d63d': 'yellow',
     '#616161': 'dark gray',
@@ -965,11 +1479,16 @@ function defaultZoneDescription(zoneType: string): string {
     case 'residential':
       return 'photorealistic residential buildings — townhouses or apartment blocks with warm materials, balconies, and landscaped entries';
     case 'road':
-      return 'paved road with lane markings, sidewalks, street trees, and parked cars';
+    case 'street':
+    case 'path':
+      return 'complete urban streetscape with smooth asphalt road surface, crisp white lane markings, concrete curbs, wide sidewalks with tactile paving, regularly spaced street trees in tree grates, pedestrian-scale lighting, parked cars along the curb, and accessible crosswalks with painted markings';
     case 'green_space':
-      return 'landscaped park with mature trees, grass lawns, walking paths, benches, and ornamental planting';
+    case 'park':
+      return 'landscaped urban park with mature canopy trees, manicured grass lawns, meandering walking paths with fine gravel or paved surface, wooden benches, ornamental flower beds, and subtle landscape lighting';
+    case 'plaza':
+      return 'public urban plaza with premium stone or brick paving in a geometric pattern, cafe seating areas with umbrellas, a central water feature or sculpture, accent planting in raised beds, and pedestrian-scale bollard lighting';
     case 'parking':
-      return 'paved surface parking or public plaza with pedestrian paving, bollards, and street furniture';
+      return 'paved surface parking lot with painted parking stalls, directional arrows, concrete wheel stops, LED pole lighting, and perimeter landscaping with low hedges';
     case 'water':
       return 'water feature — pond, fountain, or reflecting pool with clean blue water and stone edges';
     case 'development_area':
@@ -980,8 +1499,9 @@ function defaultZoneDescription(zoneType: string): string {
 }
 
 /**
- * Build the multi-zone prompt — simple, natural language for Gemini.
- * Each zone gets a one-line description built from archetype card metadata.
+ * Build the multi-zone prompt — narrative prose for Gemini.
+ * Uses the same Subject + Environment + Materials + Lighting + Camera formula
+ * as the two-pass pipeline, but describes all zones in a single prompt.
  */
 function buildStructuredPrompt(options: AIRenderOptions): string {
   const zones = options.siteZones || [];
@@ -992,51 +1512,102 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
   const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
   const isSitePlan = styleId === 'site-plan';
 
-  const parts: string[] = [
-    'This is an aerial/satellite photograph with colored polygon overlays marking proposed development zones.',
-  ];
+  const parts: string[] = [];
 
-  if (isArtistic) {
-    parts.push(`Replace each colored area with the described content, rendered in ${style?.label || styleId} style. Keep all surrounding imagery exactly as it is.`);
-  } else {
-    parts.push('Replace each colored area with the following photorealistic content. Keep all surrounding imagery exactly as it is.');
-  }
-
-  // Inject render style
-  if (style) {
-    parts.push(`RENDER STYLE: ${style.prompt}`);
-  }
-
+  // ── Opening narrative — Camera + Environment ──
   if (isSitePlan) {
-    parts.push('Disable 3D perspective and shadows. Render as a flat 2D orthographic view looking straight down.');
+    parts.push(
+      'Orthographic top-down site plan of an urban development. Colored polygon overlays on this aerial image mark proposed zones.',
+      'Render as a flat 2D view looking straight down — no 3D perspective, no cast shadows.',
+    );
+  } else if (isArtistic) {
+    parts.push(
+      `Aerial view of an urban development site. Colored polygon overlays mark proposed zones on this satellite photograph.`,
+      `Transform each colored zone into its described content, rendered in ${style?.label || styleId} style.`,
+    );
+  } else {
+    parts.push(
+      'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle over an urban development site.',
+      'Colored polygon overlays mark proposed zones. Transform each colored area into photorealistic architecture and landscape that seamlessly replaces the overlay.',
+    );
   }
 
+  // ── Style ──
+  if (style) {
+    parts.push(style.prompt);
+  }
+
+  // ── Zone-by-zone narrative descriptions ──
   if (zoneEntries.length > 0) {
+    const zoneNarratives: string[] = [];
+
     for (const entry of zoneEntries) {
       const color = colorName(entry.color);
-      let desc: string;
 
       if (entry.zoneType === 'site_boundary') {
-        desc = 'realistic urban ground-plane — sidewalks, grass, small street trees, pedestrian paths blending with surroundings';
-      } else {
-        desc = buildArchetypeDescription(entry, entry.zoneType);
+        zoneNarratives.push(
+          `The ${color} background area is the site boundary. Fill it with realistic urban ground-plane context: ` +
+          `public sidewalks matching surrounding pavement, manicured grass, small street trees, and pedestrian paths ` +
+          `that seamlessly blend the new development with the surrounding satellite imagery.`
+        );
+        continue;
       }
 
-      parts.push(`- ${color.toUpperCase()} area: ${desc}`);
+      const desc = buildArchetypeDescription(entry, entry.zoneType);
+      const userDesc = entry.descriptionText?.trim();
+      const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(entry.zoneType);
+
+      if (isBuilding) {
+        // Scale text from floors/height
+        const scaleText = entry.floors ? `${entry.floors}-story`
+          : entry.heightM ? `${entry.heightM}m tall`
+          : 'multi-story';
+
+        // Building narrative — emphasize 3D volume, SCALE, and foundation containment
+        zoneNarratives.push(
+          `The ${color} polygon is a building footprint. Render a ${scaleText} ${desc}.` +
+          (userDesc ? ` ${userDesc}.` : '') +
+          ` This is a large ${scaleText} structure that fills the entire ${color} footprint — not a small house or cabin.` +
+          ` The ${color} area is the building's ground-level foundation only — render the full vertical 3D mass ` +
+          `and roofline extending naturally into the sky above, respecting aerial perspective. ` +
+          `Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. ` +
+          `Do not let building materials bleed horizontally into neighboring zones. ` +
+          `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the ${color} polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`
+        );
+      } else {
+        // Ground-level zone narrative — emphasize strict horizontal containment
+        zoneNarratives.push(
+          `The ${color} area is a ${desc}.` +
+          (userDesc ? ` ${userDesc}.` : '') +
+          ` Fill it precisely within its boundaries, treating edges as hard physical curbs. ` +
+          `Replace every ${color} pixel completely — no colored overlay should remain visible.`
+        );
+      }
     }
+
+    parts.push(zoneNarratives.join(' '));
   }
 
+  // ── Containment + preservation instructions ──
+  parts.push(
+    'Maintain strict containment — each zone stays within its colored boundary. ' +
+    'Keep all satellite imagery outside the site boundary exactly as it is, preserving the original style, lighting, and composition.'
+  );
+
+  // ── Lighting (photorealistic only) ──
+  if (!isArtistic && !isSitePlan) {
+    parts.push(
+      'Warm afternoon sunlight from the southwest casts crisp architectural shadows. ' +
+      'Match the existing satellite imagery perspective, color temperature, and lighting for a seamless photomontage.'
+    );
+  }
+
+  // ── User custom prompt ──
   if (options.customPrompt?.trim()) {
     parts.push(options.customPrompt.trim());
   }
 
-  if (!isArtistic) {
-    parts.push('Make it look like a seamless photomontage — match lighting, shadows, and perspective of the satellite imagery.');
-  } else {
-    parts.push(`Render the entire scene consistently in ${style?.label || styleId} style.`);
-  }
-
-  return parts.join('\n');
+  return parts.join(' ');
 }
 
 /**
@@ -1092,7 +1663,10 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(stylePreset.negative);
   }
 
-  // 2. Archetype-level negatives passed from the panel
+  // 2. Building containment negatives
+  parts.push('building extending beyond footprint, architecture outside polygon, walls outside boundary, building bleed into neighboring zone');
+
+  // 3. Archetype-level negatives passed from the panel
   if (options.mapOverlayNegative?.trim()) {
     parts.push(options.mapOverlayNegative.trim());
   }
@@ -1100,7 +1674,7 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(options.archetypeNegative.trim());
   }
 
-  // 3. Zone-level archetype negatives from catalog
+  // 4. Zone-level archetype negatives from catalog
   const zones = options.siteZones || [];
   for (const zone of zones) {
     if (zone.zone_type === 'site_boundary') continue;
@@ -1195,8 +1769,19 @@ export function useAIRender(): UseAIRenderReturn {
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
 
   const reset = useCallback(() => {
+    // Restore zone layers that were hidden during render
+    const map = mapRef.current;
+    if (map) {
+      const RESTORE_LAYERS = ['site-zones-fill', 'site-zones-boundary-fill', 'site-zones-extrusion', 'site-zones-outline', 'site-zones-selected'];
+      for (const layerId of RESTORE_LAYERS) {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', 'visible');
+        }
+      }
+    }
     setResult(null);
     setPreviews([]);
     setFaceRenders([]);
@@ -1255,6 +1840,7 @@ export function useAIRender(): UseAIRenderReturn {
       setProgress(-1); // indeterminate
       setError(null);
       setStatusMessage('Capturing view...');
+      mapRef.current = map;
 
       try {
         // Generate mask FIRST (synchronous) before the async screenshot capture,
@@ -1266,7 +1852,8 @@ export function useAIRender(): UseAIRenderReturn {
           : undefined;
 
         const imageBase64 = await captureMapCanvasBase64(map);
-        const bounds = getMapBounds(map);
+        const headroomPx = getMaxBuildingHeadroom(map, zones);
+        const bounds = getMapBounds(map, headroomPx);
 
         setStatusMessage('Generating render... Please wait');
 
@@ -1339,7 +1926,8 @@ export function useAIRender(): UseAIRenderReturn {
         setStatusMessage('Capturing zone view...');
 
         const imageBase64 = await captureMapCanvasBase64(map);
-        const bounds = getMapBounds(map);
+        const headroomPx = getMaxBuildingHeadroom(map, options.siteZones);
+        const bounds = getMapBounds(map, headroomPx);
 
         setStatusMessage('Generating render... Please wait');
 
@@ -1393,7 +1981,8 @@ export function useAIRender(): UseAIRenderReturn {
           : undefined;
 
         const imageBase64 = await captureMapCanvasBase64(map);
-        const bounds = getMapBounds(map);
+        const headroomPx = getMaxBuildingHeadroom(map, zones);
+        const bounds = getMapBounds(map, headroomPx);
 
         setStatusMessage('Generating preview... Please wait');
 
@@ -1462,7 +2051,8 @@ export function useAIRender(): UseAIRenderReturn {
             : undefined;
 
           const imageBase64 = await captureMapCanvasBase64(map);
-          const bounds = getMapBounds(map);
+          const headroomPx = getMaxBuildingHeadroom(map, zones);
+          const bounds = getMapBounds(map, headroomPx);
 
           setStatusMessage('Rendering full quality... Please wait');
 
@@ -1500,7 +2090,8 @@ export function useAIRender(): UseAIRenderReturn {
           await easeMapTo(map, face.bearing, 45);
 
           const base64 = await captureMapCanvasBase64(map);
-          const bounds = getMapBounds(map);
+          const faceHeadroomPx = getMaxBuildingHeadroom(map, options.siteZones);
+          const bounds = getMapBounds(map, faceHeadroomPx);
 
           captures.push({ label: face.label, base64, bounds });
         }
@@ -1563,11 +2154,11 @@ export function useAIRender(): UseAIRenderReturn {
       setProgress(0);
       setError(null);
       setStatusMessage('Preparing per-zone render...');
+      mapRef.current = map;
 
       try {
         const zones = options.siteZones || [];
         if (zones.length === 0) {
-          // Fall back to standard render if no zones
           return await render(map, options);
         }
 
@@ -1579,130 +2170,258 @@ export function useAIRender(): UseAIRenderReturn {
 
         // Capture the full-view original for compositing
         const originalBase64 = await captureMapCanvasBase64(map);
-        const originalBounds = getMapBounds(map);
+        const perZoneHeadroomPx = getMaxBuildingHeadroom(map, zones);
+        const originalBounds = getMapBounds(map, perZoneHeadroomPx);
         const aspectRatio = computeAspectRatio(map);
         let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
 
-        // Sort zones: ground-level first (parks, roads), then buildings on top.
-        // This way buildings composite OVER parks, not under them.
-        const ZONE_ORDER: Record<string, number> = {
-          water: 0, green_space: 1, parking: 2,
-          road: 3, development_area: 4, residential: 5, building: 6,
-        };
+        // Separate zones into ground-level (Pass 1) and buildings (Pass 2)
+        const GROUND_TYPES = ['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area'];
+        const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+
         const renderableZones = zones
-          .filter(z => z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3)
-          .sort((a, b) => (ZONE_ORDER[a.zone_type] ?? 99) - (ZONE_ORDER[b.zone_type] ?? 99));
+          .filter(z => z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
 
-        // Skip site_boundary — it's just the container, not renderable content.
-        // Each inner zone already blends into the white site boundary via its prompt.
-        const allZonesToRender = renderableZones;
+        const groundZones = renderableZones.filter(z => GROUND_TYPES.includes(z.zone_type));
+        const buildingZones = renderableZones.filter(z => BUILDING_TYPES.includes(z.zone_type));
 
-        if (allZonesToRender.length === 0) {
+        // Populate _zoneColorOverrides so duplicate-colored buildings get distinct
+        // variant colors in both the map overlay and the prompt text.
+        collectZonePromptEntries(zones);
+
+        if (renderableZones.length === 0) {
           return await render(map, options);
         }
 
-        const totalZones = allZonesToRender.length;
+        const totalSteps = (groundZones.length > 0 ? 1 : 0) + buildingZones.length;
+        let currentStep = 0;
         const successfulZones: string[] = [];
 
-        // Per-zone rendering: for each zone, hide all OTHER zone layers so Gemini
-        // only sees one colored area on the white site boundary. This prevents
-        // bleed between zones. Each zone gets its own screenshot, mask, and prompt.
-        const ZONE_RENDER_LAYERS = [
-          'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
-          'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+        // ── HIDE 3D extrusion layers and labels ──
+        const LAYERS_TO_HIDE = [
+          'site-zones-extrusion', 'site-zones-outline', 'site-zones-selected',
+          'site-zones-labels', 'site-zones-fill', 'site-zones-boundary-fill',
+          'massing-preview-extrusion', '3d-buildings',
         ];
+        const layerVisibilityBackup: Record<string, string> = {};
+        for (const layerId of LAYERS_TO_HIDE) {
+          const layer = map.getLayer(layerId);
+          if (layer) {
+            const vis = map.getLayoutProperty(layerId, 'visibility');
+            layerVisibilityBackup[layerId] = typeof vis === 'string' ? vis : 'visible';
+            map.setLayoutProperty(layerId, 'visibility', 'none');
+          }
+        }
+        // Wait for repaint
+        await new Promise<void>(resolve => {
+          const t = setTimeout(resolve, 2000);
+          map.once('idle', () => { clearTimeout(t); resolve(); });
+        });
 
-        for (let i = 0; i < allZonesToRender.length; i++) {
-          const zone = allZonesToRender[i];
-          const zoneName = zone.name || zone.zone_type;
-          setStatusMessage(`Rendering zone ${i + 1}/${totalZones}: ${zoneName}...`);
-          setProgress(Math.round((i / totalZones) * 100));
+        const src = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
+        const guidanceScale = options.guidanceScale ?? 15;
+        const negativePrompt = buildNegativePrompt(options);
+
+        // Helper: update map source and wait for idle
+        const updateSourceAndWait = async (features: any[]) => {
+          if (!src) return;
+          src.setData({ type: 'FeatureCollection', features });
+          await new Promise<void>(resolve => {
+            const t = setTimeout(() => { resolve(); }, 2000);
+            map.once('idle', () => { clearTimeout(t); resolve(); });
+          });
+        };
+
+        // ════════════════════════════════════════════════════════
+        // PASS 1: GROUND PLANE (parks, roads, plazas — all at once)
+        // ════════════════════════════════════════════════════════
+        if (groundZones.length > 0) {
+          setStatusMessage(`Pass 1/${totalSteps > 1 ? '2' : '1'}: Rendering ground plane (${groundZones.length} zones)...`);
+          setProgress(5);
+          console.log(`[AIRender] ═══ PASS 1: GROUND PLANE ═══ (${groundZones.length} zones)`);
 
           try {
-            // Temporarily update the zone source to show ONLY this zone + site boundary
-            const src = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
-            const allFeatures = zones.map(z => {
-              if (!z.coordinates || z.coordinates.length < 3) return null;
-              const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
-              return {
+            // Show ALL ground zones colored + site boundary white. No buildings.
+            const groundFeatures = zones
+              .filter(z => z.coordinates && z.coordinates.length >= 3)
+              .filter(z => z.zone_type === 'site_boundary' || GROUND_TYPES.includes(z.zone_type))
+              .map(z => ({
                 type: 'Feature' as const,
                 properties: {
                   id: z.id,
-                  color: z.id === zone.id ? (z.color || '#E03C31') : '#ffffff',
+                  color: z.zone_type === 'site_boundary' ? '#ffffff' : (z.color || '#4CAF50'),
                   label: z.name || z.zone_type,
                   zone_type: z.zone_type,
-                  ...(zoneHeight != null && { height: zoneHeight }),
                 },
                 geometry: {
                   type: 'Polygon' as const,
-                  coordinates: [z.coordinates.map(([lng, lat]) => [lng, lat])],
+                  coordinates: [z.coordinates!.map(([lng, lat]) => [lng, lat])],
                 },
-              };
-            }).filter(Boolean);
+              }));
 
-            // Show only the current zone colored (others white/hidden)
-            const soloFeatures = allFeatures.filter(f => {
-              if (!f) return false;
-              const fId = f.properties.id;
-              // Keep site_boundary (white background) and the current zone
-              return fId === zone.id || zones.find(z => z.id === fId)?.zone_type === 'site_boundary';
-            });
+            await updateSourceAndWait(groundFeatures);
+            const groundScreenshot = await captureMapCanvasBase64(map);
 
-            if (src) {
-              src.setData({ type: 'FeatureCollection', features: soloFeatures as any[] });
-              // Wait for map to re-render with solo zone
-              await new Promise<void>(resolve => {
-                map.once('idle', resolve);
-                setTimeout(resolve, 500); // fallback
-              });
-            }
+            // Build combined mask for ALL ground zones
+            const groundMask = generateCombinedMask(map, groundZones);
 
-            // Capture screenshot with only this zone visible
-            const zoneScreenshot = await captureMapCanvasBase64(map);
+            // Build narrative ground plane prompt
+            const groundPrompt = buildGroundPlanePrompt(groundZones, options);
 
-            // Generate single-zone mask at the current viewport
-            const zoneMask = generateSingleZoneMask(map, zone);
+            console.log(`[AIRender] Pass 1 prompt (${groundPrompt.length} chars):\n${groundPrompt}`);
 
-            // Build zone-specific prompt
-            const zonePrompt = buildSingleZonePrompt(zone, options);
-            const negativePrompt = buildNegativePrompt(options);
-            const guidanceScale = options.guidanceScale ?? 15;
-
-            // Debug logging
-            console.log(`[AIRender] Per-zone render ${i + 1}/${totalZones}: "${zoneName}" (${zone.zone_type})`);
-            console.log(`[AIRender]   Prompt (${zonePrompt.length} chars):\n${zonePrompt}`);
-            console.log(`[AIRender]   Aspect ratio: ${aspectRatio}, guidance: ${guidanceScale}`);
-
-            // Call Gemini with screenshot showing ONLY this zone
-            const { imageDataUri } = await callVertexAI(
-              zoneScreenshot,
-              zonePrompt,
+            const { imageDataUri: groundResult } = await callVertexAI(
+              groundScreenshot,
+              groundPrompt,
               options.seed ?? Math.floor(Math.random() * 2147483647),
               aspectRatio,
-              zoneMask,
+              groundMask,
               negativePrompt || undefined,
               guidanceScale,
             );
 
-            // Composite this zone's render onto the cumulative result
-            cumulativeDataUri = await compositeZoneRender(
-              cumulativeDataUri,
-              imageDataUri,
-              map,
-              zone,
-            );
+            // Composite ground zones onto the cumulative result with strict polygon clipping
+            for (const gz of groundZones) {
+              cumulativeDataUri = await compositeZoneRender(cumulativeDataUri, groundResult, map, gz);
+              successfulZones.push(gz.name || gz.zone_type);
+            }
 
-            successfulZones.push(zoneName);
-            console.log(`[AIRender] Zone "${zoneName}" rendered successfully (${i + 1}/${totalZones})`);
-          } catch (zoneErr) {
-            console.warn(`[AIRender] Zone "${zoneName}" failed, skipping:`, zoneErr);
+            currentStep++;
+            console.log(`[AIRender] Pass 1 complete — ground plane rendered`);
+          } catch (groundErr) {
+            console.warn('[AIRender] Pass 1 (ground plane) failed:', groundErr);
           }
         }
 
-        // Restore full zone data after per-zone rendering
+        // ════════════════════════════════════════════════════════
+        // PASS 2: ARCHITECTURE (buildings, one at a time)
+        // Each building renders onto the ground plane from Pass 1.
+        // ════════════════════════════════════════════════════════
+        for (let i = 0; i < buildingZones.length; i++) {
+          const zone = buildingZones[i];
+          const zoneName = zone.name || zone.zone_type;
+          currentStep++;
+          setStatusMessage(`Pass 2: Building ${i + 1}/${buildingZones.length}: ${zoneName}...`);
+          setProgress(Math.round((currentStep / totalSteps) * 90) + 5);
+          console.log(`[AIRender] ═══ PASS 2: BUILDING ${i + 1}/${buildingZones.length}: "${zoneName}" ═══`);
+
+          try {
+            // Show only this building's footprint colored + site boundary white
+            // Use the cumulative result as the base (which now has the rendered ground plane)
+            const buildingFeatures = zones
+              .filter(z => z.coordinates && z.coordinates.length >= 3)
+              .filter(z => z.id === zone.id || z.zone_type === 'site_boundary')
+              .map(z => ({
+                type: 'Feature' as const,
+                properties: {
+                  id: z.id,
+                  color: z.id === zone.id ? getZoneRenderColor(z.id, z.color || '#E03C31') : '#ffffff',
+                  label: z.name || z.zone_type,
+                  zone_type: z.zone_type,
+                  // NO height — flat polygon only
+                },
+                geometry: {
+                  type: 'Polygon' as const,
+                  coordinates: [z.coordinates!.map(([lng, lat]) => [lng, lat])],
+                },
+              }));
+
+            await updateSourceAndWait(buildingFeatures);
+
+            // For Pass 2, use the cumulative result (with rendered ground) as the base image
+            // Paint the building footprint colored onto it + add white headroom
+            let buildingScreenshot = await captureMapCanvasBase64(map);
+
+            // Add white headroom above building polygon for 3D perspective
+            const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+              : zone.properties?.height ? Number(zone.properties.height) : 0;
+
+            if (bldgHeight > 0) {
+              const headroomPx = calculatePerspectiveHeadroom(map, bldgHeight);
+              if (headroomPx > 5) {
+                const dpr = window.devicePixelRatio || 1;
+                const pixels = siteBoundaryToPixels(map, zone.coordinates!);
+                const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+                const minX = Math.min(...devicePixels.map(p => p.x));
+                const maxX = Math.max(...devicePixels.map(p => p.x));
+                const minY = Math.min(...devicePixels.map(p => p.y));
+                const expandedTop = Math.max(0, minY - headroomPx);
+
+                const img = await loadImage(`data:image/png;base64,${buildingScreenshot}`);
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                const ctx = canvas.getContext('2d')!;
+                ctx.drawImage(img, 0, 0);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
+
+                // Feathered top edge
+                const featherH = Math.min(30 * dpr, headroomPx * 0.25);
+                if (featherH > 2) {
+                  const gradient = ctx.createLinearGradient(0, expandedTop, 0, expandedTop + featherH);
+                  gradient.addColorStop(0, 'rgba(255,255,255,0)');
+                  gradient.addColorStop(1, 'rgba(255,255,255,1)');
+                  ctx.fillStyle = gradient;
+                  ctx.fillRect(minX, expandedTop, maxX - minX, featherH);
+                }
+
+                buildingScreenshot = canvas.toDataURL('image/png').split(',')[1];
+                console.log(`[AIRender] Added ${headroomPx.toFixed(0)}px headroom for ${bldgHeight}m building`);
+              }
+            }
+
+            // Generate expanded mask for building
+            const buildingMask = generateSingleZoneMask(map, zone);
+
+            // Build narrative building prompt
+            const buildingPrompt = buildBuildingPrompt(zone, options);
+
+            console.log(`[AIRender] Pass 2 prompt (${buildingPrompt.length} chars):\n${buildingPrompt}`);
+
+            const { imageDataUri } = await callVertexAI(
+              buildingScreenshot,
+              buildingPrompt,
+              options.seed ?? Math.floor(Math.random() * 2147483647),
+              aspectRatio,
+              buildingMask,
+              negativePrompt || undefined,
+              guidanceScale,
+            );
+
+            // Composite with headroom-expanded clip
+            const preCompositDataUri = cumulativeDataUri;
+            cumulativeDataUri = await compositeZoneRender(cumulativeDataUri, imageDataUri, map, zone);
+
+            // Post-composite cleanup: restore pixels inside other zones' polygons
+            cumulativeDataUri = await cleanupZoneBleed(cumulativeDataUri, preCompositDataUri, map, zone, zones);
+            successfulZones.push(zoneName);
+            console.log(`[AIRender] Building "${zoneName}" rendered successfully`);
+          } catch (bldgErr) {
+            console.warn(`[AIRender] Building "${zoneName}" failed:`, bldgErr);
+          }
+        }
+
+        // ── Restore non-visual layers, keep zone fills hidden while render is displayed ──
+        const KEEP_HIDDEN_DURING_RENDER = ['site-zones-fill', 'site-zones-boundary-fill', 'site-zones-extrusion', 'site-zones-outline', 'site-zones-selected'];
+        for (const [layerId, visibility] of Object.entries(layerVisibilityBackup)) {
+          if (map.getLayer(layerId)) {
+            if (KEEP_HIDDEN_DURING_RENDER.includes(layerId)) {
+              // Keep hidden — the render overlay replaces these visually
+              map.setLayoutProperty(layerId, 'visibility', 'none');
+            } else {
+              map.setLayoutProperty(layerId, 'visibility', visibility as 'none' | 'visible');
+            }
+          }
+        }
+
         const restoreFeatures = zones.map(z => {
           if (!z.coordinates || z.coordinates.length < 3) return null;
-          const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+          const zoneHeight = z.properties?.height_m != null
+            ? Number(z.properties.height_m)
+            : z.properties?.height != null
+              ? Number(z.properties.height)
+              : undefined;
           return {
             type: 'Feature' as const,
             properties: {
@@ -1718,12 +2437,10 @@ export function useAIRender(): UseAIRenderReturn {
             },
           };
         }).filter(Boolean);
-        const restoreSrc = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
-        if (restoreSrc) {
-          restoreSrc.setData({ type: 'FeatureCollection', features: restoreFeatures as any[] });
+        if (src) {
+          src.setData({ type: 'FeatureCollection', features: restoreFeatures as any[] });
         }
 
-        // Restore original camera state
         map.jumpTo({
           center: origCenter,
           zoom: origZoom,
@@ -1732,19 +2449,19 @@ export function useAIRender(): UseAIRenderReturn {
         });
 
         if (successfulZones.length === 0) {
-          throw new Error('All per-zone renders failed');
+          throw new Error('All render passes failed');
         }
 
         const finalResult: AIRenderResult = {
           imageUrl: cumulativeDataUri,
           bounds: originalBounds,
           seed: options.seed,
-          prompt: `Per-zone render: ${successfulZones.length}/${totalZones} zones`,
+          prompt: `Two-pass render: ${successfulZones.length} zones (${groundZones.length} ground + ${buildingZones.length} buildings)`,
         };
 
         setResult(finalResult);
         setProgress(100);
-        setStatusMessage(`Complete — ${successfulZones.length}/${totalZones} zones rendered`);
+        setStatusMessage(`Complete — ${successfulZones.length} zones rendered (2-pass)`);
         setIsRendering(false);
         return finalResult;
       } catch (err: unknown) {

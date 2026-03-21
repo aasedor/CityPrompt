@@ -101,6 +101,8 @@ export type AestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  developmentTypes?: string[];
+  buildingSubcategory?: string;
   generationTags?: string[];
   archetypeImages?: ArchetypeImage[];
   styleProfile?: StyleProfile;
@@ -295,6 +297,8 @@ function toAestheticOption(
     photoUrl: primary?.imageUrl || '',
     photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
+    developmentTypes: Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined,
+    buildingSubcategory: seed.buildingSubcategory,
     generationTags: tags,
     archetypeImages: orderedArchetypeImages,
     styleProfile,
@@ -382,6 +386,63 @@ export const PLAZA_AESTHETIC_OPTIONS_V2: AestheticOption[] = OPEN_SPACE_OPTIONS.
 export const ROADWAY_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(ROADWAY_AESTHETIC_OPTIONS_V2);
 export const GREEN_SPACE_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(GREEN_SPACE_AESTHETIC_OPTIONS_V2);
 export const PLAZA_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(PLAZA_AESTHETIC_OPTIONS_V2);
+
+/**
+ * Map a zone_type (and optional development_type property) to the set of
+ * `developmentTypes` values that should be shown.  Returns `null` when no
+ * filtering should be applied (i.e. show everything).
+ */
+export function getAllowedDevelopmentTypes(
+  zoneType: string,
+  developmentType?: string,
+): string[] | null {
+  // If the user has already picked a specific development_type property,
+  // derive the filter from that (it's more specific than zone_type).
+  if (developmentType) {
+    if (developmentType.startsWith('residential'))  return ['residential'];
+    if (developmentType.startsWith('commercial'))   return ['commercial'];
+    if (developmentType.startsWith('industrial'))   return ['industrial'];
+    if (developmentType.startsWith('institutional'))return ['institutional'];
+    if (developmentType === 'mixed_use')            return ['mixed_use', 'mixed-use'];
+    if (developmentType === 'hospitality')           return ['hospitality'];
+    // For other values (park_plaza, recreational, open_space, other) don't filter
+    return null;
+  }
+
+  // Fall back to zone_type level filtering
+  switch (zoneType) {
+    case 'residential':
+      return ['residential'];
+    case 'commercial':
+      return ['commercial'];
+    case 'industrial':
+      return ['industrial'];
+    case 'mixed_use':
+      return ['mixed_use', 'mixed-use'];
+    case 'building':
+    case 'development_area':
+    default:
+      // Generic building zone or unknown — show everything
+      return null;
+  }
+}
+
+/**
+ * Filter building archetype options by zone / development type.
+ * If `allowedTypes` is null, all options pass through.
+ */
+export function filterOptionsByDevelopmentType(
+  options: AestheticOption[],
+  allowedTypes: string[] | null,
+): AestheticOption[] {
+  if (!allowedTypes) return options;
+  return options.filter((option) => {
+    // If the archetype has no developmentTypes defined, always show it
+    if (!option.developmentTypes || option.developmentTypes.length === 0) return true;
+    return option.developmentTypes.some((dt) => allowedTypes.includes(dt));
+  });
+}
+
 export function normalizeTransportModes(value: unknown): TransportModeKey[] {
   if (!Array.isArray(value)) return [];
   const allowed = new Set<TransportModeKey>(TRANSPORT_MODE_ORDER);

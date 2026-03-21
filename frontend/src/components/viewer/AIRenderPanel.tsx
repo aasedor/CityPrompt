@@ -69,6 +69,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const ZONE_LAYERS = [
     'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
     'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+    'massing-preview-extrusion', 'massing-preview-green',
   ];
   useEffect(() => {
     const map = mapRef.current;

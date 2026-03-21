@@ -209,9 +209,10 @@ async def generate_render(req: RenderRequest):
     parts.append({"text": prompt_text})
 
     # Map guidance_scale to temperature: high guidance = low temperature (strict)
-    temperature = 1.0
+    # For architectural editing, low temperature preserves unedited areas faithfully
+    temperature = 0.0  # Default to 0 for maximum consistency in editing
     if req.guidance_scale is not None:
-        temperature = max(0.2, min(1.5, 1.5 - (req.guidance_scale / 30) * 1.3))
+        temperature = max(0.0, min(1.5, 1.5 - (req.guidance_scale / 30) * 1.5))
 
     payload = {
         "contents": [
