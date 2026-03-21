@@ -15,7 +15,7 @@
     {
       "id": "social_event_spaces",
       "label": "Social / Event Spaces",
-      "description": "Flexible open spaces for markets and events"
+      "description": "Flexible open spaces for markets, performance, and events"
     },
     {
       "id": "ecological_resilience",
@@ -30,7 +30,27 @@
     {
       "id": "neighborhood_public_realm",
       "label": "Neighborhood Public Realm",
-      "description": "Everyday community parks and pocket spaces"
+      "description": "Everyday community parks, playgrounds, and pocket spaces"
+    },
+    {
+      "id": "sports_recreation",
+      "label": "Sports & Recreation",
+      "description": "Active sports fields, courts, and athletic facilities"
+    },
+    {
+      "id": "specialty_gardens",
+      "label": "Specialty Gardens",
+      "description": "Botanical, memorial, and themed garden spaces"
+    },
+    {
+      "id": "parking_areas",
+      "label": "Parking Areas",
+      "description": "Surface lots, structured garages, and green parking"
+    },
+    {
+      "id": "water_features",
+      "label": "Water Features",
+      "description": "Ponds, pools, canals, and decorative water elements"
     },
     {
       "id": "custom",
@@ -40,73 +60,455 @@
   ],
   "archetypes": [
     {
-      "id": "english_landscape_park",
-      "title": "English Landscape Park",
-      "aestheticCategory": "landscape_parks",
+      "id": "urban_pocket_park",
+      "title": "Urban Pocket Park",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "English Landscape Park open-space archetype with premium landscape/urban design clarity",
+      "description": "A small urban green space tucked between buildings, offering shade trees, a bench loop, and a patch of open lawn visible as a compact emerald oasis from above",
       "generationTags": [
         "park",
-        "landscape-parks",
-        "english"
+        "pocket-park",
+        "urban",
+        "neighborhood"
       ],
       "styleProfile": {
-        "landscapeCharacter": "English Landscape Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+        "landscapeCharacter": "A compact urban pocket park seen from drone altitude. Two to four mature deciduous shade trees with broad rounded canopies cast dappled shadows across a small central lawn panel. A single curving decomposed-granite path loops through the space connecting two entry points. One wooden bench sits beneath each tree. A low ornamental hedge borders the perimeter. The grass is lush dark green and freshly mowed. From above the canopy reads as overlapping dark-green circles against bright lawn.",
+        "pavingType": "Decomposed granite path with stone edging",
+        "plantingType": "Mature shade trees with rounded canopy, low perennial border",
+        "seatingRealm": "Two to four benches under tree canopy",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Intimate enclosure framed by surrounding buildings"
       },
       "prompt": {
-        "subject": "Centered English Landscape Park park archetype",
+        "subject": "Aerial view of a small urban pocket park nestled between buildings",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Two to four large shade tree canopies as dark green circles against bright lawn",
+          "A single curving decomposed-granite path connecting two entrances",
+          "Compact rectangular lawn panel with clean mowed edges",
+          "Low hedge border visible as a thin dark line along perimeter",
+          "Wooden benches as small rectangular shadows under canopy"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No buildings or vertical structures inside the park",
+          "No playground equipment",
+          "No water features",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "tree_density_level": "medium",
-        "tree_density": 0.45,
+        "tree_density": 0.5,
         "has_paths": true,
         "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
+        "shade_strategy": "canopy_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/hero.png"
     },
     {
-      "id": "central_park_inspired_urban_park",
-      "title": "Central Park-Inspired Urban Park",
-      "aestheticCategory": "landscape_parks",
+      "id": "neighborhood_park",
+      "title": "Neighborhood Park",
+      "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "Central Park-Inspired Urban Park open-space archetype with premium landscape/urban design clarity",
+      "description": "A mid-sized community park with open playing fields, a playground cluster, scattered mature trees, and a perimeter walking loop",
       "generationTags": [
         "park",
-        "landscape-parks",
-        "central"
+        "neighborhood",
+        "community",
+        "playground"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Central Park-Inspired Urban Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+        "landscapeCharacter": "A mid-sized neighborhood park viewed from 60m drone altitude. A large open grass field occupies the center, bright green and striped from mowing. Clusters of six to ten mature deciduous trees with broad canopies line the east and west edges, their shadows stretching across the grass. A paved asphalt walking loop traces the full perimeter. A compact playground area in one corner shows colorful equipment dots — slides, swings, climbing structures — on a tan rubber-mulch surface. A small parking pull-off with four to six car-sized rectangles sits at one entrance. Benches dot the path at regular intervals.",
+        "pavingType": "Asphalt perimeter loop path with concrete pad at playground",
+        "plantingType": "Scattered mature shade trees in informal clusters, open mowed lawn center",
+        "seatingRealm": "Benches along walking loop, picnic tables near playground",
+        "waterFeatures": "None or small drinking fountain",
+        "opennessEnclosure": "Open center field with tree-framed edges"
       },
       "prompt": {
-        "subject": "Centered Central Park-Inspired Urban Park park archetype",
+        "subject": "Aerial photograph of a mid-sized neighborhood park",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Large bright-green mowed lawn field in the center",
+          "Clusters of mature tree canopies along east and west borders",
+          "Continuous asphalt walking loop tracing the perimeter as a dark gray ribbon",
+          "Small playground cluster in one corner with colorful equipment on tan rubber surface",
+          "Scattered benches as tiny rectangles along the path",
+          "Small parking area with painted stalls at one entry point"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No buildings inside the park",
+          "No water features",
+          "No sports field markings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "scattered_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/hero.png"
+    },
+    {
+      "id": "community_park",
+      "title": "Community Park",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "A large community park with multiple activity zones — sports fields, picnic groves, a pond, and trail networks winding through layered planting",
+      "generationTags": [
+        "park",
+        "community",
+        "large",
+        "multi-use"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A large community park seen from high drone altitude. Multiple distinct zones are visible: a wide open sports lawn with faint white line markings, a dense picnic grove of mature trees casting deep shadows, a curving network of paved trails, and a naturalized pond with rushes along the margin. Rows of deciduous trees line internal pathways. The grass transitions from manicured bright green near the main entrance to wilder meadow tones at the edges. A small pavilion structure with a pale roof sits near the picnic area. From above, the park reads as a mosaic of green textures — dark canopy clusters, medium lawn, light meadow.",
+        "pavingType": "Paved multi-use trail network with concrete nodes",
+        "plantingType": "Layered: canopy groves, open lawn, meadow edges, riparian buffer at pond",
+        "seatingRealm": "Picnic pavilion, distributed bench seating, amphitheater lawn slope",
+        "waterFeatures": "Naturalized stormwater pond with emergent vegetation",
+        "opennessEnclosure": "Large open fields framed by canopy groves and meadow buffers"
+      },
+      "prompt": {
+        "subject": "High-altitude aerial photograph of a large community park with multiple activity zones",
+        "details": [
+          "Wide open sports lawn with faint white field markings",
+          "Dense grove of mature shade trees with deep circular canopy shadows",
+          "Curving paved trail network as gray ribbons through green",
+          "Naturalized pond with dark water surface and rushes at the margin",
+          "Small pavilion with pale roof near picnic grove",
+          "Gradient from manicured lawn to wilder meadow at edges"
+        ],
+        "negative": [
+          "No buildings except small pavilion",
+          "No parking lots inside the park",
+          "No fantasy elements",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.5,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/community-park/hero.png"
+    },
+    {
+      "id": "regional_park",
+      "title": "Regional Park",
+      "aestheticCategory": "landscape_parks",
+      "spaceType": "park",
+      "description": "A large-scale regional park with rolling terrain, extensive trail systems, forested areas, and open meadows — a naturalistic landscape visible as a broad green patchwork from high altitude",
+      "generationTags": [
+        "park",
+        "regional",
+        "large-scale",
+        "natural"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A large regional park viewed from high altitude. The landscape is a patchwork of dark forested areas with dense canopy, bright open meadows with wildflower tones, and mid-green mowed recreation fields. A network of unpaved trails appears as thin tan lines winding through the forest. A large lake or reservoir occupies one section with dark reflective water surface. Rolling terrain creates subtle shadow gradients across the meadows. Scattered picnic areas appear as small clearings within the forest canopy. The perimeter transitions gradually from maintained parkland to natural woodland.",
+        "pavingType": "Unpaved natural trails, crushed gravel service roads",
+        "plantingType": "Native forest canopy, open meadow, wildflower drifts, riparian woodland",
+        "seatingRealm": "Dispersed picnic clearings, trailhead kiosks",
+        "waterFeatures": "Lake or reservoir with natural shoreline",
+        "opennessEnclosure": "Vast open meadows alternating with dense forest blocks"
+      },
+      "prompt": {
+        "subject": "High-altitude aerial view of a large regional park with rolling natural terrain",
+        "details": [
+          "Patchwork of dark forest canopy and bright open meadows",
+          "Thin tan unpaved trails winding through woodland",
+          "Large dark reflective lake or reservoir",
+          "Rolling terrain with subtle shadow gradients",
+          "Scattered picnic clearings as light spots in dark canopy",
+          "Gradual transition from maintained grass to wild meadow to forest"
+        ],
+        "negative": [
+          "No urban development inside the park",
+          "No paved roads",
+          "No fantasy elements",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.7,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "natural_forest"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/regional-park/hero.png"
+    },
+    {
+      "id": "dog_park",
+      "title": "Dog Park",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "A fenced off-leash dog exercise area with separate large and small dog zones, gravel paths, shade structures, and durable turf",
+      "generationTags": [
+        "park",
+        "dog-park",
+        "fenced",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A fenced dog park viewed from drone altitude. A perimeter chain-link fence reads as a thin dark line enclosing the space. The interior is divided into two sections — a larger zone and a smaller zone — separated by an internal fence line. The ground is a mix of compacted earth and durable low grass, showing wear patterns near entry gates. A gravel or decomposed-granite path runs along the inside of the fence. Two to three shade canopy structures appear as small rectangular shadows. A few scattered trees provide additional shade. Entry double-gate vestibules are visible as small rectangles at access points. Water stations appear as tiny dots.",
+        "pavingType": "Decomposed granite perimeter path, compacted earth interior",
+        "plantingType": "Sparse shade trees, durable low grass, bare earth wear patches",
+        "seatingRealm": "Shade shelters with benches, perimeter fence-line seating",
+        "waterFeatures": "Dog water stations",
+        "opennessEnclosure": "Fully fenced enclosure with internal division"
+      },
+      "prompt": {
+        "subject": "Aerial view of a fenced dog park with separate large and small dog areas",
+        "details": [
+          "Chain-link fence perimeter as thin dark enclosing line",
+          "Two separate fenced zones — larger and smaller sections",
+          "Mix of worn grass and bare compacted earth, especially near gates",
+          "Decomposed granite path along inside of fence as tan strip",
+          "Two to three rectangular shade canopy structures casting shadows",
+          "Double-gate entry vestibules as small rectangles"
+        ],
+        "negative": [
+          "No playground equipment",
+          "No buildings",
+          "No water features except small stations",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "shade_structures"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/dog-park/hero.png"
+    },
+    {
+      "id": "skate_park",
+      "title": "Skate Park",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A concrete skate park with bowls, ramps, rails, and smooth hardscape — a sculptural gray terrain visible from above",
+      "generationTags": [
+        "park",
+        "skate-park",
+        "concrete",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A skate park viewed from drone altitude. The space is dominated by smooth gray concrete surfaces with sculptural bowl depressions visible as curved shadow gradients. Quarter-pipes and half-pipes read as curved ramp edges with shadow on one side. Rails and ledges appear as thin dark lines. The entire surface is poured concrete with expansion joints visible as a faint grid. A small spectator area with benches flanks one edge. The perimeter has a low fence or bollard line. Surrounding grass or sidewalk frames the concrete pad.",
+        "pavingType": "Poured smooth concrete with expansion joints",
+        "plantingType": "None inside — grass buffer at perimeter only",
+        "seatingRealm": "Spectator benches along one edge",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open concrete pad with low perimeter barrier"
+      },
+      "prompt": {
+        "subject": "Aerial view of a concrete skate park with bowls and ramps",
+        "details": [
+          "Smooth gray concrete surface covering the entire area",
+          "Bowl depressions visible as curved shadow gradients",
+          "Quarter-pipes and ramps as curved edges with shadow on one side",
+          "Rails and ledges as thin dark lines on the surface",
+          "Expansion joint grid faintly visible on concrete",
+          "Spectator benches along one edge, grass buffer at perimeter"
+        ],
+        "negative": [
+          "No grass inside the skate area",
+          "No playground equipment",
+          "No buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": false,
+        "has_benches": true,
+        "paving_material": "concrete",
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/skate-park/hero.png"
+    },
+    {
+      "id": "sports_field_complex",
+      "title": "Sports Field Complex",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A multi-field sports complex with soccer pitches, baseball diamonds, and running tracks — bright green rectangles and arcs with white line markings from above",
+      "generationTags": [
+        "park",
+        "sports",
+        "fields",
+        "athletic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A sports field complex seen from high drone altitude. Two or three bright green rectangular soccer or football fields are arranged in parallel, each with crisp white line markings for goals, midfield, and penalty areas. A baseball diamond occupies one corner with its characteristic brown infield dirt and bright white foul lines forming a 90-degree fan shape. A 400m running track oval with red-brown synthetic surface and white lane stripes rings one field. Aluminum bleacher rows appear as thin metallic lines along the sidelines. Pole-mounted field lights appear as small circles on tall shadows. A paved access road and parking strip border the complex.",
+        "pavingType": "Synthetic track surface, maintained turf fields, dirt infield",
+        "plantingType": "Manicured athletic turf only — no trees inside field areas",
+        "seatingRealm": "Aluminum bleacher rows along sidelines",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Wide open flat fields with minimal vertical elements"
+      },
+      "prompt": {
+        "subject": "Aerial view of a multi-field sports complex with soccer fields, baseball diamond, and track",
+        "details": [
+          "Bright green rectangular fields with crisp white line markings",
+          "Baseball diamond with brown dirt infield and white foul lines in 90-degree fan",
+          "Red-brown oval running track with white lane stripes around one field",
+          "Aluminum bleacher rows as thin metallic strips along sidelines",
+          "Tall field light poles casting long thin shadows",
+          "Paved access road and parking area at the perimeter"
+        ],
+        "negative": [
+          "No trees inside the playing fields",
+          "No buildings except small equipment sheds",
+          "No fantasy elements",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/hero.png"
+    },
+    {
+      "id": "tennis_court_cluster",
+      "title": "Tennis Court Cluster",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A cluster of tennis courts with colored acrylic surfaces, white line markings, and surrounding chain-link fencing",
+      "generationTags": [
+        "park",
+        "tennis",
+        "courts",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A cluster of four to six tennis courts viewed from above. Each court is a vivid blue or green acrylic rectangle with precise white boundary lines, service boxes, and center marks. A darker surround zone borders each court. Chain-link fencing encloses each court, reading as a faint grid pattern from altitude. Nets appear as thin white horizontal lines at mid-court. A narrow walkway separates adjacent courts. Small player benches sit at each net post. The surrounding area is either asphalt or maintained grass.",
+        "pavingType": "Colored acrylic hard court surface",
+        "plantingType": "None inside courts — maintained grass or hedge at perimeter",
+        "seatingRealm": "Player benches at net posts, small spectator area",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Fenced rectangular enclosures in a grid arrangement"
+      },
+      "prompt": {
+        "subject": "Aerial view of a cluster of four to six tennis courts",
+        "details": [
+          "Vivid blue or green rectangular court surfaces with precise white line markings",
+          "Darker surround zone bordering each court",
+          "Chain-link fencing as faint grid pattern enclosing each court",
+          "Nets as thin white horizontal lines at mid-court",
+          "Narrow walkways between adjacent courts",
+          "Grass or hedge buffer at the perimeter"
+        ],
+        "negative": [
+          "No trees overhanging courts",
+          "No buildings",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "acrylic",
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/hero.png"
+    },
+    {
+      "id": "botanical_garden",
+      "title": "Botanical Garden",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "A curated botanical garden with themed planting beds, specimen trees, winding paths through diverse horticultural displays, and a glass conservatory",
+      "generationTags": [
+        "park",
+        "botanical",
+        "garden",
+        "curated"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A botanical garden seen from drone altitude. A rich tapestry of diverse planting beds arranged in geometric and organic shapes — each bed a distinct color and texture: deep green conifers, silvery Mediterranean herbs, bright flower borders in pinks and purples, golden ornamental grasses. Winding pale gravel paths meander between beds. A glass conservatory or greenhouse structure with a translucent roof sits in one section, its metal frame casting a geometric shadow. Specimen trees of varying species create a varied canopy — some conical, some spreading, some columnar. Informational signs are too small to read from above but appear as tiny light dots at path intersections. A formal rose garden section shows concentric circular beds radiating from a central sundial or fountain.",
+        "pavingType": "Fine gravel paths with steel or stone edging",
+        "plantingType": "Diverse curated beds — conifers, perennials, grasses, roses, tropicals",
+        "seatingRealm": "Benches at path nodes, scattered through garden rooms",
+        "waterFeatures": "Central fountain in rose garden, possible lily pond",
+        "opennessEnclosure": "Intimate garden rooms connected by winding paths"
+      },
+      "prompt": {
+        "subject": "Aerial view of a botanical garden with diverse themed planting beds",
+        "details": [
+          "Tapestry of distinct planting beds in different colors and textures",
+          "Winding pale gravel paths meandering between beds",
+          "Glass conservatory with translucent roof and geometric metal-frame shadow",
+          "Specimen trees of varying shapes — conical, spreading, columnar",
+          "Formal rose garden section with concentric circular beds",
+          "Rich variety of greens, silvers, purples, golds across different plantings"
+        ],
+        "negative": [
+          "No large buildings except conservatory",
+          "No parking lots inside the garden",
+          "No sports fields",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.6,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "layered_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/botanical-garden/hero.png"
+    },
+    {
+      "id": "japanese_garden",
+      "title": "Japanese Garden",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "A contemplative Japanese garden with raked gravel, moss gardens, ornamental maples, a koi pond, and stepping-stone paths — an intricate miniature landscape from above",
+      "generationTags": [
+        "park",
+        "japanese",
+        "zen",
+        "contemplative"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A Japanese garden seen from drone altitude. A central koi pond with dark still water is edged by carefully placed boulders and moss-covered banks. A red-painted arched bridge spans a narrow section of the pond. Raked gravel areas show concentric wave patterns in pale beige. Japanese maple trees display deep red and orange canopy alongside dark green conifers — shaped pines with cloud-pruned rounded forms. Stepping-stone paths appear as chains of small gray circles through moss groundcover. A stone lantern stands at a path intersection. The composition is asymmetrical and deliberately naturalistic yet highly controlled. Bamboo groves form dense vertical screens at boundaries.",
+        "pavingType": "Stepping stones through moss, raked gravel, natural stone paths",
+        "plantingType": "Japanese maples, cloud-pruned pines, moss groundcover, bamboo screens",
+        "seatingRealm": "Stone benches at viewing points, teahouse at edge",
+        "waterFeatures": "Koi pond with arched bridge, stone basin water feature",
+        "opennessEnclosure": "Intimate enclosed rooms with borrowed scenery framing"
+      },
+      "prompt": {
+        "subject": "Aerial view of a contemplative Japanese garden with koi pond and raked gravel",
+        "details": [
+          "Central koi pond with dark still water and boulder-lined edges",
+          "Red-painted arched bridge spanning the pond",
+          "Pale beige raked gravel with concentric wave patterns",
+          "Deep red and orange Japanese maple canopy alongside dark green cloud-pruned pines",
+          "Stepping-stone chains through emerald moss groundcover",
+          "Stone lantern at path intersection, bamboo screen at boundary"
+        ],
+        "negative": [
+          "No modern structures",
+          "No playground equipment",
+          "No sports fields",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
@@ -114,38 +516,460 @@
         "tree_density": 0.45,
         "has_paths": true,
         "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
+        "shade_strategy": "specimen_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/japanese-garden/hero.png"
+    },
+    {
+      "id": "memorial_garden",
+      "title": "Memorial Garden",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "A solemn memorial garden with formal axial layout, reflection pools, commemorative walls, and evergreen plantings — a symmetrical composition from above",
+      "generationTags": [
+        "park",
+        "memorial",
+        "formal",
+        "contemplative"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A memorial garden viewed from drone altitude. A strong central axis runs the length of the space, defined by a long narrow reflecting pool with dark still water flanked by pale stone paving. Rows of identical evergreen trees — dark conical forms — line both sides of the axis in formal symmetry. A commemorative wall or monument reads as a solid dark rectangle at the terminus of the axis. Low clipped hedges border the walkways in geometric precision. The paving is polished stone or granite in muted grays and warm tones. Small memorial plaques or markers are arranged in a grid pattern on either side. The overall composition is bilaterally symmetrical and restrained.",
+        "pavingType": "Polished stone or granite formal paving",
+        "plantingType": "Formal rows of conical evergreens, clipped hedges, minimal flowering",
+        "seatingRealm": "Stone benches along the central axis",
+        "waterFeatures": "Long narrow reflecting pool along central axis",
+        "opennessEnclosure": "Formal axial enclosure with evergreen walls"
+      },
+      "prompt": {
+        "subject": "Aerial view of a formal memorial garden with central reflecting pool",
+        "details": [
+          "Strong central axis defined by long narrow reflecting pool with dark water",
+          "Pale stone paving flanking the pool on both sides",
+          "Rows of identical dark conical evergreen trees in formal symmetry",
+          "Commemorative wall or monument as dark rectangle at axis terminus",
+          "Low clipped hedges in geometric patterns bordering walkways",
+          "Bilaterally symmetrical layout with restrained planting palette"
+        ],
+        "negative": [
+          "No playground equipment",
+          "No sports facilities",
+          "No colorful flowers",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "formal_rows"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/memorial-garden/hero.png"
+    },
+    {
+      "id": "urban_forest",
+      "title": "Urban Forest",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A dense urban woodland with closed canopy, understory layers, and narrow footpaths — an unbroken dark-green canopy mat from above",
+      "generationTags": [
+        "park",
+        "forest",
+        "urban",
+        "ecological"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An urban forest patch viewed from drone altitude. The canopy is nearly continuous — overlapping crowns of mature deciduous and evergreen trees forming a dense dark-green mat with only small gaps where sunlight penetrates to the forest floor. A narrow footpath is barely visible as a thin brown line threading through canopy gaps. The tree canopy shows variation in tone — some lighter deciduous greens, darker evergreen patches, and occasional understory trees in a lighter shade. The edges transition from dense canopy to a scrubby understory buffer before meeting adjacent development. No lawn, no formal paths, no structures — pure woodland.",
+        "pavingType": "Narrow unpaved dirt footpath, barely visible under canopy",
+        "plantingType": "Multi-layered native woodland — tall canopy, understory, shrub layer, ground cover",
+        "seatingRealm": "None — natural log seating at most",
+        "waterFeatures": "None visible, possibly seasonal creek under canopy",
+        "opennessEnclosure": "Dense closed canopy enclosure"
+      },
+      "prompt": {
+        "subject": "Aerial view of a dense urban forest with nearly continuous canopy",
+        "details": [
+          "Dense continuous tree canopy as overlapping dark-green crowns",
+          "Variation in canopy tone — lighter deciduous, darker evergreen patches",
+          "Narrow footpath barely visible as thin brown line through canopy gaps",
+          "Small sunlight gaps revealing forest floor",
+          "Scrubby understory buffer at edges before adjacent development",
+          "No lawn, no formal paths, no structures visible"
+        ],
+        "negative": [
+          "No buildings",
+          "No lawns",
+          "No paved paths",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "very_high",
+        "tree_density": 0.9,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "natural_forest"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/urban-forest/hero.png"
+    },
+    {
+      "id": "riparian_buffer",
+      "title": "Riparian Buffer / Creek Corridor",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A naturalistic riparian corridor along a creek or drainage way, with dense native vegetation, willows, and a meandering waterway visible through canopy gaps",
+      "generationTags": [
+        "park",
+        "riparian",
+        "creek",
+        "ecological",
+        "buffer"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A riparian buffer corridor viewed from drone altitude. A sinuous creek or drainage channel winds through the center, its dark water surface visible through gaps in overhanging willows and alders. The vegetation is dense and naturalistic — weeping willow canopies draping toward the water, native shrub thickets in medium green, and tall grasses in golden-green tones along the banks. The corridor is linear, following the creek's meander. A narrow crushed-gravel trail runs parallel to the creek, set back from the banks. The edges transition from dense riparian vegetation to maintained lawn or meadow. Erosion-control boulders are visible along steeper banks as gray dots.",
+        "pavingType": "Crushed gravel trail set back from creek bank",
+        "plantingType": "Weeping willows, native alders, shrub thickets, tall riparian grasses",
+        "seatingRealm": "Occasional bench at viewing overlooks",
+        "waterFeatures": "Meandering creek or drainage channel",
+        "opennessEnclosure": "Linear corridor enclosed by riparian canopy"
+      },
+      "prompt": {
+        "subject": "Aerial view of a riparian buffer corridor along a meandering creek",
+        "details": [
+          "Sinuous dark water channel winding through dense vegetation",
+          "Weeping willow canopies draping toward the water",
+          "Dense native shrub thickets in medium green along banks",
+          "Golden-green tall grasses at the water's edge",
+          "Narrow crushed-gravel trail running parallel to the creek",
+          "Transition from dense riparian vegetation to maintained lawn at edges"
+        ],
+        "negative": [
+          "No buildings",
+          "No concrete channelization",
+          "No paved roads near the creek",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.65,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "riparian_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png"
+    },
+    {
+      "id": "wetland_rain_garden",
+      "title": "Wetland / Rain Garden",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A constructed wetland or bioretention rain garden with standing water, emergent vegetation, and boardwalk paths — a mosaic of water and marsh from above",
+      "generationTags": [
+        "park",
+        "wetland",
+        "rain-garden",
+        "stormwater",
+        "ecological"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A constructed wetland or rain garden seen from drone altitude. Shallow standing water pools reflect the sky as dark mirrors interspersed with dense patches of emergent vegetation — cattails, bulrushes, and sedges reading as textured yellow-green tufts rising from the water. A wooden boardwalk on posts weaves through the wetland as a narrow tan line elevated above the water surface. Small interpretive signs appear as tiny dots along the boardwalk. The perimeter has a gravel or stone edge transition and native meadow buffer. Inlet and outlet channels are visible as narrow dark lines. The overall pattern from above is an organic mosaic of dark water and bright marsh vegetation.",
+        "pavingType": "Elevated wooden boardwalk on posts",
+        "plantingType": "Emergent wetland plants — cattails, bulrushes, sedges, native meadow buffer",
+        "seatingRealm": "Boardwalk viewing platforms with benches",
+        "waterFeatures": "Shallow standing water pools with emergent vegetation",
+        "opennessEnclosure": "Open marsh landscape with low vegetation"
+      },
+      "prompt": {
+        "subject": "Aerial view of a constructed wetland rain garden with boardwalk",
+        "details": [
+          "Shallow dark water pools reflecting sky between vegetation patches",
+          "Dense emergent vegetation — yellow-green cattails and bulrushes in tufts",
+          "Wooden boardwalk as narrow elevated tan line weaving through the wetland",
+          "Gravel or stone edge transition at the perimeter",
+          "Native meadow buffer around the wetland edge",
+          "Organic mosaic pattern of dark water and bright marsh vegetation"
+        ],
+        "negative": [
+          "No deep open water",
+          "No buildings",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/hero.png"
+    },
+    {
+      "id": "playground_adventure",
+      "title": "Playground / Adventure Play",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "A dedicated children's playground with colorful equipment, safety surfacing, shade canopies, and a surrounding fence — a bright patchwork from above",
+      "generationTags": [
+        "park",
+        "playground",
+        "children",
+        "adventure"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A children's playground viewed from drone altitude. A large area of tan or rust-colored rubber safety surfacing forms the base. Colorful playground equipment — climbing structures, slides, swing sets — appear as bright dots and geometric shapes in red, blue, yellow, and green. A shade canopy or sail structure casts a triangular shadow. A low perimeter fence encloses the play area. Surrounding grass provides a green buffer. A small seating area with benches faces the equipment. A rubberized pathway connects the playground to adjacent paths. From above, the playground reads as a colorful confetti pattern on a tan base.",
+        "pavingType": "Rubber safety surfacing (tan or rust), rubberized pathway connections",
+        "plantingType": "Shade trees at perimeter, grass buffer surrounding the play area",
+        "seatingRealm": "Parent benches facing play equipment, shade canopy seating",
+        "waterFeatures": "None or small splash pad",
+        "opennessEnclosure": "Fenced enclosure within a larger park"
+      },
+      "prompt": {
+        "subject": "Aerial view of a children's playground with colorful equipment on safety surfacing",
+        "details": [
+          "Tan or rust rubber safety surfacing covering the play area",
+          "Colorful equipment dots — red, blue, yellow climbing structures, slides, swings",
+          "Triangular shade canopy or sail structure casting sharp shadow",
+          "Low perimeter fence as thin dark enclosing line",
+          "Green grass buffer surrounding the playground",
+          "Parent benches as small rectangles facing the play area"
+        ],
+        "negative": [
+          "No buildings",
+          "No water features except optional splash pad",
+          "No sports field markings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "shade_structures"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png"
+    },
+    {
+      "id": "splash_pad_area",
+      "title": "Splash Pad / Water Play",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "An interactive water play area with ground-level spray jets, colored paving, and drain channels — a circular wet zone from above",
+      "generationTags": [
+        "park",
+        "splash-pad",
+        "water-play",
+        "children"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A splash pad area viewed from drone altitude. A large circular or organic-shaped pad of colored concrete or rubber surface in blues and grays. Ground-level spray nozzles are arranged in patterns — some active with visible water spray catching sunlight as bright white streaks. Drain channels radiate outward like spokes. The wet surface is slightly darker and reflective compared to dry surrounding concrete. A low curved wall or seat edge borders the splash zone. Parent seating area with shade canopy sits adjacent. The surrounding surface is slip-resistant textured concrete transitioning to grass.",
+        "pavingType": "Colored slip-resistant concrete or rubber surface with drainage",
+        "plantingType": "None in splash zone — shade trees and grass at perimeter",
+        "seatingRealm": "Parent seating with shade canopy adjacent to splash zone",
+        "waterFeatures": "Ground-level spray jets, mist arches, dump buckets",
+        "opennessEnclosure": "Open splash zone with low seat wall border"
+      },
+      "prompt": {
+        "subject": "Aerial view of a splash pad water play area with spray jets",
+        "details": [
+          "Circular colored concrete pad in blues and grays",
+          "Spray nozzles creating bright white water streaks catching sunlight",
+          "Wet reflective surface contrasting with dry surrounding concrete",
+          "Drain channels radiating outward like spokes",
+          "Low curved seat wall bordering the splash zone",
+          "Parent shade canopy adjacent, grass buffer at edges"
+        ],
+        "negative": [
+          "No deep water or swimming pools",
+          "No buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "concrete",
+        "shade_strategy": "shade_structures"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png"
+    },
+    {
+      "id": "amphitheater_lawn",
+      "title": "Amphitheater / Performance Lawn",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "park",
+      "description": "A sloped grass amphitheater with a performance stage at the bottom and tiered lawn seating — a green bowl shape visible from above",
+      "generationTags": [
+        "park",
+        "amphitheater",
+        "performance",
+        "lawn"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An amphitheater lawn seen from drone altitude. A gently sloped grass bowl descends toward a flat performance area at the bottom. The stage platform is a smooth pale concrete or stone rectangle. Curved tier lines in the grass mark subtle terracing for seated viewing. The lawn is bright green and evenly mowed. A paved path curves along the top rim of the bowl. Shade trees line the upper perimeter but do not block sightlines. From above, the amphitheater reads as a green semicircular depression with concentric arc lines and a light-colored stage platform at the focal point.",
+        "pavingType": "Concrete or stone stage platform, paved rim path",
+        "plantingType": "Mowed lawn tiers, shade trees at upper perimeter only",
+        "seatingRealm": "Grass lawn tiered seating, possible built-in stone bench rows",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open bowl facing stage, tree-framed upper perimeter"
+      },
+      "prompt": {
+        "subject": "Aerial view of a grass amphitheater with performance stage at the bottom",
+        "details": [
+          "Gently sloped green grass bowl descending toward a flat stage area",
+          "Pale concrete or stone stage platform rectangle at the bottom",
+          "Subtle curved tier lines in the grass marking terraced seating",
+          "Bright green evenly mowed lawn surface",
+          "Paved path curving along the top rim of the bowl",
+          "Shade trees lining upper perimeter without blocking sightlines"
+        ],
+        "negative": [
+          "No buildings except stage structure",
+          "No parking lots",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "perimeter_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png"
+    },
+    {
+      "id": "community_garden",
+      "title": "Community Garden / Allotments",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "A community garden with individual raised-bed plots, tool sheds, compost bins, and a patchwork of crops visible from above",
+      "generationTags": [
+        "park",
+        "community-garden",
+        "allotment",
+        "urban-agriculture"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A community garden viewed from drone altitude. A grid of individual raised-bed plots in various states of cultivation — some lush with leafy greens, some with bare brown soil, some with trellised climbing plants. Each plot is a small rectangle defined by wood or stone borders. Narrow gravel or woodchip paths separate the plots in a grid pattern. A small tool shed with a simple roof appears in one corner. Compost bins read as dark brown rectangles at the edge. A shared water spigot area shows a small concrete pad. The overall pattern from above is a colorful patchwork quilt of greens, browns, and occasional flower colors within a geometric grid.",
+        "pavingType": "Gravel or woodchip paths between plots",
+        "plantingType": "Mixed vegetable and flower crops in individual raised beds",
+        "seatingRealm": "Shared picnic table, individual plot chairs",
+        "waterFeatures": "Shared water spigot or rain barrel",
+        "opennessEnclosure": "Open grid of plots enclosed by perimeter fence"
+      },
+      "prompt": {
+        "subject": "Aerial view of a community garden with grid of individual raised-bed plots",
+        "details": [
+          "Grid of small rectangular raised beds with wood or stone borders",
+          "Varied cultivation stages — lush greens, bare soil, trellised climbers",
+          "Narrow gravel or woodchip paths separating plots in grid pattern",
+          "Small tool shed with simple roof in one corner",
+          "Dark brown compost bin rectangles at the edge",
+          "Colorful patchwork quilt pattern of greens, browns, and flower colors"
+        ],
+        "negative": [
+          "No large buildings",
+          "No lawn areas",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.05,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png"
+    },
+    {
+      "id": "cemetery_memorial_grounds",
+      "title": "Cemetery / Memorial Grounds",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "Maintained cemetery grounds with rows of headstones, mature trees, manicured lawn, and quiet paved lanes — an ordered pattern of stone markers on green from above",
+      "generationTags": [
+        "park",
+        "cemetery",
+        "memorial",
+        "grounds"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Cemetery grounds viewed from drone altitude. Orderly rows of small gray headstone markers create a regular dot pattern across bright green manicured lawn. Mature deciduous trees — oaks and maples — are spaced along internal paved lanes, their broad canopies casting large circular shadows. Narrow paved service lanes in pale gray asphalt wind through sections. Occasional larger monument stones or mausoleums appear as bigger gray rectangles. Flower arrangements at some headstones add tiny color dots. A wrought-iron or stone perimeter fence defines the boundary. The overall aerial pattern is a precise grid of small gray dots on bright green.",
+        "pavingType": "Narrow paved service lanes, gravel walking paths",
+        "plantingType": "Mature deciduous shade trees, manicured lawn, minimal flowering",
+        "seatingRealm": "Occasional stone bench along lanes",
+        "waterFeatures": "None or small ornamental fountain at entrance",
+        "opennessEnclosure": "Open orderly grounds with tree canopy providing intermittent shade"
+      },
+      "prompt": {
+        "subject": "Aerial view of maintained cemetery grounds with orderly rows of headstones",
+        "details": [
+          "Regular grid pattern of small gray headstone markers on bright green lawn",
+          "Mature deciduous trees with broad canopies casting circular shadows",
+          "Narrow pale gray paved service lanes winding through sections",
+          "Occasional larger monument stones or mausoleums as bigger gray rectangles",
+          "Tiny flower color dots at some headstones",
+          "Wrought-iron or stone perimeter fence at boundary"
+        ],
+        "negative": [
+          "No modern buildings inside cemetery",
+          "No playground equipment",
+          "No sports fields",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "scattered_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/hero.png"
     },
     {
       "id": "formal_civic_plaza",
       "title": "Formal Civic Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "Formal Civic Plaza open-space archetype with premium landscape/urban design clarity",
+      "description": "A large formal civic plaza with symmetrical stone paving, a central fountain, flanking tree rows, and public seating — a grand hardscape composition from above",
       "generationTags": [
         "plaza",
-        "civic-plazas",
-        "formal"
+        "civic",
+        "formal",
+        "fountain"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Formal Civic Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
+        "landscapeCharacter": "A formal civic plaza viewed from drone altitude. A large rectangular hardscape of cut stone or granite pavers in warm gray and beige tones arranged in a geometric radial or grid pattern centered on a prominent circular fountain. The fountain basin is dark with water and has a central jet creating a bright white splash. Rows of formally spaced deciduous trees in planters flank the long edges, their round canopies casting circular shadows on the paving. Public seating — stone benches and bollards — lines the tree alleys. Flagpoles or light standards appear as small circles with long thin shadows. The paving pattern is crisp and legible from above — concentric circles around the fountain expanding to a rectilinear grid toward the edges.",
+        "pavingType": "Cut stone or granite pavers in geometric patterns",
+        "plantingType": "Formal rows of deciduous trees in planters, clipped hedges at edges",
+        "seatingRealm": "Stone benches along tree alleys, bollard seating",
+        "waterFeatures": "Central fountain with water jet",
+        "opennessEnclosure": "Grand open civic space with formal tree-lined edges"
       },
       "prompt": {
-        "subject": "Centered Formal Civic Plaza plaza archetype",
+        "subject": "Aerial view of a formal civic plaza with central fountain and symmetrical paving",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Large rectangular hardscape of cut stone pavers in warm gray and beige",
+          "Geometric radial or grid paving pattern centered on circular fountain",
+          "Central fountain basin with dark water and bright white jet splash",
+          "Formal rows of deciduous trees in planters along long edges",
+          "Circular tree canopy shadows on the paving",
+          "Flagpoles and light standards as small circles with long shadows"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No grass lawn in the main plaza",
+          "No playground equipment",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
@@ -154,967 +978,640 @@
         "paving_material": "stone",
         "shade_strategy": "tree_grove",
         "plaza_program": "civic"
-      }
-    },
-    {
-      "id": "contemporary_urban_square",
-      "title": "Contemporary Urban Square",
-      "aestheticCategory": "civic_plazas",
-      "spaceType": "plaza",
-      "description": "Contemporary Urban Square open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "plaza",
-        "civic-plazas",
-        "contemporary"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Contemporary Urban Square plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
       },
-      "prompt": {
-        "subject": "Centered Contemporary Urban Square plaza archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "parking_layout": "none",
-        "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "civic"
-      }
-    },
-    {
-      "id": "parisian_garden_square",
-      "title": "Parisian Garden Square",
-      "aestheticCategory": "landscape_parks",
-      "spaceType": "park",
-      "description": "Parisian Garden Square open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "landscape-parks",
-        "parisian"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Parisian Garden Square park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Parisian Garden Square park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "japanese_zen_court",
-      "title": "Japanese Zen Court",
-      "aestheticCategory": "landscape_parks",
-      "spaceType": "park",
-      "description": "Japanese Zen Court open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "landscape-parks",
-        "japanese"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Japanese Zen Court park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Japanese Zen Court park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "neighborhood_playground_park",
-      "title": "Neighborhood Playground Park",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Neighborhood Playground Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "neighborhood"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Neighborhood Playground Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Neighborhood Playground Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "riverfront_park",
-      "title": "Riverfront Park",
-      "aestheticCategory": "waterfront_spaces",
-      "spaceType": "park",
-      "description": "Riverfront Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "waterfront-spaces",
-        "riverfront"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Riverfront Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Riverfront Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "festival_plaza",
-      "title": "Festival Plaza",
-      "aestheticCategory": "social_event_spaces",
-      "spaceType": "plaza",
-      "description": "Festival Plaza open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "plaza",
-        "social-event-spaces",
-        "festival"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Festival Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
-      },
-      "prompt": {
-        "subject": "Centered Festival Plaza plaza archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "parking_layout": "none",
-        "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "events"
-      }
-    },
-    {
-      "id": "mediterranean_courtyard_plaza",
-      "title": "Mediterranean Courtyard Plaza",
-      "aestheticCategory": "civic_plazas",
-      "spaceType": "plaza",
-      "description": "Mediterranean Courtyard Plaza open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "plaza",
-        "civic-plazas",
-        "mediterranean"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Mediterranean Courtyard Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
-      },
-      "prompt": {
-        "subject": "Centered Mediterranean Courtyard Plaza plaza archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "parking_layout": "none",
-        "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "civic"
-      }
-    },
-    {
-      "id": "scandinavian_minimal_park",
-      "title": "Scandinavian Minimal Park",
-      "aestheticCategory": "landscape_parks",
-      "spaceType": "park",
-      "description": "Scandinavian Minimal Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "landscape-parks",
-        "scandinavian"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Scandinavian Minimal Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Scandinavian Minimal Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "ecological_wetland_park",
-      "title": "Ecological Wetland Park",
-      "aestheticCategory": "ecological_resilience",
-      "spaceType": "park",
-      "description": "Ecological Wetland Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "ecological-resilience",
-        "ecological"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Ecological Wetland Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Ecological Wetland Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "dense",
-        "tree_density": 0.7,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "ecological_mosaic"
-      }
+      "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/hero.png"
     },
     {
       "id": "market_square",
       "title": "Market Square",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "plaza",
-      "description": "Market Square open-space archetype with premium landscape/urban design clarity",
+      "description": "A flexible market square with flat open paving, power bollards, and removable vendor infrastructure — a versatile urban surface from above",
       "generationTags": [
         "plaza",
-        "social-event-spaces",
-        "market"
+        "market",
+        "flexible",
+        "vendor"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Market Square plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
+        "landscapeCharacter": "A market square viewed from drone altitude. A large flat open hardscape surface of uniform gray or warm-toned pavers stretches across the space. When active, rows of white market tent canopies create a regular grid of bright rectangles casting shadows. When inactive, the square is a clean open surface with flush power bollards as small dots in a grid. Mature trees in flush tree grates line two or three edges without obstructing the center. Café seating spills from adjacent building frontages as clusters of small circles (table umbrellas). A small stage or bandstand platform sits at one end. Drainage channels in the paving read as thin dark lines in a herringbone or grid pattern.",
+        "pavingType": "Flush unit pavers with drainage channels and power bollards",
+        "plantingType": "Mature trees in flush tree grates along edges only, no center planting",
+        "seatingRealm": "Moveable café seating, benches at edges, stage platform",
+        "waterFeatures": "Optional flush ground fountain jets",
+        "opennessEnclosure": "Wide open flexible surface with active building frontages"
       },
       "prompt": {
-        "subject": "Centered Market Square plaza archetype",
+        "subject": "Aerial view of a market square with open paving and market tents",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Large flat hardscape of uniform warm-toned pavers",
+          "Rows of white market tent canopies as bright rectangles with shadows",
+          "Mature trees in flush grates along edges only",
+          "Café umbrella clusters spilling from adjacent buildings",
+          "Flush power bollards as small dots in a grid pattern",
+          "Small stage or bandstand platform at one end"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No permanent structures in the center",
+          "No grass in the main square",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "parking_layout": "none",
         "covered": false,
-        "paving_material": "stone",
+        "paving_material": "paver",
         "shade_strategy": "tree_grove",
-        "plaza_program": "events"
-      }
+        "plaza_program": "market"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/market-square/hero.png"
     },
     {
-      "id": "memorial_garden",
-      "title": "Memorial Garden",
-      "aestheticCategory": "landscape_parks",
-      "spaceType": "park",
-      "description": "Memorial Garden open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "landscape-parks",
-        "memorial"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Memorial Garden park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Memorial Garden park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "campus_green",
-      "title": "Campus Green",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Campus Green open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "campus"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Campus Green park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Campus Green park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "urban_pocket_park",
-      "title": "Urban Pocket Park",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Urban Pocket Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "urban"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Urban Pocket Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Urban Pocket Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "natural_play_park",
-      "title": "Natural Play Park",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Natural Play Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "natural"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Natural Play Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Natural Play Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "grand_fountain_plaza",
-      "title": "Grand Fountain Plaza",
+      "id": "courtyard_plaza",
+      "title": "Courtyard",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "Grand Fountain Plaza open-space archetype with premium landscape/urban design clarity",
+      "description": "An intimate enclosed courtyard with ornamental paving, a central feature, surrounding planters, and café seating — a sheltered outdoor room from above",
       "generationTags": [
         "plaza",
-        "civic-plazas",
-        "grand"
+        "courtyard",
+        "intimate",
+        "enclosed"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Grand Fountain Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
+        "landscapeCharacter": "An intimate courtyard viewed from drone altitude. A compact rectangular or square hardscape enclosed on three or four sides by building walls casting deep shadows into the space. The paving is warm-toned stone or brick in a herringbone or basketweave pattern. A central feature — a small fountain, sculpture, or ornamental tree — anchors the composition. Raised planters with lush green shrubs and trailing plants line the building edges. Small café tables with chairs appear as tiny circles and dots in a seating cluster. String lights or café lighting may appear as thin lines stretched across the space. The courtyard reads from above as a warm-toned geometric floor within the shadow of surrounding walls.",
+        "pavingType": "Warm stone or brick in herringbone pattern",
+        "plantingType": "Raised planters with lush shrubs and trailing plants along edges",
+        "seatingRealm": "Café tables and chairs, built-in planter bench seating",
+        "waterFeatures": "Small central fountain or water basin",
+        "opennessEnclosure": "Intimate enclosure defined by surrounding building walls"
       },
       "prompt": {
-        "subject": "Centered Grand Fountain Plaza plaza archetype",
+        "subject": "Aerial view looking down into an intimate courtyard enclosed by buildings",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Compact hardscape in warm-toned stone or brick herringbone pattern",
+          "Building walls on three or four sides casting deep shadows",
+          "Central fountain or ornamental tree as focal point",
+          "Raised planters with lush green shrubs along building edges",
+          "Small café tables as tiny circle clusters",
+          "Warm overall tone contrasting with cool building shadows"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No grass lawn",
+          "No parking",
+          "No playground equipment",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "parking_layout": "none",
         "covered": false,
         "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "civic"
-      }
+        "shade_strategy": "central_tree",
+        "plaza_program": "courtyard"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png"
     },
     {
-      "id": "industrial_heritage_plaza",
-      "title": "Industrial Heritage Plaza",
-      "aestheticCategory": "social_event_spaces",
-      "spaceType": "plaza",
-      "description": "Industrial Heritage Plaza open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "plaza",
-        "social-event-spaces",
-        "industrial"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Industrial Heritage Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
-      },
-      "prompt": {
-        "subject": "Centered Industrial Heritage Plaza plaza archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "parking_layout": "none",
-        "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "events"
-      }
-    },
-    {
-      "id": "forest_edge_park",
-      "title": "Forest Edge Park",
-      "aestheticCategory": "ecological_resilience",
-      "spaceType": "park",
-      "description": "Forest Edge Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "ecological-resilience",
-        "forest"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Forest Edge Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Forest Edge Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "dense",
-        "tree_density": 0.7,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "ecological_mosaic"
-      }
-    },
-    {
-      "id": "botanical_conservatory_garden",
-      "title": "Botanical Conservatory Garden",
-      "aestheticCategory": "landscape_parks",
-      "spaceType": "park",
-      "description": "Botanical Conservatory Garden open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "landscape-parks",
-        "botanical"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Botanical Conservatory Garden park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Botanical Conservatory Garden park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
-    },
-    {
-      "id": "climate_resilience_sponge_park",
-      "title": "Climate Resilience Sponge Park",
-      "aestheticCategory": "ecological_resilience",
-      "spaceType": "park",
-      "description": "Climate Resilience Sponge Park open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "park",
-        "ecological-resilience",
-        "climate"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Climate Resilience Sponge Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
-      },
-      "prompt": {
-        "subject": "Centered Climate Resilience Sponge Park park archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "tree_density_level": "dense",
-        "tree_density": 0.7,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "ecological_mosaic"
-      }
-    },
-    {
-      "id": "childrens_discovery_plaza",
-      "title": "Children's Discovery Plaza",
-      "aestheticCategory": "social_event_spaces",
-      "spaceType": "plaza",
-      "description": "Children's Discovery Plaza open-space archetype with premium landscape/urban design clarity",
-      "generationTags": [
-        "plaza",
-        "social-event-spaces",
-        "childrens"
-      ],
-      "styleProfile": {
-        "landscapeCharacter": "Children's Discovery Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
-      },
-      "prompt": {
-        "subject": "Centered Children's Discovery Plaza plaza archetype",
-        "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
-        ],
-        "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
-        ]
-      },
-      "propertyPresets": {
-        "parking_layout": "none",
-        "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "events"
-      }
-    },
-    {
-      "id": "waterfront_boardwalk_plaza",
-      "title": "Waterfront Boardwalk Plaza",
+      "id": "promenade_boardwalk",
+      "title": "Promenade / Boardwalk",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "plaza",
-      "description": "Waterfront Boardwalk Plaza open-space archetype with premium landscape/urban design clarity",
+      "description": "A waterfront promenade or boardwalk with wide timber or stone decking, railing, benches, and views over water — a linear hardscape strip from above",
       "generationTags": [
         "plaza",
-        "waterfront-spaces",
+        "promenade",
+        "boardwalk",
         "waterfront"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Waterfront Boardwalk Plaza plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
+        "landscapeCharacter": "A waterfront promenade viewed from drone altitude. A wide linear strip of timber or stone decking runs parallel to a water edge. The deck surface shows warm brown tones with visible plank lines running lengthwise. A railing or balustrade along the water edge reads as a thin dark line. Benches face the water at regular intervals. Ornamental lamp posts create small circles with long shadows. A row of trees in flush grates or planters lines the inland edge. The water surface is dark blue-gray and reflective. From above, the promenade reads as a warm brown linear band between dark water and green or urban fabric.",
+        "pavingType": "Timber decking or stone slabs with lengthwise joint lines",
+        "plantingType": "Formal tree row in flush grates along inland edge",
+        "seatingRealm": "Benches facing water at regular intervals, lamp posts",
+        "waterFeatures": "Adjacent water body — river, lake, or harbor",
+        "opennessEnclosure": "Open linear space with water view on one side"
       },
       "prompt": {
-        "subject": "Centered Waterfront Boardwalk Plaza plaza archetype",
+        "subject": "Aerial view of a waterfront promenade with timber decking along the water's edge",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Wide linear strip of warm brown timber decking with visible plank lines",
+          "Railing along water edge as thin dark line",
+          "Benches facing water at regular intervals as small rectangles",
+          "Ornamental lamp posts as small circles with long thin shadows",
+          "Row of trees in flush grates along the inland side",
+          "Dark blue-gray reflective water surface adjacent"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No buildings on the promenade",
+          "No parking on the deck surface",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "parking_layout": "none",
         "covered": false,
-        "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "civic"
-      }
+        "paving_material": "wood",
+        "shade_strategy": "tree_row",
+        "plaza_program": "promenade"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/hero.png"
     },
     {
-      "id": "civic_art_court",
-      "title": "Civic Art Court",
+      "id": "transit_plaza",
+      "title": "Transit Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "Civic Art Court open-space archetype with premium landscape/urban design clarity",
+      "description": "A transit-oriented plaza with bus shelters, waiting areas, bike racks, and wayfinding — a functional multimodal node from above",
       "generationTags": [
         "plaza",
-        "civic-plazas",
-        "civic"
+        "transit",
+        "bus-stop",
+        "multimodal"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Civic Art Court plaza character",
-        "pavingType": "Stone or paver civic hardscape",
-        "plantingType": "Framing tree canopy and planters",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional fountain or rill",
-        "opennessEnclosure": "Civic enclosure with active edges"
+        "landscapeCharacter": "A transit plaza viewed from drone altitude. A hardscape node where pedestrian paths converge at a bus stop or light-rail station. Glass and steel transit shelters appear as elongated translucent rectangles with metal-frame shadows. A wide concrete or paver waiting area surrounds the shelters. Bike racks read as thin metallic line clusters. Wayfinding signs are small vertical dots with tiny shadows. Trees in raised planters provide shade without obstructing vehicle clearances. Bus loading zones are marked by painted curb lines in yellow or white. A tactile paving strip (contrasting color) runs along the platform edge.",
+        "pavingType": "Concrete or unit pavers with tactile warning strips",
+        "plantingType": "Trees in raised planters for shade, no overhanging branches near shelters",
+        "seatingRealm": "Bench seating in transit shelters, leaning rails",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open functional node with clear sightlines"
       },
       "prompt": {
-        "subject": "Centered Civic Art Court plaza archetype",
+        "subject": "Aerial view of a transit plaza with bus shelters and waiting areas",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Glass and steel transit shelters as elongated translucent rectangles",
+          "Wide concrete or paver waiting area surrounding the shelters",
+          "Bike rack clusters as thin metallic lines",
+          "Yellow or white painted curb lines marking bus loading zones",
+          "Contrasting tactile paving strip along platform edge",
+          "Trees in raised planters providing shade"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No residential buildings",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "none",
+        "covered": false,
+        "paving_material": "concrete",
+        "shade_strategy": "tree_planters",
+        "plaza_program": "transit"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/transit-plaza/hero.png"
+    },
+    {
+      "id": "amphitheater_performance_space",
+      "title": "Outdoor Amphitheater / Performance Space",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "plaza",
+      "description": "A built outdoor amphitheater with tiered stone seating, a stage platform, and acoustic walls — a semicircular arena from above",
+      "generationTags": [
+        "plaza",
+        "amphitheater",
+        "performance",
+        "stage"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An outdoor amphitheater viewed from drone altitude. Semicircular tiered seating in stone or concrete steps radiates outward from a flat stage platform. The tiers read as concentric curved lines with shadow on each riser face. The stage floor is a smooth pale surface — polished concrete or stone. A backdrop wall or acoustic shell curves behind the stage as a solid dark arc. Wing walls extend from the stage to frame entries. The aisle stairs cutting through the tiers appear as narrow radial lines. From above, the amphitheater reads as a clean semicircular pattern of concentric arcs focused on a central pale rectangle.",
+        "pavingType": "Stone or concrete tiered seating, polished stage floor",
+        "plantingType": "Trees and landscaping at perimeter only, no planting in seating bowl",
+        "seatingRealm": "Stone or concrete tiered bench seating in semicircular rows",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Semicircular seating bowl open to the sky"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor amphitheater with semicircular tiered seating and stage",
+        "details": [
+          "Semicircular tiered stone seating as concentric curved lines",
+          "Shadow on each riser face creating stripe pattern",
+          "Flat pale stage platform at the focal center",
+          "Curved acoustic shell or backdrop wall behind the stage",
+          "Aisle stairs as narrow radial lines cutting through tiers",
+          "Trees and landscaping at perimeter only"
+        ],
+        "negative": [
+          "No roof over the seating area",
+          "No playground equipment",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "parking_layout": "none",
         "covered": false,
         "paving_material": "stone",
-        "shade_strategy": "tree_grove",
-        "plaza_program": "civic"
-      }
+        "shade_strategy": "none",
+        "plaza_program": "performance"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/hero.png"
     },
     {
-      "id": "sports_activity_green",
-      "title": "Sports Activity Green",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Sports Activity Green open-space archetype with premium landscape/urban design clarity",
+      "id": "surface_parking_lot",
+      "title": "Surface Parking Lot",
+      "aestheticCategory": "parking_areas",
+      "spaceType": "plaza",
+      "description": "A standard surface parking lot with asphalt paving, painted stall markings, drive aisles, and perimeter curbing — a grid of car rectangles from above",
       "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "sports"
+        "parking",
+        "surface-lot",
+        "asphalt"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Sports Activity Green park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+        "landscapeCharacter": "A surface parking lot viewed from drone altitude. Dark gray asphalt covers the entire area. White or yellow painted lines delineate individual parking stalls in a regular grid — each stall roughly 2.5m by 5m. Drive aisles run between rows of stalls. Parked cars appear as small colored rectangles arranged in the stalls. A concrete curb and gutter borders the lot perimeter. One or two deciduous trees in small planter islands break up the asphalt. Pole-mounted light fixtures appear as small circles with long thin shadows. A small striped crosswalk connects to the adjacent sidewalk. Accessible parking stalls near the entrance have blue painted markings.",
+        "pavingType": "Asphalt with painted line markings",
+        "plantingType": "Minimal — one or two trees in small planter islands",
+        "seatingRealm": "None",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Wide open flat asphalt expanse"
       },
       "prompt": {
-        "subject": "Centered Sports Activity Green park archetype",
+        "subject": "Aerial view of a surface parking lot with painted stall markings and parked cars",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Dark gray asphalt surface covering the entire area",
+          "White or yellow painted stall lines in a regular grid",
+          "Parked cars as small colored rectangles in stalls",
+          "Drive aisles between rows of stalls",
+          "Concrete curb and gutter at the perimeter",
+          "One or two small tree planter islands, pole-mounted lights"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No buildings in the parking lot",
+          "No grass in the main lot area",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "surface",
+        "covered": false,
+        "paving_material": "asphalt"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/hero.png"
+    },
+    {
+      "id": "structured_parking_garage",
+      "title": "Structured Parking Garage",
+      "aestheticCategory": "parking_areas",
+      "spaceType": "plaza",
+      "description": "A multi-level parking structure with exposed concrete decks, ramping spirals, and a flat rooftop — a concrete mass with car rows visible on the top deck from above",
+      "generationTags": [
+        "parking",
+        "garage",
+        "structured",
+        "multi-level"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A structured parking garage viewed from drone altitude. The top deck is a flat concrete surface with painted parking stall lines and parked cars visible as small colored rectangles. A helical ramp or straight ramp is visible at one corner connecting levels. The concrete parapet walls cast shadows on the interior. The building mass reads as a large rectangular concrete slab with regular openings along the sides for ventilation. Stairwell towers appear as small raised boxes at corners. The overall aerial footprint is a solid gray rectangle with a gridded top surface.",
+        "pavingType": "Poured concrete decks with painted markings",
+        "plantingType": "None — possibly green wall or vine on exterior face",
+        "seatingRealm": "None",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Enclosed multi-level concrete structure"
+      },
+      "prompt": {
+        "subject": "Aerial view of a multi-level parking garage showing the rooftop deck with parked cars",
+        "details": [
+          "Flat concrete top deck with painted stall lines and parked cars",
+          "Helical or straight ramp visible at one corner",
+          "Concrete parapet walls casting shadows on interior",
+          "Large rectangular concrete building mass with ventilation openings",
+          "Stairwell towers as small raised boxes at corners",
+          "Overall solid gray rectangular footprint"
+        ],
+        "negative": [
+          "No green roof",
+          "No trees on the top deck",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "structured",
+        "covered": true,
+        "paving_material": "concrete"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/hero.png"
+    },
+    {
+      "id": "underground_parking_entry",
+      "title": "Underground Parking (Entry Only)",
+      "aestheticCategory": "parking_areas",
+      "spaceType": "plaza",
+      "description": "An underground parking entrance with only the vehicle ramp entry, ventilation grates, and surface landscaping visible from above — the parking is hidden below grade",
+      "generationTags": [
+        "parking",
+        "underground",
+        "hidden",
+        "entry-only"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An underground parking entry viewed from drone altitude. The surface above the parking is landscaped green space, paved plaza, or building footprint — the parking is invisible. The only above-grade elements are: a vehicle ramp entry as a dark rectangular opening cut into the surface, usually with a concrete retaining wall and metal guardrails; one or two ventilation grate rectangles flush with the surface as dark metal grids; and possibly a pedestrian stair or elevator kiosk as a small structure. The ramp entry typically has a slight concrete apron leading down. Directional arrows may be painted on the approach.",
+        "pavingType": "Concrete ramp entry apron, surface above is landscaped or paved",
+        "plantingType": "Surface above the parking is fully landscaped — lawn, trees, or plaza",
+        "seatingRealm": "None specific to parking",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Hidden below grade — surface reads as landscape or plaza"
+      },
+      "prompt": {
+        "subject": "Aerial view showing an underground parking entry — landscaped surface with only ramp opening visible",
+        "details": [
+          "Dark rectangular ramp opening cut into the landscaped surface",
+          "Concrete retaining walls and metal guardrails around ramp entry",
+          "Ventilation grate rectangles flush with surface as dark metal grids",
+          "Surface above is green lawn, trees, or paved plaza — parking invisible",
+          "Small pedestrian stair or elevator kiosk structure",
+          "Concrete apron leading down into the ramp"
+        ],
+        "negative": [
+          "No parking stalls visible on surface",
+          "No large paved area",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "underground",
+        "covered": true,
+        "paving_material": "concrete"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png"
+    },
+    {
+      "id": "green_parking_lot",
+      "title": "Green Parking (Permeable)",
+      "aestheticCategory": "parking_areas",
+      "spaceType": "plaza",
+      "description": "An eco-friendly parking lot with permeable grass pavers, generous tree islands, and bioswales — a green-and-gray checker pattern from above",
+      "generationTags": [
+        "parking",
+        "green",
+        "permeable",
+        "eco"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A green parking lot viewed from drone altitude. Permeable grass pavers create a checker pattern of green grass cells within a gray concrete or plastic grid. Tree islands at the end of each parking row create dark canopy circles that shade multiple stalls. Bioswale channels between rows read as narrow green depressions with ornamental grasses. The overall aerial pattern is a distinctive green-and-gray grid, much softer than a standard asphalt lot. Parked cars partially obscure the grass pavers. Rain garden basins at the low points collect stormwater. The perimeter has a native planting buffer rather than concrete curb.",
+        "pavingType": "Permeable grass pavers — concrete or plastic grid with grass infill",
+        "plantingType": "Shade trees in generous islands, bioswales with ornamental grasses, native buffer",
+        "seatingRealm": "None",
+        "waterFeatures": "Bioswale channels and rain garden basins for stormwater",
+        "opennessEnclosure": "Open lot with significant tree canopy coverage"
+      },
+      "prompt": {
+        "subject": "Aerial view of a green permeable parking lot with grass pavers and tree islands",
+        "details": [
+          "Checker pattern of green grass cells within gray paver grid",
+          "Generous tree islands with dark canopy circles at row ends",
+          "Bioswale channels as narrow green depressions between rows",
+          "Parked cars partially obscuring the grass paver pattern",
+          "Rain garden basins at low points",
+          "Native planting buffer at perimeter instead of concrete curb"
+        ],
+        "negative": [
+          "No solid asphalt surface",
+          "No buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "green",
+        "covered": false,
+        "paving_material": "permeable_paver"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png"
+    },
+    {
+      "id": "pond_lake",
+      "title": "Pond / Lake",
+      "aestheticCategory": "water_features",
+      "spaceType": "park",
+      "description": "A naturalistic pond or small lake with soft shoreline, aquatic vegetation, and surrounding trees — a dark reflective water surface from above",
+      "generationTags": [
+        "water",
+        "pond",
+        "lake",
+        "naturalistic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A naturalistic pond or small lake viewed from drone altitude. The water surface is a dark reflective plane — deep blue-black or dark green depending on depth and sky conditions. The shoreline is soft and irregular with gentle slopes of grass meeting the water. Aquatic vegetation — lily pads and reeds — creates bright green patches along the shallow margins. Mature trees overhang portions of the shoreline, their canopy partially covering the water edge. A small wooden fishing pier or dock juts out as a thin brown rectangle. Ducks or waterfowl may appear as tiny white dots. The surrounding lawn slopes gently down to the water edge. A walking path traces part of the shoreline.",
+        "pavingType": "Walking path along part of the shoreline",
+        "plantingType": "Aquatic vegetation at margins, shade trees overhanging shoreline, lawn slopes",
+        "seatingRealm": "Benches at scenic viewpoints, fishing pier",
+        "waterFeatures": "Main feature — naturalistic pond or lake with soft shoreline",
+        "opennessEnclosure": "Open water surface reflecting sky, framed by trees"
+      },
+      "prompt": {
+        "subject": "Aerial view of a naturalistic pond with soft shoreline and surrounding trees",
+        "details": [
+          "Dark reflective water surface — deep blue-black or dark green",
+          "Soft irregular shoreline with grass slopes meeting the water",
+          "Bright green lily pad and reed patches along shallow margins",
+          "Mature trees overhanging portions of the shoreline",
+          "Small wooden fishing pier or dock as thin brown rectangle",
+          "Walking path tracing part of the shoreline as gray ribbon"
+        ],
+        "negative": [
+          "No concrete edges or channelization",
+          "No buildings in the water",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
+        "tree_density": 0.3
+      },
+      "thumbnailUrl": "/archetypes/openspaces/pond-lake/hero.png"
     },
     {
-      "id": "neighborhood_dog_park",
-      "title": "Neighborhood Dog Park",
-      "aestheticCategory": "neighborhood_public_realm",
-      "spaceType": "park",
-      "description": "Neighborhood Dog Park open-space archetype with premium landscape/urban design clarity",
+      "id": "fountain_water_feature",
+      "title": "Fountain / Decorative Water Feature",
+      "aestheticCategory": "water_features",
+      "spaceType": "plaza",
+      "description": "A decorative fountain or interactive water feature set in a plaza — jets, spray, and wet paving creating a bright focal point from above",
       "generationTags": [
-        "park",
-        "neighborhood-public-realm",
-        "neighborhood"
+        "water",
+        "fountain",
+        "decorative",
+        "interactive"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Neighborhood Dog Park park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+        "landscapeCharacter": "A decorative fountain or water feature viewed from drone altitude. A circular or geometric basin of polished stone holds water that appears dark and reflective. Multiple vertical water jets create bright white spray columns of varying heights. The surrounding paving is wet and reflective in a halo around the fountain. Concentric rings of stone or tile paving radiate outward from the basin. LED light fixtures embedded in the basin floor may be visible as colored dots beneath the water. The fountain sits at the center of a paved plaza with bench seating arranged in a circle facing inward.",
+        "pavingType": "Polished stone or tile paving radiating from fountain basin",
+        "plantingType": "None near the fountain — hedges or trees at the wider perimeter",
+        "seatingRealm": "Circular bench arrangement facing the fountain",
+        "waterFeatures": "Central decorative fountain with multiple jets",
+        "opennessEnclosure": "Open plaza centered on the fountain as focal point"
       },
       "prompt": {
-        "subject": "Centered Neighborhood Dog Park park archetype",
+        "subject": "Aerial view of a decorative fountain with vertical water jets in a plaza setting",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
-          "Premium, believable material realism"
+          "Circular or geometric stone basin with dark reflective water",
+          "Bright white spray columns from multiple vertical jets",
+          "Wet reflective paving halo around the fountain",
+          "Concentric rings of stone paving radiating outward",
+          "Bench seating arranged in a circle facing the fountain",
+          "Polished stone surface in warm tones"
         ],
         "negative": [
-          "No text overlays",
-          "No fantasy impossible geometry"
+          "No grass in the immediate fountain area",
+          "No buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "paving_material": "stone",
+        "shade_strategy": "none",
+        "plaza_program": "fountain"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png"
+    },
+    {
+      "id": "stormwater_retention_pond",
+      "title": "Stormwater Retention Pond",
+      "aestheticCategory": "water_features",
+      "spaceType": "park",
+      "description": "An engineered stormwater retention pond with sloped grass banks, outlet structures, and native plantings — a green-edged depression with variable water level from above",
+      "generationTags": [
+        "water",
+        "stormwater",
+        "retention",
+        "infrastructure"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A stormwater retention pond viewed from drone altitude. A shallow depression with gently sloped grass banks forming a basin shape. The water level varies — showing either a partial water surface at the bottom (dark reflective patch) or fully dry with mowed grass. An inlet pipe or channel enters at one end. A concrete outlet riser or weir structure appears as a small gray rectangle at the low point. Native meadow grasses and sedges ring the normal water line creating a golden-green band. A riprap splash pad of gray stones sits below the inlet. A maintenance access track as a gravel strip runs along one edge. The overall aerial shape is a broad shallow green bowl with a dark water patch in the bottom.",
+        "pavingType": "Gravel maintenance access track along one edge",
+        "plantingType": "Mowed grass banks, native meadow grasses at water line, riprap at inlet",
+        "seatingRealm": "None — infrastructure element",
+        "waterFeatures": "Variable-level detention water surface, inlet/outlet structures",
+        "opennessEnclosure": "Open shallow depression in the landscape"
+      },
+      "prompt": {
+        "subject": "Aerial view of a stormwater retention pond with sloped grass banks",
+        "details": [
+          "Shallow depression with gently sloped grass banks",
+          "Dark reflective water patch at the bottom of the basin",
+          "Inlet channel entering at one end",
+          "Concrete outlet riser or weir structure as small gray rectangle",
+          "Golden-green native meadow grass band around normal water line",
+          "Riprap splash pad of gray stones below inlet, gravel access track"
+        ],
+        "negative": [
+          "No formal landscaping",
+          "No recreational equipment",
+          "No buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0
+      },
+      "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/hero.png"
+    },
+    {
+      "id": "swimming_pool_complex",
+      "title": "Swimming Pool Complex",
+      "aestheticCategory": "water_features",
+      "spaceType": "plaza",
+      "description": "An outdoor swimming pool complex with a lap pool, wading pool, sun deck, and surrounding fence — bright turquoise rectangles from above",
+      "generationTags": [
+        "water",
+        "pool",
+        "swimming",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A swimming pool complex viewed from drone altitude. A large rectangular lap pool with vivid turquoise-blue water and white lane divider lines. Adjacent smaller wading or splash pool with lighter blue water. A wide concrete sun deck with lounge chairs arranged in rows as small colored rectangles. A fence or wall enclosure as a continuous dark line around the entire complex. A small pool house or change room building with a flat roof sits at one end. Diving boards or slides may appear as thin structures at the deep end. The turquoise pool water contrasts sharply with the warm-gray concrete deck and green grass outside the fence.",
+        "pavingType": "Concrete pool deck with non-slip texture",
+        "plantingType": "Palm trees or shade trees at perimeter, grass outside the fence",
+        "seatingRealm": "Lounge chairs on sun deck in parallel rows",
+        "waterFeatures": "Lap pool and wading pool with turquoise water",
+        "opennessEnclosure": "Fenced recreational enclosure"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor swimming pool complex with turquoise lap pool",
+        "details": [
+          "Large rectangular lap pool with vivid turquoise-blue water",
+          "White lane divider lines across the pool length",
+          "Smaller wading pool adjacent with lighter blue water",
+          "Wide concrete sun deck with lounge chair rows as small colored rectangles",
+          "Continuous fence or wall enclosure as dark line",
+          "Small pool house building with flat roof at one end"
+        ],
+        "negative": [
+          "No grass inside the pool fence area",
+          "No parking inside the complex",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "paving_material": "concrete"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/hero.png"
+    },
+    {
+      "id": "canal_waterway",
+      "title": "Canal / Waterway",
+      "aestheticCategory": "water_features",
+      "spaceType": "park",
+      "description": "A linear canal or urban waterway with stone or concrete edges, towpath walks, and moored boats — a dark water ribbon through the urban fabric from above",
+      "generationTags": [
+        "water",
+        "canal",
+        "waterway",
+        "linear"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A canal or urban waterway viewed from drone altitude. A straight or gently curving dark water channel runs through the area, its surface reflecting sky as a dark blue-gray ribbon. Stone or concrete quay walls define sharp vertical edges. A towpath or walking promenade runs along one or both banks as a pale paved strip. Moored narrowboats or small vessels appear as elongated colored shapes along the quay. Deciduous trees line the far bank creating a green canopy edge. Pedestrian bridges appear as narrow bands crossing the water at intervals. Bollards and cleats dot the quay edge as tiny dots. Café terraces may extend to the water edge with small table clusters.",
+        "pavingType": "Stone or concrete quay walls and paved towpath",
+        "plantingType": "Deciduous trees lining banks, possibly willow draping toward water",
+        "seatingRealm": "Towpath benches, canal-side café terraces",
+        "waterFeatures": "Linear canal or waterway — the primary feature",
+        "opennessEnclosure": "Linear open corridor defined by quay walls and bank vegetation"
+      },
+      "prompt": {
+        "subject": "Aerial view of a canal or urban waterway with stone edges and towpath",
+        "details": [
+          "Dark blue-gray water ribbon with reflective surface",
+          "Stone or concrete quay walls defining sharp vertical edges",
+          "Pale paved towpath running along one or both banks",
+          "Moored narrowboats as elongated colored shapes along the quay",
+          "Deciduous trees lining the far bank as green canopy edge",
+          "Narrow pedestrian bridges crossing the water at intervals"
+        ],
+        "negative": [
+          "No large ships",
+          "No buildings in the water",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "tree_density_level": "medium",
-        "tree_density": 0.45,
-        "has_paths": true,
-        "has_benches": true,
-        "shade_strategy": "layered_canopy"
-      }
+        "tree_density": 0.3
+      },
+      "thumbnailUrl": "/archetypes/openspaces/canal-waterway/hero.png"
     },
     {
       "id": "custom_parks_plazas",
       "title": "Custom Parks / Plazas",
       "aestheticCategory": "custom",
       "spaceType": "park",
-      "description": "Custom Parks / Plazas open-space archetype with premium landscape/urban design clarity",
+      "description": "A user-defined open space with custom landscape character — specify your own vision",
       "generationTags": [
         "park",
         "custom"
       ],
       "styleProfile": {
-        "landscapeCharacter": "Custom Parks / Plazas park character",
-        "pavingType": "Mixed path and landscape paving",
-        "plantingType": "Layered canopy, understory, and meadow planting",
-        "seatingRealm": "Integrated social seating edges",
-        "waterFeatures": "Optional pond, stream, or rain garden",
-        "opennessEnclosure": "Balanced openness with framed landscape rooms"
+        "landscapeCharacter": "Custom open space — user will define the specific landscape character through the description field",
+        "pavingType": "User-defined paving and path layout",
+        "plantingType": "User-defined planting palette and density",
+        "seatingRealm": "User-defined seating and amenities",
+        "waterFeatures": "User-defined water features",
+        "opennessEnclosure": "User-defined spatial character"
       },
       "prompt": {
-        "subject": "Centered Custom Parks / Plazas park archetype",
+        "subject": "Aerial view of a custom open space",
         "details": [
-          "Primary landscape and paving logic should read clearly",
-          "Public use pattern should be visually legible",
+          "Primary landscape and paving logic should read clearly from above",
+          "Public use pattern should be visually legible at drone altitude",
           "Premium, believable material realism"
         ],
         "negative": [
@@ -1124,11 +1621,12 @@
       },
       "propertyPresets": {
         "tree_density_level": "medium",
-        "tree_density": 0.45,
+        "tree_density": 0.3,
         "has_paths": true,
         "has_benches": true,
         "shade_strategy": "layered_canopy"
-      }
+      },
+      "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/hero.png"
     }
   ]
 }

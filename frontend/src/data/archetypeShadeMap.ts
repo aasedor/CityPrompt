@@ -5,6 +5,9 @@
  *   - Red   (h 5-15, s 55-90%, l 35-55%)  : commercial / mixed-use / institutional / industrial
  *   - Yellow (h 45-55, s 60-90%, l 40-55%) : purely residential
  *   - Gray  (h 0, s 0-8%, l 30-60%)        : streets & pathways
+ *   - Green (h 90-160, s 30-70%, l 25-50%) : parks & green space
+ *   - Teal  (h 170-200, s 30-60%, l 30-50%): plazas & hardscape
+ *   - Blue  (h 200-230, s 40-70%, l 30-50%): water features & parking
  *
  * Every shade within a family is guaranteed >= 2 % HSL lightness or saturation
  * apart from its neighbours.
@@ -65,34 +68,68 @@ export const SHADE_MAP: Record<string, string> = {
   vertical_forest_residential:        '#ebdb2e',
 
   // ── Gray family: Streets & Pathways ─────────────────────────────────
-  kyoto_philosophers_walk:            '#4d4d4d',
-  parisian_boulevard:                 '#595959',
-  barcelona_rambla:                   '#666666',
-  amsterdam_canal_street:             '#737373',
-  copenhagen_cycle_street:            '#808080',
-  brownstone_residential_street:      '#8c8c8c',
-  whistler_village_lane:              '#999999',
-  english_garden_path:                '#4f4a4a',
-  central_park_drive:                 '#5c5757',
-  tokyo_shared_street:                '#696363',
-  scandinavian_green_street:          '#767070',
-  mediterranean_promenade:            '#837c7c',
-  modern_transit_boulevard:           '#8f8989',
-  brt_corridor:                       '#9c9696',
-  mountain_scenic_parkway:            '#514848',
-  dutch_woonerf:                      '#5e5454',
-  campus_pedestrian_spine:            '#6b6161',
-  riverfront_promenade:               '#796d6d',
-  industrial_greenway:                '#867979',
-  main_street_complete_street:        '#928686',
-  tram_priority_avenue:               '#9e9494',
-  festival_pedestrian_street:         '#534646',
-  neighborhood_school_street:         '#605252',
-  civic_esplanade:                    '#6e5e5e',
-  eco_mobility_greenway:              '#7c6a6a',
-  airport_connector_boulevard:        '#8a7575',
-  hillside_switchback_road:           '#958383',
-  custom_streets_pathways:            '#a19191',
+  narrow_residential_street:          '#4d4d4d',
+  suburban_residential_street:        '#565656',
+  collector_road:                     '#5f5f5f',
+  arterial_boulevard:                 '#686868',
+  highway_freeway:                    '#717171',
+  roundabout:                         '#7a7a7a',
+  cul_de_sac:                         '#838383',
+  back_alley_service_lane:            '#8c8c8c',
+  separated_bike_lane:                '#959595',
+  multi_use_trail:                    '#4f4a4a',
+  pedestrian_promenade:               '#585353',
+  woonerf_shared_street:              '#615c5c',
+  brt_corridor:                       '#6a6565',
+  light_rail_avenue:                  '#736e6e',
+  main_street_complete:               '#7c7777',
+  campus_pedestrian_spine:            '#858080',
+  scenic_parkway:                     '#8e8989',
+  riverfront_promenade:               '#979292',
+  custom_streets_pathways:            '#a09b9b',
+
+  // ── Green family: Parks & Green Space ───────────────────────────────
+  urban_pocket_park:                  '#2d6b30',
+  neighborhood_park:                  '#357a38',
+  community_park:                     '#3d8940',
+  regional_park:                      '#2a5e2d',
+  dog_park:                           '#4b8f4e',
+  skate_park:                         '#539756',
+  sports_field_complex:               '#3a7f3d',
+  tennis_court_cluster:               '#5ba05e',
+  botanical_garden:                   '#326e35',
+  japanese_garden:                    '#427442',
+  memorial_garden:                    '#4a7d4d',
+  urban_forest:                       '#255725',
+  riparian_buffer:                    '#2f632f',
+  wetland_rain_garden:                '#376b3a',
+  playground_adventure:               '#63a866',
+  splash_pad_area:                    '#6bb06e',
+  amphitheater_lawn:                  '#527f55',
+  community_garden:                   '#5a8a5d',
+  cemetery_memorial_grounds:          '#488048',
+
+  // ── Teal family: Plazas & Hardscape ─────────────────────────────────
+  formal_civic_plaza:                 '#2d6b6b',
+  market_square:                      '#357a7a',
+  courtyard_plaza:                    '#3d7878',
+  promenade_boardwalk:                '#2a6060',
+  transit_plaza:                      '#458585',
+  amphitheater_performance_space:     '#4d8d8d',
+
+  // ── Blue family: Water Features & Parking ───────────────────────────
+  surface_parking_lot:                '#4a6a8a',
+  structured_parking_garage:          '#527292',
+  underground_parking_entry:          '#3f5f7f',
+  green_parking_lot:                  '#5a7a9a',
+  pond_lake:                          '#2d5b8a',
+  fountain_water_feature:             '#356392',
+  stormwater_retention_pond:          '#3d6b9a',
+  swimming_pool_complex:              '#4573a2',
+  canal_waterway:                     '#2a5580',
+
+  // ── Custom ──────────────────────────────────────────────────────────
+  custom_parks_plazas:                '#629062',
 };
 
 // ---------------------------------------------------------------------------

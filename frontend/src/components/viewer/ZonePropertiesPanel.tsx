@@ -29,6 +29,7 @@ import {
   getAllowedDevelopmentTypes,
   filterOptionsByDevelopmentType,
   type ArchetypeImage as CatalogArchetypeImage,
+  type ArchetypeVariant as CatalogArchetypeVariant,
   type GenerationStyleInput as CatalogGenerationStyleInput,
   type StyleProfile as CatalogStyleProfile,
   type TransportModeKey as CatalogTransportModeKey,
@@ -65,6 +66,7 @@ type DevelopmentAestheticOption = {
   archetypeImages?: CatalogArchetypeImage[];
   styleProfile?: CatalogStyleProfile;
   generationStyleInput?: Partial<CatalogGenerationStyleInput>;
+  variants?: CatalogArchetypeVariant[];
 };
 
 const DEVELOPMENT_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = BUILDING_AESTHETIC_CATEGORIES_V2;
@@ -162,9 +164,13 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
 
   const handleSave = () => {
     // Resolve shade color from assigned archetype.
-    // Try subcategory ID first (option-level, e.g. "parisian_midrise_block")
-    // which directly matches shade map keys, then fall back to archetype_id
-    // (image-level, e.g. "parisian_midrise_block_front_day") which uses prefix matching.
+    // Check variant-specific shadeId first, then try subcategory ID (option-level,
+    // e.g. "parisian_midrise_block") which directly matches shade map keys, then
+    // fall back to archetype_id (image-level) which uses prefix matching.
+    const variantShadeId = (props.development_variant_shade_id as string)
+      || (props.road_variant_shade_id as string)
+      || (props.green_space_variant_shade_id as string)
+      || (props.plaza_variant_shade_id as string);
     const archetypeId = (props.development_subcategory as string)
       || (props.road_subcategory as string)
       || (props.green_space_subcategory as string)
@@ -173,8 +179,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       || (props.road_archetype_id as string)
       || (props.green_space_archetype_id as string)
       || (props.plaza_archetype_id as string);
-    const shadeColor = archetypeId ? getShadeForArchetype(archetypeId) : undefined;
-    console.log(`[ZoneProps] Save — archetypeId="${archetypeId}", shade="${shadeColor}"`);
+    const shadeColor = variantShadeId
+      ? getShadeForArchetype(variantShadeId)
+      : (archetypeId ? getShadeForArchetype(archetypeId) : undefined);
+    console.log(`[ZoneProps] Save — variantShade="${variantShadeId}", archetypeId="${archetypeId}", shade="${shadeColor}"`);
 
     onUpdate(zone.id, {
       name: name || undefined,
@@ -220,6 +228,11 @@ const clearDomainStyleFields = (
   target[`${prefix}_archetype_prompt`] = undefined;
   target[`${prefix}_generation_tags`] = undefined;
   target[`${prefix}_style_profile`] = undefined;
+  target[`${prefix}_selected_variant_id`] = undefined;
+  target[`${prefix}_variant_shade_id`] = undefined;
+  target[`${prefix}_facade_detail`] = undefined;
+  target[`${prefix}_roof_detail`] = undefined;
+  target[`${prefix}_palette`] = undefined;
 
   if (key === 'development_aesthetic') {
     target.generation_style_input = undefined;
@@ -241,6 +254,7 @@ const buildAestheticSelectionProps = (
   options: DevelopmentAestheticOption[],
   presets?: Record<string, Partial<SiteZoneProperties>>,
   selectedArchetypeImageId?: string,
+  selectedVariantId?: string,
 ): SiteZoneProperties => {
   const nextProps: SiteZoneProperties = { ...current, [key]: next || undefined };
   const existing = Array.isArray(current.reference_images) ? (current.reference_images as string[]) : [];
@@ -412,6 +426,38 @@ const buildAestheticSelectionProps = (
     if (descParts.length > 0) {
       nextProps.description_text = descParts.join('. ') + '.';
     }
+
+    // Apply variant overrides when a design variant is selected
+    const vPrefix = DOMAIN_STYLE_FIELD_PREFIX[key];
+    const variants = Array.isArray(selectedOption.variants) ? selectedOption.variants : [];
+    const selectedVariant = selectedVariantId ? variants.find((v) => v.id === selectedVariantId) : undefined;
+    if (selectedVariant) {
+      nextProps[`${vPrefix}_selected_variant_id`] = selectedVariant.id;
+      if (selectedVariant.renderPrompt) {
+        nextProps[`${vPrefix}_archetype_prompt`] = selectedVariant.renderPrompt;
+      }
+      if (selectedVariant.facadeDetail) {
+        nextProps[`${vPrefix}_facade_detail`] = selectedVariant.facadeDetail;
+      }
+      if (selectedVariant.roofDetail) {
+        nextProps[`${vPrefix}_roof_detail`] = selectedVariant.roofDetail;
+      }
+      if (selectedVariant.shadeId) {
+        nextProps[`${vPrefix}_variant_shade_id`] = selectedVariant.shadeId;
+      }
+      if (selectedVariant.palette) {
+        nextProps[`${vPrefix}_palette`] = selectedVariant.palette;
+      }
+      if (selectedVariant.description) {
+        nextProps.description_text = selectedVariant.description;
+      }
+    } else {
+      nextProps[`${vPrefix}_selected_variant_id`] = undefined;
+      nextProps[`${vPrefix}_variant_shade_id`] = undefined;
+      nextProps[`${vPrefix}_facade_detail`] = undefined;
+      nextProps[`${vPrefix}_roof_detail`] = undefined;
+      nextProps[`${vPrefix}_palette`] = undefined;
+    }
   }
 
   return nextProps;
@@ -424,24 +470,6 @@ const resolveOptionCategory = (
     if (!aestheticId) return undefined;
     return options.find((o) => o.id === aestheticId)?.categoryId;
   };
-
-  const resolveBuildingAestheticCategory = (aestheticId?: string): string | undefined => {
-    return resolveOptionCategory(DEVELOPMENT_AESTHETIC_OPTIONS, aestheticId);
-  };
-
-  const selectedBuildingAestheticCategory = normalizeAestheticCategory(
-    'development_aesthetic',
-    (props.development_aesthetic_category as string)
-      || resolveBuildingAestheticCategory((props.development_aesthetic as string) || undefined),
-  );
-
-  // Filter building archetype options and categories by zone / development type
-  const allowedBuildingDevTypes = getAllowedDevelopmentTypes(zone.zone_type, (props.development_type as string) || undefined);
-  const filteredBuildingOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedBuildingDevTypes);
-  const filteredBuildingCategoryIds = new Set(filteredBuildingOptions.map((o) => o.categoryId).filter(Boolean));
-  const filteredBuildingCategories = allowedBuildingDevTypes
-    ? DEVELOPMENT_AESTHETIC_CATEGORIES.filter((c) => filteredBuildingCategoryIds.has(c.id))
-    : DEVELOPMENT_AESTHETIC_CATEGORIES;
 
   const selectedRoadAestheticCategory = normalizeAestheticCategory(
     'road_aesthetic',
@@ -499,37 +527,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyBuildingAestheticCategory = (nextCategory: string | undefined) => {
-    setProps((p) => {
-      const selectedCategory = normalizeAestheticCategory('development_aesthetic', nextCategory || undefined);
-      const nextProps: SiteZoneProperties = {
-        ...p,
-        development_aesthetic_category: selectedCategory,
-      };
-
-      const currentAesthetic = (p.development_aesthetic as string) || undefined;
-      if (!currentAesthetic) {
-        return nextProps;
-      }
-
-      const optionsForCategory = selectedCategory
-        ? DEVELOPMENT_AESTHETIC_OPTIONS.filter((o) => o.categoryId === selectedCategory)
-        : DEVELOPMENT_AESTHETIC_OPTIONS;
-
-      if (optionsForCategory.some((o) => o.id === currentAesthetic)) {
-        return nextProps;
-      }
-
-      return buildAestheticSelectionProps(
-        nextProps,
-        'development_aesthetic',
-        undefined,
-        DEVELOPMENT_AESTHETIC_OPTIONS,
-      );
-    });
-  };
-
-  const applyBuildingAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
+  const applyBuildingAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -538,6 +536,7 @@ const resolveOptionCategory = (
         DEVELOPMENT_AESTHETIC_OPTIONS,
         undefined,
         selectedArchetypeImageId,
+        variantId,
       );
       const selectedOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === next);
       if (selectedOption?.categoryId) {
@@ -842,32 +841,12 @@ const resolveOptionCategory = (
             </div>
             {/* Development Aesthetic */}
             <div>
-              <label className="block text-xs text-primary-950/50">Aesthetic Category</label>
-              <select
-                value={selectedBuildingAestheticCategory || ''}
-                onChange={(e) => applyBuildingAestheticCategory(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="">-- Select Category --</option>
-                {filteredBuildingCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedBuildingAestheticCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {filteredBuildingCategories.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
-                </p>
-              )}
-            </div>
-            <div>
               <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
-                  category={selectedBuildingAestheticCategory}
                   selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                  selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                   zoneType={zone.zone_type}
                   developmentType={(props.development_type as string) || undefined}
                   onChange={applyBuildingAesthetic}
@@ -1452,32 +1431,12 @@ const resolveOptionCategory = (
               <span className="text-[10px] text-primary-950/50">Number of buildings to generate within this development area</span>
             </div>
             <div>
-              <label className="block text-xs text-primary-950/50">Aesthetic Category</label>
-              <select
-                value={selectedBuildingAestheticCategory || ''}
-                onChange={(e) => applyBuildingAestheticCategory(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="">-- Select Category --</option>
-                {filteredBuildingCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedBuildingAestheticCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {filteredBuildingCategories.find((item) => item.id === selectedBuildingAestheticCategory)?.description}
-                </p>
-              )}
-            </div>
-            <div>
               <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
-                  category={selectedBuildingAestheticCategory}
                   selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                  selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                   zoneType={zone.zone_type}
                   developmentType={(props.development_type as string) || undefined}
                   onChange={applyBuildingAesthetic}
@@ -2464,39 +2423,56 @@ function AestheticOptionCard({
   option,
   value,
   selectedReferenceId,
+  selectedVariantId,
   onSelect,
   modelPreviews,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
   selectedReferenceId?: string;
-  onSelect: (id: string, archetypeImageId?: string) => void;
+  selectedVariantId?: string;
+  onSelect: (id: string, archetypeImageId?: string, variantId?: string) => void;
   modelPreviews?: ArchetypeModelPreview[];
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
   const archetypeImages = Array.isArray(option.archetypeImages) ? option.archetypeImages : [];
+  const variants = Array.isArray(option.variants) ? option.variants : [];
   const defaultArchetype = getFrontDayArchetypeImage(archetypeImages) || archetypeImages[0];
+
+  // If a variant is selected, use its thumbnailUrl as hero override
+  const activeVariant = value === option.id && selectedVariantId
+    ? variants.find((v) => v.id === selectedVariantId)
+    : undefined;
+
   const selectedArchetype = value === option.id
     ? archetypeImages.find((image) => image.id === selectedReferenceId) || defaultArchetype
     : defaultArchetype;
-  const heroSources = selectedArchetype
-    ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
-    : sources.slice(0, Math.max(1, sources.length));
 
-  // Build the 4 thumbnail slots: fill with model previews first, then archetype lighting variants
+  const heroSources = activeVariant?.thumbnailUrl
+    ? [activeVariant.thumbnailUrl, ...(selectedArchetype ? [selectedArchetype.imageUrl] : []), ...sources]
+    : selectedArchetype
+      ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
+      : sources.slice(0, Math.max(1, sources.length));
+
+  // Determine thumbnail slot content: prefer design variants, fall back to lighting variants
+  const hasDesignVariants = variants.length > 0;
   const modelSlots = (modelPreviews || []).slice(0, AESTHETIC_EXAMPLE_COUNT);
-  const archetypeSlots = archetypeImages.length > 0
-    ? archetypeImages.slice(0, AESTHETIC_EXAMPLE_COUNT)
-    : sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT).map((source, idx) => ({
-      id: `${option.id}-example-${idx}`,
-      imageUrl: source,
-      label: `${option.label} example ${idx + 1}`,
-    }));
+  const archetypeSlots = hasDesignVariants
+    ? [] // design variants replace archetype lighting slots
+    : archetypeImages.length > 0
+      ? archetypeImages.slice(0, AESTHETIC_EXAMPLE_COUNT)
+      : sources.slice(1, 1 + AESTHETIC_EXAMPLE_COUNT).map((source, idx) => ({
+        id: `${option.id}-example-${idx}`,
+        imageUrl: source,
+        label: `${option.label} example ${idx + 1}`,
+      }));
 
-  // Merge: model previews take priority, remaining slots filled by archetype variants
   const totalSlots = AESTHETIC_EXAMPLE_COUNT;
   const remainingArchetypeSlots = archetypeSlots.slice(0, totalSlots - modelSlots.length);
+  const variantSlots = hasDesignVariants
+    ? variants.slice(0, totalSlots - modelSlots.length)
+    : [];
 
   const openImageLightbox = (imageUrl: string, label: string) => {
     const resolvedUrl = resolveApiFileUrl(imageUrl);
@@ -2562,7 +2538,47 @@ function AestheticOptionCard({
             </button>
           ))}
 
-          {/* Archetype lighting variant thumbnails (fill remaining slots) */}
+          {/* Design variant thumbnails (if option has variants[]) */}
+          {variantSlots.map((variant) => {
+            const isActive = value === option.id && selectedVariantId === variant.id;
+            return (
+              <button
+                key={`${option.id}-variant-${variant.id}`}
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onSelect(option.id, selectedArchetype?.id || defaultArchetype?.id, variant.id);
+                }}
+                onDoubleClick={(event) => {
+                  event.stopPropagation();
+                  if (variant.thumbnailUrl) {
+                    openImageLightbox(variant.thumbnailUrl, `${option.label} — ${variant.label}`);
+                  }
+                }}
+                className={`h-9 overflow-hidden rounded border ${
+                  isActive
+                    ? 'border-primary-500 ring-2 ring-primary-500/35'
+                    : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
+                }`}
+                title={`${variant.label} — click to select, double-click to enlarge`}
+              >
+                {variant.thumbnailUrl ? (
+                  <img
+                    src={resolveApiFileUrl(variant.thumbnailUrl)}
+                    alt={variant.label}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-[7px] text-primary-950/40 leading-tight px-0.5 text-center">
+                    {variant.label}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+
+          {/* Archetype lighting variant thumbnails (fill remaining slots when no design variants) */}
           {remainingArchetypeSlots.map((image, idx) => {
             const isSelected = value === option.id && selectedReferenceId === image.id;
             return (
@@ -2596,49 +2612,41 @@ function AestheticOptionCard({
 }
 function DevelopmentAestheticPicker({
   value,
-  category,
   selectedReferenceId,
+  selectedVariantId,
   zoneType,
   developmentType,
   onChange,
 }: {
   value?: string;
-  category?: string;
   selectedReferenceId?: string;
+  selectedVariantId?: string;
   zoneType?: string;
   developmentType?: string;
-  onChange: (next: string | undefined, archetypeImageId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
   const filteredOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
-  const categoryOptions = category
-    ? filteredOptions.filter((option) => option.categoryId === category)
-    : [];
   const archetypeModelPreviews = useArchetypeModelPreviews();
 
   return (
     <div className="space-y-2">
-      {!category && (
+      {filteredOptions.length === 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          Select an aesthetic category to view matching building sub-categories.
+          No sub-categories found for this development type.
         </div>
       )}
 
-      {category && categoryOptions.length === 0 && (
-        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No sub-categories found for this category.
-        </div>
-      )}
-
-      {categoryOptions.length > 0 && (
+      {filteredOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {categoryOptions.map((option) => (
+          {filteredOptions.map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               modelPreviews={archetypeModelPreviews[option.id]}
             />
           ))}

@@ -3,140 +3,255 @@
   "title": "Streets and Pathways Archetype Library",
   "categories": [
     {
-      "id": "historic_walkways",
-      "label": "Historic Walkways",
-      "description": "Pedestrian-first corridors rooted in heritage spatial character"
+      "id": "pedestrian_oriented",
+      "label": "Pedestrian Oriented",
+      "description": "Streets and paths designed primarily for walking, socializing, and human-scale activity"
     },
     {
-      "id": "urban_boulevards",
-      "label": "Urban Boulevards",
-      "description": "Formal avenue sections with strong tree canopy and civic frontage"
+      "id": "cycling_oriented",
+      "label": "Cycling Oriented",
+      "description": "Routes and corridors designed for cycling and non-motorized active transportation"
     },
     {
-      "id": "cycling_first",
-      "label": "Cycling First",
-      "description": "Protected or bike-priority corridors with low-stress movement"
+      "id": "transit_oriented",
+      "label": "Transit Oriented",
+      "description": "Corridors designed around public transit including bus rapid transit and light rail"
     },
     {
-      "id": "transit_priority",
-      "label": "Transit Priority",
-      "description": "High-capacity right-of-way typologies with multimodal access"
-    },
-    {
-      "id": "shared_slow_streets",
-      "label": "Shared Slow Streets",
-      "description": "Low-speed shared streets where public life dominates"
-    },
-    {
-      "id": "scenic_greenways",
-      "label": "Scenic Greenways",
-      "description": "Landscape-integrated promenades and parkway corridors"
-    },
-    {
-      "id": "complete_streets",
-      "label": "Complete Streets",
-      "description": "Balanced streets for walking, biking, transit, and autos"
-    },
-    {
-      "id": "custom",
-      "label": "Custom / Other",
-      "description": "User-directed corridor identity for special contexts"
+      "id": "auto_oriented",
+      "label": "Auto Oriented",
+      "description": "Streets and roads designed primarily for motor vehicle circulation"
     }
   ],
   "archetypes": [
     {
-      "id": "kyoto_philosophers_walk",
-      "shadeId": "#4d4d4d",
-      "title": "Kyoto Philosopher's Walk",
-      "aestheticCategory": "historic_walkways",
-      "description": "Kyoto Philosopher's Walk corridor archetype with premium public-realm detail and legible multimodal structure",
+      "id": "narrow_residential_street",
+      "title": "Narrow Residential Street",
+      "aestheticCategory": "auto_oriented",
+      "description": "A quiet narrow residential street with no center line, on-street parallel parking, mature street trees, and concrete sidewalks — a shaded gray ribbon with car-lined edges from above",
       "transportModes": [
-        "walking"
+        "walking",
+        "automobile"
       ],
       "volume": "low",
       "generationTags": [
-        "kyoto",
-        "streets-pathways",
-        "historic-walkways"
+        "residential",
+        "narrow",
+        "neighborhood",
+        "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Kyoto Philosopher's Walk corridor identity",
-        "movementHierarchy": "Modes: walking",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "A narrow residential street viewed from drone altitude. A single-width asphalt roadway roughly 8 to 10 meters curb-to-curb with no painted center line — just a smooth dark gray surface. Cars parked in parallel along both curbs as small colored rectangles. Concrete sidewalks on both sides as pale gray strips separated from the road by a narrow grass planting strip. Mature deciduous street trees planted at regular 10-meter intervals in the planting strip, their round canopies partially overhanging the road and creating dappled shadow patterns on the asphalt. Front yard lawns and low fences are visible beyond the sidewalks. Driveways cut through the sidewalk at intervals.",
+        "movementHierarchy": "Low-speed local access — walking and automobile only",
+        "surfaceType": "Smooth asphalt with no center marking, concrete sidewalks",
+        "plantingCharacter": "Mature deciduous street trees in planting strip at 10m intervals, round canopy",
+        "edgeConditions": "Parallel-parked cars, grass strip, concrete sidewalk, front yard setback",
+        "publicRealm": "Quiet shaded neighborhood street with residential character"
       },
       "prompt": {
-        "subject": "Strongly centered Kyoto Philosopher's Walk corridor archetype",
+        "subject": "Aerial view of a narrow residential street with mature street trees and parked cars",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
+          "Dark gray asphalt roadway with no painted center line",
+          "Cars parked in parallel along both curbs as small colored rectangles",
+          "Concrete sidewalks as pale gray strips on both sides",
+          "Narrow grass planting strip between curb and sidewalk",
+          "Mature deciduous trees with round canopies at regular intervals creating dappled shade",
+          "Front yard lawns and driveways visible beyond sidewalks"
         ],
         "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking"
-        ],
-        "width": 6,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "parisian_boulevard",
-      "shadeId": "#595959",
-      "title": "Parisian Boulevard",
-      "aestheticCategory": "urban_boulevards",
-      "description": "Parisian Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "transit",
-        "automobile"
-      ],
-      "volume": "high",
-      "generationTags": [
-        "parisian",
-        "streets-pathways",
-        "urban-boulevards"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Parisian Boulevard corridor identity",
-        "movementHierarchy": "Modes: walking, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Parisian Boulevard corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
+          "No painted lane markings",
+          "No median",
+          "No commercial signage",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "mobility_profile": "balanced",
         "transport_modes": [
           "walking",
+          "automobile"
+        ],
+        "width": 10,
+        "lane_count": 2,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/narrow-residential-street/hero.png"
+    },
+    {
+      "id": "suburban_residential_street",
+      "title": "Suburban Residential Street",
+      "aestheticCategory": "auto_oriented",
+      "description": "A wider suburban street with two lanes, rolled curbs, young trees, and wide front-yard setbacks — a bright open road with generous grass margins from above",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "residential",
+        "suburban",
+        "wide",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A suburban residential street viewed from drone altitude. A wide asphalt roadway with a dashed yellow center line and rolled concrete curbs. Wide grass front-yard setbacks on both sides — bright green lawns stretching from the curb to houses. Young deciduous trees planted at irregular intervals, their small canopies not yet touching. Concrete sidewalks set well back from the curb separated by a wide grass strip. No parked cars — houses have wide driveways with garage doors. From above the street reads as a dark gray ribbon bordered by wide bright green lawn panels.",
+        "movementHierarchy": "Low-speed residential access with generous setbacks",
+        "surfaceType": "Asphalt with dashed center line, rolled concrete curbs",
+        "plantingCharacter": "Young deciduous trees in wide grass strips, small canopy",
+        "edgeConditions": "Wide grass front-yard setbacks, driveways, no on-street parking",
+        "publicRealm": "Open sunny suburban street with wide sky exposure"
+      },
+      "prompt": {
+        "subject": "Aerial view of a wide suburban residential street with young trees and green lawns",
+        "details": [
+          "Asphalt roadway with dashed yellow center line",
+          "Rolled concrete curbs on both sides",
+          "Wide bright green lawn setbacks stretching from curb to houses",
+          "Young deciduous trees with small canopies at irregular intervals",
+          "Concrete sidewalks set far back from the curb",
+          "Wide driveways connecting to garage doors — no on-street parking"
+        ],
+        "negative": [
+          "No mature tree canopy closing over the road",
+          "No commercial buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "width": 14,
+        "lane_count": 2,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/suburban-residential-street/hero.png"
+    },
+    {
+      "id": "collector_road",
+      "title": "Collector Road",
+      "aestheticCategory": "auto_oriented",
+      "description": "A two-to-three lane collector road with a center turn lane, sidewalks, and street trees connecting neighborhoods to arterials — a wider gray road with turn-lane stripe from above",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "collector",
+        "turn-lane",
+        "neighborhood-connector",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A collector road viewed from drone altitude. A moderately wide asphalt roadway with one travel lane in each direction and a center turn lane — visible as double yellow lines flanking a slightly wider central strip. White dashed lane markings separate travel lanes from the turn lane. Concrete sidewalks on both sides with a narrow grass planting strip and mature street trees. Small commercial or residential buildings face the road. A few parked cars in on-street spots or small lot pulloffs. Crosswalk markings at intersections as white zebra stripes. The road reads as a three-stripe gray ribbon — two dark outer lanes and a slightly lighter center turn lane.",
+        "movementHierarchy": "Medium-speed collector — walking, cycling, and automobile",
+        "surfaceType": "Asphalt with center turn lane, white dashed lane markings, double yellow center",
+        "plantingCharacter": "Mature street trees in planting strips, moderate canopy coverage",
+        "edgeConditions": "Sidewalks, planting strips, mixed residential and commercial frontage",
+        "publicRealm": "Functional connector street with moderate pedestrian activity"
+      },
+      "prompt": {
+        "subject": "Aerial view of a collector road with center turn lane and street trees",
+        "details": [
+          "Asphalt roadway with one travel lane each direction and center turn lane",
+          "Double yellow center lines flanking a wider central strip",
+          "White dashed lane markings between travel and turn lanes",
+          "Concrete sidewalks on both sides with grass planting strips",
+          "Mature street trees providing moderate canopy coverage",
+          "Crosswalk zebra stripes at intersections"
+        ],
+        "negative": [
+          "No median with trees",
+          "No highway-scale infrastructure",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 16,
+        "lane_count": 3,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/collector-road/hero.png"
+    },
+    {
+      "id": "arterial_boulevard",
+      "title": "Arterial Boulevard (Tree-Lined)",
+      "aestheticCategory": "auto_oriented",
+      "description": "A divided arterial boulevard with a tree-lined median, two or three lanes each way, sidewalks, and bike lanes — a grand green-striped corridor from above",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "transit",
+        "automobile"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "arterial",
+        "boulevard",
+        "divided",
+        "tree-lined",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "An arterial boulevard viewed from drone altitude. A wide divided roadway with a central raised median planted with a double row of mature deciduous trees — their canopies forming a continuous green band down the center. Two or three travel lanes in each direction separated by white dashed markings. Painted bike lanes as narrow green or buffer-striped strips along each curb. Wide concrete sidewalks on both sides with additional street trees in tree grates. Crosswalk markings at major intersections with pedestrian refuge islands in the median. Traffic signals as small dots at intersections. The boulevard reads from above as a symmetric corridor — dark road lanes, green median canopy band, pale sidewalk strips, with tree shadows casting rhythmic patterns.",
+        "movementHierarchy": "High-capacity multimodal — walking, cycling, transit, automobile",
+        "surfaceType": "Asphalt travel lanes, raised planted median, bike lane buffer",
+        "plantingCharacter": "Double row of mature trees in median plus street trees on sidewalks, continuous canopy band",
+        "edgeConditions": "Bike lanes, wide sidewalks, tree grates, active commercial frontage",
+        "publicRealm": "Grand civic boulevard with strong tree canopy and multimodal access"
+      },
+      "prompt": {
+        "subject": "Aerial view of a divided arterial boulevard with tree-lined median",
+        "details": [
+          "Wide divided roadway with raised planted median down the center",
+          "Double row of mature tree canopies forming continuous green band in median",
+          "Two or three travel lanes each direction with white dashed markings",
+          "Painted bike lanes along each curb as narrow striped strips",
+          "Wide concrete sidewalks with additional street trees in grates",
+          "Symmetric corridor pattern — dark lanes, green median, pale sidewalks"
+        ],
+        "negative": [
+          "No highway-scale infrastructure",
+          "No barren unplanted median",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
           "transit",
           "automobile"
         ],
@@ -146,72 +261,430 @@
         "road_surface": "asphalt",
         "sidewalks": "both",
         "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
+        "priority_pedestrian": 2,
+        "priority_cycling": 3,
+        "priority_transit": 3,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/arterial-boulevard-tree-lined/hero.png"
     },
     {
-      "id": "barcelona_rambla",
-      "shadeId": "#666666",
-      "title": "Barcelona Rambla",
-      "aestheticCategory": "historic_walkways",
-      "description": "Barcelona Rambla corridor archetype with premium public-realm detail and legible multimodal structure",
+      "id": "highway_freeway",
+      "title": "Highway / Freeway",
+      "aestheticCategory": "auto_oriented",
+      "description": "A high-speed limited-access highway with four or more lanes, concrete jersey barriers, no street trees, and wide shoulders — a broad gray river of asphalt from above",
+      "transportModes": [
+        "automobile"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "highway",
+        "freeway",
+        "high-speed",
+        "limited-access",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A highway or freeway viewed from drone altitude. A broad multi-lane asphalt corridor — four or more lanes in each direction separated by a concrete jersey barrier median (a thin pale line). White dashed lane markings delineate lanes. Wide paved shoulders on both outer edges. No trees, no sidewalks, no pedestrian infrastructure. Sound walls or earth berms may line the outer edges as continuous gray or earthen bands. On-ramp and off-ramp tapers are visible as lane splits. Vehicles appear as small colored rectangles moving in stream formation. The road surface is uniform dark gray asphalt stretching broadly across the landscape. Exit signs are too small to read from altitude but may appear as small green rectangles on overhead gantries.",
+        "movementHierarchy": "High-speed automobile only — no pedestrian or bicycle access",
+        "surfaceType": "Asphalt with white lane markings, concrete jersey barrier median, paved shoulders",
+        "plantingCharacter": "None — possibly mowed grass or gravel in right-of-way margins",
+        "edgeConditions": "Sound walls, earth berms, wide gravel or grass shoulders",
+        "publicRealm": "Limited-access vehicle corridor — no public realm"
+      },
+      "prompt": {
+        "subject": "Aerial view of a multi-lane highway with jersey barrier median and no trees",
+        "details": [
+          "Broad asphalt corridor with four or more lanes each direction",
+          "Concrete jersey barrier median as thin pale line down the center",
+          "White dashed lane markings across all lanes",
+          "Wide paved shoulders on both outer edges",
+          "No trees, no sidewalks, no pedestrian infrastructure",
+          "Sound walls or earth berms as continuous bands along outer edges"
+        ],
+        "negative": [
+          "No trees alongside the highway",
+          "No pedestrian crossings",
+          "No bike lanes",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "vehicle_access",
+        "transport_modes": [
+          "automobile"
+        ],
+        "width": 40,
+        "lane_count": 8,
+        "volume": "high",
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 4,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/highway-freeway/hero.png"
+    },
+    {
+      "id": "roundabout",
+      "title": "Roundabout / Traffic Circle",
+      "aestheticCategory": "auto_oriented",
+      "description": "A single-lane or multi-lane roundabout with a central landscaped island, splitter islands, and crosswalks — a circular road ring from above",
       "transportModes": [
         "walking",
-        "transit"
+        "bicycle",
+        "automobile"
       ],
       "volume": "medium",
       "generationTags": [
-        "barcelona",
-        "streets-pathways",
-        "historic-walkways"
+        "roundabout",
+        "traffic-circle",
+        "intersection",
+        "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Barcelona Rambla corridor identity",
-        "movementHierarchy": "Modes: walking, transit",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "A roundabout viewed from drone altitude. A circular road ring of dark gray asphalt surrounds a raised central island. The central island is landscaped — mature trees, shrubs, or a decorative feature like a sculpture or fountain. The circulatory roadway is one or two lanes wide with white dashed lane markings. Triangular splitter islands at each approach separate entering and exiting traffic — these islands are raised concrete with low shrubs or bollards. Crosswalk zebra stripes cross each approach behind the splitter island. Yield line markings (dashed white triangles) mark each entry point. From above, the roundabout reads as a green circle inscribed within a dark asphalt ring with four or more approach roads radiating outward like spokes.",
+        "movementHierarchy": "Medium-speed intersection — walking, cycling, automobile flow management",
+        "surfaceType": "Asphalt circulatory roadway, concrete splitter islands, landscaped center island",
+        "plantingCharacter": "Trees and ornamental planting in central island, low shrubs on splitter islands",
+        "edgeConditions": "Crosswalks at each approach, curbed splitter islands, sidewalk connections",
+        "publicRealm": "Organized traffic flow with pedestrian crossings at each leg"
       },
       "prompt": {
-        "subject": "Strongly centered Barcelona Rambla corridor archetype",
+        "subject": "Aerial view looking straight down at a roundabout with landscaped central island",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
+          "Circular asphalt road ring surrounding a raised central island",
+          "Central island with mature trees, shrubs, or decorative feature",
+          "One or two lanes wide with white dashed markings on the circle",
+          "Triangular splitter islands at each approach with low shrubs",
+          "Crosswalk zebra stripes across each approach road",
+          "Four or more approach roads radiating outward like spokes"
         ],
         "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
+          "No signal lights in the roundabout",
+          "No buildings in the center island",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 20,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/roundabout-traffic-circle/hero.png"
+    },
+    {
+      "id": "cul_de_sac",
+      "title": "Cul-de-Sac",
+      "aestheticCategory": "auto_oriented",
+      "description": "A residential dead-end street terminating in a circular turnaround with a center island — a lollipop shape from above",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "cul-de-sac",
+        "dead-end",
+        "residential",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A cul-de-sac viewed from drone altitude. A narrow residential street terminates in a circular bulb turnaround. The turnaround circle has a raised center island — either landscaped with a tree and shrubs, or simply a concrete circle. Driveways radiate outward from the circle like a clock face, each leading to a residential lot. The roadway is smooth dark gray asphalt with a rolled concrete curb. Sidewalks curve around the outside of the circle. Parked cars may sit in driveways or along the approach street. From above, the cul-de-sac reads as a lollipop shape — a narrow stem street connected to a circular bulb with a green center dot.",
+        "movementHierarchy": "Very low speed local access — walking and automobile turnaround",
+        "surfaceType": "Asphalt roadway, concrete curb, landscaped center island",
+        "plantingCharacter": "Single specimen tree in center island, front-yard trees along stem",
+        "edgeConditions": "Driveways radiating from circle, sidewalk following the curb",
+        "publicRealm": "Quiet dead-end neighborhood character"
+      },
+      "prompt": {
+        "subject": "Aerial view looking down at a cul-de-sac with circular turnaround",
+        "details": [
+          "Narrow street terminating in circular turnaround bulb",
+          "Raised center island with a tree and shrubs as green circle",
+          "Driveways radiating outward from the circle to residential lots",
+          "Smooth dark gray asphalt with rolled concrete curb",
+          "Sidewalk curving around the outside of the circle",
+          "Lollipop shape — narrow stem street connected to circular bulb"
+        ],
+        "negative": [
+          "No through traffic",
+          "No commercial buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "width": 8,
+        "lane_count": 2,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/cul-de-sac/hero.png"
+    },
+    {
+      "id": "back_alley_service_lane",
+      "title": "Back Alley / Service Lane",
+      "aestheticCategory": "auto_oriented",
+      "description": "A narrow back alley or service lane with no sidewalks, utility poles, dumpsters, and garage doors — a utilitarian gray strip from above",
+      "transportModes": [
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "alley",
+        "service-lane",
+        "utilitarian",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A back alley viewed from drone altitude. A narrow paved strip — roughly 4 to 6 meters wide — running behind buildings. The surface is cracked asphalt or concrete, often patched. No sidewalks, no curbs — the pavement meets gravel or dirt at the edges. Utility poles with overhead wires appear as small circles with thin shadow lines. Dumpsters sit as dark rectangular objects against building walls. Garage doors face the alley as flat rectangular panels. Chain-link fences border some properties. The alley is utilitarian and unadorned — no trees, no landscaping. From above it reads as a thin gray strip between the backs of buildings.",
+        "movementHierarchy": "Very low speed service access — automobile and utility vehicles only",
+        "surfaceType": "Cracked asphalt or concrete, no curbs, gravel edges",
+        "plantingCharacter": "None — occasionally weeds or volunteer trees at fence lines",
+        "edgeConditions": "Garage doors, dumpsters, utility poles, chain-link fences",
+        "publicRealm": "Utilitarian service corridor — no public amenities"
+      },
+      "prompt": {
+        "subject": "Aerial view of a narrow back alley running behind buildings",
+        "details": [
+          "Narrow paved strip of cracked asphalt roughly 4 to 6 meters wide",
+          "No sidewalks or curbs — pavement meeting gravel at edges",
+          "Utility poles with overhead wires as small circles with shadow lines",
+          "Dumpsters as dark rectangles against building walls",
+          "Garage doors facing the alley as flat panels",
+          "Chain-link fences bordering some properties"
+        ],
+        "negative": [
+          "No trees or landscaping",
+          "No pedestrian amenities",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "vehicle_access",
+        "transport_modes": [
+          "automobile"
+        ],
+        "width": 5,
+        "lane_count": 1,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 4,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/hero.png"
+    },
+    {
+      "id": "separated_bike_lane",
+      "title": "Separated Bike Lane / Cycle Track",
+      "aestheticCategory": "cycling_oriented",
+      "description": "A physically separated two-way cycle track with bollard or curb protection, colored surface markings, and its own signal phase — a narrow colored ribbon parallel to the road from above",
+      "transportModes": [
+        "bicycle"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "bike-lane",
+        "cycle-track",
+        "separated",
+        "protected",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A separated bike lane or cycle track viewed from drone altitude. A narrow two-way cycling corridor roughly 3 to 4 meters wide runs parallel to a roadway, physically separated by a raised curb, bollard row, or planter strip. The bike lane surface may be painted green or have a red-brown colored asphalt treatment distinguishing it from the adjacent road. White dashed center line and bicycle stencil markings are visible. Bollards appear as small white or yellow dots in a line. A narrow buffer zone separates the cycle track from the travel lanes. From above the bike lane reads as a thin colored ribbon running alongside the darker road surface.",
+        "movementHierarchy": "Bicycle-priority corridor with physical separation from traffic",
+        "surfaceType": "Colored asphalt or painted green surface with white markings and bicycle stencils",
+        "plantingCharacter": "Possibly planter strip or tree line separating from road",
+        "edgeConditions": "Bollards, raised curb, or planter buffer separating from travel lanes",
+        "publicRealm": "Protected cycling infrastructure integrated into street cross-section"
+      },
+      "prompt": {
+        "subject": "Aerial view of a separated two-way cycle track parallel to a road",
+        "details": [
+          "Narrow two-way cycling corridor roughly 3 to 4 meters wide",
+          "Green-painted or red-brown colored surface distinguishing it from road",
+          "White dashed center line and bicycle stencil markings",
+          "Bollard row as small white dots or raised curb separating from traffic",
+          "Narrow buffer zone between cycle track and travel lanes",
+          "Thin colored ribbon running alongside darker road surface"
+        ],
+        "negative": [
+          "No cars on the bike lane",
+          "No pedestrians on the bike lane",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "bicycle"
+        ],
+        "width": 4,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 4,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/separated-bike-lane-cycle-track/hero.png"
+    },
+    {
+      "id": "multi_use_trail",
+      "title": "Multi-Use Trail / Greenway",
+      "aestheticCategory": "cycling_oriented",
+      "description": "A wide paved multi-use trail through a park or greenway corridor for walking, jogging, and cycling — a smooth gray path through green landscape from above",
+      "transportModes": [
+        "walking",
+        "bicycle"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "trail",
+        "greenway",
+        "multi-use",
+        "recreational",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A multi-use trail viewed from drone altitude. A smooth paved path roughly 3 to 4 meters wide winds through a green landscape corridor. The surface is pale gray asphalt or concrete with a yellow center line separating directional traffic. The trail edges have a narrow gravel or grass shoulder. Mature trees line both sides creating a dappled shade canopy over the path. Open meadow or lawn stretches beyond the tree line. Benches and mile markers appear as tiny dots at intervals. A small trailhead parking area may be visible at an access point. From above, the trail reads as a smooth pale ribbon threading through alternating stretches of tree canopy shadow and sunlit green.",
+        "movementHierarchy": "Shared walking and cycling — recreational and commuter movement",
+        "surfaceType": "Smooth asphalt or concrete with yellow center line, gravel shoulders",
+        "plantingCharacter": "Mature deciduous trees flanking both sides, meadow or lawn beyond",
+        "edgeConditions": "Gravel shoulders, tree-lined corridor, benches at intervals",
+        "publicRealm": "Recreational greenway corridor through natural or park setting"
+      },
+      "prompt": {
+        "subject": "Aerial view of a paved multi-use trail winding through a green corridor",
+        "details": [
+          "Smooth pale paved path roughly 3 to 4 meters wide",
+          "Yellow center line separating directional traffic",
+          "Gravel or grass shoulders along trail edges",
+          "Mature trees lining both sides creating dappled canopy shade",
+          "Open meadow or lawn stretching beyond the tree line",
+          "Pale ribbon threading through alternating canopy shadow and sunlit green"
+        ],
+        "negative": [
+          "No motorized vehicles",
+          "No road lane markings",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "mobility_profile": "pedestrian_first",
         "transport_modes": [
           "walking",
-          "transit"
+          "bicycle"
         ],
-        "width": 14,
+        "width": 4,
         "lane_count": 2,
         "volume": "medium",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
         "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 2,
+        "priority_cycling": 1,
+        "priority_transit": 4,
         "priority_auto": 4
-      }
+      },
+      "thumbnailUrl": "/archetypes/streets/multi-use-trail-greenway/hero.png"
     },
     {
-      "id": "amsterdam_canal_street",
-      "shadeId": "#737373",
-      "title": "Amsterdam Canal Street",
-      "aestheticCategory": "cycling_first",
-      "description": "Amsterdam Canal Street corridor archetype with premium public-realm detail and legible multimodal structure",
+      "id": "pedestrian_promenade",
+      "title": "Pedestrian Promenade / Paseo",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A wide pedestrian-only promenade with decorative paving, central trees, café seating, and no vehicle access — a lively patterned walkway from above",
+      "transportModes": [
+        "walking"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "pedestrian",
+        "promenade",
+        "paseo",
+        "walking-street",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A pedestrian promenade viewed from drone altitude. A wide paved corridor roughly 12 to 20 meters across with no vehicle lanes. The paving is decorative — stone or tile in a pattern (herringbone, fan, or banded) in warm tones of beige, gray, and rust. A central row of mature plane trees or palms runs the length of the promenade, their canopies casting large circular shadows. Café and restaurant seating spills from building frontages as clusters of round table umbrellas in white or colored canvas. Street vendors or kiosks appear as small rectangular structures. Benches and ornamental lamp posts line the walking surface. From above, the promenade reads as a wide warm-toned patterned band with a green tree spine and colorful umbrella dots.",
+        "movementHierarchy": "Pedestrian only — high-volume walking corridor with café culture",
+        "surfaceType": "Decorative stone or tile paving in warm tones — herringbone or banded pattern",
+        "plantingCharacter": "Central row of mature plane trees or palms with broad canopy",
+        "edgeConditions": "Active café frontages with umbrella seating, shop entrances, vendor kiosks",
+        "publicRealm": "Vibrant pedestrian social corridor with dining and shopping"
+      },
+      "prompt": {
+        "subject": "Aerial view of a wide pedestrian promenade with decorative paving and café seating",
+        "details": [
+          "Wide paved corridor with no vehicle lanes",
+          "Decorative stone paving in warm tones — herringbone or banded pattern",
+          "Central row of mature trees with large circular canopy shadows",
+          "Café umbrella clusters in white or colored canvas along building edges",
+          "Ornamental lamp posts as small circles with long shadows",
+          "Warm-toned patterned band with green tree spine and colorful umbrella dots"
+        ],
+        "negative": [
+          "No vehicle lanes or car traffic",
+          "No asphalt paving",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "walking_only",
+        "transport_modes": [
+          "walking"
+        ],
+        "width": 16,
+        "lane_count": 1,
+        "volume": "medium",
+        "road_surface": "paver",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/pedestrian-promenade-paseo/hero.png"
+    },
+    {
+      "id": "woonerf_shared_street",
+      "title": "Woonerf / Shared Street",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A Dutch-style woonerf or shared street where pedestrians, cyclists, and slow vehicles share a single flush surface with no curbs — a textured living street from above",
       "transportModes": [
         "walking",
         "bicycle",
@@ -219,549 +692,62 @@
       ],
       "volume": "low",
       "generationTags": [
-        "amsterdam",
-        "streets-pathways",
-        "cycling-first"
+        "woonerf",
+        "shared-street",
+        "slow",
+        "flush",
+        "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Amsterdam Canal Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "A woonerf or shared street viewed from drone altitude. A single flush surface — no curbs, no separated sidewalks — with mixed paving materials creating zones: brick pavers for the main surface, stone accents at crossings, permeable pavers around tree pits. Trees, planters, and bollards are placed in a deliberate chicane pattern to slow vehicle movement. Children playing, cyclists, and slow-moving cars share the same surface. From above, the street reads as a textured mosaic of warm-toned paving rather than the monotone gray of a standard road. Parked cars are angled informally between planting beds. String lights or festive elements may stretch between buildings.",
+        "movementHierarchy": "Ultra-low speed shared space — walking, cycling, and slow automobile coexist",
+        "surfaceType": "Mixed flush paving — brick, stone, permeable pavers, no curbs",
+        "plantingCharacter": "Trees and raised planters placed as traffic-calming chicane elements",
+        "edgeConditions": "Flush surface meeting building facades directly, informal car parking",
+        "publicRealm": "Living street where public life dominates over vehicle movement"
       },
       "prompt": {
-        "subject": "Strongly centered Amsterdam Canal Street corridor archetype",
+        "subject": "Aerial view of a woonerf shared street with flush mixed paving and no curbs",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
+          "Single flush surface with no raised curbs or separated sidewalks",
+          "Mixed paving materials — warm brick, stone accents, permeable pavers",
+          "Trees and planters placed in chicane pattern to slow vehicles",
+          "Warm-toned textured mosaic rather than monotone gray asphalt",
+          "Informally parked cars angled between planting beds",
+          "Bollards and seating elements integrated into the surface"
         ],
         "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
+          "No standard lane markings",
+          "No raised curbs",
+          "No traffic signals",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
-        "mobility_profile": "balanced",
+        "mobility_profile": "pedestrian_first",
         "transport_modes": [
           "walking",
           "bicycle",
           "automobile"
         ],
         "width": 10,
-        "lane_count": 2,
+        "lane_count": 1,
         "volume": "low",
         "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
+        "sidewalks": "none",
+        "has_sidewalks": false,
         "priority_pedestrian": 1,
         "priority_cycling": 2,
         "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "copenhagen_cycle_street",
-      "shadeId": "#808080",
-      "title": "Copenhagen Cycle Street",
-      "aestheticCategory": "cycling_first",
-      "description": "Copenhagen Cycle Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "copenhagen",
-        "streets-pathways",
-        "cycling-first"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Copenhagen Cycle Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "priority_auto": 3
       },
-      "prompt": {
-        "subject": "Strongly centered Copenhagen Cycle Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 9,
-        "lane_count": 1,
-        "volume": "medium",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "brownstone_residential_street",
-      "shadeId": "#8c8c8c",
-      "title": "Brownstone Residential Street",
-      "aestheticCategory": "shared_slow_streets",
-      "description": "Brownstone Residential Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "automobile"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "brownstone",
-        "streets-pathways",
-        "shared-slow-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Brownstone Residential Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Brownstone Residential Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "automobile"
-        ],
-        "width": 11,
-        "lane_count": 2,
-        "volume": "low",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "whistler_village_lane",
-      "shadeId": "#999999",
-      "title": "Whistler Village Lane",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Whistler Village Lane corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "whistler",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Whistler Village Lane corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "stone dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Whistler Village Lane corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 7,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "stone",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "english_garden_path",
-      "shadeId": "#4f4a4a",
-      "title": "English Garden Path",
-      "aestheticCategory": "scenic_greenways",
-      "description": "English Garden Path corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "english",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "English Garden Path corridor identity",
-        "movementHierarchy": "Modes: walking",
-        "surfaceType": "gravel dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered English Garden Path corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking"
-        ],
-        "width": 5,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "gravel",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "central_park_drive",
-      "shadeId": "#5c5757",
-      "title": "Central Park Drive",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Central Park Drive corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "automobile"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "central",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Central Park Drive corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Central Park Drive corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "automobile"
-        ],
-        "width": 14,
-        "lane_count": 2,
-        "volume": "medium",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "tokyo_shared_street",
-      "shadeId": "#696363",
-      "title": "Tokyo Shared Street",
-      "aestheticCategory": "shared_slow_streets",
-      "description": "Tokyo Shared Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "automobile"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "tokyo",
-        "streets-pathways",
-        "shared-slow-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Tokyo Shared Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Tokyo Shared Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "automobile"
-        ],
-        "width": 7,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "scandinavian_green_street",
-      "shadeId": "#767070",
-      "title": "Scandinavian Green Street",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Scandinavian Green Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "scandinavian",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Scandinavian Green Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Scandinavian Green Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit"
-        ],
-        "width": 13,
-        "lane_count": 2,
-        "volume": "medium",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "mediterranean_promenade",
-      "shadeId": "#837c7c",
-      "title": "Mediterranean Promenade",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Mediterranean Promenade corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "mediterranean",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Mediterranean Promenade corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "stone dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Mediterranean Promenade corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 12,
-        "lane_count": 1,
-        "volume": "medium",
-        "road_surface": "stone",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "modern_transit_boulevard",
-      "shadeId": "#8f8989",
-      "title": "Modern Transit Boulevard",
-      "aestheticCategory": "transit_priority",
-      "description": "Modern Transit Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "transit",
-        "automobile"
-      ],
-      "volume": "high",
-      "generationTags": [
-        "modern",
-        "streets-pathways",
-        "transit-priority"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Modern Transit Boulevard corridor identity",
-        "movementHierarchy": "Modes: walking, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Modern Transit Boulevard corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "transit",
-          "automobile"
-        ],
-        "width": 26,
-        "lane_count": 4,
-        "volume": "high",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
+      "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/hero.png"
     },
     {
       "id": "brt_corridor",
-      "shadeId": "#9c9696",
-      "title": "Bus Rapid Transit Corridor",
-      "aestheticCategory": "transit_priority",
-      "description": "Bus Rapid Transit Corridor corridor archetype with premium public-realm detail and legible multimodal structure",
+      "title": "BRT / Bus Rapid Transit Corridor",
+      "aestheticCategory": "transit_oriented",
+      "description": "A bus rapid transit corridor with dedicated center-running bus lanes, raised platforms, and general-purpose outer lanes — red-painted bus lanes from above",
       "transportModes": [
         "walking",
         "transit",
@@ -770,695 +756,32 @@
       "volume": "high",
       "generationTags": [
         "brt",
-        "streets-pathways",
-        "transit-priority"
+        "bus-rapid-transit",
+        "dedicated-lanes",
+        "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Bus Rapid Transit Corridor corridor identity",
-        "movementHierarchy": "Modes: walking, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "A BRT corridor viewed from drone altitude. A wide arterial roadway with center-running dedicated bus lanes painted red or terra-cotta — a bold colored stripe running down the center of the road. Raised median platforms at station stops with glass-canopy shelters as elongated translucent rectangles. General-purpose travel lanes flank the bus lanes on both sides. White lane markings separate all lanes. The bus lanes are separated by a raised curb or painted buffer from general traffic. Buses appear as long rectangular vehicles in the red lane. Sidewalks and trees on both outer edges. From above the corridor reads as a symmetric cross-section — dark outer lanes, red center lanes, pale platform rectangles at stations.",
+        "movementHierarchy": "Transit-priority corridor — dedicated bus lanes with automobile access on outer lanes",
+        "surfaceType": "Red-painted center bus lanes, asphalt outer lanes, concrete station platforms",
+        "plantingCharacter": "Street trees on outer sidewalks, no trees in the center median",
+        "edgeConditions": "Wide sidewalks, bus station platforms, general-purpose lanes",
+        "publicRealm": "High-capacity transit corridor with rapid service"
       },
       "prompt": {
-        "subject": "Strongly centered Bus Rapid Transit Corridor corridor archetype",
+        "subject": "Aerial view of a BRT corridor with red-painted center bus lanes and station platforms",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
+          "Wide arterial with center-running bus lanes painted red or terra-cotta",
+          "Raised median station platforms with glass canopy shelters",
+          "General-purpose travel lanes flanking the bus lanes",
+          "Buses as long rectangles in the red center lanes",
+          "White lane markings separating all lanes, raised curb dividers",
+          "Symmetric cross-section — dark outer, red center, pale platforms"
         ],
         "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "transit",
-          "automobile"
-        ],
-        "width": 24,
-        "lane_count": 4,
-        "volume": "high",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "mountain_scenic_parkway",
-      "shadeId": "#514848",
-      "title": "Mountain Scenic Parkway",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Mountain Scenic Parkway corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "automobile"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "mountain",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Mountain Scenic Parkway corridor identity",
-        "movementHierarchy": "Modes: walking, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Mountain Scenic Parkway corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "automobile"
-        ],
-        "width": 14,
-        "lane_count": 2,
-        "volume": "medium",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "dutch_woonerf",
-      "shadeId": "#5e5454",
-      "title": "Dutch Woonerf",
-      "aestheticCategory": "shared_slow_streets",
-      "description": "Dutch Woonerf corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "automobile"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "dutch",
-        "streets-pathways",
-        "shared-slow-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Dutch Woonerf corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Dutch Woonerf corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "automobile"
-        ],
-        "width": 8,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "campus_pedestrian_spine",
-      "shadeId": "#6b6161",
-      "title": "Campus Pedestrian Spine",
-      "aestheticCategory": "historic_walkways",
-      "description": "Campus Pedestrian Spine corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "campus",
-        "streets-pathways",
-        "historic-walkways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Campus Pedestrian Spine corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Campus Pedestrian Spine corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 10,
-        "lane_count": 1,
-        "volume": "medium",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "riverfront_promenade",
-      "shadeId": "#796d6d",
-      "title": "Riverfront Promenade",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Riverfront Promenade corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "riverfront",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Riverfront Promenade corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Riverfront Promenade corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 11,
-        "lane_count": 1,
-        "volume": "medium",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "industrial_greenway",
-      "shadeId": "#867979",
-      "title": "Industrial Greenway",
-      "aestheticCategory": "complete_streets",
-      "description": "Industrial Greenway corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit",
-        "automobile"
-      ],
-      "volume": "high",
-      "generationTags": [
-        "industrial",
-        "streets-pathways",
-        "complete-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Industrial Greenway corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit, automobile",
-        "surfaceType": "concrete dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Industrial Greenway corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit",
-          "automobile"
-        ],
-        "width": 22,
-        "lane_count": 4,
-        "volume": "high",
-        "road_surface": "concrete",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "main_street_complete_street",
-      "shadeId": "#928686",
-      "title": "Main Street Complete Street",
-      "aestheticCategory": "complete_streets",
-      "description": "Main Street Complete Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit",
-        "automobile"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "main",
-        "streets-pathways",
-        "complete-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Main Street Complete Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Main Street Complete Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit",
-          "automobile"
-        ],
-        "width": 18,
-        "lane_count": 3,
-        "volume": "medium",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "tram_priority_avenue",
-      "shadeId": "#9e9494",
-      "title": "Tram Priority Avenue",
-      "aestheticCategory": "transit_priority",
-      "description": "Tram Priority Avenue corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit"
-      ],
-      "volume": "high",
-      "generationTags": [
-        "tram",
-        "streets-pathways",
-        "transit-priority"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Tram Priority Avenue corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Tram Priority Avenue corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit"
-        ],
-        "width": 20,
-        "lane_count": 2,
-        "volume": "high",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "festival_pedestrian_street",
-      "shadeId": "#534646",
-      "title": "Festival Pedestrian Street",
-      "aestheticCategory": "historic_walkways",
-      "description": "Festival Pedestrian Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "festival",
-        "streets-pathways",
-        "historic-walkways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Festival Pedestrian Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle",
-        "surfaceType": "stone dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Festival Pedestrian Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle"
-        ],
-        "width": 9,
-        "lane_count": 1,
-        "volume": "medium",
-        "road_surface": "stone",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "neighborhood_school_street",
-      "shadeId": "#605252",
-      "title": "Neighborhood School Street",
-      "aestheticCategory": "shared_slow_streets",
-      "description": "Neighborhood School Street corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "automobile"
-      ],
-      "volume": "low",
-      "generationTags": [
-        "neighborhood",
-        "streets-pathways",
-        "shared-slow-streets"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Neighborhood School Street corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Neighborhood School Street corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "balanced",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "automobile"
-        ],
-        "width": 9,
-        "lane_count": 1,
-        "volume": "low",
-        "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 4,
-        "priority_auto": 2
-      }
-    },
-    {
-      "id": "civic_esplanade",
-      "shadeId": "#6e5e5e",
-      "title": "Civic Esplanade",
-      "aestheticCategory": "urban_boulevards",
-      "description": "Civic Esplanade corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "civic",
-        "streets-pathways",
-        "urban-boulevards"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Civic Esplanade corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Civic Esplanade corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit"
-        ],
-        "width": 16,
-        "lane_count": 2,
-        "volume": "medium",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "eco_mobility_greenway",
-      "shadeId": "#7c6a6a",
-      "title": "Eco-Mobility Greenway",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Eco-Mobility Greenway corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "bicycle",
-        "transit"
-      ],
-      "volume": "medium",
-      "generationTags": [
-        "eco",
-        "streets-pathways",
-        "scenic-greenways"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Eco-Mobility Greenway corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit",
-        "surfaceType": "paver dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Eco-Mobility Greenway corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
-        ]
-      },
-      "propertyPresets": {
-        "mobility_profile": "pedestrian_first",
-        "transport_modes": [
-          "walking",
-          "bicycle",
-          "transit"
-        ],
-        "width": 12,
-        "lane_count": 2,
-        "volume": "medium",
-        "road_surface": "paver",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 4
-      }
-    },
-    {
-      "id": "airport_connector_boulevard",
-      "shadeId": "#8a7575",
-      "title": "Airport Connector Boulevard",
-      "aestheticCategory": "urban_boulevards",
-      "description": "Airport Connector Boulevard corridor archetype with premium public-realm detail and legible multimodal structure",
-      "transportModes": [
-        "walking",
-        "transit",
-        "automobile"
-      ],
-      "volume": "high",
-      "generationTags": [
-        "airport",
-        "streets-pathways",
-        "urban-boulevards"
-      ],
-      "styleProfile": {
-        "corridorCharacter": "Airport Connector Boulevard corridor identity",
-        "movementHierarchy": "Modes: walking, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
-      },
-      "prompt": {
-        "subject": "Strongly centered Airport Connector Boulevard corridor archetype",
-        "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
-        ],
-        "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
+          "No rail tracks",
+          "No highway-scale infrastructure",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
@@ -1474,72 +797,329 @@
         "road_surface": "asphalt",
         "sidewalks": "both",
         "has_sidewalks": true,
-        "priority_pedestrian": 1,
+        "priority_pedestrian": 2,
         "priority_cycling": 4,
-        "priority_transit": 2,
+        "priority_transit": 1,
         "priority_auto": 2
-      }
+      },
+      "thumbnailUrl": "/archetypes/streets/brt-bus-rapid-transit-corridor/hero.png"
     },
     {
-      "id": "hillside_switchback_road",
-      "shadeId": "#958383",
-      "title": "Hillside Switchback Road",
-      "aestheticCategory": "scenic_greenways",
-      "description": "Hillside Switchback Road corridor archetype with premium public-realm detail and legible multimodal structure",
+      "id": "light_rail_avenue",
+      "title": "Light Rail / Tram Avenue",
+      "aestheticCategory": "transit_oriented",
+      "description": "A street with embedded light rail or tram tracks in a grassy median, flanked by travel lanes and sidewalks — steel rails in a green strip from above",
       "transportModes": [
         "walking",
+        "bicycle",
+        "transit",
         "automobile"
       ],
-      "volume": "low",
+      "volume": "high",
       "generationTags": [
-        "hillside",
-        "streets-pathways",
-        "scenic-greenways"
+        "light-rail",
+        "tram",
+        "tracks",
+        "transit",
+        "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Hillside Switchback Road corridor identity",
-        "movementHierarchy": "Modes: walking, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "A light rail avenue viewed from drone altitude. A center median contains embedded rail tracks — two parallel steel lines glinting in sunlight running through a green grass or gravel-ballast strip. Station platforms appear as long raised rectangles with canopy shelters at stops. General-purpose traffic lanes run on both sides of the median. Overhead catenary wires may be visible as faint diagonal lines with support poles as small dots. Trees line the outer sidewalks. A tram vehicle appears as a long articulated shape on the tracks. From above, the avenue reads as a green-striped or gravel center band with glinting rail lines, flanked by dark road lanes and tree-lined sidewalks.",
+        "movementHierarchy": "Transit-priority with multimodal access — tram, walking, cycling, automobile",
+        "surfaceType": "Grass or gravel-ballast track bed in median, asphalt traffic lanes",
+        "plantingCharacter": "Grass in track bed, street trees on outer sidewalks",
+        "edgeConditions": "Wide sidewalks, trees, station platforms with shelters",
+        "publicRealm": "Civic transit avenue with rail as the organizing spine"
       },
       "prompt": {
-        "subject": "Strongly centered Hillside Switchback Road corridor archetype",
+        "subject": "Aerial view of a light rail avenue with tracks in a grassy center median",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
-          "Premium, believable urban design visualization quality"
+          "Center median with embedded rail tracks — two parallel steel lines in grass",
+          "Green grass strip in the track bed contrasting with dark asphalt lanes",
+          "Station platforms as long raised rectangles with canopy shelters",
+          "General-purpose traffic lanes on both sides of the median",
+          "Tram vehicle as long articulated shape on the tracks",
+          "Overhead catenary wire poles as small dots with faint wire lines"
         ],
         "negative": [
-          "No exaggerated perspective distortion",
-          "No cluttered unrelated backgrounds"
+          "No heavy freight rail",
+          "No highway-scale infrastructure",
+          "No text overlays"
         ]
       },
       "propertyPresets": {
         "mobility_profile": "balanced",
         "transport_modes": [
           "walking",
+          "bicycle",
+          "transit",
+          "automobile"
+        ],
+        "width": 26,
+        "lane_count": 4,
+        "volume": "high",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 3,
+        "priority_transit": 1,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/light-rail-tram-avenue/hero.png"
+    },
+    {
+      "id": "main_street_complete",
+      "title": "Main Street / Complete Street",
+      "aestheticCategory": "auto_oriented",
+      "description": "A traditional main street with on-street parking, wide sidewalks, street trees, bike sharrows, and active commercial frontage — a balanced downtown corridor from above",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "transit",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "main-street",
+        "complete-street",
+        "downtown",
+        "commercial",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A main street viewed from drone altitude. A two-lane roadway with parallel or angled on-street parking on both sides. Wide sidewalks with street trees in grates and commercial awnings extending from storefronts. The road surface is dark gray asphalt with white parking stall markings. Crosswalk zebra stripes at regular intersections. Bicycle sharrow markings in the travel lanes. A transit stop with a small shelter on one side. Building canopies and awnings in various colors create a lively edge pattern. From above, the main street reads as a dark road strip framed by the warm-toned sidewalks, colorful awning stripes, and rhythmic tree canopy dots.",
+        "movementHierarchy": "Balanced complete street — walking, cycling, transit, and automobile each accommodated",
+        "surfaceType": "Asphalt roadway with parking markings, wide concrete sidewalks",
+        "plantingCharacter": "Street trees in grates at regular intervals, flower baskets on light poles",
+        "edgeConditions": "Wide sidewalks, commercial awnings, on-street parking, transit shelter",
+        "publicRealm": "Active downtown commercial corridor with strong pedestrian life"
+      },
+      "prompt": {
+        "subject": "Aerial view of a main street with on-street parking, sidewalks, and commercial frontage",
+        "details": [
+          "Two-lane roadway with parallel or angled on-street parking both sides",
+          "Wide sidewalks with street trees in grates and commercial awnings",
+          "White parking stall markings and crosswalk zebra stripes",
+          "Bicycle sharrow markings in travel lanes",
+          "Transit stop with small shelter on one side",
+          "Colorful building awnings and storefronts framing the road"
+        ],
+        "negative": [
+          "No highway-scale width",
+          "No barren empty lots",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "transit",
+          "automobile"
+        ],
+        "width": 18,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 3,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/main-street-complete-street/hero.png"
+    },
+    {
+      "id": "campus_pedestrian_spine",
+      "title": "Campus Pedestrian Spine",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A wide landscaped pedestrian spine through a campus or institutional district with formal tree alleys, seating, and cross-paths — a green axial corridor from above",
+      "transportModes": [
+        "walking",
+        "bicycle"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "campus",
+        "pedestrian",
+        "spine",
+        "institutional",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A campus pedestrian spine viewed from drone altitude. A wide formal walkway — 8 to 12 meters across — of pale stone or concrete paving flanked by double rows of mature deciduous trees forming a continuous canopy alley. Benches and low walls provide seating at regular intervals. Cross-paths branch off to adjacent buildings. Open lawn panels stretch beyond the tree rows. Bicycle racks as small metallic clusters near building entrances. The paving may feature a banded or medallion pattern at intersections. From above, the spine reads as a pale band framed by two parallel rows of dark green canopy, with lawn panels on both sides.",
+        "movementHierarchy": "Pedestrian and bicycle priority — the organizing movement spine of the campus",
+        "surfaceType": "Pale stone or concrete paving with banded accent patterns",
+        "plantingCharacter": "Double rows of mature deciduous trees forming continuous canopy alley",
+        "edgeConditions": "Open lawn panels, cross-path branches to buildings, bike racks",
+        "publicRealm": "Formal campus circulation spine with social seating and gathering"
+      },
+      "prompt": {
+        "subject": "Aerial view of a campus pedestrian spine with formal tree alleys and stone paving",
+        "details": [
+          "Wide formal walkway of pale stone or concrete paving",
+          "Double rows of mature deciduous trees forming continuous canopy alley",
+          "Benches and low walls at regular intervals as small rectangles",
+          "Cross-paths branching off to adjacent buildings",
+          "Open lawn panels stretching beyond the tree rows",
+          "Pale band framed by two parallel rows of dark green canopy"
+        ],
+        "negative": [
+          "No vehicle traffic on the spine",
+          "No parking lots adjacent",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "bicycle"
+        ],
+        "width": 10,
+        "lane_count": 1,
+        "volume": "medium",
+        "road_surface": "paver",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/hero.png"
+    },
+    {
+      "id": "scenic_parkway",
+      "title": "Scenic Parkway / Park Drive",
+      "aestheticCategory": "auto_oriented",
+      "description": "A curving scenic parkway through a park with generous tree setbacks, grass shoulders, and no commercial development — a winding road through green from above",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "scenic",
+        "parkway",
+        "curving",
+        "park-drive",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A scenic parkway viewed from drone altitude. A narrow two-lane road curves gently through a park or wooded setting. The road surface is smooth dark asphalt with double yellow center lines and white edge lines. Generous grass shoulders and tree setbacks create a green buffer — no buildings, no curbs, no sidewalks close to the road. Mature deciduous and evergreen trees line both sides at irregular naturalistic spacing, their canopies partially overhanging the roadway. A parallel multi-use path may run alongside in the grass margin. From above, the parkway reads as a thin dark curve threading through a lush green landscape, with tree canopy shadows crossing the road surface.",
+        "movementHierarchy": "Low-speed scenic drive — walking and cycling on parallel paths, slow automobile",
+        "surfaceType": "Smooth asphalt with center and edge lines, wide grass shoulders",
+        "plantingCharacter": "Mature trees at irregular naturalistic spacing with generous setbacks",
+        "edgeConditions": "Wide grass shoulders, no curbs, no buildings, parallel multi-use path",
+        "publicRealm": "Scenic recreational driving and walking corridor through parkland"
+      },
+      "prompt": {
+        "subject": "Aerial view of a scenic parkway curving through a wooded park setting",
+        "details": [
+          "Narrow two-lane road curving gently through green landscape",
+          "Smooth dark asphalt with double yellow center and white edge lines",
+          "Generous grass shoulders and wide tree setbacks — no buildings",
+          "Mature trees at naturalistic spacing with canopy overhanging the road",
+          "Parallel multi-use path in the grass margin",
+          "Thin dark curve threading through lush green with canopy shadows"
+        ],
+        "negative": [
+          "No commercial development",
+          "No highway-scale width",
+          "No sidewalks or curbs",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
           "automobile"
         ],
         "width": 10,
         "lane_count": 2,
         "volume": "low",
         "road_surface": "asphalt",
-        "sidewalks": "both",
-        "has_sidewalks": true,
-        "priority_pedestrian": 1,
-        "priority_cycling": 4,
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 2,
+        "priority_cycling": 2,
         "priority_transit": 4,
-        "priority_auto": 2
-      }
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/scenic-parkway-park-drive/hero.png"
+    },
+    {
+      "id": "riverfront_promenade",
+      "title": "Riverfront Promenade",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A wide paved promenade along a river or waterfront with railing, lamp posts, and linear planting — a pale ribbon alongside dark water from above",
+      "transportModes": [
+        "walking",
+        "bicycle"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "riverfront",
+        "promenade",
+        "waterfront",
+        "linear",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A riverfront promenade viewed from drone altitude. A wide paved walkway runs parallel to a river or waterfront — the dark reflective water surface on one side, urban fabric on the other. The paving is pale gray or warm-toned stone with a linear joint pattern running lengthwise. A metal or stone railing along the water edge reads as a thin continuous line. Ornamental lamp posts at regular intervals appear as small circles with long thin shadows. A parallel bikeway may be striped alongside. Trees in linear planters or grates line the inland edge. Benches face the water at regular intervals. From above, the promenade reads as a pale linear band between dark water and green/urban edge.",
+        "movementHierarchy": "Pedestrian and bicycle — waterfront recreation and commuting",
+        "surfaceType": "Pale stone or concrete paving with linear joint pattern, metal railing at water edge",
+        "plantingCharacter": "Linear row of trees along inland edge, no planting on water side",
+        "edgeConditions": "Water railing, lamp posts, benches facing water, tree row on inland side",
+        "publicRealm": "Active waterfront promenade with scenic views and recreation"
+      },
+      "prompt": {
+        "subject": "Aerial view of a riverfront promenade running parallel to water",
+        "details": [
+          "Wide paved walkway of pale gray or warm stone running parallel to water",
+          "Dark reflective water surface on one side",
+          "Metal railing along water edge as thin continuous line",
+          "Ornamental lamp posts as small circles with long shadows",
+          "Trees in linear planters along the inland edge",
+          "Pale linear band between dark water and green or urban fabric"
+        ],
+        "negative": [
+          "No vehicle traffic on the promenade",
+          "No buildings on the walkway",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "bicycle"
+        ],
+        "width": 8,
+        "lane_count": 1,
+        "volume": "medium",
+        "road_surface": "paver",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/riverfront-promenade/hero.png"
     },
     {
       "id": "custom_streets_pathways",
-      "shadeId": "#a19191",
-      "title": "Custom Streets and Pathways",
-      "aestheticCategory": "custom",
-      "description": "Custom Streets and Pathways corridor archetype with premium public-realm detail and legible multimodal structure",
+      "title": "Custom Streets / Pathways",
+      "aestheticCategory": "auto_oriented",
+      "description": "A user-defined street or pathway with custom character — specify your own corridor vision",
       "transportModes": [
         "walking",
         "bicycle",
@@ -1552,18 +1132,18 @@
         "streets-pathways"
       ],
       "styleProfile": {
-        "corridorCharacter": "Custom Streets and Pathways corridor identity",
-        "movementHierarchy": "Modes: walking, bicycle, transit, automobile",
-        "surfaceType": "asphalt dominant section",
-        "plantingCharacter": "Structured canopy and edge planting",
-        "edgeConditions": "Active, walkable frontage edges",
-        "publicRealm": "Comfortable and legible corridor for daily use"
+        "corridorCharacter": "Custom corridor — user will define the specific street or pathway character through the description field",
+        "movementHierarchy": "User-defined transport modes and priorities",
+        "surfaceType": "User-defined surface material and treatment",
+        "plantingCharacter": "User-defined planting palette and street tree strategy",
+        "edgeConditions": "User-defined edge conditions and frontage character",
+        "publicRealm": "User-defined public realm quality and amenities"
       },
       "prompt": {
-        "subject": "Strongly centered Custom Streets and Pathways corridor archetype",
+        "subject": "Aerial view of a custom street or pathway",
         "details": [
-          "Movement hierarchy must be legible",
-          "Paving and edge conditions should be clear",
+          "Movement hierarchy must be legible from above",
+          "Paving and edge conditions should be clearly distinguished",
           "Premium, believable urban design visualization quality"
         ],
         "negative": [
@@ -1579,7 +1159,7 @@
           "transit",
           "automobile"
         ],
-        "width": 12,
+        "width": 14,
         "lane_count": 2,
         "volume": "medium",
         "road_surface": "asphalt",
@@ -1587,9 +1167,10 @@
         "has_sidewalks": true,
         "priority_pedestrian": 1,
         "priority_cycling": 2,
-        "priority_transit": 2,
-        "priority_auto": 2
-      }
+        "priority_transit": 3,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/hero.png"
     }
   ]
 }

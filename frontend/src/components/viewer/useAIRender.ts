@@ -777,6 +777,7 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
     'Transform each colored zone into its described landscape, perfectly filling the colored area.',
     'Maintain strict horizontal containment — treat the boundaries between zones as hard physical curbs.',
     'The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
+    'Do not generate any people, pedestrians, or human figures.',
     'Do not generate any buildings, walls, vertical structures, or rooftops.',
   );
 
@@ -1591,6 +1592,7 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
   // ── Containment + preservation instructions ──
   parts.push(
     'Maintain strict containment — each zone stays within its colored boundary. ' +
+    'Do not include any people, pedestrians, human figures, or crowds anywhere in the scene. ' +
     'Keep all satellite imagery outside the site boundary exactly as it is, preserving the original style, lighting, and composition.'
   );
 
@@ -1663,8 +1665,8 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(stylePreset.negative);
   }
 
-  // 2. Building containment negatives
-  parts.push('building extending beyond footprint, architecture outside polygon, walls outside boundary, building bleed into neighboring zone');
+  // 2. Building containment negatives + universal exclusions
+  parts.push('building extending beyond footprint, architecture outside polygon, walls outside boundary, building bleed into neighboring zone, people, pedestrians, human figures, faces, crowds, cyclists, joggers');
 
   // 3. Archetype-level negatives passed from the panel
   if (options.mapOverlayNegative?.trim()) {
