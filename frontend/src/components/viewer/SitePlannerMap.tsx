@@ -94,16 +94,23 @@ function getArchetypeVariantFromZone(zone: SiteZone): { archetypeId: string; var
  */
 function resolveZoneColor(zone: SiteZone): string {
   let baseColor: string;
-  const devType = zone.properties?.development_type as string | undefined;
-  if (devType) {
-    const apaColor = getColourForDevelopmentType(devType);
-    if (apaColor.label !== 'Unclassified') {
-      baseColor = apaColor.fill;
+
+  // Water features (park sub-category) get blue instead of green
+  const parkCategory = zone.properties?.green_space_aesthetic_category as string | undefined;
+  if (zone.zone_type === 'green_space' && parkCategory === 'water_features') {
+    baseColor = '#4A90D9'; // Water blue
+  } else {
+    const devType = zone.properties?.development_type as string | undefined;
+    if (devType) {
+      const apaColor = getColourForDevelopmentType(devType);
+      if (apaColor.label !== 'Unclassified') {
+        baseColor = apaColor.fill;
+      } else {
+        baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
+      }
     } else {
       baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
     }
-  } else {
-    baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
   }
 
   const info = getArchetypeVariantFromZone(zone);
@@ -125,6 +132,24 @@ function resolveZoneColor(zone: SiteZone): string {
   }
 
   return hslToHex(h + hueOffset, s, l + lightnessOffset);
+}
+
+/**
+ * Resolve the map label for a zone. Shows the archetype sub-category name
+ * instead of the generic zone type (e.g. "Minimalist Infill Townhouse" instead of "Building").
+ */
+function resolveZoneLabel(zone: SiteZone): string {
+  const props = zone.properties;
+  if (props) {
+    // Check for archetype labels (set when user picks a sub-category)
+    const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+    for (const prefix of PREFIXES) {
+      const label = props[`${prefix}_archetype_label`] as string | undefined;
+      if (label) return label;
+    }
+  }
+  // Fall back to zone name or zone type config label
+  return zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
 }
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
@@ -512,7 +537,7 @@ export function SitePlannerMap({
           properties: {
             id: zone.id,
             color: resolveZoneColor(zone),
-            label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
+            label: resolveZoneLabel(zone),
             zone_type: zone.zone_type,
             ...(zoneHeight != null && { height: zoneHeight }),
           },
@@ -537,7 +562,7 @@ export function SitePlannerMap({
         properties: {
           id: zone.id,
           color: resolveZoneColor(zone),
-          label: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
+          label: resolveZoneLabel(zone),
           zone_type: zone.zone_type,
           ...(height != null && { height }),
         },
@@ -1055,7 +1080,7 @@ export function SitePlannerMap({
               properties: {
                 id: z.id,
                 color: z.color || resolveZoneColor(z),
-                label: z.name || ZONE_TYPE_CONFIG[z.zone_type]?.label || z.zone_type,
+                label: resolveZoneLabel(z),
                 zone_type: z.zone_type,
                 ...(zoneHeight != null && { height: zoneHeight }),
               },
