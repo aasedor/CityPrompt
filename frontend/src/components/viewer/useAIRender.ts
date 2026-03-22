@@ -147,16 +147,16 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     label: 'Photo Realistic',
     strength: 0.55,
     prompt:
-      'ultra-photorealistic DSLR aerial photograph of a completed urban development, sharp focus, accurate brick stone glass and concrete materials with visible grain and texture, precise cast shadows from midday sun at 60 degrees, mature trees with individual leaf clusters, parked cars and street furniture, clear blue sky with small cumulus clouds, neutral 5500K white balance, high dynamic range, architectural photography, 8k',
-    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark',
+      'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping with mature trees showing individual leaf clusters. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography, high dynamic range, neutral 5500K white balance.',
+    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark, people, pedestrians, human figures',
   },
   {
     id: 'drone-photography',
     label: 'Drone Photo',
     strength: 0.58,
     prompt:
-      'professional DJI Mavic 3 drone photograph of completed urban development from 80 meters altitude, slight wide-angle barrel distortion at edges, deep depth of field with everything sharp, subtle atmospheric haze on distant objects, desaturated color from atmospheric scattering, comprehensive site context showing neighboring streets and buildings, real-estate aerial survey documentation style, construction-complete, 8k',
-    negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark',
+      'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Building situated within realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze on distant objects, deep depth of field with everything sharp. High-resolution aerial photography, construction-complete, 8k.',
+    negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark, people, pedestrians',
   },
 
   // ── Technical / Planning ──────────────────────────────────────────────
@@ -165,16 +165,16 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     label: 'Massing Study',
     strength: 0.48,
     prompt:
-      'architectural white massing model, every surface is uniform matte white plaster with zero material texture, no windows no doors no detail, pure clean geometric volumes showing only mass and proportion, soft studio lighting from upper left, gentle ambient occlusion shadows where forms meet, flat light grey ground plane, no trees no cars no people no color, white foam-board scale model under diffused light, design review presentation',
-    negative: 'photorealistic, color, materials, brick, glass, wood, vegetation, trees, people, cars, detailed, textured, realistic, low quality, blurry',
+      'Architectural massing study rendered entirely as plain untextured matte white blocks on a neutral grey background. No windows, no doors, no material details. Focus strictly on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting with sharp directional sunlight showing deep shadows where forms meet. Minimalist architectural diagram, white foam-board scale model style.',
+    negative: 'photorealistic, color, materials, brick, glass, wood, vegetation, trees, people, cars, detailed, textured, realistic, windows, doors, low quality, blurry',
   },
   {
     id: 'site-plan',
     label: 'Site Plan',
     strength: 0.62,
     prompt:
-      'professional architectural site plan rendered from directly above in perfect nadir top-down orthographic projection, buildings shown as flat roof footprints with subtle shadow indicating height, trees as circular dark-green canopy blobs viewed from above, roads as clean grey strips, landscaping areas in matte green, water features in blue, paving patterns visible, clear figure-ground contrast, planning document quality',
-    negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, low quality, blurry, noisy, text, watermark',
+      'Top-down 2D architectural site plan in strict orthographic projection looking straight down. Clean architectural linework with soft flat pastel colors. Stylized trees depicted as simple overlapping green circles viewed from above. Paved pathways in light grey, defined property lines, crisp shadows indicating building height. Roads as clean strips, landscaping in matte green, water features in blue. Professional urban planning drawing quality.',
+    negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, detailed buildings, low quality, blurry, noisy, text, watermark',
   },
 
   // ── Artistic / Hand-Rendered ──────────────────────────────────────────
@@ -183,47 +183,47 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     label: 'Ink Wash',
     strength: 0.82,
     prompt:
-      'architectural ink wash rendering on rice paper, bold confident calligraphic brushstrokes defining building edges and structure, translucent grey and sepia ink washes pooling organically in shadow areas, wet ink bleeding softly at edges creating atmospheric depth, white paper left untouched for sky and highlights, spontaneous fluid quality with intentional drip marks, ink splatter accents for vegetation and texture, varying line weight from thick structural strokes to delicate detail lines, East Asian sumi-e influenced architectural rendering, gallery-quality hand-painted study',
-    negative: 'photorealistic, photograph, digital, 3D render, perfect lines, computer generated, neon colors, cartoon, low quality, blurry',
+      'Expressive architectural ink wash painting on heavy textured watercolor paper. Monochromatic black and grey tones with diluted ink gradients creating atmospheric perspective. Loose and fluid brushstrokes with bold confident calligraphic strokes defining edges. Wet ink bleeding softly at boundaries, white paper left untouched for sky and highlights. Ink splatter accents for vegetation, varying line weight from thick structural strokes to delicate details. Moody, artistic, and conceptual architectural illustration.',
+    negative: 'photorealistic, photograph, digital, 3D render, perfect lines, computer generated, neon colors, cartoon, color, vibrant, low quality, blurry',
   },
   {
     id: 'charcoal',
     label: 'Charcoal',
     strength: 0.84,
     prompt:
-      'rich monochromatic charcoal drawing on heavyweight textured paper, full tonal range from bright white paper to deep velvety black charcoal, soft blended smudged areas for shadows and atmosphere, sharp charcoal edge lines for architectural definition, dramatic directional side-lighting revealing three-dimensional form, visible paper grain and charcoal particle texture throughout, sculptural modeling of building volumes through carefully controlled tone, atmospheric perspective with distant elements fading lighter, eraser marks creating highlights and light rays, fine art gallery-quality architectural charcoal study',
-    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, low quality, blurry',
+      'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
+    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, smooth, clean lines, low quality, blurry',
   },
   {
     id: 'marker-render',
     label: 'Marker Render',
     strength: 0.76,
     prompt:
-      'architectural marker rendering on smooth bleedproof marker paper, translucent layered Copic marker strokes with visible overlap creating tonal depth, warm and cool color contrasts, rapid gestural confident linework in fine-tip black pen over marker fills, selective areas of high detail dissolving into loose suggestive strokes at edges, marker bleed-through effects and color mixing where strokes overlap, white highlights left as bare paper or added with white gel pen, vibrant saturated palette with greens for landscape and warm tones for buildings, energetic professional design studio sketch presentation quality',
-    negative: 'photorealistic, photograph, digital, 3D render, watercolor bleeding, pencil shading, oil paint, low quality, blurry',
+      'Traditional architectural marker rendering with classic Copic marker style. Crisp fine-liner black ink outlines overlaid with layered transparent color strokes showing visible marker overlap and bleed effects. Bright optimistic lighting, vibrant saturated palette with warm and cool contrasts. Stylized architectural entourage and simplified trees. Selective areas of high detail dissolving into loose suggestive strokes at edges. White gel pen highlights on bare paper. Professional design presentation sketch aesthetic.',
+    negative: 'photorealistic, photograph, digital, 3D render, watercolor bleeding, pencil shading, oil paint, dull colors, low quality, blurry',
   },
   {
     id: 'isometric',
     label: 'Isometric',
     strength: 0.75,
     prompt:
-      'clean isometric vector illustration of urban development, perfect 30-degree axonometric projection with zero perspective distortion, flat solid fill colors with crisp hard edges, thin precise black outlines on every surface edge, no gradients no shading no shadows, simplified geometric building forms with clear readable shapes, limited modern color palette of muted blues greens greys and warm accents, trees as simple geometric cones and spheres, roads as clean flat strips, contemporary tech-company infographic illustration style, editorial design quality',
-    negative: 'photorealistic, photograph, perspective, vanishing point, gradients, shading, shadows, texture, painterly, sketch, low quality, blurry',
+      'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Rendered in smooth matte pastel colors with crisp hard edges and thin precise black outlines on every surface edge. No gradients, no shading, no cast shadows. Clear spatial layout with simplified geometric building forms. Vector-art aesthetic, highly detailed and precise. Contemporary tech-company infographic style, editorial design quality.',
+    negative: 'photorealistic, photograph, perspective, vanishing point, gradients, shading, realistic shadows, texture, painterly, sketch, rough, low quality, blurry',
   },
   {
     id: 'woodblock',
     label: 'Wood Block',
     strength: 0.81,
     prompt:
-      'traditional Japanese woodblock print style architectural scene, ukiyo-e aesthetic with bold black outlines defining all architectural forms, limited palette of 4-6 flat colors with crisp clean separation between each color block, zero gradation or blending within color areas, graphic layered composition creating depth through overlapping color planes, strong decorative quality with patterned sky or water elements, architecture rendered as elegant simplified forms integrated into landscape composition, visible wood-grain texture from printing block, Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print',
-    negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, low quality, blurry',
+      'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
+    negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, smooth, modern, low quality, blurry',
   },
   {
     id: 'watercolour',
     label: 'Water Colour',
     strength: 0.85,
     prompt:
-      'watercolour painting on cold-pressed Arches textured paper, transparent luminous pigment washes with white paper glowing through as highlights, soft wet-on-wet bleeding edges where colors merge organically, visible rough paper grain texture under every brushstroke, pigment granulation and sedimentation creating natural stone-like textures in shadows, selective fine detail at building focal point dissolving into loose atmospheric washes at periphery, muted earth-tone palette with sage green ochre burnt sienna and ultramarine blue accents, faint underlying pencil construction lines visible beneath washes, wet-on-wet bloom effects and cauliflower edges where water pooled, deliberate unpainted white paper areas for light and sky, hand-painted architectural competition entry by a master watercolourist',
+      'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
     negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
   },
 ];
@@ -242,52 +242,52 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   photorealistic: {
     id: 'photorealistic',
     label: 'Photo Realistic',
-    prompt: 'Photorealistic aerial rendering. Accurate material textures with visible grain, precise cast shadows, realistic mature vegetation, parked cars and street furniture. DSLR-quality, sharp focus, neutral 5500K white balance, high dynamic range. 8k architectural photography.',
+    prompt: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping with mature trees showing individual leaf clusters. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography, high dynamic range, neutral 5500K white balance.',
   },
   'drone-photography': {
     id: 'drone-photography',
     label: 'Drone Photo',
-    prompt: 'Professional DJI Mavic 3 drone photograph from 80m altitude. Deep depth of field, subtle atmospheric haze on distant objects, desaturated color from atmospheric scattering, real-estate aerial survey documentation quality. Construction-complete, 8k.',
+    prompt: 'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Building situated within realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze on distant objects, deep depth of field with everything sharp. High-resolution aerial photography, construction-complete, 8k.',
   },
   'massing-study': {
     id: 'massing-study',
     label: 'Massing Study',
-    prompt: 'White massing model. Every surface uniform matte white plaster, zero material texture, no windows no doors. Pure geometric volumes showing mass and proportion. Soft studio lighting, gentle ambient occlusion shadows where forms meet. No trees, no cars, no people, no color.',
+    prompt: 'Architectural massing study rendered entirely as plain untextured matte white blocks on a neutral grey background. No windows, no doors, no material details. Focus strictly on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting with sharp directional sunlight showing deep shadows where forms meet. Minimalist architectural diagram, white foam-board scale model style.',
   },
   'site-plan': {
     id: 'site-plan',
     label: 'Site Plan',
-    prompt: 'Professional top-down orthographic site plan. Buildings as flat roof footprints with subtle height shadow. Trees as circular dark-green canopy blobs. Roads as clean grey strips. Landscaping in matte green, water in blue. Clear figure-ground contrast, planning document quality.',
+    prompt: 'Top-down 2D architectural site plan in strict orthographic projection looking straight down. Clean architectural linework with soft flat pastel colors. Stylized trees depicted as simple overlapping green circles viewed from above. Paved pathways in light grey, defined property lines, crisp shadows indicating building height. Roads as clean strips, landscaping in matte green, water features in blue. Professional urban planning drawing quality.',
   },
   'ink-wash': {
     id: 'ink-wash',
     label: 'Ink Wash',
-    prompt: 'Architectural ink wash rendering on rice paper. Bold confident calligraphic brushstrokes defining edges, translucent grey and sepia ink washes pooling in shadow areas, wet ink bleeding softly at boundaries. White paper for sky and highlights. Varying line weight, ink splatter accents for vegetation. Sumi-e influenced, gallery-quality hand-painted architectural study.',
+    prompt: 'Expressive architectural ink wash painting on heavy textured watercolor paper. Monochromatic black and grey tones with diluted ink gradients creating atmospheric perspective. Loose and fluid brushstrokes with bold confident calligraphic strokes defining edges. Wet ink bleeding softly at boundaries, white paper left untouched for sky and highlights. Ink splatter accents for vegetation, varying line weight from thick structural strokes to delicate details. Moody, artistic, and conceptual architectural illustration.',
   },
   charcoal: {
     id: 'charcoal',
     label: 'Charcoal',
-    prompt: 'Rich monochromatic charcoal drawing on textured paper. Full tonal range from white paper to deep velvety black. Soft blended smudged shadows, sharp edge lines for architecture. Dramatic side-lighting revealing 3D form. Visible paper grain and charcoal texture. Eraser highlights and light rays. Fine art gallery-quality architectural charcoal study.',
+    prompt: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
   },
   'marker-render': {
     id: 'marker-render',
     label: 'Marker Render',
-    prompt: 'Architectural Copic marker rendering on bleedproof paper. Translucent layered marker strokes with visible overlap, warm and cool color contrasts. Fine-tip black pen linework over marker fills. Selective detail dissolving into loose strokes at edges. White gel pen highlights. Vibrant saturated palette. Energetic professional design studio sketch quality.',
+    prompt: 'Traditional architectural marker rendering with classic Copic marker style. Crisp fine-liner black ink outlines overlaid with layered transparent color strokes showing visible marker overlap and bleed effects. Bright optimistic lighting, vibrant saturated palette with warm and cool contrasts. Stylized architectural entourage and simplified trees. Selective areas of high detail dissolving into loose suggestive strokes at edges. White gel pen highlights on bare paper. Professional design presentation sketch aesthetic.',
   },
   isometric: {
     id: 'isometric',
     label: 'Isometric',
-    prompt: 'Clean isometric vector illustration. Perfect 30-degree axonometric projection, zero perspective distortion. Flat solid fill colors with crisp edges, thin black outlines on every surface. No gradients, no shading, no shadows. Simplified geometric forms, limited modern muted color palette. Contemporary tech-company infographic style, editorial design quality.',
+    prompt: 'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Rendered in smooth matte pastel colors with crisp hard edges and thin precise black outlines on every surface edge. No gradients, no shading, no cast shadows. Clear spatial layout with simplified geometric building forms. Vector-art aesthetic, highly detailed and precise. Contemporary tech-company infographic style, editorial design quality.',
   },
   woodblock: {
     id: 'woodblock',
     label: 'Wood Block',
-    prompt: 'Traditional Japanese woodblock print, ukiyo-e aesthetic. Bold black outlines defining all forms, limited palette of 4-6 flat colors with crisp separation. Zero gradation within color areas. Graphic layered composition, decorative patterned elements. Visible wood-grain texture. Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print.',
+    prompt: 'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
   },
   watercolour: {
     id: 'watercolour',
     label: 'Water Colour',
-    prompt: 'Watercolour painting on cold-pressed textured paper. Transparent luminous pigment washes with white paper glowing through as highlights. Soft wet-on-wet bleeding edges, visible paper grain. Pigment granulation in shadows. Selective detail dissolving into loose atmospheric washes. Muted earth tones with sage green and ochre. Faint pencil guidelines visible. Hand-painted competition entry by a master watercolourist.',
+    prompt: 'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
   },
 };
 
@@ -1239,6 +1239,85 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  * (#E03C31). Only used temporarily during AI rendering -- the zone's persisted
  * color in the database is never modified.
  */
+// ---------------------------------------------------------------------------
+// Variant color shifting helpers
+// ---------------------------------------------------------------------------
+
+/** Convert a hex color (#RRGGBB) to HSL [h: 0-360, s: 0-100, l: 0-100]. */
+function hexToHsl(hex: string): [number, number, number] {
+  const raw = hex.replace('#', '');
+  const r = parseInt(raw.substring(0, 2), 16) / 255;
+  const g = parseInt(raw.substring(2, 4), 16) / 255;
+  const b = parseInt(raw.substring(4, 6), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l * 100];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return [h * 360, s * 100, l * 100];
+}
+
+/** Convert HSL [h: 0-360, s: 0-100, l: 0-100] back to hex (#RRGGBB). */
+function hslToHex(h: number, s: number, l: number): string {
+  h = ((h % 360) + 360) % 360;
+  s = Math.max(0, Math.min(100, s)) / 100;
+  l = Math.max(0, Math.min(100, l)) / 100;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let r = 0, g = 0, b = 0;
+  if (h < 60) { r = c; g = x; b = 0; }
+  else if (h < 120) { r = x; g = c; b = 0; }
+  else if (h < 180) { r = 0; g = c; b = x; }
+  else if (h < 240) { r = 0; g = x; b = c; }
+  else if (h < 300) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+}
+
+/**
+ * Shift a base hex color slightly for a given variant index (0-3).
+ * Produces a visually related but distinguishable shade by adjusting
+ * lightness by [-8%, -3%, +3%, +8%] and hue by [-5, +5, -10, +10] degrees.
+ */
+function shiftColorForVariant(baseHex: string, variantIndex: number): string {
+  const lightnessShifts = [-8, -3, 3, 8];
+  const hueShifts = [-5, 5, -10, 10];
+  const idx = Math.min(variantIndex, lightnessShifts.length - 1);
+  const [h, s, l] = hexToHsl(baseHex);
+  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
+}
+
+/**
+ * Determine the variant index for a building zone.
+ * Returns -1 if no variant is selected, or the 0-based index of the
+ * selected variant within the archetype's variants array.
+ */
+function getZoneVariantIndex(zone: SiteZone): number {
+  if (!zone.properties || !catalog) return -1;
+  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+  for (const prefix of PREFIXES) {
+    const selectedVariantId = zone.properties[`${prefix}_selected_variant_id`] as string | undefined;
+    if (!selectedVariantId) continue;
+    const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
+    if (!archetypeId) continue;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const entry = catalog.find((a: any) =>
+      a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
+    );
+    if (!entry?.variants || !Array.isArray(entry.variants)) continue;
+    const idx = entry.variants.findIndex((v: { id: string }) => v.id === selectedVariantId);
+    if (idx >= 0) return idx;
+  }
+  return -1;
+}
+
 /**
  * Development-type-based color palette.
  * Each building gets a color based on its development type so Gemini can
@@ -1381,10 +1460,24 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
         : item.entry.color; // absolute fallback: keep original
     }
 
+    // Apply a subtle color shift when the zone has a selected design variant
+    // so that different variants of the same archetype are visually distinguishable.
+    let variantIdx = -1;
+    if (zone) {
+      variantIdx = getZoneVariantIndex(zone);
+      if (variantIdx >= 0) {
+        const shifted = shiftColorForVariant(assignedColor, variantIdx);
+        // Only use the shifted color if it doesn't collide with an existing one
+        if (!usedColors.has(shifted.toLowerCase())) {
+          assignedColor = shifted;
+        }
+      }
+    }
+
     item.entry.color = assignedColor;
     _zoneColorOverrides.set(item.zoneId, assignedColor);
     usedColors.add(assignedColor.toLowerCase());
-    console.log(`[AIRender] Zone "${item.entry.zoneName}" → color ${assignedColor} (dev: ${devType || 'none'})`);
+    console.log(`[AIRender] Zone "${item.entry.zoneName}" → color ${assignedColor} (dev: ${devType || 'none'}${variantIdx >= 0 ? `, variant ${variantIdx}` : ''})`);
   }
 
   // With unique shade IDs, each archetype-assigned zone has its own color,
@@ -1505,7 +1598,26 @@ function colorName(hex: string): string {
     '#BC8F8F': 'rosy brown',
     '#bc8f8f': 'rosy brown',
   };
-  return genericMap[hex] || hex;
+  if (genericMap[hex]) return genericMap[hex];
+
+  // For dynamically shifted variant colors not in the map, generate a
+  // descriptive name from the HSL values so the prompt reads naturally.
+  try {
+    const [h, , l] = hexToHsl(hex);
+    const lightness = l < 35 ? 'dark ' : l > 65 ? 'light ' : '';
+    let hueName = 'brown';
+    if (h < 15 || h >= 345) hueName = 'red';
+    else if (h < 45) hueName = 'orange';
+    else if (h < 65) hueName = 'amber';
+    else if (h < 80) hueName = 'gold';
+    else if (h < 150) hueName = 'green';
+    else if (h < 210) hueName = 'blue';
+    else if (h < 270) hueName = 'indigo';
+    else if (h < 330) hueName = 'purple';
+    return `${lightness}${hueName} (${hex})`;
+  } catch {
+    return hex;
+  }
 }
 
 /**
