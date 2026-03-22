@@ -36,7 +36,7 @@ export function RenderResultModal({
   progressMessage,
 }: RenderResultModalProps) {
   const handleDownload = useCallback(() => {
-    const url = fullResult?.imageUrl;
+    const url = fullResult?.imageUrl ?? (previews.length === 1 ? previews[0]?.imageUrl : null);
     if (!url) return;
     const a = document.createElement('a');
     a.href = url;
@@ -46,9 +46,11 @@ export function RenderResultModal({
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }, [fullResult]);
+  }, [fullResult, previews]);
 
-  const displayImage = fullResult?.imageUrl ?? (selectedIndex != null ? previews[selectedIndex]?.imageUrl : null);
+  // Auto-display the single preview when there's only one
+  const autoSelectedIndex = previews.length === 1 ? 0 : selectedIndex;
+  const displayImage = fullResult?.imageUrl ?? (autoSelectedIndex != null ? previews[autoSelectedIndex]?.imageUrl : null);
 
   return (
     <div
@@ -65,11 +67,11 @@ export function RenderResultModal({
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
             <h2 className="text-lg font-semibold text-white">
-              {fullResult ? 'Render Complete' : isGeneratingFull ? 'Generating Full Quality...' : 'Choose a Preview'}
+              {fullResult ? 'Render Complete' : isGeneratingFull ? 'Generating Full Quality...' : previews.length === 1 ? 'Render Complete' : 'Choose a Preview'}
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            {fullResult && (
+            {(fullResult || previews.length === 1) && (
               <button
                 onClick={handleDownload}
                 className="flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-amber-400"
@@ -97,7 +99,7 @@ export function RenderResultModal({
             <img
               src={displayImage}
               alt="AI Render"
-              className="max-h-[60vh] max-w-full rounded-lg object-contain shadow-xl"
+              className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-xl"
             />
           ) : (
             <div className="flex flex-col items-center gap-4 text-gray-500">
@@ -117,7 +119,8 @@ export function RenderResultModal({
           )}
         </div>
 
-        {/* Preview strip */}
+        {/* Preview strip — hide when single auto-selected preview */}
+        {previews.length > 1 && (
         <div className="border-t border-white/10 bg-gray-950/50 px-6 py-4">
           <div className="mb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
             {fullResult ? 'Original previews' : 'Select a preview to generate full quality'}
@@ -156,6 +159,7 @@ export function RenderResultModal({
             ))}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

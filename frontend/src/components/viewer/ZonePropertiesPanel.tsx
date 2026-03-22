@@ -827,16 +827,11 @@ const resolveOptionCategory = (
                   <option value="institutional_education">Education</option>
                   <option value="institutional_health">Health Care</option>
                 </optgroup>
+                <option value="hospitality">Hospitality</option>
                 <optgroup label="Industrial">
                   <option value="industrial_light">Light Industrial</option>
-                  <option value="industrial">General Industrial</option>
-                  <option value="industrial_heavy">Heavy Industrial</option>
-                  <option value="industrial_warehouse">Warehouse</option>
+                  <option value="industrial_warehouse">Warehouse / Adaptive Reuse</option>
                 </optgroup>
-                <option value="park_plaza">Park / Plaza</option>
-                <option value="recreational">Recreational</option>
-                <option value="open_space">Open Space</option>
-                <option value="other">Other</option>
               </select>
             </div>
             {/* Development Aesthetic */}
@@ -987,30 +982,6 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Tree Density</label>
-              <select
-                value={(props.tree_density_level as string) || 'medium'}
-                onChange={(e) => setProps((p) => ({ ...p, tree_density_level: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="sparse">Sparse</option>
-                <option value="medium">Medium</option>
-                <option value="dense">Dense</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Tree Density Value (0-1)</label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                max="1"
-                value={props.tree_density ?? config?.defaultProperties.tree_density ?? 0.3}
-                onChange={(e) => setProps((p) => ({ ...p, tree_density: parseFloat(e.target.value) || 0 }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-            </div>
             <div className="flex items-center justify-between">
               <label className="text-xs text-primary-950/50">Has Benches</label>
               <input
@@ -1037,33 +1008,6 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'road' && (
           <>
-            {/* Streets and Paths Modes */}
-            <div>
-              <label className="block text-xs text-primary-950/50">Streets and Paths Modes</label>
-              <div className="mt-1 grid grid-cols-2 gap-1.5">
-                {TRANSPORT_MODE_OPTIONS.map((mode) => {
-                  const active = selectedTransportModes.includes(mode.id);
-                  return (
-                    <button
-                      key={mode.id}
-                      type="button"
-                      onClick={() => toggleTransportMode(mode.id)}
-                      className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
-                        active
-                          ? 'border-primary-500 bg-primary-500/15 text-primary-500'
-                          : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
-                      }`}
-                      title={mode.description}
-                    >
-                      {mode.label}
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-1 text-[10px] text-primary-950/50">
-                Select one or more modes. Intersections and widths are auto-adjusted for functional design.
-              </p>
-            </div>
 
             {/* Transportation Aesthetic Category */}
             <div>
@@ -1101,114 +1045,7 @@ const resolveOptionCategory = (
               </div>
             </div>
 
-            {/* Mobility Profile */}
-            <div>
-              <label className="block text-xs text-primary-950/50">Mobility Profile</label>
-              <div className="mt-1 grid grid-cols-2 gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => applyRoadMobilityProfile('walking_only')}
-                  className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
-                    (props.mobility_profile as string) === 'walking_only'
-                      ? 'border-primary-500 bg-primary-500/15 text-primary-500'
-                      : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
-                  }`}
-                >
-                  Walk-Only
-                </button>
-                <button
-                  type="button"
-                  onClick={() => applyRoadMobilityProfile('pedestrian_first')}
-                  className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
-                    (props.mobility_profile as string) === 'pedestrian_first'
-                      ? 'border-primary-500 bg-primary-500/15 text-primary-500'
-                      : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
-                  }`}
-                >
-                  Ped First
-                </button>
-                <button
-                  type="button"
-                  onClick={() => applyRoadMobilityProfile('balanced')}
-                  className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
-                    (props.mobility_profile as string) === 'balanced'
-                      ? 'border-primary-500 bg-primary-500/15 text-primary-500'
-                      : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
-                  }`}
-                >
-                  Balanced
-                </button>
-                <button
-                  type="button"
-                  onClick={() => applyRoadMobilityProfile('vehicle_access')}
-                  className={`rounded border px-2 py-1 text-[10px] font-medium transition-colors ${
-                    (props.mobility_profile as string) === 'vehicle_access'
-                      ? 'border-primary-500 bg-primary-500/15 text-primary-500'
-                      : 'border-primary-950/[0.08] bg-primary-950/[0.04] text-primary-950/60 hover:bg-primary-950/[0.08]'
-                  }`}
-                >
-                  Vehicle Access
-                </button>
-              </div>
-              <p className="mt-1 text-[10px] text-primary-950/50">
-                Applies recommended priority and lane defaults. You can still fine-tune below.
-              </p>
-            </div>
 
-            {/* Mode Priority */}
-            <div>
-              <label className="block text-xs font-medium text-primary-950/60 mb-1">Mode Priority (1-4 rank)</label>
-              <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-                <div>
-                  <label className="block text-xs text-primary-950/50">Pedestrian</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="4"
-                    placeholder="--"
-                    value={(props.priority_pedestrian as number) ?? ''}
-                    onChange={(e) => setProps((p) => ({ ...p, priority_pedestrian: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-primary-950/50">Cycling</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="4"
-                    placeholder="--"
-                    value={(props.priority_cycling as number) ?? ''}
-                    onChange={(e) => setProps((p) => ({ ...p, priority_cycling: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-primary-950/50">Transit</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="4"
-                    placeholder="--"
-                    value={(props.priority_transit as number) ?? ''}
-                    onChange={(e) => setProps((p) => ({ ...p, priority_transit: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-primary-950/50">Automobiles</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="4"
-                    placeholder="--"
-                    value={(props.priority_auto as number) ?? ''}
-                    onChange={(e) => setProps((p) => ({ ...p, priority_auto: e.target.value ? parseInt(e.target.value) : undefined }))}
-                    className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-                  />
-                </div>
-              </div>
-            </div>
 
             {/* Volume */}
             <div>
@@ -1246,28 +1083,6 @@ const resolveOptionCategory = (
                 onChange={(e) => setProps((p) => ({ ...p, lane_count: parseInt(e.target.value) || 2 }))}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Sidewalks</label>
-              <select
-                value={
-                  props.sidewalks === 'left' ? 'left'
-                    : props.sidewalks === 'right' ? 'right'
-                    : props.sidewalks === 'none' || props.has_sidewalks === false ? 'none'
-                    : 'both'
-                }
-                onChange={(e) => setProps((p) => ({
-                  ...p,
-                  sidewalks: e.target.value,
-                  has_sidewalks: e.target.value !== 'none',
-                }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="both">Both Sides</option>
-                <option value="left">Left Only</option>
-                <option value="right">Right Only</option>
-                <option value="none">None</option>
-              </select>
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Road Surface</label>
@@ -1409,11 +1224,10 @@ const resolveOptionCategory = (
                   <option value="institutional_education">Education</option>
                   <option value="institutional_health">Health Care</option>
                 </optgroup>
+                <option value="hospitality">Hospitality</option>
                 <optgroup label="Industrial">
                   <option value="industrial_light">Light Industrial</option>
-                  <option value="industrial">General Industrial</option>
-                  <option value="industrial_heavy">Heavy Industrial</option>
-                  <option value="industrial_warehouse">Warehouse</option>
+                  <option value="industrial_warehouse">Warehouse / Adaptive Reuse</option>
                 </optgroup>
               </select>
             </div>

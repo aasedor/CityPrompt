@@ -176,8 +176,7 @@
       "description": "Brownstone Rowhouse Frontage archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Townhouse / Rowhouse",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "residential_multifamily"
       ],
       "generationTags": [
         "brownstone_rowhouse",
@@ -339,7 +338,7 @@
       "description": "Classic Brownstone Streetwall archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Townhouse / Rowhouse",
       "developmentTypes": [
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "brownstone_rowhouse",
@@ -475,7 +474,7 @@
           "id": "classic_brownstone_modern_infill",
           "label": "Contemporary Infill",
           "thumbnailUrl": "/archetypes/buildings/classic_brownstone_streetwall/variant_3.png",
-          "description": "Modern infill within a traditional streetwall — glass and steel facade with bronze-anodized frames respecting the cornice line and setback.",
+          "description": "Modern infill within a traditional streetwall â€” glass and steel facade with bronze-anodized frames respecting the cornice line and setback.",
           "facadeDetail": {
             "primaryMaterial": "floor-to-ceiling glass panels",
             "secondaryMaterial": "bronze-anodized aluminum mullions",
@@ -501,8 +500,7 @@
       "description": "Historical Brick Main Street archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Main Street Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "commercial_light"
       ],
       "generationTags": [
         "historical",
@@ -663,8 +661,7 @@
       "description": "Victorian Heritage Avenue archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Heritage Residential / Mixed Use",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "residential_duplex"
       ],
       "generationTags": [
         "historical",
@@ -826,8 +823,7 @@
       "description": "Contemporary Mid-Rise Residential archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mid-Rise Residential",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "residential_multifamily"
       ],
       "generationTags": [
         "contemporary_urban",
@@ -1001,7 +997,7 @@
       "description": "Contemporary Townhouse Courtyard archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Contemporary Townhouse",
       "developmentTypes": [
-        "residential"
+        "residential_duplex"
       ],
       "generationTags": [
         "contemporary_urban",
@@ -1163,7 +1159,7 @@
       "description": "Detached Contemporary Infill archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Detached Infill Residential",
       "developmentTypes": [
-        "residential"
+        "residential_single_family"
       ],
       "generationTags": [
         "contemporary_urban",
@@ -1325,7 +1321,7 @@
       "description": "Courtyard Family Housing archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Courtyard Housing",
       "developmentTypes": [
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "contemporary_urban",
@@ -1487,8 +1483,7 @@
       "description": "Modern Glass Office / Institutional archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Office / Institutional",
       "developmentTypes": [
-        "commercial",
-        "institutional"
+        "commercial_office"
       ],
       "generationTags": [
         "modernist",
@@ -1785,11 +1780,11 @@
           "id": "modernist_civic_glass_volume",
           "label": "Transparent Glass Volume",
           "thumbnailUrl": "/archetypes/buildings/modernist_civic_block/variant_3.png",
-          "description": "Fully glazed modernist civic block — a transparent volume revealing public functions inside, with minimal steel structure and night-time civic glow.",
+          "description": "Fully glazed modernist civic block â€” a transparent volume revealing public functions inside, with minimal steel structure and night-time civic glow.",
           "facadeDetail": {
             "primaryMaterial": "full-height structural glass walls",
             "secondaryMaterial": "slender steel cruciform columns",
-            "groundFloor": "continuous glass at grade — no visual barrier to public",
+            "groundFloor": "continuous glass at grade â€” no visual barrier to public",
             "colorScheme": "transparent glass, silver steel, warm interior light"
           },
           "roofDetail": {
@@ -1811,7 +1806,6 @@
       "description": "Mid-Century Modern Pavilion Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mid-Century Mixed Use",
       "developmentTypes": [
-        "mixed_use",
         "institutional"
       ],
       "generationTags": [
@@ -2297,8 +2291,7 @@
       "description": "Converted warehouse-style mixed-use building with exposed red brick, large steel-framed windows, and ground-floor retail",
       "buildingSubcategory": "Industrial Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "industrial_warehouse"
       ],
       "generationTags": [
         "industrial_brick",
@@ -2464,8 +2457,7 @@
       "description": "Adaptive Reuse Warehouse Lofts archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Loft Residential / Mixed Use",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "industrial_warehouse"
       ],
       "generationTags": [
         "industrial_brick",
@@ -2585,7 +2577,7 @@
           "facadeDetail": {
             "primaryMaterial": "exposed concrete frame with mushroom columns",
             "secondaryMaterial": "floor-to-ceiling glass infill between concrete bays",
-            "groundFloor": "open concrete colonnade with café tables",
+            "groundFloor": "open concrete colonnade with cafÃ© tables",
             "colorScheme": "raw concrete, clear glass, steel frames"
           },
           "roofDetail": {
@@ -2627,7 +2619,7 @@
       "description": "Scandinavian Urban Residential archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mid-Rise Residential",
       "developmentTypes": [
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "scandinavian_nordic",
@@ -2789,8 +2781,7 @@
       "description": "Nordic Timber Mid-Rise archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mid-Rise Residential",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "residential_multifamily"
       ],
       "generationTags": [
         "scandinavian_nordic",
@@ -2952,7 +2943,7 @@
       "description": "Mediterranean Villa / Estate archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Low Density Residential",
       "developmentTypes": [
-        "residential"
+        "residential_single_family"
       ],
       "generationTags": [
         "mediterranean",
@@ -3113,8 +3104,7 @@
       "description": "Mediterranean Arcade Mixed Use archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Main Street Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "mediterranean",
@@ -3229,10 +3219,10 @@
           "id": "med_arcade_catalan_modernista",
           "label": "Catalan Modernista",
           "thumbnailUrl": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_2.png",
-          "description": "Barcelona Modernista mixed-use with parabolic arches, colorful ceramic mosaic (trencadís), organic ironwork balconies, and undulating facade.",
+          "description": "Barcelona Modernista mixed-use with parabolic arches, colorful ceramic mosaic (trencadÃ­s), organic ironwork balconies, and undulating facade.",
           "facadeDetail": {
             "primaryMaterial": "carved stone with organic flowing forms",
-            "secondaryMaterial": "trencadís ceramic mosaic in floral patterns",
+            "secondaryMaterial": "trencadÃ­s ceramic mosaic in floral patterns",
             "groundFloor": "parabolic arched entries with wrought iron gates",
             "colorScheme": "sandstone, polychrome ceramic mosaic, organic ironwork"
           },
@@ -3275,9 +3265,7 @@
       "description": "Parametric Future Hub archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Innovation District",
       "developmentTypes": [
-        "commercial",
-        "institutional",
-        "mixed_use"
+        "commercial_office"
       ],
       "generationTags": [
         "futuristic",
@@ -3361,7 +3349,7 @@
             "colorScheme": "pearl white shell, warm interior glow through perforations"
           },
           "roofDetail": {
-            "form": "continuous flowing shell — no distinct roof line",
+            "form": "continuous flowing shell â€” no distinct roof line",
             "material": "GFRC panels continuing from walls seamlessly"
           },
           "shadeId": null,
@@ -3439,8 +3427,7 @@
       "description": "Autonomous Tech Campus archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Innovation Campus",
       "developmentTypes": [
-        "institutional",
-        "commercial"
+        "commercial_office"
       ],
       "generationTags": [
         "futuristic",
@@ -3602,8 +3589,7 @@
       "description": "Art Deco Setback Tower archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mid-High Rise Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "art_deco",
@@ -3724,7 +3710,7 @@
             "primaryMaterial": "polychrome glazed terra cotta in geometric patterns",
             "secondaryMaterial": "turquoise and gold chevron tile borders",
             "groundFloor": "colorful mosaic entry surround with bronze doors",
-            "colorScheme": "turquoise, gold, orange, cream — polychrome palette"
+            "colorScheme": "turquoise, gold, orange, cream â€” polychrome palette"
           },
           "roofDetail": {
             "form": "stepped pyramid crown with polychrome accents",
@@ -3765,8 +3751,7 @@
       "description": "Deco Theater Mainstreet archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Main Street Entertainment",
       "developmentTypes": [
-        "commercial",
-        "mixed_use"
+        "commercial_light"
       ],
       "generationTags": [
         "art_deco",
@@ -3885,7 +3870,7 @@
           "description": "Egyptian Revival theater with battered pylons, lotus column entry, winged sun disc ornament, and hieroglyphic-inspired geometric patterns.",
           "facadeDetail": {
             "primaryMaterial": "painted concrete in sand and gold tones",
-            "secondaryMaterial": "cast plaster Egyptian ornament — lotus columns, scarabs",
+            "secondaryMaterial": "cast plaster Egyptian ornament â€” lotus columns, scarabs",
             "groundFloor": "battered pylon entry with lotus-capital columns",
             "colorScheme": "sand gold, turquoise accents, black and gold ornament"
           },
@@ -3928,8 +3913,7 @@
       "description": "Traditional Vernacular Market Street archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Main Street Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "commercial_retail"
       ],
       "generationTags": [
         "traditional_vernacular",
@@ -4091,7 +4075,7 @@
       "description": "Vernacular Courtyard Housing archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Courtyard Housing",
       "developmentTypes": [
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "traditional_vernacular",
@@ -4191,7 +4175,7 @@
           "facadeDetail": {
             "primaryMaterial": "plain tadelakt (polished lime plaster) exterior",
             "secondaryMaterial": "ornate zellige mosaic and carved plaster inside courtyard",
-            "groundFloor": "plain wooden door in unadorned wall — hidden garden within",
+            "groundFloor": "plain wooden door in unadorned wall â€” hidden garden within",
             "colorScheme": "plain exterior, interior: turquoise zellige, carved white plaster"
           },
           "roofDetail": {
@@ -4253,7 +4237,7 @@
       "description": "Minimalist Courtyard Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Courtyard Housing",
       "developmentTypes": [
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "minimalist",
@@ -4332,11 +4316,11 @@
           "facadeDetail": {
             "primaryMaterial": "seamless white cement render",
             "secondaryMaterial": "frameless recessed glass slots",
-            "groundFloor": "flush glass entry — near-invisible door in white wall",
+            "groundFloor": "flush glass entry â€” near-invisible door in white wall",
             "colorScheme": "pure white, reflective water, minimal green"
           },
           "roofDetail": {
-            "form": "flat — indistinguishable from walls",
+            "form": "flat â€” indistinguishable from walls",
             "material": "white-rendered parapet merging with facade"
           },
           "shadeId": null,
@@ -4351,12 +4335,12 @@
           "description": "Board-formed concrete courtyard block with raked gravel zen garden, single specimen tree, and precise rectangular openings.",
           "facadeDetail": {
             "primaryMaterial": "smooth board-formed concrete (Tadao Ando style)",
-            "secondaryMaterial": "precisely cut rectangular window openings — no frames",
+            "secondaryMaterial": "precisely cut rectangular window openings â€” no frames",
             "groundFloor": "concrete threshold opening to raked gravel courtyard",
             "colorScheme": "raw concrete, raked white gravel, single green tree"
           },
           "roofDetail": {
-            "form": "flat concrete slab — seamless",
+            "form": "flat concrete slab â€” seamless",
             "material": "exposed concrete with hidden drainage"
           },
           "shadeId": null,
@@ -4414,7 +4398,7 @@
       "description": "Minimalist Infill Townhouse archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Contemporary Townhouse",
       "developmentTypes": [
-        "residential"
+        "residential_duplex"
       ],
       "generationTags": [
         "minimalist",
@@ -4475,7 +4459,7 @@
         "groundFloor": "flush pivot entry door (same material as facade), full-height glazed panel revealing interior stair",
         "upperFloors": "one or two precisely placed openings, material continuity wall-to-sky, deep window reveals",
         "cornice": "knife-edge parapet, invisible from street level",
-        "colorScheme": "monochromatic — either all dark brick, all white render, or all grey concrete"
+        "colorScheme": "monochromatic â€” either all dark brick, all white render, or all grey concrete"
       },
       "roofDetail": {
         "form": "flat with invisible parapet",
@@ -4489,11 +4473,11 @@
           "id": "minimalist_infill_glass_slot",
           "label": "Glass Slot House",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_0.png",
-          "description": "Ultra-narrow glass slot townhouse — full-height glazing on the street side, white-painted brick party walls, and a skylit stairwell visible from outside.",
+          "description": "Ultra-narrow glass slot townhouse â€” full-height glazing on the street side, white-painted brick party walls, and a skylit stairwell visible from outside.",
           "facadeDetail": {
             "primaryMaterial": "full-height structural glass front wall",
             "secondaryMaterial": "white-painted reclaimed brick side walls visible through glass",
-            "groundFloor": "flush glass door with no frame — entire front is glass",
+            "groundFloor": "flush glass door with no frame â€” entire front is glass",
             "colorScheme": "clear glass, white interior walls, warm wood floors"
           },
           "roofDetail": {
@@ -4529,15 +4513,15 @@
           "id": "minimalist_infill_brick_monolith",
           "label": "Brick Monolith",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_2.png",
-          "description": "Monolithic brick townhouse — single material from ground to roof, no trim, windows as precise cut-outs, and a single pivoting front door.",
+          "description": "Monolithic brick townhouse â€” single material from ground to roof, no trim, windows as precise cut-outs, and a single pivoting front door.",
           "facadeDetail": {
-            "primaryMaterial": "continuous dark brick — walls, reveals, sills all brick",
-            "secondaryMaterial": "none — pure monolithic brick expression",
-            "groundFloor": "large pivoting brick-faced door — barely visible closed",
+            "primaryMaterial": "continuous dark brick â€” walls, reveals, sills all brick",
+            "secondaryMaterial": "none â€” pure monolithic brick expression",
+            "groundFloor": "large pivoting brick-faced door â€” barely visible closed",
             "colorScheme": "uniform dark buff brick, frameless glass recessed 200mm"
           },
           "roofDetail": {
-            "form": "flat — brick parapet continues monolithic expression",
+            "form": "flat â€” brick parapet continues monolithic expression",
             "material": "brick parapet with hidden membrane behind"
           },
           "shadeId": null,
@@ -4549,10 +4533,10 @@
           "id": "minimalist_infill_concrete_cantilever",
           "label": "Concrete Cantilever",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_3.png",
-          "description": "Cantilevered concrete townhouse — upper floor projects dramatically over ground-floor glass, with board-formed texture and a single tree in front.",
+          "description": "Cantilevered concrete townhouse â€” upper floor projects dramatically over ground-floor glass, with board-formed texture and a single tree in front.",
           "facadeDetail": {
             "primaryMaterial": "board-formed concrete upper volume",
-            "secondaryMaterial": "fully glazed ground floor — structural glass supporting cantilever",
+            "secondaryMaterial": "fully glazed ground floor â€” structural glass supporting cantilever",
             "groundFloor": "transparent glass base with single concrete column",
             "colorScheme": "raw concrete above, glass below, single tree"
           },
@@ -4575,8 +4559,7 @@
       "description": "Parisian Mid-Rise archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Boulevard Mid-Rise",
       "developmentTypes": [
-        "mixed_use",
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "parisian",
@@ -4691,7 +4674,7 @@
           "id": "parisian_modern_insertion",
           "label": "Contemporary Parisian Infill",
           "thumbnailUrl": "/archetypes/buildings/parisian_midrise_block/variant_2.png",
-          "description": "Modern infill respecting Haussmann streetwall — glass and steel at setback, stone-clad base matching neighbors, planted terraces at mansard level.",
+          "description": "Modern infill respecting Haussmann streetwall â€” glass and steel at setback, stone-clad base matching neighbors, planted terraces at mansard level.",
           "facadeDetail": {
             "primaryMaterial": "limestone-clad lower floors matching adjacent Haussmann",
             "secondaryMaterial": "setback glass and metal upper floors",
@@ -4711,7 +4694,7 @@
           "id": "parisian_post_haussmann",
           "label": "Post-Haussmann Brick & Stone",
           "thumbnailUrl": "/archetypes/buildings/parisian_midrise_block/variant_3.png",
-          "description": "Post-Haussmann (1920s-30s) with brick upper floors, stone base, geometric iron balconies, and bow windows — transitioning to early modernism.",
+          "description": "Post-Haussmann (1920s-30s) with brick upper floors, stone base, geometric iron balconies, and bow windows â€” transitioning to early modernism.",
           "facadeDetail": {
             "primaryMaterial": "red-brown brick with stone banding at floor levels",
             "secondaryMaterial": "geometric art deco iron balconies",
@@ -4737,8 +4720,7 @@
       "description": "Parisian Boulevard Corner archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Boulevard Corner Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "parisian",
@@ -4876,7 +4858,7 @@
           "description": "Contemporary glass corner building respecting Parisian scale, with a dramatic full-height glass corner revealing the interior, limestone-clad flanking walls.",
           "facadeDetail": {
             "primaryMaterial": "limestone-clad solid flanking walls",
-            "secondaryMaterial": "full-height structural glass corner — no mullions at turn",
+            "secondaryMaterial": "full-height structural glass corner â€” no mullions at turn",
             "groundFloor": "glass corner retail space with views in two directions",
             "colorScheme": "cream limestone sides, transparent glass corner, warm glow"
           },
@@ -4899,8 +4881,7 @@
       "description": "Mountain / Alpine Chalet archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Lodge / Chalet Residential",
       "developmentTypes": [
-        "residential",
-        "hospitality"
+        "residential_single_family"
       ],
       "generationTags": [
         "mountain_alpine",
@@ -4976,7 +4957,7 @@
           "id": "alpine_swiss_traditional",
           "label": "Swiss Traditional Chalet",
           "thumbnailUrl": "/archetypes/buildings/mountain_alpine_chalet/variant_0.png",
-          "description": "Traditional Swiss chalet with wide overhanging eaves, carved timber balconies with geraniums, stone foundation, and decorative Lüftlmalerei painting.",
+          "description": "Traditional Swiss chalet with wide overhanging eaves, carved timber balconies with geraniums, stone foundation, and decorative LÃ¼ftlmalerei painting.",
           "facadeDetail": {
             "primaryMaterial": "weathered timber log and board construction",
             "secondaryMaterial": "carved timber balcony railings with geranium boxes",
@@ -4999,7 +4980,7 @@
           "description": "Contemporary Austrian alpine building with dark larch cladding, large picture windows framing mountain views, and a simple pitched roof.",
           "facadeDetail": {
             "primaryMaterial": "dark-stained larch vertical board cladding",
-            "secondaryMaterial": "large frameless picture windows — mountain view frames",
+            "secondaryMaterial": "large frameless picture windows â€” mountain view frames",
             "groundFloor": "concrete plinth merging into hillside with flush timber door",
             "colorScheme": "dark larch, frameless glass, concrete plinth, white snow"
           },
@@ -5016,9 +4997,9 @@
           "id": "alpine_bavarian_painted",
           "label": "Bavarian Painted Facade",
           "thumbnailUrl": "/archetypes/buildings/mountain_alpine_chalet/variant_2.png",
-          "description": "Bavarian painted chalet with Lüftlmalerei facade murals, carved timber shutters, flower-box balconies, and a steep gable with carved bargeboard.",
+          "description": "Bavarian painted chalet with LÃ¼ftlmalerei facade murals, carved timber shutters, flower-box balconies, and a steep gable with carved bargeboard.",
           "facadeDetail": {
-            "primaryMaterial": "lime-rendered walls with trompe-l'oeil Lüftlmalerei paintings",
+            "primaryMaterial": "lime-rendered walls with trompe-l'oeil LÃ¼ftlmalerei paintings",
             "secondaryMaterial": "carved timber shutters and window boxes",
             "groundFloor": "painted facade with carved timber entry door",
             "colorScheme": "painted murals, carved timber, bright flower boxes"
@@ -5062,7 +5043,6 @@
       "description": "Alpine Mixed-Use Lodge archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Lodge Mixed Use",
       "developmentTypes": [
-        "mixed_use",
         "hospitality"
       ],
       "generationTags": [
@@ -5225,8 +5205,7 @@
       "description": "Transit-Oriented Station Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "TOD Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "transit_oriented_contemporary",
@@ -5291,7 +5270,7 @@
         "colorScheme": "warm grey and silver panels, clear glass, bright wayfinding accents, green roof podium"
       },
       "roofDetail": {
-        "form": "flat at multiple levels — podium and tower",
+        "form": "flat at multiple levels â€” podium and tower",
         "material": "green roof on podium, membrane with solar on tower roof",
         "features": "rooftop amenity space, solar arrays, mechanical penthouse, transit canopy structure at ground level",
         "aerialAppearance": "tower rising from green-roofed podium, solar panels on tower roof, transit infrastructure below"
@@ -5388,8 +5367,7 @@
       "description": "Transit Podium Residential archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "TOD Residential",
       "developmentTypes": [
-        "residential",
-        "mixed_use"
+        "residential_multifamily"
       ],
       "generationTags": [
         "transit_oriented_contemporary",
@@ -5551,8 +5529,7 @@
       "description": "Glass Tower Modern archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "High-Rise Office / Mixed Use",
       "developmentTypes": [
-        "commercial",
-        "mixed_use"
+        "commercial_office"
       ],
       "generationTags": [
         "glass_tower_modern",
@@ -5690,14 +5667,14 @@
           "thumbnailUrl": "/archetypes/buildings/glass_tower_podium_modern/variant_3.png",
           "description": "Ultra-minimal dark glass tower with near-invisible mullions, a monolithic obsidian appearance, and a subtle slot entry at the base.",
           "facadeDetail": {
-            "primaryMaterial": "dark grey low-E glass — near-opaque from outside",
-            "secondaryMaterial": "recessed black aluminum mullions — near invisible",
+            "primaryMaterial": "dark grey low-E glass â€” near-opaque from outside",
+            "secondaryMaterial": "recessed black aluminum mullions â€” near invisible",
             "groundFloor": "understated slot entry in dark stone base",
             "colorScheme": "dark monolithic glass, black stone base, minimal"
           },
           "roofDetail": {
-            "form": "flat — clean termination with no crown",
-            "material": "dark glass parapet — seamless top edge"
+            "form": "flat â€” clean termination with no crown",
+            "material": "dark glass parapet â€” seamless top edge"
           },
           "shadeId": null,
           "palette": {
@@ -5714,7 +5691,7 @@
       "description": "Skyline Glass Office Cluster archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "High-Rise Office",
       "developmentTypes": [
-        "commercial"
+        "commercial_office"
       ],
       "generationTags": [
         "glass_tower_modern",
@@ -5775,7 +5752,7 @@
         "accentMaterial": "polished granite at base, decorative lighting at crown",
         "groundFloor": "interconnected lobby and retail at podium level, covered public plaza, water features",
         "upperFloors": "all-glass curtain wall with varied tints between towers, sky bridges connecting towers, expressed floor plates",
-        "cornice": "varied tower crowns — flat-top, angled, or illuminated",
+        "cornice": "varied tower crowns â€” flat-top, angled, or illuminated",
         "colorScheme": "reflective glass in blue-silver tones, white structure, polished stone base"
       },
       "roofDetail": {
@@ -5810,7 +5787,7 @@
           "id": "skyline_cluster_campus_low",
           "label": "Low-Rise Glass Campus",
           "thumbnailUrl": "/archetypes/buildings/skyline_glass_office_cluster/variant_1.png",
-          "description": "Horizontal glass office campus — 3-4 story interconnected glass pavilions around landscaped courtyards, with covered walkways and water features.",
+          "description": "Horizontal glass office campus â€” 3-4 story interconnected glass pavilions around landscaped courtyards, with covered walkways and water features.",
           "facadeDetail": {
             "primaryMaterial": "floor-to-ceiling clear glass walls",
             "secondaryMaterial": "white steel colonnade and walkway canopies",
@@ -5928,7 +5905,7 @@
       },
       "renderPrompt": {
         "mapOverlay": "Replace the colored building block with a photorealistic civic monumental institution. Keep the exact same building footprint and height. Bold contemporary civic building with monumental stone or concrete forms, large-scale glazed entry hall, public forecourt, and institutional gravitas. 4-8 storey. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
-        "roofView": "Replace the colored block viewed from above with a sculptural roof form — possibly green roof, dramatic overhang, or copper-clad geometric volume. Keep surrounding context exactly as-is.",
+        "roofView": "Replace the colored block viewed from above with a sculptural roof form â€” possibly green roof, dramatic overhang, or copper-clad geometric volume. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
       },
       "facadeDetail": {
@@ -5941,7 +5918,7 @@
         "colorScheme": "warm grey stone or concrete, clear glass main hall, bronze or corten accents"
       },
       "roofDetail": {
-        "form": "sculptural — cantilever, fold, or dramatic overhang",
+        "form": "sculptural â€” cantilever, fold, or dramatic overhang",
         "material": "standing-seam metal, copper, or green roof on flat sections",
         "features": "skylights to main hall, sculptural form visible from distance, concealed mechanical",
         "aerialAppearance": "distinctive sculptural roof form, possible copper or green surface, dramatic geometry"
@@ -5972,7 +5949,7 @@
           "id": "civic_monumental_modernist",
           "label": "Modernist Civic Monument",
           "thumbnailUrl": "/archetypes/buildings/civic_monumental_institution/variant_1.png",
-          "description": "Modernist monumental institution in concrete and glass — massive cantilevered volumes, open ground floor, and sculpture garden.",
+          "description": "Modernist monumental institution in concrete and glass â€” massive cantilevered volumes, open ground floor, and sculpture garden.",
           "facadeDetail": {
             "primaryMaterial": "board-formed concrete with massive cantilevers",
             "secondaryMaterial": "continuous strip glazing between concrete bands",
@@ -6012,7 +5989,7 @@
           "id": "civic_monumental_contemporary",
           "label": "Contemporary Civic Landmark",
           "thumbnailUrl": "/archetypes/buildings/civic_monumental_institution/variant_3.png",
-          "description": "Bold contemporary civic building as a landmark — dramatic cantilevers, gold-colored cladding, public roof terrace, and transparent ground floor.",
+          "description": "Bold contemporary civic building as a landmark â€” dramatic cantilevers, gold-colored cladding, public roof terrace, and transparent ground floor.",
           "facadeDetail": {
             "primaryMaterial": "gold-anodized aluminum panels",
             "secondaryMaterial": "structural glass walls at ground level",
@@ -6038,8 +6015,7 @@
       "description": "Monumental Museum Axis archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Institutional / Cultural",
       "developmentTypes": [
-        "institutional",
-        "commercial"
+        "institutional"
       ],
       "generationTags": [
         "civic_monumental",
@@ -6143,7 +6119,7 @@
             "colorScheme": "silver titanium, fractured glass, dramatic shadows"
           },
           "roofDetail": {
-            "form": "sculptural — no conventional roof, forms collide",
+            "form": "sculptural â€” no conventional roof, forms collide",
             "material": "titanium panels continuing from walls"
           },
           "shadeId": null,
@@ -6155,7 +6131,7 @@
           "id": "museum_industrial_conversion",
           "label": "Industrial Conversion Museum",
           "thumbnailUrl": "/archetypes/buildings/monumental_museum_axis/variant_2.png",
-          "description": "Converted industrial building as museum — retained brick and steel structure, bold modern insertion in glass and steel, turbine hall as gallery.",
+          "description": "Converted industrial building as museum â€” retained brick and steel structure, bold modern insertion in glass and steel, turbine hall as gallery.",
           "facadeDetail": {
             "primaryMaterial": "retained industrial brick walls",
             "secondaryMaterial": "modern glass and steel insertion/extension",
@@ -6184,7 +6160,7 @@
           },
           "roofDetail": {
             "form": "living green roof continuous with surrounding landscape",
-            "material": "intensive green roof — building nearly invisible from above"
+            "material": "intensive green roof â€” building nearly invisible from above"
           },
           "shadeId": null,
           "palette": {
@@ -6201,7 +6177,7 @@
       "description": "Japanese Contemporary Lanehouse archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Urban Lanehouse",
       "developmentTypes": [
-        "residential"
+        "residential_single_family"
       ],
       "generationTags": [
         "japanese_contemporary",
@@ -6285,7 +6261,7 @@
             "colorScheme": "raw concrete, single window, interior garden glimpse"
           },
           "roofDetail": {
-            "form": "flat concrete — seamless with walls",
+            "form": "flat concrete â€” seamless with walls",
             "material": "exposed concrete with hidden drainage"
           },
           "shadeId": null,
@@ -6320,12 +6296,12 @@
           "description": "SANAA-inspired white abstract box on a narrow lane with irregularly placed windows of different sizes, ultra-thin walls, and an ethereal quality.",
           "facadeDetail": {
             "primaryMaterial": "thin white-painted steel panel walls",
-            "secondaryMaterial": "irregularly placed windows — varying sizes, no pattern",
+            "secondaryMaterial": "irregularly placed windows â€” varying sizes, no pattern",
             "groundFloor": "simple white door flush with wall",
             "colorScheme": "pure white, irregular windows, minimal"
           },
           "roofDetail": {
-            "form": "flat — barely distinguishable from walls",
+            "form": "flat â€” barely distinguishable from walls",
             "material": "white steel panel continuing from walls"
           },
           "shadeId": null,
@@ -6342,7 +6318,7 @@
             "primaryMaterial": "black steel plate panels",
             "secondaryMaterial": "natural timber, clear glass, and concrete in composition",
             "groundFloor": "pivoting black steel entry door with timber handle",
-            "colorScheme": "black steel, natural timber, concrete, glass — balanced"
+            "colorScheme": "black steel, natural timber, concrete, glass â€” balanced"
           },
           "roofDetail": {
             "form": "asymmetric mono-pitch",
@@ -6363,8 +6339,7 @@
       "description": "Japanese Machiya Mixed Use archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "japanese_contemporary",
@@ -6484,7 +6459,7 @@
           "facadeDetail": {
             "primaryMaterial": "original timber frame with bengara (red oxide) stain",
             "secondaryMaterial": "bamboo sudare blinds and wooden display shelves",
-            "groundFloor": "open facade — retractable panels opening cafe to street",
+            "groundFloor": "open facade â€” retractable panels opening cafe to street",
             "colorScheme": "bengara red timber, bamboo, earth tones, garden green"
           },
           "roofDetail": {
@@ -6526,8 +6501,7 @@
       "description": "Eco-Urban Bioclimatic Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Eco Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "residential"
+        "residential_multifamily"
       ],
       "generationTags": [
         "eco_urban_green_architecture",
@@ -6643,7 +6617,7 @@
           "id": "eco_bioclimatic_living_building",
           "label": "Living Building Challenge",
           "thumbnailUrl": "/archetypes/buildings/eco_urban_bioclimatic_block/variant_2.png",
-          "description": "Living Building with net-positive energy, rainwater harvesting, composting toilets, living walls, and regenerative landscape — fully self-sufficient.",
+          "description": "Living Building with net-positive energy, rainwater harvesting, composting toilets, living walls, and regenerative landscape â€” fully self-sufficient.",
           "facadeDetail": {
             "primaryMaterial": "reclaimed timber and recycled steel structure",
             "secondaryMaterial": "full-coverage living green walls with native species",
@@ -6668,7 +6642,7 @@
             "primaryMaterial": "rammed earth walls with visible color layers",
             "secondaryMaterial": "heavy timber post-and-beam frame",
             "groundFloor": "thick rammed earth walls with deep-set timber openings",
-            "colorScheme": "earth tones — ochre, sienna, umber — natural timber"
+            "colorScheme": "earth tones â€” ochre, sienna, umber â€” natural timber"
           },
           "roofDetail": {
             "form": "timber structure with natural ventilation chimneys",
@@ -6689,7 +6663,7 @@
       "description": "Vertical Forest Residential archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "High-Density Residential",
       "developmentTypes": [
-        "residential"
+        "residential_highrise"
       ],
       "generationTags": [
         "eco_urban_green_architecture",
@@ -6851,7 +6825,6 @@
       "description": "Coastal / Resort Terrace Block archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Resort Mixed Use",
       "developmentTypes": [
-        "mixed_use",
         "hospitality"
       ],
       "generationTags": [
@@ -6913,7 +6886,7 @@
         "accentMaterial": "brushed stainless steel railings, teak timber decking on terraces",
         "groundFloor": "open-air lobby with cross-ventilation, resort reception, pool deck access, tropical garden",
         "upperFloors": "deep terraces stepping back with each floor, plunge pools on select units, timber louvre screens, tropical planting",
-        "cornice": "no traditional cornice — building steps back creating organic profile",
+        "cornice": "no traditional cornice â€” building steps back creating organic profile",
         "colorScheme": "white facades, natural timber screens, turquoise pool water, green tropical planting, blue sky"
       },
       "roofDetail": {
@@ -6996,7 +6969,7 @@
             "colorScheme": "natural cliff stone, cave interiors, azure sea"
           },
           "roofDetail": {
-            "form": "terraces cut into cliff — no conventional roof",
+            "form": "terraces cut into cliff â€” no conventional roof",
             "material": "stone terrace with canvas shade sails"
           },
           "shadeId": null,
@@ -7014,8 +6987,7 @@
       "description": "Coastal Breezeway Mixed Use archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Waterfront Mixed Use",
       "developmentTypes": [
-        "mixed_use",
-        "commercial"
+        "mixed_use"
       ],
       "generationTags": [
         "coastal_resort_contemporary",
@@ -7096,7 +7068,7 @@
             "primaryMaterial": "painted concrete in bright Caribbean colors",
             "secondaryMaterial": "timber louvered breezeway screens and balconies",
             "groundFloor": "open-air market arcade with painted concrete columns",
-            "colorScheme": "turquoise, coral, yellow — bright Caribbean palette"
+            "colorScheme": "turquoise, coral, yellow â€” bright Caribbean palette"
           },
           "roofDetail": {
             "form": "corrugated metal with wide ventilated eaves",
@@ -7177,11 +7149,15 @@
       "description": "Custom Prompt-Ready Archetype archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Custom",
       "developmentTypes": [
-        "residential",
-        "commercial",
+        "residential_single_family",
+        "residential_duplex",
+        "residential_multifamily",
+        "residential_highrise",
+        "commercial_retail",
+        "commercial_office",
         "mixed_use",
         "institutional",
-        "industrial"
+        "industrial_light"
       ],
       "generationTags": [
         "other",
@@ -7256,12 +7232,12 @@
           "id": "custom_prompt_modern_neutral",
           "label": "Modern Neutral Baseline",
           "thumbnailUrl": "/archetypes/buildings/custom_prompt_ready_archetype/variant_0.png",
-          "description": "Clean modern building in neutral tones — a flexible baseline for custom prompt modifications. Simple rectangular form with glass and concrete.",
+          "description": "Clean modern building in neutral tones â€” a flexible baseline for custom prompt modifications. Simple rectangular form with glass and concrete.",
           "facadeDetail": {
             "primaryMaterial": "smooth white concrete panels",
             "secondaryMaterial": "clear glass in dark aluminum frames",
             "groundFloor": "glass entry with concrete canopy",
-            "colorScheme": "white concrete, dark frames, clear glass — neutral"
+            "colorScheme": "white concrete, dark frames, clear glass â€” neutral"
           },
           "roofDetail": {
             "form": "flat with clean parapet",
@@ -7342,11 +7318,15 @@
       "description": "Custom Contextual Experiment archetype with premium front-facing composition and consistent material realism",
       "buildingSubcategory": "Custom",
       "developmentTypes": [
-        "residential",
-        "commercial",
+        "residential_single_family",
+        "residential_duplex",
+        "residential_multifamily",
+        "residential_highrise",
+        "commercial_retail",
+        "commercial_office",
         "mixed_use",
         "institutional",
-        "industrial"
+        "industrial_light"
       ],
       "generationTags": [
         "other",
@@ -7426,11 +7406,11 @@
             "primaryMaterial": "colliding volumes in different materials",
             "secondaryMaterial": "fractured glass, rusted steel, raw concrete intersecting",
             "groundFloor": "angular entry cut through colliding volumes",
-            "colorScheme": "clashing materials — rust, glass, concrete, sharp angles"
+            "colorScheme": "clashing materials â€” rust, glass, concrete, sharp angles"
           },
           "roofDetail": {
-            "form": "no conventional roof — angular planes collide",
-            "material": "various — each volume has different material"
+            "form": "no conventional roof â€” angular planes collide",
+            "material": "various â€” each volume has different material"
           },
           "shadeId": null,
           "palette": {
@@ -7461,7 +7441,7 @@
           "id": "custom_experiment_inflatable",
           "label": "Pneumatic / Membrane Structure",
           "thumbnailUrl": "/archetypes/buildings/custom_contextual_experiment/variant_2.png",
-          "description": "Experimental pneumatic/tensile membrane structure — inflated ETFE cushions, cable-net walls, and a lightweight form that glows at night.",
+          "description": "Experimental pneumatic/tensile membrane structure â€” inflated ETFE cushions, cable-net walls, and a lightweight form that glows at night.",
           "facadeDetail": {
             "primaryMaterial": "ETFE pneumatic cushion panels",
             "secondaryMaterial": "stainless steel cable-net structure",
@@ -7484,8 +7464,8 @@
           "description": "3D-printed concrete experimental building with visible print layers creating organic curved forms, impossible with traditional construction.",
           "facadeDetail": {
             "primaryMaterial": "3D-printed concrete with visible layer lines",
-            "secondaryMaterial": "organic curved openings — no right angles",
-            "groundFloor": "flowing organic entry — printed in continuous curve",
+            "secondaryMaterial": "organic curved openings â€” no right angles",
+            "groundFloor": "flowing organic entry â€” printed in continuous curve",
             "colorScheme": "grey printed concrete, organic curves, layer texture"
           },
           "roofDetail": {
