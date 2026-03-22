@@ -141,7 +141,7 @@ export interface UseAIRenderReturn {
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
-  // ── Photorealistic Renders ──────────────────────────────────────────────
+  // ── Photorealistic ──────────────────────────────────────────────────────
   {
     id: 'photorealistic',
     label: 'Photorealistic',
@@ -157,58 +157,6 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     prompt:
       'professional DJI Mavic 3 drone photograph of completed urban development from 80 meters altitude, slight wide-angle barrel distortion at edges, deep depth of field with everything sharp, subtle atmospheric haze on distant objects, desaturated color from atmospheric scattering, comprehensive site context showing neighboring streets and buildings, real-estate aerial survey documentation style, construction-complete, 8k',
     negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'photomontage',
-    label: 'Photomontage',
-    strength: 0.52,
-    prompt:
-      'professional architectural photomontage, proposed buildings seamlessly composited into real satellite photograph, matched sun direction and color temperature with surrounding context, building slightly sharper and cleaner than photographic surroundings, realistic ground plane contact with existing pavement, planning application submission quality, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, painting, floating buildings, mismatched shadows, low quality, blurry, text, watermark',
-  },
-
-  // ── Lighting & Atmosphere ──────────────────────────────────────────────
-  {
-    id: 'golden-hour',
-    label: 'Golden Hour',
-    strength: 0.62,
-    prompt:
-      'cinematic golden hour aerial photograph, warm 3000K amber-orange sunlight from extremely low angle 10 degrees above horizon, very long dramatic shadows stretching across entire ground plane, building facades glowing warm orange, windows reflecting sunset colors, interior warm yellow lights visible through glass, sky gradient from deep orange at horizon through pink to dark blue at zenith, rim lighting on tree edges, wet-look reflective pavement, 8k',
-    negative: 'cartoon, illustration, sketch, midday sun, overhead lighting, flat lighting, overcast, cool blue tones, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'night-scene',
-    label: 'Night Scene',
-    strength: 0.68,
-    prompt:
-      'aerial night photograph with dark navy-black sky, buildings defined entirely by warm interior lighting glowing through window rectangles, exterior uplighting on key facades, street lamps casting isolated pools of warm light on pavement, dramatic high-contrast between bright windows and dark silhouetted walls, wet reflective pavement with light reflections, subtle blue-hour ambient fill, cool moonlight rim on rooftops, architectural night photography, 8k',
-    negative: 'cartoon, illustration, sketch, daytime, bright sunlight, blue sky, green vegetation, flat lighting, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'overcast-soft',
-    label: 'Overcast',
-    strength: 0.52,
-    prompt:
-      'aerial photograph under uniform white-grey overcast sky, completely diffused flat lighting with zero harsh shadows, all surfaces evenly illuminated, cool 6500K color temperature with subtle blue-grey cast, saturation reduced 25 percent, accurate material colors without glare or specular highlights, calm muted atmosphere, clean professional survey documentation quality, 8k',
-    negative: 'cartoon, illustration, sketch, dramatic lighting, lens flare, golden hour, warm tones, strong shadows, colorful sky, low quality, blurry, text, watermark',
-  },
-
-  // ── Seasonal ──────────────────────────────────────────────────────────
-  {
-    id: 'summer',
-    label: 'Summer',
-    strength: 0.58,
-    prompt:
-      'aerial photograph of completed development in peak midsummer, dense fully-leafed deciduous tree canopy in deep saturated greens, lush maintained lawns, vivid blue sky with white cumulus clouds, strong high-angle sun with short crisp shadows, vibrant flower beds, people in summer clothing using outdoor terraces and plazas, active occupied neighbourhood full of life, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, winter, snow, bare trees, autumn colors, orange leaves, dead grass, low quality, blurry, text, watermark',
-  },
-  {
-    id: 'autumn',
-    label: 'Autumn',
-    strength: 0.65,
-    prompt:
-      'aerial photograph of completed development in peak autumn, deciduous trees in rich mix of burnt orange deep red gold amber and russet foliage, scattered fallen leaves covering pathways and lawns, warm low-angle golden sunlight with long afternoon shadows, slight atmospheric haze, warm earth-tone color palette dominating, some trees partially bare showing branch structure, cozy inviting atmosphere, photorealistic, 8k',
-    negative: 'cartoon, illustration, sketch, summer green, snow, bare trees only, spring blossoms, low quality, blurry, text, watermark',
   },
 
   // ── Technical / Planning ──────────────────────────────────────────────
@@ -229,30 +177,54 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, low quality, blurry, noisy, text, watermark',
   },
 
-  // ── Artistic / Competition ────────────────────────────────────────────
+  // ── Artistic / Hand-Rendered ──────────────────────────────────────────
+  {
+    id: 'ink-wash',
+    label: 'Ink Wash',
+    strength: 0.82,
+    prompt:
+      'architectural ink wash rendering on rice paper, bold confident calligraphic brushstrokes defining building edges and structure, translucent grey and sepia ink washes pooling organically in shadow areas, wet ink bleeding softly at edges creating atmospheric depth, white paper left untouched for sky and highlights, spontaneous fluid quality with intentional drip marks, ink splatter accents for vegetation and texture, varying line weight from thick structural strokes to delicate detail lines, East Asian sumi-e influenced architectural rendering, gallery-quality hand-painted study',
+    negative: 'photorealistic, photograph, digital, 3D render, perfect lines, computer generated, neon colors, cartoon, low quality, blurry',
+  },
+  {
+    id: 'charcoal',
+    label: 'Charcoal',
+    strength: 0.84,
+    prompt:
+      'rich monochromatic charcoal drawing on heavyweight textured paper, full tonal range from bright white paper to deep velvety black charcoal, soft blended smudged areas for shadows and atmosphere, sharp charcoal edge lines for architectural definition, dramatic directional side-lighting revealing three-dimensional form, visible paper grain and charcoal particle texture throughout, sculptural modeling of building volumes through carefully controlled tone, atmospheric perspective with distant elements fading lighter, eraser marks creating highlights and light rays, fine art gallery-quality architectural charcoal study',
+    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, low quality, blurry',
+  },
+  {
+    id: 'marker-render',
+    label: 'Marker Render',
+    strength: 0.76,
+    prompt:
+      'architectural marker rendering on smooth bleedproof marker paper, translucent layered Copic marker strokes with visible overlap creating tonal depth, warm and cool color contrasts, rapid gestural confident linework in fine-tip black pen over marker fills, selective areas of high detail dissolving into loose suggestive strokes at edges, marker bleed-through effects and color mixing where strokes overlap, white highlights left as bare paper or added with white gel pen, vibrant saturated palette with greens for landscape and warm tones for buildings, energetic professional design studio sketch presentation quality',
+    negative: 'photorealistic, photograph, digital, 3D render, watercolor bleeding, pencil shading, oil paint, low quality, blurry',
+  },
+  {
+    id: 'isometric',
+    label: 'Isometric',
+    strength: 0.75,
+    prompt:
+      'clean isometric vector illustration of urban development, perfect 30-degree axonometric projection with zero perspective distortion, flat solid fill colors with crisp hard edges, thin precise black outlines on every surface edge, no gradients no shading no shadows, simplified geometric building forms with clear readable shapes, limited modern color palette of muted blues greens greys and warm accents, trees as simple geometric cones and spheres, roads as clean flat strips, contemporary tech-company infographic illustration style, editorial design quality',
+    negative: 'photorealistic, photograph, perspective, vanishing point, gradients, shading, shadows, texture, painterly, sketch, low quality, blurry',
+  },
+  {
+    id: 'woodblock',
+    label: 'Woodblock',
+    strength: 0.81,
+    prompt:
+      'traditional Japanese woodblock print style architectural scene, ukiyo-e aesthetic with bold black outlines defining all architectural forms, limited palette of 4-6 flat colors with crisp clean separation between each color block, zero gradation or blending within color areas, graphic layered composition creating depth through overlapping color planes, strong decorative quality with patterned sky or water elements, architecture rendered as elegant simplified forms integrated into landscape composition, visible wood-grain texture from printing block, Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print',
+    negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, low quality, blurry',
+  },
   {
     id: 'watercolour',
     label: 'Watercolour',
     strength: 0.85,
     prompt:
-      'watercolour painting on cold-pressed textured paper, transparent pigment washes with white paper showing through as highlights, soft bleeding edges where wet paint meets wet paint, visible paper grain texture under all paint, pigment granulation and sedimentation, selective detail at building focal point dissolving into loose washes at periphery, muted earth tones with sage green and ochre, underlying pencil guidelines visible, wet-on-wet bloom effects, hand-painted architectural competition entry style',
-    negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, low quality, blurry',
-  },
-  {
-    id: 'pencil-sketch',
-    label: 'Pencil Sketch',
-    strength: 0.88,
-    prompt:
-      'monochrome graphite pencil architectural sketch on white paper, zero color purely grey tones, confident hand-drawn lines with varying pressure and weight, heavy bold lines for building profile and ground plane, lighter lines for detail, parallel hatching and cross-hatching for shadow areas, white paper left blank for sky and highlights, slightly uneven hand-drawn imperfection, corners slightly overshooting, vegetation suggested as loose scribbled clusters, freehand architectural concept drawing quality',
-    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, perfect lines, computer generated, low quality, blurry',
-  },
-  {
-    id: 'collage',
-    label: 'Collage',
-    strength: 0.80,
-    prompt:
-      'architectural digital collage visualization, visibly assembled from disparate photographic fragments with different image qualities and white balances, flat photographic textures applied to building surfaces without perspectival correction, cut-out people figures at slightly wrong scales, intentional visible seams between image sources, mix of hand-drawn linework and photographic elements, eclectic layered composition, contemporary architecture school post-digital aesthetic',
-    negative: 'photorealistic, seamless, clean render, 3D software, smooth uniform, consistent lighting, low quality, blurry',
+      'watercolour painting on cold-pressed Arches textured paper, transparent luminous pigment washes with white paper glowing through as highlights, soft wet-on-wet bleeding edges where colors merge organically, visible rough paper grain texture under every brushstroke, pigment granulation and sedimentation creating natural stone-like textures in shadows, selective fine detail at building focal point dissolving into loose atmospheric washes at periphery, muted earth-tone palette with sage green ochre burnt sienna and ultramarine blue accents, faint underlying pencil construction lines visible beneath washes, wet-on-wet bloom effects and cauliflower edges where water pooled, deliberate unpainted white paper areas for light and sky, hand-painted architectural competition entry by a master watercolourist',
+    negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
   },
 ];
 
@@ -270,67 +242,52 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   photorealistic: {
     id: 'photorealistic',
     label: 'Photorealistic',
-    prompt: 'Photorealistic aerial rendering. Accurate material textures, precise cast shadows, realistic vegetation, parked cars and street furniture. DSLR-quality, sharp focus, neutral white balance, high dynamic range. 8k architectural photography.',
+    prompt: 'Photorealistic aerial rendering. Accurate material textures with visible grain, precise cast shadows, realistic mature vegetation, parked cars and street furniture. DSLR-quality, sharp focus, neutral 5500K white balance, high dynamic range. 8k architectural photography.',
   },
   'drone-photography': {
     id: 'drone-photography',
     label: 'Drone Photo',
-    prompt: 'Professional DJI drone photograph style. Deep depth of field, subtle atmospheric haze on distant objects, real-estate aerial survey documentation quality. Construction-complete, 8k.',
-  },
-  'photomontage': {
-    id: 'photomontage',
-    label: 'Photomontage',
-    prompt: 'Professional architectural photomontage. Buildings seamlessly composited into real satellite photograph, matched sun direction and color temperature. Planning application submission quality.',
-  },
-  'golden-hour': {
-    id: 'golden-hour',
-    label: 'Golden Hour',
-    prompt: 'Cinematic golden hour. Warm 3000K amber-orange sunlight, long dramatic shadows, building facades glowing warm orange, windows reflecting sunset colors, sky gradient from deep orange through pink to dark blue. Rim lighting on tree edges.',
-  },
-  'night-scene': {
-    id: 'night-scene',
-    label: 'Night Scene',
-    prompt: 'Night photograph. Dark navy sky, buildings defined by warm interior lighting through windows, street lamps casting pools of warm light, wet reflective pavement with light reflections, cool moonlight rim on rooftops.',
-  },
-  'overcast-soft': {
-    id: 'overcast-soft',
-    label: 'Overcast',
-    prompt: 'Overcast conditions. Uniform diffused lighting with zero harsh shadows, cool 6500K color temperature, accurate material colors without glare, calm muted atmosphere.',
-  },
-  'summer': {
-    id: 'summer',
-    label: 'Summer',
-    prompt: 'Peak midsummer. Dense fully-leafed tree canopy in deep saturated greens, lush lawns, vivid blue sky, strong high-angle sun, vibrant flower beds, people using outdoor terraces.',
-  },
-  'autumn': {
-    id: 'autumn',
-    label: 'Autumn',
-    prompt: 'Peak autumn. Trees in rich burnt orange, deep red, gold and amber foliage, scattered fallen leaves, warm low-angle golden sunlight with long shadows, slight atmospheric haze.',
-  },
-  watercolour: {
-    id: 'watercolour',
-    label: 'Watercolour',
-    prompt: 'Watercolour painting style. Transparent pigment washes on textured paper, soft bleeding edges, visible paper grain, selective detail dissolving into loose washes at periphery, muted earth tones.',
-  },
-  'pencil-sketch': {
-    id: 'pencil-sketch',
-    label: 'Pencil Sketch',
-    prompt: 'Monochrome graphite pencil sketch. Confident hand-drawn lines with varying pressure, parallel hatching for shadows, white paper for sky and highlights, freehand architectural concept quality.',
-  },
-  collage: {
-    id: 'collage',
-    label: 'Collage',
-    prompt: 'Architectural digital collage. Photographic fragments with different qualities, flat textures on building surfaces, cut-out people, intentional seams, eclectic layered composition.',
+    prompt: 'Professional DJI Mavic 3 drone photograph from 80m altitude. Deep depth of field, subtle atmospheric haze on distant objects, desaturated color from atmospheric scattering, real-estate aerial survey documentation quality. Construction-complete, 8k.',
   },
   'massing-study': {
     id: 'massing-study',
     label: 'Massing Study',
-    prompt: 'White massing model. All surfaces uniform matte white plaster, no texture detail, pure geometric volumes showing mass and proportion, soft studio lighting, ambient occlusion shadows.',
+    prompt: 'White massing model. Every surface uniform matte white plaster, zero material texture, no windows no doors. Pure geometric volumes showing mass and proportion. Soft studio lighting, gentle ambient occlusion shadows where forms meet. No trees, no cars, no people, no color.',
   },
   'site-plan': {
     id: 'site-plan',
     label: 'Site Plan',
-    prompt: 'Top-down site plan. Buildings as flat roof footprints with subtle shadow, trees as circular green canopy blobs, roads as clean grey strips, planning document quality.',
+    prompt: 'Professional top-down orthographic site plan. Buildings as flat roof footprints with subtle height shadow. Trees as circular dark-green canopy blobs. Roads as clean grey strips. Landscaping in matte green, water in blue. Clear figure-ground contrast, planning document quality.',
+  },
+  'ink-wash': {
+    id: 'ink-wash',
+    label: 'Ink Wash',
+    prompt: 'Architectural ink wash rendering on rice paper. Bold confident calligraphic brushstrokes defining edges, translucent grey and sepia ink washes pooling in shadow areas, wet ink bleeding softly at boundaries. White paper for sky and highlights. Varying line weight, ink splatter accents for vegetation. Sumi-e influenced, gallery-quality hand-painted architectural study.',
+  },
+  charcoal: {
+    id: 'charcoal',
+    label: 'Charcoal',
+    prompt: 'Rich monochromatic charcoal drawing on textured paper. Full tonal range from white paper to deep velvety black. Soft blended smudged shadows, sharp edge lines for architecture. Dramatic side-lighting revealing 3D form. Visible paper grain and charcoal texture. Eraser highlights and light rays. Fine art gallery-quality architectural charcoal study.',
+  },
+  'marker-render': {
+    id: 'marker-render',
+    label: 'Marker Render',
+    prompt: 'Architectural Copic marker rendering on bleedproof paper. Translucent layered marker strokes with visible overlap, warm and cool color contrasts. Fine-tip black pen linework over marker fills. Selective detail dissolving into loose strokes at edges. White gel pen highlights. Vibrant saturated palette. Energetic professional design studio sketch quality.',
+  },
+  isometric: {
+    id: 'isometric',
+    label: 'Isometric',
+    prompt: 'Clean isometric vector illustration. Perfect 30-degree axonometric projection, zero perspective distortion. Flat solid fill colors with crisp edges, thin black outlines on every surface. No gradients, no shading, no shadows. Simplified geometric forms, limited modern muted color palette. Contemporary tech-company infographic style, editorial design quality.',
+  },
+  woodblock: {
+    id: 'woodblock',
+    label: 'Woodblock',
+    prompt: 'Traditional Japanese woodblock print, ukiyo-e aesthetic. Bold black outlines defining all forms, limited palette of 4-6 flat colors with crisp separation. Zero gradation within color areas. Graphic layered composition, decorative patterned elements. Visible wood-grain texture. Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print.',
+  },
+  watercolour: {
+    id: 'watercolour',
+    label: 'Watercolour',
+    prompt: 'Watercolour painting on cold-pressed textured paper. Transparent luminous pigment washes with white paper glowing through as highlights. Soft wet-on-wet bleeding edges, visible paper grain. Pigment granulation in shadows. Selective detail dissolving into loose atmospheric washes. Muted earth tones with sage green and ochre. Faint pencil guidelines visible. Hand-painted competition entry by a master watercolourist.',
   },
 };
 

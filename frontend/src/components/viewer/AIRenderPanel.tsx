@@ -253,12 +253,12 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
         {/* ── Style picker ─────────────────────────────────────────────── */}
         <div>
           <label className="mb-1.5 block text-xs font-medium text-gray-400">Style</label>
-          <div className="grid grid-cols-3 gap-1">
+          <div className="grid grid-cols-5 gap-1">
             {AI_RENDER_STYLES.map((style) => (
               <button
                 key={style.id}
                 onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
-                className={`rounded-lg px-2 py-1.5 text-[11px] font-medium transition ${
+                className={`rounded-lg px-1.5 py-1.5 text-[10px] font-medium transition ${
                   selectedStyle === style.id
                     ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
