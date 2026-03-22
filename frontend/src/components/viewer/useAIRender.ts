@@ -711,7 +711,7 @@ function generateCombinedMask(
 function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOptions): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
 
   const zoneDescriptions = groundZones.map(z => {
     const info = getZoneArchetypeInfo(z);
@@ -787,7 +787,7 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   // Style
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
 
   const parts: string[] = [];
 
@@ -805,8 +805,8 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
     `The ${zoneColor} polygon is the building's absolute ground foundation. The building sits on the already-rendered park and streetscape — its base shadows should blend naturally onto the surrounding grass and pathways.`,
     `Treat the ${zoneColor} footprint as the ground-level base only. Render the full vertical 3D mass and roofline extending naturally into the sky above, respecting aerial perspective. Do not clip the architecture at any boundary line.`,
     `Replace every ${zoneColor} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.`,
-    `Do not let building materials bleed into the surrounding grass, pathways, or other zones. Keep strict horizontal containment at the foundation level.`,
-    `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the colored polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`,
+    `CONTAINMENT: Do NOT render any building structure, walls, shadows, or architectural elements outside the ${zoneColor} colored polygon. The building must fit entirely within its designated polygon boundary. No part of the building may extend sideways beyond the polygon perimeter. Do not bleed into surrounding grass, pathways, or neighboring zones.`,
+    `Each colored polygon represents a DIFFERENT building. Only render the described building within its specific ${zoneColor} polygon — ignore all other colored areas.`,
   );
 
   if (isArtistic && styleMod) {
@@ -1239,15 +1239,46 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  * (#E03C31). Only used temporarily during AI rendering -- the zone's persisted
  * color in the database is never modified.
  */
+/**
+ * Development-type-based color palette.
+ * Each building gets a color based on its development type so Gemini can
+ * visually distinguish different archetypes in multi-building scenes.
+ * Colors are chosen to be visually distinct from ground zones (green, grey, blue).
+ */
+const DEVELOPMENT_TYPE_COLORS: Record<string, string> = {
+  residential_single_family: '#D4A574',   // warm tan / sandy brown
+  residential_duplex:        '#C68642',   // caramel brown
+  residential_multifamily:   '#CC7A4F',   // terracotta
+  residential_highrise:      '#B8860B',   // dark goldenrod
+  commercial_light:          '#E8A87C',   // peach / light coral
+  commercial_retail:         '#CD5C5C',   // indian red
+  commercial_office:         '#8B7D6B',   // warm grey-brown
+  mixed_use:                 '#BF8A53',   // bronze
+  institutional:             '#9B8579',   // warm taupe
+  hospitality:               '#D4956A',   // copper tan
+  industrial_light:          '#A0937D',   // khaki grey
+  industrial_warehouse:      '#8D8478',   // stone grey
+};
+
+/**
+ * Fallback palette for buildings without a development type or when
+ * multiple buildings share the same development-type color.
+ * These are visually distinct warm/neutral tones that contrast with
+ * ground zones (greens, greys, blues).
+ */
 const BUILDING_VARIANT_PALETTE = [
-  '#E03C31', // red (original default -- first building keeps this)
-  '#C62828', // dark red
-  '#D84315', // deep orange
-  '#AD1457', // dark pink
-  '#6A1B9A', // deep purple
-  '#4527A0', // indigo
-  '#B71C1C', // crimson
-  '#E65100', // burnt orange
+  '#E03C31', // red (legacy default)
+  '#C17F59', // warm sienna
+  '#A0522D', // sienna brown
+  '#8B6F47', // dark tan
+  '#D2691E', // chocolate
+  '#CD853F', // peru
+  '#B5651D', // brown sugar
+  '#A67B5B', // french beige
+  '#996633', // dark gold
+  '#8B4513', // saddle brown
+  '#C19A6B', // camel
+  '#BC8F8F', // rosy brown
 ];
 
 /**
@@ -1317,40 +1348,43 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
     });
   }
 
-  // -- Reassign colors for duplicate-colored building zones --
-  // Group building entries by color to find duplicates that need distinct colors
-  const buildingsByColor = new Map<string, { entry: ZonePromptEntry; zoneId: string }[]>();
+  // -- Assign unique colors to ALL building zones based on development type --
+  // Each building gets a distinct color so Gemini can visually distinguish
+  // different archetypes in multi-building scenes.
+  const usedColors = new Set(
+    rawEntries
+      .filter(e => !BUILDING_TYPES.includes(e.entry.zoneType))
+      .map(e => e.entry.color.toLowerCase())
+  );
+
+  let fallbackIdx = 0;
+
   for (const item of rawEntries) {
     if (!BUILDING_TYPES.includes(item.entry.zoneType)) continue;
-    const c = item.entry.color.toLowerCase();
-    if (!buildingsByColor.has(c)) buildingsByColor.set(c, []);
-    buildingsByColor.get(c)!.push(item);
-  }
 
-  // Track all colors currently in use to avoid collisions
-  const usedColors = new Set(rawEntries.map(e => e.entry.color.toLowerCase()));
+    // Look up the zone to get its development type
+    const zone = zones.find(z => z.id === item.zoneId);
+    const devType = (zone?.properties?.development_type as string) || '';
 
-  for (const [, group] of buildingsByColor) {
-    if (group.length <= 1) continue; // No conflict -- skip
+    // Try development-type color first
+    let assignedColor = DEVELOPMENT_TYPE_COLORS[devType];
 
-    // First building keeps its original color; reassign the rest
-    let variantIdx = 0;
-    for (let gi = 1; gi < group.length; gi++) {
-      const item = group[gi];
-      // Find the next unused variant color
-      while (variantIdx < BUILDING_VARIANT_PALETTE.length &&
-             usedColors.has(BUILDING_VARIANT_PALETTE[variantIdx].toLowerCase())) {
-        variantIdx++;
+    // If no dev type color or it's already in use, pick from fallback palette
+    if (!assignedColor || usedColors.has(assignedColor.toLowerCase())) {
+      // Find next unused fallback color
+      while (fallbackIdx < BUILDING_VARIANT_PALETTE.length &&
+             usedColors.has(BUILDING_VARIANT_PALETTE[fallbackIdx].toLowerCase())) {
+        fallbackIdx++;
       }
-      if (variantIdx < BUILDING_VARIANT_PALETTE.length) {
-        const variantColor = BUILDING_VARIANT_PALETTE[variantIdx];
-        item.entry.color = variantColor;
-        _zoneColorOverrides.set(item.zoneId, variantColor);
-        usedColors.add(variantColor.toLowerCase());
-        variantIdx++;
-        console.log(`[AIRender] Zone "${item.entry.zoneName}" (${item.zoneId}) color reassigned to ${variantColor} to avoid duplicate`);
-      }
+      assignedColor = fallbackIdx < BUILDING_VARIANT_PALETTE.length
+        ? BUILDING_VARIANT_PALETTE[fallbackIdx++]
+        : item.entry.color; // absolute fallback: keep original
     }
+
+    item.entry.color = assignedColor;
+    _zoneColorOverrides.set(item.zoneId, assignedColor);
+    usedColors.add(assignedColor.toLowerCase());
+    console.log(`[AIRender] Zone "${item.entry.zoneName}" → color ${assignedColor} (dev: ${devType || 'none'})`);
   }
 
   // With unique shade IDs, each archetype-assigned zone has its own color,
@@ -1423,6 +1457,53 @@ function colorName(hex: string): string {
     '#c8a02a': 'gold/amber',
     '#F59E0B': 'orange/amber',
     '#f59e0b': 'orange/amber',
+    // Development-type building colors
+    '#D4A574': 'sandy tan',
+    '#d4a574': 'sandy tan',
+    '#C68642': 'caramel brown',
+    '#c68642': 'caramel brown',
+    '#CC7A4F': 'terracotta',
+    '#cc7a4f': 'terracotta',
+    '#B8860B': 'dark goldenrod',
+    '#b8860b': 'dark goldenrod',
+    '#E8A87C': 'peach coral',
+    '#e8a87c': 'peach coral',
+    '#CD5C5C': 'indian red',
+    '#cd5c5c': 'indian red',
+    '#8B7D6B': 'warm grey-brown',
+    '#8b7d6b': 'warm grey-brown',
+    '#BF8A53': 'bronze',
+    '#bf8a53': 'bronze',
+    '#9B8579': 'warm taupe',
+    '#9b8579': 'warm taupe',
+    '#D4956A': 'copper tan',
+    '#d4956a': 'copper tan',
+    '#A0937D': 'khaki grey',
+    '#a0937d': 'khaki grey',
+    '#8D8478': 'stone grey',
+    '#8d8478': 'stone grey',
+    // Fallback palette colors
+    '#C17F59': 'warm sienna',
+    '#c17f59': 'warm sienna',
+    '#A0522D': 'sienna brown',
+    '#a0522d': 'sienna brown',
+    '#8B6F47': 'dark tan',
+    '#8b6f47': 'dark tan',
+    '#D2691E': 'chocolate',
+    '#d2691e': 'chocolate',
+    '#CD853F': 'peru',
+    '#cd853f': 'peru',
+    '#B5651D': 'brown sugar',
+    '#b5651d': 'brown sugar',
+    '#A67B5B': 'french beige',
+    '#a67b5b': 'french beige',
+    '#996633': 'dark gold',
+    '#8B4513': 'saddle brown',
+    '#8b4513': 'saddle brown',
+    '#C19A6B': 'camel',
+    '#c19a6b': 'camel',
+    '#BC8F8F': 'rosy brown',
+    '#bc8f8f': 'rosy brown',
   };
   return genericMap[hex] || hex;
 }
@@ -1467,7 +1548,7 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const style = GEMINI_STYLE_MODIFIERS[styleId];
 
-  const isArtistic = ['watercolour', 'pencil-sketch', 'collage', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
   const isSitePlan = styleId === 'site-plan';
 
   const parts: string[] = [];
@@ -1526,11 +1607,9 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
           `The ${color} polygon is a building footprint. Render a ${scaleText} ${desc}.` +
           (userDesc ? ` ${userDesc}.` : '') +
           ` This is a large ${scaleText} structure that fills the entire ${color} footprint — not a small house or cabin.` +
-          ` The ${color} area is the building's ground-level foundation only — render the full vertical 3D mass ` +
-          `and roofline extending naturally into the sky above, respecting aerial perspective. ` +
-          `Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. ` +
-          `Do not let building materials bleed horizontally into neighboring zones. ` +
-          `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the ${color} polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`
+          ` Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.` +
+          ` CONTAINMENT: The building must stay strictly within its ${color} polygon boundary. Do NOT render any structure, walls, or architectural elements outside the ${color} polygon. Do not bleed into neighboring zones.` +
+          ` Each differently-colored polygon is a SEPARATE building — only render this building's archetype within the ${color} area.`
         );
       } else {
         // Ground-level zone narrative — emphasize strict horizontal containment
@@ -1548,6 +1627,8 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
 
   // ── Containment + preservation instructions ──
   parts.push(
+    'IMPORTANT: Each differently-colored polygon represents a DIFFERENT zone with a DIFFERENT purpose. ' +
+    'Buildings must stay strictly within their designated colored polygon — do NOT let any building extend into a neighboring polygon of a different color. ' +
     'Maintain strict containment — each zone stays within its colored boundary. ' +
     'Do not include any people, pedestrians, human figures, or crowds anywhere in the scene. ' +
     'Keep all satellite imagery outside the site boundary exactly as it is, preserving the original style, lighting, and composition.'
