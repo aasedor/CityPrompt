@@ -115,6 +115,8 @@ export type AestheticOption = {
   transportModes?: TransportModeKey[];
   developmentTypes?: string[];
   buildingSubcategory?: string;
+  minFloors?: number;
+  maxFloors?: number;
   generationTags?: string[];
   archetypeImages?: ArchetypeImage[];
   styleProfile?: StyleProfile;
@@ -155,6 +157,8 @@ type ArchetypeSeed = {
   generationTags?: string[];
   styleProfile?: StyleProfile;
   developmentTypes?: string[];
+  minFloors?: number;
+  maxFloors?: number;
   prompt?: {
     subject?: string;
     details?: string[];
@@ -313,6 +317,8 @@ function toAestheticOption(
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
     developmentTypes: Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined,
     buildingSubcategory: seed.buildingSubcategory,
+    minFloors: seed.minFloors,
+    maxFloors: seed.maxFloors,
     generationTags: tags,
     archetypeImages: orderedArchetypeImages,
     styleProfile,

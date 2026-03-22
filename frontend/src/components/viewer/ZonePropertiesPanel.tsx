@@ -62,6 +62,8 @@ type DevelopmentAestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  minFloors?: number;
+  maxFloors?: number;
   generationTags?: string[];
   archetypeImages?: CatalogArchetypeImage[];
   styleProfile?: CatalogStyleProfile;
@@ -146,6 +148,11 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
+  const selectedArchetypeOption = DEVELOPMENT_AESTHETIC_OPTIONS.find(
+    (o) => o.id === ((props.development_subcategory as string) || (props.development_aesthetic as string)),
+  );
+  const archetypeMinFloors = selectedArchetypeOption?.minFloors;
+  const archetypeMaxFloors = selectedArchetypeOption?.maxFloors;
   const panelRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -542,6 +549,17 @@ const resolveOptionCategory = (
       if (selectedOption?.categoryId) {
         nextProps.development_aesthetic_category = selectedOption.categoryId;
       }
+      // Auto-populate floors with midpoint of archetype range when archetype changes
+      // and floors haven't been manually set
+      if (selectedOption?.minFloors != null && selectedOption?.maxFloors != null) {
+        const currentFloors = p.floors as number | undefined;
+        if (!currentFloors) {
+          const defaultFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
+          const floorH = (p.floor_height as number) || 3;
+          nextProps.floors = defaultFloors;
+          nextProps.height = Math.round(defaultFloors * floorH * 10) / 10;
+        }
+      }
       return nextProps;
     });
   };
@@ -856,7 +874,8 @@ const resolveOptionCategory = (
               <input
                 type="number"
                 step="1"
-                min={1}
+                min={archetypeMinFloors ?? 1}
+                max={archetypeMaxFloors}
                 value={props.floors ?? config?.defaultProperties.floors ?? ''}
                 onChange={(e) => {
                   const floors = parseInt(e.target.value) || undefined;
@@ -868,6 +887,24 @@ const resolveOptionCategory = (
                 }}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
+              {archetypeMinFloors != null && archetypeMaxFloors != null && (
+                <p className="mt-0.5 text-[10px] text-primary-950/40">
+                  Suggested: {archetypeMinFloors}–{archetypeMaxFloors} floors
+                </p>
+              )}
+              {(() => {
+                const currentFloors = (props.floors as number) || undefined;
+                if (currentFloors != null && archetypeMinFloors != null && archetypeMaxFloors != null) {
+                  if (currentFloors < archetypeMinFloors || currentFloors > archetypeMaxFloors) {
+                    return (
+                      <p className="mt-0.5 text-[10px] text-orange-500">
+                        Outside typical range ({archetypeMinFloors}–{archetypeMaxFloors})
+                      </p>
+                    );
+                  }
+                }
+                return null;
+              })()}
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Height (m)</label>
@@ -1268,7 +1305,8 @@ const resolveOptionCategory = (
               <input
                 type="number"
                 step="1"
-                min={1}
+                min={archetypeMinFloors ?? 1}
+                max={archetypeMaxFloors}
                 value={props.floors ?? ''}
                 onChange={(e) => {
                   const floors = parseInt(e.target.value) || undefined;
@@ -1280,6 +1318,24 @@ const resolveOptionCategory = (
                 }}
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
+              {archetypeMinFloors != null && archetypeMaxFloors != null && (
+                <p className="mt-0.5 text-[10px] text-primary-950/40">
+                  Suggested: {archetypeMinFloors}–{archetypeMaxFloors} floors
+                </p>
+              )}
+              {(() => {
+                const currentFloors = (props.floors as number) || undefined;
+                if (currentFloors != null && archetypeMinFloors != null && archetypeMaxFloors != null) {
+                  if (currentFloors < archetypeMinFloors || currentFloors > archetypeMaxFloors) {
+                    return (
+                      <p className="mt-0.5 text-[10px] text-orange-500">
+                        Outside typical range ({archetypeMinFloors}–{archetypeMaxFloors})
+                      </p>
+                    );
+                  }
+                }
+                return null;
+              })()}
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Height (m)</label>
