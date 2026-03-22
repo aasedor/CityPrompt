@@ -716,26 +716,31 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
   const zoneDescriptions = groundZones.map(z => {
     const info = getZoneArchetypeInfo(z);
     const desc = buildArchetypeDescription(info, z.zone_type);
-    const color = z.color || 'colored';
-    return `The ${color} area is a ${desc}`;
+    const color = z.color || '#4CAF50';
+    const cName = colorName(color);
+    return `The ${cName} polygon is: ${desc}`;
   });
 
   const parts: string[] = [];
 
   parts.push(
     'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle.',
-    `In this image, colored polygon overlays mark proposed landscape zones on an empty site (the white area).`,
+    `In this image, distinctly colored polygon overlays mark proposed landscape zones on an empty site (the white area). Each polygon has a UNIQUE color that identifies it.`,
   );
 
   // Zone descriptions as narrative
   parts.push(zoneDescriptions.join('. ') + '.');
 
   parts.push(
-    'Transform each colored zone into its described landscape, perfectly filling the colored area.',
-    'Maintain strict horizontal containment — treat the boundaries between zones as hard physical curbs.',
-    'The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
-    'Do not generate any people, pedestrians, or human figures.',
-    'Do not generate any buildings, walls, vertical structures, or rooftops.',
+    'CRITICAL RULES:',
+    '1. Each colored polygon is a separate, independent zone. Transform ONLY the area within each polygon into the described landscape.',
+    '2. ZERO BLEED: No zone may extend even one pixel beyond its polygon boundary. Treat polygon edges as hard physical curbs or walls.',
+    '3. Each zone must render ONLY its own described content. A park zone must not bleed into a neighboring pond zone. A botanical garden must not extend into a pocket park.',
+    '4. Match each polygon by its specific color — do not confuse zones that have similar but different shades.',
+    '5. The landscape must be entirely ground-level: grass, trees, paths, water, and paving only.',
+    '6. Do not generate any people, pedestrians, or human figures.',
+    '7. Do not generate any buildings, walls, vertical structures, or rooftops.',
+    '8. Leave all areas OUTSIDE colored polygons exactly as they appear in the original photograph.',
   );
 
   if (isArtistic && styleMod) {
@@ -760,7 +765,8 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
  */
 function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   const archetypeInfo = getZoneArchetypeInfo(zone);
-  const zoneColor = getZoneRenderColor(zone.id, zone.color || '#E03C31');
+  const zoneColorHex = getZoneRenderColor(zone.id, zone.color || '#E03C31');
+  const zoneColor = colorName(zoneColorHex);
 
   // Build narrative description from archetype metadata
   const floors = zone.properties?.floors ?? zone.properties?.num_floors;
@@ -1815,8 +1821,8 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(stylePreset.negative);
   }
 
-  // 2. Building containment negatives + universal exclusions
-  parts.push('building extending beyond footprint, architecture outside polygon, walls outside boundary, building bleed into neighboring zone, people, pedestrians, human figures, faces, crowds, cyclists, joggers');
+  // 2. Zone containment negatives + universal exclusions
+  parts.push('zone bleeding into neighboring zone, landscape extending beyond polygon boundary, elements crossing polygon edges, mismatched zone content, building extending beyond footprint, architecture outside polygon, walls outside boundary, people, pedestrians, human figures, faces, crowds, cyclists, joggers');
 
   // 3. Archetype-level negatives passed from the panel
   if (options.mapOverlayNegative?.trim()) {
