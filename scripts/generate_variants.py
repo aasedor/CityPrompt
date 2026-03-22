@@ -406,6 +406,10 @@ VARIANT_DEFINITIONS: dict[str, list[dict]] = {
     ],
 }
 
+# Import V2 definitions for the 34 archetypes that had generic templates
+from variant_definitions_v2 import VARIANT_DEFINITIONS_V2
+VARIANT_DEFINITIONS.update(VARIANT_DEFINITIONS_V2)
+
 # For archetypes not in the manual definitions, generate sensible defaults
 def _generate_default_variants(arch: dict) -> list[dict]:
     """Generate 4 generic design variants based on the archetype's existing metadata."""
@@ -596,6 +600,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-existing", action="store_true")
     parser.add_argument("--json-only", action="store_true", help="Only update JSON, don't generate images")
+    parser.add_argument("--force", action="store_true", help="Force-replace variants even if they exist (uses VARIANT_DEFINITIONS)")
     args = parser.parse_args()
 
     # Load building archetypes
@@ -609,27 +614,33 @@ def main():
     for arch in archetypes:
         arch_id = arch["id"]
 
-        # Skip if already has variants
+        # Check if this archetype has a proper definition in VARIANT_DEFINITIONS
+        has_proper_def = arch_id in VARIANT_DEFINITIONS
+
+        # If --force and we have a proper definition, always replace
+        # Otherwise skip if already has variants
         if arch.get("variants") and len(arch["variants"]) >= 4:
-            print(f"SKIP (has variants): {arch.get('title', arch_id)}")
-            # Still collect image tasks for existing variants that may need images
-            for vi, v in enumerate(arch["variants"]):
-                out_dir = _PUBLIC_DIR / "buildings" / arch_id
-                img_path = out_dir / f"variant_{vi}.png"
-                if not img_path.exists() or not args.skip_existing:
-                    image_tasks.append({
-                        "arch_title": arch.get("title", arch_id),
-                        "variant": v,
-                        "output_dir": out_dir,
-                        "filename": f"variant_{vi}.png",
-                        "thumb_url": f"/archetypes/buildings/{arch_id}/variant_{vi}.png",
-                        "variant_index": vi,
-                        "arch_id": arch_id,
-                    })
-            continue
+            if not (args.force and has_proper_def):
+                print(f"SKIP (has variants): {arch.get('title', arch_id)}")
+                for vi, v in enumerate(arch["variants"]):
+                    out_dir = _PUBLIC_DIR / "buildings" / arch_id
+                    img_path = out_dir / f"variant_{vi}.png"
+                    if not img_path.exists() or not args.skip_existing:
+                        image_tasks.append({
+                            "arch_title": arch.get("title", arch_id),
+                            "variant": v,
+                            "output_dir": out_dir,
+                            "filename": f"variant_{vi}.png",
+                            "thumb_url": f"/archetypes/buildings/{arch_id}/variant_{vi}.png",
+                            "variant_index": vi,
+                            "arch_id": arch_id,
+                        })
+                continue
+            else:
+                print(f"FORCE-REPLACING: {arch.get('title', arch_id)} (has proper V2 definitions)")
 
         # Get or generate variants
-        if arch_id in VARIANT_DEFINITIONS:
+        if has_proper_def:
             variants = VARIANT_DEFINITIONS[arch_id]
         else:
             variants = _generate_default_variants(arch)
