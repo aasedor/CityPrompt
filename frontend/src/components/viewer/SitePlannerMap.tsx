@@ -6,8 +6,25 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import { getColourForDevelopmentType } from '@/data/landUseColours';
+import {
+  DEVELOPMENT_AESTHETIC_OPTIONS,
+  ROADWAY_AESTHETIC_OPTIONS,
+  GREEN_SPACE_AESTHETIC_OPTIONS,
+  PLAZA_AESTHETIC_OPTIONS,
+} from './aestheticCatalog';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
+
+// Build a quick lookup map: subcategory ID → label for all aesthetic options
+const _subcategoryLabelMap = new Map<string, string>();
+for (const opt of [
+  ...DEVELOPMENT_AESTHETIC_OPTIONS,
+  ...ROADWAY_AESTHETIC_OPTIONS,
+  ...GREEN_SPACE_AESTHETIC_OPTIONS,
+  ...PLAZA_AESTHETIC_OPTIONS,
+]) {
+  if (opt.id && opt.label) _subcategoryLabelMap.set(opt.id, opt.label);
+}
 
 // ---------------------------------------------------------------------------
 // Variant color shifting (keep polygons visually distinct per variant)
@@ -141,11 +158,14 @@ function resolveZoneColor(zone: SiteZone): string {
 function resolveZoneLabel(zone: SiteZone): string {
   const props = zone.properties;
   if (props) {
-    // Check for archetype labels (set when user picks a sub-category)
+    // Look up the typology/sub-category label from the catalog using the subcategory ID
     const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
     for (const prefix of PREFIXES) {
-      const label = props[`${prefix}_archetype_label`] as string | undefined;
-      if (label) return label;
+      const subcategoryId = props[`${prefix}_subcategory`] as string | undefined;
+      if (subcategoryId) {
+        const catalogLabel = _subcategoryLabelMap.get(subcategoryId);
+        if (catalogLabel) return catalogLabel;
+      }
     }
   }
   // Fall back to zone name or zone type config label
