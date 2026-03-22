@@ -571,7 +571,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
+  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
         p,
@@ -580,6 +580,7 @@ const resolveOptionCategory = (
         ROADWAY_AESTHETIC_OPTIONS,
         ROADWAY_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
+        variantId,
       );
 
       const selectedOption = ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -621,7 +622,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
+  const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -630,6 +631,7 @@ const resolveOptionCategory = (
         GREEN_SPACE_AESTHETIC_OPTIONS,
         GREEN_SPACE_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
+        variantId,
       );
 
       const selectedOption = GREEN_SPACE_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -665,7 +667,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyPlazaAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
+  const applyPlazaAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -674,6 +676,7 @@ const resolveOptionCategory = (
         PLAZA_AESTHETIC_OPTIONS,
         PLAZA_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
+        variantId,
       );
       const selectedOption = PLAZA_AESTHETIC_OPTIONS.find((o) => o.id === next);
       if (selectedOption?.categoryId) {
@@ -978,6 +981,7 @@ const resolveOptionCategory = (
                   value={(props.green_space_aesthetic as string) || undefined}
                   category={selectedGreenSpaceCategory}
                   selectedReferenceId={selectedGreenSpaceReferenceId}
+                  selectedVariantId={(props.green_space_selected_variant_id as string) || undefined}
                   onChange={applyGreenSpaceAesthetic}
                 />
               </div>
@@ -1039,6 +1043,7 @@ const resolveOptionCategory = (
                   value={(props.road_aesthetic as string) || undefined}
                   category={selectedRoadAestheticCategory}
                   selectedReferenceId={selectedRoadReferenceId}
+                  selectedVariantId={(props.road_selected_variant_id as string) || undefined}
                   selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
@@ -1134,6 +1139,7 @@ const resolveOptionCategory = (
                   value={(props.plaza_aesthetic as string) || undefined}
                   category={selectedPlazaCategory}
                   selectedReferenceId={selectedPlazaReferenceId}
+                  selectedVariantId={(props.plaza_selected_variant_id as string) || undefined}
                   onChange={applyPlazaAesthetic}
                 />
               </div>
@@ -2482,14 +2488,16 @@ function RoadwayAestheticPicker({
   value,
   category,
   selectedReferenceId,
+  selectedVariantId,
   selectedModes,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
+  selectedVariantId?: string;
   selectedModes: TransportModeKey[];
-  onChange: (next: string | undefined, archetypeImageId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2523,7 +2531,8 @@ function RoadwayAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
             />
           ))}
         </div>
@@ -2548,12 +2557,14 @@ function GreenSpaceAestheticPicker({
   value,
   category,
   selectedReferenceId,
+  selectedVariantId,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
-  onChange: (next: string | undefined, archetypeImageId?: string) => void;
+  selectedVariantId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2581,7 +2592,8 @@ function GreenSpaceAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
             />
           ))}
         </div>
@@ -2601,12 +2613,14 @@ function PlazaAestheticPicker({
   value,
   category,
   selectedReferenceId,
+  selectedVariantId,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
-  onChange: (next: string | undefined, archetypeImageId?: string) => void;
+  selectedVariantId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? PLAZA_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2634,7 +2648,8 @@ function PlazaAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
             />
           ))}
         </div>
