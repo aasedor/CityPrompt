@@ -144,7 +144,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   // ── Photorealistic ──────────────────────────────────────────────────────
   {
     id: 'photorealistic',
-    label: 'Photorealistic',
+    label: 'Photo Realistic',
     strength: 0.55,
     prompt:
       'ultra-photorealistic DSLR aerial photograph of a completed urban development, sharp focus, accurate brick stone glass and concrete materials with visible grain and texture, precise cast shadows from midday sun at 60 degrees, mature trees with individual leaf clusters, parked cars and street furniture, clear blue sky with small cumulus clouds, neutral 5500K white balance, high dynamic range, architectural photography, 8k',
@@ -212,7 +212,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   },
   {
     id: 'woodblock',
-    label: 'Woodblock',
+    label: 'Wood Block',
     strength: 0.81,
     prompt:
       'traditional Japanese woodblock print style architectural scene, ukiyo-e aesthetic with bold black outlines defining all architectural forms, limited palette of 4-6 flat colors with crisp clean separation between each color block, zero gradation or blending within color areas, graphic layered composition creating depth through overlapping color planes, strong decorative quality with patterned sky or water elements, architecture rendered as elegant simplified forms integrated into landscape composition, visible wood-grain texture from printing block, Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print',
@@ -220,7 +220,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   },
   {
     id: 'watercolour',
-    label: 'Watercolour',
+    label: 'Water Colour',
     strength: 0.85,
     prompt:
       'watercolour painting on cold-pressed Arches textured paper, transparent luminous pigment washes with white paper glowing through as highlights, soft wet-on-wet bleeding edges where colors merge organically, visible rough paper grain texture under every brushstroke, pigment granulation and sedimentation creating natural stone-like textures in shadows, selective fine detail at building focal point dissolving into loose atmospheric washes at periphery, muted earth-tone palette with sage green ochre burnt sienna and ultramarine blue accents, faint underlying pencil construction lines visible beneath washes, wet-on-wet bloom effects and cauliflower edges where water pooled, deliberate unpainted white paper areas for light and sky, hand-painted architectural competition entry by a master watercolourist',
@@ -241,7 +241,7 @@ interface GeminiStyleModifier {
 const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   photorealistic: {
     id: 'photorealistic',
-    label: 'Photorealistic',
+    label: 'Photo Realistic',
     prompt: 'Photorealistic aerial rendering. Accurate material textures with visible grain, precise cast shadows, realistic mature vegetation, parked cars and street furniture. DSLR-quality, sharp focus, neutral 5500K white balance, high dynamic range. 8k architectural photography.',
   },
   'drone-photography': {
@@ -281,12 +281,12 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   },
   woodblock: {
     id: 'woodblock',
-    label: 'Woodblock',
+    label: 'Wood Block',
     prompt: 'Traditional Japanese woodblock print, ukiyo-e aesthetic. Bold black outlines defining all forms, limited palette of 4-6 flat colors with crisp separation. Zero gradation within color areas. Graphic layered composition, decorative patterned elements. Visible wood-grain texture. Hiroshige and Hokusai influenced urban landscape, museum-quality fine art print.',
   },
   watercolour: {
     id: 'watercolour',
-    label: 'Watercolour',
+    label: 'Water Colour',
     prompt: 'Watercolour painting on cold-pressed textured paper. Transparent luminous pigment washes with white paper glowing through as highlights. Soft wet-on-wet bleeding edges, visible paper grain. Pigment granulation in shadows. Selective detail dissolving into loose atmospheric washes. Muted earth tones with sage green and ochre. Faint pencil guidelines visible. Hand-painted competition entry by a master watercolourist.',
   },
 };
