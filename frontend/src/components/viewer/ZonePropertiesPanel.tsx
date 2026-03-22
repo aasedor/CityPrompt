@@ -297,7 +297,8 @@ const buildAestheticSelectionProps = (
       : (Array.isArray(selectedOption.generationStyleInput?.generationTags) ? selectedOption.generationStyleInput?.generationTags : []);
 
     const archetypeId = resolvedArchetype?.id || selectedOption.id;
-    const archetypeLabel = resolvedArchetype?.label || selectedOption.label;
+    // Use the typology/sub-category label (e.g. "Pond / Lake"), NOT the image label ("Front Elevation Day")
+    const archetypeLabel = selectedOption.label;
 
     nextProps[`${stylePrefix}_subcategory`] = selectedOption.id;
     nextProps[`${stylePrefix}_aesthetic_category`] = selectedOption.categoryId || nextProps[`${stylePrefix}_aesthetic_category`];
