@@ -57,27 +57,41 @@ function shiftColorForVariant(baseHex: string, variantIndex: number): string {
   return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
 }
 
-/** Derive a variant index (0-3) from zone properties. Returns -1 if no variant selected. */
-function getVariantIndexFromZone(zone: SiteZone): number {
-  const props = zone.properties;
-  if (!props) return -1;
-  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-  for (const prefix of PREFIXES) {
-    const variantId = props[`${prefix}_selected_variant_id`] as string | undefined;
-    if (!variantId) continue;
-    // Try to extract index from variant ID (e.g. "brownstone_rowhouse_red_sandstone" → hash to 0-3)
-    // Use a simple hash to get a consistent 0-3 index
-    let hash = 0;
-    for (let i = 0; i < variantId.length; i++) {
-      hash = ((hash << 5) - hash + variantId.charCodeAt(i)) | 0;
-    }
-    return Math.abs(hash) % 4;
+/** Hash a string to a consistent integer. */
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
   }
-  return -1;
+  return Math.abs(hash);
 }
 
-/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config.
- *  When a variant is selected, shifts the color slightly to distinguish variants visually. */
+/**
+ * Derive archetype and variant info from zone properties.
+ * Returns { archetypeId, variantId } or null if nothing selected.
+ */
+function getArchetypeVariantFromZone(zone: SiteZone): { archetypeId: string; variantId: string | null } | null {
+  const props = zone.properties;
+  if (!props) return null;
+  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+  for (const prefix of PREFIXES) {
+    const archetypeId = props[`${prefix}_archetype_id`] as string | undefined;
+    if (!archetypeId) continue;
+    const variantId = props[`${prefix}_selected_variant_id`] as string | undefined;
+    return { archetypeId, variantId: variantId || null };
+  }
+  return null;
+}
+
+/**
+ * Resolve zone color with unique shading per archetype + variant combination.
+ *
+ * - Base color comes from development type (APA standard) or zone type config
+ * - Archetype selection shifts the hue (each sub-category gets a distinct hue offset)
+ * - Variant selection shifts the lightness (each variant within that archetype is distinguishable)
+ *
+ * Example: 3 retail archetypes × 4 variants = 12 unique shades of the retail base color
+ */
 function resolveZoneColor(zone: SiteZone): string {
   let baseColor: string;
   const devType = zone.properties?.development_type as string | undefined;
@@ -92,12 +106,25 @@ function resolveZoneColor(zone: SiteZone): string {
     baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
   }
 
-  // Shift color for selected variant
-  const variantIdx = getVariantIndexFromZone(zone);
-  if (variantIdx >= 0) {
-    return shiftColorForVariant(baseColor, variantIdx);
+  const info = getArchetypeVariantFromZone(zone);
+  if (!info) return baseColor;
+
+  const [h, s, l] = hexToHsl(baseColor);
+
+  // Archetype shifts hue: spread evenly across ±30° range
+  const archetypeHash = hashString(info.archetypeId);
+  // Use golden ratio to spread hues evenly (avoids clustering)
+  const hueOffset = ((archetypeHash * 137.508) % 60) - 30; // range: -30° to +30°
+
+  // Variant shifts lightness: 4 distinct steps
+  let lightnessOffset = 0;
+  if (info.variantId) {
+    const variantHash = hashString(info.variantId);
+    const lightnessSteps = [-10, -4, 4, 10];
+    lightnessOffset = lightnessSteps[variantHash % 4];
   }
-  return baseColor;
+
+  return hslToHex(h + hueOffset, s, l + lightnessOffset);
 }
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
