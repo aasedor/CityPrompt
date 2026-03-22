@@ -9,14 +9,95 @@ import { getColourForDevelopmentType } from '@/data/landUseColours';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
-/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config */
+// ---------------------------------------------------------------------------
+// Variant color shifting (keep polygons visually distinct per variant)
+// ---------------------------------------------------------------------------
+
+function hexToHsl(hex: string): [number, number, number] {
+  const raw = hex.replace('#', '');
+  const r = parseInt(raw.substring(0, 2), 16) / 255;
+  const g = parseInt(raw.substring(2, 4), 16) / 255;
+  const b = parseInt(raw.substring(4, 6), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l * 100];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return [h * 360, s * 100, l * 100];
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  h = ((h % 360) + 360) % 360;
+  s = Math.max(0, Math.min(100, s)) / 100;
+  l = Math.max(0, Math.min(100, l)) / 100;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let rr = 0, gg = 0, bb = 0;
+  if (h < 60) { rr = c; gg = x; }
+  else if (h < 120) { rr = x; gg = c; }
+  else if (h < 180) { gg = c; bb = x; }
+  else if (h < 240) { gg = x; bb = c; }
+  else if (h < 300) { rr = x; bb = c; }
+  else { rr = c; bb = x; }
+  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+  return `#${toHex(rr)}${toHex(gg)}${toHex(bb)}`;
+}
+
+function shiftColorForVariant(baseHex: string, variantIndex: number): string {
+  const lightnessShifts = [-8, -3, 3, 8];
+  const hueShifts = [-5, 5, -10, 10];
+  const idx = Math.min(variantIndex, lightnessShifts.length - 1);
+  const [h, s, l] = hexToHsl(baseHex);
+  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
+}
+
+/** Derive a variant index (0-3) from zone properties. Returns -1 if no variant selected. */
+function getVariantIndexFromZone(zone: SiteZone): number {
+  const props = zone.properties;
+  if (!props) return -1;
+  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
+  for (const prefix of PREFIXES) {
+    const variantId = props[`${prefix}_selected_variant_id`] as string | undefined;
+    if (!variantId) continue;
+    // Try to extract index from variant ID (e.g. "brownstone_rowhouse_red_sandstone" → hash to 0-3)
+    // Use a simple hash to get a consistent 0-3 index
+    let hash = 0;
+    for (let i = 0; i < variantId.length; i++) {
+      hash = ((hash << 5) - hash + variantId.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash) % 4;
+  }
+  return -1;
+}
+
+/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config.
+ *  When a variant is selected, shifts the color slightly to distinguish variants visually. */
 function resolveZoneColor(zone: SiteZone): string {
+  let baseColor: string;
   const devType = zone.properties?.development_type as string | undefined;
   if (devType) {
     const apaColor = getColourForDevelopmentType(devType);
-    if (apaColor.label !== 'Unclassified') return apaColor.fill;
+    if (apaColor.label !== 'Unclassified') {
+      baseColor = apaColor.fill;
+    } else {
+      baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
+    }
+  } else {
+    baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
   }
-  return ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
+
+  // Shift color for selected variant
+  const variantIdx = getVariantIndexFromZone(zone);
+  if (variantIdx >= 0) {
+    return shiftColorForVariant(baseColor, variantIdx);
+  }
+  return baseColor;
 }
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
