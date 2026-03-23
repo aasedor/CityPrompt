@@ -623,17 +623,18 @@ export async function generateStreetView(
   try {
     const response = await axios.post(RENDER_API_URL, {
       prompt,
+      aspect_ratio: '16:9',
       // Text-only generation — no image_base64
-    });
+    }, { timeout: 180_000 });
 
-    const imageUrl: string | undefined =
-      response.data?.image_url || response.data?.imageUrl;
+    const resultBase64: string | undefined = response.data?.image_base64;
 
-    if (!imageUrl) {
-      console.error('[useStreetViewRender] No image URL in API response', response.data);
+    if (!resultBase64) {
+      console.error('[useStreetViewRender] No image data in API response', response.data);
       return null;
     }
 
+    const imageUrl = `data:image/png;base64,${resultBase64}`;
     return { imageUrl, prompt };
   } catch (err) {
     console.error('[useStreetViewRender] Render API call failed:', err);
