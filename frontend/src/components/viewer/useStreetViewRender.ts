@@ -7,6 +7,7 @@
  */
 import { useCallback } from 'react';
 import axios from 'axios';
+import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
@@ -614,102 +615,164 @@ export function buildStreetViewPrompt(
   styleModifier?: string,
 ): string {
   const direction = compassDirection(angleDeg);
-
   const lines: string[] = [];
 
-  // Build a checklist of ALL zones that must appear
+  // ─── SCHEMA-style perspective grid prompt ───
+  // Uses foreground/midground/background depth planes with optical constraints
+
+  lines.push(
+    `PERSPECTIVE GRID LAYOUT: 3-Tier Depth Frustum (Foreground, Midground, Background).`,
+  );
+  lines.push(
+    `CAMERA PARAMETERS: Street-level perspective, camera height fixed at exactly 1.7 meters, ` +
+    `looking ${direction}. 35mm lens, f/8 aperture, deep focus. 16:9 wide panoramic frame.`,
+  );
+
+  // Categorize zones into depth planes
+  const foreground: ZoneWithDistance[] = []; // < 30m
+  const midground: ZoneWithDistance[] = [];  // 30-80m
+  const background: ZoneWithDistance[] = []; // > 80m
+
+  for (const z of visibleZones) {
+    if (z.distance < 30) foreground.push(z);
+    else if (z.distance < 80) midground.push(z);
+    else background.push(z);
+  }
+
+  // ─── FOREGROUND PLANE ───
+  lines.push(`═══ FOREGROUND PLANE (bottom 25% of frame, closest to camera) ═══`);
+  lines.push(
+    `Spatial Position: Immediate proximity to the camera lens, dominating the lower quarter of the frame.`,
+  );
+  if (foreground.length > 0) {
+    const fgDescriptions = foreground.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+      const pos = entry.relativePosition === 'left' ? 'LEFT' :
+                  entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+      const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+      const heightNote = floors > 0 ? ` (${floors} stories tall)` : '';
+      return `  ${pos} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%, ~${Math.round(entry.distance)}m): ` +
+             `"${name}"${heightNote} — ${desc}`;
+    });
+    lines.push(`Content Assignment:\n${fgDescriptions.join('\n')}`);
+  } else {
+    lines.push(`Content Assignment: Paved sidewalk and street extending into the scene with curbs and street trees.`);
+  }
+  lines.push(
+    `Optical Effect: Sharp, high-contrast resolution. Every material texture (brick joints, glass reflections, ` +
+    `leaf veins, stone grain) must be rendered with maximum detail. Close structures cast crisp shadows ` +
+    `onto the foreground pavement.`,
+  );
+
+  // ─── MIDGROUND PLANE ───
+  lines.push(`═══ MIDGROUND PLANE (center 45% of frame, primary focal area) ═══`);
+  lines.push(
+    `Spatial Position: The primary focal zone, intersecting the center horizontal axis of the frame.`,
+  );
+  if (midground.length > 0) {
+    const mgDescriptions = midground.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+      const pos = entry.relativePosition === 'left' ? 'LEFT' :
+                  entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+      const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+      const heightNote = floors > 0 ? ` (${floors} stories tall)` : '';
+      return `  ${pos} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%, ~${Math.round(entry.distance)}m): ` +
+             `"${name}"${heightNote} — ${desc}`;
+    });
+    lines.push(`Content Assignment:\n${mgDescriptions.join('\n')}`);
+  } else {
+    lines.push(`Content Assignment: Open development ground transitioning to the background.`);
+  }
+  lines.push(
+    `Optical Effect: Render with sharp resolution but slightly softer than the foreground. ` +
+    `Structural shadows from buildings must connect with the foreground ground plane.`,
+  );
+
+  // ─── BACKGROUND PLANE ───
+  lines.push(`═══ BACKGROUND PLANE (top 30% of frame, deep distance) ═══`);
+  lines.push(
+    `Spatial Position: Deep distance, occupying the top portion of the frame behind the midground structures.`,
+  );
+  if (background.length > 0) {
+    const bgDescriptions = background.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+      const pos = entry.relativePosition === 'left' ? 'LEFT' :
+                  entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+      return `  ${pos} (~${Math.round(entry.distance)}m): "${name}" — ${desc}`;
+    });
+    lines.push(`Content Assignment:\n${bgDescriptions.join('\n')}`);
+  }
+  lines.push(
+    `Content Assignment (sky): Clear sky fading from warm golden tones at the horizon to ` +
+    `deeper blue overhead.`,
+  );
+  lines.push(
+    `Optical Effect: Enforce atmospheric perspective. Background structures must appear ` +
+    `desaturated, hazy, and blue-tinted compared to the crisp foreground and midground. ` +
+    `Distant buildings are visibly smaller due to perspective foreshortening.`,
+  );
+
+  // ─── GROUND PLANE ───
+  lines.push(
+    `═══ GROUND PLANE ═══\n` +
+    `Paved sidewalk and street in the immediate foreground with realistic curbs, utility poles, ` +
+    `and street trees. The ground plane recedes naturally toward the horizon using one-point ` +
+    `perspective, visually connecting all depth planes.`,
+  );
+
+  // ─── WATER/PARK SPECIFIC INSTRUCTIONS ───
+  const hasWater = visibleZones.some(z => z.zone.zone_type === 'water');
+  const hasParks = visibleZones.some(z => z.zone.zone_type === 'green_space');
+
+  if (hasWater) {
+    lines.push(
+      `═══ WATER RENDERING (MANDATORY) ═══\n` +
+      `Any blue surface in the clay model MUST be rendered as a body of water. ` +
+      `Show realistic water with: mirror-like reflections of adjacent buildings and sky, ` +
+      `subtle ripples on the surface, natural shoreline with reeds/rocks/vegetation at edges, ` +
+      `color gradient from deep blue in the center to lighter blue-green at shallow edges. ` +
+      `Water must NOT be rendered as a blue floor, pavement, or solid surface.`,
+    );
+  }
+
+  if (hasParks) {
+    lines.push(
+      `═══ PARK/GREEN SPACE RENDERING (MANDATORY) ═══\n` +
+      `Green volumes in the clay model represent parks and green spaces. These MUST be rendered as ` +
+      `lush, detailed landscape with: mature trees with visible trunks and leafy canopies, ` +
+      `manicured lawns, walking paths (gravel or stone), park benches, planted beds, ` +
+      `and natural ground cover. Parks should feel alive and inviting — NOT empty grass fields. ` +
+      `Tree canopies should break the skyline, creating organic silhouettes against the sky.`,
+    );
+  }
+
+  // ─── MANDATORY CHECKLIST ───
   const zoneNames = visibleZones.map(z => {
     const info = getZoneArchetypeInfo(z.zone);
     return info.archetypeTitle || z.zone.name || zoneTypeLabel(z.zone.zone_type);
   });
-
-  // Strong framing instruction
-  lines.push(
-    `Generate a wide 16:9 street-level photograph of an urban development master plan, ` +
-    `as seen from eye level (1.7m height) looking ${direction}. ` +
-    `This is a panoramic establishing shot showing the COMPLETE streetscape.`,
-  );
-
   if (zoneNames.length > 0) {
     lines.push(
-      `MANDATORY CHECKLIST — the image MUST contain ALL ${zoneNames.length} of these elements:\n` +
-      zoneNames.map((n, i) => `  ${i + 1}. ${n}`).join('\n') +
-      `\nIf any element is missing, the image is WRONG. Every item above must be visible.`,
+      `MANDATORY ELEMENTS (all ${zoneNames.length} must be visible):\n` +
+      zoneNames.map((n, i) => `  ${i + 1}. ${n}`).join('\n'),
     );
   }
-
-  lines.push(
-    `DEPTH RULE: Close elements (under 30m) are LARGE and dominate the frame. ` +
-    `Far elements (over 80m) are SMALL, near the horizon. ` +
-    `Parks and green spaces should show trees, paths, and landscape — they are NOT empty lawns.`,
-  );
-
-  if (visibleZones.length === 0) {
-    lines.push('The view shows an empty development site with cleared ground and surrounding neighborhood.');
-  } else {
-    // Find the "hero" zone — closest to camera AND most central (largest frame coverage)
-    const hero = [...visibleZones].sort((a, b) => {
-      // Score: lower distance + higher frame percent = better hero
-      const scoreA = a.distance - a.framePercent * 2;
-      const scoreB = b.distance - b.framePercent * 2;
-      return scoreA - scoreB;
-    })[0];
-
-    if (hero) {
-      const heroInfo = getZoneArchetypeInfo(hero.zone);
-      const heroDesc = describeZoneForStreetView(hero.zone, heroInfo);
-      const heroName = heroInfo.archetypeTitle || hero.zone.name || zoneTypeLabel(hero.zone.zone_type);
-      const isGreenSpace = hero.zone.zone_type === 'green_space' || hero.zone.zone_type === 'water' || hero.zone.zone_type === 'parking';
-
-      lines.push(
-        `=== PRIMARY SUBJECT (this dominates the center of the image) ===\n` +
-        `"${heroName}" is the MAIN FOCUS of this image. It is only ~${Math.round(hero.distance)}m away ` +
-        `and fills the center ${hero.framePercent}% of the frame (position ${hero.frameLeftPct}%-${hero.frameRightPct}%). ` +
-        (isGreenSpace
-          ? `This is a LANDSCAPE element — it should fill the lower 40-60% of the image with lush greenery, paths, trees, and open space. Buildings appear BEHIND and BESIDE it, not in front of it. `
-          : ``) +
-        `\nDescription: ${heroDesc}`,
-      );
-    }
-
-    // Other zones, sorted by distance
-    const others = visibleZones.filter(z => z !== hero);
-    if (others.length > 0) {
-      lines.push('=== SURROUNDING CONTEXT (these frame the main subject) ===');
-      for (const entry of others) {
-        const info = getZoneArchetypeInfo(entry.zone);
-        const desc = describeZoneForStreetView(entry.zone, info);
-        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
-        const heightDesc = floors > 0 ? `${floors}-story, ` : '';
-        const posDesc = entry.relativePosition === 'left' ? 'LEFT edge' :
-                        entry.relativePosition === 'right' ? 'RIGHT edge' : 'CENTER-BACK';
-        const sizeDesc = entry.distance < 30 ? 'Large' :
-                         entry.distance < 80 ? 'Medium' : 'Small/distant';
-
-        lines.push(
-          `${sizeDesc}, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
-          `~${Math.round(entry.distance)}m, ${heightDesc}${desc}`,
-        );
-      }
-    }
-  }
-
-  // Ground plane
-  lines.push(
-    'GROUND: Paved sidewalk and street in the immediate foreground with curbs and street trees. ' +
-    'The ground plane recedes naturally toward the horizon, connecting all described elements.',
-  );
 
   // Style modifier
   if (styleModifier) {
     lines.push(styleModifier);
   }
 
-  // Closing quality directives
+  // Closing
   lines.push(
-    'STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting. ' +
-    'Sharp material detail on close elements, atmospheric haze on distant ones. 35mm lens. ' +
-    '8K resolution, no people, no text overlays, no watermarks.',
+    `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
+    `no grid artifacts. Single continuous photorealistic architectural visualization photograph.`,
   );
 
   return lines.join('\n\n');
@@ -927,6 +990,384 @@ export function generateDepthMap(
 }
 
 // ---------------------------------------------------------------------------
+// Three.js Clay Render — solid gray 3D massing model from street level
+// ---------------------------------------------------------------------------
+
+const CLAY_WIDTH = 1024;
+const CLAY_HEIGHT = 576;
+
+/**
+ * Generate a "clay render" — a gray-shaded 3D massing model from street level.
+ * Uses Three.js offscreen renderer to produce solid gray volumes with proper
+ * perspective, occlusion, and lighting. This gives Gemini unambiguous spatial
+ * data about building heights, positions, and depth ordering.
+ *
+ * Buildings → extruded gray boxes
+ * Parks → flat green-tinted ground planes with low hedge volumes
+ * Water → flat blue-tinted ground planes
+ * Roads → flat gray ground strips
+ */
+export function generateClayRender(
+  pegmanPos: [number, number],
+  angleDeg: number,
+  visibleZones: ZoneWithDistance[],
+): string {
+  // --- Set up offscreen Three.js scene ---
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: false,
+    preserveDrawingBuffer: true,
+  });
+  renderer.setSize(CLAY_WIDTH, CLAY_HEIGHT);
+  renderer.setClearColor(0xd4e6f1, 1); // light sky blue background
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  // Sky-like fog for atmospheric perspective (distant objects fade)
+  scene.fog = new THREE.Fog(0xc8dce8, 80, 350);
+
+  // --- Camera at eye level, facing the heading direction ---
+  const camera = new THREE.PerspectiveCamera(60, CLAY_WIDTH / CLAY_HEIGHT, 0.5, 500);
+  camera.position.set(0, EYE_HEIGHT_M, 0);
+
+  // Convert compass heading to Three.js look direction
+  // Compass: 0=North(+Y), 90=East(+X). Three.js: -Z is forward by default.
+  const headingRad = angleDeg * DEG_TO_RAD;
+  const lookX = Math.sin(headingRad) * 100;
+  const lookZ = -Math.cos(headingRad) * 100;
+  camera.lookAt(new THREE.Vector3(lookX, EYE_HEIGHT_M * 0.8, lookZ));
+
+  // --- Lighting ---
+  // Ambient for base illumination
+  const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambient);
+
+  // Directional sun light (slightly from front-left for shading definition)
+  const sunLight = new THREE.DirectionalLight(0xfff4e0, 1.2);
+  sunLight.position.set(-30, 60, -20);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 1024;
+  sunLight.shadow.mapSize.height = 1024;
+  sunLight.shadow.camera.near = 0.5;
+  sunLight.shadow.camera.far = 300;
+  sunLight.shadow.camera.left = -150;
+  sunLight.shadow.camera.right = 150;
+  sunLight.shadow.camera.top = 150;
+  sunLight.shadow.camera.bottom = -150;
+  scene.add(sunLight);
+
+  // Hemisphere light for natural sky/ground color variation
+  const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x8b7355, 0.3);
+  scene.add(hemiLight);
+
+  // --- Ground plane ---
+  const groundGeo = new THREE.PlaneGeometry(600, 600);
+  const groundMat = new THREE.MeshStandardMaterial({
+    color: 0x9e9e9e,
+    roughness: 0.9,
+    metalness: 0,
+  });
+  const ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = 0;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // --- Helper: convert zone's lat/lng polygon centroid to local meters ---
+  const [pegLng, pegLat] = pegmanPos;
+  const metersPerDegLng = METERS_PER_DEG_LAT * Math.cos(pegLat * DEG_TO_RAD);
+
+  function toLocal(lng: number, lat: number): [number, number] {
+    const x = (lng - pegLng) * metersPerDegLng;
+    const z = -(lat - pegLat) * METERS_PER_DEG_LAT; // negative because Three.js -Z is north
+    return [x, z];
+  }
+
+  function getPolygonCentroid(coords: number[][]): [number, number] {
+    let sumX = 0, sumY = 0;
+    for (const c of coords) {
+      sumX += c[0];
+      sumY += c[1];
+    }
+    return [sumX / coords.length, sumY / coords.length];
+  }
+
+  function getPolygonExtent(coords: number[][]): { minX: number; maxX: number; minY: number; maxY: number } {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const c of coords) {
+      if (c[0] < minX) minX = c[0];
+      if (c[0] > maxX) maxX = c[0];
+      if (c[1] < minY) minY = c[1];
+      if (c[1] > maxY) maxY = c[1];
+    }
+    return { minX, maxX, minY, maxY };
+  }
+
+  // --- Material palette ---
+  const buildingMat = new THREE.MeshStandardMaterial({
+    color: 0xb0b0b0,
+    roughness: 0.7,
+    metalness: 0.1,
+  });
+  const buildingDarkMat = new THREE.MeshStandardMaterial({
+    color: 0x999999,
+    roughness: 0.7,
+    metalness: 0.1,
+  });
+  const parkMat = new THREE.MeshStandardMaterial({
+    color: 0x7cb342,
+    roughness: 0.9,
+    metalness: 0,
+  });
+  const roadMat = new THREE.MeshStandardMaterial({
+    color: 0x757575,
+    roughness: 0.95,
+    metalness: 0,
+  });
+
+  // --- Build 3D volumes for each zone ---
+  for (const entry of visibleZones) {
+    const zone = entry.zone;
+    const coords = zone.coordinates;
+    if (!coords || coords.length < 3) continue;
+
+    const centroid = getPolygonCentroid(coords);
+    const [cx, cz] = toLocal(centroid[0], centroid[1]);
+    const extent = getPolygonExtent(coords);
+
+    // Convert extent to local meters for sizing
+    const [minLocalX, minLocalZ] = toLocal(extent.minX, extent.maxY);
+    const [maxLocalX, maxLocalZ] = toLocal(extent.maxX, extent.minY);
+    const widthM = Math.abs(maxLocalX - minLocalX);
+    const depthM = Math.abs(maxLocalZ - minLocalZ);
+
+    // Skip extremely small or distant zones
+    if (widthM < 1 && depthM < 1) continue;
+    if (entry.distance > 300) continue;
+
+    const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
+
+    if (isBuilding) {
+      // Extruded box for buildings
+      const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || 4;
+      const heightM = floors * FLOOR_HEIGHT_M;
+
+      const geo = new THREE.BoxGeometry(
+        Math.max(widthM, 5),
+        heightM,
+        Math.max(depthM, 5),
+      );
+      // Alternate materials slightly for visual distinction between buildings
+      const mat = entry.distance % 2 < 1 ? buildingMat : buildingDarkMat;
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(cx, heightM / 2, cz);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+
+      // Add subtle edge lines for definition
+      const edges = new THREE.EdgesGeometry(geo);
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x666666, opacity: 0.4, transparent: true });
+      const lineSegments = new THREE.LineSegments(edges, lineMat);
+      lineSegments.position.copy(mesh.position);
+      scene.add(lineSegments);
+
+    } else if (zone.zone_type === 'green_space') {
+      // Parks: organic green ground with scattered tree canopy spheres
+      const pw = Math.max(widthM, 5);
+      const pd = Math.max(depthM, 5);
+
+      // Grass ground plane (slightly irregular — use slightly raised green)
+      const planeGeo = new THREE.PlaneGeometry(pw, pd);
+      const plane = new THREE.Mesh(planeGeo, parkMat);
+      plane.rotation.x = -Math.PI / 2;
+      plane.position.set(cx, 0.08, cz);
+      plane.receiveShadow = true;
+      scene.add(plane);
+
+      // Scatter tree canopy spheres (organic shapes, not boxes)
+      const treeCount = Math.max(3, Math.floor((pw * pd) / 80));
+      const canopyMat = new THREE.MeshStandardMaterial({
+        color: 0x4a7c2a,
+        roughness: 0.85,
+        metalness: 0,
+      });
+      const darkCanopyMat = new THREE.MeshStandardMaterial({
+        color: 0x2e5a1a,
+        roughness: 0.85,
+        metalness: 0,
+      });
+      // Use a seeded random based on zone position for consistency
+      let seed = Math.abs(cx * 17 + cz * 31) % 1000;
+      const seededRandom = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+
+      for (let t = 0; t < treeCount; t++) {
+        const tx = cx + (seededRandom() - 0.5) * pw * 0.85;
+        const tz = cz + (seededRandom() - 0.5) * pd * 0.85;
+
+        // Tree trunk (thin cylinder)
+        const trunkH = 2 + seededRandom() * 2;
+        const trunkGeo = new THREE.CylinderGeometry(0.15, 0.2, trunkH, 6);
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5d4037, roughness: 0.9 });
+        const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+        trunk.position.set(tx, trunkH / 2, tz);
+        trunk.castShadow = true;
+        scene.add(trunk);
+
+        // Tree canopy (sphere or icosahedron for organic look)
+        const canopyR = 2 + seededRandom() * 3;
+        const canopyGeo = new THREE.IcosahedronGeometry(canopyR, 1);
+        const canopy = new THREE.Mesh(canopyGeo, t % 2 === 0 ? canopyMat : darkCanopyMat);
+        canopy.position.set(tx, trunkH + canopyR * 0.6, tz);
+        // Slightly squash vertically for realistic canopy shape
+        canopy.scale.set(1, 0.7, 1);
+        canopy.castShadow = true;
+        scene.add(canopy);
+      }
+
+      // Add a path/walkway through the park (thin light strip)
+      const pathGeo = new THREE.PlaneGeometry(pw * 0.15, pd * 0.8);
+      const pathMat = new THREE.MeshStandardMaterial({ color: 0xbcaaa4, roughness: 0.95 });
+      const path = new THREE.Mesh(pathGeo, pathMat);
+      path.rotation.x = -Math.PI / 2;
+      path.position.set(cx, 0.1, cz);
+      scene.add(path);
+
+    } else if (zone.zone_type === 'water') {
+      // Water: reflective blue plane with darker shoreline border
+      const ww = Math.max(widthM, 5);
+      const wd = Math.max(depthM, 5);
+
+      // Shoreline border (darker ground ring around water)
+      const shoreGeo = new THREE.PlaneGeometry(ww + 3, wd + 3);
+      const shoreMat = new THREE.MeshStandardMaterial({
+        color: 0x6d4c41,
+        roughness: 0.9,
+        metalness: 0,
+      });
+      const shore = new THREE.Mesh(shoreGeo, shoreMat);
+      shore.rotation.x = -Math.PI / 2;
+      shore.position.set(cx, 0.01, cz);
+      scene.add(shore);
+
+      // Vegetation around shoreline (small green spheres at edges)
+      const vegMat = new THREE.MeshStandardMaterial({ color: 0x558b2f, roughness: 0.9 });
+      const vegCount = Math.floor((ww + wd) / 4);
+      for (let v = 0; v < vegCount; v++) {
+        const angle = (v / vegCount) * Math.PI * 2;
+        const rx = cx + Math.cos(angle) * (ww / 2 + 0.5);
+        const rz = cz + Math.sin(angle) * (wd / 2 + 0.5);
+        const vegGeo = new THREE.SphereGeometry(0.6 + Math.random() * 0.5, 6, 4);
+        const veg = new THREE.Mesh(vegGeo, vegMat);
+        veg.position.set(rx, 0.5, rz);
+        scene.add(veg);
+      }
+
+      // Water surface (slightly recessed, high metalness for reflective look)
+      const waterGeo = new THREE.PlaneGeometry(ww, wd);
+      const waterSurfaceMat = new THREE.MeshStandardMaterial({
+        color: 0x1976d2,
+        roughness: 0.1,
+        metalness: 0.6,
+        transparent: true,
+        opacity: 0.85,
+      });
+      const water = new THREE.Mesh(waterGeo, waterSurfaceMat);
+      water.rotation.x = -Math.PI / 2;
+      water.position.set(cx, -0.1, cz); // slightly below ground for "recessed" look
+      water.receiveShadow = true;
+      scene.add(water);
+
+    } else {
+      // Roads and other: flat gray strip
+      const planeGeo = new THREE.PlaneGeometry(
+        Math.max(widthM, 3),
+        Math.max(depthM, 3),
+      );
+      const plane = new THREE.Mesh(planeGeo, roadMat);
+      plane.rotation.x = -Math.PI / 2;
+      plane.position.set(cx, 0.03, cz);
+      plane.receiveShadow = true;
+      scene.add(plane);
+    }
+  }
+
+  // --- Bake text labels into the clay render ---
+  // Use a 2D canvas overlay to add zone names as floating labels
+  // First render the 3D scene, then composite labels on top
+  renderer.render(scene, camera);
+
+  // Create a 2D overlay canvas for text labels
+  const labelCanvas = document.createElement('canvas');
+  labelCanvas.width = CLAY_WIDTH;
+  labelCanvas.height = CLAY_HEIGHT;
+  const labelCtx = labelCanvas.getContext('2d')!;
+
+  // Copy 3D render to label canvas
+  labelCtx.drawImage(renderer.domElement, 0, 0);
+
+  // Project 3D zone positions to 2D screen coordinates and draw labels
+  for (const entry of visibleZones) {
+    const zone = entry.zone;
+    const coords = zone.coordinates;
+    if (!coords || coords.length < 3) continue;
+
+    const centroid = getPolygonCentroid(coords);
+    const [lcx, lcz] = toLocal(centroid[0], centroid[1]);
+
+    const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
+    const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || (isBuilding ? 4 : 0);
+    const labelY = isBuilding ? floors * FLOOR_HEIGHT_M + 2 : 5;
+
+    // Project 3D point to 2D screen
+    const worldPos = new THREE.Vector3(lcx, labelY, lcz);
+    worldPos.project(camera);
+
+    // Convert from NDC (-1 to 1) to screen pixels
+    const screenX = (worldPos.x * 0.5 + 0.5) * CLAY_WIDTH;
+    const screenY = (-worldPos.y * 0.5 + 0.5) * CLAY_HEIGHT;
+
+    // Only draw if on screen and in front of camera
+    if (screenX < -50 || screenX > CLAY_WIDTH + 50 || screenY < -20 || screenY > CLAY_HEIGHT + 20) continue;
+    if (worldPos.z > 1) continue; // behind camera
+
+    const info = getZoneArchetypeInfo(zone);
+    const title = info.archetypeTitle || zone.name || zoneTypeLabel(zone.zone_type);
+
+    // Draw label background
+    labelCtx.font = 'bold 11px Arial, sans-serif';
+    const textWidth = labelCtx.measureText(title).width;
+    labelCtx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    labelCtx.fillRect(screenX - textWidth / 2 - 4, screenY - 12, textWidth + 8, 16);
+
+    // Draw label text
+    labelCtx.fillStyle = '#ffffff';
+    labelCtx.textAlign = 'center';
+    labelCtx.textBaseline = 'middle';
+    labelCtx.fillText(title, screenX, screenY - 4);
+  }
+
+  // Use the label canvas as the final output instead of the raw 3D render
+  const dataUrl = labelCanvas.toDataURL('image/png');
+
+  // Clean up Three.js resources
+  renderer.dispose();
+  scene.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
+      obj.geometry.dispose();
+      if (Array.isArray(obj.material)) {
+        obj.material.forEach((m) => m.dispose());
+      } else {
+        obj.material.dispose();
+      }
+    }
+  });
+
+  return dataUrl.split(',')[1];
+}
+
+// ---------------------------------------------------------------------------
 // Public API — async generator
 // ---------------------------------------------------------------------------
 
@@ -947,6 +1388,87 @@ export interface StreetViewResult {
  *
  * Returns the generated image URL and prompt, or null on failure.
  */
+/**
+ * Fetch an image from a URL and return its base64 data (without prefix).
+ * Used to collect archetype card images for multi-image routing.
+ */
+async function fetchImageAsBase64(url: string): Promise<string | null> {
+  try {
+    // For relative URLs (archetype cards served from public/)
+    const fullUrl = url.startsWith('http') ? url : window.location.origin + url;
+    const resp = await fetch(fullUrl);
+    if (!resp.ok) return null;
+    const blob = await resp.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        resolve(dataUrl.split(',')[1] || null);
+      };
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Collect archetype card images for all visible zones (up to 6).
+ * Returns array of { image_base64, label, zone_color } for multi-image routing.
+ */
+async function collectArchetypeImages(
+  visibleZones: ZoneWithDistance[],
+): Promise<Array<{ image_base64: string; label: string; zone_color: string }>> {
+  const results: Array<{ image_base64: string; label: string; zone_color: string }> = [];
+
+  // Take up to 6 closest/most important zones
+  const candidates = visibleZones.slice(0, 6);
+
+  const promises = candidates.map(async (entry) => {
+    const info = getZoneArchetypeInfo(entry.zone);
+    const title = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+
+    // Try to find the archetype's thumbnail image
+    let thumbnailUrl: string | null = null;
+
+    const archetypeId = entry.zone.properties?.archetype_id || entry.zone.properties?.subcategory;
+    if (archetypeId) {
+      // Look up the catalog entry for its thumbnail
+      const catalogEntry = catalog.find(
+        (c: any) => c.id === archetypeId,
+      );
+      if (catalogEntry?.variants) {
+        // Use the SELECTED variant if available, otherwise variant 0
+        const selectedVariantIdx = Number(entry.zone.properties?.selected_variant) || 0;
+        const variant = catalogEntry.variants[selectedVariantIdx] || catalogEntry.variants[0];
+        if (variant?.thumbnailUrl) {
+          thumbnailUrl = variant.thumbnailUrl;
+        }
+      } else if (catalogEntry?.thumbnailUrl) {
+        thumbnailUrl = catalogEntry.thumbnailUrl;
+      }
+    }
+
+    if (!thumbnailUrl) return null;
+
+    const b64 = await fetchImageAsBase64(thumbnailUrl);
+    if (!b64) return null;
+
+    // Use relative position as zone identifier for routing
+    const positionLabel = entry.relativePosition; // left/center/right
+
+    return { image_base64: b64, label: title, zone_color: positionLabel };
+  });
+
+  const settled = await Promise.all(promises);
+  for (const item of settled) {
+    if (item) results.push(item);
+  }
+
+  console.log(`[StreetView] Collected ${results.length} archetype card images for multi-image routing`);
+  return results;
+}
+
 export async function generateStreetView(
   pegmanPos: [number, number],
   angleDeg: number,
@@ -956,6 +1478,7 @@ export async function generateStreetView(
     distanceMeters?: number;
     styleModifier?: string;
     model?: string;
+    previousRenderBase64?: string; // For dual anchoring on re-render
   },
 ): Promise<StreetViewResult | null> {
   const fov = options?.fovDeg ?? 70;
@@ -983,38 +1506,117 @@ export async function generateStreetView(
     );
   }
 
-  // 4. Build prompt
+  // 4. Build SCHEMA-style prompt
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
   console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
-  // 5. Generate color-coded depth map as spatial guide
-  const depthMapBase64 = generateDepthMap(pegmanPos, angleDeg, sorted);
+  // 5. Generate 3D clay render as spatial guide (gray massing model)
+  let guideImageBase64: string;
+  try {
+    guideImageBase64 = generateClayRender(pegmanPos, angleDeg, sorted);
+    console.log('[StreetView] Clay render generated successfully');
+  } catch (clayErr) {
+    console.warn('[StreetView] Clay render failed, falling back to flat depth map:', clayErr);
+    guideImageBase64 = generateDepthMap(pegmanPos, angleDeg, sorted);
+  }
 
-  // 6. Call render API with depth map as guide image
+  // 6. Collect archetype card images for multi-image routing (up to 6)
+  let archetypeImages: Array<{ image_base64: string; label: string; zone_color: string }> = [];
+  try {
+    archetypeImages = await collectArchetypeImages(sorted);
+  } catch (archErr) {
+    console.warn('[StreetView] Failed to collect archetype images:', archErr);
+  }
+
+  // 7. Call render API with clay render + archetype images + optional dual anchor
   try {
     const enhancedPrompt =
       prompt +
-      '\n\nIMPORTANT: The attached image is a color-coded spatial guide showing where each zone ' +
-      'should appear in the final render. Each colored block represents a different building or ' +
-      'landscape zone. Use the position, size, and color of each block to place the corresponding ' +
-      'architectural element in the correct location. Replace each colored block with the photorealistic ' +
-      'version described in the prompt above. Maintain the same spatial layout and proportions.';
+      '\n\nSPATIAL REFERENCE: The attached 3D clay massing model shows the exact spatial layout ' +
+      'from the camera\'s perspective at street level. Gray volumes = buildings with accurate height. ' +
+      'Green volumes = parks and tree canopies. Blue surfaces = water features. ' +
+      'STRICT RULES: ' +
+      '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the clay model. ' +
+      '2. Replace each volume with photorealistic materials as described above. ' +
+      '3. Do NOT add, remove, or reposition any structures. ' +
+      '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
+      '5. Maintain camera height (1.7m) and viewing angle exactly.' +
+      (archetypeImages.length > 0
+        ? '\n\nARCHETYPE REFERENCES: Additional images show the exact architectural style and ' +
+          'materials for specific zones. Apply each reference image\'s style to the corresponding ' +
+          'volume in the clay model as labeled.'
+        : '');
 
     const body: Record<string, unknown> = {
       prompt: enhancedPrompt,
-      image_base64: depthMapBase64,
+      image_base64: guideImageBase64,
       aspect_ratio: '16:9',
     };
+
     if (options?.model) {
       body.model = options.model;
     }
+
+    // Multi-image archetype routing
+    if (archetypeImages.length > 0) {
+      body.archetype_images = archetypeImages;
+    }
+
+    // Dual anchoring: feed previous render back for iterative refinement
+    if (options?.previousRenderBase64) {
+      body.previous_render_base64 = options.previousRenderBase64;
+      console.log('[StreetView] Dual anchoring: including previous render as structural anchor');
+    }
+
     const response = await axios.post(RENDER_API_URL, body, { timeout: 180_000 });
 
-    const resultBase64: string | undefined = response.data?.image_base64;
+    let resultBase64: string | undefined = response.data?.image_base64;
 
     if (!resultBase64) {
       console.error('[useStreetViewRender] No image data in API response', response.data);
       return null;
+    }
+
+    // --- TWO-PASS GENERATION ---
+    // When using Pro model, do a refinement pass for better spatial accuracy.
+    // Pass 1 establishes the spatial layout, Pass 2 refines materials and details.
+    const isProModel = options?.model === 'gemini-3-pro-image-preview';
+    if (isProModel && !options?.previousRenderBase64) {
+      console.log('[StreetView] Pass 2: Refining spatial layout with dual anchoring...');
+      try {
+        const refinementPrompt =
+          'REFINEMENT PASS: Use Image 1 (the previous render) as the absolute structural anchor. ' +
+          'Preserve the EXACT spatial layout, building positions, heights, camera angle, and proportions. ' +
+          'Improve ONLY: material detail and realism, lighting quality, atmospheric effects, ' +
+          'texture sharpness on close elements, and natural landscape detail. ' +
+          'Do NOT move, resize, add, or remove any structures. ' +
+          'The clay model (Image 2) confirms the correct spatial arrangement.\n\n' +
+          prompt;
+
+        const pass2Body: Record<string, unknown> = {
+          prompt: refinementPrompt,
+          image_base64: guideImageBase64,
+          previous_render_base64: resultBase64,
+          aspect_ratio: '16:9',
+          model: options.model,
+        };
+
+        if (archetypeImages.length > 0) {
+          pass2Body.archetype_images = archetypeImages;
+        }
+
+        const pass2Response = await axios.post(RENDER_API_URL, pass2Body, { timeout: 180_000 });
+        const pass2Base64: string | undefined = pass2Response.data?.image_base64;
+
+        if (pass2Base64) {
+          console.log('[StreetView] Pass 2 refinement successful');
+          resultBase64 = pass2Base64;
+        } else {
+          console.warn('[StreetView] Pass 2 returned no image, using Pass 1 result');
+        }
+      } catch (pass2Err) {
+        console.warn('[StreetView] Pass 2 refinement failed, using Pass 1 result:', pass2Err);
+      }
     }
 
     const imageUrl = `data:image/png;base64,${resultBase64}`;
@@ -1049,6 +1651,7 @@ export function useStreetViewRender() {
         distanceMeters?: number;
         styleModifier?: string;
         model?: string;
+        previousRenderBase64?: string;
       },
     ) => generateStreetView(pegmanPos, angleDeg, siteZones, options),
     [],

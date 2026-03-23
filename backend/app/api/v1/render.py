@@ -43,6 +43,13 @@ _GEMINI_RENDER_MODEL = "gemini-2.5-flash-image"
 # ---------------------------------------------------------------------------
 
 
+class ArchetypeImage(BaseModel):
+    """An archetype reference image to include in the multi-image payload."""
+    image_base64: str = Field(..., description="Base64-encoded JPEG/PNG of the archetype card.")
+    label: str = Field(..., description="Label for this archetype (e.g., 'Glass Office Tower').")
+    zone_color: Optional[str] = Field(default=None, description="Color identifier in the layout (e.g., 'red').")
+
+
 class RenderRequest(BaseModel):
     """Payload sent by the frontend useAIRender hook."""
 
@@ -86,6 +93,14 @@ class RenderRequest(BaseModel):
     model: Optional[str] = Field(
         default=None,
         description="Gemini model ID to use. Defaults to gemini-2.5-flash-image.",
+    )
+    archetype_images: Optional[list[ArchetypeImage]] = Field(
+        default=None,
+        description="Archetype card photos for multi-image composition routing.",
+    )
+    previous_render_base64: Optional[str] = Field(
+        default=None,
+        description="Previous render for dual anchoring (iterative refinement).",
     )
 
 
@@ -192,8 +207,28 @@ async def generate_render(req: RenderRequest):
     # --- Build payload ---
     parts: list[dict] = []
 
-    # Add the screenshot as inline image (if provided)
+    # For dual anchoring: previous render goes first as structural anchor
+    if req.previous_render_base64:
+        parts.append({
+            "text": "Image 1 (STRUCTURAL ANCHOR): This is a previously generated render. "
+                    "Preserve its EXACT spatial layout, geometric volumes, camera angle, and "
+                    "proportions. Only modify the specific elements described in the prompt."
+        })
+        parts.append({
+            "inlineData": {
+                "mimeType": "image/png",
+                "data": req.previous_render_base64,
+            }
+        })
+
+    # Add the primary layout image (clay render or screenshot)
     if req.image_base64:
+        img_index = 2 if req.previous_render_base64 else 1
+        parts.append({
+            "text": f"Image {img_index} (SPATIAL LAYOUT): This is a 3D clay massing model "
+                    f"showing the exact spatial arrangement of all structures from the camera's "
+                    f"perspective. Use this as the definitive spatial reference."
+        })
         parts.append({
             "inlineData": {
                 "mimeType": "image/png",
@@ -201,7 +236,29 @@ async def generate_render(req: RenderRequest):
             }
         })
 
-    # If a mask is provided, send it as a second image with explanation
+    # Add archetype reference images for multi-image composition
+    if req.archetype_images:
+        base_index = 3 if req.previous_render_base64 else 2
+        for i, arch_img in enumerate(req.archetype_images[:6]):  # Max 6 archetype refs
+            img_idx = base_index + i
+            color_ref = f" Located in the {arch_img.zone_color} zone." if arch_img.zone_color else ""
+            parts.append({
+                "text": f"Image {img_idx} (ARCHETYPE REFERENCE — {arch_img.label}): "
+                        f"Apply the exact architectural style, materials, and textures from "
+                        f"this reference image to the corresponding zone.{color_ref}"
+            })
+            # Detect mime type from base64 header or default to jpeg
+            mime = "image/jpeg"
+            if arch_img.image_base64[:4] == "iVBO":
+                mime = "image/png"
+            parts.append({
+                "inlineData": {
+                    "mimeType": mime,
+                    "data": arch_img.image_base64,
+                }
+            })
+
+    # If a mask is provided, send it as an additional image with explanation
     if req.image_base64 and req.mask_base64:
         parts.append({
             "text": "The following black-and-white mask shows the exact area to edit "

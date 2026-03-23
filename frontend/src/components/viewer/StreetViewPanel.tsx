@@ -48,11 +48,20 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
     if (!streetViewPegman?.position) return;
     setIsGenerating(true);
     try {
+      // For re-renders: extract previous render base64 for dual anchoring
+      let previousRenderBase64: string | undefined;
+      if (result?.imageUrl?.startsWith('data:image/')) {
+        previousRenderBase64 = result.imageUrl.split(',')[1];
+      }
+
       const res = await generateStreetView(
         streetViewPegman.position,
         streetViewPegman.angle,
         siteZones,
-        { model: selectedModel !== 'gemini-2.5-flash-image' ? selectedModel : undefined },
+        {
+          model: selectedModel !== 'gemini-2.5-flash-image' ? selectedModel : undefined,
+          previousRenderBase64,
+        },
       );
       if (res) {
         setResult(res);
@@ -65,7 +74,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedModel]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedModel, result]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
