@@ -9,6 +9,26 @@
 import { useState, useMemo } from 'react';
 import { ZONE_TYPE_CONFIG, type SiteZone } from '@/types';
 import { getColourForDevelopmentType } from '@/data/landUseColours';
+import buildingCatalog from '@/data/buildingArchetypes.json';
+import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
+import streetPathCatalog from '@/data/streetPathArchetypes.json';
+
+// Merge all archetype catalogs for label resolution
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _allArchetypes: any[] = [
+  ...((buildingCatalog as any)?.archetypes || []),
+  ...((openSpaceCatalog as any)?.archetypes || []),
+  ...((streetPathCatalog as any)?.archetypes || []),
+];
+
+/** Look up the archetype title from the zone's subcategory/archetype_id */
+function resolveArchetypeLabel(zone: SiteZone): string | null {
+  const archetypeId = (zone.properties?.archetype_id as string)
+    || (zone.properties?.subcategory as string);
+  if (!archetypeId) return null;
+  const entry = _allArchetypes.find((a: any) => a.id === archetypeId);
+  return entry?.title || null;
+}
 
 interface ZoneLegendProps {
   siteZones: SiteZone[];
@@ -29,11 +49,12 @@ export function ZoneLegend({ siteZones }: ZoneLegendProps) {
     const result: LegendEntry[] = [];
 
     for (const zone of siteZones) {
-      // Try archetype label first (unique shade per archetype)
+      // Try archetype label first — check explicit properties, then resolve from catalog
       const archetypeLabel = (zone.properties?.development_archetype_label as string)
         || (zone.properties?.road_archetype_label as string)
         || (zone.properties?.green_space_archetype_label as string)
-        || (zone.properties?.plaza_archetype_label as string);
+        || (zone.properties?.plaza_archetype_label as string)
+        || resolveArchetypeLabel(zone);
       if (archetypeLabel && !seen.has(zone.id)) {
         seen.add(zone.id);
         result.push({
@@ -71,12 +92,20 @@ export function ZoneLegend({ siteZones }: ZoneLegendProps) {
         continue;
       }
 
-      if (!seen.has(zt)) {
-        seen.add(zt);
+      // Use zone name if it's meaningful (not a generic cached name like "Front Elevation Day")
+      const zoneName = zone.name;
+      const isGenericName = !zoneName || zoneName.startsWith('Front ') || zoneName.startsWith('Rear ') || zoneName === 'Building' || zoneName === 'Park';
+      const displayLabel = isGenericName ? null : zoneName;
+
+      if (!seen.has(zone.id)) {
+        seen.add(zone.id);
         const config = ZONE_TYPE_CONFIG[zt];
-        if (config) {
-          result.push({ key: zt, color: config.color, label: config.label });
-        }
+        result.push({
+          key: zone.id,
+          color: zone.color || config?.color || '#888',
+          label: displayLabel || config?.label || zt.replace(/_/g, ' '),
+          outline: zone.zone_type === 'site_boundary',
+        });
       }
     }
 
@@ -117,7 +146,7 @@ export function ZoneLegend({ siteZones }: ZoneLegendProps) {
             onClick={() => setIsExpanded(false)}
             className="flex w-full items-center justify-between px-3 py-2 border-b border-white/5"
           >
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Land Use Legend</span>
+            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Legend</span>
             <svg className="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
             </svg>

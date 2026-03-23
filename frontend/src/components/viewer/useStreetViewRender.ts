@@ -716,12 +716,62 @@ export function buildStreetViewPrompt(
   // ─── SCHEMA-style perspective grid prompt ───
   // Uses foreground/midground/background depth planes with optical constraints
 
+  // ─── CLAUSE 1: GEOMETRIC LOCKDOWN ───
+  lines.push(
+    `GEOMETRIC LOCKDOWN: Analyze the provided reference image (Image 1). It is a color-coded ` +
+    `3D massing model. Strictly adhere to the perspective, building geometry, volumetric proportions, ` +
+    `and structural massing shown in the reference. Do not alter the silhouette, scale, or footprint ` +
+    `of any provided volume. Each colored volume maps to a specific architectural zone described below.`,
+  );
+
+  // ─── CLAUSE 2: NUMERICAL INVENTORY ───
+  const buildingCount = visibleZones.filter(z =>
+    z.zone.zone_type === 'building' || z.zone.zone_type === 'residential' || z.zone.zone_type === 'development_area'
+  ).length;
+  const parkCount = visibleZones.filter(z => z.zone.zone_type === 'green_space').length;
+  const waterCount = visibleZones.filter(z => z.zone.zone_type === 'water').length;
+  const streetCount = visibleZones.filter(z => {
+    const zt = z.zone.zone_type as string;
+    return zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian';
+  }).length;
+  lines.push(
+    `NUMERICAL INVENTORY: This scene contains exactly ${visibleZones.length} zones: ` +
+    `${buildingCount} building(s), ${parkCount} park(s), ${waterCount} water feature(s), ` +
+    `${streetCount} street/path(s). Render ONLY these elements. Do not add any additional structures.`,
+  );
+
+  // ─── CLAUSE 3: VOID DEFINITION (semantic negative) ───
+  lines.push(
+    `VOID DEFINITION: All space between the defined zones consists of a flat, unbroken, ` +
+    `deserted concrete pavement surface. The background behind all structures consists solely ` +
+    `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is a continuous ` +
+    `atmospheric gradient with no additional towers, buildings, or structures on the horizon.`,
+  );
+
+  // ─── COLOR-TO-ZONE MAPPING LEGEND ───
+  const DEFAULT_ZONE_COLORS: Record<string, string> = {
+    building: '#E03C31', residential: '#E03C31', development_area: '#E03C31',
+    green_space: '#4CAF50', water: '#2196F3',
+    road: '#757575', street: '#757575', path: '#9E9E9E', pedestrian: '#8D6E63',
+  };
+  const colorLegend = visibleZones.map(entry => {
+    const info = getZoneArchetypeInfo(entry.zone);
+    const name = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+    const color = entry.zone.color || DEFAULT_ZONE_COLORS[entry.zone.zone_type] || '#888888';
+    return `  • The ${color} colored volume = "${name}"`;
+  });
+  lines.push(
+    `COLOR-TO-ZONE MAPPING (match the colored volumes in Image 1):\n${colorLegend.join('\n')}\n` +
+    `Apply photorealistic materials and textures ONLY within each color zone's boundary. ` +
+    `Do not allow materials from one zone to bleed into adjacent zones.`,
+  );
+
   lines.push(
     `PERSPECTIVE GRID LAYOUT: 3-Tier Depth Frustum (Foreground, Midground, Background).`,
   );
   lines.push(
     `CAMERA PARAMETERS: Street-level perspective, camera height fixed at exactly 1.7 meters, ` +
-    `looking ${direction}. 16:9 wide panoramic frame.`,
+    `looking ${direction}. 50mm lens, f/8 aperture, deep focus. 16:9 wide panoramic frame.`,
   );
 
   // Categorize zones into depth planes
@@ -864,21 +914,23 @@ export function buildStreetViewPrompt(
   if (styleModifier) {
     lines.push(
       `FINAL REMINDER: The entire image MUST be in the artistic style specified at the top of this prompt. ` +
-      `Do NOT render as a photograph. Apply the artistic medium consistently to every element.`,
+      `Apply the artistic medium consistently to every element including buildings, landscape, and sky.`,
     );
     lines.push(
-      `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
-      `no grid artifacts, no photorealistic rendering.`,
+      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
+      `with pristine, uninhabited surfaces. All streets and pathways are perfectly unobstructed ` +
+      `with clean, unmarked surfaces. The image is a pure architectural illustration.`,
     );
   } else {
     lines.push(
       `STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting. ` +
-      `Sharp material detail on close elements, atmospheric haze on distant ones. 35mm lens, f/8 aperture. ` +
-      `8K resolution.`,
+      `Sharp material detail on close elements, atmospheric haze on distant ones. 50mm lens, f/8 aperture, ` +
+      `deep focus. 8K resolution.`,
     );
     lines.push(
-      `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
-      `no grid artifacts.`,
+      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
+      `with pristine, uninhabited surfaces. All streets and pathways are perfectly unobstructed ` +
+      `with clean, unmarked surfaces.`,
     );
   }
 
@@ -1211,22 +1263,34 @@ export function generateClayRender(
     return { minX, maxX, minY, maxY };
   }
 
-  // --- Material palette ---
-  const buildingMat = new THREE.MeshStandardMaterial({
-    color: 0xb0b0b0,
-    roughness: 0.7,
-    metalness: 0.1,
-  });
-  const buildingDarkMat = new THREE.MeshStandardMaterial({
-    color: 0x999999,
-    roughness: 0.7,
-    metalness: 0.1,
-  });
-  const parkMat = new THREE.MeshStandardMaterial({
-    color: 0x7cb342,
-    roughness: 0.9,
-    metalness: 0,
-  });
+  // --- Ground plane grid for perspective anchoring ---
+  // Research shows a visible grid prevents tilt-shift and locks vanishing points
+  const gridHelper = new THREE.GridHelper(600, 60, 0x666666, 0x888888);
+  gridHelper.position.y = 0.02;
+  (gridHelper.material as THREE.Material).opacity = 0.25;
+  (gridHelper.material as THREE.Material).transparent = true;
+  scene.add(gridHelper);
+
+  // --- Helper: parse hex color to Three.js color number ---
+  function hexToThreeColor(hex: string): number {
+    const clean = hex.replace('#', '');
+    return parseInt(clean, 16);
+  }
+
+  // --- Zone-specific color materials (full opacity, unique per zone) ---
+  // Each zone gets its own material based on its actual map color
+  const zoneMaterials = new Map<string, THREE.MeshStandardMaterial>();
+  function getZoneMaterial(zone: SiteZone, fallbackColor: number, roughness = 0.7, metalness = 0.1): THREE.MeshStandardMaterial {
+    const zoneColor = zone.color;
+    const key = zone.id || `${zoneColor}_${fallbackColor}`;
+    if (zoneMaterials.has(key)) return zoneMaterials.get(key)!;
+    const color = zoneColor ? hexToThreeColor(zoneColor) : fallbackColor;
+    const mat = new THREE.MeshStandardMaterial({ color, roughness, metalness });
+    zoneMaterials.set(key, mat);
+    return mat;
+  }
+
+  // Fallback materials for roads (keep neutral)
   const roadMat = new THREE.MeshStandardMaterial({
     color: 0x757575,
     roughness: 0.95,
@@ -1265,8 +1329,8 @@ export function generateClayRender(
         heightM,
         Math.max(depthM, 5),
       );
-      // Alternate materials slightly for visual distinction between buildings
-      const mat = entry.distance % 2 < 1 ? buildingMat : buildingDarkMat;
+      // Use each zone's unique color at full opacity for color-coded semantic mapping
+      const mat = getZoneMaterial(zone, 0xb0b0b0);
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.set(cx, heightM / 2, cz);
       mesh.castShadow = true;
@@ -1285,8 +1349,9 @@ export function generateClayRender(
       const pw = Math.max(widthM, 5);
       const pd = Math.max(depthM, 5);
 
-      // Grass ground plane (slightly irregular — use slightly raised green)
+      // Grass ground plane — use zone's actual color at full opacity
       const planeGeo = new THREE.PlaneGeometry(pw, pd);
+      const parkMat = getZoneMaterial(zone, 0x7cb342, 0.9, 0);
       const plane = new THREE.Mesh(planeGeo, parkMat);
       plane.rotation.x = -Math.PI / 2;
       plane.position.set(cx, 0.08, cz);
@@ -1371,14 +1436,13 @@ export function generateClayRender(
         scene.add(veg);
       }
 
-      // Water surface (slightly recessed, high metalness for reflective look)
+      // Water surface — use zone's actual color at full opacity, with reflective properties
       const waterGeo = new THREE.PlaneGeometry(ww, wd);
+      const waterColor = zone.color ? hexToThreeColor(zone.color) : 0x1976d2;
       const waterSurfaceMat = new THREE.MeshStandardMaterial({
-        color: 0x1976d2,
+        color: waterColor,
         roughness: 0.1,
         metalness: 0.6,
-        transparent: true,
-        opacity: 0.85,
       });
       const water = new THREE.Mesh(waterGeo, waterSurfaceMat);
       water.rotation.x = -Math.PI / 2;
@@ -1637,25 +1701,32 @@ export async function generateStreetView(
   try {
     const enhancedPrompt =
       prompt +
-      '\n\nSPATIAL REFERENCE: The attached 3D clay massing model shows the exact spatial layout ' +
-      'from the camera\'s perspective at street level. Gray volumes = buildings with accurate height. ' +
-      'Green volumes = parks and tree canopies. Blue surfaces = water features. ' +
+      '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
+      'Each colored volume maps to a specific architectural zone described in the COLOR-TO-ZONE MAPPING above. ' +
+      'The ground plane grid provides perspective and scale calibration. ' +
       'STRICT RULES: ' +
-      '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the clay model. ' +
-      '2. Replace each volume with photorealistic materials as described above. ' +
-      '3. Do NOT add, remove, or reposition any structures. ' +
+      '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the massing model. ' +
+      '2. Replace each colored volume with photorealistic materials matching its zone description. ' +
+      '3. Render ONLY the structures shown in the massing model as listed in the NUMERICAL INVENTORY. ' +
       '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
       '5. Maintain camera height (1.7m) and viewing angle exactly.' +
       (archetypeImages.length > 0
-        ? '\n\nARCHETYPE REFERENCES: Additional images show the exact architectural style and ' +
-          'materials for specific zones. Apply each reference image\'s style to the corresponding ' +
-          'volume in the clay model as labeled.'
+        ? '\n\nARCHETYPE STYLE REFERENCES (Images 2+): Additional images show the exact architectural ' +
+          'style and materials for specific zones. Use Image 1 strictly as the structural foundation. ' +
+          'Extract material textures and architectural aesthetic from the style reference images. ' +
+          'Apply each reference image\'s style to the corresponding colored volume in Image 1.'
         : '');
 
     const body: Record<string, unknown> = {
       prompt: enhancedPrompt,
       image_base64: guideImageBase64,
       aspect_ratio: '16:9',
+      // Optimal API config from research: temp=0.35 prevents hallucinations while
+      // preserving photorealistic material variance; topP=0.85 trims long-tail
+      // improbable elements; topK=32 restricts to probable geometric interpretations
+      temperature: 0.35,
+      top_p: 0.85,
+      top_k: 32,
     };
 
     if (options?.model) {
