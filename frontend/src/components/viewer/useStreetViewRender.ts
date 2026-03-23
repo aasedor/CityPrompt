@@ -955,6 +955,7 @@ export async function generateStreetView(
     fovDeg?: number;
     distanceMeters?: number;
     styleModifier?: string;
+    model?: string;
   },
 ): Promise<StreetViewResult | null> {
   const fov = options?.fovDeg ?? 70;
@@ -999,11 +1000,15 @@ export async function generateStreetView(
       'architectural element in the correct location. Replace each colored block with the photorealistic ' +
       'version described in the prompt above. Maintain the same spatial layout and proportions.';
 
-    const response = await axios.post(RENDER_API_URL, {
+    const body: Record<string, unknown> = {
       prompt: enhancedPrompt,
       image_base64: depthMapBase64,
       aspect_ratio: '16:9',
-    }, { timeout: 180_000 });
+    };
+    if (options?.model) {
+      body.model = options.model;
+    }
+    const response = await axios.post(RENDER_API_URL, body, { timeout: 180_000 });
 
     const resultBase64: string | undefined = response.data?.image_base64;
 
@@ -1043,6 +1048,7 @@ export function useStreetViewRender() {
         fovDeg?: number;
         distanceMeters?: number;
         styleModifier?: string;
+        model?: string;
       },
     ) => generateStreetView(pegmanPos, angleDeg, siteZones, options),
     [],
