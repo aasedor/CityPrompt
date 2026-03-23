@@ -812,9 +812,10 @@ const resolveOptionCategory = (
                   <option value="industrial_heavy">Heavy Industrial</option>
                   <option value="industrial_warehouse">Warehouse</option>
                 </optgroup>
-                <option value="park_plaza">Park / Plaza</option>
                 <option value="recreational">Recreational</option>
-                <option value="open_space">Open Space</option>
+                <option value="recreational_centre">Rec Centre</option>
+                <option value="sports_arena">Sports Arena</option>
+                <option value="hotel">Hotels</option>
                 <option value="other">Other</option>
               </select>
             </div>

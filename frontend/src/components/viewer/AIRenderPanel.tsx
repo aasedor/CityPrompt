@@ -7,10 +7,11 @@
  */
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import type { Map as MapboxMap } from 'mapbox-gl';
-import type { SiteZone } from '@/types';
+import type { SiteZone, SavedRender } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
 import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
+import { rendersApi, resolveApiFileUrl } from '@/services/api';
 
 // ---------------------------------------------------------------------------
 // Props
@@ -29,13 +30,15 @@ interface AIRenderPanelProps {
   siteZones?: SiteZone[];
   /** Called when the user changes the render style — lets the parent sync style to other panels */
   onStyleChange?: (styleId: string) => void;
+  /** Project ID for saving/loading renders */
+  projectId?: string;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId }: AIRenderPanelProps) {
   const {
     render,
     renderPerZone,
@@ -64,6 +67,16 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [guidanceScale, setGuidanceScale] = useState(15);
   const [perZoneMode, setPerZoneMode] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Saved renders gallery
+  const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [showGallery, setShowGallery] = useState(false);
+  const [galleryLightbox, setGalleryLightbox] = useState<SavedRender | null>(null);
+
+  useEffect(() => {
+    if (!projectId || !showGallery) return;
+    rendersApi.list(projectId).then(setSavedRenders).catch(() => {});
+  }, [projectId, showGallery]);
 
   // Hide zone polygon layers when a render result is displayed, restore when cleared
   const ZONE_LAYERS = [
@@ -253,12 +266,12 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
         {/* ── Style picker ─────────────────────────────────────────────── */}
         <div>
           <label className="mb-1.5 block text-xs font-medium text-gray-400">Style</label>
-          <div className="grid grid-cols-5 gap-1">
+          <div className="grid grid-cols-3 gap-1">
             {AI_RENDER_STYLES.map((style) => (
               <button
                 key={style.id}
                 onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
-                className={`rounded-lg px-1.5 py-1.5 text-[10px] font-medium transition ${
+                className={`rounded-lg px-2 py-1.5 text-[11px] font-medium transition ${
                   selectedStyle === style.id
                     ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
@@ -582,6 +595,95 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
           )}
         </div>
       </div>
+
+      {/* ── Saved Renders Gallery ── */}
+      {projectId && (
+        <div className="border-t border-white/5 px-4 py-3">
+          <button
+            onClick={() => setShowGallery(!showGallery)}
+            className="flex w-full items-center justify-between text-xs font-medium text-gray-400 hover:text-gray-200 transition"
+          >
+            <span>Saved Renders</span>
+            <svg className={`h-3.5 w-3.5 transition-transform ${showGallery ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {showGallery && (
+            <div className="mt-3">
+              {savedRenders.length === 0 ? (
+                <p className="text-xs text-gray-500 text-center py-4">
+                  No saved renders yet. Generate a render and click "Save to Project" to add one.
+                </p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {savedRenders.map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => setGalleryLightbox(r)}
+                      className="group relative overflow-hidden rounded-lg border border-white/10 hover:border-amber-400/50 transition"
+                    >
+                      <img
+                        src={resolveApiFileUrl(r.image_url)}
+                        alt={r.prompt || 'Saved render'}
+                        className="aspect-square w-full object-cover"
+                      />
+                      {r.style && (
+                        <span className="absolute bottom-1 left-1 rounded bg-black/70 px-1.5 py-0.5 text-[9px] font-medium text-white/80">
+                          {r.style}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Gallery lightbox */}
+      {galleryLightbox && (
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setGalleryLightbox(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={resolveApiFileUrl(galleryLightbox.image_url)}
+              alt={galleryLightbox.prompt || 'Saved render'}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+              {galleryLightbox.prompt && (
+                <p className="text-xs text-white/80 line-clamp-2">{galleryLightbox.prompt}</p>
+              )}
+              <p className="mt-1 text-[10px] text-white/50">
+                {new Date(galleryLightbox.created_at).toLocaleDateString()}
+                {galleryLightbox.style && ` · ${galleryLightbox.style}`}
+              </p>
+            </div>
+            <button
+              onClick={() => setGalleryLightbox(null)}
+              className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <a
+              href={resolveApiFileUrl(galleryLightbox.image_url)}
+              download={`render-${galleryLightbox.id}.png`}
+              className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+              title="Download"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

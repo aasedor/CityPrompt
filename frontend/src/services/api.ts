@@ -29,6 +29,7 @@ import type {
   MasterPlan3DGenerateRequest,
   MasterPlan3DGenerateResponse,
   SiteMassingResponse,
+  SavedRender,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -1124,6 +1125,27 @@ export const modelLibraryApi = {
   archetypePreviews: async (): Promise<Record<string, Array<{ id: string; name: string; preview_url: string; model_url: string; project_id?: string }>>> => {
     const { data } = await api.get('/api/v1/model-library/archetype-previews');
     return data;
+  },
+};
+
+export const rendersApi = {
+  save: async (projectId: string, render: {
+    image_base64: string;
+    prompt: string;
+    style?: string;
+    seed?: number;
+  }): Promise<SavedRender> => {
+    const { data } = await api.post(`/api/v1/render/projects/${projectId}/save`, render, { timeout: 30000 });
+    return data;
+  },
+
+  list: async (projectId: string): Promise<SavedRender[]> => {
+    const { data } = await api.get(`/api/v1/render/projects/${projectId}/renders`);
+    return data;
+  },
+
+  delete: async (projectId: string, renderId: string): Promise<void> => {
+    await api.delete(`/api/v1/render/projects/${projectId}/renders/${renderId}`);
   },
 };
 

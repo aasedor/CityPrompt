@@ -4,10 +4,11 @@
  * Flow:
  *   1. Shows 3 preview thumbnails — user clicks to select one
  *   2. Selected preview triggers full-quality render
- *   3. Full result displayed with download button
+ *   3. Full result displayed with download + save buttons
  */
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import type { AIRenderResult } from './useAIRender';
+import { rendersApi } from '@/services/api';
 
 interface RenderResultModalProps {
   /** The 3 preview renders to choose from */
@@ -24,6 +25,12 @@ interface RenderResultModalProps {
   fullResult: AIRenderResult | null;
   /** Progress / status message */
   progressMessage: string;
+  /** Project ID for saving renders */
+  projectId?: string;
+  /** Style preset used for generation */
+  style?: string;
+  /** Called after a render is saved successfully */
+  onSaved?: () => void;
 }
 
 export function RenderResultModal({
@@ -34,9 +41,14 @@ export function RenderResultModal({
   isGeneratingFull,
   fullResult,
   progressMessage,
+  projectId,
+  style,
+  onSaved,
 }: RenderResultModalProps) {
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
   const handleDownload = useCallback(() => {
-    const url = fullResult?.imageUrl ?? (previews.length === 1 ? previews[0]?.imageUrl : null);
+    const url = fullResult?.imageUrl;
     if (!url) return;
     const a = document.createElement('a');
     a.href = url;
@@ -46,11 +58,42 @@ export function RenderResultModal({
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }, [fullResult, previews]);
+  }, [fullResult]);
 
-  // Auto-display the single preview when there's only one
-  const autoSelectedIndex = previews.length === 1 ? 0 : selectedIndex;
-  const displayImage = fullResult?.imageUrl ?? (autoSelectedIndex != null ? previews[autoSelectedIndex]?.imageUrl : null);
+  const handleSave = useCallback(async () => {
+    if (!fullResult?.imageUrl || !projectId || saveStatus === 'saving' || saveStatus === 'saved') return;
+    setSaveStatus('saving');
+    try {
+      // Extract base64 from data URI
+      let base64 = '';
+      if (fullResult.imageUrl.startsWith('data:')) {
+        base64 = fullResult.imageUrl.split(',')[1];
+      } else {
+        // Fetch the image and convert to base64
+        const resp = await fetch(fullResult.imageUrl);
+        const blob = await resp.blob();
+        base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+          reader.readAsDataURL(blob);
+        });
+      }
+      await rendersApi.save(projectId, {
+        image_base64: base64,
+        prompt: fullResult.prompt || '',
+        style: style,
+        seed: fullResult.seed,
+      });
+      setSaveStatus('saved');
+      onSaved?.();
+    } catch (err) {
+      console.error('[RenderResultModal] Save failed:', err);
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    }
+  }, [fullResult, projectId, style, saveStatus]);
+
+  const displayImage = fullResult?.imageUrl ?? (selectedIndex != null ? previews[selectedIndex]?.imageUrl : null);
 
   return (
     <div
@@ -67,11 +110,37 @@ export function RenderResultModal({
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
             </svg>
             <h2 className="text-lg font-semibold text-white">
-              {fullResult ? 'Render Complete' : isGeneratingFull ? 'Generating Full Quality...' : previews.length === 1 ? 'Render Complete' : 'Choose a Preview'}
+              {fullResult ? 'Render Complete' : isGeneratingFull ? 'Generating Full Quality...' : 'Choose a Preview'}
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            {(fullResult || previews.length === 1) && (
+            {fullResult && projectId && (
+              <button
+                onClick={handleSave}
+                disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                  saveStatus === 'saved'
+                    ? 'bg-green-600 text-white'
+                    : saveStatus === 'error'
+                      ? 'bg-red-600 text-white hover:bg-red-500'
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {saveStatus === 'saving' ? (
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                ) : saveStatus === 'saved' ? (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                ) : (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                  </svg>
+                )}
+                {saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Failed — Retry' : 'Save to Project'}
+              </button>
+            )}
+            {fullResult && (
               <button
                 onClick={handleDownload}
                 className="flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-amber-400"
@@ -99,7 +168,7 @@ export function RenderResultModal({
             <img
               src={displayImage}
               alt="AI Render"
-              className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-xl"
+              className="max-h-[60vh] max-w-full rounded-lg object-contain shadow-xl"
             />
           ) : (
             <div className="flex flex-col items-center gap-4 text-gray-500">
@@ -119,8 +188,7 @@ export function RenderResultModal({
           )}
         </div>
 
-        {/* Preview strip — hide when single auto-selected preview */}
-        {previews.length > 1 && (
+        {/* Preview strip */}
         <div className="border-t border-white/10 bg-gray-950/50 px-6 py-4">
           <div className="mb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">
             {fullResult ? 'Original previews' : 'Select a preview to generate full quality'}
@@ -159,7 +227,6 @@ export function RenderResultModal({
             ))}
           </div>
         </div>
-        )}
       </div>
     </div>
   );

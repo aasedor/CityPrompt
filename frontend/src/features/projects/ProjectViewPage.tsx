@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Building2, Plus, Loader2, CheckCircle, AlertCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
-import { projectsApi, buildingsApi } from '@/services/api';
+import { projectsApi, buildingsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
+import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
@@ -17,6 +18,7 @@ import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
+import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
 export function ProjectViewPage() {
@@ -24,8 +26,13 @@ export function ProjectViewPage() {
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
+  const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
+
+  // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
+  useUndoRedoKeyboard();
 
   // Site planner store + zone CRUD + workflow
   const {
@@ -53,6 +60,12 @@ export function ProjectViewPage() {
   );
 
   // Activate site planner on mount, pre-select buildings tool, reset workflow step
+  // Load saved renders for this project
+  useEffect(() => {
+    if (!id) return;
+    rendersApi.list(id).then(setSavedRenders).catch(() => {});
+  }, [id]);
+
   useEffect(() => {
     setSitePlannerActive(true);
     setActiveSitePlannerTool('building');
@@ -302,6 +315,7 @@ export function ProjectViewPage() {
               onRenderComplete={handleAIRenderCompleteWithModal}
               onPreviewsReady={handlePreviewsReady}
               onClearOverlay={handleClearAIOverlay}
+              projectId={project?.id}
             />
           )}
 
@@ -354,85 +368,47 @@ export function ProjectViewPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Buildings */}
+          {/* Saved Renders Gallery */}
           <section className="card">
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-primary-950">
-                <Building2 size={20} />
-                Buildings
+                <Sparkles size={20} />
+                Saved Renders
               </h2>
-              <button
-                onClick={() => setShowAddBuilding(true)}
-                className="flex items-center gap-1 rounded-lg bg-primary-500/15 px-3 py-1.5 text-sm font-medium text-primary-400 hover:bg-primary-500/25"
-              >
-                <Plus size={16} />
-                Add Building
-              </button>
+              <span className="text-sm text-primary-950/50">
+                {savedRenders.length} {savedRenders.length === 1 ? 'render' : 'renders'}
+              </span>
             </div>
-            {project.buildings?.length ? (
-              <div className="mt-4 space-y-3">
-                {project.buildings.map((b) => (
-                  <div key={b.id} className="flex items-center justify-between rounded-lg border border-primary-950/[0.08] p-4">
-                    <div>
-                      <p className="font-medium text-primary-950">{b.name || 'Unnamed Building'}</p>
-                      <p className="text-sm text-primary-950/50">
-                        {b.floor_count && `${b.floor_count} floors`}
-                        {b.height_meters && ` | ${b.height_meters}m tall`}
-                        {b.roof_type && ` | ${b.roof_type} roof`}
+            {savedRenders.length > 0 ? (
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {savedRenders.map((r) => (
+                  <button
+                    key={r.id}
+                    onClick={() => setRenderLightbox(r)}
+                    className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] hover:border-primary-400 transition"
+                  >
+                    <img
+                      src={resolveApiFileUrl(r.image_url)}
+                      alt={r.prompt || 'Saved render'}
+                      className="aspect-video w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
+                    <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 opacity-0 group-hover:opacity-100 transition">
+                      {r.style && (
+                        <span className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                          {r.style}
+                        </span>
+                      )}
+                      <p className="mt-0.5 text-[10px] text-white/70 truncate">
+                        {new Date(r.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {b.model_url ? (
-                        <span className="badge bg-emerald-500/15 text-emerald-400">
-                          3D Ready
-                        </span>
-                      ) : b.generation_status === 'generating' ? (
-                        <span className="flex items-center gap-1 badge bg-primary-500/15 text-primary-400">
-                          <Loader2 size={10} className="animate-spin" />
-                          Generating...
-                          {genElapsed > 0 && (
-                            <span className="tabular-nums text-primary-500">
-                              {Math.floor(genElapsed / 60)}:{(genElapsed % 60).toString().padStart(2, '0')}
-                            </span>
-                          )}
-                        </span>
-                      ) : b.generation_status === 'failed' ? (
-                        <span className="badge bg-red-500/15 text-red-600">
-                          Failed
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => setAiGenerateBuildingId(b.id)}
-                          className="flex items-center gap-1 rounded-full bg-purple-500/15 px-2.5 py-0.5 text-xs font-medium text-purple-400 hover:bg-purple-500/25"
-                          title="Generate 3D model with AI"
-                        >
-                          <Sparkles size={10} />
-                          Generate 3D
-                        </button>
-                      )}
-                      <button
-                        onClick={() => {
-                          if (confirm(`Delete "${b.name || 'this building'}"? This cannot be undone.`)) {
-                            buildingsApi.delete(b.id).then(() => {
-                              queryClient.invalidateQueries({ queryKey: ['project', id] });
-                              toast.success('Building deleted');
-                            }).catch(() => {
-                              toast.error('Failed to delete building');
-                            });
-                          }
-                        }}
-                        className="rounded-md p-1.5 text-primary-950/40 hover:bg-red-50 hover:text-red-600"
-                        title="Delete building"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             ) : (
               <p className="mt-4 text-sm text-primary-950/50">
-                No buildings yet. Add buildings manually or draw zones on the map.
+                No saved renders yet. Use the AI Render panel to generate images, then click "Save to Project".
               </p>
             )}
           </section>
@@ -491,6 +467,63 @@ export function ProjectViewPage() {
       </div>
       <ImageLightbox />
 
+      {/* Saved render lightbox */}
+      {renderLightbox && (
+        <div
+          className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setRenderLightbox(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={resolveApiFileUrl(renderLightbox.image_url)}
+              alt={renderLightbox.prompt || 'Saved render'}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+              {renderLightbox.prompt && (
+                <p className="text-sm text-white/90 line-clamp-2">{renderLightbox.prompt}</p>
+              )}
+              <p className="mt-1 text-xs text-white/50">
+                {new Date(renderLightbox.created_at).toLocaleDateString()}
+                {renderLightbox.style && ` · ${renderLightbox.style}`}
+              </p>
+            </div>
+            <div className="absolute top-3 right-3 flex gap-2">
+              <a
+                href={resolveApiFileUrl(renderLightbox.image_url)}
+                download={`render-${renderLightbox.id}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+                title="Download"
+              >
+                <FileDown size={18} />
+              </a>
+              <button
+                onClick={() => {
+                  if (!id) return;
+                  rendersApi.delete(id, renderLightbox.id).then(() => {
+                    setSavedRenders((prev) => prev.filter((r) => r.id !== renderLightbox.id));
+                    setRenderLightbox(null);
+                    toast.success('Render deleted');
+                  }).catch(() => toast.error('Failed to delete'));
+                }}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-red-600 hover:text-white transition"
+                title="Delete render"
+              >
+                <Trash2 size={18} />
+              </button>
+              <button
+                onClick={() => setRenderLightbox(null)}
+                className="rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+              >
+                <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Full-screen AI render result modal */}
       {showRenderModal && renderPreviews.length > 0 && (
         <RenderResultModal
@@ -501,6 +534,10 @@ export function ProjectViewPage() {
           isGeneratingFull={isGeneratingFull}
           fullResult={fullRenderResult}
           progressMessage={renderProgressMessage}
+          projectId={project?.id}
+          onSaved={() => {
+            if (id) rendersApi.list(id).then(setSavedRenders).catch(() => {});
+          }}
         />
       )}
     </div>

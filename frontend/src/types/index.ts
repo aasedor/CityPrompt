@@ -62,6 +62,15 @@ export interface BuildingSpecifications {
   [key: string]: unknown;
 }
 
+export interface SavedRender {
+  id: string;
+  image_url: string;
+  prompt: string;
+  style?: string;
+  seed?: number;
+  created_at: string;
+}
+
 export interface Document {
   id: string;
   project_id: string;

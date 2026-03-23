@@ -45,6 +45,7 @@ export type ArchetypeImage = {
   description: string;
   camera: 'street' | 'corner' | 'promenade' | 'courtyard';
   imageUrl: string;
+  thumbnailUrl?: string;
   imagePath?: string;
   lighting?: string;
   generationTags?: string[];
@@ -113,6 +114,7 @@ export type AestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
+  developmentType?: string;
   developmentTypes?: string[];
   buildingSubcategory?: string;
   generationTags?: string[];
@@ -157,6 +159,7 @@ type ArchetypeSeed = {
   volume?: string;
   generationTags?: string[];
   styleProfile?: StyleProfile;
+  developmentType?: string;
   developmentTypes?: string[];
   prompt?: {
     subject?: string;
@@ -269,12 +272,14 @@ function toArchetypeImages(
   const variants = visualSystem.cardVariants || [];
   return variants.map((variant) => {
     const imagePath = `/archetypes/${domainPath}/${seed.id}/${variant.id}.png`;
+    const thumbPath = `/archetypes/${domainPath}/${seed.id}/${variant.id}_thumb.jpg`;
     return {
       id: `${seed.id}_${variant.id}`,
       label: variant.title,
       description: variant.description,
       camera: normalizeCamera(variant.camera),
       imageUrl: resolvePublicAssetUrl(imagePath),
+      thumbnailUrl: resolvePublicAssetUrl(thumbPath),
       imagePath,
       lighting: variant.lighting,
       generationTags: dedupeStrings(seed.generationTags),
@@ -316,7 +321,8 @@ function toAestheticOption(
     photoUrl: primary?.imageUrl || '',
     photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
-    developmentTypes: Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined,
+    developmentType: seed.developmentType || (Array.isArray(seed.developmentTypes) ? seed.developmentTypes[0] : undefined),
+    developmentTypes: seed.developmentType ? [seed.developmentType] : (Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined),
     buildingSubcategory: seed.buildingSubcategory,
     generationTags: tags,
     archetypeImages: orderedArchetypeImages,
@@ -374,11 +380,11 @@ export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   { id: 'auto_oriented', label: 'Auto Oriented', description: 'Streets designed primarily for automobile movement and access' },
 ];
 export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('street_pathway', 'streets-pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
+  toAestheticOption('street_pathway', 'streets_pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
 );
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('park_plaza', 'parks-plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
+  toAestheticOption('park_plaza', 'parks_plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
 );
 
 const GREEN_SPACE_CATEGORY_IDS = new Set(
@@ -425,26 +431,19 @@ export function getAllowedDevelopmentTypes(
   developmentType?: string,
 ): string[] | null {
   // If the user has already picked a specific development_type property,
-  // derive the filter from that (it's more specific than zone_type).
+  // use exact match for granular filtering (e.g. residential_single_family)
   if (developmentType) {
-    if (developmentType.startsWith('residential'))  return ['residential'];
-    if (developmentType.startsWith('commercial'))   return ['commercial'];
-    if (developmentType.startsWith('industrial'))   return ['industrial'];
-    if (developmentType.startsWith('institutional'))return ['institutional'];
-    if (developmentType === 'mixed_use')            return ['mixed_use', 'mixed-use'];
-    if (developmentType === 'hospitality')           return ['hospitality'];
-    // For other values (park_plaza, recreational, open_space, other) don't filter
-    return null;
+    return [developmentType];
   }
 
   // Fall back to zone_type level filtering
   switch (zoneType) {
     case 'residential':
-      return ['residential'];
+      return ['residential', 'residential_single_family', 'residential_duplex', 'residential_multifamily', 'residential_highrise'];
     case 'commercial':
-      return ['commercial'];
+      return ['commercial', 'commercial_light', 'commercial_retail', 'commercial_office'];
     case 'industrial':
-      return ['industrial'];
+      return ['industrial', 'industrial_light', 'industrial_heavy', 'industrial_warehouse'];
     case 'mixed_use':
       return ['mixed_use', 'mixed-use'];
     case 'building':
@@ -465,7 +464,11 @@ export function filterOptionsByDevelopmentType(
 ): AestheticOption[] {
   if (!allowedTypes) return options;
   return options.filter((option) => {
-    // If the archetype has no developmentTypes defined, always show it
+    // Check single developmentType first (preferred)
+    if (option.developmentType) {
+      return allowedTypes.includes(option.developmentType);
+    }
+    // Fallback to array for backwards compatibility
     if (!option.developmentTypes || option.developmentTypes.length === 0) return true;
     return option.developmentTypes.some((dt) => allowedTypes.includes(dt));
   });
