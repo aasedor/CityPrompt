@@ -16,6 +16,44 @@ const COMPASS_LABELS: Record<number, string> = {
   180: 'S', 225: 'SW', 270: 'W', 315: 'NW',
 };
 
+const STREET_VIEW_STYLES = [
+  {
+    id: 'photorealistic',
+    label: 'Photo',
+    prompt: 'Hyper-photorealistic street-level architectural visualization. Camera positioned at exact human eye-level using a 35mm prime lens at f/8 aperture ensuring deep focus and edge-to-edge sharpness. Golden hour on a clear day with warm low-angle directional sunlight casting long crisp high-contrast shadows across the sidewalk. Subtle hyper-realistic environmental details: specular reflections of adjacent buildings visible in glass facades, slight atmospheric haze, photorealistic street trees. Rendered in the style of Unreal Engine 5 with path-traced global illumination, 8K resolution, architectural digest photography.',
+  },
+  {
+    id: 'watercolour',
+    label: 'Watercolour',
+    prompt: 'A beautiful, evocative architectural watercolour painting on rough cold-pressed watercolour paper. The artistic style is intentionally loose, expressive, and highly atmospheric, heavily utilizing traditional wet-on-wet painting techniques with visible fluid brushstrokes and natural unpredictable pigment bleeds at the edges of forms. Architecture outlined very loosely with delicate jittery black ink pen linework mimicking a masterful ink and wash architectural sketch. Colour palette of highly translucent luminous pastels — soft ochre and raw sienna for stone and facades, muted atmospheric cyan for sky, sap green and viridian for foliage, concentrated splashes of colour on awnings and signage to draw the eye. Lighting is bright and ethereal, leaving generous amounts of stark white negative space on the textured paper to represent glaring sunlight — the paper itself creates the highlights since watercolourists cannot paint white. Pigment granulation visible in shadow areas. Foreground facades rendered with tighter detail, background elements dissolve into soft suggestive washes. Masterful traditional media, concept art, architectural sketch.',
+  },
+  {
+    id: 'charcoal',
+    label: 'Charcoal',
+    prompt: 'A highly detailed expressive architectural hand-sketch rendered in charcoal and graphite pencil on heavy textured cream sketching paper. The drawing style features loose kinetic gestural linework that accurately captures the perspective and vanishing points of the street. Full tonal range from deep compressed charcoal blacks in shadow areas to soft smudged mid-tones to bright paper whites on sunlit surfaces. Shading achieved through meticulous architectural crosshatching and subtle graphite smudging establishing volume and depth of recessed windows, doorways, and building facades. The image is strictly monochromatic with zero colour applied. The edges of the streetscape fade out loosely into the white of the paper giving it an authentic unfinished rapid-ideation sketchbook aesthetic. Foreground architecture sharp and detailed, background dissolves into atmospheric smudged tones. Visible charcoal texture and paper grain throughout. Precise architectural illustration, master draftsman techniques.',
+  },
+  {
+    id: 'marker-render',
+    label: 'Marker',
+    prompt: 'A classic handcrafted architectural marker rendering on smooth bleedproof presentation paper. The scene is drafted with precise straight black ink linework using a technical pen defining all architectural edges and material boundaries. Colour and shading applied using simulated alcohol-based Copic design markers. The image must clearly display characteristic overlapping streaky marker strokes with visible stroke direction following surface planes, and subtle ink bleeds at the edges of colour blocks. Colour palette is vibrant but highly controlled — warm greys and ochres for building facades, olive and sap greens for landscape, bold teal and cerulean for sky. Stark white gaps deliberately left between marker strokes to represent highlights and reflected light. Bright optimistic illustrative lighting. White gel pen highlights on glass reflections and material edges. Entourage elements like trees and street furniture rendered in quick confident marker strokes. Traditional architectural presentation board aesthetic, retro design illustration, highly tactile.',
+  },
+  {
+    id: 'oil-canvas',
+    label: 'Oil',
+    prompt: 'A masterful museum-quality oil on canvas painting of the architectural streetscape. The artistic execution utilizes thick aggressive impasto technique with highly visible textured brushstrokes and heavy palette knife applications that give physical dimension to building facades and wet pavement. Dramatic theatrical chiaroscuro lighting — street level features deep brooding shadows while upper building elements are illuminated by warm golden sunset piercing through clouds. Colour palette is rich saturated and opaque featuring deep ultramarine blues, burnt umber, raw sienna, and brilliant streaks of titanium white reflecting in street surfaces. The texture of the woven canvas is subtly visible beneath the paint layers. Thick paint buildup on architectural edges catches light creating three-dimensional relief. Classical architectural storytelling, impressionistic masterpiece, moody and monumental, gallery exhibition quality.',
+  },
+  {
+    id: 'clay-model',
+    label: 'Clay',
+    prompt: 'A pristine physical white clay architectural massing model of the entire streetscape. The entirety of the scene — buildings, streets, sidewalks, trees, street furniture — is constructed from a single matte untextured white plaster material. There are absolutely zero colours or distinct material finishes present anywhere. All visual definition relies exclusively on high-quality Ambient Occlusion rendering to define sharp edges, depth, and spatial relationships of intersecting geometric volumes. Lighting is soft highly diffused studio softbox setup casting smooth gradient shadows across the pure white forms, emphasizing architectural massing and volumetric proportions without visual distractions. Trees represented as simplified smooth white sculptural forms. The scene resembles a physical foam-board scale model photographed in a professional studio. Minimalist clean exhibition-quality physical scale model, architectural review presentation.',
+  },
+  {
+    id: 'collage',
+    label: 'Collage',
+    prompt: 'A vibrant post-digital architectural collage depicting the streetscape as a highly stylized mixed media composition resembling a physical mood board. Architecture represented by flat unshaded blocks of pastel colours and oversized mismatched photographic textures of brick concrete and wood applied like rough paper cut-outs with visible torn edges. Trees and landscape elements are vintage botanical illustration cut-outs pasted at varied scales. The sky is an abstract geometric pattern rather than realistic. Pedestrian figures represented by monochromatic vintage photographic cut-outs with stark white paper borders pasted seemingly at varied scales into the scene. Lighting is intentionally flat and illustrative emphasizing the overlapping layers and surreal disjointed scale of different elements. Visible paper texture and adhesive marks throughout. Avant-garde architectural visualization, artistic narrative presentation, Dadaist pop-art influences, design competition aesthetic.',
+  },
+] as const;
+
 function compassLabel(angle: number): string {
   const norm = ((angle % 360) + 360) % 360;
   return COMPASS_LABELS[norm] || `${norm}°`;
@@ -33,6 +71,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
   const [result, setResult] = useState<{ imageUrl: string; prompt: string } | null>(null);
   const [saving, setSaving] = useState(false);
   const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash-image');
+  const [selectedStyle, setSelectedStyle] = useState('photorealistic');
 
   const handleRotateLeft = useCallback(() => {
     if (!streetViewPegman) return;
@@ -54,6 +93,11 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         previousRenderBase64 = result.imageUrl.split(',')[1];
       }
 
+      const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
+      const styleModifier = styleObj && styleObj.id !== 'photorealistic'
+        ? `RENDER STYLE: ${styleObj.prompt}`
+        : undefined;
+
       const res = await generateStreetView(
         streetViewPegman.position,
         streetViewPegman.angle,
@@ -61,6 +105,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         {
           model: selectedModel !== 'gemini-2.5-flash-image' ? selectedModel : undefined,
           previousRenderBase64,
+          styleModifier,
         },
       );
       if (res) {
@@ -74,7 +119,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedModel, result]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedModel, selectedStyle, result]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
@@ -253,6 +298,26 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
               }`}
             >
               {m.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div className="h-8 w-px bg-primary-950/10" />
+
+        {/* Style selector */}
+        <div className="flex flex-col gap-0.5">
+          {STREET_VIEW_STYLES.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSelectedStyle(s.id)}
+              className={`rounded px-2 py-0.5 text-[10px] font-medium transition ${
+                selectedStyle === s.id
+                  ? 'bg-amber-500/20 text-amber-700'
+                  : 'text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950/70'
+              }`}
+            >
+              {s.label}
             </button>
           ))}
         </div>

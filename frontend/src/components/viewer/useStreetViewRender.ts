@@ -355,6 +355,90 @@ export function getViewConePolygon(
 // ---------------------------------------------------------------------------
 
 /**
+ * Buffer a polyline into a polygon by offsetting perpendicular to each segment.
+ * Takes a line [[lng,lat], ...] and a width in meters, returns a polygon [[lng,lat], ...].
+ * Uses a simple perpendicular offset approach — good enough for street widths.
+ */
+export function bufferLineToPolygon(
+  lineCoords: number[][],
+  widthMeters: number,
+): number[][] {
+  if (lineCoords.length < 2) return lineCoords;
+
+  const halfWidth = widthMeters / 2;
+  const leftSide: number[][] = [];
+  const rightSide: number[][] = [];
+
+  for (let i = 0; i < lineCoords.length; i++) {
+    const [lng, lat] = lineCoords[i];
+
+    // Calculate the direction vector at this point
+    let dx = 0, dy = 0;
+    if (i < lineCoords.length - 1) {
+      dx += lineCoords[i + 1][0] - lng;
+      dy += lineCoords[i + 1][1] - lat;
+    }
+    if (i > 0) {
+      dx += lng - lineCoords[i - 1][0];
+      dy += lat - lineCoords[i - 1][1];
+    }
+
+    // Normalize
+    const len = Math.sqrt(dx * dx + dy * dy);
+    if (len < 1e-12) continue;
+    dx /= len;
+    dy /= len;
+
+    // Perpendicular vector (rotated 90°)
+    const px = -dy;
+    const py = dx;
+
+    // Convert meters to degrees (approximate)
+    const metersPerDegLat = 110540;
+    const metersPerDegLng = metersPerDegLat * Math.cos(lat * DEG_TO_RAD);
+    const offsetLng = (halfWidth / metersPerDegLng) * px;
+    const offsetLat = (halfWidth / metersPerDegLat) * py;
+
+    leftSide.push([lng + offsetLng, lat + offsetLat]);
+    rightSide.push([lng - offsetLng, lat - offsetLat]);
+  }
+
+  // Combine left side forward + right side reversed to form a closed polygon
+  return [...leftSide, ...rightSide.reverse()];
+}
+
+/**
+ * Pre-process site zones: convert street/path polylines into buffered polygons
+ * so they can be detected by the view cone and rendered in the clay model.
+ * Returns a new array with lines converted to polygons.
+ */
+export function preprocessZonesForStreetView(siteZones: SiteZone[]): SiteZone[] {
+  return siteZones.map(zone => {
+    const zt = zone.zone_type as string;
+    const isLine = zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian';
+
+    // If it looks like a polyline (few points, or explicitly a line type)
+    if (isLine && zone.coordinates && zone.coordinates.length >= 2) {
+      const width = Number(zone.properties?.width) || 10; // default 10m
+      const buffered = bufferLineToPolygon(zone.coordinates, width);
+      if (buffered.length >= 3) {
+        return {
+          ...zone,
+          coordinates: buffered,
+          // Preserve original for reference
+          properties: {
+            ...zone.properties,
+            _original_line_coords: zone.coordinates,
+            _is_buffered_line: true,
+          },
+        };
+      }
+    }
+    return zone;
+  });
+}
+
+/**
  * Find which site zones intersect with a view cone polygon.
  * Excludes `site_boundary` zones since they encompass the entire site.
  *
@@ -560,14 +644,17 @@ function describeZoneForStreetView(
     if (info.publicRealm) {
       parts.push(info.publicRealm);
     }
-  } else if (zone.zone_type === 'road') {
-    // Road/path corridor
+  } else if (['road', 'street', 'path', 'pedestrian'].includes(zone.zone_type as string)) {
+    // Road/path corridor — rich street-level description
+    const streetWidth = Number(zone.properties?.width) || 10;
+    parts.push(`${streetWidth}m wide corridor`);
     if (info.corridorDescription) {
       parts.push(info.corridorDescription);
     } else {
       if (info.surfaceType) parts.push(`Surface: ${info.surfaceType}`);
       if (info.plantingCharacter) parts.push(info.plantingCharacter);
       if (info.edgeConditions) parts.push(`Edges: ${info.edgeConditions}`);
+      if (info.publicRealm) parts.push(info.publicRealm);
     }
   } else if (zone.zone_type === 'green_space' || zone.zone_type === 'parking') {
     // Parks, plazas, green spaces — use rich landscape metadata
@@ -617,6 +704,15 @@ export function buildStreetViewPrompt(
   const direction = compassDirection(angleDeg);
   const lines: string[] = [];
 
+  // ─── Style instruction FIRST — Gemini weights earlier instructions more heavily ───
+  if (styleModifier) {
+    lines.push(
+      `MANDATORY OUTPUT STYLE: ${styleModifier}\n` +
+      `This is NOT a photograph. The entire output image MUST be rendered in the artistic style described above. ` +
+      `Every element — buildings, landscape, sky, ground — must be rendered in this style with zero photorealistic elements.`,
+    );
+  }
+
   // ─── SCHEMA-style perspective grid prompt ───
   // Uses foreground/midground/background depth planes with optical constraints
 
@@ -625,7 +721,7 @@ export function buildStreetViewPrompt(
   );
   lines.push(
     `CAMERA PARAMETERS: Street-level perspective, camera height fixed at exactly 1.7 meters, ` +
-    `looking ${direction}. 35mm lens, f/8 aperture, deep focus. 16:9 wide panoramic frame.`,
+    `looking ${direction}. 16:9 wide panoramic frame.`,
   );
 
   // Categorize zones into depth planes
@@ -764,16 +860,27 @@ export function buildStreetViewPrompt(
     );
   }
 
-  // Style modifier
+  // Closing style + prohibitions
   if (styleModifier) {
-    lines.push(styleModifier);
+    lines.push(
+      `FINAL REMINDER: The entire image MUST be in the artistic style specified at the top of this prompt. ` +
+      `Do NOT render as a photograph. Apply the artistic medium consistently to every element.`,
+    );
+    lines.push(
+      `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
+      `no grid artifacts, no photorealistic rendering.`,
+    );
+  } else {
+    lines.push(
+      `STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting. ` +
+      `Sharp material detail on close elements, atmospheric haze on distant ones. 35mm lens, f/8 aperture. ` +
+      `8K resolution.`,
+    );
+    lines.push(
+      `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
+      `no grid artifacts.`,
+    );
   }
-
-  // Closing
-  lines.push(
-    `PROHIBITIONS: No people, no text overlays, no watermarks, no UI elements, no split screens, ` +
-    `no grid artifacts. Single continuous photorealistic architectural visualization photograph.`,
-  );
 
   return lines.join('\n\n');
 }
@@ -1280,76 +1387,71 @@ export function generateClayRender(
       scene.add(water);
 
     } else {
-      // Roads and other: flat gray strip
-      const planeGeo = new THREE.PlaneGeometry(
-        Math.max(widthM, 3),
-        Math.max(depthM, 3),
-      );
-      const plane = new THREE.Mesh(planeGeo, roadMat);
-      plane.rotation.x = -Math.PI / 2;
-      plane.position.set(cx, 0.03, cz);
-      plane.receiveShadow = true;
-      scene.add(plane);
+      // Roads, streets, paths, and other ground zones
+      const zt2 = zone.zone_type as string;
+      const isStreet = zt2 === 'road' || zt2 === 'street' || zt2 === 'path' || zt2 === 'pedestrian';
+
+      if (isStreet && zone.properties?._original_line_coords) {
+        // Buffered street — draw as a raised dark strip following the original line
+        const lineCoords = zone.properties._original_line_coords as number[][];
+        const streetWidth = Number(zone.properties?.width) || 10;
+
+        // Draw street segments as elongated boxes
+        for (let seg = 0; seg < lineCoords.length - 1; seg++) {
+          const [lng1, lat1] = lineCoords[seg];
+          const [lng2, lat2] = lineCoords[seg + 1];
+          const [lx1, lz1] = toLocal(lng1, lat1);
+          const [lx2, lz2] = toLocal(lng2, lat2);
+
+          const segLength = Math.sqrt((lx2 - lx1) ** 2 + (lz2 - lz1) ** 2);
+          if (segLength < 0.5) continue;
+
+          const midX = (lx1 + lx2) / 2;
+          const midZ = (lz1 + lz2) / 2;
+          const angle = Math.atan2(lx2 - lx1, lz2 - lz1);
+
+          // Street surface as a flat dark box
+          const streetGeo = new THREE.BoxGeometry(streetWidth, 0.15, segLength);
+          const streetMesh = new THREE.Mesh(streetGeo, roadMat);
+          streetMesh.position.set(midX, 0.08, midZ);
+          streetMesh.rotation.y = angle;
+          streetMesh.receiveShadow = true;
+          scene.add(streetMesh);
+
+          // Sidewalk curbs (slightly raised edges)
+          const curbMat = new THREE.MeshStandardMaterial({ color: 0xa0a0a0, roughness: 0.85 });
+          const curbWidth = 1.5;
+          for (const side of [-1, 1]) {
+            const curbGeo = new THREE.BoxGeometry(curbWidth, 0.25, segLength);
+            const curb = new THREE.Mesh(curbGeo, curbMat);
+            const offset = (streetWidth / 2 + curbWidth / 2);
+            curb.position.set(
+              midX + Math.cos(angle) * offset * side,
+              0.12,
+              midZ - Math.sin(angle) * offset * side,
+            );
+            curb.rotation.y = angle;
+            scene.add(curb);
+          }
+        }
+      } else {
+        // Generic ground zone — flat gray strip
+        const planeGeo = new THREE.PlaneGeometry(
+          Math.max(widthM, 3),
+          Math.max(depthM, 3),
+        );
+        const plane = new THREE.Mesh(planeGeo, roadMat);
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.set(cx, 0.03, cz);
+        plane.receiveShadow = true;
+        scene.add(plane);
+      }
     }
   }
 
-  // --- Bake text labels into the clay render ---
-  // Use a 2D canvas overlay to add zone names as floating labels
-  // First render the 3D scene, then composite labels on top
+  // --- Render the 3D scene (no text labels — user can add those after) ---
   renderer.render(scene, camera);
-
-  // Create a 2D overlay canvas for text labels
-  const labelCanvas = document.createElement('canvas');
-  labelCanvas.width = CLAY_WIDTH;
-  labelCanvas.height = CLAY_HEIGHT;
-  const labelCtx = labelCanvas.getContext('2d')!;
-
-  // Copy 3D render to label canvas
-  labelCtx.drawImage(renderer.domElement, 0, 0);
-
-  // Project 3D zone positions to 2D screen coordinates and draw labels
-  for (const entry of visibleZones) {
-    const zone = entry.zone;
-    const coords = zone.coordinates;
-    if (!coords || coords.length < 3) continue;
-
-    const centroid = getPolygonCentroid(coords);
-    const [lcx, lcz] = toLocal(centroid[0], centroid[1]);
-
-    const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
-    const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || (isBuilding ? 4 : 0);
-    const labelY = isBuilding ? floors * FLOOR_HEIGHT_M + 2 : 5;
-
-    // Project 3D point to 2D screen
-    const worldPos = new THREE.Vector3(lcx, labelY, lcz);
-    worldPos.project(camera);
-
-    // Convert from NDC (-1 to 1) to screen pixels
-    const screenX = (worldPos.x * 0.5 + 0.5) * CLAY_WIDTH;
-    const screenY = (-worldPos.y * 0.5 + 0.5) * CLAY_HEIGHT;
-
-    // Only draw if on screen and in front of camera
-    if (screenX < -50 || screenX > CLAY_WIDTH + 50 || screenY < -20 || screenY > CLAY_HEIGHT + 20) continue;
-    if (worldPos.z > 1) continue; // behind camera
-
-    const info = getZoneArchetypeInfo(zone);
-    const title = info.archetypeTitle || zone.name || zoneTypeLabel(zone.zone_type);
-
-    // Draw label background
-    labelCtx.font = 'bold 11px Arial, sans-serif';
-    const textWidth = labelCtx.measureText(title).width;
-    labelCtx.fillStyle = 'rgba(0, 0, 0, 0.75)';
-    labelCtx.fillRect(screenX - textWidth / 2 - 4, screenY - 12, textWidth + 8, 16);
-
-    // Draw label text
-    labelCtx.fillStyle = '#ffffff';
-    labelCtx.textAlign = 'center';
-    labelCtx.textBaseline = 'middle';
-    labelCtx.fillText(title, screenX, screenY - 4);
-  }
-
-  // Use the label canvas as the final output instead of the raw 3D render
-  const dataUrl = labelCanvas.toDataURL('image/png');
+  const dataUrl = renderer.domElement.toDataURL('image/png');
 
   // Clean up Three.js resources
   renderer.dispose();
@@ -1484,11 +1586,14 @@ export async function generateStreetView(
   const fov = options?.fovDeg ?? 70;
   const distance = options?.distanceMeters ?? 200;
 
+  // 0. Pre-process: buffer street/path polylines into polygons
+  const processedZones = preprocessZonesForStreetView(siteZones);
+
   // 1. View cone
   const cone = getViewConePolygon(pegmanPos, angleDeg, fov, distance);
 
   // 2. Zone intersection
-  const intersecting = getZonesInViewCone(siteZones, cone);
+  const intersecting = getZonesInViewCone(processedZones, cone);
 
   // 3. Sort by distance with angular analysis
   const sorted = sortZonesByDistance(intersecting, pegmanPos, angleDeg, fov);
