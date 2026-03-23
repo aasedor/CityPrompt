@@ -518,59 +518,81 @@ export function buildStreetViewPrompt(
 ): string {
   const direction = compassDirection(angleDeg);
 
-  const sections: string[] = [];
+  const lines: string[] = [];
 
-  // Header
-  sections.push(
-    `Photorealistic eye-level street view render looking ${direction}. ` +
-    `Standing at street level, human perspective, 1.7m eye height.`,
+  // Strong framing instruction
+  lines.push(
+    `Generate a wide-angle 16:9 street-level photograph of an urban development, ` +
+    `as seen from eye level (1.7m height) looking ${direction}. ` +
+    `The image MUST show ALL of the following elements composed together in a single coherent scene. ` +
+    `This is a wide establishing shot showing multiple buildings, landscape areas, and infrastructure ` +
+    `receding into the distance. Do NOT focus on just one element — show the full streetscape panorama.`,
   );
 
-  // Group zones by depth band
-  const grouped: Record<string, ZoneWithDistance[]> = {
-    FOREGROUND: [],
-    MIDGROUND: [],
-    BACKGROUND: [],
-  };
+  // Separate zones into left / center / right groups
+  const leftZones = visibleZones.filter(z => z.relativePosition === 'left');
+  const centerZones = visibleZones.filter(z => z.relativePosition === 'center');
+  const rightZones = visibleZones.filter(z => z.relativePosition === 'right');
 
-  for (const entry of visibleZones) {
-    const band = depthBand(entry.distance);
-    grouped[band].push(entry);
-  }
+  // Build spatial composition description
+  lines.push('SPATIAL COMPOSITION OF THE SCENE:');
 
-  // Emit sections for each depth band
-  for (const band of ['FOREGROUND', 'MIDGROUND', 'BACKGROUND'] as const) {
-    const entries = grouped[band];
-    if (entries.length === 0) continue;
-
-    for (const entry of entries) {
+  if (leftZones.length > 0) {
+    const descs = leftZones.map(entry => {
       const info = getZoneArchetypeInfo(entry.zone);
-      const description = describeZoneForStreetView(entry.zone, info);
-      const position = entry.relativePosition.toUpperCase();
-
-      const label =
-        band === 'FOREGROUND' && entries.length === 1
-          ? `${band} (nearest)`
-          : position !== 'CENTER'
-            ? `${position} ${band}`
-            : band;
-
-      sections.push(`${label}: ${description}.`);
-    }
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const dist = depthBand(entry.distance).toLowerCase();
+      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
+    });
+    lines.push(`LEFT SIDE OF FRAME: ${descs.join('. ')}.`);
   }
+
+  if (centerZones.length > 0) {
+    const descs = centerZones.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const dist = depthBand(entry.distance).toLowerCase();
+      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
+    });
+    lines.push(`CENTER OF FRAME: ${descs.join('. ')}.`);
+  }
+
+  if (rightZones.length > 0) {
+    const descs = rightZones.map(entry => {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const dist = depthBand(entry.distance).toLowerCase();
+      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
+    });
+    lines.push(`RIGHT SIDE OF FRAME: ${descs.join('. ')}.`);
+  }
+
+  // If no zones were categorized, describe as empty site
+  if (visibleZones.length === 0) {
+    lines.push('The view shows an empty development site with cleared ground, construction fencing, and surrounding neighborhood context.');
+  }
+
+  // Ground plane and context
+  lines.push(
+    'GROUND PLANE: The immediate foreground shows a paved sidewalk or street surface. ' +
+    'Include realistic urban context: curbs, street trees, lamp posts, crosswalks where appropriate. ' +
+    'The scene transitions naturally between the different zones described above.',
+  );
 
   // Style modifier
   if (styleModifier) {
-    sections.push(styleModifier);
+    lines.push(styleModifier);
   }
 
   // Closing quality directives
-  sections.push(
-    'Sunny day, golden hour lighting, photorealistic architectural visualization, ' +
-    '8K detail, no people, no text.',
+  lines.push(
+    'STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting ' +
+    'from the side casting long soft shadows. Sharp detail on building materials and textures. ' +
+    'Wide-angle lens (24mm equivalent). Depth of field with sharp foreground and slightly softer background. ' +
+    '8K resolution, no people, no text overlays, no watermarks.',
   );
 
-  return sections.join('\n\n');
+  return lines.join('\n\n');
 }
 
 // ---------------------------------------------------------------------------
