@@ -320,8 +320,8 @@ function polygonsIntersect(
 export function getViewConePolygon(
   center: [number, number],
   angleDeg: number,
-  fovDeg: number = 45,
-  distanceMeters: number = 120,
+  fovDeg: number = 70,
+  distanceMeters: number = 200,
 ): [number, number][] {
   const [cLng, cLat] = center;
   const halfFov = fovDeg / 2;
@@ -453,7 +453,7 @@ export function sortZonesByDistance(
   zones: SiteZone[],
   pegmanPos: [number, number],
   pegmanAngle: number,
-  fovDeg: number = 45,
+  fovDeg: number = 70,
 ): ZoneWithDistance[] {
   const halfFov = fovDeg / 2;
 
@@ -617,14 +617,31 @@ export function buildStreetViewPrompt(
 
   const lines: string[] = [];
 
+  // Build a checklist of ALL zones that must appear
+  const zoneNames = visibleZones.map(z => {
+    const info = getZoneArchetypeInfo(z.zone);
+    return info.archetypeTitle || z.zone.name || zoneTypeLabel(z.zone.zone_type);
+  });
+
   // Strong framing instruction
   lines.push(
-    `Generate a wide 16:9 street-level photograph of an urban development, ` +
+    `Generate a wide 16:9 street-level photograph of an urban development master plan, ` +
     `as seen from eye level (1.7m height) looking ${direction}. ` +
-    `The image MUST show ALL of the following elements composed together in a single coherent scene. ` +
-    `CRITICAL DEPTH RULE: Elements that are CLOSE (under 30m) must appear LARGE and fill much of the frame. ` +
-    `Elements that are FAR (over 80m) must appear SMALL, near the horizon line. ` +
-    `A zone 20m away should appear roughly 4x larger than a zone 80m away.`,
+    `This is a panoramic establishing shot showing the COMPLETE streetscape.`,
+  );
+
+  if (zoneNames.length > 0) {
+    lines.push(
+      `MANDATORY CHECKLIST — the image MUST contain ALL ${zoneNames.length} of these elements:\n` +
+      zoneNames.map((n, i) => `  ${i + 1}. ${n}`).join('\n') +
+      `\nIf any element is missing, the image is WRONG. Every item above must be visible.`,
+    );
+  }
+
+  lines.push(
+    `DEPTH RULE: Close elements (under 30m) are LARGE and dominate the frame. ` +
+    `Far elements (over 80m) are SMALL, near the horizon. ` +
+    `Parks and green spaces should show trees, paths, and landscape — they are NOT empty lawns.`,
   );
 
   if (visibleZones.length === 0) {
@@ -968,8 +985,8 @@ export async function generateStreetView(
     styleModifier?: string;
   },
 ): Promise<StreetViewResult | null> {
-  const fov = options?.fovDeg ?? 45;
-  const distance = options?.distanceMeters ?? 120;
+  const fov = options?.fovDeg ?? 70;
+  const distance = options?.distanceMeters ?? 200;
 
   // 1. View cone
   const cone = getViewConePolygon(pegmanPos, angleDeg, fov, distance);
@@ -980,8 +997,22 @@ export async function generateStreetView(
   // 3. Sort by distance with angular analysis
   const sorted = sortZonesByDistance(intersecting, pegmanPos, angleDeg, fov);
 
+  // Debug: log what was found
+  console.log('[StreetView] Pegman at', pegmanPos, 'facing', angleDeg, '°');
+  console.log('[StreetView] FOV:', fov, '° Distance:', distance, 'm');
+  console.log('[StreetView] Total site zones:', siteZones.length, '| In view cone:', intersecting.length);
+  for (const z of sorted) {
+    const info = getZoneArchetypeInfo(z.zone);
+    console.log(
+      `  [${z.relativePosition.toUpperCase()}] ${info.archetypeTitle || z.zone.name || z.zone.zone_type}` +
+      ` — ${Math.round(z.distance)}m — frame ${z.frameLeftPct}%-${z.frameRightPct}% (${z.framePercent}% wide)` +
+      ` — has metadata: ${!!info.archetypeTitle}`,
+    );
+  }
+
   // 4. Build prompt
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
+  console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
   // 5. Generate color-coded depth map as spatial guide
   const depthMapBase64 = generateDepthMap(pegmanPos, angleDeg, sorted);

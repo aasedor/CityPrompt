@@ -1364,7 +1364,7 @@ export function SitePlannerMap({
     }
 
     // Update view cone
-    const coneCoords = getViewConePolygon(pos, angle, 45, 120);
+    const coneCoords = getViewConePolygon(pos, angle, 70, 200);
     const coneGeoJSON: GeoJSON.FeatureCollection = {
       type: 'FeatureCollection',
       features: [{
