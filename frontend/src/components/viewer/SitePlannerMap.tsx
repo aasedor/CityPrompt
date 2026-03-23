@@ -7,169 +7,49 @@ import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import { getColourForDevelopmentType } from '@/data/landUseColours';
 import {
-  DEVELOPMENT_AESTHETIC_OPTIONS,
-  ROADWAY_AESTHETIC_OPTIONS,
-  GREEN_SPACE_AESTHETIC_OPTIONS,
-  PLAZA_AESTHETIC_OPTIONS,
+  BUILDING_AESTHETIC_OPTIONS_V2,
+  ROADWAY_AESTHETIC_OPTIONS_V2,
+  GREEN_SPACE_AESTHETIC_OPTIONS_V2,
+  PLAZA_AESTHETIC_OPTIONS_V2,
 } from './aestheticCatalog';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
-// Build a quick lookup map: subcategory ID → label for all aesthetic options
+/** Lookup map from archetype/subcategory id → human-readable label */
 const _subcategoryLabelMap = new Map<string, string>();
 for (const opt of [
-  ...DEVELOPMENT_AESTHETIC_OPTIONS,
-  ...ROADWAY_AESTHETIC_OPTIONS,
-  ...GREEN_SPACE_AESTHETIC_OPTIONS,
-  ...PLAZA_AESTHETIC_OPTIONS,
+  ...BUILDING_AESTHETIC_OPTIONS_V2,
+  ...ROADWAY_AESTHETIC_OPTIONS_V2,
+  ...GREEN_SPACE_AESTHETIC_OPTIONS_V2,
+  ...PLAZA_AESTHETIC_OPTIONS_V2,
 ]) {
-  if (opt.id && opt.label) _subcategoryLabelMap.set(opt.id, opt.label);
+  _subcategoryLabelMap.set(opt.id, opt.label);
 }
 
-// ---------------------------------------------------------------------------
-// Variant color shifting (keep polygons visually distinct per variant)
-// ---------------------------------------------------------------------------
-
-function hexToHsl(hex: string): [number, number, number] {
-  const raw = hex.replace('#', '');
-  const r = parseInt(raw.substring(0, 2), 16) / 255;
-  const g = parseInt(raw.substring(2, 4), 16) / 255;
-  const b = parseInt(raw.substring(4, 6), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const l = (max + min) / 2;
-  if (max === min) return [0, 0, l * 100];
-  const d = max - min;
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  let h = 0;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
-  return [h * 360, s * 100, l * 100];
-}
-
-function hslToHex(h: number, s: number, l: number): string {
-  h = ((h % 360) + 360) % 360;
-  s = Math.max(0, Math.min(100, s)) / 100;
-  l = Math.max(0, Math.min(100, l)) / 100;
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  const m = l - c / 2;
-  let rr = 0, gg = 0, bb = 0;
-  if (h < 60) { rr = c; gg = x; }
-  else if (h < 120) { rr = x; gg = c; }
-  else if (h < 180) { gg = c; bb = x; }
-  else if (h < 240) { gg = x; bb = c; }
-  else if (h < 300) { rr = x; bb = c; }
-  else { rr = c; bb = x; }
-  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-  return `#${toHex(rr)}${toHex(gg)}${toHex(bb)}`;
-}
-
-function shiftColorForVariant(baseHex: string, variantIndex: number): string {
-  const lightnessShifts = [-8, -3, 3, 8];
-  const hueShifts = [-5, 5, -10, 10];
-  const idx = Math.min(variantIndex, lightnessShifts.length - 1);
-  const [h, s, l] = hexToHsl(baseHex);
-  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
-}
-
-/** Hash a string to a consistent integer. */
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash);
-}
-
-/**
- * Derive archetype and variant info from zone properties.
- * Returns { archetypeId, variantId } or null if nothing selected.
- */
-function getArchetypeVariantFromZone(zone: SiteZone): { archetypeId: string; variantId: string | null } | null {
-  const props = zone.properties;
-  if (!props) return null;
-  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-  for (const prefix of PREFIXES) {
-    const archetypeId = props[`${prefix}_archetype_id`] as string | undefined;
-    if (!archetypeId) continue;
-    const variantId = props[`${prefix}_selected_variant_id`] as string | undefined;
-    return { archetypeId, variantId: variantId || null };
-  }
-  return null;
-}
-
-/**
- * Resolve zone color with unique shading per archetype + variant combination.
- *
- * - Base color comes from development type (APA standard) or zone type config
- * - Archetype selection shifts the hue (each sub-category gets a distinct hue offset)
- * - Variant selection shifts the lightness (each variant within that archetype is distinguishable)
- *
- * Example: 3 retail archetypes × 4 variants = 12 unique shades of the retail base color
- */
-function resolveZoneColor(zone: SiteZone): string {
-  let baseColor: string;
-
-  // Water features (park sub-category) get blue instead of green
-  const parkCategory = zone.properties?.green_space_aesthetic_category as string | undefined;
-  if (zone.zone_type === 'green_space' && parkCategory === 'water_features') {
-    baseColor = '#4A90D9'; // Water blue
-  } else {
-    const devType = zone.properties?.development_type as string | undefined;
-    if (devType) {
-      const apaColor = getColourForDevelopmentType(devType);
-      if (apaColor.label !== 'Unclassified') {
-        baseColor = apaColor.fill;
-      } else {
-        baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
-      }
-    } else {
-      baseColor = ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
-    }
-  }
-
-  const info = getArchetypeVariantFromZone(zone);
-  if (!info) return baseColor;
-
-  const [h, s, l] = hexToHsl(baseColor);
-
-  // Archetype shifts hue: spread evenly across ±30° range
-  const archetypeHash = hashString(info.archetypeId);
-  // Use golden ratio to spread hues evenly (avoids clustering)
-  const hueOffset = ((archetypeHash * 137.508) % 60) - 30; // range: -30° to +30°
-
-  // Variant shifts lightness: 4 distinct steps
-  let lightnessOffset = 0;
-  if (info.variantId) {
-    const variantHash = hashString(info.variantId);
-    const lightnessSteps = [-10, -4, 4, 10];
-    lightnessOffset = lightnessSteps[variantHash % 4];
-  }
-
-  return hslToHex(h + hueOffset, s, l + lightnessOffset);
-}
-
-/**
- * Resolve the map label for a zone. Shows the archetype sub-category name
- * instead of the generic zone type (e.g. "Minimalist Infill Townhouse" instead of "Building").
- */
+/** Resolve a zone's display label from its selected archetype, falling back to zone name or type */
 function resolveZoneLabel(zone: SiteZone): string {
-  const props = zone.properties;
-  if (props) {
-    // Look up the typology/sub-category label from the catalog using the subcategory ID
-    const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-    for (const prefix of PREFIXES) {
-      const subcategoryId = props[`${prefix}_subcategory`] as string | undefined;
-      if (subcategoryId) {
-        const catalogLabel = _subcategoryLabelMap.get(subcategoryId);
-        if (catalogLabel) return catalogLabel;
-      }
+  const props = zone.properties || {};
+  for (const prefix of ['development', 'green_space', 'road', 'plaza'] as const) {
+    // Check subcategory first (the specific archetype), then archetype_id, then aesthetic (category)
+    const subcatId = props[`${prefix}_subcategory`] as string | undefined;
+    const archetypeId = props[`${prefix}_archetype_id`] as string | undefined;
+    const aestheticId = props[`${prefix}_aesthetic`] as string | undefined;
+    const id = subcatId || archetypeId || aestheticId;
+    if (id && _subcategoryLabelMap.has(id)) {
+      return _subcategoryLabelMap.get(id)!;
     }
   }
-  // Fall back to zone name or zone type config label
   return zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
+}
+
+/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config */
+function resolveZoneColor(zone: SiteZone): string {
+  const devType = zone.properties?.development_type as string | undefined;
+  if (devType) {
+    const apaColor = getColourForDevelopmentType(devType);
+    if (apaColor.label !== 'Unclassified') return apaColor.fill;
+  }
+  return ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
 }
 
 // Zone types that are drawn as a line path (buffered into a polygon on finish)
@@ -313,7 +193,7 @@ function getToolDisplayLabel(tool: SiteZoneType): string {
  * polygon area (the innermost / most specific zone). Uses the shoelace formula
  * on raw coordinates — absolute value is fine for relative comparison.
  */
-function pickSmallestFeature(features: mapboxgl.MapGeoJSONFeature[]): mapboxgl.MapGeoJSONFeature {
+function pickSmallestFeature(features: mapboxgl.GeoJSONFeature[]): mapboxgl.GeoJSONFeature {
   if (features.length <= 1) return features[0];
 
   let best = features[0];
@@ -1050,7 +930,7 @@ export function SitePlannerMap({
       if (tool) return;
 
       // Only add vertices when a zone is selected
-      const selId = selectedZoneIdRef.current;
+      const selId = selectedZoneId;
       if (!selId) return;
 
       const zone = siteZonesRef.current.find((z) => z.id === selId);
@@ -1285,6 +1165,50 @@ export function SitePlannerMap({
       updateVertexHandles(null, siteZones);
     }
   }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, updateVertexHandles]);
+
+  // ─── WASD map panning ───
+  useEffect(() => {
+    const keysDown = new Set<string>();
+    const PAN_SPEED = 8; // pixels per frame
+    let rafId = 0;
+
+    const isEditable = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      return tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable;
+    };
+
+    const tick = () => {
+      const map = mapRef.current;
+      if (!map || keysDown.size === 0) { rafId = 0; return; }
+      let dx = 0, dy = 0;
+      if (keysDown.has('a')) dx -= PAN_SPEED;
+      if (keysDown.has('d')) dx += PAN_SPEED;
+      if (keysDown.has('w')) dy -= PAN_SPEED;
+      if (keysDown.has('s')) dy += PAN_SPEED;
+      if (dx !== 0 || dy !== 0) map.panBy([dx, dy], { duration: 0 });
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const onDown = (e: KeyboardEvent) => {
+      if (isEditable(e)) return;
+      const k = e.key.toLowerCase();
+      if ('wasd'.includes(k) && k.length === 1) {
+        keysDown.add(k);
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+    };
+    const onUp = (e: KeyboardEvent) => {
+      keysDown.delete(e.key.toLowerCase());
+    };
+
+    window.addEventListener('keydown', onDown);
+    window.addEventListener('keyup', onUp);
+    return () => {
+      window.removeEventListener('keydown', onDown);
+      window.removeEventListener('keyup', onUp);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   // ─── Keyboard shortcuts ───
   useEffect(() => {

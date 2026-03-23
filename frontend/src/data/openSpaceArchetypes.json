@@ -102,37 +102,7 @@
         "has_benches": true,
         "shade_strategy": "canopy_trees"
       },
-      "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/hero.png",
-      "variants": [
-        {
-          "id": "urban_pocket_park_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Urban Pocket Park in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/variant_0.png"
-        },
-        {
-          "id": "urban_pocket_park_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Urban Pocket Park in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/variant_1.png"
-        },
-        {
-          "id": "urban_pocket_park_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Urban Pocket Park in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/variant_2.png"
-        },
-        {
-          "id": "urban_pocket_park_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Urban Pocket Park in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/hero.png"
     },
     {
       "id": "neighborhood_park",
@@ -178,37 +148,7 @@
         "has_benches": true,
         "shade_strategy": "scattered_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/hero.png",
-      "variants": [
-        {
-          "id": "neighborhood_park_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Neighborhood Park in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/variant_0.png"
-        },
-        {
-          "id": "neighborhood_park_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Neighborhood Park in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/variant_1.png"
-        },
-        {
-          "id": "neighborhood_park_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Neighborhood Park in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/variant_2.png"
-        },
-        {
-          "id": "neighborhood_park_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Neighborhood Park in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/hero.png"
     },
     {
       "id": "community_park",
@@ -254,37 +194,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/community-park/hero.png",
-      "variants": [
-        {
-          "id": "community_park_v0",
-          "label": "English Pastoral",
-          "color": "#4A7C59",
-          "description": "Community Park in classic English landscape garden style. Rolling lawns with scattered specimen trees, serpentine gravel paths, naturalistic pond edges, ornamental iron benches, and romantic bridge features.",
-          "thumbnailUrl": "/archetypes/openspaces/community-park/variant_0.png"
-        },
-        {
-          "id": "community_park_v1",
-          "label": "Modern Minimalist",
-          "color": "#7D8491",
-          "description": "Community Park in contemporary minimalist landscape design. Clean geometric lawn panels, poured concrete paths with corten steel edges, architectural grasses in linear beds, minimalist timber benches, and subtle led path lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/community-park/variant_1.png"
-        },
-        {
-          "id": "community_park_v2",
-          "label": "Mediterranean Xeriscape",
-          "color": "#C4A35A",
-          "description": "Community Park in Mediterranean drought-tolerant xeriscape. Gravel and decomposed granite groundcover, native drought-tolerant plantings including lavender and rosemary, terracotta-edged paths, olive and citrus trees, and stone retaining walls.",
-          "thumbnailUrl": "/archetypes/openspaces/community-park/variant_2.png"
-        },
-        {
-          "id": "community_park_v3",
-          "label": "Tropical Lush",
-          "color": "#2D6A4F",
-          "description": "Community Park in lush tropical landscape design. Dense tropical plantings with palms and ferns, winding boardwalk paths, water features with lotus plants, thatched shade pavilions, and volcanic rock accents.",
-          "thumbnailUrl": "/archetypes/openspaces/community-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/community-park/hero.png"
     },
     {
       "id": "regional_park",
@@ -330,37 +240,7 @@
         "has_benches": false,
         "shade_strategy": "natural_forest"
       },
-      "thumbnailUrl": "/archetypes/openspaces/regional-park/hero.png",
-      "variants": [
-        {
-          "id": "regional_park_v0",
-          "label": "English Pastoral",
-          "color": "#4A7C59",
-          "description": "Regional Park in classic English landscape garden style. Rolling lawns with scattered specimen trees, serpentine gravel paths, naturalistic pond edges, ornamental iron benches, and romantic bridge features.",
-          "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_0.png"
-        },
-        {
-          "id": "regional_park_v1",
-          "label": "Modern Minimalist",
-          "color": "#7D8491",
-          "description": "Regional Park in contemporary minimalist landscape design. Clean geometric lawn panels, poured concrete paths with corten steel edges, architectural grasses in linear beds, minimalist timber benches, and subtle led path lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_1.png"
-        },
-        {
-          "id": "regional_park_v2",
-          "label": "Mediterranean Xeriscape",
-          "color": "#C4A35A",
-          "description": "Regional Park in Mediterranean drought-tolerant xeriscape. Gravel and decomposed granite groundcover, native drought-tolerant plantings including lavender and rosemary, terracotta-edged paths, olive and citrus trees, and stone retaining walls.",
-          "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_2.png"
-        },
-        {
-          "id": "regional_park_v3",
-          "label": "Tropical Lush",
-          "color": "#2D6A4F",
-          "description": "Regional Park in lush tropical landscape design. Dense tropical plantings with palms and ferns, winding boardwalk paths, water features with lotus plants, thatched shade pavilions, and volcanic rock accents.",
-          "thumbnailUrl": "/archetypes/openspaces/regional-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/regional-park/hero.png"
     },
     {
       "id": "dog_park",
@@ -406,37 +286,7 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/dog-park/hero.png",
-      "variants": [
-        {
-          "id": "dog_park_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Dog Park in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_0.png"
-        },
-        {
-          "id": "dog_park_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Dog Park in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_1.png"
-        },
-        {
-          "id": "dog_park_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Dog Park in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_2.png"
-        },
-        {
-          "id": "dog_park_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Dog Park in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/dog-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/dog-park/hero.png"
     },
     {
       "id": "skate_park",
@@ -483,37 +333,7 @@
         "paving_material": "concrete",
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/skate-park/hero.png",
-      "variants": [
-        {
-          "id": "skate_park_v0",
-          "label": "Professional Grade",
-          "color": "#1B5E20",
-          "description": "Skate Park in professional-grade sports facility. Regulation markings on manicured turf, aluminum bleacher seating, chain-link and windscreen fencing, professional led floodlights, and paved service roads.",
-          "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_0.png"
-        },
-        {
-          "id": "skate_park_v1",
-          "label": "Community Recreation",
-          "color": "#E65100",
-          "description": "Skate Park in community recreation center style. Multi-use fields with painted lines, covered picnic pavilions, rubber track surface, colorful equipment and signage, and family-friendly gathering areas.",
-          "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_1.png"
-        },
-        {
-          "id": "skate_park_v2",
-          "label": "Naturalized Active",
-          "color": "#558B2F",
-          "description": "Skate Park in naturalized active recreation landscape. Fields integrated into natural terrain, timber spectator terraces, native grass borders, gravel parking areas, and wildlife-friendly perimeter planting.",
-          "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_2.png"
-        },
-        {
-          "id": "skate_park_v3",
-          "label": "Urban Athletic",
-          "color": "#37474F",
-          "description": "Skate Park in urban athletic facility with industrial materials. Concrete and steel structures, rubber and asphalt surfaces, corten steel retaining walls, bold graphic markings, and integrated skateable landscape elements.",
-          "thumbnailUrl": "/archetypes/openspaces/skate-park/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/skate-park/hero.png"
     },
     {
       "id": "sports_field_complex",
@@ -559,37 +379,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/hero.png",
-      "variants": [
-        {
-          "id": "sports_field_complex_v0",
-          "label": "Professional Grade",
-          "color": "#1B5E20",
-          "description": "Sports Field Complex in professional-grade sports facility. Regulation markings on manicured turf, aluminum bleacher seating, chain-link and windscreen fencing, professional led floodlights, and paved service roads.",
-          "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_0.png"
-        },
-        {
-          "id": "sports_field_complex_v1",
-          "label": "Community Recreation",
-          "color": "#E65100",
-          "description": "Sports Field Complex in community recreation center style. Multi-use fields with painted lines, covered picnic pavilions, rubber track surface, colorful equipment and signage, and family-friendly gathering areas.",
-          "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_1.png"
-        },
-        {
-          "id": "sports_field_complex_v2",
-          "label": "Naturalized Active",
-          "color": "#558B2F",
-          "description": "Sports Field Complex in naturalized active recreation landscape. Fields integrated into natural terrain, timber spectator terraces, native grass borders, gravel parking areas, and wildlife-friendly perimeter planting.",
-          "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_2.png"
-        },
-        {
-          "id": "sports_field_complex_v3",
-          "label": "Urban Athletic",
-          "color": "#37474F",
-          "description": "Sports Field Complex in urban athletic facility with industrial materials. Concrete and steel structures, rubber and asphalt surfaces, corten steel retaining walls, bold graphic markings, and integrated skateable landscape elements.",
-          "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/sports-field-complex/hero.png"
     },
     {
       "id": "tennis_court_cluster",
@@ -636,37 +426,7 @@
         "paving_material": "acrylic",
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/hero.png",
-      "variants": [
-        {
-          "id": "tennis_court_cluster_v0",
-          "label": "Professional Grade",
-          "color": "#1B5E20",
-          "description": "Tennis Court Cluster in professional-grade sports facility. Regulation markings on manicured turf, aluminum bleacher seating, chain-link and windscreen fencing, professional led floodlights, and paved service roads.",
-          "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_0.png"
-        },
-        {
-          "id": "tennis_court_cluster_v1",
-          "label": "Community Recreation",
-          "color": "#E65100",
-          "description": "Tennis Court Cluster in community recreation center style. Multi-use fields with painted lines, covered picnic pavilions, rubber track surface, colorful equipment and signage, and family-friendly gathering areas.",
-          "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_1.png"
-        },
-        {
-          "id": "tennis_court_cluster_v2",
-          "label": "Naturalized Active",
-          "color": "#558B2F",
-          "description": "Tennis Court Cluster in naturalized active recreation landscape. Fields integrated into natural terrain, timber spectator terraces, native grass borders, gravel parking areas, and wildlife-friendly perimeter planting.",
-          "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_2.png"
-        },
-        {
-          "id": "tennis_court_cluster_v3",
-          "label": "Urban Athletic",
-          "color": "#37474F",
-          "description": "Tennis Court Cluster in urban athletic facility with industrial materials. Concrete and steel structures, rubber and asphalt surfaces, corten steel retaining walls, bold graphic markings, and integrated skateable landscape elements.",
-          "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/tennis-court-cluster/hero.png"
     },
     {
       "id": "botanical_garden",
@@ -712,37 +472,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/botanical-garden/hero.png",
-      "variants": [
-        {
-          "id": "botanical_garden_v0",
-          "label": "Classical Formal",
-          "color": "#5D4037",
-          "description": "Botanical Garden in classical formal garden design. Symmetrical parterre beds, clipped boxwood hedges, gravel allees, stone urns and balustrades, and a central ornamental fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_0.png"
-        },
-        {
-          "id": "botanical_garden_v1",
-          "label": "Woodland Naturalistic",
-          "color": "#33691E",
-          "description": "Botanical Garden in woodland naturalistic garden. Shade-loving understory plantings, bark mulch paths winding through dappled light, moss-covered stones, fern grottos, and rustic timber bridges.",
-          "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_1.png"
-        },
-        {
-          "id": "botanical_garden_v2",
-          "label": "Contemporary Sculptural",
-          "color": "#546E7A",
-          "description": "Botanical Garden in contemporary sculptural garden. Abstract sculptural elements, architectural plant specimens, polished concrete and corten steel features, minimalist water rills, and dramatic night lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_2.png"
-        },
-        {
-          "id": "botanical_garden_v3",
-          "label": "Cottage Romantic",
-          "color": "#AD1457",
-          "description": "Botanical Garden in romantic cottage garden style. Overflowing perennial borders, climbing roses on arbors, brick and stone paths, weathered wooden gates, and antique-style garden furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/botanical-garden/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/botanical-garden/hero.png"
     },
     {
       "id": "japanese_garden",
@@ -788,37 +518,7 @@
         "has_benches": true,
         "shade_strategy": "specimen_trees"
       },
-      "thumbnailUrl": "/archetypes/openspaces/japanese-garden/hero.png",
-      "variants": [
-        {
-          "id": "japanese_garden_v0",
-          "label": "Classical Formal",
-          "color": "#5D4037",
-          "description": "Japanese Garden in classical formal garden design. Symmetrical parterre beds, clipped boxwood hedges, gravel allees, stone urns and balustrades, and a central ornamental fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_0.png"
-        },
-        {
-          "id": "japanese_garden_v1",
-          "label": "Woodland Naturalistic",
-          "color": "#33691E",
-          "description": "Japanese Garden in woodland naturalistic garden. Shade-loving understory plantings, bark mulch paths winding through dappled light, moss-covered stones, fern grottos, and rustic timber bridges.",
-          "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_1.png"
-        },
-        {
-          "id": "japanese_garden_v2",
-          "label": "Contemporary Sculptural",
-          "color": "#546E7A",
-          "description": "Japanese Garden in contemporary sculptural garden. Abstract sculptural elements, architectural plant specimens, polished concrete and corten steel features, minimalist water rills, and dramatic night lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_2.png"
-        },
-        {
-          "id": "japanese_garden_v3",
-          "label": "Cottage Romantic",
-          "color": "#AD1457",
-          "description": "Japanese Garden in romantic cottage garden style. Overflowing perennial borders, climbing roses on arbors, brick and stone paths, weathered wooden gates, and antique-style garden furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/japanese-garden/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/japanese-garden/hero.png"
     },
     {
       "id": "memorial_garden",
@@ -864,37 +564,7 @@
         "has_benches": true,
         "shade_strategy": "formal_rows"
       },
-      "thumbnailUrl": "/archetypes/openspaces/memorial-garden/hero.png",
-      "variants": [
-        {
-          "id": "memorial_garden_v0",
-          "label": "Classical Formal",
-          "color": "#5D4037",
-          "description": "Memorial Garden in classical formal garden design. Symmetrical parterre beds, clipped boxwood hedges, gravel allees, stone urns and balustrades, and a central ornamental fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_0.png"
-        },
-        {
-          "id": "memorial_garden_v1",
-          "label": "Woodland Naturalistic",
-          "color": "#33691E",
-          "description": "Memorial Garden in woodland naturalistic garden. Shade-loving understory plantings, bark mulch paths winding through dappled light, moss-covered stones, fern grottos, and rustic timber bridges.",
-          "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_1.png"
-        },
-        {
-          "id": "memorial_garden_v2",
-          "label": "Contemporary Sculptural",
-          "color": "#546E7A",
-          "description": "Memorial Garden in contemporary sculptural garden. Abstract sculptural elements, architectural plant specimens, polished concrete and corten steel features, minimalist water rills, and dramatic night lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_2.png"
-        },
-        {
-          "id": "memorial_garden_v3",
-          "label": "Cottage Romantic",
-          "color": "#AD1457",
-          "description": "Memorial Garden in romantic cottage garden style. Overflowing perennial borders, climbing roses on arbors, brick and stone paths, weathered wooden gates, and antique-style garden furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/memorial-garden/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/memorial-garden/hero.png"
     },
     {
       "id": "urban_forest",
@@ -941,37 +611,7 @@
         "has_benches": false,
         "shade_strategy": "natural_forest"
       },
-      "thumbnailUrl": "/archetypes/openspaces/urban-forest/hero.png",
-      "variants": [
-        {
-          "id": "urban_forest_v0",
-          "label": "Native Restoration",
-          "color": "#2E7D32",
-          "description": "Urban Forest in native habitat restoration landscape. Native grassland and woodland edge plantings, naturalized stream channels, wildlife corridors, educational interpretive signs, and minimal-impact boardwalk trails.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_0.png"
-        },
-        {
-          "id": "urban_forest_v1",
-          "label": "Bioengineered Infrastructure",
-          "color": "#00695C",
-          "description": "Urban Forest in bioengineered green infrastructure. Constructed wetland cells, gabion basket retaining walls, bioswale channels with native sedges, permeable paving systems, and rain harvesting cisterns.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_1.png"
-        },
-        {
-          "id": "urban_forest_v2",
-          "label": "Rewilded Urban",
-          "color": "#4E342E",
-          "description": "Urban Forest in rewilded urban landscape. Successional forest plantings, deadwood habitat piles, wildflower meadows on former pavement, reclaimed material paths, and insect hotels.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_2.png"
-        },
-        {
-          "id": "urban_forest_v3",
-          "label": "Resilient Coastal",
-          "color": "#0277BD",
-          "description": "Urban Forest in resilient coastal landscape design. Salt-tolerant native plantings, living shoreline with oyster reef structures, elevated boardwalks, dune grass restoration, and tidal marsh buffers.",
-          "thumbnailUrl": "/archetypes/openspaces/urban-forest/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/urban-forest/hero.png"
     },
     {
       "id": "riparian_buffer",
@@ -1018,37 +658,7 @@
         "has_benches": true,
         "shade_strategy": "riparian_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png",
-      "variants": [
-        {
-          "id": "riparian_buffer_v0",
-          "label": "Native Restoration",
-          "color": "#2E7D32",
-          "description": "Riparian Buffer / Creek Corridor in native habitat restoration landscape. Native grassland and woodland edge plantings, naturalized stream channels, wildlife corridors, educational interpretive signs, and minimal-impact boardwalk trails.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_0.png"
-        },
-        {
-          "id": "riparian_buffer_v1",
-          "label": "Bioengineered Infrastructure",
-          "color": "#00695C",
-          "description": "Riparian Buffer / Creek Corridor in bioengineered green infrastructure. Constructed wetland cells, gabion basket retaining walls, bioswale channels with native sedges, permeable paving systems, and rain harvesting cisterns.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_1.png"
-        },
-        {
-          "id": "riparian_buffer_v2",
-          "label": "Rewilded Urban",
-          "color": "#4E342E",
-          "description": "Riparian Buffer / Creek Corridor in rewilded urban landscape. Successional forest plantings, deadwood habitat piles, wildflower meadows on former pavement, reclaimed material paths, and insect hotels.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_2.png"
-        },
-        {
-          "id": "riparian_buffer_v3",
-          "label": "Resilient Coastal",
-          "color": "#0277BD",
-          "description": "Riparian Buffer / Creek Corridor in resilient coastal landscape design. Salt-tolerant native plantings, living shoreline with oyster reef structures, elevated boardwalks, dune grass restoration, and tidal marsh buffers.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png"
     },
     {
       "id": "wetland_rain_garden",
@@ -1095,37 +705,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/hero.png",
-      "variants": [
-        {
-          "id": "wetland_rain_garden_v0",
-          "label": "Native Restoration",
-          "color": "#2E7D32",
-          "description": "Wetland / Rain Garden in native habitat restoration landscape. Native grassland and woodland edge plantings, naturalized stream channels, wildlife corridors, educational interpretive signs, and minimal-impact boardwalk trails.",
-          "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/variant_0.png"
-        },
-        {
-          "id": "wetland_rain_garden_v1",
-          "label": "Bioengineered Infrastructure",
-          "color": "#00695C",
-          "description": "Wetland / Rain Garden in bioengineered green infrastructure. Constructed wetland cells, gabion basket retaining walls, bioswale channels with native sedges, permeable paving systems, and rain harvesting cisterns.",
-          "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/variant_1.png"
-        },
-        {
-          "id": "wetland_rain_garden_v2",
-          "label": "Rewilded Urban",
-          "color": "#4E342E",
-          "description": "Wetland / Rain Garden in rewilded urban landscape. Successional forest plantings, deadwood habitat piles, wildflower meadows on former pavement, reclaimed material paths, and insect hotels.",
-          "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/variant_2.png"
-        },
-        {
-          "id": "wetland_rain_garden_v3",
-          "label": "Resilient Coastal",
-          "color": "#0277BD",
-          "description": "Wetland / Rain Garden in resilient coastal landscape design. Salt-tolerant native plantings, living shoreline with oyster reef structures, elevated boardwalks, dune grass restoration, and tidal marsh buffers.",
-          "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/hero.png"
     },
     {
       "id": "playground_adventure",
@@ -1171,37 +751,7 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png",
-      "variants": [
-        {
-          "id": "playground_adventure_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Playground / Adventure Play in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_0.png"
-        },
-        {
-          "id": "playground_adventure_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Playground / Adventure Play in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_1.png"
-        },
-        {
-          "id": "playground_adventure_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Playground / Adventure Play in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_2.png"
-        },
-        {
-          "id": "playground_adventure_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Playground / Adventure Play in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png"
     },
     {
       "id": "splash_pad_area",
@@ -1247,37 +797,7 @@
         "paving_material": "concrete",
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png",
-      "variants": [
-        {
-          "id": "splash_pad_area_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Splash Pad / Water Play in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_0.png"
-        },
-        {
-          "id": "splash_pad_area_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Splash Pad / Water Play in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_1.png"
-        },
-        {
-          "id": "splash_pad_area_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Splash Pad / Water Play in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_2.png"
-        },
-        {
-          "id": "splash_pad_area_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Splash Pad / Water Play in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png"
     },
     {
       "id": "amphitheater_lawn",
@@ -1322,37 +842,7 @@
         "has_benches": true,
         "shade_strategy": "perimeter_trees"
       },
-      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png",
-      "variants": [
-        {
-          "id": "amphitheater_lawn_v0",
-          "label": "Terraced Performance",
-          "color": "#4527A0",
-          "description": "Amphitheater / Performance Lawn in terraced performance venue landscape. Stone-clad terraced seating into hillside, permanent stage platform with acoustic wall, theatrical lighting columns, and landscaped wings with mature trees.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_0.png"
-        },
-        {
-          "id": "amphitheater_lawn_v1",
-          "label": "Open Festival Ground",
-          "color": "#F57F17",
-          "description": "Amphitheater / Performance Lawn in open festival ground design. Large flat lawn for events, portable infrastructure connections, gravel service paths, shade sail anchor points, and perimeter food vendor pads.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_1.png"
-        },
-        {
-          "id": "amphitheater_lawn_v2",
-          "label": "Intimate Garden Venue",
-          "color": "#1B5E20",
-          "description": "Amphitheater / Performance Lawn in intimate garden event venue. Formal garden rooms with hedge walls, pergola-covered gathering areas, string light canopy, stone patio spaces, and ornamental flower beds.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_2.png"
-        },
-        {
-          "id": "amphitheater_lawn_v3",
-          "label": "Industrial Adaptive",
-          "color": "#424242",
-          "description": "Amphitheater / Performance Lawn in industrial adaptive reuse event space. Reclaimed brick and steel structures, polished concrete surfaces, industrial pendant lighting, exposed steel trusses for hanging decor, and container gardens.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png"
     },
     {
       "id": "community_garden",
@@ -1398,37 +888,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png",
-      "variants": [
-        {
-          "id": "community_garden_v0",
-          "label": "Rustic Timber & Gravel",
-          "color": "#8B6914",
-          "description": "Community Garden / Allotments in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_0.png"
-        },
-        {
-          "id": "community_garden_v1",
-          "label": "Modern Steel & Turf",
-          "color": "#5B7065",
-          "description": "Community Garden / Allotments in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_1.png"
-        },
-        {
-          "id": "community_garden_v2",
-          "label": "Natural Meadow",
-          "color": "#6B8E23",
-          "description": "Community Garden / Allotments in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_2.png"
-        },
-        {
-          "id": "community_garden_v3",
-          "label": "Urban Contemporary",
-          "color": "#4A6670",
-          "description": "Community Garden / Allotments in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png"
     },
     {
       "id": "cemetery_memorial_grounds",
@@ -1474,37 +934,7 @@
         "has_benches": true,
         "shade_strategy": "scattered_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/hero.png",
-      "variants": [
-        {
-          "id": "cemetery_memorial_grounds_v0",
-          "label": "Classical Formal",
-          "color": "#5D4037",
-          "description": "Cemetery / Memorial Grounds in classical formal garden design. Symmetrical parterre beds, clipped boxwood hedges, gravel allees, stone urns and balustrades, and a central ornamental fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_0.png"
-        },
-        {
-          "id": "cemetery_memorial_grounds_v1",
-          "label": "Woodland Naturalistic",
-          "color": "#33691E",
-          "description": "Cemetery / Memorial Grounds in woodland naturalistic garden. Shade-loving understory plantings, bark mulch paths winding through dappled light, moss-covered stones, fern grottos, and rustic timber bridges.",
-          "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_1.png"
-        },
-        {
-          "id": "cemetery_memorial_grounds_v2",
-          "label": "Contemporary Sculptural",
-          "color": "#546E7A",
-          "description": "Cemetery / Memorial Grounds in contemporary sculptural garden. Abstract sculptural elements, architectural plant specimens, polished concrete and corten steel features, minimalist water rills, and dramatic night lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_2.png"
-        },
-        {
-          "id": "cemetery_memorial_grounds_v3",
-          "label": "Cottage Romantic",
-          "color": "#AD1457",
-          "description": "Cemetery / Memorial Grounds in romantic cottage garden style. Overflowing perennial borders, climbing roses on arbors, brick and stone paths, weathered wooden gates, and antique-style garden furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/hero.png"
     },
     {
       "id": "formal_civic_plaza",
@@ -1549,37 +979,7 @@
         "shade_strategy": "tree_grove",
         "plaza_program": "civic"
       },
-      "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/hero.png",
-      "variants": [
-        {
-          "id": "formal_civic_plaza_v0",
-          "label": "Neoclassical Stone",
-          "color": "#795548",
-          "description": "Formal Civic Plaza in neoclassical stone civic plaza. Cut stone paving in radiating patterns, classical balustrades and columns, symmetrical tree plantings, ornamental lamp posts, and a central monument or fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/variant_0.png"
-        },
-        {
-          "id": "formal_civic_plaza_v1",
-          "label": "Contemporary Urban",
-          "color": "#455A64",
-          "description": "Formal Civic Plaza in contemporary urban civic plaza. Large-format granite pavers, linear water channels, architectural concrete seating walls, stainless steel bollards, and specimen trees in flush grates.",
-          "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/variant_1.png"
-        },
-        {
-          "id": "formal_civic_plaza_v2",
-          "label": "Green Civic",
-          "color": "#388E3C",
-          "description": "Formal Civic Plaza in green civic plaza with integrated landscape. Permeable paving with grass joints, raised planter terraces, shade tree canopy, rain gardens at edges, and timber-and-steel hybrid furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/variant_2.png"
-        },
-        {
-          "id": "formal_civic_plaza_v3",
-          "label": "Festival & Market",
-          "color": "#D84315",
-          "description": "Formal Civic Plaza in flexible festival and market plaza. Flat open hardscape with utility hookups, moveable planters, retractable bollards, festoon lighting infrastructure, and modular stage platform area.",
-          "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/hero.png"
     },
     {
       "id": "market_square",
@@ -1624,37 +1024,7 @@
         "shade_strategy": "tree_grove",
         "plaza_program": "market"
       },
-      "thumbnailUrl": "/archetypes/openspaces/market-square/hero.png",
-      "variants": [
-        {
-          "id": "market_square_v0",
-          "label": "Terraced Performance",
-          "color": "#4527A0",
-          "description": "Market Square in terraced performance venue landscape. Stone-clad terraced seating into hillside, permanent stage platform with acoustic wall, theatrical lighting columns, and landscaped wings with mature trees.",
-          "thumbnailUrl": "/archetypes/openspaces/market-square/variant_0.png"
-        },
-        {
-          "id": "market_square_v1",
-          "label": "Open Festival Ground",
-          "color": "#F57F17",
-          "description": "Market Square in open festival ground design. Large flat lawn for events, portable infrastructure connections, gravel service paths, shade sail anchor points, and perimeter food vendor pads.",
-          "thumbnailUrl": "/archetypes/openspaces/market-square/variant_1.png"
-        },
-        {
-          "id": "market_square_v2",
-          "label": "Intimate Garden Venue",
-          "color": "#1B5E20",
-          "description": "Market Square in intimate garden event venue. Formal garden rooms with hedge walls, pergola-covered gathering areas, string light canopy, stone patio spaces, and ornamental flower beds.",
-          "thumbnailUrl": "/archetypes/openspaces/market-square/variant_2.png"
-        },
-        {
-          "id": "market_square_v3",
-          "label": "Industrial Adaptive",
-          "color": "#424242",
-          "description": "Market Square in industrial adaptive reuse event space. Reclaimed brick and steel structures, polished concrete surfaces, industrial pendant lighting, exposed steel trusses for hanging decor, and container gardens.",
-          "thumbnailUrl": "/archetypes/openspaces/market-square/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/market-square/hero.png"
     },
     {
       "id": "courtyard_plaza",
@@ -1700,37 +1070,7 @@
         "shade_strategy": "central_tree",
         "plaza_program": "courtyard"
       },
-      "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png",
-      "variants": [
-        {
-          "id": "courtyard_plaza_v0",
-          "label": "Neoclassical Stone",
-          "color": "#795548",
-          "description": "Courtyard in neoclassical stone civic plaza. Cut stone paving in radiating patterns, classical balustrades and columns, symmetrical tree plantings, ornamental lamp posts, and a central monument or fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_0.png"
-        },
-        {
-          "id": "courtyard_plaza_v1",
-          "label": "Contemporary Urban",
-          "color": "#455A64",
-          "description": "Courtyard in contemporary urban civic plaza. Large-format granite pavers, linear water channels, architectural concrete seating walls, stainless steel bollards, and specimen trees in flush grates.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_1.png"
-        },
-        {
-          "id": "courtyard_plaza_v2",
-          "label": "Green Civic",
-          "color": "#388E3C",
-          "description": "Courtyard in green civic plaza with integrated landscape. Permeable paving with grass joints, raised planter terraces, shade tree canopy, rain gardens at edges, and timber-and-steel hybrid furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_2.png"
-        },
-        {
-          "id": "courtyard_plaza_v3",
-          "label": "Festival & Market",
-          "color": "#D84315",
-          "description": "Courtyard in flexible festival and market plaza. Flat open hardscape with utility hookups, moveable planters, retractable bollards, festoon lighting infrastructure, and modular stage platform area.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png"
     },
     {
       "id": "promenade_boardwalk",
@@ -1775,37 +1115,7 @@
         "shade_strategy": "tree_row",
         "plaza_program": "promenade"
       },
-      "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/hero.png",
-      "variants": [
-        {
-          "id": "promenade_boardwalk_v0",
-          "label": "Maritime Heritage",
-          "color": "#1565C0",
-          "description": "Promenade / Boardwalk in maritime heritage waterfront. Timber boardwalk with rope railings, nautical lighting fixtures, weathered timber bollards, mooring cleats as seating, and coastal native plantings.",
-          "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/variant_0.png"
-        },
-        {
-          "id": "promenade_boardwalk_v1",
-          "label": "Modern Esplanade",
-          "color": "#78909C",
-          "description": "Promenade / Boardwalk in modern waterfront esplanade. Polished concrete promenade, glass and steel balustrades, integrated led strip lighting, cantilevered viewing platforms, and architectural shade structures.",
-          "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/variant_1.png"
-        },
-        {
-          "id": "promenade_boardwalk_v2",
-          "label": "Tropical Resort",
-          "color": "#00897B",
-          "description": "Promenade / Boardwalk in tropical resort waterfront. Palm-lined walkways, white sand accents, thatched shade cabanas, coral stone retaining walls, and overwater timber decking.",
-          "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/variant_2.png"
-        },
-        {
-          "id": "promenade_boardwalk_v3",
-          "label": "Naturalized Riparian",
-          "color": "#33691E",
-          "description": "Promenade / Boardwalk in naturalized riparian waterfront. Natural stone bank armoring, native riparian plantings, timber fishing platforms, gravel access paths, and wildlife observation blinds.",
-          "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/hero.png"
     },
     {
       "id": "transit_plaza",
@@ -1850,37 +1160,7 @@
         "shade_strategy": "tree_planters",
         "plaza_program": "transit"
       },
-      "thumbnailUrl": "/archetypes/openspaces/transit-plaza/hero.png",
-      "variants": [
-        {
-          "id": "transit_plaza_v0",
-          "label": "Neoclassical Stone",
-          "color": "#795548",
-          "description": "Transit Plaza in neoclassical stone civic plaza. Cut stone paving in radiating patterns, classical balustrades and columns, symmetrical tree plantings, ornamental lamp posts, and a central monument or fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_0.png"
-        },
-        {
-          "id": "transit_plaza_v1",
-          "label": "Contemporary Urban",
-          "color": "#455A64",
-          "description": "Transit Plaza in contemporary urban civic plaza. Large-format granite pavers, linear water channels, architectural concrete seating walls, stainless steel bollards, and specimen trees in flush grates.",
-          "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_1.png"
-        },
-        {
-          "id": "transit_plaza_v2",
-          "label": "Green Civic",
-          "color": "#388E3C",
-          "description": "Transit Plaza in green civic plaza with integrated landscape. Permeable paving with grass joints, raised planter terraces, shade tree canopy, rain gardens at edges, and timber-and-steel hybrid furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_2.png"
-        },
-        {
-          "id": "transit_plaza_v3",
-          "label": "Festival & Market",
-          "color": "#D84315",
-          "description": "Transit Plaza in flexible festival and market plaza. Flat open hardscape with utility hookups, moveable planters, retractable bollards, festoon lighting infrastructure, and modular stage platform area.",
-          "thumbnailUrl": "/archetypes/openspaces/transit-plaza/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/transit-plaza/hero.png"
     },
     {
       "id": "amphitheater_performance_space",
@@ -1925,37 +1205,7 @@
         "shade_strategy": "none",
         "plaza_program": "performance"
       },
-      "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/hero.png",
-      "variants": [
-        {
-          "id": "amphitheater_performance_space_v0",
-          "label": "Terraced Performance",
-          "color": "#4527A0",
-          "description": "Outdoor Amphitheater / Performance Space in terraced performance venue landscape. Stone-clad terraced seating into hillside, permanent stage platform with acoustic wall, theatrical lighting columns, and landscaped wings with mature trees.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_0.png"
-        },
-        {
-          "id": "amphitheater_performance_space_v1",
-          "label": "Open Festival Ground",
-          "color": "#F57F17",
-          "description": "Outdoor Amphitheater / Performance Space in open festival ground design. Large flat lawn for events, portable infrastructure connections, gravel service paths, shade sail anchor points, and perimeter food vendor pads.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_1.png"
-        },
-        {
-          "id": "amphitheater_performance_space_v2",
-          "label": "Intimate Garden Venue",
-          "color": "#1B5E20",
-          "description": "Outdoor Amphitheater / Performance Space in intimate garden event venue. Formal garden rooms with hedge walls, pergola-covered gathering areas, string light canopy, stone patio spaces, and ornamental flower beds.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_2.png"
-        },
-        {
-          "id": "amphitheater_performance_space_v3",
-          "label": "Industrial Adaptive",
-          "color": "#424242",
-          "description": "Outdoor Amphitheater / Performance Space in industrial adaptive reuse event space. Reclaimed brick and steel structures, polished concrete surfaces, industrial pendant lighting, exposed steel trusses for hanging decor, and container gardens.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/hero.png"
     },
     {
       "id": "surface_parking_lot",
@@ -1997,37 +1247,7 @@
         "covered": false,
         "paving_material": "asphalt"
       },
-      "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/hero.png",
-      "variants": [
-        {
-          "id": "surface_parking_lot_v0",
-          "label": "Standard Asphalt",
-          "color": "#616161",
-          "description": "Surface Parking Lot in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/variant_0.png"
-        },
-        {
-          "id": "surface_parking_lot_v1",
-          "label": "Green Infrastructure",
-          "color": "#43A047",
-          "description": "Surface Parking Lot in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/variant_1.png"
-        },
-        {
-          "id": "surface_parking_lot_v2",
-          "label": "Urban Structured",
-          "color": "#546E7A",
-          "description": "Surface Parking Lot in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/variant_2.png"
-        },
-        {
-          "id": "surface_parking_lot_v3",
-          "label": "Landscape-Screened",
-          "color": "#689F38",
-          "description": "Surface Parking Lot in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/surface-parking-lot/hero.png"
     },
     {
       "id": "structured_parking_garage",
@@ -2070,37 +1290,7 @@
         "covered": true,
         "paving_material": "concrete"
       },
-      "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/hero.png",
-      "variants": [
-        {
-          "id": "structured_parking_garage_v0",
-          "label": "Standard Asphalt",
-          "color": "#616161",
-          "description": "Structured Parking Garage in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/variant_0.png"
-        },
-        {
-          "id": "structured_parking_garage_v1",
-          "label": "Green Infrastructure",
-          "color": "#43A047",
-          "description": "Structured Parking Garage in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/variant_1.png"
-        },
-        {
-          "id": "structured_parking_garage_v2",
-          "label": "Urban Structured",
-          "color": "#546E7A",
-          "description": "Structured Parking Garage in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/variant_2.png"
-        },
-        {
-          "id": "structured_parking_garage_v3",
-          "label": "Landscape-Screened",
-          "color": "#689F38",
-          "description": "Structured Parking Garage in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/structured-parking-garage/hero.png"
     },
     {
       "id": "underground_parking_entry",
@@ -2143,37 +1333,7 @@
         "covered": true,
         "paving_material": "concrete"
       },
-      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png",
-      "variants": [
-        {
-          "id": "underground_parking_entry_v0",
-          "label": "Standard Asphalt",
-          "color": "#616161",
-          "description": "Underground Parking (Entry Only) in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_0.png"
-        },
-        {
-          "id": "underground_parking_entry_v1",
-          "label": "Green Infrastructure",
-          "color": "#43A047",
-          "description": "Underground Parking (Entry Only) in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_1.png"
-        },
-        {
-          "id": "underground_parking_entry_v2",
-          "label": "Urban Structured",
-          "color": "#546E7A",
-          "description": "Underground Parking (Entry Only) in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_2.png"
-        },
-        {
-          "id": "underground_parking_entry_v3",
-          "label": "Landscape-Screened",
-          "color": "#689F38",
-          "description": "Underground Parking (Entry Only) in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png"
     },
     {
       "id": "green_parking_lot",
@@ -2216,37 +1376,7 @@
         "covered": false,
         "paving_material": "permeable_paver"
       },
-      "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png",
-      "variants": [
-        {
-          "id": "green_parking_lot_v0",
-          "label": "Standard Asphalt",
-          "color": "#616161",
-          "description": "Green Parking (Permeable) in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_0.png"
-        },
-        {
-          "id": "green_parking_lot_v1",
-          "label": "Green Infrastructure",
-          "color": "#43A047",
-          "description": "Green Parking (Permeable) in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_1.png"
-        },
-        {
-          "id": "green_parking_lot_v2",
-          "label": "Urban Structured",
-          "color": "#546E7A",
-          "description": "Green Parking (Permeable) in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_2.png"
-        },
-        {
-          "id": "green_parking_lot_v3",
-          "label": "Landscape-Screened",
-          "color": "#689F38",
-          "description": "Green Parking (Permeable) in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png"
     },
     {
       "id": "pond_lake",
@@ -2288,37 +1418,7 @@
         "tree_density_level": "medium",
         "tree_density": 0.3
       },
-      "thumbnailUrl": "/archetypes/openspaces/pond-lake/hero.png",
-      "variants": [
-        {
-          "id": "pond_lake_v0",
-          "label": "Naturalistic Pond",
-          "color": "#1B5E20",
-          "description": "Pond / Lake in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/pond-lake/variant_0.png"
-        },
-        {
-          "id": "pond_lake_v1",
-          "label": "Formal Reflecting",
-          "color": "#37474F",
-          "description": "Pond / Lake in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/pond-lake/variant_1.png"
-        },
-        {
-          "id": "pond_lake_v2",
-          "label": "Contemporary Interactive",
-          "color": "#0097A7",
-          "description": "Pond / Lake in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/pond-lake/variant_2.png"
-        },
-        {
-          "id": "pond_lake_v3",
-          "label": "Ecological Wetland",
-          "color": "#558B2F",
-          "description": "Pond / Lake in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/pond-lake/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/pond-lake/hero.png"
     },
     {
       "id": "fountain_water_feature",
@@ -2361,37 +1461,7 @@
         "shade_strategy": "none",
         "plaza_program": "fountain"
       },
-      "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png",
-      "variants": [
-        {
-          "id": "fountain_water_feature_v0",
-          "label": "Naturalistic Pond",
-          "color": "#1B5E20",
-          "description": "Fountain / Decorative Water Feature in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_0.png"
-        },
-        {
-          "id": "fountain_water_feature_v1",
-          "label": "Formal Reflecting",
-          "color": "#37474F",
-          "description": "Fountain / Decorative Water Feature in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_1.png"
-        },
-        {
-          "id": "fountain_water_feature_v2",
-          "label": "Contemporary Interactive",
-          "color": "#0097A7",
-          "description": "Fountain / Decorative Water Feature in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_2.png"
-        },
-        {
-          "id": "fountain_water_feature_v3",
-          "label": "Ecological Wetland",
-          "color": "#558B2F",
-          "description": "Fountain / Decorative Water Feature in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png"
     },
     {
       "id": "stormwater_retention_pond",
@@ -2434,37 +1504,7 @@
         "tree_density_level": "none",
         "tree_density": 0
       },
-      "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/hero.png",
-      "variants": [
-        {
-          "id": "stormwater_retention_pond_v0",
-          "label": "Naturalistic Pond",
-          "color": "#1B5E20",
-          "description": "Stormwater Retention Pond in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_0.png"
-        },
-        {
-          "id": "stormwater_retention_pond_v1",
-          "label": "Formal Reflecting",
-          "color": "#37474F",
-          "description": "Stormwater Retention Pond in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_1.png"
-        },
-        {
-          "id": "stormwater_retention_pond_v2",
-          "label": "Contemporary Interactive",
-          "color": "#0097A7",
-          "description": "Stormwater Retention Pond in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_2.png"
-        },
-        {
-          "id": "stormwater_retention_pond_v3",
-          "label": "Ecological Wetland",
-          "color": "#558B2F",
-          "description": "Stormwater Retention Pond in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/stormwater-retention-pond/hero.png"
     },
     {
       "id": "swimming_pool_complex",
@@ -2505,37 +1545,7 @@
       "propertyPresets": {
         "paving_material": "concrete"
       },
-      "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/hero.png",
-      "variants": [
-        {
-          "id": "swimming_pool_complex_v0",
-          "label": "Naturalistic Pond",
-          "color": "#1B5E20",
-          "description": "Swimming Pool Complex in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/variant_0.png"
-        },
-        {
-          "id": "swimming_pool_complex_v1",
-          "label": "Formal Reflecting",
-          "color": "#37474F",
-          "description": "Swimming Pool Complex in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/variant_1.png"
-        },
-        {
-          "id": "swimming_pool_complex_v2",
-          "label": "Contemporary Interactive",
-          "color": "#0097A7",
-          "description": "Swimming Pool Complex in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/variant_2.png"
-        },
-        {
-          "id": "swimming_pool_complex_v3",
-          "label": "Ecological Wetland",
-          "color": "#558B2F",
-          "description": "Swimming Pool Complex in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/swimming-pool-complex/hero.png"
     },
     {
       "id": "canal_waterway",
@@ -2577,37 +1587,7 @@
         "tree_density_level": "medium",
         "tree_density": 0.3
       },
-      "thumbnailUrl": "/archetypes/openspaces/canal-waterway/hero.png",
-      "variants": [
-        {
-          "id": "canal_waterway_v0",
-          "label": "Naturalistic Pond",
-          "color": "#1B5E20",
-          "description": "Canal / Waterway in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_0.png"
-        },
-        {
-          "id": "canal_waterway_v1",
-          "label": "Formal Reflecting",
-          "color": "#37474F",
-          "description": "Canal / Waterway in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_1.png"
-        },
-        {
-          "id": "canal_waterway_v2",
-          "label": "Contemporary Interactive",
-          "color": "#0097A7",
-          "description": "Canal / Waterway in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_2.png"
-        },
-        {
-          "id": "canal_waterway_v3",
-          "label": "Ecological Wetland",
-          "color": "#558B2F",
-          "description": "Canal / Waterway in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/canal-waterway/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/canal-waterway/hero.png"
     },
     {
       "id": "custom_parks_plazas",
@@ -2646,37 +1626,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/hero.png",
-      "variants": [
-        {
-          "id": "custom_parks_plazas_v0",
-          "label": "Eclectic Mixed-Use",
-          "color": "#6D4C41",
-          "description": "Custom Parks / Plazas in eclectic mixed-use open space. Combination of hardscape and softscape zones, moveable furniture, pop-up garden beds, flexible paving areas, and art installation platforms.",
-          "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_0.png"
-        },
-        {
-          "id": "custom_parks_plazas_v1",
-          "label": "Biophilic Urban",
-          "color": "#2E7D32",
-          "description": "Custom Parks / Plazas in biophilic urban oasis. Dense vertical gardens, moss walls, cascading water features, natural stone and timber materials, and sensory planting beds.",
-          "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_1.png"
-        },
-        {
-          "id": "custom_parks_plazas_v2",
-          "label": "Tech-Enabled Smart",
-          "color": "#1565C0",
-          "description": "Custom Parks / Plazas in tech-enabled smart park. Solar-powered charging stations, interactive digital displays, smart irrigation zones, sensor-equipped furniture, and programmable led landscape lighting.",
-          "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_2.png"
-        },
-        {
-          "id": "custom_parks_plazas_v3",
-          "label": "Heritage Adaptive",
-          "color": "#8D6E63",
-          "description": "Custom Parks / Plazas in heritage adaptive reuse landscape. Preserved historic elements integrated with new plantings, reclaimed materials for paths and walls, interpretive heritage markers, and restored original features.",
-          "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_3.png"
-        }
-      ]
+      "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/hero.png"
     }
   ]
 }

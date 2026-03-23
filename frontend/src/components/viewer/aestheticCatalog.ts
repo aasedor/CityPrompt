@@ -115,12 +115,13 @@ export type AestheticOption = {
   transportModes?: TransportModeKey[];
   developmentTypes?: string[];
   buildingSubcategory?: string;
-  minFloors?: number;
-  maxFloors?: number;
   generationTags?: string[];
   archetypeImages?: ArchetypeImage[];
   styleProfile?: StyleProfile;
   generationStyleInput?: Partial<GenerationStyleInput>;
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedAreaSqm?: number;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
 };
@@ -157,16 +158,16 @@ type ArchetypeSeed = {
   generationTags?: string[];
   styleProfile?: StyleProfile;
   developmentTypes?: string[];
-  minFloors?: number;
-  maxFloors?: number;
   prompt?: {
     subject?: string;
     details?: string[];
     negative?: string[];
   };
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedAreaSqm?: number;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
-  thumbnailUrl?: string;
 };
 
 type ArchetypeLibrary = {
@@ -312,16 +313,17 @@ function toAestheticOption(
     categoryId: category,
     label: seed.title,
     description: seed.description,
-    photoUrl: resolvePublicAssetUrl((seed.variants?.[0]?.thumbnailUrl) || seed.thumbnailUrl || primary?.imageUrl || ''),
+    photoUrl: primary?.imageUrl || '',
     photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
     developmentTypes: Array.isArray(seed.developmentTypes) ? seed.developmentTypes : undefined,
     buildingSubcategory: seed.buildingSubcategory,
-    minFloors: seed.minFloors,
-    maxFloors: seed.maxFloors,
     generationTags: tags,
     archetypeImages: orderedArchetypeImages,
     styleProfile,
+    minFloors: seed.minFloors,
+    maxFloors: seed.maxFloors,
+    suggestedAreaSqm: seed.suggestedAreaSqm,
     propertyPresets: seed.propertyPresets,
     variants: seed.variants,
     generationStyleInput: {
@@ -372,11 +374,11 @@ export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   { id: 'auto_oriented', label: 'Auto Oriented', description: 'Streets designed primarily for automobile movement and access' },
 ];
 export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('street_pathway', 'streets_pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
+  toAestheticOption('street_pathway', 'streets-pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
 );
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('park_plaza', 'parks_plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
+  toAestheticOption('park_plaza', 'parks-plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
 );
 
 const GREEN_SPACE_CATEGORY_IDS = new Set(
@@ -423,17 +425,16 @@ export function getAllowedDevelopmentTypes(
   developmentType?: string,
 ): string[] | null {
   // If the user has already picked a specific development_type property,
-  // return both the exact sub-type AND the broad category so archetypes
-  // tagged with either will match.
+  // derive the filter from that (it's more specific than zone_type).
   if (developmentType) {
-    // Extract broad category (e.g. "residential" from "residential_single_family")
-    const broad = developmentType.split('_')[0];
-    // Return both the exact value and the broad category for matching
-    const types = [developmentType];
-    if (broad !== developmentType) types.push(broad);
-    // Also include mixed-use alias
-    if (developmentType === 'mixed_use') types.push('mixed-use');
-    return types;
+    if (developmentType.startsWith('residential'))  return ['residential'];
+    if (developmentType.startsWith('commercial'))   return ['commercial'];
+    if (developmentType.startsWith('industrial'))   return ['industrial'];
+    if (developmentType.startsWith('institutional'))return ['institutional'];
+    if (developmentType === 'mixed_use')            return ['mixed_use', 'mixed-use'];
+    if (developmentType === 'hospitality')           return ['hospitality'];
+    // For other values (park_plaza, recreational, open_space, other) don't filter
+    return null;
   }
 
   // Fall back to zone_type level filtering

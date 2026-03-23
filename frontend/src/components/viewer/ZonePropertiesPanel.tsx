@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, ModelLibraryRecommendation } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
@@ -21,8 +21,6 @@ import {
   ROADWAY_AESTHETIC_PRESETS_V2,
   GREEN_SPACE_AESTHETIC_PRESETS_V2,
   PLAZA_AESTHETIC_PRESETS_V2,
-  TRANSPORT_MODE_OPTIONS,
-  TRANSPORT_MODE_ORDER,
   inferTransportModesFromProperties,
   applyModeDrivenRoadDefaults,
   normalizeTransportModes,
@@ -62,12 +60,13 @@ type DevelopmentAestheticOption = {
   photoUrl: string;
   photoUrls?: string[];
   transportModes?: TransportModeKey[];
-  minFloors?: number;
-  maxFloors?: number;
   generationTags?: string[];
   archetypeImages?: CatalogArchetypeImage[];
   styleProfile?: CatalogStyleProfile;
   generationStyleInput?: Partial<CatalogGenerationStyleInput>;
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedAreaSqm?: number;
   variants?: CatalogArchetypeVariant[];
 };
 
@@ -148,11 +147,6 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
-  const selectedArchetypeOption = DEVELOPMENT_AESTHETIC_OPTIONS.find(
-    (o) => o.id === ((props.development_subcategory as string) || (props.development_aesthetic as string)),
-  );
-  const archetypeMinFloors = selectedArchetypeOption?.minFloors;
-  const archetypeMaxFloors = selectedArchetypeOption?.maxFloors;
   const panelRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -297,8 +291,7 @@ const buildAestheticSelectionProps = (
       : (Array.isArray(selectedOption.generationStyleInput?.generationTags) ? selectedOption.generationStyleInput?.generationTags : []);
 
     const archetypeId = resolvedArchetype?.id || selectedOption.id;
-    // Use the typology/sub-category label (e.g. "Pond / Lake"), NOT the image label ("Front Elevation Day")
-    const archetypeLabel = selectedOption.label;
+    const archetypeLabel = resolvedArchetype?.label || selectedOption.label;
 
     nextProps[`${stylePrefix}_subcategory`] = selectedOption.id;
     nextProps[`${stylePrefix}_aesthetic_category`] = selectedOption.categoryId || nextProps[`${stylePrefix}_aesthetic_category`];
@@ -550,16 +543,12 @@ const resolveOptionCategory = (
       if (selectedOption?.categoryId) {
         nextProps.development_aesthetic_category = selectedOption.categoryId;
       }
-      // Auto-populate floors with midpoint of archetype range when archetype changes
-      // and floors haven't been manually set
-      if (selectedOption?.minFloors != null && selectedOption?.maxFloors != null) {
-        const currentFloors = p.floors as number | undefined;
-        if (!currentFloors) {
-          const defaultFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
-          const floorH = (p.floor_height as number) || 3;
-          nextProps.floors = defaultFloors;
-          nextProps.height = Math.round(defaultFloors * floorH * 10) / 10;
-        }
+      // Auto-populate floors from archetype suggestion when floors haven't been set
+      if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
+        const suggestedFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
+        nextProps.floors = suggestedFloors;
+        const floorH = (p.floor_height as number) || 3;
+        nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
       }
       return nextProps;
     });
@@ -590,7 +579,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
+  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
         p,
@@ -599,7 +588,6 @@ const resolveOptionCategory = (
         ROADWAY_AESTHETIC_OPTIONS,
         ROADWAY_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
-        variantId,
       );
 
       const selectedOption = ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -641,7 +629,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
+  const applyGreenSpaceAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -650,7 +638,6 @@ const resolveOptionCategory = (
         GREEN_SPACE_AESTHETIC_OPTIONS,
         GREEN_SPACE_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
-        variantId,
       );
 
       const selectedOption = GREEN_SPACE_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -686,7 +673,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyPlazaAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, variantId?: string) => {
+  const applyPlazaAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
     setProps((p) => {
       const nextProps = buildAestheticSelectionProps(
         p,
@@ -695,24 +682,12 @@ const resolveOptionCategory = (
         PLAZA_AESTHETIC_OPTIONS,
         PLAZA_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
-        variantId,
       );
       const selectedOption = PLAZA_AESTHETIC_OPTIONS.find((o) => o.id === next);
       if (selectedOption?.categoryId) {
         nextProps.plaza_aesthetic_category = selectedOption.categoryId;
       }
       return nextProps;
-    });
-  };
-
-  const toggleTransportMode = (mode: TransportModeKey) => {
-    setProps((p) => {
-      const currentModes = inferTransportModesFromProperties(p);
-      const nextModes = currentModes.includes(mode)
-        ? currentModes.filter((m) => m !== mode)
-        : [...currentModes, mode];
-      const deduped = TRANSPORT_MODE_ORDER.filter((m) => nextModes.includes(m));
-      return applyModeDrivenRoadDefaults({ ...p }, deduped, (p.volume as string) || undefined);
     });
   };
 
@@ -723,24 +698,6 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyRoadMobilityProfile = (profile: 'walking_only' | 'pedestrian_first' | 'balanced' | 'vehicle_access') => {
-    setProps((p) => {
-      const profileModes: Record<typeof profile, TransportModeKey[]> = {
-        walking_only: ['walking'],
-        pedestrian_first: ['walking', 'bicycle'],
-        balanced: ['walking', 'bicycle', 'transit', 'automobile'],
-        vehicle_access: ['automobile', 'transit'],
-      };
-      const base = { ...p, mobility_profile: profile };
-      const volume = profile === 'walking_only' ? 'low' : ((p.volume as string) || undefined);
-      const next = applyModeDrivenRoadDefaults(base, profileModes[profile], volume);
-      next.mobility_profile = profile;
-      if (profile === 'walking_only') {
-        next.volume = 'low';
-      }
-      return next;
-    });
-  };
   // Compute approximate area from coordinates (in square meters)
   const area = computePolygonAreaM2(zone.coordinates);
 
@@ -849,11 +806,16 @@ const resolveOptionCategory = (
                   <option value="institutional_education">Education</option>
                   <option value="institutional_health">Health Care</option>
                 </optgroup>
-                <option value="hospitality">Hospitality</option>
                 <optgroup label="Industrial">
                   <option value="industrial_light">Light Industrial</option>
-                  <option value="industrial_warehouse">Warehouse / Adaptive Reuse</option>
+                  <option value="industrial">General Industrial</option>
+                  <option value="industrial_heavy">Heavy Industrial</option>
+                  <option value="industrial_warehouse">Warehouse</option>
                 </optgroup>
+                <option value="park_plaza">Park / Plaza</option>
+                <option value="recreational">Recreational</option>
+                <option value="open_space">Open Space</option>
+                <option value="other">Other</option>
               </select>
             </div>
             {/* Development Aesthetic */}
@@ -870,68 +832,74 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Floors</label>
-              <input
-                type="number"
-                step="1"
-                min={archetypeMinFloors ?? 1}
-                max={archetypeMaxFloors}
-                value={props.floors ?? config?.defaultProperties.floors ?? ''}
-                onChange={(e) => {
-                  const floors = parseInt(e.target.value) || undefined;
-                  setProps((p) => {
-                    if (!floors) return { ...p, floors: undefined };
-                    const floorH = (p.floor_height as number) || 3;
-                    return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
-                  });
-                }}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              {archetypeMinFloors != null && archetypeMaxFloors != null && (
-                <p className="mt-0.5 text-[10px] text-primary-950/40">
-                  Suggested: {archetypeMinFloors}–{archetypeMaxFloors} floors
-                </p>
-              )}
-              {(() => {
-                const currentFloors = (props.floors as number) || undefined;
-                if (currentFloors != null && archetypeMinFloors != null && archetypeMaxFloors != null) {
-                  if (currentFloors < archetypeMinFloors || currentFloors > archetypeMaxFloors) {
-                    return (
-                      <p className="mt-0.5 text-[10px] text-orange-500">
-                        Outside typical range ({archetypeMinFloors}–{archetypeMaxFloors})
-                      </p>
-                    );
-                  }
-                }
-                return null;
-              })()}
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Height (m)</label>
-              <input
-                type="number"
-                step="1"
-                value={props.height ?? config?.defaultProperties.height ?? ''}
-                onChange={(e) => {
-                  const height = parseFloat(e.target.value) || undefined;
-                  setProps((p) => {
-                    if (!height) return { ...p, height: undefined };
-                    const floors = (p.floors as number) || (config?.defaultProperties.floors as number) || 1;
-                    return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
-                  });
-                }}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              {(() => {
-                const floors = (props.floors as number) || (config?.defaultProperties.floors as number);
-                const height = (props.height as number) || (config?.defaultProperties.height as number);
-                if (floors && height) {
-                  return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
-                }
-                return null;
-              })()}
-            </div>
+            {(() => {
+              const selectedBuildingOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
+              const archMinFloors = selectedBuildingOption?.minFloors;
+              const archMaxFloors = selectedBuildingOption?.maxFloors;
+              const archSuggestedArea = selectedBuildingOption?.suggestedAreaSqm;
+              const currentFloors = (props.floors as number) || (config?.defaultProperties.floors as number);
+              const floorOutOfRange = archMinFloors != null && archMaxFloors != null && currentFloors != null
+                && (currentFloors < archMinFloors || currentFloors > archMaxFloors);
+              return (
+                <>
+                  <div>
+                    <label className="block text-xs text-primary-950/50">Floors</label>
+                    <input
+                      type="number"
+                      step="1"
+                      min={archMinFloors ?? 1}
+                      max={archMaxFloors}
+                      value={props.floors ?? config?.defaultProperties.floors ?? ''}
+                      onChange={(e) => {
+                        const floors = parseInt(e.target.value) || undefined;
+                        setProps((p) => {
+                          if (!floors) return { ...p, floors: undefined };
+                          const floorH = (p.floor_height as number) || 3;
+                          return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
+                        });
+                      }}
+                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                    />
+                    {archMinFloors != null && archMaxFloors != null && (
+                      <p className="mt-0.5 text-[10px] text-primary-950/40">Suggested: {archMinFloors}–{archMaxFloors} floors</p>
+                    )}
+                    {floorOutOfRange && (
+                      <p className="mt-0.5 text-[10px] text-orange-500">Floor count is outside the typical range for this archetype ({archMinFloors}–{archMaxFloors})</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-xs text-primary-950/50">Height (m)</label>
+                    <input
+                      type="number"
+                      step="1"
+                      value={props.height ?? config?.defaultProperties.height ?? ''}
+                      onChange={(e) => {
+                        const height = parseFloat(e.target.value) || undefined;
+                        setProps((p) => {
+                          if (!height) return { ...p, height: undefined };
+                          const floors = (p.floors as number) || (config?.defaultProperties.floors as number) || 1;
+                          return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
+                        });
+                      }}
+                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                    />
+                    {(() => {
+                      const floors = (props.floors as number) || (config?.defaultProperties.floors as number);
+                      const height = (props.height as number) || (config?.defaultProperties.height as number);
+                      if (floors && height) {
+                        return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
+                      }
+                      return null;
+                    })()}
+                  </div>
+                  {archSuggestedArea != null && (
+                    <div className="flex justify-between">
+                      <span className="text-[10px] text-primary-950/40">Suggested area: ~{archSuggestedArea.toLocaleString()} m²</span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
             <div>
               <label className="block text-xs text-primary-950/50">Facade Material</label>
               <select
@@ -1019,7 +987,6 @@ const resolveOptionCategory = (
                   value={(props.green_space_aesthetic as string) || undefined}
                   category={selectedGreenSpaceCategory}
                   selectedReferenceId={selectedGreenSpaceReferenceId}
-                  selectedVariantId={(props.green_space_selected_variant_id as string) || undefined}
                   onChange={applyGreenSpaceAesthetic}
                 />
               </div>
@@ -1050,7 +1017,6 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'road' && (
           <>
-
             {/* Transportation Aesthetic Category */}
             <div>
               <label className="block text-xs text-primary-950/50">Streets and Paths Category</label>
@@ -1081,14 +1047,11 @@ const resolveOptionCategory = (
                   value={(props.road_aesthetic as string) || undefined}
                   category={selectedRoadAestheticCategory}
                   selectedReferenceId={selectedRoadReferenceId}
-                  selectedVariantId={(props.road_selected_variant_id as string) || undefined}
                   selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
               </div>
             </div>
-
-
 
             {/* Volume */}
             <div>
@@ -1177,7 +1140,6 @@ const resolveOptionCategory = (
                   value={(props.plaza_aesthetic as string) || undefined}
                   category={selectedPlazaCategory}
                   selectedReferenceId={selectedPlazaReferenceId}
-                  selectedVariantId={(props.plaza_selected_variant_id as string) || undefined}
                   onChange={applyPlazaAesthetic}
                 />
               </div>
@@ -1268,10 +1230,11 @@ const resolveOptionCategory = (
                   <option value="institutional_education">Education</option>
                   <option value="institutional_health">Health Care</option>
                 </optgroup>
-                <option value="hospitality">Hospitality</option>
                 <optgroup label="Industrial">
                   <option value="industrial_light">Light Industrial</option>
-                  <option value="industrial_warehouse">Warehouse / Adaptive Reuse</option>
+                  <option value="industrial">General Industrial</option>
+                  <option value="industrial_heavy">Heavy Industrial</option>
+                  <option value="industrial_warehouse">Warehouse</option>
                 </optgroup>
               </select>
             </div>
@@ -1301,68 +1264,74 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Floors</label>
-              <input
-                type="number"
-                step="1"
-                min={archetypeMinFloors ?? 1}
-                max={archetypeMaxFloors}
-                value={props.floors ?? ''}
-                onChange={(e) => {
-                  const floors = parseInt(e.target.value) || undefined;
-                  setProps((p) => {
-                    if (!floors) return { ...p, floors: undefined };
-                    const floorH = (p.floor_height as number) || 3;
-                    return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
-                  });
-                }}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              {archetypeMinFloors != null && archetypeMaxFloors != null && (
-                <p className="mt-0.5 text-[10px] text-primary-950/40">
-                  Suggested: {archetypeMinFloors}–{archetypeMaxFloors} floors
-                </p>
-              )}
-              {(() => {
-                const currentFloors = (props.floors as number) || undefined;
-                if (currentFloors != null && archetypeMinFloors != null && archetypeMaxFloors != null) {
-                  if (currentFloors < archetypeMinFloors || currentFloors > archetypeMaxFloors) {
-                    return (
-                      <p className="mt-0.5 text-[10px] text-orange-500">
-                        Outside typical range ({archetypeMinFloors}–{archetypeMaxFloors})
-                      </p>
-                    );
-                  }
-                }
-                return null;
-              })()}
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Height (m)</label>
-              <input
-                type="number"
-                step="1"
-                value={props.height ?? ''}
-                onChange={(e) => {
-                  const height = parseFloat(e.target.value) || undefined;
-                  setProps((p) => {
-                    if (!height) return { ...p, height: undefined };
-                    const floors = (p.floors as number) || 1;
-                    return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
-                  });
-                }}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              {(() => {
-                const floors = (props.floors as number);
-                const height = (props.height as number);
-                if (floors && height) {
-                  return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
-                }
-                return null;
-              })()}
-            </div>
+            {(() => {
+              const selectedDevOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
+              const devMinFloors = selectedDevOption?.minFloors;
+              const devMaxFloors = selectedDevOption?.maxFloors;
+              const devSuggestedArea = selectedDevOption?.suggestedAreaSqm;
+              const devCurrentFloors = (props.floors as number);
+              const devFloorOutOfRange = devMinFloors != null && devMaxFloors != null && devCurrentFloors != null
+                && (devCurrentFloors < devMinFloors || devCurrentFloors > devMaxFloors);
+              return (
+                <>
+                  <div>
+                    <label className="block text-xs text-primary-950/50">Floors</label>
+                    <input
+                      type="number"
+                      step="1"
+                      min={devMinFloors ?? 1}
+                      max={devMaxFloors}
+                      value={props.floors ?? ''}
+                      onChange={(e) => {
+                        const floors = parseInt(e.target.value) || undefined;
+                        setProps((p) => {
+                          if (!floors) return { ...p, floors: undefined };
+                          const floorH = (p.floor_height as number) || 3;
+                          return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
+                        });
+                      }}
+                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                    />
+                    {devMinFloors != null && devMaxFloors != null && (
+                      <p className="mt-0.5 text-[10px] text-primary-950/40">Suggested: {devMinFloors}–{devMaxFloors} floors</p>
+                    )}
+                    {devFloorOutOfRange && (
+                      <p className="mt-0.5 text-[10px] text-orange-500">Floor count is outside the typical range for this archetype ({devMinFloors}–{devMaxFloors})</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-xs text-primary-950/50">Height (m)</label>
+                    <input
+                      type="number"
+                      step="1"
+                      value={props.height ?? ''}
+                      onChange={(e) => {
+                        const height = parseFloat(e.target.value) || undefined;
+                        setProps((p) => {
+                          if (!height) return { ...p, height: undefined };
+                          const floors = (p.floors as number) || 1;
+                          return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
+                        });
+                      }}
+                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                    />
+                    {(() => {
+                      const floors = (props.floors as number);
+                      const height = (props.height as number);
+                      if (floors && height) {
+                        return <p className="mt-0.5 text-[10px] text-primary-950/40">{(height / floors).toFixed(1)}m per floor</p>;
+                      }
+                      return null;
+                    })()}
+                  </div>
+                  {devSuggestedArea != null && (
+                    <div className="flex justify-between">
+                      <span className="text-[10px] text-primary-950/40">Suggested area: ~{devSuggestedArea.toLocaleString()} m²</span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
             <div>
               <label className="block text-xs text-primary-950/50">Ground Texture</label>
               <select
@@ -2545,16 +2514,14 @@ function RoadwayAestheticPicker({
   value,
   category,
   selectedReferenceId,
-  selectedVariantId,
   selectedModes,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
-  selectedVariantId?: string;
   selectedModes: TransportModeKey[];
-  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2588,8 +2555,7 @@ function RoadwayAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              selectedVariantId={selectedVariantId}
-              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2614,14 +2580,12 @@ function GreenSpaceAestheticPicker({
   value,
   category,
   selectedReferenceId,
-  selectedVariantId,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
-  selectedVariantId?: string;
-  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? GREEN_SPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2649,8 +2613,7 @@ function GreenSpaceAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              selectedVariantId={selectedVariantId}
-              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>
@@ -2670,14 +2633,12 @@ function PlazaAestheticPicker({
   value,
   category,
   selectedReferenceId,
-  selectedVariantId,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
-  selectedVariantId?: string;
-  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string) => void;
 }) {
   const categoryOptions = category
     ? PLAZA_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2705,8 +2666,7 @@ function PlazaAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              selectedVariantId={selectedVariantId}
-              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
             />
           ))}
         </div>

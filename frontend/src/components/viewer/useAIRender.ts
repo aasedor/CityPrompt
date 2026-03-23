@@ -141,11 +141,10 @@ export interface UseAIRenderReturn {
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
-  // ── Photorealistic ──────────────────────────────────────────────────────
   {
     id: 'photorealistic',
     label: 'Photo Realistic',
-    strength: 0.55,
+    strength: 0.65,
     prompt:
       'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping with mature trees showing individual leaf clusters. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography, high dynamic range, neutral 5500K white balance.',
     negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark, people, pedestrians, human figures',
@@ -153,17 +152,15 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'drone-photography',
     label: 'Drone Photo',
-    strength: 0.58,
+    strength: 0.65,
     prompt:
       'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Building situated within realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze on distant objects, deep depth of field with everything sharp. High-resolution aerial photography, construction-complete, 8k.',
     negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark, people, pedestrians',
   },
-
-  // ── Technical / Planning ──────────────────────────────────────────────
   {
     id: 'massing-study',
     label: 'Massing Study',
-    strength: 0.48,
+    strength: 0.65,
     prompt:
       'Architectural massing study rendered entirely as plain untextured matte white blocks on a neutral grey background. No windows, no doors, no material details. Focus strictly on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting with sharp directional sunlight showing deep shadows where forms meet. Minimalist architectural diagram, white foam-board scale model style.',
     negative: 'photorealistic, color, materials, brick, glass, wood, vegetation, trees, people, cars, detailed, textured, realistic, windows, doors, low quality, blurry',
@@ -171,17 +168,15 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'site-plan',
     label: 'Site Plan',
-    strength: 0.62,
+    strength: 0.65,
     prompt:
       'Top-down 2D architectural site plan in strict orthographic projection looking straight down. Clean architectural linework with soft flat pastel colors. Stylized trees depicted as simple overlapping green circles viewed from above. Paved pathways in light grey, defined property lines, crisp shadows indicating building height. Roads as clean strips, landscaping in matte green, water features in blue. Professional urban planning drawing quality.',
     negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, detailed buildings, low quality, blurry, noisy, text, watermark',
   },
-
-  // ── Artistic / Hand-Rendered ──────────────────────────────────────────
   {
     id: 'ink-wash',
     label: 'Ink Wash',
-    strength: 0.82,
+    strength: 0.65,
     prompt:
       'Expressive architectural ink wash painting on heavy textured watercolor paper. Monochromatic black and grey tones with diluted ink gradients creating atmospheric perspective. Loose and fluid brushstrokes with bold confident calligraphic strokes defining edges. Wet ink bleeding softly at boundaries, white paper left untouched for sky and highlights. Ink splatter accents for vegetation, varying line weight from thick structural strokes to delicate details. Moody, artistic, and conceptual architectural illustration.',
     negative: 'photorealistic, photograph, digital, 3D render, perfect lines, computer generated, neon colors, cartoon, color, vibrant, low quality, blurry',
@@ -189,7 +184,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'charcoal',
     label: 'Charcoal',
-    strength: 0.84,
+    strength: 0.65,
     prompt:
       'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
     negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, smooth, clean lines, low quality, blurry',
@@ -197,7 +192,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'marker-render',
     label: 'Marker Render',
-    strength: 0.76,
+    strength: 0.65,
     prompt:
       'Traditional architectural marker rendering with classic Copic marker style. Crisp fine-liner black ink outlines overlaid with layered transparent color strokes showing visible marker overlap and bleed effects. Bright optimistic lighting, vibrant saturated palette with warm and cool contrasts. Stylized architectural entourage and simplified trees. Selective areas of high detail dissolving into loose suggestive strokes at edges. White gel pen highlights on bare paper. Professional design presentation sketch aesthetic.',
     negative: 'photorealistic, photograph, digital, 3D render, watercolor bleeding, pencil shading, oil paint, dull colors, low quality, blurry',
@@ -205,7 +200,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'isometric',
     label: 'Isometric',
-    strength: 0.75,
+    strength: 0.65,
     prompt:
       'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Rendered in smooth matte pastel colors with crisp hard edges and thin precise black outlines on every surface edge. No gradients, no shading, no cast shadows. Clear spatial layout with simplified geometric building forms. Vector-art aesthetic, highly detailed and precise. Contemporary tech-company infographic style, editorial design quality.',
     negative: 'photorealistic, photograph, perspective, vanishing point, gradients, shading, realistic shadows, texture, painterly, sketch, rough, low quality, blurry',
@@ -213,7 +208,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'woodblock',
     label: 'Wood Block',
-    strength: 0.81,
+    strength: 0.65,
     prompt:
       'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
     negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, smooth, modern, low quality, blurry',
@@ -221,7 +216,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
   {
     id: 'watercolour',
     label: 'Water Colour',
-    strength: 0.85,
+    strength: 0.65,
     prompt:
       'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
     negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
@@ -242,52 +237,52 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   photorealistic: {
     id: 'photorealistic',
     label: 'Photo Realistic',
-    prompt: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping with mature trees showing individual leaf clusters. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography, high dynamic range, neutral 5500K white balance.',
+    prompt: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
   },
   'drone-photography': {
     id: 'drone-photography',
     label: 'Drone Photo',
-    prompt: 'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Building situated within realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze on distant objects, deep depth of field with everything sharp. High-resolution aerial photography, construction-complete, 8k.',
+    prompt: 'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze, deep depth of field. High-resolution aerial photography, construction-complete, 8k.',
   },
   'massing-study': {
     id: 'massing-study',
     label: 'Massing Study',
-    prompt: 'Architectural massing study rendered entirely as plain untextured matte white blocks on a neutral grey background. No windows, no doors, no material details. Focus strictly on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting with sharp directional sunlight showing deep shadows where forms meet. Minimalist architectural diagram, white foam-board scale model style.',
+    prompt: 'Architectural massing study rendered entirely as plain untextured matte white blocks on neutral grey background. No windows, no doors, no material details. Focus on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting, white foam-board scale model style.',
   },
   'site-plan': {
     id: 'site-plan',
     label: 'Site Plan',
-    prompt: 'Top-down 2D architectural site plan in strict orthographic projection looking straight down. Clean architectural linework with soft flat pastel colors. Stylized trees depicted as simple overlapping green circles viewed from above. Paved pathways in light grey, defined property lines, crisp shadows indicating building height. Roads as clean strips, landscaping in matte green, water features in blue. Professional urban planning drawing quality.',
+    prompt: 'Top-down 2D architectural site plan in strict orthographic projection. Clean architectural linework with soft flat pastel colors. Stylized trees as simple green circles from above. Professional urban planning drawing quality.',
   },
   'ink-wash': {
     id: 'ink-wash',
     label: 'Ink Wash',
-    prompt: 'Expressive architectural ink wash painting on heavy textured watercolor paper. Monochromatic black and grey tones with diluted ink gradients creating atmospheric perspective. Loose and fluid brushstrokes with bold confident calligraphic strokes defining edges. Wet ink bleeding softly at boundaries, white paper left untouched for sky and highlights. Ink splatter accents for vegetation, varying line weight from thick structural strokes to delicate details. Moody, artistic, and conceptual architectural illustration.',
+    prompt: 'Expressive architectural ink wash painting. Monochromatic black and grey tones with diluted ink gradients. Loose and fluid brushstrokes with bold calligraphic edges. Wet ink bleeding softly at boundaries. Moody, artistic, and conceptual architectural illustration.',
   },
   charcoal: {
     id: 'charcoal',
     label: 'Charcoal',
-    prompt: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
+    prompt: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
   },
   'marker-render': {
     id: 'marker-render',
     label: 'Marker Render',
-    prompt: 'Traditional architectural marker rendering with classic Copic marker style. Crisp fine-liner black ink outlines overlaid with layered transparent color strokes showing visible marker overlap and bleed effects. Bright optimistic lighting, vibrant saturated palette with warm and cool contrasts. Stylized architectural entourage and simplified trees. Selective areas of high detail dissolving into loose suggestive strokes at edges. White gel pen highlights on bare paper. Professional design presentation sketch aesthetic.',
+    prompt: 'Traditional architectural marker rendering with Copic marker style. Crisp fine-liner black ink outlines with layered transparent color strokes. Bright optimistic lighting, vibrant saturated palette. White gel pen highlights. Professional design presentation sketch aesthetic.',
   },
   isometric: {
     id: 'isometric',
     label: 'Isometric',
-    prompt: 'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Rendered in smooth matte pastel colors with crisp hard edges and thin precise black outlines on every surface edge. No gradients, no shading, no cast shadows. Clear spatial layout with simplified geometric building forms. Vector-art aesthetic, highly detailed and precise. Contemporary tech-company infographic style, editorial design quality.',
+    prompt: 'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Smooth matte pastel colors with crisp hard edges and thin black outlines. Vector-art aesthetic, contemporary infographic style.',
   },
   woodblock: {
     id: 'woodblock',
     label: 'Wood Block',
-    prompt: 'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
+    prompt: 'Stylized woodblock print. Bold thick black outlines, flat limited vintage color palette of 4-6 colors with crisp separation. Visible wood grain texture. Zero gradation or blending. Graphic retro architectural illustration, museum-quality fine art print.',
   },
   watercolour: {
     id: 'watercolour',
     label: 'Water Colour',
-    prompt: 'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
+    prompt: 'Beautiful watercolor architectural painting on textured paper. Soft bleeding edges where colors mix organically, translucent layered washes with white paper glowing through. Loose and artistic, pigment granulation in shadows. Muted earth-tone palette with sage green, ochre, and ultramarine accents.',
   },
 };
 
@@ -424,9 +419,11 @@ function generateBinaryMask(
   // Draw zone polygons as white (area to edit) in hierarchical order:
   // 1. site_boundary FIRST (master clipping area)
   // 2. All other zones on top (redundant but explicit)
+  // 3. Building zones get upward headroom expansion for 3D perspective height
   ctx.fillStyle = '#ffffff';
   let drawnCount = 0;
 
+  const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
   const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary');
   const others = siteZones.filter(z => z.zone_type !== 'site_boundary');
 
@@ -442,6 +439,40 @@ function generateBinaryMask(
     }
     ctx.closePath();
     ctx.fill();
+
+    // For building zones, expand the mask upward based on the actual building
+    // height with a 3x safety margin. This gives the AI enough room to render
+    // the full 3D building without giving it unlimited space to over-generate.
+    if (BUILDING_TYPES.includes(zone.zone_type)) {
+      const buildingHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+        : zone.properties?.height ? Number(zone.properties.height) : 0;
+      const headroom = buildingHeight > 0
+        ? calculatePerspectiveHeadroom(map, buildingHeight)
+        : 80 * dpr; // conservative default if no height specified
+      if (headroom > 0) {
+        const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+        const minY = Math.min(...devicePixels.map(p => p.y));
+        const minX = Math.min(...devicePixels.map(p => p.x));
+        const maxX = Math.max(...devicePixels.map(p => p.x));
+        const expandedTop = Math.max(0, minY - headroom);
+        ctx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
+
+        // Soft feathered edge at the top to blend with background
+        const featherHeight = Math.min(20 * dpr, headroom * 0.25);
+        if (featherHeight > 2) {
+          const gradient = ctx.createLinearGradient(0, expandedTop, 0, expandedTop + featherHeight);
+          gradient.addColorStop(0, 'rgba(0,0,0,1)');
+          gradient.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.fillStyle = gradient;
+          ctx.fillRect(minX, expandedTop, maxX - minX, featherHeight);
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.fillStyle = '#ffffff'; // restore for next zone
+        }
+        console.log(`[AIRender] Mask: building headroom ${headroom.toFixed(0)}px (3x margin) for "${zone.name || zone.id}"`);
+      }
+    }
+
     drawnCount++;
     console.log(`[AIRender] Mask: drew zone "${zone.name || zone.id}" (${zone.zone_type}) — ${pixels.length} vertices`);
   }
@@ -469,9 +500,11 @@ function loadImage(src: string | Blob): Promise<HTMLImageElement> {
 }
 
 /**
- * Stitch the AI-rendered result back onto the original screenshot,
- * using site zone polygons as a clip mask so only the zone areas change.
- * Returns a data-URI for the composited image.
+ * Stitch the AI-rendered result back onto the original screenshot using a
+ * hybrid approach:
+ *  1) Polygon clip to site boundary — controls horizontal extent
+ *  2) Pixel-diff ABOVE building zones — captures 3D vertical extent
+ *     without bleeding horizontally outside the boundary
  */
 async function stitchWithBoundaryMask(
   originalBase64: string,
@@ -486,39 +519,169 @@ async function stitchWithBoundaryMask(
 
   const w = originalImg.naturalWidth;
   const h = originalImg.naturalHeight;
+  const dpr = window.devicePixelRatio || 1;
 
+  // ── Step 1: Mask-based composite of AI result ──
+  // Build a mask that includes the site boundary polygon AND extends upward
+  // to the top of the canvas above each building zone (the "massive box"
+  // approach). This ensures 3D buildings are never clipped at the ground-level
+  // boundary, regardless of camera angle.
   const canvas = document.createElement('canvas');
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext('2d')!;
 
-  // Step 1: Draw the original screenshot (untouched background)
   ctx.drawImage(originalImg, 0, 0, w, h);
 
-  // Step 2: Clip to the site boundary (master container) so the AI result
-  // replaces everything inside. Using only site_boundary avoids winding-rule
-  // conflicts where inner zone sub-paths with opposite winding create holes.
-  const dpr = window.devicePixelRatio || 1;
   const boundaries = siteZones.filter(z => z.zone_type === 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
-  // Fall back to all zones if no site_boundary exists
   const clipZones = boundaries.length > 0 ? boundaries : siteZones.filter(z => z.coordinates && z.coordinates.length >= 3);
 
-  ctx.save();
-  ctx.beginPath();
+  const BUILDING_TYPES_STITCH = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+  const hasBuildingZones = siteZones.some(z =>
+    BUILDING_TYPES_STITCH.includes(z.zone_type) && z.coordinates && z.coordinates.length >= 3
+  );
+
+  // Build a white-on-black mask: white = show AI render, black = keep original
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const maskCtx = maskCanvas.getContext('2d')!;
+  maskCtx.fillStyle = '#000000';
+  maskCtx.fillRect(0, 0, w, h);
+  maskCtx.fillStyle = '#ffffff';
+
+  // Draw site boundary polygon(s) into the mask
   for (const zone of clipZones) {
     const pixels = siteBoundaryToPixels(map, zone.coordinates!);
-    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    maskCtx.beginPath();
+    maskCtx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
     for (let i = 1; i < pixels.length; i++) {
-      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+      maskCtx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
     }
-    ctx.closePath();
+    maskCtx.closePath();
+    maskCtx.fill();
   }
-  ctx.clip();
 
-  // Step 3: Draw the rendered image within the clipped region
-  ctx.drawImage(renderedImg, 0, 0, w, h);
-  ctx.restore();
+  // For each building zone, extend the mask upward by the building's
+  // perspective headroom (bounded, not infinite) so the stitch captures
+  // the 3D silhouette without over-compositing
+  if (hasBuildingZones) {
+    const bldgZones = siteZones.filter(z =>
+      BUILDING_TYPES_STITCH.includes(z.zone_type) && z.coordinates && z.coordinates.length >= 3
+    );
+    for (const zone of bldgZones) {
+      const pixels = siteBoundaryToPixels(map, zone.coordinates!);
+      const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
 
+      const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+        : zone.properties?.height ? Number(zone.properties.height) : 0;
+      const headroom = bldgHeight > 0
+        ? calculatePerspectiveHeadroom(map, bldgHeight)
+        : 100 * dpr;
+
+      const minX = Math.min(...devicePixels.map(p => p.x));
+      const maxX = Math.max(...devicePixels.map(p => p.x));
+      const minY = Math.min(...devicePixels.map(p => p.y));
+      const expandedTop = Math.max(0, Math.floor(minY - headroom));
+      maskCtx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
+      console.log(`[AIRender] Stitch mask: ${headroom.toFixed(0)}px headroom for "${zone.name || zone.zone_type}"`);
+    }
+  }
+
+  // Composite: draw AI render masked by the stitch mask
+  const aiCanvas = document.createElement('canvas');
+  aiCanvas.width = w;
+  aiCanvas.height = h;
+  const aiCtx = aiCanvas.getContext('2d')!;
+  aiCtx.drawImage(renderedImg, 0, 0, w, h);
+  // Keep only AI pixels where mask is white
+  aiCtx.globalCompositeOperation = 'destination-in';
+  aiCtx.drawImage(maskCanvas, 0, 0);
+  // Draw the masked AI render on top of the original
+  ctx.drawImage(aiCanvas, 0, 0);
+
+  // ── Step 2: Pixel-diff ABOVE each building zone ──
+  // For each building, compare original vs AI in the region directly above
+  // the building's polygon (between its top edge and the headroom ceiling).
+  // This captures the building's 3D silhouette without horizontal bleed.
+  const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+  const buildingZones = siteZones.filter(z =>
+    BUILDING_TYPES.includes(z.zone_type) && z.coordinates && z.coordinates.length >= 3
+  );
+
+  if (buildingZones.length > 0) {
+    // Get pixel data from original and AI render for diff comparison
+    const origTmpCanvas = document.createElement('canvas');
+    origTmpCanvas.width = w;
+    origTmpCanvas.height = h;
+    const origTmpCtx = origTmpCanvas.getContext('2d')!;
+    origTmpCtx.drawImage(originalImg, 0, 0, w, h);
+
+    const rendTmpCanvas = document.createElement('canvas');
+    rendTmpCanvas.width = w;
+    rendTmpCanvas.height = h;
+    const rendTmpCtx = rendTmpCanvas.getContext('2d')!;
+    rendTmpCtx.drawImage(renderedImg, 0, 0, w, h);
+
+    // Get the current composited result (with polygon-clipped ground)
+    const currentData = ctx.getImageData(0, 0, w, h);
+    const currentPx = currentData.data;
+
+    const DIFF_THRESHOLD = 18;
+
+    for (const zone of buildingZones) {
+      const pixels = siteBoundaryToPixels(map, zone.coordinates!);
+      const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+
+      const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+        : zone.properties?.height ? Number(zone.properties.height) : 0;
+      const headroom = bldgHeight > 0
+        ? calculatePerspectiveHeadroom(map, bldgHeight)
+        : 100 * dpr;
+
+      const minX = Math.min(...devicePixels.map(p => p.x));
+      const maxX = Math.max(...devicePixels.map(p => p.x));
+      const minY = Math.min(...devicePixels.map(p => p.y));
+      const expandedTop = Math.max(0, Math.floor(minY - headroom));
+
+      // Only process the region ABOVE the polygon (between expandedTop and minY)
+      // The polygon interior is already handled by the site boundary clip in Step 1
+      const regionX = Math.max(0, Math.floor(minX));
+      const regionR = Math.min(w, Math.ceil(maxX));
+      const regionY = expandedTop;
+      const regionB = Math.floor(minY);
+      if (regionB <= regionY || regionR <= regionX) continue;
+
+      const rw = regionR - regionX;
+      const rh = regionB - regionY;
+
+      const origRegion = origTmpCtx.getImageData(regionX, regionY, rw, rh);
+      const rendRegion = rendTmpCtx.getImageData(regionX, regionY, rw, rh);
+
+      for (let row = 0; row < rh; row++) {
+        for (let col = 0; col < rw; col++) {
+          const idx = (row * rw + col) * 4;
+          const dr = Math.abs(origRegion.data[idx] - rendRegion.data[idx]);
+          const dg = Math.abs(origRegion.data[idx + 1] - rendRegion.data[idx + 1]);
+          const db = Math.abs(origRegion.data[idx + 2] - rendRegion.data[idx + 2]);
+
+          if (Math.max(dr, dg, db) > DIFF_THRESHOLD) {
+            const globalIdx = ((regionY + row) * w + (regionX + col)) * 4;
+            currentPx[globalIdx] = rendRegion.data[idx];
+            currentPx[globalIdx + 1] = rendRegion.data[idx + 1];
+            currentPx[globalIdx + 2] = rendRegion.data[idx + 2];
+            currentPx[globalIdx + 3] = rendRegion.data[idx + 3];
+          }
+        }
+      }
+
+      console.log(`[AIRender] Building "${zone.name || zone.zone_type}" pixel-diff: ${rw}x${rh}px above polygon`);
+    }
+
+    ctx.putImageData(currentData, 0, 0);
+  }
+
+  console.log(`[AIRender] Hybrid stitch: polygon clip + pixel-diff for ${buildingZones.length} building(s)`);
   return canvas.toDataURL('image/png');
 }
 
@@ -543,13 +706,17 @@ function calculatePerspectiveHeadroom(
   const pixelsPer100m = Math.abs(p2.y - p1.y);
   const pixelsPerMeter = pixelsPer100m / 100;
 
-  // Vertical shift: building height projected onto screen Y-axis
-  // At higher pitch angles, buildings appear to lean more "up-screen"
-  const verticalShift = buildingHeightM * pixelsPerMeter *
-    Math.sin((90 - pitch) * Math.PI / 180);
+  // Vertical shift: building height projected onto screen Y-axis.
+  // At higher pitch angles, buildings appear to lean more "up-screen".
+  // sin(pitch) is correct: at pitch=0 (top-down) shift is 0,
+  // at pitch=60° (oblique) shift is large.
+  const pitchRad = pitch * Math.PI / 180;
+  const verticalShift = buildingHeightM * pixelsPerMeter * Math.sin(pitchRad);
 
   const dpr = window.devicePixelRatio || 1;
-  return verticalShift * dpr;
+  // Apply 2.0x safety margin to handle perspective distortion at edges
+  // and ensure buildings are fully captured at steep oblique angles
+  return verticalShift * dpr * 2.0;
 }
 
 /**
@@ -704,6 +871,86 @@ function generateCombinedMask(
  * Build a zone-specific prompt for per-zone rendering.
  * Simple, natural language — Gemini handles spatial reasoning natively.
  */
+
+// ── Color utilities for variant-specific polygon colors ──────────────
+function hexToHsl(hex: string): [number, number, number] {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l * 100];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return [h * 360, s * 100, l * 100];
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  h = ((h % 360) + 360) % 360;
+  s = Math.max(0, Math.min(100, s)) / 100;
+  l = Math.max(0, Math.min(100, l)) / 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+function shiftColorForVariant(baseHex: string, variantIndex: number): string {
+  const lightnessShifts = [-8, -3, 3, 8];
+  const hueShifts = [-5, 5, -10, 10];
+  const idx = Math.max(0, Math.min(3, variantIndex));
+  const [h, s, l] = hexToHsl(baseHex);
+  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
+}
+
+function colorName(hex: string): string {
+  const genericMap: Record<string, string> = {
+    '#E03C31': 'red', '#e03c31': 'red',
+    '#FF6B6B': 'coral', '#ff6b6b': 'coral',
+    '#E8927C': 'salmon', '#e8927c': 'salmon',
+    '#F5A623': 'amber', '#f5a623': 'amber',
+    '#FFD700': 'gold', '#ffd700': 'gold',
+    '#FFEB3B': 'yellow', '#ffeb3b': 'yellow',
+    '#F0E68C': 'khaki', '#f0e68c': 'khaki',
+    '#4CAF50': 'green', '#4caf50': 'green',
+    '#66BB6A': 'spring green', '#66bb6a': 'spring green',
+    '#2E7D32': 'forest green', '#2e7d32': 'forest green',
+    '#009688': 'teal',
+    '#4169E1': 'royal blue', '#4169e1': 'royal blue',
+    '#3F51B5': 'indigo', '#3f51b5': 'indigo',
+    '#2196F3': 'blue', '#2196f3': 'blue',
+    '#9C27B0': 'purple', '#9c27b0': 'purple',
+    '#795548': 'brown',
+    '#607D8B': 'blue grey', '#607d8b': 'blue grey',
+    '#BDBDBD': 'silver', '#bdbdbd': 'silver',
+    '#ffffff': 'white', '#FFFFFF': 'white',
+  };
+  if (genericMap[hex]) return genericMap[hex];
+  try {
+    const [h, , l] = hexToHsl(hex);
+    const lightness = l < 35 ? 'dark ' : l > 65 ? 'light ' : '';
+    let hueName = 'brown';
+    if (h < 15 || h >= 345) hueName = 'red';
+    else if (h < 45) hueName = 'orange';
+    else if (h < 65) hueName = 'amber';
+    else if (h < 80) hueName = 'gold';
+    else if (h < 150) hueName = 'green';
+    else if (h < 210) hueName = 'blue';
+    else if (h < 270) hueName = 'indigo';
+    else if (h < 330) hueName = 'purple';
+    return `${lightness}${hueName} (${hex})`;
+  } catch {
+    return hex;
+  }
+}
+
 /**
  * Build a GROUND PLANE prompt for Pass 1 of the two-pass pipeline.
  * Renders parks, roads, plazas — no vertical structures.
@@ -716,31 +963,33 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
   const zoneDescriptions = groundZones.map(z => {
     const info = getZoneArchetypeInfo(z);
     const desc = buildArchetypeDescription(info, z.zone_type);
-    const color = z.color || '#4CAF50';
-    const cName = colorName(color);
-    return `The ${cName} polygon is: ${desc}`;
+    const color = colorName(z.color || '#4CAF50');
+    return `The ${color} polygon is a ${desc}`;
   });
 
   const parts: string[] = [];
 
   parts.push(
     'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle.',
-    `In this image, distinctly colored polygon overlays mark proposed landscape zones on an empty site (the white area). Each polygon has a UNIQUE color that identifies it.`,
+    `In this image, colored polygon overlays mark proposed landscape zones on an empty site (the white area).`,
   );
 
   // Zone descriptions as narrative
   parts.push(zoneDescriptions.join('. ') + '.');
 
   parts.push(
+    'Transform each colored zone into its described landscape, perfectly filling the colored area.',
+  );
+
+  // CRITICAL RULES for zone containment
+  parts.push(
     'CRITICAL RULES:',
-    '1. Each colored polygon is a separate, independent zone. Transform ONLY the area within each polygon into the described landscape.',
-    '2. ZERO BLEED: No zone may extend even one pixel beyond its polygon boundary. Treat polygon edges as hard physical curbs or walls.',
-    '3. Each zone must render ONLY its own described content. A park zone must not bleed into a neighboring pond zone. A botanical garden must not extend into a pocket park.',
-    '4. Match each polygon by its specific color — do not confuse zones that have similar but different shades.',
-    '5. The landscape must be entirely ground-level: grass, trees, paths, water, and paving only.',
-    '6. Do not generate any people, pedestrians, or human figures.',
-    '7. Do not generate any buildings, walls, vertical structures, or rooftops.',
-    '8. Leave all areas OUTSIDE colored polygons exactly as they appear in the original photograph.',
+    '1. Each zone\'s landscape must stay strictly inside its colored polygon boundary — zero bleed into any neighboring zone.',
+    '2. Treat every polygon edge as a hard physical curb or wall that no element may cross.',
+    '3. Match each polygon by its specific color and fill only that polygon with the described content.',
+    '4. The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
+    '5. Do not generate any people, pedestrians, or human figures.',
+    '6. Do not generate any buildings, walls, vertical structures, or rooftops.',
   );
 
   if (isArtistic && styleMod) {
@@ -765,8 +1014,7 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
  */
 function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   const archetypeInfo = getZoneArchetypeInfo(zone);
-  const zoneColorHex = getZoneRenderColor(zone.id, zone.color || '#E03C31');
-  const zoneColor = colorName(zoneColorHex);
+  const zoneColor = colorName(getZoneRenderColor(zone.id, zone.color || '#E03C31'));
 
   // Build narrative description from archetype metadata
   const floors = zone.properties?.floors ?? zone.properties?.num_floors;
@@ -811,8 +1059,8 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
     `The ${zoneColor} polygon is the building's absolute ground foundation. The building sits on the already-rendered park and streetscape — its base shadows should blend naturally onto the surrounding grass and pathways.`,
     `Treat the ${zoneColor} footprint as the ground-level base only. Render the full vertical 3D mass and roofline extending naturally into the sky above, respecting aerial perspective. Do not clip the architecture at any boundary line.`,
     `Replace every ${zoneColor} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.`,
-    `CONTAINMENT: Do NOT render any building structure, walls, shadows, or architectural elements outside the ${zoneColor} colored polygon. The building must fit entirely within its designated polygon boundary. No part of the building may extend sideways beyond the polygon perimeter. Do not bleed into surrounding grass, pathways, or neighboring zones.`,
-    `Each colored polygon represents a DIFFERENT building. Only render the described building within its specific ${zoneColor} polygon — ignore all other colored areas.`,
+    `Do not let building materials bleed into the surrounding grass, pathways, or other zones. Keep strict horizontal containment at the foundation level.`,
+    `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the colored polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`,
   );
 
   if (isArtistic && styleMod) {
@@ -891,7 +1139,8 @@ function buildArchetypeDescription(
 
 /**
  * Composite a single zone render onto a cumulative canvas.
- * Uses the zone polygon as a clip mask — only pixels inside the zone change.
+ * For ground-level zones: strict polygon clip.
+ * For buildings: polygon clip for footprint + pixel-diff above for 3D height.
  */
 async function compositeZoneRender(
   baseDataUri: string,
@@ -911,83 +1160,127 @@ async function compositeZoneRender(
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext('2d')!;
-
-  // Draw the base (cumulative result so far)
   ctx.drawImage(baseImg, 0, 0, w, h);
 
-  // Clip zone render to its polygon. For buildings, expand the clip upward
-  // to accommodate 3D perspective height while still preventing horizontal bleed.
+  if (!zone.coordinates || zone.coordinates.length < 3) {
+    return canvas.toDataURL('image/png');
+  }
+
+  const dpr = window.devicePixelRatio || 1;
+  const pixels = siteBoundaryToPixels(map, zone.coordinates);
+  const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
   const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(zone.zone_type);
 
-  if (zone.coordinates && zone.coordinates.length >= 3) {
-    const dpr = window.devicePixelRatio || 1;
-    const pixels = siteBoundaryToPixels(map, zone.coordinates);
-    const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+  // Step 1: Mask-based composite for the footprint + building height
+  // For buildings, the mask extends to the top of the canvas so the full
+  // 3D silhouette is captured regardless of camera angle.
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const maskCtx = maskCanvas.getContext('2d')!;
+  maskCtx.fillStyle = '#000000';
+  maskCtx.fillRect(0, 0, w, h);
+  maskCtx.fillStyle = '#ffffff';
 
-    ctx.save();
-    ctx.beginPath();
+  // Draw zone footprint polygon
+  maskCtx.beginPath();
+  maskCtx.moveTo(devicePixels[0].x, devicePixels[0].y);
+  for (let i = 1; i < devicePixels.length; i++) {
+    maskCtx.lineTo(devicePixels[i].x, devicePixels[i].y);
+  }
+  maskCtx.closePath();
+  maskCtx.fill();
 
-    if (isBuilding) {
-      // Building clip: polygon sides + bottom stay locked, top edge expanded upward
-      // to give room for the building's 3D height in perspective
-      const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
-        : zone.properties?.height ? Number(zone.properties.height) : 0;
-      const headroom = bldgHeight > 0 ? calculatePerspectiveHeadroom(map, bldgHeight) : 50 * dpr;
-      const minY = Math.min(...devicePixels.map(p => p.y));
-      console.log(`[AIRender] compositeZoneRender: BUILDING zone — crown clip with ${headroom.toFixed(0)}px headroom`);
-
-      // Identify "top edge" vertices — within the upper 40% of vertical span.
-      const maxY = Math.max(...devicePixels.map(p => p.y));
-      const verticalSpan = maxY - minY;
-      const topThreshold = minY + verticalSpan * 0.4;
-      const topEdgeIndices: number[] = [];
-      for (let i = 0; i < devicePixels.length; i++) {
-        if (devicePixels[i].y <= topThreshold) topEdgeIndices.push(i);
-      }
-      topEdgeIndices.sort((a, b) => devicePixels[a].x - devicePixels[b].x);
-
-      // Draw the original polygon
-      ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
-      for (let i = 1; i < devicePixels.length; i++) {
-        ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
-      }
-      ctx.closePath();
-
-      // Crown shape: follows polygon top contour upward instead of flat bbox rect
-      if (topEdgeIndices.length >= 2) {
-        const leftmost = devicePixels[topEdgeIndices[0]];
-        ctx.moveTo(leftmost.x, leftmost.y);
-        for (let i = 1; i < topEdgeIndices.length; i++) {
-          ctx.lineTo(devicePixels[topEdgeIndices[i]].x, devicePixels[topEdgeIndices[i]].y);
-        }
-        for (let i = topEdgeIndices.length - 1; i >= 0; i--) {
-          const p = devicePixels[topEdgeIndices[i]];
-          ctx.lineTo(p.x, Math.max(0, p.y - headroom));
-        }
-        ctx.closePath();
-      } else {
-        // Fallback for degenerate polygons
-        const minX = Math.min(...devicePixels.map(p => p.x));
-        const maxX = Math.max(...devicePixels.map(p => p.x));
-        const expandedTop = Math.max(0, minY - headroom);
-        ctx.moveTo(minX, expandedTop);
-        ctx.lineTo(maxX, expandedTop);
-        ctx.lineTo(maxX, minY);
-        ctx.lineTo(minX, minY);
-        ctx.closePath();
-      }
-    } else {
-      // Ground-level zones: strict polygon clip
-      console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
-      ctx.moveTo(devicePixels[0].x, devicePixels[0].y);
-      for (let i = 1; i < devicePixels.length; i++) {
-        ctx.lineTo(devicePixels[i].x, devicePixels[i].y);
-      }
+  // For buildings, extend mask upward by perspective headroom (bounded)
+  if (isBuilding) {
+    const bldgH = zone.properties?.height_m ? Number(zone.properties.height_m)
+      : zone.properties?.height ? Number(zone.properties.height) : 0;
+    const hr = bldgH > 0
+      ? calculatePerspectiveHeadroom(map, bldgH)
+      : 100 * dpr;
+    if (hr > 0) {
+      const mnX = Math.min(...devicePixels.map(p => p.x));
+      const mxX = Math.max(...devicePixels.map(p => p.x));
+      const mnY = Math.min(...devicePixels.map(p => p.y));
+      const expTop = Math.max(0, Math.floor(mnY - hr));
+      maskCtx.fillRect(mnX, expTop, mxX - mnX, mnY - expTop);
     }
-    ctx.closePath();
-    ctx.clip();
-    ctx.drawImage(renderedImg, 0, 0, w, h);
-    ctx.restore();
+  }
+
+  // Composite: AI render masked, then drawn onto base
+  const aiCanvas = document.createElement('canvas');
+  aiCanvas.width = w;
+  aiCanvas.height = h;
+  const aiCtx = aiCanvas.getContext('2d')!;
+  aiCtx.drawImage(renderedImg, 0, 0, w, h);
+  aiCtx.globalCompositeOperation = 'destination-in';
+  aiCtx.drawImage(maskCanvas, 0, 0);
+  ctx.drawImage(aiCanvas, 0, 0);
+
+  // Step 2: For buildings, pixel-diff above the polygon for 3D height
+  if (isBuilding) {
+    const bldgHeight = zone.properties?.height_m ? Number(zone.properties.height_m)
+      : zone.properties?.height ? Number(zone.properties.height) : 0;
+    const headroom = bldgHeight > 0
+      ? calculatePerspectiveHeadroom(map, bldgHeight)
+      : 100 * dpr;
+
+    const minX = Math.min(...devicePixels.map(p => p.x));
+    const maxX = Math.max(...devicePixels.map(p => p.x));
+    const minY = Math.min(...devicePixels.map(p => p.y));
+    const expandedTop = Math.max(0, Math.floor(minY - headroom));
+
+    const regionX = Math.max(0, Math.floor(minX));
+    const regionR = Math.min(w, Math.ceil(maxX));
+    const regionY = expandedTop;
+    const regionB = Math.floor(minY);
+
+    if (regionB > regionY && regionR > regionX) {
+      const rw = regionR - regionX;
+      const rh = regionB - regionY;
+
+      const baseTmpCanvas = document.createElement('canvas');
+      baseTmpCanvas.width = w;
+      baseTmpCanvas.height = h;
+      const baseTmpCtx = baseTmpCanvas.getContext('2d')!;
+      baseTmpCtx.drawImage(baseImg, 0, 0, w, h);
+
+      const rendTmpCanvas = document.createElement('canvas');
+      rendTmpCanvas.width = w;
+      rendTmpCanvas.height = h;
+      const rendTmpCtx = rendTmpCanvas.getContext('2d')!;
+      rendTmpCtx.drawImage(renderedImg, 0, 0, w, h);
+
+      const baseRegion = baseTmpCtx.getImageData(regionX, regionY, rw, rh);
+      const rendRegion = rendTmpCtx.getImageData(regionX, regionY, rw, rh);
+      const currentData = ctx.getImageData(0, 0, w, h);
+      const currentPx = currentData.data;
+
+      const DIFF_THRESHOLD = 18;
+      for (let row = 0; row < rh; row++) {
+        for (let col = 0; col < rw; col++) {
+          const idx = (row * rw + col) * 4;
+          const dr = Math.abs(baseRegion.data[idx] - rendRegion.data[idx]);
+          const dg = Math.abs(baseRegion.data[idx + 1] - rendRegion.data[idx + 1]);
+          const db = Math.abs(baseRegion.data[idx + 2] - rendRegion.data[idx + 2]);
+
+          if (Math.max(dr, dg, db) > DIFF_THRESHOLD) {
+            const globalIdx = ((regionY + row) * w + (regionX + col)) * 4;
+            currentPx[globalIdx] = rendRegion.data[idx];
+            currentPx[globalIdx + 1] = rendRegion.data[idx + 1];
+            currentPx[globalIdx + 2] = rendRegion.data[idx + 2];
+            currentPx[globalIdx + 3] = rendRegion.data[idx + 3];
+          }
+        }
+      }
+
+      ctx.putImageData(currentData, 0, 0);
+      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip + pixel-diff ${rw}x${rh}px above`);
+    } else {
+      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip only (no headroom region)`);
+    }
+  } else {
+    console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
   }
 
   return canvas.toDataURL('image/png');
@@ -1245,125 +1538,15 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  * (#E03C31). Only used temporarily during AI rendering -- the zone's persisted
  * color in the database is never modified.
  */
-// ---------------------------------------------------------------------------
-// Variant color shifting helpers
-// ---------------------------------------------------------------------------
-
-/** Convert a hex color (#RRGGBB) to HSL [h: 0-360, s: 0-100, l: 0-100]. */
-function hexToHsl(hex: string): [number, number, number] {
-  const raw = hex.replace('#', '');
-  const r = parseInt(raw.substring(0, 2), 16) / 255;
-  const g = parseInt(raw.substring(2, 4), 16) / 255;
-  const b = parseInt(raw.substring(4, 6), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const l = (max + min) / 2;
-  if (max === min) return [0, 0, l * 100];
-  const d = max - min;
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  let h = 0;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
-  return [h * 360, s * 100, l * 100];
-}
-
-/** Convert HSL [h: 0-360, s: 0-100, l: 0-100] back to hex (#RRGGBB). */
-function hslToHex(h: number, s: number, l: number): string {
-  h = ((h % 360) + 360) % 360;
-  s = Math.max(0, Math.min(100, s)) / 100;
-  l = Math.max(0, Math.min(100, l)) / 100;
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  const m = l - c / 2;
-  let r = 0, g = 0, b = 0;
-  if (h < 60) { r = c; g = x; b = 0; }
-  else if (h < 120) { r = x; g = c; b = 0; }
-  else if (h < 180) { r = 0; g = c; b = x; }
-  else if (h < 240) { r = 0; g = x; b = c; }
-  else if (h < 300) { r = x; g = 0; b = c; }
-  else { r = c; g = 0; b = x; }
-  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
-}
-
-/**
- * Shift a base hex color slightly for a given variant index (0-3).
- * Produces a visually related but distinguishable shade by adjusting
- * lightness by [-8%, -3%, +3%, +8%] and hue by [-5, +5, -10, +10] degrees.
- */
-function shiftColorForVariant(baseHex: string, variantIndex: number): string {
-  const lightnessShifts = [-8, -3, 3, 8];
-  const hueShifts = [-5, 5, -10, 10];
-  const idx = Math.min(variantIndex, lightnessShifts.length - 1);
-  const [h, s, l] = hexToHsl(baseHex);
-  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
-}
-
-/**
- * Determine the variant index for a building zone.
- * Returns -1 if no variant is selected, or the 0-based index of the
- * selected variant within the archetype's variants array.
- */
-function getZoneVariantIndex(zone: SiteZone): number {
-  if (!zone.properties || !catalog) return -1;
-  const PREFIXES = ['development', 'road', 'green_space', 'plaza'] as const;
-  for (const prefix of PREFIXES) {
-    const selectedVariantId = zone.properties[`${prefix}_selected_variant_id`] as string | undefined;
-    if (!selectedVariantId) continue;
-    const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
-    if (!archetypeId) continue;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const entry = catalog.find((a: any) =>
-      a.id === archetypeId || archetypeId.startsWith(a.id + '_'),
-    );
-    if (!entry?.variants || !Array.isArray(entry.variants)) continue;
-    const idx = entry.variants.findIndex((v: { id: string }) => v.id === selectedVariantId);
-    if (idx >= 0) return idx;
-  }
-  return -1;
-}
-
-/**
- * Development-type-based color palette.
- * Each building gets a color based on its development type so Gemini can
- * visually distinguish different archetypes in multi-building scenes.
- * Colors are chosen to be visually distinct from ground zones (green, grey, blue).
- */
-const DEVELOPMENT_TYPE_COLORS: Record<string, string> = {
-  residential_single_family: '#D4A574',   // warm tan / sandy brown
-  residential_duplex:        '#C68642',   // caramel brown
-  residential_multifamily:   '#CC7A4F',   // terracotta
-  residential_highrise:      '#B8860B',   // dark goldenrod
-  commercial_light:          '#E8A87C',   // peach / light coral
-  commercial_retail:         '#CD5C5C',   // indian red
-  commercial_office:         '#8B7D6B',   // warm grey-brown
-  mixed_use:                 '#BF8A53',   // bronze
-  institutional:             '#9B8579',   // warm taupe
-  hospitality:               '#D4956A',   // copper tan
-  industrial_light:          '#A0937D',   // khaki grey
-  industrial_warehouse:      '#8D8478',   // stone grey
-};
-
-/**
- * Fallback palette for buildings without a development type or when
- * multiple buildings share the same development-type color.
- * These are visually distinct warm/neutral tones that contrast with
- * ground zones (greens, greys, blues).
- */
 const BUILDING_VARIANT_PALETTE = [
-  '#E03C31', // red (legacy default)
-  '#C17F59', // warm sienna
-  '#A0522D', // sienna brown
-  '#8B6F47', // dark tan
-  '#D2691E', // chocolate
-  '#CD853F', // peru
-  '#B5651D', // brown sugar
-  '#A67B5B', // french beige
-  '#996633', // dark gold
-  '#8B4513', // saddle brown
-  '#C19A6B', // camel
-  '#BC8F8F', // rosy brown
+  '#E03C31', // red (original default -- first building keeps this)
+  '#C62828', // dark red
+  '#D84315', // deep orange
+  '#AD1457', // dark pink
+  '#6A1B9A', // deep purple
+  '#4527A0', // indigo
+  '#B71C1C', // crimson
+  '#E65100', // burnt orange
 ];
 
 /**
@@ -1433,57 +1616,40 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
     });
   }
 
-  // -- Assign unique colors to ALL building zones based on development type --
-  // Each building gets a distinct color so Gemini can visually distinguish
-  // different archetypes in multi-building scenes.
-  const usedColors = new Set(
-    rawEntries
-      .filter(e => !BUILDING_TYPES.includes(e.entry.zoneType))
-      .map(e => e.entry.color.toLowerCase())
-  );
-
-  let fallbackIdx = 0;
-
+  // -- Reassign colors for duplicate-colored building zones --
+  // Group building entries by color to find duplicates that need distinct colors
+  const buildingsByColor = new Map<string, { entry: ZonePromptEntry; zoneId: string }[]>();
   for (const item of rawEntries) {
     if (!BUILDING_TYPES.includes(item.entry.zoneType)) continue;
+    const c = item.entry.color.toLowerCase();
+    if (!buildingsByColor.has(c)) buildingsByColor.set(c, []);
+    buildingsByColor.get(c)!.push(item);
+  }
 
-    // Look up the zone to get its development type
-    const zone = zones.find(z => z.id === item.zoneId);
-    const devType = (zone?.properties?.development_type as string) || '';
+  // Track all colors currently in use to avoid collisions
+  const usedColors = new Set(rawEntries.map(e => e.entry.color.toLowerCase()));
 
-    // Try development-type color first
-    let assignedColor = DEVELOPMENT_TYPE_COLORS[devType];
+  for (const [, group] of buildingsByColor) {
+    if (group.length <= 1) continue; // No conflict -- skip
 
-    // If no dev type color or it's already in use, pick from fallback palette
-    if (!assignedColor || usedColors.has(assignedColor.toLowerCase())) {
-      // Find next unused fallback color
-      while (fallbackIdx < BUILDING_VARIANT_PALETTE.length &&
-             usedColors.has(BUILDING_VARIANT_PALETTE[fallbackIdx].toLowerCase())) {
-        fallbackIdx++;
+    // First building keeps its original color; reassign the rest
+    let variantIdx = 0;
+    for (let gi = 1; gi < group.length; gi++) {
+      const item = group[gi];
+      // Find the next unused variant color
+      while (variantIdx < BUILDING_VARIANT_PALETTE.length &&
+             usedColors.has(BUILDING_VARIANT_PALETTE[variantIdx].toLowerCase())) {
+        variantIdx++;
       }
-      assignedColor = fallbackIdx < BUILDING_VARIANT_PALETTE.length
-        ? BUILDING_VARIANT_PALETTE[fallbackIdx++]
-        : item.entry.color; // absolute fallback: keep original
-    }
-
-    // Apply a subtle color shift when the zone has a selected design variant
-    // so that different variants of the same archetype are visually distinguishable.
-    let variantIdx = -1;
-    if (zone) {
-      variantIdx = getZoneVariantIndex(zone);
-      if (variantIdx >= 0) {
-        const shifted = shiftColorForVariant(assignedColor, variantIdx);
-        // Only use the shifted color if it doesn't collide with an existing one
-        if (!usedColors.has(shifted.toLowerCase())) {
-          assignedColor = shifted;
-        }
+      if (variantIdx < BUILDING_VARIANT_PALETTE.length) {
+        const variantColor = BUILDING_VARIANT_PALETTE[variantIdx];
+        item.entry.color = variantColor;
+        _zoneColorOverrides.set(item.zoneId, variantColor);
+        usedColors.add(variantColor.toLowerCase());
+        variantIdx++;
+        console.log(`[AIRender] Zone "${item.entry.zoneName}" (${item.zoneId}) color reassigned to ${variantColor} to avoid duplicate`);
       }
     }
-
-    item.entry.color = assignedColor;
-    _zoneColorOverrides.set(item.zoneId, assignedColor);
-    usedColors.add(assignedColor.toLowerCase());
-    console.log(`[AIRender] Zone "${item.entry.zoneName}" → color ${assignedColor} (dev: ${devType || 'none'}${variantIdx >= 0 ? `, variant ${variantIdx}` : ''})`);
   }
 
   // With unique shade IDs, each archetype-assigned zone has its own color,
@@ -1510,121 +1676,7 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
   return result;
 }
 
-/**
- * Human-readable color name for hex colors — archetype-aware.
- *
- * First tries to match the hex to a known archetype shade (unique per archetype).
- * Falls back to generic zone-type color names for unassigned zones.
- */
-function colorName(hex: string): string {
-  // Try archetype shade match first (unique per archetype)
-  const archetypeId = getArchetypeForShade(hex);
-  if (archetypeId) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const entry = catalog?.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
-    if (entry?.title) return `${entry.title} shade (${hex})`;
-  }
-
-  // Fall back to generic zone-type names
-  const genericMap: Record<string, string> = {
-    '#E03C31': 'red',
-    '#e03c31': 'red',
-    '#C62828': 'dark red',
-    '#c62828': 'dark red',
-    '#D84315': 'deep orange',
-    '#d84315': 'deep orange',
-    '#AD1457': 'dark pink',
-    '#ad1457': 'dark pink',
-    '#6A1B9A': 'deep purple',
-    '#6a1b9a': 'deep purple',
-    '#4527A0': 'indigo',
-    '#4527a0': 'indigo',
-    '#B71C1C': 'crimson',
-    '#b71c1c': 'crimson',
-    '#E65100': 'burnt orange',
-    '#e65100': 'burnt orange',
-    '#F5D63D': 'yellow',
-    '#f5d63d': 'yellow',
-    '#616161': 'dark gray',
-    '#4CAF50': 'green',
-    '#4caf50': 'green',
-    '#9E9E9E': 'light gray',
-    '#9e9e9e': 'light gray',
-    '#4A90D9': 'blue',
-    '#4a90d9': 'blue',
-    '#C8A02A': 'gold/amber',
-    '#c8a02a': 'gold/amber',
-    '#F59E0B': 'orange/amber',
-    '#f59e0b': 'orange/amber',
-    // Development-type building colors
-    '#D4A574': 'sandy tan',
-    '#d4a574': 'sandy tan',
-    '#C68642': 'caramel brown',
-    '#c68642': 'caramel brown',
-    '#CC7A4F': 'terracotta',
-    '#cc7a4f': 'terracotta',
-    '#B8860B': 'dark goldenrod',
-    '#b8860b': 'dark goldenrod',
-    '#E8A87C': 'peach coral',
-    '#e8a87c': 'peach coral',
-    '#CD5C5C': 'indian red',
-    '#cd5c5c': 'indian red',
-    '#8B7D6B': 'warm grey-brown',
-    '#8b7d6b': 'warm grey-brown',
-    '#BF8A53': 'bronze',
-    '#bf8a53': 'bronze',
-    '#9B8579': 'warm taupe',
-    '#9b8579': 'warm taupe',
-    '#D4956A': 'copper tan',
-    '#d4956a': 'copper tan',
-    '#A0937D': 'khaki grey',
-    '#a0937d': 'khaki grey',
-    '#8D8478': 'stone grey',
-    '#8d8478': 'stone grey',
-    // Fallback palette colors
-    '#C17F59': 'warm sienna',
-    '#c17f59': 'warm sienna',
-    '#A0522D': 'sienna brown',
-    '#a0522d': 'sienna brown',
-    '#8B6F47': 'dark tan',
-    '#8b6f47': 'dark tan',
-    '#D2691E': 'chocolate',
-    '#d2691e': 'chocolate',
-    '#CD853F': 'peru',
-    '#cd853f': 'peru',
-    '#B5651D': 'brown sugar',
-    '#b5651d': 'brown sugar',
-    '#A67B5B': 'french beige',
-    '#a67b5b': 'french beige',
-    '#996633': 'dark gold',
-    '#8B4513': 'saddle brown',
-    '#8b4513': 'saddle brown',
-    '#C19A6B': 'camel',
-    '#c19a6b': 'camel',
-    '#BC8F8F': 'rosy brown',
-    '#bc8f8f': 'rosy brown',
-  };
-  if (genericMap[hex]) return genericMap[hex];
-
-  // For dynamically shifted variant colors not in the map, generate a
-  // descriptive name from the HSL values so the prompt reads naturally.
-  try {
-    const [h, , l] = hexToHsl(hex);
-    const lightness = l < 35 ? 'dark ' : l > 65 ? 'light ' : '';
-    let hueName = 'brown';
-    if (h < 15 || h >= 345) hueName = 'red';
-    else if (h < 45) hueName = 'orange';
-    else if (h < 65) hueName = 'amber';
-    else if (h < 80) hueName = 'gold';
-    else if (h < 150) hueName = 'green';
-    else if (h < 210) hueName = 'blue';
-    else if (h < 270) hueName = 'indigo';
-    else if (h < 330) hueName = 'purple';
-    return `${lightness}${hueName} (${hex})`;
-  } catch {
-    return hex;
-  }
-}
+// colorName() is defined earlier in this file (see "Color utilities for variant-specific polygon colors")
 
 /**
  * Build the default description for a zone type when no archetype is assigned.
@@ -1725,9 +1777,11 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
           `The ${color} polygon is a building footprint. Render a ${scaleText} ${desc}.` +
           (userDesc ? ` ${userDesc}.` : '') +
           ` This is a large ${scaleText} structure that fills the entire ${color} footprint — not a small house or cabin.` +
-          ` Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.` +
-          ` CONTAINMENT: The building must stay strictly within its ${color} polygon boundary. Do NOT render any structure, walls, or architectural elements outside the ${color} polygon. Do not bleed into neighboring zones.` +
-          ` Each differently-colored polygon is a SEPARATE building — only render this building's archetype within the ${color} area.`
+          ` The ${color} area is the building's ground-level foundation only — render the full vertical 3D mass ` +
+          `and roofline extending naturally into the sky above, respecting aerial perspective. ` +
+          `Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. ` +
+          `Do not let building materials bleed horizontally into neighboring zones. ` +
+          `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the ${color} polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`
         );
       } else {
         // Ground-level zone narrative — emphasize strict horizontal containment
@@ -1745,8 +1799,6 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
 
   // ── Containment + preservation instructions ──
   parts.push(
-    'IMPORTANT: Each differently-colored polygon represents a DIFFERENT zone with a DIFFERENT purpose. ' +
-    'Buildings must stay strictly within their designated colored polygon — do NOT let any building extend into a neighboring polygon of a different color. ' +
     'Maintain strict containment — each zone stays within its colored boundary. ' +
     'Do not include any people, pedestrians, human figures, or crowds anywhere in the scene. ' +
     'Keep all satellite imagery outside the site boundary exactly as it is, preserving the original style, lighting, and composition.'
@@ -1821,10 +1873,13 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(stylePreset.negative);
   }
 
-  // 2. Zone containment negatives + universal exclusions
-  parts.push('zone bleeding into neighboring zone, landscape extending beyond polygon boundary, elements crossing polygon edges, mismatched zone content, building extending beyond footprint, architecture outside polygon, walls outside boundary, people, pedestrians, human figures, faces, crowds, cyclists, joggers');
+  // 2. Building containment negatives + universal exclusions
+  parts.push('building extending beyond footprint, architecture outside polygon, walls outside boundary, building bleed into neighboring zone, people, pedestrians, human figures, faces, crowds, cyclists, joggers');
 
-  // 3. Archetype-level negatives passed from the panel
+  // 3. Zone bleeding negatives
+  parts.push('zone bleeding into neighboring zone, landscape extending beyond polygon boundary, elements crossing polygon edges, mismatched zone content');
+
+  // 4. Archetype-level negatives passed from the panel
   if (options.mapOverlayNegative?.trim()) {
     parts.push(options.mapOverlayNegative.trim());
   }
@@ -1832,7 +1887,7 @@ function buildNegativePrompt(options: AIRenderOptions): string {
     parts.push(options.archetypeNegative.trim());
   }
 
-  // 4. Zone-level archetype negatives from catalog
+  // 5. Zone-level archetype negatives from catalog
   const zones = options.siteZones || [];
   for (const zone of zones) {
     if (zone.zone_type === 'site_boundary') continue;
