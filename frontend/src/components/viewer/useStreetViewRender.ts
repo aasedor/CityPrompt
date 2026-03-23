@@ -299,8 +299,8 @@ function polygonsIntersect(
 export function getViewConePolygon(
   center: [number, number],
   angleDeg: number,
-  fovDeg: number = 60,
-  distanceMeters: number = 150,
+  fovDeg: number = 45,
+  distanceMeters: number = 120,
 ): [number, number][] {
   const [cLng, cLat] = center;
   const halfFov = fovDeg / 2;
@@ -372,37 +372,98 @@ export interface ZoneWithDistance {
   distance: number;
   /** Position of the zone relative to the pegman's viewing direction. */
   relativePosition: 'left' | 'center' | 'right';
+  /** Degrees from center of view (negative = left, positive = right). */
+  angularOffset: number;
+  /** Angular width of the zone from the camera in degrees. */
+  angularWidth: number;
+  /** Estimated percentage of the frame width this zone occupies (0-100). */
+  framePercent: number;
+  /** Left edge position as percentage of frame (0=left edge, 100=right edge). */
+  frameLeftPct: number;
+  /** Right edge position as percentage of frame. */
+  frameRightPct: number;
+}
+
+/**
+ * Calculate the angular extent (min/max bearing) of a zone's polygon
+ * as seen from the pegman position, relative to the view direction.
+ */
+function calcZoneAngularExtent(
+  zoneCoords: number[][],
+  pegmanPos: [number, number],
+  pegmanAngle: number,
+): { minAngle: number; maxAngle: number; angularWidth: number; centerAngle: number } {
+  let minRel = Infinity;
+  let maxRel = -Infinity;
+
+  for (const coord of zoneCoords) {
+    const brng = bearing(pegmanPos, [coord[0], coord[1]] as [number, number]);
+    let rel = brng - pegmanAngle;
+    if (rel > 180) rel -= 360;
+    if (rel < -180) rel += 360;
+    if (rel < minRel) minRel = rel;
+    if (rel > maxRel) maxRel = rel;
+  }
+
+  return {
+    minAngle: minRel,
+    maxAngle: maxRel,
+    angularWidth: maxRel - minRel,
+    centerAngle: (minRel + maxRel) / 2,
+  };
 }
 
 /**
  * Sort zones by distance from the pegman position (nearest first) and
- * annotate each with distance and relative bearing.
+ * annotate each with distance, relative bearing, angular width, and
+ * frame percentage based on the view cone geometry.
  */
 export function sortZonesByDistance(
   zones: SiteZone[],
   pegmanPos: [number, number],
   pegmanAngle: number,
+  fovDeg: number = 45,
 ): ZoneWithDistance[] {
+  const halfFov = fovDeg / 2;
+
   const annotated: ZoneWithDistance[] = zones.map((zone) => {
     const centroid = polygonCentroid(zone.coordinates) as [number, number];
     const dist = haversineDistance(pegmanPos, centroid);
-    const brng = bearing(pegmanPos, centroid);
 
-    // Relative angle: positive = right of center, negative = left
-    let relAngle = brng - pegmanAngle;
-    if (relAngle > 180) relAngle -= 360;
-    if (relAngle < -180) relAngle += 360;
+    // Angular extent of this zone from the camera
+    const angular = calcZoneAngularExtent(zone.coordinates, pegmanPos, pegmanAngle);
+
+    // Clamp to FOV bounds
+    const clampedMin = Math.max(angular.minAngle, -halfFov);
+    const clampedMax = Math.min(angular.maxAngle, halfFov);
+    const clampedWidth = Math.max(0, clampedMax - clampedMin);
+
+    // Frame percentage: what fraction of the FOV this zone occupies
+    const framePercent = Math.round((clampedWidth / fovDeg) * 100);
+
+    // Frame position: left/right edges as percentage (0% = left, 100% = right)
+    const frameLeftPct = Math.round(((clampedMin + halfFov) / fovDeg) * 100);
+    const frameRightPct = Math.round(((clampedMax + halfFov) / fovDeg) * 100);
 
     let relativePosition: 'left' | 'center' | 'right';
-    if (relAngle < -15) {
+    if (angular.centerAngle < -8) {
       relativePosition = 'left';
-    } else if (relAngle > 15) {
+    } else if (angular.centerAngle > 8) {
       relativePosition = 'right';
     } else {
       relativePosition = 'center';
     }
 
-    return { zone, distance: dist, relativePosition };
+    return {
+      zone,
+      distance: dist,
+      relativePosition,
+      angularOffset: angular.centerAngle,
+      angularWidth: clampedWidth,
+      framePercent,
+      frameLeftPct,
+      frameRightPct,
+    };
   });
 
   annotated.sort((a, b) => a.distance - b.distance);
@@ -522,61 +583,51 @@ export function buildStreetViewPrompt(
 
   // Strong framing instruction
   lines.push(
-    `Generate a wide-angle 16:9 street-level photograph of an urban development, ` +
+    `Generate a wide 16:9 street-level photograph of an urban development, ` +
     `as seen from eye level (1.7m height) looking ${direction}. ` +
-    `The image MUST show ALL of the following elements composed together in a single coherent scene. ` +
-    `This is a wide establishing shot showing multiple buildings, landscape areas, and infrastructure ` +
-    `receding into the distance. Do NOT focus on just one element — show the full streetscape panorama.`,
+    `The image MUST show ALL of the following elements composed together in a single coherent scene ` +
+    `at the EXACT frame positions specified below. Each element has a specific horizontal position ` +
+    `and size within the frame — follow these precisely.`,
   );
 
-  // Separate zones into left / center / right groups
-  const leftZones = visibleZones.filter(z => z.relativePosition === 'left');
-  const centerZones = visibleZones.filter(z => z.relativePosition === 'center');
-  const rightZones = visibleZones.filter(z => z.relativePosition === 'right');
-
-  // Build spatial composition description
-  lines.push('SPATIAL COMPOSITION OF THE SCENE:');
-
-  if (leftZones.length > 0) {
-    const descs = leftZones.map(entry => {
-      const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
-      const dist = depthBand(entry.distance).toLowerCase();
-      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
-    });
-    lines.push(`LEFT SIDE OF FRAME: ${descs.join('. ')}.`);
-  }
-
-  if (centerZones.length > 0) {
-    const descs = centerZones.map(entry => {
-      const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
-      const dist = depthBand(entry.distance).toLowerCase();
-      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
-    });
-    lines.push(`CENTER OF FRAME: ${descs.join('. ')}.`);
-  }
-
-  if (rightZones.length > 0) {
-    const descs = rightZones.map(entry => {
-      const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
-      const dist = depthBand(entry.distance).toLowerCase();
-      return `[${dist}, ~${Math.round(entry.distance)}m away] ${desc}`;
-    });
-    lines.push(`RIGHT SIDE OF FRAME: ${descs.join('. ')}.`);
-  }
-
-  // If no zones were categorized, describe as empty site
   if (visibleZones.length === 0) {
-    lines.push('The view shows an empty development site with cleared ground, construction fencing, and surrounding neighborhood context.');
+    lines.push('The view shows an empty development site with cleared ground and surrounding neighborhood.');
+  } else {
+    // Build precise spatial layout
+    lines.push('PRECISE SPATIAL LAYOUT (frame position 0% = left edge, 100% = right edge):');
+
+    // Sort by frameLeftPct for left-to-right description
+    const leftToRight = [...visibleZones].sort((a, b) => a.frameLeftPct - b.frameLeftPct);
+
+    for (const entry of leftToRight) {
+      const info = getZoneArchetypeInfo(entry.zone);
+      const desc = describeZoneForStreetView(entry.zone, info);
+      const depth = depthBand(entry.distance).toLowerCase();
+
+      // Calculate apparent height based on distance (closer = taller in frame)
+      const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+      const heightDesc = floors > 0 ? `${floors}-story, ` : '';
+      const sizeDesc = entry.distance < 30 ? 'large and dominant' :
+                       entry.distance < 60 ? 'medium-sized' : 'smaller in the distance';
+
+      lines.push(
+        `- POSITION ${entry.frameLeftPct}%-${entry.frameRightPct}% of frame width ` +
+        `(${entry.framePercent}% wide), ${depth} (~${Math.round(entry.distance)}m away), ` +
+        `${heightDesc}${sizeDesc}: ${desc}`,
+      );
+    }
+
+    // Describe gaps as sky/ground
+    lines.push(
+      '\nFill any gaps between elements with: sky above the horizon line, and paved street / ' +
+      'sidewalk / landscaping below. Elements farther away appear smaller and closer to the horizon.',
+    );
   }
 
-  // Ground plane and context
+  // Ground plane
   lines.push(
-    'GROUND PLANE: The immediate foreground shows a paved sidewalk or street surface. ' +
-    'Include realistic urban context: curbs, street trees, lamp posts, crosswalks where appropriate. ' +
-    'The scene transitions naturally between the different zones described above.',
+    'FOREGROUND: Paved sidewalk or street surface with curbs, pedestrian crossing markings, ' +
+    'and scattered street trees. The ground plane connects all elements naturally.',
   );
 
   // Style modifier
@@ -587,8 +638,8 @@ export function buildStreetViewPrompt(
   // Closing quality directives
   lines.push(
     'STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting ' +
-    'from the side casting long soft shadows. Sharp detail on building materials and textures. ' +
-    'Wide-angle lens (24mm equivalent). Depth of field with sharp foreground and slightly softer background. ' +
+    'from the side casting long soft shadows. Sharp material detail. 35mm lens equivalent. ' +
+    'Depth of field — sharp foreground, slightly softer background. ' +
     '8K resolution, no people, no text overlays, no watermarks.',
   );
 
@@ -603,7 +654,7 @@ const DEPTH_MAP_WIDTH = 1024;
 const DEPTH_MAP_HEIGHT = 576; // 16:9
 const EYE_HEIGHT_M = 1.7;
 const FLOOR_HEIGHT_M = 3.2;
-const SKY_COLOR = '#87CEEB';
+// sky color used inline in gradient
 const GROUND_COLOR = '#808075';
 const DEFAULT_ZONE_COLORS: Record<string, string> = {
   building: '#E03C31',
@@ -614,51 +665,15 @@ const DEFAULT_ZONE_COLORS: Record<string, string> = {
 };
 
 /**
- * Convert a [lng,lat] coordinate to a position relative to the camera.
- * Returns [rightward, forward] in meters where forward is along the view axis.
- */
-function worldToCamera(
-  point: [number, number],
-  camPos: [number, number],
-  camAngleRad: number,
-): [number, number] {
-  const latRad = camPos[1] * DEG_TO_RAD;
-  const dx = (point[0] - camPos[0]) * METERS_PER_DEG_LAT * Math.cos(latRad); // east-west in meters
-  const dy = (point[1] - camPos[1]) * METERS_PER_DEG_LAT; // north-south in meters
-
-  // Rotate into camera space (camAngle: 0=N means forward is +Y)
-  const sinA = Math.sin(camAngleRad);
-  const cosA = Math.cos(camAngleRad);
-  const forward = dx * sinA + dy * cosA;
-  const right = dx * cosA - dy * sinA;
-  return [right, forward];
-}
-
-/**
- * Project a 3D camera-space point to 2D screen coordinates using simple
- * perspective. Returns [screenX, screenY] or null if behind camera.
- */
-function perspectiveProject(
-  right: number,
-  forward: number,
-  heightM: number,
-  focalLength: number,
-): [number, number] | null {
-  if (forward <= 0.5) return null; // behind camera or too close
-  const sx = (right / forward) * focalLength + DEPTH_MAP_WIDTH / 2;
-  const sy = ((EYE_HEIGHT_M - heightM) / forward) * focalLength + DEPTH_MAP_HEIGHT / 2;
-  return [sx, sy];
-}
-
-/**
  * Generate a color-coded perspective depth map showing zone positions
- * from the pegman's viewpoint. Each zone is drawn as a colored block
- * using its unique polygon color, with height based on floor count.
+ * from the pegman's viewpoint. Uses the pre-computed frame percentages
+ * from ZoneWithDistance for accurate horizontal positioning, and
+ * distance-based perspective for vertical sizing.
  *
  * Returns base64-encoded PNG (without data URI prefix).
  */
 export function generateDepthMap(
-  pegmanPos: [number, number],
+  _pegmanPos: [number, number],
   angleDeg: number,
   visibleZones: ZoneWithDistance[],
 ): string {
@@ -667,124 +682,130 @@ export function generateDepthMap(
   canvas.height = DEPTH_MAP_HEIGHT;
   const ctx = canvas.getContext('2d')!;
 
+  const horizonY = DEPTH_MAP_HEIGHT * 0.50;
+
   // Draw sky gradient
-  const skyGrad = ctx.createLinearGradient(0, 0, 0, DEPTH_MAP_HEIGHT * 0.55);
-  skyGrad.addColorStop(0, SKY_COLOR);
-  skyGrad.addColorStop(1, '#d4e8f0');
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+  skyGrad.addColorStop(0, '#6BA3D6');
+  skyGrad.addColorStop(1, '#B8D4E8');
   ctx.fillStyle = skyGrad;
-  ctx.fillRect(0, 0, DEPTH_MAP_WIDTH, DEPTH_MAP_HEIGHT);
+  ctx.fillRect(0, 0, DEPTH_MAP_WIDTH, horizonY);
 
   // Draw ground plane
-  const horizonY = DEPTH_MAP_HEIGHT * 0.55;
   const groundGrad = ctx.createLinearGradient(0, horizonY, 0, DEPTH_MAP_HEIGHT);
   groundGrad.addColorStop(0, '#a0a090');
   groundGrad.addColorStop(1, GROUND_COLOR);
   ctx.fillStyle = groundGrad;
   ctx.fillRect(0, horizonY, DEPTH_MAP_WIDTH, DEPTH_MAP_HEIGHT - horizonY);
 
-  const camAngleRad = angleDeg * DEG_TO_RAD;
-  const focalLength = DEPTH_MAP_WIDTH * 0.7; // ~50mm equivalent
-
   // Sort zones back-to-front (farthest first) so nearer zones overdraw
   const sortedBackToFront = [...visibleZones].sort((a, b) => b.distance - a.distance);
 
   for (const entry of sortedBackToFront) {
     const zone = entry.zone;
-    const coords = zone.coordinates;
-    if (!coords || coords.length < 3) continue;
-
-    // Determine zone color
     const color = zone.color || DEFAULT_ZONE_COLORS[zone.zone_type] || '#888888';
 
-    // Determine building height
-    let heightM = 0;
-    if (zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') {
-      const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || 4;
-      heightM = floors * FLOOR_HEIGHT_M;
-    } else if (zone.zone_type === 'green_space' || zone.zone_type === 'parking') {
-      heightM = 0; // ground-level
-    } else if (zone.zone_type === 'water') {
-      heightM = -0.5; // slightly below ground
-    }
+    // Use frame percentages for horizontal positioning
+    const leftX = (entry.frameLeftPct / 100) * DEPTH_MAP_WIDTH;
+    const rightX = (entry.frameRightPct / 100) * DEPTH_MAP_WIDTH;
+    const width = rightX - leftX;
+    if (width < 2) continue; // too narrow to draw
 
-    // Project all polygon vertices to screen space (at ground level and top level)
-    const groundScreenPts: [number, number][] = [];
-    const topScreenPts: [number, number][] = [];
+    // Determine building height and apparent size based on distance
+    const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
+    const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || (isBuilding ? 4 : 0);
+    const heightM = floors * FLOOR_HEIGHT_M;
 
-    for (const coord of coords) {
-      const [right, forward] = worldToCamera(
-        [coord[0], coord[1]] as [number, number],
-        pegmanPos,
-        camAngleRad,
+    // Distance-based perspective: closer = taller and lower base
+    // Normalize distance: 10m = very close, 150m = far
+    const distNorm = Math.max(0.1, Math.min(1, entry.distance / 150));
+    const perspScale = 1 / (0.3 + distNorm * 0.7); // closer = larger scale
+
+    if (isBuilding && heightM > 0) {
+      // Building: draw as a colored rectangle
+      // Base sits on ground, height proportional to floors and distance
+      const apparentHeight = Math.min(
+        horizonY * 0.9,
+        (heightM / EYE_HEIGHT_M) * 30 * perspScale,
       );
+      // Base Y: closer buildings have base further below horizon
+      const baseY = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.1 + distNorm * 0.3);
+      const topY = baseY - apparentHeight;
 
-      const groundPt = perspectiveProject(right, forward, 0, focalLength);
-      if (groundPt) groundScreenPts.push(groundPt);
-
-      if (heightM > 0) {
-        const topPt = perspectiveProject(right, forward, heightM, focalLength);
-        if (topPt) topScreenPts.push(topPt);
-      }
-    }
-
-    if (groundScreenPts.length < 2) continue;
-
-    if (heightM > 0 && topScreenPts.length >= 2) {
-      // Draw building as a filled shape: ground outline → top outline
       ctx.fillStyle = color;
-      ctx.globalAlpha = 0.85;
-      ctx.beginPath();
+      ctx.globalAlpha = 0.9;
+      ctx.fillRect(leftX, Math.max(0, topY), width, baseY - Math.max(0, topY));
 
-      // Find the screen bounding box of ground points
-      const groundMinX = Math.min(...groundScreenPts.map(p => p[0]));
-      const groundMaxX = Math.max(...groundScreenPts.map(p => p[0]));
-      const groundMaxY = Math.max(...groundScreenPts.map(p => p[1]));
-      const topMinY = Math.min(...topScreenPts.map(p => p[1]));
-
-      // Draw as a simple rectangle from ground to top
-      ctx.fillRect(
-        Math.max(0, groundMinX),
-        Math.max(0, topMinY),
-        Math.min(DEPTH_MAP_WIDTH, groundMaxX) - Math.max(0, groundMinX),
-        groundMaxY - topMinY,
-      );
-
-      // Draw outline
+      // Outline
       ctx.strokeStyle = '#000000';
-      ctx.lineWidth = 1.5;
-      ctx.globalAlpha = 0.5;
-      ctx.strokeRect(
-        Math.max(0, groundMinX),
-        Math.max(0, topMinY),
-        Math.min(DEPTH_MAP_WIDTH, groundMaxX) - Math.max(0, groundMinX),
-        groundMaxY - topMinY,
-      );
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.6;
+      ctx.strokeRect(leftX, Math.max(0, topY), width, baseY - Math.max(0, topY));
+
+      // Label
       ctx.globalAlpha = 1;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        `${floors}F`,
+        leftX + width / 2,
+        Math.max(0, topY) + 14,
+      );
     } else {
-      // Ground-level zone (park, road, water, plaza) — draw as ground patch
+      // Ground-level zone (park, water, road) — draw as ground-plane patch
+      // These sit on the ground plane, getting narrower with distance
+      const groundTop = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.05 + distNorm * 0.35);
+      const groundBot = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.15 + distNorm * 0.5);
+
       ctx.fillStyle = color;
-      ctx.globalAlpha = 0.7;
+      ctx.globalAlpha = 0.75;
+
+      // Draw as a trapezoid (narrower at top / farther)
+      const narrowing = distNorm * 0.15 * width;
       ctx.beginPath();
-      ctx.moveTo(groundScreenPts[0][0], groundScreenPts[0][1]);
-      for (let i = 1; i < groundScreenPts.length; i++) {
-        ctx.lineTo(groundScreenPts[i][0], groundScreenPts[i][1]);
-      }
+      ctx.moveTo(leftX + narrowing, groundTop);
+      ctx.lineTo(rightX - narrowing, groundTop);
+      ctx.lineTo(rightX, groundBot);
+      ctx.lineTo(leftX, groundBot);
       ctx.closePath();
       ctx.fill();
+
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.4;
+      ctx.stroke();
       ctx.globalAlpha = 1;
     }
   }
 
-  // Add a label at the bottom
+  // Add zone name labels
+  ctx.globalAlpha = 1;
+  for (const entry of visibleZones) {
+    const info = getZoneArchetypeInfo(entry.zone);
+    const title = info.archetypeTitle || entry.zone.name || zoneTypeLabel(entry.zone.zone_type);
+    const centerX = ((entry.frameLeftPct + entry.frameRightPct) / 2 / 100) * DEPTH_MAP_WIDTH;
+
+    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    const textWidth = ctx.measureText(title).width;
+    const labelY = DEPTH_MAP_HEIGHT - 35;
+    ctx.fillRect(centerX - textWidth / 2 - 3, labelY - 10, textWidth + 6, 14);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(title, centerX, labelY);
+  }
+
+  // Bottom bar label
   ctx.fillStyle = 'rgba(0,0,0,0.6)';
-  ctx.fillRect(0, DEPTH_MAP_HEIGHT - 24, DEPTH_MAP_WIDTH, 24);
+  ctx.fillRect(0, DEPTH_MAP_HEIGHT - 22, DEPTH_MAP_WIDTH, 22);
   ctx.fillStyle = '#ffffff';
-  ctx.font = '12px sans-serif';
+  ctx.font = '11px sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText(
-    `Street View Guide — Looking ${compassDirection(angleDeg)} — Use zone colors to place buildings and landscape`,
+    `Street View Guide — Looking ${compassDirection(angleDeg)} — Colored blocks show zone positions`,
     DEPTH_MAP_WIDTH / 2,
-    DEPTH_MAP_HEIGHT - 8,
+    DEPTH_MAP_HEIGHT - 7,
   );
 
   return canvas.toDataURL('image/png').split(',')[1];
@@ -821,8 +842,8 @@ export async function generateStreetView(
     styleModifier?: string;
   },
 ): Promise<StreetViewResult | null> {
-  const fov = options?.fovDeg ?? 60;
-  const distance = options?.distanceMeters ?? 150;
+  const fov = options?.fovDeg ?? 45;
+  const distance = options?.distanceMeters ?? 120;
 
   // 1. View cone
   const cone = getViewConePolygon(pegmanPos, angleDeg, fov, distance);
@@ -830,8 +851,8 @@ export async function generateStreetView(
   // 2. Zone intersection
   const intersecting = getZonesInViewCone(siteZones, cone);
 
-  // 3. Sort by distance
-  const sorted = sortZonesByDistance(intersecting, pegmanPos, angleDeg);
+  // 3. Sort by distance with angular analysis
+  const sorted = sortZonesByDistance(intersecting, pegmanPos, angleDeg, fov);
 
   // 4. Build prompt
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
