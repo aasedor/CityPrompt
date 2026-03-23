@@ -6,6 +6,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import { getColourForDevelopmentType } from '@/data/landUseColours';
+import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import {
   BUILDING_AESTHETIC_OPTIONS_V2,
   ROADWAY_AESTHETIC_OPTIONS_V2,
@@ -42,12 +43,75 @@ function resolveZoneLabel(zone: SiteZone): string {
   return zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
 }
 
-/** Resolve zone color: granular APA color from development_type if available, else fallback to zone_type config */
+/** Simple HSL shift for variant-level color differentiation on the map */
+function shiftHex(hex: string, hueShift: number, lightnessShift: number): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  h = ((h * 360 + hueShift) % 360 + 360) % 360 / 360;
+  l = Math.max(0, Math.min(1, l + lightnessShift));
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const toHex = (v: number) => Math.round(v * 255).toString(16).padStart(2, '0');
+  return `#${toHex(hue2rgb(p, q, h + 1/3))}${toHex(hue2rgb(p, q, h))}${toHex(hue2rgb(p, q, h - 1/3))}`;
+}
+
+const VARIANT_SHIFTS: [number, number][] = [[0, 0], [8, -0.06], [-8, 0.06], [16, -0.03]];
+
+/** Resolve zone color: per-archetype shade + variant shift, else dev-type color, else zone-type fallback */
 function resolveZoneColor(zone: SiteZone): string {
-  const devType = zone.properties?.development_type as string | undefined;
-  if (devType) {
-    const apaColor = getColourForDevelopmentType(devType);
-    if (apaColor.label !== 'Unclassified') return apaColor.fill;
+  const props = zone.properties;
+  if (props) {
+    // Get archetype ID from any zone type prefix
+    const archetypeId =
+      (props.development_subcategory as string) ||
+      (props.road_subcategory as string) ||
+      (props.green_space_subcategory as string) ||
+      (props.plaza_subcategory as string) ||
+      (props.development_archetype_id as string) ||
+      (props.road_archetype_id as string) ||
+      (props.green_space_archetype_id as string) ||
+      (props.plaza_archetype_id as string);
+
+    if (archetypeId) {
+      const baseColor = getShadeForArchetype(archetypeId);
+      if (baseColor !== '#888888') {
+        // Apply variant-level shift if a variant is selected
+        const variantId =
+          (props.development_selected_variant_id as string) ||
+          (props.road_selected_variant_id as string) ||
+          (props.green_space_selected_variant_id as string) ||
+          (props.plaza_selected_variant_id as string) || '';
+        // Extract variant index from id (e.g. "archetype_v2" → 1)
+        const vMatch = variantId.match(/_v(\d+)$/);
+        const vIdx = vMatch ? parseInt(vMatch[1], 10) - 1 : 0;
+        const [hShift, lShift] = VARIANT_SHIFTS[vIdx % VARIANT_SHIFTS.length];
+        return hShift === 0 && lShift === 0 ? baseColor : shiftHex(baseColor, hShift, lShift);
+      }
+    }
+
+    // Fallback: dev-type APA color
+    const devType = props.development_type as string | undefined;
+    if (devType) {
+      const apaColor = getColourForDevelopmentType(devType);
+      if (apaColor.label !== 'Unclassified') return apaColor.fill;
+    }
   }
   return ZONE_TYPE_CONFIG[zone.zone_type]?.color || zone.color;
 }
