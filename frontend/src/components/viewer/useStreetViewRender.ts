@@ -596,6 +596,201 @@ export function buildStreetViewPrompt(
 }
 
 // ---------------------------------------------------------------------------
+// Perspective depth map — color-coded guide image for spatial accuracy
+// ---------------------------------------------------------------------------
+
+const DEPTH_MAP_WIDTH = 1024;
+const DEPTH_MAP_HEIGHT = 576; // 16:9
+const EYE_HEIGHT_M = 1.7;
+const FLOOR_HEIGHT_M = 3.2;
+const SKY_COLOR = '#87CEEB';
+const GROUND_COLOR = '#808075';
+const DEFAULT_ZONE_COLORS: Record<string, string> = {
+  building: '#E03C31',
+  green_space: '#4CAF50',
+  road: '#808080',
+  water: '#2196F3',
+  parking: '#9E9E9E',
+};
+
+/**
+ * Convert a [lng,lat] coordinate to a position relative to the camera.
+ * Returns [rightward, forward] in meters where forward is along the view axis.
+ */
+function worldToCamera(
+  point: [number, number],
+  camPos: [number, number],
+  camAngleRad: number,
+): [number, number] {
+  const latRad = camPos[1] * DEG_TO_RAD;
+  const dx = (point[0] - camPos[0]) * METERS_PER_DEG_LAT * Math.cos(latRad); // east-west in meters
+  const dy = (point[1] - camPos[1]) * METERS_PER_DEG_LAT; // north-south in meters
+
+  // Rotate into camera space (camAngle: 0=N means forward is +Y)
+  const sinA = Math.sin(camAngleRad);
+  const cosA = Math.cos(camAngleRad);
+  const forward = dx * sinA + dy * cosA;
+  const right = dx * cosA - dy * sinA;
+  return [right, forward];
+}
+
+/**
+ * Project a 3D camera-space point to 2D screen coordinates using simple
+ * perspective. Returns [screenX, screenY] or null if behind camera.
+ */
+function perspectiveProject(
+  right: number,
+  forward: number,
+  heightM: number,
+  focalLength: number,
+): [number, number] | null {
+  if (forward <= 0.5) return null; // behind camera or too close
+  const sx = (right / forward) * focalLength + DEPTH_MAP_WIDTH / 2;
+  const sy = ((EYE_HEIGHT_M - heightM) / forward) * focalLength + DEPTH_MAP_HEIGHT / 2;
+  return [sx, sy];
+}
+
+/**
+ * Generate a color-coded perspective depth map showing zone positions
+ * from the pegman's viewpoint. Each zone is drawn as a colored block
+ * using its unique polygon color, with height based on floor count.
+ *
+ * Returns base64-encoded PNG (without data URI prefix).
+ */
+export function generateDepthMap(
+  pegmanPos: [number, number],
+  angleDeg: number,
+  visibleZones: ZoneWithDistance[],
+): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = DEPTH_MAP_WIDTH;
+  canvas.height = DEPTH_MAP_HEIGHT;
+  const ctx = canvas.getContext('2d')!;
+
+  // Draw sky gradient
+  const skyGrad = ctx.createLinearGradient(0, 0, 0, DEPTH_MAP_HEIGHT * 0.55);
+  skyGrad.addColorStop(0, SKY_COLOR);
+  skyGrad.addColorStop(1, '#d4e8f0');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0, 0, DEPTH_MAP_WIDTH, DEPTH_MAP_HEIGHT);
+
+  // Draw ground plane
+  const horizonY = DEPTH_MAP_HEIGHT * 0.55;
+  const groundGrad = ctx.createLinearGradient(0, horizonY, 0, DEPTH_MAP_HEIGHT);
+  groundGrad.addColorStop(0, '#a0a090');
+  groundGrad.addColorStop(1, GROUND_COLOR);
+  ctx.fillStyle = groundGrad;
+  ctx.fillRect(0, horizonY, DEPTH_MAP_WIDTH, DEPTH_MAP_HEIGHT - horizonY);
+
+  const camAngleRad = angleDeg * DEG_TO_RAD;
+  const focalLength = DEPTH_MAP_WIDTH * 0.7; // ~50mm equivalent
+
+  // Sort zones back-to-front (farthest first) so nearer zones overdraw
+  const sortedBackToFront = [...visibleZones].sort((a, b) => b.distance - a.distance);
+
+  for (const entry of sortedBackToFront) {
+    const zone = entry.zone;
+    const coords = zone.coordinates;
+    if (!coords || coords.length < 3) continue;
+
+    // Determine zone color
+    const color = zone.color || DEFAULT_ZONE_COLORS[zone.zone_type] || '#888888';
+
+    // Determine building height
+    let heightM = 0;
+    if (zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') {
+      const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || 4;
+      heightM = floors * FLOOR_HEIGHT_M;
+    } else if (zone.zone_type === 'green_space' || zone.zone_type === 'parking') {
+      heightM = 0; // ground-level
+    } else if (zone.zone_type === 'water') {
+      heightM = -0.5; // slightly below ground
+    }
+
+    // Project all polygon vertices to screen space (at ground level and top level)
+    const groundScreenPts: [number, number][] = [];
+    const topScreenPts: [number, number][] = [];
+
+    for (const coord of coords) {
+      const [right, forward] = worldToCamera(
+        [coord[0], coord[1]] as [number, number],
+        pegmanPos,
+        camAngleRad,
+      );
+
+      const groundPt = perspectiveProject(right, forward, 0, focalLength);
+      if (groundPt) groundScreenPts.push(groundPt);
+
+      if (heightM > 0) {
+        const topPt = perspectiveProject(right, forward, heightM, focalLength);
+        if (topPt) topScreenPts.push(topPt);
+      }
+    }
+
+    if (groundScreenPts.length < 2) continue;
+
+    if (heightM > 0 && topScreenPts.length >= 2) {
+      // Draw building as a filled shape: ground outline → top outline
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+
+      // Find the screen bounding box of ground points
+      const groundMinX = Math.min(...groundScreenPts.map(p => p[0]));
+      const groundMaxX = Math.max(...groundScreenPts.map(p => p[0]));
+      const groundMaxY = Math.max(...groundScreenPts.map(p => p[1]));
+      const topMinY = Math.min(...topScreenPts.map(p => p[1]));
+
+      // Draw as a simple rectangle from ground to top
+      ctx.fillRect(
+        Math.max(0, groundMinX),
+        Math.max(0, topMinY),
+        Math.min(DEPTH_MAP_WIDTH, groundMaxX) - Math.max(0, groundMinX),
+        groundMaxY - topMinY,
+      );
+
+      // Draw outline
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.5;
+      ctx.strokeRect(
+        Math.max(0, groundMinX),
+        Math.max(0, topMinY),
+        Math.min(DEPTH_MAP_WIDTH, groundMaxX) - Math.max(0, groundMinX),
+        groundMaxY - topMinY,
+      );
+      ctx.globalAlpha = 1;
+    } else {
+      // Ground-level zone (park, road, water, plaza) — draw as ground patch
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(groundScreenPts[0][0], groundScreenPts[0][1]);
+      for (let i = 1; i < groundScreenPts.length; i++) {
+        ctx.lineTo(groundScreenPts[i][0], groundScreenPts[i][1]);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // Add a label at the bottom
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fillRect(0, DEPTH_MAP_HEIGHT - 24, DEPTH_MAP_WIDTH, 24);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(
+    `Street View Guide — Looking ${compassDirection(angleDeg)} — Use zone colors to place buildings and landscape`,
+    DEPTH_MAP_WIDTH / 2,
+    DEPTH_MAP_HEIGHT - 8,
+  );
+
+  return canvas.toDataURL('image/png').split(',')[1];
+}
+
+// ---------------------------------------------------------------------------
 // Public API — async generator
 // ---------------------------------------------------------------------------
 
@@ -641,12 +836,23 @@ export async function generateStreetView(
   // 4. Build prompt
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
 
-  // 5. Call render API
+  // 5. Generate color-coded depth map as spatial guide
+  const depthMapBase64 = generateDepthMap(pegmanPos, angleDeg, sorted);
+
+  // 6. Call render API with depth map as guide image
   try {
+    const enhancedPrompt =
+      prompt +
+      '\n\nIMPORTANT: The attached image is a color-coded spatial guide showing where each zone ' +
+      'should appear in the final render. Each colored block represents a different building or ' +
+      'landscape zone. Use the position, size, and color of each block to place the corresponding ' +
+      'architectural element in the correct location. Replace each colored block with the photorealistic ' +
+      'version described in the prompt above. Maintain the same spatial layout and proportions.';
+
     const response = await axios.post(RENDER_API_URL, {
-      prompt,
+      prompt: enhancedPrompt,
+      image_base64: depthMapBase64,
       aspect_ratio: '16:9',
-      // Text-only generation — no image_base64
     }, { timeout: 180_000 });
 
     const resultBase64: string | undefined = response.data?.image_base64;

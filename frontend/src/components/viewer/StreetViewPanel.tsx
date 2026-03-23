@@ -182,7 +182,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
 
   // Floating panel on the map
   return (
-    <div className="absolute bottom-32 left-1/2 z-40 -translate-x-1/2">
+    <div className="absolute bottom-4 left-1/2 z-40 -translate-x-1/2">
       <div className="flex items-center gap-3 rounded-xl bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-sm">
         {/* Direction controls */}
         <button
