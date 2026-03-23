@@ -13,6 +13,7 @@ import {
   GREEN_SPACE_AESTHETIC_OPTIONS_V2,
   PLAZA_AESTHETIC_OPTIONS_V2,
 } from './aestheticCatalog';
+import { getViewConePolygon } from './useStreetViewRender';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -315,7 +316,7 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
@@ -335,6 +336,9 @@ export function SitePlannerMap({
   activeToolPropertiesRef.current = activeToolProperties;
   const siteZonesRef = useRef(siteZones);
   siteZonesRef.current = siteZones;
+  const streetViewPegmanRef = useRef(streetViewPegman);
+  streetViewPegmanRef.current = streetViewPegman;
+  const pegmanMarkerRef = useRef<mapboxgl.Marker | null>(null);
   const mapLoadedRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
 
@@ -894,6 +898,10 @@ export function SitePlannerMap({
           const features = buildPreviewFeatures(pts, currentTool);
           src.setData({ type: 'FeatureCollection', features });
         });
+      } else if (streetViewPegmanRef.current) {
+        // Street view mode — place the pegman at the clicked location
+        setStreetViewPosition([e.lngLat.lng, e.lngLat.lat]);
+        return;
       } else {
         // Selection mode — but only if not coming from a drag
         // Query both flat fill and extruded layers so building zones (with height) are clickable
@@ -1318,6 +1326,99 @@ export function SitePlannerMap({
     );
   }
 
+  // ─── Street View Pegman marker + view cone ───
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    // Remove existing marker when pegman is deactivated or position cleared
+    if (!streetViewPegman?.position) {
+      if (pegmanMarkerRef.current) {
+        pegmanMarkerRef.current.remove();
+        pegmanMarkerRef.current = null;
+      }
+      // Remove view cone layer/source
+      if (map.getLayer('street-view-cone-fill')) map.removeLayer('street-view-cone-fill');
+      if (map.getLayer('street-view-cone-line')) map.removeLayer('street-view-cone-line');
+      if (map.getSource('street-view-cone')) map.removeSource('street-view-cone');
+      return;
+    }
+
+    const pos = streetViewPegman.position;
+    const angle = streetViewPegman.angle;
+
+    // Create or update marker
+    if (!pegmanMarkerRef.current) {
+      const el = document.createElement('div');
+      el.style.cssText = 'width:32px;height:32px;border-radius:50%;background:#f59e0b;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:grab;display:flex;align-items:center;justify-content:center;font-size:16px;';
+      el.textContent = '\uD83D\uDC41'; // eye emoji
+      pegmanMarkerRef.current = new mapboxgl.Marker({ element: el, draggable: true })
+        .setLngLat(pos)
+        .addTo(map);
+      pegmanMarkerRef.current.on('dragend', () => {
+        const lngLat = pegmanMarkerRef.current!.getLngLat();
+        setStreetViewPosition([lngLat.lng, lngLat.lat]);
+      });
+    } else {
+      pegmanMarkerRef.current.setLngLat(pos);
+    }
+
+    // Update view cone
+    const coneCoords = getViewConePolygon(pos, angle, 60, 150);
+    const coneGeoJSON: GeoJSON.FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [{
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [coneCoords.map(c => [c[0], c[1]]).concat([coneCoords[0]])],
+        },
+      }],
+    };
+
+    if (map.getSource('street-view-cone')) {
+      (map.getSource('street-view-cone') as mapboxgl.GeoJSONSource).setData(coneGeoJSON);
+    } else {
+      map.addSource('street-view-cone', { type: 'geojson', data: coneGeoJSON });
+      map.addLayer({
+        id: 'street-view-cone-fill',
+        type: 'fill',
+        source: 'street-view-cone',
+        paint: { 'fill-color': '#f59e0b', 'fill-opacity': 0.15 },
+      });
+      map.addLayer({
+        id: 'street-view-cone-line',
+        type: 'line',
+        source: 'street-view-cone',
+        paint: { 'line-color': '#f59e0b', 'line-width': 2, 'line-dasharray': [3, 2] },
+      });
+    }
+  }, [streetViewPegman?.position, streetViewPegman?.angle, mapReady, setStreetViewPosition]);
+
+  // ─── Arrow key rotation for street view ───
+  useEffect(() => {
+    if (!streetViewPegman?.position) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!streetViewPegmanRef.current) return;
+      const currentAngle = streetViewPegmanRef.current.angle;
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setStreetViewAngle(((currentAngle - 45) + 360) % 360);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setStreetViewAngle((currentAngle + 45) % 360);
+      } else if (e.key === 'Escape') {
+        // Clear pegman on Escape
+        setStreetViewPosition(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition]);
+
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);
   const currentLength = linear && drawingPoints.length >= 2 ? polylineLength(drawingPoints) : 0;
@@ -1347,8 +1448,19 @@ export function SitePlannerMap({
           {formatDistance(currentLength)}
         </div>
       )}
+      {/* Street View mode hint */}
+      {streetViewPegman && !streetViewPegman.position && (
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-amber-600/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+          Click on the map to place the street view camera
+        </div>
+      )}
+      {streetViewPegman?.position && (
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-amber-600/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+          Use ← → arrow keys to rotate view — Esc to remove pin
+        </div>
+      )}
       {/* Select mode hint */}
-      {!activeSitePlannerTool && (
+      {!activeSitePlannerTool && !streetViewPegman && (
         <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
         </div>

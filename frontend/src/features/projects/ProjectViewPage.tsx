@@ -14,6 +14,7 @@ import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
+import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
 import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
@@ -292,6 +293,9 @@ export function ProjectViewPage() {
           />
           {/* GIS color legend */}
           <ZoneLegend siteZones={siteZones} />
+
+          {/* Street View Panel */}
+          <StreetViewPanel siteZones={siteZones} projectId={project?.id} />
 
           {/* Step 1: Zone properties panel */}
           {workflowStep === 1 && selectedZone && (

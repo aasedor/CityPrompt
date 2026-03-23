@@ -46,8 +46,8 @@ _GEMINI_RENDER_MODEL = "gemini-2.5-flash-image"
 class RenderRequest(BaseModel):
     """Payload sent by the frontend useAIRender hook."""
 
-    image_base64: str = Field(
-        ...,
+    image_base64: Optional[str] = Field(
+        default=None,
         description="Base64-encoded PNG screenshot of the map with colored zone overlays.",
     )
     mask_base64: Optional[str] = Field(
@@ -180,16 +180,17 @@ async def generate_render(req: RenderRequest):
     # --- Build payload ---
     parts: list[dict] = []
 
-    # Add the screenshot as inline image
-    parts.append({
-        "inlineData": {
-            "mimeType": "image/png",
-            "data": req.image_base64,
-        }
-    })
+    # Add the screenshot as inline image (if provided)
+    if req.image_base64:
+        parts.append({
+            "inlineData": {
+                "mimeType": "image/png",
+                "data": req.image_base64,
+            }
+        })
 
     # If a mask is provided, send it as a second image with explanation
-    if req.mask_base64:
+    if req.image_base64 and req.mask_base64:
         parts.append({
             "text": "The following black-and-white mask shows the exact area to edit "
                     "(white = edit, black = keep unchanged):"
@@ -304,14 +305,15 @@ async def generate_render(req: RenderRequest):
 
         # Log dimensions
         try:
-            input_img = Image.open(io.BytesIO(base64.b64decode(req.image_base64)))
-            output_img = Image.open(io.BytesIO(base64.b64decode(image_b64)))
-            logger.info(
-                "Dimensions — input: %s, output: %s, match: %s",
-                input_img.size,
-                output_img.size,
-                input_img.size == output_img.size,
-            )
+            if req.image_base64:
+                input_img = Image.open(io.BytesIO(base64.b64decode(req.image_base64)))
+                output_img = Image.open(io.BytesIO(base64.b64decode(image_b64)))
+                logger.info(
+                    "Dimensions — input: %s, output: %s, match: %s",
+                    input_img.size,
+                    output_img.size,
+                    input_img.size == output_img.size,
+                )
         except Exception as dim_exc:
             logger.warning("Could not compare dimensions: %s", dim_exc)
 

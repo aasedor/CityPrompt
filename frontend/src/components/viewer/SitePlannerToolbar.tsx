@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { MousePointer, HelpCircle, Layers3 } from 'lucide-react';
+import { MousePointer, HelpCircle, Layers3, Eye } from 'lucide-react';
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
@@ -70,7 +70,7 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
 }
 
 export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
-  const { activeSitePlannerTool, setActiveSitePlannerTool } = useViewerStore();
+  const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -141,6 +141,19 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           >
             <MousePointer size={14} />
             Select
+          </button>
+
+          <button
+            onClick={() => setStreetViewActive(!streetViewPegman)}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              streetViewPegman
+                ? 'bg-amber-500/15 text-amber-700 ring-1 ring-amber-500/25'
+                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            }`}
+            title="Drop a pin to generate a street-level view"
+          >
+            <Eye size={14} />
+            Street View
           </button>
 
           <UndoRedoButtons />
