@@ -349,10 +349,20 @@ export function getZonesInViewCone(
     // Skip site boundaries — they wrap everything
     if (zone.zone_type === 'site_boundary') continue;
 
-    // Need at least 3 coords to form a polygon
-    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    if (!zone.coordinates || zone.coordinates.length < 2) continue;
 
     const zoneCoords = zone.coordinates as [number, number][];
+
+    // For lines (roads/paths with only 2 points), check if either endpoint
+    // is inside the cone or if the line segment crosses the cone
+    if (zoneCoords.length === 2) {
+      const inCone = pointInPolygon(zoneCoords[0], conePolygon) ||
+                     pointInPolygon(zoneCoords[1], conePolygon);
+      if (inCone) {
+        result.push(zone);
+      }
+      continue;
+    }
 
     if (polygonsIntersect(conePolygon, zoneCoords)) {
       result.push(zone);
@@ -487,12 +497,7 @@ function zoneTypeLabel(zoneType: string): string {
   return labels[zoneType] || zoneType.replace(/_/g, ' ');
 }
 
-/** Classify distance into foreground / midground / background. */
-function depthBand(distanceM: number): 'FOREGROUND' | 'MIDGROUND' | 'BACKGROUND' {
-  if (distanceM < 30) return 'FOREGROUND';
-  if (distanceM < 80) return 'MIDGROUND';
-  return 'BACKGROUND';
-}
+// Depth classification is now done inline in buildStreetViewPrompt
 
 /**
  * Build a detailed description for a single zone based on its type and
@@ -585,49 +590,77 @@ export function buildStreetViewPrompt(
   lines.push(
     `Generate a wide 16:9 street-level photograph of an urban development, ` +
     `as seen from eye level (1.7m height) looking ${direction}. ` +
-    `The image MUST show ALL of the following elements composed together in a single coherent scene ` +
-    `at the EXACT frame positions specified below. Each element has a specific horizontal position ` +
-    `and size within the frame — follow these precisely.`,
+    `The image MUST show ALL of the following elements composed together in a single coherent scene. ` +
+    `CRITICAL DEPTH RULE: Elements that are CLOSE (under 30m) must appear LARGE and fill much of the frame. ` +
+    `Elements that are FAR (over 80m) must appear SMALL, near the horizon line. ` +
+    `A zone 20m away should appear roughly 4x larger than a zone 80m away.`,
   );
 
   if (visibleZones.length === 0) {
     lines.push('The view shows an empty development site with cleared ground and surrounding neighborhood.');
   } else {
-    // Build precise spatial layout
-    lines.push('PRECISE SPATIAL LAYOUT (frame position 0% = left edge, 100% = right edge):');
+    // Separate by depth for structured description
+    const foreground = visibleZones.filter(z => z.distance < 30);
+    const midground = visibleZones.filter(z => z.distance >= 30 && z.distance < 80);
+    const background = visibleZones.filter(z => z.distance >= 80);
 
-    // Sort by frameLeftPct for left-to-right description
-    const leftToRight = [...visibleZones].sort((a, b) => a.frameLeftPct - b.frameLeftPct);
+    if (foreground.length > 0) {
+      lines.push('=== FOREGROUND (CLOSEST, LARGEST IN FRAME — these dominate the view) ===');
+      for (const entry of foreground) {
+        const info = getZoneArchetypeInfo(entry.zone);
+        const desc = describeZoneForStreetView(entry.zone, info);
+        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+        const heightDesc = floors > 0 ? `${floors}-story building, ` : '';
+        const posDesc = entry.relativePosition === 'left' ? 'on the LEFT side' :
+                        entry.relativePosition === 'right' ? 'on the RIGHT side' : 'in the CENTER';
 
-    for (const entry of leftToRight) {
-      const info = getZoneArchetypeInfo(entry.zone);
-      const desc = describeZoneForStreetView(entry.zone, info);
-      const depth = depthBand(entry.distance).toLowerCase();
-
-      // Calculate apparent height based on distance (closer = taller in frame)
-      const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
-      const heightDesc = floors > 0 ? `${floors}-story, ` : '';
-      const sizeDesc = entry.distance < 30 ? 'large and dominant' :
-                       entry.distance < 60 ? 'medium-sized' : 'smaller in the distance';
-
-      lines.push(
-        `- POSITION ${entry.frameLeftPct}%-${entry.frameRightPct}% of frame width ` +
-        `(${entry.framePercent}% wide), ${depth} (~${Math.round(entry.distance)}m away), ` +
-        `${heightDesc}${sizeDesc}: ${desc}`,
-      );
+        lines.push(
+          `LARGE, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
+          `only ~${Math.round(entry.distance)}m away, ${heightDesc}` +
+          `filling ${entry.framePercent}% of frame width: ${desc}`,
+        );
+      }
     }
 
-    // Describe gaps as sky/ground
-    lines.push(
-      '\nFill any gaps between elements with: sky above the horizon line, and paved street / ' +
-      'sidewalk / landscaping below. Elements farther away appear smaller and closer to the horizon.',
-    );
+    if (midground.length > 0) {
+      lines.push('=== MIDGROUND (MEDIUM SIZE — visible but not dominant) ===');
+      for (const entry of midground) {
+        const info = getZoneArchetypeInfo(entry.zone);
+        const desc = describeZoneForStreetView(entry.zone, info);
+        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+        const heightDesc = floors > 0 ? `${floors}-story, ` : '';
+        const posDesc = entry.relativePosition === 'left' ? 'LEFT' :
+                        entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+
+        lines.push(
+          `Medium-sized, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
+          `~${Math.round(entry.distance)}m away, ${heightDesc}${desc}`,
+        );
+      }
+    }
+
+    if (background.length > 0) {
+      lines.push('=== BACKGROUND (SMALL, near horizon — these should look distant) ===');
+      for (const entry of background) {
+        const info = getZoneArchetypeInfo(entry.zone);
+        const desc = describeZoneForStreetView(entry.zone, info);
+        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
+        const heightDesc = floors > 0 ? `${floors}-story, ` : '';
+        const posDesc = entry.relativePosition === 'left' ? 'LEFT' :
+                        entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+
+        lines.push(
+          `Small and distant, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
+          `~${Math.round(entry.distance)}m away, ${heightDesc}${desc}`,
+        );
+      }
+    }
   }
 
   // Ground plane
   lines.push(
-    'FOREGROUND: Paved sidewalk or street surface with curbs, pedestrian crossing markings, ' +
-    'and scattered street trees. The ground plane connects all elements naturally.',
+    'GROUND: Paved sidewalk and street in the immediate foreground with curbs and street trees. ' +
+    'The ground plane recedes naturally toward the horizon, connecting all described elements.',
   );
 
   // Style modifier
@@ -637,9 +670,8 @@ export function buildStreetViewPrompt(
 
   // Closing quality directives
   lines.push(
-    'STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting ' +
-    'from the side casting long soft shadows. Sharp material detail. 35mm lens equivalent. ' +
-    'Depth of field — sharp foreground, slightly softer background. ' +
+    'STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting. ' +
+    'Sharp material detail on close elements, atmospheric haze on distant ones. 35mm lens. ' +
     '8K resolution, no people, no text overlays, no watermarks.',
   );
 
