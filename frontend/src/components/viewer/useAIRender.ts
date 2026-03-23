@@ -15,6 +15,8 @@ import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
+import openSpaceCatalogData from '@/data/openSpaceArchetypes.json';
+import streetPathCatalogData from '@/data/streetPathArchetypes.json';
 import { getArchetypeForShade } from '@/data/archetypeShadeMap';
 
 // ---------------------------------------------------------------------------
@@ -1073,6 +1075,12 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
     parts.push('Warm afternoon sunlight from the southwest casts crisp architectural shadows. Captured with a DJI drone at 60m altitude, matching the existing satellite imagery perspective and lighting.');
   }
 
+  parts.push(
+    'If an archetype reference image is provided, apply its exact architectural style, facade materials, ' +
+    'window patterns, and material textures to the building. The reference image shows what the finished ' +
+    'building should look like — match it as closely as possible while respecting the aerial perspective.',
+  );
+
   parts.push('Keep everything else in the image exactly the same, preserving the original style, lighting, and composition.');
 
   if (options.customPrompt?.trim()) {
@@ -1930,6 +1938,63 @@ function buildNegativePrompt(options: AIRenderOptions): string {
  * Call our backend endpoint which proxies to Vertex AI Imagen 3.
  * Returns a data-URI for the rendered image.
  */
+/**
+ * Fetch an image URL and return base64 data (without data URI prefix).
+ */
+async function fetchArchetypeImageBase64(url: string): Promise<string | null> {
+  try {
+    const fullUrl = url.startsWith('http') ? url : window.location.origin + url;
+    const resp = await fetch(fullUrl);
+    if (!resp.ok) return null;
+    const blob = await resp.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        resolve(dataUrl.split(',')[1] || null);
+      };
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Look up the archetype card thumbnail for a zone.
+ * Returns { image_base64, label } or null if not found.
+ */
+async function getZoneArchetypeCard(zone: SiteZone): Promise<{ image_base64: string; label: string } | null> {
+  const info = getZoneArchetypeInfo(zone);
+  const archetypeId = zone.properties?.archetype_id || zone.properties?.subcategory;
+  if (!archetypeId) return null;
+
+  // Look through all catalogs
+  const allCatalogs: any[] = [
+    ...((archetypeCatalog as any)?.archetypes || []),
+    ...((openSpaceCatalogData as any)?.archetypes || []),
+    ...((streetPathCatalogData as any)?.archetypes || []),
+  ];
+
+  const catalogEntry = allCatalogs.find((c: any) => c.id === archetypeId);
+  if (!catalogEntry) return null;
+
+  let thumbnailUrl: string | null = null;
+  if (catalogEntry.variants) {
+    const selectedIdx = Number(zone.properties?.selected_variant) || 0;
+    const variant = catalogEntry.variants[selectedIdx] || catalogEntry.variants[0];
+    thumbnailUrl = variant?.thumbnailUrl || null;
+  }
+  if (!thumbnailUrl) thumbnailUrl = catalogEntry.thumbnailUrl || null;
+  if (!thumbnailUrl) return null;
+
+  const b64 = await fetchArchetypeImageBase64(thumbnailUrl);
+  if (!b64) return null;
+
+  const label = info.archetypeTitle || zone.name || zone.zone_type;
+  return { image_base64: b64, label };
+}
+
 async function callVertexAI(
   imageBase64: string,
   prompt: string,
@@ -1939,8 +2004,9 @@ async function callVertexAI(
   negativePrompt?: string,
   guidanceScale?: number,
   model?: string,
+  archetypeImages?: Array<{ image_base64: string; label: string; zone_color?: string }>,
 ): Promise<{ imageDataUri: string; seed: number }> {
-  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default');
+  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default', 'archetypeImages:', archetypeImages?.length || 0);
 
   const body: Record<string, unknown> = {
     image_base64: imageBase64,
@@ -1959,6 +2025,9 @@ async function callVertexAI(
   }
   if (model) {
     body.model = model;
+  }
+  if (archetypeImages && archetypeImages.length > 0) {
+    body.archetype_images = archetypeImages;
   }
 
   const resp = await axios.post(
@@ -2600,6 +2669,19 @@ export function useAIRender(): UseAIRenderReturn {
 
             console.log(`[AIRender] Pass 2 prompt (${buildingPrompt.length} chars):\n${buildingPrompt}`);
 
+            // Fetch archetype card image for multi-image routing
+            let buildingArchetypeImages: Array<{ image_base64: string; label: string; zone_color?: string }> | undefined;
+            try {
+              const card = await getZoneArchetypeCard(zone);
+              if (card) {
+                const zoneColor = colorName(getZoneRenderColor(zone.id, zone.color || '#E03C31'));
+                buildingArchetypeImages = [{ ...card, zone_color: zoneColor }];
+                console.log(`[AIRender] Pass 2: Sending archetype card "${card.label}" for multi-image routing`);
+              }
+            } catch (cardErr) {
+              console.warn('[AIRender] Failed to fetch archetype card:', cardErr);
+            }
+
             const { imageDataUri } = await callVertexAI(
               buildingScreenshot,
               buildingPrompt,
@@ -2609,6 +2691,7 @@ export function useAIRender(): UseAIRenderReturn {
               negativePrompt || undefined,
               guidanceScale,
               options.model,
+              buildingArchetypeImages,
             );
 
             // Composite with headroom-expanded clip
