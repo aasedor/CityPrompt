@@ -316,7 +316,7 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewActive, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
@@ -1400,24 +1400,38 @@ export function SitePlannerMap({
   useEffect(() => {
     if (!streetViewPegman?.position) return;
 
+    // Disable Mapbox keyboard navigation while street view is active
+    const map = mapRef.current;
+    if (map) {
+      map.keyboard.disable();
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!streetViewPegmanRef.current) return;
       const currentAngle = streetViewPegmanRef.current.angle;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
+        e.stopPropagation();
         setStreetViewAngle(((currentAngle - 45) + 360) % 360);
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
+        e.stopPropagation();
         setStreetViewAngle((currentAngle + 45) % 360);
       } else if (e.key === 'Escape') {
-        // Clear pegman on Escape
-        setStreetViewPosition(null);
+        e.preventDefault();
+        setStreetViewActive(false);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition]);
+    window.addEventListener('keydown', handleKeyDown, true); // capture phase
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+      // Re-enable Mapbox keyboard navigation
+      if (map) {
+        map.keyboard.enable();
+      }
+    };
+  }, [streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition, setStreetViewActive]);
 
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);

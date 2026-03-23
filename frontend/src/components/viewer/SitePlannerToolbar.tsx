@@ -80,6 +80,8 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   );
 
   const activateCoreTool = (id: CoreToolId) => {
+    // Deactivate street view when switching to a drawing tool
+    if (streetViewPegman) setStreetViewActive(false);
     const zoneType = resolveZoneTypeForCoreTool(id, parksSubtype);
     if (activeSitePlannerTool === zoneType) {
       setActiveSitePlannerTool(null);
@@ -89,6 +91,8 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   };
 
   const handleSelectMode = () => {
+    // Deactivate street view when switching to select mode
+    if (streetViewPegman) setStreetViewActive(false);
     setActiveSitePlannerTool(null);
   };
 
