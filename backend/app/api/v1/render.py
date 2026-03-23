@@ -83,6 +83,10 @@ class RenderRequest(BaseModel):
         default=True,
         description="Apply post-processing (sharpening, contrast, color enhancement).",
     )
+    model: Optional[str] = Field(
+        default=None,
+        description="Gemini model ID to use. Defaults to gemini-2.5-flash-image.",
+    )
 
 
 class RenderResponse(BaseModel):
@@ -110,17 +114,25 @@ def _post_process(image_b64: str) -> str:
     return base64.b64encode(buf.getvalue()).decode()
 
 
-def _build_gemini_url(settings) -> str:
+_ALLOWED_MODELS = {
+    "gemini-2.5-flash-image",
+    "gemini-3-pro-image-preview",
+    "gemini-3.1-flash-image-preview",
+}
+
+
+def _build_gemini_url(settings, model: str | None = None) -> str:
     """Build the Gemini API URL.
 
     If GEMINI_API_KEY is set, use the public generativelanguage.googleapis.com
     endpoint (simpler, no Vertex AI setup needed).
     Otherwise fall back to Vertex AI endpoint.
     """
+    render_model = model if model and model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     if settings.gemini_api_key:
         return (
             f"https://generativelanguage.googleapis.com/v1beta/"
-            f"models/{_GEMINI_RENDER_MODEL}:generateContent"
+            f"models/{render_model}:generateContent"
             f"?key={settings.gemini_api_key}"
         )
     else:
@@ -130,7 +142,7 @@ def _build_gemini_url(settings) -> str:
             f"https://{location}-aiplatform.googleapis.com/v1/"
             f"projects/{settings.vertex_ai_project}/"
             f"locations/{location}/"
-            f"publishers/google/models/{_GEMINI_RENDER_MODEL}:generateContent"
+            f"publishers/google/models/{render_model}:generateContent"
         )
 
 
@@ -233,7 +245,7 @@ async def generate_render(req: RenderRequest):
     logger.info(
         "Render request — model=%s, auth=%s, prompt_length=%d, has_mask=%s, "
         "temperature=%.2f",
-        _GEMINI_RENDER_MODEL,
+        req.model or _GEMINI_RENDER_MODEL,
         auth_mode,
         len(req.prompt),
         bool(req.mask_base64),
@@ -243,7 +255,7 @@ async def generate_render(req: RenderRequest):
 
     # --- Call Gemini ---
     try:
-        url = _build_gemini_url(settings)
+        url = _build_gemini_url(settings, model=req.model)
         headers = _get_auth_headers(settings)
     except Exception as exc:
         logger.exception("Failed to prepare Gemini request: %s", exc)

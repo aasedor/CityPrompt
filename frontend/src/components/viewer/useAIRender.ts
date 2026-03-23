@@ -74,6 +74,8 @@ export interface AIRenderOptions {
    * All site zones — used for structured zone-by-zone prompt generation.
    */
   siteZones?: SiteZone[];
+  /** Gemini model ID override (e.g. 'gemini-3-pro-image-preview') */
+  model?: string;
 }
 
 export interface AIRenderResult {
@@ -1936,8 +1938,9 @@ async function callVertexAI(
   maskBase64?: string,
   negativePrompt?: string,
   guidanceScale?: number,
+  model?: string,
 ): Promise<{ imageDataUri: string; seed: number }> {
-  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale);
+  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default');
 
   const body: Record<string, unknown> = {
     image_base64: imageBase64,
@@ -1953,6 +1956,9 @@ async function callVertexAI(
   }
   if (guidanceScale != null) {
     body.guidance_scale = guidanceScale;
+  }
+  if (model) {
+    body.model = model;
   }
 
   const resp = await axios.post(
@@ -2028,6 +2034,7 @@ export function useAIRender(): UseAIRenderReturn {
           maskBase64,
           negativePrompt || undefined,
           guidanceScale,
+          options.model,
         );
         return { imageUrl: imageDataUri, bounds, seed: resultSeed, prompt };
       } catch (err: unknown) {
@@ -2491,6 +2498,7 @@ export function useAIRender(): UseAIRenderReturn {
               groundMask,
               negativePrompt || undefined,
               guidanceScale,
+              options.model,
             );
 
             // Composite ground zones onto the cumulative result with strict polygon clipping
@@ -2600,6 +2608,7 @@ export function useAIRender(): UseAIRenderReturn {
               buildingMask,
               negativePrompt || undefined,
               guidanceScale,
+              options.model,
             );
 
             // Composite with headroom-expanded clip
