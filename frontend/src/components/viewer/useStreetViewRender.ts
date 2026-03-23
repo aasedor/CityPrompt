@@ -647,59 +647,48 @@ export function buildStreetViewPrompt(
   if (visibleZones.length === 0) {
     lines.push('The view shows an empty development site with cleared ground and surrounding neighborhood.');
   } else {
-    // Separate by depth for structured description
-    const foreground = visibleZones.filter(z => z.distance < 30);
-    const midground = visibleZones.filter(z => z.distance >= 30 && z.distance < 80);
-    const background = visibleZones.filter(z => z.distance >= 80);
+    // Find the "hero" zone — closest to camera AND most central (largest frame coverage)
+    const hero = [...visibleZones].sort((a, b) => {
+      // Score: lower distance + higher frame percent = better hero
+      const scoreA = a.distance - a.framePercent * 2;
+      const scoreB = b.distance - b.framePercent * 2;
+      return scoreA - scoreB;
+    })[0];
 
-    if (foreground.length > 0) {
-      lines.push('=== FOREGROUND (CLOSEST, LARGEST IN FRAME — these dominate the view) ===');
-      for (const entry of foreground) {
-        const info = getZoneArchetypeInfo(entry.zone);
-        const desc = describeZoneForStreetView(entry.zone, info);
-        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
-        const heightDesc = floors > 0 ? `${floors}-story building, ` : '';
-        const posDesc = entry.relativePosition === 'left' ? 'on the LEFT side' :
-                        entry.relativePosition === 'right' ? 'on the RIGHT side' : 'in the CENTER';
+    if (hero) {
+      const heroInfo = getZoneArchetypeInfo(hero.zone);
+      const heroDesc = describeZoneForStreetView(hero.zone, heroInfo);
+      const heroName = heroInfo.archetypeTitle || hero.zone.name || zoneTypeLabel(hero.zone.zone_type);
+      const isGreenSpace = hero.zone.zone_type === 'green_space' || hero.zone.zone_type === 'water' || hero.zone.zone_type === 'parking';
 
-        lines.push(
-          `LARGE, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
-          `only ~${Math.round(entry.distance)}m away, ${heightDesc}` +
-          `filling ${entry.framePercent}% of frame width: ${desc}`,
-        );
-      }
+      lines.push(
+        `=== PRIMARY SUBJECT (this dominates the center of the image) ===\n` +
+        `"${heroName}" is the MAIN FOCUS of this image. It is only ~${Math.round(hero.distance)}m away ` +
+        `and fills the center ${hero.framePercent}% of the frame (position ${hero.frameLeftPct}%-${hero.frameRightPct}%). ` +
+        (isGreenSpace
+          ? `This is a LANDSCAPE element — it should fill the lower 40-60% of the image with lush greenery, paths, trees, and open space. Buildings appear BEHIND and BESIDE it, not in front of it. `
+          : ``) +
+        `\nDescription: ${heroDesc}`,
+      );
     }
 
-    if (midground.length > 0) {
-      lines.push('=== MIDGROUND (MEDIUM SIZE — visible but not dominant) ===');
-      for (const entry of midground) {
+    // Other zones, sorted by distance
+    const others = visibleZones.filter(z => z !== hero);
+    if (others.length > 0) {
+      lines.push('=== SURROUNDING CONTEXT (these frame the main subject) ===');
+      for (const entry of others) {
         const info = getZoneArchetypeInfo(entry.zone);
         const desc = describeZoneForStreetView(entry.zone, info);
         const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
         const heightDesc = floors > 0 ? `${floors}-story, ` : '';
-        const posDesc = entry.relativePosition === 'left' ? 'LEFT' :
-                        entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
+        const posDesc = entry.relativePosition === 'left' ? 'LEFT edge' :
+                        entry.relativePosition === 'right' ? 'RIGHT edge' : 'CENTER-BACK';
+        const sizeDesc = entry.distance < 30 ? 'Large' :
+                         entry.distance < 80 ? 'Medium' : 'Small/distant';
 
         lines.push(
-          `Medium-sized, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
-          `~${Math.round(entry.distance)}m away, ${heightDesc}${desc}`,
-        );
-      }
-    }
-
-    if (background.length > 0) {
-      lines.push('=== BACKGROUND (SMALL, near horizon — these should look distant) ===');
-      for (const entry of background) {
-        const info = getZoneArchetypeInfo(entry.zone);
-        const desc = describeZoneForStreetView(entry.zone, info);
-        const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
-        const heightDesc = floors > 0 ? `${floors}-story, ` : '';
-        const posDesc = entry.relativePosition === 'left' ? 'LEFT' :
-                        entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
-
-        lines.push(
-          `Small and distant, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
-          `~${Math.round(entry.distance)}m away, ${heightDesc}${desc}`,
+          `${sizeDesc}, ${posDesc} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%), ` +
+          `~${Math.round(entry.distance)}m, ${heightDesc}${desc}`,
         );
       }
     }
@@ -856,29 +845,12 @@ export function generateDepthMap(
       ctx.globalAlpha = 0.3;
       ctx.stroke();
 
-      // Draw tree canopy circles above the ground — parks have vertical presence!
-      // Canopy height scales inversely with distance (close = tall trees)
-      const treeHeight = Math.min(horizonY * 0.7, 60 * perspScale);
-      const numTrees = Math.max(2, Math.min(6, Math.round(width / 40)));
-      const treeSpacing = width / (numTrees + 1);
-
-      ctx.globalAlpha = 0.65;
-      for (let t = 1; t <= numTrees; t++) {
-        const treeX = leftX + t * treeSpacing;
-        const treeBaseY = groundTop;
-        const treeTopY = treeBaseY - treeHeight;
-        const canopyRadius = Math.max(8, 20 * perspScale);
-
-        // Tree trunk
-        ctx.fillStyle = '#5D4037';
-        ctx.fillRect(treeX - 2, treeTopY + canopyRadius * 0.6, 4, treeHeight - canopyRadius * 0.6);
-
-        // Canopy (green circle)
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(treeX, treeTopY + canopyRadius, canopyRadius, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      // Draw a tall green block above ground to represent park's vertical presence
+      // (trees, vegetation) — simpler than individual circles to avoid literal interpretation
+      const vegHeight = Math.min(horizonY * 0.5, 40 * perspScale);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.5;
+      ctx.fillRect(leftX + 4, groundTop - vegHeight, width - 8, vegHeight);
       ctx.globalAlpha = 1;
 
     } else if (zone.zone_type === 'water') {
