@@ -8,7 +8,9 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import type { SiteZone } from '@/types';
-import archetypeCatalog from '@/data/buildingArchetypes.json';
+import buildingCatalog from '@/data/buildingArchetypes.json';
+import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
+import streetPathCatalog from '@/data/streetPathArchetypes.json';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -21,8 +23,13 @@ const EARTH_RADIUS_M = 6_371_000;
 /** Meters per degree of latitude (roughly constant). */
 const METERS_PER_DEG_LAT = 110_540;
 
+// Merge all archetype catalogs into a single lookup array
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
+const catalog: any[] = [
+  ...((buildingCatalog as any)?.archetypes || []),
+  ...((openSpaceCatalog as any)?.archetypes || []),
+  ...((streetPathCatalog as any)?.archetypes || []),
+];
 
 // ---------------------------------------------------------------------------
 // Compass helpers
@@ -74,6 +81,13 @@ interface ArchetypeInfo {
   surfaceType?: string;
   plantingCharacter?: string;
   edgeConditions?: string;
+  // Park/open space specific
+  landscapeCharacter?: string;
+  plantingType?: string;
+  seatingRealm?: string;
+  waterFeatures?: string;
+  opennessEnclosure?: string;
+  pavingType?: string;
 }
 
 /**
@@ -137,9 +151,16 @@ export function getZoneArchetypeInfo(zone: SiteZone): ArchetypeInfo {
       colorScheme: fd.colorScheme || undefined,
       aerialAppearance: rd.aerialAppearance || undefined,
       corridorDescription: corridorParts.length > 0 ? corridorParts.join('. ') : undefined,
-      surfaceType: sp.surfaceType || undefined,
-      plantingCharacter: sp.plantingCharacter || undefined,
+      surfaceType: sp.surfaceType || sp.pavingType || undefined,
+      plantingCharacter: sp.plantingCharacter || sp.plantingType || undefined,
       edgeConditions: sp.edgeConditions || undefined,
+      // Park/open space specific
+      landscapeCharacter: sp.landscapeCharacter || undefined,
+      plantingType: sp.plantingType || undefined,
+      seatingRealm: sp.seatingRealm || undefined,
+      waterFeatures: sp.waterFeatures || undefined,
+      opennessEnclosure: sp.opennessEnclosure || undefined,
+      pavingType: sp.pavingType || undefined,
     };
   }
 
@@ -548,13 +569,23 @@ function describeZoneForStreetView(
       if (info.edgeConditions) parts.push(`Edges: ${info.edgeConditions}`);
     }
   } else if (zone.zone_type === 'green_space' || zone.zone_type === 'parking') {
-    // Parks, plazas, green spaces
-    if (info.mapOverlayPrompt) {
+    // Parks, plazas, green spaces — use rich landscape metadata
+    if (info.landscapeCharacter) {
+      // Best source: the full landscape character description from openSpaceArchetypes
+      parts.push(info.landscapeCharacter);
+    } else if (info.mapOverlayPrompt) {
       parts.push(info.mapOverlayPrompt);
-    } else {
+    }
+    // Layer additional details
+    if (info.plantingType) parts.push(`Planting: ${info.plantingType}`);
+    if (info.pavingType) parts.push(`Paths: ${info.pavingType}`);
+    if (info.seatingRealm) parts.push(`Seating: ${info.seatingRealm}`);
+    if (info.waterFeatures && info.waterFeatures !== 'None') parts.push(`Water: ${info.waterFeatures}`);
+    if (info.opennessEnclosure) parts.push(`Character: ${info.opennessEnclosure}`);
+    // Fallbacks if no rich data
+    if (parts.length <= 1) {
       if (info.plantingCharacter) parts.push(info.plantingCharacter);
       if (info.surfaceType) parts.push(`Surface: ${info.surfaceType}`);
-      if (info.materials) parts.push(`Materials: ${info.materials}`);
       if (info.publicRealm) parts.push(info.publicRealm);
     }
   } else if (zone.zone_type === 'water') {
@@ -784,17 +815,17 @@ export function generateDepthMap(
         leftX + width / 2,
         Math.max(0, topY) + 14,
       );
-    } else {
-      // Ground-level zone (park, water, road) — draw as ground-plane patch
-      // These sit on the ground plane, getting narrower with distance
-      const groundTop = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.05 + distNorm * 0.35);
-      const groundBot = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.15 + distNorm * 0.5);
+    } else if (zone.zone_type === 'green_space' || zone.zone_type === 'parking') {
+      // Parks and green spaces — draw ground patch PLUS tree canopy above horizon
+      // Ground patch (larger for closer parks)
+      const groundTop = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.02 + distNorm * 0.25);
+      const groundBot = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.25 + distNorm * 0.45);
 
       ctx.fillStyle = color;
       ctx.globalAlpha = 0.75;
 
-      // Draw as a trapezoid (narrower at top / farther)
-      const narrowing = distNorm * 0.15 * width;
+      // Draw ground as trapezoid
+      const narrowing = distNorm * 0.1 * width;
       ctx.beginPath();
       ctx.moveTo(leftX + narrowing, groundTop);
       ctx.lineTo(rightX - narrowing, groundTop);
@@ -805,8 +836,71 @@ export function generateDepthMap(
 
       ctx.strokeStyle = '#000000';
       ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.4;
+      ctx.globalAlpha = 0.3;
       ctx.stroke();
+
+      // Draw tree canopy circles above the ground — parks have vertical presence!
+      // Canopy height scales inversely with distance (close = tall trees)
+      const treeHeight = Math.min(horizonY * 0.7, 60 * perspScale);
+      const numTrees = Math.max(2, Math.min(6, Math.round(width / 40)));
+      const treeSpacing = width / (numTrees + 1);
+
+      ctx.globalAlpha = 0.65;
+      for (let t = 1; t <= numTrees; t++) {
+        const treeX = leftX + t * treeSpacing;
+        const treeBaseY = groundTop;
+        const treeTopY = treeBaseY - treeHeight;
+        const canopyRadius = Math.max(8, 20 * perspScale);
+
+        // Tree trunk
+        ctx.fillStyle = '#5D4037';
+        ctx.fillRect(treeX - 2, treeTopY + canopyRadius * 0.6, 4, treeHeight - canopyRadius * 0.6);
+
+        // Canopy (green circle)
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(treeX, treeTopY + canopyRadius, canopyRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+    } else if (zone.zone_type === 'water') {
+      // Water — draw as reflective ground patch with slight blue gradient
+      const groundTop = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.03 + distNorm * 0.28);
+      const groundBot = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.2 + distNorm * 0.45);
+
+      const waterGrad = ctx.createLinearGradient(0, groundTop, 0, groundBot);
+      waterGrad.addColorStop(0, '#64B5F6');
+      waterGrad.addColorStop(1, color || '#2196F3');
+      ctx.fillStyle = waterGrad;
+      ctx.globalAlpha = 0.8;
+
+      const narrowing = distNorm * 0.1 * width;
+      ctx.beginPath();
+      ctx.moveTo(leftX + narrowing, groundTop);
+      ctx.lineTo(rightX - narrowing, groundTop);
+      ctx.lineTo(rightX, groundBot);
+      ctx.lineTo(leftX, groundBot);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+    } else {
+      // Roads and other ground-level zones
+      const groundTop = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.1 + distNorm * 0.3);
+      const groundBot = horizonY + (DEPTH_MAP_HEIGHT - horizonY) * (0.2 + distNorm * 0.45);
+
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.7;
+
+      const narrowing = distNorm * 0.12 * width;
+      ctx.beginPath();
+      ctx.moveTo(leftX + narrowing, groundTop);
+      ctx.lineTo(rightX - narrowing, groundTop);
+      ctx.lineTo(rightX, groundBot);
+      ctx.lineTo(leftX, groundBot);
+      ctx.closePath();
+      ctx.fill();
       ctx.globalAlpha = 1;
     }
   }
