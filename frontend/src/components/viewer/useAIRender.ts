@@ -973,29 +973,12 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
 
   const parts: string[] = [];
 
-  // GEOMETRIC LOCKDOWN
   parts.push(
-    'GEOMETRIC LOCKDOWN: Image 1 is a color-coded spatial map. Strictly adhere to the zone boundaries ' +
-    'shown in the map. Each colored region maps to a specific landscape zone described below.',
+    'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle.',
+    `In this image, colored polygon overlays mark proposed landscape zones on an empty site (the white area).`,
   );
 
-  // NUMERICAL INVENTORY
-  const parkCount = groundZones.filter(z => z.zone_type === 'green_space').length;
-  const waterCount = groundZones.filter(z => z.zone_type === 'water').length;
-  const otherCount = groundZones.length - parkCount - waterCount;
-  parts.push(
-    `NUMERICAL INVENTORY: This ground plane contains exactly ${groundZones.length} zones: ` +
-    `${parkCount} park(s), ${waterCount} water feature(s), ${otherCount} other ground zone(s). ` +
-    `Render ONLY these landscape elements within their color boundaries.`,
-  );
-
-  parts.push(
-    'Aerial photograph captured by a DJI drone at approximately 60 meters altitude. ' +
-    'Maintain the exact camera angle, bearing, and pitch from Image 2 (the map screenshot).',
-  );
-
-  // COLOR-TO-ZONE MAPPING
-  parts.push('COLOR-TO-ZONE MAPPING (match colors in Image 1):');
+  // Zone descriptions as narrative
   parts.push(zoneDescriptions.join('. ') + '.');
 
   parts.push(
@@ -1009,12 +992,8 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
     '2. Treat every polygon edge as a hard physical curb or wall that no element may cross.',
     '3. Match each polygon by its specific color and fill only that polygon with the described content.',
     '4. The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
-  );
-
-  // VOID DEFINITION (semantic negative)
-  parts.push(
-    'VOID DEFINITION: All space between the defined zones is a flat, unbroken, deserted concrete surface. ' +
-    'The scene is a completely uninhabited architectural visualization with pristine, empty surfaces.',
+    '5. Do not generate any people, pedestrians, or human figures.',
+    '6. Do not generate any buildings, walls, vertical structures, or rooftops.',
   );
 
   if (isArtistic && styleMod) {
@@ -2050,11 +2029,6 @@ async function callVertexAI(
   if (archetypeImages && archetypeImages.length > 0) {
     body.archetype_images = archetypeImages;
   }
-
-  // Optimal API config from research for architectural rendering
-  body.temperature = 0.35;
-  body.top_p = 0.85;
-  body.top_k = 32;
 
   const resp = await axios.post(
     RENDER_API_URL,
