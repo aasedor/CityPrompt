@@ -294,7 +294,6 @@ async def generate_render(req: RenderRequest):
         "generationConfig": {
             "responseModalities": ["TEXT", "IMAGE"],
             "temperature": temperature,
-            "mediaResolution": "MEDIA_RESOLUTION_HIGH",
         },
     }
 

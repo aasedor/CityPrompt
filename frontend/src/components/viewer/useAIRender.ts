@@ -986,8 +986,6 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
   );
 
   // CRITICAL RULES for zone containment
-  const zoneCount = groundZones.length;
-  const zoneNames = groundZones.map(z => z.name || z.zone_type).join(', ');
   parts.push(
     'CRITICAL RULES:',
     '1. Each zone\'s landscape must stay strictly inside its colored polygon boundary — zero bleed into any neighboring zone.',
@@ -996,7 +994,6 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
     '4. The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
     '5. Do not generate any people, pedestrians, or human figures.',
     '6. Do not generate any buildings, walls, vertical structures, or rooftops.',
-    `STRICT SCENE BOUNDARY: This site contains EXACTLY ${zoneCount} ground-level zone${zoneCount !== 1 ? 's' : ''}: ${zoneNames}. Do not add any structure, object, or element not explicitly described above. All unpainted areas within the site boundary are flat empty paved ground — render them as plain concrete or asphalt with no decoration.`,
   );
 
   if (isArtistic && styleMod) {
@@ -1085,11 +1082,6 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   );
 
   parts.push('Keep everything else in the image exactly the same, preserving the original style, lighting, and composition.');
-
-  const zoneName = zone.name || zone.zone_type;
-  parts.push(
-    `STRICT SCENE BOUNDARY: Render ONLY the ${zoneName} building described above inside the ${zoneColor} polygon. Do not add any additional buildings, towers, cranes, background structures, or architectural elements not explicitly described. No new structures may appear anywhere in the image outside of this single ${zoneColor} footprint.`,
-  );
 
   if (options.customPrompt?.trim()) {
     parts.push(options.customPrompt.trim());
@@ -2465,9 +2457,12 @@ export function useAIRender(): UseAIRenderReturn {
         const origBearing = map.getBearing();
         const origPitch = map.getPitch();
 
+        // Capture the full-view original for compositing
+        const originalBase64 = await captureMapCanvasBase64(map);
         const perZoneHeadroomPx = getMaxBuildingHeadroom(map, zones);
         const originalBounds = getMapBounds(map, perZoneHeadroomPx);
         const aspectRatio = computeAspectRatio(map);
+        let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
 
         // Separate zones into ground-level (Pass 1) and buildings (Pass 2)
         const GROUND_TYPES = ['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area'];
@@ -2506,15 +2501,11 @@ export function useAIRender(): UseAIRenderReturn {
             map.setLayoutProperty(layerId, 'visibility', 'none');
           }
         }
-        // Wait for repaint with zone layers hidden, then capture clean satellite base
+        // Wait for repaint
         await new Promise<void>(resolve => {
           const t = setTimeout(resolve, 2000);
           map.once('idle', () => { clearTimeout(t); resolve(); });
         });
-
-        // Capture AFTER hiding layers — no colored zone fills or outlines baked into base
-        const originalBase64 = await captureMapCanvasBase64(map);
-        let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
 
         const src = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
         const guidanceScale = options.guidanceScale ?? 15;
