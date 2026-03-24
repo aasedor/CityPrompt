@@ -2457,8 +2457,26 @@ export function useAIRender(): UseAIRenderReturn {
         const origBearing = map.getBearing();
         const origPitch = map.getPitch();
 
-        // Capture the full-view original for compositing
+        // Hide ONLY the outline/stroke layers before capturing the base screenshot
+        // so colored fills remain visible (Gemini uses them as spatial anchors)
+        // but polygon borders don't bake into the composite base.
+        const OUTLINE_LAYERS = ['site-zones-outline', 'site-zones-selected', 'site-zones-labels', 'massing-preview-extrusion'];
+        for (const layerId of OUTLINE_LAYERS) {
+          if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
+        }
+        await new Promise<void>(resolve => {
+          const t = setTimeout(resolve, 500);
+          map.once('idle', () => { clearTimeout(t); resolve(); });
+        });
+
+        // Capture with fills visible but outlines hidden
         const originalBase64 = await captureMapCanvasBase64(map);
+
+        // Restore outline layers before the full hide pass below
+        for (const layerId of OUTLINE_LAYERS) {
+          if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
+        }
+
         const perZoneHeadroomPx = getMaxBuildingHeadroom(map, zones);
         const originalBounds = getMapBounds(map, perZoneHeadroomPx);
         const aspectRatio = computeAspectRatio(map);
