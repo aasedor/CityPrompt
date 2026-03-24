@@ -102,6 +102,24 @@ class RenderRequest(BaseModel):
         default=None,
         description="Previous render for dual anchoring (iterative refinement).",
     )
+    temperature: Optional[float] = Field(
+        default=None,
+        ge=0.0,
+        le=2.0,
+        description="Generation temperature. 0.35 is optimal for architectural rendering.",
+    )
+    top_p: Optional[float] = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Nucleus sampling threshold. 0.85 trims hallucinated elements.",
+    )
+    top_k: Optional[int] = Field(
+        default=None,
+        ge=1,
+        le=100,
+        description="Top-K filtering. 32 restricts to probable geometric interpretations.",
+    )
 
 
 class RenderResponse(BaseModel):
@@ -278,11 +296,23 @@ async def generate_render(req: RenderRequest):
 
     parts.append({"text": prompt_text})
 
-    # Map guidance_scale to temperature: high guidance = low temperature (strict)
-    # For architectural editing, low temperature preserves unedited areas faithfully
-    temperature = 0.0  # Default to 0 for maximum consistency in editing
-    if req.guidance_scale is not None:
+    # Use explicit temperature/topP/topK from request if provided (street view),
+    # otherwise fall back to guidance_scale mapping or default
+    if req.temperature is not None:
+        temperature = req.temperature
+    elif req.guidance_scale is not None:
         temperature = max(0.0, min(1.5, 1.5 - (req.guidance_scale / 30) * 1.5))
+    else:
+        temperature = 0.35  # Optimal for architectural rendering per research
+
+    gen_config: dict = {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "temperature": temperature,
+    }
+    if req.top_p is not None:
+        gen_config["topP"] = req.top_p
+    if req.top_k is not None:
+        gen_config["topK"] = req.top_k
 
     payload = {
         "contents": [
@@ -291,10 +321,7 @@ async def generate_render(req: RenderRequest):
                 "parts": parts,
             }
         ],
-        "generationConfig": {
-            "responseModalities": ["TEXT", "IMAGE"],
-            "temperature": temperature,
-        },
+        "generationConfig": gen_config,
     }
 
     # --- Logging ---
