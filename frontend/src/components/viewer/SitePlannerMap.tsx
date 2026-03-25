@@ -751,7 +751,7 @@ export function SitePlannerMap({
         tileSize: 512,
         maxzoom: 14,
       });
-      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.2 });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 0.5 });
 
       // --- 3D Buildings from Mapbox composite source ---
       const layers = map.getStyle().layers;
@@ -1453,8 +1453,7 @@ export function SitePlannerMap({
   // Q/E always rotate the map bearing.
   useEffect(() => {
     const keysDown = new Set<string>();
-    const PAN_SPEED = 8; // pixels per frame
-    const MOVE_STEP = 0.00008; // ~8m in lng/lat per frame
+    const PAN_PX = 4; // pixels per frame for both panning and zone movement
     const ROTATE_SPEED = 1.5; // degrees per frame
     let rafId = 0;
 
@@ -1481,13 +1480,19 @@ export function SitePlannerMap({
         const zone = selId ? zones.find(z => z.id === selId) : null;
 
         if (zone) {
-          // Move selected zone
-          let dlng = 0, dlat = 0;
-          if (keysDown.has('a') || keysDown.has('arrowleft')) dlng -= MOVE_STEP;
-          if (keysDown.has('d') || keysDown.has('arrowright')) dlng += MOVE_STEP;
-          if (keysDown.has('w') || keysDown.has('arrowup')) dlat += MOVE_STEP;
-          if (keysDown.has('s') || keysDown.has('arrowdown')) dlat -= MOVE_STEP;
-          if (dlng !== 0 || dlat !== 0) {
+          // Move selected zone — use pixel offset so speed matches zoom/pitch
+          let dx = 0, dy = 0;
+          if (keysDown.has('a') || keysDown.has('arrowleft')) dx -= PAN_PX;
+          if (keysDown.has('d') || keysDown.has('arrowright')) dx += PAN_PX;
+          if (keysDown.has('w') || keysDown.has('arrowup')) dy -= PAN_PX;
+          if (keysDown.has('s') || keysDown.has('arrowdown')) dy += PAN_PX;
+          if (dx !== 0 || dy !== 0) {
+            // Convert pixel offset to lng/lat delta using the map's current projection
+            const center = map.getCenter();
+            const centerPx = map.project(center);
+            const offsetLngLat = map.unproject([centerPx.x + dx, centerPx.y + dy]);
+            const dlng = offsetLngLat.lng - center.lng;
+            const dlat = offsetLngLat.lat - center.lat;
             const newCoords = zone.coordinates.map(([lng, lat]) => [lng + dlng, lat + dlat]);
             updateZoneOnMap(selId!, newCoords);
             pendingCoordsRef.current = { zoneId: selId!, coords: newCoords };
@@ -1495,10 +1500,10 @@ export function SitePlannerMap({
         } else {
           // Pan map when no zone selected
           let dx = 0, dy = 0;
-          if (keysDown.has('a') || keysDown.has('arrowleft')) dx -= PAN_SPEED;
-          if (keysDown.has('d') || keysDown.has('arrowright')) dx += PAN_SPEED;
-          if (keysDown.has('w') || keysDown.has('arrowup')) dy -= PAN_SPEED;
-          if (keysDown.has('s') || keysDown.has('arrowdown')) dy += PAN_SPEED;
+          if (keysDown.has('a') || keysDown.has('arrowleft')) dx -= PAN_PX;
+          if (keysDown.has('d') || keysDown.has('arrowright')) dx += PAN_PX;
+          if (keysDown.has('w') || keysDown.has('arrowup')) dy -= PAN_PX;
+          if (keysDown.has('s') || keysDown.has('arrowdown')) dy += PAN_PX;
           if (dx !== 0 || dy !== 0) map.panBy([dx, dy], { duration: 0 });
         }
       }
