@@ -295,7 +295,8 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
 // ---------------------------------------------------------------------------
 
 /** Backend render endpoint */
-const RENDER_API_URL = '/api/v1/render/generate';
+const API_BASE = import.meta.env.VITE_API_URL || '';
+const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 
 /** Timeout for the backend request (3 minutes — Imagen 3 can be slow) */
 const RENDER_TIMEOUT = 180_000;
@@ -2037,6 +2038,9 @@ async function callVertexAI(
   );
 
   const { image_base64: resultBase64, seed: resultSeed } = resp.data;
+  if (!resultBase64) {
+    throw new Error('Backend returned no image_base64 — check backend logs or VITE_API_URL config');
+  }
   const imageDataUri = `data:image/png;base64,${resultBase64}`;
 
   console.log('[AIRender] Vertex AI success — image size:', resultBase64.length, 'chars');
