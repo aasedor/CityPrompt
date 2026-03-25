@@ -58,9 +58,9 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   // Local form state
   const [selectedStyle, setSelectedStyle] = useState(AI_RENDER_STYLES[0].id);
   const [customPrompt, setCustomPrompt] = useState('');
-  const [controlStrength, setControlStrength] = useState(0.85);
+  const [controlStrength] = useState(0.85);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
-  const [referenceStrength, setReferenceStrength] = useState(0.6);
+  const [referenceStrength] = useState(0.6);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [useArchetypes, setUseArchetypes] = useState(true);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -371,27 +371,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               />
             </div>
 
-            {/* Geometry fidelity */}
-            <div>
-              <div className="mb-1 flex items-center justify-between">
-                <label className="text-[11px] font-medium text-gray-400">Geometry Fidelity</label>
-                <span className="text-[10px] tabular-nums text-gray-500">{controlStrength.toFixed(2)}</span>
-              </div>
-              <input
-                type="range"
-                min={0.3}
-                max={1.0}
-                step={0.05}
-                value={controlStrength}
-                onChange={(e) => setControlStrength(parseFloat(e.target.value))}
-                className="w-full accent-amber-500"
-              />
-              <div className="mt-0.5 flex justify-between text-[9px] text-gray-600">
-                <span>Creative</span>
-                <span>Faithful</span>
-              </div>
-            </div>
-
             {/* Prompt Adherence */}
             <div>
               <div className="mb-1 flex items-center justify-between">
@@ -446,19 +425,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
-                  <div className="mt-1.5 flex items-center justify-between">
-                    <label className="text-[10px] text-gray-500">Influence</label>
-                    <span className="text-[10px] tabular-nums text-gray-500">{referenceStrength.toFixed(2)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={0.1}
-                    max={1.0}
-                    step={0.05}
-                    value={referenceStrength}
-                    onChange={(e) => setReferenceStrength(parseFloat(e.target.value))}
-                    className="w-full accent-amber-500"
-                  />
                 </div>
               ) : (
                 <button
@@ -511,43 +477,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
           </div>
         )}
 
-        {/* ── Preview cards ─────────────────────────────────────────────── */}
-        {previews.length > 0 && !isRendering && (
-          <div>
-            <label className="mb-1.5 block text-xs font-medium text-gray-400">
-              Select a preview
-            </label>
-            <div className="grid grid-cols-3 gap-1.5">
-              {previews.map((preview, idx) => (
-                <button
-                  key={preview.seed ?? idx}
-                  onClick={() => handleSelectPreview(idx)}
-                  className={`relative overflow-hidden rounded-lg border-2 transition ${
-                    selectedPreviewIndex === idx
-                      ? 'border-amber-400 shadow-lg shadow-amber-500/20'
-                      : 'border-transparent hover:border-white/20'
-                  }`}
-                >
-                  <img
-                    src={preview.imageUrl}
-                    alt={`Preview ${idx + 1}`}
-                    className="aspect-square w-full object-cover"
-                  />
-                  {selectedPreviewIndex === idx && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                      <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                    </div>
-                  )}
-                  <span className="absolute bottom-0.5 right-1 text-[9px] text-white/60">
-                    #{idx + 1}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Preview cards removed — single render only */}
 
         {/* ── Full result ───────────────────────────────────────────────── */}
         {result && !isRendering && (
@@ -611,16 +541,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               </>
             )}
           </button>
-          {/* Quick single render */}
-          {!isRendering && (
-            <button
-              onClick={handleRender}
-              className="rounded-lg bg-white/10 px-3 py-2.5 text-xs font-medium text-gray-300 transition hover:bg-white/15"
-              title="Single render (skip previews)"
-            >
-              1x
-            </button>
-          )}
         </div>
       </div>
 

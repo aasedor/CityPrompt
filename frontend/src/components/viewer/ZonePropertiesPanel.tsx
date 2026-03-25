@@ -901,60 +901,9 @@ const resolveOptionCategory = (
                 </>
               );
             })()}
-            <div>
-              <label className="block text-xs text-primary-950/50">Facade Material</label>
-              <select
-                value={(props.facade_material as string) || 'concrete'}
-                onChange={(e) => setProps((p) => ({ ...p, facade_material: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="glass">Glass</option>
-                <option value="brick">Brick</option>
-                <option value="concrete">Concrete</option>
-                <option value="stone">Stone</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Roof Style</label>
-              <select
-                value={(props.roof_style as string) || 'flat'}
-                onChange={(e) => setProps((p) => ({ ...p, roof_style: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="flat">Flat</option>
-                <option value="gabled">Gabled</option>
-                <option value="hip">Hip</option>
-              </select>
-            </div>
           </>
         )}
 
-        {zone.zone_type === 'residential' && (
-          <>
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-primary-950/50">Balconies</label>
-              <input
-                type="checkbox"
-                checked={!!props.balconies}
-                onChange={(e) => setProps((p) => ({ ...p, balconies: e.target.checked }))}
-                className="rounded border-primary-950/[0.1]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Unit Count</label>
-              <input
-                type="number"
-                min="1"
-                max="50"
-                step="1"
-                value={(props.unit_count as number) ?? 1}
-                onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 1 }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              <span className="text-[10px] text-primary-950/50">Number of buildings to generate within this zone</span>
-            </div>
-          </>
-        )}
 
         {/* ============================================================= */}
         {/* GREEN SPACE                                                    */}
@@ -991,24 +940,6 @@ const resolveOptionCategory = (
                   onChange={applyGreenSpaceAesthetic}
                 />
               </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-primary-950/50">Has Benches</label>
-              <input
-                type="checkbox"
-                checked={!!props.has_benches}
-                onChange={(e) => setProps((p) => ({ ...p, has_benches: e.target.checked }))}
-                className="rounded border-primary-950/[0.1]"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-primary-950/50">Has Paths</label>
-              <input
-                type="checkbox"
-                checked={!!props.has_paths}
-                onChange={(e) => setProps((p) => ({ ...p, has_paths: e.target.checked }))}
-                className="rounded border-primary-950/[0.1]"
-              />
             </div>
           </>
         )}
@@ -1079,33 +1010,6 @@ const resolveOptionCategory = (
                 className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
               />
             </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Lane Count</label>
-              <input
-                type="number"
-                step="1"
-                min="1"
-                max="6"
-                value={(props.lane_count as number) ?? 2}
-                onChange={(e) => setProps((p) => ({ ...p, lane_count: parseInt(e.target.value) || 2 }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Road Surface</label>
-              <select
-                value={(props.road_surface as string) || 'asphalt'}
-                onChange={(e) => setProps((p) => ({ ...p, road_surface: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="asphalt">Asphalt</option>
-                <option value="concrete">Concrete</option>
-                <option value="cobblestone">Cobblestone</option>
-                <option value="brick">Brick</option>
-                <option value="paver">Paver</option>
-                <option value="gravel">Gravel</option>
-              </select>
-            </div>
           </>
         )}
 
@@ -1145,59 +1049,7 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Parking Layout</label>
-              <select
-                value={(props.parking_layout as string) || 'perpendicular'}
-                onChange={(e) => setProps((p) => ({ ...p, parking_layout: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="angled">Angled</option>
-                <option value="perpendicular">Perpendicular</option>
-                <option value="parallel">Parallel</option>
-              </select>
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="text-xs text-primary-950/50">Covered</label>
-              <input
-                type="checkbox"
-                checked={!!props.covered}
-                onChange={(e) => setProps((p) => ({ ...p, covered: e.target.checked }))}
-                className="rounded border-primary-950/[0.1]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Paving Material</label>
-              <select
-                value={(props.paving_material as string) || 'paver'}
-                onChange={(e) => setProps((p) => ({ ...p, paving_material: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="paver">Paver</option>
-                <option value="stone">Stone</option>
-                <option value="concrete">Concrete</option>
-                <option value="wood_deck">Wood Deck</option>
-              </select>
-            </div>
           </>
-        )}
-
-        {/* ============================================================= */}
-        {/* WATER                                                          */}
-        {/* ============================================================= */}
-        {zone.zone_type === 'water' && (
-          <div>
-            <label className="block text-xs text-primary-950/50">Water Type</label>
-            <select
-              value={(props.water_type as string) || 'pond'}
-              onChange={(e) => setProps((p) => ({ ...p, water_type: e.target.value }))}
-              className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-            >
-              <option value="pond">Pond</option>
-              <option value="stream">Stream</option>
-              <option value="fountain">Fountain</option>
-            </select>
-          </div>
         )}
 
         {/* ============================================================= */}
@@ -1238,19 +1090,6 @@ const resolveOptionCategory = (
                   <option value="industrial_warehouse">Warehouse</option>
                 </optgroup>
               </select>
-            </div>
-            <div>
-              <label className="block text-xs text-primary-950/50">Target Units</label>
-              <input
-                type="number"
-                min="2"
-                max="100"
-                step="1"
-                value={(props.unit_count as number) ?? 10}
-                onChange={(e) => setProps((p) => ({ ...p, unit_count: parseInt(e.target.value) || 2 }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              />
-              <span className="text-[10px] text-primary-950/50">Number of buildings to generate within this development area</span>
             </div>
             <div>
               <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
@@ -1333,19 +1172,6 @@ const resolveOptionCategory = (
                 </>
               );
             })()}
-            <div>
-              <label className="block text-xs text-primary-950/50">Ground Texture</label>
-              <select
-                value={(props.ground_texture as string) || 'grass'}
-                onChange={(e) => setProps((p) => ({ ...p, ground_texture: e.target.value }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
-              >
-                <option value="grass">Grass</option>
-                <option value="concrete">Concrete</option>
-                <option value="gravel">Gravel</option>
-                <option value="dirt">Dirt</option>
-              </select>
-            </div>
           </>
         )}
 
@@ -1383,10 +1209,6 @@ const resolveOptionCategory = (
         </button>
 
 
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && onAIGenerate && zone.building_id && (
-          <AIGenerateZoneButton zone={zone} onAIGenerate={onAIGenerate} />
-        )}
-
         {/* Quick Regenerate ? visible when zone already has a generated building */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (() => {
           const linkedBuilding = buildings?.find((b) => b.id === zone.building_id);
@@ -1397,11 +1219,6 @@ const resolveOptionCategory = (
             />
           );
         })()}
-
-        {/* Model Library ? browse & apply saved models */}
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && zone.building_id && (
-          <ModelLibrarySection buildingId={zone.building_id} />
-        )}
 
         {/* Preview History ? buildable zones */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
