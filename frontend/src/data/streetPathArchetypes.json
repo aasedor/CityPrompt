@@ -95,7 +95,6 @@
             "plantingStyle": "Mature deciduous street trees in planting strip at 10m intervals, round canopy",
             "streetFurniture": "Quiet shaded neighborhood street with residential character"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3B3B3B"
           }
@@ -111,7 +110,6 @@
             "plantingStyle": "sugar maples at 8m intervals, vase-shaped canopy",
             "streetFurniture": "cast iron lamp posts, granite hitching post bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6B4226"
           }
@@ -127,7 +125,6 @@
             "plantingStyle": "Douglas fir and western red cedar with native fern understory",
             "streetFurniture": "weathered cedar bollards, recycled steel bike racks"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#2E5D3A"
           }
@@ -143,7 +140,6 @@
             "plantingStyle": "mesquite and palo verde trees at irregular spacing, light canopy",
             "streetFurniture": "rusted corten steel address markers, solar pathway bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C4A76C"
           }
@@ -220,7 +216,6 @@
             "plantingStyle": "Young deciduous trees in wide grass strips, small canopy",
             "streetFurniture": "Open sunny suburban street with wide sky exposure"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#2C2C2C"
           }
@@ -236,7 +231,6 @@
             "plantingStyle": "southern magnolias at 15m intervals with crape myrtles between",
             "streetFurniture": "brick-capped mailbox pedestals, coach lamp post lights"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5C5C5C"
           }
@@ -252,7 +246,6 @@
             "plantingStyle": "quaking aspen clusters and blue spruce at naturalistic spacing",
             "streetFurniture": "log-and-steel hybrid benches, sandstone address markers"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A6670"
           }
@@ -268,7 +261,6 @@
             "plantingStyle": "Mexican fan palms at 15m intervals, agave accent clusters",
             "streetFurniture": "white-painted steel street lights, recycled plastic benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#D4A574"
           }
@@ -347,7 +339,6 @@
             "plantingStyle": "Mature street trees in planting strips, moderate canopy coverage",
             "streetFurniture": "Functional connector street with moderate pedestrian activity"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#444444"
           }
@@ -363,7 +354,6 @@
             "plantingStyle": "London plane trees at 8m intervals, pollarded canopy in commercial zone",
             "streetFurniture": "ornamental pendant street lights, cast iron tree guards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7A5C3E"
           }
@@ -379,7 +369,6 @@
             "plantingStyle": "diverse native species mix — oaks, birch, serviceberry at varied spacing",
             "streetFurniture": "recycled composite benches, solar LED pathway lights"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3A6B4F"
           }
@@ -395,7 +384,6 @@
             "plantingStyle": "young honeylocust cultivars at 12m intervals, open canopy for signage visibility",
             "streetFurniture": "galvanized steel breakaway light poles, reflective guide posts"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#555555"
           }
@@ -477,7 +465,6 @@
             "plantingStyle": "Double row of mature trees in median plus street trees on sidewalks, continuous canopy band",
             "streetFurniture": "Grand civic boulevard with strong tree canopy and multimodal access"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#2B4C3F"
           }
@@ -493,7 +480,6 @@
             "plantingStyle": "American elm allée in median, red oaks on sidewalks, seasonal flower beds",
             "streetFurniture": "acorn-globe street lights on fluted poles, granite memorial benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A5D4A"
           }
@@ -509,7 +495,6 @@
             "plantingStyle": "native oak and tupelo in rain-garden median, ornamental grasses at edges",
             "streetFurniture": "slim aluminum LED mast lights, modular steel bike corrals, smart transit shelters"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3D6B7A"
           }
@@ -525,7 +510,6 @@
             "plantingStyle": "royal palms in median at 12m intervals, bougainvillea hedge at median edges",
             "streetFurniture": "Art Deco aluminum lamp posts, pastel-painted metal benches, coral stone planters"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#E88D67"
           }
@@ -602,7 +586,6 @@
             "plantingStyle": "None — possibly mowed grass or gravel in right-of-way margins",
             "streetFurniture": "Limited-access vehicle corridor — no public realm"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3C3C3C"
           }
@@ -618,7 +601,6 @@
             "plantingStyle": "none — gravel shoulders with occasional drainage swales",
             "streetFurniture": "high-mast lighting towers, overhead variable message signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8C8C8C"
           }
@@ -634,7 +616,6 @@
             "plantingStyle": "naturalized tree clusters at interchanges, native grass swales along margins",
             "streetFurniture": "bronze-colored light poles, stone-clad overpass abutments"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4E6B52"
           }
@@ -650,7 +631,6 @@
             "plantingStyle": "none on structure — possible tree canopy visible below at grade level",
             "streetFurniture": "deck-mounted luminaires, overhead guide signs on cantilever arms"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6B6B6B"
           }
@@ -729,7 +709,6 @@
             "plantingStyle": "Trees and ornamental planting in central island, low shrubs on splitter islands",
             "streetFurniture": "Organized traffic flow with pedestrian crossings at each leg"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3E5C34"
           }
@@ -745,7 +724,6 @@
             "plantingStyle": "low-maintenance gravel-and-boulder central island, ornamental grasses",
             "streetFurniture": "LED-backlit directional signage, reflective chevron bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5A5A5A"
           }
@@ -761,7 +739,6 @@
             "plantingStyle": "Italian cypress in central island, lavender and rosemary in splitter beds",
             "streetFurniture": "wrought-iron lamp posts, central fountain or sculpture, decorative bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#B87333"
           }
@@ -777,7 +754,6 @@
             "plantingStyle": "flowering crabapple and dogwood in central island, daylily and hosta beds",
             "streetFurniture": "decorative coach-style lamp posts, engraved neighborhood gateway signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7B5E57"
           }
@@ -854,7 +830,6 @@
             "plantingStyle": "Single specimen tree in center island, front-yard trees along stem",
             "streetFurniture": "Quiet dead-end neighborhood character"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#484848"
           }
@@ -870,7 +845,6 @@
             "plantingStyle": "native rain garden in center — sedges, iris, river birch — native shrub borders",
             "streetFurniture": "recycled timber bollards, solar pathway lights, community little library box"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A7B5E"
           }
@@ -886,7 +860,6 @@
             "plantingStyle": "center island with Italian cypress, lavender hedge ring, and gravel mulch",
             "streetFurniture": "small tiled fountain in center island, wrought-iron coach lamps"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C9956B"
           }
@@ -902,7 +875,6 @@
             "plantingStyle": "center island with native birch cluster, fern understory, and moss groundcover",
             "streetFurniture": "rustic timber post lamp, natural stone address markers"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5C7A5C"
           }
@@ -977,7 +949,6 @@
             "plantingStyle": "None — occasionally weeds or volunteer trees at fence lines",
             "streetFurniture": "Utilitarian service corridor — no public amenities"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4F4F4F"
           }
@@ -993,7 +964,6 @@
             "plantingStyle": "climbing hydrangea and Virginia creeper on garage walls, rain garden pockets",
             "streetFurniture": "LED security wall-packs, recycled plastic bollards, green waste bins"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A7A5C"
           }
@@ -1009,7 +979,6 @@
             "plantingStyle": "none — moss and lichen on cobblestones, occasional fern in wall cracks",
             "streetFurniture": "cast-iron wall-mount lanterns, heritage bollards, loading dock bumpers"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7A6B5E"
           }
@@ -1025,7 +994,6 @@
             "plantingStyle": "potted plants, vertical garden panels on walls, hanging baskets",
             "streetFurniture": "bistro tables and chairs, overhead string lights, neon signage, mural walls"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#D4567A"
           }
@@ -1101,7 +1069,6 @@
             "plantingStyle": "Possibly planter strip or tree line separating from road",
             "streetFurniture": "Protected cycling infrastructure integrated into street cross-section"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5B7B8A"
           }
@@ -1117,7 +1084,6 @@
             "plantingStyle": "low box hedges in planter buffer, street trees on adjacent sidewalk",
             "streetFurniture": "cyclist-priority traffic lights, directional ANWB-style wayfinding signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#A0522D"
           }
@@ -1133,7 +1099,6 @@
             "plantingStyle": "no planting in buffer zone — adjacent street trees on sidewalk side",
             "streetFurniture": "bike-signal push buttons, modular bike repair stations, parking corrals"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#2E8B57"
           }
@@ -1149,7 +1114,6 @@
             "plantingStyle": "mature park trees along one side, native meadow grass buffer on the other",
             "streetFurniture": "timber wayfinding posts, cyclist rest areas with bike stands and benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6B8E6B"
           }
@@ -1227,7 +1191,6 @@
             "plantingStyle": "Mature deciduous trees flanking both sides, meadow or lawn beyond",
             "streetFurniture": "Recreational greenway corridor through natural or park setting"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A5A4A"
           }
@@ -1243,7 +1206,6 @@
             "plantingStyle": "native riparian trees — sycamore, willow, cottonwood — naturalistic spacing",
             "streetFurniture": "timber boardwalk sections, rustic split-log benches, interpretive signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8B7D6B"
           }
@@ -1259,7 +1221,6 @@
             "plantingStyle": "naturalized pioneer species — birch, sumac, goldenrod — along former rail cut",
             "streetFurniture": "repurposed rail artifacts as art, heritage interpretive panels, steel benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7A7A7A"
           }
@@ -1275,7 +1236,6 @@
             "plantingStyle": "native dune grasses — sea oats, beach rose — along margins, no planted trees",
             "streetFurniture": "observation platforms with benches, trail counters, wildlife viewing blinds"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#A0937D"
           }
@@ -1351,7 +1311,6 @@
             "plantingStyle": "Central row of mature plane trees or palms with broad canopy",
             "streetFurniture": "Vibrant pedestrian social corridor with dining and shopping"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C4956A"
           }
@@ -1367,7 +1326,6 @@
             "plantingStyle": "silver birch in corten steel tree grates, ornamental grass beds in raised planters",
             "streetFurniture": "minimalist stainless steel benches, cylindrical bollard lights, teak café chairs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8C9AA0"
           }
@@ -1383,7 +1341,6 @@
             "plantingStyle": "coconut palms at 10m intervals, hibiscus and heliconia in raised beds",
             "streetFurniture": "tile-clad benches, painted steel market kiosks, festive string lights overhead"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#E07B4C"
           }
@@ -1399,7 +1356,6 @@
             "plantingStyle": "mature American elms in cast-iron tree grates, seasonal flower baskets on lamp posts",
             "streetFurniture": "gas-lamp style LED fixtures, cast-iron benches with wood slats, heritage bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8B4513"
           }
@@ -1480,7 +1436,6 @@
             "plantingStyle": "Trees and raised planters placed as traffic-calming chicane elements",
             "streetFurniture": "Living street where public life dominates over vehicle movement"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#9B5B3A"
           }
@@ -1496,7 +1451,6 @@
             "plantingStyle": "ornamental grasses and multi-stem amelanchier in corten steel planters",
             "streetFurniture": "linear corten steel bench-walls, recessed LED ground lights, slim bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7A6A5A"
           }
@@ -1512,7 +1466,6 @@
             "plantingStyle": "large specimen trees in permanent raised beds, movable planters for flexible layout",
             "streetFurniture": "catenary wire masts for string lights, fold-down café barriers, pop-up market power pedestals"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C4A882"
           }
@@ -1528,7 +1481,6 @@
             "plantingStyle": "single-stem Japanese maples in minimalist square tree pits, clipped azalea",
             "streetFurniture": "timber and steel minimalist benches, recessed floor washers, low stone bollards"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8A8A7A"
           }
@@ -1607,7 +1559,6 @@
             "plantingStyle": "Street trees on outer sidewalks, no trees in the center median",
             "streetFurniture": "High-capacity transit corridor with rapid service"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#CC2233"
           }
@@ -1623,7 +1574,6 @@
             "plantingStyle": "grass in bus track bed, London plane trees on wide outer sidewalks",
             "streetFurniture": "elegant curved glass shelter canopies, real-time departure displays, bike parking"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3B7A57"
           }
@@ -1639,7 +1589,6 @@
             "plantingStyle": "existing street trees at irregular intervals, seasonal flower baskets",
             "streetFurniture": "simple metal-and-glass bus shelters, bench seating, digital schedule signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#B85C38"
           }
@@ -1655,7 +1604,6 @@
             "plantingStyle": "royal palms along outer sidewalks at 10m intervals, tropical hedge screening",
             "streetFurniture": "large covered station canopies with integrated solar panels, colorful seating"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#D4742C"
           }
@@ -1737,7 +1685,6 @@
             "plantingStyle": "Grass in track bed, street trees on outer sidewalks",
             "streetFurniture": "Civic transit avenue with rail as the organizing spine"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A7A4A"
           }
@@ -1753,7 +1700,6 @@
             "plantingStyle": "multi-stem birch clusters in large corten steel planters, ornamental grasses",
             "streetFurniture": "minimalist steel-and-glass platform canopies, LED information totems, public art"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6A7A8A"
           }
@@ -1769,7 +1715,6 @@
             "plantingStyle": "low maintenance groundcover along fence lines, shade trees at station areas",
             "streetFurniture": "concrete platform stations with metal canopy shelters, crossing gates and signals"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8A7A6A"
           }
@@ -1785,7 +1730,6 @@
             "plantingStyle": "mature American elms in cast-iron tree grates, seasonal flower baskets on poles",
             "streetFurniture": "reproduction Victorian platform shelters, cast-iron benches, heritage wayfinding"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8B4513"
           }
@@ -1867,7 +1811,6 @@
             "plantingStyle": "Street trees in grates at regular intervals, flower baskets on light poles",
             "streetFurniture": "Active downtown commercial corridor with strong pedestrian life"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5B3A29"
           }
@@ -1883,7 +1826,6 @@
             "plantingStyle": "ornamental pear trees at 10m intervals, seasonal flower planters at corners",
             "streetFurniture": "acorn-globe pendant street lights, painted metal benches, flag-pole brackets"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6B5B4B"
           }
@@ -1899,7 +1841,6 @@
             "plantingStyle": "diverse native tree mix in silva cells, rain garden bump-outs, green roof parklets",
             "streetFurniture": "slim LED mast lights, modular parklet seating, smart transit shelter with e-ink display"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3A7A6A"
           }
@@ -1915,7 +1856,6 @@
             "plantingStyle": "honey locust trees at 12m intervals, ornamental grasses in stone planters",
             "streetFurniture": "timber-and-steel bench hybrids, rustic pendant lights, sandstone planters"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8B6F47"
           }
@@ -1993,7 +1933,6 @@
             "plantingStyle": "Double rows of mature deciduous trees forming continuous canopy alley",
             "streetFurniture": "Formal campus circulation spine with social seating and gathering"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#2B3D4F"
           }
@@ -2009,7 +1948,6 @@
             "plantingStyle": "multi-stem birch clusters in corten planters, ornamental grass ribbons",
             "streetFurniture": "stainless steel and timber slat benches, cylindrical LED bollards, public art"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6A7A8A"
           }
@@ -2025,7 +1963,6 @@
             "plantingStyle": "live oaks with spreading canopy, magnolias, azalea beds along building edges",
             "streetFurniture": "limestone and cast-iron benches, copper lanterns, brick wayfinding pylons"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6B4226"
           }
@@ -2041,7 +1978,6 @@
             "plantingStyle": "native prairie meadow panels, rain garden wetland plantings, food forest sections",
             "streetFurniture": "recycled timber and steel benches, solar charging stations, interpretive ecology signs"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A7A4A"
           }
@@ -2122,7 +2058,6 @@
             "plantingStyle": "Mature trees at irregular naturalistic spacing with generous setbacks",
             "streetFurniture": "Scenic recreational driving and walking corridor through parkland"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#3E5C3E"
           }
@@ -2138,7 +2073,6 @@
             "plantingStyle": "windswept Monterey cypress, native coastal scrub, ice plant groundcover",
             "streetFurniture": "galvanized steel cable guardrails, stone pull-off overlooks, weather stations"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A6B7A"
           }
@@ -2154,7 +2088,6 @@
             "plantingStyle": "specimen tree groups — beech, oak, catalpa — in pastoral lawn, naturalistic groves",
             "streetFurniture": "heritage cast-iron carriage lamps, stone-capped bridge walls, rustic timber benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A6B4A"
           }
@@ -2170,7 +2103,6 @@
             "plantingStyle": "native desert — saguaro, prickly pear, desert willow — beyond road shoulders",
             "streetFurniture": "corten steel pull-off shelters, sandstone interpretive panels, solar path lights"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#B85C38"
           }
@@ -2248,7 +2180,6 @@
             "plantingStyle": "Linear row of trees along inland edge, no planting on water side",
             "streetFurniture": "Active waterfront promenade with scenic views and recreation"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#8A8A7A"
           }
@@ -2264,7 +2195,6 @@
             "plantingStyle": "ornamental grasses in galvanized steel planters, no trees on water side",
             "streetFurniture": "stainless steel and timber slatted benches, cylindrical bollard lights, yacht cleats as art"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6A5A4A"
           }
@@ -2280,7 +2210,6 @@
             "plantingStyle": "weeping willows at water edge, clipped hedge screening café terraces, potted olives",
             "streetFurniture": "stone-integrated bench seating, café tables and umbrellas, underwater LED lighting"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C4A476"
           }
@@ -2296,7 +2225,6 @@
             "plantingStyle": "native riparian — river birch, button bush, sedges, cardinal flower — naturalistic",
             "streetFurniture": "timber observation platforms, rustic benches, interpretive ecology panels"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#5C7A5C"
           }
@@ -2371,7 +2299,6 @@
             "plantingStyle": "User-defined planting palette and street tree strategy",
             "streetFurniture": "User-defined public realm quality and amenities"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#C4956A"
           }
@@ -2387,7 +2314,6 @@
             "plantingStyle": "user-defined — default birch and ornamental grasses in corten steel planters",
             "streetFurniture": "user-defined — default stainless steel and teak benches, cylindrical bollard lights"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#6A7A8A"
           }
@@ -2403,7 +2329,6 @@
             "plantingStyle": "user-defined — default native meadow and rain-garden plantings",
             "streetFurniture": "user-defined — default recycled composite benches, solar pathway lights"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#4A7A5E"
           }
@@ -2419,7 +2344,6 @@
             "plantingStyle": "user-defined — default mature canopy trees in cast-iron tree grates",
             "streetFurniture": "user-defined — default reproduction heritage lamp posts, cast-iron benches"
           },
-          "shadeId": null,
           "palette": {
             "primary": "#7A5C3E"
           }
