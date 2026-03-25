@@ -341,6 +341,7 @@ export function SitePlannerMap({
   const pegmanMarkerRef = useRef<mapboxgl.Marker | null>(null);
   const mapLoadedRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
+  const [currentPitch, setCurrentPitch] = useState(60);
 
   // Drag state for zone/vertex editing
   const dragStateRef = useRef<DragState | null>(null);
@@ -651,6 +652,8 @@ export function SitePlannerMap({
     mapRef.current = map;
     setMapInstance(map);
 
+    map.on('pitch', () => setCurrentPitch(Math.round(map.getPitch())));
+
     map.on('load', () => {
       mapLoadedRef.current = true;
 
@@ -694,7 +697,7 @@ export function SitePlannerMap({
             ],
             'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'height']],
             'fill-extrusion-base': ['interpolate', ['linear'], ['zoom'], 13, 0, 13.05, ['get', 'min_height']],
-            'fill-extrusion-opacity': 0.8,
+            'fill-extrusion-opacity': 1.0,
           },
         },
         labelLayerId,
@@ -726,7 +729,7 @@ export function SitePlannerMap({
           'fill-extrusion-color': ['get', 'color'],
           'fill-extrusion-height': ['get', 'height'],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.85,
+          'fill-extrusion-opacity': 1.0,
         },
       });
 
@@ -745,7 +748,7 @@ export function SitePlannerMap({
         type: 'fill',
         source: 'site-zones',
         filter: ['all', ['!', ['has', 'height']], ['!=', ['get', 'zone_type'], 'site_boundary']],
-        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.85 },
+        paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 1.0 },
       });
 
       map.addLayer({
@@ -795,7 +798,7 @@ export function SitePlannerMap({
           'fill-extrusion-color': ['get', 'color'],
           'fill-extrusion-height': ['get', 'height'],
           'fill-extrusion-base': 0,
-          'fill-extrusion-opacity': 0.85,
+          'fill-extrusion-opacity': 1.0,
         },
       });
 
@@ -806,7 +809,7 @@ export function SitePlannerMap({
         filter: ['==', ['get', 'type'], 'green_space'],
         paint: {
           'fill-color': ['get', 'color'],
-          'fill-opacity': 0.6,
+          'fill-opacity': 1.0,
         },
       });
 
@@ -1479,6 +1482,18 @@ export function SitePlannerMap({
           Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
         </div>
       )}
+      {/* Pitch angle indicator */}
+      <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg select-none">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-white/70 shrink-0">
+          <ellipse cx="8" cy="10" rx="6" ry="3" stroke="currentColor" strokeWidth="1.3" fill="none"/>
+          <line x1="8" y1="10" x2="8" y2="2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+          <line x1="8" y1="2" x2="11" y2="6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+        <span className="text-[11px] font-semibold tabular-nums text-white/90">{currentPitch}°</span>
+        <span className="text-[10px] text-white/40">
+          {currentPitch <= 30 ? 'flat' : currentPitch <= 50 ? 'good' : currentPitch <= 60 ? 'optimal' : 'steep'}
+        </span>
+      </div>
     </>
   );
 }
