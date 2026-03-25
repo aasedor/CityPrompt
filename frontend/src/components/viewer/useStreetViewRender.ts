@@ -17,7 +17,8 @@ import streetPathCatalog from '@/data/streetPathArchetypes.json';
 // Constants
 // ---------------------------------------------------------------------------
 
-const RENDER_API_URL = '/api/v1/render/generate';
+const API_BASE = import.meta.env.VITE_API_URL || '';
+const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 const DEG_TO_RAD = Math.PI / 180;
 const EARTH_RADIUS_M = 6_371_000;
 
