@@ -1059,16 +1059,6 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
     parts.push(userDesc);
   }
 
-  // Building orientation — tell Gemini which direction the entrance faces
-  const entranceFacing = zone.properties?.entrance_facing as number | undefined;
-  if (entranceFacing != null) {
-    const dirLabels = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest'];
-    const dirLabel = dirLabels[entranceFacing / 45] || 'north';
-    parts.push(
-      `The building's main entrance and front facade faces ${dirLabel}. Orient the building's most architecturally prominent facade in that direction.`,
-    );
-  }
-
   parts.push(
     `The ${zoneColor} polygon is the building's absolute ground foundation. The building sits on the already-rendered park and streetscape — its base shadows should blend naturally onto the surrounding grass and pathways.`,
     `Treat the ${zoneColor} footprint as the ground-level base only. Render the full vertical 3D mass and roofline extending naturally into the sky above, respecting aerial perspective. Do not clip the architecture at any boundary line.`,

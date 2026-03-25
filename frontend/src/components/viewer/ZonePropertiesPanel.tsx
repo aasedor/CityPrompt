@@ -904,68 +904,6 @@ const resolveOptionCategory = (
           </>
         )}
 
-        {/* Entrance Orientation — building/residential zones only */}
-        {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'commercial' || zone.zone_type === 'industrial' || zone.zone_type === 'mixed_use') && (
-          <div>
-            <label className="block text-xs text-primary-950/50 mb-1">Entrance Faces</label>
-            <div className="flex items-center gap-3">
-              <div className="relative w-16 h-16 shrink-0">
-                {/* Compass ring */}
-                <svg viewBox="0 0 64 64" className="w-full h-full">
-                  <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary-950/10" />
-                  {[
-                    { label: 'N', deg: 0 },
-                    { label: 'NE', deg: 45 },
-                    { label: 'E', deg: 90 },
-                    { label: 'SE', deg: 135 },
-                    { label: 'S', deg: 180 },
-                    { label: 'SW', deg: 225 },
-                    { label: 'W', deg: 270 },
-                    { label: 'NW', deg: 315 },
-                  ].map(({ label, deg }) => {
-                    const rad = ((deg - 90) * Math.PI) / 180;
-                    const x = 32 + 28 * Math.cos(rad);
-                    const y = 32 + 28 * Math.sin(rad);
-                    const isSelected = (props.entrance_facing as number) === deg;
-                    return (
-                      <g key={deg} onClick={() => setProps((p) => ({ ...p, entrance_facing: deg }))} className="cursor-pointer">
-                        <circle
-                          cx={x} cy={y} r={label.length === 1 ? 9 : 7}
-                          fill={isSelected ? '#f59e0b' : 'transparent'}
-                          stroke={isSelected ? '#f59e0b' : 'currentColor'}
-                          strokeWidth={isSelected ? 0 : 0.8}
-                          className={isSelected ? '' : 'text-primary-950/20 hover:text-primary-950/40'}
-                        />
-                        <text
-                          x={x} y={y} textAnchor="middle" dominantBaseline="central"
-                          className={`text-[7px] font-semibold ${isSelected ? 'fill-white' : 'fill-primary-950/50'}`}
-                          style={{ pointerEvents: 'none' }}
-                        >
-                          {label}
-                        </text>
-                      </g>
-                    );
-                  })}
-                  {/* Center dot */}
-                  <circle cx="32" cy="32" r="3" fill="currentColor" className="text-primary-950/15" />
-                </svg>
-              </div>
-              <div className="text-[10px] text-primary-950/40">
-                {(props.entrance_facing as number) != null
-                  ? `Front door faces ${['N','NE','E','SE','S','SW','W','NW'][(props.entrance_facing as number) / 45]}`
-                  : 'Click a direction to set where the main entrance faces'}
-              </div>
-            </div>
-            {(props.entrance_facing as number) != null && (
-              <button
-                onClick={() => setProps((p) => { const next = { ...p }; delete next.entrance_facing; return next; })}
-                className="mt-1 text-[10px] text-primary-950/30 hover:text-primary-950/50 underline"
-              >
-                Clear orientation
-              </button>
-            )}
-          </div>
-        )}
 
         {/* ============================================================= */}
         {/* GREEN SPACE                                                    */}
