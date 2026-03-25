@@ -86,7 +86,7 @@ const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = R
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
 const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = PLAZA_AESTHETIC_PRESETS_V2;
 
-const FRONT_DAY_VARIANT_ID = 'front_day';
+const FRONT_DAY_VARIANT_ID = 'variant_0';
 
 const LEGACY_CATEGORY_ALIASES: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', Record<string, string>> = {
   development_aesthetic: {
@@ -819,7 +819,8 @@ const resolveOptionCategory = (
                 <option value="other">Other</option>
               </select>
             </div>
-            {/* Development Aesthetic */}
+            {/* Development Aesthetic – only shown after a development type is chosen */}
+            {props.development_type && (
             <div>
               <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
@@ -833,6 +834,7 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            )}
             {(() => {
               const selectedBuildingOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
               const archMinFloors = selectedBuildingOption?.minFloors;
@@ -1091,6 +1093,7 @@ const resolveOptionCategory = (
                 </optgroup>
               </select>
             </div>
+            {props.development_type && (
             <div>
               <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
               <div className="mt-1">
@@ -1104,6 +1107,7 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            )}
             {(() => {
               const selectedDevOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
               const devMinFloors = selectedDevOption?.minFloors;

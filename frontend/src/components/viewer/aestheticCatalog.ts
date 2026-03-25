@@ -262,7 +262,7 @@ function buildImagePrompt(
   };
 }
 
-const FRONT_DAY_VARIANT_ID = 'front_day';
+const FRONT_DAY_VARIANT_ID = 'variant_0';
 
 function toArchetypeImages(
   domainPath: string,
@@ -270,9 +270,14 @@ function toArchetypeImages(
   seed: ArchetypeSeed,
 ): ArchetypeImage[] {
   const variants = visualSystem.cardVariants || [];
+  // Derive folder slug from thumbnailUrl if available (handles hyphen vs underscore),
+  // otherwise fall back to seed.id
+  const folderSlug = seed.thumbnailUrl
+    ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
+    : seed.id;
   return variants.map((variant) => {
-    const imagePath = `/archetypes/${domainPath}/${seed.id}/${variant.id}.png`;
-    const thumbPath = `/archetypes/${domainPath}/${seed.id}/${variant.id}_thumb.jpg`;
+    const imagePath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
+    const thumbPath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
     return {
       id: `${seed.id}_${variant.id}`,
       label: variant.title,
@@ -380,7 +385,7 @@ export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
   { id: 'auto_oriented', label: 'Auto Oriented', description: 'Streets designed primarily for automobile movement and access' },
 ];
 export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('street_pathway', 'streets_pathways', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
+  toAestheticOption('street_pathway', 'streets', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
 );
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
