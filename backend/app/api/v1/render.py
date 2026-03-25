@@ -15,15 +15,21 @@ from __future__ import annotations
 import base64
 import io
 import logging
+import uuid as _uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
 import httpx
 from PIL import Image, ImageEnhance
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from app.core.database import get_db
+from app.core.security import require_auth, check_project_permission
+from app.models.models import Project, User
 
 logger = logging.getLogger(__name__)
 
@@ -400,3 +406,112 @@ async def generate_render(req: RenderRequest):
             status_code=502,
             detail=f"Invalid Gemini response: {exc}",
         ) from exc
+
+
+# ---------------------------------------------------------------------------
+# Saved renders (gallery)
+# ---------------------------------------------------------------------------
+
+class SaveRenderRequest(BaseModel):
+    image_base64: str = Field(..., description="Base64-encoded PNG of the render.")
+    prompt: str = Field(..., description="Prompt used for the render.")
+    style: Optional[str] = Field(default=None, description="Style preset name.")
+    seed: Optional[int] = Field(default=None, description="Seed used for generation.")
+
+
+class SavedRenderResponse(BaseModel):
+    id: str
+    image_url: str
+    prompt: str
+    style: Optional[str] = None
+    seed: Optional[int] = None
+    created_at: str
+
+
+@router.post("/projects/{project_id}/save", response_model=SavedRenderResponse, status_code=status.HTTP_201_CREATED)
+async def save_render(
+    project_id: _uuid.UUID,
+    req: SaveRenderRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Save an AI render image to the project's gallery in S3."""
+    await check_project_permission(project_id, user, db, required="editor")
+
+    project = await db.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    try:
+        image_bytes = base64.b64decode(req.image_base64)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid base64 image data")
+
+    render_id = str(_uuid.uuid4())
+    file_key = f"projects/{project_id}/renders/{render_id}.png"
+
+    from app.api.v1.documents import _upload_to_storage
+    await _upload_to_storage(file_key, image_bytes, "image/png")
+
+    image_url = f"/api/v1/files/{file_key}"
+    now = datetime.now(timezone.utc).isoformat()
+
+    entry = {
+        "id": render_id,
+        "image_url": image_url,
+        "prompt": req.prompt,
+        "style": req.style,
+        "seed": req.seed,
+        "created_at": now,
+    }
+
+    meta = dict(project.metadata_) if project.metadata_ else {}
+    renders = list(meta.get("saved_renders", []))
+    renders.insert(0, entry)
+    meta["saved_renders"] = renders
+    project.metadata_ = meta
+
+    await db.commit()
+    logger.info("Saved render %s for project %s", render_id, project_id)
+
+    return SavedRenderResponse(**entry)
+
+
+@router.get("/projects/{project_id}/renders", response_model=list[SavedRenderResponse])
+async def list_renders(
+    project_id: _uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all saved renders for a project."""
+    await check_project_permission(project_id, user, db, required="viewer")
+
+    project = await db.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    meta = project.metadata_ or {}
+    renders = meta.get("saved_renders", [])
+    return [SavedRenderResponse(**r) for r in renders]
+
+
+@router.delete("/projects/{project_id}/renders/{render_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_render(
+    project_id: _uuid.UUID,
+    render_id: str,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a saved render from the project."""
+    await check_project_permission(project_id, user, db, required="editor")
+
+    project = await db.get(Project, project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    meta = dict(project.metadata_) if project.metadata_ else {}
+    renders = list(meta.get("saved_renders", []))
+    meta["saved_renders"] = [r for r in renders if r.get("id") != render_id]
+    project.metadata_ = meta
+
+    await db.commit()
