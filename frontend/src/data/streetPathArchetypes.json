@@ -85,64 +85,32 @@
       "thumbnailUrl": "/archetypes/streets/narrow-residential-street/hero.png",
       "variants": [
         {
-          "id": "narrow_residential_street_variant_0",
-          "label": "Narrow Residential Street",
-          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_0.png",
-          "description": "A quiet narrow residential street with no center line, on-street parallel parking, mature street trees, and concrete sidewalks — a shaded gray ribbon with car-lined edges from above",
-          "surfaceDetail": {
-            "primarySurface": "Smooth asphalt with no center marking, concrete sidewalks",
-            "edgeTreatment": "Parallel-parked cars, grass strip, concrete sidewalk, front yard setback",
-            "plantingStyle": "Mature deciduous street trees in planting strip at 10m intervals, round canopy",
-            "streetFurniture": "Quiet shaded neighborhood street with residential character"
-          },
-          "palette": {
-            "primary": "#3B3B3B"
-          }
+          "id": "narrow_residential_street_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Narrow Residential Street in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_0.png"
         },
         {
-          "id": "narrow_residential_street_variant_1",
-          "label": "New England Brick Accents",
-          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_1.png",
-          "description": "Warm-toned asphalt edged with brick-inlay crosswalks and bluestone curbs. Sugar maples provide a fiery autumn canopy over a compact New England residential lane.",
-          "surfaceDetail": {
-            "primarySurface": "warm gray asphalt with brick-inlay crosswalks at intersections",
-            "edgeTreatment": "bluestone granite curbs with narrow perennial planting strip",
-            "plantingStyle": "sugar maples at 8m intervals, vase-shaped canopy",
-            "streetFurniture": "cast iron lamp posts, granite hitching post bollards"
-          },
-          "palette": {
-            "primary": "#6B4226"
-          }
+          "id": "narrow_residential_street_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Narrow Residential Street in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_1.png"
         },
         {
-          "id": "narrow_residential_street_variant_2",
-          "label": "Pacific Northwest Green Street",
-          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_2.png",
-          "description": "Rain-garden bioswales replace traditional curb strips. Native ferns and Douglas fir soften a mossy, green-tinted streetscape with permeable paver parking bays.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with green-tinted moss patina at edges",
-            "edgeTreatment": "curbless bioswale rain gardens with river rock channels",
-            "plantingStyle": "Douglas fir and western red cedar with native fern understory",
-            "streetFurniture": "weathered cedar bollards, recycled steel bike racks"
-          },
-          "palette": {
-            "primary": "#2E5D3A"
-          }
+          "id": "narrow_residential_street_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Narrow Residential Street in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_2.png"
         },
         {
-          "id": "narrow_residential_street_variant_3",
-          "label": "Sunbelt Xeriscaped Residential",
-          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_3.png",
-          "description": "Pale concrete roadway with decomposed granite shoulders and drought-tolerant planting. Desert-adapted mesquite trees cast light shade over a bright, arid-character residential lane.",
-          "surfaceDetail": {
-            "primarySurface": "pale buff-colored concrete with integral color",
-            "edgeTreatment": "decomposed granite shoulders with concrete ribbon curb",
-            "plantingStyle": "mesquite and palo verde trees at irregular spacing, light canopy",
-            "streetFurniture": "rusted corten steel address markers, solar pathway bollards"
-          },
-          "palette": {
-            "primary": "#C4A76C"
-          }
+          "id": "narrow_residential_street_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Narrow Residential Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_3.png"
         }
       ]
     },
@@ -206,64 +174,32 @@
       "thumbnailUrl": "/archetypes/streets/suburban-residential-street/hero.png",
       "variants": [
         {
-          "id": "suburban_residential_street_variant_0",
-          "label": "Suburban Residential Street",
-          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_0.png",
-          "description": "A wider suburban street with two lanes, rolled curbs, young trees, and wide front-yard setbacks — a bright open road with generous grass margins from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt with dashed center line, rolled concrete curbs",
-            "edgeTreatment": "Wide grass front-yard setbacks, driveways, no on-street parking",
-            "plantingStyle": "Young deciduous trees in wide grass strips, small canopy",
-            "streetFurniture": "Open sunny suburban street with wide sky exposure"
-          },
-          "palette": {
-            "primary": "#2C2C2C"
-          }
+          "id": "suburban_residential_street_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Suburban Residential Street in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_0.png"
         },
         {
-          "id": "suburban_residential_street_variant_1",
-          "label": "Southern Traditional Subdivision",
-          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_1.png",
-          "description": "Warm gray asphalt with broad magnolia-lined margins and brick-capped mailbox pedestals. A generous southern-character suburban street with formal front-yard landscaping.",
-          "surfaceDetail": {
-            "primarySurface": "warm gray asphalt with reflective center stripe",
-            "edgeTreatment": "formed concrete curb and gutter with St. Augustine grass strip",
-            "plantingStyle": "southern magnolias at 15m intervals with crape myrtles between",
-            "streetFurniture": "brick-capped mailbox pedestals, coach lamp post lights"
-          },
-          "palette": {
-            "primary": "#5C5C5C"
-          }
+          "id": "suburban_residential_street_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Suburban Residential Street in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_1.png"
         },
         {
-          "id": "suburban_residential_street_variant_2",
-          "label": "Mountain West Contemporary",
-          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_2.png",
-          "description": "Cool-toned asphalt with native grass swales and aspen groves. A mountain-region suburban street with natural stone accents and open sky character.",
-          "surfaceDetail": {
-            "primarySurface": "cool dark gray asphalt with white dashed center line",
-            "edgeTreatment": "native grass bioswales with river-rock spillways",
-            "plantingStyle": "quaking aspen clusters and blue spruce at naturalistic spacing",
-            "streetFurniture": "log-and-steel hybrid benches, sandstone address markers"
-          },
-          "palette": {
-            "primary": "#4A6670"
-          }
+          "id": "suburban_residential_street_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Suburban Residential Street in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_2.png"
         },
         {
-          "id": "suburban_residential_street_variant_3",
-          "label": "Coastal California Suburban",
-          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_3.png",
-          "description": "Light gray asphalt with warm-toned concrete edges and palm-lined medians. A bright coastal-suburban lane with succulent planting strips and terracotta accent pavers.",
-          "surfaceDetail": {
-            "primarySurface": "light gray asphalt with thermoplastic lane markings",
-            "edgeTreatment": "sandstone-colored concrete curb with succulent planting strip",
-            "plantingStyle": "Mexican fan palms at 15m intervals, agave accent clusters",
-            "streetFurniture": "white-painted steel street lights, recycled plastic benches"
-          },
-          "palette": {
-            "primary": "#D4A574"
-          }
+          "id": "suburban_residential_street_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Suburban Residential Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_3.png"
         }
       ]
     },
@@ -329,64 +265,32 @@
       "thumbnailUrl": "/archetypes/streets/collector-road/hero.png",
       "variants": [
         {
-          "id": "collector_road_variant_0",
-          "label": "Collector Road",
-          "thumbnailUrl": "/archetypes/streets/collector-road/variant_0.png",
-          "description": "A two-to-three lane collector road with a center turn lane, sidewalks, and street trees connecting neighborhoods to arterials — a wider gray road with turn-lane stripe from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt with center turn lane, white dashed lane markings, double yellow center",
-            "edgeTreatment": "Sidewalks, planting strips, mixed residential and commercial frontage",
-            "plantingStyle": "Mature street trees in planting strips, moderate canopy coverage",
-            "streetFurniture": "Functional connector street with moderate pedestrian activity"
-          },
-          "palette": {
-            "primary": "#444444"
-          }
+          "id": "collector_road_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Collector Road in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/collector-road/variant_0.png"
         },
         {
-          "id": "collector_road_variant_1",
-          "label": "Mixed-Use Village Collector",
-          "thumbnailUrl": "/archetypes/streets/collector-road/variant_1.png",
-          "description": "A collector with decorative crosswalks, brick accent banding, and wider sidewalks at commercial nodes. Transitions between residential and village-center character.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with brick-patterned stamped crosswalks",
-            "edgeTreatment": "granite curbs with brick accent band at gutter line",
-            "plantingStyle": "London plane trees at 8m intervals, pollarded canopy in commercial zone",
-            "streetFurniture": "ornamental pendant street lights, cast iron tree guards"
-          },
-          "palette": {
-            "primary": "#7A5C3E"
-          }
+          "id": "collector_road_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Collector Road in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/collector-road/variant_1.png"
         },
         {
-          "id": "collector_road_variant_2",
-          "label": "Green Infrastructure Collector",
-          "thumbnailUrl": "/archetypes/streets/collector-road/variant_2.png",
-          "description": "An eco-upgraded collector with bioretention curb extensions, pervious concrete parking bays, and a generous tree canopy. Stormwater-sensitive modern design.",
-          "surfaceDetail": {
-            "primarySurface": "standard asphalt with pervious concrete parking bays",
-            "edgeTreatment": "bioretention curb bump-outs with native grasses and sedges",
-            "plantingStyle": "diverse native species mix — oaks, birch, serviceberry at varied spacing",
-            "streetFurniture": "recycled composite benches, solar LED pathway lights"
-          },
-          "palette": {
-            "primary": "#3A6B4F"
-          }
+          "id": "collector_road_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Collector Road in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/collector-road/variant_2.png"
         },
         {
-          "id": "collector_road_variant_3",
-          "label": "Suburban Arterial Collector",
-          "thumbnailUrl": "/archetypes/streets/collector-road/variant_3.png",
-          "description": "A wider suburban collector with generous turn lanes, bright pavement markings, and young street trees in a commercial-strip context. Practical and auto-accommodating.",
-          "surfaceDetail": {
-            "primarySurface": "fresh dark asphalt with wide thermoplastic lane markings",
-            "edgeTreatment": "mountable concrete curbs with wide grass strip and detached sidewalk",
-            "plantingStyle": "young honeylocust cultivars at 12m intervals, open canopy for signage visibility",
-            "streetFurniture": "galvanized steel breakaway light poles, reflective guide posts"
-          },
-          "palette": {
-            "primary": "#555555"
-          }
+          "id": "collector_road_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Collector Road in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/collector-road/variant_3.png"
         }
       ]
     },
@@ -455,64 +359,32 @@
       "thumbnailUrl": "/archetypes/streets/arterial-boulevard/hero.png",
       "variants": [
         {
-          "id": "arterial_boulevard_variant_0",
-          "label": "Arterial Boulevard (Tree-Lined)",
-          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_0.png",
-          "description": "A divided arterial boulevard with a tree-lined median, two or three lanes each way, sidewalks, and bike lanes — a grand green-striped corridor from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt travel lanes, raised planted median, bike lane buffer",
-            "edgeTreatment": "Bike lanes, wide sidewalks, tree grates, active commercial frontage",
-            "plantingStyle": "Double row of mature trees in median plus street trees on sidewalks, continuous canopy band",
-            "streetFurniture": "Grand civic boulevard with strong tree canopy and multimodal access"
-          },
-          "palette": {
-            "primary": "#2B4C3F"
-          }
+          "id": "arterial_boulevard_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Arterial Boulevard (Tree-Lined) in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_0.png"
         },
         {
-          "id": "arterial_boulevard_variant_1",
-          "label": "American City Beautiful Boulevard",
-          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_1.png",
-          "description": "A wide civic boulevard with a planted median, American elms arching overhead, and classical stone balustrade median walls. Grand park-to-park connector character.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with wide white lane markings and reflective raised pavement markers",
-            "edgeTreatment": "limestone curbs with grassed median, stone balustrade at median ends",
-            "plantingStyle": "American elm allée in median, red oaks on sidewalks, seasonal flower beds",
-            "streetFurniture": "acorn-globe street lights on fluted poles, granite memorial benches"
-          },
-          "palette": {
-            "primary": "#4A5D4A"
-          }
+          "id": "arterial_boulevard_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Arterial Boulevard (Tree-Lined) in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_1.png"
         },
         {
-          "id": "arterial_boulevard_variant_2",
-          "label": "Modern Multimodal Boulevard",
-          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_2.png",
-          "description": "A contemporary redesigned boulevard with protected bike lanes, rain-garden medians, and smart LED street lighting. Sustainable urban corridor with green infrastructure.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with green-painted bike lane zones and thermoplastic markings",
-            "edgeTreatment": "concrete curb with bioretention median and protected bike lane buffer",
-            "plantingStyle": "native oak and tupelo in rain-garden median, ornamental grasses at edges",
-            "streetFurniture": "slim aluminum LED mast lights, modular steel bike corrals, smart transit shelters"
-          },
-          "palette": {
-            "primary": "#3D6B7A"
-          }
+          "id": "arterial_boulevard_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Arterial Boulevard (Tree-Lined) in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_2.png"
         },
         {
-          "id": "arterial_boulevard_variant_3",
-          "label": "Tropical Coastal Boulevard",
-          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_3.png",
-          "description": "A palm-lined divided boulevard with coral-tinted concrete medians, tropical landscaping, and Art Deco-influenced street furniture. Bright and warm coastal civic character.",
-          "surfaceDetail": {
-            "primarySurface": "light warm-gray asphalt with bright white lane markings",
-            "edgeTreatment": "coral-tinted concrete curbs with crushed shell mulch median beds",
-            "plantingStyle": "royal palms in median at 12m intervals, bougainvillea hedge at median edges",
-            "streetFurniture": "Art Deco aluminum lamp posts, pastel-painted metal benches, coral stone planters"
-          },
-          "palette": {
-            "primary": "#E88D67"
-          }
+          "id": "arterial_boulevard_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Arterial Boulevard (Tree-Lined) in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_3.png"
         }
       ]
     },
@@ -576,64 +448,32 @@
       "thumbnailUrl": "/archetypes/streets/highway-freeway/hero.png",
       "variants": [
         {
-          "id": "highway_freeway_variant_0",
-          "label": "Highway / Freeway",
-          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_0.png",
-          "description": "A high-speed limited-access highway with four or more lanes, concrete jersey barriers, no street trees, and wide shoulders — a broad gray river of asphalt from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt with white lane markings, concrete jersey barrier median, paved shoulders",
-            "edgeTreatment": "Sound walls, earth berms, wide gravel or grass shoulders",
-            "plantingStyle": "None — possibly mowed grass or gravel in right-of-way margins",
-            "streetFurniture": "Limited-access vehicle corridor — no public realm"
-          },
-          "palette": {
-            "primary": "#3C3C3C"
-          }
+          "id": "highway_freeway_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Highway / Freeway in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_0.png"
         },
         {
-          "id": "highway_freeway_variant_1",
-          "label": "Concrete Expressway",
-          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_1.png",
-          "description": "A reinforced concrete highway surface with characteristic jointed slabs and a lighter color than asphalt. Sound walls and wide gravel shoulders define the corridor.",
-          "surfaceDetail": {
-            "primarySurface": "jointed pale gray reinforced concrete slabs with dark sealant joints",
-            "edgeTreatment": "concrete barrier walls with textured sound walls beyond shoulders",
-            "plantingStyle": "none — gravel shoulders with occasional drainage swales",
-            "streetFurniture": "high-mast lighting towers, overhead variable message signs"
-          },
-          "palette": {
-            "primary": "#8C8C8C"
-          }
+          "id": "highway_freeway_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Highway / Freeway in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_1.png"
         },
         {
-          "id": "highway_freeway_variant_2",
-          "label": "Landscaped Parkway Highway",
-          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_2.png",
-          "description": "A highway with landscaped right-of-way margins, earth-berm sound barriers with vine cover, and naturalized stormwater swales. A greener highway corridor.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with standard white lane markings",
-            "edgeTreatment": "earth-berm sound barriers with vine cover and native wildflower seeding",
-            "plantingStyle": "naturalized tree clusters at interchanges, native grass swales along margins",
-            "streetFurniture": "bronze-colored light poles, stone-clad overpass abutments"
-          },
-          "palette": {
-            "primary": "#4E6B52"
-          }
+          "id": "highway_freeway_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Highway / Freeway in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_2.png"
         },
         {
-          "id": "highway_freeway_variant_3",
-          "label": "Elevated Urban Expressway",
-          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_3.png",
-          "description": "An elevated freeway on concrete piers with metal guardrails and expansion joints visible from above. Dense urban context with buildings flanking the elevated structure.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt on concrete deck with expansion joint strips",
-            "edgeTreatment": "concrete parapet walls with metal railing on elevated structure",
-            "plantingStyle": "none on structure — possible tree canopy visible below at grade level",
-            "streetFurniture": "deck-mounted luminaires, overhead guide signs on cantilever arms"
-          },
-          "palette": {
-            "primary": "#6B6B6B"
-          }
+          "id": "highway_freeway_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Highway / Freeway in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_3.png"
         }
       ]
     },
@@ -699,64 +539,32 @@
       "thumbnailUrl": "/archetypes/streets/roundabout/hero.png",
       "variants": [
         {
-          "id": "roundabout_variant_0",
-          "label": "Roundabout / Traffic Circle",
-          "thumbnailUrl": "/archetypes/streets/roundabout/variant_0.png",
-          "description": "A single-lane or multi-lane roundabout with a central landscaped island, splitter islands, and crosswalks — a circular road ring from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt circulatory roadway, concrete splitter islands, landscaped center island",
-            "edgeTreatment": "Crosswalks at each approach, curbed splitter islands, sidewalk connections",
-            "plantingStyle": "Trees and ornamental planting in central island, low shrubs on splitter islands",
-            "streetFurniture": "Organized traffic flow with pedestrian crossings at each leg"
-          },
-          "palette": {
-            "primary": "#3E5C34"
-          }
+          "id": "roundabout_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Roundabout / Traffic Circle in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/roundabout/variant_0.png"
         },
         {
-          "id": "roundabout_variant_1",
-          "label": "Modern Turbo Roundabout",
-          "thumbnailUrl": "/archetypes/streets/roundabout/variant_1.png",
-          "description": "A contemporary high-capacity turbo roundabout with raised lane dividers, thermoplastic spiral markings, and a low-maintenance gravel-and-boulder central island.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with bright thermoplastic spiral lane markings in white and yellow",
-            "edgeTreatment": "raised concrete lane dividers with reflective markers, poured concrete aprons",
-            "plantingStyle": "low-maintenance gravel-and-boulder central island, ornamental grasses",
-            "streetFurniture": "LED-backlit directional signage, reflective chevron bollards"
-          },
-          "palette": {
-            "primary": "#5A5A5A"
-          }
+          "id": "roundabout_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Roundabout / Traffic Circle in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/roundabout/variant_1.png"
         },
         {
-          "id": "roundabout_variant_2",
-          "label": "Mediterranean Piazza Roundabout",
-          "thumbnailUrl": "/archetypes/streets/roundabout/variant_2.png",
-          "description": "A civic roundabout with a central fountain, decorative stone paving, and Mediterranean plantings. The central island is a public art focal point with a terracotta character.",
-          "surfaceDetail": {
-            "primarySurface": "warm-toned asphalt with decorative stone paver crosswalks",
-            "edgeTreatment": "sandstone curbs with terracotta-tiled splitter island caps",
-            "plantingStyle": "Italian cypress in central island, lavender and rosemary in splitter beds",
-            "streetFurniture": "wrought-iron lamp posts, central fountain or sculpture, decorative bollards"
-          },
-          "palette": {
-            "primary": "#B87333"
-          }
+          "id": "roundabout_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Roundabout / Traffic Circle in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/roundabout/variant_2.png"
         },
         {
-          "id": "roundabout_variant_3",
-          "label": "Suburban Landscaped Roundabout",
-          "thumbnailUrl": "/archetypes/streets/roundabout/variant_3.png",
-          "description": "A generously planted suburban roundabout with a central island of ornamental trees and perennial beds. Brick-edged paths and pedestrian refuge islands at each leg.",
-          "surfaceDetail": {
-            "primarySurface": "standard asphalt with white dashed circulatory markings",
-            "edgeTreatment": "brick-capped concrete curbs with planted pedestrian refuge islands",
-            "plantingStyle": "flowering crabapple and dogwood in central island, daylily and hosta beds",
-            "streetFurniture": "decorative coach-style lamp posts, engraved neighborhood gateway signs"
-          },
-          "palette": {
-            "primary": "#7B5E57"
-          }
+          "id": "roundabout_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Roundabout / Traffic Circle in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/roundabout/variant_3.png"
         }
       ]
     },
@@ -820,64 +628,32 @@
       "thumbnailUrl": "/archetypes/streets/cul-de-sac/hero.png",
       "variants": [
         {
-          "id": "cul_de_sac_variant_0",
-          "label": "Cul-de-Sac",
-          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_0.png",
-          "description": "A residential dead-end street terminating in a circular turnaround with a center island — a lollipop shape from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt roadway, concrete curb, landscaped center island",
-            "edgeTreatment": "Driveways radiating from circle, sidewalk following the curb",
-            "plantingStyle": "Single specimen tree in center island, front-yard trees along stem",
-            "streetFurniture": "Quiet dead-end neighborhood character"
-          },
-          "palette": {
-            "primary": "#484848"
-          }
+          "id": "cul_de_sac_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Cul-de-Sac in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_0.png"
         },
         {
-          "id": "cul_de_sac_variant_1",
-          "label": "Green Court Eco Cul-de-Sac",
-          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_1.png",
-          "description": "An eco-designed cul-de-sac with a permeable paver turnaround, a central rain garden island, and native planting. Sustainable neighborhood design with stormwater focus.",
-          "surfaceDetail": {
-            "primarySurface": "permeable interlocking concrete pavers in gray herringbone pattern",
-            "edgeTreatment": "flush curbless transition to bioretention rain garden",
-            "plantingStyle": "native rain garden in center — sedges, iris, river birch — native shrub borders",
-            "streetFurniture": "recycled timber bollards, solar pathway lights, community little library box"
-          },
-          "palette": {
-            "primary": "#4A7B5E"
-          }
+          "id": "cul_de_sac_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Cul-de-Sac in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_1.png"
         },
         {
-          "id": "cul_de_sac_variant_2",
-          "label": "Mediterranean Villa Court",
-          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_2.png",
-          "description": "A warm-toned cul-de-sac with a decorative paver turnaround, central fountain island, and Mediterranean landscaping. Terracotta and stucco character.",
-          "surfaceDetail": {
-            "primarySurface": "warm tan concrete with stamped cobblestone pattern at turnaround",
-            "edgeTreatment": "sandstone curbs with decomposed granite shoulders",
-            "plantingStyle": "center island with Italian cypress, lavender hedge ring, and gravel mulch",
-            "streetFurniture": "small tiled fountain in center island, wrought-iron coach lamps"
-          },
-          "palette": {
-            "primary": "#C9956B"
-          }
+          "id": "cul_de_sac_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Cul-de-Sac in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_2.png"
         },
         {
-          "id": "cul_de_sac_variant_3",
-          "label": "Woodland Retreat Cul-de-Sac",
-          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_3.png",
-          "description": "A rural-character cul-de-sac with chip-sealed surface, no formal curbs, and a naturalistic center island of native woodland planting. Rustic and informal.",
-          "surfaceDetail": {
-            "primarySurface": "chip-sealed asphalt with gravel edges blending into landscape",
-            "edgeTreatment": "no formal curbs — grass and gravel shoulder transition",
-            "plantingStyle": "center island with native birch cluster, fern understory, and moss groundcover",
-            "streetFurniture": "rustic timber post lamp, natural stone address markers"
-          },
-          "palette": {
-            "primary": "#5C7A5C"
-          }
+          "id": "cul_de_sac_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Cul-de-Sac in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_3.png"
         }
       ]
     },
@@ -939,64 +715,32 @@
       "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/hero.png",
       "variants": [
         {
-          "id": "back_alley_service_lane_variant_0",
-          "label": "Back Alley / Service Lane",
-          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_0.png",
-          "description": "A narrow back alley or service lane with no sidewalks, utility poles, dumpsters, and garage doors — a utilitarian gray strip from above",
-          "surfaceDetail": {
-            "primarySurface": "Cracked asphalt or concrete, no curbs, gravel edges",
-            "edgeTreatment": "Garage doors, dumpsters, utility poles, chain-link fences",
-            "plantingStyle": "None — occasionally weeds or volunteer trees at fence lines",
-            "streetFurniture": "Utilitarian service corridor — no public amenities"
-          },
-          "palette": {
-            "primary": "#4F4F4F"
-          }
+          "id": "back_alley_service_lane_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Back Alley / Service Lane in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_0.png"
         },
         {
-          "id": "back_alley_service_lane_variant_1",
-          "label": "Green Alley Retrofit",
-          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_1.png",
-          "description": "A retrofitted green alley with permeable pavers, bioswale drainage channels, and climbing vines on garage walls. Sustainable stormwater management in a service corridor.",
-          "surfaceDetail": {
-            "primarySurface": "permeable concrete pavers in running bond pattern, center drainage channel",
-            "edgeTreatment": "planted bioswale strips replacing gravel edges",
-            "plantingStyle": "climbing hydrangea and Virginia creeper on garage walls, rain garden pockets",
-            "streetFurniture": "LED security wall-packs, recycled plastic bollards, green waste bins"
-          },
-          "palette": {
-            "primary": "#4A7A5C"
-          }
+          "id": "back_alley_service_lane_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Back Alley / Service Lane in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_1.png"
         },
         {
-          "id": "back_alley_service_lane_variant_2",
-          "label": "Historic Cobblestone Alley",
-          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_2.png",
-          "description": "A preserved historic alley with original cobblestone paving, brick building walls, and cast-iron fire escapes. Heritage character with patina and age.",
-          "surfaceDetail": {
-            "primarySurface": "original granite cobblestone setts with moss in joints",
-            "edgeTreatment": "brick building walls directly abutting paving, stone drainage gutter",
-            "plantingStyle": "none — moss and lichen on cobblestones, occasional fern in wall cracks",
-            "streetFurniture": "cast-iron wall-mount lanterns, heritage bollards, loading dock bumpers"
-          },
-          "palette": {
-            "primary": "#7A6B5E"
-          }
+          "id": "back_alley_service_lane_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Back Alley / Service Lane in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_2.png"
         },
         {
-          "id": "back_alley_service_lane_variant_3",
-          "label": "Activated Laneway",
-          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_3.png",
-          "description": "A converted service lane turned activated laneway with string lights, mural walls, and café seating. Creative placemaking transforms a utilitarian alley into a social space.",
-          "surfaceDetail": {
-            "primarySurface": "sealed concrete with painted ground murals and epoxy floor sections",
-            "edgeTreatment": "building walls with large-scale murals, painted doorways and window boxes",
-            "plantingStyle": "potted plants, vertical garden panels on walls, hanging baskets",
-            "streetFurniture": "bistro tables and chairs, overhead string lights, neon signage, mural walls"
-          },
-          "palette": {
-            "primary": "#D4567A"
-          }
+          "id": "back_alley_service_lane_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Back Alley / Service Lane in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_3.png"
         }
       ]
     },
@@ -1059,64 +803,32 @@
       "thumbnailUrl": "/archetypes/streets/separated-bike-lane/hero.png",
       "variants": [
         {
-          "id": "separated_bike_lane_variant_0",
-          "label": "Separated Bike Lane / Cycle Track",
-          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_0.png",
-          "description": "A physically separated two-way cycle track with bollard or curb protection, colored surface markings, and its own signal phase — a narrow colored ribbon parallel to the road from above",
-          "surfaceDetail": {
-            "primarySurface": "Colored asphalt or painted green surface with white markings and bicycle stencils",
-            "edgeTreatment": "Bollards, raised curb, or planter buffer separating from travel lanes",
-            "plantingStyle": "Possibly planter strip or tree line separating from road",
-            "streetFurniture": "Protected cycling infrastructure integrated into street cross-section"
-          },
-          "palette": {
-            "primary": "#5B7B8A"
-          }
+          "id": "separated_bike_lane_v0",
+          "label": "Dutch Cycle Infrastructure",
+          "color": "#E53935",
+          "description": "Separated Bike Lane / Cycle Track in Dutch-style separated cycle infrastructure. Red-tinted asphalt cycle track, raised concrete separator from traffic, dedicated signal poles, cycle parking racks, and green verge with low hedging.",
+          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_0.png"
         },
         {
-          "id": "separated_bike_lane_variant_1",
-          "label": "Dutch Protected Bikeway",
-          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_1.png",
-          "description": "A red-tinted asphalt two-way cycle track with bollard and planter separation. Classic Dutch cycling infrastructure with clear wayfinding markings.",
-          "surfaceDetail": {
-            "primarySurface": "red-brown tinted asphalt with white dashed center line and shark-tooth yields",
-            "edgeTreatment": "flexible delineator bollards and planter boxes separating from traffic",
-            "plantingStyle": "low box hedges in planter buffer, street trees on adjacent sidewalk",
-            "streetFurniture": "cyclist-priority traffic lights, directional ANWB-style wayfinding signs"
-          },
-          "palette": {
-            "primary": "#A0522D"
-          }
+          "id": "separated_bike_lane_v1",
+          "label": "Green Corridor",
+          "color": "#43A047",
+          "description": "Separated Bike Lane / Cycle Track in green corridor cycle and pedestrian path. Smooth asphalt path through linear park, native wildflower meadow edges, timber rest stops with bike repair stations, and wildlife crossing bridges.",
+          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_1.png"
         },
         {
-          "id": "separated_bike_lane_variant_2",
-          "label": "North American Green Lane",
-          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_2.png",
-          "description": "A bright green-painted bike lane with white bollard protection and reflective lane delineators. High-visibility American-style protected cycling facility.",
-          "surfaceDetail": {
-            "primarySurface": "bright green epoxy-painted asphalt with white bicycle stencils",
-            "edgeTreatment": "white flexible delineator posts at 3m spacing, concrete curb base",
-            "plantingStyle": "no planting in buffer zone — adjacent street trees on sidewalk side",
-            "streetFurniture": "bike-signal push buttons, modular bike repair stations, parking corrals"
-          },
-          "palette": {
-            "primary": "#2E8B57"
-          }
+          "id": "separated_bike_lane_v2",
+          "label": "Urban Protected Lane",
+          "color": "#1565C0",
+          "description": "Separated Bike Lane / Cycle Track in urban protected cycle lane. Green-painted cycle lane with concrete barriers, flex-post delineators, dedicated signal phases, bike box at intersections, and raised crossings.",
+          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_2.png"
         },
         {
-          "id": "separated_bike_lane_variant_3",
-          "label": "Parkside Cycle Path",
-          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_3.png",
-          "description": "A smooth concrete cycle path running alongside a park, separated from pedestrians by a grass strip. A quieter, greenway-adjacent cycling route with natural character.",
-          "surfaceDetail": {
-            "primarySurface": "smooth light gray concrete with yellow center line and green bicycle stencils",
-            "edgeTreatment": "grass strip separating from adjacent pedestrian path, no curbs",
-            "plantingStyle": "mature park trees along one side, native meadow grass buffer on the other",
-            "streetFurniture": "timber wayfinding posts, cyclist rest areas with bike stands and benches"
-          },
-          "palette": {
-            "primary": "#6B8E6B"
-          }
+          "id": "separated_bike_lane_v3",
+          "label": "Scenic Greenway",
+          "color": "#2E7D32",
+          "description": "Separated Bike Lane / Cycle Track in scenic greenway trail. Winding paved path through natural landscape, interpretive nature signs, rest areas with shade pavilions, native tree canopy, and creek crossings on timber bridges.",
+          "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_3.png"
         }
       ]
     },
@@ -1181,64 +893,32 @@
       "thumbnailUrl": "/archetypes/streets/multi-use-trail/hero.png",
       "variants": [
         {
-          "id": "multi_use_trail_variant_0",
-          "label": "Multi-Use Trail / Greenway",
-          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_0.png",
-          "description": "A wide paved multi-use trail through a park or greenway corridor for walking, jogging, and cycling — a smooth gray path through green landscape from above",
-          "surfaceDetail": {
-            "primarySurface": "Smooth asphalt or concrete with yellow center line, gravel shoulders",
-            "edgeTreatment": "Gravel shoulders, tree-lined corridor, benches at intervals",
-            "plantingStyle": "Mature deciduous trees flanking both sides, meadow or lawn beyond",
-            "streetFurniture": "Recreational greenway corridor through natural or park setting"
-          },
-          "palette": {
-            "primary": "#4A5A4A"
-          }
+          "id": "multi_use_trail_v0",
+          "label": "Dutch Cycle Infrastructure",
+          "color": "#E53935",
+          "description": "Multi-Use Trail / Greenway in Dutch-style separated cycle infrastructure. Red-tinted asphalt cycle track, raised concrete separator from traffic, dedicated signal poles, cycle parking racks, and green verge with low hedging.",
+          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_0.png"
         },
         {
-          "id": "multi_use_trail_variant_1",
-          "label": "Riverside Nature Trail",
-          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_1.png",
-          "description": "A crushed stone trail winding through riparian woodland along a creek. Natural and informal with native plantings and timber boardwalk sections at wet crossings.",
-          "surfaceDetail": {
-            "primarySurface": "compacted crushed limestone with natural earth shoulders",
-            "edgeTreatment": "timber edging at curves, natural grade blending into forest floor",
-            "plantingStyle": "native riparian trees — sycamore, willow, cottonwood — naturalistic spacing",
-            "streetFurniture": "timber boardwalk sections, rustic split-log benches, interpretive signs"
-          },
-          "palette": {
-            "primary": "#8B7D6B"
-          }
+          "id": "multi_use_trail_v1",
+          "label": "Green Corridor",
+          "color": "#43A047",
+          "description": "Multi-Use Trail / Greenway in green corridor cycle and pedestrian path. Smooth asphalt path through linear park, native wildflower meadow edges, timber rest stops with bike repair stations, and wildlife crossing bridges.",
+          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_1.png"
         },
         {
-          "id": "multi_use_trail_variant_2",
-          "label": "Rail-Trail Conversion",
-          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_2.png",
-          "description": "A converted rail corridor trail with smooth concrete surface, remnant rail artifacts, and a wide straight alignment. Former railroad right-of-way with industrial heritage character.",
-          "surfaceDetail": {
-            "primarySurface": "smooth pale concrete with expansion joints and yellow center stripe",
-            "edgeTreatment": "gravel ballast shoulders with remnant rail ties as edge definition",
-            "plantingStyle": "naturalized pioneer species — birch, sumac, goldenrod — along former rail cut",
-            "streetFurniture": "repurposed rail artifacts as art, heritage interpretive panels, steel benches"
-          },
-          "palette": {
-            "primary": "#7A7A7A"
-          }
+          "id": "multi_use_trail_v2",
+          "label": "Urban Protected Lane",
+          "color": "#1565C0",
+          "description": "Multi-Use Trail / Greenway in urban protected cycle lane. Green-painted cycle lane with concrete barriers, flex-post delineators, dedicated signal phases, bike box at intersections, and raised crossings.",
+          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_2.png"
         },
         {
-          "id": "multi_use_trail_variant_3",
-          "label": "Coastal Boardwalk Trail",
-          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_3.png",
-          "description": "A composite-decked boardwalk trail along a coastal dune or wetland. Elevated sections protect sensitive habitat while providing scenic ocean or marsh views.",
-          "surfaceDetail": {
-            "primarySurface": "composite timber decking in weathered gray with non-slip surface",
-            "edgeTreatment": "timber railings with cable infill at elevated sections, sand transitions at grade",
-            "plantingStyle": "native dune grasses — sea oats, beach rose — along margins, no planted trees",
-            "streetFurniture": "observation platforms with benches, trail counters, wildlife viewing blinds"
-          },
-          "palette": {
-            "primary": "#A0937D"
-          }
+          "id": "multi_use_trail_v3",
+          "label": "Scenic Greenway",
+          "color": "#2E7D32",
+          "description": "Multi-Use Trail / Greenway in scenic greenway trail. Winding paved path through natural landscape, interpretive nature signs, rest areas with shade pavilions, native tree canopy, and creek crossings on timber bridges.",
+          "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_3.png"
         }
       ]
     },
@@ -1301,64 +981,32 @@
       "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/hero.png",
       "variants": [
         {
-          "id": "pedestrian_promenade_variant_0",
-          "label": "Pedestrian Promenade / Paseo",
-          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_0.png",
-          "description": "A wide pedestrian-only promenade with decorative paving, central trees, café seating, and no vehicle access — a lively patterned walkway from above",
-          "surfaceDetail": {
-            "primarySurface": "Decorative stone or tile paving in warm tones — herringbone or banded pattern",
-            "edgeTreatment": "Active café frontages with umbrella seating, shop entrances, vendor kiosks",
-            "plantingStyle": "Central row of mature plane trees or palms with broad canopy",
-            "streetFurniture": "Vibrant pedestrian social corridor with dining and shopping"
-          },
-          "palette": {
-            "primary": "#C4956A"
-          }
+          "id": "pedestrian_promenade_v0",
+          "label": "Mediterranean Paseo",
+          "color": "#D4A574",
+          "description": "Pedestrian Promenade / Paseo in Mediterranean paseo streetscape. Terracotta-toned pavers, shade pergolas with climbing bougainvillea, ceramic tile accents, wrought-iron benches, and citrus trees in decorative planters.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_0.png"
         },
         {
-          "id": "pedestrian_promenade_variant_1",
-          "label": "Nordic Granite Promenade",
-          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_1.png",
-          "description": "A cool-toned granite promenade with clean lines, silver birch trees, and minimalist steel furniture. Scandinavian design clarity with a restrained material palette.",
-          "surfaceDetail": {
-            "primarySurface": "light gray granite pavers in banded linear pattern",
-            "edgeTreatment": "flush granite curb transitions to building facades, stainless steel drainage channels",
-            "plantingStyle": "silver birch in corten steel tree grates, ornamental grass beds in raised planters",
-            "streetFurniture": "minimalist stainless steel benches, cylindrical bollard lights, teak café chairs"
-          },
-          "palette": {
-            "primary": "#8C9AA0"
-          }
+          "id": "pedestrian_promenade_v1",
+          "label": "Nordic Timber Walk",
+          "color": "#5D4037",
+          "description": "Pedestrian Promenade / Paseo in Nordic timber pedestrian streetscape. Wide timber boardwalk surface, birch tree plantings, warm-toned timber bollards, integrated timber bench seating, and native ground cover plantings.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_1.png"
         },
         {
-          "id": "pedestrian_promenade_variant_2",
-          "label": "Tropical Market Promenade",
-          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_2.png",
-          "description": "A colorful tropical promenade with mosaic paving accents, palm trees, and vibrant market stalls under colorful canopy structures. Lively and festive market-street character.",
-          "surfaceDetail": {
-            "primarySurface": "polished concrete with inlaid mosaic tile accent bands in blues and yellows",
-            "edgeTreatment": "building arcades with colorful canopy structures, potted tropical plants",
-            "plantingStyle": "coconut palms at 10m intervals, hibiscus and heliconia in raised beds",
-            "streetFurniture": "tile-clad benches, painted steel market kiosks, festive string lights overhead"
-          },
-          "palette": {
-            "primary": "#E07B4C"
-          }
+          "id": "pedestrian_promenade_v2",
+          "label": "Contemporary Urban",
+          "color": "#455A64",
+          "description": "Pedestrian Promenade / Paseo in contemporary urban pedestrian street. Large-format natural stone pavers, corten steel planters, architectural concrete seating walls, linear water features, and specimen trees in flush grates.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_2.png"
         },
         {
-          "id": "pedestrian_promenade_variant_3",
-          "label": "Historic Brick Promenade",
-          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_3.png",
-          "description": "A classic red-brick promenade with gas-lamp style lighting, cast-iron benches, and mature elms. Heritage downtown walking street with a 19th-century character.",
-          "surfaceDetail": {
-            "primarySurface": "red clay brick pavers in running bond pattern with granite border bands",
-            "edgeTreatment": "restored historic building facades with decorative cornice lines",
-            "plantingStyle": "mature American elms in cast-iron tree grates, seasonal flower baskets on lamp posts",
-            "streetFurniture": "gas-lamp style LED fixtures, cast-iron benches with wood slats, heritage bollards"
-          },
-          "palette": {
-            "primary": "#8B4513"
-          }
+          "id": "pedestrian_promenade_v3",
+          "label": "Festival Street",
+          "color": "#E65100",
+          "description": "Pedestrian Promenade / Paseo in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_3.png"
         }
       ]
     },
@@ -1426,64 +1074,32 @@
       "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/hero.png",
       "variants": [
         {
-          "id": "woonerf_shared_street_variant_0",
-          "label": "Woonerf / Shared Street",
-          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_0.png",
-          "description": "A Dutch-style woonerf or shared street where pedestrians, cyclists, and slow vehicles share a single flush surface with no curbs — a textured living street from above",
-          "surfaceDetail": {
-            "primarySurface": "Mixed flush paving — brick, stone, permeable pavers, no curbs",
-            "edgeTreatment": "Flush surface meeting building facades directly, informal car parking",
-            "plantingStyle": "Trees and raised planters placed as traffic-calming chicane elements",
-            "streetFurniture": "Living street where public life dominates over vehicle movement"
-          },
-          "palette": {
-            "primary": "#9B5B3A"
-          }
+          "id": "woonerf_shared_street_v0",
+          "label": "Mediterranean Paseo",
+          "color": "#D4A574",
+          "description": "Woonerf / Shared Street in Mediterranean paseo streetscape. Terracotta-toned pavers, shade pergolas with climbing bougainvillea, ceramic tile accents, wrought-iron benches, and citrus trees in decorative planters.",
+          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_0.png"
         },
         {
-          "id": "woonerf_shared_street_variant_1",
-          "label": "Contemporary Shared Space",
-          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_1.png",
-          "description": "A modern shared-surface street with large-format concrete pavers, corten steel planters, and LED-strip wayfinding embedded in the surface. Sleek contemporary design.",
-          "surfaceDetail": {
-            "primarySurface": "large-format light gray concrete pavers with flush stone drainage channels",
-            "edgeTreatment": "corten steel raised planters defining driving zone, flush thresholds at building entries",
-            "plantingStyle": "ornamental grasses and multi-stem amelanchier in corten steel planters",
-            "streetFurniture": "linear corten steel bench-walls, recessed LED ground lights, slim bollards"
-          },
-          "palette": {
-            "primary": "#7A6A5A"
-          }
+          "id": "woonerf_shared_street_v1",
+          "label": "Nordic Timber Walk",
+          "color": "#5D4037",
+          "description": "Woonerf / Shared Street in Nordic timber pedestrian streetscape. Wide timber boardwalk surface, birch tree plantings, warm-toned timber bollards, integrated timber bench seating, and native ground cover plantings.",
+          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_1.png"
         },
         {
-          "id": "woonerf_shared_street_variant_2",
-          "label": "Festival Street / Flexible Space",
-          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_2.png",
-          "description": "A convertible shared street with removable bollards, overhead catenary wire for string lights, and flush paving that doubles as event space. Designed for temporary closures and markets.",
-          "surfaceDetail": {
-            "primarySurface": "warm gray concrete pavers with stone accent banding at gathering zones",
-            "edgeTreatment": "retractable bollards at entry points, building facades with roll-up storefronts",
-            "plantingStyle": "large specimen trees in permanent raised beds, movable planters for flexible layout",
-            "streetFurniture": "catenary wire masts for string lights, fold-down café barriers, pop-up market power pedestals"
-          },
-          "palette": {
-            "primary": "#C4A882"
-          }
+          "id": "woonerf_shared_street_v2",
+          "label": "Contemporary Urban",
+          "color": "#455A64",
+          "description": "Woonerf / Shared Street in contemporary urban pedestrian street. Large-format natural stone pavers, corten steel planters, architectural concrete seating walls, linear water features, and specimen trees in flush grates.",
+          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_2.png"
         },
         {
-          "id": "woonerf_shared_street_variant_3",
-          "label": "Japanese Shared Street (Seikatsu-Doro)",
-          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_3.png",
-          "description": "A Japanese-inspired living street with permeable concrete blocks, subtle level changes, and restrained planting. Minimalist shared surface with meticulous detail and order.",
-          "surfaceDetail": {
-            "primarySurface": "pale interlocking concrete blocks with contrasting dark accent strips",
-            "edgeTreatment": "subtle 20mm level change at building thresholds, granite drainage channels",
-            "plantingStyle": "single-stem Japanese maples in minimalist square tree pits, clipped azalea",
-            "streetFurniture": "timber and steel minimalist benches, recessed floor washers, low stone bollards"
-          },
-          "palette": {
-            "primary": "#8A8A7A"
-          }
+          "id": "woonerf_shared_street_v3",
+          "label": "Festival Street",
+          "color": "#E65100",
+          "description": "Woonerf / Shared Street in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
+          "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_3.png"
         }
       ]
     },
@@ -1549,64 +1165,32 @@
       "thumbnailUrl": "/archetypes/streets/brt-corridor/hero.png",
       "variants": [
         {
-          "id": "brt_corridor_variant_0",
-          "label": "BRT / Bus Rapid Transit Corridor",
-          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_0.png",
-          "description": "A bus rapid transit corridor with dedicated center-running bus lanes, raised platforms, and general-purpose outer lanes — red-painted bus lanes from above",
-          "surfaceDetail": {
-            "primarySurface": "Red-painted center bus lanes, asphalt outer lanes, concrete station platforms",
-            "edgeTreatment": "Wide sidewalks, bus station platforms, general-purpose lanes",
-            "plantingStyle": "Street trees on outer sidewalks, no trees in the center median",
-            "streetFurniture": "High-capacity transit corridor with rapid service"
-          },
-          "palette": {
-            "primary": "#CC2233"
-          }
+          "id": "brt_corridor_v0",
+          "label": "Modern Transit Mall",
+          "color": "#1565C0",
+          "description": "BRT / Bus Rapid Transit Corridor in modern transit mall design. Dedicated bus and rail lanes in colored pavement, glass-canopy shelters, digital real-time displays, raised platform stops, and street trees in structural soil.",
+          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_0.png"
         },
         {
-          "id": "brt_corridor_variant_1",
-          "label": "European Quality BRT",
-          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_1.png",
-          "description": "A high-quality European BRT with grassed track bed in the center, elegant glass shelters, and integrated cycling infrastructure. Transit boulevard with green infrastructure.",
-          "surfaceDetail": {
-            "primarySurface": "reinforced grass-track bus guideway in center, asphalt outer lanes",
-            "edgeTreatment": "granite curbs with planted buffer between BRT and traffic, protected bike lanes",
-            "plantingStyle": "grass in bus track bed, London plane trees on wide outer sidewalks",
-            "streetFurniture": "elegant curved glass shelter canopies, real-time departure displays, bike parking"
-          },
-          "palette": {
-            "primary": "#3B7A57"
-          }
+          "id": "brt_corridor_v1",
+          "label": "Heritage Tram Avenue",
+          "color": "#795548",
+          "description": "BRT / Bus Rapid Transit Corridor in heritage tram avenue streetscape. Embedded rail tracks in cobblestone paving, ornamental catenary poles, heritage-style waiting shelters, gas-lamp-style lighting, and mature tree-lined median.",
+          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_1.png"
         },
         {
-          "id": "brt_corridor_variant_2",
-          "label": "North American BRT Lite",
-          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_2.png",
-          "description": "A bus-priority corridor with red-painted bus lanes, curbside stations with simple shelters, and queue-jump signals. Incrementally upgraded existing arterial.",
-          "surfaceDetail": {
-            "primarySurface": "terra-cotta painted curbside bus lanes, standard asphalt travel lanes",
-            "edgeTreatment": "concrete curb with bus boarding bulbs at stations, standard sidewalks",
-            "plantingStyle": "existing street trees at irregular intervals, seasonal flower baskets",
-            "streetFurniture": "simple metal-and-glass bus shelters, bench seating, digital schedule signs"
-          },
-          "palette": {
-            "primary": "#B85C38"
-          }
+          "id": "brt_corridor_v2",
+          "label": "Green Transit Corridor",
+          "color": "#388E3C",
+          "description": "BRT / Bus Rapid Transit Corridor in green transit corridor. Grass-track transit lanes, bioswale median strips, solar-powered shelters with green roofs, native plantings along alignment, and permeable platform surfaces.",
+          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_2.png"
         },
         {
-          "id": "brt_corridor_variant_3",
-          "label": "Tropical BRT Corridor",
-          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_3.png",
-          "description": "A BRT corridor in a tropical setting with covered walkway canopies at stations, palm-lined outer sidewalks, and bright-colored bus livery. Warm climate transit design.",
-          "surfaceDetail": {
-            "primarySurface": "red-oxide painted center bus lanes, light gray asphalt outer lanes",
-            "edgeTreatment": "wide covered canopy walkways connecting stations, decorative tile accents",
-            "plantingStyle": "royal palms along outer sidewalks at 10m intervals, tropical hedge screening",
-            "streetFurniture": "large covered station canopies with integrated solar panels, colorful seating"
-          },
-          "palette": {
-            "primary": "#D4742C"
-          }
+          "id": "brt_corridor_v3",
+          "label": "High-Tech Transit Hub",
+          "color": "#37474F",
+          "description": "BRT / Bus Rapid Transit Corridor in high-tech transit hub streetscape. Sleek aluminum and glass shelters, integrated ev charging, smart pavement sensors, dynamic led wayfinding, and polished concrete platforms.",
+          "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_3.png"
         }
       ]
     },
@@ -1675,64 +1259,32 @@
       "thumbnailUrl": "/archetypes/streets/light-rail-avenue/hero.png",
       "variants": [
         {
-          "id": "light_rail_avenue_variant_0",
-          "label": "Light Rail / Tram Avenue",
-          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_0.png",
-          "description": "A street with embedded light rail or tram tracks in a grassy median, flanked by travel lanes and sidewalks — steel rails in a green strip from above",
-          "surfaceDetail": {
-            "primarySurface": "Grass or gravel-ballast track bed in median, asphalt traffic lanes",
-            "edgeTreatment": "Wide sidewalks, trees, station platforms with shelters",
-            "plantingStyle": "Grass in track bed, street trees on outer sidewalks",
-            "streetFurniture": "Civic transit avenue with rail as the organizing spine"
-          },
-          "palette": {
-            "primary": "#4A7A4A"
-          }
+          "id": "light_rail_avenue_v0",
+          "label": "Modern Transit Mall",
+          "color": "#1565C0",
+          "description": "Light Rail / Tram Avenue in modern transit mall design. Dedicated bus and rail lanes in colored pavement, glass-canopy shelters, digital real-time displays, raised platform stops, and street trees in structural soil.",
+          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_0.png"
         },
         {
-          "id": "light_rail_avenue_variant_1",
-          "label": "Modern Light Rail Transit Mall",
-          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_1.png",
-          "description": "A car-free transit mall with embedded light rail in concrete track slab, wide pedestrian zones, and contemporary architecture. Urban transit-pedestrian hybrid corridor.",
-          "surfaceDetail": {
-            "primarySurface": "pale concrete track slab with flush rail, granite paver pedestrian zones",
-            "edgeTreatment": "flush transition between track and pedestrian paving, tactile warning strips",
-            "plantingStyle": "multi-stem birch clusters in large corten steel planters, ornamental grasses",
-            "streetFurniture": "minimalist steel-and-glass platform canopies, LED information totems, public art"
-          },
-          "palette": {
-            "primary": "#6A7A8A"
-          }
+          "id": "light_rail_avenue_v1",
+          "label": "Heritage Tram Avenue",
+          "color": "#795548",
+          "description": "Light Rail / Tram Avenue in heritage tram avenue streetscape. Embedded rail tracks in cobblestone paving, ornamental catenary poles, heritage-style waiting shelters, gas-lamp-style lighting, and mature tree-lined median.",
+          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_1.png"
         },
         {
-          "id": "light_rail_avenue_variant_2",
-          "label": "Ballasted Suburban Light Rail",
-          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_2.png",
-          "description": "A suburban light rail line in traditional gravel-ballast track bed running in a wide center median. Separated from traffic with fencing and grade crossings at intersections.",
-          "surfaceDetail": {
-            "primarySurface": "gravel-ballast track bed with concrete ties, asphalt outer traffic lanes",
-            "edgeTreatment": "chain-link or metal panel fencing along track edges, concrete median barriers",
-            "plantingStyle": "low maintenance groundcover along fence lines, shade trees at station areas",
-            "streetFurniture": "concrete platform stations with metal canopy shelters, crossing gates and signals"
-          },
-          "palette": {
-            "primary": "#8A7A6A"
-          }
+          "id": "light_rail_avenue_v2",
+          "label": "Green Transit Corridor",
+          "color": "#388E3C",
+          "description": "Light Rail / Tram Avenue in green transit corridor. Grass-track transit lanes, bioswale median strips, solar-powered shelters with green roofs, native plantings along alignment, and permeable platform surfaces.",
+          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_2.png"
         },
         {
-          "id": "light_rail_avenue_variant_3",
-          "label": "Historic Streetcar Revival Avenue",
-          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_3.png",
-          "description": "A revived historic streetcar line with vintage-style rail embedded in brick paving, mixed with automobile traffic. Heritage transit character with period-appropriate details.",
-          "surfaceDetail": {
-            "primarySurface": "red brick paving between and around rails, asphalt in outer traffic lanes",
-            "edgeTreatment": "granite curbs with wide brick sidewalks, heritage lamp post bases",
-            "plantingStyle": "mature American elms in cast-iron tree grates, seasonal flower baskets on poles",
-            "streetFurniture": "reproduction Victorian platform shelters, cast-iron benches, heritage wayfinding"
-          },
-          "palette": {
-            "primary": "#8B4513"
-          }
+          "id": "light_rail_avenue_v3",
+          "label": "High-Tech Transit Hub",
+          "color": "#37474F",
+          "description": "Light Rail / Tram Avenue in high-tech transit hub streetscape. Sleek aluminum and glass shelters, integrated ev charging, smart pavement sensors, dynamic led wayfinding, and polished concrete platforms.",
+          "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_3.png"
         }
       ]
     },
@@ -1801,64 +1353,32 @@
       "thumbnailUrl": "/archetypes/streets/main-street-complete/hero.png",
       "variants": [
         {
-          "id": "main_street_complete_variant_0",
-          "label": "Main Street / Complete Street",
-          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_0.png",
-          "description": "A traditional main street with on-street parking, wide sidewalks, street trees, bike sharrows, and active commercial frontage — a balanced downtown corridor from above",
-          "surfaceDetail": {
-            "primarySurface": "Asphalt roadway with parking markings, wide concrete sidewalks",
-            "edgeTreatment": "Wide sidewalks, commercial awnings, on-street parking, transit shelter",
-            "plantingStyle": "Street trees in grates at regular intervals, flower baskets on light poles",
-            "streetFurniture": "Active downtown commercial corridor with strong pedestrian life"
-          },
-          "palette": {
-            "primary": "#5B3A29"
-          }
+          "id": "main_street_complete_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Main Street / Complete Street in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_0.png"
         },
         {
-          "id": "main_street_complete_variant_1",
-          "label": "Midwestern Main Street",
-          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_1.png",
-          "description": "A wide midwestern downtown main street with angled parking, pressed-brick storefronts, and ornamental pear trees. Heartland commercial corridor with generous proportions.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with white angled parking stall markings",
-            "edgeTreatment": "concrete curbs with scored concrete sidewalks, planting cutouts",
-            "plantingStyle": "ornamental pear trees at 10m intervals, seasonal flower planters at corners",
-            "streetFurniture": "acorn-globe pendant street lights, painted metal benches, flag-pole brackets"
-          },
-          "palette": {
-            "primary": "#6B5B4B"
-          }
+          "id": "main_street_complete_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Main Street / Complete Street in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_1.png"
         },
         {
-          "id": "main_street_complete_variant_2",
-          "label": "Revitalized Complete Street",
-          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_2.png",
-          "description": "A recently redesigned complete street with bump-outs, protected bike lanes, parklets, and smart transit shelters. Contemporary urban revitalization with green infrastructure.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with green-painted bike lane zones and high-visibility crosswalks",
-            "edgeTreatment": "concrete curb bump-outs with bioretention planting, parklet platforms",
-            "plantingStyle": "diverse native tree mix in silva cells, rain garden bump-outs, green roof parklets",
-            "streetFurniture": "slim LED mast lights, modular parklet seating, smart transit shelter with e-ink display"
-          },
-          "palette": {
-            "primary": "#3A7A6A"
-          }
+          "id": "main_street_complete_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Main Street / Complete Street in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_2.png"
         },
         {
-          "id": "main_street_complete_variant_3",
-          "label": "Western Frontier Main Street",
-          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_3.png",
-          "description": "A western-character main street with wide sidewalks, covered wooden boardwalk arcades, and rustic timber details. Heritage frontier-town character with modern amenities.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with white parallel parking markings, wide lane proportions",
-            "edgeTreatment": "concrete curbs with covered timber boardwalk arcade along storefronts",
-            "plantingStyle": "honey locust trees at 12m intervals, ornamental grasses in stone planters",
-            "streetFurniture": "timber-and-steel bench hybrids, rustic pendant lights, sandstone planters"
-          },
-          "palette": {
-            "primary": "#8B6F47"
-          }
+          "id": "main_street_complete_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Main Street / Complete Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_3.png"
         }
       ]
     },
@@ -1923,64 +1443,32 @@
       "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/hero.png",
       "variants": [
         {
-          "id": "campus_pedestrian_spine_variant_0",
-          "label": "Campus Pedestrian Spine",
-          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_0.png",
-          "description": "A wide landscaped pedestrian spine through a campus or institutional district with formal tree alleys, seating, and cross-paths — a green axial corridor from above",
-          "surfaceDetail": {
-            "primarySurface": "Pale stone or concrete paving with banded accent patterns",
-            "edgeTreatment": "Open lawn panels, cross-path branches to buildings, bike racks",
-            "plantingStyle": "Double rows of mature deciduous trees forming continuous canopy alley",
-            "streetFurniture": "Formal campus circulation spine with social seating and gathering"
-          },
-          "palette": {
-            "primary": "#2B3D4F"
-          }
+          "id": "campus_pedestrian_spine_v0",
+          "label": "Mediterranean Paseo",
+          "color": "#D4A574",
+          "description": "Campus Pedestrian Spine in Mediterranean paseo streetscape. Terracotta-toned pavers, shade pergolas with climbing bougainvillea, ceramic tile accents, wrought-iron benches, and citrus trees in decorative planters.",
+          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_0.png"
         },
         {
-          "id": "campus_pedestrian_spine_variant_1",
-          "label": "Modern Research Campus Spine",
-          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_1.png",
-          "description": "A contemporary campus spine with large-format concrete pavers, stainless steel furniture, and sculptural tree plantings. Clean-lined modern institutional character.",
-          "surfaceDetail": {
-            "primarySurface": "large-format smooth concrete pavers with steel drainage channels",
-            "edgeTreatment": "flush glass-and-steel building entries, corten steel raised planters",
-            "plantingStyle": "multi-stem birch clusters in corten planters, ornamental grass ribbons",
-            "streetFurniture": "stainless steel and timber slat benches, cylindrical LED bollards, public art"
-          },
-          "palette": {
-            "primary": "#6A7A8A"
-          }
+          "id": "campus_pedestrian_spine_v1",
+          "label": "Nordic Timber Walk",
+          "color": "#5D4037",
+          "description": "Campus Pedestrian Spine in Nordic timber pedestrian streetscape. Wide timber boardwalk surface, birch tree plantings, warm-toned timber bollards, integrated timber bench seating, and native ground cover plantings.",
+          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_1.png"
         },
         {
-          "id": "campus_pedestrian_spine_variant_2",
-          "label": "Southern Campus Promenade",
-          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_2.png",
-          "description": "A warm-climate campus walkway with brick paving, live oak canopy, and Collegiate Gothic building character. Spanish moss and magnolia create deep shade and southern atmosphere.",
-          "surfaceDetail": {
-            "primarySurface": "red clay brick in herringbone pattern with limestone medallions at nodes",
-            "edgeTreatment": "low limestone walls with integrated seating, colonnaded building arcades",
-            "plantingStyle": "live oaks with spreading canopy, magnolias, azalea beds along building edges",
-            "streetFurniture": "limestone and cast-iron benches, copper lanterns, brick wayfinding pylons"
-          },
-          "palette": {
-            "primary": "#6B4226"
-          }
+          "id": "campus_pedestrian_spine_v2",
+          "label": "Contemporary Urban",
+          "color": "#455A64",
+          "description": "Campus Pedestrian Spine in contemporary urban pedestrian street. Large-format natural stone pavers, corten steel planters, architectural concrete seating walls, linear water features, and specimen trees in flush grates.",
+          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_2.png"
         },
         {
-          "id": "campus_pedestrian_spine_variant_3",
-          "label": "Sustainable Campus Green Spine",
-          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_3.png",
-          "description": "An eco-campus walkway with permeable pavers, rain garden bioswales, and native meadow planting panels. LEED-campus design with educational landscape character.",
-          "surfaceDetail": {
-            "primarySurface": "permeable concrete pavers with grass-joint pattern, recycled glass aggregate accents",
-            "edgeTreatment": "bioswale rain gardens between path and buildings, timber deck overlooks",
-            "plantingStyle": "native prairie meadow panels, rain garden wetland plantings, food forest sections",
-            "streetFurniture": "recycled timber and steel benches, solar charging stations, interpretive ecology signs"
-          },
-          "palette": {
-            "primary": "#4A7A4A"
-          }
+          "id": "campus_pedestrian_spine_v3",
+          "label": "Festival Street",
+          "color": "#E65100",
+          "description": "Campus Pedestrian Spine in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
+          "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_3.png"
         }
       ]
     },
@@ -2048,64 +1536,32 @@
       "thumbnailUrl": "/archetypes/streets/scenic-parkway/hero.png",
       "variants": [
         {
-          "id": "scenic_parkway_variant_0",
-          "label": "Scenic Parkway / Park Drive",
-          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_0.png",
-          "description": "A curving scenic parkway through a park with generous tree setbacks, grass shoulders, and no commercial development — a winding road through green from above",
-          "surfaceDetail": {
-            "primarySurface": "Smooth asphalt with center and edge lines, wide grass shoulders",
-            "edgeTreatment": "Wide grass shoulders, no curbs, no buildings, parallel multi-use path",
-            "plantingStyle": "Mature trees at irregular naturalistic spacing with generous setbacks",
-            "streetFurniture": "Scenic recreational driving and walking corridor through parkland"
-          },
-          "palette": {
-            "primary": "#3E5C3E"
-          }
+          "id": "scenic_parkway_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Scenic Parkway / Park Drive in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_0.png"
         },
         {
-          "id": "scenic_parkway_variant_1",
-          "label": "Coastal Scenic Highway",
-          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_1.png",
-          "description": "A cliffside parkway with ocean views, cable guardrails, and windswept coastal plantings. Dramatic coastal road with wide vista pull-offs and sea-spray character.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with bright white edge lines, no center line on curves",
-            "edgeTreatment": "cable guardrails on ocean side, natural rock cuts on inland side",
-            "plantingStyle": "windswept Monterey cypress, native coastal scrub, ice plant groundcover",
-            "streetFurniture": "galvanized steel cable guardrails, stone pull-off overlooks, weather stations"
-          },
-          "palette": {
-            "primary": "#4A6B7A"
-          }
+          "id": "scenic_parkway_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Scenic Parkway / Park Drive in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_1.png"
         },
         {
-          "id": "scenic_parkway_variant_2",
-          "label": "Formal Park Boulevard",
-          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_2.png",
-          "description": "A designed parkway through a Frederick Law Olmsted-style landscape park with generous grass setbacks, specimen tree groups, and carriage-style lamp posts. Pastoral park drive character.",
-          "surfaceDetail": {
-            "primarySurface": "smooth dark asphalt with subtle white edge lines, gentle curves",
-            "edgeTreatment": "wide grass shoulders, no curbs, stone bridge parapets at stream crossings",
-            "plantingStyle": "specimen tree groups — beech, oak, catalpa — in pastoral lawn, naturalistic groves",
-            "streetFurniture": "heritage cast-iron carriage lamps, stone-capped bridge walls, rustic timber benches"
-          },
-          "palette": {
-            "primary": "#4A6B4A"
-          }
+          "id": "scenic_parkway_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Scenic Parkway / Park Drive in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_2.png"
         },
         {
-          "id": "scenic_parkway_variant_3",
-          "label": "Desert Canyon Scenic Road",
-          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_3.png",
-          "description": "A parkway through arid canyon landscape with red rock formations, native desert planting, and rusted corten steel guardrails. Southwestern scenic road character.",
-          "surfaceDetail": {
-            "primarySurface": "dark asphalt with bright white edge lines through red rock landscape",
-            "edgeTreatment": "corten steel guardrails, natural sandstone rock cuts, drainage culverts",
-            "plantingStyle": "native desert — saguaro, prickly pear, desert willow — beyond road shoulders",
-            "streetFurniture": "corten steel pull-off shelters, sandstone interpretive panels, solar path lights"
-          },
-          "palette": {
-            "primary": "#B85C38"
-          }
+          "id": "scenic_parkway_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Scenic Parkway / Park Drive in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_3.png"
         }
       ]
     },
@@ -2170,64 +1626,32 @@
       "thumbnailUrl": "/archetypes/streets/riverfront-promenade/hero.png",
       "variants": [
         {
-          "id": "riverfront_promenade_variant_0",
-          "label": "Riverfront Promenade",
-          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_0.png",
-          "description": "A wide paved promenade along a river or waterfront with railing, lamp posts, and linear planting — a pale ribbon alongside dark water from above",
-          "surfaceDetail": {
-            "primarySurface": "Pale stone or concrete paving with linear joint pattern, metal railing at water edge",
-            "edgeTreatment": "Water railing, lamp posts, benches facing water, tree row on inland side",
-            "plantingStyle": "Linear row of trees along inland edge, no planting on water side",
-            "streetFurniture": "Active waterfront promenade with scenic views and recreation"
-          },
-          "palette": {
-            "primary": "#8A8A7A"
-          }
+          "id": "riverfront_promenade_v0",
+          "label": "Mediterranean Paseo",
+          "color": "#D4A574",
+          "description": "Riverfront Promenade in Mediterranean paseo streetscape. Terracotta-toned pavers, shade pergolas with climbing bougainvillea, ceramic tile accents, wrought-iron benches, and citrus trees in decorative planters.",
+          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_0.png"
         },
         {
-          "id": "riverfront_promenade_variant_1",
-          "label": "Modern Harbor Boardwalk",
-          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_1.png",
-          "description": "A contemporary boardwalk promenade along a redeveloped harbor with IPE timber decking, cable railings, and minimalist steel furniture. Clean maritime-modern character.",
-          "surfaceDetail": {
-            "primarySurface": "IPE timber decking in linear plank pattern with stainless steel fasteners",
-            "edgeTreatment": "stainless steel cable railing at water edge, flush steel drainage edges",
-            "plantingStyle": "ornamental grasses in galvanized steel planters, no trees on water side",
-            "streetFurniture": "stainless steel and timber slatted benches, cylindrical bollard lights, yacht cleats as art"
-          },
-          "palette": {
-            "primary": "#6A5A4A"
-          }
+          "id": "riverfront_promenade_v1",
+          "label": "Nordic Timber Walk",
+          "color": "#5D4037",
+          "description": "Riverfront Promenade in Nordic timber pedestrian streetscape. Wide timber boardwalk surface, birch tree plantings, warm-toned timber bollards, integrated timber bench seating, and native ground cover plantings.",
+          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_1.png"
         },
         {
-          "id": "riverfront_promenade_variant_2",
-          "label": "Urban River Walk",
-          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_2.png",
-          "description": "A terraced river walk promenade with multiple levels, stone seating steps descending to water, and café terraces at upper level. Layered urban waterfront with active edges.",
-          "surfaceDetail": {
-            "primarySurface": "warm sandstone pavers on upper promenade, granite steps descending to water level",
-            "edgeTreatment": "terraced stone seating steps to water, metal railing at lower level, café zone at upper",
-            "plantingStyle": "weeping willows at water edge, clipped hedge screening café terraces, potted olives",
-            "streetFurniture": "stone-integrated bench seating, café tables and umbrellas, underwater LED lighting"
-          },
-          "palette": {
-            "primary": "#C4A476"
-          }
+          "id": "riverfront_promenade_v2",
+          "label": "Contemporary Urban",
+          "color": "#455A64",
+          "description": "Riverfront Promenade in contemporary urban pedestrian street. Large-format natural stone pavers, corten steel planters, architectural concrete seating walls, linear water features, and specimen trees in flush grates.",
+          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_2.png"
         },
         {
-          "id": "riverfront_promenade_variant_3",
-          "label": "Natural Riparian Greenway",
-          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_3.png",
-          "description": "A naturalized riverfront path with crushed stone surface, native riparian plantings, and timber-and-cable railings. Ecological restoration character with a gentle, wild atmosphere.",
-          "surfaceDetail": {
-            "primarySurface": "compacted crushed limestone with timber edging, natural earth at water edge",
-            "edgeTreatment": "timber-and-cable railings at steep banks, natural stone at gentle slopes",
-            "plantingStyle": "native riparian — river birch, button bush, sedges, cardinal flower — naturalistic",
-            "streetFurniture": "timber observation platforms, rustic benches, interpretive ecology panels"
-          },
-          "palette": {
-            "primary": "#5C7A5C"
-          }
+          "id": "riverfront_promenade_v3",
+          "label": "Festival Street",
+          "color": "#E65100",
+          "description": "Riverfront Promenade in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
+          "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_3.png"
         }
       ]
     },
@@ -2289,64 +1713,32 @@
       "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/hero.png",
       "variants": [
         {
-          "id": "custom_streets_pathways_variant_0",
-          "label": "Custom Streets / Pathways",
-          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_0.png",
-          "description": "A user-defined street or pathway with custom character — specify your own corridor vision",
-          "surfaceDetail": {
-            "primarySurface": "User-defined surface material and treatment",
-            "edgeTreatment": "User-defined edge conditions and frontage character",
-            "plantingStyle": "User-defined planting palette and street tree strategy",
-            "streetFurniture": "User-defined public realm quality and amenities"
-          },
-          "palette": {
-            "primary": "#C4956A"
-          }
+          "id": "custom_streets_pathways_v0",
+          "label": "Classic Tree-Lined",
+          "color": "#4A7C59",
+          "description": "Custom Streets / Pathways in classic tree-lined streetscape. Mature deciduous street trees with broad canopies, traditional concrete sidewalks, ornamental iron lamp posts, granite curbs, and manicured grass planting strips.",
+          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_0.png"
         },
         {
-          "id": "custom_streets_pathways_variant_1",
-          "label": "Cool Urban Palette",
-          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_1.png",
-          "description": "A custom street configuration using a cool material palette — granite, steel, and slate tones. Suitable for contemporary, Nordic, or industrial-modern contexts.",
-          "surfaceDetail": {
-            "primarySurface": "cool gray concrete or granite pavers, user-defined layout",
-            "edgeTreatment": "user-defined — default granite curbs with stainless steel drainage channels",
-            "plantingStyle": "user-defined — default birch and ornamental grasses in corten steel planters",
-            "streetFurniture": "user-defined — default stainless steel and teak benches, cylindrical bollard lights"
-          },
-          "palette": {
-            "primary": "#6A7A8A"
-          }
+          "id": "custom_streets_pathways_v1",
+          "label": "Modern Minimalist",
+          "color": "#607D8B",
+          "description": "Custom Streets / Pathways in modern minimalist streetscape. Clean concrete paving, flush curbs, columnar trees in steel grates, led pole lights, and minimal street furniture in brushed stainless steel.",
+          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_1.png"
         },
         {
-          "id": "custom_streets_pathways_variant_2",
-          "label": "Green Infrastructure Palette",
-          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_2.png",
-          "description": "A custom street configuration emphasizing green infrastructure — bioswales, permeable pavers, and native plantings. Suitable for eco-district or sustainable-development contexts.",
-          "surfaceDetail": {
-            "primarySurface": "permeable concrete pavers or porous asphalt, user-defined layout",
-            "edgeTreatment": "user-defined — default bioretention curb extensions with native grasses",
-            "plantingStyle": "user-defined — default native meadow and rain-garden plantings",
-            "streetFurniture": "user-defined — default recycled composite benches, solar pathway lights"
-          },
-          "palette": {
-            "primary": "#4A7A5E"
-          }
+          "id": "custom_streets_pathways_v2",
+          "label": "European Cobblestone",
+          "color": "#8D6E63",
+          "description": "Custom Streets / Pathways in European cobblestone streetscape. Natural stone sett paving, granite curbs, pollarded plane trees, vintage-style cast iron lamp posts, and stone bollards with iron chains.",
+          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_2.png"
         },
         {
-          "id": "custom_streets_pathways_variant_3",
-          "label": "Heritage Streetscape Palette",
-          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_3.png",
-          "description": "A custom street configuration using heritage materials — cobblestone, brick, and cast iron. Suitable for historic-district or preservation-context projects.",
-          "surfaceDetail": {
-            "primarySurface": "brick or cobblestone pavers, user-defined layout",
-            "edgeTreatment": "user-defined — default granite curbs with brick gutter channel",
-            "plantingStyle": "user-defined — default mature canopy trees in cast-iron tree grates",
-            "streetFurniture": "user-defined — default reproduction heritage lamp posts, cast-iron benches"
-          },
-          "palette": {
-            "primary": "#7A5C3E"
-          }
+          "id": "custom_streets_pathways_v3",
+          "label": "Tropical Boulevard",
+          "color": "#2E7D32",
+          "description": "Custom Streets / Pathways in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
+          "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_3.png"
         }
       ]
     }
