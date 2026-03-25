@@ -321,12 +321,19 @@ function toAestheticOption(
   const styleProfile = (seed.styleProfile || {}) as StyleProfile;
   const category = seed.aestheticCategory;
 
+  // Use the first design variant's thumbnail as hero (paths are known-correct),
+  // fall back to the visual system primary image
+  const heroFromVariant = seed.variants?.[0]?.thumbnailUrl;
+  const heroUrl = heroFromVariant
+    ? resolvePublicAssetUrl(heroFromVariant)
+    : (primary?.imageUrl || '');
+
   return {
     id: seed.id,
     categoryId: category,
     label: seed.title,
     description: seed.description,
-    photoUrl: primary?.imageUrl || '',
+    photoUrl: heroUrl,
     photoUrls: orderedArchetypeImages.map((image) => image.imageUrl),
     transportModes: Array.isArray(seed.transportModes) ? seed.transportModes : undefined,
     developmentType: seed.developmentType || (Array.isArray(seed.developmentTypes) ? seed.developmentTypes[0] : undefined),
