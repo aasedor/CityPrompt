@@ -799,8 +799,17 @@ export function buildStreetViewPrompt(
                   entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
       const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
       const heightNote = floors > 0 ? ` (${floors} stories tall)` : '';
+      // Determine if viewer sees front/side/back based on entrance orientation vs camera angle
+      const entranceFacing = entry.zone.properties?.entrance_facing as number | undefined;
+      let facadeNote = '';
+      if (entranceFacing != null) {
+        const angleDiff = ((entranceFacing - angleDeg) % 360 + 360) % 360;
+        if (angleDiff > 135 && angleDiff < 225) facadeNote = ' (viewing front facade)';
+        else if (angleDiff <= 45 || angleDiff >= 315) facadeNote = ' (viewing rear)';
+        else facadeNote = ' (viewing side)';
+      }
       return `  ${pos} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%, ~${Math.round(entry.distance)}m): ` +
-             `"${name}"${heightNote} — ${desc}`;
+             `"${name}"${heightNote}${facadeNote} — ${desc}`;
     });
     lines.push(`Content Assignment:\n${fgDescriptions.join('\n')}`);
   } else {
@@ -826,8 +835,17 @@ export function buildStreetViewPrompt(
                   entry.relativePosition === 'right' ? 'RIGHT' : 'CENTER';
       const floors = Number(entry.zone.properties?.floors) || Number(entry.zone.properties?.max_floors) || 0;
       const heightNote = floors > 0 ? ` (${floors} stories tall)` : '';
+      // Determine if viewer sees front/side/back based on entrance orientation vs camera angle
+      const entranceFacing = entry.zone.properties?.entrance_facing as number | undefined;
+      let facadeNote = '';
+      if (entranceFacing != null) {
+        const angleDiff = ((entranceFacing - angleDeg) % 360 + 360) % 360;
+        if (angleDiff > 135 && angleDiff < 225) facadeNote = ' (viewing front facade)';
+        else if (angleDiff <= 45 || angleDiff >= 315) facadeNote = ' (viewing rear)';
+        else facadeNote = ' (viewing side)';
+      }
       return `  ${pos} (frame ${entry.frameLeftPct}%-${entry.frameRightPct}%, ~${Math.round(entry.distance)}m): ` +
-             `"${name}"${heightNote} — ${desc}`;
+             `"${name}"${heightNote}${facadeNote} — ${desc}`;
     });
     lines.push(`Content Assignment:\n${mgDescriptions.join('\n')}`);
   } else {

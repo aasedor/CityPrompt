@@ -342,6 +342,7 @@ export function SitePlannerMap({
   const mapLoadedRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
   const [currentPitch, setCurrentPitch] = useState(60);
+  const [currentBearing, setCurrentBearing] = useState(-30);
 
   // Drag state for zone/vertex editing
   const dragStateRef = useRef<DragState | null>(null);
@@ -653,6 +654,7 @@ export function SitePlannerMap({
     setMapInstance(map);
 
     map.on('pitch', () => setCurrentPitch(Math.round(map.getPitch())));
+    map.on('rotate', () => setCurrentBearing(Math.round(map.getBearing())));
 
     map.on('load', () => {
       mapLoadedRef.current = true;
@@ -1482,17 +1484,28 @@ export function SitePlannerMap({
           Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
         </div>
       )}
-      {/* Pitch angle indicator */}
-      <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg select-none">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-white/70 shrink-0">
-          <ellipse cx="8" cy="10" rx="6" ry="3" stroke="currentColor" strokeWidth="1.3" fill="none"/>
-          <line x1="8" y1="10" x2="8" y2="2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-          <line x1="8" y1="2" x2="11" y2="6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
-        </svg>
-        <span className="text-[11px] font-semibold tabular-nums text-white/90">{currentPitch}°</span>
-        <span className="text-[10px] text-white/40">
-          {currentPitch <= 30 ? 'flat' : currentPitch <= 50 ? 'good' : currentPitch <= 60 ? 'optimal' : 'steep'}
-        </span>
+      {/* North arrow + Pitch angle indicator */}
+      <div className="absolute top-4 left-4 z-30 flex items-center gap-3 select-none">
+        {/* North arrow compass */}
+        <div className="flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg">
+          <svg width="18" height="18" viewBox="0 0 18 18" className="shrink-0" style={{ transform: `rotate(${-currentBearing}deg)`, transition: 'transform 0.15s ease-out' }}>
+            <polygon points="9,1 12,11 9,9 6,11" fill="#ef4444" stroke="#ef4444" strokeWidth="0.5"/>
+            <polygon points="9,17 6,11 9,9 12,11" fill="#ffffff" fillOpacity="0.4" stroke="#ffffff" strokeOpacity="0.4" strokeWidth="0.5"/>
+          </svg>
+          <span className="text-[10px] font-bold text-red-400">N</span>
+        </div>
+        {/* Pitch indicator */}
+        <div className="flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-white/70 shrink-0">
+            <ellipse cx="8" cy="10" rx="6" ry="3" stroke="currentColor" strokeWidth="1.3" fill="none"/>
+            <line x1="8" y1="10" x2="8" y2="2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+            <line x1="8" y1="2" x2="11" y2="6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+          </svg>
+          <span className="text-[11px] font-semibold tabular-nums text-white/90">{currentPitch}°</span>
+          <span className="text-[10px] text-white/40">
+            {currentPitch <= 30 ? 'flat' : currentPitch <= 50 ? 'good' : currentPitch <= 60 ? 'optimal' : 'steep'}
+          </span>
+        </div>
       </div>
     </>
   );
