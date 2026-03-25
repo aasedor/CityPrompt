@@ -579,7 +579,7 @@ const resolveOptionCategory = (
     });
   };
 
-  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string) => {
+  const applyRoadAesthetic = (next: string | undefined, selectedArchetypeImageId?: string, selectedVariantId?: string) => {
     setProps((p) => {
       let nextProps = buildAestheticSelectionProps(
         p,
@@ -588,6 +588,7 @@ const resolveOptionCategory = (
         ROADWAY_AESTHETIC_OPTIONS,
         ROADWAY_AESTHETIC_PRESETS,
         selectedArchetypeImageId,
+        selectedVariantId,
       );
 
       const selectedOption = ROADWAY_AESTHETIC_OPTIONS.find((o) => o.id === next);
@@ -981,6 +982,7 @@ const resolveOptionCategory = (
                   value={(props.road_aesthetic as string) || undefined}
                   category={selectedRoadAestheticCategory}
                   selectedReferenceId={selectedRoadReferenceId}
+                  selectedVariantId={(props.road_selected_variant_id as string) || undefined}
                   selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
@@ -2336,14 +2338,16 @@ function RoadwayAestheticPicker({
   value,
   category,
   selectedReferenceId,
+  selectedVariantId,
   selectedModes,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
+  selectedVariantId?: string;
   selectedModes: TransportModeKey[];
-  onChange: (next: string | undefined, archetypeImageId?: string) => void;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
@@ -2377,7 +2381,8 @@ function RoadwayAestheticPicker({
               option={option}
               value={value}
               selectedReferenceId={selectedReferenceId}
-              onSelect={(id, archetypeImageId) => onChange(id, archetypeImageId)}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
             />
           ))}
         </div>

@@ -171,6 +171,7 @@ type ArchetypeSeed = {
   suggestedAreaSqm?: number;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
+  thumbnailUrl?: string;
 };
 
 type ArchetypeLibrary = {
