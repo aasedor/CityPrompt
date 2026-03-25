@@ -271,11 +271,13 @@ function toArchetypeImages(
   seed: ArchetypeSeed,
 ): ArchetypeImage[] {
   const variants = visualSystem.cardVariants || [];
-  // Derive folder slug from thumbnailUrl if available (handles hyphen vs underscore),
-  // otherwise fall back to seed.id
-  const folderSlug = seed.thumbnailUrl
+  // Derive folder slug: use the slug from thumbnailUrl when the domain uses
+  // hyphenated directory names (streets, openspaces), fall back to seed.id
+  // for domains that use underscored directory names (buildings).
+  const thumbSlug = seed.thumbnailUrl
     ? seed.thumbnailUrl.split('/').slice(-2, -1)[0]
-    : seed.id;
+    : undefined;
+  const folderSlug = thumbSlug && thumbSlug.includes('-') ? thumbSlug : seed.id;
   return variants.map((variant) => {
     const imagePath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}.png`;
     const thumbPath = `/archetypes/${domainPath}/${folderSlug}/${variant.id}_thumb.jpg`;
