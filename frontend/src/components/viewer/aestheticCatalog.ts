@@ -390,7 +390,7 @@ export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.arch
 );
 
 const OPEN_SPACE_OPTIONS = OPEN_SPACE_LIBRARY.archetypes.map((seed) =>
-  toAestheticOption('park_plaza', 'parks_plazas', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
+  toAestheticOption('park_plaza', 'openspaces', VISUAL_SYSTEM, OPEN_SPACE_LIBRARY.categories, seed),
 );
 
 const GREEN_SPACE_CATEGORY_IDS = new Set(

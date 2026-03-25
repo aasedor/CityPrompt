@@ -658,7 +658,7 @@
         "has_benches": true,
         "shade_strategy": "riparian_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/hero.png"
     },
     {
       "id": "wetland_rain_garden",
@@ -751,7 +751,7 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/playground-adventure/hero.png"
     },
     {
       "id": "splash_pad_area",
@@ -797,7 +797,7 @@
         "paving_material": "concrete",
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/hero.png"
     },
     {
       "id": "amphitheater_lawn",
@@ -842,7 +842,7 @@
         "has_benches": true,
         "shade_strategy": "perimeter_trees"
       },
-      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/hero.png"
     },
     {
       "id": "community_garden",
@@ -888,7 +888,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/community-garden/hero.png"
     },
     {
       "id": "cemetery_memorial_grounds",
@@ -1070,7 +1070,7 @@
         "shade_strategy": "central_tree",
         "plaza_program": "courtyard"
       },
-      "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/hero.png"
     },
     {
       "id": "promenade_boardwalk",
@@ -1205,7 +1205,7 @@
         "shade_strategy": "none",
         "plaza_program": "performance"
       },
-      "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/hero.png"
     },
     {
       "id": "surface_parking_lot",
@@ -1333,7 +1333,7 @@
         "covered": true,
         "paving_material": "concrete"
       },
-      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/hero.png"
     },
     {
       "id": "green_parking_lot",
@@ -1376,7 +1376,7 @@
         "covered": false,
         "paving_material": "permeable_paver"
       },
-      "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/hero.png"
     },
     {
       "id": "pond_lake",
@@ -1461,7 +1461,7 @@
         "shade_strategy": "none",
         "plaza_program": "fountain"
       },
-      "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png"
+      "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/hero.png"
     },
     {
       "id": "stormwater_retention_pond",
