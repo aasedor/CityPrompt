@@ -1149,4 +1149,60 @@ export const rendersApi = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// Beta Feedback
+// ---------------------------------------------------------------------------
+
+export interface FeedbackItem {
+  id: string;
+  author_id: string;
+  author_email?: string;
+  author_name?: string;
+  category: string;
+  text: string;
+  page_url?: string;
+  status: string;
+  admin_notes?: string;
+  created_at: string;
+}
+
+export interface FeedbackCounts {
+  open: number;
+  reviewed: number;
+  resolved: number;
+  dismissed: number;
+  total: number;
+}
+
+export const feedbackApi = {
+  submit: async (body: { category: string; text: string; page_url?: string }): Promise<FeedbackItem> => {
+    const { data } = await api.post('/api/v1/feedback', body);
+    return data;
+  },
+
+  mine: async (): Promise<FeedbackItem[]> => {
+    const { data } = await api.get('/api/v1/feedback/mine');
+    return data;
+  },
+
+  inbox: async (params?: { status_filter?: string; category?: string; limit?: number; skip?: number }): Promise<FeedbackItem[]> => {
+    const { data } = await api.get('/api/v1/feedback/inbox', { params });
+    return data;
+  },
+
+  counts: async (): Promise<FeedbackCounts> => {
+    const { data } = await api.get('/api/v1/feedback/inbox/counts');
+    return data;
+  },
+
+  update: async (feedbackId: string, body: { status?: string; admin_notes?: string }): Promise<FeedbackItem> => {
+    const { data } = await api.put(`/api/v1/feedback/${feedbackId}`, body);
+    return data;
+  },
+
+  delete: async (feedbackId: string): Promise<void> => {
+    await api.delete(`/api/v1/feedback/${feedbackId}`);
+  },
+};
+
 export default api;

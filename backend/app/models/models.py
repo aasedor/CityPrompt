@@ -284,6 +284,22 @@ class ModelLibraryEntry(Base):
     source_project: Mapped["Project | None"] = relationship()
 
 
+class BetaFeedback(Base):
+    __tablename__ = "beta_feedback"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    author_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    category: Mapped[str] = mapped_column(String(30), nullable=False, default="suggestion")  # suggestion, bug, question
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    page_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="open")  # open, reviewed, resolved, dismissed
+    admin_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    author: Mapped["User"] = relationship()
+
+
 class ApiUsageLog(Base):
     __tablename__ = "api_usage_logs"
 

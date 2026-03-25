@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { BarChart3, Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, Shield, User, Menu, X, Sun, Moon, Monitor } from 'lucide-react';
+import { BarChart3, Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, MessageSquare, Shield, User, Menu, X, Sun, Moon, Monitor } from 'lucide-react';
 import { useThemeStore } from '@/store/themeStore';
 import { useAuthStore } from '@/store';
 
@@ -34,7 +34,7 @@ export function Layout() {
 
   return (
     <div className="min-h-screen">
-      <header className="relative border-b border-primary-950/[0.06] bg-accent-50/80 backdrop-blur-xl">
+      <header className="relative z-[100] border-b border-primary-950/[0.06] bg-accent-50/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
             <Box className="h-7 w-7 text-coral-500 sm:h-8 sm:w-8" />
@@ -103,6 +103,16 @@ export function Layout() {
                       >
                         {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                         Admin Dashboard
+                      </Link>
+                    )}
+                    {user?.role && ['admin', 'cofounder'].includes(user.role) && (
+                      <Link
+                        to="/admin/feedback"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
+                      >
+                        <MessageSquare size={14} />
+                        Feedback Inbox
                       </Link>
                     )}
                     {user?.role === 'cofounder' && (
