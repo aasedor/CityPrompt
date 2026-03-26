@@ -251,7 +251,7 @@ export function AdminUsersPage() {
                       {u.is_active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-primary-950/50">
+                  <td className="px-4 py-3 text-primary-950/50" title={u.last_login_at ? new Date(u.last_login_at).toLocaleString() : undefined}>
                     {u.last_login_at
                       ? new Date(u.last_login_at).toLocaleDateString()
                       : <span className="text-primary-950/40">Never</span>}

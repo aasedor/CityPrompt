@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Plus, FolderOpen, Clock, X, MapPin } from 'lucide-react';
 import { getApiErrorMessage, projectsApi } from '@/services/api';
+import { useAuthStore } from '@/store';
 import type { Project, Location } from '@/types';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
@@ -14,6 +15,8 @@ interface GeocodeSuggestion {
 }
 
 export function ProjectListPage() {
+  const { user: currentUser } = useAuthStore();
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'cofounder';
   const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
@@ -285,6 +288,9 @@ export function ProjectListPage() {
                 <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
               </div>
               {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50">{project.description}</p>}
+              {isAdmin && project.owner_email && (
+                <div className="mt-1.5 text-xs text-primary-500/70 truncate">{project.owner_email}</div>
+              )}
               {project.location?.address && (
                 <div className="mt-2 flex items-center text-xs text-primary-950/40">
                   <MapPin size={11} className="mr-1 flex-shrink-0" />

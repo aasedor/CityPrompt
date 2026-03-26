@@ -153,6 +153,7 @@ class ProjectListResponse(BaseModel):
     location: Optional[LocationResponse] = Field(None, description="Project site location")
     created_at: datetime = Field(description="Creation timestamp")
     updated_at: datetime = Field(description="Last update timestamp")
+    owner_email: Optional[str] = Field(None, description="Owner email (admin view only)")
 
 
 # =============================================================================
