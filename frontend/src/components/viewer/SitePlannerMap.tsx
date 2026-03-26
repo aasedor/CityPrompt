@@ -582,27 +582,6 @@ export function SitePlannerMap({
     const map = mapRef.current;
     if (!map || !mapLoadedRef.current) return;
 
-    // Debug: log zone dimensions for alignment comparison with block editor
-    for (const z of zones) {
-      if (z.coordinates.length >= 3) {
-        const lat = z.coordinates[0][1];
-        const mlon = 111320 * Math.abs(Math.cos((lat * Math.PI) / 180));
-        const cx = z.coordinates.reduce((s, c) => s + c[0], 0) / z.coordinates.length;
-        const cy = z.coordinates.reduce((s, c) => s + c[1], 0) / z.coordinates.length;
-        const xs = z.coordinates.map((c) => (c[0] - cx) * mlon);
-        const ys = z.coordinates.map((c) => (c[1] - cy) * 111320);
-        const w = Math.max(...xs) - Math.min(...xs);
-        const d = Math.max(...ys) - Math.min(...ys);
-        console.log('[MasterPlan Debug]', {
-          zoneId: z.id, zoneName: z.name, zoneType: z.zone_type,
-          numCoords: z.coordinates.length,
-          centroid: [cx.toFixed(6), cy.toFixed(6)],
-          zoneWidthM: w.toFixed(1), zoneDepthM: d.toFixed(1),
-          firstCoord: z.coordinates[0], lastCoord: z.coordinates[z.coordinates.length - 1],
-        });
-      }
-    }
-
     const source = map.getSource('site-zones') as mapboxgl.GeoJSONSource | undefined;
     if (!source) return;
 
@@ -1198,7 +1177,7 @@ export function SitePlannerMap({
       if (tool) return;
 
       // Only add vertices when a zone is selected
-      const selId = selectedZoneId;
+      const selId = selectedZoneIdRef.current;
       if (!selId) return;
 
       const zone = siteZonesRef.current.find((z) => z.id === selId);
@@ -1242,7 +1221,7 @@ export function SitePlannerMap({
           const features = siteZonesRef.current.map(z => {
             const c = z.id === selId ? newCoords : z.coordinates;
             if (!c || c.length < 3) return null;
-            const zoneHeight = z.properties?.height_m != null ? Number(z.properties.height_m) : undefined;
+            const zoneHeight = z.properties?.height != null ? Number(z.properties.height) : undefined;
             return {
               type: 'Feature' as const,
               properties: {

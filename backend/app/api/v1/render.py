@@ -15,6 +15,7 @@ from __future__ import annotations
 import base64
 import io
 import logging
+import os
 import uuid as _uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -134,6 +135,53 @@ def _post_process(image_b64: str) -> str:
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return base64.b64encode(buf.getvalue()).decode()
+
+
+def _describe_google_auth_failure(exc: Exception, settings) -> str:
+    """Return a human-readable description of a Google auth / Vertex AI failure."""
+    from google.auth.exceptions import DefaultCredentialsError, TransportError
+
+    suffix = ""
+    if getattr(settings, "app_debug", False):
+        suffix = f" [{type(exc).__name__}: {exc}]"
+
+    creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "")
+
+    if isinstance(exc, DefaultCredentialsError):
+        if not creds_path:
+            return (
+                "Google credentials are not configured. "
+                "Set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON file."
+                + suffix
+            )
+        if not Path(creds_path).exists():
+            return (
+                f"Credentials file was not found at {creds_path}. "
+                "Check that the path is correct and the file exists."
+                + suffix
+            )
+        return (
+            f"Credentials file at {creds_path} could not be loaded. "
+            "Ensure it contains valid service-account JSON."
+            + suffix
+        )
+
+    if isinstance(exc, TransportError):
+        return (
+            "The server could not reach Google's token service "
+            "(oauth2.googleapis.com). Check network / firewall settings."
+            + suffix
+        )
+
+    if isinstance(exc, RuntimeError) and "403" in str(exc):
+        return (
+            "Google rejected the token request (403). "
+            "Verify that the Vertex AI API is enabled on the project "
+            "and the service account has the correct IAM roles."
+            + suffix
+        )
+
+    return f"Google auth failed: {exc}" + suffix
 
 
 _ALLOWED_MODELS = {

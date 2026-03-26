@@ -10,8 +10,8 @@ from datetime import datetime, timezone
 from urllib.parse import urlencode
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Query, Request, status
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -72,6 +72,22 @@ def _resolve_frontend_redirect_origin(state: str | None) -> str:
     return fallback
 
 
+_CSRF_COOKIE_NAME = "oauth_csrf"
+
+
+def _extract_csrf_from_state(state: str | None) -> str | None:
+    """Decode the state parameter and return the csrf token, or None."""
+    if not state:
+        return None
+    try:
+        padded = state + "=" * (-len(state) % 4)
+        decoded = base64.urlsafe_b64decode(padded.encode("utf-8")).decode("utf-8")
+        payload = json.loads(decoded)
+        return payload.get("csrf")
+    except Exception:
+        return None
+
+
 def _oauth_error_redirect(frontend_origin: str, message: str) -> RedirectResponse:
     params = urlencode({"oauth_error": message})
     return RedirectResponse(url=f"{frontend_origin}/oauth/callback?{params}", status_code=302)
@@ -86,6 +102,8 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
             detail="Google OAuth is not configured",
         )
 
+    state = _build_oauth_state(frontend_origin)
+    csrf_token = _extract_csrf_from_state(state)
     params = {
         "client_id": settings.google_client_id,
         "redirect_uri": settings.google_redirect_uri,
@@ -93,10 +111,14 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
         "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "select_account",
-        "state": _build_oauth_state(frontend_origin),
+        "state": state,
     }
     authorization_url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
-    return {"authorization_url": authorization_url}
+    response = JSONResponse(content={"authorization_url": authorization_url})
+    response.set_cookie(
+        _CSRF_COOKIE_NAME, csrf_token or "", httponly=True, samesite="lax", max_age=600,
+    )
+    return response
 
 
 @router.get("/google/callback")
@@ -105,10 +127,17 @@ async def google_callback(
     state: str | None = None,
     error: str | None = None,
     error_description: str | None = None,
+    oauth_csrf: str | None = Cookie(default=None),
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Google OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
     frontend_origin = _resolve_frontend_redirect_origin(state)
+
+    # Validate CSRF: compare cookie to state
+    state_csrf = _extract_csrf_from_state(state)
+    if not oauth_csrf or not state_csrf or not secrets.compare_digest(oauth_csrf, state_csrf):
+        logger.warning("Google OAuth CSRF mismatch — cookie=%s state=%s", bool(oauth_csrf), bool(state_csrf))
+        return _oauth_error_redirect(frontend_origin, "OAuth state validation failed. Please try logging in again.")
 
     if error:
         reason = error_description or error
@@ -242,6 +271,8 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
             detail="Microsoft OAuth is not configured",
         )
 
+    state = _build_oauth_state(frontend_origin)
+    csrf_token = _extract_csrf_from_state(state)
     params = {
         "client_id": settings.microsoft_client_id,
         "redirect_uri": settings.microsoft_redirect_uri,
@@ -249,19 +280,31 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
         "scope": "openid profile email User.Read",
         "response_mode": "query",
         "prompt": "select_account",
-        "state": _build_oauth_state(frontend_origin),
+        "state": state,
     }
     authorization_url = f"{MICROSOFT_AUTH_URL}?{urlencode(params)}"
-    return {"authorization_url": authorization_url}
+    response = JSONResponse(content={"authorization_url": authorization_url})
+    response.set_cookie(
+        _CSRF_COOKIE_NAME, csrf_token or "", httponly=True, samesite="lax", max_age=600,
+    )
+    return response
 
 
 @router.get("/microsoft/callback")
 async def microsoft_callback(
     code: str,
     state: str | None = None,
+    oauth_csrf: str | None = Cookie(default=None),
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Microsoft OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
+    # Validate CSRF: compare cookie to state
+    frontend_origin = _resolve_frontend_redirect_origin(state)
+    state_csrf = _extract_csrf_from_state(state)
+    if not oauth_csrf or not state_csrf or not secrets.compare_digest(oauth_csrf, state_csrf):
+        logger.warning("Microsoft OAuth CSRF mismatch — cookie=%s state=%s", bool(oauth_csrf), bool(state_csrf))
+        return _oauth_error_redirect(frontend_origin, "OAuth state validation failed. Please try logging in again.")
+
     if not settings.microsoft_client_id or not settings.microsoft_client_secret:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
