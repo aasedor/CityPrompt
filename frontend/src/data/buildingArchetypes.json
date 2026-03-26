@@ -243,7 +243,7 @@
         "features": "brick chimneys, occasional rooftop skylight, planted containers",
         "aerialAppearance": "dark flat surface with occasional brick chimneys and stone parapet walls, some rooftop planting"
       },
-      "thumbnailUrl": "/archetypes/buildings/brownstone-rowhouse-frontage/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/brownstone_rowhouse_frontage/hero.png",
       "variants": [
         {
           "id": "brownstone_rowhouse_red_sandstone",
@@ -406,7 +406,7 @@
         "features": "brick chimneys at party walls, occasional roof hatch, planted containers",
         "aerialAppearance": "regular dark rectangles with shared party walls visible as narrow lines, brick chimneys at intervals"
       },
-      "thumbnailUrl": "/archetypes/buildings/classic-brownstone-streetwall/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/classic_brownstone_streetwall/hero.png",
       "variants": [
         {
           "id": "classic_brownstone_traditional",
@@ -568,7 +568,7 @@
         "features": "brick chimneys, decorative parapet with date stone or name plaque, fire escapes at rear",
         "aerialAppearance": "dark flat roof with decorative front parapet rising above, some mechanical equipment, occasional skylight"
       },
-      "thumbnailUrl": "/archetypes/buildings/historical-brick-main-street/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/historical_brick_main_street/hero.png",
       "variants": [
         {
           "id": "historical_brick_victorian",
@@ -731,7 +731,7 @@
         "features": "ornamental ridge cresting, finials at gable peaks, brick chimneys with corbelled caps, dormer windows",
         "aerialAppearance": "complex dark roof geometry with multiple gables, dormers, and possible turret, brick chimneys"
       },
-      "thumbnailUrl": "/archetypes/buildings/victorian-heritage-avenue/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/victorian_heritage_avenue/hero.png",
       "variants": [
         {
           "id": "victorian_heritage_queen_anne",
@@ -899,7 +899,7 @@
           "id": "contemporary_midrise_variant_timber_glass",
           "label": "Timber & Glass",
           "description": "Warm timber-clad contemporary mid-rise with extensive glazing, green roof sections, and biophilic balcony planting",
-          "thumbnailUrl": "/archetypes/buildings/contemporary-mid-rise-residential/variant_0.png",
+          "thumbnailUrl": "/archetypes/buildings/contemporary_mid_rise_residential/variant_0.png",
           "shadeId": "#A67C52",
           "renderPrompt": {
             "mapOverlay": "Replace the colored building block with a photorealistic 6-storey contemporary mid-rise residential building clad predominantly in cross-laminated timber panels in warm honey-amber tones. The facade features a rhythmic grid of floor-to-ceiling low-iron glass panels with slim black aluminium mullions. Every second bay has a projecting timber-framed balcony with integrated planter boxes overflowing with trailing greenery. Ground floor is a double-height glazed lobby entrance with a deep timber-beamed canopy extending over the sidewalk. The top floor is set back with an accessible green roof terrace visible from below. Keep the exact same building footprint and height. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
@@ -922,7 +922,7 @@
           "id": "contemporary_midrise_variant_white_metal",
           "label": "White Render & Metal",
           "description": "Crisp white-rendered mid-rise with dark metal accent panels, deep-set windows, and a sculptural roofline",
-          "thumbnailUrl": "/archetypes/buildings/contemporary-mid-rise-residential/variant_1.png",
+          "thumbnailUrl": "/archetypes/buildings/contemporary_mid_rise_residential/variant_1.png",
           "shadeId": "#4A7FA5",
           "renderPrompt": {
             "mapOverlay": "Replace the colored building block with a photorealistic 7-storey contemporary mid-rise residential building with a pristine smooth white rendered facade. The facade is punctuated by dark anthracite metal panel inserts that create a bold geometric pattern across the elevation. Windows are deep-set within the white render, framed by dark powder-coated aluminium reveals that cast strong shadow lines. Select bays feature full-height sliding glass doors opening to cantilevered steel balconies with perforated dark metal balustrades. Ground floor has a recessed glazed entrance with a thin steel canopy and polished concrete surrounds. The roofline steps back at the top two floors creating terraced balconies. Keep the exact same building footprint and height. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
@@ -945,7 +945,7 @@
           "id": "contemporary_midrise_variant_brick_bronze",
           "label": "Brick & Bronze",
           "description": "Contemporary brick mid-rise with bronze-anodized window frames, soldier-course detailing, and a warm urban presence",
-          "thumbnailUrl": "/archetypes/buildings/contemporary-mid-rise-residential/variant_2.png",
+          "thumbnailUrl": "/archetypes/buildings/contemporary_mid_rise_residential/variant_2.png",
           "shadeId": "#8B4513",
           "renderPrompt": {
             "mapOverlay": "Replace the colored building block with a photorealistic 6-storey contemporary mid-rise residential building with a rich dark red-brown brick facade laid in stretcher bond. The windows are tall and generously proportioned, framed by bronze-anodized aluminium reveals that catch the light with a warm metallic sheen. Brick soldier courses and recessed horizontal bands mark each floor level, adding depth and shadow to the facade. Select bays project forward slightly as brick-clad oriels with bronze-framed corner glazing. Ground floor features a tall arched brick entrance portal with bronze-finished door hardware, flanked by shopfront glazing with bronze transoms. Balconies have brick balustrade walls with bronze metal rail caps. Keep the exact same building footprint and height. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
@@ -968,7 +968,7 @@
           "id": "contemporary_midrise_variant_concrete_corten",
           "label": "Concrete & Cor-Ten",
           "description": "Brutalist-inflected mid-rise with board-formed concrete and weathering steel panels expressing raw materiality",
-          "thumbnailUrl": "/archetypes/buildings/contemporary-mid-rise-residential/variant_3.png",
+          "thumbnailUrl": "/archetypes/buildings/contemporary_mid_rise_residential/variant_3.png",
           "shadeId": "#5B7065",
           "renderPrompt": {
             "mapOverlay": "Replace the colored building block with a photorealistic 6-storey contemporary mid-rise residential building with a bold facade of exposed board-formed concrete showing horizontal timber grain texture. Large rectilinear openings are punched into the concrete walls, framed by deep weathering steel (Cor-Ten) surrounds that have developed a rich orange-brown patina. Alternating bays feature full-height Cor-Ten steel rain-screen panels with a rusted patina contrasting against the cool grey concrete. Balconies are deep concrete slabs with Cor-Ten steel balustrade panels featuring laser-cut geometric perforations. Ground floor has an oversized concrete portal frame entrance with a pivoting Cor-Ten steel front door and cast-in-situ concrete bench seating flanking the entry. Exposed concrete columns at ground level create a partially covered colonnade. Keep the exact same building footprint and height. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
@@ -988,7 +988,7 @@
           }
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/contemporary-mid-rise-residential/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/contemporary_mid_rise_residential/hero.png",
       "minFloors": 4,
       "maxFloors": 8,
       "suggestedAreaSqm": 800,
@@ -1069,7 +1069,7 @@
         "features": "roof terraces on select units, photovoltaic panels, skylights",
         "aerialAppearance": "regular flat-roofed townhouse units around central green courtyard, paths crossing through planting"
       },
-      "thumbnailUrl": "/archetypes/buildings/contemporary-townhouse-courtyard/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/contemporary_townhouse_courtyard/hero.png",
       "variants": [
         {
           "id": "contemporary_townhouse_timber_screen",
@@ -1232,7 +1232,7 @@
         "features": "skylights, rooftop terrace, concealed drainage",
         "aerialAppearance": "modern flat-roofed footprint with mix of green roof, terrace deck, and solar panels"
       },
-      "thumbnailUrl": "/archetypes/buildings/detached-contemporary-infill/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/detached_contemporary_infill/hero.png",
       "variants": [
         {
           "id": "detached_infill_glass_box",
@@ -1395,7 +1395,7 @@
         "features": "communal roof terrace on select blocks, photovoltaics, skylights to corridors",
         "aerialAppearance": "flat-roofed residential blocks around green courtyards with trees, paths, and play areas"
       },
-      "thumbnailUrl": "/archetypes/buildings/courtyard-family-housing/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/courtyard_family_housing/hero.png",
       "variants": [
         {
           "id": "courtyard_family_mediterranean",
@@ -1558,7 +1558,7 @@
         "features": "mechanical penthouse with cooling towers and louvred screens, satellite dishes, lightning protection",
         "aerialAppearance": "light grey flat roof with central mechanical penthouse, equipment arrays, and possible green roof patches"
       },
-      "thumbnailUrl": "/archetypes/buildings/modern-glass-office-institutional/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/modern_glass_office_institutional/hero.png",
       "variants": [
         {
           "id": "glass_office_blue_curtainwall",
@@ -1720,7 +1720,7 @@
         "features": "sculptural mechanical penthouse, possible rooftop sculpture or antenna, public observation terrace",
         "aerialAppearance": "bold concrete geometry with flat roof, expressed grid pattern, mechanical penthouse"
       },
-      "thumbnailUrl": "/archetypes/buildings/modernist-civic-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/modernist_civic_block/hero.png",
       "variants": [
         {
           "id": "modernist_civic_concrete_brutalist",
@@ -1883,7 +1883,7 @@
         "features": "minimal mechanical equipment hidden by parapet, possible central atrium opening",
         "aerialAppearance": "clean flat white or gravel roof with crisp rectangular edges, possible central courtyard or atrium"
       },
-      "thumbnailUrl": "/archetypes/buildings/mid-century-modern-pavilion-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/mid_century_modern_pavilion_block/hero.png",
       "variants": [
         {
           "id": "mid_century_pavilion_glass_steel",
@@ -2045,7 +2045,7 @@
         "features": "stone balustrade, central dome or cupola on some examples, hidden mechanical",
         "aerialAppearance": "copper-green or dark lead roof behind stone balustrade, possible central dome or skylight"
       },
-      "thumbnailUrl": "/archetypes/buildings/civic-classical-building/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/civic_classical_building/hero.png",
       "variants": [
         {
           "id": "civic_classical_limestone_ionic",
@@ -2208,7 +2208,7 @@
         "features": "lantern atop dome, sculptural acroteria at corners, concealed mechanical",
         "aerialAppearance": "prominent copper-green dome as central element, flanking flat roof wings with stone parapets"
       },
-      "thumbnailUrl": "/archetypes/buildings/monumental-courthouse-axis/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/monumental_courthouse_axis/hero.png",
       "variants": [
         {
           "id": "courthouse_neoclassical_temple",
@@ -2375,7 +2375,7 @@
           "No fantasy distortions"
         ]
       },
-      "thumbnailUrl": "/archetypes/buildings/industrial-brick-mixed-use/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/industrial_brick_mixed_use/hero.png",
       "variants": [
         {
           "id": "industrial_brick_original_mill",
@@ -2538,7 +2538,7 @@
         "features": "original skylights restored, rooftop terrace with planters and string lights, modern penthouse volume",
         "aerialAppearance": "dark flat roof with modern glass penthouse addition, timber deck areas, industrial skylight monitors"
       },
-      "thumbnailUrl": "/archetypes/buildings/adaptive-reuse-warehouse-lofts/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/hero.png",
       "variants": [
         {
           "id": "warehouse_loft_timber_brick",
@@ -2701,7 +2701,7 @@
         "features": "communal roof terrace, photovoltaic arrays, rainwater collection",
         "aerialAppearance": "green vegetated roof or light surface with solar panels, possible communal terrace with timber decking"
       },
-      "thumbnailUrl": "/archetypes/buildings/scandinavian-urban-residential/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/scandinavian_urban_residential/hero.png",
       "variants": [
         {
           "id": "scandi_urban_white_plaster",
@@ -2864,7 +2864,7 @@
         "features": "communal roof garden, timber-clad mechanical housing, rainwater harvesting",
         "aerialAppearance": "lush green roof surface with solar panels, timber-screened mechanical area, possible communal garden"
       },
-      "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/nordic_timber_mid_rise/hero.png",
       "variants": [
         {
           "id": "nordic_timber_mass_timber",
@@ -3026,7 +3026,7 @@
         "features": "chimney pots, terracotta ridge tiles, cupola or tower element on larger villas",
         "aerialAppearance": "warm terracotta tile roofs in varied forms around central courtyard, blue pool, cypress trees"
       },
-      "thumbnailUrl": "/archetypes/buildings/mediterranean-villa-estate/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/mediterranean_villa_estate/hero.png",
       "variants": [
         {
           "id": "med_villa_tuscan",
@@ -3188,7 +3188,7 @@
         "features": "rooftop terraces with timber pergolas, planted containers, occasional tower or belvedere",
         "aerialAppearance": "warm terracotta roof tiles, rooftop terraces with pergola shadows, interior courtyard planting"
       },
-      "thumbnailUrl": "/archetypes/buildings/mediterranean-arcade-mixed-use/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/mediterranean_arcade_mixed_use/hero.png",
       "variants": [
         {
           "id": "med_arcade_italian_portici",
@@ -3351,7 +3351,7 @@
         "features": "green roof terraces at multiple levels, rainwater collection, dynamic shading system",
         "aerialAppearance": "dramatic organic roof geometry with ETFE panels, green terraces, solar integration"
       },
-      "thumbnailUrl": "/archetypes/buildings/parametric-future-hub/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/parametric_future_hub/hero.png",
       "variants": [
         {
           "id": "parametric_fluid_organic",
@@ -3514,7 +3514,7 @@
         "features": "massive solar arrays, drone landing pads, rainwater collection, mechanical equipment hidden below canopy",
         "aerialAppearance": "large solar canopy structures connecting building clusters, green courtyards, autonomous vehicle paths"
       },
-      "thumbnailUrl": "/archetypes/buildings/autonomous-tech-campus/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/autonomous_tech_campus/hero.png",
       "variants": [
         {
           "id": "tech_campus_silicon_valley",
@@ -3677,7 +3677,7 @@
         "features": "Art Deco geometric finial or antenna mount, illuminated at night, setback terraces with balustrades",
         "aerialAppearance": "distinctive stepped tower crown tapering upward, geometric metal cap, setback terraces at multiple levels"
       },
-      "thumbnailUrl": "/archetypes/buildings/art-deco-setback-tower/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/art_deco_setback_tower/hero.png",
       "variants": [
         {
           "id": "art_deco_cream_terracotta",
@@ -3840,7 +3840,7 @@
         "features": "vertical neon sign tower, decorative parapet with geometric finials, fly tower if theater has stage",
         "aerialAppearance": "large auditorium roof volume behind decorative front facade, prominent sign tower, flat membrane roof"
       },
-      "thumbnailUrl": "/archetypes/buildings/deco-theater-mainstreet/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/deco_theater_mainstreet/hero.png",
       "variants": [
         {
           "id": "deco_theater_movie_palace",
@@ -4003,7 +4003,7 @@
         "features": "brick or stone chimneys, dormer windows, gable-end detail",
         "aerialAppearance": "varied pitched rooflines creating irregular skyline, clay or slate tiles, brick chimneys"
       },
-      "thumbnailUrl": "/archetypes/buildings/traditional-vernacular-market-street/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/traditional_vernacular_market_street/hero.png",
       "variants": [
         {
           "id": "vernacular_market_tudor",
@@ -4166,7 +4166,7 @@
         "features": "internal courtyard open to sky, timber pergola over outdoor living area, rainwater cistern",
         "aerialAppearance": "terracotta roofs surrounding green courtyard gardens, pergola structures, possible water feature"
       },
-      "thumbnailUrl": "/archetypes/buildings/vernacular-courtyard-housing/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/vernacular_courtyard_housing/hero.png",
       "variants": [
         {
           "id": "vernacular_courtyard_chinese_siheyuan",
@@ -4328,7 +4328,7 @@
         "features": "minimalist rooftop with concealed equipment, possible reflective water plane",
         "aerialAppearance": "white flat roof surrounding dark reflecting pool or gravel courtyard, specimen trees, extreme precision"
       },
-      "thumbnailUrl": "/archetypes/buildings/minimalist-courtyard-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/minimalist_courtyard_block/hero.png",
       "variants": [
         {
           "id": "minimalist_courtyard_white_cube",
@@ -4490,7 +4490,7 @@
         "features": "private roof terrace with frameless glass balustrade, minimal planting, concealed drainage",
         "aerialAppearance": "small flat roof with timber deck terrace, frameless glass edge, minimal and precise"
       },
-      "thumbnailUrl": "/archetypes/buildings/minimalist-infill-townhouse/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/hero.png",
       "variants": [
         {
           "id": "minimalist_infill_glass_slot",
@@ -4652,7 +4652,7 @@
         "features": "mansard dormer windows with zinc cheeks, terracotta chimney pots in rows, zinc ridge caps",
         "aerialAppearance": "dark grey zinc mansard roof with rows of dormers, chimney pots, occasional rooftop terrace"
       },
-      "thumbnailUrl": "/archetypes/buildings/parisian-mid-rise/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/parisian_mid_rise/hero.png",
       "variants": [
         {
           "id": "parisian_haussmann_classic",
@@ -4814,7 +4814,7 @@
         "features": "corner dome with finial, dormer windows, chimney stacks, zinc ornamental cresting",
         "aerialAppearance": "distinctive corner dome element in copper/zinc, surrounding mansard roof, chimneys and dormers"
       },
-      "thumbnailUrl": "/archetypes/buildings/parisian-boulevard-corner/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/parisian_boulevard_corner/hero.png",
       "variants": [
         {
           "id": "parisian_corner_haussmann_turret",
@@ -4977,7 +4977,7 @@
         "features": "large stone chimney, snow guards, deep overhangs protecting walls, dormer windows",
         "aerialAppearance": "large steep dark roof with prominent stone chimney, deep overhangs casting shadows, possible dormer"
       },
-      "thumbnailUrl": "/archetypes/buildings/mountain-alpine-chalet/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/mountain_alpine_chalet/hero.png",
       "variants": [
         {
           "id": "alpine_swiss_traditional",
@@ -5140,7 +5140,7 @@
         "features": "stone chimneys, dormer windows, snow guards and snow fences, deep overhangs",
         "aerialAppearance": "large dark pitched roof with dormers, stone chimneys, surrounding mountain landscape"
       },
-      "thumbnailUrl": "/archetypes/buildings/alpine-mixed-use-lodge/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/alpine_mixed_use_lodge/hero.png",
       "variants": [
         {
           "id": "alpine_lodge_ski_resort",
@@ -5303,7 +5303,7 @@
         "features": "rooftop amenity space, solar arrays, mechanical penthouse, transit canopy structure at ground level",
         "aerialAppearance": "tower rising from green-roofed podium, solar panels on tower roof, transit infrastructure below"
       },
-      "thumbnailUrl": "/archetypes/buildings/transit-oriented-station-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/transit_oriented_station_block/hero.png",
       "variants": [
         {
           "id": "transit_station_modern_glass",
@@ -5466,7 +5466,7 @@
         "features": "podium garden with pool, play areas, communal BBQ; tower roof has solar panels and mechanical",
         "aerialAppearance": "tower rising from lush podium garden with pool and terraces, solar panels on tower roof"
       },
-      "thumbnailUrl": "/archetypes/buildings/transit-podium-residential/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/transit_podium_residential/hero.png",
       "variants": [
         {
           "id": "transit_podium_glass_tower",
@@ -5629,7 +5629,7 @@
         "features": "mechanical penthouse, possible helipad marking, lightning protection spire, green roof on podium",
         "aerialAppearance": "glass tower top with mechanical penthouse, podium green roof terrace, distinctive floor plan visible through glass"
       },
-      "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/glass_tower_modern/hero.png",
       "variants": [
         {
           "id": "glass_tower_blue_reflective",
@@ -5792,7 +5792,7 @@
         "features": "helicopter markings on tallest tower, mechanical penthouses, spires or antenna",
         "aerialAppearance": "cluster of glass towers at varying heights, mechanical penthouses, shared podium/plaza visible between towers"
       },
-      "thumbnailUrl": "/archetypes/buildings/skyline-glass-office-cluster/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/skyline_glass_office_cluster/hero.png",
       "variants": [
         {
           "id": "skyline_cluster_staggered",
@@ -5955,7 +5955,7 @@
         "features": "skylights to main hall, sculptural form visible from distance, concealed mechanical",
         "aerialAppearance": "distinctive sculptural roof form, possible copper or green surface, dramatic geometry"
       },
-      "thumbnailUrl": "/archetypes/buildings/civic-monumental-institution/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/civic_monumental_institution/hero.png",
       "variants": [
         {
           "id": "civic_monumental_neoclassical",
@@ -6118,7 +6118,7 @@
         "features": "dramatic atrium skylight, sculpture terrace, concealed mechanical, skylights to galleries",
         "aerialAppearance": "glazed atrium as centrepiece, flanking green-roofed gallery wings, sculpture terrace, formal landscaping"
       },
-      "thumbnailUrl": "/archetypes/buildings/monumental-museum-axis/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/monumental_museum_axis/hero.png",
       "variants": [
         {
           "id": "museum_classical_temple",
@@ -6281,7 +6281,7 @@
         "features": "interior courtyard void open to sky, concealed drainage, skylight to interior rooms",
         "aerialAppearance": "precise flat roof with small void or courtyard, minimal and clean, possible moss garden"
       },
-      "thumbnailUrl": "/archetypes/buildings/japanese-contemporary-lanehouse/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/japanese_contemporary_lanehouse/hero.png",
       "variants": [
         {
           "id": "japanese_lane_concrete_minimalist",
@@ -6444,7 +6444,7 @@
         "features": "interior tsuboniwa (light-well garden), rear garden visible, deep timber eaves",
         "aerialAppearance": "narrow deep roof forms with grey clay tiles, light-well gardens visible between buildings, rear gardens"
       },
-      "thumbnailUrl": "/archetypes/buildings/japanese-machiya-mixed-use/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/japanese_machiya_mixed_use/hero.png",
       "variants": [
         {
           "id": "machiya_traditional_restored",
@@ -6607,7 +6607,7 @@
         "features": "urban farm plots, pollinator gardens, rainwater collection, composting area, beehives",
         "aerialAppearance": "lush green productive roof with farm plots, solar canopy structure, rainwater gardens, biodiversity areas"
       },
-      "thumbnailUrl": "/archetypes/buildings/eco-urban-bioclimatic-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/eco_urban_bioclimatic_block/hero.png",
       "variants": [
         {
           "id": "eco_bioclimatic_passive",
@@ -6770,7 +6770,7 @@
         "features": "mature trees and shrubs continuing the vertical forest upward, wind screening, photovoltaics where possible",
         "aerialAppearance": "green canopy of trees and shrubs from above, resembling a forest patch, barely visible building structure"
       },
-      "thumbnailUrl": "/archetypes/buildings/vertical-forest-residential/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/vertical_forest_residential/hero.png",
       "variants": [
         {
           "id": "vertical_forest_bosco",
@@ -6933,7 +6933,7 @@
         "features": "private terrace pools, tropical planting at each step, solar panels on highest roof, cross-ventilation design",
         "aerialAppearance": "cascading white terraces with pools and tropical gardens stepping down toward water, dramatic stepped profile"
       },
-      "thumbnailUrl": "/archetypes/buildings/coastal-resort-terrace-block/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/coastal_resort_terrace_block/hero.png",
       "variants": [
         {
           "id": "coastal_resort_white_mediterranean",
@@ -7096,7 +7096,7 @@
         "features": "rooftop dining terrace with shade sails, cupola ventilators, deep overhangs for shade",
         "aerialAppearance": "light-colored roofs with shade structures, rooftop terraces, breezeway passages visible, waterfront connection"
       },
-      "thumbnailUrl": "/archetypes/buildings/coastal-breezeway-mixed-use/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/coastal_breezeway_mixed_use/hero.png",
       "variants": [
         {
           "id": "coastal_breeze_caribbean",
@@ -7258,7 +7258,7 @@
         "features": "user-specified roof features",
         "aerialAppearance": "user-specified aerial appearance"
       },
-      "thumbnailUrl": "/archetypes/buildings/custom-prompt-ready-archetype/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/custom_prompt_ready_archetype/hero.png",
       "variants": [
         {
           "id": "custom_prompt_modern_neutral",
@@ -7419,7 +7419,7 @@
         "features": "user-specified experimental roof features",
         "aerialAppearance": "user-specified experimental aerial appearance"
       },
-      "thumbnailUrl": "/archetypes/buildings/custom-contextual-experiment/hero.png",
+      "thumbnailUrl": "/archetypes/buildings/custom_contextual_experiment/hero.png",
       "variants": [
         {
           "id": "custom_experiment_deconstructivist",
