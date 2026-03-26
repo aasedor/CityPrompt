@@ -184,6 +184,64 @@ def _describe_google_auth_failure(exc: Exception, settings) -> str:
     return f"Google auth failed: {exc}" + suffix
 
 
+async def _save_render_audit(
+    db: AsyncSession,
+    user,
+    render_model: str,
+    token_cost: int,
+    input_b64: str | None,
+    output_b64: str | None,
+    prompt_preview: str | None = None,
+):
+    """Save input/output images to S3 and create an audit log row."""
+    import boto3
+    from botocore.config import Config as BotoConfig
+
+    settings = get_settings()
+    audit_id = _uuid.uuid4()
+
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=settings.s3_endpoint_url,
+        aws_access_key_id=settings.s3_access_key,
+        aws_secret_access_key=settings.s3_secret_key,
+        region_name=settings.s3_region,
+        config=BotoConfig(signature_version="s3v4"),
+    )
+
+    bucket = settings.s3_bucket_name
+    try:
+        s3.head_bucket(Bucket=bucket)
+    except Exception:
+        s3.create_bucket(Bucket=bucket)
+
+    input_key = None
+    output_key = None
+
+    if input_b64:
+        input_key = f"render-audit/{audit_id}/input.png"
+        s3.put_object(Bucket=bucket, Key=input_key, Body=base64.b64decode(input_b64), ContentType="image/png")
+
+    if output_b64:
+        output_key = f"render-audit/{audit_id}/output.png"
+        s3.put_object(Bucket=bucket, Key=output_key, Body=base64.b64decode(output_b64), ContentType="image/png")
+
+    from app.models.models import RenderAuditLog
+    log = RenderAuditLog(
+        id=audit_id,
+        user_id=user.id,
+        user_email=user.email,
+        model=render_model,
+        tokens_spent=token_cost,
+        input_image_key=input_key,
+        output_image_key=output_key,
+        prompt_preview=prompt_preview,
+    )
+    db.add(log)
+    await db.commit()
+    logger.info("Render audit saved: %s for %s", audit_id, user.email)
+
+
 _ALLOWED_MODELS = {
     "gemini-2.5-flash-image",
     "gemini-3-pro-image-preview",
@@ -486,6 +544,20 @@ async def generate_render(
             db.add(user)
             await db.commit()
             logger.info("User %s: %d tokens deducted (%s) — %d remaining", user.email, token_cost, render_model, user.render_credits)
+
+        # Save audit log with input/output images to S3
+        try:
+            await _save_render_audit(
+                db=db,
+                user=user,
+                render_model=render_model,
+                token_cost=token_cost if not is_admin_or_above(user) else 0,
+                input_b64=req.image_base64,
+                output_b64=image_b64,
+                prompt_preview=req.prompt[:500] if req.prompt else None,
+            )
+        except Exception as audit_exc:
+            logger.warning("Failed to save render audit log: %s", audit_exc)
 
         return RenderResponse(
             image_base64=image_b64,

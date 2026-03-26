@@ -302,6 +302,24 @@ class BetaFeedback(Base):
     author: Mapped["User"] = relationship()
 
 
+class RenderAuditLog(Base):
+    __tablename__ = "render_audit_logs"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_email: Mapped[str] = mapped_column(String(255), nullable=False)
+    project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    model: Mapped[str] = mapped_column(String(100), nullable=False)
+    tokens_spent: Mapped[int] = mapped_column(Integer, default=0)
+    input_image_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    output_image_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    prompt_preview: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+    # Relationships
+    user: Mapped["User"] = relationship()
+
+
 class ApiUsageLog(Base):
     __tablename__ = "api_usage_logs"
 

@@ -787,6 +787,17 @@ export interface AdminProject {
   building_count: number;
 }
 
+export interface RenderAuditLog {
+  id: string;
+  user_email: string;
+  model: string;
+  tokens_spent: number;
+  input_image_url?: string;
+  output_image_url?: string;
+  prompt_preview?: string;
+  created_at: string;
+}
+
 export const adminApi = {
   getStats: async (): Promise<AdminDashboardStats> => {
     const { data } = await api.get('/api/v1/admin/stats');
@@ -815,6 +826,15 @@ export const adminApi = {
   updateTokens: async (userId: string, amount: number, mode: 'add' | 'set' = 'add'): Promise<AdminUser> => {
     const { data } = await api.post(`/api/v1/admin/users/${userId}/tokens`, { amount, mode });
     return data;
+  },
+
+  listRenderLogs: async (params?: { skip?: number; limit?: number; user_email?: string }): Promise<RenderAuditLog[]> => {
+    const { data } = await api.get('/api/v1/admin/render-logs', { params });
+    return data;
+  },
+
+  deleteRenderLogs: async (ids: string[]): Promise<void> => {
+    await api.delete('/api/v1/admin/render-logs', { params: { ids } });
   },
 
   listAllBuildings: async (params?: {

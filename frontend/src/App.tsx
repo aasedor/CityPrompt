@@ -18,6 +18,7 @@ import { AdminDashboardPage } from '@/features/admin/AdminDashboardPage';
 import { AdminUsersPage } from '@/features/admin/AdminUsersPage';
 import { AdminProjectsPage } from '@/features/admin/AdminProjectsPage';
 import { AdminBuildingsPage } from '@/features/admin/AdminBuildingsPage';
+import { AdminRenderLogsPage } from '@/features/admin/AdminRenderLogsPage';
 import { ConfirmRoleChangePage } from '@/features/admin/ConfirmRoleChangePage';
 import { CofounderAnalyticsPage } from '@/features/admin/CofounderAnalyticsPage';
 import { AdminFeedbackPage } from '@/features/admin/AdminFeedbackPage';
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><AdminUsersPage /></ProtectedRoute>} />
         <Route path="/admin/projects" element={<ProtectedRoute requiredRole="admin"><AdminProjectsPage /></ProtectedRoute>} />
         <Route path="/admin/buildings" element={<ProtectedRoute requiredRole="admin"><AdminBuildingsPage /></ProtectedRoute>} />
+        <Route path="/admin/render-logs" element={<ProtectedRoute requiredRole="admin"><AdminRenderLogsPage /></ProtectedRoute>} />
         <Route path="/admin/feedback" element={<ProtectedRoute requiredRole="admin"><AdminFeedbackPage /></ProtectedRoute>} />
         <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="cofounder"><CofounderAnalyticsPage /></ProtectedRoute>} />
         <Route path="/admin/confirm-role-change" element={<ProtectedRoute requiredRole="admin"><ConfirmRoleChangePage /></ProtectedRoute>} />
