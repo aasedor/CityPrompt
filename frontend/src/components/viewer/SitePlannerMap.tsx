@@ -153,6 +153,26 @@ function formatDistance(meters: number): string {
   return `${(meters / 1000).toFixed(2)} km`;
 }
 
+/** Calculate geodesic polygon area in square meters using the spherical excess formula */
+function geodesicArea(coords: number[][]): number {
+  if (coords.length < 3) return 0;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const R = 6371000;
+  let total = 0;
+  for (let i = 0; i < coords.length; i++) {
+    const j = (i + 1) % coords.length;
+    total += toRad(coords[j][0] - coords[i][0]) *
+      (2 + Math.sin(toRad(coords[i][1])) + Math.sin(toRad(coords[j][1])));
+  }
+  return Math.abs(total * R * R / 2);
+}
+
+/** Format area into a human-readable string */
+function formatArea(sqm: number): string {
+  if (sqm < 10000) return `${Math.round(sqm).toLocaleString()} m\u00B2`;
+  return `${(sqm / 10000).toFixed(1)} ha`;
+}
+
 /**
  * Catmull-Rom spline interpolation for smooth road curves.
  * Takes raw waypoints and returns a denser set of smoothly interpolated points.
@@ -351,6 +371,8 @@ export function SitePlannerMap({
   const dragStateRef = useRef<DragState | null>(null);
   // Ref to track pending coords during drag for persistence on mouseup
   const pendingCoordsRef = useRef<{ zoneId: string; coords: number[][] } | null>(null);
+  // Live area display during drag/resize
+  const [dragArea, setDragArea] = useState<number>(0);
   const selectedZoneIdRef = useRef(selectedZoneId);
   selectedZoneIdRef.current = selectedZoneId;
   // Clipboard for copy/paste
@@ -1324,6 +1346,12 @@ export function SitePlannerMap({
         updateZoneOnMap(ds.zoneId, newCoords);
         updateVertexHandles(ds.zoneId, siteZonesRef.current, newCoords);
       }
+
+      // Live area update during any drag type
+      const pending = pendingCoordsRef.current;
+      if (pending && pending.coords.length >= 3) {
+        setDragArea(geodesicArea(pending.coords));
+      }
     });
 
     // Mouseup on map is handled by the window-level listener below
@@ -1370,6 +1398,7 @@ export function SitePlannerMap({
         map.getCanvas().style.cursor = '';
       }
       setDraggingZone(false);
+      setDragArea(0);
       dragStateRef.current = null;
 
       // Persist the pending coordinates
@@ -1716,6 +1745,7 @@ export function SitePlannerMap({
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);
   const currentLength = linear && drawingPoints.length >= 2 ? polylineLength(drawingPoints) : 0;
+  const currentArea = !linear && drawingPoints.length >= 3 ? geodesicArea(drawingPoints) : 0;
 
   return (
     <>
@@ -1733,13 +1763,24 @@ export function SitePlannerMap({
               : `Click to add points (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
             : linear
             ? `${drawingPoints.length} waypoints · ${formatDistance(currentLength)} — Double-click or Enter to finish — Esc to cancel`
-            : `${drawingPoints.length} points — Double-click or Enter to finish — Esc to cancel`}
+            : `${drawingPoints.length} points · ${formatArea(currentArea)} — Double-click or Enter to finish — Esc to cancel`}
         </div>
       )}
       {/* Live distance badge for roads */}
       {activeSitePlannerTool && linear && currentLength > 0 && (
         <div className="absolute left-1/2 top-[6.5rem] z-30 -translate-x-1/2 rounded-full bg-emerald-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
           {formatDistance(currentLength)}
+        </div>
+      )}
+      {activeSitePlannerTool && !linear && currentArea > 0 && (
+        <div className="absolute left-1/2 top-[6.5rem] z-30 -translate-x-1/2 rounded-full bg-blue-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
+          {formatArea(currentArea)}
+        </div>
+      )}
+      {/* Live area badge during drag/resize */}
+      {!activeSitePlannerTool && dragArea > 0 && (
+        <div className="absolute left-1/2 top-16 z-30 -translate-x-1/2 rounded-full bg-blue-500/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm shadow-lg">
+          {formatArea(dragArea)}
         </div>
       )}
       {/* Street View mode hint */}
@@ -1755,7 +1796,7 @@ export function SitePlannerMap({
       )}
       {/* Select mode hint */}
       {!activeSitePlannerTool && !streetViewPegman && (
-        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+        <div className="absolute left-1/2 top-4 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           Click a zone to select — Drag to move — Drag vertices to reshape — Del to delete
         </div>
       )}

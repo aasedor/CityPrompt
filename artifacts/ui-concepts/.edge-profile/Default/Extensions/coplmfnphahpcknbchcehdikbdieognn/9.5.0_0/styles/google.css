@@ -1,0 +1,169 @@
+.ta-lg-active {
+  display: none !important;
+}
+
+@media (min-width: 841px) {
+  .yR1fYc {
+    /* padding-right: 60px !important; */
+  }
+
+  .trZjtf {
+    /* margin: 0 !important; */
+  }
+
+  .uVdL1c .OgQvJf {
+    height: 45px !important;
+  }
+
+  .uj4xv .y0NSEe.V1iAHe {
+    justify-content: flex-end !important;
+  }
+
+  .uj4xv .Ak5kof {
+    flex: 3 !important;
+  }
+
+  .uj4xv .Ir0Voe {
+    flex: 0 0 calc(22% - 32px) !important;
+  }
+
+  .uj4xv .Ak5kof {
+    flex: 1.5 !important;
+  }
+
+  .BbR8Ec {
+    flex: 1.5 !important;
+  }
+
+  .U3gSDe {
+    flex: 1 !important;
+  }
+
+  .U3gSDe {
+    flex: 2 !important;
+  }
+
+  .U3gSDe.ETvUZc,
+  .XWuBZb.ETvUZc {
+    justify-content: start !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .FpEdX:not(.hoFJvd) {
+    margin-top: 3px !important;
+  }
+}
+
+/*
+* Media width above 1024px
+ */
+@media (min-width: 1024px) {
+  div[jsname='Prr8lb'] {
+    display: none !important;
+  }
+
+  .ta-lg-active {
+    display: block !important;
+    width: 100% !important;
+    overflow: auto !important;
+    text-align: right !important;
+  }
+
+  .ta-lg-aircraft {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.8 !important;
+  }
+
+  .ta-lg-aircraft-name {
+    text-decoration: underline #b5b5b5 !important;
+    position: relative !important;
+  }
+
+  .ta-lg-seatmap-error-tooltip {
+    position: absolute !important;
+    left: -4px !important;
+    /* translate -x */
+    transform: translateX(-100%) !important;
+    background-color: #fff !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    z-index: 500 !important;
+    font-size: 10px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    padding: 4px !important;
+    color: red !important;
+  }
+
+  .ta-lg-aircraft-name:hover {
+    text-decoration: underline !important;
+  }
+
+  .ta-lg-legroom-separator {
+    margin: 0 -3px !important;
+    font-weight: 400 !important;
+    color: #949494 !important;
+  }
+
+  .ta-lg-legroom {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #636363 !important;
+    font-variant-numeric: tabular-nums !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .ta-lg-wifi {
+    height: 14px !important;
+    width: 14px !important;
+    margin-left: 4px !important;
+  }
+
+  .ta-lg-power {
+    height: 14px !important;
+    width: 14px !important;
+    margin-left: 4px !important;
+  }
+
+  .ta-lg-video {
+    height: 14px !important;
+    width: 14px !important;
+    margin-left: 4px !important;
+  }
+}
+
+/* Fade out */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.3s ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}

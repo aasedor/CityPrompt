@@ -1,0 +1,59 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "images/smallpdf_128.png",
+         "16": "images/smallpdf_16.png",
+         "32": "images/smallpdf_32.png",
+         "48": "images/smallpdf_48.png"
+      },
+      "default_popup": "browserAction.html",
+      "default_title": "Smallpdf"
+   },
+   "background": {
+      "service_worker": "static/js/background.js",
+      "type": "module"
+   },
+   "content_scripts": [ {
+      "js": [ "static/js/content.js" ],
+      "matches": [ "http://*/*", "https://*/*", "ftp://*/*", "file://*/*" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+   },
+   "cross_origin_embedder_policy": {
+      "value": "unsafe-none"
+   },
+   "cross_origin_opener_policy": {
+      "value": "unsafe-none"
+   },
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "externally_connectable": {
+      "matches": [ "https://*.smallpdf.com/*", "https://smallpdf.com/*", "https://smallpdf-staging.com/*", "https://*.smallpdf-staging.com/*" ]
+   },
+   "homepage_url": "https://smallpdf.com",
+   "icons": {
+      "128": "images/smallpdf_128.png",
+      "16": "images/smallpdf_16.png",
+      "32": "images/smallpdf_32.png",
+      "48": "images/smallpdf_48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyr/5Z9e9MM17u/f14no6Axnl2XMkTJ0WA45fpCNmC7F4VyasQaiWrFOi/2CrxU1o8LYO040MvZxLHdKJWLWkvKIeykQa5uzJyfuqeip5XKkO9qSu6OC+/Foz9eYuhvgSunZQoy5yhc7Oug4DTtII+tJApXFFYFOrr51fWHA1yBevDpPi5G4C4x6lnNsVpeiRCbIZ6zFLEyjd6hlGmyt/k3KngGE/hq/eJsC3Te1KLP4pj4DAjWBT5+Jq6s84vQdJva7mAZMSPIIfjmc7vqFmIVP4st74VS1nomxJMRDpxVexG7fqJUzOyEGSRzaremOy7NnnI38H0QbiYoB4Uog6owIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "88",
+   "name": "__MSG_appName__",
+   "options_page": "options.html",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "options.html"
+   },
+   "permissions": [ "storage", "notifications", "alarms" ],
+   "short_name": "Smallpdf",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.23.18",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "iframe.html", "handle-auth.html", "/images/*", "/static/media/*", "options.html" ]
+   } ]
+}

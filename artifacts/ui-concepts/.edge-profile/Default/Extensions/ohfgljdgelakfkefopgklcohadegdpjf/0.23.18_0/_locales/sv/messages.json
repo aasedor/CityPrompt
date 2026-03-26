@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Logga in på Smallpdf"
+   },
+   "114rvnf": {
+      "message": "ELLER"
+   },
+   "114rvpe": {
+      "message": "E-postadress"
+   },
+   "114rvqv": {
+      "message": "Lösenord"
+   },
+   "114rvrt": {
+      "message": "Glömt lösenordet?"
+   },
+   "114rvti": {
+      "message": "Logga in"
+   },
+   "114rvvm": {
+      "message": "Har du inget konto ännu?"
+   },
+   "114rvyk": {
+      "message": "Skapa konto"
+   },
+   "114rw18": {
+      "message": "Konto"
+   },
+   "114rw2d": {
+      "message": "Prova Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Kontoinställningar"
+   },
+   "114rw4o": {
+      "message": "Hjälp"
+   },
+   "114rw5s": {
+      "message": "Ladda ner appar"
+   },
+   "114rw6m": {
+      "message": "Logga ut"
+   },
+   "114rw86": {
+      "message": "Fel e-postadress eller lösenord."
+   },
+   "114rwft": {
+      "message": "Vi kan inte behandla den här filen. Försök igen."
+   },
+   "114rwo7": {
+      "message": "Din fil är lösenordsskyddad"
+   },
+   "114rwpn": {
+      "message": "Ta bort lösenordet och ladda upp filen igen."
+   },
+   "114rwrd": {
+      "message": "Hoppsan! Den här filen är skadad"
+   },
+   "114rwsa": {
+      "message": "Försök igen med en annan fil."
+   },
+   "114rwye": {
+      "message": "Är du säker på att du vill avsluta?"
+   },
+   "114rwzh": {
+      "message": "Din fil kommer att raderas. Kom ihåg att ladda ner den innan du avslutar!"
+   },
+   "114rx0l": {
+      "message": "Lämna"
+   },
+   "114rx4t": {
+      "message": "Stanna kvar"
+   },
+   "114rx78": {
+      "message": "Byt namn på din fil"
+   },
+   "114rx9b": {
+      "message": "Byt namn"
+   },
+   "114rxav": {
+      "message": "Släpp filen här för att komma igång"
+   },
+   "114rxc0": {
+      "message": "Lägg till fil"
+   },
+   "114rxcw": {
+      "message": "Släpp din fil här"
+   },
+   "114rxhe": {
+      "message": "Din fil"
+   },
+   "114rxii": {
+      "message": "Din fil kunde inte laddas upp"
+   },
+   "114rxjj": {
+      "message": "Filtypen stöds inte"
+   },
+   "114rxk1": {
+      "message": "Försök igen med en PDF-fil istället."
+   },
+   "114rxp1": {
+      "message": "Antal kostnadsfria uppgifter kvar för idag"
+   },
+   "114rxqs": {
+      "message": "Eller börja med ett verktyg"
+   },
+   "114rxs1": {
+      "message": "Öppna ett verktyg i webbappen"
+   },
+   "114rxzd": {
+      "message": "Bli ett PDF-proffs!"
+   },
+   "114ry1m": {
+      "message": "Skaffa Pro – gratis!"
+   },
+   "114ry2l": {
+      "message": "Uppgradera till Pro och njut av obegränsad åtkomst till dina favoritverktyg och mer!"
+   },
+   "114ry41": {
+      "message": "Visa PDF-filen vem som bestämmer. Lås upp en värld av smarta PDF-verktyg med vår 7-dagars gratis provperiod."
+   },
+   "114ry4i": {
+      "message": "Vad ingår?"
+   },
+   "114ry60": {
+      "message": "Pro-verktyg och -funktioner"
+   },
+   "114ry6y": {
+      "message": "Exklusiva Pro-verktyg och funktioner"
+   },
+   "114ry85": {
+      "message": "Hög komprimering, PDF- till Office-konverteringar, OCR och mycket mer."
+   },
+   "114ry8l": {
+      "message": "Premium-åtkomst till Pro PDF-verktyg och funktioner."
+   },
+   "114ry9k": {
+      "message": "Inga begränsningar"
+   },
+   "114ryam": {
+      "message": "Obegränsat antal filer och uppgifter per dag. Trevligt!"
+   },
+   "114ryc1": {
+      "message": "Jobba när du är på språng"
+   },
+   "114rycg": {
+      "message": "Jobba när som helst, var som helst"
+   },
+   "114ryd0": {
+      "message": "Premium-åtkomst till vår webbplattform, skrivbordsapp och våra mobilappar."
+   },
+   "114rydg": {
+      "message": "Lås upp alla plattformar och appar – från mobil till skrivbordsapp och webb!"
+   },
+   "114rydy": {
+      "message": "Uppgradera ditt konto"
+   },
+   "114ryfe": {
+      "message": "Logga in"
+   },
+   "114ryfx": {
+      "message": "Prova gratis i {{trial_days}} dagar"
+   },
+   "114rylw": {
+      "message": "Nästan klar ...\\nVad sägs om att ta en kaffe, klappa hunden eller sträcka lite på dig? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Tillbaka till start"
+   },
+   "114ryvl": {
+      "message": "Tillbaka till verktyg"
+   },
+   "114rz0g": {
+      "message": "Välj komprimeringstyp"
+   },
+   "114rz1n": {
+      "message": "Basic"
+   },
+   "114rz2h": {
+      "message": "Medium filstorlek, hög kvalitet."
+   },
+   "114rz3e": {
+      "message": "Strong"
+   },
+   "114rz44": {
+      "message": "Minsta filstorlek, bra kvalitet."
+   },
+   "114rz68": {
+      "message": "Välj konverteringstyp"
+   },
+   "114rz7c": {
+      "message": "Alternativ"
+   },
+   "114rz83": {
+      "message": "Med OCR"
+   },
+   "114rz8u": {
+      "message": "Skannade sidor kommer att konverteras till ett redigerbart Word-dokument. Formateringen kan ändras."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Tillbaka till konvertering"
+   },
+   "114rzmr": {
+      "message": "Skannade sidor kommer att konverteras till ett redigerbart Excel-dokument. Formateringen kan ändras."
+   },
+   "114s0il": {
+      "message": "Ladda ner min fil automatiskt"
+   },
+   "114s0jf": {
+      "message": "Vi laddar automatiskt ner din fil när behandlingen är klar."
+   },
+   "114s1u3": {
+      "message": "Konvertera din PDF-fil till en PowerPoint-fil."
+   },
+   "114tq39": {
+      "message": "Konvertera hela sidor"
+   },
+   "114tq47": {
+      "message": "Extrahera enstaka bilder"
+   },
+   "114tq8x": {
+      "message": "PDF till PowerPoint"
+   },
+   "1167iyh": {
+      "message": "För många misslyckade försök. Kontrollera dina inloggningsuppgifter och försök igen senare."
+   },
+   "11wp338": {
+      "message": "Redigera PDF"
+   },
+   "11wp39c": {
+      "message": "PDF till Word"
+   },
+   "11wp3g5": {
+      "message": "Komprimera PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "Sammanfoga PDF"
+   },
+   "11wp3jn": {
+      "message": "PDF-konverterare"
+   },
+   "11wp3k6": {
+      "message": "Fler PDF-verktyg"
+   },
+   "11wp3o4": {
+      "message": "Små pdf-verktyg"
+   },
+   "11yan2r": {
+      "message": "Minska storleken på din pdf-fil, bild eller Microsoft Office-dokument."
+   },
+   "11yan3p": {
+      "message": "Redigera text, lägg till anteckningar, former och bilder, och organisera pdf-filer."
+   },
+   "11yan4l": {
+      "message": "Sammanfoga flera dokument till en pdf-fil."
+   },
+   "11yan5a": {
+      "message": "Vänd enstaka eller flera sidor i din pdf-fil."
+   },
+   "11yan62": {
+      "message": "Välj fil"
+   },
+   "11yany0": {
+      "message": "Säkert dokument med TLS-kryptering"
+   },
+   "11yao0f": {
+      "message": "Ta bort enstaka eller flera sidor från ditt dokument."
+   },
+   "11yao16": {
+      "message": "Extrahera specifika sidor för att spara som separata dokument."
+   },
+   "11yao2j": {
+      "message": "E-signera alla pdf-filer och begär signaturer från andra."
+   },
+   "11yao3e": {
+      "message": "Lägg till ett lösenord för att skydda din pdf-fil."
+   },
+   "11yao41": {
+      "message": "Ta bort ett lösenord från en krypterad pdf-fil."
+   },
+   "11yao4u": {
+      "message": "Konvertera Word-, PowerPoint-, Excel- och bildfiler till och från PDF."
+   },
+   "11yao7p": {
+      "message": "Visa, redigera, kommentera och organisera pdf-filer."
+   },
+   "11yao8n": {
+      "message": "Lägg till sidnummer till din pdf-fil."
+   },
+   "120e7u5": {
+      "message": "eller släpp en fil här"
+   },
+   "12bijem": {
+      "message": "Sammanfatta med AI"
+   },
+   "12bikcl": {
+      "message": "Välj fil"
+   },
+   "12bikhi": {
+      "message": "Välj fil"
+   },
+   "12bikpq": {
+      "message": "Eller börja med ett verktyg"
+   },
+   "12bikry": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bikv2": {
+      "message": "Dela upp din PDF i flera dokument."
+   },
+   "12bikx8": {
+      "message": "Sammanfoga"
+   },
+   "12bikzn": {
+      "message": "Komprimera"
+   },
+   "12bil0r": {
+      "message": "Konvertera"
+   },
+   "12bil27": {
+      "message": "PDF till bild"
+   },
+   "12bil4a": {
+      "message": "Redigera text"
+   },
+   "12bil5v": {
+      "message": "PDF till Word"
+   },
+   "12bil78": {
+      "message": "Signera"
+   },
+   "12bil7z": {
+      "message": "Fler verktyg"
+   },
+   "12bil9j": {
+      "message": "Visa verktyg i Googles sökresultat"
+   },
+   "12bila5": {
+      "message": "När du söker efter ett PDF-verktyg på Google kan du bearbeta ditt dokument i resultatområdet."
+   },
+   "12bilas": {
+      "message": "Visa apprekommendationer"
+   },
+   "12bilbj": {
+      "message": "Visa verktyg i Chromes PDF-läsare"
+   },
+   "12bilbl": {
+      "message": "Dela"
+   },
+   "12bilbu": {
+      "message": "När du öppnar en PDF i Chromes PDF-läsare kommer du åt Smallpdfs verktyg i läsaren."
+   },
+   "12bilcf": {
+      "message": "Ta bort sidor"
+   },
+   "12bilco": {
+      "message": "Chrome-inställningar"
+   },
+   "12bilcy": {
+      "message": "Smallpdf webbplats"
+   },
+   "12bildu": {
+      "message": "Rotera"
+   },
+   "12bilee": {
+      "message": "Lås upp"
+   },
+   "12bilfg": {
+      "message": "Skydda"
+   },
+   "12bilfo": {
+      "message": "Sammanfatta eller chatta med din PDF med hjälp av AI"
+   },
+   "12bilfz": {
+      "message": "PDF till Excel"
+   },
+   "12bilhn": {
+      "message": "PDF till PowerPoint"
+   },
+   "12bili5": {
+      "message": "Stäng av rekommendationer om andra appar du kan installera i Google och på andra plattformar."
+   },
+   "12bilic": {
+      "message": "Beskär och trimma dina dokument med vår PDF-beskärare."
+   },
+   "12biliw": {
+      "message": "Chrome Web Store"
+   },
+   "12bilj8": {
+      "message": "Numrera sidor"
+   },
+   "12bilk3": {
+      "message": "PDF läsare"
+   },
+   "12bilm7": {
+      "message": "Laddar upp ..."
+   },
+   "12bilm8": {
+      "message": "Ta bort känslig information från din PDF."
+   },
+   "12bilnj": {
+      "message": "Det här kan ta några sekunder."
+   },
+   "12bilod": {
+      "message": "Avbryt"
+   },
+   "12bilqr": {
+      "message": "Chatta med och fråga din PDF vad som helst."
+   },
+   "12biltj": {
+      "message": "Chrome-tillägg"
+   },
+   "12bilug": {
+      "message": "Välj ett verktyg"
+   },
+   "12biluz": {
+      "message": "Fortsätt"
+   },
+   "12bilvm": {
+      "message": "Starta om"
+   },
+   "12bim4n": {
+      "message": "Få PDF-verktyg i \u003Cb>Google Dokument\u003C/b> och \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Skaffa gratis app"
+   },
+   "12bimem": {
+      "message": "Konvertera, sammanfoga och mer från \u003Cb>Google Dokument\u003C/b> och \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf – komprimera, signera och sammanfoga"
+   },
+   "12bk4lc": {
+      "message": "Beskär PDF"
+   },
+   "12bk4mb": {
+      "message": "Maskera PDF"
+   },
+   "12bk4my": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bk4n8": {
+      "message": "Chatta med PDF"
+   },
+   "12bk4nl": {
+      "message": "Översätt PDF"
+   },
+   "12ca4j0": {
+      "message": "Gör din PDF oredigerbar"
+   },
+   "12ca7vl": {
+      "message": "Drivs av sign.com och Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Vill du få ut mer av Smallpdf?"
+   },
+   "12ctd58": {
+      "message": "Tillåt åtkomst till filernas webbadresser för att använda våra PDF-verktyg när du visar dina PDF-filer i Chrome."
+   },
+   "12ctd60": {
+      "message": "Öppna inställningar"
+   },
+   "12ctd7g": {
+      "message": "Aktivera detta även för PDF-filer som sparats på din dator."
+   },
+   "12ctd81": {
+      "message": "Aktivera"
+   },
+   "12ctd8y": {
+      "message": "Inaktivera"
+   },
+   "action_app_website": {
+      "message": "{app_name}s webbplats"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name}s inställningar"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name}s internetbutik"
+   },
+   "action_convert_to": {
+      "message": "Konvertera till {file_type}"
+   },
+   "appDesc": {
+      "message": "Enkla verktyg för att komprimera, konvertera, sammanfoga, chatta med, dela, e-signera och redigera PDF-filer i webbläsaren."
+   },
+   "appName": {
+      "message": "Smallpdf – Redigera, konvertera, komprimera och AI-sammanfatta PDF-filer"
+   },
+   "cancel": {
+      "message": "Avbryt"
+   },
+   "compress": {
+      "message": "Komprimera"
+   },
+   "converter": {
+      "message": "Konvertera"
+   },
+   "delete": {
+      "message": "Ta bort sidor"
+   },
+   "download": {
+      "message": "Ladda ner"
+   },
+   "downloadCta": {
+      "message": "Ladda ner nu"
+   },
+   "edit": {
+      "message": "Redigera"
+   },
+   "error_try_later": {
+      "message": "Hoppsan! Något gick fel"
+   },
+   "excel": {
+      "message": "Excel till PDF"
+   },
+   "extract": {
+      "message": "PDF till JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Bild"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Bilder"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF-filer"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG till PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} och {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} och {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Sammanfoga"
+   },
+   "noInternetConnection": {
+      "message": "Ingen internetanslutning"
+   },
+   "okay": {
+      "message": "Okej"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}-tillägg / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Ge {app_name} åtkomst till dina lokala filers webbadresser för att göra det möjligt att öppna {file_types} i {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Aktivera {app_name}-tillägget för lokala filer"
+   },
+   "options_setting_status_disabled": {
+      "message": "Inaktiverat"
+   },
+   "pdf_to_excel": {
+      "message": "PDF till Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF till PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF till Word"
+   },
+   "please_try_again": {
+      "message": "Försök igen."
+   },
+   "ppt": {
+      "message": "PPT till PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Det uppstod tyvärr problem när din fil skulle behandlas"
+   },
+   "processingFailedTitle": {
+      "message": "Behandling misslyckades"
+   },
+   "protect": {
+      "message": "Skydda"
+   },
+   "rotate": {
+      "message": "Rotera"
+   },
+   "search": {
+      "message": "Sök"
+   },
+   "serp_hide_button": {
+      "message": "Visa inte det här igen"
+   },
+   "serp_powered_by": {
+      "message": "Drivs av Smallpdf"
+   },
+   "sign": {
+      "message": "Skriv under"
+   },
+   "split": {
+      "message": "Dela upp"
+   },
+   "tools": {
+      "message": "Verktyg"
+   },
+   "try_again": {
+      "message": "Vill du försöka igen?"
+   },
+   "uh_something_wrong": {
+      "message": "Hoppsan! Något gick fel"
+   },
+   "unlock": {
+      "message": "Lås upp"
+   },
+   "uploadFailed": {
+      "message": "Uppladdningen misslyckades"
+   },
+   "uploading": {
+      "message": "Laddar upp ..."
+   },
+   "word": {
+      "message": "Word till PDF"
+   }
+}

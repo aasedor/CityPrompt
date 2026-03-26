@@ -1,0 +1,404 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Log in to Smallpdf"
+   },
+   "114rvnf": {
+      "message": "OR"
+   },
+   "114rvpe": {
+      "message": "Email"
+   },
+   "114rvqv": {
+      "message": "Password"
+   },
+   "114rvrt": {
+      "message": "Forgot your password?"
+   },
+   "114rvti": {
+      "message": "Log in"
+   },
+   "114rvvm": {
+      "message": "Don’t have an account yet?"
+   },
+   "114rvyk": {
+      "message": "Create account"
+   },
+   "114rw18": {
+      "message": "Account"
+   },
+   "114rw2d": {
+      "message": "Try Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Account settings"
+   },
+   "114rw4o": {
+      "message": "Help"
+   },
+   "114rw5s": {
+      "message": "Download apps"
+   },
+   "114rw6m": {
+      "message": "Log out"
+   },
+   "114rw86": {
+      "message": "Wrong email or password."
+   },
+   "114rwft": {
+      "message": "We can’t process this file. Please try again."
+   },
+   "114rwo7": {
+      "message": "Your file is password protected"
+   },
+   "114rwpn": {
+      "message": "Please remove the password and upload the file again."
+   },
+   "114rwrd": {
+      "message": "Uh-oh! This file is corrupt"
+   },
+   "114rwsa": {
+      "message": "Please try again with another file."
+   },
+   "114rwye": {
+      "message": "Sure you want to go?"
+   },
+   "114rwzh": {
+      "message": "Your file will be deleted. Remember to download it before you leave!"
+   },
+   "114rx0l": {
+      "message": "Go"
+   },
+   "114rx4t": {
+      "message": "Stay"
+   },
+   "114rx78": {
+      "message": "Rename your file"
+   },
+   "114rx9b": {
+      "message": "Rename"
+   },
+   "114rxav": {
+      "message": "Drop file here to get started"
+   },
+   "114rxc0": {
+      "message": "Add File"
+   },
+   "114rxcw": {
+      "message": "Drop your file here"
+   },
+   "114rxhe": {
+      "message": "Your file"
+   },
+   "114rxii": {
+      "message": "Your file failed to upload"
+   },
+   "114rxjj": {
+      "message": "This file type is not supported"
+   },
+   "114rxk1": {
+      "message": "Please try again with a PDF."
+   },
+   "114rxp1": {
+      "message": "Free daily tasks left"
+   },
+   "114rxqs": {
+      "message": "Or start with a tool"
+   },
+   "114rxs1": {
+      "message": "Open a tool in the web app"
+   },
+   "114rxzd": {
+      "message": "Become a PDF ninja!"
+   },
+   "114ry1m": {
+      "message": "Go Pro—for free!"
+   },
+   "114ry2l": {
+      "message": "Upgrade to Pro and enjoy unlimited access to your favorite tools and more!"
+   },
+   "114ry41": {
+      "message": "Show PDFs who’s boss! Unlock a world of nifty PDF tools with our 7-day free trial."
+   },
+   "114ry4i": {
+      "message": "What do you get?"
+   },
+   "114ry60": {
+      "message": "Pro tools and features"
+   },
+   "114ry6y": {
+      "message": "Exclusive Pro tools and features"
+   },
+   "114ry85": {
+      "message": "Strong compression, PDF to Office conversions, OCR, and more."
+   },
+   "114ry8l": {
+      "message": "Premium access to Pro PDF tools and features."
+   },
+   "114ry9k": {
+      "message": "Zero limitations"
+   },
+   "114ryam": {
+      "message": "Unlimited files and tasks per day. Noice!"
+   },
+   "114ryc1": {
+      "message": "Work on-the-go"
+   },
+   "114rycg": {
+      "message": "Work anytime, anywhere"
+   },
+   "114ryd0": {
+      "message": "Premium access to our web platform, desktop, and mobile apps."
+   },
+   "114rydg": {
+      "message": "Unlock all platforms and apps—from mobile, to desktop, and web!"
+   },
+   "114rydy": {
+      "message": "Upgrade Your Account"
+   },
+   "114ryfe": {
+      "message": "Log In"
+   },
+   "114ryfx": {
+      "message": "Get {{trial_days}} Days Free"
+   },
+   "114rylw": {
+      "message": "Almost done...\\nWhy not grab a coffee, pet the pooch, or have a stretch? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Back to start"
+   },
+   "114ryvl": {
+      "message": "Back to tools"
+   },
+   "114rz0g": {
+      "message": "Choose compression type"
+   },
+   "114rz1n": {
+      "message": "Basic"
+   },
+   "114rz2h": {
+      "message": "Medium file size, best quality."
+   },
+   "114rz3e": {
+      "message": "Strong"
+   },
+   "114rz44": {
+      "message": "Smallest file size, good quality."
+   },
+   "114rz68": {
+      "message": "Choose conversion type"
+   },
+   "114rz7c": {
+      "message": "Options"
+   },
+   "114rz83": {
+      "message": "With OCR"
+   },
+   "114rz8u": {
+      "message": "Scanned pages will be converted to an editable Word document. Formatting may change."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Back to convert"
+   },
+   "114rzmr": {
+      "message": "Scanned pages will be converted to an editable Excel document. Formatting may change."
+   },
+   "114s0il": {
+      "message": "Download my file automatically"
+   },
+   "114s0jf": {
+      "message": "We’ll download your file automatically once the process is done."
+   },
+   "action_app_website": {
+      "message": "{app_name} nettsted"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name}-innstillinger"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name}-nettbutikk"
+   },
+   "action_convert_to": {
+      "message": "Konverter til {file_type}"
+   },
+   "appDesc": {
+      "message": "Brukervennlig PDF-verktøy for å komprimere, konvertere, slå sammen, chatte med, dele opp, e-signere og redigere PDF-filer i nettleser."
+   },
+   "appName": {
+      "message": "Smallpdf – Rediger, konverter, komprimer og KI-oppsummer PDF"
+   },
+   "cancel": {
+      "message": "Cancel"
+   },
+   "compress": {
+      "message": "Komprimer"
+   },
+   "converter": {
+      "message": "Konverter"
+   },
+   "delete": {
+      "message": "Slett sider"
+   },
+   "download": {
+      "message": "Download"
+   },
+   "downloadCta": {
+      "message": "Last den ned nå"
+   },
+   "edit": {
+      "message": "Rediger"
+   },
+   "error_try_later": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "excel": {
+      "message": "Excel til PDF"
+   },
+   "extract": {
+      "message": "PDF til JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Bilde"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Bilder"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF-er"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG til PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} og {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} og {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Slå sammen"
+   },
+   "noInternetConnection": {
+      "message": "Ingen internettforbindelse"
+   },
+   "okay": {
+      "message": "Okay"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}-utvidelse / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Gi {app_name} tilgang til nettadressene til dine lokale filer, så {file_types} kan åpnes i {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Aktiver {app_name}-utvidelsen på lokale filer"
+   },
+   "options_setting_status_disabled": {
+      "message": "Deaktivert"
+   },
+   "pdf_to_excel": {
+      "message": "PDF til Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF til PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF til Word"
+   },
+   "please_try_again": {
+      "message": "Please try again."
+   },
+   "ppt": {
+      "message": "PPT til PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Beklager, det oppstod et problem ved behandlingen av filen din"
+   },
+   "processingFailedTitle": {
+      "message": "Behandlingen mislyktes"
+   },
+   "protect": {
+      "message": "Beskytt"
+   },
+   "rotate": {
+      "message": "Roter"
+   },
+   "search": {
+      "message": "Søk"
+   },
+   "sign": {
+      "message": "Signer"
+   },
+   "split": {
+      "message": "Del opp"
+   },
+   "tools": {
+      "message": "Verktøy"
+   },
+   "try_again": {
+      "message": "Try Again"
+   },
+   "uh_something_wrong": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "unlock": {
+      "message": "Lås opp"
+   },
+   "uploadFailed": {
+      "message": "Beklager, opplastingen mislyktes"
+   },
+   "uploading": {
+      "message": "Uploading..."
+   },
+   "word": {
+      "message": "Word til PDF"
+   }
+}

@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Masuk ke Smallpdf"
+   },
+   "114rvnf": {
+      "message": "ATAU"
+   },
+   "114rvpe": {
+      "message": "Email"
+   },
+   "114rvqv": {
+      "message": "Kata sandi"
+   },
+   "114rvrt": {
+      "message": "Lupa kata sandi?"
+   },
+   "114rvti": {
+      "message": "Login"
+   },
+   "114rvvm": {
+      "message": "Belum punya akun?"
+   },
+   "114rvyk": {
+      "message": "Buat akun"
+   },
+   "114rw18": {
+      "message": "Akun"
+   },
+   "114rw2d": {
+      "message": "Coba Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Pengaturan akun"
+   },
+   "114rw4o": {
+      "message": "Bantuan"
+   },
+   "114rw5s": {
+      "message": "Unduh Aplikasi"
+   },
+   "114rw6m": {
+      "message": "Keluar"
+   },
+   "114rw86": {
+      "message": "Email atau kata sandi salah."
+   },
+   "114rwft": {
+      "message": "Kami tidak dapat memproses file ini. Silakan coba lagi."
+   },
+   "114rwo7": {
+      "message": "File Anda dilindungi kata sandi"
+   },
+   "114rwpn": {
+      "message": "Harap hapus kata sandi dan unggah file lagi."
+   },
+   "114rwrd": {
+      "message": "Uh oh! File ini rusak"
+   },
+   "114rwsa": {
+      "message": "Silakan coba lagi dengan file lain."
+   },
+   "114rwye": {
+      "message": "Yakin mau keluar?"
+   },
+   "114rwzh": {
+      "message": "File Anda akan dihapus. Jangan lupa mengunduhnya sebelum pergi!"
+   },
+   "114rx0l": {
+      "message": "Pergi"
+   },
+   "114rx4t": {
+      "message": "Tinggal"
+   },
+   "114rx78": {
+      "message": "Ganti nama file Anda"
+   },
+   "114rx9b": {
+      "message": "Ganti nama"
+   },
+   "114rxav": {
+      "message": "Lepas file di sini untuk memulai"
+   },
+   "114rxc0": {
+      "message": "Tambah File"
+   },
+   "114rxcw": {
+      "message": "Lepas file Anda di sini"
+   },
+   "114rxhe": {
+      "message": "File Anda"
+   },
+   "114rxii": {
+      "message": "File Anda gagal diunggah"
+   },
+   "114rxjj": {
+      "message": "Tipe file ini tidak didukung"
+   },
+   "114rxk1": {
+      "message": "Silakan coba dengan PDF."
+   },
+   "114rxp1": {
+      "message": "Sisa tugas harian gratis"
+   },
+   "114rxqs": {
+      "message": "Atau mulai dengan alat"
+   },
+   "114rxs1": {
+      "message": "Buka alat di aplikasi web"
+   },
+   "114rxzd": {
+      "message": "Jadi ahli PDF secara instan!"
+   },
+   "114ry1m": {
+      "message": "Coba Paket Pro—secara gratis!"
+   },
+   "114ry2l": {
+      "message": "Upgrade ke Pro dan nikmati akses tanpa batas ke alat favorit Anda dan masih banyak lagi!"
+   },
+   "114ry41": {
+      "message": "Tunjukkan kepada PDF siapa penguasanya! Buka alat-alat PDF terbaik di dunia dengan uji coba gratis selama 7 hari."
+   },
+   "114ry4i": {
+      "message": "Apa yang Anda dapatkan?"
+   },
+   "114ry60": {
+      "message": "Alat dan fitur Pro"
+   },
+   "114ry6y": {
+      "message": "Alat dan fitur Pro eksklusif"
+   },
+   "114ry85": {
+      "message": "Kompresi kuat, konversi PDF ke Office, OCR, dan masih banyak lagi."
+   },
+   "114ry8l": {
+      "message": "Akses Premium ke alat dan fitur PDF Pro."
+   },
+   "114ry9k": {
+      "message": "Tanpa batasan"
+   },
+   "114ryam": {
+      "message": "File dan tugas tanpa batas per hari. Hebat, ‘kan?"
+   },
+   "114ryc1": {
+      "message": "Bekerja sambil jalan"
+   },
+   "114rycg": {
+      "message": "Kerja kapan saja, di mana saja"
+   },
+   "114ryd0": {
+      "message": "Akses Premium ke platform web, desktop, dan aplikasi seluler kami."
+   },
+   "114rydg": {
+      "message": "Buka semua platform dan aplikasi—dari seluler, desktop, dan web!"
+   },
+   "114rydy": {
+      "message": "Upgrade Akun Anda"
+   },
+   "114ryfe": {
+      "message": "Login"
+   },
+   "114ryfx": {
+      "message": "Dapatkan {{trial_days}} Hari Gratis"
+   },
+   "114rylw": {
+      "message": "Hampir selesai...\\nSilakan menikmati kopi, membelai anjing kesayangan, atau meregangkan badan dahulu. ☕🐶"
+   },
+   "114rys4": {
+      "message": "Kembali ke awal"
+   },
+   "114ryvl": {
+      "message": "Kembali ke alat"
+   },
+   "114rz0g": {
+      "message": "Pilih tipe kompresi"
+   },
+   "114rz1n": {
+      "message": "Dasar"
+   },
+   "114rz2h": {
+      "message": "Ukuran file sedang, kualitas tinggi."
+   },
+   "114rz3e": {
+      "message": "Kuat"
+   },
+   "114rz44": {
+      "message": "Ukuran file terkecil, kualitas bagus."
+   },
+   "114rz68": {
+      "message": "Pilih tipe konversi"
+   },
+   "114rz7c": {
+      "message": "Opsi"
+   },
+   "114rz83": {
+      "message": "Dengan OCR"
+   },
+   "114rz8u": {
+      "message": "Halaman yang dipindai akan dikonversi menjadi dokumen Word yang dapat diedit. Format dapat berubah."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Kembali ke konversi"
+   },
+   "114rzmr": {
+      "message": "Halaman yang dipindai akan dikonversi menjadi dokumen Excel yang dapat diedit. Format dapat berubah."
+   },
+   "114s0il": {
+      "message": "Unduh file saya secara otomatis"
+   },
+   "114s0jf": {
+      "message": "Kami akan mengunduh file Anda secara otomatis setelah prosesnya selesai."
+   },
+   "114s1u3": {
+      "message": "Konversi PDF Anda ke file PowerPoint."
+   },
+   "114tq39": {
+      "message": "Konversi seluruh halaman"
+   },
+   "114tq47": {
+      "message": "Ekstraksi gambar tunggal"
+   },
+   "114tq8x": {
+      "message": "PDF ke PowerPoint"
+   },
+   "1167iyh": {
+      "message": "Terlalu banyak upaya gagal. Periksa detail login dan coba lagi nanti."
+   },
+   "11wp338": {
+      "message": "Edit PDF"
+   },
+   "11wp39c": {
+      "message": "PDF ke Word"
+   },
+   "11wp3g5": {
+      "message": "Kompresi PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "Gabung PDF"
+   },
+   "11wp3jn": {
+      "message": "Konverter PDF"
+   },
+   "11wp3k6": {
+      "message": "Alat PDF Lainnya"
+   },
+   "11wp3o4": {
+      "message": "Alat PDF Kecil"
+   },
+   "11yan2r": {
+      "message": "Perkecil ukuran PDF, gambar, atau dokumen Microsoft Office Anda."
+   },
+   "11yan3p": {
+      "message": "Edit teks, tambahkan anotasi, bentuk, dan gambar, dan susun PDF Anda."
+   },
+   "11yan4l": {
+      "message": "Gabung multi dokumen jadi satu PDF."
+   },
+   "11yan5a": {
+      "message": "Balik satu atau beberapa halaman di PDF Anda."
+   },
+   "11yan62": {
+      "message": "Pilih file"
+   },
+   "11yany0": {
+      "message": "Transfer dokumen yang aman dengan enkripsi TLS"
+   },
+   "11yao0f": {
+      "message": "Hapus satu atau beberapa halaman dari dokumen Anda."
+   },
+   "11yao16": {
+      "message": "Ekstraksi halaman tertentu untuk disimpan sebagai dokumen terpisah."
+   },
+   "11yao2j": {
+      "message": "Beri tanda tangan elektronik di PDF dan minta tanda tangan dari orang lain."
+   },
+   "11yao3e": {
+      "message": "Tambahkan kata sandi untuk amankan PDF Anda."
+   },
+   "11yao41": {
+      "message": "Hapus kata sandi dari PDF terenkripsi."
+   },
+   "11yao4u": {
+      "message": "Konversi file Word, PowerPoint, Excel, dan gambar ke dan dari PDF."
+   },
+   "11yao7p": {
+      "message": "Lihat, edit, anotasi, dan susun PDF."
+   },
+   "11yao8n": {
+      "message": "Tambahkan nomor halaman ke PDF Anda."
+   },
+   "120e7u5": {
+      "message": "atau letakkan file di sini"
+   },
+   "12bijem": {
+      "message": "Merangkum dengan AI"
+   },
+   "12bikcl": {
+      "message": "Pilih file"
+   },
+   "12bikhi": {
+      "message": "Pilih file"
+   },
+   "12bikpq": {
+      "message": "Atau mulai dengan alat"
+   },
+   "12bikry": {
+      "message": "AI Peringkas PDF"
+   },
+   "12bikv2": {
+      "message": "Pisah PDF jadi beberapa dokumen."
+   },
+   "12bikx8": {
+      "message": "Gabung"
+   },
+   "12bikzn": {
+      "message": "Kompres"
+   },
+   "12bil0r": {
+      "message": "Konversi"
+   },
+   "12bil27": {
+      "message": "PDF ke Gambar"
+   },
+   "12bil4a": {
+      "message": "Edit Teks"
+   },
+   "12bil5v": {
+      "message": "PDF ke Word"
+   },
+   "12bil78": {
+      "message": "Tanda Tangan"
+   },
+   "12bil7z": {
+      "message": "Lebih banyak alat"
+   },
+   "12bil9j": {
+      "message": "Tampilkan alat di hasil pencarian Google"
+   },
+   "12bila5": {
+      "message": "Saat Anda cari alat PDF di Google, Anda bisa proses dokumen Anda dalam area hasil pencarian."
+   },
+   "12bilas": {
+      "message": "Tampilkan rekomendasi aplikasi"
+   },
+   "12bilbj": {
+      "message": "Tampilkan alat di penampil PDF Chrome"
+   },
+   "12bilbl": {
+      "message": "Pisah"
+   },
+   "12bilbu": {
+      "message": "Saat Anda buka PDF di penampil PDF Chrome, Anda akan punya akses ke alat Smallpdf di penampil."
+   },
+   "12bilcf": {
+      "message": "Hapus Halaman"
+   },
+   "12bilco": {
+      "message": "Pengaturan Chrome"
+   },
+   "12bilcy": {
+      "message": "Situs Web Smallpdf"
+   },
+   "12bildu": {
+      "message": "Putar"
+   },
+   "12bilee": {
+      "message": "Buka kunci"
+   },
+   "12bilfg": {
+      "message": "Lindungi"
+   },
+   "12bilfo": {
+      "message": "Buat ringkasan atau ngobrol dengan PDF pakai AI."
+   },
+   "12bilfz": {
+      "message": "PDF ke Excel"
+   },
+   "12bilhn": {
+      "message": "PDF ke PowerPoint"
+   },
+   "12bili5": {
+      "message": "Nonaktifkan rekomendasi untuk aplikasi tambahan yang bisa Anda instal di Google dan platform lain."
+   },
+   "12bilic": {
+      "message": "Pangkas dan rapikan dokumen dengan pemangkas PDF kami."
+   },
+   "12biliw": {
+      "message": "Chrome Web Store"
+   },
+   "12bilj8": {
+      "message": "Nomor Halaman"
+   },
+   "12bilk3": {
+      "message": "Pembaca PDF"
+   },
+   "12bilm7": {
+      "message": "Mengunggah..."
+   },
+   "12bilm8": {
+      "message": "Hapus informasi sensitif dari PDF Anda."
+   },
+   "12bilnj": {
+      "message": "Ini butuh beberapa detik."
+   },
+   "12bilod": {
+      "message": "Batal"
+   },
+   "12bilqr": {
+      "message": "Ngobrol dan tanya apa pun ke PDF Anda."
+   },
+   "12biltj": {
+      "message": "Ekstensi Chrome"
+   },
+   "12bilug": {
+      "message": "Pilih alat"
+   },
+   "12biluz": {
+      "message": "Lanjutkan"
+   },
+   "12bilvm": {
+      "message": "Mulai lagi"
+   },
+   "12bim4n": {
+      "message": "Dapatkan alat PDF di \u003Cb>Google Docs\u003C/b> dan \u003Cb>Gmail\u003C/b> dengan \u003Cb>Smallpdf Workspace App\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Dapatkan free app"
+   },
+   "12bimem": {
+      "message": "Konversi, gabung, dan lainnya dari \u003Cb>Google Docs\u003C/b> dan \u003Cb>Gmail\u003C/b> dengan \u003Cb>Smallpdf Workspace App\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf—Kompresi, tanda tangan & gabung file"
+   },
+   "12bk4lc": {
+      "message": "Pangkas PDF"
+   },
+   "12bk4mb": {
+      "message": "Sunting PDF"
+   },
+   "12bk4my": {
+      "message": "AI Peringkas PDF"
+   },
+   "12bk4n8": {
+      "message": "Mengobrol dengan PDF"
+   },
+   "12bk4nl": {
+      "message": "Terjemahkan PDF"
+   },
+   "12ca4j0": {
+      "message": "Buat PDF bisa diedit"
+   },
+   "12ca7vl": {
+      "message": "Didukung oleh sign.com & Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Mau dapat lebih banyak dari Smallpdf?"
+   },
+   "12ctd58": {
+      "message": "Izinkan akses ke URL file untuk pakai alat PDF kami saat Anda buka PDF di Chrome."
+   },
+   "12ctd60": {
+      "message": "Buka Pengaturan"
+   },
+   "12ctd7g": {
+      "message": "Aktifkan ini juga untuk PDF yang disimpan di komputer Anda."
+   },
+   "12ctd81": {
+      "message": "Aktifkan"
+   },
+   "12ctd8y": {
+      "message": "Nonaktifkan"
+   },
+   "action_app_website": {
+      "message": "Situs Web {app_name}"
+   },
+   "action_browser_settings": {
+      "message": "Pengaturan {browser_name}"
+   },
+   "action_chrome_web_store": {
+      "message": "Toko Web {browser_name}"
+   },
+   "action_convert_to": {
+      "message": "Konversi ke {file_type}"
+   },
+   "appDesc": {
+      "message": "Alat PDF mudah: kompres, konversi, gabung, obrolan, bagi, tanda tangan elektronik, dan edit PDF di browser Anda."
+   },
+   "appName": {
+      "message": "Smallpdf—Edit, Konversi, Kompresi, & Rangkum PDF AI"
+   },
+   "cancel": {
+      "message": "Batal"
+   },
+   "compress": {
+      "message": "Kompres"
+   },
+   "converter": {
+      "message": "Konversi"
+   },
+   "delete": {
+      "message": "Hapus Halaman"
+   },
+   "download": {
+      "message": "Unduh"
+   },
+   "downloadCta": {
+      "message": "Unduh sekarang"
+   },
+   "edit": {
+      "message": "Edit"
+   },
+   "error_try_later": {
+      "message": "Uh oh! Ada yang salah"
+   },
+   "excel": {
+      "message": "Excel ke PDF"
+   },
+   "extract": {
+      "message": "PDF ke JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Gambar"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Gambar"
+   },
+   "file_type_generic_office": {
+      "message": "Kantor"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG ke PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0}, dan {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} dan {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0}, atau {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} atau {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Gabungkan"
+   },
+   "noInternetConnection": {
+      "message": "Tidak ada koneksi internet"
+   },
+   "okay": {
+      "message": "Oke"
+   },
+   "options_extension_version": {
+      "message": "Sambungan {browser_name} / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Berikan {app_name} akses ke URL file lokal Anda untuk mengaktifkan {file_types} agar terbuka di {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Aktifkan sambungan {app_name} di file lokal"
+   },
+   "options_setting_status_disabled": {
+      "message": "Dinonaktifkan"
+   },
+   "pdf_to_excel": {
+      "message": "PDF ke Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF ke PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF ke Word"
+   },
+   "please_try_again": {
+      "message": "Silakan coba lagi."
+   },
+   "ppt": {
+      "message": "PPT ke PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Maaf, terjadi kesalahan saat memproses file Anda"
+   },
+   "processingFailedTitle": {
+      "message": "Pemrosesan gagal"
+   },
+   "protect": {
+      "message": "Lindungi"
+   },
+   "rotate": {
+      "message": "Putar"
+   },
+   "search": {
+      "message": "Cari"
+   },
+   "serp_hide_button": {
+      "message": "Jangan tampilkan ini lagi"
+   },
+   "serp_powered_by": {
+      "message": "Didukung oleh Smallpdf"
+   },
+   "sign": {
+      "message": "Tanda tangani"
+   },
+   "split": {
+      "message": "Bagi"
+   },
+   "tools": {
+      "message": "Alat"
+   },
+   "try_again": {
+      "message": "Coba Lagi"
+   },
+   "uh_something_wrong": {
+      "message": "Uh oh! Ada yang salah"
+   },
+   "unlock": {
+      "message": "Buka"
+   },
+   "uploadFailed": {
+      "message": "Maaf, unggahan Anda gagal"
+   },
+   "uploading": {
+      "message": "Mengunggah..."
+   },
+   "word": {
+      "message": "Word ke PDF"
+   }
+}

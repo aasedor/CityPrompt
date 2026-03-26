@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Log ind på Smallpdf"
+   },
+   "114rvnf": {
+      "message": "ELLER"
+   },
+   "114rvpe": {
+      "message": "E-mail"
+   },
+   "114rvqv": {
+      "message": "Adgangskode"
+   },
+   "114rvrt": {
+      "message": "Glemt din adgangskode?"
+   },
+   "114rvti": {
+      "message": "Log på"
+   },
+   "114rvvm": {
+      "message": "Har du endnu ikke en konto?"
+   },
+   "114rvyk": {
+      "message": "Opret en konto"
+   },
+   "114rw18": {
+      "message": "Konto"
+   },
+   "114rw2d": {
+      "message": "Prøv Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Kontoindstillinger"
+   },
+   "114rw4o": {
+      "message": "Hjælp"
+   },
+   "114rw5s": {
+      "message": "Download apps"
+   },
+   "114rw6m": {
+      "message": "Log af"
+   },
+   "114rw86": {
+      "message": "Forkert e-mail eller adgangskode."
+   },
+   "114rwft": {
+      "message": "Vi kan ikke behandle denne fil. Prøv igen."
+   },
+   "114rwo7": {
+      "message": "Din fil er beskyttet af en adgangskode"
+   },
+   "114rwpn": {
+      "message": "Fjern adgangskoden, og upload filen igen."
+   },
+   "114rwrd": {
+      "message": "Hovsa! Denne fil er ødelagt"
+   },
+   "114rwsa": {
+      "message": "Prøv igen med en anden fil."
+   },
+   "114rwye": {
+      "message": "Er du sikker på, at du vil forlade siden?"
+   },
+   "114rwzh": {
+      "message": "Din fil vil blive slettet. Husk at downloade den, før du forlader siden!"
+   },
+   "114rx0l": {
+      "message": "Forlad"
+   },
+   "114rx4t": {
+      "message": "Bliv"
+   },
+   "114rx78": {
+      "message": "Omdøb din fil"
+   },
+   "114rx9b": {
+      "message": "Omdøb"
+   },
+   "114rxav": {
+      "message": "Slip fil her for at komme i gang"
+   },
+   "114rxc0": {
+      "message": "Tilføj fil"
+   },
+   "114rxcw": {
+      "message": "Slip din fil her"
+   },
+   "114rxhe": {
+      "message": "Din fil"
+   },
+   "114rxii": {
+      "message": "Din fil blev ikke uploadet"
+   },
+   "114rxjj": {
+      "message": "Denne filtype understøttes ikke"
+   },
+   "114rxk1": {
+      "message": "Prøv igen med en PDF."
+   },
+   "114rxp1": {
+      "message": "Daglige gratis opgaver tilbage"
+   },
+   "114rxqs": {
+      "message": "Eller start med et værktøj"
+   },
+   "114rxs1": {
+      "message": "Åben et værktøj i webappen"
+   },
+   "114rxzd": {
+      "message": "Bliv en PDF-haj!"
+   },
+   "114ry1m": {
+      "message": "Prøv en Pro-konto – helt gratis!"
+   },
+   "114ry2l": {
+      "message": "Opgrader til Pro, og nyd ubegrænset adgang til dine favorit-værktøjer med mere!"
+   },
+   "114ry41": {
+      "message": "Styr dine PDF’er uden problemer! Få adgang til en verden af smarte PDF-værktøjer med vores 7-dages gratis prøveperiode."
+   },
+   "114ry4i": {
+      "message": "Hvad får du?"
+   },
+   "114ry60": {
+      "message": "Pro-værktøjer og -funktioner"
+   },
+   "114ry6y": {
+      "message": "Eksklusive Pro-værktøjer og -funktioner"
+   },
+   "114ry85": {
+      "message": "Stærk komprimering, konvertering af PDF-filer til Office-filer, OCR med mere."
+   },
+   "114ry8l": {
+      "message": "Premium adgang til Pro PDF-værktøjer og -funktioner."
+   },
+   "114ry9k": {
+      "message": "Ingen begrænsninger"
+   },
+   "114ryam": {
+      "message": "Ubegrænset antal filer og opgaver per dag. Nice!"
+   },
+   "114ryc1": {
+      "message": "Arbejd på farten"
+   },
+   "114rycg": {
+      "message": "Arbejd når som helst og hvor som helst"
+   },
+   "114ryd0": {
+      "message": "Premium adgang til vores webplatform, desktop- og mobil-apps."
+   },
+   "114rydg": {
+      "message": "Få adgang til alle platforme og apps – fra mobil til computer og web!"
+   },
+   "114rydy": {
+      "message": "Opgrader din konto"
+   },
+   "114ryfe": {
+      "message": "Log på"
+   },
+   "114ryfx": {
+      "message": "Prøv gratis i {{trial_days}} dage"
+   },
+   "114rylw": {
+      "message": "Næsten færdig ...\\nHvorfor ikke snuppe en kop kaffe, klappe hunden, eller strække ud, mens du venter? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Tilbage til start"
+   },
+   "114ryvl": {
+      "message": "Tilbage til værktøjer"
+   },
+   "114rz0g": {
+      "message": "Vælg komprimeringstype"
+   },
+   "114rz1n": {
+      "message": "Basis"
+   },
+   "114rz2h": {
+      "message": "Medium filstørrelse, høj kvalitet."
+   },
+   "114rz3e": {
+      "message": "Stærk"
+   },
+   "114rz44": {
+      "message": "Mindste filstørrelse, god kvalitet."
+   },
+   "114rz68": {
+      "message": "Vælg konverteringstype"
+   },
+   "114rz7c": {
+      "message": "Valgmuligheder"
+   },
+   "114rz83": {
+      "message": "Med OCR"
+   },
+   "114rz8u": {
+      "message": "Scannede sider vil blive konverteret til et redigerbart Word-dokument. Formateringen kan ændre sig."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Tilbage til konvertering"
+   },
+   "114rzmr": {
+      "message": "Scannede sider vil blive konverteret til et redigerbart Excel-dokument. Formateringen kan ændre sig."
+   },
+   "114s0il": {
+      "message": "Download min fil automatisk"
+   },
+   "114s0jf": {
+      "message": "Vi downloader automatisk din fil, når processen er færdig."
+   },
+   "114s1u3": {
+      "message": "Konverter din PDF til en PowerPoint-fil."
+   },
+   "114tq39": {
+      "message": "Konverter hele sider"
+   },
+   "114tq47": {
+      "message": "Træk enkelte billeder ud"
+   },
+   "114tq8x": {
+      "message": "PDF til PowerPoint"
+   },
+   "1167iyh": {
+      "message": "For mange fejlslagne login-forsøg. Tjek dine login-oplysninger, og prøv igen senere."
+   },
+   "11wp338": {
+      "message": "Rediger PDF"
+   },
+   "11wp39c": {
+      "message": "PDF til Word"
+   },
+   "11wp3g5": {
+      "message": "Komprimer PDF"
+   },
+   "11wp3gn": {
+      "message": "eUnderskriv PDF"
+   },
+   "11wp3j6": {
+      "message": "Flet PDF"
+   },
+   "11wp3jn": {
+      "message": "PDF-konvertering"
+   },
+   "11wp3k6": {
+      "message": "Flere PDF-værktøjer"
+   },
+   "11wp3o4": {
+      "message": "Lille pdf-værktøj"
+   },
+   "11yan2r": {
+      "message": "Reducer størrelsen på din PDF, dit billede eller dine Microsoft Office-dokumenter."
+   },
+   "11yan3p": {
+      "message": "Rediger tekst, tilføj markeringer, former og billeder, og byt om på rækkefølgen af siderne i dine PDF'er."
+   },
+   "11yan4l": {
+      "message": "Sammenflet flere dokumenter til én PDF."
+   },
+   "11yan5a": {
+      "message": "Vend en eller flere sider i din PDF."
+   },
+   "11yan62": {
+      "message": "Vælg fil"
+   },
+   "11yany0": {
+      "message": "Sikker dokumentoverførsel med TLS-kryptering"
+   },
+   "11yao0f": {
+      "message": "Slet en eller flere sider fra dit dokument."
+   },
+   "11yao16": {
+      "message": "Udtræk specifikke sider, og gem dem som separate dokumenter."
+   },
+   "11yao2j": {
+      "message": "E-underskriv en hvilken som helst PDF, og bed om underskrifter fra andre."
+   },
+   "11yao3e": {
+      "message": "Tilføj en adgangskode for at sikre din PDF."
+   },
+   "11yao41": {
+      "message": "Fjern adgangskoden fra en krypteret PDF."
+   },
+   "11yao4u": {
+      "message": "Konverter Word-, PowerPoint-, Excel- og billedfiler til og fra PDF."
+   },
+   "11yao7p": {
+      "message": "Se, rediger, marker og organiser PDF'er."
+   },
+   "11yao8n": {
+      "message": "Føj sidetal til din PDF."
+   },
+   "120e7u5": {
+      "message": "eller slip en fil her"
+   },
+   "12bijem": {
+      "message": "AI-genererede resuméer"
+   },
+   "12bikcl": {
+      "message": "Vælg fil"
+   },
+   "12bikhi": {
+      "message": "Vælg fil"
+   },
+   "12bikpq": {
+      "message": "Eller start med et værktøj"
+   },
+   "12bikry": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bikv2": {
+      "message": "Inddel dine PDF'er i flere dokumenter."
+   },
+   "12bikx8": {
+      "message": "Flet"
+   },
+   "12bikzn": {
+      "message": "Komprimer"
+   },
+   "12bil0r": {
+      "message": "Konverter"
+   },
+   "12bil27": {
+      "message": "PDF til billede"
+   },
+   "12bil4a": {
+      "message": "Rediger tekst"
+   },
+   "12bil5v": {
+      "message": "PDF til Word"
+   },
+   "12bil78": {
+      "message": "Underskriv"
+   },
+   "12bil7z": {
+      "message": "Flere værktøjer"
+   },
+   "12bil9j": {
+      "message": "Vis værktøjer i Googles søgeresultater"
+   },
+   "12bila5": {
+      "message": "Når du googler et PDF-værktøj, vil du kunne behandle dine dokumenter direkte i søgeresultat-feltet."
+   },
+   "12bilas": {
+      "message": "Vis app-anbefalinger"
+   },
+   "12bilbj": {
+      "message": "Vis værktøjer i Chromes PDF-fremviser"
+   },
+   "12bilbl": {
+      "message": "Opdel"
+   },
+   "12bilbu": {
+      "message": "Når du åbner en PDF i Chromes PDF-fremviser, får du adgang til Smallpdfs værktøjer direkte i fremviseren."
+   },
+   "12bilcf": {
+      "message": "Slet sider"
+   },
+   "12bilco": {
+      "message": "Chrome-indstillinger"
+   },
+   "12bilcy": {
+      "message": "Smallpdfs website"
+   },
+   "12bildu": {
+      "message": "Roter"
+   },
+   "12bilee": {
+      "message": "Lås op"
+   },
+   "12bilfg": {
+      "message": "Beskyt"
+   },
+   "12bilfo": {
+      "message": "Opsummer eller chat med din PDF ved hjælp af AI."
+   },
+   "12bilfz": {
+      "message": "PDF til Excel"
+   },
+   "12bilhn": {
+      "message": "PDF til PowerPoint"
+   },
+   "12bili5": {
+      "message": "Fravælg anbefalinger om andre apps, du kan installere i Google og på andre platforme."
+   },
+   "12bilic": {
+      "message": "Beskær og trim dine dokumenter med vores PDF-beskærer."
+   },
+   "12biliw": {
+      "message": "Chrome Webshop"
+   },
+   "12bilj8": {
+      "message": "Sidetal"
+   },
+   "12bilk3": {
+      "message": "PDF-læser"
+   },
+   "12bilm7": {
+      "message": "Uploader ..."
+   },
+   "12bilm8": {
+      "message": "Fjern følsomme oplysninger fra din PDF."
+   },
+   "12bilnj": {
+      "message": "Det kan tage et par sekunder..."
+   },
+   "12bilod": {
+      "message": "Annuller"
+   },
+   "12bilqr": {
+      "message": "Chat med din PDF: Spørg den om hvad som helst."
+   },
+   "12biltj": {
+      "message": "Chrome-udvidelse"
+   },
+   "12bilug": {
+      "message": "Vælg et værktøj"
+   },
+   "12biluz": {
+      "message": "Fortsæt"
+   },
+   "12bilvm": {
+      "message": "Start forfra"
+   },
+   "12bim4n": {
+      "message": "Brug PDF-værktøjer i \u003Cb>Google Docs\u003C/b> og \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Hent gratis app"
+   },
+   "12bimem": {
+      "message": "Konverter og sammenflet med mere via \u003Cb>Google Docs\u003C/b> og \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf – komprimer, underskriv og sammenflet"
+   },
+   "12bk4lc": {
+      "message": "Beskær PDF"
+   },
+   "12bk4mb": {
+      "message": "Bortredigering af PDF-informationer"
+   },
+   "12bk4my": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bk4n8": {
+      "message": "Chat med PDF"
+   },
+   "12bk4nl": {
+      "message": "Oversæt PDF"
+   },
+   "12ca4j0": {
+      "message": "Gør din PDF skrivebeskyttet"
+   },
+   "12ca7vl": {
+      "message": "Leveret af sign.com & Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Vil du have mere ud af Smallpdf?"
+   },
+   "12ctd58": {
+      "message": "Tillad adgang til fil-URL'er, så du kan bruge vores PDF-værktøjer, når dine PDF'er vises i Chrome."
+   },
+   "12ctd60": {
+      "message": "Åbn Indstillinger"
+   },
+   "12ctd7g": {
+      "message": "Aktivér også for PDF'er, der er gemt på din computer."
+   },
+   "12ctd81": {
+      "message": "Aktiver"
+   },
+   "12ctd8y": {
+      "message": "Deaktiver"
+   },
+   "action_app_website": {
+      "message": "{app_name}-websted"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name}-indstillinger"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name}-webbutik"
+   },
+   "action_convert_to": {
+      "message": "Konverter til {file_type}"
+   },
+   "appDesc": {
+      "message": "Komprimer, konverter, sammenflet, chat med, opdel, eUnderskriv og rediger PDF'er i din browser med nemme PDF-værktøjer."
+   },
+   "appName": {
+      "message": "Smallpdf – rediger, konverter, komprimer og få AI-genererede PDF-resuméer"
+   },
+   "cancel": {
+      "message": "Annuller"
+   },
+   "compress": {
+      "message": "Komprimer"
+   },
+   "converter": {
+      "message": "Konverter"
+   },
+   "delete": {
+      "message": "Slet sider"
+   },
+   "download": {
+      "message": "Download"
+   },
+   "downloadCta": {
+      "message": "Download nu"
+   },
+   "edit": {
+      "message": "Rediger"
+   },
+   "error_try_later": {
+      "message": "Hovsa! Noget gik galt"
+   },
+   "excel": {
+      "message": "Excel til PDF"
+   },
+   "extract": {
+      "message": "PDF til JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Billede"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Billeder"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF'er"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG til PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0}, og {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} og {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0}, eller {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Sammenflet"
+   },
+   "noInternetConnection": {
+      "message": "Ingen internetforbindelse"
+   },
+   "okay": {
+      "message": "Okay"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}-udvidelse/{version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Giv {app_name} adgang til url'er til dine lokale filer for at gøre det muligt, at {file_types} åbnes i {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Aktiver {app_name}-udvidelse til lokale filer"
+   },
+   "options_setting_status_disabled": {
+      "message": "Deaktiveret"
+   },
+   "pdf_to_excel": {
+      "message": "PDF til Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF til PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDT til Word"
+   },
+   "please_try_again": {
+      "message": "Prøv igen."
+   },
+   "ppt": {
+      "message": "PPT til PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Beklager, men der opstod et problem under behandlingen af din fil"
+   },
+   "processingFailedTitle": {
+      "message": "Behandlingen mislykkedes"
+   },
+   "protect": {
+      "message": "Beskyt"
+   },
+   "rotate": {
+      "message": "Roter"
+   },
+   "search": {
+      "message": "Søg"
+   },
+   "serp_hide_button": {
+      "message": "Vis ikke dette igen"
+   },
+   "serp_powered_by": {
+      "message": "Leveret af Smallpdf"
+   },
+   "sign": {
+      "message": "Underskriv"
+   },
+   "split": {
+      "message": "Opdel"
+   },
+   "tools": {
+      "message": "Værktøjer"
+   },
+   "try_again": {
+      "message": "Prøv igen"
+   },
+   "uh_something_wrong": {
+      "message": "Hovsa! Noget gik galt"
+   },
+   "unlock": {
+      "message": "Lås op"
+   },
+   "uploadFailed": {
+      "message": "Beklager, men din overførsel mislykkedes"
+   },
+   "uploading": {
+      "message": "Uploader ..."
+   },
+   "word": {
+      "message": "Word til PDF"
+   }
+}

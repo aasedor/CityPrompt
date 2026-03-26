@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Meld je aan bij Smallpdf"
+   },
+   "114rvnf": {
+      "message": "OF"
+   },
+   "114rvpe": {
+      "message": "E-mailadres"
+   },
+   "114rvqv": {
+      "message": "Wachtwoord"
+   },
+   "114rvrt": {
+      "message": "Wachtwoord vergeten?"
+   },
+   "114rvti": {
+      "message": "Inloggen"
+   },
+   "114rvvm": {
+      "message": "Heb je nog geen account?"
+   },
+   "114rvyk": {
+      "message": "Account aanmaken"
+   },
+   "114rw18": {
+      "message": "Account"
+   },
+   "114rw2d": {
+      "message": "Probeer Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Accountinstellingen"
+   },
+   "114rw4o": {
+      "message": "Help"
+   },
+   "114rw5s": {
+      "message": "Apps downloaden"
+   },
+   "114rw6m": {
+      "message": "Uitloggen"
+   },
+   "114rw86": {
+      "message": "Verkeerd(e) e-mail of wachtwoord."
+   },
+   "114rwft": {
+      "message": "We kunnen dit bestand niet verwerken. Probeer het nogmaals."
+   },
+   "114rwo7": {
+      "message": "Je bestand is beveiligd met een wachtwoord"
+   },
+   "114rwpn": {
+      "message": "Verwijder het wachtwoord en upload het bestand nogmaals."
+   },
+   "114rwrd": {
+      "message": "O jee! Dit bestand is corrupt"
+   },
+   "114rwsa": {
+      "message": "Probeer het opnieuw met een ander bestand."
+   },
+   "114rwye": {
+      "message": "Weet je zeker dat je wilt gaan?"
+   },
+   "114rwzh": {
+      "message": "Je bestand wordt verwijderd. Vergeet niet om het te downloaden, voordat je gaat!"
+   },
+   "114rx0l": {
+      "message": "Gaan"
+   },
+   "114rx4t": {
+      "message": "Blijven"
+   },
+   "114rx78": {
+      "message": "Bestand hernoemen"
+   },
+   "114rx9b": {
+      "message": "Hernoemen"
+   },
+   "114rxav": {
+      "message": "Sleep het bestand hier naartoe om aan de slag te gaan"
+   },
+   "114rxc0": {
+      "message": "Bestand toevoegen"
+   },
+   "114rxcw": {
+      "message": "Sleep je bestand hier naartoe"
+   },
+   "114rxhe": {
+      "message": "Je bestand"
+   },
+   "114rxii": {
+      "message": "Je bestand kon niet worden geüpload"
+   },
+   "114rxjj": {
+      "message": "Dit bestandstype wordt niet ondersteund"
+   },
+   "114rxk1": {
+      "message": "Probeer het nogmaals met een pdf."
+   },
+   "114rxp1": {
+      "message": "Gratis dagelijkse taken over"
+   },
+   "114rxqs": {
+      "message": "Of begin met een tool"
+   },
+   "114rxs1": {
+      "message": "Open een tool in de webapp"
+   },
+   "114rxzd": {
+      "message": "Wordt een pdf-ninja!"
+   },
+   "114ry1m": {
+      "message": "Go voor Pro, het is gratis!"
+   },
+   "114ry2l": {
+      "message": "Upgrade naar Pro en profiteer van onbeperkte toegang tot je favoriete tools en meer!"
+   },
+   "114ry41": {
+      "message": "Wees de baas over pdf's! Krijg toegang tot een wereld aan handige pdf-tools met ons gratis proefabonnement van 7 dagen."
+   },
+   "114ry4i": {
+      "message": "Wat krijg je?"
+   },
+   "114ry60": {
+      "message": "Pro-tools en -functies"
+   },
+   "114ry6y": {
+      "message": "Exclusieve Pro-tools en -functies"
+   },
+   "114ry85": {
+      "message": "Krachtige compressie, pdf naar Office conversie, OCR en meer."
+   },
+   "114ry8l": {
+      "message": "Premium toegang tot Pro pdf-tools en -functies."
+   },
+   "114ry9k": {
+      "message": "Geen beperkingen"
+   },
+   "114ryam": {
+      "message": "Onbeperkte bestanden en taken per dag. Gaaf!"
+   },
+   "114ryc1": {
+      "message": "Onderweg werken"
+   },
+   "114rycg": {
+      "message": "Altijd en overal werken"
+   },
+   "114ryd0": {
+      "message": "Premium toegang tot ons webplatform, desktop en mobiele apps."
+   },
+   "114rydg": {
+      "message": "Toegang tot alle platforms en apps, van mobiel tot desktop en web!"
+   },
+   "114rydy": {
+      "message": "Upgrade je account"
+   },
+   "114ryfe": {
+      "message": "Inloggen"
+   },
+   "114ryfx": {
+      "message": "Probeer {{trial_days}} dagen gratis"
+   },
+   "114rylw": {
+      "message": "Bijna klaar...\\nNeem anders een kopje koffie, knuffel je huisdier of rek jezelf even uit... ☕🐶"
+   },
+   "114rys4": {
+      "message": "Terug naar start"
+   },
+   "114ryvl": {
+      "message": "Terug naar tools"
+   },
+   "114rz0g": {
+      "message": "Kies compressietype"
+   },
+   "114rz1n": {
+      "message": "Basis"
+   },
+   "114rz2h": {
+      "message": "Middelgrote bestandsgrootte, hoge kwaliteit."
+   },
+   "114rz3e": {
+      "message": "Sterk"
+   },
+   "114rz44": {
+      "message": "Kleinste bestandsgrootte, goede kwaliteit."
+   },
+   "114rz68": {
+      "message": "Kies conversietype"
+   },
+   "114rz7c": {
+      "message": "Opties"
+   },
+   "114rz83": {
+      "message": "Met OCR"
+   },
+   "114rz8u": {
+      "message": "Gescande pagina's worden geconverteerd naar een bewerkbaar Word-document. Opmaak kan veranderen."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Terug naar converteren"
+   },
+   "114rzmr": {
+      "message": "Gescande pagina's worden geconverteerd naar een bewerkbaar Excel-document. Opmaak kan veranderen."
+   },
+   "114s0il": {
+      "message": "Download mijn bestand automatisch"
+   },
+   "114s0jf": {
+      "message": "We downloaden je bestand automatisch zodra het proces is afgerond."
+   },
+   "114s1u3": {
+      "message": "Converteer je pdf naar een PowerPoint-bestand."
+   },
+   "114tq39": {
+      "message": "Hele pagina's converteren"
+   },
+   "114tq47": {
+      "message": "Enkele afbeeldingen extraheren"
+   },
+   "114tq8x": {
+      "message": "Pdf naar PowerPoint"
+   },
+   "1167iyh": {
+      "message": "Te veel mislukte pogingen. Controleer je inloggegevens en probeer het later opnieuw."
+   },
+   "11wp338": {
+      "message": "PDF bewerken"
+   },
+   "11wp39c": {
+      "message": "Pdf naar Word"
+   },
+   "11wp3g5": {
+      "message": "Pdf comprimeren"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "PDF samenvoegen"
+   },
+   "11wp3jn": {
+      "message": "PDF Converter"
+   },
+   "11wp3k6": {
+      "message": "Meer PDF-hulpmiddelen"
+   },
+   "11wp3o4": {
+      "message": "Smallpdf-hulpmiddelen"
+   },
+   "11yan2r": {
+      "message": "Verklein het formaat van je pdf's, afbeeldingen of Microsoft Office-documenten."
+   },
+   "11yan3p": {
+      "message": "Bewerk tekst, voeg annotaties, figuren en afbeeldingen toe en organiseer pdf's."
+   },
+   "11yan4l": {
+      "message": "Combineer meerdere documenten in één pdf."
+   },
+   "11yan5a": {
+      "message": "Draai enkele of meerdere pagina's in je pdf."
+   },
+   "11yan62": {
+      "message": "Bestand selecteren"
+   },
+   "11yany0": {
+      "message": "Veilige documentoverdracht met TLS-codering"
+   },
+   "11yao0f": {
+      "message": "Verwijder enkele of meerdere pagina's uit je document."
+   },
+   "11yao16": {
+      "message": "Extraheer specifieke pagina's die als afzonderlijke documenten worden opgeslagen."
+   },
+   "11yao2j": {
+      "message": "Plaats een elektronische handtekening in een pdf en vraag anderen om een handtekening."
+   },
+   "11yao3e": {
+      "message": "Voeg een wachtwoord toe om je pdf te beveiligen."
+   },
+   "11yao41": {
+      "message": "Verwijder een wachtwoord van een versleutelde pdf."
+   },
+   "11yao4u": {
+      "message": "Converteer Word-, PowerPoint-, Excel- en afbeeldingsbestanden van en naar pdf."
+   },
+   "11yao7p": {
+      "message": "Bekijk, bewerk, annoteer en organiseer pdf's."
+   },
+   "11yao8n": {
+      "message": "Voeg paginanummers aan je pdf toe."
+   },
+   "120e7u5": {
+      "message": "of sleep een bestand hier naartoe"
+   },
+   "12bijem": {
+      "message": "Samenvatten met AI"
+   },
+   "12bikcl": {
+      "message": "Bestand selecteren"
+   },
+   "12bikhi": {
+      "message": "Bestand selecteren"
+   },
+   "12bikpq": {
+      "message": "Of begin met een tool"
+   },
+   "12bikry": {
+      "message": "AI pdf-samenvatter"
+   },
+   "12bikv2": {
+      "message": "Splits je pdf op in meerdere documenten."
+   },
+   "12bikx8": {
+      "message": "Samenvoegen"
+   },
+   "12bikzn": {
+      "message": "Comprimeren"
+   },
+   "12bil0r": {
+      "message": "Converteren"
+   },
+   "12bil27": {
+      "message": "Pdf naar afbeelding"
+   },
+   "12bil4a": {
+      "message": "Tekst bewerken"
+   },
+   "12bil5v": {
+      "message": "Pdf naar Word"
+   },
+   "12bil78": {
+      "message": "Ondertekenen"
+   },
+   "12bil7z": {
+      "message": "Meer tools"
+   },
+   "12bil9j": {
+      "message": "Toon tools in Google-zoekresultaten"
+   },
+   "12bila5": {
+      "message": "Als je in Google naar een pdf-tool zoekt, kun je jouw document met het zoekresultatenscherm verwerken."
+   },
+   "12bilas": {
+      "message": "Toon app-aanbevelingen"
+   },
+   "12bilbj": {
+      "message": "Toon tools in de pdf-viewer van Chrome"
+   },
+   "12bilbl": {
+      "message": "Opsplitsen"
+   },
+   "12bilbu": {
+      "message": "Als je een pdf in de pdf-viewer van Chrome opent, heb je binnen de viewer toegang tot de tools van Smallpdf."
+   },
+   "12bilcf": {
+      "message": "Pagina's verwijderen"
+   },
+   "12bilco": {
+      "message": "Chrome-instellingen"
+   },
+   "12bilcy": {
+      "message": "Smallpdf-website"
+   },
+   "12bildu": {
+      "message": "Draaien"
+   },
+   "12bilee": {
+      "message": "Ontgrendelen"
+   },
+   "12bilfg": {
+      "message": "Beschermen"
+   },
+   "12bilfo": {
+      "message": "Vat je pdf samen of chat ermee met behulp van AI."
+   },
+   "12bilfz": {
+      "message": "Pdf naar Excel"
+   },
+   "12bilhn": {
+      "message": "Pdf naar PowerPoint"
+   },
+   "12bili5": {
+      "message": "Schakel aanbevelingen uit voor aanvullende apps die je in Google en andere platformen kunt installeren."
+   },
+   "12bilic": {
+      "message": "Snijd je documenten bij met onze tool voor pdf bijsnijden."
+   },
+   "12biliw": {
+      "message": "Chrome Web Store"
+   },
+   "12bilj8": {
+      "message": "Pagina's nummeren"
+   },
+   "12bilk3": {
+      "message": "Pdf lezer"
+   },
+   "12bilm7": {
+      "message": "Uploaden ..."
+   },
+   "12bilm8": {
+      "message": "Verwijder gevoelige informatie uit je pdf."
+   },
+   "12bilnj": {
+      "message": "Dit kan enkele seconden duren."
+   },
+   "12bilod": {
+      "message": "Annuleren"
+   },
+   "12bilqr": {
+      "message": "Chat met en vraag alles aan je pdf."
+   },
+   "12biltj": {
+      "message": "Chrome-extensie"
+   },
+   "12bilug": {
+      "message": "Kies een tool"
+   },
+   "12biluz": {
+      "message": "Doorgaan"
+   },
+   "12bilvm": {
+      "message": "Opnieuw beginnen"
+   },
+   "12bim4n": {
+      "message": "Gebruik pdf-tools in \u003Cb>Google Docs\u003C/b> en \u003Cb>Gmail\u003C/b> met de \u003Cb>Smallpdf Workspace-app\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Haal de gratis app"
+   },
+   "12bimem": {
+      "message": "Converteren, samenvoegen en meer vanuit \u003Cb>Google Docs\u003C/b> en \u003Cb>Gmail\u003C/b> met de \u003Cb>Smallpdf Workspace-app\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf - comprimeren, ondertekenen & samenvoegen"
+   },
+   "12bk4lc": {
+      "message": "Pdf bijsnijden"
+   },
+   "12bk4mb": {
+      "message": "Pdf redigeren"
+   },
+   "12bk4my": {
+      "message": "AI pdf-samenvatter"
+   },
+   "12bk4n8": {
+      "message": "Chat met pdf"
+   },
+   "12bk4nl": {
+      "message": "Pdf vertalen"
+   },
+   "12ca4j0": {
+      "message": "Maak je PDF onbewerkbaar"
+   },
+   "12ca7vl": {
+      "message": "Powered by sign.com & Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Wil je meer uit Smallpdf halen?"
+   },
+   "12ctd58": {
+      "message": "Geef toegang tot bestands-URLs om onze pdf-tools te gebruiken wanneer je je pdfs in Chrome bekijkt."
+   },
+   "12ctd60": {
+      "message": "Open Instellingen"
+   },
+   "12ctd7g": {
+      "message": "Schakel dit ook in voor pdfs die op je computer zijn opgeslagen."
+   },
+   "12ctd81": {
+      "message": "Inschakelen"
+   },
+   "12ctd8y": {
+      "message": "Uitschakelen"
+   },
+   "action_app_website": {
+      "message": "Website {app_name}"
+   },
+   "action_browser_settings": {
+      "message": "Instellingen {browser_name}"
+   },
+   "action_chrome_web_store": {
+      "message": "Webwinkel {browser_name}"
+   },
+   "action_convert_to": {
+      "message": "Omzetten naar {file_type}"
+   },
+   "appDesc": {
+      "message": "Eenvoudige pdf-tools voor online comprimeren, converteren, samenvoegen, splitsen, e-ondertekenen, bewerken en chatten."
+   },
+   "appName": {
+      "message": "Smallpdf — Pdf bewerken, converteren, comprimeren en AI-samenvatting"
+   },
+   "cancel": {
+      "message": "Annuleren"
+   },
+   "compress": {
+      "message": "Comprimeren"
+   },
+   "converter": {
+      "message": "Converteren"
+   },
+   "delete": {
+      "message": "Pagina's verwijderen"
+   },
+   "download": {
+      "message": "Downloaden"
+   },
+   "downloadCta": {
+      "message": "Downloaden"
+   },
+   "edit": {
+      "message": "Bewerken"
+   },
+   "error_try_later": {
+      "message": "O jee! Er is iets fout gegaan"
+   },
+   "excel": {
+      "message": "Excel naar PDF"
+   },
+   "extract": {
+      "message": "PDF naar JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Afbeelding"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Afbeeldingen"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF's"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "jpg (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG naar PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} en {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} en {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} of {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} of {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Samenvoegen"
+   },
+   "noInternetConnection": {
+      "message": "Geen internetverbinding"
+   },
+   "okay": {
+      "message": "OK"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}-extensie / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Geef {app_name} toegang tot je lokale bestands-URL's om {file_types} te kunnen openen in {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Schakel de {app_name}-extensie voor lokale bestanden in"
+   },
+   "options_setting_status_disabled": {
+      "message": "Uitgeschakeld"
+   },
+   "pdf_to_excel": {
+      "message": "PDF naar Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF naar PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF naar Word"
+   },
+   "please_try_again": {
+      "message": "Probeer het nogmaals."
+   },
+   "ppt": {
+      "message": "PPT naar PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Sorry, maar er is een probleem opgetreden tijdens het verwerken van je bestand"
+   },
+   "processingFailedTitle": {
+      "message": "Het verwerken is mislukt"
+   },
+   "protect": {
+      "message": "Beschermen"
+   },
+   "rotate": {
+      "message": "Draaien"
+   },
+   "search": {
+      "message": "Zoeken"
+   },
+   "serp_hide_button": {
+      "message": "Niet meer weergeven"
+   },
+   "serp_powered_by": {
+      "message": "Powered by Smallpdf"
+   },
+   "sign": {
+      "message": "Ondertekenen"
+   },
+   "split": {
+      "message": "Splitsen"
+   },
+   "tools": {
+      "message": "Hulpprogramma's"
+   },
+   "try_again": {
+      "message": "Nog een keer proberen"
+   },
+   "uh_something_wrong": {
+      "message": "O jee! Er is iets fout gegaan"
+   },
+   "unlock": {
+      "message": "Vrijgeven"
+   },
+   "uploadFailed": {
+      "message": "Het uploaden is mislukt"
+   },
+   "uploading": {
+      "message": "Uploaden ..."
+   },
+   "word": {
+      "message": "Word naar PDF"
+   }
+}

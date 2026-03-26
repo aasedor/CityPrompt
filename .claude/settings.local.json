@@ -78,7 +78,8 @@
       "Bash(npx --yes tsx -e:*)",
       "Bash(npx vite build:*)",
       "WebFetch(domain:render.com)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }

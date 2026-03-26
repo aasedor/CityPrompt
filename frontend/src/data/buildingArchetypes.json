@@ -169,6 +169,126 @@
   ],
   "archetypes": [
     {
+      "id": "collegiate_gothic_education",
+      "shadeId": "#5B4A3F",
+      "title": "Collegiate Gothic",
+      "aestheticCategory": "collegiate_gothic",
+      "description": "Gothic Revival educational building inspired by the medieval colleges of Oxford and Cambridge, featuring pointed arches, stone tracery, towers, and quadrangle layouts",
+      "buildingSubcategory": "Educational / Institutional",
+      "generationTags": [
+        "collegiate_gothic",
+        "educational",
+        "institutional",
+        "university",
+        "gothic_revival"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#5B4A3F"
+      },
+      "styleProfile": {
+        "era": "Gothic Revival (1850s-1930s)",
+        "influences": ["English Gothic", "Oxford & Cambridge colleges", "Medieval ecclesiastical"],
+        "keywords": ["pointed arches", "stone tracery", "towers", "quadrangles", "battlements"]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "cut limestone ashlar in warm honey or pale cream tones",
+        "secondaryMaterial": "carved stone tracery, mullioned windows with leaded glass",
+        "accentMaterial": "carved heraldic shields, stone pinnacles, iron hardware",
+        "groundFloor": "pointed arch entrance with carved stone surrounds, heavy oak doors with iron studs",
+        "upperFloors": "tall mullioned and transomed windows with Gothic tracery, carved string courses between floors",
+        "cornice": "crenellated parapet with pinnacles or shaped gables depending on sub-style",
+        "colorScheme": "warm limestone body, dark slate or polychrome slate roof, dark oak doors, lead-grey window frames"
+      },
+      "roofDetail": {
+        "form": "steeply pitched with prominent tower elements and crenellated or pinnacled parapets",
+        "material": "dark slate or polychrome patterned slate",
+        "features": "towers with octagonal lanterns, chimney stacks, gargoyle downspouts, iron ridge cresting",
+        "aerialAppearance": "dark slate with prominent stone tower, parapets, and pinnacles creating a medieval silhouette"
+      },
+      "thumbnailUrl": "/archetypes/buildings/collegiate_gothic_education/hero.png",
+      "variants": [
+        {
+          "id": "collegiate_gothic_tudor",
+          "label": "Tudor Gothic",
+          "thumbnailUrl": "/archetypes/buildings/collegiate_gothic_education/variant_0.png",
+          "description": "Honey limestone quadrangle with four-centred Tudor arches, crenellated battlements, oriel windows, and clustered chimney stacks. Inspired by Magdalen College Oxford.",
+          "facadeDetail": {
+            "primaryMaterial": "honey-colored limestone ashlar, Cotswold stone",
+            "secondaryMaterial": "carved limestone door surrounds with Tudor rose motifs",
+            "groundFloor": "four-centred Tudor arch gatehouse entrance with heraldic shields",
+            "colorScheme": "warm honey limestone, dark slate roof, dark oak doors"
+          },
+          "roofDetail": {
+            "form": "steeply pitched gable behind crenellated parapet",
+            "material": "dark Welsh slate with clustered octagonal chimney stacks"
+          },
+          "shadeId": null,
+          "palette": {"primary": "#C4A55A"}
+        },
+        {
+          "id": "collegiate_gothic_jacobethan",
+          "label": "Jacobethan",
+          "thumbnailUrl": "/archetypes/buildings/collegiate_gothic_education/variant_1.png",
+          "description": "Symmetrical red brick facade with shaped Dutch gables, strapwork decoration, classical entrance porch, and ornate chimney stacks. Inspired by Royal Holloway College.",
+          "facadeDetail": {
+            "primaryMaterial": "rich warm red brick in Flemish bond",
+            "secondaryMaterial": "pale Portland stone window surrounds and strapwork panels",
+            "groundFloor": "central entrance porch with classical columns and round arch",
+            "colorScheme": "rich red brick, pale cream stone dressings, dark slate roof"
+          },
+          "roofDetail": {
+            "form": "steeply pitched with multiple shaped Dutch gables",
+            "material": "dark slate tiles with ornamental chimney stacks"
+          },
+          "shadeId": null,
+          "palette": {"primary": "#8B3A3A"}
+        },
+        {
+          "id": "collegiate_gothic_perpendicular",
+          "label": "Perpendicular Revival",
+          "thumbnailUrl": "/archetypes/buildings/collegiate_gothic_education/variant_2.png",
+          "description": "Soaring pale limestone with rectilinear panel tracery, enormous windows, blind paneling, pinnacles, and a tall tower with octagonal lantern. Inspired by King's College Chapel Cambridge.",
+          "facadeDetail": {
+            "primaryMaterial": "pale cream limestone ashlar, Bath stone",
+            "secondaryMaterial": "slender stone mullions forming rectilinear panel tracery grid",
+            "groundFloor": "tall four-centred arch entrance with blind panel tracery surrounds",
+            "colorScheme": "pale cream limestone throughout, dark leaded glass, grey lead roof"
+          },
+          "roofDetail": {
+            "form": "relatively flat, hidden behind tall crenellated parapet with pinnacles",
+            "material": "lead sheeting or dark slate"
+          },
+          "shadeId": null,
+          "palette": {"primary": "#E8DCC8"}
+        },
+        {
+          "id": "collegiate_gothic_ruskinian",
+          "label": "Ruskinian Gothic",
+          "thumbnailUrl": "/archetypes/buildings/collegiate_gothic_education/variant_3.png",
+          "description": "Bold polychrome brickwork with horizontal bands of red, cream, and blue-black brick, pointed lancet arches, naturalistic carved capitals, and polychrome slate roof. Inspired by Keble College Oxford.",
+          "facadeDetail": {
+            "primaryMaterial": "red brick with horizontal bands of cream and blue-black brick",
+            "secondaryMaterial": "carved sandstone window surrounds with naturalistic leaf capitals",
+            "groundFloor": "pointed lancet arch entrance with alternating red and cream voussoirs",
+            "colorScheme": "red brick with cream, blue-black banding, sandstone details, polychrome slate"
+          },
+          "roofDetail": {
+            "form": "steep pitch with cross gables and round corner turrets",
+            "material": "polychrome slate in patterned layout — red, grey, and purple slates"
+          },
+          "shadeId": null,
+          "palette": {"primary": "#A0522D"}
+        }
+      ],
+      "minFloors": 2,
+      "maxFloors": 5,
+      "suggestedAreaSqm": 5000,
+      "developmentType": "institutional"
+    },
+    {
       "id": "brownstone_rowhouse_frontage",
       "shadeId": "#8a3028",
       "title": "Brownstone Rowhouse Frontage",

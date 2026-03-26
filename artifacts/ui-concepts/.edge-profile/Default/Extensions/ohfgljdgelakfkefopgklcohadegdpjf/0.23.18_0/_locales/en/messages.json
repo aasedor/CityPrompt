@@ -1,0 +1,803 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Log in to Smallpdf"
+   },
+   "114rvnf": {
+      "message": "OR"
+   },
+   "114rvpe": {
+      "message": "Email"
+   },
+   "114rvqv": {
+      "message": "Password"
+   },
+   "114rvrt": {
+      "message": "Forgot your password?"
+   },
+   "114rvti": {
+      "message": "Log in"
+   },
+   "114rvvm": {
+      "message": "Don’t have an account yet?"
+   },
+   "114rvyk": {
+      "message": "Create account"
+   },
+   "114rw18": {
+      "message": "Account"
+   },
+   "114rw2d": {
+      "message": "Try Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Account settings"
+   },
+   "114rw4o": {
+      "message": "Help"
+   },
+   "114rw5s": {
+      "message": "Download apps"
+   },
+   "114rw6m": {
+      "message": "Log out"
+   },
+   "114rw86": {
+      "message": "Wrong email or password."
+   },
+   "114rwft": {
+      "message": "We can’t process this file. Please try again."
+   },
+   "114rwo7": {
+      "message": "Your file is password protected"
+   },
+   "114rwpn": {
+      "message": "Please remove the password and upload the file again."
+   },
+   "114rwrd": {
+      "message": "Uh-oh! This file is corrupt"
+   },
+   "114rwsa": {
+      "message": "Please try again with another file."
+   },
+   "114rwye": {
+      "message": "Sure you want to go?"
+   },
+   "114rwzh": {
+      "message": "Your file will be deleted. Remember to download it before you leave!"
+   },
+   "114rx0l": {
+      "message": "Go"
+   },
+   "114rx4t": {
+      "message": "Stay"
+   },
+   "114rx78": {
+      "message": "Rename your file"
+   },
+   "114rx9b": {
+      "message": "Rename"
+   },
+   "114rxav": {
+      "message": "Drop file here to get started"
+   },
+   "114rxc0": {
+      "message": "Add File"
+   },
+   "114rxcw": {
+      "message": "Drop your file here"
+   },
+   "114rxhe": {
+      "message": "Your file"
+   },
+   "114rxii": {
+      "message": "Your file failed to upload"
+   },
+   "114rxjj": {
+      "message": "This file type is not supported"
+   },
+   "114rxk1": {
+      "message": "Please try again with a PDF."
+   },
+   "114rxp1": {
+      "message": "Free daily tasks left"
+   },
+   "114rxqs": {
+      "message": "Or start with a tool"
+   },
+   "114rxs1": {
+      "message": "Open a tool in the web app"
+   },
+   "114rxzd": {
+      "message": "Become a PDF ninja!"
+   },
+   "114ry1m": {
+      "message": "Go Pro—for free!"
+   },
+   "114ry2l": {
+      "message": "Upgrade to Pro and enjoy unlimited access to your favorite tools and more!"
+   },
+   "114ry41": {
+      "message": "Show PDFs who’s boss! Unlock a world of nifty PDF tools with our 7-day free trial."
+   },
+   "114ry4i": {
+      "message": "What do you get?"
+   },
+   "114ry60": {
+      "message": "Pro tools and features"
+   },
+   "114ry6y": {
+      "message": "Exclusive Pro tools and features"
+   },
+   "114ry85": {
+      "message": "Strong compression, PDF to Office conversions, OCR, and more."
+   },
+   "114ry8l": {
+      "message": "Premium access to Pro PDF tools and features."
+   },
+   "114ry9k": {
+      "message": "Zero limitations"
+   },
+   "114ryam": {
+      "message": "Unlimited files and tasks per day. Noice!"
+   },
+   "114ryc1": {
+      "message": "Work on-the-go"
+   },
+   "114rycg": {
+      "message": "Work anytime, anywhere"
+   },
+   "114ryd0": {
+      "message": "Premium access to our web platform, desktop, and mobile apps."
+   },
+   "114rydg": {
+      "message": "Unlock all platforms and apps—from mobile, to desktop, and web!"
+   },
+   "114rydy": {
+      "message": "Upgrade Your Account"
+   },
+   "114ryfe": {
+      "message": "Log in"
+   },
+   "114ryfx": {
+      "message": "Get {{trial_days}} Days Free"
+   },
+   "114rylw": {
+      "message": "Almost done...\\nWhy not grab a coffee, pet the pooch, or have a stretch? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Back to start"
+   },
+   "114ryvl": {
+      "message": "Back to tools"
+   },
+   "114rz0g": {
+      "message": "Choose compression type"
+   },
+   "114rz1n": {
+      "message": "Basic"
+   },
+   "114rz2h": {
+      "message": "Medium file size, high quality."
+   },
+   "114rz3e": {
+      "message": "Strong"
+   },
+   "114rz44": {
+      "message": "Smallest file size, good quality."
+   },
+   "114rz68": {
+      "message": "Choose conversion type"
+   },
+   "114rz7c": {
+      "message": "Options"
+   },
+   "114rz83": {
+      "message": "With OCR"
+   },
+   "114rz8u": {
+      "message": "Scanned pages will be converted to an editable Word document. Formatting may change."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Back to convert"
+   },
+   "114rzmr": {
+      "message": "Scanned pages will be converted to an editable Excel document. Formatting may change."
+   },
+   "114s0il": {
+      "message": "Download my file automatically"
+   },
+   "114s0jf": {
+      "message": "We’ll download your file automatically once the process is done."
+   },
+   "114s1u3": {
+      "message": "Convert your PDF to a PowerPoint file."
+   },
+   "114tq39": {
+      "message": "Convert entire pages"
+   },
+   "114tq47": {
+      "message": "Extract single images"
+   },
+   "114tq8x": {
+      "message": "PDF to PowerPoint"
+   },
+   "1167iyh": {
+      "message": "Too many failed attempts. Please check login details and try again later."
+   },
+   "11wp338": {
+      "message": "Edit PDF"
+   },
+   "11wp39c": {
+      "message": "PDF to Word"
+   },
+   "11wp3g5": {
+      "message": "Compress PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "Merge PDF"
+   },
+   "11wp3jn": {
+      "message": "PDF Converter"
+   },
+   "11wp3k6": {
+      "message": "More PDF Tools"
+   },
+   "11wp3o4": {
+      "message": "Smallpdf Tools"
+   },
+   "11yamxr": {
+      "message": "Convert PDF to Word"
+   },
+   "11yamz6": {
+      "message": "Convert PDFs to editable Word documents."
+   },
+   "11yamzl": {
+      "message": "Convert PDF to PPT"
+   },
+   "11yan07": {
+      "message": "Convert PDF to editable PowerPoint presentations."
+   },
+   "11yan0q": {
+      "message": "Convert PDF to Excel"
+   },
+   "11yan14": {
+      "message": "Convert PDF to editable Excel spreadsheets."
+   },
+   "11yan1f": {
+      "message": "Convert PDF to JPG"
+   },
+   "11yan22": {
+      "message": "Extract images or save entire pages from PDF as JPG images."
+   },
+   "11yan2h": {
+      "message": "Compress PDF"
+   },
+   "11yan2r": {
+      "message": "Reduce the size of your PDF, image, or Microsoft Office documents."
+   },
+   "11yan3c": {
+      "message": "Edit PDF"
+   },
+   "11yan3p": {
+      "message": "Edit text, add annotations, shapes, and images, and organize PDFs."
+   },
+   "11yan49": {
+      "message": "Merge PDF"
+   },
+   "11yan4l": {
+      "message": "Combine multiple documents into one PDF."
+   },
+   "11yan4w": {
+      "message": "Rotate PDF Pages"
+   },
+   "11yan5a": {
+      "message": "Flip single or multiple pages in your PDF."
+   },
+   "11yan62": {
+      "message": "Select file"
+   },
+   "11yany0": {
+      "message": "Secure document transfer with TLS encryption"
+   },
+   "11yanzx": {
+      "message": "Delete PDF"
+   },
+   "11yao0f": {
+      "message": "Delete single or multiple pages from your document."
+   },
+   "11yao0t": {
+      "message": "Extract PDF"
+   },
+   "11yao16": {
+      "message": "Extract specific pages to save as separate documents."
+   },
+   "11yao1k": {
+      "message": "Split PDF"
+   },
+   "11yao27": {
+      "message": "eSign PDF"
+   },
+   "11yao2j": {
+      "message": "E-sign any PDF and request signatures from others."
+   },
+   "11yao2x": {
+      "message": "Protect PDF"
+   },
+   "11yao3e": {
+      "message": "Add a password to secure your PDF."
+   },
+   "11yao3p": {
+      "message": "Unlock PDF"
+   },
+   "11yao41": {
+      "message": "Remove a password from an encrypted PDF."
+   },
+   "11yao4h": {
+      "message": "PDF Converter"
+   },
+   "11yao4u": {
+      "message": "Convert Word, PowerPoint, Excel, and image files to and from PDF."
+   },
+   "11yao55": {
+      "message": "Convert PPT to PDF"
+   },
+   "11yao5h": {
+      "message": "Save PowerPoint presentations as PDF."
+   },
+   "11yao5t": {
+      "message": "Convert JPG to PDF"
+   },
+   "11yao64": {
+      "message": "Save JPG, PNG, GIF, BMP, TIFF, and other images as PDF."
+   },
+   "11yao6j": {
+      "message": "Convert Excel to PDF"
+   },
+   "11yao6t": {
+      "message": "Save Excel spreadsheets as PDFs."
+   },
+   "11yao7a": {
+      "message": "PDF Reader"
+   },
+   "11yao7p": {
+      "message": "View, edit, annotate, and organize PDFs."
+   },
+   "11yao8b": {
+      "message": "Number Pages"
+   },
+   "11yao8n": {
+      "message": "Add page numbers to your PDF."
+   },
+   "11yao8z": {
+      "message": "Convert Word to PDF"
+   },
+   "11yao99": {
+      "message": "Save Word documents as PDFs."
+   },
+   "120e7u5": {
+      "message": "or drop a file here"
+   },
+   "12628pz": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bijem": {
+      "message": "Summarize with AI"
+   },
+   "12bikcl": {
+      "message": "Select file"
+   },
+   "12bikhi": {
+      "message": "Select file"
+   },
+   "12bikpq": {
+      "message": "Or start with a tool"
+   },
+   "12bikry": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bikv2": {
+      "message": "Separate your PDF into multiple documents."
+   },
+   "12bikx8": {
+      "message": "Merge"
+   },
+   "12bikzn": {
+      "message": "Compress"
+   },
+   "12bil0r": {
+      "message": "Convert"
+   },
+   "12bil27": {
+      "message": "PDF to Image"
+   },
+   "12bil4a": {
+      "message": "Edit Text"
+   },
+   "12bil5v": {
+      "message": "PDF to Word"
+   },
+   "12bil78": {
+      "message": "Sign"
+   },
+   "12bil7z": {
+      "message": "More Tools"
+   },
+   "12bil9j": {
+      "message": "Show tools in Google search results"
+   },
+   "12bila5": {
+      "message": "When you search Google for a PDF tool, you’ll be able to process your document within the search result area."
+   },
+   "12bilas": {
+      "message": "Show app recommendations"
+   },
+   "12bilbj": {
+      "message": "Show tools in Chrome’s PDF viewer"
+   },
+   "12bilbl": {
+      "message": "Split"
+   },
+   "12bilbu": {
+      "message": "When you open a PDF in Chrome’s PDF viewer, you’ll have access to Smallpdf’s tools within the viewer."
+   },
+   "12bilcf": {
+      "message": "Delete Pages"
+   },
+   "12bilco": {
+      "message": "Chrome Settings"
+   },
+   "12bilcy": {
+      "message": "Smallpdf Website"
+   },
+   "12bildu": {
+      "message": "Rotate"
+   },
+   "12bilee": {
+      "message": "Unlock"
+   },
+   "12bilfg": {
+      "message": "Protect"
+   },
+   "12bilfo": {
+      "message": "Summarize or chat with your PDF using AI."
+   },
+   "12bilfz": {
+      "message": "PDF to Excel"
+   },
+   "12bilhn": {
+      "message": "PDF to PowerPoint"
+   },
+   "12bili5": {
+      "message": "Turn off recommendations for additional apps you can install in Google and other platforms."
+   },
+   "12bilic": {
+      "message": "Crop and trim your documents with our PDF cropper."
+   },
+   "12biliw": {
+      "message": "Chrome Web Store"
+   },
+   "12bilj8": {
+      "message": "Number Pages"
+   },
+   "12bilk3": {
+      "message": "PDF Reader"
+   },
+   "12bilm7": {
+      "message": "Uploading..."
+   },
+   "12bilm8": {
+      "message": "Remove sensitive information from your PDF."
+   },
+   "12bilnj": {
+      "message": "This might take a few seconds."
+   },
+   "12bilod": {
+      "message": "Cancel"
+   },
+   "12bilqr": {
+      "message": "Chat with and ask your PDF anything."
+   },
+   "12biltj": {
+      "message": "Chrome Extension"
+   },
+   "12bilug": {
+      "message": "Pick a tool"
+   },
+   "12biluz": {
+      "message": "Continue"
+   },
+   "12bilvm": {
+      "message": "Start over"
+   },
+   "12bim4n": {
+      "message": "Get PDF tools in \u003Cb>Google Docs\u003C/b> and \u003Cb>Gmail\u003C/b> with the \u003Cb>Smallpdf Workspace App\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Get free app"
+   },
+   "12bimem": {
+      "message": "Convert, merge, and more from \u003Cb>Google Docs\u003C/b> and \u003Cb>Gmail\u003C/b> with the \u003Cb>Smallpdf Workspace App\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf—Compress, sign, & merge"
+   },
+   "12bk4lc": {
+      "message": "Crop PDF"
+   },
+   "12bk4mb": {
+      "message": "Redact PDF"
+   },
+   "12bk4my": {
+      "message": "AI PDF Summarizer"
+   },
+   "12bk4n8": {
+      "message": "Chat with PDF"
+   },
+   "12bk4nl": {
+      "message": "Translate PDF"
+   },
+   "12ca4j0": {
+      "message": "Make your PDF uneditable"
+   },
+   "12ca7vl": {
+      "message": "Powered by sign.com & Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Want to get more out of Smallpdf?"
+   },
+   "12ctd58": {
+      "message": "Allow access to file URLs to use our PDF tools when you view your PDFs in Chrome."
+   },
+   "12ctd60": {
+      "message": "Open Settings"
+   },
+   "12ctd7g": {
+      "message": "Enable this also for PDFs saved on your computer."
+   },
+   "12ctd81": {
+      "message": "Enable"
+   },
+   "12ctd8y": {
+      "message": "Disable"
+   },
+   "action_app_website": {
+      "message": "{app_name} Website"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name} Settings"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name} Web Store"
+   },
+   "action_convert_to": {
+      "message": "Convert to {file_type}"
+   },
+   "appDesc": {
+      "message": "Easy-to-use PDF tools to compress, convert, merge, chat to, split, e-sign, and edit PDF files in your browser."
+   },
+   "appName": {
+      "message": "Smallpdf—Edit, Convert, Compress, & AI Summarize PDF"
+   },
+   "cancel": {
+      "message": "Cancel"
+   },
+   "compress": {
+      "message": "Compress"
+   },
+   "converter": {
+      "message": "Convert"
+   },
+   "delete": {
+      "message": "Delete Pages"
+   },
+   "download": {
+      "message": "Download"
+   },
+   "downloadCta": {
+      "message": "Download it now"
+   },
+   "edit": {
+      "message": "Edit"
+   },
+   "error_try_later": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "excel": {
+      "message": "Excel to PDF"
+   },
+   "extract": {
+      "message": "PDF to JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Image"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Images"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDFs"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG to PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0}, and {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} and {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0}, or {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} or {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Merge"
+   },
+   "noInternetConnection": {
+      "message": "No internet connection"
+   },
+   "okay": {
+      "message": "Okay"
+   },
+   "options_extension_version": {
+      "message": "{browser_name} Extension / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Grant {app_name} access to your local file URLs to enable {file_types} to be opened in {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Enable the {app_name} extension on local files"
+   },
+   "options_setting_status_disabled": {
+      "message": "Disabled"
+   },
+   "pdf_to_excel": {
+      "message": "PDF to Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF to PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF to Word"
+   },
+   "please_try_again": {
+      "message": "Please try again."
+   },
+   "ppt": {
+      "message": "PPT to PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Sorry, there was a problem processing your file"
+   },
+   "processingFailedTitle": {
+      "message": "Processing failed"
+   },
+   "protect": {
+      "message": "Protect"
+   },
+   "rotate": {
+      "message": "Rotate"
+   },
+   "search": {
+      "message": "Search"
+   },
+   "serp_choose_file": {
+      "message": "Choose file"
+   },
+   "serp_drag_release": {
+      "message": "Drop here!"
+   },
+   "serp_drop_excel": {
+      "message": "Drop Excel File here"
+   },
+   "serp_drop_file": {
+      "message": "Drop File here"
+   },
+   "serp_drop_image": {
+      "message": "Drop Image here"
+   },
+   "serp_drop_pdf": {
+      "message": "Drop PDF here"
+   },
+   "serp_drop_ppt": {
+      "message": "Drop PPT File here"
+   },
+   "serp_drop_word": {
+      "message": "Drop Word File here"
+   },
+   "serp_drop_zip": {
+      "message": "Drop ZIP File here"
+   },
+   "serp_hide_button": {
+      "message": "Don’t show this again"
+   },
+   "serp_hide_description": {
+      "message": "You won't see the Smallpdf drop area in your Google search results any more."
+   },
+   "serp_hide_description_restore": {
+      "message": "You can turn it back on any time in the extension settings page."
+   },
+   "serp_hide_title": {
+      "message": "Hidden!"
+   },
+   "serp_powered_by": {
+      "message": "Powered by Smallpdf"
+   },
+   "serp_uploading": {
+      "message": "Uploading..."
+   },
+   "sign": {
+      "message": "Sign"
+   },
+   "split": {
+      "message": "Split"
+   },
+   "tools": {
+      "message": "Tools"
+   },
+   "try_again": {
+      "message": "Try Again"
+   },
+   "uh_something_wrong": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "unlock": {
+      "message": "Unlock"
+   },
+   "uploadFailed": {
+      "message": "Sorry your upload failed"
+   },
+   "uploading": {
+      "message": "Uploading..."
+   },
+   "word": {
+      "message": "Word to PDF"
+   }
+}

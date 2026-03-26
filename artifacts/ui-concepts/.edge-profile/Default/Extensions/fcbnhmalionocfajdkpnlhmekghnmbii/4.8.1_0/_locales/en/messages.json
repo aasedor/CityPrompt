@@ -1,0 +1,234 @@
+{
+   "allowAccessToFileURLsMessage": {
+      "description": "Request for allowing access to file URLs",
+      "message": "Please allow access to file URLs in the following screen and then reload current page"
+   },
+   "appDesc": {
+      "description": "The description of the application, displayed in the web store.",
+      "message": "Translate text on PDF/HTML/TXT in two clicks, even for local docs. Now with ChatGPT support."
+   },
+   "appName": {
+      "description": "The title of the application, displayed in the web store.",
+      "message": "Instant Multilingual PDF/HTML/TXT Translator"
+   },
+   "author": {
+      "description": "The author of the application, displayed in the web store.",
+      "message": "Bohdan Stasiuk"
+   },
+   "cmd_description": {
+      "description": "Command description",
+      "message": "Translate selected text"
+   },
+   "contactDeveloper": {
+      "description": "",
+      "message": "Visit support hub"
+   },
+   "cspPronounceDesc": {
+      "description": "Description to inform users about enabling pronunciation on pages protected by Content Security Policy, with examples of compatible websites.",
+      "message": "Enables pronunciation on Content Security Policy (CSP) protected pages, such as github.com, apple.com, binance.com, etc., where this feature is possible."
+   },
+   "cspPronounceName": {
+      "description": "Name of the setting for enabling pronunciation on CSP protected pages.",
+      "message": "CSP Page Pronunciation"
+   },
+   "defineButton": {
+      "description": "Button text for the define action in popup window",
+      "message": "Define"
+   },
+   "detectLanguageName": {
+      "description": "",
+      "message": "Detect language"
+   },
+   "errorMessage": {
+      "description": "Generic error message displayed when something goes wrong",
+      "message": "An error has occurred."
+   },
+   "fallbackFileAccessRequiredHeading": {
+      "description": "Heading shown when file access permission is needed for local files",
+      "message": "File Access Required"
+   },
+   "fallbackFileAccessRequiredMessage": {
+      "description": "Message explaining how to enable file access permissions for local files",
+      "message": "\u003Cp>To translate text in local files, you need to grant permissions to this extension.\u003C/p>\u003Cp>Please enable \u003Cstrong>\"Allow access to file URLs\"\u003C/strong> on the \u003Ca href=\"#\" id=\"pht-open-extensions-link\">extension settings page\u003C/a>, then reload this file. For immediate translation, you can also use the right-click context menu or copy and paste text into this window.\u003C/p>"
+   },
+   "fallbackFileReloadHeading": {
+      "description": "Heading shown when content script is missing in a local file with proper permissions",
+      "message": "Extension Requires File Reload"
+   },
+   "fallbackFileReloadMessage": {
+      "description": "Message explaining how to reload a local file to enable extension features",
+      "message": "\u003Cp>The content script is not ready yet. This can happen after an update or if the file was opened before the extension was enabled.\u003C/p>\u003Cp>Please \u003Cstrong>reload this file\u003C/strong> to use all features. For immediate translation, you can also use the right-click context menu or copy and paste text into this window.\u003C/p>"
+   },
+   "fallbackPageReloadHeading": {
+      "description": "Heading shown when content script is missing on a web page",
+      "message": "Extension Requires Page Reload"
+   },
+   "fallbackPageReloadMessage": {
+      "description": "Message explaining how to reload a web page to enable extension features",
+      "message": "\u003Cp>The content script is not ready yet. This usually happens after installing or updating the extension.\u003C/p>\u003Cp>Please \u003Cstrong>reload this page\u003C/strong> to use all features. For immediate translation, you can also use the right-click context menu or copy and paste text into this window.\u003C/p>"
+   },
+   "fontFamilyName": {
+      "description": "",
+      "message": "Font family"
+   },
+   "fontSizeName": {
+      "description": "",
+      "message": "Font size"
+   },
+   "fromName": {
+      "description": "",
+      "message": "From"
+   },
+   "inaccessiblePageHeading": {
+      "description": "Heading shown when the extension cannot access the current page",
+      "message": "Page Inaccessible"
+   },
+   "inaccessiblePageMessage": {
+      "description": "Message for pages that are fundamentally non-injectable (Chrome store, internal pages) without reload suggestion",
+      "message": "The extension cannot access this page due to browser security restrictions. Please paste text into the field above or try the right-click context menu for instant definitions."
+   },
+   "loginToChatGPT": {
+      "description": "Link text prompting user to log into ChatGPT when authorization fails",
+      "message": "Login to ChatGPT"
+   },
+   "maxWidthName": {
+      "description": "",
+      "message": "Max. width"
+   },
+   "menuItemCopyName": {
+      "description": "",
+      "message": "Copy"
+   },
+   "menuItemTranslateName": {
+      "description": "",
+      "message": "Translate"
+   },
+   "noDefinitionFound": {
+      "description": "Message displayed when no definition is available and ChatGPT backup is disabled",
+      "message": "No definition found"
+   },
+   "noSelectionHeading": {
+      "description": "Heading for when no text is selected or selection is not accessible",
+      "message": "Selection Not Accessible"
+   },
+   "noSelectionMessagePopup": {
+      "description": "Message for the popup window when no selection is found. Includes reference to the input field.",
+      "message": "Could not retrieve a selection. If text is selected, the keyboard shortcut may be blocked on this page. Please paste the text into the input field above or try the right-click context menu."
+   },
+   "noSelectionMessageQtip": {
+      "description": "Message for qTip when no selection is found. Omits reference to popup input field.",
+      "message": "Could not retrieve a selection. If text is selected, the keyboard shortcut may be blocked on this page. You can also try the right-click context menu."
+   },
+   "notificationButtonAllow": {
+      "description": "Button text for allowing action in notification",
+      "message": "Allow"
+   },
+   "notificationButtonReload": {
+      "description": "Button text for reloading page in notification",
+      "message": "Reload"
+   },
+   "notificationGenericFailureMessage": {
+      "description": "Message for a generic, unexpected failure in a notification",
+      "message": "An unexpected error occurred. Please try again."
+   },
+   "nowrapDesc": {
+      "description": "Description of the option to remove line breaks in the selected text before translation",
+      "message": "Activate this option to remove line breaks in the text selected for translation, particularly enhancing the quality of translations for PDF files with columns or intricate layouts."
+   },
+   "nowrapName": {
+      "description": "Option name for removing line breaks in the text selected for translation",
+      "message": "Remove Line Breaks"
+   },
+   "openKeyboardShortcutsTitle": {
+      "description": "Title of the keyboard shortcuts link",
+      "message": "Keyboard Shortcuts for Extensions and Apps"
+   },
+   "optionsTitle": {
+      "description": "",
+      "message": "PHT Translator Options"
+   },
+   "pageInaccessibleMessage": {
+      "description": "Message when page cannot be accessed for translation",
+      "message": "This page is not accessible for translation"
+   },
+   "patreon": {
+      "description": "",
+      "message": "Support project on Patreon"
+   },
+   "popup": {
+      "description": "",
+      "message": "Popup"
+   },
+   "processing": {
+      "description": "Status message shown while the extension is processing a request",
+      "message": "processing..."
+   },
+   "qtipStyleClassName": {
+      "description": "",
+      "message": "Style"
+   },
+   "reloadPageMessage": {
+      "description": "Generic request to reload the page to activate the extension's content script.",
+      "message": "The extension isn't active yet. Please reload the page to enable all features."
+   },
+   "searchWebDesc": {
+      "description": "Description of the 'Search the web' functionality",
+      "message": "Adds a 'Search the web' link in the bottom right corner of the popup, allowing you to search the web with selected text using Google or Bing."
+   },
+   "searchWebName": {
+      "description": "Name of the link to search the web with selected text",
+      "message": "Search the web"
+   },
+   "selectionIconDesc": {
+      "description": "Description of the Selection Icon feature",
+      "message": "When enabled, a small icon will appear when you select text, allowing you to quickly translate it. (Note: Does not work on PDF files or protected pages like Chrome Web Store)"
+   },
+   "selectionIconName": {
+      "description": "Name of the setting to show an icon when text is selected",
+      "message": "Show Selection Icon"
+   },
+   "short_name": {
+      "description": "The short name of the application, displayed in the web store.",
+      "message": "PHT Translator"
+   },
+   "shortcut": {
+      "description": "Keyboard shortcut for translation on the fly",
+      "message": "Shortcut"
+   },
+   "shortcutDescription": {
+      "description": "Keyboard shortcut description for change",
+      "message": "You can change it on"
+   },
+   "support": {
+      "description": "",
+      "message": "Support"
+   },
+   "thinkingText": {
+      "description": "Status message shown while ChatGPT is processing a request",
+      "message": "ChatGPT is thinking..."
+   },
+   "toName": {
+      "description": "",
+      "message": "To"
+   },
+   "translateByName": {
+      "description": "",
+      "message": "Provider"
+   },
+   "translation": {
+      "description": "",
+      "message": "Translation"
+   },
+   "useCGBDesc": {
+      "description": "Description of the ChatGPT as backup option with accessibility info",
+      "message": "Allows you to use ChatGPT as a backup definition provider when the primary provider fails or can't find a definition. May not be accessible from all areas."
+   },
+   "useCGBName": {
+      "description": "Toggle to use ChatGPT as a backup translation provider",
+      "message": "ChatGPT as backup"
+   },
+   "writeReview": {
+      "description": "",
+      "message": "Write a review"
+   }
+}

@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "登入 Smallpdf"
+   },
+   "114rvnf": {
+      "message": "或"
+   },
+   "114rvpe": {
+      "message": "電子郵件"
+   },
+   "114rvqv": {
+      "message": "密碼"
+   },
+   "114rvrt": {
+      "message": "忘記您的密碼了嗎？"
+   },
+   "114rvti": {
+      "message": "登入"
+   },
+   "114rvvm": {
+      "message": "還沒有帳戶嗎？"
+   },
+   "114rvyk": {
+      "message": "建立帳戶"
+   },
+   "114rw18": {
+      "message": "帳戶"
+   },
+   "114rw2d": {
+      "message": "試試 Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "帳戶設定"
+   },
+   "114rw4o": {
+      "message": "說明"
+   },
+   "114rw5s": {
+      "message": "下載應用程式"
+   },
+   "114rw6m": {
+      "message": "登出"
+   },
+   "114rw86": {
+      "message": "電子郵件或密碼錯誤。"
+   },
+   "114rwft": {
+      "message": "我們無法處理此檔案。請再試一次。"
+   },
+   "114rwo7": {
+      "message": "您的檔案受密碼保護"
+   },
+   "114rwpn": {
+      "message": "請移除密碼並重新上傳檔案。"
+   },
+   "114rwrd": {
+      "message": "哎呀！此檔案已毀損"
+   },
+   "114rwsa": {
+      "message": "請使用其他檔案再試一次。"
+   },
+   "114rwye": {
+      "message": "您確定要返回主頁面嗎？"
+   },
+   "114rwzh": {
+      "message": "您的檔案將被刪除。在您離開前，請記得下載！"
+   },
+   "114rx0l": {
+      "message": "執行"
+   },
+   "114rx4t": {
+      "message": "維持不動"
+   },
+   "114rx78": {
+      "message": "重新命名您的檔案"
+   },
+   "114rx9b": {
+      "message": "重新命名"
+   },
+   "114rxav": {
+      "message": "將檔案拖放在此處以開始"
+   },
+   "114rxc0": {
+      "message": "新增檔案"
+   },
+   "114rxcw": {
+      "message": "將您的檔案拖放在此處"
+   },
+   "114rxhe": {
+      "message": "您的檔案"
+   },
+   "114rxii": {
+      "message": "您的檔案未能成功上傳"
+   },
+   "114rxjj": {
+      "message": "不支援此檔案類型"
+   },
+   "114rxk1": {
+      "message": "請使用 PDF 再試一次。"
+   },
+   "114rxp1": {
+      "message": "每日免費工作額度剩餘"
+   },
+   "114rxqs": {
+      "message": "或者以下列任一工具開始"
+   },
+   "114rxs1": {
+      "message": "在網頁版應用程式打開工具"
+   },
+   "114rxzd": {
+      "message": "成為 PDF 忍者！"
+   },
+   "114ry1m": {
+      "message": "免費升級至 Pro！"
+   },
+   "114ry2l": {
+      "message": "升級至 Pro 並享受您最喜愛工具的無限次使用權限等！"
+   },
+   "114ry41": {
+      "message": "輕鬆駕馭 PDF ！透過我們的 7 天免費試用，盡情探索 PDF 工具的精彩世界。"
+   },
+   "114ry4i": {
+      "message": "您可以獲得哪些優勢？"
+   },
+   "114ry60": {
+      "message": "Pro 工具和功能"
+   },
+   "114ry6y": {
+      "message": "專屬的 Pro 工具和功能"
+   },
+   "114ry85": {
+      "message": "強壓縮、PDF 到 Office 的轉換、光學字元辨識技術等等。"
+   },
+   "114ry8l": {
+      "message": "Pro PDF 工具和功能的高級存取權限。"
+   },
+   "114ry9k": {
+      "message": "無任何限制"
+   },
+   "114ryam": {
+      "message": "每天可無限制地使用相關工具以完成文件工作。太棒了！"
+   },
+   "114ryc1": {
+      "message": "隨時隨地工作"
+   },
+   "114rycg": {
+      "message": "隨時隨地工作"
+   },
+   "114ryd0": {
+      "message": "對網頁平台、桌面和行動應用程式的高級使用權限。"
+   },
+   "114rydg": {
+      "message": "解除行動裝置、桌面和網頁版本等所有平台和應用程式的鎖定！"
+   },
+   "114rydy": {
+      "message": "升級您的帳戶"
+   },
+   "114ryfe": {
+      "message": "登入"
+   },
+   "114ryfx": {
+      "message": "免費試用 {{trial_days}} 天"
+   },
+   "114rylw": {
+      "message": "差不多快完成了……\\n何不來杯咖啡、摸一下狗狗，或舒展一下呢？☕🐶"
+   },
+   "114rys4": {
+      "message": "返回至開始"
+   },
+   "114ryvl": {
+      "message": "返回至工具"
+   },
+   "114rz0g": {
+      "message": "選擇壓縮類型"
+   },
+   "114rz1n": {
+      "message": "基本"
+   },
+   "114rz2h": {
+      "message": "文件大小適中，高質量。"
+   },
+   "114rz3e": {
+      "message": "強"
+   },
+   "114rz44": {
+      "message": "文件最小，質量好。"
+   },
+   "114rz68": {
+      "message": "選擇轉換類型"
+   },
+   "114rz7c": {
+      "message": "選項"
+   },
+   "114rz83": {
+      "message": "使用光學字元辨識技術"
+   },
+   "114rz8u": {
+      "message": "掃描的頁面將轉換為可編輯的 Word 文件。格式可能會有所改變。"
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "返回至轉換"
+   },
+   "114rzmr": {
+      "message": "掃描的頁面將轉換為可編輯的 Excel 文件。格式可能會有所改變。"
+   },
+   "114s0il": {
+      "message": "自動下載我的檔案"
+   },
+   "114s0jf": {
+      "message": "程序完成後，我們會自動下載您的檔案。"
+   },
+   "114s1u3": {
+      "message": "將您的 PDF 轉換為 PowerPoint 檔案。"
+   },
+   "114tq39": {
+      "message": "轉換整個頁面"
+   },
+   "114tq47": {
+      "message": "擷取單一圖像"
+   },
+   "114tq8x": {
+      "message": "PDF 至 PowerPoint"
+   },
+   "1167iyh": {
+      "message": "太多次失敗的嘗試。請檢查登入詳細資料，然後稍後再試一次。"
+   },
+   "11wp338": {
+      "message": "編輯PDF"
+   },
+   "11wp39c": {
+      "message": "PDF 轉 Word"
+   },
+   "11wp3g5": {
+      "message": "壓縮 PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "合併 PDF"
+   },
+   "11wp3jn": {
+      "message": "PDF轉換器"
+   },
+   "11wp3k6": {
+      "message": "更多PDF工具"
+   },
+   "11wp3o4": {
+      "message": "小pdf工具"
+   },
+   "11yan2r": {
+      "message": "壓縮您的 PDF 檔案、圖片與 Microsoft Office 文件的大小。"
+   },
+   "11yan3p": {
+      "message": "編輯文字、新增註解、形狀、圖片和整理PDF 檔案。"
+   },
+   "11yan4l": {
+      "message": "將多個文件合併為一個 PDF 檔案。"
+   },
+   "11yan5a": {
+      "message": "在您的 PDF 檔案中翻轉單個或多個頁面。"
+   },
+   "11yan62": {
+      "message": "選擇檔案"
+   },
+   "11yany0": {
+      "message": "使用 TLS 加密進行安全的文件傳輸"
+   },
+   "11yao0f": {
+      "message": "自您的文件中刪除一個或多個頁面。"
+   },
+   "11yao16": {
+      "message": "擷取特定頁面以儲存為獨立的文件。"
+   },
+   "11yao2j": {
+      "message": "以電子方式簽署任何一份 PDF 檔案，並且請求他人完成簽署。"
+   },
+   "11yao3e": {
+      "message": "新增一個密碼以保障您的 PDF 檔案的安全性。"
+   },
+   "11yao41": {
+      "message": "移除經過加密之 PDF 檔案的密碼。"
+   },
+   "11yao4u": {
+      "message": "將 Word、PowerPoint、Excel 和圖片檔案轉換為 PDF，或從 PDF 轉換為這些格式。"
+   },
+   "11yao7p": {
+      "message": "檢視、編輯、撰寫註解以及整理 PDF 檔案。"
+   },
+   "11yao8n": {
+      "message": "為您的 PDF 檔案新增頁碼。"
+   },
+   "120e7u5": {
+      "message": "或將一個檔案放在此處"
+   },
+   "12bijem": {
+      "message": "使用 AI 進行摘要"
+   },
+   "12bikcl": {
+      "message": "選擇檔案"
+   },
+   "12bikhi": {
+      "message": "選擇檔案"
+   },
+   "12bikpq": {
+      "message": "或者以下列任一工具開始"
+   },
+   "12bikry": {
+      "message": "AI PDF 摘要節錄器"
+   },
+   "12bikv2": {
+      "message": "將您的 PDF 檔案分割成多份文件。"
+   },
+   "12bikx8": {
+      "message": "合併"
+   },
+   "12bikzn": {
+      "message": "壓縮"
+   },
+   "12bil0r": {
+      "message": "轉換"
+   },
+   "12bil27": {
+      "message": "PDF 轉為圖像"
+   },
+   "12bil4a": {
+      "message": "編輯文字"
+   },
+   "12bil5v": {
+      "message": "PDF 轉 Word"
+   },
+   "12bil78": {
+      "message": "簽署"
+   },
+   "12bil7z": {
+      "message": "更多工具"
+   },
+   "12bil9j": {
+      "message": "在 Google 搜尋結果中顯示工具"
+   },
+   "12bila5": {
+      "message": "使用 Google 搜尋 PDF 工具時，您將可以在搜尋結果區域中處理您的文件。"
+   },
+   "12bilas": {
+      "message": "顯示建議的應用程式"
+   },
+   "12bilbj": {
+      "message": "在 Chrome 的 PDF 檢視器中顯示工具"
+   },
+   "12bilbl": {
+      "message": "分割"
+   },
+   "12bilbu": {
+      "message": "在 Chrome 的 PDF 檢視器中開啟 PDF 檔案時，可以在檢視器中使用 Smallpdf 的工具。"
+   },
+   "12bilcf": {
+      "message": "刪除頁面"
+   },
+   "12bilco": {
+      "message": "Chrome 設定"
+   },
+   "12bilcy": {
+      "message": "Smallpdf 網站"
+   },
+   "12bildu": {
+      "message": "旋轉"
+   },
+   "12bilee": {
+      "message": "解除鎖定"
+   },
+   "12bilfg": {
+      "message": "保護"
+   },
+   "12bilfo": {
+      "message": "透過 AI 人工智慧的幫助來得出 PDF 檔中的總結，或檢閱字裡行間中的秘密。"
+   },
+   "12bilfz": {
+      "message": "PDF 轉 Excel"
+   },
+   "12bilhn": {
+      "message": "PDF 至 PowerPoint"
+   },
+   "12bili5": {
+      "message": "關閉在 Google 與其他平台上可安裝其他應用程式的建議。"
+   },
+   "12bilic": {
+      "message": "使用我們的 PDF 裁剪工具來裁剪或修整您的文件。"
+   },
+   "12biliw": {
+      "message": "Chrome 線上應用程式商店"
+   },
+   "12bilj8": {
+      "message": "頁碼"
+   },
+   "12bilk3": {
+      "message": "PDF 閱讀器"
+   },
+   "12bilm7": {
+      "message": "上傳中……"
+   },
+   "12bilm8": {
+      "message": "移除您 PDF 檔案中的敏感資訊。"
+   },
+   "12bilnj": {
+      "message": "這可能需要幾秒鐘的時間。"
+   },
+   "12bilod": {
+      "message": "取消"
+   },
+   "12bilqr": {
+      "message": "與您的 PDF 檔案聊天並詢問任何問題。"
+   },
+   "12biltj": {
+      "message": "Chrome 擴充功能"
+   },
+   "12bilug": {
+      "message": "選擇一種工具"
+   },
+   "12biluz": {
+      "message": "繼續"
+   },
+   "12bilvm": {
+      "message": "重新開始"
+   },
+   "12bim4n": {
+      "message": "取得 \u003Cb>Smallpdf Workspace 應用程式\u003C/b>在 \u003Cb>Google Docs\u003C/b> 和 \u003Cb>Gmail\u003C/b> 中使用 PDF 工具！"
+   },
+   "12bimc8": {
+      "message": "下載免費的 App"
+   },
+   "12bimem": {
+      "message": "使用 \u003Cb>Smallpdf Workspace 應用程式\u003C/b>在 \u003Cb>Google Docs\u003C/b>和 \u003Cb>Gmail\u003C/b> 中進行轉換、合併與更多操作！"
+   },
+   "12bimj1": {
+      "message": "Smallpdf——壓縮、簽署與合併"
+   },
+   "12bk4lc": {
+      "message": "裁剪 PDF"
+   },
+   "12bk4mb": {
+      "message": "修訂 PDF"
+   },
+   "12bk4my": {
+      "message": "AI PDF 摘要節錄器"
+   },
+   "12bk4n8": {
+      "message": "與 PDF 檔案進行對談"
+   },
+   "12bk4nl": {
+      "message": "翻譯 PDF"
+   },
+   "12ca4j0": {
+      "message": "確保他人無法隨意編輯您的 PDF 檔案"
+   },
+   "12ca7vl": {
+      "message": "由 sign.com 與 Smallpdf 提供技術支援"
+   },
+   "12ctd3b": {
+      "message": "想要充分利用 Smallpdf 的功能嗎？"
+   },
+   "12ctd58": {
+      "message": "允許存取檔案 URL，以便在 Chrome 瀏覽器中檢視 PDF 時使用我們的 PDF 工具。"
+   },
+   "12ctd60": {
+      "message": "打開設定"
+   },
+   "12ctd7g": {
+      "message": "啟用此項功能也能處理儲存在您電腦上的 PDF。"
+   },
+   "12ctd81": {
+      "message": "啟用"
+   },
+   "12ctd8y": {
+      "message": "停用"
+   },
+   "action_app_website": {
+      "message": "{app_name} 網站"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name} 設定"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name} 線上應用程式商店"
+   },
+   "action_convert_to": {
+      "message": "轉換為 {file_type}"
+   },
+   "appDesc": {
+      "message": "容易上手的 PDF 壓縮、轉換、合併、聊天、分割、電子簽名與編輯工具，通通可以在您的網頁瀏覽器中使用。"
+   },
+   "appName": {
+      "message": "Smallpdf—PDF 編輯、轉換、壓縮與 AI 摘錄工具"
+   },
+   "cancel": {
+      "message": "取消"
+   },
+   "compress": {
+      "message": "壓縮"
+   },
+   "converter": {
+      "message": "轉換"
+   },
+   "delete": {
+      "message": "刪除頁面"
+   },
+   "download": {
+      "message": "下載"
+   },
+   "downloadCta": {
+      "message": "立即下載"
+   },
+   "edit": {
+      "message": "編輯"
+   },
+   "error_try_later": {
+      "message": "哎呀！出了一些問題"
+   },
+   "excel": {
+      "message": "Excel 轉 PDF"
+   },
+   "extract": {
+      "message": "PDF 轉 JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "圖像"
+   },
+   "file_type_generic_image_plural": {
+      "message": "圖像"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel（.xlsx）"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint（.pptx）"
+   },
+   "format_word": {
+      "message": "Word（.docx）"
+   },
+   "jpg": {
+      "message": "JPG 轉 PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} 和 {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}、{1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} 和 {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}、{1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} 或 {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}、{1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} 或 {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}、{1}"
+   },
+   "merge": {
+      "message": "合併"
+   },
+   "noInternetConnection": {
+      "message": "沒有網絡連線"
+   },
+   "okay": {
+      "message": "確定"
+   },
+   "options_extension_version": {
+      "message": "{browser_name} 擴充功能 | {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "授權 {app_name} 存取您的本地檔案 URL 以在 {browser_name} 打開 {file_types}。"
+   },
+   "options_setting_local_files_title": {
+      "message": "在本地檔案中啟用 {app_name} 擴充功能。"
+   },
+   "options_setting_status_disabled": {
+      "message": "已停用"
+   },
+   "pdf_to_excel": {
+      "message": "PDF 轉 EXCEL"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF 轉 PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF 轉 WORD"
+   },
+   "please_try_again": {
+      "message": "請再試一次。"
+   },
+   "ppt": {
+      "message": "PPT 轉 PDF"
+   },
+   "processingFailedMessage": {
+      "message": "抱歉，處理您的文件時發生錯誤"
+   },
+   "processingFailedTitle": {
+      "message": "處理失敗"
+   },
+   "protect": {
+      "message": "保護"
+   },
+   "rotate": {
+      "message": "旋轉"
+   },
+   "search": {
+      "message": "搜尋"
+   },
+   "serp_hide_button": {
+      "message": "不再顯示此內容"
+   },
+   "serp_powered_by": {
+      "message": "由 Smallpdf 提供技術支援"
+   },
+   "sign": {
+      "message": "簽署"
+   },
+   "split": {
+      "message": "分割"
+   },
+   "tools": {
+      "message": "工具"
+   },
+   "try_again": {
+      "message": "再試一次"
+   },
+   "uh_something_wrong": {
+      "message": "哎呀！出了一些問題"
+   },
+   "unlock": {
+      "message": "解鎖"
+   },
+   "uploadFailed": {
+      "message": "抱歉，您的上傳失敗"
+   },
+   "uploading": {
+      "message": "上傳中……"
+   },
+   "word": {
+      "message": "Word 轉 PDF"
+   }
+}

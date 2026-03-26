@@ -1,0 +1,404 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Log in to Smallpdf"
+   },
+   "114rvnf": {
+      "message": "OR"
+   },
+   "114rvpe": {
+      "message": "Email"
+   },
+   "114rvqv": {
+      "message": "Password"
+   },
+   "114rvrt": {
+      "message": "Forgot your password?"
+   },
+   "114rvti": {
+      "message": "Log in"
+   },
+   "114rvvm": {
+      "message": "Don’t have an account yet?"
+   },
+   "114rvyk": {
+      "message": "Create account"
+   },
+   "114rw18": {
+      "message": "Account"
+   },
+   "114rw2d": {
+      "message": "Try Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Account settings"
+   },
+   "114rw4o": {
+      "message": "Help"
+   },
+   "114rw5s": {
+      "message": "Download apps"
+   },
+   "114rw6m": {
+      "message": "Log out"
+   },
+   "114rw86": {
+      "message": "Wrong email or password."
+   },
+   "114rwft": {
+      "message": "We can’t process this file. Please try again."
+   },
+   "114rwo7": {
+      "message": "Your file is password protected"
+   },
+   "114rwpn": {
+      "message": "Please remove the password and upload the file again."
+   },
+   "114rwrd": {
+      "message": "Uh-oh! This file is corrupt"
+   },
+   "114rwsa": {
+      "message": "Please try again with another file."
+   },
+   "114rwye": {
+      "message": "Sure you want to go?"
+   },
+   "114rwzh": {
+      "message": "Your file will be deleted. Remember to download it before you leave!"
+   },
+   "114rx0l": {
+      "message": "Go"
+   },
+   "114rx4t": {
+      "message": "Stay"
+   },
+   "114rx78": {
+      "message": "Rename your file"
+   },
+   "114rx9b": {
+      "message": "Rename"
+   },
+   "114rxav": {
+      "message": "Drop file here to get started"
+   },
+   "114rxc0": {
+      "message": "Add File"
+   },
+   "114rxcw": {
+      "message": "Drop your file here"
+   },
+   "114rxhe": {
+      "message": "Your file"
+   },
+   "114rxii": {
+      "message": "Your file failed to upload"
+   },
+   "114rxjj": {
+      "message": "This file type is not supported"
+   },
+   "114rxk1": {
+      "message": "Please try again with a PDF."
+   },
+   "114rxp1": {
+      "message": "Free daily tasks left"
+   },
+   "114rxqs": {
+      "message": "Or start with a tool"
+   },
+   "114rxs1": {
+      "message": "Open a tool in the web app"
+   },
+   "114rxzd": {
+      "message": "Become a PDF ninja!"
+   },
+   "114ry1m": {
+      "message": "Go Pro—for free!"
+   },
+   "114ry2l": {
+      "message": "Upgrade to Pro and enjoy unlimited access to your favorite tools and more!"
+   },
+   "114ry41": {
+      "message": "Show PDFs who’s boss! Unlock a world of nifty PDF tools with our 7-day free trial."
+   },
+   "114ry4i": {
+      "message": "What do you get?"
+   },
+   "114ry60": {
+      "message": "Pro tools and features"
+   },
+   "114ry6y": {
+      "message": "Exclusive Pro tools and features"
+   },
+   "114ry85": {
+      "message": "Strong compression, PDF to Office conversions, OCR, and more."
+   },
+   "114ry8l": {
+      "message": "Premium access to Pro PDF tools and features."
+   },
+   "114ry9k": {
+      "message": "Zero limitations"
+   },
+   "114ryam": {
+      "message": "Unlimited files and tasks per day. Noice!"
+   },
+   "114ryc1": {
+      "message": "Work on-the-go"
+   },
+   "114rycg": {
+      "message": "Work anytime, anywhere"
+   },
+   "114ryd0": {
+      "message": "Premium access to our web platform, desktop, and mobile apps."
+   },
+   "114rydg": {
+      "message": "Unlock all platforms and apps—from mobile, to desktop, and web!"
+   },
+   "114rydy": {
+      "message": "Upgrade Your Account"
+   },
+   "114ryfe": {
+      "message": "Log In"
+   },
+   "114ryfx": {
+      "message": "Get {{trial_days}} Days Free"
+   },
+   "114rylw": {
+      "message": "Almost done...\\nWhy not grab a coffee, pet the pooch, or have a stretch? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Back to start"
+   },
+   "114ryvl": {
+      "message": "Back to tools"
+   },
+   "114rz0g": {
+      "message": "Choose compression type"
+   },
+   "114rz1n": {
+      "message": "Basic"
+   },
+   "114rz2h": {
+      "message": "Medium file size, best quality."
+   },
+   "114rz3e": {
+      "message": "Strong"
+   },
+   "114rz44": {
+      "message": "Smallest file size, good quality."
+   },
+   "114rz68": {
+      "message": "Choose conversion type"
+   },
+   "114rz7c": {
+      "message": "Options"
+   },
+   "114rz83": {
+      "message": "With OCR"
+   },
+   "114rz8u": {
+      "message": "Scanned pages will be converted to an editable Word document. Formatting may change."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Back to convert"
+   },
+   "114rzmr": {
+      "message": "Scanned pages will be converted to an editable Excel document. Formatting may change."
+   },
+   "114s0il": {
+      "message": "Download my file automatically"
+   },
+   "114s0jf": {
+      "message": "We’ll download your file automatically once the process is done."
+   },
+   "action_app_website": {
+      "message": "{app_name} वेबसाइट"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name} सेटिंग्‍स"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name} वेब स्‍टोर"
+   },
+   "action_convert_to": {
+      "message": "{file_type} में कनवर्ट करें"
+   },
+   "appDesc": {
+      "message": "ब्राज़उर में PDF फाइल कम्प्रेस, कन्वर्ट, मर्ज, संग  चैट, स्प्लिट, ई-साइन व एडिट हेतु उपयोग-में-आसान PDF टूल्स।"
+   },
+   "appName": {
+      "message": "Smallpdf—PDF एडिट, कंवर्ट, कंप्रेस, AI समराइज़ करें"
+   },
+   "cancel": {
+      "message": "Cancel"
+   },
+   "compress": {
+      "message": "सिकोड़ना"
+   },
+   "converter": {
+      "message": "कनवर्ट करें"
+   },
+   "delete": {
+      "message": "पृष्‍ठों को हटाएं"
+   },
+   "download": {
+      "message": "Download"
+   },
+   "downloadCta": {
+      "message": "इसे अभी डाउनलोड करें"
+   },
+   "edit": {
+      "message": "संपादन"
+   },
+   "error_try_later": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "excel": {
+      "message": "एक्‍सेल से पीडीएफ"
+   },
+   "extract": {
+      "message": "पीडीएफ से जेपीजी"
+   },
+   "file_type_excel": {
+      "message": "एक्‍सेल"
+   },
+   "file_type_generic_image": {
+      "message": "छवि"
+   },
+   "file_type_generic_image_plural": {
+      "message": "छवियां"
+   },
+   "file_type_generic_office": {
+      "message": "ऑफिस"
+   },
+   "file_type_pdf_plural": {
+      "message": "पीडीएफएस"
+   },
+   "file_type_powerpoint_long": {
+      "message": "पावरप्‍वाइंट"
+   },
+   "file_type_word": {
+      "message": "वर्ड"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "जेपीजी से पीडीएफ"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} और {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} और {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} या {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} या {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "मिलाएं"
+   },
+   "noInternetConnection": {
+      "message": "कोई इंटरनेट कनेक्‍शन नहीं है"
+   },
+   "okay": {
+      "message": "Okay"
+   },
+   "options_extension_version": {
+      "message": "{browser_name} विस्‍तार / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "{file_types} को {browser_name} में खोलने में सक्षम करने के लिए अपने स्थानीय फाइल यूआरएल तक {app_name} को ऐक्‍सेस दें।"
+   },
+   "options_setting_local_files_title": {
+      "message": "स्‍थानीय फाइलों पर {app_name} का विस्‍तार सक्षम करें"
+   },
+   "options_setting_status_disabled": {
+      "message": "अक्षम है"
+   },
+   "pdf_to_excel": {
+      "message": "पीडीएफ से एक्‍सेल"
+   },
+   "pdf_to_ppt": {
+      "message": "पीडीएफ से पीपीटी"
+   },
+   "pdf_to_word": {
+      "message": "पीडीएफ से वर्ड"
+   },
+   "please_try_again": {
+      "message": "Please try again."
+   },
+   "ppt": {
+      "message": "पीपीटी से पीडीएफ"
+   },
+   "processingFailedMessage": {
+      "message": "क्षमा करें, आपकी फाइल को संसाधित करने में कोई समस्या थी"
+   },
+   "processingFailedTitle": {
+      "message": "संसाधिक करना विफल रहा"
+   },
+   "protect": {
+      "message": "संरक्षित"
+   },
+   "rotate": {
+      "message": "घुमाएं"
+   },
+   "search": {
+      "message": "खोजें"
+   },
+   "sign": {
+      "message": "हस्‍ताक्षर"
+   },
+   "split": {
+      "message": "विभाजन"
+   },
+   "tools": {
+      "message": "टूल्‍स"
+   },
+   "try_again": {
+      "message": "Try Again"
+   },
+   "uh_something_wrong": {
+      "message": "Uh-oh! Something went wrong"
+   },
+   "unlock": {
+      "message": "अनलॉक"
+   },
+   "uploadFailed": {
+      "message": "क्षमा करें आपका अपलोड विफल रहा"
+   },
+   "uploading": {
+      "message": "Uploading..."
+   },
+   "word": {
+      "message": "वर्ड से पीडीएफ"
+   }
+}

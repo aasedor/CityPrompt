@@ -154,14 +154,6 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark, people, pedestrians, human figures',
   },
   {
-    id: 'drone-photography',
-    label: 'Drone Photo',
-    strength: 0.65,
-    prompt:
-      'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Building situated within realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze on distant objects, deep depth of field with everything sharp. High-resolution aerial photography, construction-complete, 8k.',
-    negative: 'cartoon, illustration, sketch, painting, fish-eye, indoor, close-up, low quality, blurry, text, watermark, people, pedestrians',
-  },
-  {
     id: 'massing-study',
     label: 'Massing Study',
     strength: 0.65,
@@ -194,14 +186,6 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, smooth, clean lines, low quality, blurry',
   },
   {
-    id: 'marker-render',
-    label: 'Marker Render',
-    strength: 0.65,
-    prompt:
-      'Traditional architectural marker rendering with classic Copic marker style. Crisp fine-liner black ink outlines overlaid with layered transparent color strokes showing visible marker overlap and bleed effects. Bright optimistic lighting, vibrant saturated palette with warm and cool contrasts. Stylized architectural entourage and simplified trees. Selective areas of high detail dissolving into loose suggestive strokes at edges. White gel pen highlights on bare paper. Professional design presentation sketch aesthetic.',
-    negative: 'photorealistic, photograph, digital, 3D render, watercolor bleeding, pencil shading, oil paint, dull colors, low quality, blurry',
-  },
-  {
     id: 'isometric',
     label: 'Isometric',
     strength: 0.65,
@@ -225,6 +209,14 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
       'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
     negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
   },
+  {
+    id: 'clay-maquette',
+    label: 'Clay Maquette',
+    strength: 0.65,
+    prompt:
+      'Photorealistic macro photography of a physical architectural scale model. Entire scene is made of seamless, matte, off-white plaster — no distinct colors or textures on any surface. Studio lighting with a single soft overhead softbox creating deep ambient occlusion shadows that define every edge, setback, and topographic contour. High-angle isometric aerial view looking down at the model. Shallow depth of field with tilt-shift effect blurring the edges of the scene. All buildings, landscape, streets, and vegetation are sculpted from the same uniform matte clay material. Miniature architectural maquette, professional studio photography.',
+    negative: 'photorealistic buildings, color, materials, brick, glass, wood, realistic vegetation, people, cars, textured surfaces, painted surfaces, outdoor lighting, sky, clouds, low quality, blurry',
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -242,11 +234,6 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'photorealistic',
     label: 'Photo Realistic',
     prompt: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
-  },
-  'drone-photography': {
-    id: 'drone-photography',
-    label: 'Drone Photo',
-    prompt: 'Aerial drone photograph shot from 200 feet altitude, angled downward at 45 degrees. Realistic urban context with surrounding streets, neighboring rooftops, and parked vehicles. Sunny day with clear cast shadows, subtle atmospheric haze, deep depth of field. High-resolution aerial photography, construction-complete, 8k.',
   },
   'massing-study': {
     id: 'massing-study',
@@ -268,11 +255,6 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     label: 'Charcoal',
     prompt: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
   },
-  'marker-render': {
-    id: 'marker-render',
-    label: 'Marker Render',
-    prompt: 'Traditional architectural marker rendering with Copic marker style. Crisp fine-liner black ink outlines with layered transparent color strokes. Bright optimistic lighting, vibrant saturated palette. White gel pen highlights. Professional design presentation sketch aesthetic.',
-  },
   isometric: {
     id: 'isometric',
     label: 'Isometric',
@@ -287,6 +269,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'watercolour',
     label: 'Water Colour',
     prompt: 'Beautiful watercolor architectural painting on textured paper. Soft bleeding edges where colors mix organically, translucent layered washes with white paper glowing through. Loose and artistic, pigment granulation in shadows. Muted earth-tone palette with sage green, ochre, and ultramarine accents.',
+  },
+  'clay-maquette': {
+    id: 'clay-maquette',
+    label: 'Clay Maquette',
+    prompt: 'Photorealistic macro photography of a physical architectural scale model made entirely of seamless matte off-white plaster. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric aerial view with tilt-shift depth of field. All elements sculpted from uniform matte clay. Miniature architectural maquette, professional studio photography.',
   },
 };
 
@@ -963,7 +950,7 @@ function colorName(hex: string): string {
 function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOptions): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
 
   const zoneDescriptions = groundZones.map(z => {
     const info = getZoneArchetypeInfo(z);
@@ -1046,7 +1033,7 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   // Style
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
 
   const parts: string[] = [];
 
@@ -1729,7 +1716,7 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const style = GEMINI_STYLE_MODIFIERS[styleId];
 
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'marker-render', 'isometric', 'woodblock', 'massing-study', 'site-plan'].includes(styleId);
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
   const isSitePlan = styleId === 'site-plan';
 
   const parts: string[] = [];

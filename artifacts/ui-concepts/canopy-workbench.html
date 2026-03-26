@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiteForge Concept - Canopy Workbench</title>
+    <link rel="stylesheet" href="./common.css" />
+    <style>
+      :root {
+        --bg: #eaf3ea;
+        --frame: rgba(247, 252, 247, 0.82);
+        --frame-border: rgba(71, 103, 80, 0.12);
+        --ink: #163024;
+        --muted: rgba(22, 48, 36, 0.62);
+        --soft: rgba(22, 48, 36, 0.12);
+        --line: rgba(71, 103, 80, 0.1);
+        --panel: rgba(255, 255, 255, 0.84);
+        --accent: #4f9d69;
+        --accent-2: #ff9f6e;
+        --accent-3: #f0d35b;
+        --glow: rgba(79, 157, 105, 0.18);
+        --heading-font: "Gill Sans", "Trebuchet MS", sans-serif;
+        --body-font: "Trebuchet MS", "Segoe UI", sans-serif;
+      }
+
+      html,
+      body {
+        background:
+          radial-gradient(circle at 12% 22%, rgba(79, 157, 105, 0.16), transparent 22%),
+          radial-gradient(circle at 82% 12%, rgba(240, 211, 91, 0.16), transparent 20%),
+          linear-gradient(145deg, #eef7ee, #dceadf 60%);
+      }
+
+      .leaf-cloud {
+        position: absolute;
+        inset: auto auto 70px 70px;
+        width: 420px;
+        height: 220px;
+        opacity: 0.32;
+        background:
+          radial-gradient(circle at 20% 40%, rgba(79, 157, 105, 0.32), transparent 26%),
+          radial-gradient(circle at 52% 36%, rgba(240, 211, 91, 0.28), transparent 22%),
+          radial-gradient(circle at 78% 48%, rgba(255, 159, 110, 0.24), transparent 24%);
+      }
+
+      .hero-panel {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.62)),
+          var(--panel);
+      }
+
+      .map-stage {
+        background:
+          radial-gradient(circle at 16% 20%, rgba(255, 255, 255, 0.42), transparent 16%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+          linear-gradient(145deg, rgba(87, 184, 118, 0.18), rgba(255, 255, 255, 0.18));
+      }
+
+      .map-stage::before {
+        background-image:
+          linear-gradient(rgba(79, 157, 105, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(79, 157, 105, 0.1) 1px, transparent 1px);
+      }
+
+      .zone.one { background: rgba(240, 211, 91, 0.32); }
+      .zone.two { background: rgba(79, 157, 105, 0.26); }
+      .zone.three { background: rgba(255, 159, 110, 0.24); }
+    </style>
+  </head>
+  <body>
+    <div class="concept-page">
+      <div class="blob" style="background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent 42%), rgba(79,157,105,0.14);"></div>
+      <div class="blob-2" style="background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.56), transparent 38%), rgba(240,211,91,0.12);"></div>
+      <div class="blob-3" style="background: linear-gradient(135deg, rgba(255,159,110,0.12), rgba(255,255,255,0.08));"></div>
+      <div class="leaf-cloud"></div>
+      <div class="noise"></div>
+
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark" style="background:linear-gradient(135deg,#4f9d69,#f0d35b);"></div>
+          <div>
+            SiteForge
+            <span class="brand-sub">Canopy Workbench</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="toolbar-pill">Family-friendly, still pro</div>
+          <div class="toolbar-pill">15 minute neighborhood lens</div>
+          <div class="toolbar-button primary" style="background:linear-gradient(135deg,#4f9d69,#79bc88);box-shadow:0 18px 32px rgba(79,157,105,0.18);">Open Idea Sprint</div>
+        </div>
+      </div>
+
+      <div class="layout">
+        <aside class="rail">
+          <div class="rail-stack">
+            <div class="icon-pill active"><div class="icon-dot" style="background:linear-gradient(135deg,#4f9d69,#f0d35b);"></div></div>
+            <div class="icon-pill"><div class="icon-bars"><span></span></div></div>
+            <div class="icon-pill"><div class="icon-dot" style="background:linear-gradient(135deg,#ff9f6e,#4f9d69);"></div></div>
+            <div class="icon-pill"><div class="icon-bars"><span></span></div></div>
+          </div>
+          <div class="rail-stack">
+            <div class="icon-pill"><div class="icon-dot" style="border-radius:999px;background:linear-gradient(135deg,#f0d35b,#4f9d69);"></div></div>
+          </div>
+        </aside>
+
+        <main class="hero-panel">
+          <div class="hero-header">
+            <div>
+              <span class="eyebrow">Optimistic and approachable</span>
+              <h1 class="hero-title" style="font-size:60px;">A brighter, more playful planning studio with real warmth.</h1>
+              <p class="hero-copy">
+                If you want SiteForge to feel less intimidating, this direction leans into big rounded cards,
+                spring colors, and a friendlier way of presenting urban data.
+              </p>
+            </div>
+            <div class="badge-stack">
+              <div class="badge" style="--accent:#4f9d69;">Friendly</div>
+              <div class="badge" style="--accent:#ff9f6e;">Workshop-ready</div>
+            </div>
+          </div>
+
+          <div class="hero-grid">
+            <section class="map-stage">
+              <div class="map-road a" style="top:22%;height:20px;"></div>
+              <div class="map-road b" style="bottom:18%;height:18px;"></div>
+              <div class="map-road c" style="left:58%;width:16px;"></div>
+              <div class="zone one" style="left:16%;top:26%;width:28%;height:26%;"></div>
+              <div class="zone two" style="left:48%;top:24%;width:30%;height:32%;"></div>
+              <div class="zone three" style="left:28%;bottom:14%;width:34%;height:20%;"></div>
+              <div class="zone-label" style="left: 14%; top: 16%;">Play plaza</div>
+              <div class="zone-label" style="left: 48%; top: 16%;">Tree court homes</div>
+              <div class="zone-label" style="left: 34%; bottom: 8%;">Food lane</div>
+              <div class="floating-tag" style="right: 10%; top: 56%;">Pocket park ribbon</div>
+              <div class="corner-note">Workshop mode / simplified language</div>
+            </section>
+
+            <div class="side-stack">
+              <section class="panel">
+                <h2 class="section-title">Idea prompts</h2>
+                <p class="section-copy">The software talks like a creative partner, not a permit form.</p>
+                <div class="chip-row" style="margin-top:16px;">
+                  <div class="legend-chip"><span class="legend-dot" style="background:#4f9d69;"></span>Add shady walks</div>
+                  <div class="legend-chip"><span class="legend-dot" style="background:#ff9f6e;"></span>Make edges lively</div>
+                  <div class="legend-chip"><span class="legend-dot" style="background:#f0d35b;"></span>Open a public square</div>
+                </div>
+              </section>
+
+              <section class="grid-2">
+                <div class="mini-panel">
+                  <div class="muted">Comfort score</div>
+                  <div class="big-number" style="color:#4f9d69;">91</div>
+                  <div class="muted">for walking with shade</div>
+                </div>
+                <div class="mini-panel">
+                  <div class="muted">Community uses</div>
+                  <div class="big-number" style="color:#ff9f6e;">07</div>
+                  <div class="muted">mixed in by default</div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <h2 class="panel-title">Fast reads</h2>
+                <div class="task-list">
+                  <div class="task-item"><span class="label">What is new</span><span class="value">Green loop added</span></div>
+                  <div class="task-item"><span class="label">What got better</span><span class="value">Retail frontage +12%</span></div>
+                  <div class="task-item"><span class="label">Next action</span><span class="value">Test school edge</span></div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="footer-strip">
+            <div class="pill-list">
+              <div class="tiny-chip">Low intimidation factor</div>
+              <div class="tiny-chip">Better for workshops</div>
+              <div class="tiny-chip">Kid-friendly color story without becoming childish</div>
+            </div>
+            <div class="user-stack">
+              <div class="avatar" style="background:linear-gradient(135deg,#4f9d69,#ff9f6e);"></div>
+              <div>
+                <div class="strong">Concept Direction 03</div>
+                <div class="muted">Soft, vibrant, collaborative, easier to love</div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="side-stack">
+          <section class="panel">
+            <h2 class="panel-title">Meeting board</h2>
+            <div class="outline-block">
+              <div class="strong">Today's question</div>
+              <p class="section-copy" style="margin-top:8px;">How can this block feel lively from morning coffee to evening family walks?</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Scene thumbnail</h2>
+            <div class="thumbnail" style="background:radial-gradient(circle at 50% 28%, rgba(255,255,255,0.54), transparent 18%), linear-gradient(145deg, rgba(79,157,105,0.26), rgba(255,159,110,0.18));"></div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Simple progress</h2>
+            <div class="meter"><span style="width:72%;background:linear-gradient(90deg,#4f9d69,#f0d35b);"></span></div>
+            <div class="task-list" style="margin-top:16px;">
+              <div class="task-item"><span class="label">Public space tuning</span><span class="value">72%</span></div>
+              <div class="task-item"><span class="label">Housing diversity</span><span class="value">Healthy</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Visual point</h2>
+            <p class="section-copy">
+              This is the most inviting direction. It would help the tool feel less like specialist software and more like a collaborative design room.
+            </p>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

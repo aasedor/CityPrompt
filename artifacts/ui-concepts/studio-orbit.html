@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiteForge Concept - Studio Orbit</title>
+    <link rel="stylesheet" href="./common.css" />
+    <style>
+      :root {
+        --bg: #121418;
+        --frame: rgba(18, 20, 24, 0.88);
+        --frame-border: rgba(214, 175, 115, 0.14);
+        --ink: #f8f1e6;
+        --muted: rgba(248, 241, 230, 0.64);
+        --soft: rgba(248, 241, 230, 0.12);
+        --line: rgba(248, 241, 230, 0.1);
+        --panel: rgba(27, 29, 36, 0.74);
+        --accent: #d6af73;
+        --accent-2: #7ac2ff;
+        --accent-3: #f07a5d;
+        --glow: rgba(214, 175, 115, 0.18);
+        --heading-font: Georgia, "Times New Roman", serif;
+        --body-font: "Aptos", "Segoe UI", sans-serif;
+      }
+
+      html,
+      body {
+        background:
+          radial-gradient(circle at 18% 16%, rgba(214, 175, 115, 0.14), transparent 20%),
+          radial-gradient(circle at 82% 12%, rgba(122, 194, 255, 0.12), transparent 18%),
+          linear-gradient(145deg, #181b20, #0c0f13 58%);
+      }
+
+      .concept-page {
+        background:
+          linear-gradient(180deg, rgba(23, 25, 31, 0.98), rgba(14, 16, 21, 0.95)),
+          var(--frame);
+      }
+
+      .film-band {
+        position: absolute;
+        left: 170px;
+        right: 170px;
+        bottom: 140px;
+        height: 140px;
+        border-radius: 24px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+        border: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .film-band::before,
+      .film-band::after {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        border-radius: 18px;
+        border: 1px dashed rgba(214, 175, 115, 0.12);
+      }
+
+      .layout {
+        grid-template-columns: 92px 1.18fr 0.92fr;
+      }
+
+      .map-stage {
+        min-height: 470px;
+        background:
+          radial-gradient(circle at 68% 30%, rgba(122, 194, 255, 0.18), transparent 18%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
+          linear-gradient(145deg, rgba(28, 31, 38, 0.92), rgba(11, 14, 18, 0.98));
+      }
+
+      .map-stage::before {
+        background-image:
+          linear-gradient(rgba(214, 175, 115, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(214, 175, 115, 0.08) 1px, transparent 1px);
+      }
+
+      .map-road { background: rgba(248, 241, 230, 0.12); }
+      .zone.one { background: rgba(214, 175, 115, 0.22); }
+      .zone.two { background: rgba(122, 194, 255, 0.18); }
+      .zone.three { background: rgba(240, 122, 93, 0.18); }
+    </style>
+  </head>
+  <body>
+    <div class="concept-page dark-surface">
+      <div class="blob" style="background: radial-gradient(circle at 30% 30%, rgba(214,175,115,0.18), transparent 42%), rgba(214,175,115,0.06);"></div>
+      <div class="blob-2" style="background: radial-gradient(circle at 40% 35%, rgba(122,194,255,0.16), transparent 38%), rgba(122,194,255,0.04);"></div>
+      <div class="blob-3" style="background: linear-gradient(135deg, rgba(240,122,93,0.06), rgba(214,175,115,0.03));"></div>
+      <div class="film-band"></div>
+      <div class="noise"></div>
+
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark" style="background:linear-gradient(135deg,#d6af73,#f07a5d);"></div>
+          <div>
+            SiteForge
+            <span class="brand-sub">Studio Orbit</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="toolbar-pill">Premium review suite</div>
+          <div class="toolbar-pill">Curated for boardroom moments</div>
+          <div class="toolbar-button primary" style="background:linear-gradient(135deg,#d6af73,#f0c789); color:#24180a; box-shadow:0 18px 32px rgba(214,175,115,0.16);">Create cinematic deck</div>
+        </div>
+      </div>
+
+      <div class="layout">
+        <aside class="rail">
+          <div class="rail-stack">
+            <div class="icon-pill active"><div class="icon-dot" style="background:linear-gradient(135deg,#d6af73,#7ac2ff);"></div></div>
+            <div class="icon-pill"><div class="icon-bars"><span></span></div></div>
+            <div class="icon-pill"><div class="icon-dot" style="background:linear-gradient(135deg,#f07a5d,#d6af73);"></div></div>
+            <div class="icon-pill"><div class="icon-bars"><span></span></div></div>
+          </div>
+          <div class="rail-stack">
+            <div class="icon-pill"><div class="icon-dot" style="border-radius:999px;background:linear-gradient(135deg,#d6af73,#f07a5d);"></div></div>
+          </div>
+        </aside>
+
+        <main class="hero-panel" style="background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));">
+          <div class="hero-header">
+            <div>
+              <span class="eyebrow">Premium cinematic direction</span>
+              <h1 class="hero-title" style="font-size:62px;">A luxury visual system for planning that feels gallery-grade.</h1>
+              <p class="hero-copy">
+                This version leans premium rather than playful: rich darkness, copper accents,
+                editorial typography, and a stronger sense of design authority.
+              </p>
+            </div>
+            <div class="badge-stack">
+              <div class="badge" style="--accent:#d6af73;">Luxury</div>
+              <div class="badge" style="--accent:#7ac2ff;">Presentation</div>
+            </div>
+          </div>
+
+          <div class="hero-grid" style="grid-template-columns:1.2fr 0.8fr;">
+            <section class="map-stage">
+              <div class="map-road a" style="left:12%;right:16%;top:18%;height:20px;"></div>
+              <div class="map-road b" style="left:18%;right:12%;bottom:20%;height:18px;"></div>
+              <div class="map-road c" style="left:52%;top:8%;bottom:10%;width:16px;"></div>
+              <div class="zone one" style="left:14%;top:24%;width:34%;height:28%;"></div>
+              <div class="zone two" style="right:18%;top:20%;width:24%;height:24%;"></div>
+              <div class="zone three" style="left:34%;bottom:18%;width:38%;height:22%;"></div>
+              <div class="zone-label" style="left: 14%; top: 15%;">Grand arrival court</div>
+              <div class="zone-label" style="right: 14%; top: 14%;">Tower lantern</div>
+              <div class="zone-label" style="left: 36%; bottom: 10%;">Gallery promenade</div>
+              <div class="floating-tag" style="right: 10%; bottom: 18%;">Night lighting script</div>
+              <div class="corner-note">Board presentation view</div>
+            </section>
+
+            <div class="side-stack">
+              <section class="panel">
+                <h2 class="panel-title">Editorial narrative</h2>
+                <p class="section-copy">
+                  The software feels closer to a beautifully art-directed real estate showcase than a utilitarian GIS console.
+                </p>
+              </section>
+
+              <section class="panel">
+                <div class="grid-2">
+                  <div class="mini-panel">
+                    <div class="muted">Signature frontage</div>
+                    <div class="big-number">540m</div>
+                    <div class="muted">of premium public edge</div>
+                  </div>
+                  <div class="mini-panel">
+                    <div class="muted">Night identity</div>
+                    <div class="big-number">A+</div>
+                    <div class="muted">for visual drama</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <h2 class="panel-title">Presentation strip</h2>
+                <div class="thumbnail" style="background:radial-gradient(circle at 50% 26%, rgba(214,175,115,0.24), transparent 18%), linear-gradient(145deg,#1e2027,#11141a);"></div>
+              </section>
+            </div>
+          </div>
+
+          <div class="footer-strip">
+            <div class="pill-list">
+              <div class="tiny-chip">Premium real estate vibe</div>
+              <div class="tiny-chip">Excellent for board approvals</div>
+              <div class="tiny-chip">Highest perceived value</div>
+            </div>
+            <div class="user-stack">
+              <div class="avatar" style="background:linear-gradient(135deg,#d6af73,#7ac2ff);"></div>
+              <div>
+                <div class="strong">Concept Direction 04</div>
+                <div class="muted">Dark, refined, cinematic, luxury-forward</div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="side-stack">
+          <section class="panel">
+            <h2 class="panel-title">Approval metrics</h2>
+            <div class="task-list">
+              <div class="task-item"><span class="label">Public realm elegance</span><span class="value">Exceptional</span></div>
+              <div class="task-item"><span class="label">Streetwall coherence</span><span class="value">93%</span></div>
+              <div class="task-item"><span class="label">Investor wow factor</span><span class="value">High</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Performance arc</h2>
+            <div class="chart" style="background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));">
+              <svg viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 122C62 110 80 90 114 82C152 72 184 66 208 54C234 40 264 30 296 26" stroke="#d6af73" stroke-width="4" stroke-linecap="round"/>
+                <path d="M24 138C52 132 78 120 112 118C150 116 186 128 214 116C246 102 274 78 296 72" stroke="#7ac2ff" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+                <g opacity="0.12" stroke="#f8f1e6">
+                  <path d="M20 30H300" />
+                  <path d="M20 60H300" />
+                  <path d="M20 90H300" />
+                  <path d="M20 120H300" />
+                </g>
+              </svg>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Design note</h2>
+            <p class="section-copy">
+              If you want the tool to feel expensive and high-trust, this is the strongest direction in the set.
+            </p>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>

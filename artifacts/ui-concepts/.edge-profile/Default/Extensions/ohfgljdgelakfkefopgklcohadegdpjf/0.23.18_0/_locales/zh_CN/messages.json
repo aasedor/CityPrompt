@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "登录Smallpdf"
+   },
+   "114rvnf": {
+      "message": "或"
+   },
+   "114rvpe": {
+      "message": "电邮地址"
+   },
+   "114rvqv": {
+      "message": "密码"
+   },
+   "114rvrt": {
+      "message": "忘记了您的密码？"
+   },
+   "114rvti": {
+      "message": "登录"
+   },
+   "114rvvm": {
+      "message": "还没有账户？"
+   },
+   "114rvyk": {
+      "message": "创建帐户"
+   },
+   "114rw18": {
+      "message": "帐户"
+   },
+   "114rw2d": {
+      "message": "试用 Smallpdf Pro 专业版"
+   },
+   "114rw3q": {
+      "message": "账户设置"
+   },
+   "114rw4o": {
+      "message": "帮助"
+   },
+   "114rw5s": {
+      "message": "下载app"
+   },
+   "114rw6m": {
+      "message": "登出"
+   },
+   "114rw86": {
+      "message": "电邮地址或密码错误。"
+   },
+   "114rwft": {
+      "message": "我们无法处理这个文件。请重试。"
+   },
+   "114rwo7": {
+      "message": "你的文件受到密码保护"
+   },
+   "114rwpn": {
+      "message": "请移除密码后再次上传。"
+   },
+   "114rwrd": {
+      "message": "糟糕！此文件已损坏"
+   },
+   "114rwsa": {
+      "message": "请使用其他文件再试一次。"
+   },
+   "114rwye": {
+      "message": "真的要退出吗？"
+   },
+   "114rwzh": {
+      "message": "你的文件将被删除。退出之前记得下载哦！"
+   },
+   "114rx0l": {
+      "message": "退出"
+   },
+   "114rx4t": {
+      "message": "算了"
+   },
+   "114rx78": {
+      "message": "重命名你的文件"
+   },
+   "114rx9b": {
+      "message": "重命名"
+   },
+   "114rxav": {
+      "message": "首先，把文件拖放到这里"
+   },
+   "114rxc0": {
+      "message": "添加文件"
+   },
+   "114rxcw": {
+      "message": "把你的文件拖放到这里"
+   },
+   "114rxhe": {
+      "message": "你的文件"
+   },
+   "114rxii": {
+      "message": "文件上传失败"
+   },
+   "114rxjj": {
+      "message": "不支持这种文件类型"
+   },
+   "114rxk1": {
+      "message": "请用 PDF 文件再试一次"
+   },
+   "114rxp1": {
+      "message": "每日免费任务剩余次数"
+   },
+   "114rxqs": {
+      "message": "或者调用工具"
+   },
+   "114rxs1": {
+      "message": "在网页版 App 里打开工具"
+   },
+   "114rxzd": {
+      "message": "成为 PDF 大师!"
+   },
+   "114ry1m": {
+      "message": "升级到 Pro（专业版） - 免费！"
+   },
+   "114ry2l": {
+      "message": "升级到 Pro 专业版，去除使用限制。喜欢 Smallpdf 就来完全解锁吧！"
+   },
+   "114ry41": {
+      "message": "向 PDF 展示谁是老大! 用我们的 7 天免费试用版解锁一个便捷的 PDF 工具世界。"
+   },
+   "114ry4i": {
+      "message": "你能得到什么？"
+   },
+   "114ry60": {
+      "message": "专业工具和功能"
+   },
+   "114ry6y": {
+      "message": "独家专业工具和功能"
+   },
+   "114ry85": {
+      "message": "强力压缩、PDF 转 Office 文件、OCR，以及更多。"
+   },
+   "114ry8l": {
+      "message": "专业版高级 PDF 工具和功能。"
+   },
+   "114ry9k": {
+      "message": "零限制"
+   },
+   "114ryam": {
+      "message": "每日文件和任务零限制。真棒!"
+   },
+   "114ryc1": {
+      "message": "随时随地工作"
+   },
+   "114rycg": {
+      "message": "随时随地工作"
+   },
+   "114ryd0": {
+      "message": "成为 VIP 用户，随意使用我们的 Web、桌面，以及移动 App。"
+   },
+   "114rydg": {
+      "message": "移动、桌面、Web，所有平台全解锁！"
+   },
+   "114rydy": {
+      "message": "升级你的帐户"
+   },
+   "114ryfe": {
+      "message": "登录"
+   },
+   "114ryfx": {
+      "message": "尝试 {{trial_days}} 天免费试用"
+   },
+   "114rylw": {
+      "message": "就快完了...\\n趁此机会，何不来杯咖啡撸撸猫？☕🐶"
+   },
+   "114rys4": {
+      "message": "返回开始"
+   },
+   "114ryvl": {
+      "message": "返回工具"
+   },
+   "114rz0g": {
+      "message": "选择压缩类型"
+   },
+   "114rz1n": {
+      "message": "基本"
+   },
+   "114rz2h": {
+      "message": "文件大小适中，高质量。"
+   },
+   "114rz3e": {
+      "message": "强"
+   },
+   "114rz44": {
+      "message": "文件最小，质量好。"
+   },
+   "114rz68": {
+      "message": "选择转换类型"
+   },
+   "114rz7c": {
+      "message": "选项"
+   },
+   "114rz83": {
+      "message": "带有 OCR"
+   },
+   "114rz8u": {
+      "message": "扫描的页面将被转换为可编辑的 Word 文档。格式可能会改变。"
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "返回转换"
+   },
+   "114rzmr": {
+      "message": "扫描的页面将被转换为可编辑的 Excel 文档。格式可能会改变。"
+   },
+   "114s0il": {
+      "message": "自动下载我的文件"
+   },
+   "114s0jf": {
+      "message": "等处理完成，我们会自动为你下载文件。"
+   },
+   "114s1u3": {
+      "message": "把 PDF 文件转换为 PowerPoint 格式。"
+   },
+   "114tq39": {
+      "message": "转换整个页面"
+   },
+   "114tq47": {
+      "message": "提取单个图像"
+   },
+   "114tq8x": {
+      "message": "PDF转PowerPoint"
+   },
+   "1167iyh": {
+      "message": "登录失败次数过多。请检查登录信息，稍后再试。"
+   },
+   "11wp338": {
+      "message": "编辑PDF"
+   },
+   "11wp39c": {
+      "message": "PDF转Word"
+   },
+   "11wp3g5": {
+      "message": "压缩PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "合并PDF"
+   },
+   "11wp3jn": {
+      "message": "PDF转换器"
+   },
+   "11wp3k6": {
+      "message": "更多PDF工具"
+   },
+   "11wp3o4": {
+      "message": "小pdf工具"
+   },
+   "11yan2r": {
+      "message": "减小 PDF 文件、图像或 Microsoft Office 文档的大小。"
+   },
+   "11yan3p": {
+      "message": "编辑文本、添加注释、形状和图像，并整理 PDF 文件。"
+   },
+   "11yan4l": {
+      "message": "将多个文档合并为一个 PDF 文件。"
+   },
+   "11yan5a": {
+      "message": "翻转 PDF 文件中的单个或多个页面。"
+   },
+   "11yan62": {
+      "message": "选择文件"
+   },
+   "11yany0": {
+      "message": "使用 TLS 加密的安全文件传输"
+   },
+   "11yao0f": {
+      "message": "删除文档中的单个或多个页面。"
+   },
+   "11yao16": {
+      "message": "提取特定页面并另存为单独文件。"
+   },
+   "11yao2j": {
+      "message": "对任何 PDF 文件进行电子签名，并请求他人签名。"
+   },
+   "11yao3e": {
+      "message": "添加密码以保护 PDF 文件。"
+   },
+   "11yao41": {
+      "message": "移除加密 PDF 文件的密码。"
+   },
+   "11yao4u": {
+      "message": "将 Word、PowerPoint、Excel 和图像文件转换为 PDF，或将 PDF 文档转换为 Word、PowerPoint、Excel 和图像文件。"
+   },
+   "11yao7p": {
+      "message": "查看、编辑、整理 PDF 文件并添加注释。"
+   },
+   "11yao8n": {
+      "message": "为 PDF 文件添加页码。"
+   },
+   "120e7u5": {
+      "message": "或将一个文件拖放至此处"
+   },
+   "12bijem": {
+      "message": "使用 AI 生成摘要"
+   },
+   "12bikcl": {
+      "message": "选择文件"
+   },
+   "12bikhi": {
+      "message": "选择文件"
+   },
+   "12bikpq": {
+      "message": "或者调用工具"
+   },
+   "12bikry": {
+      "message": "AI PDF 摘要生成器"
+   },
+   "12bikv2": {
+      "message": "将 PDF 拆分成多个文档。"
+   },
+   "12bikx8": {
+      "message": "合并"
+   },
+   "12bikzn": {
+      "message": "压缩"
+   },
+   "12bil0r": {
+      "message": "转换"
+   },
+   "12bil27": {
+      "message": "PDF 转为图像"
+   },
+   "12bil4a": {
+      "message": "编辑文本"
+   },
+   "12bil5v": {
+      "message": "PDF转Word"
+   },
+   "12bil78": {
+      "message": "签名"
+   },
+   "12bil7z": {
+      "message": "更多工具"
+   },
+   "12bil9j": {
+      "message": "在 Google 搜索结果中显示工具"
+   },
+   "12bila5": {
+      "message": "在 Google 中搜索 PDF 工具时，您可以在搜索结果区域处理您的文档。"
+   },
+   "12bilas": {
+      "message": "显示应用程序推荐"
+   },
+   "12bilbj": {
+      "message": "在 Chrome PDF 查看器中显示工具"
+   },
+   "12bilbl": {
+      "message": "拆分"
+   },
+   "12bilbu": {
+      "message": "在 Chrome PDF 查看器中打开 PDF 时，您可以在查看器中使用 Smallpdf 工具。"
+   },
+   "12bilcf": {
+      "message": "删除页面"
+   },
+   "12bilco": {
+      "message": "Chrome 设置"
+   },
+   "12bilcy": {
+      "message": "Smallpdf 网站"
+   },
+   "12bildu": {
+      "message": "旋转"
+   },
+   "12bilee": {
+      "message": "解锁"
+   },
+   "12bilfg": {
+      "message": "加密"
+   },
+   "12bilfo": {
+      "message": "使用 AI 总结 PDF 或与 PDF 对话。"
+   },
+   "12bilfz": {
+      "message": "PDF转Excel"
+   },
+   "12bilhn": {
+      "message": "PDF转PowerPoint"
+   },
+   "12bili5": {
+      "message": "关闭在 Google 和其他平台上可安装的其他应用程序的推荐功能。"
+   },
+   "12bilic": {
+      "message": "使用 PDF 裁剪器裁剪文档。"
+   },
+   "12biliw": {
+      "message": "Chrome 应用商店"
+   },
+   "12bilj8": {
+      "message": "页面编号"
+   },
+   "12bilk3": {
+      "message": "PDF阅读器"
+   },
+   "12bilm7": {
+      "message": "上传中..."
+   },
+   "12bilm8": {
+      "message": "删除 PDF 中的敏感信息。"
+   },
+   "12bilnj": {
+      "message": "这可能需要几秒钟..."
+   },
+   "12bilod": {
+      "message": "取消"
+   },
+   "12bilqr": {
+      "message": "与 PDF 对话并询问 PDF 任何内容。"
+   },
+   "12biltj": {
+      "message": "Chrome 扩展程序"
+   },
+   "12bilug": {
+      "message": "选择一种工具"
+   },
+   "12biluz": {
+      "message": "继续"
+   },
+   "12bilvm": {
+      "message": "重来"
+   },
+   "12bim4n": {
+      "message": "使用 \u003Cb>Smallpdf Workspace App\u003C/b> 在 \u003Cb>Google Docs\u003C/b> 和 \u003Cb>Gmail\u003C/b> 中获取 PDF 工具！"
+   },
+   "12bimc8": {
+      "message": "获取免费应用程序"
+   },
+   "12bimem": {
+      "message": "使用 \u003Cb>Smallpdf Workspace App\u003C/b> 从 \u003Cb>Google Docs\u003C/b> 和 \u003Cb>Gmail\u003C/b> 中进行转换、合并等！"
+   },
+   "12bimj1": {
+      "message": "Smallpdf — 压缩、签名和合并"
+   },
+   "12bk4lc": {
+      "message": "裁剪 PDF"
+   },
+   "12bk4mb": {
+      "message": "标记密文 PDF"
+   },
+   "12bk4my": {
+      "message": "AI PDF 摘要生成器"
+   },
+   "12bk4n8": {
+      "message": "与 PDF 对话"
+   },
+   "12bk4nl": {
+      "message": "翻译 PDF"
+   },
+   "12ca4j0": {
+      "message": "使你的 PDF 无法编辑"
+   },
+   "12ca7vl": {
+      "message": "由 sign.com 和 Smallpdf 提供技术支持"
+   },
+   "12ctd3b": {
+      "message": "想要获得更多 Smallpdf 功能吗？"
+   },
+   "12ctd58": {
+      "message": "在 Chrome 中查看 PDF 文件时，可访问文件 URL 以使用我们的 PDF 工具。"
+   },
+   "12ctd60": {
+      "message": "打开“设置”"
+   },
+   "12ctd7g": {
+      "message": "也可针对保存在计算机上的 PDF 文件启用该功能。"
+   },
+   "12ctd81": {
+      "message": "启用"
+   },
+   "12ctd8y": {
+      "message": "禁用"
+   },
+   "action_app_website": {
+      "message": "{app_name}网站"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name}设置"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name}网络应用商店"
+   },
+   "action_convert_to": {
+      "message": "转换至{file_type}"
+   },
+   "appDesc": {
+      "message": "易于使用的 PDF 工具，可在浏览器中压缩、转换、合并、拆分 PDF 文件，并与其进行对话和对其进行电子签名。"
+   },
+   "appName": {
+      "message": "Smallpdf - 编辑、转换、压缩 PDF 文件并 AI 生成 PDF 摘要"
+   },
+   "cancel": {
+      "message": "取消"
+   },
+   "compress": {
+      "message": "压缩"
+   },
+   "converter": {
+      "message": "转换"
+   },
+   "delete": {
+      "message": "删除页面"
+   },
+   "download": {
+      "message": "下载"
+   },
+   "downloadCta": {
+      "message": "立即下载"
+   },
+   "edit": {
+      "message": "编辑"
+   },
+   "error_try_later": {
+      "message": "糟糕！出问题了"
+   },
+   "excel": {
+      "message": "Excel 至 PDF"
+   },
+   "extract": {
+      "message": "PDF 至 JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "图像"
+   },
+   "file_type_generic_image_plural": {
+      "message": "图像"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel（.xlsx）"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint（.pptx）"
+   },
+   "format_word": {
+      "message": "Word（.docx）"
+   },
+   "jpg": {
+      "message": "JPG 至 PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0}和{1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}、{1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0}和{1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}、{1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0}或{1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}、{1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0}或{1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}、{1}"
+   },
+   "merge": {
+      "message": "合并"
+   },
+   "noInternetConnection": {
+      "message": "无网络连接"
+   },
+   "okay": {
+      "message": "好的"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}扩展程序/ {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "给予{app_name}本地文件URL的访问权限，使{file_types}可在{browser_name}中打开。"
+   },
+   "options_setting_local_files_title": {
+      "message": "对本地文件启用{app_name}扩展程序"
+   },
+   "options_setting_status_disabled": {
+      "message": "禁用"
+   },
+   "pdf_to_excel": {
+      "message": "PDF 至 Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF 至 PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF 至 Word"
+   },
+   "please_try_again": {
+      "message": "请重试。"
+   },
+   "ppt": {
+      "message": "PPT 至 PDF"
+   },
+   "processingFailedMessage": {
+      "message": "抱歉，处理您的文件时遇到了问题"
+   },
+   "processingFailedTitle": {
+      "message": "处理失败"
+   },
+   "protect": {
+      "message": "加密"
+   },
+   "rotate": {
+      "message": "旋转"
+   },
+   "search": {
+      "message": "搜索"
+   },
+   "serp_hide_button": {
+      "message": "不再显示此条信息"
+   },
+   "serp_powered_by": {
+      "message": "由 Smallpdf 提供技术支持"
+   },
+   "sign": {
+      "message": "签名"
+   },
+   "split": {
+      "message": "切分"
+   },
+   "tools": {
+      "message": "工具"
+   },
+   "try_again": {
+      "message": "再试一次"
+   },
+   "uh_something_wrong": {
+      "message": "糟糕！出问题了"
+   },
+   "unlock": {
+      "message": "解锁"
+   },
+   "uploadFailed": {
+      "message": "抱歉，上传失败"
+   },
+   "uploading": {
+      "message": "上传中..."
+   },
+   "word": {
+      "message": "Word 至 PDF"
+   }
+}

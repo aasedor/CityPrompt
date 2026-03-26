@@ -1,0 +1,674 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Smallpdf oturumu açın"
+   },
+   "114rvnf": {
+      "message": "VEYA"
+   },
+   "114rvpe": {
+      "message": "Eposta"
+   },
+   "114rvqv": {
+      "message": "Şifre"
+   },
+   "114rvrt": {
+      "message": "Şifrenizi mi unuttunuz?"
+   },
+   "114rvti": {
+      "message": "Oturum aç"
+   },
+   "114rvvm": {
+      "message": "Henüz hesabınız yok mu?"
+   },
+   "114rvyk": {
+      "message": "Hesap oluştur"
+   },
+   "114rw18": {
+      "message": "Hesap"
+   },
+   "114rw2d": {
+      "message": "Smallpdf Pro'yu deneyin"
+   },
+   "114rw3q": {
+      "message": "Hesap ayarları"
+   },
+   "114rw4o": {
+      "message": "Yardım"
+   },
+   "114rw5s": {
+      "message": "Uygulamaları indir"
+   },
+   "114rw6m": {
+      "message": "Oturumu kapat"
+   },
+   "114rw86": {
+      "message": "Yanlış e-posta veya şifre."
+   },
+   "114rwft": {
+      "message": "Bu dosyayı işleyemiyoruz. Lütfen tekrar deneyin."
+   },
+   "114rwo7": {
+      "message": "Dosyanız şifre korumalı"
+   },
+   "114rwpn": {
+      "message": "Lütfen şifreyi kaldırın ve dosyayı tekrar yükleyin."
+   },
+   "114rwrd": {
+      "message": "Hay aksi! Bu dosya bozuk"
+   },
+   "114rwsa": {
+      "message": "Lütfen başka bir dosyayla tekrar deneyin."
+   },
+   "114rwye": {
+      "message": "Çıkmak istediğinize emin misiniz?"
+   },
+   "114rwzh": {
+      "message": "Dosyanız silinecek. Çıkmadan önce indirmeyi unutmayın!"
+   },
+   "114rx0l": {
+      "message": "Çık"
+   },
+   "114rx4t": {
+      "message": "Kal"
+   },
+   "114rx78": {
+      "message": "Dosya adını değiştirin"
+   },
+   "114rx9b": {
+      "message": "Adını değiştir"
+   },
+   "114rxav": {
+      "message": "Başlamak için dosyayı buraya bırakın"
+   },
+   "114rxc0": {
+      "message": "Dosya Ekle"
+   },
+   "114rxcw": {
+      "message": "Dosyanızı buraya bırakın"
+   },
+   "114rxhe": {
+      "message": "Dosyanız"
+   },
+   "114rxii": {
+      "message": "Dosyanız karşıya yüklenemedi"
+   },
+   "114rxjj": {
+      "message": "Bu dosya türü desteklenmiyor"
+   },
+   "114rxk1": {
+      "message": "Lütfen bir PDF ile tekrar deneyin."
+   },
+   "114rxp1": {
+      "message": "Kalan ücretsiz günlük işlem"
+   },
+   "114rxqs": {
+      "message": "Veya bir araçla çalışmaya başlayın"
+   },
+   "114rxs1": {
+      "message": "Web uygulamasında araç açın"
+   },
+   "114rxzd": {
+      "message": "Bir PDF ninjası olun!"
+   },
+   "114ry1m": {
+      "message": "Ücretsiz olarak Pro'ya geçin!"
+   },
+   "114ry2l": {
+      "message": "Pro'ya güncelleyerek favori araçlarınıza sınırsız erişimin keyfini çıkarın!"
+   },
+   "114ry41": {
+      "message": "PDF'lere patronun kim olduğunu gösterin! 7 günlük ücretsiz deneme sürümümüzle havalı PDF araçlarımıza ulaşın."
+   },
+   "114ry4i": {
+      "message": "Şunları edinirsiniz:"
+   },
+   "114ry60": {
+      "message": "Pro araç ve özellikleri"
+   },
+   "114ry6y": {
+      "message": "Özel Pro araç ve özellikleri"
+   },
+   "114ry85": {
+      "message": "Güçlü sıkıştırma, PDF'den Office dosyasına dönüştürme, OCR ve daha fazlası."
+   },
+   "114ry8l": {
+      "message": "Pro PDF araç ve özelliklerimize premium erişim."
+   },
+   "114ry9k": {
+      "message": "Sınırlama yok"
+   },
+   "114ryam": {
+      "message": "Sınırsız sayıda dosya ve günlük işlem sayısı. Harika!"
+   },
+   "114ryc1": {
+      "message": "Hareket halinde çalışın"
+   },
+   "114rycg": {
+      "message": "Dilediğiniz zaman ve her yerden çalışın"
+   },
+   "114ryd0": {
+      "message": "Web platformumuz, masaüstü ve mobil uygulamalarımıza premium erişim."
+   },
+   "114rydg": {
+      "message": "Mobilden masaüstüne ve web'e kadar tüm platform ve uygulamaları etkinleştirin!"
+   },
+   "114rydy": {
+      "message": "Hesabınızı Güncelleyin"
+   },
+   "114ryfe": {
+      "message": "Oturum aç"
+   },
+   "114ryfx": {
+      "message": "{{trial_days}} Gün Ücretsiz Kullanın"
+   },
+   "114rylw": {
+      "message": "Neredeyse bitti...\\nBir kahve koymaya, köpeğinizi sevmeye veya vücut esnetme egzersizleri yapmaya ne dersiniz? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Başlangıca dön"
+   },
+   "114ryvl": {
+      "message": "Araçlara dön"
+   },
+   "114rz0g": {
+      "message": "Sıkıştırma tipini seçin"
+   },
+   "114rz1n": {
+      "message": "Temel"
+   },
+   "114rz2h": {
+      "message": "Orta dosya boyutu, yüksek kalite."
+   },
+   "114rz3e": {
+      "message": "Güçlü"
+   },
+   "114rz44": {
+      "message": "En küçük dosya boyutu, kaliteli."
+   },
+   "114rz68": {
+      "message": "Dönüştürme tipini seçin"
+   },
+   "114rz7c": {
+      "message": "Seçenekler"
+   },
+   "114rz83": {
+      "message": "OCR uygula"
+   },
+   "114rz8u": {
+      "message": "Taranan sayfalar düzenlenebilir bir Word belgesine dönüştürülür. Biçimlendirme değişebilir."
+   },
+   "114rzll": {
+      "message": "Change conversion type"
+   },
+   "114rzly": {
+      "message": "Dönüştürmeye dön"
+   },
+   "114rzmr": {
+      "message": "Taranan sayfalar düzenlenebilir bir Excel belgesine dönüştürülür. Biçimlendirme değişebilir."
+   },
+   "114s0il": {
+      "message": "Dosyamı otomatik olarak indir"
+   },
+   "114s0jf": {
+      "message": "İşlem tamamlandığında dosyanızı otomatik olarak indireceğiz."
+   },
+   "114s1u3": {
+      "message": "PDF'inizi bir PowerPoint dosyasına dönüştürün."
+   },
+   "114tq39": {
+      "message": "Sayfaların tamamını dönüştür"
+   },
+   "114tq47": {
+      "message": "Tekil resimleri çıkar"
+   },
+   "114tq8x": {
+      "message": "PDF'ten PowerPoint’e"
+   },
+   "1167iyh": {
+      "message": "Çok fazla başarısız deneme. Lütfen oturum açma bilgilerinizi kontrol edin ve tekrar deneyin."
+   },
+   "11wp338": {
+      "message": "PDF'yi düzenle"
+   },
+   "11wp39c": {
+      "message": "PDF'ten Word'e"
+   },
+   "11wp3g5": {
+      "message": "PDF Sıkıştır"
+   },
+   "11wp3gn": {
+      "message": "PDF için e-İmza"
+   },
+   "11wp3j6": {
+      "message": "PDF Birleştir"
+   },
+   "11wp3jn": {
+      "message": "PDF Dönüştürücü"
+   },
+   "11wp3k6": {
+      "message": "Daha Fazla PDF Aracı"
+   },
+   "11wp3o4": {
+      "message": "Küçükpdf Araçları"
+   },
+   "11yan2r": {
+      "message": "PDF, resim veya Microsoft Office belgelerinizin boyutunu küçültün."
+   },
+   "11yan3p": {
+      "message": "Metinleri düzenleyin, ek notlar, şekiller ve görüntüler ekleyin ve PDF'leri organize edin."
+   },
+   "11yan4l": {
+      "message": "Çok sayıda belgeyi tek bir PDF altında birleştirin."
+   },
+   "11yan5a": {
+      "message": "PDF'inizdeki tek veya çok sayıda sayfayı döndürün."
+   },
+   "11yan62": {
+      "message": "Dosya seçin"
+   },
+   "11yany0": {
+      "message": "TLS şifreleme ile güvenli belge aktarımı"
+   },
+   "11yao0f": {
+      "message": "Belgelerinizden tek veya çok sayıda sayfayı kaldırın."
+   },
+   "11yao16": {
+      "message": "Belirli sayfaları ayrı belgeler olarak kaydetmek için ayıklayın."
+   },
+   "11yao2j": {
+      "message": "PDF'leri e-imzalayın ve diğer kişilerden imza talep edin."
+   },
+   "11yao3e": {
+      "message": "PDF'inizi korumak için bir şifre ekleyin."
+   },
+   "11yao41": {
+      "message": "Şifreli bir PDF'in şifresini kaldırın."
+   },
+   "11yao4u": {
+      "message": "Word, PowerPoint, Excel ve resim dosyalarını PDF'e veya tersi yönde dönüştürün."
+   },
+   "11yao7p": {
+      "message": "PDF'lerinizi görüntüleyin, düzenleyin, notlar ekleyin ve organize edin."
+   },
+   "11yao8n": {
+      "message": "PDF'inize sayfa numaraları ekleyin."
+   },
+   "120e7u5": {
+      "message": "veya bir dosyayı sürükleyip bırakın"
+   },
+   "12bijem": {
+      "message": "AI ile Özetle"
+   },
+   "12bikcl": {
+      "message": "Dosya seçin"
+   },
+   "12bikhi": {
+      "message": "Dosya seçin"
+   },
+   "12bikpq": {
+      "message": "Veya bir araçla çalışmaya başlayın"
+   },
+   "12bikry": {
+      "message": "YZ PDF Özetleyici"
+   },
+   "12bikv2": {
+      "message": "PDF'inizi birden fazla belgeye ayırın."
+   },
+   "12bikx8": {
+      "message": "Birleştir"
+   },
+   "12bikzn": {
+      "message": "Sıkıştır"
+   },
+   "12bil0r": {
+      "message": "Dönüştür"
+   },
+   "12bil27": {
+      "message": "PDF'ten resim dosyasına"
+   },
+   "12bil4a": {
+      "message": "Metni düzenle"
+   },
+   "12bil5v": {
+      "message": "PDF'ten Word'e"
+   },
+   "12bil78": {
+      "message": "İmzala"
+   },
+   "12bil7z": {
+      "message": "Daha fazla araç"
+   },
+   "12bil9j": {
+      "message": "Araçları Google arama sonuçlarında göster"
+   },
+   "12bila5": {
+      "message": "Google'da bir PDF aracı aradığınızda, belgenizi doğrudan arama sonucu alanında işleyebilirsiniz."
+   },
+   "12bilas": {
+      "message": "Uygulama tavsiyelerini göster"
+   },
+   "12bilbj": {
+      "message": "Araçları Chrome'un PDF görüntüleyicisinde göster"
+   },
+   "12bilbl": {
+      "message": "Böl"
+   },
+   "12bilbu": {
+      "message": "Chrome'un PDF görüntüleyicisinde bir PDF açtığınızda, Smallpdf araçlarına doğrudan görüntüleyiciden erişebilirsiniz."
+   },
+   "12bilcf": {
+      "message": "Sayfaları sil"
+   },
+   "12bilco": {
+      "message": "Chrome Ayarları"
+   },
+   "12bilcy": {
+      "message": "Smallpdf Web Sitesi"
+   },
+   "12bildu": {
+      "message": "Döndür"
+   },
+   "12bilee": {
+      "message": "Kilidi kaldır"
+   },
+   "12bilfg": {
+      "message": "Koru"
+   },
+   "12bilfo": {
+      "message": "YZ kullanarak PDF'nizi özetleyin veya onunla sohbet edin."
+   },
+   "12bilfz": {
+      "message": "PDF'ten Excel'e"
+   },
+   "12bilhn": {
+      "message": "PDF'ten PowerPoint’e"
+   },
+   "12bili5": {
+      "message": "Google'da ve diğer platformlarda yükleyebileceğiniz ek uygulamalara yönelik önerileri kapatın."
+   },
+   "12bilic": {
+      "message": "PDF kırpma aracımızla belgelerinizi kırpın ve düzeltin."
+   },
+   "12biliw": {
+      "message": "Chrome Web Mağazası"
+   },
+   "12bilj8": {
+      "message": "Sayfaları Numaralandırın"
+   },
+   "12bilk3": {
+      "message": "PDF Okuyucu"
+   },
+   "12bilm7": {
+      "message": "Karşıya yükleniyor..."
+   },
+   "12bilm8": {
+      "message": "Hassas bilgileri PDF'inizden kaldırın."
+   },
+   "12bilnj": {
+      "message": "Bu birkaç saniye sürebilir."
+   },
+   "12bilod": {
+      "message": "İptal"
+   },
+   "12bilqr": {
+      "message": "PDF'inizle sohbet edin ve dilediğiniz her şeyi sorun."
+   },
+   "12biltj": {
+      "message": "Chrome Eklentisi"
+   },
+   "12bilug": {
+      "message": "Bir araç seçin"
+   },
+   "12biluz": {
+      "message": "Devam"
+   },
+   "12bilvm": {
+      "message": "Baştan başla"
+   },
+   "12bim4n": {
+      "message": "\u003Cb>Smallpdf Workspace uygulaması\u003C/b> ile PDF araçlarına \u003Cb>Google Docs\u003C/b> ve \u003Cb>Gmail\u003C/b> içerisinden ulaşın!"
+   },
+   "12bimc8": {
+      "message": "Ücretsiz edinin"
+   },
+   "12bimem": {
+      "message": "\u003Cb>Smallpdf Workspace uygulaması\u003C/b> ile \u003Cb>Google Docs\u003C/b> ve \u003Cb>Gmail\u003C/b> içerisinden dönüştürün, birleştirin ve daha fazlasını yapın!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf—Sıkıştırın, imzalayın ve birleştirin"
+   },
+   "12bk4lc": {
+      "message": "PDF Kırpma"
+   },
+   "12bk4mb": {
+      "message": "PDF Redaksiyonu"
+   },
+   "12bk4my": {
+      "message": "YZ PDF Özetleyici"
+   },
+   "12bk4n8": {
+      "message": "PDF'inizle sohbet edin"
+   },
+   "12bk4nl": {
+      "message": "PDF Çevirmeni"
+   },
+   "12ca4j0": {
+      "message": "PDF'inizi düzenlenemez hale getirin"
+   },
+   "12ca7vl": {
+      "message": "sign.com & Smallpdf ile güçlendirilmiştir"
+   },
+   "12ctd3b": {
+      "message": "Smallpdf'ten daha fazla faydalanmak ister misiniz?"
+   },
+   "12ctd58": {
+      "message": "PDF'lerinizi Chrome'da görüntülerken PDF araçlarımızı kullanabilmek için dosya URL'lerine erişim izni verin."
+   },
+   "12ctd60": {
+      "message": "Ayarları Aç"
+   },
+   "12ctd7g": {
+      "message": "Bunu bilgisayarınızda kayıtlı olan PDF'ler için de etkinleştirin."
+   },
+   "12ctd81": {
+      "message": "Etkinleştir"
+   },
+   "12ctd8y": {
+      "message": "Devre dışı bırak"
+   },
+   "action_app_website": {
+      "message": "{app_name} İnternet Sitesi"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name} Ayarları"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name} İnternet Mağazası"
+   },
+   "action_convert_to": {
+      "message": "{file_type} dosyasına dönüştür"
+   },
+   "appDesc": {
+      "message": "Tarayıcıdan PDF sıkıştırma, dönüştürme, birleştirme, bölme, sohbet, e-imza ve düzenleme için kullanımı kolay PDF araçları."
+   },
+   "appName": {
+      "message": "Smallpdf—PDF Düzenleme, Dönüştürme, Sıkıştırma & YZ Özetleyici"
+   },
+   "cancel": {
+      "message": "İptal"
+   },
+   "compress": {
+      "message": "Sıkıştır"
+   },
+   "converter": {
+      "message": "Dönüştür"
+   },
+   "delete": {
+      "message": "Sayfaları sil"
+   },
+   "download": {
+      "message": "İndir"
+   },
+   "downloadCta": {
+      "message": "Onu şimdi indir"
+   },
+   "edit": {
+      "message": "Düzenle"
+   },
+   "error_try_later": {
+      "message": "Hay aksi! Bir şeyler ters gitti"
+   },
+   "excel": {
+      "message": "Excel'den PDF'e"
+   },
+   "extract": {
+      "message": "PDF'ten JPG'e"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Görüntü"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Görüntüler"
+   },
+   "file_type_generic_office": {
+      "message": "Büro"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF'ler"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG'ten PDF'e"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} ve {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} ve {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0}, ya da {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} ya da {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Birleştir"
+   },
+   "noInternetConnection": {
+      "message": "İnternet bağlantısı yok"
+   },
+   "okay": {
+      "message": "Tamam"
+   },
+   "options_extension_version": {
+      "message": "{browser_name} Eklentisi / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "{file_types} dosyalarının {browser_name} ile açılmasına imkan tanımak için {app_name} uygulamasının yerel dosya URL'lerine erişimine izin ver."
+   },
+   "options_setting_local_files_title": {
+      "message": "Yerel dosyalarda {app_name} eklentisini etkinleştir"
+   },
+   "options_setting_status_disabled": {
+      "message": "Devre dışı bırakıldı"
+   },
+   "pdf_to_excel": {
+      "message": "PDF'ten Excel'e"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF'ten PPT'ye"
+   },
+   "pdf_to_word": {
+      "message": "PDF'ten Word'a"
+   },
+   "please_try_again": {
+      "message": "Lütfen tekrar deneyin."
+   },
+   "ppt": {
+      "message": "PPT'den PDF'e"
+   },
+   "processingFailedMessage": {
+      "message": "Üzgünüz, dosyanı işlerken bir sorun oluştu"
+   },
+   "processingFailedTitle": {
+      "message": "İşleme başarısız oldu"
+   },
+   "protect": {
+      "message": "Koru"
+   },
+   "rotate": {
+      "message": "Döndür"
+   },
+   "search": {
+      "message": "Arama"
+   },
+   "serp_hide_button": {
+      "message": "Bunu tekrar gösterme"
+   },
+   "serp_powered_by": {
+      "message": "Smallpdf ile güçlendirilmiştir"
+   },
+   "sign": {
+      "message": "İmzala"
+   },
+   "split": {
+      "message": "Ayır"
+   },
+   "tools": {
+      "message": "Araçlar"
+   },
+   "try_again": {
+      "message": "Yeniden Dene"
+   },
+   "uh_something_wrong": {
+      "message": "Hay aksi! Bir şeyler ters gitti"
+   },
+   "unlock": {
+      "message": "Kilidini aç"
+   },
+   "uploadFailed": {
+      "message": "Üzgünüz, karşıya yüklemen başarısız oldu"
+   },
+   "uploading": {
+      "message": "Karşıya yükleniyor..."
+   },
+   "word": {
+      "message": "Word'ten PDF'e"
+   }
+}

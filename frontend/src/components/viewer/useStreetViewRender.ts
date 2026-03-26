@@ -1645,7 +1645,12 @@ async function collectArchetypeImages(
     // Try to find the archetype's thumbnail image
     let thumbnailUrl: string | null = null;
 
-    const archetypeId = entry.zone.properties?.archetype_id || entry.zone.properties?.subcategory;
+    const archetypeId = entry.zone.properties?.development_archetype_id
+      || entry.zone.properties?.road_archetype_id
+      || entry.zone.properties?.green_space_archetype_id
+      || entry.zone.properties?.plaza_archetype_id
+      || entry.zone.properties?.archetype_id
+      || entry.zone.properties?.subcategory;
     if (archetypeId) {
       // Look up the catalog entry for its thumbnail
       const catalogEntry = catalog.find(

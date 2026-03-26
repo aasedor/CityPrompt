@@ -1,0 +1,671 @@
+{
+   "113bx69": {
+      "message": "Test translation with a placeholder: {{placeholder_name}} and a styled element \u003Cstyled>Styled content\u003C/styled>"
+   },
+   "114rvhu": {
+      "message": "Logg inn på Smallpdf"
+   },
+   "114rvnf": {
+      "message": "ELLER"
+   },
+   "114rvpe": {
+      "message": "E-postadresse"
+   },
+   "114rvqv": {
+      "message": "Passord"
+   },
+   "114rvrt": {
+      "message": "Har du glemt passordet ditt?"
+   },
+   "114rvti": {
+      "message": "Logg inn"
+   },
+   "114rvvm": {
+      "message": "Har du ikke en konto ennå?"
+   },
+   "114rvyk": {
+      "message": "Opprett konto"
+   },
+   "114rw18": {
+      "message": "Konto"
+   },
+   "114rw2d": {
+      "message": "Prøv Smallpdf Pro"
+   },
+   "114rw3q": {
+      "message": "Kontoinnstillinger"
+   },
+   "114rw4o": {
+      "message": "Hjelp"
+   },
+   "114rw5s": {
+      "message": "Last ned apper"
+   },
+   "114rw6m": {
+      "message": "Logg ut"
+   },
+   "114rw86": {
+      "message": "Feil e-postadresse eller passord."
+   },
+   "114rwft": {
+      "message": "Vi kan ikke behandle denne filen. Prøv igjen."
+   },
+   "114rwo7": {
+      "message": "Filen din er passordbeskyttet"
+   },
+   "114rwpn": {
+      "message": "Fjern passordet og last opp filen på nytt."
+   },
+   "114rwrd": {
+      "message": "Å nei! Denne filen er ødelagt"
+   },
+   "114rwsa": {
+      "message": "Prøv igjen med en annen fil."
+   },
+   "114rwye": {
+      "message": "Er du sikker på at du vil avslutte?"
+   },
+   "114rwzh": {
+      "message": "Filen din vil bli slettet. Husk å laste den ned før du går!"
+   },
+   "114rx0l": {
+      "message": "Avslutt"
+   },
+   "114rx4t": {
+      "message": "Bli her"
+   },
+   "114rx78": {
+      "message": "Gi filen din nytt navn"
+   },
+   "114rx9b": {
+      "message": "Gi nytt navn"
+   },
+   "114rxav": {
+      "message": "Slipp filen her for å komme i gang"
+   },
+   "114rxc0": {
+      "message": "Legg til fil"
+   },
+   "114rxcw": {
+      "message": "Slipp filen din her"
+   },
+   "114rxhe": {
+      "message": "Filen din"
+   },
+   "114rxii": {
+      "message": "Filen din ble ikke lastet opp"
+   },
+   "114rxjj": {
+      "message": "Denne filtypen støttes ikke"
+   },
+   "114rxk1": {
+      "message": "Prøv igjen med en PDF-fil."
+   },
+   "114rxp1": {
+      "message": "Daglige gratisoppgaver som gjenstår"
+   },
+   "114rxqs": {
+      "message": "Eller begynn med et verktøy"
+   },
+   "114rxs1": {
+      "message": "Åpne et verktøy i nettappen"
+   },
+   "114rxzd": {
+      "message": "Bli en PDF-ninja!"
+   },
+   "114ry1m": {
+      "message": "Bli Pro – helt gratis!"
+   },
+   "114ry2l": {
+      "message": "Oppgrader til Pro og få glede av ubegrenset tilgang til dine favorittverktøy og mye mer!"
+   },
+   "114ry41": {
+      "message": "Vis PDF-ene hvem som er sjefen! Få tilgang til all verdens nyttige PDF-verktøy med vår 7-dagers gratis prøveperiode."
+   },
+   "114ry4i": {
+      "message": "Hva får du?"
+   },
+   "114ry60": {
+      "message": "Pro-verktøy og -funksjoner"
+   },
+   "114ry6y": {
+      "message": "Eksklusive Pro-verktøy og -funksjoner"
+   },
+   "114ry85": {
+      "message": "Sterk komprimering, konvertering fra PDF til Office, OCR og mer."
+   },
+   "114ry8l": {
+      "message": "Premium tilgang til Pro PDF-verktøy og -funksjoner."
+   },
+   "114ry9k": {
+      "message": "Null begrensninger"
+   },
+   "114ryam": {
+      "message": "Ubegrenset antall filer og oppgaver per dag. Nais!"
+   },
+   "114ryc1": {
+      "message": "Jobb på farten"
+   },
+   "114rycg": {
+      "message": "Jobb når som helst, hvor som helst"
+   },
+   "114ryd0": {
+      "message": "Premium tilgang til nettplattformen, skrivebordsprogrammet og mobilappen."
+   },
+   "114rydg": {
+      "message": "Lås opp alle plattformer og apper – fra mobil til skrivebord og web!"
+   },
+   "114rydy": {
+      "message": "Oppgrader kontoen din"
+   },
+   "114ryfe": {
+      "message": "Logg inn"
+   },
+   "114ryfx": {
+      "message": "Få {{trial_days}} dager gratis"
+   },
+   "114rylw": {
+      "message": "Nesten ferdig ...\\nHva med å ta en kaffe, klappe hunden eller tøye ut litt? ☕🐶"
+   },
+   "114rys4": {
+      "message": "Tilbake til start"
+   },
+   "114ryvl": {
+      "message": "Tilbake til verktøy"
+   },
+   "114rz0g": {
+      "message": "Velg komprimeringstype"
+   },
+   "114rz1n": {
+      "message": "Standard"
+   },
+   "114rz2h": {
+      "message": "Medium filstørrelse, høy kvalitet."
+   },
+   "114rz3e": {
+      "message": "Sterk"
+   },
+   "114rz44": {
+      "message": "Minste filstørrelse, god kvalitet."
+   },
+   "114rz68": {
+      "message": "Velg konverteringstype"
+   },
+   "114rz7c": {
+      "message": "Valg"
+   },
+   "114rz83": {
+      "message": "Med OCR"
+   },
+   "114rz8u": {
+      "message": "Skannede sider vil bli konvertert til et redigerbart Word-dokument. Formateringen kan endre seg."
+   },
+   "114rzly": {
+      "message": "Tilbake til konvertering"
+   },
+   "114rzmr": {
+      "message": "Skannede sider vil bli konvertert til et redigerbart Excel-dokument. Formateringen kan endre seg."
+   },
+   "114s0il": {
+      "message": "Last ned filen min automatisk"
+   },
+   "114s0jf": {
+      "message": "Vi laster ned filen din automatisk så snart den er ferdig behandlet."
+   },
+   "114s1u3": {
+      "message": "Konverter PDF-filen din til en PowerPoint-fil."
+   },
+   "114tq39": {
+      "message": "Konverter hele sider"
+   },
+   "114tq47": {
+      "message": "Trekk ut enkeltbilder"
+   },
+   "114tq8x": {
+      "message": "PDF til PowerPoint"
+   },
+   "1167iyh": {
+      "message": "For mange mislykkede forsøk. Sjekk påloggingsdetaljene og prøv igjen senere."
+   },
+   "11wp338": {
+      "message": "Rediger PDF"
+   },
+   "11wp39c": {
+      "message": "PDF til Word"
+   },
+   "11wp3g5": {
+      "message": "Komprimer PDF"
+   },
+   "11wp3gn": {
+      "message": "eSign PDF"
+   },
+   "11wp3j6": {
+      "message": "Slå sammen PDF"
+   },
+   "11wp3jn": {
+      "message": "Konverteringsprogram for PDF"
+   },
+   "11wp3k6": {
+      "message": "Flere PDF-verktøy"
+   },
+   "11wp3o4": {
+      "message": "Små pdf-verktøy"
+   },
+   "11yan2r": {
+      "message": "Reduser størrelsen på PDF-filen, bildet eller Microsoft Office-dokumenter."
+   },
+   "11yan3p": {
+      "message": "Rediger tekst, legg til anmerkninger, figurer og bilder, og organiser PDF-filer."
+   },
+   "11yan4l": {
+      "message": "Slå sammen flere dokumenter til én PDF."
+   },
+   "11yan5a": {
+      "message": "Vend én eller flere sider i PDF-filen."
+   },
+   "11yan62": {
+      "message": "Velg fil"
+   },
+   "11yany0": {
+      "message": "Sikker dokumentoverføring med TLS-kryptering"
+   },
+   "11yao0f": {
+      "message": "Slett en eller flere sider fra dokumentet."
+   },
+   "11yao16": {
+      "message": "Trekk ut spesifikke sider for å lagre som et eget dokument."
+   },
+   "11yao2j": {
+      "message": "E-signer enhver PDF-fil og be om signaturer fra andre."
+   },
+   "11yao3e": {
+      "message": "Legg til et passord for å sikre PDF-filen."
+   },
+   "11yao41": {
+      "message": "Fjern passord fra en kryptert PDF-fil."
+   },
+   "11yao4u": {
+      "message": "Konverter Word-, PowerPoint-, Excel- og bildefiler til og fra PDF."
+   },
+   "11yao7p": {
+      "message": "Se, rediger, annoter og organiser PDF-filer."
+   },
+   "11yao8n": {
+      "message": "Legg til sidetall i PDF-filen."
+   },
+   "120e7u5": {
+      "message": "eller slipp en fil her"
+   },
+   "12bijem": {
+      "message": "Oppsummer med KI"
+   },
+   "12bikcl": {
+      "message": "Velg fil"
+   },
+   "12bikhi": {
+      "message": "Velg fil"
+   },
+   "12bikpq": {
+      "message": "Eller begynn med et verktøy"
+   },
+   "12bikry": {
+      "message": "PDF-oppsummering med KI"
+   },
+   "12bikv2": {
+      "message": "Del opp PDF-filen til flere dokumenter."
+   },
+   "12bikx8": {
+      "message": "Slå sammen"
+   },
+   "12bikzn": {
+      "message": "Komprimeren"
+   },
+   "12bil0r": {
+      "message": "Konverter"
+   },
+   "12bil27": {
+      "message": "PDF til bilde"
+   },
+   "12bil4a": {
+      "message": "Rediger tekst"
+   },
+   "12bil5v": {
+      "message": "PDF til Word"
+   },
+   "12bil78": {
+      "message": "Signer"
+   },
+   "12bil7z": {
+      "message": "Flere verktøy"
+   },
+   "12bil9j": {
+      "message": "Vis verktøy i Google søkeresultater"
+   },
+   "12bila5": {
+      "message": "Når du søker etter et PDF-verktøy i Google, vil du kunne behandle dokumentet ditt innenfor søkeresultatet."
+   },
+   "12bilas": {
+      "message": "Vis app-anbefalinger"
+   },
+   "12bilbj": {
+      "message": "Vis verktøy i Chromes PDF-visning"
+   },
+   "12bilbl": {
+      "message": "Del opp"
+   },
+   "12bilbu": {
+      "message": "Når du åpner en PDF-fil i Chromes PDF-visning, får du tilgang til Smallpdfs verktøy i visningsprogrammet."
+   },
+   "12bilcf": {
+      "message": "Slett sider"
+   },
+   "12bilco": {
+      "message": "Chrome-innstillinger"
+   },
+   "12bilcy": {
+      "message": "Smallpdf-nettsted"
+   },
+   "12bildu": {
+      "message": "Roter"
+   },
+   "12bilee": {
+      "message": "Lås opp"
+   },
+   "12bilfg": {
+      "message": "Beskytt"
+   },
+   "12bilfo": {
+      "message": "Oppsummer eller chat med PDF-filen ved hjelp av KI."
+   },
+   "12bilfz": {
+      "message": "PDF til Excel"
+   },
+   "12bilhn": {
+      "message": "PDF til PowerPoint"
+   },
+   "12bili5": {
+      "message": "Slå av anbefalinger for andre apper du kan installere på Google og andre plattformer."
+   },
+   "12bilic": {
+      "message": "Beskjær og trim dokumentene dine med vårt PDF-beskjæringsprogram."
+   },
+   "12biliw": {
+      "message": "Chrome nettbutikk"
+   },
+   "12bilj8": {
+      "message": "Sidetall"
+   },
+   "12bilk3": {
+      "message": "PDF leser"
+   },
+   "12bilm7": {
+      "message": "Laster opp ..."
+   },
+   "12bilm8": {
+      "message": "Fjern sensitiv informasjon fra PDF-filen."
+   },
+   "12bilnj": {
+      "message": "Dette kan ta noen sekunder."
+   },
+   "12bilod": {
+      "message": "Avbryt"
+   },
+   "12bilqr": {
+      "message": "Chat med PDF-filen og spør om hva som helst."
+   },
+   "12biltj": {
+      "message": "Chrome-utvidelse"
+   },
+   "12bilug": {
+      "message": "Velg et verktøy"
+   },
+   "12biluz": {
+      "message": "Fortsett"
+   },
+   "12bilvm": {
+      "message": "Start på nytt"
+   },
+   "12bim4n": {
+      "message": "Få PDF-verktøy i \u003Cb>Google Docs\u003C/b> og \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimc8": {
+      "message": "Få gratis app"
+   },
+   "12bimem": {
+      "message": "Konverter, slå sammen og mer fra \u003Cb>Google Docs\u003C/b> og \u003Cb>Gmail\u003C/b> med \u003Cb>Smallpdf Workspace-appen\u003C/b>!"
+   },
+   "12bimj1": {
+      "message": "Smallpdf – komprimer, signer og slå sammen"
+   },
+   "12bk4lc": {
+      "message": "Beskjær PDF-filer"
+   },
+   "12bk4mb": {
+      "message": "Fjern innhold i PDF-filer"
+   },
+   "12bk4my": {
+      "message": "PDF-oppsummering med KI"
+   },
+   "12bk4n8": {
+      "message": "Chat med PDF"
+   },
+   "12bk4nl": {
+      "message": "Oversett PDF"
+   },
+   "12ca4j0": {
+      "message": "Gjør PDF-filen ikke-redigerbar"
+   },
+   "12ca7vl": {
+      "message": "Levert av sign.com og Smallpdf"
+   },
+   "12ctd3b": {
+      "message": "Vil du få mer ut av Smallpdf?"
+   },
+   "12ctd58": {
+      "message": "Gi tilgang til filenes URL for å bruke PDF-verktøyene våre når PDF-filene vises i Chrome."
+   },
+   "12ctd60": {
+      "message": "Åpne innstillinger"
+   },
+   "12ctd7g": {
+      "message": "Aktiver dette også for PDF-filer som er lagret på datamaskinen din."
+   },
+   "12ctd81": {
+      "message": "Aktiver"
+   },
+   "12ctd8y": {
+      "message": "Deaktiver"
+   },
+   "action_app_website": {
+      "message": "{app_name} nettsted"
+   },
+   "action_browser_settings": {
+      "message": "{browser_name}-innstillinger"
+   },
+   "action_chrome_web_store": {
+      "message": "{browser_name}-nettbutikk"
+   },
+   "action_convert_to": {
+      "message": "Konverter til {file_type}"
+   },
+   "appDesc": {
+      "message": "Brukervennlig PDF-verktøy for å komprimere, konvertere, slå sammen, chatte med, dele opp, e-signere og redigere PDF-filer."
+   },
+   "appName": {
+      "message": "Smallpdf – Rediger, konverter, komprimer og KI-oppsummer PDF"
+   },
+   "cancel": {
+      "message": "Avbryt"
+   },
+   "compress": {
+      "message": "Komprimer"
+   },
+   "converter": {
+      "message": "Konverter"
+   },
+   "delete": {
+      "message": "Slett sider"
+   },
+   "download": {
+      "message": "Last ned"
+   },
+   "downloadCta": {
+      "message": "Last den ned nå"
+   },
+   "edit": {
+      "message": "Rediger"
+   },
+   "error_try_later": {
+      "message": "Å nei! Noe gikk galt"
+   },
+   "excel": {
+      "message": "Excel til PDF"
+   },
+   "extract": {
+      "message": "PDF til JPG"
+   },
+   "file_type_excel": {
+      "message": "Excel"
+   },
+   "file_type_generic_image": {
+      "message": "Bilde"
+   },
+   "file_type_generic_image_plural": {
+      "message": "Bilder"
+   },
+   "file_type_generic_office": {
+      "message": "Office"
+   },
+   "file_type_pdf_plural": {
+      "message": "PDF-er"
+   },
+   "file_type_powerpoint_long": {
+      "message": "PowerPoint"
+   },
+   "file_type_word": {
+      "message": "Word"
+   },
+   "format_excel": {
+      "message": "Excel (.xlsx)"
+   },
+   "format_image": {
+      "message": "JPG (.jpg)"
+   },
+   "format_ppt": {
+      "message": "PowerPoint (.pptx)"
+   },
+   "format_word": {
+      "message": "Word (.docx)"
+   },
+   "jpg": {
+      "message": "JPG til PDF"
+   },
+   "list_conjunction_long_end": {
+      "message": "{0} og {1}"
+   },
+   "list_conjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_conjunction_long_pair": {
+      "message": "{0} og {1}"
+   },
+   "list_conjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_end": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_middle": {
+      "message": "{0}, {1}"
+   },
+   "list_disjunction_long_pair": {
+      "message": "{0} eller {1}"
+   },
+   "list_disjunction_long_start": {
+      "message": "{0}, {1}"
+   },
+   "merge": {
+      "message": "Slå sammen"
+   },
+   "noInternetConnection": {
+      "message": "Ingen internettforbindelse"
+   },
+   "okay": {
+      "message": "OK"
+   },
+   "options_extension_version": {
+      "message": "{browser_name}-utvidelse / {version}"
+   },
+   "options_setting_local_files_description": {
+      "message": "Gi {app_name} tilgang til nettadressene til dine lokale filer, så {file_types} kan åpnes i {browser_name}."
+   },
+   "options_setting_local_files_title": {
+      "message": "Aktiver {app_name}-utvidelsen på lokale filer"
+   },
+   "options_setting_status_disabled": {
+      "message": "Deaktivert"
+   },
+   "pdf_to_excel": {
+      "message": "PDF til Excel"
+   },
+   "pdf_to_ppt": {
+      "message": "PDF til PPT"
+   },
+   "pdf_to_word": {
+      "message": "PDF til Word"
+   },
+   "please_try_again": {
+      "message": "Prøv igjen."
+   },
+   "ppt": {
+      "message": "PPT til PDF"
+   },
+   "processingFailedMessage": {
+      "message": "Beklager, det oppstod et problem ved behandlingen av filen din"
+   },
+   "processingFailedTitle": {
+      "message": "Behandlingen mislyktes"
+   },
+   "protect": {
+      "message": "Beskytt"
+   },
+   "rotate": {
+      "message": "Roter"
+   },
+   "search": {
+      "message": "Søk"
+   },
+   "serp_hide_button": {
+      "message": "Ikke vis dette igjen"
+   },
+   "serp_powered_by": {
+      "message": "Levert av Smallpdf"
+   },
+   "sign": {
+      "message": "Signer"
+   },
+   "split": {
+      "message": "Del opp"
+   },
+   "tools": {
+      "message": "Verktøy"
+   },
+   "try_again": {
+      "message": "Prøv igjen"
+   },
+   "uh_something_wrong": {
+      "message": "Å nei! Noe gikk galt"
+   },
+   "unlock": {
+      "message": "Lås opp"
+   },
+   "uploadFailed": {
+      "message": "Beklager, opplastingen mislyktes"
+   },
+   "uploading": {
+      "message": "Laster opp ..."
+   },
+   "word": {
+      "message": "Word til PDF"
+   }
+}
