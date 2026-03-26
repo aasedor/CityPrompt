@@ -898,11 +898,30 @@ const resolveOptionCategory = (
                       return null;
                     })()}
                   </div>
-                  {archSuggestedArea != null && (
-                    <div className="flex justify-between">
-                      <span className="text-[10px] text-primary-950/40">Suggested area: ~{archSuggestedArea.toLocaleString()} m²</span>
-                    </div>
-                  )}
+                  {archSuggestedArea != null && (() => {
+                    const ratio = area / archSuggestedArea;
+                    const pct = Math.round((ratio - 1) * 100);
+                    const isClose = ratio >= 0.7 && ratio <= 1.5;
+                    return (
+                      <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5">
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-[10px] text-primary-950/50">Zone area</span>
+                          <span className="text-[11px] font-medium text-primary-950/70">{Math.round(area).toLocaleString()} m²</span>
+                        </div>
+                        <div className="flex justify-between items-baseline mt-0.5">
+                          <span className="text-[10px] text-primary-950/50">Suggested</span>
+                          <span className="text-[11px] font-medium text-primary-950/70">~{archSuggestedArea.toLocaleString()} m²</span>
+                        </div>
+                        <div className={`mt-1 text-[10px] font-medium ${isClose ? 'text-green-600' : 'text-orange-500'}`}>
+                          {isClose
+                            ? `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+                            : ratio < 0.7
+                              ? `Zone is small for this archetype (${pct}%) — render may look cramped`
+                              : `Zone is large for this archetype (+${pct}%) — render may look sparse`}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </>
               );
             })()}
@@ -1174,11 +1193,30 @@ const resolveOptionCategory = (
                       return null;
                     })()}
                   </div>
-                  {devSuggestedArea != null && (
-                    <div className="flex justify-between">
-                      <span className="text-[10px] text-primary-950/40">Suggested area: ~{devSuggestedArea.toLocaleString()} m²</span>
-                    </div>
-                  )}
+                  {devSuggestedArea != null && (() => {
+                    const ratio = area / devSuggestedArea;
+                    const pct = Math.round((ratio - 1) * 100);
+                    const isClose = ratio >= 0.7 && ratio <= 1.5;
+                    return (
+                      <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5">
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-[10px] text-primary-950/50">Zone area</span>
+                          <span className="text-[11px] font-medium text-primary-950/70">{Math.round(area).toLocaleString()} m²</span>
+                        </div>
+                        <div className="flex justify-between items-baseline mt-0.5">
+                          <span className="text-[10px] text-primary-950/50">Suggested</span>
+                          <span className="text-[11px] font-medium text-primary-950/70">~{devSuggestedArea.toLocaleString()} m²</span>
+                        </div>
+                        <div className={`mt-1 text-[10px] font-medium ${isClose ? 'text-green-600' : 'text-orange-500'}`}>
+                          {isClose
+                            ? `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+                            : ratio < 0.7
+                              ? `Zone is small for this archetype (${pct}%) — render may look cramped`
+                              : `Zone is large for this archetype (+${pct}%) — render may look sparse`}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </>
               );
             })()}
