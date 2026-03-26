@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Crown, Loader2, Search, AlertTriangle, ShieldAlert, Trash2 } from 'lucide-react';
+import { ArrowLeft, Crown, Loader2, Search, AlertTriangle, ShieldAlert, Trash2, Plus, RotateCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { AdminUser } from '@/services/api';
@@ -208,6 +208,35 @@ export function AdminUsersPage() {
                           {u.render_credits.toLocaleString()}
                         </span>
                         <span className="text-[10px] text-primary-950/30">/ 1,000</span>
+                        <button
+                          onClick={() => {
+                            const amt = prompt('Add tokens:', '500');
+                            if (amt && !isNaN(Number(amt)) && Number(amt) > 0) {
+                              adminApi.updateTokens(u.id, Number(amt), 'add').then((updated) => {
+                                setUsers((prev) => prev.map((x) => x.id === updated.id ? updated : x));
+                                toast.success(`Added ${amt} tokens to ${u.email}`);
+                              }).catch(() => toast.error('Failed to add tokens'));
+                            }
+                          }}
+                          className="rounded p-0.5 text-primary-950/40 hover:bg-emerald-500/15 hover:text-emerald-600"
+                          title="Add tokens"
+                        >
+                          <Plus size={13} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Reset ${u.email} to 1,000 tokens?`)) {
+                              adminApi.updateTokens(u.id, 1000, 'set').then((updated) => {
+                                setUsers((prev) => prev.map((x) => x.id === updated.id ? updated : x));
+                                toast.success(`Reset ${u.email} to 1,000 tokens`);
+                              }).catch(() => toast.error('Failed to reset tokens'));
+                            }
+                          }}
+                          className="rounded p-0.5 text-primary-950/40 hover:bg-primary-500/15 hover:text-primary-600"
+                          title="Reset to 1,000 tokens"
+                        >
+                          <RotateCcw size={13} />
+                        </button>
                       </div>
                     )}
                   </td>

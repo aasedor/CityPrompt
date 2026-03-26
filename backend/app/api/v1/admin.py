@@ -8,6 +8,7 @@ import uuid
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
+from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -234,6 +235,50 @@ async def delete_user(
 
     await db.delete(target)
     await db.flush()
+
+
+class TokenUpdateRequest(BaseModel):
+    """Set or add render tokens for a user."""
+    amount: int = Field(..., description="Token amount (positive to add, or exact value for reset)")
+    mode: str = Field("add", pattern="^(add|set)$", description="'add' to increment, 'set' to replace")
+
+
+@router.post("/users/{user_id}/tokens", response_model=AdminUserListResponse)
+async def update_user_tokens(
+    user_id: uuid.UUID,
+    req: TokenUpdateRequest,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Add tokens to or reset tokens for a user. Admin+ only."""
+    target = await db.get(User, user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if req.mode == "set":
+        target.render_credits = max(0, req.amount)
+    else:
+        target.render_credits = max(0, target.render_credits + req.amount)
+
+    db.add(target)
+    await db.flush()
+
+    count_result = await db.execute(
+        select(func.count(Project.id)).where(Project.owner_id == target.id)
+    )
+    project_count = count_result.scalar() or 0
+
+    return AdminUserListResponse(
+        id=target.id,
+        email=target.email,
+        full_name=target.full_name,
+        role=target.role,
+        is_active=target.is_active,
+        created_at=target.created_at,
+        last_login_at=target.last_login_at,
+        project_count=project_count,
+        render_credits=target.render_credits,
+    )
 
 
 @router.get("/buildings", response_model=list[AdminBuildingListResponse])

@@ -812,6 +812,11 @@ export const adminApi = {
     await api.delete(`/api/v1/admin/users/${userId}`);
   },
 
+  updateTokens: async (userId: string, amount: number, mode: 'add' | 'set' = 'add'): Promise<AdminUser> => {
+    const { data } = await api.post(`/api/v1/admin/users/${userId}/tokens`, { amount, mode });
+    return data;
+  },
+
   listAllBuildings: async (params?: {
     skip?: number;
     limit?: number;
