@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, Trash2, Eye, X } from 'lucide-react';
+import { ArrowLeft, ArrowLeftRight, Loader2, Search, Trash2, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { RenderAuditLog } from '@/services/api';
@@ -24,38 +24,99 @@ function useAuthImage(url: string | undefined | null) {
   return src;
 }
 
-function AuditImage({ url, label }: { url: string | null | undefined; label: string }) {
+function AuditImage({ url, label, onClick }: { url: string | null | undefined; label: string; onClick?: () => void }) {
   const src = useAuthImage(url);
-  const [lightbox, setLightbox] = useState(false);
-
   if (!src) return <span className="text-primary-950/30 text-xs">-</span>;
+  return (
+    <button
+      onClick={onClick}
+      className="group relative h-12 w-16 overflow-hidden rounded border border-primary-950/[0.1] bg-primary-950/[0.04] cursor-pointer"
+      title={`Click to view ${label}`}
+    >
+      <img src={src} alt={label} className="h-full w-full object-cover" />
+      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors">
+        <Eye size={14} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
+    </button>
+  );
+}
+
+function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }: { inputUrl: string | null | undefined; outputUrl: string | null | undefined; startOnOutput?: boolean; onClose: () => void }) {
+  const [showOutput, setShowOutput] = useState(startOnOutput);
+  const inputSrc = useAuthImage(inputUrl);
+  const outputSrc = useAuthImage(outputUrl);
+  const currentSrc = showOutput ? outputSrc : inputSrc;
+  const label = showOutput ? 'Output (render)' : 'Input (screenshot)';
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') setShowOutput(false);
+      else if (e.key === 'ArrowRight') setShowOutput(true);
+      else if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+  if (!currentSrc) return null;
 
   return (
-    <>
-      <button
-        onClick={() => setLightbox(true)}
-        className="group relative h-12 w-16 overflow-hidden rounded border border-primary-950/[0.1] bg-primary-950/[0.04]"
-      >
-        <img src={src} alt={label} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors">
-          <Eye size={14} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-        </div>
-      </button>
-      {lightbox && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={() => setLightbox(false)}>
-          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={onClose}>
+      <div className="relative flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute -right-3 -top-3 z-10 rounded-full bg-white p-1.5 shadow-lg hover:bg-gray-100">
+          <X size={16} />
+        </button>
+
+        <div className="relative">
+          <img src={currentSrc} alt={label} className="max-h-[80vh] max-w-[85vw] rounded-lg shadow-2xl" />
+
+          {/* Left arrow */}
+          {inputSrc && (
             <button
-              onClick={() => setLightbox(false)}
-              className="absolute -right-3 -top-3 rounded-full bg-white p-1.5 shadow-lg hover:bg-gray-100"
+              onClick={() => setShowOutput(false)}
+              className={`absolute left-3 top-1/2 -translate-y-1/2 rounded-full p-2 transition-all ${
+                !showOutput ? 'bg-white text-primary-950 shadow-lg' : 'bg-black/40 text-white/70 hover:bg-black/60 hover:text-white'
+              }`}
             >
-              <X size={16} />
+              <ChevronLeft size={20} />
             </button>
-            <img src={src} alt={label} className="max-h-[85vh] max-w-[85vw] rounded-lg shadow-2xl" />
-            <p className="mt-2 text-center text-sm text-white/70">{label}</p>
-          </div>
+          )}
+
+          {/* Right arrow */}
+          {outputSrc && (
+            <button
+              onClick={() => setShowOutput(true)}
+              className={`absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-2 transition-all ${
+                showOutput ? 'bg-white text-primary-950 shadow-lg' : 'bg-black/40 text-white/70 hover:bg-black/60 hover:text-white'
+              }`}
+            >
+              <ChevronRight size={20} />
+            </button>
+          )}
         </div>
-      )}
-    </>
+
+        <div className="mt-3 flex items-center gap-3">
+          <button
+            onClick={() => setShowOutput(false)}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+              !showOutput ? 'bg-white text-primary-950' : 'bg-white/10 text-white/60 hover:text-white'
+            }`}
+          >
+            Input
+          </button>
+          <ArrowLeftRight size={14} className="text-white/40" />
+          <button
+            onClick={() => setShowOutput(true)}
+            className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+              showOutput ? 'bg-white text-primary-950' : 'bg-white/10 text-white/60 hover:text-white'
+            }`}
+          >
+            Output
+          </button>
+        </div>
+        <p className="mt-1 text-xs text-white/40">Use arrow keys to switch</p>
+      </div>
+    </div>
   );
 }
 
@@ -64,6 +125,8 @@ export function AdminRenderLogsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [compareLog, setCompareLog] = useState<RenderAuditLog | null>(null);
+  const [compareStartOutput, setCompareStartOutput] = useState(false);
 
   const fetchLogs = useCallback(async () => {
     setLoading(true);
@@ -171,8 +234,7 @@ export function AdminRenderLogsPage() {
                 <th className="px-3 py-3">User</th>
                 <th className="px-3 py-3">Model</th>
                 <th className="px-3 py-3">Tokens</th>
-                <th className="px-3 py-3">Input</th>
-                <th className="px-3 py-3">Output</th>
+                <th className="px-3 py-3">Preview</th>
                 <th className="px-3 py-3">Prompt</th>
                 <th className="px-3 py-3">Time</th>
               </tr>
@@ -194,9 +256,13 @@ export function AdminRenderLogsPage() {
                   </td>
                   <td className="px-3 py-3 text-primary-950/50">{log.tokens_spent}</td>
                   <td className="px-3 py-2">
-                    <AuditImage url={log.input_image_url} label="Input screenshot" />
+                    <div className="flex items-center gap-1.5">
+                    <AuditImage url={log.input_image_url} label="Input" onClick={() => { setCompareStartOutput(false); setCompareLog(log); }} />
+                    <AuditImage url={log.output_image_url} label="Output" onClick={() => { setCompareStartOutput(true); setCompareLog(log); }} />
+                    </div>
                   </td>
-                  <td className="px-3 py-2">
+                  {/* removed separate output column */}
+                  <td className="px-3 py-2 hidden">
                     <AuditImage url={log.output_image_url} label="Render output" />
                   </td>
                   <td className="px-3 py-3 max-w-[200px]">
@@ -212,6 +278,15 @@ export function AdminRenderLogsPage() {
             </tbody>
           </table>
         </div>
+      )}
+
+      {compareLog && (
+        <CompareLightbox
+          inputUrl={compareLog.input_image_url}
+          outputUrl={compareLog.output_image_url}
+          startOnOutput={compareStartOutput}
+          onClose={() => setCompareLog(null)}
+        />
       )}
     </div>
   );
