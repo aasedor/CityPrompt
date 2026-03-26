@@ -696,6 +696,27 @@ function describeZoneForStreetView(
  * background, left / center / right) so the generative model can compose
  * the scene accurately.
  */
+/**
+ * Determine what type of zone the pegman is standing inside.
+ * Returns 'park', 'water', 'street', or 'default'.
+ */
+export function detectPegmanContext(
+  pegmanPos: [number, number],
+  zones: ZoneWithDistance[],
+): 'park' | 'water' | 'street' | 'default' {
+  for (const z of zones) {
+    const coords = z.zone.coordinates as [number, number][] | undefined;
+    if (!coords || coords.length < 3) continue;
+    if (pointInPolygon(pegmanPos, coords)) {
+      const zt = z.zone.zone_type;
+      if (zt === 'green_space' || zt === 'park') return 'park';
+      if (zt === 'water') return 'water';
+      if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return 'street';
+    }
+  }
+  return 'default';
+}
+
 export function buildStreetViewPrompt(
   _pegmanPos: [number, number],
   angleDeg: number,
@@ -704,6 +725,7 @@ export function buildStreetViewPrompt(
 ): string {
   const direction = compassDirection(angleDeg);
   const lines: string[] = [];
+  const pegmanContext = detectPegmanContext(_pegmanPos, visibleZones);
 
   // ─── Style instruction FIRST — Gemini weights earlier instructions more heavily ───
   if (styleModifier) {
@@ -741,10 +763,15 @@ export function buildStreetViewPrompt(
     `${streetCount} street/path(s). Render ONLY these elements. Do not add any additional structures.`,
   );
 
-  // ─── CLAUSE 3: VOID DEFINITION (semantic negative) ───
+  // ─── CLAUSE 3: VOID DEFINITION (context-aware) ───
+  const voidSurface = pegmanContext === 'park'
+    ? 'a continuous, manicured grass lawn with scattered mature trees and natural ground cover'
+    : pegmanContext === 'water'
+    ? 'a calm, reflective water surface with natural shoreline vegetation'
+    : 'a flat, unbroken, deserted concrete pavement surface';
   lines.push(
-    `VOID DEFINITION: All space between the defined zones consists of a flat, unbroken, ` +
-    `deserted concrete pavement surface. The background behind all structures consists solely ` +
+    `VOID DEFINITION: All space between the defined zones consists of ${voidSurface}. ` +
+    `The background behind all structures consists solely ` +
     `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is a continuous ` +
     `atmospheric gradient with no additional towers, buildings, or structures on the horizon.`,
   );
@@ -771,7 +798,8 @@ export function buildStreetViewPrompt(
     `PERSPECTIVE GRID LAYOUT: 3-Tier Depth Frustum (Foreground, Midground, Background).`,
   );
   lines.push(
-    `CAMERA PARAMETERS: Street-level perspective, camera height fixed at exactly 1.7 meters, ` +
+    `CAMERA PARAMETERS: ${pegmanContext === 'park' ? 'Park pathway' : pegmanContext === 'water' ? 'Waterfront promenade' : 'Street-level'} perspective, ` +
+    `camera height fixed at exactly 1.7 meters, ` +
     `looking ${direction}. 50mm lens, f/8 aperture, deep focus. 16:9 wide panoramic frame.`,
   );
 
@@ -805,7 +833,13 @@ export function buildStreetViewPrompt(
     });
     lines.push(`Content Assignment:\n${fgDescriptions.join('\n')}`);
   } else {
-    lines.push(`Content Assignment: Paved sidewalk and street extending into the scene with curbs and street trees.`);
+    lines.push(`Content Assignment: ${
+      pegmanContext === 'park'
+        ? 'Lush grass lawn with a winding stone pathway, mature trees, and planted garden beds extending into the scene.'
+        : pegmanContext === 'water'
+        ? 'Natural shoreline with reeds, smooth stones, and a wooden boardwalk extending into the scene.'
+        : 'Paved sidewalk and street extending into the scene with curbs and street trees.'
+    }`);
   }
   lines.push(
     `Optical Effect: Sharp, high-contrast resolution. Every material texture (brick joints, glass reflections, ` +
@@ -868,8 +902,15 @@ export function buildStreetViewPrompt(
   // ─── GROUND PLANE ───
   lines.push(
     `═══ GROUND PLANE ═══\n` +
-    `Paved sidewalk and street in the immediate foreground with realistic curbs, utility poles, ` +
-    `and street trees. The ground plane recedes naturally toward the horizon using one-point ` +
+    (pegmanContext === 'park'
+      ? `Manicured grass lawn and winding gravel or stone pathways in the immediate foreground, ` +
+        `with mature trees, flower beds, and park benches. `
+      : pegmanContext === 'water'
+      ? `Wooden boardwalk or natural stone shoreline in the immediate foreground, ` +
+        `with reeds, smooth rocks, and water lapping at the edges. `
+      : `Paved sidewalk and street in the immediate foreground with realistic curbs, utility poles, ` +
+        `and street trees. `) +
+    `The ground plane recedes naturally toward the horizon using one-point ` +
     `perspective, visually connecting all depth planes.`,
   );
 
@@ -919,8 +960,11 @@ export function buildStreetViewPrompt(
     );
     lines.push(
       `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
-      `with pristine, uninhabited surfaces. All streets and pathways are perfectly unobstructed ` +
-      `with clean, unmarked surfaces. The image is a pure architectural illustration.`,
+      `with pristine, uninhabited surfaces. ${
+        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
+        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
+        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
+      } The image is a pure architectural illustration.`,
     );
   } else {
     lines.push(
@@ -930,8 +974,11 @@ export function buildStreetViewPrompt(
     );
     lines.push(
       `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
-      `with pristine, uninhabited surfaces. All streets and pathways are perfectly unobstructed ` +
-      `with clean, unmarked surfaces.`,
+      `with pristine, uninhabited surfaces. ${
+        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
+        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
+        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
+      }`,
     );
   }
 
@@ -1676,7 +1723,9 @@ export async function generateStreetView(
     );
   }
 
-  // 4. Build SCHEMA-style prompt
+  // 4. Build SCHEMA-style prompt (context-aware: park/water/street)
+  const pegmanCtx = detectPegmanContext(pegmanPos, sorted);
+  console.log(`[StreetView] Pegman context: ${pegmanCtx} (prompt will adapt ground plane accordingly)`);
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
   console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
