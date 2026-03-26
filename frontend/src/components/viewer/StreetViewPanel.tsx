@@ -23,6 +23,16 @@ const STREET_VIEW_STYLES = [
     prompt: 'Hyper-photorealistic street-level architectural visualization. Camera positioned at exact human eye-level using a 35mm prime lens at f/8 aperture ensuring deep focus and edge-to-edge sharpness. Golden hour on a clear day with warm low-angle directional sunlight casting long crisp high-contrast shadows across the sidewalk. Subtle hyper-realistic environmental details: specular reflections of adjacent buildings visible in glass facades, slight atmospheric haze, photorealistic street trees. Rendered in the style of Unreal Engine 5 with path-traced global illumination, 8K resolution, architectural digest photography.',
   },
   {
+    id: 'photomontage',
+    label: 'Montage',
+    prompt: 'Professional architectural photomontage at street level, indistinguishable from a real photograph taken by a surveyor documenting an existing building. Shot on a Canon EOS R5 with a 35mm prime lens at f/8, ISO 200, from a tripod at exactly 1.6 meters height. The proposed building appears as if it has existed on this site for 1-2 years -- subtle concrete dust at the base, minor rainwater staining below window reveals, fingerprints and smudges on ground-floor entrance glass, worn threshold stones at doorways. The building sits within completely real street context: existing pavement with authentic repair patches and gum stains, real street furniture, actual adjacent buildings with their genuine patina and signage. Reflections in the new building ground-floor glazing show the actual street scene opposite including existing buildings and parked vehicles. Shadows cast by the new building fall correctly onto the real pavement and neighbouring facades matching the sun position. Slight depth of field -- building in sharp focus, background softening naturally beyond 80 meters. Overcast-bright sky with soft diffused light eliminating harsh shadows, typical of UK planning verified view photography. Natural sensor noise at ISO 200, subtle lens barrel distortion at frame edges. This is a planning application verified view, not an architectural marketing image.',
+  },
+  {
+    id: 'atmospheric',
+    label: 'Atmospheric',
+    prompt: 'Cinematic street-level architectural photograph emphasizing dramatic atmospheric conditions and emotional lighting. Camera at human eye height, 50mm lens, f/2.8 with shallow depth of field -- foreground architectural details tack-sharp while the distant streetscape dissolves into soft atmospheric bokeh. The scene is captured during blue hour, approximately 20 minutes after sunset. The sky transitions from deep indigo overhead through bands of magenta and burnt orange at the horizon. All ambient exterior light is cool blue-violet while interior lights glow intensely warm amber and gold through floor-to-ceiling glazing, creating strong warm-cool colour temperature contrast that defines every window bay and entrance. Recent rainfall has left the entire street surface wet -- pavement, sidewalks, and plaza surfaces act as dark mirrors reflecting the glowing building facades, the coloured sky gradient, and the amber pools of light spilling from ground-floor retail. Shallow puddles collected in slight pavement depressions create concentrated reflections. Subtle volumetric moisture visible in the air around exterior light sources, creating soft haloes and gentle god rays where interior light spills outward through entrance lobbies. Building materials respond to the wet conditions -- concrete darkened two shades, brushed stainless steel panels showing streaky water rivulets, timber cladding saturated to a richer tone. Atmospheric perspective compresses the background -- distant buildings reduced to cool blue-grey silhouettes with pinpoints of warm window light. Thin wisps of low cloud or mist drifting at rooftop level. The mood is contemplative, cinematic, and deeply atmospheric -- this is an award-winning architectural photograph, not a technical documentation image.',
+  },
+  {
     id: 'watercolour',
     label: 'Watercolour',
     prompt: 'A beautiful, evocative architectural watercolour painting on rough cold-pressed watercolour paper. The artistic style is intentionally loose, expressive, and highly atmospheric, heavily utilizing traditional wet-on-wet painting techniques with visible fluid brushstrokes and natural unpredictable pigment bleeds at the edges of forms. Architecture outlined very loosely with delicate jittery black ink pen linework mimicking a masterful ink and wash architectural sketch. Colour palette of highly translucent luminous pastels — soft ochre and raw sienna for stone and facades, muted atmospheric cyan for sky, sap green and viridian for foliage, concentrated splashes of colour on awnings and signage to draw the eye. Lighting is bright and ethereal, leaving generous amounts of stark white negative space on the textured paper to represent glaring sunlight — the paper itself creates the highlights since watercolourists cannot paint white. Pigment granulation visible in shadow areas. Foreground facades rendered with tighter detail, background elements dissolve into soft suggestive washes. Masterful traditional media, concept art, architectural sketch.',
@@ -104,8 +114,11 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
       }
 
       const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
-      const styleModifier = styleObj && styleObj.id !== 'photorealistic'
+      const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric'];
+      const styleModifier = styleObj && !PHOTO_VARIANT_STYLES.includes(styleObj.id)
         ? `RENDER STYLE: ${styleObj.prompt}`
+        : styleObj && styleObj.id !== 'photorealistic'
+        ? `PHOTO STYLE: ${styleObj.prompt}`
         : undefined;
 
       const res = await generateStreetView(

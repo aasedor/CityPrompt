@@ -729,11 +729,21 @@ export function buildStreetViewPrompt(
 
   // ─── Style instruction FIRST — Gemini weights earlier instructions more heavily ───
   if (styleModifier) {
-    lines.push(
-      `MANDATORY OUTPUT STYLE: ${styleModifier}\n` +
-      `This is NOT a photograph. The entire output image MUST be rendered in the artistic style described above. ` +
-      `Every element — buildings, landscape, sky, ground — must be rendered in this style with zero photorealistic elements.`,
-    );
+    if (styleModifier.startsWith('PHOTO STYLE:')) {
+      // Photorealistic variants (photomontage, atmospheric) — keep photographic, no "not a photograph"
+      lines.push(
+        `MANDATORY PHOTOGRAPHIC STYLE: ${styleModifier.replace('PHOTO STYLE: ', '')}\n` +
+        `This IS a photograph. Apply the photographic style described above to every element. ` +
+        `Maintain full photorealistic quality with the specific camera, lighting, and atmospheric conditions specified.`,
+      );
+    } else {
+      // Artistic styles — override to non-photorealistic
+      lines.push(
+        `MANDATORY OUTPUT STYLE: ${styleModifier}\n` +
+        `This is NOT a photograph. The entire output image MUST be rendered in the artistic style described above. ` +
+        `Every element — buildings, landscape, sky, ground — must be rendered in this style with zero photorealistic elements.`,
+      );
+    }
   }
 
   // ─── SCHEMA-style perspective grid prompt ───
@@ -953,7 +963,21 @@ export function buildStreetViewPrompt(
   }
 
   // Closing style + prohibitions
-  if (styleModifier) {
+  if (styleModifier && styleModifier.startsWith('PHOTO STYLE:')) {
+    // Photorealistic variants — keep photographic language
+    lines.push(
+      `FINAL REMINDER: Maintain the specific photographic style, camera parameters, and atmospheric conditions ` +
+      `specified at the top of this prompt. This must look like a real photograph, not a CG render.`,
+    );
+    lines.push(
+      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
+      `with pristine, uninhabited surfaces. ${
+        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
+        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
+        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
+      }`,
+    );
+  } else if (styleModifier) {
     lines.push(
       `FINAL REMINDER: The entire image MUST be in the artistic style specified at the top of this prompt. ` +
       `Apply the artistic medium consistently to every element including buildings, landscape, and sky.`,

@@ -304,7 +304,7 @@
       "minFloors": 2,
       "maxFloors": 5,
       "suggestedAreaSqm": 5000,
-      "developmentType": "institutional"
+      "developmentType": "institutional_education"
     },
     {
       "id": "brownstone_rowhouse_frontage",
@@ -8637,7 +8637,7 @@
       "minFloors": 3,
       "maxFloors": 12,
       "suggestedAreaSqm": 15000,
-      "developmentType": "institutional"
+      "developmentType": "institutional_health"
     },
     {
       "id": "functionalist_healthcare",
@@ -8762,7 +8762,7 @@
       "minFloors": 3,
       "maxFloors": 10,
       "suggestedAreaSqm": 20000,
-      "developmentType": "institutional"
+      "developmentType": "institutional_health"
     },
     {
       "id": "biophilic_healthcare",
@@ -8887,7 +8887,7 @@
       "minFloors": 2,
       "maxFloors": 6,
       "suggestedAreaSqm": 12000,
-      "developmentType": "institutional"
+      "developmentType": "institutional_health"
     },
     {
       "id": "daylight_factory",
@@ -9012,7 +9012,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 5000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_light"
     },
     {
       "id": "industrial_park_modernism",
@@ -9137,7 +9137,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 4000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_light"
     },
     {
       "id": "art_deco_industrial",
@@ -9262,7 +9262,7 @@
       "minFloors": 1,
       "maxFloors": 4,
       "suggestedAreaSqm": 4000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_light"
     },
     {
       "id": "functionalist_brick_industrial",
@@ -9758,7 +9758,7 @@
       "minFloors": 1,
       "maxFloors": 10,
       "suggestedAreaSqm": 20000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_heavy"
     },
     {
       "id": "brutalist_utility_heavy_industrial",
@@ -9882,7 +9882,7 @@
       "minFloors": 1,
       "maxFloors": 6,
       "suggestedAreaSqm": 15000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_heavy"
     },
     {
       "id": "early_20c_megastructure_industrial",
@@ -10006,7 +10006,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 25000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_heavy"
     },
     {
       "id": "romanesque_revival_warehouse",
@@ -10130,7 +10130,7 @@
       "minFloors": 3,
       "maxFloors": 7,
       "suggestedAreaSqm": 8000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_warehouse"
     },
     {
       "id": "midcentury_distribution_warehouse",
@@ -10254,7 +10254,7 @@
       "minFloors": 1,
       "maxFloors": 2,
       "suggestedAreaSqm": 6000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_warehouse"
     },
     {
       "id": "modern_bigbox_warehouse",
@@ -10378,7 +10378,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 30000,
-      "developmentType": "industrial"
+      "developmentType": "industrial_warehouse"
     },
     {
       "id": "parkitecture_recreational",
@@ -10626,7 +10626,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 4000,
-      "developmentType": "recreational"
+      "developmentType": "recreational_centre"
     },
     {
       "id": "postmodern_rec_centre",
@@ -10750,7 +10750,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 3500,
-      "developmentType": "recreational"
+      "developmentType": "recreational_centre"
     },
     {
       "id": "contemporary_sustainable_rec_centre",
@@ -10874,7 +10874,7 @@
       "minFloors": 1,
       "maxFloors": 3,
       "suggestedAreaSqm": 4500,
-      "developmentType": "recreational"
+      "developmentType": "recreational_centre"
     },
     {
       "id": "monumental_antiquity_arena",
@@ -10998,7 +10998,7 @@
       "minFloors": 2,
       "maxFloors": 6,
       "suggestedAreaSqm": 25000,
-      "developmentType": "recreational"
+      "developmentType": "sports_arena"
     },
     {
       "id": "high_tech_arena",
@@ -11122,7 +11122,7 @@
       "minFloors": 2,
       "maxFloors": 5,
       "suggestedAreaSqm": 30000,
-      "developmentType": "recreational"
+      "developmentType": "sports_arena"
     },
     {
       "id": "concrete_megastructure_arena",
@@ -11246,7 +11246,7 @@
       "minFloors": 2,
       "maxFloors": 5,
       "suggestedAreaSqm": 35000,
-      "developmentType": "recreational"
+      "developmentType": "sports_arena"
     },
     {
       "id": "chateauesque_hotel",
@@ -11370,7 +11370,7 @@
       "minFloors": 4,
       "maxFloors": 12,
       "suggestedAreaSqm": 15000,
-      "developmentType": "hospitality"
+      "developmentType": "hotel"
     },
     {
       "id": "resort_modernism_hotel",
@@ -11494,7 +11494,7 @@
       "minFloors": 1,
       "maxFloors": 6,
       "suggestedAreaSqm": 8000,
-      "developmentType": "hospitality"
+      "developmentType": "hotel"
     },
     {
       "id": "corporate_tower_hotel",
@@ -11618,7 +11618,7 @@
       "minFloors": 10,
       "maxFloors": 50,
       "suggestedAreaSqm": 20000,
-      "developmentType": "hospitality"
+      "developmentType": "hotel"
     },
     {
       "id": "historic_grand_station",

@@ -154,6 +154,22 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'cartoon, illustration, sketch, painting, artistic, stylized, watercolor, pencil, monochrome, low quality, blurry, text, watermark, people, pedestrians, human figures',
   },
   {
+    id: 'photomontage',
+    label: 'Photomontage',
+    strength: 0.65,
+    prompt:
+      'Professional architectural photomontage indistinguishable from a real drone photograph. Shot on a DJI Mavic 3 Enterprise at 60 meters altitude, angled downward at approximately 40 degrees, captured with a Hasselblad 4/3 CMOS sensor and 24mm equivalent lens at f/5.6, ISO 100. The proposed development appears as if fully constructed and occupied within the existing site context. Lighting, shadow direction, and color temperature precisely match the surrounding real environment. Subtle atmospheric haze increases with distance from the camera, reducing contrast and shifting distant elements toward blue-grey. Building materials show realistic weathering appropriate to a structure 1-2 years post-completion -- faint water staining below window sills, minor dust accumulation on ledges, natural patina on metal surfaces. Rooftop mechanical equipment, safety railings, and drainage infrastructure visible. Surrounding context includes real parked vehicles, existing tree canopy, neighboring rooftops with typical rooftop clutter. Natural lens vignetting at frame edges, slight chromatic aberration on high-contrast edges. No pristine CG perfection -- this must read as documentary aerial photography of an existing place.',
+    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, CGI look, perfect pristine surfaces, floating buildings, perspective distortion, unrealistic shadows, low quality, blurry, text, watermark',
+  },
+  {
+    id: 'atmospheric',
+    label: 'Atmospheric',
+    strength: 0.65,
+    prompt:
+      'Cinematic aerial architectural photograph with dramatic atmospheric conditions. Shot from 80 meters altitude at an oblique angle during the final minutes of golden hour. Low-angle warm sunlight rakes across rooftops and facade surfaces, casting extremely long shadows that stretch across streets and neighbouring properties, revealing every setback, cornice, and massing transition. The sky dominates the upper third of the frame -- towering cumulus clouds lit amber and rose on their undersides, transitioning to deep blue-grey overhead with patches of clear sky breaking through. Subtle ground-level haze softens the base of buildings and creates distinct atmospheric depth layers -- foreground sharp and warm-toned, midground slightly desaturated, background fading to cool blue-grey. Wet surfaces from recent rainfall create mirror-like reflections on rooftops, roads, and plaza surfaces, doubling the warm sky colours on the ground plane. Pools of standing water on flat roofs catch and reflect the dramatic sky. Interior lights beginning to glow warm amber through windows as twilight approaches, contrasting against the cool exterior shadows. Lush vegetation rendered with individual leaf detail, canopy tops catching the last golden light while understory sits in deep cool shadow. Photographed on medium format digital with exceptional dynamic range capturing both bright cloud highlights and deep shadow detail simultaneously.',
+    negative: 'flat lighting, generic blue sky, midday sun, sterile, clinical, uniform exposure, low quality, blurry, text, watermark, people, pedestrians',
+  },
+  {
     id: 'massing-study',
     label: 'Massing Study',
     strength: 0.65,
@@ -234,6 +250,16 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'photorealistic',
     label: 'Photo Realistic',
     prompt: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
+  },
+  photomontage: {
+    id: 'photomontage',
+    label: 'Photomontage',
+    prompt: 'Professional architectural photomontage indistinguishable from a real drone photograph. DJI Mavic 3 at 60m altitude, Hasselblad sensor, 24mm lens f/5.6. Proposed development appears fully constructed within existing site context. Lighting and shadows match surroundings. Atmospheric haze increasing with distance. Realistic material weathering 1-2 years post-completion. Natural lens vignetting and chromatic aberration. Documentary aerial photography of an existing place.',
+  },
+  atmospheric: {
+    id: 'atmospheric',
+    label: 'Atmospheric',
+    prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose, transitioning to deep blue-grey overhead. Ground-level haze creating atmospheric depth layers. Wet surfaces from recent rainfall with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
   },
   'massing-study': {
     id: 'massing-study',
