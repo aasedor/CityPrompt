@@ -3117,7 +3117,7 @@ function LayoutRoadMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (road.centerline.length < 2) return null;
+    if (!road.centerline || road.centerline.length < 2) return null;
 
     const mLon = metersPerDegLon(origin.lat);
     const halfW = road.width_m / 2;
@@ -3187,7 +3187,7 @@ function LayoutGreenMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (greenSpace.polygon.length < 3) return null;
+    if (!greenSpace.polygon || greenSpace.polygon.length < 3) return null;
 
     const mLon = metersPerDegLon(origin.lat);
 
