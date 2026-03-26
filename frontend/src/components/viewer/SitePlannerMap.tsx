@@ -1170,9 +1170,9 @@ export function SitePlannerMap({
         }
       }
 
-      // Check zone body for zone dragging
+      // Check zone body for zone dragging (include extrusions so buildings can be dragged)
       const zoneFeatures = map.queryRenderedFeatures(e.point, {
-        layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
+        layers: ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l)),
       });
       if (zoneFeatures.length > 0) {
         const zoneId = pickSmallestFeature(zoneFeatures).properties?.id as string;
@@ -1295,9 +1295,9 @@ export function SitePlannerMap({
           map.getCanvas().style.cursor = 'crosshair';
           return;
         }
-        // Check if hovering zone body
+        // Check if hovering zone body (include extrusions for buildings)
         const zoneHits = map.queryRenderedFeatures(e.point, {
-          layers: ['site-zones-boundary-fill', 'site-zones-fill'].filter(l => map.getLayer(l)),
+          layers: ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l)),
         });
         if (zoneHits.length > 0) {
           map.getCanvas().style.cursor = 'grab';

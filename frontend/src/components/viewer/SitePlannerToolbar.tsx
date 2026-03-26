@@ -21,13 +21,6 @@ interface CoreToolDef {
 
 const CORE_TOOLS: CoreToolDef[] = [
   {
-    id: 'siteBoundary',
-    label: 'Site Boundary',
-    drawType: 'Polygon',
-    description: 'Define the generation area',
-    icon: siteBoundaryIcon,
-  },
-  {
     id: 'buildings',
     label: 'Buildings',
     drawType: 'Polygon',
@@ -47,6 +40,13 @@ const CORE_TOOLS: CoreToolDef[] = [
     drawType: 'Polygon',
     description: 'Create park and plaza public spaces',
     icon: parksPlazasIcon,
+  },
+  {
+    id: 'siteBoundary',
+    label: 'Site Boundary',
+    drawType: 'Polygon',
+    description: 'Define the generation area',
+    icon: siteBoundaryIcon,
   },
 ];
 

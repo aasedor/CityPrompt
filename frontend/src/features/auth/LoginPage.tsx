@@ -47,13 +47,13 @@ export function LoginPage() {
       <div className="hidden w-1/2 flex-col justify-between bg-primary-950 p-12 lg:flex">
         <div className="flex items-center gap-3">
           <Box className="h-8 w-8 text-coral-500" />
-          <span className="text-xl font-bold text-white">SiteForge</span>
+          <span className="text-xl font-bold text-white">City Prompt</span>
         </div>
         <div>
           <h2 className="text-3xl font-bold text-white">Design, plan, and visualize<br />in three dimensions.</h2>
           <p className="mt-4 text-lg text-white/50">Create site plans on satellite maps, generate AI-powered buildings, and explore immersive 3D walkthroughs — all from your browser.</p>
         </div>
-        <p className="text-sm text-white/30">&copy; 2026 SiteForge</p>
+        <p className="text-sm text-white/30">&copy; 2026 City Prompt</p>
       </div>
 
       {/* Right form panel */}
@@ -62,7 +62,7 @@ export function LoginPage() {
           <div className="mb-8 text-center">
             <Building2 size={40} className="mx-auto text-primary-400" />
             <h1 className="mt-4 text-2xl font-bold text-primary-950">Sign in</h1>
-            <p className="mt-1 text-sm text-primary-950/40">SiteForge</p>
+            <p className="mt-1 text-sm text-primary-950/40">City Prompt</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-primary-950/[0.06] bg-white p-6 shadow-sm">

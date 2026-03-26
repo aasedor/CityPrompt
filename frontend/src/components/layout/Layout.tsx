@@ -38,7 +38,7 @@ export function Layout() {
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
             <Box className="h-7 w-7 text-coral-500 sm:h-8 sm:w-8" />
-            <span className="text-lg font-bold text-primary-950 sm:text-xl">SiteForge</span>
+            <span className="text-lg font-bold text-primary-950 sm:text-xl">City Prompt</span>
           </Link>
 
           {/* Desktop nav */}

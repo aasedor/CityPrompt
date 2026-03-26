@@ -1,6 +1,6 @@
 {
-  "name": "SiteForge",
-  "short_name": "SiteForge",
+  "name": "City Prompt",
+  "short_name": "City Prompt",
   "description": "Design site plans, generate AI-powered 3D buildings, and explore immersive architectural visualizations",
   "start_url": "/",
   "display": "standalone",
