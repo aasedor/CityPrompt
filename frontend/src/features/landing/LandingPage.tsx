@@ -354,7 +354,7 @@ export function LandingPage() {
       <nav className="fixed inset-x-0 top-0 z-50 bg-accent-50/80 backdrop-blur-xl border-b border-primary-950/[0.06]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2.5">
-            <Box className="h-7 w-7 text-coral-500" />
+            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9" />
             <span className="text-lg font-bold text-primary-950">City Prompt</span>
           </Link>
           <div className="flex items-center gap-3">

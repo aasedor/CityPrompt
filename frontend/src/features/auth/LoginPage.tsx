@@ -46,7 +46,7 @@ export function LoginPage() {
       {/* Left hero panel - desktop only */}
       <div className="hidden w-1/2 flex-col justify-between bg-primary-950 p-12 lg:flex">
         <div className="flex items-center gap-3">
-          <Box className="h-8 w-8 text-coral-500" />
+          <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-10 w-10" />
           <span className="text-xl font-bold text-white">City Prompt</span>
         </div>
         <div>
