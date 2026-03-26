@@ -161,6 +161,7 @@ export function AdminUsersPage() {
                 <th className="px-4 py-3">User</th>
                 <th className="px-4 py-3">Role</th>
                 <th className="px-4 py-3">Projects</th>
+                <th className="px-4 py-3">Tokens</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Last Login</th>
                 <th className="px-4 py-3">Joined</th>
@@ -188,6 +189,28 @@ export function AdminUsersPage() {
                     </select>
                   </td>
                   <td className="px-4 py-3 text-primary-950/50">{u.project_count}</td>
+                  <td className="px-4 py-3">
+                    {['admin', 'cofounder'].includes(u.role) ? (
+                      <span className="text-xs text-primary-950/40">Unlimited</span>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-16 h-1.5 rounded-full bg-primary-950/[0.08] overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${
+                              u.render_credits > 500 ? 'bg-emerald-500' : u.render_credits > 100 ? 'bg-amber-500' : 'bg-red-500'
+                            }`}
+                            style={{ width: `${Math.min(100, (u.render_credits / 1000) * 100)}%` }}
+                          />
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          u.render_credits > 500 ? 'text-emerald-600' : u.render_credits > 100 ? 'text-amber-600' : 'text-red-500'
+                        }`}>
+                          {u.render_credits.toLocaleString()}
+                        </span>
+                        <span className="text-[10px] text-primary-950/30">/ 1,000</span>
+                      </div>
+                    )}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${

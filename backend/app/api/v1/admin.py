@@ -102,6 +102,7 @@ async def list_users(
             created_at=u.created_at,
             last_login_at=u.last_login_at,
             project_count=count,
+            render_credits=u.render_credits,
         )
         for u, count in rows
     ]
@@ -196,6 +197,7 @@ async def update_user(
         created_at=target.created_at,
         last_login_at=target.last_login_at,
         project_count=project_count,
+        render_credits=target.render_credits,
     )
 
     if (was_promoted_to_admin or was_promoted_to_cofounder) and not email_sent:

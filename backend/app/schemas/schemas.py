@@ -1066,6 +1066,7 @@ class AdminUserListResponse(BaseModel):
     created_at: datetime
     last_login_at: Optional[datetime] = None
     project_count: int
+    render_credits: int = 1000
 
 
 class AdminUserUpdate(BaseModel):

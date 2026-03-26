@@ -740,6 +740,7 @@ export interface AdminUser {
   created_at: string;
   last_login_at?: string;
   project_count: number;
+  render_credits: number;
 }
 
 export interface AdminUserUpdate {
