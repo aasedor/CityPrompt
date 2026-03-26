@@ -58,6 +58,23 @@ export function Layout() {
                 Analytics
               </Link>
             )}
+            {/* Token balance — non-admin only */}
+            {isAuthenticated && user && !['admin', 'cofounder'].includes(user.role) && (
+              <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+                user.render_credits <= 0
+                  ? 'bg-red-500/10 text-red-500 ring-1 ring-red-500/20'
+                  : user.render_credits <= 100
+                    ? 'bg-amber-500/10 text-amber-600 ring-1 ring-amber-500/20'
+                    : 'bg-primary-500/10 text-primary-600 ring-1 ring-primary-500/20'
+              }`}>
+                <svg viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
+                  <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                  <text x="8" y="11.5" textAnchor="middle" fontSize="9" fontWeight="bold">T</text>
+                </svg>
+                {user.render_credits.toLocaleString()} tokens
+              </div>
+            )}
+
             {/* Theme toggle */}
             <div className="flex items-center rounded-lg border border-primary-950/[0.06]">
               <button

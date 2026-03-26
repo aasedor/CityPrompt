@@ -141,6 +141,7 @@ export interface AuthUser {
   full_name?: string;
   role: string;
   is_active: boolean;
+  render_credits: number;
   created_at: string;
 }
 

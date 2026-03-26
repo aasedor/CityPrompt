@@ -28,7 +28,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import require_auth, check_project_permission
+from app.core.security import require_auth, check_project_permission, is_admin_or_above
+from app.models.models import User
 from app.models.models import Project, User
 
 logger = logging.getLogger(__name__)
@@ -141,6 +142,15 @@ _ALLOWED_MODELS = {
     "gemini-3.1-flash-image-preview",
 }
 
+# Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
+_MODEL_TOKEN_COST: dict[str, int] = {
+    "gemini-2.5-flash-image": 8,        # ~$0.039
+    "gemini-3.1-flash-image-preview": 13, # ~$0.067
+    "gemini-3-pro-image-preview": 27,     # ~$0.134
+}
+_DEFAULT_TOKEN_COST = 13  # fallback
+_WEEKLY_TOKEN_ALLOWANCE = 1000
+
 
 def _build_gemini_url(settings, model: str | None = None) -> str:
     """Build the Gemini API URL.
@@ -195,12 +205,39 @@ def _get_auth_headers(settings) -> dict[str, str]:
 
 
 @router.post("/generate", response_model=RenderResponse)
-async def generate_render(req: RenderRequest):
+async def generate_render(
+    req: RenderRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
     """Generate a photorealistic architectural render via Gemini.
 
     Sends the map screenshot + prompt to Gemini's generateContent API
     with responseModalities: ["TEXT", "IMAGE"] to get an edited image back.
+    Requires authentication. Non-admin users must have render tokens.
     """
+    # Weekly token reset for non-admin users
+    if not is_admin_or_above(user):
+        now = datetime.now(timezone.utc)
+        if user.credits_reset_at is None or (now - user.credits_reset_at).days >= 7:
+            user.render_credits = _WEEKLY_TOKEN_ALLOWANCE
+            user.credits_reset_at = now
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
+            logger.info("Weekly token reset for %s — %d tokens", user.email, user.render_credits)
+
+    # Calculate cost for this render
+    render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
+    token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
+
+    # Check render tokens for non-admin users
+    if not is_admin_or_above(user) and user.render_credits < token_cost:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}. Tokens reset weekly.",
+        )
+
     settings = get_settings()
 
     if not settings.gemini_api_key and not settings.vertex_ai_project:
@@ -394,6 +431,13 @@ async def generate_render(req: RenderRequest):
 
         if req.post_process:
             image_b64 = _post_process(image_b64)
+
+        # Deduct tokens for non-admin users
+        if not is_admin_or_above(user):
+            user.render_credits = max(0, user.render_credits - token_cost)
+            db.add(user)
+            await db.commit()
+            logger.info("User %s: %d tokens deducted (%s) — %d remaining", user.email, token_cost, render_model, user.render_credits)
 
         return RenderResponse(
             image_base64=image_b64,

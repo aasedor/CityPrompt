@@ -1823,7 +1823,11 @@ export async function generateStreetView(
       console.log('[StreetView] Dual anchoring: including previous render as structural anchor');
     }
 
-    const response = await axios.post(RENDER_API_URL, body, { timeout: 180_000 });
+    const svToken = localStorage.getItem('access_token');
+    const response = await axios.post(RENDER_API_URL, body, {
+      timeout: 180_000,
+      headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
+    });
 
     let resultBase64: string | undefined = response.data?.image_base64;
 
@@ -1860,7 +1864,10 @@ export async function generateStreetView(
           pass2Body.archetype_images = archetypeImages;
         }
 
-        const pass2Response = await axios.post(RENDER_API_URL, pass2Body, { timeout: 180_000 });
+        const pass2Response = await axios.post(RENDER_API_URL, pass2Body, {
+          timeout: 180_000,
+          headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
+        });
         const pass2Base64: string | undefined = pass2Response.data?.image_base64;
 
         if (pass2Base64) {

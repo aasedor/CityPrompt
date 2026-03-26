@@ -2044,10 +2044,14 @@ async function callVertexAI(
     body.archetype_images = archetypeImages;
   }
 
+  const token = localStorage.getItem('access_token');
   const resp = await axios.post(
     RENDER_API_URL,
     body,
-    { timeout: RENDER_TIMEOUT },
+    {
+      timeout: RENDER_TIMEOUT,
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    },
   );
 
   const { image_base64: resultBase64, seed: resultSeed } = resp.data;

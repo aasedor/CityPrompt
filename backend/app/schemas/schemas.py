@@ -37,6 +37,7 @@ class UserResponse(BaseModel):
     full_name: Optional[str] = Field(description="Display name")
     role: str = Field(description="User role: viewer, editor, or admin")
     is_active: bool = Field(description="Whether the account is active")
+    render_credits: int = Field(description="Remaining AI render credits")
     created_at: datetime = Field(description="Account creation timestamp")
 
 
