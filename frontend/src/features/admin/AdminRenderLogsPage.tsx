@@ -5,13 +5,16 @@ import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { RenderAuditLog } from '@/services/api';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 /** Fetch an image through the authenticated API and return an object URL */
 function useAuthImage(url: string | undefined | null) {
   const [src, setSrc] = useState<string | null>(null);
   useEffect(() => {
     if (!url) { setSrc(null); return; }
     const token = localStorage.getItem('access_token');
-    fetch(url, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+    const fullUrl = url.startsWith('/') ? `${API_BASE}${url}` : url;
+    fetch(fullUrl, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
       .then((r) => r.ok ? r.blob() : Promise.reject())
       .then((blob) => setSrc(URL.createObjectURL(blob)))
       .catch(() => setSrc(null));
