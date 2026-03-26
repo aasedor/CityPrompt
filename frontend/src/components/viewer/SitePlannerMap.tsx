@@ -1761,14 +1761,14 @@ export function SitePlannerMap({
       )}
       {/* Pitch angle indicator */}
       <div className="absolute top-4 left-4 z-30 flex items-center gap-1.5 rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg select-none">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-white/70 shrink-0">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none" className="shrink-0" style={{ color: currentPitch <= 30 ? '#ef4444' : currentPitch <= 50 ? '#eab308' : currentPitch <= 60 ? '#22c55e' : currentPitch <= 70 ? '#eab308' : '#ef4444' }}>
           <ellipse cx="8" cy="10" rx="6" ry="3" stroke="currentColor" strokeWidth="1.3" fill="none"/>
           <line x1="8" y1="10" x2="8" y2="2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
           <line x1="8" y1="2" x2="11" y2="6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
         </svg>
-        <span className="text-[11px] font-semibold tabular-nums text-white/90">{currentPitch}°</span>
-        <span className="text-[10px] text-white/40">
-          {currentPitch <= 30 ? 'flat' : currentPitch <= 50 ? 'good' : currentPitch <= 60 ? 'optimal' : 'steep'}
+        <span className="text-[13px] font-bold tabular-nums" style={{ color: currentPitch <= 30 ? '#ef4444' : currentPitch <= 50 ? '#eab308' : currentPitch <= 60 ? '#22c55e' : currentPitch <= 70 ? '#eab308' : '#ef4444' }}>{currentPitch}°</span>
+        <span className="text-[10px]" style={{ color: currentPitch <= 30 ? '#fca5a5' : currentPitch <= 50 ? '#fde047' : currentPitch <= 60 ? '#86efac' : currentPitch <= 70 ? '#fde047' : '#fca5a5' }}>
+          {currentPitch <= 30 ? 'flat' : currentPitch <= 50 ? 'good' : currentPitch <= 60 ? 'optimal' : currentPitch <= 70 ? 'steep' : 'too steep'}
         </span>
       </div>
       {/* Rotation angle badge — anchored at the zone centroid */}
