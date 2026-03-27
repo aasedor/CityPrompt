@@ -2275,6 +2275,71 @@
           "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_3.png"
         }
       ]
+    },
+    {
+      "id": "elevated_rail_transit",
+      "title": "Elevated Rail Transit",
+      "aestheticCategory": "transit_oriented",
+      "description": "An architecturally stunning elevated rail transit line threading through the urban fabric, with sculptural stations serving as civic landmarks and activated public space beneath the viaduct",
+      "transportModes": ["rail", "walking"],
+      "volume": "high",
+      "generationTags": ["transit", "elevated", "rail", "viaduct", "station", "streets-pathways"],
+      "styleProfile": {
+        "corridorCharacter": "An elevated rail transit corridor viewed from drone altitude. A slender guideway structure rises above the street on sculptural piers, carrying rail tracks to elevated station platforms. The station is an architectural landmark with a dramatic canopy or enclosure. Below the viaduct, activated public space, landscaping, or civic amenities occupy the ground plane. The elevated structure threads through the urban fabric of mid-rise buildings.",
+        "movementHierarchy": "High-capacity rail transit above, pedestrian and cycling below",
+        "surfaceType": "Concrete or steel guideway above, varied public realm paving below",
+        "plantingCharacter": "Street trees, landscaped pier bases, potential green infrastructure on or beneath the viaduct",
+        "edgeConditions": "Mid-rise urban buildings framing the transit corridor, station access points at street level",
+        "publicRealm": "Elevated transit as civic infrastructure enhancing the streetscape with landmark station architecture"
+      },
+      "prompt": {
+        "subject": "Aerial view of an elevated rail transit line with sculptural station architecture",
+        "details": [
+          "Slender elevated guideway on sculptural piers threading through urban fabric",
+          "Architecturally dramatic station with canopy or enclosure as civic landmark",
+          "Activated public space beneath the viaduct — parks, plazas, or amenities",
+          "Modern rail vehicles on the elevated guideway",
+          "Surrounding mid-rise urban buildings framing the corridor"
+        ],
+        "negative": ["No ugly brutalist concrete", "No oppressive shadows", "No derelict infrastructure", "No text overlays"]
+      },
+      "propertyPresets": {
+        "lane_count": "2 (one per direction, elevated)",
+        "speed_limit_kmh": "80",
+        "parking_type": "none",
+        "bike_infrastructure": "separated path below viaduct",
+        "transit_type": "elevated rail"
+      },
+      "variants": [
+        {
+          "id": "elevated_parametric_flow",
+          "label": "Parametric Flow Station",
+          "description": "Zaha Hadid-inspired flowing double-curved white canopy with geometric perforations creating dappled light, the station serves as both transit hub and sculptural pedestrian bridge",
+          "palette": {"primary": "#E8E0F0", "accent": "#B8A0D0", "ground": "#F0F0F5"},
+          "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_0.png"
+        },
+        {
+          "id": "elevated_structural_poetry",
+          "label": "Structural Poetry",
+          "description": "Santiago Calatrava-inspired tree-like branching white steel columns forming transparent forest canopies, cable-stayed elements, open-air cathedral-like volumes with reflecting pools below",
+          "palette": {"primary": "#F0F5FA", "accent": "#C0D8E8", "ground": "#E8F0F5"},
+          "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_1.png"
+        },
+        {
+          "id": "elevated_living_viaduct",
+          "label": "Living Viaduct",
+          "description": "Split-track design allowing daylight through, sculptural tree-form piers, mature trees growing between tracks, activated linear park underneath with sports courts, bioswales, and public art",
+          "palette": {"primary": "#A8D8A0", "accent": "#78B870", "ground": "#D0E8C8"},
+          "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_2.png"
+        },
+        {
+          "id": "elevated_floating_ribbon",
+          "label": "Floating Ribbon",
+          "description": "Ultra-slender aerodynamic guideway on cable-stayed tapered columns spaced 80m apart, glass-enclosed station glowing as a civic lantern with mass-timber interior, minimal shadow on the vibrant street below",
+          "palette": {"primary": "#F5E8D0", "accent": "#E8C890", "ground": "#FAF5F0"},
+          "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_3.png"
+        }
+      ]
     }
   ]
 }
