@@ -270,7 +270,6 @@ function getToolDisplayLabel(tool: SiteZoneType): string {
   if (tool === 'building' || tool === 'residential') return 'Buildings';
   if (tool === 'road') return 'Streets and Paths';
   if (tool === 'green_space' || tool === 'parking') return 'Parks / Plazas';
-  if (tool === 'preserve_existing') return 'Preserve Existing';
   return ZONE_TYPE_CONFIG[tool]?.label || tool;
 }
 
