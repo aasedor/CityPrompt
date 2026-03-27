@@ -8,7 +8,7 @@ import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
 import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
 import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
 
-type CoreToolId = 'siteBoundary' | 'buildings' | 'streetsPaths' | 'parksPlazas';
+type CoreToolId = 'siteBoundary' | 'buildings' | 'streetsPaths' | 'parksPlazas' | 'preserveExisting';
 type ParksSubtype = 'park' | 'plaza';
 
 interface CoreToolDef {
@@ -42,6 +42,13 @@ const CORE_TOOLS: CoreToolDef[] = [
     icon: parksPlazasIcon,
   },
   {
+    id: 'preserveExisting',
+    label: 'Preserve',
+    drawType: 'Polygon',
+    description: 'Keep existing buildings as-is or harmonize with render style',
+    icon: siteBoundaryIcon,
+  },
+  {
     id: 'siteBoundary',
     label: 'Site Boundary',
     drawType: 'Polygon',
@@ -59,6 +66,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
   if (tool === 'building') return 'buildings';
   if (tool === 'road') return 'streetsPaths';
   if (tool === 'green_space' || tool === 'parking') return 'parksPlazas';
+  if (tool === 'preserve_existing') return 'preserveExisting';
   return null;
 }
 
@@ -66,6 +74,7 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
   if (id === 'siteBoundary') return 'site_boundary';
   if (id === 'buildings') return 'building';
   if (id === 'streetsPaths') return 'road';
+  if (id === 'preserveExisting') return 'preserve_existing';
   return parksSubtype === 'plaza' ? 'parking' : 'green_space';
 }
 

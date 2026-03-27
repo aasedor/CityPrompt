@@ -95,7 +95,7 @@ export interface ProcessingStatus {
 // Site Zone Types
 // =============================================================================
 
-export type SiteZoneType = 'site_boundary' | 'building' | 'residential' | 'road' | 'green_space' | 'parking' | 'water' | 'development_area';
+export type SiteZoneType = 'site_boundary' | 'building' | 'residential' | 'road' | 'green_space' | 'parking' | 'water' | 'development_area' | 'preserve_existing';
 
 export interface LayoutRoadData {
   centerline: number[][];  // [[x_offset_deg, y_offset_deg], ...]
@@ -580,6 +580,12 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
     color: '#C8A02A',       // APA Duplex/Medium-density Yellow-Brown
     icon: 'A',
     defaultProperties: { ground_texture: 'grass' },
+  },
+  preserve_existing: {
+    label: 'Preserve Existing',
+    color: '#78909C',       // Blue-grey — existing structures to keep
+    icon: '🛡',
+    defaultProperties: { preserve_mode: 'lock' },
   },
 };
 

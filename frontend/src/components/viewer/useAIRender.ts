@@ -886,6 +886,52 @@ function generateCombinedMask(
 }
 
 /**
+ * Subtract "preserve lock" zones from a base64 mask by painting their polygons BLACK.
+ * This ensures locked preserve zones are never edited by the AI.
+ */
+function subtractPreserveLockZones(
+  maskBase64: string,
+  map: MapboxMap,
+  lockZones: SiteZone[],
+): string {
+  if (lockZones.length === 0) return maskBase64;
+
+  const mapCanvas = map.getCanvas();
+  const w = mapCanvas.width;
+  const h = mapCanvas.height;
+  const dpr = window.devicePixelRatio || 1;
+
+  // Decode existing mask
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const ctx = maskCanvas.getContext('2d')!;
+
+  // Draw existing mask
+  const img = new Image();
+  img.src = `data:image/png;base64,${maskBase64}`;
+  // Synchronous draw since the image is already a data URI
+  ctx.drawImage(img, 0, 0, w, h);
+
+  // Paint lock zones as BLACK (protect these pixels)
+  ctx.fillStyle = '#000000';
+  for (const zone of lockZones) {
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const pixels = siteBoundaryToPixels(map, zone.coordinates);
+    ctx.beginPath();
+    ctx.moveTo(pixels[0].x * dpr, pixels[0].y * dpr);
+    for (let i = 1; i < pixels.length; i++) {
+      ctx.lineTo(pixels[i].x * dpr, pixels[i].y * dpr);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  console.log(`[AIRender] Subtracted ${lockZones.length} preserve-lock zones from mask`);
+  return maskCanvas.toDataURL('image/png').split(',')[1];
+}
+
+/**
  * Build a zone-specific prompt for per-zone rendering.
  * Simple, natural language — Gemini handles spatial reasoning natively.
  */
@@ -2508,7 +2554,17 @@ export function useAIRender(): UseAIRenderReturn {
         const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
 
         const renderableZones = zones
-          .filter(z => z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3);
+          .filter(z => z.zone_type !== 'site_boundary' && z.zone_type !== 'preserve_existing' && z.coordinates && z.coordinates.length >= 3);
+
+        // Preserve zones: lock = black mask (protect pixels), harmonize = re-render to match style
+        const preserveLockZones = zones.filter(z =>
+          z.zone_type === 'preserve_existing' && z.coordinates && z.coordinates.length >= 3 &&
+          z.properties?.preserve_mode !== 'harmonize'
+        );
+        const preserveHarmonizeZones = zones.filter(z =>
+          z.zone_type === 'preserve_existing' && z.coordinates && z.coordinates.length >= 3 &&
+          z.properties?.preserve_mode === 'harmonize'
+        );
 
         const groundZones = renderableZones.filter(z => GROUND_TYPES.includes(z.zone_type));
         const buildingZones = renderableZones.filter(z => BUILDING_TYPES.includes(z.zone_type));
@@ -2590,8 +2646,11 @@ export function useAIRender(): UseAIRenderReturn {
             await updateSourceAndWait(groundFeatures);
             const groundScreenshot = await captureMapCanvasBase64(map);
 
-            // Build combined mask for ALL ground zones
-            const groundMask = generateCombinedMask(map, groundZones);
+            // Build combined mask for ALL ground zones, then subtract lock-preserve zones
+            let groundMask = generateCombinedMask(map, groundZones);
+            if (preserveLockZones.length > 0) {
+              groundMask = subtractPreserveLockZones(groundMask, map, preserveLockZones);
+            }
 
             // Build narrative ground plane prompt
             const groundPrompt = buildGroundPlanePrompt(groundZones, options);
@@ -2700,8 +2759,11 @@ export function useAIRender(): UseAIRenderReturn {
               }
             }
 
-            // Generate expanded mask for building
-            const buildingMask = generateSingleZoneMask(map, zone);
+            // Generate expanded mask for building, subtract lock-preserve zones
+            let buildingMask = generateSingleZoneMask(map, zone);
+            if (preserveLockZones.length > 0) {
+              buildingMask = subtractPreserveLockZones(buildingMask, map, preserveLockZones);
+            }
 
             // Build narrative building prompt
             const buildingPrompt = buildBuildingPrompt(zone, options);
@@ -2743,6 +2805,57 @@ export function useAIRender(): UseAIRenderReturn {
             console.log(`[AIRender] Building "${zoneName}" rendered successfully`);
           } catch (bldgErr) {
             console.warn(`[AIRender] Building "${zoneName}" failed:`, bldgErr);
+          }
+        }
+
+        // ════════════════════════════════════════════════════════
+        // PASS 3: PRESERVE-HARMONIZE (existing buildings, match style)
+        // ════════════════════════════════════════════════════════
+        for (let i = 0; i < preserveHarmonizeZones.length; i++) {
+          const zone = preserveHarmonizeZones[i];
+          const zoneName = zone.name || 'Existing Building';
+          setStatusMessage(`Harmonizing: ${zoneName}...`);
+          console.log(`[AIRender] ═══ PASS 3: HARMONIZE ${i + 1}/${preserveHarmonizeZones.length}: "${zoneName}" ═══`);
+
+          try {
+            // Use current cumulative result as base
+            const harmonizeScreenshot = cumulativeDataUri.split(',')[1];
+
+            // Generate mask for this preserve zone (no headroom — preserving, not building)
+            let harmonizeMask = generateSingleZoneMask(map, zone);
+            if (preserveLockZones.length > 0) {
+              harmonizeMask = subtractPreserveLockZones(harmonizeMask, map, preserveLockZones);
+            }
+
+            const styleName = options.style || 'photorealistic';
+            const harmonizePrompt =
+              `EXISTING BUILDING PRESERVATION: The structure within the ${zone.color || 'grey'} polygon is an ` +
+              `EXISTING building visible in the base photograph. Preserve its exact architectural ` +
+              `form, massing, roofline, window pattern, and facade materials. Do NOT replace it ` +
+              `with a new design. Only adjust the lighting, color temperature, atmospheric effects, ` +
+              `and surface rendering quality to seamlessly match the ${styleName} aesthetic of the ` +
+              `surrounding new development. The existing building should look like it belongs in ` +
+              `the same photograph as the new buildings.` +
+              (zone.properties?.notes ? ` Note: ${zone.properties.notes}` : '');
+
+            console.log(`[AIRender] Harmonize prompt: ${harmonizePrompt}`);
+
+            const { imageDataUri } = await callVertexAI(
+              harmonizeScreenshot,
+              harmonizePrompt,
+              options.seed ?? Math.floor(Math.random() * 2147483647),
+              aspectRatio,
+              harmonizeMask,
+              negativePrompt || undefined,
+              guidanceScale,
+              options.model,
+            );
+
+            cumulativeDataUri = await compositeZoneRender(cumulativeDataUri, imageDataUri, map, zone);
+            successfulZones.push(`${zoneName} (harmonized)`);
+            console.log(`[AIRender] Harmonize "${zoneName}" complete`);
+          } catch (harmErr) {
+            console.warn(`[AIRender] Harmonize "${zoneName}" failed:`, harmErr);
           }
         }
 

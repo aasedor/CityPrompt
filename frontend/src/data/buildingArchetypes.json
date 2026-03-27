@@ -12003,6 +12003,966 @@
       "maxFloors": 1,
       "suggestedAreaSqm": 200,
       "developmentType": "institutional"
+    },
+    {
+      "id": "climbing_wall_building",
+      "shadeId": "#3D3D3D",
+      "title": "Climbing Wall Building",
+      "aestheticCategory": "climbing_wall",
+      "description": "A building that integrates exterior climbing walls as a primary architectural feature, transforming facades into vertical recreation landscapes",
+      "buildingSubcategory": "Vertical Recreation",
+      "generationTags": [
+        "climbing_wall"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#D4870F"
+      },
+      "styleProfile": {
+        "era": "",
+        "influences": [],
+        "keywords": []
+      },
+      "facadeDetail": {
+        "primaryMaterial": "climbing wall panels and fiberglass shell",
+        "secondaryMaterial": "glass curtain wall, timber, concrete",
+        "accentMaterial": "LED route lines, climbing holds",
+        "groundFloor": "public plaza with boulder garden and crash pads",
+        "upperFloors": "climbing surfaces with rest terraces",
+        "cornice": "rooftop garden or terrace",
+        "colorScheme": "varies by variant — charcoal/amber, honey timber, bronze/grey, teal gradient"
+      },
+      "roofDetail": {
+        "form": "varies — sloped wedge, flat with pool, tower cap, undulating shell",
+        "material": "green roof, concrete, fiberglass"
+      },
+      "variants": [
+        {
+          "id": "climbing_crucible",
+          "label": "The Crucible",
+          "thumbnailUrl": "/archetypes/buildings/climbing_wall_building/variant_0.png",
+          "description": "CopenHill-inspired industrial wedge with 75-degree sloped climbing facade in dark hexagonal panels with amber LED route lines",
+          "facadeDetail": {
+            "primaryMaterial": "dark charcoal hexagonal fiberglass panels",
+            "secondaryMaterial": "floor-to-ceiling industrial glass, Corten steel",
+            "groundFloor": "landscaped park with boulders and rubber fall zone",
+            "colorScheme": "charcoal panels with amber LED route lines, rust-orange Corten ends"
+          },
+          "roofDetail": {
+            "form": "sloped wedge with rooftop running track",
+            "material": "native grasses on rooftop terrace"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#3D3D3D",
+            "accent": "#D4870F",
+            "ground": "#8B4513"
+          }
+        },
+        {
+          "id": "climbing_overhang",
+          "label": "The Overhang",
+          "thumbnailUrl": "/archetypes/buildings/climbing_wall_building/variant_1.png",
+          "description": "Recreation center with dramatic 25m timber climbing wall cantilevered 12m over the street in faceted origami CLT geometry",
+          "facadeDetail": {
+            "primaryMaterial": "honey-toned Douglas fir cross-laminated timber",
+            "secondaryMaterial": "white concrete and glass base",
+            "groundFloor": "public plaza with grey granite pavers and ornamental grasses",
+            "colorScheme": "warm honey timber with earth-toned climbing holds, white concrete base"
+          },
+          "roofDetail": {
+            "form": "flat roof with infinity pool",
+            "material": "concrete with pool deck"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C8A876",
+            "accent": "#8B6914",
+            "ground": "#E8E0D0"
+          }
+        },
+        {
+          "id": "climbing_spine",
+          "label": "The Spine",
+          "thumbnailUrl": "/archetypes/buildings/climbing_wall_building/variant_2.png",
+          "description": "30-story mixed-use tower with full-height sculptural concrete climbing strip and terraced rest stations every 5 floors",
+          "facadeDetail": {
+            "primaryMaterial": "light warm grey sculpted precast concrete",
+            "secondaryMaterial": "dark bronze glass curtain wall",
+            "groundFloor": "double-height retail arcade with boulder garden",
+            "colorScheme": "warm grey concrete spine against dark bronze glass"
+          },
+          "roofDetail": {
+            "form": "rooftop garden with sculptural boulders",
+            "material": "concrete and landscape"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A0A0B0",
+            "accent": "#6B6B7B",
+            "ground": "#D0D0D8"
+          }
+        },
+        {
+          "id": "climbing_reef",
+          "label": "The Reef",
+          "thumbnailUrl": "/archetypes/buildings/climbing_wall_building/variant_3.png",
+          "description": "Organic bouldering community centre shaped like a coral reef — the entire building is a continuous climbable surface in teal-to-seafoam gradient",
+          "facadeDetail": {
+            "primaryMaterial": "fiberglass shell with teal-to-seafoam gradient",
+            "secondaryMaterial": "circular skylight domes",
+            "groundFloor": "sand-colored rubber crash pad zones surrounding building",
+            "colorScheme": "deep teal through aquamarine to pale seafoam gradient"
+          },
+          "roofDetail": {
+            "form": "undulating organic shell with skylight domes",
+            "material": "fiberglass with organic rock-like texture"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#2E8B8B",
+            "accent": "#7BC8C8",
+            "ground": "#D4C4A0"
+          }
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 30,
+      "suggestedAreaSqm": 5000,
+      "developmentType": "recreational"
+    },
+    {
+      "id": "waste_to_energy_plant",
+      "shadeId": "#5A7D3E",
+      "title": "Waste-to-Energy Plant",
+      "aestheticCategory": "industrial_infrastructure",
+      "description": "Innovative waste-to-energy facility that transforms municipal waste into electricity and heat, featuring architectural design that integrates public amenities and green infrastructure",
+      "buildingSubcategory": "Waste-to-Energy / Infrastructure",
+      "generationTags": [
+        "waste_to_energy",
+        "industrial",
+        "infrastructure",
+        "sustainable",
+        "green_roof"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#5A7D3E"
+      },
+      "styleProfile": {
+        "era": "Contemporary (2010s-present)",
+        "influences": [
+          "BIG Architects",
+          "Hundertwasser",
+          "Scandinavian industrial"
+        ],
+        "keywords": [
+          "green roof",
+          "chimney",
+          "industrial",
+          "public amenity",
+          "sustainability"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "brushed aluminum panels or perforated Corten steel",
+        "secondaryMaterial": "structural glass curtain walls revealing industrial interior",
+        "accentMaterial": "green roof vegetation, mosaic tile, timber cladding",
+        "groundFloor": "public visitor entrance with educational displays and observation areas",
+        "upperFloors": "sloping rooftop with recreational features or green landscape",
+        "cornice": "sculptural chimney as architectural landmark element",
+        "colorScheme": "aluminum or Corten with green roof, warm interior glow through openings"
+      },
+      "roofDetail": {
+        "form": "dramatically sloping or undulating green roof integrated with landscape",
+        "material": "synthetic turf, native grasses, wildflowers, or solar panels",
+        "features": "ski slope, hiking paths, or meadow landscape on roof surface",
+        "aerialAppearance": "green landscape merging with surroundings, punctuated by sculptural chimney"
+      },
+      "thumbnailUrl": "/archetypes/buildings/waste_to_energy_plant/hero.png",
+      "variants": [
+        {
+          "id": "wte_ski_slope",
+          "label": "Ski Slope WtE",
+          "thumbnailUrl": "/archetypes/buildings/waste_to_energy_plant/variant_0.png",
+          "description": "Monumental waste-to-energy plant with a 400-meter artificial ski slope on its dramatically sloping rooftop, brushed-aluminum facade, and climbing wall on longest face",
+          "facadeDetail": {
+            "primaryMaterial": "brushed-aluminum brick with rhythmic gaps",
+            "secondaryMaterial": "bright green synthetic turf ski slope on roof",
+            "groundFloor": "waterfront industrial base with cargo ship access",
+            "colorScheme": "silver aluminum, green turf roof, warm interior glow"
+          },
+          "roofDetail": {
+            "form": "dramatically sloping ski slope from summit to ground",
+            "material": "bright green synthetic turf with skiing and hiking paths"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#7BAA4D"
+          }
+        },
+        {
+          "id": "wte_hillside",
+          "label": "Hillside WtE",
+          "thumbnailUrl": "/archetypes/buildings/waste_to_energy_plant/variant_1.png",
+          "description": "Waste-to-energy plant disappearing into rolling green hills with native grasses, wildflowers, and walking paths merging with surrounding pastoral meadow",
+          "facadeDetail": {
+            "primaryMaterial": "curved glass curtain walls at entrance",
+            "secondaryMaterial": "native grasses and wildflower green roof",
+            "groundFloor": "glass entrance revealing industrial machinery within",
+            "colorScheme": "green landscape, glass, tapered concrete chimney"
+          },
+          "roofDetail": {
+            "form": "undulating green roof with sculpted berms merging into hillside",
+            "material": "native grasses, wildflowers, solar panels on south slopes"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#6B8E4E"
+          }
+        },
+        {
+          "id": "wte_mosaic",
+          "label": "Mosaic WtE",
+          "thumbnailUrl": "/archetypes/buildings/waste_to_energy_plant/variant_2.png",
+          "description": "Waste-to-energy facility with spectacular 100-meter mosaic-clad chimney in Hundertwasser patterns, golden sphere atop, and whimsical art palace atmosphere",
+          "facadeDetail": {
+            "primaryMaterial": "white stucco walls with colorful ceramic tile patches",
+            "secondaryMaterial": "mosaic tiles in deep blue, gold, crimson, emerald",
+            "groundFloor": "riverbank promenade with wrought-iron railings",
+            "colorScheme": "white stucco, colorful mosaic chimney, golden sphere"
+          },
+          "roofDetail": {
+            "form": "rooftop gardens with small trees on flat sections",
+            "material": "planted gardens, mosaic tile accents"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#D4A843"
+          }
+        },
+        {
+          "id": "wte_transparent",
+          "label": "Transparent WtE",
+          "thumbnailUrl": "/archetypes/buildings/waste_to_energy_plant/variant_3.png",
+          "description": "Cutting-edge waste-to-energy plant with floor-to-ceiling glass and perforated Corten steel revealing gleaming stainless steel furnaces and turbines within",
+          "facadeDetail": {
+            "primaryMaterial": "perforated Corten steel with laser-cut circular openings",
+            "secondaryMaterial": "floor-to-ceiling structural glass panels",
+            "groundFloor": "CLT timber visitor center with educational garden paths",
+            "colorScheme": "rust Corten, warm orange interior glow, glass, timber"
+          },
+          "roofDetail": {
+            "form": "cantilevered glass-bottomed observation bridge over process hall",
+            "material": "glass and Corten steel with skylights"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A0522D"
+          }
+        }
+      ],
+      "minFloors": 2,
+      "maxFloors": 12,
+      "suggestedAreaSqm": 25000,
+      "developmentType": "industrial"
+    },
+    {
+      "id": "senior_living_complex",
+      "shadeId": "#B8860B",
+      "title": "Senior Living Complex",
+      "aestheticCategory": "senior_living",
+      "description": "Purpose-designed senior living community emphasizing wellness, accessibility, social connection, and integration of gardens, courtyards, and communal amenities",
+      "buildingSubcategory": "Senior Living / Assisted Living",
+      "generationTags": [
+        "senior_living",
+        "residential",
+        "assisted_living",
+        "wellness",
+        "courtyard"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#B8860B"
+      },
+      "styleProfile": {
+        "era": "Contemporary (2000s-present)",
+        "influences": [
+          "Garden city movement",
+          "Scandinavian cohousing",
+          "Mediterranean resort"
+        ],
+        "keywords": [
+          "courtyard",
+          "garden",
+          "accessibility",
+          "wellness",
+          "community"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "warm brick, CLT timber, or white stucco depending on variant",
+        "secondaryMaterial": "large windows, Juliet balconies, glass conservatory",
+        "accentMaterial": "copper roofing, timber lattice, wrought-iron railings",
+        "groundFloor": "covered colonnades, community pavilion, accessible garden paths",
+        "upperFloors": "residential units with generous windows and private balconies or terraces",
+        "cornice": "pitched copper roofs with dormers or flat green roofs",
+        "colorScheme": "warm earth tones, natural materials, abundant greenery"
+      },
+      "roofDetail": {
+        "form": "pitched roofs with dormers or green roofs depending on variant",
+        "material": "copper, terracotta tile, sedum green roof, or standing-seam metal",
+        "features": "rooftop wellness terraces, gardens, solar panels",
+        "aerialAppearance": "interconnected buildings around garden courtyards with warm-toned roofs"
+      },
+      "thumbnailUrl": "/archetypes/buildings/senior_living_complex/hero.png",
+      "variants": [
+        {
+          "id": "senior_garden_courtyard",
+          "label": "Garden Courtyard",
+          "thumbnailUrl": "/archetypes/buildings/senior_living_complex/variant_0.png",
+          "description": "Intimate 2-3 story buildings around interconnected garden courtyards with central fountain, rose gardens, raised vegetable beds, and covered colonnades",
+          "facadeDetail": {
+            "primaryMaterial": "warm brick with large windows and Juliet balconies",
+            "secondaryMaterial": "covered colonnades with arched openings",
+            "groundFloor": "community pavilion with glass conservatory, garden access",
+            "colorScheme": "warm brick, copper roof, dappled golden light"
+          },
+          "roofDetail": {
+            "form": "pitched copper roofs with dormers",
+            "material": "patinated copper with brick chimneys"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C4956A"
+          }
+        },
+        {
+          "id": "senior_urban_tower",
+          "label": "Urban Tower",
+          "thumbnailUrl": "/archetypes/buildings/senior_living_complex/variant_1.png",
+          "description": "Sleek 12-story senior living tower with sculptural curving form, cascading balcony greenery, rooftop wellness terrace with lap pool and yoga pavilion",
+          "facadeDetail": {
+            "primaryMaterial": "warm champagne-toned metal panels with floor-to-ceiling glass",
+            "secondaryMaterial": "cantilevered balconies with trailing greenery",
+            "groundFloor": "public plaza with cafe and water features",
+            "colorScheme": "champagne metal, glass, cascading green, rooftop pool"
+          },
+          "roofDetail": {
+            "form": "rooftop wellness terrace with lap pool and meditation garden",
+            "material": "ipe wood decking with glass railings"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C8B078"
+          }
+        },
+        {
+          "id": "senior_timber_cohousing",
+          "label": "Timber Cohousing",
+          "thumbnailUrl": "/archetypes/buildings/senior_living_complex/variant_2.png",
+          "description": "Senior cohousing community in pale CLT and dark shou sugi ban charred timber, with communal dining pavilion, kitchen garden, and green sedum roofs",
+          "facadeDetail": {
+            "primaryMaterial": "pale natural CLT timber and dark shou sugi ban charred timber",
+            "secondaryMaterial": "double-height communal windows with exposed timber beams",
+            "groundFloor": "ground-floor apartments with private timber-deck patios",
+            "colorScheme": "pale honey wood, dark charred timber, green sedum, grey granite"
+          },
+          "roofDetail": {
+            "form": "steeply pitched roofs with deep overhanging eaves",
+            "material": "green sedum roof blending with forested hillside"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A0845C"
+          }
+        },
+        {
+          "id": "senior_mediterranean_resort",
+          "label": "Mediterranean Resort",
+          "thumbnailUrl": "/archetypes/buildings/senior_living_complex/variant_3.png",
+          "description": "Luxurious senior living resort in Mediterranean revival style with white stucco, terracotta roofs, turquoise pool, bougainvillea pergolas, and ocean views",
+          "facadeDetail": {
+            "primaryMaterial": "white stucco walls with terracotta barrel-tile roofs",
+            "secondaryMaterial": "wrought-iron balcony railings, arched colonnades",
+            "groundFloor": "arched colonnades with stone columns, covered dining terrace",
+            "colorScheme": "white stucco, terracotta, wrought iron, turquoise pool"
+          },
+          "roofDetail": {
+            "form": "terracotta barrel-tile roofs with bell tower",
+            "material": "traditional terracotta tiles"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#E07B4C"
+          }
+        }
+      ],
+      "minFloors": 2,
+      "maxFloors": 12,
+      "suggestedAreaSqm": 8000,
+      "developmentType": "residential_multifamily"
+    },
+    {
+      "id": "brewery_distillery",
+      "shadeId": "#8B4513",
+      "title": "Brewery / Distillery",
+      "aestheticCategory": "brewery_distillery",
+      "description": "Craft brewery or distillery combining production facilities with public taprooms, beer gardens, and visitor experiences in architecturally distinctive settings",
+      "buildingSubcategory": "Brewery / Distillery",
+      "generationTags": [
+        "brewery",
+        "distillery",
+        "craft_beer",
+        "taproom",
+        "industrial_heritage"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#8B4513"
+      },
+      "styleProfile": {
+        "era": "Contemporary / Adaptive Reuse",
+        "influences": [
+          "Scottish Highland distilleries",
+          "Industrial warehouse conversion",
+          "Agricultural vernacular"
+        ],
+        "keywords": [
+          "copper stills",
+          "timber gridshell",
+          "brick warehouse",
+          "taproom",
+          "beer garden"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "timber gridshell, heritage brick, board-and-batten cedar, or glass-and-steel",
+        "secondaryMaterial": "copper brewing vessels visible through glass, Corten steel accents",
+        "accentMaterial": "string lights, hop vine trellises, neon signage",
+        "groundFloor": "taproom, tasting room, or brewery entrance with visible production equipment",
+        "upperFloors": "rooftop beer garden or mezzanine dining areas",
+        "cornice": "preserved brick chimney, kiln tower, or crystalline glass roof",
+        "colorScheme": "warm copper, timber, brick, with amber interior light"
+      },
+      "roofDetail": {
+        "form": "undulating green roof, gambrel barn roof, or crystalline glass pavilion",
+        "material": "grass and heather, weathered cedar shingles, or triangulated glass-and-steel",
+        "features": "rooftop beer gardens, hop vine trellises, PV panels",
+        "aerialAppearance": "distinctive production compound with warm copper interior glow"
+      },
+      "thumbnailUrl": "/archetypes/buildings/brewery_distillery/hero.png",
+      "variants": [
+        {
+          "id": "brewery_highland_distillery",
+          "label": "Highland Distillery",
+          "thumbnailUrl": "/archetypes/buildings/brewery_distillery/variant_0.png",
+          "description": "Luxury whisky distillery concealed beneath an undulating green roof of interlocking timber beams, with gleaming copper pot stills visible through glass curtain walls",
+          "facadeDetail": {
+            "primaryMaterial": "pale Scandinavian spruce timber gridshell",
+            "secondaryMaterial": "large glass curtain walls revealing copper pot stills",
+            "groundFloor": "visitor arrival court with low stone wall and gravel paths",
+            "colorScheme": "pale timber, glass, copper amber glow, rolling green roof"
+          },
+          "roofDetail": {
+            "form": "undulating green roof of interlocking timber beams",
+            "material": "grass, heather, and wildflower landscape"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#6B8E4E"
+          }
+        },
+        {
+          "id": "brewery_canal_warehouse",
+          "label": "Canal Brewery",
+          "thumbnailUrl": "/archetypes/buildings/brewery_distillery/variant_1.png",
+          "description": "Craft brewery in a converted 19th-century brick warehouse along a canal, with glass addition over water, rooftop beer garden, and cobblestone courtyard",
+          "facadeDetail": {
+            "primaryMaterial": "preserved red-brown brick with Corten steel and glass additions",
+            "secondaryMaterial": "tall arched windows revealing stainless fermentation tanks",
+            "groundFloor": "cobblestone courtyard with outdoor seating and food trucks",
+            "colorScheme": "red-brown brick, Corten rust, glass, neon signage, string lights"
+          },
+          "roofDetail": {
+            "form": "flat roof beer garden with hop vine trellises",
+            "material": "reclaimed timber furniture, string lights, hop bines"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A0522D"
+          }
+        },
+        {
+          "id": "brewery_crystal_brewhouse",
+          "label": "Crystal Brewhouse",
+          "thumbnailUrl": "/archetypes/buildings/brewery_distillery/variant_2.png",
+          "description": "State-of-the-art craft brewery with soaring faceted crystalline glass-and-steel roof pavilion, polished copper kettles, and panoramic taproom over hop fields",
+          "facadeDetail": {
+            "primaryMaterial": "triangulated steel beams with glass panels in faceted crystalline roof",
+            "secondaryMaterial": "board-formed concrete base walls, standing-seam zinc",
+            "groundFloor": "transparent brewhouse pavilion with copper kettles visible",
+            "colorScheme": "steel, glass, copper, zinc, board-formed concrete"
+          },
+          "roofDetail": {
+            "form": "faceted crystalline roof of triangulated steel and glass",
+            "material": "glass panels with PV panels on south-facing surfaces"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#B8860B"
+          }
+        },
+        {
+          "id": "brewery_farmstead",
+          "label": "Farmstead Brewery",
+          "thumbnailUrl": "/archetypes/buildings/brewery_distillery/variant_3.png",
+          "description": "Agricultural compound of connected barn-like structures with gambrel roofs, weathered cedar, copper brewing vessels, hop fields, and farmhouse beer garden",
+          "facadeDetail": {
+            "primaryMaterial": "weathered cedar shingles and vertical board-and-batten in natural gray",
+            "secondaryMaterial": "stone-and-timber tasting room with hand-hewn beams",
+            "groundFloor": "massive sliding barn door revealing copper brewing vessels",
+            "colorScheme": "weathered gray cedar, stone, natural timber, copper"
+          },
+          "roofDetail": {
+            "form": "gambrel barn roofs with conical-roofed kiln tower",
+            "material": "weathered cedar shingles"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#8B7355"
+          }
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 4,
+      "suggestedAreaSqm": 5000,
+      "developmentType": "commercial_retail"
+    },
+    {
+      "id": "solar_farm_agrivoltaics",
+      "shadeId": "#1E3A5F",
+      "title": "Solar Farm / Agrivoltaics",
+      "aestheticCategory": "solar_renewable",
+      "description": "Large-scale solar energy installation ranging from desert utility-scale PV arrays to innovative agrivoltaic, floating, and concentrated solar power configurations",
+      "buildingSubcategory": "Solar / Renewable Energy",
+      "generationTags": [
+        "solar_farm",
+        "agrivoltaics",
+        "renewable_energy",
+        "photovoltaic",
+        "concentrated_solar"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#1E3A5F"
+      },
+      "styleProfile": {
+        "era": "Contemporary (2010s-present)",
+        "influences": [
+          "Utility-scale energy infrastructure",
+          "Agricultural innovation",
+          "Concentrated solar technology"
+        ],
+        "keywords": [
+          "solar panels",
+          "photovoltaic",
+          "agrivoltaic",
+          "heliostat",
+          "floating solar"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "crystalline silicon PV panels on tracking or fixed arrays",
+        "secondaryMaterial": "white steel columns, HDPE pontoons, or heliostat mirrors",
+        "accentMaterial": "substation equipment, inverter buildings, maintenance infrastructure",
+        "groundFloor": "operations building, farm stand, or inverter station",
+        "upperFloors": "elevated panel arrays or tower receiver",
+        "cornice": "panel array edges or tower receiver element",
+        "colorScheme": "dark blue-black PV panels, silver mirrors, or white columns against landscape"
+      },
+      "roofDetail": {
+        "form": "vast arrays of tilted panels, floating platforms, or radial heliostat fields",
+        "material": "crystalline silicon, bifacial glass, or mirrored heliostats",
+        "features": "tracking mechanisms, maintenance walkways, agricultural integration",
+        "aerialAppearance": "geometric patterns of panels creating mesmerizing repetition across landscape"
+      },
+      "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/hero.png",
+      "variants": [
+        {
+          "id": "solar_desert_utility",
+          "label": "Desert Solar Farm",
+          "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/variant_0.png",
+          "description": "Vast utility-scale solar farm on rolling desert terrain with thousands of single-axis tracking PV panels in precise parallel rows creating mesmerizing geometric patterns",
+          "facadeDetail": {
+            "primaryMaterial": "dark blue-black crystalline silicon PV panels on tracking mounts",
+            "secondaryMaterial": "steel tracking structures, electrical conduit runs",
+            "groundFloor": "central operations building with communications array, substation",
+            "colorScheme": "dark blue-black panels, desert ochre, golden reflections"
+          },
+          "roofDetail": {
+            "form": "precise parallel rows of single-axis tracking panels",
+            "material": "crystalline silicon on galvanized steel torque tubes"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#2C3E50"
+          }
+        },
+        {
+          "id": "solar_agrivoltaic",
+          "label": "Agrivoltaic Farm",
+          "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/variant_1.png",
+          "description": "Semi-transparent bifacial solar panels elevated 4-5 meters above actively farmed cropland on slender white columns, creating dappled light canopy over vegetables",
+          "facadeDetail": {
+            "primaryMaterial": "semi-transparent bifacial solar panels on white steel columns",
+            "secondaryMaterial": "cable-stayed cross-bracing, motorized tilting brackets",
+            "groundFloor": "timber-and-glass farm stand with green roof at entrance",
+            "colorScheme": "white columns, semi-transparent panels, green crops below"
+          },
+          "roofDetail": {
+            "form": "elevated panel canopy creating dappled light for crops below",
+            "material": "bifacial glass panels on slender white steel frame"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#4A7C4B"
+          }
+        },
+        {
+          "id": "solar_floating",
+          "label": "Floating Solar",
+          "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/variant_2.png",
+          "description": "Thousands of PV panels on white HDPE pontoon platforms in geometric island formation on a calm reservoir, with onshore inverter station and maintenance dock",
+          "facadeDetail": {
+            "primaryMaterial": "PV panels on white HDPE pontoon platforms",
+            "secondaryMaterial": "maintenance walkway gratings, mooring cables",
+            "groundFloor": "onshore inverter station in timber-clad building",
+            "colorScheme": "blue-black panels on white pontoons, dark water, golden reflections"
+          },
+          "roofDetail": {
+            "form": "geometric island formations of floating panel blocks",
+            "material": "PV panels on HDPE pontoon platforms"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#1A5276"
+          }
+        },
+        {
+          "id": "solar_csp_tower",
+          "label": "CSP Tower",
+          "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/variant_3.png",
+          "description": "Concentrated solar power plant with a gleaming 200-meter tower, over 10,000 heliostats in precise radial concentric rings, and molten salt storage at base",
+          "facadeDetail": {
+            "primaryMaterial": "gleaming white concrete tower with receiver at top",
+            "secondaryMaterial": "billboard-sized heliostat mirrors on tracking mounts",
+            "groundFloor": "molten salt storage tanks and turbine hall at tower base",
+            "colorScheme": "white tower, silver mirrors, glowing orange receiver, desert sand"
+          },
+          "roofDetail": {
+            "form": "radial concentric rings of heliostats extending nearly a kilometer",
+            "material": "curved mirror panels on two-axis tracking mounts"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C0C0C0"
+          }
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 3,
+      "suggestedAreaSqm": 100000,
+      "developmentType": "industrial"
+    },
+    {
+      "id": "immersive_experience_venue",
+      "shadeId": "#6A0DAD",
+      "title": "Immersive Experience Venue",
+      "aestheticCategory": "immersive_experience",
+      "description": "Purpose-built or adaptively reused venue for immersive digital art, projection mapping, and experiential installations, featuring dramatic architectural forms",
+      "buildingSubcategory": "Immersive Experience / Digital Art",
+      "generationTags": [
+        "immersive",
+        "digital_art",
+        "experience_venue",
+        "projection_mapping",
+        "experiential"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#6A0DAD"
+      },
+      "styleProfile": {
+        "era": "Contemporary (2015-present)",
+        "influences": [
+          "teamLab",
+          "Meow Wolf",
+          "Atelier des Lumieres",
+          "Geodesic domes"
+        ],
+        "keywords": [
+          "immersive",
+          "projection",
+          "experiential",
+          "mirror",
+          "dome",
+          "underground"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "raw concrete, mirror-polished steel, ETFE cushions, or subterranean",
+        "secondaryMaterial": "backlit translucent panels, LED strips, fiber-optic elements",
+        "accentMaterial": "iridescent sculpture, neon, colored light, mirrored surfaces",
+        "groundFloor": "monumental entry portal or sunken ramp with atmospheric lighting",
+        "upperFloors": "cavernous dark interior for immersive projections",
+        "cornice": "sculptural element, dome profile, or flush with landscape",
+        "colorScheme": "dark dramatic exterior with vibrant colored light accents"
+      },
+      "roofDetail": {
+        "form": "geodesic dome, amorphous sculpture, sawtooth industrial, or underground skylights",
+        "material": "ETFE cushions, mirror-polished steel, glass, or grass-covered earth",
+        "features": "color-changing illumination, sculptural portals, reflecting pools",
+        "aerialAppearance": "dramatic glowing form contrasting with surroundings"
+      },
+      "thumbnailUrl": "/archetypes/buildings/immersive_experience_venue/hero.png",
+      "variants": [
+        {
+          "id": "immersive_industrial_portal",
+          "label": "Industrial Portal",
+          "thumbnailUrl": "/archetypes/buildings/immersive_experience_venue/variant_0.png",
+          "description": "Massive converted industrial warehouse with iridescent sculptural portal bursting through the roof, backlit translucent facade panels, and surreal organic entry archway",
+          "facadeDetail": {
+            "primaryMaterial": "raw concrete-and-steel preserved industrial structure",
+            "secondaryMaterial": "backlit translucent panels pulsing magenta, cyan, violet",
+            "groundFloor": "surreal organic fiberglass archway entry with mushrooms and crystals",
+            "colorScheme": "raw concrete, iridescent rainbow sculpture, neon glow"
+          },
+          "roofDetail": {
+            "form": "sawtooth skylights with iridescent sculpture bursting through",
+            "material": "existing industrial roof with mirrored sculptural addition"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#9B30FF"
+          }
+        },
+        {
+          "id": "immersive_geodesic_dome",
+          "label": "Geodesic Dome",
+          "thumbnailUrl": "/archetypes/buildings/immersive_experience_venue/variant_1.png",
+          "description": "60-meter geodesic dome with ETFE cushion skin glowing deep indigo and magenta, black concrete base, sunken courtyard with reflecting pool, and waterfront setting",
+          "facadeDetail": {
+            "primaryMaterial": "ETFE cushion panels in geodesic steel frame",
+            "secondaryMaterial": "low circular black concrete base with glass band",
+            "groundFloor": "sunken courtyard with black reflecting pool",
+            "colorScheme": "deep indigo and magenta ETFE glow, black concrete, dark water"
+          },
+          "roofDetail": {
+            "form": "massive 60-meter geodesic dome",
+            "material": "ETFE cushion panels shifting transparent to opaque"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#4B0082"
+          }
+        },
+        {
+          "id": "immersive_mirror_droplet",
+          "label": "Mirror Droplet",
+          "thumbnailUrl": "/archetypes/buildings/immersive_experience_venue/variant_2.png",
+          "description": "Immersive venue in fluid amorphous form entirely clad in polished stainless steel mirror panels, reflecting and distorting surrounding cityscape in kaleidoscopic effect",
+          "facadeDetail": {
+            "primaryMaterial": "polished stainless steel mirror panels in fluid form",
+            "secondaryMaterial": "dark rectangular openings with LED strip edges in amber",
+            "groundFloor": "sunken entry plaza with broad stairs and black granite paving",
+            "colorScheme": "mirror steel reflecting golden sunset, amber LED accents"
+          },
+          "roofDetail": {
+            "form": "continuous fluid amorphous mirror surface, no distinct roof",
+            "material": "polished stainless steel mirror panels"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C0C0C0"
+          }
+        },
+        {
+          "id": "immersive_underground",
+          "label": "Underground Venue",
+          "thumbnailUrl": "/archetypes/buildings/immersive_experience_venue/variant_3.png",
+          "description": "Immersive venue built entirely underground, visible as dramatic circular skylights emitting colored light from galleries below, with spiral ramp entrance and grass mounds",
+          "facadeDetail": {
+            "primaryMaterial": "board-formed concrete ramp walls with fiber-optic starfield",
+            "secondaryMaterial": "glass-floored viewing platforms over galleries below",
+            "groundFloor": "sweeping concrete ramp spiraling down through 20-meter opening",
+            "colorScheme": "grass mounds, colored light from below, bronze sculptural totems"
+          },
+          "roofDetail": {
+            "form": "sculpted grass mounds with circular skylights flush with park",
+            "material": "grass-covered earth with glass skylight insertions"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#2E8B57"
+          }
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 6,
+      "suggestedAreaSqm": 10000,
+      "developmentType": "recreational"
+    },
+    {
+      "id": "modern_fire_station",
+      "shadeId": "#B22222",
+      "title": "Modern Fire Station",
+      "aestheticCategory": "modern_fire_station",
+      "description": "Contemporary fire station balancing emergency response functionality with civic architecture, community presence, and sustainable design",
+      "buildingSubcategory": "Fire Station / Emergency Services",
+      "generationTags": [
+        "fire_station",
+        "emergency_services",
+        "civic",
+        "institutional",
+        "community"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#c4b896",
+        "ground": "#8a8a7a",
+        "accent": "#B22222"
+      },
+      "styleProfile": {
+        "era": "Contemporary (2000s-present)",
+        "influences": [
+          "Deconstructivism",
+          "Mass timber",
+          "High-tech",
+          "Craftsman vernacular"
+        ],
+        "keywords": [
+          "apparatus bay",
+          "hose tower",
+          "fire engine",
+          "civic",
+          "community"
+        ]
+      },
+      "facadeDetail": {
+        "primaryMaterial": "exposed concrete, CLT timber, perforated aluminum, or warm brick",
+        "secondaryMaterial": "glass-paneled overhead doors revealing fire engines",
+        "accentMaterial": "red-painted steel frames, memorial wall, clock tower",
+        "groundFloor": "apparatus bays with transparent doors, public community room",
+        "upperFloors": "crew living quarters, training facilities, watch room",
+        "cornice": "hose-drying tower as vertical landmark element",
+        "colorScheme": "varies by variant -- raw concrete, warm timber, red-bronze metal, or red brick"
+      },
+      "roofDetail": {
+        "form": "angular planes, green roof meadow, flat with cantilever, or pitched with dormers",
+        "material": "exposed concrete, sedum green roof, standing-seam metal, or charcoal metal",
+        "features": "training tower, solar panels, rooftop gardens, antenna arrays",
+        "aerialAppearance": "distinctive civic form with hose tower and apparatus bay apron"
+      },
+      "thumbnailUrl": "/archetypes/buildings/modern_fire_station/hero.png",
+      "variants": [
+        {
+          "id": "fire_deconstructivist",
+          "label": "Deconstructivist",
+          "thumbnailUrl": "/archetypes/buildings/modern_fire_station/variant_0.png",
+          "description": "Bold deconstructivist fire station in raw exposed concrete with dramatically angled walls, no right angles, and angular hose-drying tower with narrow slit window",
+          "facadeDetail": {
+            "primaryMaterial": "board-formed exposed concrete with visible wood grain",
+            "secondaryMaterial": "red-painted steel frames at apparatus bay openings",
+            "groundFloor": "three apparatus bays between angular concrete planes",
+            "colorScheme": "raw concrete, red steel frames, dramatic angular shadows"
+          },
+          "roofDetail": {
+            "form": "angular concrete planes extending like frozen explosion shards",
+            "material": "board-formed concrete with sharp diagonal profiles"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#808080"
+          }
+        },
+        {
+          "id": "fire_mass_timber",
+          "label": "Mass Timber",
+          "thumbnailUrl": "/archetypes/buildings/modern_fire_station/variant_1.png",
+          "description": "Modern fire station in CLT and mass timber with honey-toned wood, green roof meadow garden, shou sugi ban accents, and welcoming residential scale",
+          "facadeDetail": {
+            "primaryMaterial": "CLT mass timber with warm honey tone, exposed beam ends",
+            "secondaryMaterial": "board-formed concrete apparatus bay with glass-paneled doors",
+            "groundFloor": "three glass-paneled overhead doors revealing red fire engines",
+            "colorScheme": "honey timber, charred shou sugi ban accents, green roof, concrete"
+          },
+          "roofDetail": {
+            "form": "extensive green roof garden with native grasses and wildflowers",
+            "material": "sedum, native grasses, small trees, solar panels"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C4956A"
+          }
+        },
+        {
+          "id": "fire_cantilevered_modern",
+          "label": "Cantilevered Modern",
+          "thumbnailUrl": "/archetypes/buildings/modern_fire_station/variant_2.png",
+          "description": "Striking modern fire station with bold cantilevered second floor in perforated red-bronze aluminum, transparent ground floor, and corner glass-and-steel clock tower",
+          "facadeDetail": {
+            "primaryMaterial": "perforated anodized aluminum in deep red-bronze finish",
+            "secondaryMaterial": "floor-to-ceiling glass ground floor revealing fire engines",
+            "groundFloor": "transparent glass apparatus bay with polished concrete floor",
+            "colorScheme": "deep red-bronze cantilever, glass, polished concrete, LED accents"
+          },
+          "roofDetail": {
+            "form": "flat roof with bold 10-meter cantilever over public plaza",
+            "material": "perforated anodized aluminum panels"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A52A2A"
+          }
+        },
+        {
+          "id": "fire_craftsman_neighborhood",
+          "label": "Craftsman Neighborhood",
+          "thumbnailUrl": "/archetypes/buildings/modern_fire_station/variant_3.png",
+          "description": "Fire station blending with residential neighborhood in warm red-brown brick, craftsman home aesthetic, barn-style apparatus doors, copper cupola hose tower, and memorial garden",
+          "facadeDetail": {
+            "primaryMaterial": "warm red-brown brick with painted wood trim",
+            "secondaryMaterial": "wood-paneled overhead doors referencing barn aesthetics",
+            "groundFloor": "covered front porch with timber columns, community room",
+            "colorScheme": "red-brown brick, charcoal metal roof, painted wood, copper cupola"
+          },
+          "roofDetail": {
+            "form": "standing-seam charcoal metal roof with gabled dormers",
+            "material": "charcoal standing-seam metal with copper cupola on hose tower"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#8B4513"
+          }
+        }
+      ],
+      "minFloors": 2,
+      "maxFloors": 4,
+      "suggestedAreaSqm": 3000,
+      "developmentType": "institutional"
     }
   ]
 }

@@ -930,6 +930,55 @@ const resolveOptionCategory = (
 
 
         {/* ============================================================= */}
+        {/* PRESERVE EXISTING                                              */}
+        {/* ============================================================= */}
+        {zone.zone_type === 'preserve_existing' && (
+          <>
+            <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-3">
+              <label className="block text-xs font-medium text-blue-800 mb-2">Preserve Mode</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setProps((p) => ({ ...p, preserve_mode: 'lock' }))}
+                  className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                    (zone.properties?.preserve_mode || 'lock') === 'lock'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-white text-blue-700 border border-blue-200 hover:bg-blue-50'
+                  }`}
+                >
+                  🔒 Lock
+                </button>
+                <button
+                  onClick={() => setProps((p) => ({ ...p, preserve_mode: 'harmonize' }))}
+                  className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                    zone.properties?.preserve_mode === 'harmonize'
+                      ? 'bg-amber-500 text-white shadow-sm'
+                      : 'bg-white text-amber-700 border border-amber-200 hover:bg-amber-50'
+                  }`}
+                >
+                  🎨 Harmonize
+                </button>
+              </div>
+              <p className="mt-2 text-[10px] text-blue-600/70">
+                {(zone.properties?.preserve_mode || 'lock') === 'lock'
+                  ? 'Lock: The existing building will not be touched during rendering. Original satellite pixels preserved.'
+                  : 'Harmonize: The existing building form is kept but re-rendered to match the chosen aesthetic style.'}
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-xs text-primary-950/50">Notes</label>
+              <textarea
+                value={zone.properties?.notes || ''}
+                onChange={(e) => setProps((p) => ({ ...p, notes: e.target.value }))}
+                placeholder="e.g. Heritage church, built 1922"
+                rows={2}
+                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950 resize-none"
+              />
+            </div>
+          </>
+        )}
+
+        {/* ============================================================= */}
         {/* GREEN SPACE                                                    */}
         {/* ============================================================= */}
         {zone.zone_type === 'green_space' && (
