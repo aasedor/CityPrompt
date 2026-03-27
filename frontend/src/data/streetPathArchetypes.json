@@ -1741,6 +1741,540 @@
           "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_3.png"
         }
       ]
+    },
+    {
+      "id": "downtown_thoroughfare",
+      "title": "Downtown Thoroughfare",
+      "aestheticCategory": "auto_oriented",
+      "description": "A wide 6-lane downtown street with transit service, lined by mid-rise commercial buildings with ground-floor retail, street trees in grates, and active sidewalks",
+      "transportModes": [
+        "walking",
+        "transit",
+        "automobile"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "downtown",
+        "thoroughfare",
+        "urban",
+        "transit",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A wide downtown thoroughfare viewed from 3/4 aerial angle. Six travel lanes of dark asphalt with white lane markings. Concrete sidewalks with street trees in metal grates. 8-12 story commercial buildings with ground-floor retail and canvas awnings line both sides.",
+        "movementHierarchy": "High-volume multi-modal — automobile, transit, walking",
+        "surfaceType": "Dark asphalt with white lane markings, concrete sidewalks",
+        "plantingCharacter": "Honey Locust trees in metal grates at regular intervals",
+        "edgeConditions": "Ground-floor retail, canvas awnings, parallel parked cars",
+        "publicRealm": "Active urban commercial corridor with transit service"
+      },
+      "prompt": {
+        "subject": "Aerial view of a wide 6-lane downtown street with transit and commercial buildings",
+        "details": [
+          "Six lanes of dark asphalt with white lane markings",
+          "Concrete sidewalks with street trees in metal grates",
+          "8-12 story brick and limestone commercial buildings",
+          "Ground-floor retail with canvas awnings",
+          "Transit bus at shelter, parallel parked cars"
+        ],
+        "negative": [
+          "No text overlays",
+          "No unrealistic elements"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "auto_dominant",
+        "transport_modes": [
+          "walking",
+          "transit",
+          "automobile"
+        ],
+        "width": 30,
+        "lane_count": 6,
+        "volume": "high",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 3,
+        "priority_cycling": 4,
+        "priority_transit": 2,
+        "priority_auto": 1
+      },
+      "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/hero.png",
+      "variants": [
+        {
+          "id": "downtown_thoroughfare_v0",
+          "label": "American Downtown",
+          "color": "#2C3E50",
+          "description": "Downtown Thoroughfare in classic American city style. 6-lane road with parallel parking, transit shelters, brick and limestone buildings with ground-floor retail.",
+          "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/variant_0.png"
+        },
+        {
+          "id": "downtown_thoroughfare_v1",
+          "label": "European Boulevard",
+          "color": "#1A5276",
+          "description": "Downtown Thoroughfare as grand European boulevard. Tram tracks in grass median, Haussmann buildings, cafe terraces under parasols.",
+          "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/variant_1.png"
+        },
+        {
+          "id": "downtown_thoroughfare_v2",
+          "label": "Asian Urban",
+          "color": "#6C3483",
+          "description": "Downtown Thoroughfare in dense Asian city context. BRT station, glass towers with illuminated signage, elevated pedestrian bridge.",
+          "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/variant_2.png"
+        },
+        {
+          "id": "downtown_thoroughfare_v3",
+          "label": "Complete Street",
+          "color": "#1E8449",
+          "description": "Downtown Thoroughfare as contemporary complete street. Planted median rain gardens, protected cycle track, bioretention planters, mixed-use buildings.",
+          "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian_only_street",
+      "title": "Pedestrian-Only Street",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A fully car-free pedestrian street with high-quality paving, street furniture, planting, and active ground-floor frontages for shopping and dining",
+      "transportModes": [
+        "walking"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "pedestrian",
+        "car-free",
+        "shopping",
+        "promenade",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A fully pedestrian street viewed from 3/4 aerial angle. Full-width quality stone or concrete paving with no vehicle lanes. Ground-floor retail and cafe frontages with outdoor seating. Street furniture, planters, and public art. Lively human activity.",
+        "movementHierarchy": "Pedestrian-only — no vehicle access",
+        "surfaceType": "Granite sett paving, limestone, or high-quality concrete pavers",
+        "plantingCharacter": "Street trees in planters, flower beds, seasonal planting",
+        "edgeConditions": "Active ground-floor retail, cafe terraces, awnings",
+        "publicRealm": "Premier pedestrian shopping and socializing environment"
+      },
+      "prompt": {
+        "subject": "Aerial view of a pedestrian-only shopping street with quality paving and active frontages",
+        "details": [
+          "Full-width quality stone or concrete paving, no vehicle lanes",
+          "Ground-floor retail and cafes with outdoor terraces",
+          "Street furniture — benches, lamps, planters",
+          "Trees and seasonal planting",
+          "Fountain or public art focal point"
+        ],
+        "negative": [
+          "No vehicles",
+          "No road markings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian",
+        "transport_modes": [
+          "walking"
+        ],
+        "width": 15,
+        "lane_count": 0,
+        "volume": "high",
+        "road_surface": "stone_paving",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/hero.png",
+      "variants": [
+        {
+          "id": "pedestrian_only_street_v0",
+          "label": "Nordic Shopping Street",
+          "color": "#5D6D7E",
+          "description": "Pedestrian-Only Street in historic European style. Gray granite sett paving, painted facades, cast-iron lamps, flower planters, fountain focal point.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/variant_0.png"
+        },
+        {
+          "id": "pedestrian_only_street_v1",
+          "label": "Mediterranean Promenade",
+          "color": "#D4A017",
+          "description": "Pedestrian-Only Street as Mediterranean promenade. Cream limestone paving, Plane trees, cafe terraces, ochre stucco buildings with bougainvillea.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/variant_1.png"
+        },
+        {
+          "id": "pedestrian_only_street_v2",
+          "label": "Asian Night Market",
+          "color": "#C0392B",
+          "description": "Pedestrian-Only Street as Asian night market. Market stalls with colorful canopies, string lights and paper lanterns, dense signage, steam from food stalls.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/variant_2.png"
+        },
+        {
+          "id": "pedestrian_only_street_v3",
+          "label": "Contemporary Redesign",
+          "color": "#7D8B69",
+          "description": "Pedestrian-Only Street with contemporary redesign. Concrete pavers, Corten planters with grasses, timber-slat benches, restored warehouses and new glass buildings.",
+          "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "green_alley",
+      "title": "Green Alley",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A residential alley retrofitted with permeable paving, bioswales, rain gardens, and native plantings for stormwater management and ecological habitat",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "very_low",
+      "generationTags": [
+        "alley",
+        "green-infrastructure",
+        "stormwater",
+        "residential",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A residential green alley viewed from 3/4 aerial angle. Permeable paving replaces traditional asphalt. Bioswales and rain gardens line the edges. Native plantings and mature backyard trees overhang the alley.",
+        "movementHierarchy": "Very low-speed shared access — walking and occasional automobile",
+        "surfaceType": "Permeable concrete pavers or permeable asphalt",
+        "plantingCharacter": "Bioswales with native sedges, rain gardens with wildflowers, overhanging backyard trees",
+        "edgeConditions": "Wood privacy fences, rain barrels, garage entrances",
+        "publicRealm": "Green infrastructure corridor in residential neighborhood"
+      },
+      "prompt": {
+        "subject": "Aerial view of a green alley with permeable paving and bioswales",
+        "details": [
+          "Permeable concrete pavers or permeable asphalt surface",
+          "Bioswales and rain gardens along edges",
+          "Native wildflowers and sedges in stormwater features",
+          "Mature trees overhanging from adjacent yards",
+          "Wood privacy fences, residential character"
+        ],
+        "negative": [
+          "No commercial signage",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "width": 5,
+        "lane_count": 1,
+        "volume": "very_low",
+        "road_surface": "permeable_paving",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 4,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/green-alley/hero.png",
+      "variants": [
+        {
+          "id": "green_alley_v0",
+          "label": "Chicago Permeable",
+          "color": "#A3B86C",
+          "description": "Green Alley in Chicago-style permeable paving. Cream herringbone pavers, wood fences, overhanging mature trees, LED lighting.",
+          "thumbnailUrl": "/archetypes/streets/green-alley/variant_0.png"
+        },
+        {
+          "id": "green_alley_v1",
+          "label": "Bioswale Corridor",
+          "color": "#3B7A57",
+          "description": "Green Alley with continuous bioswale. Permeable asphalt with bioswale of sedges and iris, river cobble inlets, limestone check dams.",
+          "thumbnailUrl": "/archetypes/streets/green-alley/variant_1.png"
+        },
+        {
+          "id": "green_alley_v2",
+          "label": "Rain Garden Cells",
+          "color": "#DAA520",
+          "description": "Green Alley with alternating rain garden cells. Central pavers flanked by rain gardens with Coneflower, Black-Eyed Susan, Little Bluestem.",
+          "thumbnailUrl": "/archetypes/streets/green-alley/variant_2.png"
+        },
+        {
+          "id": "green_alley_v3",
+          "label": "Native Garden Path",
+          "color": "#556B2F",
+          "description": "Green Alley as heavily planted native garden path. Decomposed granite winding through Big Bluestem, Switchgrass, Wild Bergamot.",
+          "thumbnailUrl": "/archetypes/streets/green-alley/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "commercial_alley_laneway",
+      "title": "Commercial Alley / Laneway",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A narrow commercial laneway activated with cafes, street art, pop-up vendors, or specialty retail in a compressed urban setting",
+      "transportModes": [
+        "walking"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "alley",
+        "laneway",
+        "commercial",
+        "cafe",
+        "street-art",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A narrow commercial laneway viewed from 3/4 aerial angle. Tall brick or stone walls create an intimate passage. Ground-floor cafes and bars with tiny frontages. Overhead string lights. Street art and murals.",
+        "movementHierarchy": "Pedestrian-only narrow passage",
+        "surfaceType": "Bluestone flagstone, cobblestone, or worn concrete",
+        "plantingCharacter": "Minimal — potted plants, window boxes, vine-covered walls",
+        "edgeConditions": "Cafe counters, bar entrances, street art murals, fire escapes",
+        "publicRealm": "Intimate activated urban passage with discovery character"
+      },
+      "prompt": {
+        "subject": "Aerial view of a narrow commercial laneway with cafes and street art",
+        "details": [
+          "Narrow passage between tall brick or stone buildings",
+          "Tiny cafe and bar frontages at ground level",
+          "Overhead string lights and atmospheric lighting",
+          "Street art murals on walls",
+          "Quality stone or flagstone paving"
+        ],
+        "negative": [
+          "No vehicles",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian",
+        "transport_modes": [
+          "walking"
+        ],
+        "width": 4,
+        "lane_count": 0,
+        "volume": "medium",
+        "road_surface": "stone_paving",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 4,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/hero.png",
+      "variants": [
+        {
+          "id": "commercial_alley_laneway_v0",
+          "label": "Melbourne Laneway",
+          "color": "#B03A2E",
+          "description": "Commercial Alley as Melbourne-style laneway. Brick warehouses with street art murals, bluestone paving, tiny cafe fronts, Edison-bulb string lights.",
+          "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/variant_0.png"
+        },
+        {
+          "id": "commercial_alley_laneway_v1",
+          "label": "Tokyo Yokocho",
+          "color": "#E74C3C",
+          "description": "Commercial Alley as Tokyo yokocho drinking alley. Ultra-narrow passage with noren curtains, paper lanterns, counter seating, yakitori steam.",
+          "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/variant_1.png"
+        },
+        {
+          "id": "commercial_alley_laneway_v2",
+          "label": "European Arcade",
+          "color": "#D4AC0D",
+          "description": "Commercial Alley as 19th-century European shopping passage. Glass barrel-vault roof, marble floor, ornate gilded shop fronts, brass lights.",
+          "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/variant_2.png"
+        },
+        {
+          "id": "commercial_alley_laneway_v3",
+          "label": "Brooklyn Activated",
+          "color": "#2980B9",
+          "description": "Commercial Alley as Brooklyn-style activated alley. Painted asphalt mural, pop-up vendors, food truck, reclaimed wood tables, botanical mural.",
+          "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "yield_street",
+      "title": "Yield Street",
+      "aestheticCategory": "auto_oriented",
+      "description": "A narrow shared-surface street where vehicles must yield to oncoming traffic and pedestrians, with no curbs and integrated traffic-calming elements",
+      "transportModes": [
+        "walking",
+        "cycling",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "yield",
+        "shared-space",
+        "woonerf",
+        "narrow",
+        "residential",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A narrow yield street viewed from 3/4 aerial angle. Continuous surface paving with no curbs — vehicles share the space with pedestrians. Bollards and planters define the driving lane. Buildings front directly onto the street.",
+        "movementHierarchy": "Low-speed shared space — pedestrians, cycling, automobile yielding",
+        "surfaceType": "Clay brick pavers, cobblestone, or granite blocks — continuous surface, no curbs",
+        "plantingCharacter": "Street trees creating canopy, planters as traffic calming",
+        "edgeConditions": "Building facades directly abutting street, potted plants, bicycles",
+        "publicRealm": "Intimate shared-use residential or historic street"
+      },
+      "prompt": {
+        "subject": "Aerial view of a narrow yield street with shared surface and no curbs",
+        "details": [
+          "Continuous brick or stone paving with no curbs",
+          "Bollards and planters defining driving lane",
+          "Narrow enough that vehicles must yield to oncoming traffic",
+          "Buildings fronting directly onto the street",
+          "Bicycles, potted plants, street trees"
+        ],
+        "negative": [
+          "No lane markings",
+          "No traffic signals",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "cycling",
+          "automobile"
+        ],
+        "width": 6,
+        "lane_count": 1,
+        "volume": "low",
+        "road_surface": "brick_paving",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 4,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/yield-street/hero.png",
+      "variants": [
+        {
+          "id": "yield_street_v0",
+          "label": "Dutch Woonerf",
+          "color": "#A04000",
+          "description": "Yield Street as Dutch woonerf. Red-brown clay brick herringbone pavers, bollards and Hydrangea planters, brick rowhouses with stepped gables.",
+          "thumbnailUrl": "/archetypes/streets/yield-street/variant_0.png"
+        },
+        {
+          "id": "yield_street_v1",
+          "label": "New England Historic",
+          "color": "#6E2C00",
+          "description": "Yield Street as historic New England street. Worn brick paving, Federal-style rowhouses, gas-lamp lights, mature Elm canopy.",
+          "thumbnailUrl": "/archetypes/streets/yield-street/variant_1.png"
+        },
+        {
+          "id": "yield_street_v2",
+          "label": "Japanese Residential",
+          "color": "#707B7C",
+          "description": "Yield Street as narrow Japanese residential alley. 3m gray asphalt, traditional houses with tile roofs, potted plants, utility poles, immaculately clean.",
+          "thumbnailUrl": "/archetypes/streets/yield-street/variant_2.png"
+        },
+        {
+          "id": "yield_street_v3",
+          "label": "Scandinavian Shared",
+          "color": "#839192",
+          "description": "Yield Street as Scandinavian shared-space. Gray granite pavers, Corten planters with grasses and Birch chicanes, timber-clad houses with green roofs.",
+          "thumbnailUrl": "/archetypes/streets/yield-street/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "neighborhood_main_street",
+      "title": "Neighborhood Main Street",
+      "aestheticCategory": "pedestrian_oriented",
+      "description": "A traditional neighborhood commercial street with two travel lanes, on-street parking, wide sidewalks, and 2-3 story mixed-use buildings with active retail",
+      "transportModes": [
+        "walking",
+        "cycling",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "main-street",
+        "neighborhood",
+        "commercial",
+        "retail",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A neighborhood main street viewed from 3/4 aerial angle. Two travel lanes with on-street parking — diagonal or parallel. Wide sidewalks with street trees and pedestrian amenities. 2-3 story mixed-use buildings with ground-floor retail.",
+        "movementHierarchy": "Medium-speed local commercial — walking, cycling, automobile",
+        "surfaceType": "Asphalt roadway, concrete or brick sidewalks",
+        "plantingCharacter": "Street trees in tree wells or planting strips, flower baskets on lamp posts",
+        "edgeConditions": "Ground-floor retail with awnings and blade signs, wide sidewalks, on-street parking",
+        "publicRealm": "Active neighborhood commercial and social corridor"
+      },
+      "prompt": {
+        "subject": "Aerial view of a neighborhood main street with shops and on-street parking",
+        "details": [
+          "Two-lane road with diagonal or parallel parking",
+          "2-3 story mixed-use commercial buildings",
+          "Ground-floor retail with awnings and signage",
+          "Wide sidewalks with street trees and lamp posts",
+          "Flower baskets, benches, pedestrian amenities"
+        ],
+        "negative": [
+          "No text overlays",
+          "No unrealistic elements"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "cycling",
+          "automobile"
+        ],
+        "width": 16,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 3,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/hero.png",
+      "variants": [
+        {
+          "id": "neighborhood_main_street_v0",
+          "label": "Small-Town American",
+          "color": "#922B21",
+          "description": "Neighborhood Main Street in small-town American style. Red and cream brick buildings, pressed-metal cornices, canvas awnings, diagonal parking, flower basket lamp posts.",
+          "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_0.png"
+        },
+        {
+          "id": "neighborhood_main_street_v1",
+          "label": "English High Street",
+          "color": "#7B7D3E",
+          "description": "Neighborhood Main Street as English Victorian high street. Cotswold stone and brick buildings, sash windows, York stone sidewalks, cast-iron lamp posts, red pillar box.",
+          "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_1.png"
+        },
+        {
+          "id": "neighborhood_main_street_v2",
+          "label": "Mediterranean Village",
+          "color": "#CA6F1E",
+          "description": "Neighborhood Main Street as Mediterranean village street. White and ochre stucco with barrel-tile roofs, wrought-iron balconies, bougainvillea, sandstone paving.",
+          "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_2.png"
+        },
+        {
+          "id": "neighborhood_main_street_v3",
+          "label": "Contemporary Urban",
+          "color": "#2471A3",
+          "description": "Neighborhood Main Street with contemporary design. Protected bike lane, rain garden tree trenches, mixed-use with NanaWall storefronts, modern steel furniture.",
+          "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_3.png"
+        }
+      ]
     }
   ]
 }

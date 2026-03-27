@@ -2677,6 +2677,376 @@
           "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/variant_3.png"
         }
       ]
+    },
+    {
+      "id": "linear_park_greenway",
+      "title": "Linear Park / Greenway",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A narrow linear park following a former rail corridor, creek, or utility easement, with multi-use trails, native plantings, and ecological restoration",
+      "generationTags": [
+        "linear-park",
+        "greenway",
+        "trail",
+        "ecological",
+        "corridor"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A linear park or greenway viewed from 3/4 aerial angle. A paved multi-use trail follows a narrow corridor — a former rail line, creek, or utility easement. Native wildflower meadows and riparian plantings flank the path. Bridges, overlooks, and interpretive signage.",
+        "pavingType": "Asphalt or crushed limestone multi-use trail",
+        "plantingType": "Native wildflower meadows, riparian buffer plantings, shade trees",
+        "seatingRealm": "Railroad-tie benches, timber overlook platforms",
+        "waterFeatures": "Creek, river, or stormwater features",
+        "opennessEnclosure": "Linear corridor framed by vegetation and adjacent development"
+      },
+      "prompt": {
+        "subject": "Aerial view of a linear park greenway along a former rail or creek corridor",
+        "details": [
+          "Multi-use asphalt or gravel trail along narrow corridor",
+          "Native wildflower meadows flanking the trail",
+          "Shade trees and riparian plantings",
+          "Bridges, overlooks, and interpretive signage",
+          "Cyclists, joggers, and walkers on path"
+        ],
+        "negative": [
+          "No vehicles",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "riparian_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/hero.png",
+      "variants": [
+        {
+          "id": "linear_park_greenway_v0",
+          "label": "Rail Trail",
+          "color": "#8B4513",
+          "description": "Linear Park as rail trail. Asphalt path along former rail corridor, preserved tracks, wildflower meadow banks, railroad-tie benches, steel truss bridge.",
+          "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/variant_0.png"
+        },
+        {
+          "id": "linear_park_greenway_v1",
+          "label": "Riverfront Greenway",
+          "color": "#1B4F72",
+          "description": "Linear Park as riverfront greenway. Concrete path along river, cantilevered overlook platforms, Weeping Willows, lawn terraces, kayak launch.",
+          "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/variant_1.png"
+        },
+        {
+          "id": "linear_park_greenway_v2",
+          "label": "Daylighted Creek",
+          "color": "#196F3D",
+          "description": "Linear Park as daylighted creek restoration. Meandering creek with riffles and weirs, boardwalk over wetland, rain garden bioretention.",
+          "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/variant_2.png"
+        },
+        {
+          "id": "linear_park_greenway_v3",
+          "label": "Elevated Viaduct",
+          "color": "#6E2C00",
+          "description": "Linear Park as elevated park on repurposed rail viaduct. Corten steel viaduct, concrete plank paving with grasses, preserved rail tracks, cantilevered viewing platform.",
+          "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "nature_preserve",
+      "title": "Nature Preserve",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A protected natural area with minimal development — boardwalks, observation platforms, and interpretive signage through wetland, prairie, dune, or forest ecosystems",
+      "generationTags": [
+        "nature",
+        "preserve",
+        "wetland",
+        "prairie",
+        "ecological",
+        "conservation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A nature preserve viewed from 3/4 aerial angle. Undisturbed natural ecosystem with minimal built intervention. Narrow boardwalks and trails thread through wetland, prairie, dunes, or forest. Observation platforms and interpretive panels.",
+        "pavingType": "Timber boardwalk, crushed stone trail, or mown path",
+        "plantingType": "Native ecosystem — wetland marsh, tallgrass prairie, coastal dune, or old-growth forest",
+        "seatingRealm": "Observation platforms, minimal benches at trailheads",
+        "waterFeatures": "Natural — marsh water, creek, or ocean",
+        "opennessEnclosure": "Open natural landscape with horizon views or enclosed forest canopy"
+      },
+      "prompt": {
+        "subject": "Aerial view of a nature preserve with boardwalk and native ecosystems",
+        "details": [
+          "Undisturbed natural ecosystem — wetland, prairie, dunes, or forest",
+          "Narrow timber boardwalk or crushed-stone trail",
+          "Observation platform with interpretive panels",
+          "Native wildlife and plantings",
+          "Minimal built intervention"
+        ],
+        "negative": [
+          "No vehicles",
+          "No commercial development",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "varies",
+        "tree_density": 0.6,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "natural_canopy"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/nature-preserve/hero.png",
+      "variants": [
+        {
+          "id": "nature_preserve_v0",
+          "label": "Wetland Boardwalk",
+          "color": "#1A5276",
+          "description": "Nature Preserve as wetland with timber boardwalk through Cattails and Reed, observation platform, Bald Cypress, Great Blue Heron.",
+          "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_0.png"
+        },
+        {
+          "id": "nature_preserve_v1",
+          "label": "Tallgrass Prairie",
+          "color": "#B7950B",
+          "description": "Nature Preserve as tallgrass prairie reserve. Mown trail through Big Bluestem and Indian Grass, wildflowers, timber observation platform, Bur Oak savanna.",
+          "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_1.png"
+        },
+        {
+          "id": "nature_preserve_v2",
+          "label": "Coastal Dune",
+          "color": "#D4AC0D",
+          "description": "Nature Preserve as coastal dune conservation. Timber boardwalk through sand dunes with Beach Grass, sand fencing, Piping Plover nesting zone, ocean views.",
+          "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_2.png"
+        },
+        {
+          "id": "nature_preserve_v3",
+          "label": "Old-Growth Forest",
+          "color": "#1B4F72",
+          "description": "Nature Preserve as old-growth forest trail. Massive tree trunks, moss-covered logs, sword ferns, boardwalk over wet area, cathedral-like dappled light.",
+          "thumbnailUrl": "/archetypes/openspaces/nature-preserve/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "rooftop_garden",
+      "title": "Rooftop Garden",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "A rooftop open space atop a building — ranging from intensive gardens with trees and lawns to extensive green roofs, urban farms, or social terraces",
+      "generationTags": [
+        "rooftop",
+        "garden",
+        "green-roof",
+        "urban-farm",
+        "terrace"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A rooftop garden or green roof viewed from 3/4 aerial angle atop a multi-story building. Planted beds, seating areas, and amenities set against a city skyline backdrop. Glass railings at building edge.",
+        "pavingType": "Ipe deck, porcelain tile, or concrete pavers",
+        "plantingType": "Intensive planting beds with trees and shrubs, or extensive sedum carpet",
+        "seatingRealm": "Lounge furniture, built-in benches, dining areas",
+        "waterFeatures": "Reflecting pool or fountain",
+        "opennessEnclosure": "Open sky exposure with city views, glass railings at edges"
+      },
+      "prompt": {
+        "subject": "Aerial view of a rooftop garden atop a multi-story building",
+        "details": [
+          "Planted beds with trees, shrubs, or sedum on rooftop",
+          "Deck or paving with seating areas",
+          "Glass railings with city views beyond",
+          "Pergola or shade structure",
+          "Green contrast against urban context"
+        ],
+        "negative": [
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.2,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "pergola_structure"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/hero.png",
+      "variants": [
+        {
+          "id": "rooftop_garden_v0",
+          "label": "Intensive Garden",
+          "color": "#27AE60",
+          "description": "Rooftop Garden as lush intensive garden. Japanese Maple, Birch, Hydrangeas, cedar pergola with Wisteria, reflecting pool, ipe deck lounge, lawn panel.",
+          "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/variant_0.png"
+        },
+        {
+          "id": "rooftop_garden_v1",
+          "label": "Sedum Green Roof",
+          "color": "#82E0AA",
+          "description": "Rooftop Garden as extensive sedum green roof. Patchwork carpet of silver-green, red, yellow-green Sedum, modular trays, maintenance path, screened HVAC.",
+          "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/variant_1.png"
+        },
+        {
+          "id": "rooftop_garden_v2",
+          "label": "Urban Farm",
+          "color": "#7D6608",
+          "description": "Rooftop Garden as urban farm. Galvanized raised beds with vegetables, row covers, drip irrigation, timber greenhouse, composting bins, city skyline.",
+          "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/variant_2.png"
+        },
+        {
+          "id": "rooftop_garden_v3",
+          "label": "Social Terrace",
+          "color": "#4A235A",
+          "description": "Rooftop Garden as social space and bar at blue hour. Porcelain paving, fire table, bar structure, Edison-bulb lights, Corten planters, wicker lounge, panoramic skyline.",
+          "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "riverfront_park_beach",
+      "title": "Riverfront Park / Beach",
+      "aestheticCategory": "waterfront_spaces",
+      "spaceType": "park",
+      "description": "A waterfront park with beach, swimming, and recreation along a river or lake — combining sand, water access, promenades, and naturalized shoreline",
+      "generationTags": [
+        "waterfront",
+        "beach",
+        "river",
+        "lake",
+        "swimming",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A riverfront or lakefront park with beach viewed from 3/4 aerial angle. Sand beach area along water with stepped terraces, promenades, and recreation facilities. Trees and native plantings at the upland edge.",
+        "pavingType": "Timber deck promenade, concrete terraces, sand beach",
+        "plantingType": "Plane trees along promenade, native shoreline plantings, riparian buffer",
+        "seatingRealm": "Deck chairs, parasols, picnic areas, timber platforms",
+        "waterFeatures": "River, lake, or swimming zone with buoys",
+        "opennessEnclosure": "Open water views with tree-framed upland edge"
+      },
+      "prompt": {
+        "subject": "Aerial view of a riverfront park with beach and swimming area",
+        "details": [
+          "Sand beach along river or lake",
+          "Stepped concrete terraces or timber promenade above",
+          "Parasols, deck chairs, beach volleyball",
+          "Trees and native plantings at upland edge",
+          "People swimming, sunbathing, kayaking"
+        ],
+        "negative": [
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.3,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "canopy_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/hero.png",
+      "variants": [
+        {
+          "id": "riverfront_park_beach_v0",
+          "label": "Urban River Beach",
+          "color": "#E67E22",
+          "description": "Riverfront Park as urban river beach. Golden sand, concrete terraces, striped parasols, beach volleyball, timber promenade with cafe kiosks.",
+          "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_0.png"
+        },
+        {
+          "id": "riverfront_park_beach_v1",
+          "label": "Lake Swimming Beach",
+          "color": "#2E86C1",
+          "description": "Riverfront Park as lake swimming beach. Crescent sand beach, turquoise water, swimming dock, cedar bathhouse, kayaks on rack.",
+          "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_1.png"
+        },
+        {
+          "id": "riverfront_park_beach_v2",
+          "label": "Adventure Pier",
+          "color": "#C0392B",
+          "description": "Riverfront Park as waterfront adventure park on former industrial pier. Kayak launch, climbing wall, adventure playground, splash pad, gabion walls.",
+          "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_2.png"
+        },
+        {
+          "id": "riverfront_park_beach_v3",
+          "label": "Naturalized Riverfront",
+          "color": "#1E8449",
+          "description": "Riverfront Park as naturalized ecological riverfront. Bio-engineered bank, wet meadow with sedges and Iris, Sycamores, observation platform, water lilies.",
+          "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/variant_3.png"
+        }
+      ]
+    },
+    {
+      "id": "street_plaza_parklet",
+      "title": "Street Plaza / Parklet",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "park",
+      "description": "A small public space created by reclaiming street or parking space — from painted plazas with bistro furniture to timber parklets extending the sidewalk",
+      "generationTags": [
+        "plaza",
+        "parklet",
+        "tactical-urbanism",
+        "street-reclamation",
+        "public-space"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A street plaza or parklet viewed from 3/4 aerial angle. Former roadway or parking spaces converted to public gathering space with seating, planters, and surface treatment. Adjacent buildings and street context visible.",
+        "pavingType": "Painted asphalt, timber deck, or granite pavers",
+        "plantingType": "Planters with small trees, potted plants, container gardens",
+        "seatingRealm": "Bistro tables and chairs, benches, Adirondack chairs",
+        "waterFeatures": "Small fountain or bubbler if formal design",
+        "opennessEnclosure": "Open to street with bollards or planters defining edge"
+      },
+      "prompt": {
+        "subject": "Aerial view of a street plaza or parklet reclaimed from roadway",
+        "details": [
+          "Former roadway or parking spaces converted to public space",
+          "Bistro tables, chairs, and seating",
+          "Planters with small trees and container gardens",
+          "Bollards or barriers defining the space",
+          "Adjacent building frontages and street context"
+        ],
+        "negative": [
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.2,
+        "has_paths": false,
+        "has_benches": true,
+        "shade_strategy": "parasols_canopies"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/hero.png",
+      "variants": [
+        {
+          "id": "street_plaza_parklet_v0",
+          "label": "NYC Street Plaza",
+          "color": "#F1C40F",
+          "description": "Street Plaza as NYC-style painted plaza. Bold yellow geometric paint pattern, yellow bistro chairs, black planter boxes, granite bollards.",
+          "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_0.png"
+        },
+        {
+          "id": "street_plaza_parklet_v1",
+          "label": "SF Parklet",
+          "color": "#AF601A",
+          "description": "Street Plaza as San Francisco timber parklet. Douglas fir deck, timber slat railing, terracotta pots with herbs, cafe tables, chalkboard menu.",
+          "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_1.png"
+        },
+        {
+          "id": "street_plaza_parklet_v2",
+          "label": "Tactical Urbanism",
+          "color": "#E74C3C",
+          "description": "Street Plaza as tactical urbanism community plaza. Spray-painted mural, painted jersey barriers, colorful Adirondack chairs, tire planters, string lights.",
+          "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_2.png"
+        },
+        {
+          "id": "street_plaza_parklet_v3",
+          "label": "European Pocket Plaza",
+          "color": "#5B6F6F",
+          "description": "Street Plaza as refined European pocket plaza. Gray granite pavers, Corten planters with Amelanchier, bubbler fountain, cast-aluminum benches, cafe terrace.",
+          "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/variant_3.png"
+        }
+      ]
     }
   ]
 }

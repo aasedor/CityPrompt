@@ -583,7 +583,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#93632f"
           }
         },
         {
@@ -1054,6 +1054,9 @@
             "form": "Flat with extensive green roof and setback penthouse",
             "material": "Sedum green roof (70%) with photovoltaic arrays (30%), timber-decked communal terrace",
             "aerialAppearance": "Lush green vegetated surface with solar panels and timber-decked terrace area, rectangular footprint"
+          },
+          "palette": {
+            "primary": "#5ec539"
           }
         },
         {
@@ -1077,6 +1080,9 @@
             "form": "Flat with stepped terraces at upper floors",
             "material": "Light grey single-ply membrane with solar panel arrays, white paving on terraced levels",
             "aerialAppearance": "Light grey roof with solar panels, stepped terrace profile at upper levels, white paved terraces with minimalist planters"
+          },
+          "palette": {
+            "primary": "#9b736a"
           }
         },
         {
@@ -1100,6 +1106,9 @@
             "form": "Flat with brick parapet and bronze coping",
             "material": "Dark membrane roof with dark grey porcelain-paved terrace zones, raised brick planters",
             "aerialAppearance": "Dark roof membrane with paved terrace areas, brick planters with low hedging, mechanical plant in brick enclosures"
+          },
+          "palette": {
+            "primary": "#a18573"
           }
         },
         {
@@ -1123,6 +1132,9 @@
             "form": "Flat exposed concrete deck with parapet",
             "material": "Concrete roof deck with gravel ballast zones, Cor-Ten steel planter troughs, timber decking areas",
             "aerialAppearance": "Concrete and gravel roof with rusted steel planters containing grasses, timber-decked terrace, mechanical plant behind Cor-Ten screens"
+          },
+          "palette": {
+            "primary": "#a7957c"
           }
         }
       ],
@@ -1449,7 +1461,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#a3822e"
           }
         }
       ],
@@ -2040,7 +2052,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#2F4F4F"
+            "primary": "#2e4145"
           }
         },
         {
@@ -2060,7 +2072,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#807555"
           }
         },
         {
@@ -2100,7 +2112,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#c49a3d"
           }
         }
       ],
@@ -2242,7 +2254,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#7e5515"
           }
         },
         {
@@ -2405,7 +2417,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#936b62"
           }
         },
         {
@@ -2425,7 +2437,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#82b5e5"
           }
         }
       ],
@@ -2532,7 +2544,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#8f7713"
           }
         },
         {
@@ -2572,7 +2584,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#523c37"
           }
         },
         {
@@ -2695,7 +2707,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#b5a82b"
           }
         },
         {
@@ -2715,7 +2727,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#77574f"
           }
         },
         {
@@ -2735,7 +2747,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A9A9A9"
+            "primary": "#b69891"
           }
         },
         {
@@ -2755,7 +2767,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#2F4F4F"
+            "primary": "#304552"
           }
         }
       ],
@@ -2898,7 +2910,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B0000"
+            "primary": "#7a1d06"
           }
         },
         {
@@ -3021,7 +3033,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8860B"
+            "primary": "#a99b0f"
           }
         },
         {
@@ -3041,7 +3053,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#1C1C1C"
+            "primary": "#3d2c28"
           }
         },
         {
@@ -3061,7 +3073,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DEB887"
+            "primary": "#d7c383"
           }
         },
         {
@@ -3183,7 +3195,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4A574"
+            "primary": "#ccb171"
           }
         },
         {
@@ -3223,7 +3235,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#cebd43"
           }
         },
         {
@@ -3345,7 +3357,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DEB887"
+            "primary": "#dfdb8a"
           }
         },
         {
@@ -3385,7 +3397,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8860B"
+            "primary": "#aabc0b"
           }
         },
         {
@@ -3405,7 +3417,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#8baaeb"
           }
         }
       ],
@@ -3528,7 +3540,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#4969a6"
           }
         },
         {
@@ -3548,7 +3560,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#cbbc24"
           }
         },
         {
@@ -3568,7 +3580,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#627193"
           }
         }
       ],
@@ -3671,7 +3683,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#95a0f0"
           }
         },
         {
@@ -3691,7 +3703,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#247e35"
           }
         },
         {
@@ -3711,7 +3723,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#2F4F4F"
+            "primary": "#32455f"
           }
         },
         {
@@ -3854,7 +3866,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#1C1C1C"
+            "primary": "#3d3028"
           }
         },
         {
@@ -3874,7 +3886,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CC7722"
+            "primary": "#bd8f26"
           }
         },
         {
@@ -3894,7 +3906,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8E8E8"
+            "primary": "#d6c5c1"
           }
         }
       ],
@@ -3997,7 +4009,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B0000"
+            "primary": "#883907"
           }
         },
         {
@@ -4037,7 +4049,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#cade20"
           }
         },
         {
@@ -4057,7 +4069,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#a6a0f5"
           }
         }
       ],
@@ -4160,7 +4172,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#654321"
+            "primary": "#5a4821"
           }
         },
         {
@@ -4200,7 +4212,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C19A6B"
+            "primary": "#b8a469"
           }
         },
         {
@@ -4220,7 +4232,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#a1a110"
           }
         }
       ],
@@ -4323,7 +4335,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B0000"
+            "primary": "#975b07"
           }
         },
         {
@@ -4343,7 +4355,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#cbd649"
           }
         },
         {
@@ -4363,7 +4375,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#ade628"
           }
         },
         {
@@ -4383,7 +4395,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F0E68C"
+            "primary": "#e1eb86"
           }
         }
       ],
@@ -4505,7 +4517,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A9A9A9"
+            "primary": "#bca79a"
           }
         },
         {
@@ -4525,7 +4537,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#1C1C1C"
+            "primary": "#3d3428"
           }
         },
         {
@@ -4545,7 +4557,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8860B"
+            "primary": "#93cc0a"
           }
         }
       ],
@@ -4647,7 +4659,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#b79ff8"
           }
         },
         {
@@ -4667,7 +4679,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#696f9b"
           }
         },
         {
@@ -4687,7 +4699,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B6F47"
+            "primary": "#7f7348"
           }
         },
         {
@@ -4707,7 +4719,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#c8b2ad"
           }
         }
       ],
@@ -4809,7 +4821,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#ded7b9"
           }
         },
         {
@@ -4849,7 +4861,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#4758b7"
           }
         },
         {
@@ -4869,7 +4881,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#b8de51"
           }
         }
       ],
@@ -4971,7 +4983,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4C5A0"
+            "primary": "#cdc89c"
           }
         },
         {
@@ -4991,7 +5003,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#b7c728"
           }
         },
         {
@@ -5011,7 +5023,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8A88A"
+            "primary": "#afa988"
           }
         },
         {
@@ -5031,7 +5043,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#c89ef9"
           }
         }
       ],
@@ -5134,7 +5146,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B6914"
+            "primary": "#7e7416"
           }
         },
         {
@@ -5154,7 +5166,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#5b493d"
           }
         },
         {
@@ -5174,7 +5186,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F0E68C"
+            "primary": "#d4f090"
           }
         },
         {
@@ -5194,7 +5206,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#9b7d69"
           }
         }
       ],
@@ -5297,7 +5309,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8860B"
+            "primary": "#75db0b"
           }
         },
         {
@@ -5317,7 +5329,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#a4da25"
           }
         },
         {
@@ -5337,7 +5349,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#816656"
           }
         },
         {
@@ -5357,7 +5369,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#238f4d"
           }
         }
       ],
@@ -5460,7 +5472,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#514cc1"
           }
         },
         {
@@ -5480,7 +5492,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#93b40d"
           }
         },
         {
@@ -5500,7 +5512,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B8860B"
+            "primary": "#51e90c"
           }
         },
         {
@@ -5520,7 +5532,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#a18e72"
           }
         }
       ],
@@ -5623,7 +5635,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#da9ef9"
           }
         },
         {
@@ -5643,7 +5655,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#6B8E6B"
+            "primary": "#5f8f68"
           }
         },
         {
@@ -5663,7 +5675,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#7672a1"
           }
         },
         {
@@ -5683,7 +5695,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#89e22c"
           }
         }
       ],
@@ -5786,7 +5798,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4169E1"
+            "primary": "#3d46d9"
           }
         },
         {
@@ -5806,7 +5818,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#cebfb6"
           }
         },
         {
@@ -5826,7 +5838,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#21a06b"
           }
         },
         {
@@ -5846,7 +5858,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#2F4F4F"
+            "primary": "#34406d"
           }
         }
       ],
@@ -5949,7 +5961,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#6e52cb"
           }
         },
         {
@@ -5969,7 +5981,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#ec9ef9"
           }
         },
         {
@@ -5989,7 +6001,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#8679aa"
           }
         },
         {
@@ -6009,7 +6021,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#1eb291"
           }
         }
       ],
@@ -6112,7 +6124,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#e0e0b7"
           }
         },
         {
@@ -6132,7 +6144,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#a79e7c"
           }
         },
         {
@@ -6152,7 +6164,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#655743"
           }
         },
         {
@@ -6172,7 +6184,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#8fed30"
           }
         }
       ],
@@ -6275,7 +6287,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F0EDE5"
+            "primary": "#d7d5c0"
           }
         },
         {
@@ -6295,7 +6307,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#d4cbbf"
           }
         },
         {
@@ -6315,7 +6327,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#8a775c"
           }
         },
         {
@@ -6335,7 +6347,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#1bc4c0"
           }
         }
       ],
@@ -6438,7 +6450,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A9A9A9"
+            "primary": "#c2b5a4"
           }
         },
         {
@@ -6458,7 +6470,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#8e8b56"
           }
         },
         {
@@ -6478,7 +6490,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#FFFFFF"
+            "primary": "#d6c7c1"
           }
         },
         {
@@ -6498,7 +6510,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#6e6649"
           }
         }
       ],
@@ -6601,7 +6613,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#654321"
+            "primary": "#686122"
           }
         },
         {
@@ -6621,7 +6633,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#2F4F4F"
+            "primary": "#34367c"
           }
         },
         {
@@ -6641,7 +6653,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DEB887"
+            "primary": "#d9e593"
           }
         },
         {
@@ -6764,7 +6776,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#17b7d8"
           }
         },
         {
@@ -6824,7 +6836,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#6de934"
           }
         }
       ],
@@ -6927,7 +6939,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#228B22"
+            "primary": "#129cec"
           }
         },
         {
@@ -6947,7 +6959,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#006400"
+            "primary": "#056017"
           }
         },
         {
@@ -7090,7 +7102,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F8F8FF"
+            "primary": "#b09ef9"
           }
         },
         {
@@ -7110,7 +7122,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DEB887"
+            "primary": "#d0eb9d"
           }
         },
         {
@@ -7130,7 +7142,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#8d58d4"
           }
         },
         {
@@ -7150,7 +7162,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#adac85"
           }
         }
       ],
@@ -7293,7 +7305,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#987db5"
           }
         },
         {
@@ -7313,7 +7325,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#ad60dc"
           }
         }
       ],
@@ -7435,7 +7447,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#52f03d"
           }
         },
         {
@@ -7455,7 +7467,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#939d56"
           }
         },
         {
@@ -7475,7 +7487,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#f99ef5"
           }
         }
       ],
@@ -7596,7 +7608,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#7cc60a"
           }
         },
         {
@@ -7636,7 +7648,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#d6d2c1"
           }
         }
       ],
@@ -7740,7 +7752,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#cd68e3"
           }
         },
         {
@@ -7760,7 +7772,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#a4e559"
           }
         },
         {
@@ -7780,7 +7792,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#FF6347"
+            "primary": "#f58346"
           }
         },
         {
@@ -7800,7 +7812,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#72f339"
           }
         }
       ],
@@ -7905,7 +7917,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#adb38e"
           }
         },
         {
@@ -7925,7 +7937,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#77764f"
           }
         },
         {
@@ -7945,7 +7957,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#5ed50b"
           }
         },
         {
@@ -7965,7 +7977,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DEB887"
+            "primary": "#c9f0a7"
           }
         }
       ],
@@ -8070,7 +8082,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#36454F"
+            "primary": "#313b49"
           }
         },
         {
@@ -8090,7 +8102,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F5F5DC"
+            "primary": "#dbe5b2"
           }
         },
         {
@@ -8110,7 +8122,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#DAA520"
+            "primary": "#5bf546"
           }
         },
         {
@@ -8130,7 +8142,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#87CEEB"
+            "primary": "#f99ee3"
           }
         }
       ],
@@ -8195,7 +8207,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#d9e3b4"
           }
         },
         {
@@ -8255,7 +8267,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#3be30b"
           }
         }
       ],
@@ -8320,7 +8332,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#aebe93"
           }
         },
         {
@@ -8340,7 +8352,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#d5d6c1"
           }
         },
         {
@@ -8360,7 +8372,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#938862"
           }
         },
         {
@@ -8445,7 +8457,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4C5A9"
+            "primary": "#cdc7a5"
           }
         },
         {
@@ -8485,7 +8497,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#ab82bf"
           }
         },
         {
@@ -8570,7 +8582,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4C5A9"
+            "primary": "#d3d5ac"
           }
         },
         {
@@ -8630,7 +8642,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8E8E8"
+            "primary": "#d6c9c1"
           }
         }
       ],
@@ -8695,7 +8707,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#FFFFFF"
+            "primary": "#d6cbc1"
           }
         },
         {
@@ -8735,7 +8747,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#d2d6c1"
           }
         },
         {
@@ -8860,7 +8872,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#8fac57"
           }
         },
         {
@@ -8880,7 +8892,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#90ec62"
           }
         }
       ],
@@ -8945,7 +8957,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#12f20c"
           }
         },
         {
@@ -8965,7 +8977,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A9A9A9"
+            "primary": "#c8c2ad"
           }
         },
         {
@@ -9110,7 +9122,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E0E0E0"
+            "primary": "#d6c6c1"
           }
         },
         {
@@ -9255,7 +9267,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C4B896"
+            "primary": "#bbb993"
           }
         }
       ],
@@ -9339,7 +9351,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#6B3A2A"
+            "primary": "#60422a"
           }
         },
         {
@@ -9359,7 +9371,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#1bf340"
           }
         },
         {
@@ -9443,7 +9455,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#29f373"
           }
         },
         {
@@ -9463,7 +9475,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#cfd8bf"
           }
         },
         {
@@ -9483,7 +9495,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E0E0E0"
+            "primary": "#d6cac1"
           }
         },
         {
@@ -9503,7 +9515,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#B0C4DE"
+            "primary": "#abb6d7"
           }
         }
       ],
@@ -9567,7 +9579,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0A0A0"
+            "primary": "#ae8e86"
           }
         },
         {
@@ -9587,7 +9599,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#556B2F"
+            "primary": "#44602f"
           }
         },
         {
@@ -9607,7 +9619,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#adc898"
           }
         },
         {
@@ -9627,7 +9639,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#9b9a69"
           }
         }
       ],
@@ -9691,7 +9703,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#38f4a2"
           }
         },
         {
@@ -9711,7 +9723,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#c088c9"
           }
         },
         {
@@ -9731,7 +9743,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0A0A0"
+            "primary": "#b59e90"
           }
         },
         {
@@ -9751,7 +9763,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#e971e8"
           }
         }
       ],
@@ -9815,7 +9827,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#abd09f"
           }
         },
         {
@@ -9835,7 +9847,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#696969"
+            "primary": "#99a172"
           }
         },
         {
@@ -9939,7 +9951,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4A4A4A"
+            "primary": "#798055"
           }
         },
         {
@@ -9959,7 +9971,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#505050"
+            "primary": "#59413b"
           }
         },
         {
@@ -9979,7 +9991,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#46f5ca"
           }
         },
         {
@@ -10063,7 +10075,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#6B3A2A"
+            "primary": "#6e562b"
           }
         },
         {
@@ -10103,7 +10115,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#55f6ee"
           }
         },
         {
@@ -10123,7 +10135,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0522D"
+            "primary": "#47f555"
           }
         }
       ],
@@ -10207,7 +10219,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#505050"
+            "primary": "#634e42"
           }
         },
         {
@@ -10227,7 +10239,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#cadbbc"
           }
         },
         {
@@ -10247,7 +10259,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#7ef16b"
           }
         }
       ],
@@ -10311,7 +10323,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8E8E8"
+            "primary": "#d6cdc1"
           }
         },
         {
@@ -10331,7 +10343,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0A0A0"
+            "primary": "#bbad99"
           }
         },
         {
@@ -10371,7 +10383,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#909090"
+            "primary": "#a27c73"
           }
         }
       ],
@@ -10435,7 +10447,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B6914"
+            "primary": "#828f14"
           }
         },
         {
@@ -10475,7 +10487,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#86b75b"
           }
         },
         {
@@ -10495,7 +10507,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#7A7A6B"
+            "primary": "#7a8357"
           }
         }
       ],
@@ -10559,7 +10571,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#63e1f6"
           }
         },
         {
@@ -10579,7 +10591,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#76f67c"
           }
         },
         {
@@ -10599,7 +10611,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E0E0E0"
+            "primary": "#d6cec1"
           }
         },
         {
@@ -10619,7 +10631,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#a8d9a6"
           }
         }
       ],
@@ -10683,7 +10695,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4169E1"
+            "primary": "#5b45e1"
           }
         },
         {
@@ -10703,7 +10715,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#72caf7"
           }
         },
         {
@@ -10723,7 +10735,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#d18ecd"
           }
         },
         {
@@ -10807,7 +10819,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8E8E8"
+            "primary": "#d6d1c1"
           }
         },
         {
@@ -10827,7 +10839,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#83f8a0"
           }
         },
         {
@@ -10931,7 +10943,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4C5A9"
+            "primary": "#d3ddb3"
           }
         },
         {
@@ -10951,7 +10963,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#d0e6b1"
           }
         },
         {
@@ -10971,7 +10983,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C4A265"
+            "primary": "#bbad63"
           }
         },
         {
@@ -10991,7 +11003,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#c6e8af"
           }
         }
       ],
@@ -11055,7 +11067,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#c2ddba"
           }
         },
         {
@@ -11075,7 +11087,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#708090"
+            "primary": "#d996c8"
           }
         },
         {
@@ -11095,7 +11107,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E0E0E0"
+            "primary": "#d6d3c1"
           }
         },
         {
@@ -11179,7 +11191,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#aee0b5"
           }
         },
         {
@@ -11199,7 +11211,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#909090"
+            "primary": "#a88d7c"
           }
         },
         {
@@ -11219,7 +11231,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#A0A0A0"
+            "primary": "#c1baa2"
           }
         },
         {
@@ -11323,7 +11335,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8DCC8"
+            "primary": "#b9ebac"
           }
         },
         {
@@ -11343,7 +11355,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C4A87C"
+            "primary": "#bbaf79"
           }
         },
         {
@@ -11427,7 +11439,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B7355"
+            "primary": "#7bc160"
           }
         },
         {
@@ -11447,7 +11459,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#98D4BB"
+            "primary": "#94cdc0"
           }
         },
         {
@@ -11467,7 +11479,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#b2e5c3"
           }
         },
         {
@@ -11487,7 +11499,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C4A87C"
+            "primary": "#c5c57f"
           }
         }
       ],
@@ -11551,7 +11563,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#4682B4"
+            "primary": "#ef7ad7"
           }
         },
         {
@@ -11571,7 +11583,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#b9e0b7"
           }
         },
         {
@@ -11675,7 +11687,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#D4C5A9"
+            "primary": "#cfe2b5"
           }
         },
         {
@@ -11695,7 +11707,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#8B4513"
+            "primary": "#80b8f8"
           }
         },
         {
@@ -11715,7 +11727,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C4A265"
+            "primary": "#c2c568"
           }
         },
         {
@@ -11735,7 +11747,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#9E8E7E"
+            "primary": "#a09271"
           }
         }
       ],
@@ -11799,7 +11811,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F5F5F5"
+            "primary": "#d6ccc1"
           }
         },
         {
@@ -11819,7 +11831,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#E8E8E8"
+            "primary": "#d6d5c1"
           }
         },
         {
@@ -11839,7 +11851,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#CD853F"
+            "primary": "#92f9bf"
           }
         },
         {
@@ -11859,7 +11871,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F0F0F0"
+            "primary": "#d6c8c1"
           }
         }
       ],
@@ -11923,7 +11935,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#C0C0C0"
+            "primary": "#b5e2bb"
           }
         },
         {
@@ -11943,7 +11955,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#F5F5F5"
+            "primary": "#d6cfc1"
           }
         },
         {
@@ -11963,7 +11975,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#6B8E23"
+            "primary": "#518125"
           }
         },
         {
@@ -11983,7 +11995,7 @@
           },
           "shadeId": null,
           "palette": {
-            "primary": "#808080"
+            "primary": "#afe8cd"
           }
         }
       ],
