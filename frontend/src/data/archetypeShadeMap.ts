@@ -128,6 +128,80 @@ export const SHADE_MAP: Record<string, string> = {
   swimming_pool_complex:              '#4573a2',
   canal_waterway:                     '#2a5580',
 
+  // ── Red family: Institutional (new) ─────────────────────────────────
+  collegiate_gothic_education:        '#7a2820',
+  neoclassical_institutional:         '#8e3325',
+  brutalist_institutional:            '#6e241c',
+  contemporary_civic:                 '#a33d2a',
+
+  // ── Red family: Healthcare ────────────────────────────────────────
+  art_deco_healthcare:                '#b7452f',
+  functionalist_healthcare:           '#c44e38',
+  biophilic_healthcare:               '#7f2b1e',
+
+  // ── Red family: Industrial ────────────────────────────────────────
+  daylight_factory:                   '#8b3520',
+  industrial_park_modernism:          '#9a3c25',
+  art_deco_industrial:                '#a9432a',
+  functionalist_brick_industrial:     '#7c2e19',
+  structural_expressionism_industrial:'#8d3721',
+  corrugated_vernacular_industrial:   '#9e4029',
+  machine_aesthetic_heavy_industrial: '#723118',
+  brutalist_utility_heavy_industrial: '#833a20',
+  early_20c_megastructure_industrial: '#944328',
+  romanesque_revival_warehouse:       '#682a14',
+  midcentury_distribution_warehouse:  '#79331c',
+  modern_bigbox_warehouse:            '#8a3c24',
+
+  // ── Red family: Hospitality ───────────────────────────────────────
+  boutique_hotel_tower:               '#ba4a35',
+  chateauesque_hotel:                 '#c7533e',
+  resort_modernism_hotel:             '#d45c47',
+  corporate_tower_hotel:              '#ad4130',
+
+  // ── Red family: Transit ───────────────────────────────────────────
+  historic_grand_station:             '#96382b',
+  contemporary_transit_hub:           '#a44133',
+  urban_light_rail_stop:              '#b24a3b',
+
+  // ── Red/Orange family: Recreation ─────────────────────────────────
+  community_recreation_centre:        '#c05040',
+  modern_sports_arena:                '#cd5948',
+  parkitecture_recreational:          '#6a2915',
+  civic_modernism_rec_centre:         '#7b321d',
+  postmodern_rec_centre:              '#8c3b25',
+  contemporary_sustainable_rec_centre:'#9d442d',
+  monumental_antiquity_arena:         '#753019',
+  high_tech_arena:                    '#863921',
+  concrete_megastructure_arena:       '#974229',
+
+  // ── Red/Orange family: Specialty ──────────────────────────────────
+  climbing_wall_building:             '#ae4b31',
+  waste_to_energy_plant:              '#6f2c16',
+  brewery_distillery:                 '#80351e',
+  solar_farm_agrivoltaics:            '#913e26',
+  immersive_experience_venue:         '#a2472e',
+  modern_fire_station:                '#b35036',
+
+  // ── Yellow family: Senior Living ──────────────────────────────────
+  senior_living_complex:              '#c4a510',
+
+  // ── Gray family: Streets (new) ─────────────────────────────────────
+  downtown_thoroughfare:              '#a4a0a0',
+  pedestrian_only_street:             '#adaaa8',
+  green_alley:                        '#b5b2b0',
+  commercial_alley_laneway:           '#bdbab8',
+  yield_street:                       '#c5c2c0',
+  neighborhood_main_street:           '#cdc9c7',
+  elevated_rail_transit:              '#d5d1cf',
+
+  // ── Green family: Parks (new) ──────────────────────────────────────
+  linear_park_greenway:               '#2b5f32',
+  nature_preserve:                    '#1e4f1e',
+  rooftop_garden:                     '#4d9450',
+  riverfront_park_beach:              '#3a7545',
+  street_plaza_parklet:               '#558e58',
+
   // ── Custom ──────────────────────────────────────────────────────────
   custom_parks_plazas:                '#629062',
 };
