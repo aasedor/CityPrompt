@@ -48,14 +48,14 @@ export function ResetPasswordPage() {
       {/* Left hero panel - desktop only */}
       <div className="hidden w-1/2 flex-col justify-between bg-gradient-primary p-12 lg:flex">
         <div className="flex items-center gap-3">
-          <Box className="h-8 w-8 text-accent-300" />
-          <span className="text-xl font-bold text-white">SiteForge</span>
+          <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-10 w-10" />
+          <span className="text-xl font-bold text-white">City Prompt</span>
         </div>
         <div>
           <h2 className="text-3xl font-bold text-white">Almost there.<br />Set your new password.</h2>
           <p className="mt-4 text-lg text-primary-950/60">Choose a strong password to secure your account.</p>
         </div>
-        <p className="text-sm text-primary-950/50">&copy; 2026 SiteForge</p>
+        <p className="text-sm text-primary-950/50">&copy; 2026 City Prompt</p>
       </div>
 
       {/* Right form panel */}

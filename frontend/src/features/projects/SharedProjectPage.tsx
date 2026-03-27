@@ -37,8 +37,8 @@ export function SharedProjectPage() {
       <header className="bg-white shadow-lg">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6">
           <Link to="/projects" className="flex items-center gap-2">
-            <Box className="h-7 w-7 text-coral-500" />
-            <span className="text-lg font-bold text-primary-950">SiteForge</span>
+            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9" />
+            <span className="text-lg font-bold text-primary-950">City Prompt</span>
           </Link>
           <span className="rounded-full bg-primary-500/20 px-3 py-1 text-xs font-medium text-coral-500">
             Shared view

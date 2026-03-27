@@ -314,7 +314,7 @@ def test_tree_layout_stays_stable_when_style_variants_change():
     points_a = _tree_points(geometry, props, variant_a)
     points_b = _tree_points(geometry, props, variant_b)
 
-    assert [(round(x, 3), round(y, 3)) for x, y, _ in points_a] == [(round(x, 3), round(y, 3)) for x, y, _ in points_b]
+    assert [(round(x, 3), round(y, 3)) for x, y, *_ in points_a] == [(round(x, 3), round(y, 3)) for x, y, *_ in points_b]
 
 
 def test_style_pass_prompt_uses_professional_planimetric_language():

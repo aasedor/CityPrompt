@@ -74,6 +74,7 @@ function toLocalPoints(
   origin: { lat: number; lon: number },
 ): THREE.Vector2[] {
   const mLon = metersPerDegLon(origin.lat);
+  if (!coords || coords.length === 0) return [];
   const rawPts = coords.map((p) => {
     const x = (p[0] - origin.lon) * mLon;
     const z = (p[1] - origin.lat) * METERS_PER_DEG_LAT;
@@ -3117,7 +3118,7 @@ function LayoutRoadMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (road.centerline.length < 2) return null;
+    if (!road.centerline || road.centerline.length < 2) return null;
 
     const mLon = metersPerDegLon(origin.lat);
     const halfW = road.width_m / 2;
@@ -3187,7 +3188,7 @@ function LayoutGreenMesh({
   origin: { lat: number; lon: number };
 }) {
   const geometry = useMemo(() => {
-    if (greenSpace.polygon.length < 3) return null;
+    if (!greenSpace.polygon || greenSpace.polygon.length < 3) return null;
 
     const mLon = metersPerDegLon(origin.lat);
 
@@ -3282,6 +3283,7 @@ function ZoneLayoutOverlay({
   // Zone centroid for converting offsets
   const centroid = useMemo(() => {
     const coords = zone.coordinates;
+    if (!coords || coords.length === 0) return { lon: 0, lat: 0 };
     let cx = 0, cy = 0;
     for (const p of coords) {
       cx += p[0];
@@ -3292,7 +3294,7 @@ function ZoneLayoutOverlay({
 
   return (
     <group name={`zone-overlay-${zone.id}`}>
-      {option.buildings.map((bld, i) => (
+      {(option.buildings ?? []).map((bld, i) => (
         <PreviewBuildingFootprint
           key={`preview-bld-${zone.id}-${i}`}
           building={bld}
@@ -3301,7 +3303,7 @@ function ZoneLayoutOverlay({
           height={bld.height_m || (zone.properties?.height as number) || 12}
         />
       ))}
-      {option.roads.map((road, i) => (
+      {(option.roads ?? []).map((road, i) => (
         <LayoutRoadMesh
           key={`preview-road-${zone.id}-${i}`}
           road={road}
@@ -3309,7 +3311,7 @@ function ZoneLayoutOverlay({
           origin={origin}
         />
       ))}
-      {option.green_spaces.map((gs, i) => (
+      {(option.green_spaces ?? []).map((gs, i) => (
         <LayoutGreenMesh
           key={`preview-green-${zone.id}-${i}`}
           greenSpace={gs}

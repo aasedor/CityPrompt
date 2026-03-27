@@ -8,6 +8,7 @@ import uuid
 from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
+from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +16,7 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.email import send_admin_welcome_email, send_cofounder_welcome_email
 from app.core.security import is_admin_or_above, require_admin
-from app.models.models import Building, Document, Project, User
+from app.models.models import Building, Document, Project, RenderAuditLog, User
 
 logger = logging.getLogger(__name__)
 from app.schemas.schemas import (
@@ -102,6 +103,7 @@ async def list_users(
             created_at=u.created_at,
             last_login_at=u.last_login_at,
             project_count=count,
+            render_credits=u.render_credits,
         )
         for u, count in rows
     ]
@@ -196,6 +198,7 @@ async def update_user(
         created_at=target.created_at,
         last_login_at=target.last_login_at,
         project_count=project_count,
+        render_credits=target.render_credits,
     )
 
     if (was_promoted_to_admin or was_promoted_to_cofounder) and not email_sent:
@@ -232,6 +235,50 @@ async def delete_user(
 
     await db.delete(target)
     await db.flush()
+
+
+class TokenUpdateRequest(BaseModel):
+    """Set or add render tokens for a user."""
+    amount: int = Field(..., description="Token amount (positive to add, or exact value for reset)")
+    mode: str = Field("add", pattern="^(add|set)$", description="'add' to increment, 'set' to replace")
+
+
+@router.post("/users/{user_id}/tokens", response_model=AdminUserListResponse)
+async def update_user_tokens(
+    user_id: uuid.UUID,
+    req: TokenUpdateRequest,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Add tokens to or reset tokens for a user. Admin+ only."""
+    target = await db.get(User, user_id)
+    if not target:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if req.mode == "set":
+        target.render_credits = max(0, req.amount)
+    else:
+        target.render_credits = max(0, target.render_credits + req.amount)
+
+    db.add(target)
+    await db.flush()
+
+    count_result = await db.execute(
+        select(func.count(Project.id)).where(Project.owner_id == target.id)
+    )
+    project_count = count_result.scalar() or 0
+
+    return AdminUserListResponse(
+        id=target.id,
+        email=target.email,
+        full_name=target.full_name,
+        role=target.role,
+        is_active=target.is_active,
+        created_at=target.created_at,
+        last_login_at=target.last_login_at,
+        project_count=project_count,
+        render_credits=target.render_credits,
+    )
 
 
 @router.get("/buildings", response_model=list[AdminBuildingListResponse])
@@ -769,3 +816,178 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
 
     session.close()
     logger.info(f"Thumbnail backfill complete: {success} fetched, {propagated} propagated to siblings, {failed} failed")
+
+
+# ---------------------------------------------------------------------------
+# Render Audit Logs
+# ---------------------------------------------------------------------------
+
+
+class RenderAuditResponse(BaseModel):
+    id: str
+    user_email: str
+    model: str
+    tokens_spent: int
+    input_image_url: Optional[str] = None
+    output_image_url: Optional[str] = None
+    prompt_preview: Optional[str] = None
+    created_at: str
+
+
+@router.get("/render-logs/stats")
+async def render_log_stats(
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get render audit log statistics including S3 storage usage. Admin+ only."""
+    import boto3
+    from botocore.config import Config as BotoConfig
+
+    count_result = await db.execute(select(func.count(RenderAuditLog.id)))
+    total_count = count_result.scalar() or 0
+
+    oldest_result = await db.execute(select(func.min(RenderAuditLog.created_at)))
+    oldest = oldest_result.scalar()
+
+    settings = get_settings()
+    total_bytes = 0
+    try:
+        s3 = boto3.client(
+            "s3",
+            endpoint_url=settings.s3_endpoint_url,
+            aws_access_key_id=settings.s3_access_key,
+            aws_secret_access_key=settings.s3_secret_key,
+            region_name=settings.s3_region,
+            config=BotoConfig(signature_version="s3v4"),
+        )
+        paginator = s3.get_paginator("list_objects_v2")
+        for page in paginator.paginate(Bucket=settings.s3_bucket_name, Prefix="render-audit/"):
+            for obj in page.get("Contents", []):
+                total_bytes += obj.get("Size", 0)
+    except Exception:
+        pass
+
+    return {
+        "total_renders": total_count,
+        "storage_bytes": total_bytes,
+        "storage_mb": round(total_bytes / (1024 * 1024), 1),
+        "storage_gb": round(total_bytes / (1024 * 1024 * 1024), 2),
+        "storage_limit_gb": 10.0,
+        "oldest_render": oldest.isoformat() if oldest else None,
+    }
+
+
+@router.get("/render-logs")
+async def list_render_logs(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    user_email: Optional[str] = Query(None),
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """List render audit logs with S3 image URLs. Admin+ only."""
+    settings = get_settings()
+    s3_base = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}"
+
+    query = select(RenderAuditLog).order_by(RenderAuditLog.created_at.desc())
+    if user_email:
+        query = query.where(RenderAuditLog.user_email.ilike(f"%{user_email}%"))
+    query = query.offset(skip).limit(limit)
+
+    result = await db.execute(query)
+    logs = result.scalars().all()
+
+    return [
+        RenderAuditResponse(
+            id=str(log.id),
+            user_email=log.user_email,
+            model=log.model,
+            tokens_spent=log.tokens_spent,
+            input_image_url=f"/api/v1/admin/render-logs/{log.id}/input" if log.input_image_key else None,
+            output_image_url=f"/api/v1/admin/render-logs/{log.id}/output" if log.output_image_key else None,
+            prompt_preview=log.prompt_preview,
+            created_at=log.created_at.isoformat(),
+        )
+        for log in logs
+    ]
+
+
+@router.get("/render-logs/{log_id}/{image_type}")
+async def get_render_log_image(
+    log_id: uuid.UUID,
+    image_type: str,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Serve a render audit log image (input or output) from S3. Admin+ only."""
+    import boto3
+    from botocore.config import Config as BotoConfig
+    from fastapi.responses import Response
+
+    if image_type not in ("input", "output"):
+        raise HTTPException(status_code=400, detail="image_type must be 'input' or 'output'")
+
+    log = await db.get(RenderAuditLog, log_id)
+    if not log:
+        raise HTTPException(status_code=404, detail="Render log not found")
+
+    key = log.input_image_key if image_type == "input" else log.output_image_key
+    if not key:
+        raise HTTPException(status_code=404, detail="No image available")
+
+    settings = get_settings()
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=settings.s3_endpoint_url,
+        aws_access_key_id=settings.s3_access_key,
+        aws_secret_access_key=settings.s3_secret_key,
+        region_name=settings.s3_region,
+        config=BotoConfig(signature_version="s3v4"),
+    )
+
+    try:
+        obj = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)
+        return Response(content=obj["Body"].read(), media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=404, detail=f"Image not found in storage: {exc}")
+
+
+@router.delete("/render-logs", status_code=204)
+async def bulk_delete_render_logs(
+    ids: list[str] = Query(..., description="List of render log IDs to delete"),
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """Bulk delete render audit logs and their S3 images. Admin+ only."""
+    import boto3
+    from botocore.config import Config as BotoConfig
+
+    settings = get_settings()
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=settings.s3_endpoint_url,
+        aws_access_key_id=settings.s3_access_key,
+        aws_secret_access_key=settings.s3_secret_key,
+        region_name=settings.s3_region,
+        config=BotoConfig(signature_version="s3v4"),
+    )
+    bucket = settings.s3_bucket_name
+
+    for log_id in ids:
+        try:
+            uid = uuid.UUID(log_id)
+        except ValueError:
+            continue
+        log = await db.get(RenderAuditLog, uid)
+        if not log:
+            continue
+        # Delete S3 objects
+        for key in [log.input_image_key, log.output_image_key]:
+            if key:
+                try:
+                    s3.delete_object(Bucket=bucket, Key=key)
+                except Exception:
+                    pass
+        await db.delete(log)
+
+    await db.flush()

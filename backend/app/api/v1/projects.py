@@ -31,12 +31,16 @@ def _serialize_location(project: Project) -> dict | None:
         return None
     try:
         point = to_shape(project.location)
-        return {"longitude": point.x, "latitude": point.y}
+        result: dict = {"longitude": point.x, "latitude": point.y}
+        address = (project.metadata_ or {}).get("address")
+        if address:
+            result["address"] = address
+        return result
     except Exception:
         return None
 
 
-def _project_to_dict(project: Project, include_relations: bool = False) -> dict:
+def _project_to_dict(project: Project, include_relations: bool = False, owner_email: str | None = None) -> dict:
     """Convert a Project ORM object to a dict with serialized location."""
     data = {
         "id": project.id,
@@ -49,6 +53,8 @@ def _project_to_dict(project: Project, include_relations: bool = False) -> dict:
         "updated_at": project.updated_at,
         "owner_id": project.owner_id,
     }
+    if owner_email is not None:
+        data["owner_email"] = owner_email
     if include_relations:
         data["buildings"] = [_building_to_response(b) for b in project.buildings]
         data["documents"] = project.documents
@@ -76,6 +82,8 @@ async def create_project(
         from geoalchemy2.elements import WKTElement
         point = f"POINT({project_in.location.longitude} {project_in.location.latitude})"
         project.location = WKTElement(point, srid=4326)
+        if project_in.location.address:
+            project.metadata_ = {**(project.metadata_ or {}), "address": project_in.location.address}
 
     db.add(project)
     await db.flush()
@@ -94,17 +102,18 @@ async def list_projects(
 
     Admin users see all projects across the platform.
     """
-    # Admin/cofounder users see all projects
+    # Admin/cofounder users see all projects with owner email
     if is_admin_or_above(user):
         query = (
-            select(Project)
+            select(Project, User.email)
+            .join(User, Project.owner_id == User.id)
             .order_by(Project.updated_at.desc())
             .offset(skip)
             .limit(limit)
         )
         result = await db.execute(query)
-        projects = result.scalars().all()
-        return [_project_to_dict(p) for p in projects]
+        rows = result.all()
+        return [_project_to_dict(p, owner_email=email) for p, email in rows]
 
     # Get IDs of projects shared with this user
     shared_result = await db.execute(

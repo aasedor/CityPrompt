@@ -26,6 +26,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   owner_id: string;
+  owner_email?: string;
   buildings?: Building[];
   documents?: Document[];
 }

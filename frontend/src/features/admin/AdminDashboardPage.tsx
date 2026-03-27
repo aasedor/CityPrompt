@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, FolderOpen, Box, FileText, Loader2, BarChart3, MessageSquare } from 'lucide-react';
+import { Users, FolderOpen, Box, FileText, Loader2, BarChart3, MessageSquare, Image } from 'lucide-react';
 import { adminApi, feedbackApi } from '@/services/api';
 import type { AdminDashboardStats, FeedbackCounts } from '@/services/api';
 import { useAuthStore } from '@/store';
@@ -41,6 +41,7 @@ export function AdminDashboardPage() {
     { label: 'Projects', value: stats.total_projects, icon: FolderOpen, color: 'text-emerald-400 bg-emerald-500/15', to: '/admin/projects' },
     { label: 'Buildings', value: stats.total_buildings, icon: Box, color: 'text-accent-400 bg-accent-500/15', to: '/admin/buildings' },
     { label: 'Documents', value: stats.total_documents, icon: FileText, color: 'text-amber-400 bg-amber-500/15' },
+    { label: 'Render Logs', value: null, icon: Image, color: 'text-pink-400 bg-pink-500/15', to: '/admin/render-logs' },
     { label: 'Feedback', value: feedbackCounts?.total ?? 0, sub: feedbackCounts?.open ? `${feedbackCounts.open} open` : undefined, icon: MessageSquare, color: 'text-violet-400 bg-violet-500/15', to: '/admin/feedback' },
   ];
 

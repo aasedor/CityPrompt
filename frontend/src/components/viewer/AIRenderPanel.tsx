@@ -11,7 +11,8 @@ import type { SiteZone, SavedRender } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
 import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
-import { rendersApi, resolveApiFileUrl } from '@/services/api';
+import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
+import { useAuthStore } from '@/store';
 
 // ---------------------------------------------------------------------------
 // Props
@@ -55,6 +56,16 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     statusMessage,
   } = useAIRender();
 
+  const user = useAuthStore((s) => s.user);
+  const setUser = useAuthStore((s) => s.setUser);
+  const isAdmin = user?.role === 'admin' || user?.role === 'cofounder';
+  const credits = user?.render_credits ?? 0;
+  const outOfCredits = !isAdmin && credits < 8; // minimum render cost is 8 tokens
+
+  const refreshCredits = useCallback(async () => {
+    try { const u = await authApi.me(); setUser(u); } catch { /* ignore */ }
+  }, [setUser]);
+
   // Local form state
   const [selectedStyle, setSelectedStyle] = useState(AI_RENDER_STYLES[0].id);
   const [customPrompt, setCustomPrompt] = useState('');
@@ -90,17 +101,15 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     if (!map) return;
     const visibility = result ? 'none' : 'visible';
     for (const layerId of ZONE_LAYERS) {
-      if (map.getLayer(layerId)) {
-        map.setLayoutProperty(layerId, 'visibility', visibility);
-      }
+      try { if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', visibility); } catch { /* map destroyed */ }
     }
-    // Restore layers on unmount
+    // Restore layers on unmount — guard against map already being destroyed
     return () => {
-      for (const layerId of ZONE_LAYERS) {
-        if (map.getLayer(layerId)) {
-          map.setLayoutProperty(layerId, 'visibility', 'visible');
+      try {
+        for (const layerId of ZONE_LAYERS) {
+          if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'visible');
         }
-      }
+      } catch { /* map style already removed during navigation */ }
     };
   }, [result, mapRef]);
 
@@ -169,7 +178,8 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     if (results.length > 0) {
       onPreviewsReady?.(results);
     }
-  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady]);
+    refreshCredits();
+  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady, refreshCredits]);
 
   /** Select a preview and trigger full-quality render with its seed */
   const handleSelectPreview = useCallback(async (index: number) => {
@@ -450,8 +460,24 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
 
         {/* ── Error ──────────────────────────────────────────────────────── */}
         {error && (
-          <div className="rounded-lg bg-red-500/10 px-3 py-2 text-xs text-red-400">
-            {error}
+          <div className={`rounded-lg px-3 py-3 text-sm ${
+            error.toLowerCase().includes('token') || error.toLowerCase().includes('credit')
+              ? 'bg-amber-500/15 ring-1 ring-amber-500/30'
+              : 'bg-red-500/10'
+          }`}>
+            {error.toLowerCase().includes('token') || error.toLowerCase().includes('credit') ? (
+              <div className="space-y-1.5">
+                <p className="font-semibold text-amber-400">Not enough tokens</p>
+                <p className="text-xs text-amber-400/80">
+                  You don't have enough tokens for this render. Your 1,000 weekly tokens reset every 7 days.
+                </p>
+                <p className="text-xs text-amber-400/60">
+                  Tokens remaining: <span className="font-bold">{credits}</span>
+                </p>
+              </div>
+            ) : (
+              <p className="text-red-400">{error}</p>
+            )}
           </div>
         )}
 
@@ -515,13 +541,32 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
           </div>
         )}
 
+        {/* ── Token balance badge ───────────────────────────────────────── */}
+        {!isAdmin && (
+          <div className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium ${
+            credits <= 0
+              ? 'bg-red-500/15 text-red-400 ring-1 ring-red-500/20'
+              : credits <= 100
+                ? 'bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/20'
+                : 'bg-white/[0.06] text-white/60'
+          }`}>
+            <span>Tokens remaining</span>
+            <span className="text-sm font-bold">{credits.toLocaleString()} / 1,000</span>
+          </div>
+        )}
+
         {/* ── Generate buttons with summary ─────────────────────────────── */}
+        {outOfCredits && (
+          <div className="rounded-lg bg-red-500/10 px-3 py-2 text-center text-xs text-red-400">
+            Not enough tokens. Your 1,000 weekly tokens will reset soon.
+          </div>
+        )}
         <div className="flex gap-2">
           <button
             onClick={handleGeneratePreviews}
-            disabled={isRendering}
+            disabled={isRendering || outOfCredits}
             className={`flex flex-1 flex-col items-center justify-center gap-0.5 rounded-lg py-2.5 transition ${
-              isRendering
+              isRendering || outOfCredits
                 ? 'cursor-not-allowed bg-gray-700 text-gray-400'
                 : 'bg-amber-500 text-black shadow-lg shadow-amber-500/25 hover:bg-amber-400'
             }`}

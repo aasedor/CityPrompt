@@ -141,6 +141,7 @@ export interface AuthUser {
   full_name?: string;
   role: string;
   is_active: boolean;
+  render_credits: number;
   created_at: string;
 }
 
@@ -739,6 +740,7 @@ export interface AdminUser {
   created_at: string;
   last_login_at?: string;
   project_count: number;
+  render_credits: number;
 }
 
 export interface AdminUserUpdate {
@@ -785,6 +787,26 @@ export interface AdminProject {
   building_count: number;
 }
 
+export interface RenderAuditLog {
+  id: string;
+  user_email: string;
+  model: string;
+  tokens_spent: number;
+  input_image_url?: string;
+  output_image_url?: string;
+  prompt_preview?: string;
+  created_at: string;
+}
+
+export interface RenderLogStats {
+  total_renders: number;
+  storage_bytes: number;
+  storage_mb: number;
+  storage_gb: number;
+  storage_limit_gb: number;
+  oldest_render?: string;
+}
+
 export const adminApi = {
   getStats: async (): Promise<AdminDashboardStats> => {
     const { data } = await api.get('/api/v1/admin/stats');
@@ -808,6 +830,25 @@ export const adminApi = {
 
   deleteUser: async (userId: string): Promise<void> => {
     await api.delete(`/api/v1/admin/users/${userId}`);
+  },
+
+  updateTokens: async (userId: string, amount: number, mode: 'add' | 'set' = 'add'): Promise<AdminUser> => {
+    const { data } = await api.post(`/api/v1/admin/users/${userId}/tokens`, { amount, mode });
+    return data;
+  },
+
+  renderLogStats: async (): Promise<RenderLogStats> => {
+    const { data } = await api.get('/api/v1/admin/render-logs/stats');
+    return data;
+  },
+
+  listRenderLogs: async (params?: { skip?: number; limit?: number; user_email?: string }): Promise<RenderAuditLog[]> => {
+    const { data } = await api.get('/api/v1/admin/render-logs', { params });
+    return data;
+  },
+
+  deleteRenderLogs: async (ids: string[]): Promise<void> => {
+    await api.delete('/api/v1/admin/render-logs', { params: { ids } });
   },
 
   listAllBuildings: async (params?: {
