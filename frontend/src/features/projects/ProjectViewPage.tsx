@@ -57,7 +57,7 @@ export function ProjectViewPage() {
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
 
   const hasEditableZones = siteZones.some((z) =>
-    (z.zone_type === 'building' || z.zone_type === 'residential' || z.zone_type === 'development_area')
+    z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3
   );
 
   // Activate site planner on mount, pre-select buildings tool, reset workflow step
@@ -350,7 +350,7 @@ export function ProjectViewPage() {
               onClick={() => setWorkflowStep(2)}
               disabled={!hasEditableZones}
               className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              title={hasEditableZones ? 'Generate AI render from current view' : 'Draw building or residential zones first'}
+              title={hasEditableZones ? 'Generate AI render from current view' : 'Draw zones first (buildings, parks, or streets)'}
             >
               <Sparkles size={16} />
               AI Render
