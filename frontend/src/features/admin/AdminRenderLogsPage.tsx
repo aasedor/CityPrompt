@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowLeftRight, Loader2, Search, Trash2, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
-import type { RenderAuditLog } from '@/services/api';
+import type { RenderAuditLog, RenderLogStats } from '@/services/api';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -122,11 +122,18 @@ function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }
 
 export function AdminRenderLogsPage() {
   const [logs, setLogs] = useState<RenderAuditLog[]>([]);
+  const [stats, setStats] = useState<RenderLogStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [compareLog, setCompareLog] = useState<RenderAuditLog | null>(null);
   const [compareStartOutput, setCompareStartOutput] = useState(false);
+
+  const fetchStats = useCallback(() => {
+    adminApi.renderLogStats().then(setStats).catch(() => {});
+  }, []);
+
+  useEffect(() => { fetchStats(); }, [fetchStats]);
 
   const fetchLogs = useCallback(async () => {
     setLoading(true);
@@ -173,6 +180,7 @@ export function AdminRenderLogsPage() {
       setLogs((prev) => prev.filter((l) => !selected.has(l.id)));
       toast.success(`Deleted ${selected.size} render log(s)`);
       setSelected(new Set());
+      fetchStats();
     } catch {
       toast.error('Failed to delete render logs');
     }
@@ -189,6 +197,44 @@ export function AdminRenderLogsPage() {
           {logs.length} renders
         </span>
       </div>
+
+      {/* Storage stats */}
+      {stats && (
+        <div className="mb-4 rounded-xl border border-primary-950/[0.08] bg-white p-4">
+          <div className="flex flex-wrap items-center gap-6">
+            <div>
+              <p className="text-xs text-primary-950/40 uppercase font-medium">Total Renders</p>
+              <p className="text-xl font-bold text-primary-950">{stats.total_renders.toLocaleString()}</p>
+            </div>
+            <div className="flex-1 min-w-[200px]">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs text-primary-950/40 uppercase font-medium">Storage Used</p>
+                <p className="text-xs font-medium text-primary-950/60">
+                  {stats.storage_gb < 1 ? `${stats.storage_mb} MB` : `${stats.storage_gb} GB`} / {stats.storage_limit_gb} GB
+                </p>
+              </div>
+              <div className="h-2.5 w-full rounded-full bg-primary-950/[0.06] overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all ${
+                    stats.storage_gb / stats.storage_limit_gb > 0.8
+                      ? 'bg-red-500'
+                      : stats.storage_gb / stats.storage_limit_gb > 0.5
+                        ? 'bg-amber-500'
+                        : 'bg-emerald-500'
+                  }`}
+                  style={{ width: `${Math.max(stats.storage_bytes > 0 ? 2 : 0, Math.min(100, (stats.storage_gb / stats.storage_limit_gb) * 100))}%` }}
+                />
+              </div>
+            </div>
+            {stats.oldest_render && (
+              <div>
+                <p className="text-xs text-primary-950/40 uppercase font-medium">Since</p>
+                <p className="text-sm font-medium text-primary-950/60">{new Date(stats.oldest_render).toLocaleDateString()}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-md">

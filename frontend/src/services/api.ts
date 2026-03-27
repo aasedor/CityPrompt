@@ -798,6 +798,15 @@ export interface RenderAuditLog {
   created_at: string;
 }
 
+export interface RenderLogStats {
+  total_renders: number;
+  storage_bytes: number;
+  storage_mb: number;
+  storage_gb: number;
+  storage_limit_gb: number;
+  oldest_render?: string;
+}
+
 export const adminApi = {
   getStats: async (): Promise<AdminDashboardStats> => {
     const { data } = await api.get('/api/v1/admin/stats');
@@ -825,6 +834,11 @@ export const adminApi = {
 
   updateTokens: async (userId: string, amount: number, mode: 'add' | 'set' = 'add'): Promise<AdminUser> => {
     const { data } = await api.post(`/api/v1/admin/users/${userId}/tokens`, { amount, mode });
+    return data;
+  },
+
+  renderLogStats: async (): Promise<RenderLogStats> => {
+    const { data } = await api.get('/api/v1/admin/render-logs/stats');
     return data;
   },
 
