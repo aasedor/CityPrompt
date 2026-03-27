@@ -12129,7 +12129,7 @@
         }
       ],
       "minFloors": 1,
-      "maxFloors": 30,
+      "maxFloors": 6,
       "suggestedAreaSqm": 5000,
       "developmentType": "recreational"
     },
@@ -12266,9 +12266,9 @@
           }
         }
       ],
-      "minFloors": 2,
+      "minFloors": 3,
       "maxFloors": 12,
-      "suggestedAreaSqm": 25000,
+      "suggestedAreaSqm": 40000,
       "developmentType": "industrial"
     },
     {
@@ -12406,7 +12406,7 @@
       ],
       "minFloors": 2,
       "maxFloors": 12,
-      "suggestedAreaSqm": 8000,
+      "suggestedAreaSqm": 10000,
       "developmentType": "residential_multifamily"
     },
     {
@@ -12681,7 +12681,7 @@
         }
       ],
       "minFloors": 1,
-      "maxFloors": 3,
+      "maxFloors": 1,
       "suggestedAreaSqm": 100000,
       "developmentType": "industrial"
     },
@@ -12821,8 +12821,8 @@
         }
       ],
       "minFloors": 1,
-      "maxFloors": 6,
-      "suggestedAreaSqm": 10000,
+      "maxFloors": 5,
+      "suggestedAreaSqm": 8000,
       "developmentType": "recreational"
     },
     {
@@ -12959,9 +12959,9 @@
           }
         }
       ],
-      "minFloors": 2,
-      "maxFloors": 4,
-      "suggestedAreaSqm": 3000,
+      "minFloors": 1,
+      "maxFloors": 3,
+      "suggestedAreaSqm": 2500,
       "developmentType": "institutional"
     },
     {
@@ -13012,7 +13012,10 @@
           "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/hero.png",
+      "minFloors": 2,
+      "maxFloors": 8,
+      "suggestedAreaSqm": 15000
     },
     {
       "id": "vertiport_evtol",
@@ -13062,7 +13065,10 @@
           "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/hero.png",
+      "minFloors": 1,
+      "maxFloors": 3,
+      "suggestedAreaSqm": 5000
     },
     {
       "id": "shophouse_southeast_asian",
@@ -13112,7 +13118,10 @@
           "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/hero.png",
+      "minFloors": 2,
+      "maxFloors": 4,
+      "suggestedAreaSqm": 400
     },
     {
       "id": "food_hall_market_hall",
@@ -13162,7 +13171,10 @@
           "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/hero.png",
+      "minFloors": 1,
+      "maxFloors": 3,
+      "suggestedAreaSqm": 5000
     },
     {
       "id": "ev_charging_hub",
@@ -13212,7 +13224,10 @@
           "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/hero.png",
+      "minFloors": 1,
+      "maxFloors": 2,
+      "suggestedAreaSqm": 3000
     },
     {
       "id": "hyperscale_data_center",
@@ -13262,7 +13277,10 @@
           "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/hero.png",
+      "minFloors": 1,
+      "maxFloors": 4,
+      "suggestedAreaSqm": 50000
     },
     {
       "id": "vertical_farm",
@@ -13312,7 +13330,10 @@
           "thumbnailUrl": "/archetypes/buildings/vertical_farm/variant_3.png"
         }
       ],
-      "thumbnailUrl": "/archetypes/buildings/vertical_farm/hero.png"
+      "thumbnailUrl": "/archetypes/buildings/vertical_farm/hero.png",
+      "minFloors": 5,
+      "maxFloors": 50,
+      "suggestedAreaSqm": 5000
     }
   ]
 }
