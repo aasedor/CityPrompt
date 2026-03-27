@@ -12978,7 +12978,8 @@
           "palette": {
             "primary": "#E8E8F0",
             "accent": "#C0C0D0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/variant_0.png"
         },
         {
           "id": "concert_crystalline_glass",
@@ -12987,7 +12988,8 @@
           "palette": {
             "primary": "#A8C8E0",
             "accent": "#6090B8"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/variant_1.png"
         },
         {
           "id": "concert_timber_acoustic",
@@ -12996,7 +12998,8 @@
           "palette": {
             "primary": "#B89878",
             "accent": "#8B7355"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/variant_2.png"
         },
         {
           "id": "concert_civic_landmark",
@@ -13005,9 +13008,11 @@
           "palette": {
             "primary": "#C8C8D0",
             "accent": "#A0A0B0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/concert_hall_modern/hero.png"
     },
     {
       "id": "vertiport_evtol",
@@ -13023,7 +13028,8 @@
           "palette": {
             "primary": "#D0E0F0",
             "accent": "#80B0D8"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/variant_0.png"
         },
         {
           "id": "vertiport_ground_terminal",
@@ -13032,7 +13038,8 @@
           "palette": {
             "primary": "#E0E8F0",
             "accent": "#90B8D0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/variant_1.png"
         },
         {
           "id": "vertiport_futuristic_canopy",
@@ -13041,7 +13048,8 @@
           "palette": {
             "primary": "#C8E0C8",
             "accent": "#78B878"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/variant_2.png"
         },
         {
           "id": "vertiport_transit_hub",
@@ -13050,9 +13058,11 @@
           "palette": {
             "primary": "#D8C0A0",
             "accent": "#B89868"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/vertiport_evtol/hero.png"
     },
     {
       "id": "shophouse_southeast_asian",
@@ -13068,7 +13078,8 @@
           "palette": {
             "primary": "#40B0B0",
             "accent": "#E87070"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/variant_0.png"
         },
         {
           "id": "shophouse_chinese",
@@ -13077,7 +13088,8 @@
           "palette": {
             "primary": "#C8B080",
             "accent": "#987848"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/variant_1.png"
         },
         {
           "id": "shophouse_adaptive_reuse",
@@ -13086,7 +13098,8 @@
           "palette": {
             "primary": "#B8A090",
             "accent": "#786858"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/variant_2.png"
         },
         {
           "id": "shophouse_contemporary",
@@ -13095,9 +13108,11 @@
           "palette": {
             "primary": "#304878",
             "accent": "#688848"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/shophouse_southeast_asian/hero.png"
     },
     {
       "id": "food_hall_market_hall",
@@ -13113,7 +13128,8 @@
           "palette": {
             "primary": "#2D5D3D",
             "accent": "#B89060"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_0.png"
         },
         {
           "id": "market_contemporary",
@@ -13122,7 +13138,8 @@
           "palette": {
             "primary": "#A0A0A8",
             "accent": "#D0D0D8"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_1.png"
         },
         {
           "id": "market_industrial_reuse",
@@ -13131,7 +13148,8 @@
           "palette": {
             "primary": "#4A4A50",
             "accent": "#C89050"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_2.png"
         },
         {
           "id": "market_open_air_pavilion",
@@ -13140,9 +13158,11 @@
           "palette": {
             "primary": "#5D8D50",
             "accent": "#A0C890"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/food_hall_market_hall/hero.png"
     },
     {
       "id": "ev_charging_hub",
@@ -13158,7 +13178,8 @@
           "palette": {
             "primary": "#2848A0",
             "accent": "#E0E8F0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/variant_0.png"
         },
         {
           "id": "ev_green_mobility_hub",
@@ -13167,7 +13188,8 @@
           "palette": {
             "primary": "#608868",
             "accent": "#A0B8A0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/variant_1.png"
         },
         {
           "id": "ev_highway_reststop",
@@ -13176,7 +13198,8 @@
           "palette": {
             "primary": "#A08850",
             "accent": "#C8B078"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/variant_2.png"
         },
         {
           "id": "ev_urban_garden",
@@ -13185,9 +13208,11 @@
           "palette": {
             "primary": "#78A068",
             "accent": "#B8C8A8"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/ev_charging_hub/hero.png"
     },
     {
       "id": "hyperscale_data_center",
@@ -13203,7 +13228,8 @@
           "palette": {
             "primary": "#787880",
             "accent": "#A8A8B0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/variant_0.png"
         },
         {
           "id": "datacenter_urban_stealth",
@@ -13212,7 +13238,8 @@
           "palette": {
             "primary": "#484850",
             "accent": "#987850"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/variant_1.png"
         },
         {
           "id": "datacenter_nordic",
@@ -13221,7 +13248,8 @@
           "palette": {
             "primary": "#506878",
             "accent": "#A08860"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/variant_2.png"
         },
         {
           "id": "datacenter_futuristic_modular",
@@ -13230,9 +13258,11 @@
           "palette": {
             "primary": "#606068",
             "accent": "#909098"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/hyperscale_data_center/hero.png"
     },
     {
       "id": "vertical_farm",
@@ -13248,7 +13278,8 @@
           "palette": {
             "primary": "#48A848",
             "accent": "#E8F0E0"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertical_farm/variant_0.png"
         },
         {
           "id": "farm_led_indoor",
@@ -13257,7 +13288,8 @@
           "palette": {
             "primary": "#9830B0",
             "accent": "#383040"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertical_farm/variant_1.png"
         },
         {
           "id": "farm_timber_farmscraper",
@@ -13266,7 +13298,8 @@
           "palette": {
             "primary": "#90B860",
             "accent": "#C8A868"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertical_farm/variant_2.png"
         },
         {
           "id": "farm_rooftop_greenhouse",
@@ -13275,9 +13308,11 @@
           "palette": {
             "primary": "#68A050",
             "accent": "#C04830"
-          }
+          },
+          "thumbnailUrl": "/archetypes/buildings/vertical_farm/variant_3.png"
         }
-      ]
+      ],
+      "thumbnailUrl": "/archetypes/buildings/vertical_farm/hero.png"
     }
   ]
 }
