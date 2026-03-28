@@ -101,7 +101,7 @@ function resolveZoneColor(zone: SiteZone): string {
           (props.plaza_selected_variant_id as string) || '';
         // Extract variant index from id (e.g. "archetype_v2" → 1)
         const vMatch = variantId.match(/_v(\d+)$/);
-        const vIdx = vMatch ? parseInt(vMatch[1], 10) - 1 : 0;
+        const vIdx = vMatch ? Math.max(0, parseInt(vMatch[1], 10) - 1) : 0;
         const [hShift, lShift] = VARIANT_SHIFTS[vIdx % VARIANT_SHIFTS.length];
         return hShift === 0 && lShift === 0 ? baseColor : shiftHex(baseColor, hShift, lShift);
       }
