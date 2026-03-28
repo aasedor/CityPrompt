@@ -13334,6 +13334,62 @@
       "minFloors": 5,
       "maxFloors": 50,
       "suggestedAreaSqm": 5000
+    },
+    {
+      "id": "mall_redevelopment",
+      "title": "Mall Redevelopment",
+      "developmentType": "mixed_use",
+      "buildingSubcategory": "Mall Redevelopment / Greyfield",
+      "description": "Suburban shopping mall site transformed into walkable mixed-use development, adaptive reuse campus, or eco-district",
+      "floorRange": [1, 5],
+      "suggestedArea_m2": 50000,
+      "variants": [
+        {
+          "id": "mall_new_town_center",
+          "label": "New Town Center",
+          "description": "Complete demolition replaced with 22-block walkable mixed-use street grid with central plaza, tree-lined boulevards, and pocket parks",
+          "palette": {
+            "primary": "#B87333",
+            "accent": "#8B4513",
+            "ground": "#D2B48C"
+          },
+          "thumbnailUrl": "/archetypes/buildings/mall_redevelopment/variant_0.png"
+        },
+        {
+          "id": "mall_open_air_retrofit",
+          "label": "Open-Air Retrofit",
+          "description": "Mall structure preserved with roof sections removed to create open-air paseos, anchor stores re-clad with contemporary facades and living green walls",
+          "palette": {
+            "primary": "#708090",
+            "accent": "#2F4F2F",
+            "ground": "#C0C0C0"
+          },
+          "thumbnailUrl": "/archetypes/buildings/mall_redevelopment/variant_1.png"
+        },
+        {
+          "id": "mall_community_campus",
+          "label": "Community Campus",
+          "description": "Adaptive reuse as healthcare, education and civic hub with 2-acre community park replacing parking lot",
+          "palette": {
+            "primary": "#CD9B6A",
+            "accent": "#8FBC8F",
+            "ground": "#F5F5DC"
+          },
+          "thumbnailUrl": "/archetypes/buildings/mall_redevelopment/variant_2.png"
+        },
+        {
+          "id": "mall_green_grid",
+          "label": "Green Grid Eco-District",
+          "description": "Full demolition replaced with eco-district featuring daylighted creek, mass-timber buildings, urban farm, and near-zero parking",
+          "palette": {
+            "primary": "#6B8E23",
+            "accent": "#DAA520",
+            "ground": "#8FBC8F"
+          },
+          "thumbnailUrl": "/archetypes/buildings/mall_redevelopment/variant_3.png"
+        }
+      ],
+      "thumbnailUrl": "/archetypes/buildings/mall_redevelopment/hero.png"
     }
   ]
 }

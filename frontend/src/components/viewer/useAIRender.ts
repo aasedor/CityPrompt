@@ -186,6 +186,14 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'perspective, 3D, oblique angle, horizon visible, photorealistic facades, eye-level, detailed buildings, low quality, blurry, noisy, text, watermark',
   },
   {
+    id: 'site-plan-photo',
+    label: 'Site Plan Photo',
+    strength: 0.65,
+    prompt:
+      'Professional near-top-down architectural photomontage shot from a DJI Mavic 3 Enterprise drone at 100 meters altitude, looking almost straight down at approximately 15-20 degrees from nadir. Hasselblad 4/3 CMOS sensor, 24mm equivalent lens at f/5.6, ISO 100. The proposed development appears as if fully constructed and occupied, photographed from directly above in a real drone survey. All buildings, parks, streets, and landscaping are photorealistic with accurate materials, shadows, and proportions as seen from near-overhead. Building rooftops show realistic roofing materials, mechanical equipment, and drainage. Shadows are short and fall consistently in one direction indicating building height. Surrounding context preserves the real satellite imagery seamlessly. Materials show realistic weathering 1-2 years post-completion. Natural lens vignetting at frame edges. This must read as a real drone survey photograph of a completed development, not a diagram or illustration. CRITICAL: The colored polygon overlay zones (green, red, blue, orange, yellow fills) visible in the reference image are ONLY spatial markers showing where each element should be placed. You MUST completely replace every colored fill with photorealistic materials — real rooftop surfaces, real grass textures, real pavement, real building materials. No flat colored fills should remain visible in the output.',
+    negative: 'cartoon, illustration, sketch, painting, artistic, stylized, CGI look, diagram, linework, pastel colors, perfect pristine surfaces, floating buildings, unrealistic shadows, low quality, blurry, text, watermark, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills',
+  },
+  {
     id: 'ink-wash',
     label: 'Ink Wash',
     strength: 0.65,
@@ -270,6 +278,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'site-plan',
     label: 'Site Plan',
     prompt: 'Top-down 2D architectural site plan in strict orthographic projection. Clean architectural linework with soft flat pastel colors. Stylized trees as simple green circles from above. Professional urban planning drawing quality.',
+  },
+  'site-plan-photo': {
+    id: 'site-plan-photo',
+    label: 'Site Plan Photo',
+    prompt: 'Professional near-top-down drone photomontage at 100m altitude, 15-20 degrees from nadir. DJI Mavic 3, Hasselblad sensor, 24mm lens f/5.6. Photorealistic materials, accurate short shadows, real rooftop equipment visible. Seamless integration with surrounding satellite context. Documentary drone survey photography of a completed development. CRITICAL: Replace all colored polygon fills completely with photorealistic materials. No flat green, red, blue, or orange overlay colors should remain visible.',
   },
   'ink-wash': {
     id: 'ink-wash',
@@ -2503,6 +2516,31 @@ export function useAIRender(): UseAIRenderReturn {
         const aspectRatio = computeAspectRatio(map);
         let cumulativeDataUri = `data:image/png;base64,${originalBase64}`;
 
+        // For site-plan style: capture an additional top-down (nadir) screenshot
+        // to give Gemini a true orthographic reference for spatial layout
+        const styleId = options.renderStyleId || options.style || 'photorealistic';
+        let topDownBase64: string | null = null;
+        if (styleId === 'site-plan' || styleId === 'site-plan-photo') {
+          try {
+            console.log('[AIRender] Site plan: capturing top-down reference...');
+            map.jumpTo({ center: origCenter, zoom: origZoom, bearing: origBearing, pitch: 0 });
+            await new Promise<void>(resolve => {
+              const t = setTimeout(resolve, 1500);
+              map.once('idle', () => { clearTimeout(t); resolve(); });
+            });
+            topDownBase64 = await captureMapCanvasBase64(map);
+            // Restore original pitch
+            map.jumpTo({ center: origCenter, zoom: origZoom, bearing: origBearing, pitch: origPitch });
+            await new Promise<void>(resolve => {
+              const t = setTimeout(resolve, 500);
+              map.once('idle', () => { clearTimeout(t); resolve(); });
+            });
+            console.log('[AIRender] Site plan: top-down reference captured');
+          } catch (topDownErr) {
+            console.warn('[AIRender] Failed to capture top-down reference:', topDownErr);
+          }
+        }
+
         // Separate zones into ground-level (Pass 1) and buildings (Pass 2)
         const GROUND_TYPES = ['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area'];
         const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
@@ -2598,6 +2636,11 @@ export function useAIRender(): UseAIRenderReturn {
 
             console.log(`[AIRender] Pass 1 prompt (${groundPrompt.length} chars):\n${groundPrompt}`);
 
+            // For site-plan: include top-down reference as additional image
+            const groundArchetypeImages = topDownBase64
+              ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view of the site — use this as the spatial layout reference for the site plan. Maintain exact zone positions and proportions as shown in this nadir view.' }]
+              : undefined;
+
             const { imageDataUri: groundResult } = await callVertexAI(
               groundScreenshot,
               groundPrompt,
@@ -2607,6 +2650,7 @@ export function useAIRender(): UseAIRenderReturn {
               negativePrompt || undefined,
               guidanceScale,
               options.model,
+              groundArchetypeImages,
             );
 
             // Composite ground zones onto the cumulative result with strict polygon clipping
@@ -2721,6 +2765,12 @@ export function useAIRender(): UseAIRenderReturn {
               console.warn('[AIRender] Failed to fetch archetype card:', cardErr);
             }
 
+            // For site-plan: add top-down reference to archetype images
+            const allBuildingImages = [
+              ...(buildingArchetypeImages || []),
+              ...(topDownBase64 ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view — use as spatial layout reference. Maintain exact zone positions and proportions.' }] : []),
+            ];
+
             const { imageDataUri } = await callVertexAI(
               buildingScreenshot,
               buildingPrompt,
@@ -2730,7 +2780,7 @@ export function useAIRender(): UseAIRenderReturn {
               negativePrompt || undefined,
               guidanceScale,
               options.model,
-              buildingArchetypeImages,
+              allBuildingImages.length > 0 ? allBuildingImages : undefined,
             );
 
             // Composite with headroom-expanded clip
