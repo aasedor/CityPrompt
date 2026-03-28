@@ -3088,6 +3088,7 @@ function LayoutInfrastructure({
   // Compute zone centroid for offset conversion
   const centroid = useMemo(() => {
     const coords = zone.coordinates;
+    if (!coords || coords.length === 0) return { lon: 0, lat: 0 };
     let cx = 0, cy = 0;
     for (const p of coords) {
       cx += p[0];
