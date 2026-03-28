@@ -551,6 +551,9 @@ export function SitePlannerMap({
         };
       }
 
+      if (!zone.coordinates || zone.coordinates.length === 0) {
+        return null as unknown as GeoJSON.Feature; // skip zones without coordinates
+      }
       const zoneCoords = [...zone.coordinates];
       if (
         zoneCoords.length > 0 &&

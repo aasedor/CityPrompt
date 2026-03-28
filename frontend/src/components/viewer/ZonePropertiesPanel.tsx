@@ -180,14 +180,20 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       || (props.road_archetype_id as string)
       || (props.green_space_archetype_id as string)
       || (props.plaza_archetype_id as string);
-    const shadeColor = variantShadeId
-      ? getShadeForArchetype(variantShadeId)
-      : (archetypeId ? getShadeForArchetype(archetypeId) : undefined);
-    console.log(`[ZoneProps] Save — variantShade="${variantShadeId}", archetypeId="${archetypeId}", shade="${shadeColor}"`);
+    // Try variant palette.primary color first (most specific),
+    // then variant shadeId, then archetype-level shade map
+    const variantPalettePrimary = (props.development_palette as any)?.primary
+      || (props.road_palette as any)?.primary
+      || (props.green_space_palette as any)?.primary
+      || (props.plaza_palette as any)?.primary;
+    const shadeColor = variantPalettePrimary
+      || (variantShadeId ? getShadeForArchetype(variantShadeId) : undefined)
+      || (archetypeId ? getShadeForArchetype(archetypeId) : undefined);
+    console.log(`[ZoneProps] Save — variantPalette="${variantPalettePrimary}", variantShade="${variantShadeId}", archetypeId="${archetypeId}", shade="${shadeColor}"`);
 
     onUpdate(zone.id, {
       name: name || undefined,
-      color: shadeColor !== '#888888' ? shadeColor : undefined,
+      color: shadeColor && shadeColor !== '#888888' ? shadeColor : undefined,
       properties: props,
     });
   };
@@ -702,7 +708,7 @@ const resolveOptionCategory = (
   };
 
   // Compute approximate area from coordinates (in square meters)
-  const area = computePolygonAreaM2(zone.coordinates);
+  const area = zone.coordinates && zone.coordinates.length >= 3 ? computePolygonAreaM2(zone.coordinates) : 0;
 
   return (
     <>
@@ -3212,8 +3218,8 @@ function composeZonePrompt(zone: SiteZone): string {
   }
 
   // 2. Approximate dimensions from coordinates
-  if (zone.coordinates.length >= 3) {
-    const area = computePolygonAreaM2(zone.coordinates);
+  if (zone.coordinates && zone.coordinates.length >= 3) {
+    const area = zone.coordinates && zone.coordinates.length >= 3 ? computePolygonAreaM2(zone.coordinates) : 0;
     if (area > 1) {
       // Approximate bounding box dimensions
       const centerLat = zone.coordinates.reduce((s, c) => s + c[1], 0) / zone.coordinates.length;
