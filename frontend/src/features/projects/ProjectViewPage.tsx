@@ -16,6 +16,7 @@ import { RenderResultModal } from '@/components/viewer/RenderResultModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { OnboardingTour } from '@/components/viewer/OnboardingTour';
 import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
@@ -29,6 +30,7 @@ export function ProjectViewPage() {
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [showTour, setShowTour] = useState(false);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
 
@@ -338,15 +340,19 @@ export function ProjectViewPage() {
           )}
         </div>
 
+        {/* Onboarding tour */}
+        {workflowStep === 1 && <OnboardingTour forceShow={showTour} onComplete={() => setShowTour(false)} />}
+
         {/* Bottom toolbar — context-sensitive per step */}
         <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
           <div className="flex-1 min-w-0">
-            <SitePlannerToolbar />
+            <SitePlannerToolbar onShowGuide={() => setShowTour(true)} />
           </div>
 
           {/* Step 1: Render button to advance to step 2 */}
           {workflowStep === 1 && (
             <button
+              data-tour="ai-render-btn"
               onClick={() => setWorkflowStep(2)}
               disabled={!hasEditableZones}
               className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"

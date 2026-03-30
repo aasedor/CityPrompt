@@ -21,11 +21,11 @@ interface CoreToolDef {
 
 const CORE_TOOLS: CoreToolDef[] = [
   {
-    id: 'buildings',
-    label: 'Buildings',
+    id: 'siteBoundary',
+    label: 'Site Boundary',
     drawType: 'Polygon',
-    description: 'Place building development zones',
-    icon: buildingsIcon,
+    description: 'Define the generation area',
+    icon: siteBoundaryIcon,
   },
   {
     id: 'streetsPaths',
@@ -35,18 +35,18 @@ const CORE_TOOLS: CoreToolDef[] = [
     icon: streetsPathsIcon,
   },
   {
+    id: 'buildings',
+    label: 'Buildings',
+    drawType: 'Polygon',
+    description: 'Place building development zones',
+    icon: buildingsIcon,
+  },
+  {
     id: 'parksPlazas',
     label: 'Parks / Plazas',
     drawType: 'Polygon',
     description: 'Create park and plaza public spaces',
     icon: parksPlazasIcon,
-  },
-  {
-    id: 'siteBoundary',
-    label: 'Site Boundary',
-    drawType: 'Polygon',
-    description: 'Define the generation area',
-    icon: siteBoundaryIcon,
   },
 ];
 
@@ -111,6 +111,7 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           return (
             <button
               key={tool.id}
+              data-tour={`tool-${tool.id}`}
               onClick={() => activateCoreTool(tool.id)}
               className={`group flex min-h-[86px] flex-col items-start rounded-xl border px-3 py-2 text-left transition-all ${
                 isActive
@@ -135,6 +136,7 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-primary-950/[0.03] px-2 py-1.5">
         <div className="flex flex-wrap items-center gap-1.5">
           <button
+            data-tour="select-btn"
             onClick={handleSelectMode}
             className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
               activeSitePlannerTool === null
@@ -203,10 +205,11 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
           {onShowGuide && (
             <button
               onClick={onShowGuide}
-              className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-primary-950/60 hover:bg-primary-950/[0.05] hover:text-primary-950"
+              className="flex items-center gap-1.5 rounded-lg border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100 hover:border-amber-400/60 transition-all"
               title="Show quick-start guide"
             >
               <HelpCircle size={14} />
+              Guide
             </button>
           )}
         </div>
