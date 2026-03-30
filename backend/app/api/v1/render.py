@@ -43,7 +43,7 @@ router = APIRouter()
 
 # Gemini model for render pipeline — must support image generation
 # (responseModalities: ["TEXT", "IMAGE"])
-_GEMINI_RENDER_MODEL = "gemini-2.5-flash-image"
+_GEMINI_RENDER_MODEL = "gemini-3.1-flash-image-preview"
 
 
 # ---------------------------------------------------------------------------

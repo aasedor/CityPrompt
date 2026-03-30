@@ -77,7 +77,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [guidanceScale, setGuidanceScale] = useState(15);
   const [perZoneMode, setPerZoneMode] = useState(true);
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash-image');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Saved renders gallery
@@ -165,10 +164,8 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       siteBoundaryCoords,
       // Pass all zones for inpainting mask generation
       siteZones: siteZones.length > 0 ? siteZones : undefined,
-      // AI model selection
-      model: selectedModel !== 'gemini-2.5-flash-image' ? selectedModel : undefined,
     };
-  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones, selectedModel]);
+  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
 
   /** Generate 3 preview renders in parallel */
   const handleGeneratePreviews = useCallback(async () => {
@@ -291,31 +288,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
                 }`}
               >
                 {style.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Model selector ─────────────────────────────────────────── */}
-        <div>
-          <label className="mb-1.5 block text-xs font-medium text-gray-400">AI Model</label>
-          <div className="grid grid-cols-3 gap-1">
-            {[
-              { id: 'gemini-2.5-flash-image', label: 'Flash 2.5', desc: 'Fast & affordable' },
-              { id: 'gemini-3.1-flash-image-preview', label: 'Flash 3.1', desc: 'Newest, balanced' },
-              { id: 'gemini-3-pro-image-preview', label: 'Pro 3', desc: 'Best quality' },
-            ].map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedModel(m.id)}
-                className={`rounded-lg px-2 py-1.5 text-center transition ${
-                  selectedModel === m.id
-                    ? 'bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/50'
-                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
-                }`}
-              >
-                <span className="block text-[11px] font-medium">{m.label}</span>
-                <span className="block text-[9px] opacity-60">{m.desc}</span>
               </button>
             ))}
           </div>

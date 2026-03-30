@@ -90,7 +90,6 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<{ imageUrl: string; prompt: string } | null>(null);
   const [saving, setSaving] = useState(false);
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash-image');
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
 
   const handleRotateLeft = useCallback(() => {
@@ -126,7 +125,6 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         streetViewPegman.angle,
         siteZones,
         {
-          model: selectedModel !== 'gemini-2.5-flash-image' ? selectedModel : undefined,
           previousRenderBase64,
           styleModifier,
         },
@@ -142,7 +140,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedModel, selectedStyle, result]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
@@ -300,30 +298,6 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         >
           <ArrowRight size={16} />
         </button>
-
-        {/* Divider */}
-        <div className="h-8 w-px bg-primary-950/10" />
-
-        {/* Model selector */}
-        <div className="flex flex-col gap-0.5">
-          {[
-            { id: 'gemini-2.5-flash-image', label: '2.5' },
-            { id: 'gemini-3.1-flash-image-preview', label: '3.1' },
-            { id: 'gemini-3-pro-image-preview', label: 'Pro' },
-          ].map((m) => (
-            <button
-              key={m.id}
-              onClick={() => setSelectedModel(m.id)}
-              className={`rounded px-2 py-0.5 text-[10px] font-medium transition ${
-                selectedModel === m.id
-                  ? 'bg-blue-500/20 text-blue-600'
-                  : 'text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950/70'
-              }`}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
 
         {/* Divider */}
         <div className="h-8 w-px bg-primary-950/10" />
