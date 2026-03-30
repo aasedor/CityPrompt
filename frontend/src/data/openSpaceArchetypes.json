@@ -64,7 +64,7 @@
       "title": "Urban Pocket Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A small urban green space tucked between buildings, offering shade trees, a bench loop, and a patch of open lawn visible as a compact emerald oasis from above",
+      "description": "A small urban green space tucked between buildings, offering shade trees, a bench loop, and a patch of open lawn",
       "generationTags": [
         "park",
         "pocket-park",
@@ -137,14 +137,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic compact urban pocket park. Two to four mature deciduous shade trees with broad rounded canopies casting dappled shadows across a small central lawn panel. A curving decomposed-granite path loops through the space. Wooden benches beneath tree canopies. Low ornamental hedge borders the perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with two to four overlapping dark-green circular tree canopies against a bright emerald lawn rectangle. Thin tan curving path. Low dark hedge line at perimeter. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "neighborhood_park",
       "title": "Neighborhood Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A mid-sized community park with open playing fields, a playground cluster, scattered mature trees, and a perimeter walking loop",
+      "description": "A mid-sized community park with open playing fields, a playground cluster, scattered mature trees, and a perimeter",
       "generationTags": [
         "park",
         "neighborhood",
@@ -218,14 +219,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic mid-sized neighborhood park. Large open bright-green mowed lawn field with mowing stripes. Clusters of mature deciduous trees along edges. Continuous dark-gray asphalt walking loop around perimeter. Compact playground cluster with colorful equipment on tan rubber-mulch surface. Benches along path. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with large bright-green striped mowed lawn center. Dark-green tree canopy clusters along borders. Dark-gray asphalt loop path. Small colorful playground patch in one corner. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "community_park",
       "title": "Community Park",
       "aestheticCategory": "landscape_parks",
       "spaceType": "park",
-      "description": "A large community park with multiple activity zones — sports fields, picnic groves, a pond, and trail networks winding through layered planting",
+      "description": "A large community park with multiple activity zones",
       "generationTags": [
         "park",
         "community",
@@ -299,14 +301,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic large community park with multiple activity zones. Wide open sports lawn with faint white line markings. Dense picnic grove of mature trees. Curving network of paved trails. Naturalized stormwater pond with emergent rushes. Small pavilion structure. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with mosaic of green textures: dark canopy groves, medium-green lawns, light meadow at edges. Gray trail ribbons. Dark water pond with green rushes. Small pale-roofed pavilion. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "regional_park",
       "title": "Regional Park",
       "aestheticCategory": "landscape_parks",
       "spaceType": "park",
-      "description": "A large-scale regional park with rolling terrain, extensive trail systems, forested areas, and open meadows — a naturalistic landscape visible as a broad green patchwork from high altitude",
+      "description": "A large-scale regional park with rolling terrain, extensive trail systems, forested areas, and open meadows",
       "generationTags": [
         "park",
         "regional",
@@ -380,14 +383,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic large-scale regional park with rolling natural terrain. Patchwork of dark forested areas, bright open meadows, and mid-green recreation fields. Thin unpaved trails through forest. Large lake with dark reflective water. Rolling terrain with shadow gradients. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with patchwork of dark forest canopy blocks, bright meadow panels, and mid-green lawn areas. Thin tan trail lines through woodland. Large dark reflective lake surface. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "dog_park",
       "title": "Dog Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A fenced off-leash dog exercise area with separate large and small dog zones, gravel paths, shade structures, and durable turf",
+      "description": "A fenced off-leash dog exercise area with separate large and small dog zones, gravel paths, shade structures, and",
       "generationTags": [
         "park",
         "dog-park",
@@ -461,7 +465,8 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic fenced dog park. Perimeter chain-link fence with internal fence dividing into two zones. Mix of compacted earth and worn grass. Tan decomposed-granite path inside the fence. Shade canopy structures. Scattered trees. Double-gate entry vestibules. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with fenced enclosure divided into two sections. Mixed worn grass and bare earth. Tan path along inside perimeter. Rectangular shade structure shadows. Double-gate rectangles at entries. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "skate_park",
@@ -543,14 +548,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic concrete skate park. Smooth gray poured concrete surfaces with sculptural bowl depressions. Quarter-pipes and half-pipes. Rails and ledges as thin dark lines. Spectator benches along one edge. Surrounding grass framing the concrete pad. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with smooth gray concrete pad. Curved bowl shadow gradients. Ramp edges as curved lines. Rails as thin dark lines. Bench row along one edge. Grass buffer at perimeter. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1500
     },
     {
       "id": "sports_field_complex",
       "title": "Sports Field Complex",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
-      "description": "A multi-field sports complex with soccer pitches, baseball diamonds, and running tracks — bright green rectangles and arcs with white line markings from above",
+      "description": "A multi-field sports complex with soccer pitches, baseball diamonds, and running tracks",
       "generationTags": [
         "park",
         "sports",
@@ -624,7 +631,9 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic multi-field sports complex. Bright green rectangular soccer fields with crisp white line markings. Baseball diamond with brown infield dirt. Red-brown synthetic running track oval. Aluminum bleacher rows. Pole-mounted field lights. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with bright green rectangular fields with white line markings. Brown dirt baseball diamond fan. Red-brown track oval with white lane stripes. Thin metallic bleacher strips. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 7000
     },
     {
       "id": "tennis_court_cluster",
@@ -706,14 +715,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic cluster of four to six tennis courts. Vivid blue or green acrylic rectangles with precise white boundary lines. Chain-link fencing. Nets as thin white horizontal lines. Narrow walkways between courts. Maintained grass buffer at perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with grid of vivid blue or green rectangular court surfaces with white line markings. Darker surround bands. Faint chain-link grid. Thin white net lines at mid-court. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2000
     },
     {
       "id": "botanical_garden",
       "title": "Botanical Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
-      "description": "A curated botanical garden with themed planting beds, specimen trees, winding paths through diverse horticultural displays, and a glass conservatory",
+      "description": "A curated botanical garden with themed planting beds, specimen trees, winding paths through diverse horticultural",
       "generationTags": [
         "park",
         "botanical",
@@ -787,14 +798,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic curated botanical garden. Rich tapestry of diverse planting beds in geometric and organic shapes with distinct colors and textures. Winding pale gravel paths. Glass conservatory with translucent roof. Specimen trees of varying species. Formal rose garden section. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with tapestry of distinct planting beds in varied colors. Pale gravel path lines winding between beds. Translucent glass conservatory rectangle. Varied tree canopy shapes. Concentric circular rose garden beds. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "japanese_garden",
       "title": "Japanese Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
-      "description": "A contemplative Japanese garden with raked gravel, moss gardens, ornamental maples, a koi pond, and stepping-stone paths — an intricate miniature landscape from above",
+      "description": "A contemplative Japanese garden with raked gravel, moss gardens, ornamental maples, a koi pond, and stepping-stone paths",
       "generationTags": [
         "park",
         "japanese",
@@ -868,14 +880,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic contemplative Japanese garden. Central koi pond with dark still water edged by carefully placed boulders. Red-painted arched bridge. Raked gravel areas with concentric wave patterns. Japanese maple trees with deep red canopy alongside cloud-pruned pines. Stepping-stone paths through emerald moss. Stone lantern. Dense bamboo groves. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with dark koi pond water surface with boulder-edged shoreline. Red arched bridge. Pale beige raked gravel panels with wave patterns. Deep red-orange maple canopies and dark green rounded pine canopies. Gray stepping-stone dot chains. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "memorial_garden",
       "title": "Memorial Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
-      "description": "A solemn memorial garden with formal axial layout, reflection pools, commemorative walls, and evergreen plantings — a symmetrical composition from above",
+      "description": "A solemn memorial garden with formal axial layout, reflection pools, commemorative walls, and evergreen plantings",
       "generationTags": [
         "park",
         "memorial",
@@ -949,14 +962,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic solemn memorial garden with formal axial layout. Central axis with long narrow reflecting pool flanked by polished stone paving. Rows of identical dark conical evergreen trees in formal symmetry. Commemorative wall or monument at axis terminus. Low clipped hedges. Stone benches. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with bilaterally symmetrical layout. Long narrow dark reflecting pool along central axis. Rows of identical dark conical evergreen shapes on both sides. Dark monument rectangle at terminus. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "urban_forest",
       "title": "Urban Forest",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
-      "description": "A dense urban woodland with closed canopy, understory layers, and narrow footpaths — an unbroken dark-green canopy mat from above",
+      "description": "A dense urban woodland with closed canopy, understory layers, and narrow footpaths",
       "generationTags": [
         "park",
         "forest",
@@ -1031,14 +1045,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic dense urban woodland. Nearly continuous canopy of overlapping crowns forming a dense dark-green mat. Narrow dirt footpath as thin brown line. Variation in canopy tone. No lawn, no formal paths, no structures. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with dense continuous tree canopy mat of overlapping dark-green crowns. Tiny canopy gaps revealing forest floor. Barely visible thin brown footpath line. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "riparian_buffer",
       "title": "Riparian Buffer / Creek Corridor",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
-      "description": "A naturalistic riparian corridor along a creek or drainage way, with dense native vegetation, willows, and a meandering waterway visible through canopy gaps",
+      "description": "A naturalistic riparian corridor along a creek or drainage way, with dense native vegetation, willows, and a meandering",
       "generationTags": [
         "park",
         "riparian",
@@ -1078,49 +1093,50 @@
         "has_benches": true,
         "shade_strategy": "riparian_canopy"
       },
-      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png",
       "variants": [
         {
           "id": "riparian_buffer_v0",
           "label": "Native Restoration",
           "color": "#2E7D32",
           "description": "Riparian Buffer / Creek Corridor in native habitat restoration landscape. Native grassland and woodland edge plantings, naturalized stream channels, wildlife corridors, educational interpretive signs, and minimal-impact boardwalk trails.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/variant_0.png"
         },
         {
           "id": "riparian_buffer_v1",
           "label": "Bioengineered Infrastructure",
           "color": "#00695C",
           "description": "Riparian Buffer / Creek Corridor in bioengineered green infrastructure. Constructed wetland cells, gabion basket retaining walls, bioswale channels with native sedges, permeable paving systems, and rain harvesting cisterns.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/variant_1.png"
         },
         {
           "id": "riparian_buffer_v2",
           "label": "Rewilded Urban",
           "color": "#4E342E",
           "description": "Riparian Buffer / Creek Corridor in rewilded urban landscape. Successional forest plantings, deadwood habitat piles, wildflower meadows on former pavement, reclaimed material paths, and insect hotels.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/variant_2.png"
         },
         {
           "id": "riparian_buffer_v3",
           "label": "Resilient Coastal",
           "color": "#0277BD",
           "description": "Riparian Buffer / Creek Corridor in resilient coastal landscape design. Salt-tolerant native plantings, living shoreline with oyster reef structures, elevated boardwalks, dune grass restoration, and tidal marsh buffers.",
-          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic naturalistic riparian corridor. Sinuous creek winding through center with dark water surface. Dense vegetation with willow canopies, native shrub thickets, and tall riparian grasses. Narrow crushed-gravel trail parallel to creek. Erosion-control boulders. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with sinuous dark water channel. Weeping willow canopies draping over water edge. Dense shrub thickets along banks. Thin tan trail line parallel to creek. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "wetland_rain_garden",
       "title": "Wetland / Rain Garden",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
-      "description": "A constructed wetland or bioretention rain garden with standing water, emergent vegetation, and boardwalk paths — a mosaic of water and marsh from above",
+      "description": "A constructed wetland or bioretention rain garden with standing water, emergent vegetation, and boardwalk paths",
       "generationTags": [
         "park",
         "wetland",
@@ -1195,14 +1211,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic constructed wetland rain garden. Shallow standing water pools reflecting sky as dark mirrors interspersed with dense emergent vegetation — cattails, bulrushes, sedges. Wooden boardwalk elevated above water surface. Gravel edge transition with native meadow buffer. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with organic mosaic of dark reflective water pools and bright yellow-green marsh vegetation tufts. Thin tan boardwalk line weaving through. Gravel edge at perimeter. Native meadow buffer ring. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "playground_adventure",
       "title": "Playground / Adventure Play",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A dedicated children's playground with colorful equipment, safety surfacing, shade canopies, and a surrounding fence — a bright patchwork from above",
+      "description": "A dedicated children's playground with colorful equipment, safety surfacing, shade canopies, and a surrounding fence",
       "generationTags": [
         "park",
         "playground",
@@ -1241,49 +1258,50 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/playground-adventure/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png",
       "variants": [
         {
           "id": "playground_adventure_v0",
           "label": "Rustic Timber & Gravel",
           "color": "#8B6914",
           "description": "Playground / Adventure Play in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/variant_0.png"
         },
         {
           "id": "playground_adventure_v1",
           "label": "Modern Steel & Turf",
           "color": "#5B7065",
           "description": "Playground / Adventure Play in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/variant_1.png"
         },
         {
           "id": "playground_adventure_v2",
           "label": "Natural Meadow",
           "color": "#6B8E23",
           "description": "Playground / Adventure Play in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/variant_2.png"
         },
         {
           "id": "playground_adventure_v3",
           "label": "Urban Contemporary",
           "color": "#4A6670",
           "description": "Playground / Adventure Play in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/playground-adventure/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic children's playground. Tan or rust-colored rubber safety surfacing. Colorful playground equipment in red, blue, yellow, green. Shade canopy structure. Low perimeter fence. Surrounding grass buffer. Parent benches facing equipment. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with tan or rust rubber safety surface. Colorful confetti-like dots of playground equipment. Triangular shade canopy shadow. Thin dark perimeter fence line. Green grass buffer. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "splash_pad_area",
       "title": "Splash Pad / Water Play",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "An interactive water play area with ground-level spray jets, colored paving, and drain channels — a circular wet zone from above",
+      "description": "An interactive water play area with ground-level spray jets, colored paving, and drain channels",
       "generationTags": [
         "park",
         "splash-pad",
@@ -1322,49 +1340,50 @@
         "paving_material": "concrete",
         "shade_strategy": "shade_structures"
       },
-      "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png",
       "variants": [
         {
           "id": "splash_pad_area_v0",
           "label": "Rustic Timber & Gravel",
           "color": "#8B6914",
           "description": "Splash Pad / Water Play in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_0.png"
         },
         {
           "id": "splash_pad_area_v1",
           "label": "Modern Steel & Turf",
           "color": "#5B7065",
           "description": "Splash Pad / Water Play in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_1.png"
         },
         {
           "id": "splash_pad_area_v2",
           "label": "Natural Meadow",
           "color": "#6B8E23",
           "description": "Splash Pad / Water Play in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_2.png"
         },
         {
           "id": "splash_pad_area_v3",
           "label": "Urban Contemporary",
           "color": "#4A6670",
           "description": "Splash Pad / Water Play in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/splash-pad-area/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic interactive splash pad water play area. Colored concrete or rubber surface in blues and grays. Ground-level spray nozzles with bright white water spray. Wet reflective surface. Low curved seat wall. Parent seating area with shade canopy. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with circular colored concrete pad in blues and grays. Bright white spray jet streaks. Darker wet reflective surface. Low curved seat wall border. Adjacent shade canopy rectangle. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "amphitheater_lawn",
       "title": "Amphitheater / Performance Lawn",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "park",
-      "description": "A sloped grass amphitheater with a performance stage at the bottom and tiered lawn seating — a green bowl shape visible from above",
+      "description": "A sloped grass amphitheater with a performance stage at the bottom and tiered lawn seating",
       "generationTags": [
         "park",
         "amphitheater",
@@ -1402,49 +1421,50 @@
         "has_benches": true,
         "shade_strategy": "perimeter_trees"
       },
-      "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png",
       "variants": [
         {
           "id": "amphitheater_lawn_v0",
           "label": "Terraced Performance",
           "color": "#4527A0",
           "description": "Amphitheater / Performance Lawn in terraced performance venue landscape. Stone-clad terraced seating into hillside, permanent stage platform with acoustic wall, theatrical lighting columns, and landscaped wings with mature trees.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/variant_0.png"
         },
         {
           "id": "amphitheater_lawn_v1",
           "label": "Open Festival Ground",
           "color": "#F57F17",
           "description": "Amphitheater / Performance Lawn in open festival ground design. Large flat lawn for events, portable infrastructure connections, gravel service paths, shade sail anchor points, and perimeter food vendor pads.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/variant_1.png"
         },
         {
           "id": "amphitheater_lawn_v2",
           "label": "Intimate Garden Venue",
           "color": "#1B5E20",
           "description": "Amphitheater / Performance Lawn in intimate garden event venue. Formal garden rooms with hedge walls, pergola-covered gathering areas, string light canopy, stone patio spaces, and ornamental flower beds.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/variant_2.png"
         },
         {
           "id": "amphitheater_lawn_v3",
           "label": "Industrial Adaptive",
           "color": "#424242",
           "description": "Amphitheater / Performance Lawn in industrial adaptive reuse event space. Reclaimed brick and steel structures, polished concrete surfaces, industrial pendant lighting, exposed steel trusses for hanging decor, and container gardens.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-lawn/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic sloped grass amphitheater. Gently sloped bright-green grass bowl descending toward a flat performance area. Stage platform in smooth pale concrete. Curved tier lines in grass. Paved path along top rim. Shade trees along upper perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with green semicircular bowl depression. Concentric curved tier lines. Pale concrete stage rectangle at focal point. Paved path arc along top rim. Tree canopy circles along perimeter. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "community_garden",
       "title": "Community Garden / Allotments",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A community garden with individual raised-bed plots, tool sheds, compost bins, and a patchwork of crops visible from above",
+      "description": "A community garden with individual raised-bed plots, tool sheds, compost bins, and a patchwork of crops visible from",
       "generationTags": [
         "park",
         "community-garden",
@@ -1483,49 +1503,50 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
-      "thumbnailUrl": "/archetypes/openspaces/community-garden/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png",
       "variants": [
         {
           "id": "community_garden_v0",
           "label": "Rustic Timber & Gravel",
           "color": "#8B6914",
           "description": "Community Garden / Allotments in rustic timber and natural materials design. Rough-hewn timber structures, compacted gravel paths, split-rail fences, wildflower meadow borders, and natural boulder seating.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/variant_0.png"
         },
         {
           "id": "community_garden_v1",
           "label": "Modern Steel & Turf",
           "color": "#5B7065",
           "description": "Community Garden / Allotments in modern steel and synthetic turf design. Powder-coated steel structures, synthetic turf play areas, rubber safety surfacing, led-lit stainless bollards, and clean concrete edges.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/variant_1.png"
         },
         {
           "id": "community_garden_v2",
           "label": "Natural Meadow",
           "color": "#6B8E23",
           "description": "Community Garden / Allotments in naturalized meadow and prairie planting. Native prairie grasses and wildflowers, mown paths through tall meadow, log seating circles, bird boxes on timber posts, and rain garden bioswales.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/variant_2.png"
         },
         {
           "id": "community_garden_v3",
           "label": "Urban Contemporary",
           "color": "#4A6670",
           "description": "Community Garden / Allotments in urban contemporary landscape with mixed hardscape. Permeable pavers in geometric patterns, raised planters with ornamental grasses, powder-coated metal furniture, integrated water play jets, and colored concrete accents.",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic community garden with allotment plots. Grid of individual raised-bed plots in various states of cultivation. Narrow gravel or woodchip paths in grid pattern. Small tool shed. Compost bin rectangles. Colorful patchwork of greens and browns. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with geometric grid of small rectangular raised beds. Varied fill colors: greens, bare brown soil. Narrow tan path grid between plots. Small shed rectangle. Dark brown compost rectangles. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "cemetery_memorial_grounds",
       "title": "Cemetery / Memorial Grounds",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
-      "description": "Maintained cemetery grounds with rows of headstones, mature trees, manicured lawn, and quiet paved lanes — an ordered pattern of stone markers on green from above",
+      "description": "Maintained cemetery grounds with rows of headstones, mature trees, manicured lawn, and quiet paved lanes",
       "generationTags": [
         "park",
         "cemetery",
@@ -1599,14 +1620,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic maintained cemetery grounds. Orderly rows of small gray headstone markers across bright green manicured lawn. Mature trees with broad canopies. Narrow pale gray service lanes. Occasional larger monuments. Wrought-iron or stone perimeter fence. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with precise grid of small gray headstone dots on bright green lawn. Broad circular tree canopy shadows. Narrow pale gray lane lines. Perimeter fence line. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "formal_civic_plaza",
       "title": "Formal Civic Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "A large formal civic plaza with symmetrical stone paving, a central fountain, flanking tree rows, and public seating — a grand hardscape composition from above",
+      "description": "A large formal civic plaza with symmetrical stone paving, a central fountain, flanking tree rows, and public seating",
       "generationTags": [
         "plaza",
         "civic",
@@ -1679,14 +1701,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic formal civic plaza. Large rectangular hardscape of cut stone pavers in warm gray and beige in geometric pattern centered on a prominent circular fountain. Rows of formally spaced deciduous trees in planters. Stone benches and bollards. Flagpoles. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with geometric stone paver pattern in warm gray and beige. Concentric rings from central dark circular fountain basin. Formal rows of round tree canopy circles along edges. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "market_square",
       "title": "Market Square",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "plaza",
-      "description": "A flexible market square with flat open paving, power bollards, and removable vendor infrastructure — a versatile urban surface from above",
+      "description": "A flexible market square with flat open paving, power bollards, and removable vendor infrastructure",
       "generationTags": [
         "plaza",
         "market",
@@ -1759,14 +1782,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic flexible market square. Large flat open hardscape of uniform warm-toned unit pavers. Rows of white market tent canopies. Mature trees in flush tree grates along edges. Cafe seating clusters. Small stage at one end. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with uniform warm-toned paver surface. White tent canopy rectangles in grid. Tree canopy circles in flush grates along edges. Small umbrella clusters near building frontages. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "courtyard_plaza",
       "title": "Courtyard",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "An intimate enclosed courtyard with ornamental paving, a central feature, surrounding planters, and café seating — a sheltered outdoor room from above",
+      "description": "An intimate enclosed courtyard with ornamental paving, a central feature, surrounding planters, and café seating",
       "generationTags": [
         "plaza",
         "courtyard",
@@ -1805,49 +1829,50 @@
         "shade_strategy": "central_tree",
         "plaza_program": "courtyard"
       },
-      "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png",
       "variants": [
         {
           "id": "courtyard_plaza_v0",
           "label": "Neoclassical Stone",
           "color": "#795548",
           "description": "Courtyard in neoclassical stone civic plaza. Cut stone paving in radiating patterns, classical balustrades and columns, symmetrical tree plantings, ornamental lamp posts, and a central monument or fountain.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_0.png"
         },
         {
           "id": "courtyard_plaza_v1",
           "label": "Contemporary Urban",
           "color": "#455A64",
           "description": "Courtyard in contemporary urban civic plaza. Large-format granite pavers, linear water channels, architectural concrete seating walls, stainless steel bollards, and specimen trees in flush grates.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_1.png"
         },
         {
           "id": "courtyard_plaza_v2",
           "label": "Green Civic",
           "color": "#388E3C",
           "description": "Courtyard in green civic plaza with integrated landscape. Permeable paving with grass joints, raised planter terraces, shade tree canopy, rain gardens at edges, and timber-and-steel hybrid furniture.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_2.png"
         },
         {
           "id": "courtyard_plaza_v3",
           "label": "Festival & Market",
           "color": "#D84315",
           "description": "Courtyard in flexible festival and market plaza. Flat open hardscape with utility hookups, moveable planters, retractable bollards, festoon lighting infrastructure, and modular stage platform area.",
-          "thumbnailUrl": "/archetypes/openspaces/courtyard-plaza/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/courtyard/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic intimate enclosed courtyard. Compact rectangular hardscape of warm-toned stone or brick in herringbone pattern enclosed by building walls. Central fountain, sculpture, or ornamental tree. Raised planters with lush green shrubs. Small cafe tables. String lights. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with compact warm-toned herringbone paving. Building wall shadows from three or four sides. Central feature at focal point. Green planter rectangles along edges. Small cafe table clusters. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "promenade_boardwalk",
       "title": "Promenade / Boardwalk",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "plaza",
-      "description": "A waterfront promenade or boardwalk with wide timber or stone decking, railing, benches, and views over water — a linear hardscape strip from above",
+      "description": "A waterfront promenade or boardwalk with wide timber or stone decking, railing, benches, and views over water",
       "generationTags": [
         "plaza",
         "promenade",
@@ -1920,14 +1945,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic waterfront promenade or boardwalk. Wide linear strip of warm brown timber decking with visible plank lines parallel to water. Railing along water edge. Benches facing the water. Ornamental lamp posts. Row of trees along inland edge. Dark blue-gray water surface adjacent. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with wide warm brown linear timber deck strip. Thin dark railing line along water edge. Small bench rectangles. Lamp post circles. Tree canopy circles along inland edge. Dark water surface adjacent. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "transit_plaza",
       "title": "Transit Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
-      "description": "A transit-oriented plaza with bus shelters, waiting areas, bike racks, and wayfinding — a functional multimodal node from above",
+      "description": "A transit-oriented plaza with bus shelters, waiting areas, bike racks, and wayfinding",
       "generationTags": [
         "plaza",
         "transit",
@@ -2000,14 +2026,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic transit-oriented plaza. Glass and steel transit shelters as translucent rectangles. Wide concrete waiting area. Bike rack clusters. Yellow or white painted curb lines. Contrasting tactile paving strip. Trees in raised planters. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with concrete or paver hardscape. Elongated translucent shelter rectangles. Bike rack clusters. Yellow or white curb lines. Contrasting tactile strip. Tree canopy circles in raised planters. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "amphitheater_performance_space",
       "title": "Outdoor Amphitheater / Performance Space",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "plaza",
-      "description": "A built outdoor amphitheater with tiered stone seating, a stage platform, and acoustic walls — a semicircular arena from above",
+      "description": "A built outdoor amphitheater with tiered stone seating, a stage platform, and acoustic walls",
       "generationTags": [
         "plaza",
         "amphitheater",
@@ -2045,49 +2072,51 @@
         "shade_strategy": "none",
         "plaza_program": "performance"
       },
-      "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/hero.png",
       "variants": [
         {
           "id": "amphitheater_performance_space_v0",
           "label": "Terraced Performance",
           "color": "#4527A0",
           "description": "Outdoor Amphitheater / Performance Space in terraced performance venue landscape. Stone-clad terraced seating into hillside, permanent stage platform with acoustic wall, theatrical lighting columns, and landscaped wings with mature trees.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_0.png"
         },
         {
           "id": "amphitheater_performance_space_v1",
           "label": "Open Festival Ground",
           "color": "#F57F17",
           "description": "Outdoor Amphitheater / Performance Space in open festival ground design. Large flat lawn for events, portable infrastructure connections, gravel service paths, shade sail anchor points, and perimeter food vendor pads.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_1.png"
         },
         {
           "id": "amphitheater_performance_space_v2",
           "label": "Intimate Garden Venue",
           "color": "#1B5E20",
           "description": "Outdoor Amphitheater / Performance Space in intimate garden event venue. Formal garden rooms with hedge walls, pergola-covered gathering areas, string light canopy, stone patio spaces, and ornamental flower beds.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_2.png"
         },
         {
           "id": "amphitheater_performance_space_v3",
           "label": "Industrial Adaptive",
           "color": "#424242",
           "description": "Outdoor Amphitheater / Performance Space in industrial adaptive reuse event space. Reclaimed brick and steel structures, polished concrete surfaces, industrial pendant lighting, exposed steel trusses for hanging decor, and container gardens.",
-          "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-space/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-amphitheater-performance-space/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic built outdoor amphitheater. Semicircular tiered stone or concrete seating radiating from a flat stage platform. Tiers as concentric curved lines with shadow on risers. Curved acoustic shell behind stage. Aisle stairs as radial lines. Trees at perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with semicircular concentric stone tier arcs focused on central pale stage rectangle. Shadow stripes on risers. Curved dark acoustic shell arc behind stage. Radial aisle stair lines. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2000
     },
     {
       "id": "surface_parking_lot",
       "title": "Surface Parking Lot",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
-      "description": "A standard surface parking lot with asphalt paving, painted stall markings, drive aisles, and perimeter curbing — a grid of car rectangles from above",
+      "description": "A standard surface parking lot with asphalt paving, painted stall markings, drive aisles, and perimeter curbing",
       "generationTags": [
         "parking",
         "surface-lot",
@@ -2157,14 +2186,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic surface parking lot. Dark gray asphalt covering entire area. White or yellow painted lines delineating parking stalls in grid. Drive aisles between rows. Parked cars as colored rectangles. Concrete curb at perimeter. Trees in small planter islands. Pole-mounted lights. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with dark gray asphalt surface. White or yellow painted stall line grid. Small colored car rectangles. Drive aisle gaps. Concrete curb line at perimeter. Small green tree canopy circles. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1000
     },
     {
       "id": "structured_parking_garage",
       "title": "Structured Parking Garage",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
-      "description": "A multi-level parking structure with exposed concrete decks, ramping spirals, and a flat rooftop — a concrete mass with car rows visible on the top deck from above",
+      "description": "A multi-level parking structure with exposed concrete decks, ramping spirals, and a flat rooftop",
       "generationTags": [
         "parking",
         "garage",
@@ -2235,14 +2266,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic multi-level parking garage. Top deck with flat concrete surface and painted stall lines and parked cars. Helical or straight ramp at one corner. Concrete parapet walls. Stairwell towers at corners. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with flat concrete top deck with painted stall lines and parked car rectangles. Ramp opening at one corner. Concrete parapet edges. Stairwell boxes at corners. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2500
     },
     {
       "id": "underground_parking_entry",
       "title": "Underground Parking (Entry Only)",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
-      "description": "An underground parking entrance with only the vehicle ramp entry, ventilation grates, and surface landscaping visible from above — the parking is hidden below grade",
+      "description": "An underground parking entrance with only the vehicle ramp entry, ventilation grates, and surface landscaping visible",
       "generationTags": [
         "parking",
         "underground",
@@ -2278,49 +2311,50 @@
         "covered": true,
         "paving_material": "concrete"
       },
-      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png",
       "variants": [
         {
           "id": "underground_parking_entry_v0",
           "label": "Standard Asphalt",
           "color": "#616161",
           "description": "Underground Parking (Entry Only) in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/variant_0.png"
         },
         {
           "id": "underground_parking_entry_v1",
           "label": "Green Infrastructure",
           "color": "#43A047",
           "description": "Underground Parking (Entry Only) in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/variant_1.png"
         },
         {
           "id": "underground_parking_entry_v2",
           "label": "Urban Structured",
           "color": "#546E7A",
           "description": "Underground Parking (Entry Only) in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/variant_2.png"
         },
         {
           "id": "underground_parking_entry_v3",
           "label": "Landscape-Screened",
           "color": "#689F38",
           "description": "Underground Parking (Entry Only) in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic landscaped surface above underground parking garage. Green lawn, trees, or paved plaza on top. A dark rectangular vehicle ramp entry opening with concrete retaining walls. Ventilation grate rectangles flush with surface. Small pedestrian kiosk. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with green landscaped surface or paved plaza. Dark rectangular ramp opening. Dark metal ventilation grates flush with surface. Small pedestrian kiosk structure. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "green_parking_lot",
       "title": "Green Parking (Permeable)",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
-      "description": "An eco-friendly parking lot with permeable grass pavers, generous tree islands, and bioswales — a green-and-gray checker pattern from above",
+      "description": "An eco-friendly parking lot with permeable grass pavers, generous tree islands, and bioswales",
       "generationTags": [
         "parking",
         "green",
@@ -2356,49 +2390,50 @@
         "covered": false,
         "paving_material": "permeable_paver"
       },
-      "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png",
       "variants": [
         {
           "id": "green_parking_lot_v0",
           "label": "Standard Asphalt",
           "color": "#616161",
           "description": "Green Parking (Permeable) in standard asphalt parking facility. Smooth asphalt surface with painted striping, concrete curbs, standard pole-mounted lighting, simple landscaped islands, and chain-link perimeter.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/variant_0.png"
         },
         {
           "id": "green_parking_lot_v1",
           "label": "Green Infrastructure",
           "color": "#43A047",
           "description": "Green Parking (Permeable) in green infrastructure parking design. Permeable paver parking stalls, bioswale drainage channels, shade tree canopy over every row, rain gardens at lot edges, and solar panel canopies.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/variant_1.png"
         },
         {
           "id": "green_parking_lot_v2",
           "label": "Urban Structured",
           "color": "#546E7A",
           "description": "Green Parking (Permeable) in urban structured parking design. Concrete and steel multi-level structure, perforated metal screen facade, integrated ev charging stations, led wayfinding, and ground-level retail wrap.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/variant_2.png"
         },
         {
           "id": "green_parking_lot_v3",
           "label": "Landscape-Screened",
           "color": "#689F38",
           "description": "Green Parking (Permeable) in landscape-screened parking facility. Dense hedge and tree screening, decorative perimeter fencing, brick paver entry drives, ornamental lighting, and generous landscape medians.",
-          "thumbnailUrl": "/archetypes/openspaces/green-parking-lot/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic eco-friendly green parking lot. Permeable grass pavers creating a checker pattern of green grass cells within a concrete or plastic grid. Tree islands at row ends. Bioswale channels between rows. Rain garden basins. Native planting buffer at perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with distinctive green-and-gray checker grid pattern. Dark tree canopy circles at row ends. Narrow green bioswale depressions between rows. Rain garden patches. Native planting buffer at perimeter. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "pond_lake",
       "title": "Pond / Lake",
       "aestheticCategory": "water_features",
       "spaceType": "park",
-      "description": "A naturalistic pond or small lake with soft shoreline, aquatic vegetation, and surrounding trees — a dark reflective water surface from above",
+      "description": "A naturalistic pond or small lake with soft shoreline, aquatic vegetation, and surrounding trees",
       "generationTags": [
         "water",
         "pond",
@@ -2468,14 +2503,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic naturalistic pond or small lake. Dark reflective water surface in deep blue-black tones. Soft irregular shoreline with gentle grass slopes. Lily pad and reed patches along shallow margins. Mature trees overhanging shoreline. Small wooden fishing pier. Walking path tracing shoreline. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with dark reflective water surface. Soft irregular shoreline with green grass. Bright green lily pad and reed patches. Tree canopy circles overhanging water edge. Thin brown pier rectangle. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 800
     },
     {
       "id": "fountain_water_feature",
       "title": "Fountain / Decorative Water Feature",
       "aestheticCategory": "water_features",
       "spaceType": "plaza",
-      "description": "A decorative fountain or interactive water feature set in a plaza — jets, spray, and wet paving creating a bright focal point from above",
+      "description": "A decorative fountain or interactive water feature set in a plaza",
       "generationTags": [
         "water",
         "fountain",
@@ -2511,49 +2548,50 @@
         "shade_strategy": "none",
         "plaza_program": "fountain"
       },
-      "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/hero.png",
+      "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png",
       "variants": [
         {
           "id": "fountain_water_feature_v0",
           "label": "Naturalistic Pond",
           "color": "#1B5E20",
           "description": "Fountain / Decorative Water Feature in naturalistic pond and water garden. Irregular organic shoreline, native aquatic plantings, natural stone edge, timber fishing dock, and overhanging willow trees.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/variant_0.png"
         },
         {
           "id": "fountain_water_feature_v1",
           "label": "Formal Reflecting",
           "color": "#37474F",
           "description": "Fountain / Decorative Water Feature in formal reflecting pool and fountain. Geometric stone-edged reflecting pool, symmetrical jet fountains, polished granite coping, clipped hedges framing the water, and classical urns.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/variant_1.png"
         },
         {
           "id": "fountain_water_feature_v2",
           "label": "Contemporary Interactive",
           "color": "#0097A7",
           "description": "Fountain / Decorative Water Feature in contemporary interactive water feature. Flush-grade splash jets in granite paving, led-lit water curtains, misting arches, stainless steel nozzles, and rubberized play surfacing.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/variant_2.png"
         },
         {
           "id": "fountain_water_feature_v3",
           "label": "Ecological Wetland",
           "color": "#558B2F",
           "description": "Fountain / Decorative Water Feature in ecological wetland water system. Constructed wetland cells with native sedges, gravel filter beds, wooden boardwalk crossings, bird observation platforms, and interpretive ecology signage.",
-          "thumbnailUrl": "/archetypes/openspaces/fountain-water-feature/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/variant_3.png"
         }
       ],
       "renderPrompt": {
         "mapOverlay": "Replace the colored park zone with a photorealistic decorative fountain in plaza setting. Circular polished stone basin with dark reflective water. Multiple vertical water jets creating bright white spray columns. Wet reflective paving around fountain. Concentric rings of stone paving. Bench seating in circle. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with concentric rings of warm-toned stone paving from central dark circular fountain basin. Bright white spray column dots. Wet reflective paving halo. Bench dots in circle. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "stormwater_retention_pond",
       "title": "Stormwater Retention Pond",
       "aestheticCategory": "water_features",
       "spaceType": "park",
-      "description": "An engineered stormwater retention pond with sloped grass banks, outlet structures, and native plantings — a green-edged depression with variable water level from above",
+      "description": "An engineered stormwater retention pond with sloped grass banks, outlet structures, and native plantings",
       "generationTags": [
         "water",
         "stormwater",
@@ -2624,14 +2662,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic engineered stormwater retention pond. Shallow depression with gently sloped mowed grass banks. Partial dark reflective water patch at bottom. Inlet pipe or channel. Concrete outlet structure. Native meadow grasses ringing waterline. Gravel maintenance track. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with broad shallow oval depression. Green mowed grass slopes. Dark reflective water patch at bottom. Inlet channel line. Small gray outlet structure. Golden-green native grass band. Thin gravel track. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 500
     },
     {
       "id": "swimming_pool_complex",
       "title": "Swimming Pool Complex",
       "aestheticCategory": "water_features",
       "spaceType": "plaza",
-      "description": "An outdoor swimming pool complex with a lap pool, wading pool, sun deck, and surrounding fence — bright turquoise rectangles from above",
+      "description": "An outdoor swimming pool complex with a lap pool, wading pool, sun deck, and surrounding fence",
       "generationTags": [
         "water",
         "pool",
@@ -2700,14 +2740,16 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic outdoor swimming pool complex. Large rectangular lap pool with vivid turquoise-blue water and white lane lines. Adjacent smaller wading pool. Wide warm-gray concrete sun deck with lounge chairs. Continuous dark fence enclosure. Small pool house. Diving boards. Green grass and trees outside fence. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with vivid turquoise-blue rectangular lap pool with white lane lines. Smaller lighter blue wading pool. Wide warm-gray concrete deck. Rows of lounge chair rectangles. Dark fence enclosure line. Green grass outside fence. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2500
     },
     {
       "id": "canal_waterway",
       "title": "Canal / Waterway",
       "aestheticCategory": "water_features",
       "spaceType": "park",
-      "description": "A linear canal or urban waterway with stone or concrete edges, towpath walks, and moored boats — a dark water ribbon through the urban fabric from above",
+      "description": "A linear canal or urban waterway with stone or concrete edges, towpath walks, and moored boats",
       "generationTags": [
         "water",
         "canal",
@@ -2777,7 +2819,8 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic linear canal or urban waterway. Straight or gently curving dark blue-gray water channel with reflective surface. Stone or concrete quay walls. Pale paved towpath along one or both banks. Moored narrowboats as elongated colored shapes. Deciduous trees lining far bank. Narrow pedestrian bridges. Cafe terraces near water edge. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with dark blue-gray water ribbon. Stone quay wall lines. Pale towpath strips. Elongated colored boat shapes. Tree canopy circles along one bank. Narrow bridge bands crossing water. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "custom_parks_plazas",
@@ -2851,14 +2894,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic custom open space. Well-designed public landscape with a mix of paved areas and planted zones. Paths with mature shade trees. Seating areas and gathering spaces. Premium material realism. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with mixed-use open space landscape. Paved path networks and planted zones. Tree canopy circles. Seating nodes. Well-maintained planting. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "linear_park_greenway",
       "title": "Linear Park / Greenway",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
-      "description": "A narrow linear park following a former rail corridor, creek, or utility easement, with multi-use trails, native plantings, and ecological restoration",
+      "description": "A narrow linear park following a former rail corridor, creek, or utility easement, with multi-use trails, native",
       "generationTags": [
         "linear-park",
         "greenway",
@@ -2930,14 +2974,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic linear park greenway along a corridor. Paved multi-use trail following a narrow corridor. Native wildflower meadows and riparian plantings flanking the trail. Shade trees along the corridor. Small bridges or overlook platforms. Creek or stormwater features alongside. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with narrow linear corridor. Gray or tan trail line running the length. Native wildflower meadow strips flanking. Tree canopy circles along corridor. Small bridge structures. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "nature_preserve",
       "title": "Nature Preserve",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
-      "description": "A protected natural area with minimal development — boardwalks, observation platforms, and interpretive signage through wetland, prairie, dune, or forest ecosystems",
+      "description": "A protected natural area with minimal development",
       "generationTags": [
         "nature",
         "preserve",
@@ -3011,14 +3056,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic protected nature preserve. Undisturbed natural ecosystem with minimal built intervention. Narrow timber boardwalk or crushed-stone trail threading through. Observation platform at scenic point. Native vegetation dominating. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with undisturbed natural ecosystem surface. Thin boardwalk or trail line threading through. Small observation platform rectangle. Native vegetation textures dominant. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "rooftop_garden",
       "title": "Rooftop Garden",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "A rooftop open space atop a building — ranging from intensive gardens with trees and lawns to extensive green roofs, urban farms, or social terraces",
+      "description": "A rooftop open space atop a building",
       "generationTags": [
         "rooftop",
         "garden",
@@ -3089,14 +3135,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic rooftop garden atop a multi-story building. Intensive planted beds with small trees, shrubs, and ornamental grasses. Ipe deck or porcelain tile paving with seating areas. Pergola or shade structure. Glass railings at building edge. Reflecting pool or water feature. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with rooftop surface divided into planted bed zones and paved deck areas. Seating furniture clusters. Pergola structure rectangle. Glass railing at building edge. Small water feature. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "riverfront_park_beach",
       "title": "Riverfront Park / Beach",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
-      "description": "A waterfront park with beach, swimming, and recreation along a river or lake — combining sand, water access, promenades, and naturalized shoreline",
+      "description": "A waterfront park with beach, swimming, and recreation along a river or lake",
       "generationTags": [
         "waterfront",
         "beach",
@@ -3168,14 +3215,15 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic waterfront park with beach. Sand beach area along the shoreline in warm golden tones. Stepped concrete terraces or timber deck promenade. Parasols and deck chairs on sand. Plane trees along upland edge. Promenade walkway. Water surface in dark tones. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with golden sand beach strip along water edge. Dark water surface. Stepped terrace or deck strip above beach. Small parasol and chair dots. Tree canopy circles along upland edge. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "street_plaza_parklet",
       "title": "Street Plaza / Parklet",
       "aestheticCategory": "civic_plazas",
       "spaceType": "park",
-      "description": "A small public space created by reclaiming street or parking space — from painted plazas with bistro furniture to timber parklets extending the sidewalk",
+      "description": "A small public space created by reclaiming street or parking space",
       "generationTags": [
         "plaza",
         "parklet",
@@ -3246,15 +3294,21 @@
         "mapOverlay": "Replace the colored park zone with a photorealistic small street plaza or parklet reclaimed from roadway. Painted asphalt, timber deck, or granite pavers. Bistro tables and chairs. Planters with small trees. Bollards or painted barriers separating from active roadway. Colorful furniture and plantings. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
         "roofView": "Replace the colored zone viewed from directly above with small reclaimed street space. Painted or paved surface distinct from surrounding roadway. Small table and chair clusters. Planter rectangles with tree canopies. Bollard dots or painted barrier lines. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
-      }
+      },
+      "districtKit": null
     },
     {
       "id": "community_garden_enhanced",
       "title": "Community Garden (Design Variants)",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
-      "description": "Diverse community garden designs from classic European allotments to permaculture farms, therapeutic healing gardens, and intercultural social gathering spaces",
-      "generationTags": ["park", "community-garden", "urban-agriculture", "neighborhood"],
+      "description": "Diverse community garden designs from classic European allotments to permaculture farms, therapeutic healing gardens,",
+      "generationTags": [
+        "park",
+        "community-garden",
+        "urban-agriculture",
+        "neighborhood"
+      ],
       "styleProfile": {
         "landscapeCharacter": "Organized community garden with individual or shared plots, support structures, paths, and gathering areas",
         "pavingType": "Gravel paths, decomposed granite, wood chip mulch",
@@ -3265,8 +3319,17 @@
       },
       "prompt": {
         "subject": "Aerial view of a community garden with diverse planting plots and gathering areas",
-        "details": ["Individual or shared garden plots with varied plantings", "Paths connecting plots and communal areas", "Support structures: sheds, pavilions, greenhouses", "Communal gathering and dining areas"],
-        "negative": ["No buildings inside the garden", "No parking lots", "No sports fields"]
+        "details": [
+          "Individual or shared garden plots with varied plantings",
+          "Paths connecting plots and communal areas",
+          "Support structures: sheds, pavilions, greenhouses",
+          "Communal gathering and dining areas"
+        ],
+        "negative": [
+          "No buildings inside the garden",
+          "No parking lots",
+          "No sports fields"
+        ]
       },
       "variants": [
         {
@@ -3274,30 +3337,1661 @@
           "label": "Classic Allotment",
           "description": "European Schrebergarten-style with individual fenced plots, colorful painted garden sheds, privet hedgerows, and communal orchard",
           "color": "#7CFC00",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden-enhanced/variant_0.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_0.png"
         },
         {
           "id": "garden_permaculture_farm",
           "label": "Urban Permaculture Farm",
           "description": "Productive seven-layer food forest with organized raised bed market garden, hoop houses, composting station, and farm stand",
           "color": "#228B22",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden-enhanced/variant_1.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_1.png"
         },
         {
           "id": "garden_healing",
           "label": "Healing Garden",
           "description": "Therapeutic accessible garden with flowing wheelchair-friendly loop paths, raised sensory beds, water feature, pergolas, and meditation alcoves",
           "color": "#DDA0DD",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden-enhanced/variant_2.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_2.png"
         },
         {
           "id": "garden_intercultural",
           "label": "Intercultural Social Garden",
           "description": "Multicultural gathering garden with communal bread oven pavilion, culturally diverse planting zones, central event lawn, and children's play area",
           "color": "#FF8C00",
-          "thumbnailUrl": "/archetypes/openspaces/community-garden-enhanced/variant_3.png"
+          "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic community garden (design variants). Keep the exact same zone footprint. Organized community garden with individual or shared plots. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "districtKit": null,
+      "thumbnailUrl": "/archetypes/openspaces/community-garden-design-variants/hero.png"
+    },
+    {
+      "id": "parisian_place",
+      "title": "Place Royale",
+      "aestheticCategory": "parisian_civic",
+      "spaceType": "plaza",
+      "description": "Formal Parisian plaza with uniform facades, central monument or fountain, and paved surface",
+      "generationTags": [
+        "parisian",
+        "place",
+        "plaza",
+        "formal",
+        "monument"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Formal paved square enclosed by uniform Haussmann or classical facades. Central monument, obelisk, or fountain. Radiating streets. No grass. Cafe terrasses at edges.",
+        "pavingType": "Stone paving in geometric pattern, granite borders",
+        "plantingType": "Formal clipped trees at perimeter, no lawn",
+        "seatingRealm": "Cast-iron benches, period lampposts with globe lanterns",
+        "waterFeatures": "Central fountain or monument with sculptural program",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Place Royale",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Parisian place (formal square). Stone-paved with central monument or fountain, surrounded by uniform classical facades. No grass. Cafe terrasses at edges. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/place-royale/hero.png",
+      "variants": [
+        {
+          "id": "parisian_place_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Place Royale variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_0.png"
+        },
+        {
+          "id": "parisian_place_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Place Royale variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_1.png"
+        },
+        {
+          "id": "parisian_place_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Place Royale variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_2.png"
+        },
+        {
+          "id": "parisian_place_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Place Royale variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/place-royale/variant_3.png"
+        }
+      ],
+      "districtKit": "paris"
+    },
+    {
+      "id": "parisian_square",
+      "title": "Square Parisien",
+      "aestheticCategory": "parisian_garden",
+      "spaceType": "park",
+      "description": "Small fenced Parisian garden square with gravel paths, green benches, iron fence, and mature trees",
+      "generationTags": [
+        "parisian",
+        "square",
+        "garden",
+        "fenced",
+        "gravel"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Small fenced green space within a residential block. Wrought iron fence (grille) painted dark green or black around perimeter. Gravel paths (allees en gravier). Green-painted cast-iron benches with wooden slats. Mature plane trees and chestnuts. Flower beds. Sometimes a small fountain or bandstand.",
+        "pavingType": "Gravel paths (the characteristic crunching Parisian sound)",
+        "plantingType": "Mature plane trees, chestnuts, lindens, seasonal flower beds, clipped box hedges",
+        "seatingRealm": "Green-painted cast-iron benches with wooden slats, children's play area",
+        "waterFeatures": "Small fountain or bandstand (kiosque a musique), sometimes a pond",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Square Parisien",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Parisian square garden. Iron fence with gates, gravel paths, green cast-iron benches, mature plane trees, flower beds. Intimate neighbourhood scale. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/square-parisien/hero.png",
+      "variants": [
+        {
+          "id": "parisian_square_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Square Parisien variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_0.png"
+        },
+        {
+          "id": "parisian_square_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Square Parisien variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_1.png"
+        },
+        {
+          "id": "parisian_square_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Square Parisien variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_2.png"
+        },
+        {
+          "id": "parisian_square_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Square Parisien variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/square-parisien/variant_3.png"
+        }
+      ],
+      "districtKit": "paris"
+    },
+    {
+      "id": "parisian_jardin",
+      "title": "Jardin a la Francaise",
+      "aestheticCategory": "parisian_formal_garden",
+      "spaceType": "park",
+      "description": "Formal French garden with axial symmetry, geometric parterres, bassin, and moveable green metal chairs",
+      "generationTags": [
+        "parisian",
+        "jardin",
+        "french_garden",
+        "formal",
+        "luxembourg"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Formal French garden with axial symmetry and geometric parterres. Clipped hedges and topiary. Gravel allees. Circular or octagonal bassin where children sail model boats. Moveable green metal chairs (the iconic Luxembourg chairs). Statues throughout. Orangerie or pavilion.",
+        "pavingType": "Gravel allees in formal geometric pattern",
+        "plantingType": "Clipped box hedges, formal parterres, mature trees in allees, seasonal bedding plants",
+        "seatingRealm": "Moveable green metal chairs (Luxembourg style, free to move), stone benches along allees",
+        "waterFeatures": "Octagonal bassin with model sailing boats, monumental fountain",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Jardin a la Francaise",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Jardin a la Francaise. Formal axial garden with geometric parterres, clipped hedges, gravel paths, circular bassin, moveable green metal chairs, statues. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/hero.png",
+      "variants": [
+        {
+          "id": "parisian_jardin_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Jardin a la Francaise variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_0.png"
+        },
+        {
+          "id": "parisian_jardin_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Jardin a la Francaise variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_1.png"
+        },
+        {
+          "id": "parisian_jardin_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Jardin a la Francaise variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_2.png"
+        },
+        {
+          "id": "parisian_jardin_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Jardin a la Francaise variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/jardin-a-la-francaise/variant_3.png"
+        }
+      ],
+      "districtKit": "paris"
+    },
+    {
+      "id": "amsterdam_vondelpark",
+      "title": "Vondelpark Garden",
+      "aestheticCategory": "amsterdam_landscape",
+      "spaceType": "park",
+      "description": "English landscape park with winding paths, ponds, mature tree canopy, and open lawns",
+      "generationTags": [
+        "amsterdam",
+        "vondelpark",
+        "landscape_park",
+        "english_garden",
+        "ponds"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Naturalistic English landscape style park with winding paths, irregular ponds bridged by small footbridges, rolling lawns, and dense mature tree groups (planes, elms, beeches, chestnuts). Open grassy areas for sitting and picnicking. Bandstand pavilion. Cafe terrasses.",
+        "pavingType": "Winding gravel and asphalt paths through naturalistic landscape",
+        "plantingType": "Dense mature deciduous trees (plane, elm, beech, chestnut), meadow grass, wildflower areas",
+        "seatingRealm": "Wooden and iron benches along paths, open lawns for informal sitting, cafe pavilion",
+        "waterFeatures": "Irregular ponds and streams, small footbridges",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Vondelpark Garden",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Vondelpark-style English landscape park. Winding paths, irregular ponds with footbridges, mature tree canopy, open lawns, naturalistic planting. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/hero.png",
+      "variants": [
+        {
+          "id": "amsterdam_vondelpark_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Vondelpark Garden variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_0.png"
+        },
+        {
+          "id": "amsterdam_vondelpark_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Vondelpark Garden variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_1.png"
+        },
+        {
+          "id": "amsterdam_vondelpark_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Vondelpark Garden variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_2.png"
+        },
+        {
+          "id": "amsterdam_vondelpark_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Vondelpark Garden variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/vondelpark-garden/variant_3.png"
+        }
+      ],
+      "districtKit": "amsterdam"
+    },
+    {
+      "id": "amsterdam_hofje_garden",
+      "title": "Hofje Courtyard Garden",
+      "aestheticCategory": "amsterdam_courtyard",
+      "spaceType": "park",
+      "description": "Enclosed courtyard garden within a hofje complex, with gravel paths, low hedges, and central well",
+      "generationTags": [
+        "amsterdam",
+        "hofje",
+        "courtyard_garden",
+        "enclosed",
+        "hidden"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Secluded formal or semi-formal garden completely enclosed by small brick dwellings. Low box hedges, gravel paths, flower beds. Central feature: well, pump, sundial, or small statue. Roses, lavender, herbs. Completely hidden from the street, accessed through a single gate.",
+        "pavingType": "Gravel paths in simple geometric layout",
+        "plantingType": "Low box hedges, rose bushes, lavender, herbs, one or two small trees",
+        "seatingRealm": "Simple wooden or iron bench, maintained by residents",
+        "waterFeatures": "Central pump or well, sometimes a small sundial",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Hofje Courtyard Garden",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Amsterdam hofje courtyard garden. Enclosed by small brick dwellings, gravel paths, low box hedges, central pump or well, roses and lavender. Hidden from street. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/hero.png",
+      "variants": [
+        {
+          "id": "amsterdam_hofje_garden_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Hofje Courtyard Garden variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_0.png"
+        },
+        {
+          "id": "amsterdam_hofje_garden_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Hofje Courtyard Garden variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_1.png"
+        },
+        {
+          "id": "amsterdam_hofje_garden_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Hofje Courtyard Garden variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_2.png"
+        },
+        {
+          "id": "amsterdam_hofje_garden_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Hofje Courtyard Garden variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/hofje-courtyard-garden/variant_3.png"
+        }
+      ],
+      "districtKit": "amsterdam"
+    },
+    {
+      "id": "amsterdam_plein",
+      "title": "Amsterdam Plein",
+      "aestheticCategory": "amsterdam_civic",
+      "spaceType": "plaza",
+      "description": "Irregular hard-paved Amsterdam civic square with market use, cafe terrasses, and church or weigh house focal building",
+      "generationTags": [
+        "amsterdam",
+        "plein",
+        "square",
+        "market",
+        "civic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Irregular-shaped civic square, predominantly hard-paved with brick or stone. Church, weigh house (Waag), or historic building as focal point. Outdoor cafe terrasses. Market stalls on market days. Mature trees at edges. Bicycle parking. Multi-use: markets, events, gathering.",
+        "pavingType": "Brick or stone paving, irregular pattern following organic square shape",
+        "plantingType": "Mature trees at square edges, minimal planting within the paved area",
+        "seatingRealm": "Cafe terrasses, market stall positions, benches facing focal building",
+        "waterFeatures": "None typically, sometimes a small fountain",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Amsterdam Plein",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Amsterdam plein (civic square). Irregular shape, brick-paved, church or historic building as focus, cafe terrasses, market stalls, bicycles. Mature trees at edges. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/hero.png",
+      "variants": [
+        {
+          "id": "amsterdam_plein_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Amsterdam Plein variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_0.png"
+        },
+        {
+          "id": "amsterdam_plein_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Amsterdam Plein variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_1.png"
+        },
+        {
+          "id": "amsterdam_plein_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Amsterdam Plein variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_2.png"
+        },
+        {
+          "id": "amsterdam_plein_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Amsterdam Plein variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/amsterdam-plein/variant_3.png"
+        }
+      ],
+      "districtKit": "amsterdam"
+    },
+    {
+      "id": "barcelona_pati_interior",
+      "title": "Eixample Interior Courtyard",
+      "aestheticCategory": "barcelona_courtyard",
+      "spaceType": "park",
+      "description": "Green oasis hidden inside an Eixample block, with gravel paths, fountain, and Mediterranean planting",
+      "generationTags": [
+        "barcelona",
+        "eixample",
+        "courtyard",
+        "interior",
+        "mediterranean"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Reclaimed interior courtyard within a Cerda block. Green oasis hidden from the streets. Gravel paths, central fountain, Mediterranean planting (palms, citrus, bougainvillea, oleander). Benches, children's play area. Accessed through a passage from the street.",
+        "pavingType": "Gravel paths, stone paving around fountain",
+        "plantingType": "Mediterranean: palms, citrus trees, bougainvillea, oleander, jasmine, cypress",
+        "seatingRealm": "Stone benches, children's play area, shaded seating under palms",
+        "waterFeatures": "Central fountain or small pool, sometimes a water channel",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Eixample Interior Courtyard",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Barcelona Eixample interior courtyard garden. Green oasis with Mediterranean planting (palms, bougainvillea, citrus), gravel paths, central fountain, benches. Hidden inside a city block. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/hero.png",
+      "variants": [
+        {
+          "id": "barcelona_pati_interior_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Eixample Interior Courtyard variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_0.png"
+        },
+        {
+          "id": "barcelona_pati_interior_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Eixample Interior Courtyard variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_1.png"
+        },
+        {
+          "id": "barcelona_pati_interior_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Eixample Interior Courtyard variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_2.png"
+        },
+        {
+          "id": "barcelona_pati_interior_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Eixample Interior Courtyard variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/eixample-interior-courtyard/variant_3.png"
+        }
+      ],
+      "districtKit": "barcelona"
+    },
+    {
+      "id": "barcelona_placa_xamfra",
+      "title": "Chamfer Plaza",
+      "aestheticCategory": "barcelona_civic",
+      "spaceType": "plaza",
+      "description": "Small diamond-shaped open space where four chamfered Eixample corners meet at an intersection",
+      "generationTags": [
+        "barcelona",
+        "eixample",
+        "chamfer",
+        "plaza",
+        "diamond"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Small diamond-shaped open space formed where four chamfered corners meet at an intersection. Cafe terraces radiating from corner buildings. A single mature tree or small fountain at center. Hexagonal Gaudi pavement tiles. Intimate urban room created by the geometry of the chamfered blocks.",
+        "pavingType": "Hexagonal Gaudi pavement tiles, stone paving",
+        "plantingType": "Single mature plane tree providing shade, sometimes small planted area",
+        "seatingRealm": "Cafe terraces extending from corner buildings, moveable chairs and tables",
+        "waterFeatures": "Small fountain or decorative element at center, sometimes a bench",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Chamfer Plaza",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Barcelona chamfer plaza (placa de xamfra). Diamond-shaped open space at intersection of four chamfered corners, cafe terraces, single tree, hexagonal Gaudi tiles. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/hero.png",
+      "variants": [
+        {
+          "id": "barcelona_placa_xamfra_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Chamfer Plaza variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_0.png"
+        },
+        {
+          "id": "barcelona_placa_xamfra_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Chamfer Plaza variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_1.png"
+        },
+        {
+          "id": "barcelona_placa_xamfra_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Chamfer Plaza variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_2.png"
+        },
+        {
+          "id": "barcelona_placa_xamfra_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Chamfer Plaza variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/chamfer-plaza/variant_3.png"
+        }
+      ],
+      "districtKit": "barcelona"
+    },
+    {
+      "id": "barcelona_superilla",
+      "title": "Barcelona Superblock",
+      "aestheticCategory": "barcelona_urban",
+      "spaceType": "plaza",
+      "description": "Modern pedestrianized superblock interior with colored pavement, planters, play equipment, and pop-up market",
+      "generationTags": [
+        "barcelona",
+        "superblock",
+        "superilla",
+        "pedestrian",
+        "tactical_urbanism"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Pedestrianized interior of a superblock (superilla) cluster. Temporary and permanent street furniture: planters, benches, play equipment. Colored pavement markings and painted surfaces in bold patterns. Trees, pop-up markets, community events. Reclaimed road space for people.",
+        "pavingType": "Colored asphalt and painted pavement in bold geometric patterns (yellow, green, blue)",
+        "plantingType": "Trees in planters, raised planting beds, climbing plants on temporary structures",
+        "seatingRealm": "Moveable benches, ping-pong tables, community bulletin boards, pop-up market stalls",
+        "waterFeatures": "Sometimes spray play or rain garden features",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Barcelona Superblock",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Barcelona superblock (superilla). Pedestrianized street with bold colored pavement patterns, planters, benches, play equipment, trees. Pop-up market stalls. People-friendly reclaimed road space. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/hero.png",
+      "variants": [
+        {
+          "id": "barcelona_superilla_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Barcelona Superblock variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_0.png"
+        },
+        {
+          "id": "barcelona_superilla_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Barcelona Superblock variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_1.png"
+        },
+        {
+          "id": "barcelona_superilla_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Barcelona Superblock variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_2.png"
+        },
+        {
+          "id": "barcelona_superilla_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Barcelona Superblock variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/barcelona-superblock/variant_3.png"
+        }
+      ],
+      "districtKit": "barcelona"
+    },
+    {
+      "id": "london_garden_square",
+      "title": "London Garden Square",
+      "aestheticCategory": "london_georgian",
+      "spaceType": "park",
+      "description": "Rectangular fenced garden enclosed by Georgian/Victorian terraces, with plane trees, gravel paths, and locked gate",
+      "generationTags": [
+        "london",
+        "garden_square",
+        "fenced",
+        "plane_trees",
+        "residents"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Rectangular fenced garden enclosed by Georgian or Victorian terraces on all four sides. Mature London plane trees. Gravel paths. Central lawn. Wrought iron railings and locked gate (residents' key only). Benches. Rose beds. The quintessential London green space.",
+        "pavingType": "Gravel paths, stone edging",
+        "plantingType": "Mature London plane trees, privet hedges, rose beds, central lawn",
+        "seatingRealm": "Wrought iron benches, residents-only access with key-locked gate",
+        "waterFeatures": "None typically, sometimes a small memorial or statue",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of London Garden Square",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic London garden square. Rectangular fenced garden enclosed by terraces, mature plane trees, gravel paths, central lawn, iron railings with locked gate, benches. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/london-garden-square/hero.png",
+      "variants": [
+        {
+          "id": "london_garden_square_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "London Garden Square variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_0.png"
+        },
+        {
+          "id": "london_garden_square_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "London Garden Square variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_1.png"
+        },
+        {
+          "id": "london_garden_square_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "London Garden Square variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_2.png"
+        },
+        {
+          "id": "london_garden_square_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "London Garden Square variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/london-garden-square/variant_3.png"
+        }
+      ],
+      "districtKit": "london"
+    },
+    {
+      "id": "london_circus",
+      "title": "London Circus",
+      "aestheticCategory": "london_georgian",
+      "spaceType": "park",
+      "description": "Circular arrangement of grand terrace houses facing inward to a round garden with large trees",
+      "generationTags": [
+        "london",
+        "circus",
+        "circular",
+        "classical",
+        "terrace_garden"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Circular arrangement of unified classical terrace houses facing inward toward a round garden. Large mature trees (planes, limes) in the circular garden. Iron railings. Gravel paths. Benches. A miniature classical world enclosed by continuous facade.",
+        "pavingType": "Gravel paths in circular and radial pattern",
+        "plantingType": "Large mature trees (London plane, lime), central lawn, rose beds",
+        "seatingRealm": "Iron benches, gravel seating areas, circular path for walking",
+        "waterFeatures": "Sometimes a central statue or small fountain",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of London Circus",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic London circus garden. Round garden enclosed by circular classical terrace, mature trees, gravel paths, iron railings. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/london-circus/hero.png",
+      "variants": [
+        {
+          "id": "london_circus_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "London Circus variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_0.png"
+        },
+        {
+          "id": "london_circus_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "London Circus variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_1.png"
+        },
+        {
+          "id": "london_circus_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "London Circus variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_2.png"
+        },
+        {
+          "id": "london_circus_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "London Circus variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/london-circus/variant_3.png"
+        }
+      ],
+      "districtKit": "london"
+    },
+    {
+      "id": "newyork_pocket_park",
+      "title": "New York Pocket Park",
+      "aestheticCategory": "newyork_urban",
+      "spaceType": "park",
+      "description": "Tiny urban oasis between buildings with waterfall wall, moveable chairs, and honey locust shade",
+      "generationTags": [
+        "newyork",
+        "pocket_park",
+        "waterfall",
+        "paley",
+        "oasis"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Tiny reclaimed space between buildings (under 1000 sqm). Waterfall wall at back creating white noise and masking city sounds. Moveable wire-frame chairs and small tables. Honey locust trees providing dappled shade. Ivy on side walls. Elevated a few steps from sidewalk. An urban oasis.",
+        "pavingType": "Stone or concrete paving, elevated from sidewalk by 3-4 steps",
+        "plantingType": "Honey locust trees (dappled shade), ivy on side walls, small planted areas",
+        "seatingRealm": "Moveable wire-frame chairs and small tables, no fixed benches",
+        "waterFeatures": "Waterfall wall at back of park, creating white noise",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of New York Pocket Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic New York pocket park (Paley Park style). Tiny urban oasis between tall buildings, waterfall wall at back, moveable wire chairs, honey locust trees, ivy on walls. Elevated from sidewalk. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/hero.png",
+      "variants": [
+        {
+          "id": "newyork_pocket_park_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "New York Pocket Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_0.png"
+        },
+        {
+          "id": "newyork_pocket_park_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "New York Pocket Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_1.png"
+        },
+        {
+          "id": "newyork_pocket_park_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "New York Pocket Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_2.png"
+        },
+        {
+          "id": "newyork_pocket_park_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "New York Pocket Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-pocket-park/variant_3.png"
+        }
+      ],
+      "districtKit": "new_york"
+    },
+    {
+      "id": "newyork_community_garden",
+      "title": "New York Community Garden",
+      "aestheticCategory": "newyork_urban",
+      "spaceType": "park",
+      "description": "Fenced community garden on a former vacant lot with raised beds, murals, casita shed, and volunteer-run plots",
+      "generationTags": [
+        "newyork",
+        "community_garden",
+        "raised_beds",
+        "murals",
+        "casita"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Fenced lot on former vacant land. Raised planting beds with vegetables and flowers. Hand-painted murals on surrounding walls. Casita (small wooden shed) for tools and gatherings. Benches made from reclaimed materials. Sunflowers, tomato plants. Gate with combination lock. Volunteer-maintained.",
+        "pavingType": "Gravel paths between raised beds, some stepping stones",
+        "plantingType": "Raised bed vegetables (tomatoes, squash, herbs), sunflowers, fruit trees, wildflowers",
+        "seatingRealm": "Reclaimed-material benches, casita shed, picnic table, community bulletin board",
+        "waterFeatures": "Rain barrel, sometimes small pond or birdbath",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of New York Community Garden",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic New York community garden. Fenced former vacant lot, raised planting beds, hand-painted murals on walls, small casita shed, sunflowers, tomato plants. Volunteer-run community space. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/hero.png",
+      "variants": [
+        {
+          "id": "newyork_community_garden_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "New York Community Garden variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_0.png"
+        },
+        {
+          "id": "newyork_community_garden_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "New York Community Garden variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_1.png"
+        },
+        {
+          "id": "newyork_community_garden_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "New York Community Garden variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_2.png"
+        },
+        {
+          "id": "newyork_community_garden_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "New York Community Garden variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/new-york-community-garden/variant_3.png"
+        }
+      ],
+      "districtKit": "new_york"
+    },
+    {
+      "id": "montreal_mount_royal",
+      "title": "Mount Royal Park",
+      "aestheticCategory": "montreal_landscape",
+      "spaceType": "park",
+      "description": "Olmsted-designed naturalistic park on Mount Royal with wooded hillside, Beaver Lake, and stone lookout with city views",
+      "generationTags": [
+        "montreal",
+        "mount_royal",
+        "olmsted",
+        "mountain",
+        "lookout",
+        "forest"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Frederick Law Olmsted-designed (1876) naturalistic park on Mount Royal. Wooded hillside with winding carriage paths. Beaver Lake (man-made). Stone lookout (Belvedere) with panoramic city views. The illuminated cross at summit. Granite and limestone retaining walls. Deciduous forest (predominantly maple). Gravel paths. The mountain rises 233m above the city.",
+        "pavingType": "Gravel paths and winding carriage roads",
+        "plantingType": "Dense deciduous forest, predominantly sugar maple, creating spectacular autumn colour",
+        "seatingRealm": "Stone lookout (Belvedere), wooden benches along paths, Beaver Lake shoreline seating",
+        "waterFeatures": "Beaver Lake, natural springs",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Mount Royal Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Mount Royal Park. Wooded mountainside with winding gravel paths, stone lookout with city panorama, Beaver Lake, dense maple forest, granite retaining walls. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/hero.png",
+      "variants": [
+        {
+          "id": "montreal_mount_royal_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Mount Royal Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_0.png"
+        },
+        {
+          "id": "montreal_mount_royal_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Mount Royal Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_1.png"
+        },
+        {
+          "id": "montreal_mount_royal_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Mount Royal Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_2.png"
+        },
+        {
+          "id": "montreal_mount_royal_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Mount Royal Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/mount-royal-park/variant_3.png"
+        }
+      ],
+      "districtKit": "montreal",
+      "suggestedAreaSqm": 20000
+    },
+    {
+      "id": "montreal_square",
+      "title": "Montreal Neighbourhood Square",
+      "aestheticCategory": "montreal_civic",
+      "spaceType": "park",
+      "description": "Small formal Montreal square with central fountain, iron fence, benches, and mature trees, surrounded by triplexes",
+      "generationTags": [
+        "montreal",
+        "square",
+        "fountain",
+        "neighbourhood",
+        "intimate"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Small formal square at a street intersection. Central fountain or monument. Low stone or iron perimeter fence. Benches. Mature deciduous trees. Sometimes a small playground. Surrounded on all sides by triplex facades. Scale is intimate — typically 0.5-1 acre. Provides breathing room in the dense triplex fabric.",
+        "pavingType": "Gravel paths in simple geometric layout, stone edging",
+        "plantingType": "Mature deciduous trees (maple, elm), seasonal flower beds",
+        "seatingRealm": "Cast-iron or wooden benches, low iron perimeter fence",
+        "waterFeatures": "Central fountain or small monument",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Montreal Neighbourhood Square",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Montreal neighbourhood square. Small formal garden with fountain, iron fence, benches, mature trees. Surrounded by triplex facades. Intimate scale. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/hero.png",
+      "variants": [
+        {
+          "id": "montreal_square_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Montreal Neighbourhood Square variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_0.png"
+        },
+        {
+          "id": "montreal_square_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Montreal Neighbourhood Square variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_1.png"
+        },
+        {
+          "id": "montreal_square_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Montreal Neighbourhood Square variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_2.png"
+        },
+        {
+          "id": "montreal_square_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Montreal Neighbourhood Square variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/montreal-neighbourhood-square/variant_3.png"
+        }
+      ],
+      "districtKit": "montreal"
+    },
+    {
+      "id": "vancouver_seawall",
+      "title": "Vancouver Seawall Promenade",
+      "aestheticCategory": "vancouver_waterfront",
+      "spaceType": "park",
+      "description": "Continuous waterfront seawall path with ocean on one side, forest or city on the other, and mountain views across the in",
+      "generationTags": [
+        "vancouver",
+        "seawall",
+        "waterfront",
+        "promenade",
+        "mountain_views",
+        "ocean"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Continuous paved waterfront promenade. Ocean and harbour on one side, forest (Stanley Park) or urban development on the other. Mountain views across Burrard Inlet and English Bay. Separated cycling and walking lanes. Benches at viewpoints. Public art. Drift logs on adjacent beaches.",
+        "pavingType": "Paved concrete path, separated walking and cycling lanes",
+        "plantingType": "Adjacent forest (Stanley Park sections) or urban landscaping, drift logs on beaches",
+        "seatingRealm": "Benches at viewpoints, low cable or concrete railing at water's edge",
+        "waterFeatures": "Ocean water at path's edge, tidal shoreline, harbour activity",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Vancouver Seawall Promenade",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Vancouver seawall promenade. Continuous waterfront path with ocean on one side and forest or city on the other. Mountain views across the water. Separated walk/bike lanes. Public art. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/hero.png",
+      "variants": [
+        {
+          "id": "vancouver_seawall_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Vancouver Seawall Promenade variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_0.png"
+        },
+        {
+          "id": "vancouver_seawall_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Vancouver Seawall Promenade variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_1.png"
+        },
+        {
+          "id": "vancouver_seawall_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Vancouver Seawall Promenade variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_2.png"
+        },
+        {
+          "id": "vancouver_seawall_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Vancouver Seawall Promenade variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-seawall-promenade/variant_3.png"
+        }
+      ],
+      "districtKit": "vancouver"
+    },
+    {
+      "id": "vancouver_beach_park",
+      "title": "Vancouver Beach Park",
+      "aestheticCategory": "vancouver_waterfront",
+      "spaceType": "park",
+      "description": "West Coast beach park with sandy beach, drift logs, grassy slope, outdoor pool, and mountain/ocean views",
+      "generationTags": [
+        "vancouver",
+        "beach",
+        "drift_logs",
+        "ocean",
+        "mountain_views",
+        "kits_beach"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Sandy beach with drift log barriers. Grassy slope behind beach. Concrete seawall path along edge. Mountain and ocean views. Outdoor pool (Kits Pool style). Volleyball courts. West Coast casual atmosphere — logs, sand, grass, water, mountains.",
+        "pavingType": "Concrete seawall path, sand beach, grassy slope",
+        "plantingType": "Beach grasses, mature deciduous trees on slope, drift logs as natural barriers",
+        "seatingRealm": "Drift logs as informal seating, concrete benches along seawall, lifeguard station",
+        "waterFeatures": "Ocean water, tidal zone, sometimes outdoor swimming pool",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Vancouver Beach Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Vancouver beach park. Sandy beach with drift logs, grassy slope, seawall path, mountain views across the water. Outdoor pool. West Coast casual character. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/hero.png",
+      "variants": [
+        {
+          "id": "vancouver_beach_park_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Vancouver Beach Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_0.png"
+        },
+        {
+          "id": "vancouver_beach_park_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Vancouver Beach Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_1.png"
+        },
+        {
+          "id": "vancouver_beach_park_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Vancouver Beach Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_2.png"
+        },
+        {
+          "id": "vancouver_beach_park_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Vancouver Beach Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/vancouver-beach-park/variant_3.png"
+        }
+      ],
+      "districtKit": "vancouver",
+      "suggestedAreaSqm": 5000
+    },
+    {
+      "id": "toronto_ravine",
+      "title": "Toronto Ravine Park",
+      "aestheticCategory": "toronto_landscape",
+      "spaceType": "park",
+      "description": "Deep glacial ravine cutting through the urban grid, dense deciduous forest, unpaved trails, wooden bridges, 20-30m below",
+      "generationTags": [
+        "toronto",
+        "ravine",
+        "forest",
+        "glacial",
+        "trails",
+        "creek"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Deep glacial valley (20-30m below street level) cutting through the regular urban grid. Dense deciduous forest (maple, oak, beech). Unpaved trails. Wooden footbridges over creeks. The ravines disrupt the street grid, creating dead-ends and curving roads at their edges. Descending from the city grid into wilderness.",
+        "pavingType": "Unpaved earth and wood-chip trails, wooden boardwalks over wet sections",
+        "plantingType": "Dense deciduous forest: sugar maple, red oak, American beech, white pine. Understory of ferns and wildflowers.",
+        "seatingRealm": "Wooden benches at viewpoints, simple trail markers, wooden footbridges",
+        "waterFeatures": "Creeks and streams at ravine bottom, some with exposed bedrock, seasonal flooding",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Toronto Ravine Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Toronto ravine park. Deep forested valley cutting below the urban grid. Dense deciduous forest, unpaved trails, wooden footbridge over creek. 20-30m below surrounding streets. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/hero.png",
+      "variants": [
+        {
+          "id": "toronto_ravine_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Toronto Ravine Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_0.png"
+        },
+        {
+          "id": "toronto_ravine_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Toronto Ravine Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_1.png"
+        },
+        {
+          "id": "toronto_ravine_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Toronto Ravine Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_2.png"
+        },
+        {
+          "id": "toronto_ravine_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Toronto Ravine Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_3.png"
+        }
+      ],
+      "districtKit": "toronto",
+      "suggestedAreaSqm": 5000
+    },
+    {
+      "id": "toronto_urban_square",
+      "title": "Toronto Urban Square",
+      "aestheticCategory": "toronto_civic",
+      "spaceType": "plaza",
+      "description": "Hard-surfaced Toronto civic plaza with ice rink in winter, public art, reflecting pool, surrounded by towers",
+      "generationTags": [
+        "toronto",
+        "urban_square",
+        "civic",
+        "ice_rink",
+        "public_art",
+        "nathan_phillips"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Hard-surfaced civic plaza. Ice rink in winter, reflecting pool in summer. Public art installations. Programmed event space. Surrounded by towers. More corporate/civic than intimate. Nathan Phillips Square character — curved City Hall, reflecting pool/rink.",
+        "pavingType": "Stone or concrete paving, reflecting pool/ice rink surface",
+        "plantingType": "Minimal — some trees at edges, seasonal planters",
+        "seatingRealm": "Public art, event stage, cafe kiosk, ice rink changing rooms in winter",
+        "waterFeatures": "Reflecting pool (becomes ice rink in winter)",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Toronto Urban Square",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Toronto urban square. Hard-paved civic plaza with reflecting pool, public art, event space. Surrounded by towers. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/hero.png",
+      "variants": [
+        {
+          "id": "toronto_urban_square_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Toronto Urban Square variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_0.png"
+        },
+        {
+          "id": "toronto_urban_square_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Toronto Urban Square variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_1.png"
+        },
+        {
+          "id": "toronto_urban_square_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Toronto Urban Square variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_2.png"
+        },
+        {
+          "id": "toronto_urban_square_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Toronto Urban Square variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_3.png"
+        }
+      ],
+      "districtKit": "toronto"
+    },
+    {
+      "id": "calgary_princes_island",
+      "title": "Prince's Island Park",
+      "aestheticCategory": "calgary_river",
+      "spaceType": "park",
+      "description": "River island park in the Bow River with walking paths, cottonwood trees, public art, event lawns, and mountain views",
+      "generationTags": [
+        "calgary",
+        "princes_island",
+        "river",
+        "island",
+        "cottonwood",
+        "events"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "20-hectare island in the Bow River immediately north of downtown. Large manicured grass lawns, ponds with fountains, flower gardens, art sculptures, outdoor stage, children's playground. Network of trails lined with cottonwood trees. Eastern end is designated wetland marsh (Chevron Learning Pathway). Connected to downtown by three bridges. Integrated into Bow River Pathway system. Mountain views on clear days.",
+        "pavingType": "Paved and gravel walking paths, wooden boardwalks in wetland area",
+        "plantingType": "Cottonwood trees (defining Calgary landscape element), flower gardens, native prairie grasses in wetland",
+        "seatingRealm": "Benches along paths, outdoor stage for events, children's playground, food stands",
+        "waterFeatures": "Ponds with fountains, lagoon (former lumber channel), constructed wetland at east end",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Prince's Island Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Prince's Island Park. River island with walking paths, cottonwood trees, grass lawns, ponds with fountains, public art. Downtown skyline and mountain backdrop. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/princes-island-park/hero.png",
+      "variants": [
+        {
+          "id": "calgary_princes_island_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Prince's Island Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_0.png"
+        },
+        {
+          "id": "calgary_princes_island_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Prince's Island Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_1.png"
+        },
+        {
+          "id": "calgary_princes_island_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Prince's Island Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_2.png"
+        },
+        {
+          "id": "calgary_princes_island_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Prince's Island Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_3.png"
+        }
+      ],
+      "districtKit": "calgary",
+      "suggestedAreaSqm": 10000
+    },
+    {
+      "id": "calgary_prairie_plaza",
+      "title": "Calgary Prairie Urban Plaza",
+      "aestheticCategory": "calgary_civic",
+      "spaceType": "plaza",
+      "description": "Open civic plaza with big prairie sky, reflecting pool, wind-swept character, seasonal markets, and mountain views",
+      "generationTags": [
+        "calgary",
+        "plaza",
+        "prairie",
+        "big_sky",
+        "mountain_views",
+        "open"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Hard-surfaced civic plaza. Big sky overhead — Calgary's high elevation (1,045m) and prairie location create enormous open skies. Reflecting pool or water feature. Open and sometimes wind-swept. Designed for community gatherings and seasonal markets. Mountain views on clear days. The openness and sky are the defining features.",
+        "pavingType": "Stone or concrete paving, open expanses",
+        "plantingType": "Minimal — some trees at edges, native prairie grass in planters",
+        "seatingRealm": "Seasonal market stalls, event stage, warming huts in winter, benches",
+        "waterFeatures": "Reflecting pool, sometimes ice features in winter",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Calgary Prairie Urban Plaza",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Calgary prairie urban plaza. Open civic space with big sky, reflecting pool, mountain views on horizon. Wind-swept, expansive character. Seasonal market potential. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/hero.png",
+      "variants": [
+        {
+          "id": "calgary_prairie_plaza_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Calgary Prairie Urban Plaza variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_0.png"
+        },
+        {
+          "id": "calgary_prairie_plaza_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Calgary Prairie Urban Plaza variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_1.png"
+        },
+        {
+          "id": "calgary_prairie_plaza_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Calgary Prairie Urban Plaza variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2.png"
+        },
+        {
+          "id": "calgary_prairie_plaza_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Calgary Prairie Urban Plaza variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_3.png"
+        }
+      ],
+      "districtKit": "calgary"
+    },
+    {
+      "id": "halifax_public_gardens",
+      "title": "Halifax Public Gardens",
+      "aestheticCategory": "halifax_victorian",
+      "spaceType": "park",
+      "description": "One of the finest surviving Victorian gardens in North America with bandstand, carpet beds, serpentine paths, and wrough",
+      "generationTags": [
+        "halifax",
+        "public_gardens",
+        "victorian",
+        "bandstand",
+        "carpet_beds",
+        "national_historic"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "16-acre National Historic Site. Founded 1836. Gardenesque landscape by Richard Power. Axially symmetrical plan. Serpentine paths. Geometric carpet beds (densely planted dwarf plants in contrasting colours). Bandstand (1887, Queen Victoria's Golden Jubilee). Three fountains. Two stone bridges. Three ponds. Wrought-iron gates. Mature deciduous trees. Commemorative statuary. Enclosed by iron fence — bounded, curated space.",
+        "pavingType": "Serpentine gravel and stone paths in formal layout",
+        "plantingType": "Geometric carpet beds with contrasting plants, mature deciduous trees, tropical display beds (Victorian tradition)",
+        "seatingRealm": "Wrought-iron benches, bandstand (1887), commemorative statuary, stone bridges over ponds",
+        "waterFeatures": "Three fountains, three ponds with stone bridges, formal water features",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Halifax Public Gardens",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Halifax Public Gardens. Victorian formal garden with geometric carpet beds, bandstand, serpentine paths, fountains, ponds with stone bridges, wrought-iron gates, mature trees. National Historic Site. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/hero.png",
+      "variants": [
+        {
+          "id": "halifax_public_gardens_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Halifax Public Gardens variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_0.png"
+        },
+        {
+          "id": "halifax_public_gardens_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Halifax Public Gardens variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_1.png"
+        },
+        {
+          "id": "halifax_public_gardens_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Halifax Public Gardens variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_2.png"
+        },
+        {
+          "id": "halifax_public_gardens_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Halifax Public Gardens variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_3.png"
+        }
+      ],
+      "districtKit": "halifax",
+      "suggestedAreaSqm": 5000
+    },
+    {
+      "id": "halifax_coastal_park",
+      "title": "Halifax Coastal Forest Park",
+      "aestheticCategory": "halifax_natural",
+      "spaceType": "park",
+      "description": "Coastal forest park meeting the Atlantic Ocean with hiking trails, ruined fortifications, rocky shoreline, and salt-wind",
+      "generationTags": [
+        "halifax",
+        "coastal",
+        "forest",
+        "fortifications",
+        "atlantic",
+        "point_pleasant"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Coastal forest park at the tip of the Halifax peninsula. Mixed forest meeting the Atlantic Ocean. Hiking trails through woods. Ruined stone fortifications (18th-century batteries and towers). Rocky shoreline. Salt spray and wind shape the vegetation. Wilder and more exposed character than urban parks. Regenerating forest (much lost to Hurricane Juan in 2003).",
+        "pavingType": "Unpaved hiking trails through forest, some gravel paths",
+        "plantingType": "Mixed coastal forest: spruce, birch, maple. Salt-wind shaped trees. Regenerating understory.",
+        "seatingRealm": "Simple trail markers, wooden benches at viewpoints, interpretive panels at fortification ruins",
+        "waterFeatures": "Atlantic Ocean at shoreline, tidal pools on rocky coast",
+        "opennessEnclosure": "Semi-enclosed"
+      },
+      "prompt": {
+        "subject": "Aerial view of Halifax Coastal Forest Park",
+        "details": [
+          "Photoreal rendering",
+          "Warm light"
+        ],
+        "negative": [
+          "No text",
+          "No fantasy"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic Halifax coastal forest park. Forest meeting the Atlantic Ocean. Hiking trails. Ruined stone fortifications. Rocky shoreline. Salt-wind shaped trees. Wild, exposed character. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "propertyPresets": {},
+      "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/hero.png",
+      "variants": [
+        {
+          "id": "halifax_coastal_park_v0",
+          "label": "Variant 1",
+          "color": "#4CAF50",
+          "description": "Halifax Coastal Forest Park variant 1",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_0.png"
+        },
+        {
+          "id": "halifax_coastal_park_v1",
+          "label": "Variant 2",
+          "color": "#388E3C",
+          "description": "Halifax Coastal Forest Park variant 2",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_1.png"
+        },
+        {
+          "id": "halifax_coastal_park_v2",
+          "label": "Variant 3",
+          "color": "#2E7D32",
+          "description": "Halifax Coastal Forest Park variant 3",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_2.png"
+        },
+        {
+          "id": "halifax_coastal_park_v3",
+          "label": "Variant 4",
+          "color": "#1B5E20",
+          "description": "Halifax Coastal Forest Park variant 4",
+          "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_3.png"
+        }
+      ],
+      "districtKit": "halifax",
+      "suggestedAreaSqm": 8000
     }
   ]
 }
