@@ -543,12 +543,12 @@ export function sortZonesByDistance(
 ): ZoneWithDistance[] {
   const halfFov = fovDeg / 2;
 
-  const annotated: ZoneWithDistance[] = zones.map((zone) => {
-    const centroid = polygonCentroid(zone.coordinates) as [number, number];
+  const annotated: ZoneWithDistance[] = zones.filter(z => z.coordinates && z.coordinates.length >= 2).map((zone) => {
+    const centroid = polygonCentroid(zone.coordinates!) as [number, number];
     const dist = haversineDistance(pegmanPos, centroid);
 
     // Angular extent of this zone from the camera
-    const angular = calcZoneAngularExtent(zone.coordinates, pegmanPos, pegmanAngle);
+    const angular = calcZoneAngularExtent(zone.coordinates!, pegmanPos, pegmanAngle);
 
     // Clamp to FOV bounds
     const clampedMin = Math.max(angular.minAngle, -halfFov);
@@ -585,6 +585,116 @@ export function sortZonesByDistance(
 
   annotated.sort((a, b) => a.distance - b.distance);
   return annotated;
+}
+
+// ---------------------------------------------------------------------------
+// Occlusion culling — remove zones hidden behind closer buildings
+// ---------------------------------------------------------------------------
+
+/** Normalize a bearing difference to [-180, 180] range. */
+function angleDiff(a: number, b: number): number {
+  let d = b - a;
+  while (d > 180) d -= 360;
+  while (d < -180) d += 360;
+  return d;
+}
+
+/**
+ * Cull zones that are fully occluded by closer building zones.
+ *
+ * Algorithm: process building zones from nearest to farthest, accumulating
+ * the angular ranges (relative to pegman) that each building blocks. Any
+ * non-building zone (park, street, plaza) whose angular extent is fully
+ * contained within the blocked angles is removed from the visible list.
+ * Building zones themselves are never culled (they're always visible as facades).
+ */
+export function cullOccludedZones(
+  pegmanPos: [number, number],
+  sortedZones: ZoneWithDistance[],
+): ZoneWithDistance[] {
+  const BUILDING_TYPES = new Set(['building', 'residential', 'commercial', 'industrial', 'mixed_use', 'development_area']);
+
+  // Compute the angular extent [minBearing, maxBearing] of each zone from the pegman
+  type ZoneAngles = { zone: ZoneWithDistance; minBearing: number; maxBearing: number; isBuilding: boolean };
+  const zoneAngles: ZoneAngles[] = [];
+
+  for (const z of sortedZones) {
+    const coords = z.zone.coordinates as [number, number][] | undefined;
+    if (!coords || coords.length < 2) {
+      zoneAngles.push({ zone: z, minBearing: 0, maxBearing: 0, isBuilding: false });
+      continue;
+    }
+
+    const bearings = coords.map(c => bearing(pegmanPos, c));
+    // Handle wrap-around at 0/360 by checking if the spread crosses north
+    const sorted = [...bearings].sort((a, b) => a - b);
+    let minB = sorted[0];
+    let maxB = sorted[sorted.length - 1];
+
+    // If the angular span is > 180, the zone wraps around north (0/360)
+    // In that case, shift bearings to avoid the discontinuity
+    if (maxB - minB > 180) {
+      const shifted = bearings.map(b => b < 180 ? b + 360 : b);
+      const sortedShifted = [...shifted].sort((a, b) => a - b);
+      minB = sortedShifted[0];
+      maxB = sortedShifted[sortedShifted.length - 1];
+    }
+
+    const isBuilding = BUILDING_TYPES.has(z.zone.zone_type as string);
+    zoneAngles.push({ zone: z, minBearing: minB, maxBearing: maxB, isBuilding });
+  }
+
+  // Sort by distance (closest first) — buildings cast shadows on things behind them
+  const byDistance = [...zoneAngles].sort((a, b) => a.zone.distance - b.zone.distance);
+
+  // Accumulate blocked angular ranges from buildings
+  const blockedRanges: Array<{ min: number; max: number }> = [];
+
+  const result: ZoneWithDistance[] = [];
+
+  for (const za of byDistance) {
+    if (za.isBuilding) {
+      // Buildings are always visible (you see their facade) and they block things behind them
+      result.push(za.zone);
+      // Add this building's angular range to the blocked set
+      blockedRanges.push({ min: za.minBearing, max: za.maxBearing });
+    } else {
+      // Non-building zone: check if it's fully occluded by accumulated blocked ranges
+      const zoneMin = za.minBearing;
+      const zoneMax = za.maxBearing;
+      const zoneSpan = zoneMax - zoneMin;
+
+      if (zoneSpan <= 0) {
+        // Degenerate zone, keep it
+        result.push(za.zone);
+        continue;
+      }
+
+      // Check what fraction of this zone's angular extent is blocked
+      let blockedDegrees = 0;
+      for (const br of blockedRanges) {
+        // Calculate overlap between [zoneMin, zoneMax] and [br.min, br.max]
+        const overlapMin = Math.max(zoneMin, br.min);
+        const overlapMax = Math.min(zoneMax, br.max);
+        if (overlapMax > overlapMin) {
+          blockedDegrees += overlapMax - overlapMin;
+        }
+      }
+
+      const blockedFraction = blockedDegrees / zoneSpan;
+
+      if (blockedFraction >= 0.8) {
+        // Zone is 80%+ occluded — cull it
+        console.log(`[StreetView] Occlusion: culled "${za.zone.zone.name || za.zone.zone.zone_type}" (${Math.round(blockedFraction * 100)}% blocked by buildings)`);
+      } else {
+        result.push(za.zone);
+      }
+    }
+  }
+
+  // Re-sort by distance (the original sort order)
+  result.sort((a, b) => a.distance - b.distance);
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -698,23 +808,69 @@ function describeZoneForStreetView(
  */
 /**
  * Determine what type of zone the pegman is standing inside.
- * Returns 'park', 'water', 'street', or 'default'.
+ * Returns the context type AND the actual zone (for archetype lookup).
+ * Searches all site zones (not just visible ones) since the standing zone
+ * may be behind the camera / outside the view cone.
  */
 export function detectPegmanContext(
   pegmanPos: [number, number],
   zones: ZoneWithDistance[],
-): 'park' | 'water' | 'street' | 'default' {
+  allZones?: SiteZone[],
+): { context: 'park' | 'water' | 'street' | 'default'; zone?: SiteZone } {
+  // First try the visible/processed zones (these have buffered street polygons)
   for (const z of zones) {
     const coords = z.zone.coordinates as [number, number][] | undefined;
     if (!coords || coords.length < 3) continue;
     if (pointInPolygon(pegmanPos, coords)) {
       const zt = z.zone.zone_type;
-      if (zt === 'green_space' || zt === 'park') return 'park';
-      if (zt === 'water') return 'water';
-      if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return 'street';
+      if (zt === 'green_space' || zt === 'park') return { context: 'park', zone: z.zone };
+      if (zt === 'water') return { context: 'water', zone: z.zone };
+      if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return { context: 'street', zone: z.zone };
     }
   }
-  return 'default';
+  // Fallback: search all site zones (catches zones behind the camera)
+  if (allZones) {
+    for (const zone of allZones) {
+      const coords = zone.coordinates as [number, number][] | undefined;
+      if (!coords || coords.length < 3) continue;
+      if (pointInPolygon(pegmanPos, coords)) {
+        const zt = zone.zone_type;
+        if (zt === 'green_space' || zt === 'park') return { context: 'park', zone };
+        if (zt === 'water') return { context: 'water', zone };
+        if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return { context: 'street', zone };
+      }
+    }
+  }
+
+  // Nearest-zone fallback: pegman is between zones, find the closest one within 50m
+  const MAX_SNAP_DISTANCE = 50; // meters
+  let nearestZone: SiteZone | undefined;
+  let nearestDist = Infinity;
+  const searchZones = allZones || zones.map(z => z.zone);
+  for (const zone of searchZones) {
+    if (zone.zone_type === 'site_boundary') continue;
+    const coords = zone.coordinates as [number, number][] | undefined;
+    if (!coords || coords.length < 2) continue;
+    // Find distance to nearest vertex of this zone
+    for (const coord of coords) {
+      const d = haversineDistance(pegmanPos, coord);
+      if (d < nearestDist) {
+        nearestDist = d;
+        nearestZone = zone;
+      }
+    }
+  }
+  if (nearestZone && nearestDist <= MAX_SNAP_DISTANCE) {
+    const zt = nearestZone.zone_type;
+    if (zt === 'green_space' || (zt as string) === 'park') return { context: 'park', zone: nearestZone };
+    if (zt === 'water') return { context: 'water', zone: nearestZone };
+    if (zt === 'road' || (zt as string) === 'street' || (zt as string) === 'path' || (zt as string) === 'pedestrian')
+      return { context: 'street', zone: nearestZone };
+    // Default to street context if nearest zone is any other type
+    return { context: 'default', zone: nearestZone };
+  }
+
+  return { context: 'default' };
 }
 
 export function buildStreetViewPrompt(
@@ -722,10 +878,11 @@ export function buildStreetViewPrompt(
   angleDeg: number,
   visibleZones: ZoneWithDistance[],
   styleModifier?: string,
+  standingZoneInfo?: ArchetypeInfo,
 ): string {
   const direction = compassDirection(angleDeg);
   const lines: string[] = [];
-  const pegmanContext = detectPegmanContext(_pegmanPos, visibleZones);
+  const { context: pegmanContext } = detectPegmanContext(_pegmanPos, visibleZones);
 
   // ─── Style instruction FIRST — Gemini weights earlier instructions more heavily ───
   if (styleModifier) {
@@ -773,12 +930,20 @@ export function buildStreetViewPrompt(
     `${streetCount} street/path(s). Render ONLY these elements. Do not add any additional structures.`,
   );
 
-  // ─── CLAUSE 3: VOID DEFINITION (context-aware) ───
-  const voidSurface = pegmanContext === 'park'
-    ? 'a continuous, manicured grass lawn with scattered mature trees and natural ground cover'
-    : pegmanContext === 'water'
-    ? 'a calm, reflective water surface with natural shoreline vegetation'
-    : 'a flat, unbroken, deserted concrete pavement surface';
+  // ─── CLAUSE 3: VOID DEFINITION (context-aware, archetype-enriched) ───
+  let voidSurface: string;
+  if (pegmanContext === 'park') {
+    voidSurface = standingZoneInfo?.landscapeCharacter
+      || 'a continuous, manicured grass lawn with scattered mature trees and natural ground cover';
+  } else if (pegmanContext === 'water') {
+    voidSurface = 'a calm, reflective water surface with natural shoreline vegetation';
+  } else if (pegmanContext === 'street' && standingZoneInfo?.surfaceType) {
+    const parts = [`a continuous surface of ${standingZoneInfo.surfaceType}`];
+    if (standingZoneInfo.plantingCharacter) parts.push(`with ${standingZoneInfo.plantingCharacter}`);
+    voidSurface = parts.join(' ');
+  } else {
+    voidSurface = 'a flat, unbroken, deserted concrete pavement surface';
+  }
   lines.push(
     `VOID DEFINITION: All space between the defined zones consists of ${voidSurface}. ` +
     `The background behind all structures consists solely ` +
@@ -843,13 +1008,18 @@ export function buildStreetViewPrompt(
     });
     lines.push(`Content Assignment:\n${fgDescriptions.join('\n')}`);
   } else {
-    lines.push(`Content Assignment: ${
-      pegmanContext === 'park'
-        ? 'Lush grass lawn with a winding stone pathway, mature trees, and planted garden beds extending into the scene.'
-        : pegmanContext === 'water'
-        ? 'Natural shoreline with reeds, smooth stones, and a wooden boardwalk extending into the scene.'
-        : 'Paved sidewalk and street extending into the scene with curbs and street trees.'
-    }`);
+    let fgFallback: string;
+    if (pegmanContext === 'park') {
+      fgFallback = standingZoneInfo?.landscapeCharacter
+        || 'Lush grass lawn with a winding stone pathway, mature trees, and planted garden beds extending into the scene.';
+    } else if (pegmanContext === 'water') {
+      fgFallback = 'Natural shoreline with reeds, smooth stones, and a wooden boardwalk extending into the scene.';
+    } else if (pegmanContext === 'street' && standingZoneInfo?.corridorDescription) {
+      fgFallback = `${standingZoneInfo.corridorDescription} extending into the scene.`;
+    } else {
+      fgFallback = 'Paved sidewalk and street extending into the scene with curbs and street trees.';
+    }
+    lines.push(`Content Assignment: ${fgFallback}`);
   }
   lines.push(
     `Optical Effect: Sharp, high-contrast resolution. Every material texture (brick joints, glass reflections, ` +
@@ -909,17 +1079,21 @@ export function buildStreetViewPrompt(
     `Distant buildings are visibly smaller due to perspective foreshortening.`,
   );
 
-  // ─── GROUND PLANE ───
+  // ─── GROUND PLANE (archetype-enriched) ───
+  let groundPlaneDesc: string;
+  if (pegmanContext === 'park') {
+    groundPlaneDesc = standingZoneInfo?.landscapeCharacter
+      || 'Manicured grass lawn and winding gravel or stone pathways in the immediate foreground, with mature trees, flower beds, and park benches.';
+  } else if (pegmanContext === 'water') {
+    groundPlaneDesc = 'Wooden boardwalk or natural stone shoreline in the immediate foreground, with reeds, smooth rocks, and water lapping at the edges.';
+  } else if (pegmanContext === 'street' && standingZoneInfo?.corridorDescription) {
+    groundPlaneDesc = `${standingZoneInfo.corridorDescription} extending into the scene in the immediate foreground.`;
+  } else {
+    groundPlaneDesc = 'Paved sidewalk and street in the immediate foreground with realistic curbs, utility poles, and street trees.';
+  }
   lines.push(
     `═══ GROUND PLANE ═══\n` +
-    (pegmanContext === 'park'
-      ? `Manicured grass lawn and winding gravel or stone pathways in the immediate foreground, ` +
-        `with mature trees, flower beds, and park benches. `
-      : pegmanContext === 'water'
-      ? `Wooden boardwalk or natural stone shoreline in the immediate foreground, ` +
-        `with reeds, smooth rocks, and water lapping at the edges. `
-      : `Paved sidewalk and street in the immediate foreground with realistic curbs, utility poles, ` +
-        `and street trees. `) +
+    `${groundPlaneDesc} ` +
     `The ground plane recedes naturally toward the horizon using one-point ` +
     `perspective, visually connecting all depth planes.`,
   );
@@ -970,25 +1144,25 @@ export function buildStreetViewPrompt(
       `specified at the top of this prompt. This must look like a real photograph, not a CG render.`,
     );
     lines.push(
-      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
-      `with pristine, uninhabited surfaces. ${
-        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
-        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
-        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
+      `SCENE CONDITIONS: The fictional human figures described in ENTOURAGE must be present. ` +
+      `The scene feels lived-in and welcoming — a real place with real activity. ${
+        pegmanContext === 'park' ? 'Pathways wind naturally through lush green landscape with people enjoying the space.'
+        : pegmanContext === 'water' ? 'The waterfront is active with people strolling and enjoying views.'
+        : 'Streets and sidewalks have natural pedestrian activity with people going about their day.'
       }`,
     );
   } else if (styleModifier) {
     lines.push(
       `FINAL REMINDER: The entire image MUST be in the artistic style specified at the top of this prompt. ` +
-      `Apply the artistic medium consistently to every element including buildings, landscape, and sky.`,
+      `Apply the artistic medium consistently to every element including buildings, landscape, sky, AND human figures.`,
     );
     lines.push(
-      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
-      `with pristine, uninhabited surfaces. ${
-        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
-        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
-        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
-      } The image is a pure architectural illustration.`,
+      `SCENE CONDITIONS: Include the fictional human figures described in ENTOURAGE, rendered in the same ` +
+      `artistic style as the architecture. ${
+        pegmanContext === 'park' ? 'Pathways wind naturally through lush green landscape with figures enjoying the space.'
+        : pegmanContext === 'water' ? 'The waterfront has figures strolling along the boardwalk.'
+        : 'Streets have figures walking and sitting at cafes, all in the specified artistic style.'
+      }`,
     );
   } else {
     lines.push(
@@ -997,14 +1171,45 @@ export function buildStreetViewPrompt(
       `deep focus. 8K resolution.`,
     );
     lines.push(
-      `SCENE CONDITIONS: The scene is a completely deserted, empty architectural visualization ` +
-      `with pristine, uninhabited surfaces. ${
-        pegmanContext === 'park' ? 'All pathways wind naturally through lush green landscape.'
-        : pegmanContext === 'water' ? 'The waterfront is serene and undisturbed.'
-        : 'All streets and pathways are perfectly unobstructed with clean, unmarked surfaces.'
+      `SCENE CONDITIONS: Include the fictional human figures described in ENTOURAGE. ` +
+      `The scene feels alive and inhabited. ${
+        pegmanContext === 'park' ? 'People enjoy the green space on paths and benches.'
+        : pegmanContext === 'water' ? 'People stroll along the waterfront promenade.'
+        : 'Pedestrians walk the sidewalks and sit at outdoor cafes.'
       }`,
     );
   }
+
+  // ─── ENTOURAGE — Style 6 photorealistic fictional people ───
+  let entourageDesc: string;
+  if (pegmanContext === 'park') {
+    entourageDesc = (
+      'Include 5-8 diverse human figures naturally enjoying the park — ' +
+      'on pathways, sitting on benches, a parent with a child, someone walking a dog. '
+    );
+  } else if (pegmanContext === 'water') {
+    entourageDesc = (
+      'Include 4-6 diverse human figures along the waterfront — ' +
+      'on the boardwalk, sitting on rocks, a couple looking at the water. '
+    );
+  } else {
+    entourageDesc = (
+      'Include 6-10 diverse human figures naturally inhabiting the street — ' +
+      'walking on sidewalks, sitting at outdoor cafe tables, a cyclist, someone walking a dog. '
+    );
+  }
+  lines.push(
+    `═══ ENTOURAGE ═══\n` +
+    entourageDesc +
+    `The ARCHITECTURE AND SPACE are the primary subject — people are secondary, providing ` +
+    `scale and life. Place most figures in the mid-ground and background (15-40m from camera). ` +
+    `Each figure must have anatomically correct proportions, natural posture, realistic clothing ` +
+    `appropriate for the setting, and visible hair and skin textures with natural subsurface scattering. ` +
+    `Diverse ages, ethnicities, and body types reflecting a contemporary urban community. ` +
+    `NO figures blocking the central architectural view. NO wall of people across the frame. ` +
+    `These are fictional characters — not real individuals. ` +
+    `Shot on 35mm SLR, Kodak Portra 400 film stock color science.`,
+  );
 
   return lines.join('\n\n');
 }
@@ -1739,11 +1944,14 @@ export async function generateStreetView(
   // 3. Sort by distance with angular analysis
   const sorted = sortZonesByDistance(intersecting, pegmanPos, angleDeg, fov);
 
+  // 3b. Occlusion culling — remove zones hidden behind closer buildings
+  const visible = cullOccludedZones(pegmanPos, sorted);
+
   // Debug: log what was found
   console.log('[StreetView] Pegman at', pegmanPos, 'facing', angleDeg, '°');
   console.log('[StreetView] FOV:', fov, '° Distance:', distance, 'm');
-  console.log('[StreetView] Total site zones:', siteZones.length, '| In view cone:', intersecting.length);
-  for (const z of sorted) {
+  console.log('[StreetView] Total site zones:', siteZones.length, '| In view cone:', intersecting.length, '| After occlusion:', visible.length);
+  for (const z of visible) {
     const info = getZoneArchetypeInfo(z.zone);
     console.log(
       `  [${z.relativePosition.toUpperCase()}] ${info.archetypeTitle || z.zone.name || z.zone.zone_type}` +
@@ -1753,19 +1961,21 @@ export async function generateStreetView(
   }
 
   // 4. Build SCHEMA-style prompt (context-aware: park/water/street)
-  const pegmanCtx = detectPegmanContext(pegmanPos, sorted);
-  console.log(`[StreetView] Pegman context: ${pegmanCtx} (prompt will adapt ground plane accordingly)`);
-  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, sorted, options?.styleModifier);
+  // Pass processedZones as fallback so we find the standing zone even if behind camera
+  const { context: pegmanCtx, zone: standingZone } = detectPegmanContext(pegmanPos, visible, processedZones);
+  const standingZoneInfo = standingZone ? getZoneArchetypeInfo(standingZone) : undefined;
+  console.log(`[StreetView] Pegman context: ${pegmanCtx} — standing on: ${standingZoneInfo?.archetypeTitle || standingZone?.name || 'unknown'}`);
+  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo);
   console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
   // 5. Generate 3D clay render as spatial guide (gray massing model)
   let guideImageBase64: string;
   try {
-    guideImageBase64 = generateClayRender(pegmanPos, angleDeg, sorted);
+    guideImageBase64 = generateClayRender(pegmanPos, angleDeg, visible);
     console.log('[StreetView] Clay render generated successfully');
   } catch (clayErr) {
     console.warn('[StreetView] Clay render failed, falling back to flat depth map:', clayErr);
-    guideImageBase64 = generateDepthMap(pegmanPos, angleDeg, sorted);
+    guideImageBase64 = generateDepthMap(pegmanPos, angleDeg, visible);
   }
 
   // 6. Collect archetype card images for multi-image routing (up to 6)
@@ -1825,7 +2035,7 @@ export async function generateStreetView(
 
     const svToken = localStorage.getItem('access_token');
     const response = await axios.post(RENDER_API_URL, body, {
-      timeout: 180_000,
+      timeout: 300_000,
       headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
     });
 
@@ -1865,7 +2075,7 @@ export async function generateStreetView(
         }
 
         const pass2Response = await axios.post(RENDER_API_URL, pass2Body, {
-          timeout: 180_000,
+          timeout: 300_000,
           headers: svToken ? { Authorization: `Bearer ${svToken}` } : {},
         });
         const pass2Base64: string | undefined = pass2Response.data?.image_base64;
