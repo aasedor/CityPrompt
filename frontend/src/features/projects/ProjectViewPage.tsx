@@ -21,6 +21,7 @@ import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
 import { useSiteZones } from '@/hooks/useSiteZones';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
+import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
 export function ProjectViewPage() {
@@ -304,7 +305,13 @@ export function ProjectViewPage() {
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
-              onUpdate={(zoneId, data) => updateZone.mutate({ zoneId, data })}
+              onUpdate={(zoneId, data) => {
+                updateZone.mutate({ zoneId, data });
+                // Re-buffer road polygon when width changes
+                if (siteZones) {
+                  rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+                }
+              }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}

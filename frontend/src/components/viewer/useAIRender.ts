@@ -166,16 +166,8 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     label: 'Atmospheric',
     strength: 0.65,
     prompt:
-      'Cinematic aerial architectural photograph with dramatic atmospheric conditions. Shot from 80 meters altitude at an oblique angle during the final minutes of golden hour. Low-angle warm sunlight rakes across rooftops and facade surfaces, casting extremely long shadows that stretch across streets and neighbouring properties, revealing every setback, cornice, and massing transition. The sky dominates the upper third of the frame -- towering cumulus clouds lit amber and rose on their undersides, transitioning to deep blue-grey overhead with patches of clear sky breaking through. Subtle ground-level haze softens the base of buildings and creates distinct atmospheric depth layers -- foreground sharp and warm-toned, midground slightly desaturated, background fading to cool blue-grey. Wet surfaces from recent rainfall create mirror-like reflections on rooftops, roads, and plaza surfaces, doubling the warm sky colours on the ground plane. Pools of standing water on flat roofs catch and reflect the dramatic sky. Interior lights beginning to glow warm amber through windows as twilight approaches, contrasting against the cool exterior shadows. Lush vegetation rendered with individual leaf detail, canopy tops catching the last golden light while understory sits in deep cool shadow. Photographed on medium format digital with exceptional dynamic range capturing both bright cloud highlights and deep shadow detail simultaneously.',
-    negative: 'flat lighting, generic blue sky, midday sun, sterile, clinical, uniform exposure, low quality, blurry, text, watermark, people, pedestrians',
-  },
-  {
-    id: 'massing-study',
-    label: 'Massing Study',
-    strength: 0.65,
-    prompt:
-      'Architectural massing study rendered entirely as plain untextured matte white blocks on a neutral grey background. No windows, no doors, no material details. Focus strictly on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting with sharp directional sunlight showing deep shadows where forms meet. Minimalist architectural diagram, white foam-board scale model style.',
-    negative: 'photorealistic, color, materials, brick, glass, wood, vegetation, trees, people, cars, detailed, textured, realistic, windows, doors, low quality, blurry',
+      'Cinematic aerial architectural photograph with dramatic atmospheric conditions. Shot from 80 meters altitude at an oblique angle during the final minutes of golden hour. CRITICAL: Every building must have photorealistic architectural materials — real brick, stone, concrete, glass, metal cladding, and proper roofing materials. Completely replace ALL colored polygon overlay fills (green, blue, purple, red, orange, yellow) with appropriate real building materials. No building should have a flat colored roof or facade — every surface must show realistic architectural textures and materials. Low-angle warm sunlight rakes across rooftops and facade surfaces, casting extremely long shadows. The sky dominates the upper third — towering cumulus clouds lit amber and rose, transitioning to deep blue-grey overhead. Subtle ground-level haze creates atmospheric depth layers. Wet surfaces from recent rainfall create mirror-like reflections on rooftops, roads, and plaza surfaces. Interior lights glowing warm amber through windows. Lush vegetation with individual leaf detail. Photographed on medium format digital with exceptional dynamic range.',
+    negative: 'flat lighting, generic blue sky, midday sun, sterile, clinical, uniform exposure, low quality, blurry, text, watermark, people, pedestrians, colored polygon fills, flat colored roofs, green roofs on non-eco buildings, blue facades, purple walls, orange surfaces',
   },
   {
     id: 'site-plan',
@@ -192,6 +184,14 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     prompt:
       'Professional near-top-down architectural photomontage shot from a DJI Mavic 3 Enterprise drone at 100 meters altitude, looking almost straight down at approximately 15-20 degrees from nadir. Hasselblad 4/3 CMOS sensor, 24mm equivalent lens at f/5.6, ISO 100. The proposed development appears as if fully constructed and occupied, photographed from directly above in a real drone survey. All buildings, parks, streets, and landscaping are photorealistic with accurate materials, shadows, and proportions as seen from near-overhead. Building rooftops show realistic roofing materials, mechanical equipment, and drainage. Shadows are short and fall consistently in one direction indicating building height. Surrounding context preserves the real satellite imagery seamlessly. Materials show realistic weathering 1-2 years post-completion. Natural lens vignetting at frame edges. This must read as a real drone survey photograph of a completed development, not a diagram or illustration. CRITICAL: The colored polygon overlay zones (green, red, blue, orange, yellow fills) visible in the reference image are ONLY spatial markers showing where each element should be placed. You MUST completely replace every colored fill with photorealistic materials — real rooftop surfaces, real grass textures, real pavement, real building materials. No flat colored fills should remain visible in the output.',
     negative: 'cartoon, illustration, sketch, painting, artistic, stylized, CGI look, diagram, linework, pastel colors, perfect pristine surfaces, floating buildings, unrealistic shadows, low quality, blurry, text, watermark, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills',
+  },
+  {
+    id: 'site-plan-watercolor',
+    label: 'Site Plan WC',
+    strength: 0.65,
+    prompt:
+      'Near-top-down architectural site plan rendered as a beautiful hand-painted watercolor illustration on heavy textured watercolor paper, viewed from approximately 15-20 degrees above nadir. The layout shows the proposed development from almost directly overhead, maintaining accurate spatial relationships and building footprints. Soft translucent watercolor washes define each zone — warm ochre and sienna for buildings, sage green washes for parks and landscaping, soft grey for roads and paving, ultramarine blue for water features. Building rooftops shown as watercolor-washed forms with faint pencil construction lines visible beneath. Trees depicted as loose circular watercolor daubs in varied greens with wet-on-wet bloom effects. Shadows painted as soft blue-grey washes indicating building height. White watercolor paper glowing through as highlights. Pigment granulation and sedimentation in shadow areas. Bleeding edges where colors mix organically at zone boundaries, creating natural soft transitions. Surrounding context rendered in lighter, more transparent washes fading to white at the edges. Hand-painted architectural competition entry quality.',
+    negative: 'photorealistic, photograph, digital, 3D render, sharp edges, perfect lines, perspective, eye-level view, neon colors, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills, low quality, blurry',
   },
   {
     id: 'ink-wash',
@@ -238,8 +238,8 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     label: 'Clay Maquette',
     strength: 0.65,
     prompt:
-      'Photorealistic macro photography of a physical architectural scale model. Entire scene is made of seamless, matte, off-white plaster — no distinct colors or textures on any surface. Studio lighting with a single soft overhead softbox creating deep ambient occlusion shadows that define every edge, setback, and topographic contour. High-angle isometric aerial view looking down at the model. Shallow depth of field with tilt-shift effect blurring the edges of the scene. All buildings, landscape, streets, and vegetation are sculpted from the same uniform matte clay material. Miniature architectural maquette, professional studio photography.',
-    negative: 'photorealistic buildings, color, materials, brick, glass, wood, realistic vegetation, people, cars, textured surfaces, painted surfaces, outdoor lighting, sky, clouds, low quality, blurry',
+      'Photorealistic macro photography of a physical architectural scale model carved entirely from a single block of pure white matte plaster or foam board. CRITICAL: EVERY element in the entire scene — every building, every tree, every road, every park, every fence, every vehicle — is made of the SAME pure white matte material with ZERO color variation. No colored surfaces whatsoever. No green for parks, no gray for roads, no brown for brick — everything is identical pure white plaster. The ONLY visual differentiation comes from form, shadow, and depth. Studio lighting with a single soft overhead softbox creating deep ambient occlusion shadows in cool gray tones that define every edge, setback, roof pitch, and topographic contour. High-angle isometric aerial view. Shallow depth of field with tilt-shift miniature effect. The model sits on a white base board. This is a monochromatic white architectural maquette — a physical object photographed in a studio.',
+    negative: 'ANY color whatsoever, green parks, gray roads, brown brick, blue water, red buildings, orange surfaces, purple walls, colored roofs, realistic materials, photorealistic buildings, realistic vegetation, people, cars, outdoor lighting, sky background, clouds, digital rendering',
   },
 ];
 
@@ -267,12 +267,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   atmospheric: {
     id: 'atmospheric',
     label: 'Atmospheric',
-    prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose, transitioning to deep blue-grey overhead. Ground-level haze creating atmospheric depth layers. Wet surfaces from recent rainfall with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
-  },
-  'massing-study': {
-    id: 'massing-study',
-    label: 'Massing Study',
-    prompt: 'Architectural massing study rendered entirely as plain untextured matte white blocks on neutral grey background. No windows, no doors, no material details. Focus on volume, form, scale, and spatial relationships. Clean ambient occlusion lighting, white foam-board scale model style.',
+    prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials — real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
   },
   'site-plan': {
     id: 'site-plan',
@@ -283,6 +278,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'site-plan-photo',
     label: 'Site Plan Photo',
     prompt: 'Professional near-top-down drone photomontage at 100m altitude, 15-20 degrees from nadir. DJI Mavic 3, Hasselblad sensor, 24mm lens f/5.6. Photorealistic materials, accurate short shadows, real rooftop equipment visible. Seamless integration with surrounding satellite context. Documentary drone survey photography of a completed development. CRITICAL: Replace all colored polygon fills completely with photorealistic materials. No flat green, red, blue, or orange overlay colors should remain visible.',
+  },
+  'site-plan-watercolor': {
+    id: 'site-plan-watercolor',
+    label: 'Site Plan WC',
+    prompt: 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
   },
   'ink-wash': {
     id: 'ink-wash',
@@ -312,7 +312,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   'clay-maquette': {
     id: 'clay-maquette',
     label: 'Clay Maquette',
-    prompt: 'Photorealistic macro photography of a physical architectural scale model made entirely of seamless matte off-white plaster. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric aerial view with tilt-shift depth of field. All elements sculpted from uniform matte clay. Miniature architectural maquette, professional studio photography.',
+    prompt: 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element — buildings, trees, roads, parks, vehicles — is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
   },
 };
 
@@ -325,7 +325,7 @@ const API_BASE = import.meta.env.VITE_API_URL || '';
 const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 
 /** Timeout for the backend request (3 minutes — Imagen 3 can be slow) */
-const RENDER_TIMEOUT = 180_000;
+const RENDER_TIMEOUT = 300_000;
 
 /** The 4 face bearings */
 const FACE_BEARINGS: { label: 'front' | 'right' | 'rear' | 'left'; bearing: number }[] = [
@@ -987,55 +987,28 @@ function colorName(hex: string): string {
  * Renders parks, roads, plazas — no vertical structures.
  */
 function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOptions): string {
-  const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
-
-  const zoneDescriptions = groundZones.map(z => {
+  const entries: ZonePromptEntry[] = groundZones.map(z => {
     const info = getZoneArchetypeInfo(z);
-    const desc = buildArchetypeDescription(info, z.zone_type);
     const color = colorName(z.color || '#4CAF50');
-    return `The ${color} polygon is a ${desc}`;
+    return {
+      color,
+      zoneType: z.zone_type,
+      zoneName: z.name || z.zone_type,
+      descriptionText: (z.properties?.description_text as string) || undefined,
+      floors: undefined,
+      heightM: undefined,
+      archetypeTitle: info.archetypeTitle,
+      facadeDescription: info.facadeDescription,
+      roofDescription: info.roofDescription,
+      materials: info.materials,
+      massing: info.massing,
+      heightTendency: info.heightTendency,
+      publicRealm: info.publicRealm,
+      colorScheme: info.colorScheme,
+      aerialAppearance: info.aerialAppearance,
+    };
   });
-
-  const parts: string[] = [];
-
-  parts.push(
-    'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle.',
-    `In this image, colored polygon overlays mark proposed landscape zones on an empty site (the white area).`,
-  );
-
-  // Zone descriptions as narrative
-  parts.push(zoneDescriptions.join('. ') + '.');
-
-  parts.push(
-    'Transform each colored zone into its described landscape, perfectly filling the colored area.',
-  );
-
-  // CRITICAL RULES for zone containment
-  parts.push(
-    'CRITICAL RULES:',
-    '1. Each zone\'s landscape must stay strictly inside its colored polygon boundary — zero bleed into any neighboring zone.',
-    '2. Treat every polygon edge as a hard physical curb or wall that no element may cross.',
-    '3. Match each polygon by its specific color and fill only that polygon with the described content.',
-    '4. The landscape must be entirely ground-level: an empty site with only grass, trees, paths, and paving.',
-    '5. Do not generate any people, pedestrians, or human figures.',
-    '6. Do not generate any buildings, walls, vertical structures, or rooftops.',
-  );
-
-  if (isArtistic && styleMod) {
-    parts.push(`Render in ${styleMod.label} style: ${styleMod.prompt}`);
-  } else if (styleMod && styleId !== 'photorealistic') {
-    parts.push(`Render style: ${styleMod.prompt}`);
-  }
-
-  parts.push('Keep all satellite imagery outside the white site boundary exactly as it is.');
-
-  if (options.customPrompt?.trim()) {
-    parts.push(options.customPrompt.trim());
-  }
-
-  return parts.join(' ');
+  return buildSCHEMAPrompt(entries, options, 'ground');
 }
 
 /**
@@ -1046,75 +1019,27 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
 function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
   const archetypeInfo = getZoneArchetypeInfo(zone);
   const zoneColor = colorName(getZoneRenderColor(zone.id, zone.color || '#E03C31'));
-
-  // Build narrative description from archetype metadata
   const floors = zone.properties?.floors ?? zone.properties?.num_floors;
   const heightM = zone.properties?.height_m ?? zone.properties?.height;
-  const floorText = floors ? `${floors}-story` : heightM ? `${heightM}m tall` : 'multi-story';
 
-  // Descriptive text from the zone properties (auto-populated from archetype card)
-  const userDesc = (zone.properties?.description_text as string) || '';
-
-  // Archetype-derived narrative
-  const narrativeParts: string[] = [];
-  if (archetypeInfo.archetypeTitle) {
-    narrativeParts.push(`A completed ${floorText} ${archetypeInfo.archetypeTitle} building`);
-  } else {
-    narrativeParts.push(`A completed ${floorText} commercial building`);
-  }
-  if (archetypeInfo.facadeDescription) narrativeParts.push(`with ${archetypeInfo.facadeDescription.toLowerCase()}`);
-  if (archetypeInfo.roofDescription) narrativeParts.push(`topped by ${archetypeInfo.roofDescription.toLowerCase()}`);
-  if (archetypeInfo.materials) narrativeParts.push(`Materials: ${archetypeInfo.materials}`);
-  if (archetypeInfo.colorScheme) narrativeParts.push(`Color palette: ${archetypeInfo.colorScheme}`);
-
-  const buildingNarrative = narrativeParts.join('. ') + '.';
-
-  // Style
-  const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const styleMod = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
-
-  const parts: string[] = [];
-
-  // Narrative prose prompt — Subject + Environment + Materials + Lighting + Camera
-  parts.push(
-    `Using the provided landscape image, render a building on the ${zoneColor} colored footprint.`,
-    buildingNarrative,
-  );
-
-  if (userDesc) {
-    parts.push(userDesc);
-  }
-
-  parts.push(
-    `The ${zoneColor} polygon is the building's absolute ground foundation. The building sits on the already-rendered park and streetscape — its base shadows should blend naturally onto the surrounding grass and pathways.`,
-    `Treat the ${zoneColor} footprint as the ground-level base only. Render the full vertical 3D mass and roofline extending naturally into the sky above, respecting aerial perspective. Do not clip the architecture at any boundary line.`,
-    `Replace every ${zoneColor} pixel with building facade, structure, or ground-plane landscaping. No colored overlay should remain visible.`,
-    `Do not let building materials bleed into the surrounding grass, pathways, or other zones. Keep strict horizontal containment at the foundation level.`,
-    `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the colored polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`,
-  );
-
-  if (isArtistic && styleMod) {
-    parts.push(`Render in ${styleMod.label} style: ${styleMod.prompt}`);
-  } else if (styleMod && styleId !== 'photorealistic') {
-    parts.push(`Render style: ${styleMod.prompt}`);
-  } else {
-    parts.push('Warm afternoon sunlight from the southwest casts crisp architectural shadows. Captured with a DJI drone at 60m altitude, matching the existing satellite imagery perspective and lighting.');
-  }
-
-  parts.push(
-    'If an archetype reference image is provided, apply its exact architectural style, facade materials, ' +
-    'window patterns, and material textures to the building. The reference image shows what the finished ' +
-    'building should look like — match it as closely as possible while respecting the aerial perspective.',
-  );
-
-  parts.push('Keep everything else in the image exactly the same, preserving the original style, lighting, and composition.');
-
-  if (options.customPrompt?.trim()) {
-    parts.push(options.customPrompt.trim());
-  }
-
-  return parts.join(' ');
+  const entry: ZonePromptEntry = {
+    color: zoneColor,
+    zoneType: zone.zone_type,
+    zoneName: zone.name || zone.zone_type,
+    descriptionText: (zone.properties?.description_text as string) || undefined,
+    floors: typeof floors === 'number' ? floors : undefined,
+    heightM: typeof heightM === 'number' ? heightM : undefined,
+    archetypeTitle: archetypeInfo.archetypeTitle,
+    facadeDescription: archetypeInfo.facadeDescription,
+    roofDescription: archetypeInfo.roofDescription,
+    materials: archetypeInfo.materials,
+    massing: archetypeInfo.massing,
+    heightTendency: archetypeInfo.heightTendency,
+    publicRealm: archetypeInfo.publicRealm,
+    colorScheme: archetypeInfo.colorScheme,
+    aerialAppearance: archetypeInfo.aerialAppearance,
+  };
+  return buildSCHEMAPrompt([entry], options, 'building');
 }
 
 /**
@@ -1172,6 +1097,211 @@ function buildArchetypeDescription(
   }
 
   return defaultZoneDescription(zoneType);
+}
+
+/** Extract N keywords from verbose description text, joining with '+' */
+function condenseToKeywords(text: string | undefined, maxTokens = 4): string {
+  if (!text) return '';
+  // Split on sentence/clause boundaries
+  const tokens = text
+    .replace(/\.\s+/g, ', ')
+    .split(/[,;:]+/)
+    .map(t => t.trim())
+    .filter(t => t.length > 2)
+    .map(t => t.replace(/^(a |an |the |with |and |or |in |on |at |of |for |is |are |has |have |its |this )/gi, '').trim())
+    .filter(t => t.length > 2)
+    .slice(0, maxTokens);
+  return tokens.join('+');
+}
+
+/**
+ * Check if a zone is a "priority" type that needs a richer description (~150 chars)
+ * to prevent hallucination. Large/unique building types get more detail.
+ */
+function isPriorityZone(entry: ZonePromptEntry): boolean {
+  const name = (entry.archetypeTitle || entry.zoneName || '').toLowerCase();
+  const PRIORITY_KEYWORDS = [
+    'arena', 'stadium', 'colosseum', 'amphitheater',
+    'hotel', 'resort', 'chateauesque',
+    'transit', 'station', 'vertiport', 'terminal',
+    'church', 'mosque', 'temple', 'cathedral',
+    'museum', 'courthouse', 'monument',
+    'climbing', 'data center', 'vertical farm',
+    'fire station', 'brewery', 'distillery',
+    'waste-to-energy', 'solar farm',
+    'immersive', 'concert hall', 'opera',
+    'mall redevelopment', 'terraced',
+  ];
+  return PRIORITY_KEYWORDS.some(kw => name.includes(kw));
+}
+
+/** Build a compressed SCHEMA zone label from a ZonePromptEntry.
+ *  Standard zones: ~80 chars. Priority zones: ~150 chars for richer detail. */
+function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number): string {
+  const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+  const isBuilding = BUILDING_TYPES.includes(entry.zoneType);
+  const isRoad = ['road', 'street', 'path'].includes(entry.zoneType);
+  const isPark = ['green_space', 'park', 'plaza', 'water'].includes(entry.zoneType);
+  const priority = isPriorityZone(entry);
+
+  const name = entry.archetypeTitle || entry.zoneName || entry.zoneType;
+
+  // Scale
+  let scale = 'gnd';
+  if (isBuilding) {
+    if (entry.floors && entry.heightM) scale = `${entry.floors}F ${entry.heightM}m`;
+    else if (entry.floors) scale = `${entry.floors}F`;
+    else if (entry.heightM) scale = `${entry.heightM}m`;
+    else scale = 'multi-story';
+  }
+
+  // If we have an archetype image reference, use that instead of materials
+  if (imageIndex != null) {
+    return `[${entry.color}] ${name} | ${scale} | match style of Image ${imageIndex}`;
+  }
+
+  // Materials/features — priority zones get more keywords for richer detail
+  const maxKeywords = priority ? 6 : 3;
+  let features = '';
+
+  if (isBuilding) {
+    const parts: string[] = [];
+    if (entry.materials) parts.push(condenseToKeywords(entry.materials, priority ? 3 : 2));
+    if (entry.facadeDescription) parts.push(condenseToKeywords(entry.facadeDescription, priority ? 3 : 2));
+    if (entry.roofDescription) parts.push(condenseToKeywords(entry.roofDescription, priority ? 2 : 1));
+    if (priority && entry.aerialAppearance) parts.push(condenseToKeywords(entry.aerialAppearance, 2));
+    if (priority && entry.massing) parts.push(condenseToKeywords(entry.massing, 2));
+    features = parts.filter(Boolean).join(', ');
+  } else if (isRoad) {
+    // Streets: use corridor description or public realm
+    const roadDesc = entry.publicRealm || entry.materials || entry.descriptionText;
+    features = condenseToKeywords(roadDesc, maxKeywords);
+    // Add surface type if available
+    if (entry.materials && !features.includes(condenseToKeywords(entry.materials, 1))) {
+      features += '+' + condenseToKeywords(entry.materials, 1);
+    }
+  } else if (isPark) {
+    // Parks/plazas: use public realm, landscape features
+    const parkDesc = entry.publicRealm || entry.materials || entry.descriptionText;
+    features = condenseToKeywords(parkDesc, maxKeywords);
+  } else {
+    features = condenseToKeywords(entry.descriptionText || entry.materials || entry.publicRealm, maxKeywords);
+  }
+
+  // User description override takes priority if present and non-empty
+  if (entry.descriptionText?.trim() && entry.descriptionText.trim().length > 10) {
+    // Append user description to features rather than replacing
+    const userKeywords = condenseToKeywords(entry.descriptionText, 3);
+    if (userKeywords && !features.includes(userKeywords)) {
+      features = features ? `${features}, ${userKeywords}` : userKeywords;
+    }
+  }
+
+  if (!features) features = entry.zoneType.replace(/_/g, ' ');
+
+  // Priority zones: allow up to 160 chars. Standard: 100 chars.
+  const maxLen = priority ? 160 : 100;
+  const label = `[${entry.color}] ${name} | ${scale} | ${features}`;
+  return label.length > maxLen ? label.slice(0, maxLen - 3) + '...' : label;
+}
+
+/**
+ * Build a SCHEMA AVANZATO format prompt — structured labels instead of paragraphs.
+ * Targets 2,200-2,500 chars for optimal Gemini 3 Pro attention.
+ */
+function buildSCHEMAPrompt(
+  zoneEntries: ZonePromptEntry[],
+  options: AIRenderOptions,
+  mode: 'structured' | 'ground' | 'building',
+  imageIndices?: Map<string, number>,
+): string {
+  const styleId = options.renderStyleId || options.style || 'photorealistic';
+  const style = GEMINI_STYLE_MODIFIERS[styleId];
+  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'site-plan', 'site-plan-watercolor', 'clay-maquette'].includes(styleId);
+  const isSitePlan = styleId === 'site-plan' || styleId === 'site-plan-watercolor' || styleId === 'site-plan-photo';
+  const isClay = styleId === 'clay-maquette';
+
+  const lines: string[] = [];
+
+  // ── STYLE ──
+  // Truncate style prompt to first sentence or 200 chars
+  if (style) {
+    let styleText = style.prompt;
+    const firstSentence = styleText.indexOf('. ');
+    if (firstSentence > 0 && firstSentence < 200) {
+      styleText = styleText.slice(0, firstSentence + 1);
+    } else if (styleText.length > 200) {
+      styleText = styleText.slice(0, 197) + '...';
+    }
+    lines.push(`STYLE: ${styleText}`);
+  }
+
+  // ── COMPOSITION ──
+  if (isSitePlan) {
+    lines.push('COMPOSITION: Near-top-down aerial, 15-20 degrees from nadir, colored polygons mark proposed zones on satellite photo');
+  } else if (mode === 'ground') {
+    lines.push('COMPOSITION: Oblique aerial, drone 60m altitude, ground-level zones only, no vertical structures');
+  } else if (mode === 'building') {
+    const entry = zoneEntries[0];
+    lines.push(`COMPOSITION: Oblique aerial, drone 60m, single building on ${entry?.color || 'colored'} footprint, full 3D mass extending into sky`);
+  } else {
+    lines.push('COMPOSITION: Oblique aerial, DJI drone 60m altitude, colored polygons mark proposed zones on satellite photo');
+  }
+
+  // ── LIGHTING ──
+  if (isClay) {
+    lines.push('LIGHTING: Soft diffused studio light, gentle shadows defining form only');
+  } else if (isArtistic) {
+    lines.push(`LIGHTING: Match ${style?.label || styleId} artistic conventions`);
+  } else if (styleId === 'atmospheric') {
+    lines.push('LIGHTING: Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze');
+  } else {
+    lines.push('LIGHTING: Golden hour, warm southwest sun, crisp architectural shadows');
+  }
+
+  // ── CONTEXT ──
+  lines.push('CONTEXT: Preserve all unmasked satellite imagery exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent satellite context.');
+
+  // ── ZONES ──
+  if (zoneEntries.length > 0) {
+    lines.push('ZONES:');
+    zoneEntries.forEach((entry, i) => {
+      const imgIdx = imageIndices?.get(entry.color);
+      lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry, imgIdx)}`);
+    });
+  }
+
+  // ── MANDATORY ──
+  if (isClay) {
+    lines.push('MANDATORY: ALL elements rendered as pure white matte plaster/clay. Every building, street, park, tree — everything is the same white material. Only shadows and form define shapes. Zero color, zero texture, zero real materials.');
+  } else {
+    lines.push('MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate materials.');
+  }
+
+  // ── PROHIBITIONS ──
+  const prohibitions = [
+    'buildings extending beyond polygon boundaries',
+    'colored polygon fills visible on rooftops or facades',
+    'boundary lines or outlines visible in final image',
+    'people or pedestrians',
+    'text overlays or watermarks',
+  ];
+  if (isClay) {
+    prohibitions.push('any color other than white/off-white', 'any real building materials or textures', 'any colored surfaces');
+  }
+  if (isArtistic && !isClay) {
+    prohibitions.push('photorealistic rendering');
+  }
+  lines.push(`PROHIBITIONS: ${prohibitions.join(', ')}`);
+
+  // ── User custom prompt ──
+  if (options.customPrompt?.trim()) {
+    lines.push(`ADDITIONAL: ${options.customPrompt.trim()}`);
+  }
+
+  const result = lines.join('\n');
+  console.log(`[AIRender] SCHEMA prompt (${result.length} chars, ${zoneEntries.length} zones):\n${result}`);
+  return result;
 }
 
 /**
@@ -1244,14 +1374,23 @@ async function compositeZoneRender(
     }
   }
 
-  // Composite: AI render masked, then drawn onto base
+  // Apply soft feather to mask edges so zones blend into satellite
+  const featherPx = 4 * dpr;
+  const featherCanvas = document.createElement('canvas');
+  featherCanvas.width = w;
+  featherCanvas.height = h;
+  const featherCtx = featherCanvas.getContext('2d')!;
+  featherCtx.filter = `blur(${featherPx}px)`;
+  featherCtx.drawImage(maskCanvas, 0, 0);
+
+  // Composite: AI render masked with feathered edges, then drawn onto base
   const aiCanvas = document.createElement('canvas');
   aiCanvas.width = w;
   aiCanvas.height = h;
   const aiCtx = aiCanvas.getContext('2d')!;
   aiCtx.drawImage(renderedImg, 0, 0, w, h);
   aiCtx.globalCompositeOperation = 'destination-in';
-  aiCtx.drawImage(maskCanvas, 0, 0);
+  aiCtx.drawImage(featherCanvas, 0, 0);
   ctx.drawImage(aiCanvas, 0, 0);
 
   // Step 2: For buildings, pixel-diff above the polygon for 3D height
@@ -1319,6 +1458,86 @@ async function compositeZoneRender(
   } else {
     console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
   }
+
+  return canvas.toDataURL('image/png');
+}
+
+/** Clip the composite to the site boundary polygon so nothing renders outside it.
+ *  Uses a feathered mask so the boundary edge blends rather than hard-cuts. */
+async function clipToSiteBoundary(
+  dataUri: string,
+  map: MapboxMap,
+  boundaryZone: SiteZone,
+): Promise<string> {
+  const img = await loadImage(dataUri);
+  const w = img.naturalWidth;
+  const h = img.naturalHeight;
+  const dpr = window.devicePixelRatio || 1;
+
+  const pixels = siteBoundaryToPixels(map, boundaryZone.coordinates!);
+  const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
+
+  // Draw site boundary polygon as white on black mask
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const maskCtx = maskCanvas.getContext('2d')!;
+  maskCtx.fillStyle = '#000000';
+  maskCtx.fillRect(0, 0, w, h);
+  maskCtx.fillStyle = '#ffffff';
+  maskCtx.beginPath();
+  maskCtx.moveTo(devicePixels[0].x, devicePixels[0].y);
+  for (let i = 1; i < devicePixels.length; i++) {
+    maskCtx.lineTo(devicePixels[i].x, devicePixels[i].y);
+  }
+  maskCtx.closePath();
+  maskCtx.fill();
+
+  // Slight feather so the boundary edge blends
+  const featherCanvas = document.createElement('canvas');
+  featherCanvas.width = w;
+  featherCanvas.height = h;
+  const featherCtx = featherCanvas.getContext('2d')!;
+  featherCtx.filter = `blur(${6 * dpr}px)`;
+  featherCtx.drawImage(maskCanvas, 0, 0);
+
+  // Apply mask to composite
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+  ctx.drawImage(img, 0, 0, w, h);
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(featherCanvas, 0, 0);
+
+  return canvas.toDataURL('image/png');
+}
+
+/** Apply an alpha feather at the edges of an image so the overlay fades into the map. */
+async function applyEdgeFeather(dataUri: string, featherPx: number): Promise<string> {
+  const img = await loadImage(dataUri);
+  const w = img.naturalWidth;
+  const h = img.naturalHeight;
+  const dpr = window.devicePixelRatio || 1;
+  const f = featherPx * dpr;
+
+  // Create an inset rectangle mask and blur it for soft edges
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const maskCtx = maskCanvas.getContext('2d')!;
+  maskCtx.filter = `blur(${f}px)`;
+  maskCtx.fillStyle = '#ffffff';
+  maskCtx.fillRect(f, f, w - f * 2, h - f * 2);
+
+  // Apply the mask to the image
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d')!;
+  ctx.drawImage(img, 0, 0, w, h);
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(maskCanvas, 0, 0);
 
   return canvas.toDataURL('image/png');
 }
@@ -1618,18 +1837,9 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
   for (const zone of zones) {
     if (!zone.coordinates?.length) continue;
 
-    // Include site_boundary with a special contextual infill entry
-    if (zone.zone_type === 'site_boundary') {
-      rawEntries.push({
-        zoneId: zone.id,
-        entry: {
-          color: zone.color || '#F5D63D',
-          zoneType: 'site_boundary',
-          zoneName: 'Site Boundary / Contextual Infill',
-        },
-      });
-      continue;
-    }
+    // Skip site_boundary — it's never composited and including it in the
+    // prompt risks the AI drawing visible boundary lines/edges
+    if (zone.zone_type === 'site_boundary') continue;
 
     const config = ZONE_TYPE_CONFIG[zone.zone_type];
     const color = zone.color || config?.color || '#888888';
@@ -1752,109 +1962,7 @@ function defaultZoneDescription(zoneType: string): string {
 function buildStructuredPrompt(options: AIRenderOptions): string {
   const zones = options.siteZones || [];
   const zoneEntries = collectZonePromptEntries(zones);
-  const styleId = options.renderStyleId || options.style || 'photorealistic';
-  const style = GEMINI_STYLE_MODIFIERS[styleId];
-
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'massing-study', 'site-plan', 'clay-maquette'].includes(styleId);
-  const isSitePlan = styleId === 'site-plan';
-
-  const parts: string[] = [];
-
-  // ── Opening narrative — Camera + Environment ──
-  if (isSitePlan) {
-    parts.push(
-      'Orthographic top-down site plan of an urban development. Colored polygon overlays on this aerial image mark proposed zones.',
-      'Render as a flat 2D view looking straight down — no 3D perspective, no cast shadows.',
-    );
-  } else if (isArtistic) {
-    parts.push(
-      `Aerial view of an urban development site. Colored polygon overlays mark proposed zones on this satellite photograph.`,
-      `Transform each colored zone into its described content, rendered in ${style?.label || styleId} style.`,
-    );
-  } else {
-    parts.push(
-      'Aerial photograph captured by a DJI drone at approximately 60 meters altitude, looking down at an oblique angle over an urban development site.',
-      'Colored polygon overlays mark proposed zones. Transform each colored area into photorealistic architecture and landscape that seamlessly replaces the overlay.',
-    );
-  }
-
-  // ── Style ──
-  if (style) {
-    parts.push(style.prompt);
-  }
-
-  // ── Zone-by-zone narrative descriptions ──
-  if (zoneEntries.length > 0) {
-    const zoneNarratives: string[] = [];
-
-    for (const entry of zoneEntries) {
-      const color = colorName(entry.color);
-
-      if (entry.zoneType === 'site_boundary') {
-        zoneNarratives.push(
-          `The ${color} background area is the site boundary. Fill it with realistic urban ground-plane context: ` +
-          `public sidewalks matching surrounding pavement, manicured grass, small street trees, and pedestrian paths ` +
-          `that seamlessly blend the new development with the surrounding satellite imagery.`
-        );
-        continue;
-      }
-
-      const desc = buildArchetypeDescription(entry, entry.zoneType);
-      const userDesc = entry.descriptionText?.trim();
-      const isBuilding = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(entry.zoneType);
-
-      if (isBuilding) {
-        // Scale text from floors/height
-        const scaleText = entry.floors ? `${entry.floors}-story`
-          : entry.heightM ? `${entry.heightM}m tall`
-          : 'multi-story';
-
-        // Building narrative — emphasize 3D volume, SCALE, and foundation containment
-        zoneNarratives.push(
-          `The ${color} polygon is a building footprint. Render a ${scaleText} ${desc}.` +
-          (userDesc ? ` ${userDesc}.` : '') +
-          ` This is a large ${scaleText} structure that fills the entire ${color} footprint — not a small house or cabin.` +
-          ` The ${color} area is the building's ground-level foundation only — render the full vertical 3D mass ` +
-          `and roofline extending naturally into the sky above, respecting aerial perspective. ` +
-          `Replace every ${color} pixel with building facade, structure, or ground-plane landscaping. ` +
-          `Do not let building materials bleed horizontally into neighboring zones. ` +
-          `CRITICAL: The building's walls, shadows, and all architectural elements must stay strictly within the horizontal boundaries of the ${color} polygon footprint. No part of the building may extend sideways beyond the polygon perimeter.`
-        );
-      } else {
-        // Ground-level zone narrative — emphasize strict horizontal containment
-        zoneNarratives.push(
-          `The ${color} area is a ${desc}.` +
-          (userDesc ? ` ${userDesc}.` : '') +
-          ` Fill it precisely within its boundaries, treating edges as hard physical curbs. ` +
-          `Replace every ${color} pixel completely — no colored overlay should remain visible.`
-        );
-      }
-    }
-
-    parts.push(zoneNarratives.join(' '));
-  }
-
-  // ── Containment + preservation instructions ──
-  parts.push(
-    'Maintain strict containment — each zone stays within its colored boundary. ' +
-    'Do not include any people, pedestrians, human figures, or crowds anywhere in the scene. ' +
-    'Keep all satellite imagery outside the site boundary exactly as it is, preserving the original style, lighting, and composition.'
-  );
-
-  // ── Lighting (photorealistic only) ──
-  if (!isArtistic && !isSitePlan) {
-    parts.push(
-      'Warm afternoon sunlight from the southwest casts crisp architectural shadows. ' +
-      'Match the existing satellite imagery perspective, color temperature, and lighting for a seamless photomontage.'
-    );
-  }
-
-  // ── User custom prompt ──
-  if (options.customPrompt?.trim()) {
-    parts.push(options.customPrompt.trim());
-  }
-
-  return parts.join(' ');
+  return buildSCHEMAPrompt(zoneEntries, options, 'structured');
 }
 
 /**
@@ -2032,6 +2140,8 @@ async function callVertexAI(
   guidanceScale?: number,
   model?: string,
   archetypeImages?: Array<{ image_base64: string; label: string; zone_color?: string }>,
+  thinkingBudget?: number,
+  imageSize?: string,
 ): Promise<{ imageDataUri: string; seed: number }> {
   console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default', 'archetypeImages:', archetypeImages?.length || 0);
 
@@ -2055,6 +2165,12 @@ async function callVertexAI(
   }
   if (archetypeImages && archetypeImages.length > 0) {
     body.archetype_images = archetypeImages;
+  }
+  if (thinkingBudget != null) {
+    body.thinking_budget = thinkingBudget;
+  }
+  if (imageSize) {
+    body.image_size = imageSize;
   }
 
   const token = localStorage.getItem('access_token');
@@ -2128,6 +2244,13 @@ export function useAIRender(): UseAIRenderReturn {
       const negativePrompt = buildNegativePrompt(options);
       const guidanceScale = options.guidanceScale ?? 15;
 
+      // Compute thinking budget from zone count
+      const zoneCount = options.siteZones?.length ?? 0;
+      let thinkingBudget: number | undefined;
+      if (zoneCount >= 30) thinkingBudget = 24576;
+      else if (zoneCount >= 16) thinkingBudget = 16384;
+      else if (zoneCount >= 6) thinkingBudget = 8192;
+
       try {
         const { imageDataUri, seed: resultSeed } = await callVertexAI(
           imageBase64,
@@ -2138,6 +2261,8 @@ export function useAIRender(): UseAIRenderReturn {
           negativePrompt || undefined,
           guidanceScale,
           options.model,
+          undefined,
+          thinkingBudget,
         );
         return { imageUrl: imageDataUri, bounds, seed: resultSeed, prompt };
       } catch (err: unknown) {
@@ -2494,7 +2619,7 @@ export function useAIRender(): UseAIRenderReturn {
         // Hide ONLY the outline/stroke layers before capturing the base screenshot
         // so colored fills remain visible (Gemini uses them as spatial anchors)
         // but polygon borders don't bake into the composite base.
-        const OUTLINE_LAYERS = ['site-zones-outline', 'site-zones-selected', 'site-zones-labels', 'massing-preview-extrusion'];
+        const OUTLINE_LAYERS = ['site-zones-outline', 'site-zones-selected', 'site-zones-labels', 'site-zones-boundary-fill', 'massing-preview-extrusion'];
         for (const layerId of OUTLINE_LAYERS) {
           if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', 'none');
         }
@@ -2520,7 +2645,7 @@ export function useAIRender(): UseAIRenderReturn {
         // to give Gemini a true orthographic reference for spatial layout
         const styleId = options.renderStyleId || options.style || 'photorealistic';
         let topDownBase64: string | null = null;
-        if (styleId === 'site-plan' || styleId === 'site-plan-photo') {
+        if (styleId === 'site-plan' || styleId === 'site-plan-photo' || styleId === 'site-plan-watercolor') {
           try {
             console.log('[AIRender] Site plan: capturing top-down reference...');
             map.jumpTo({ center: origCenter, zoom: origZoom, bearing: origBearing, pitch: 0 });
@@ -2641,6 +2766,13 @@ export function useAIRender(): UseAIRenderReturn {
               ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view of the site — use this as the spatial layout reference for the site plan. Maintain exact zone positions and proportions as shown in this nadir view.' }]
               : undefined;
 
+            // Compute thinking budget from total zone count
+            const totalZones = options.siteZones?.length ?? 0;
+            let groundThinkingBudget: number | undefined;
+            if (totalZones >= 30) groundThinkingBudget = 24576;
+            else if (totalZones >= 16) groundThinkingBudget = 16384;
+            else if (totalZones >= 6) groundThinkingBudget = 8192;
+
             const { imageDataUri: groundResult } = await callVertexAI(
               groundScreenshot,
               groundPrompt,
@@ -2651,6 +2783,7 @@ export function useAIRender(): UseAIRenderReturn {
               guidanceScale,
               options.model,
               groundArchetypeImages,
+              groundThinkingBudget,
             );
 
             // Composite ground zones onto the cumulative result with strict polygon clipping
@@ -2781,6 +2914,7 @@ export function useAIRender(): UseAIRenderReturn {
               guidanceScale,
               options.model,
               allBuildingImages.length > 0 ? allBuildingImages : undefined,
+              undefined, // thinkingBudget — single building, let backend auto-default
             );
 
             // Composite with headroom-expanded clip
@@ -2846,8 +2980,17 @@ export function useAIRender(): UseAIRenderReturn {
           throw new Error('All render passes failed');
         }
 
+        // Clip final composite to site boundary so nothing bleeds outside
+        const siteBoundaryZone = zones.find(z => z.zone_type === 'site_boundary');
+        if (siteBoundaryZone?.coordinates?.length) {
+          cumulativeDataUri = await clipToSiteBoundary(cumulativeDataUri, map, siteBoundaryZone);
+        }
+
+        // Apply edge feathering so the overlay rectangle blends into satellite
+        const featheredUri = await applyEdgeFeather(cumulativeDataUri, 20);
+
         const finalResult: AIRenderResult = {
-          imageUrl: cumulativeDataUri,
+          imageUrl: featheredUri,
           bounds: originalBounds,
           seed: options.seed,
           prompt: `Two-pass render: ${successfulZones.length} zones (${groundZones.length} ground + ${buildingZones.length} buildings)`,

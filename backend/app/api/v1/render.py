@@ -110,6 +110,17 @@ class RenderRequest(BaseModel):
         default=None,
         description="Previous render for dual anchoring (iterative refinement).",
     )
+    thinking_budget: Optional[int] = Field(
+        default=None,
+        ge=0,
+        le=32768,
+        description="Gemini thinking budget tokens for complex spatial reasoning",
+    )
+    image_size: Optional[str] = Field(
+        default=None,
+        pattern=r"^(512|1K|2K|4K)$",
+        description="Output image resolution: 512, 1K, 2K, or 4K. Model-dependent.",
+    )
 
 
 class RenderResponse(BaseModel):
@@ -255,7 +266,7 @@ _MODEL_TOKEN_COST: dict[str, int] = {
     "gemini-3-pro-image-preview": 27,     # ~$0.134
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
-_WEEKLY_TOKEN_ALLOWANCE = 1000
+_WEEKLY_TOKEN_ALLOWANCE = 99999
 
 
 def _build_gemini_url(settings, model: str | None = None) -> str:
@@ -433,6 +444,28 @@ async def generate_render(
     if req.guidance_scale is not None:
         temperature = max(0.0, min(1.5, 1.5 - (req.guidance_scale / 30) * 1.5))
 
+    gen_config = {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "temperature": temperature,
+    }
+
+    # Add image size for models that support higher resolution
+    _HIRES_MODELS = {"gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview"}
+    image_size = req.image_size
+    if image_size is None and render_model in _HIRES_MODELS:
+        image_size = "2K"  # Default to 2K for supported models
+    if image_size and render_model in _HIRES_MODELS:
+        gen_config["imageConfig"] = {"imageSize": image_size}
+
+    # Add thinking budget for complex scenes (only models that support it)
+    _THINKING_MODELS = {"gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview"}
+    if render_model in _THINKING_MODELS:
+        thinking = req.thinking_budget
+        if thinking is None and len(req.prompt) > 1000:
+            thinking = 8192
+        if thinking is not None and thinking > 0:
+            gen_config["thinkingConfig"] = {"thinkingBudget": thinking}
+
     payload = {
         "contents": [
             {
@@ -440,22 +473,20 @@ async def generate_render(
                 "parts": parts,
             }
         ],
-        "generationConfig": {
-            "responseModalities": ["TEXT", "IMAGE"],
-            "temperature": temperature,
-        },
+        "generationConfig": gen_config,
     }
 
     # --- Logging ---
     auth_mode = "API key" if settings.gemini_api_key else "Vertex AI"
     logger.info(
         "Render request — model=%s, auth=%s, prompt_length=%d, has_mask=%s, "
-        "temperature=%.2f",
+        "temperature=%.2f, imageSize=%s",
         req.model or _GEMINI_RENDER_MODEL,
         auth_mode,
         len(req.prompt),
         bool(req.mask_base64),
         temperature,
+        gen_config.get("imageConfig", {}).get("imageSize", "default"),
     )
     logger.debug("Final prompt:\n%s", prompt_text)
 

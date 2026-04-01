@@ -41,9 +41,12 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
     return result;
   }, [zones]);
 
+  // Filter out zones with missing or invalid coordinates to prevent react-three crashes
+  const validZones = zones.filter(z => z.coordinates && Array.isArray(z.coordinates) && z.coordinates.length >= 3);
+
   return (
     <group name="site-zones">
-      {zones.map((zone) => (
+      {validZones.map((zone) => (
         <SiteZoneMesh
           key={zone.id}
           zone={zone}
@@ -53,7 +56,7 @@ export function SiteZonesGroup({ zones, projectLat, projectLng, buildingStatuses
           onClick={onZoneClick ? () => onZoneClick(zone.id) : undefined}
         />
       ))}
-      <LayoutPreviewOverlay zones={zones} origin={origin} />
+      <LayoutPreviewOverlay zones={validZones} origin={origin} />
     </group>
   );
 }

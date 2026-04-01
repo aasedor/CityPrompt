@@ -28,7 +28,7 @@
       "id": "narrow_residential_street",
       "title": "Narrow Residential Street",
       "aestheticCategory": "auto_oriented",
-      "description": "A quiet narrow residential street with no center line, on-street parallel parking, mature street trees, and concrete sidewalks — a shaded gray ribbon with car-lined edges from above",
+      "description": "A quiet narrow residential street with no center line, on-street parallel parking, mature street trees, and concrete",
       "transportModes": [
         "walking",
         "automobile"
@@ -112,13 +112,18 @@
           "description": "Narrow Residential Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/narrow-residential-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic narrow residential street. Smooth dark gray asphalt roadway 8-10 meters wide with no painted center line. Parallel-parked cars along both curbs as small colored rectangles. Pale gray concrete sidewalks on both sides separated from the road by a narrow grass planting strip. Mature deciduous street trees planted at regular 10-meter intervals in the planting strip with round canopies partially overhanging the road, creating dappled shadow patterns on the asphalt. Front yard lawns and driveways visible beyond the sidewalks. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a narrow dark gray asphalt strip with no center line markings. Rows of small colored car rectangles parked along both curb edges. Pale gray concrete sidewalk strips on each side with a narrow green grass buffer. Round deciduous tree canopies at regular intervals partially overhanging the road, casting circular shadow patterns. Green lawn strips visible beyond the sidewalks. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, lane markings, median, commercial signage"
+      }
     },
     {
       "id": "suburban_residential_street",
       "title": "Suburban Residential Street",
       "aestheticCategory": "auto_oriented",
-      "description": "A wider suburban street with two lanes, rolled curbs, young trees, and wide front-yard setbacks — a bright open road with generous grass margins from above",
+      "description": "A wider suburban street with two lanes, rolled curbs, young trees, and wide front-yard setbacks",
       "transportModes": [
         "walking",
         "automobile"
@@ -201,13 +206,18 @@
           "description": "Suburban Residential Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/suburban-residential-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic wide suburban residential street. Asphalt roadway with a dashed yellow center line and rolled concrete curbs. Wide bright green lawn setbacks stretching from the curb to houses on both sides. Young deciduous trees with small canopies at irregular intervals in wide grass strips. Concrete sidewalks set well back from the curb. Wide driveways connecting to garage doors, no on-street parking. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a dark gray asphalt road strip with dashed yellow center line. Rolled concrete curb edges. Wide bright green lawn panels on both sides. Small young tree canopies scattered at irregular intervals. Pale concrete sidewalks set far back from the curb. Driveway cuts visible as lighter rectangles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, mature tree canopy closing over road, commercial buildings"
+      }
     },
     {
       "id": "collector_road",
       "title": "Collector Road",
       "aestheticCategory": "auto_oriented",
-      "description": "A two-to-three lane collector road with a center turn lane, sidewalks, and street trees connecting neighborhoods to arterials — a wider gray road with turn-lane stripe from above",
+      "description": "A two-to-three lane collector road with a center turn lane, sidewalks, and street trees connecting neighborhoods to",
       "transportModes": [
         "walking",
         "bicycle",
@@ -292,13 +302,18 @@
           "description": "Collector Road in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/collector-road/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic collector road. Moderately wide asphalt roadway with one travel lane each direction and a center turn lane. Double yellow center lines and white dashed lane markings. Concrete sidewalks on both sides with narrow grass planting strips and mature street trees. Mixed residential and small commercial buildings along the edges. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a three-lane asphalt road pattern with double yellow center lines and white dashed markings. Concrete sidewalk strips with green grass buffer. Round tree canopies at regular intervals. White crosswalk stripes at intersections. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, highway-scale infrastructure"
+      }
     },
     {
       "id": "arterial_boulevard",
       "title": "Arterial Boulevard (Tree-Lined)",
       "aestheticCategory": "auto_oriented",
-      "description": "A divided arterial boulevard with a tree-lined median, two or three lanes each way, sidewalks, and bike lanes — a grand green-striped corridor from above",
+      "description": "A divided arterial boulevard with a tree-lined median, two or three lanes each way, sidewalks, and bike lanes",
       "transportModes": [
         "walking",
         "bicycle",
@@ -386,13 +401,18 @@
           "description": "Arterial Boulevard (Tree-Lined) in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/arterial-boulevard/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic divided arterial boulevard. Wide roadway with a central raised median planted with a double row of mature deciduous trees forming a continuous green canopy band. Two to three asphalt travel lanes in each direction with white dashed lane markings. Painted bike lanes along each curb edge. Wide concrete sidewalks with additional street trees. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a wide symmetric road corridor. A continuous green canopy band of mature tree crowns runs down the center median. Dark asphalt travel lanes on each side with white dashed markings. Pale concrete sidewalk bands with tree canopy dots on the outer edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, highway-scale infrastructure"
+      }
     },
     {
       "id": "highway_freeway",
       "title": "Highway / Freeway",
       "aestheticCategory": "auto_oriented",
-      "description": "A high-speed limited-access highway with four or more lanes, concrete jersey barriers, no street trees, and wide shoulders — a broad gray river of asphalt from above",
+      "description": "A high-speed limited-access highway with four or more lanes, concrete jersey barriers, no street trees, and wide",
       "transportModes": [
         "automobile"
       ],
@@ -475,13 +495,18 @@
           "description": "Highway / Freeway in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/highway-freeway/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic multi-lane highway. Broad asphalt corridor with four or more lanes in each direction. Concrete jersey barrier median. White dashed lane markings across all lanes. Wide paved shoulders. No trees, no sidewalks, no pedestrian infrastructure. Sound walls along outer edges. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a broad dark gray asphalt expanse. White dashed lane markings creating 8+ lane grid pattern. Thin pale concrete jersey barrier line down the center. Wide paved shoulders. No trees or green elements. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, trees, pedestrian crossings, bike lanes"
+      }
     },
     {
       "id": "roundabout",
       "title": "Roundabout / Traffic Circle",
       "aestheticCategory": "auto_oriented",
-      "description": "A single-lane or multi-lane roundabout with a central landscaped island, splitter islands, and crosswalks — a circular road ring from above",
+      "description": "A single-lane or multi-lane roundabout with a central landscaped island, splitter islands, and crosswalks",
       "transportModes": [
         "walking",
         "bicycle",
@@ -566,7 +591,12 @@
           "description": "Roundabout / Traffic Circle in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/roundabout/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic roundabout intersection. A circular road ring of dark gray asphalt surrounding a raised central landscaped island with mature trees and shrubs. White dashed lane markings. Triangular concrete splitter islands at each approach. Crosswalk zebra stripes. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a circular dark gray asphalt ring encircling a green landscaped center island with tree canopies. White dashed markings on the roadway. Triangular splitter islands at each approach. White crosswalk stripes. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, traffic signals in roundabout"
+      }
     },
     {
       "id": "cul_de_sac",
@@ -655,13 +685,18 @@
           "description": "Cul-de-Sac in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/cul-de-sac/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic cul-de-sac. A narrow residential street terminating in a circular bulb turnaround. Raised center island with a tree and shrubs. Smooth dark gray asphalt with rolled concrete curb. Driveways radiating outward. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a lollipop-shaped asphalt pattern: narrow stem street connecting to a circular turnaround bulb. A green center dot with tree canopy. Driveway cuts radiating outward. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, through traffic, commercial buildings"
+      }
     },
     {
       "id": "back_alley_service_lane",
       "title": "Back Alley / Service Lane",
       "aestheticCategory": "auto_oriented",
-      "description": "A narrow back alley or service lane with no sidewalks, utility poles, dumpsters, and garage doors — a utilitarian gray strip from above",
+      "description": "A narrow back alley or service lane with no sidewalks, utility poles, dumpsters, and garage doors",
       "transportModes": [
         "automobile"
       ],
@@ -742,13 +777,18 @@
           "description": "Back Alley / Service Lane in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/back-alley-service-lane/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic back alley service lane. A narrow paved strip of cracked asphalt running behind buildings. No sidewalks, no curbs. Utility poles with overhead wires. Dumpsters against building walls. Garage doors facing the alley. Chain-link fences. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a thin gray strip of cracked asphalt between building rear walls. No curbs. Utility pole tops. Dark rectangular dumpster shapes. Flat garage door panels along edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, trees, landscaping, clean new pavement"
+      }
     },
     {
       "id": "separated_bike_lane",
       "title": "Separated Bike Lane / Cycle Track",
       "aestheticCategory": "cycling_oriented",
-      "description": "A physically separated two-way cycle track with bollard or curb protection, colored surface markings, and its own signal phase — a narrow colored ribbon parallel to the road from above",
+      "description": "A physically separated two-way cycle track with bollard or curb protection, colored surface markings, and its own",
       "transportModes": [
         "bicycle"
       ],
@@ -830,13 +870,18 @@
           "description": "Separated Bike Lane / Cycle Track in scenic greenway trail. Winding paved path through natural landscape, interpretive nature signs, rest areas with shade pavilions, native tree canopy, and creek crossings on timber bridges.",
           "thumbnailUrl": "/archetypes/streets/separated-bike-lane/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic separated two-way cycle track. Green-painted or red-brown colored asphalt surface 3-4 meters wide. White dashed center line and bicycle stencil markings. Physically separated by bollards or raised curb from traffic lanes. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a thin colored ribbon of green-painted or red-brown asphalt. White dashed center line. White bicycle stencil markings. Row of small bollard dots separating from the darker adjacent road. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, cars on bike lane"
+      }
     },
     {
       "id": "multi_use_trail",
       "title": "Multi-Use Trail / Greenway",
       "aestheticCategory": "cycling_oriented",
-      "description": "A wide paved multi-use trail through a park or greenway corridor for walking, jogging, and cycling — a smooth gray path through green landscape from above",
+      "description": "A wide paved multi-use trail through a park or greenway corridor for walking, jogging, and cycling",
       "transportModes": [
         "walking",
         "bicycle"
@@ -920,13 +965,18 @@
           "description": "Multi-Use Trail / Greenway in scenic greenway trail. Winding paved path through natural landscape, interpretive nature signs, rest areas with shade pavilions, native tree canopy, and creek crossings on timber bridges.",
           "thumbnailUrl": "/archetypes/streets/multi-use-trail/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic paved multi-use trail through a green corridor. Smooth pale gray asphalt or concrete path 3-4 meters wide with a yellow center line. Mature deciduous trees lining both sides creating dappled shade canopy. Open meadow or lawn beyond the tree line. Benches at intervals. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a smooth pale gray ribbon threading through green landscape. Yellow center line. Dense tree canopy overhanging from both sides. Open bright green lawn between canopy gaps. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, motorized vehicles"
+      }
     },
     {
       "id": "pedestrian_promenade",
       "title": "Pedestrian Promenade / Paseo",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A wide pedestrian-only promenade with decorative paving, central trees, café seating, and no vehicle access — a lively patterned walkway from above",
+      "description": "A wide pedestrian-only promenade with decorative paving, central trees, café seating, and no vehicle access",
       "transportModes": [
         "walking"
       ],
@@ -1008,13 +1058,18 @@
           "description": "Pedestrian Promenade / Paseo in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
           "thumbnailUrl": "/archetypes/streets/pedestrian-promenade/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic wide pedestrian promenade. Decorative stone or tile paving in warm tones with herringbone or banded pattern. Central row of mature plane trees. Cafe terraces with round table umbrellas. Ornamental lamp posts. No vehicle lanes. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a wide warm-toned patterned band of decorative paving. Central spine of large circular tree canopies. Colorful umbrella dot clusters along building edges. No vehicle lanes or asphalt. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, vehicle lanes, car traffic"
+      }
     },
     {
       "id": "woonerf_shared_street",
       "title": "Woonerf / Shared Street",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A Dutch-style woonerf or shared street where pedestrians, cyclists, and slow vehicles share a single flush surface with no curbs — a textured living street from above",
+      "description": "A Dutch-style woonerf or shared street where pedestrians, cyclists, and slow vehicles share a single flush surface with",
       "transportModes": [
         "walking",
         "bicycle",
@@ -1101,13 +1156,18 @@
           "description": "Woonerf / Shared Street in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
           "thumbnailUrl": "/archetypes/streets/woonerf-shared-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic Dutch-style woonerf shared street. Single flush surface with no raised curbs. Mixed paving materials: warm brick pavers, stone accents, permeable pavers around tree pits. Trees, planters, and bollards in a chicane pattern. Cars parked informally between planting beds. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a textured mosaic of warm-toned mixed paving. Tree canopies and green planter rectangles in a staggered chicane pattern. No curb lines, no lane markings. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, standard lane markings, raised curbs"
+      }
     },
     {
       "id": "brt_corridor",
       "title": "BRT / Bus Rapid Transit Corridor",
       "aestheticCategory": "transit_oriented",
-      "description": "A bus rapid transit corridor with dedicated center-running bus lanes, raised platforms, and general-purpose outer lanes — red-painted bus lanes from above",
+      "description": "A bus rapid transit corridor with dedicated center-running bus lanes, raised platforms, and general-purpose outer lanes",
       "transportModes": [
         "walking",
         "transit",
@@ -1192,13 +1252,18 @@
           "description": "BRT / Bus Rapid Transit Corridor in high-tech transit hub streetscape. Sleek aluminum and glass shelters, integrated ev charging, smart pavement sensors, dynamic led wayfinding, and polished concrete platforms.",
           "thumbnailUrl": "/archetypes/streets/brt-corridor/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic bus rapid transit corridor. Wide arterial roadway with center-running dedicated bus lanes painted red or terra-cotta. Raised median station platforms with glass-canopy shelters. General-purpose travel lanes flanking both sides. White lane markings. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a symmetric road pattern. Red or terra-cotta painted center bus lanes. Dark gray outer travel lanes. White lane markings. Pale platform rectangles with canopy shelters at stations. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, rail tracks"
+      }
     },
     {
       "id": "light_rail_avenue",
       "title": "Light Rail / Tram Avenue",
       "aestheticCategory": "transit_oriented",
-      "description": "A street with embedded light rail or tram tracks in a grassy median, flanked by travel lanes and sidewalks — steel rails in a green strip from above",
+      "description": "A street with embedded light rail or tram tracks in a grassy median, flanked by travel lanes and sidewalks",
       "transportModes": [
         "walking",
         "bicycle",
@@ -1286,13 +1351,18 @@
           "description": "Light Rail / Tram Avenue in high-tech transit hub streetscape. Sleek aluminum and glass shelters, integrated ev charging, smart pavement sensors, dynamic led wayfinding, and polished concrete platforms.",
           "thumbnailUrl": "/archetypes/streets/light-rail-avenue/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic light rail transit avenue. A center median containing embedded rail tracks as two parallel steel lines through a green grass strip. Station platforms with canopy shelters at stops. General-purpose traffic lanes on both sides. Overhead catenary poles. Trees lining outer sidewalks. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a green-striped center band containing two parallel glinting rail lines. Dark gray travel lanes flanking both sides. Long pale station platform rectangles. Small catenary pole dots. Tree canopy circles along outer edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, heavy freight rail"
+      }
     },
     {
       "id": "main_street_complete",
       "title": "Main Street / Complete Street",
       "aestheticCategory": "auto_oriented",
-      "description": "A traditional main street with on-street parking, wide sidewalks, street trees, bike sharrows, and active commercial frontage — a balanced downtown corridor from above",
+      "description": "A traditional main street with on-street parking, wide sidewalks, street trees, bike sharrows, and active commercial",
       "transportModes": [
         "walking",
         "bicycle",
@@ -1380,13 +1450,18 @@
           "description": "Main Street / Complete Street in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/main-street-complete/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic traditional main street complete street. Two-lane asphalt roadway with on-street parking on both sides. Wide concrete sidewalks with street trees in metal grates. Commercial awnings extending from storefronts. Crosswalk stripes at intersections. Bicycle sharrow markings. Transit stop shelter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a dark gray asphalt road strip framed by white parking stall markings. Parked car rectangles. Wide pale concrete sidewalk bands with tree canopy dots. Colorful awning stripe patterns along building edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, highway-scale width"
+      }
     },
     {
       "id": "campus_pedestrian_spine",
       "title": "Campus Pedestrian Spine",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A wide landscaped pedestrian spine through a campus or institutional district with formal tree alleys, seating, and cross-paths — a green axial corridor from above",
+      "description": "A wide landscaped pedestrian spine through a campus or institutional district with formal tree alleys, seating, and",
       "transportModes": [
         "walking",
         "bicycle"
@@ -1470,13 +1545,18 @@
           "description": "Campus Pedestrian Spine in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
           "thumbnailUrl": "/archetypes/streets/campus-pedestrian-spine/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic campus pedestrian spine. A wide formal walkway of pale stone or concrete paving flanked by double rows of mature deciduous trees forming a continuous canopy alley. Benches at regular intervals. Cross-paths branching to adjacent buildings. Open lawn panels beyond the tree rows. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a pale band of paving framed by two parallel rows of dark green tree canopy. Green lawn panels beyond the tree rows. Small bench rectangles at intervals. Cross-path lines branching off. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, vehicle traffic"
+      }
     },
     {
       "id": "scenic_parkway",
       "title": "Scenic Parkway / Park Drive",
       "aestheticCategory": "auto_oriented",
-      "description": "A curving scenic parkway through a park with generous tree setbacks, grass shoulders, and no commercial development — a winding road through green from above",
+      "description": "A curving scenic parkway through a park with generous tree setbacks, grass shoulders, and no commercial development",
       "transportModes": [
         "walking",
         "bicycle",
@@ -1563,13 +1643,18 @@
           "description": "Scenic Parkway / Park Drive in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/scenic-parkway/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic scenic parkway curving through parkland. Narrow two-lane dark asphalt with double yellow center lines curving gently through a wooded setting. Generous grass shoulders and wide tree setbacks. No buildings, no curbs, no sidewalks. Mature trees at naturalistic spacing with canopies overhanging the roadway. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a thin dark asphalt curve with double yellow center lines threading through lush green landscape. Wide grass shoulders. Irregular tree canopies overhanging the road edges. No buildings adjacent. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, commercial development, highway-scale width"
+      }
     },
     {
       "id": "riverfront_promenade",
       "title": "Riverfront Promenade",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A wide paved promenade along a river or waterfront with railing, lamp posts, and linear planting — a pale ribbon alongside dark water from above",
+      "description": "A wide paved promenade along a river or waterfront with railing, lamp posts, and linear planting",
       "transportModes": [
         "walking",
         "bicycle"
@@ -1653,7 +1738,12 @@
           "description": "Riverfront Promenade in vibrant festival street design. Colorful permeable pavers in patterns, festoon string lighting overhead, moveable planter boxes, public art installations, and bright-colored street furniture.",
           "thumbnailUrl": "/archetypes/streets/riverfront-promenade/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic riverfront promenade. Wide paved walkway of pale gray stone running parallel to a river. Metal or stone railing along the water edge. Ornamental lamp posts at regular intervals. Trees along the inland edge. Benches facing the water. A parallel bikeway. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a pale linear stone band running alongside dark reflective water. Thin railing line along the water edge. Lamp post circles. Linear row of tree canopies along the inland edge. Bench rectangles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, vehicle traffic on promenade"
+      }
     },
     {
       "id": "custom_streets_pathways",
@@ -1740,13 +1830,18 @@
           "description": "Custom Streets / Pathways in tropical boulevard streetscape. Palm-lined median and verges, coral stone curbs, lush tropical understory plantings, warm-toned concrete walks, and decorative tile accents.",
           "thumbnailUrl": "/archetypes/streets/custom-streets-pathways/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic custom street or pathway. A well-designed urban corridor with clearly legible movement hierarchy. Distinct paving materials and edge conditions. Premium urban design quality with appropriate lane markings, sidewalks, and planting. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a clearly defined street or pathway corridor. Paving materials, lane markings, and edge conditions clearly visible. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors"
+      }
     },
     {
       "id": "downtown_thoroughfare",
       "title": "Downtown Thoroughfare",
       "aestheticCategory": "auto_oriented",
-      "description": "A wide 6-lane downtown street with transit service, lined by mid-rise commercial buildings with ground-floor retail, street trees in grates, and active sidewalks",
+      "description": "A wide 6-lane downtown street with transit service, lined by mid-rise commercial buildings with ground-floor retail,",
       "transportModes": [
         "walking",
         "transit",
@@ -1830,13 +1925,18 @@
           "description": "Downtown Thoroughfare as contemporary complete street. Planted median rain gardens, protected cycle track, bioretention planters, mixed-use buildings.",
           "thumbnailUrl": "/archetypes/streets/downtown-thoroughfare/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic wide downtown thoroughfare. Six lanes of dark asphalt with white lane markings. Concrete sidewalks with street trees in metal grates. Commercial buildings with ground-floor retail and awnings. Transit bus at shelter stop. Parallel parked cars. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a wide six-lane dark gray asphalt road with white lane markings. Parked car rectangles along curbs. Pale concrete sidewalk strips with tree canopy dots. Building shadow patterns from flanking structures. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, residential houses"
+      }
     },
     {
       "id": "pedestrian_only_street",
       "title": "Pedestrian-Only Street",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A fully car-free pedestrian street with high-quality paving, street furniture, planting, and active ground-floor frontages for shopping and dining",
+      "description": "A fully car-free pedestrian street with high-quality paving, street furniture, planting, and active ground-floor",
       "transportModes": [
         "walking"
       ],
@@ -1917,13 +2017,18 @@
           "description": "Pedestrian-Only Street with contemporary redesign. Concrete pavers, Corten planters with grasses, timber-slat benches, restored warehouses and new glass buildings.",
           "thumbnailUrl": "/archetypes/streets/pedestrian-only-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic pedestrian-only shopping street. Full-width granite sett, limestone, or concrete paver surface with no vehicle lanes. Ground-floor retail and cafe frontages with outdoor seating. Street trees and seasonal plantings. A fountain or public art focal point. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a warm-toned stone paving surface filling the full width. Tree canopy circles. Cafe umbrella dot clusters along building edges. No vehicles, no lane markings. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, vehicles, road markings, asphalt"
+      }
     },
     {
       "id": "green_alley",
       "title": "Green Alley",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A residential alley retrofitted with permeable paving, bioswales, rain gardens, and native plantings for stormwater management and ecological habitat",
+      "description": "A residential alley retrofitted with permeable paving, bioswales, rain gardens, and native plantings for stormwater",
       "transportModes": [
         "walking",
         "automobile"
@@ -2005,13 +2110,18 @@
           "description": "Green Alley as heavily planted native garden path. Decomposed granite winding through Big Bluestem, Switchgrass, Wild Bergamot.",
           "thumbnailUrl": "/archetypes/streets/green-alley/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic green alley. Permeable concrete pavers or permeable asphalt. Bioswales and rain gardens with native sedges and wildflowers lining the edges. Mature trees overhanging from backyards. Wood privacy fences. Rain barrels and garage entrances. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a narrow strip of permeable pavers in lighter tone. Green bioswale strips along edges. Overhanging tree canopies from adjacent yards. Wood fence lines along property boundaries. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, standard asphalt, curbs"
+      }
     },
     {
       "id": "commercial_alley_laneway",
       "title": "Commercial Alley / Laneway",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A narrow commercial laneway activated with cafes, street art, pop-up vendors, or specialty retail in a compressed urban setting",
+      "description": "A narrow commercial laneway activated with cafes, street art, pop-up vendors, or specialty retail in a compressed urban",
       "transportModes": [
         "walking"
       ],
@@ -2092,13 +2202,18 @@
           "description": "Commercial Alley as Brooklyn-style activated alley. Painted asphalt mural, pop-up vendors, food truck, reclaimed wood tables, botanical mural.",
           "thumbnailUrl": "/archetypes/streets/commercial-alley-laneway/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic narrow commercial laneway. Narrow passage between tall brick building walls. Bluestone flagstone or cobblestone paving. Ground-floor cafes and bars with tiny frontages. Overhead string lights. Street art and murals on walls. Potted plants. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a very narrow strip of stone paving between tall building walls. Overhead string light wires. Tiny cafe table dots along walls. Colorful mural patches. No vehicles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, vehicles, wide road"
+      }
     },
     {
       "id": "yield_street",
       "title": "Yield Street",
       "aestheticCategory": "auto_oriented",
-      "description": "A narrow shared-surface street where vehicles must yield to oncoming traffic and pedestrians, with no curbs and integrated traffic-calming elements",
+      "description": "A narrow shared-surface street where vehicles must yield to oncoming traffic and pedestrians, with no curbs and",
       "transportModes": [
         "walking",
         "cycling",
@@ -2184,13 +2299,18 @@
           "description": "Yield Street as Scandinavian shared-space. Gray granite pavers, Corten planters with grasses and Birch chicanes, timber-clad houses with green roofs.",
           "thumbnailUrl": "/archetypes/streets/yield-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic narrow yield street. Continuous clay brick pavers or cobblestone with no curbs. Bollards and planters defining the driving lane in a chicane pattern. Buildings fronting directly onto the street. Street trees creating canopy. Potted plants and bicycles along building edges. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a narrow continuous brick or stone paved surface with no curb lines or lane markings. Bollard dots and green planter rectangles in a staggered chicane. Tree canopies partially covering the street. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, lane markings, traffic signals, wide road"
+      }
     },
     {
       "id": "neighborhood_main_street",
       "title": "Neighborhood Main Street",
       "aestheticCategory": "pedestrian_oriented",
-      "description": "A traditional neighborhood commercial street with two travel lanes, on-street parking, wide sidewalks, and 2-3 story mixed-use buildings with active retail",
+      "description": "A traditional neighborhood commercial street with two travel lanes, on-street parking, wide sidewalks, and 2-3 story",
       "transportModes": [
         "walking",
         "cycling",
@@ -2274,16 +2394,31 @@
           "description": "Neighborhood Main Street with contemporary design. Protected bike lane, rain garden tree trenches, mixed-use with NanaWall storefronts, modern steel furniture.",
           "thumbnailUrl": "/archetypes/streets/neighborhood-main-street/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic neighborhood main street. Two asphalt travel lanes with on-street parking. Wide sidewalks with street trees and flower baskets on lamp posts. 2-3 story mixed-use buildings with ground-floor retail, awnings, and blade signs. Active neighborhood commercial character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a dark gray two-lane road with parking stall markings. Wide pale sidewalk bands with tree canopy dots and lamp post circles. Colorful awning stripes along building edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, highway-scale width, high-rise buildings"
+      }
     },
     {
       "id": "elevated_rail_transit",
       "title": "Elevated Rail Transit",
       "aestheticCategory": "transit_oriented",
-      "description": "An architecturally stunning elevated rail transit line threading through the urban fabric, with sculptural stations serving as civic landmarks and activated public space beneath the viaduct",
-      "transportModes": ["rail", "walking"],
+      "description": "An architecturally stunning elevated rail transit line threading through the urban fabric, with sculptural stations",
+      "transportModes": [
+        "rail",
+        "walking"
+      ],
       "volume": "high",
-      "generationTags": ["transit", "elevated", "rail", "viaduct", "station", "streets-pathways"],
+      "generationTags": [
+        "transit",
+        "elevated",
+        "rail",
+        "viaduct",
+        "station",
+        "streets-pathways"
+      ],
       "styleProfile": {
         "corridorCharacter": "An elevated rail transit corridor viewed from drone altitude. A slender guideway structure rises above the street on sculptural piers, carrying rail tracks to elevated station platforms. The station is an architectural landmark with a dramatic canopy or enclosure. Below the viaduct, activated public space, landscaping, or civic amenities occupy the ground plane. The elevated structure threads through the urban fabric of mid-rise buildings.",
         "movementHierarchy": "High-capacity rail transit above, pedestrian and cycling below",
@@ -2301,7 +2436,12 @@
           "Modern rail vehicles on the elevated guideway",
           "Surrounding mid-rise urban buildings framing the corridor"
         ],
-        "negative": ["No ugly brutalist concrete", "No oppressive shadows", "No derelict infrastructure", "No text overlays"]
+        "negative": [
+          "No ugly brutalist concrete",
+          "No oppressive shadows",
+          "No derelict infrastructure",
+          "No text overlays"
+        ]
       },
       "propertyPresets": {
         "lane_count": "2 (one per direction, elevated)",
@@ -2315,31 +2455,52 @@
           "id": "elevated_parametric_flow",
           "label": "Parametric Flow Station",
           "description": "Zaha Hadid-inspired flowing double-curved white canopy with geometric perforations creating dappled light, the station serves as both transit hub and sculptural pedestrian bridge",
-          "palette": {"primary": "#E8E0F0", "accent": "#B8A0D0", "ground": "#F0F0F5"},
+          "palette": {
+            "primary": "#E8E0F0",
+            "accent": "#B8A0D0",
+            "ground": "#F0F0F5"
+          },
           "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_0.png"
         },
         {
           "id": "elevated_structural_poetry",
           "label": "Structural Poetry",
           "description": "Santiago Calatrava-inspired tree-like branching white steel columns forming transparent forest canopies, cable-stayed elements, open-air cathedral-like volumes with reflecting pools below",
-          "palette": {"primary": "#F0F5FA", "accent": "#C0D8E8", "ground": "#E8F0F5"},
+          "palette": {
+            "primary": "#F0F5FA",
+            "accent": "#C0D8E8",
+            "ground": "#E8F0F5"
+          },
           "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_1.png"
         },
         {
           "id": "elevated_living_viaduct",
           "label": "Living Viaduct",
           "description": "Split-track design allowing daylight through, sculptural tree-form piers, mature trees growing between tracks, activated linear park underneath with sports courts, bioswales, and public art",
-          "palette": {"primary": "#A8D8A0", "accent": "#78B870", "ground": "#D0E8C8"},
+          "palette": {
+            "primary": "#A8D8A0",
+            "accent": "#78B870",
+            "ground": "#D0E8C8"
+          },
           "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_2.png"
         },
         {
           "id": "elevated_floating_ribbon",
           "label": "Floating Ribbon",
           "description": "Ultra-slender aerodynamic guideway on cable-stayed tapered columns spaced 80m apart, glass-enclosed station glowing as a civic lantern with mass-timber interior, minimal shadow on the vibrant street below",
-          "palette": {"primary": "#F5E8D0", "accent": "#E8C890", "ground": "#FAF5F0"},
+          "palette": {
+            "primary": "#F5E8D0",
+            "accent": "#E8C890",
+            "ground": "#FAF5F0"
+          },
           "thumbnailUrl": "/archetypes/streets/elevated-rail-transit/variant_3.png"
         }
-      ]
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic elevated rail transit corridor. A slender concrete or steel guideway structure rising above the street on sculptural piers. An architecturally dramatic station with a sweeping canopy. Activated public space beneath the viaduct with landscaping. Modern rail vehicles on the guideway. Surrounding mid-rise urban buildings. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a slender elevated guideway ribbon. Two parallel rail lines on the deck. Sculptural pier bases at regular intervals. Station canopy as a dramatic footprint. Green landscaping beneath the viaduct. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, ugly brutalist concrete, oppressive shadows"
+      }
     }
   ]
 }
