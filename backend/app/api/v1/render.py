@@ -503,7 +503,7 @@ async def generate_render(
 
     logger.info("Calling Gemini — %s", auth_mode)
 
-    async with httpx.AsyncClient(timeout=180.0) as client:
+    async with httpx.AsyncClient(timeout=300.0) as client:
         resp = await client.post(url, json=payload, headers=headers)
 
     if resp.status_code != 200:

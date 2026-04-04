@@ -58,14 +58,9 @@ const STREET_VIEW_STYLES = [
     prompt: 'A vibrant post-digital architectural collage depicting the streetscape as a highly stylized mixed media composition resembling a physical mood board. Architecture represented by flat unshaded blocks of pastel colours and oversized mismatched photographic textures of brick concrete and wood applied like rough paper cut-outs with visible torn edges. Trees and landscape elements are vintage botanical illustration cut-outs pasted at varied scales. The sky is an abstract geometric pattern rather than realistic. Pedestrian figures represented by monochromatic vintage photographic cut-outs with stark white paper borders pasted seemingly at varied scales into the scene. Lighting is intentionally flat and illustrative emphasizing the overlapping layers and surreal disjointed scale of different elements. Visible paper texture and adhesive marks throughout. Avant-garde architectural visualization, artistic narrative presentation, Dadaist pop-art influences, design competition aesthetic.',
   },
   {
-    id: 'risograph',
-    label: 'Risograph',
-    prompt: 'Risograph riso print, two-color spot ink on uncoated cream recycled paper with visible fiber flecks. Exactly two semi-transparent soy-based inks -- warm fluorescent coral-vermilion and deep teal-indigo -- printed via stencil drum with visible horizontal roller grain streaks. Where both inks overprint in multiply blend they produce a rich near-black. All tonal variation achieved ONLY through coarse visible halftone dot patterns at varied densities -- absolutely zero smooth gradients or airbrushed shading anywhere. Deliberate 2mm misregistration offset between colour passes creating vibrant double-edge effect on all architectural forms. Uneven splotchy ink coverage with speckle artifacts, faint fingerprint marks, and subtle ink bleed at shape boundaries. Bold simplified flat graphic architectural silhouettes with zero three-dimensional rendering. Raw paper tone visible as a fourth value. Coarse stencil grain texture throughout. Small-press zine aesthetic, Risotto Studio Glasgow, Japanese independent riso print, Hatch Show Print boldness, overprinted spot-colour editorial poster.',
-  },
-  {
-    id: 'gouache',
-    label: 'Gouache',
-    prompt: 'Opaque matte gouache architectural painting on warm ochre-toned cold-press illustration board. Thick chalky completely matte paint with absolutely zero shine or gloss -- every surface has a velvety powdery finish. Bold decisive brushstrokes with visible brush-drag texture and crisp hand-painted edges where each colour mass meets the next. Colour applied in confident blocky flat shapes with zero airbrushed gradients or smooth blending -- adjacent colour areas butt against each other with hard edges like a painted paper collage. Dry-brush passages on sunlit surfaces where bristle marks skip across the paper grain revealing the warm ochre ground beneath. Rich saturated but chalky palette: terracotta and salmon facades, deep prussian blue and navy shadows, cadmium yellow awnings, muted sage vegetation. Thick impasto highlights of pure titanium white mixed with warm yellow applied with a loaded flat brush. Warm underpainting glimpses visible at unpainted edges and through thin shadow washes. Paper fiber texture visible throughout thinner paint areas. Compressed tonal range with chalky value shifts. Mid-century travel poster illustration, Bauhaus design school, WPA Federal Art Project mural painting, Mary Blair colour styling, hand-painted exhibition poster.',
+    id: 'winter',
+    label: 'Winter',
+    prompt: 'Photorealistic winter street-level architectural scene. Snow accumulation on all horizontal surfaces -- rooftops, ledges, window sills, and parapets show realistic drift patterns. Bare deciduous trees with visible branch architecture and zero foliage. Evergreen conifers with heavy snow-load clumps on branches. Frost visible on metal railings, glass surfaces, and exposed stone. Plowed street surfaces with salt-grit residue, thin slush patches, and tire tracks in compacted snow. Cobblestone crevices packed with white snow while dark wet stone crowns create high-contrast grid pattern. Snow piled in sculptural windrows at curb edges. Warm incandescent glow spilling from shop windows and entrance lobbies contrasting against the cool winter palette. Pale blue-grey overcast sky with soft diffuse winter daylight. Low sun angle casting long blue-tinted shadows. Exhaled breath vapor from any figures. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Snow-capped stone lintels and frosted wrought-iron fences on heritage buildings.',
   },
   {
     id: 'pixel-art',
@@ -113,7 +108,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
       }
 
       const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
-      const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric'];
+      const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric', 'winter'];
       const styleModifier = styleObj && !PHOTO_VARIANT_STYLES.includes(styleObj.id)
         ? `RENDER STYLE: ${styleObj.prompt}`
         : styleObj && styleObj.id !== 'photorealistic'

@@ -931,8 +931,20 @@ export function buildStreetViewPrompt(
   );
 
   // ─── CLAUSE 3: VOID DEFINITION (context-aware, archetype-enriched) ───
+  const isWinter = styleModifier?.toLowerCase().includes('winter') ?? false;
   let voidSurface: string;
-  if (pegmanContext === 'park') {
+  if (isWinter) {
+    // Winter-specific void surfaces
+    if (pegmanContext === 'park') {
+      voidSurface = 'snow-covered ground with soft undulating drifts over lawn areas, bare deciduous canopies with visible branch architecture, snow-laden evergreens with heavy clumps on branches, undisturbed powder with small-animal tracks';
+    } else if (pegmanContext === 'water') {
+      voidSurface = 'a milky translucent frozen surface with frost patterns, visible texture cracks, and thin snow dusting along the shoreline';
+    } else if (pegmanContext === 'street' && standingZoneInfo?.surfaceType) {
+      voidSurface = `a plowed surface of ${standingZoneInfo.surfaceType} with salt-grit residue, thin slush patches, tire tracks in compacted snow, and sculptural snow windrows at curb edges`;
+    } else {
+      voidSurface = 'concrete pavement with mottled salt residue, thin black-ice patches reflecting surrounding architecture, and compacted snow at edges';
+    }
+  } else if (pegmanContext === 'park') {
     voidSurface = standingZoneInfo?.landscapeCharacter
       || 'a continuous, manicured grass lawn with scattered mature trees and natural ground cover';
   } else if (pegmanContext === 'water') {
@@ -944,11 +956,14 @@ export function buildStreetViewPrompt(
   } else {
     voidSurface = 'a flat, unbroken, deserted concrete pavement surface';
   }
+  const skyDesc = isWinter
+    ? 'a pale blue-grey winter overcast gradient'
+    : 'a continuous atmospheric gradient';
   lines.push(
     `VOID DEFINITION: All space between the defined zones consists of ${voidSurface}. ` +
     `The background behind all structures consists solely ` +
-    `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is a continuous ` +
-    `atmospheric gradient with no additional towers, buildings, or structures on the horizon.`,
+    `of a clear, unobstructed skyline meeting a flat, empty horizon. The sky is ${skyDesc} ` +
+    `with no additional towers, buildings, or structures on the horizon.`,
   );
 
   // ─── COLOR-TO-ZONE MAPPING LEGEND ───

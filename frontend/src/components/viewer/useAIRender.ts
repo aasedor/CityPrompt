@@ -194,12 +194,12 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'photorealistic, photograph, digital, 3D render, sharp edges, perfect lines, perspective, eye-level view, neon colors, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills, low quality, blurry',
   },
   {
-    id: 'ink-wash',
-    label: 'Ink Wash',
-    strength: 0.65,
+    id: 'winter',
+    label: 'Winter',
+    strength: 0.75,
     prompt:
-      'Expressive architectural ink wash painting on heavy textured watercolor paper. Monochromatic black and grey tones with diluted ink gradients creating atmospheric perspective. Loose and fluid brushstrokes with bold confident calligraphic strokes defining edges. Wet ink bleeding softly at boundaries, white paper left untouched for sky and highlights. Ink splatter accents for vegetation, varying line weight from thick structural strokes to delicate details. Moody, artistic, and conceptual architectural illustration.',
-    negative: 'photorealistic, photograph, digital, 3D render, perfect lines, computer generated, neon colors, cartoon, color, vibrant, low quality, blurry',
+      'Photorealistic winter scene aerial architectural visualization. Snow-covered roofs with realistic drift patterns and accumulation on all horizontal surfaces — ledges, parapets, window sills. Bare deciduous trees with visible branch architecture and no foliage. Evergreen conifers with heavy snow-load clumps on branches. Frosted ground plane showing plowed vs. unplowed contrast — plowed paths with salt-grit residue and thin slush, undisturbed areas with soft powder drifts. Soft diffuse winter daylight from a pale blue-grey overcast sky. Low sun angle casting long blue-tinted shadows. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Warm incandescent glow visible through windows. Frost on exposed metal and glass surfaces.',
+    negative: 'lush green vegetation, summer foliage, bright green lawns, tropical plants, vibrant green trees, warm golden sunlight, low quality, blurry',
   },
   {
     id: 'charcoal',
@@ -284,10 +284,10 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     label: 'Site Plan WC',
     prompt: 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
   },
-  'ink-wash': {
-    id: 'ink-wash',
-    label: 'Ink Wash',
-    prompt: 'Expressive architectural ink wash painting. Monochromatic black and grey tones with diluted ink gradients. Loose and fluid brushstrokes with bold calligraphic edges. Wet ink bleeding softly at boundaries. Moody, artistic, and conceptual architectural illustration.',
+  winter: {
+    id: 'winter',
+    label: 'Winter',
+    prompt: 'Photorealistic winter scene. Snow-covered roofs with drift patterns. Bare deciduous trees, snow-laden evergreens. Frosted surfaces, salt-grit on plowed paths. Soft diffuse winter light, pale blue-grey sky, long blue-tinted shadows. Specular melt/ice sheen on horizontal surfaces. Warm window glow.',
   },
   charcoal: {
     id: 'charcoal',
@@ -374,6 +374,93 @@ async function captureMapCanvasBase64(map: MapboxMap): Promise<string> {
       reader.onerror = () => reject(new Error('Failed to read canvas blob'));
       reader.readAsDataURL(blob);
     }, 'image/png');
+  });
+}
+
+/**
+ * Apply a winter color grade to a satellite base64 image.
+ * Desaturates greens (vegetation → muted brown/grey), adds cool blue cast,
+ * slight brightness boost, and global desaturation for winter atmosphere.
+ * This helps Gemini see winter-toned context and blend rendered zones naturally.
+ */
+async function applyWinterColorGrade(base64: string): Promise<string> {
+  const t0 = performance.now();
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const px = imageData.data;
+
+      for (let i = 0; i < px.length; i += 4) {
+        let r = px[i];
+        let g = px[i + 1];
+        let b = px[i + 2];
+
+        // 1. Detect vegetation: green-dominant pixels → shift to muted winter brown/grey
+        if (g > r + 15 && g > b + 15 && g > 80) {
+          r = r * 0.85 + g * 0.15 + 20;
+          g = g * 0.55 + r * 0.1;
+          b = b * 0.7 + 15;
+        }
+
+        // 2. Global desaturation (20% toward luminance) for muted winter palette
+        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+        r = r * 0.8 + lum * 0.2;
+        g = g * 0.8 + lum * 0.2;
+        b = b * 0.8 + lum * 0.2;
+
+        // 3. Cool blue shift
+        r = r - 3;
+        b = b + 8;
+
+        // 4. Slight brightness boost for snow/frost reflectance
+        px[i] = Math.min(255, Math.max(0, r + 10));
+        px[i + 1] = Math.min(255, Math.max(0, g + 10));
+        px[i + 2] = Math.min(255, Math.max(0, b + 12));
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      const dataUri = canvas.toDataURL('image/png');
+      const result = dataUri.split(',')[1];
+      console.log(`[AIRender] Winter color grade applied in ${(performance.now() - t0).toFixed(0)}ms (${canvas.width}x${canvas.height})`);
+      resolve(result);
+    };
+    img.onerror = () => reject(new Error('Failed to load image for winter color grade'));
+    img.src = `data:image/png;base64,${base64}`;
+  });
+}
+
+/**
+ * Invert a binary mask (white↔black). Used to create a mask that targets
+ * the context area (outside zones) for the winter second-pass enhancement.
+ */
+async function invertMask(maskBase64: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const px = imageData.data;
+      for (let i = 0; i < px.length; i += 4) {
+        px[i] = 255 - px[i];
+        px[i + 1] = 255 - px[i + 1];
+        px[i + 2] = 255 - px[i + 2];
+      }
+      ctx.putImageData(imageData, 0, 0);
+      resolve(canvas.toDataURL('image/png').split(',')[1]);
+    };
+    img.onerror = () => reject(new Error('Failed to load mask for inversion'));
+    img.src = `data:image/png;base64,${maskBase64}`;
   });
 }
 
@@ -1217,7 +1304,7 @@ function buildSCHEMAPrompt(
 ): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const style = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'ink-wash', 'charcoal', 'isometric', 'woodblock', 'site-plan', 'site-plan-watercolor', 'clay-maquette'].includes(styleId);
+  const isArtistic = ['watercolour', 'charcoal', 'isometric', 'woodblock', 'site-plan', 'site-plan-watercolor', 'clay-maquette'].includes(styleId);
   const isSitePlan = styleId === 'site-plan' || styleId === 'site-plan-watercolor' || styleId === 'site-plan-photo';
   const isClay = styleId === 'clay-maquette';
 
@@ -1255,6 +1342,8 @@ function buildSCHEMAPrompt(
     lines.push(`LIGHTING: Match ${style?.label || styleId} artistic conventions`);
   } else if (styleId === 'atmospheric') {
     lines.push('LIGHTING: Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze');
+  } else if (styleId === 'winter') {
+    lines.push('LIGHTING: Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky. Snow-covered roofs, frosted ground plane, bare deciduous trees with visible branch structure, evergreens with heavy snow-load clumps. Increase specular reflectivity of all horizontal surfaces by 20% to simulate melt and ice sheen.');
   } else {
     lines.push('LIGHTING: Golden hour, warm southwest sun, crisp architectural shadows');
   }
@@ -1291,6 +1380,9 @@ function buildSCHEMAPrompt(
   }
   if (isArtistic && !isClay) {
     prohibitions.push('photorealistic rendering');
+  }
+  if (styleId === 'winter') {
+    prohibitions.push('lush green vegetation on deciduous trees', 'summer foliage', 'bright green lawns');
   }
   lines.push(`PROHIBITIONS: ${prohibitions.join(', ')}`);
 
@@ -2251,9 +2343,15 @@ export function useAIRender(): UseAIRenderReturn {
       else if (zoneCount >= 16) thinkingBudget = 16384;
       else if (zoneCount >= 6) thinkingBudget = 8192;
 
+      // Apply winter color grade to satellite context if winter style is selected
+      const styleId = options.renderStyleId || options.style || 'photorealistic';
+      const gradedImageBase64 = styleId === 'winter'
+        ? await applyWinterColorGrade(imageBase64)
+        : imageBase64;
+
       try {
         const { imageDataUri, seed: resultSeed } = await callVertexAI(
-          imageBase64,
+          gradedImageBase64,
           prompt,
           seed,
           aspectRatio,
@@ -2315,6 +2413,52 @@ export function useAIRender(): UseAIRenderReturn {
         if (zones && zones.length > 0) {
           const stitched = await stitchWithBoundaryMask(imageBase64, renderResult.imageUrl, map, zones);
           renderResult.imageUrl = stitched;
+        }
+
+        // Winter Pass 2: Enhance satellite context outside rendered zones
+        const winterStyleId = options.renderStyleId || options.style || 'photorealistic';
+        if (winterStyleId === 'winter' && maskBase64 && renderResult.imageUrl) {
+          setStatusMessage('Pass 2: Enhancing winter context...');
+          console.log('[AIRender] ═══ WINTER PASS 2: Enhancing satellite context ═══');
+
+          try {
+            // Invert mask: white = context area (outside zones), black = rendered zones (protected)
+            const invertedMask = await invertMask(maskBase64);
+
+            // Extract base64 from the stitched data URI
+            const stitchedBase64 = renderResult.imageUrl.startsWith('data:')
+              ? renderResult.imageUrl.split(',')[1]
+              : renderResult.imageUrl;
+
+            const contextPrompt =
+              'Enhance the satellite imagery context in the white-masked area to show realistic winter conditions. ' +
+              'Add snow accumulation on existing rooftops, bare deciduous trees with visible branch structure, ' +
+              'frost on surfaces, and muted winter tones. Make existing buildings look like real buildings with ' +
+              'visible facades, windows, and architectural detail — not grey blocks. ' +
+              'Preserve all road markings, parking lots, and infrastructure detail. ' +
+              'Do NOT alter the black-masked zones — they are already rendered. ' +
+              'Match the winter lighting and snow coverage of the adjacent rendered zones for seamless blending.';
+
+            const pass2Seed = seed + 1;
+            const { imageDataUri: pass2DataUri } = await callVertexAI(
+              stitchedBase64,
+              contextPrompt,
+              pass2Seed,
+              aspectRatio,
+              invertedMask,
+              'summer vegetation, lush green trees, bright green grass, warm golden sunlight',
+              options.guidanceScale ?? 15,
+              options.model,
+            );
+
+            if (pass2DataUri) {
+              renderResult.imageUrl = pass2DataUri;
+              console.log('[AIRender] Winter Pass 2 complete — context enhanced');
+            }
+          } catch (pass2Err) {
+            console.warn('[AIRender] Winter Pass 2 failed, using Pass 1 result:', pass2Err);
+            // Non-fatal: keep the Pass 1 result if Pass 2 fails
+          }
         }
 
         setResult(renderResult);
