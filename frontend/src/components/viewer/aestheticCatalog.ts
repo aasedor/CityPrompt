@@ -104,6 +104,13 @@ export type ArchetypeVariant = {
   shadeId?: string;
   palette?: Record<string, string>;
   description?: string;
+  /** Per-variant floor/area overrides — when set, these take priority over archetype-level values */
+  minFloors?: number;
+  maxFloors?: number;
+  suggestedFloorHeight?: number;
+  suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
 };
 
 export type AestheticOption = {
@@ -124,6 +131,8 @@ export type AestheticOption = {
   minFloors?: number;
   maxFloors?: number;
   suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
 };
@@ -169,6 +178,8 @@ type ArchetypeSeed = {
   minFloors?: number;
   maxFloors?: number;
   suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
   thumbnailUrl?: string;
@@ -345,6 +356,8 @@ function toAestheticOption(
     minFloors: seed.minFloors,
     maxFloors: seed.maxFloors,
     suggestedAreaSqm: seed.suggestedAreaSqm,
+    minAreaSqm: seed.minAreaSqm,
+    maxAreaSqm: seed.maxAreaSqm,
     propertyPresets: seed.propertyPresets,
     variants: seed.variants,
     generationStyleInput: {

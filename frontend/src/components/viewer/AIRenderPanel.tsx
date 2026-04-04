@@ -83,6 +83,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryLightbox, setGalleryLightbox] = useState<SavedRender | null>(null);
+  const [renderLightbox, setRenderLightbox] = useState(false);
 
   useEffect(() => {
     if (!projectId || !showGallery) return;
@@ -508,7 +509,9 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
             <img
               src={result.imageUrl}
               alt="AI Render"
-              className="w-full rounded-lg shadow-md"
+              className="w-full cursor-pointer rounded-lg shadow-md transition hover:opacity-90"
+              onClick={() => setRenderLightbox(true)}
+              title="Click to enlarge"
             />
           </div>
         )}
@@ -604,6 +607,45 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Render result lightbox — click aerial render to enlarge */}
+      {renderLightbox && result && (
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 backdrop-blur-sm"
+          onClick={() => setRenderLightbox(false)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={result.imageUrl}
+              alt="AI Render"
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+              {result.prompt && (
+                <p className="text-xs text-white/80 line-clamp-2">{result.prompt}</p>
+              )}
+            </div>
+            <button
+              onClick={() => setRenderLightbox(false)}
+              className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <a
+              href={result.imageUrl}
+              download={`siteforge-render-${Date.now()}.png`}
+              className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+              title="Download"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+            </a>
+          </div>
         </div>
       )}
 

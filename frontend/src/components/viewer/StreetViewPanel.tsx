@@ -86,6 +86,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
   const [result, setResult] = useState<{ imageUrl: string; prompt: string } | null>(null);
   const [saving, setSaving] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const handleRotateLeft = useCallback(() => {
     if (!streetViewPegman) return;
@@ -209,12 +210,14 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
               </button>
             </div>
           </div>
-          {/* Image */}
+          {/* Image — click to enlarge */}
           <div className="flex-1 overflow-auto p-4">
             <img
               src={result.imageUrl}
               alt="Street view render"
-              className="h-auto w-full rounded-lg"
+              className="h-auto w-full cursor-pointer rounded-lg transition hover:opacity-90"
+              onClick={() => setLightboxOpen(true)}
+              title="Click to enlarge"
             />
           </div>
           {/* Footer — re-render controls */}
@@ -248,6 +251,43 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
             </button>
           </div>
         </div>
+
+        {/* Lightbox modal — click image to enlarge */}
+        {lightboxOpen && result && (
+          <div
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 backdrop-blur-sm"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+              <img
+                src={result.imageUrl}
+                alt="Street view render"
+                className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+              />
+              <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
+                <p className="text-xs text-white/80 line-clamp-2">{result.prompt}</p>
+                <p className="mt-1 text-[10px] text-white/50">
+                  {STREET_VIEW_STYLES.find(s => s.id === selectedStyle)?.label || selectedStyle} style
+                  {streetViewPegman && ` · ${compassLabel(streetViewPegman.angle)}`}
+                </p>
+              </div>
+              <button
+                onClick={() => setLightboxOpen(false)}
+                className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+              >
+                <X size={20} />
+              </button>
+              <a
+                href={result.imageUrl}
+                download={`siteforge-streetview-${Date.now()}.png`}
+                className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
+                title="Download"
+              >
+                <Download size={20} />
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

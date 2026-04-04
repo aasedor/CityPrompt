@@ -67,6 +67,8 @@ type DevelopmentAestheticOption = {
   minFloors?: number;
   maxFloors?: number;
   suggestedAreaSqm?: number;
+  minAreaSqm?: number;
+  maxAreaSqm?: number;
   variants?: CatalogArchetypeVariant[];
 };
 
@@ -197,6 +199,25 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       properties: props,
     });
   };
+
+  // Auto-save when the user picks a new archetype card (any zone type)
+  const prevArchetypeRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    const currentArchetype = (props.development_subcategory as string)
+      || (props.road_subcategory as string)
+      || (props.green_space_subcategory as string)
+      || (props.plaza_subcategory as string)
+      || (props.development_archetype_id as string)
+      || (props.road_archetype_id as string)
+      || (props.green_space_archetype_id as string)
+      || (props.plaza_archetype_id as string);
+
+    // Skip initial mount and zone resets — only fire when archetype actually changes
+    if (prevArchetypeRef.current !== undefined && currentArchetype && currentArchetype !== prevArchetypeRef.current) {
+      handleSave();
+    }
+    prevArchetypeRef.current = currentArchetype;
+  }, [props.development_subcategory, props.road_subcategory, props.green_space_subcategory, props.plaza_subcategory, props.development_archetype_id, props.road_archetype_id, props.green_space_archetype_id, props.plaza_archetype_id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isRemoteReferenceImage = (value: string): boolean => /^https?:\/\//i.test(value);
 
@@ -549,8 +570,26 @@ const resolveOptionCategory = (
       if (selectedOption?.categoryId) {
         nextProps.development_aesthetic_category = selectedOption.categoryId;
       }
-      // Auto-populate floors from archetype suggestion when floors haven't been set
-      if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
+      // Auto-populate floors from variant or archetype suggestion.
+      // Variant-level specs take priority over archetype-level.
+      // When switching variants, always update floors/height to match the new variant.
+      const selectedVariant = variantId && selectedOption?.variants
+        ? selectedOption.variants.find((v) => v.id === variantId)
+        : undefined;
+      const variantMinFloors = selectedVariant?.minFloors;
+      const variantMaxFloors = selectedVariant?.maxFloors;
+      const variantFloorHeight = selectedVariant?.suggestedFloorHeight;
+      const hasVariantOverride = variantMinFloors != null && variantMaxFloors != null;
+
+      if (hasVariantOverride) {
+        // Variant has per-variant floor specs — always apply when switching variants
+        const suggestedFloors = Math.floor((variantMinFloors + variantMaxFloors) / 2);
+        nextProps.floors = suggestedFloors;
+        const floorH = variantFloorHeight || (p.floor_height as number) || 3;
+        nextProps.floor_height = floorH;
+        nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
+      } else if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
+        // Fallback to archetype-level floors only when floors haven't been set
         const suggestedFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
         nextProps.floors = suggestedFloors;
         const floorH = (p.floor_height as number) || 3;
@@ -825,6 +864,15 @@ const resolveOptionCategory = (
                 <option value="recreational_centre">Rec Centre</option>
                 <option value="sports_arena">Sports Arena</option>
                 <option value="hotel">Hotels</option>
+                <optgroup label="Transportation">
+                  <option value="transit_station">Transit Station</option>
+                  <option value="transit_hub">Transit Hub</option>
+                  <option value="mobility_infrastructure">Mobility Infrastructure</option>
+                </optgroup>
+                <optgroup label="Energy">
+                  <option value="energy_renewable">Renewable Energy</option>
+                  <option value="energy_infrastructure">Energy Infrastructure</option>
+                </optgroup>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -846,9 +894,13 @@ const resolveOptionCategory = (
             )}
             {(() => {
               const selectedBuildingOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
-              const archMinFloors = selectedBuildingOption?.minFloors;
-              const archMaxFloors = selectedBuildingOption?.maxFloors;
-              const archSuggestedArea = selectedBuildingOption?.suggestedAreaSqm;
+              // Check for per-variant overrides (e.g. Vertical Farm variants have different floor/area specs)
+              const selectedBuildingVariant = (props.development_selected_variant_id && selectedBuildingOption?.variants)
+                ? selectedBuildingOption.variants.find((v) => v.id === props.development_selected_variant_id)
+                : undefined;
+              const archMinFloors = selectedBuildingVariant?.minFloors ?? selectedBuildingOption?.minFloors;
+              const archMaxFloors = selectedBuildingVariant?.maxFloors ?? selectedBuildingOption?.maxFloors;
+              const archSuggestedArea = selectedBuildingVariant?.suggestedAreaSqm ?? selectedBuildingOption?.suggestedAreaSqm;
               const currentFloors = (props.floors as number) || (config?.defaultProperties.floors as number);
               const floorOutOfRange = archMinFloors != null && archMaxFloors != null && currentFloors != null
                 && (currentFloors < archMinFloors || currentFloors > archMaxFloors);
@@ -972,6 +1024,56 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            {/* Area size check for selected park archetype */}
+            {(() => {
+              const selectedParkOption = GREEN_SPACE_AESTHETIC_OPTIONS.find(
+                (o) => o.id === (props.green_space_aesthetic as string)
+              );
+              if (!selectedParkOption) return null;
+              const selectedParkVariant = (props.green_space_selected_variant_id && selectedParkOption?.variants)
+                ? selectedParkOption.variants.find((v) => v.id === props.green_space_selected_variant_id)
+                : undefined;
+              const parkMinArea = selectedParkVariant?.minAreaSqm ?? selectedParkOption?.minAreaSqm;
+              const parkMaxArea = selectedParkVariant?.maxAreaSqm ?? selectedParkOption?.maxAreaSqm;
+              const parkSuggestedArea = selectedParkVariant?.suggestedAreaSqm ?? selectedParkOption?.suggestedAreaSqm;
+              if (parkSuggestedArea == null && parkMinArea == null) return null;
+              const tooSmall = parkMinArea != null && area < parkMinArea;
+              const tooLarge = parkMaxArea != null && area > parkMaxArea;
+              const areaOutOfRange = tooSmall || tooLarge;
+              return (
+                <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-[10px] text-primary-950/50">Zone area</span>
+                    <span className="text-[11px] font-medium text-primary-950/70">
+                      {area >= 10000
+                        ? `${(area / 10000).toFixed(2)} ha`
+                        : `${Math.round(area).toLocaleString()} m²`}
+                    </span>
+                  </div>
+                  {parkMinArea != null && parkMaxArea != null && (
+                    <div className="flex justify-between items-baseline mt-0.5">
+                      <span className="text-[10px] text-primary-950/50">Typical range</span>
+                      <span className="text-[11px] font-medium text-primary-950/70">
+                        {parkMinArea >= 10000
+                          ? `${(parkMinArea / 10000).toFixed(1)} ha`
+                          : `${parkMinArea.toLocaleString()} m²`}
+                        {' – '}
+                        {parkMaxArea >= 10000
+                          ? `${(parkMaxArea / 10000).toFixed(1)} ha`
+                          : `${parkMaxArea.toLocaleString()} m²`}
+                      </span>
+                    </div>
+                  )}
+                  <div className={`mt-1 text-[10px] font-medium ${areaOutOfRange ? 'text-orange-500' : 'text-green-600'}`}>
+                    {tooSmall
+                      ? `Zone is too small for this park type — minimum ${parkMinArea!.toLocaleString()} m² recommended`
+                      : tooLarge
+                        ? `Zone is very large for this park type — maximum ${parkMaxArea!.toLocaleString()} m² typical`
+                        : 'Good fit for this park type'}
+                  </div>
+                </div>
+              );
+            })()}
           </>
         )}
 
@@ -1122,6 +1224,15 @@ const resolveOptionCategory = (
                   <option value="industrial_heavy">Heavy Industrial</option>
                   <option value="industrial_warehouse">Warehouse</option>
                 </optgroup>
+                <optgroup label="Transportation">
+                  <option value="transit_station">Transit Station</option>
+                  <option value="transit_hub">Transit Hub</option>
+                  <option value="mobility_infrastructure">Mobility Infrastructure</option>
+                </optgroup>
+                <optgroup label="Energy">
+                  <option value="energy_renewable">Renewable Energy</option>
+                  <option value="energy_infrastructure">Energy Infrastructure</option>
+                </optgroup>
               </select>
             </div>
             {props.development_type && (
@@ -1141,9 +1252,12 @@ const resolveOptionCategory = (
             )}
             {(() => {
               const selectedDevOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
-              const devMinFloors = selectedDevOption?.minFloors;
-              const devMaxFloors = selectedDevOption?.maxFloors;
-              const devSuggestedArea = selectedDevOption?.suggestedAreaSqm;
+              const selectedDevVariant = (props.development_selected_variant_id && selectedDevOption?.variants)
+                ? selectedDevOption.variants.find((v) => v.id === props.development_selected_variant_id)
+                : undefined;
+              const devMinFloors = selectedDevVariant?.minFloors ?? selectedDevOption?.minFloors;
+              const devMaxFloors = selectedDevVariant?.maxFloors ?? selectedDevOption?.maxFloors;
+              const devSuggestedArea = selectedDevVariant?.suggestedAreaSqm ?? selectedDevOption?.suggestedAreaSqm;
               const devCurrentFloors = (props.floors as number);
               const devFloorOutOfRange = devMinFloors != null && devMaxFloors != null && devCurrentFloors != null
                 && (devCurrentFloors < devMinFloors || devCurrentFloors > devMaxFloors);

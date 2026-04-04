@@ -49,7 +49,7 @@ def _load_api_key() -> str:
 
 
 API_KEY = _load_api_key()
-MODEL = "gemini-2.5-flash-image"
+MODEL = "gemini-3.1-flash-image-preview"
 API_URL = (
     f"https://generativelanguage.googleapis.com/v1beta/"
     f"models/{MODEL}:generateContent?key={API_KEY}"
@@ -72,17 +72,82 @@ STYLE_ANCHOR = (
     "Photorealistic, 8K detail, architectural photography composition."
 )
 
-# For parks/streets/plazas — ONLY abstract silhouettes, NO real people
-PEOPLE_SNIPPET = (
-    "The ONLY human figures in this image must be flat-color semi-transparent "
-    "silhouettes in soft muted pastel tones (light cyan, warm peach, soft mint, "
-    "dusty rose). These are simple solid-color cutout shapes — NO realistic "
-    "people, NO photorealistic humans, NO rendered faces, NO skin texture, "
-    "NO clothing detail, NO anatomical features. Just flat translucent colored "
-    "shapes like architectural competition render silhouettes. Place 5-8 of "
-    "these abstract figures naturally on walkways, at benches, or standing in "
-    "pairs. Do NOT generate any realistic or semi-realistic human beings."
+# Style 6: Photorealistic Fictional People — camera physics suffix (constant)
+# Key: camera physics, fictional characters, texture emphasis, mid-ground placement,
+# critical constraints at END of prompt to avoid malformations
+PEOPLE_CAMERA_SUFFIX = (
+    "Emphasize natural hair texture, skin texture, and clothing fabric detail. "
+    "The architecture and landscape is the hero of the image, not the people. "
+    "Shot on 35mm SLR, Kodak Portra 400 film stock, f/5.6 aperture. "
+    "CRITICAL: all human figures must be fictional characters with naturally "
+    "proportioned bodies — no deformed hands, no distorted faces, no extra "
+    "limbs, no uncanny valley."
 )
+
+# Activity-specific people for different archetype types
+# Maps archetype ID keywords to contextual people descriptions
+ACTIVITY_PEOPLE: dict[str, str] = {
+    "basketball": "Include 5-8 fictional people — a few playing basketball on the court (one mid-jump shooting, others defending), a couple watching from a bench courtside, someone walking a dog past the fence. ",
+    "pickleball": "Include 5-8 fictional people — two pairs actively playing pickleball on courts (mid-rally with paddles), spectators watching from covered seating, someone drinking water at a bench. ",
+    "soccer": "Include 5-8 fictional people — players actively playing soccer on the pitch (one kicking the ball, others running), a couple watching from outside the cage, a person walking by with a dog. ",
+    "running_track": "Include 5-8 fictional people — runners jogging on the track in athletic wear, someone stretching on the infield grass, a coach with a stopwatch at trackside, a walker on the outer lane. ",
+    "fitness": "Include 5-8 fictional people — someone doing pull-ups on the bars, a person using the parallel dip bars, a couple jogging along the fitness trail, someone stretching on a mat. ",
+    "baseball": "Include 5-8 fictional people — a batter at home plate, a pitcher on the mound, fielders in position, a few spectators on the bleachers behind the backstop. ",
+    "cricket": "Include 5-8 fictional people — a batsman and bowler on the wicket, fielders positioned on the outfield, spectators seated at the pavilion with tea. ",
+    "disc_golf": "Include 5-8 fictional people — a player mid-throw at the tee pad, others walking the fairway carrying disc bags, a couple on the path with a dog watching. ",
+    "bocce": "Include 5-8 fictional people — players gathered around the court studying their throws, one mid-toss with a bocce ball, others seated with wine glasses at the pergola, a dog resting nearby. ",
+    "climbing": "Include 5-8 fictional people — climbers on the bouldering wall reaching for holds, a spotter watching from below, friends sitting on benches cheering, someone chalking their hands. ",
+    "nature_play": "Include 5-8 fictional people — children balancing on logs, a toddler playing in the sand area, a parent watching from a log bench, kids splashing in the water channel, someone exploring the willow tunnel. ",
+    "inclusive": "Include 5-8 fictional people — a child in a wheelchair going up a ramp, kids on adaptive swings, a parent pushing a child on the merry-go-round, children playing together on the structure. ",
+    "mini_golf": "Include 5-8 fictional people — a family putting on a green, a couple waiting at the next hole, a child excited about a shot, someone at the clubhouse kiosk. ",
+    "pollinator": "Include 5-8 fictional people — a couple walking hand-in-hand through the wildflower meadow path, a nature photographer kneeling to photograph butterflies, someone reading on a clearing bench, a person walking a dog. ",
+    "orchard": "Include 5-8 fictional people — someone picking fruit from a tree, a couple walking between rows with a basket, a family at the picnic table, a child reaching for an apple, a dog sniffing the ground. ",
+    "bioswale": "Include 5-8 fictional people — a couple walking along the bioswale path, someone reading an interpretive sign, a jogger passing by, a person walking a dog, a child pointing at plants. ",
+    "urban_beach": "Include 5-8 fictional people — sunbathers on loungers, a couple walking barefoot on the sand, someone at the bar kiosk, kids playing near the splash zone, a person under an umbrella reading. ",
+    "sculpture": "Include 5-8 fictional people — a couple contemplating a large sculpture, someone sketching on a bench, a photographer framing a piece, visitors strolling the gravel paths, a person walking a dog. ",
+    "labyrinth": "Include 3-5 fictional people — someone walking the labyrinth path meditatively, a person sitting in quiet contemplation on a bench, a couple approaching the garden entrance. Calm, unhurried energy. ",
+    "festival": "Include 5-8 fictional people — someone jogging across the open lawn, a couple walking a dog, a family having a picnic on the grass, a cyclist on the perimeter path. The lawn is empty of events — showing its versatile everyday character. ",
+    "pump_track": "Include 5-8 fictional people — a BMX rider pumping through the rollers, a kid on a scooter on the track, spectators watching from benches, someone waiting at the start mound with their bike. ",
+    "ice_rink": "Include 5-8 fictional people — skaters gliding on the ice (a couple holding hands, a child learning), someone lacing up skates on a bench, a person at the hot drink kiosk. Winter clothing. ",
+    "volleyball": "Include 5-8 fictional people — two teams actively playing beach volleyball (one player jumping to spike), spectators sitting on the sand watching, someone walking by with a towel. ",
+    "kayak": "Include 5-8 fictional people — someone carrying a kayak to the dock, a pair paddling on the water, a person at the storage racks, a couple watching from the bench, a dog on the dock. ",
+    "splash_pad": "Include 5-8 fictional people — children running through spray jets laughing, a toddler in the ground bubblers, parents watching from benches, a child under the dump bucket. Summer clothing. ",
+    "amphitheater": "Include 5-8 fictional people — audience seated on the grass or terraces, a performer on stage, someone carrying a picnic blanket to find a spot, a couple arriving from the path. ",
+    "skate_park": "Include 5-8 fictional people — skateboarders riding in the bowl and on ledges, someone sitting on the edge watching, a BMX rider on the ramp, friends hanging out on benches. ",
+    "dog_park": "Include 5-8 fictional people — dog owners chatting while their dogs play off-leash, someone throwing a ball for a retriever, a person at the water station, dogs of various sizes running. Multiple dogs. ",
+    "community_garden": "Include 5-8 fictional people — someone tending a raised bed, a couple carrying a harvest basket, a person watering plants, a child helping dig, someone resting on a bench with a dog. ",
+    "playground": "Include 5-8 fictional people — children on swings and slides, a parent pushing a child on a swing, kids climbing on the structure, a family arriving at the entrance. ",
+    "swimming": "Include 5-8 fictional people — swimmers in lap lanes, someone diving from the edge, people sunbathing on deck chairs, a lifeguard in the stand, children in the wading pool. ",
+    "vehicular_bridge": "Include 5-8 fictional people — cars and a bus crossing the bridge deck, a couple walking on the sidewalk, a cyclist in the bike lane, someone leaning on the railing looking at the water below. ",
+    "landmark": "Include 5-8 fictional people — pedestrians walking along the bridge promenade with the skyline behind them, a couple taking a photo, a cyclist crossing, vehicles on the roadway. Dramatic civic scale. ",
+    "viaduct": "Include 3-5 fictional people — a train or tram crossing the elevated viaduct, pedestrians walking below between the piers, a cyclist on the path beneath. Show the impressive repetitive arch/pier rhythm. ",
+    "transit_priority": "Include 5-8 fictional people — a tram or bus crossing the bridge, pedestrians on wide sidewalks, a cyclist in the bike lane, someone at a transit stop on the bridge approach. ",
+    "footbridge": "Include 5-8 fictional people — pedestrians crossing the footbridge at different points, a couple stopping to look at the view, someone with a stroller, a jogger. The bridge structure is the hero. ",
+    "landscape_park_pedestrian": "Include 5-8 fictional people — a couple crossing the bridge hand-in-hand, someone pausing to photograph the water below, a person with binoculars birdwatching, a child pointing at fish. Natural setting. ",
+    "cycle_bridge": "Include 5-8 fictional people — cyclists riding across the bridge in both directions, a person on an e-scooter, someone stopping to enjoy the view, a jogger. Smooth flowing movement. ",
+    "shared_cycle_pedestrian": "Include 5-8 fictional people — cyclists on the red/dedicated cycle lane, pedestrians on the separate walking path, a family with children, someone walking a dog on the pedestrian side. Clear mode separation. ",
+}
+
+# Default fallback for any archetype not matched above
+DEFAULT_PEOPLE = (
+    "Include 5-8 fictional human characters naturally placed in the mid-ground "
+    "of the scene, 15-40 meters from camera — a couple walking together, someone "
+    "sitting on a bench reading, a person walking a golden retriever, a cyclist "
+    "passing through. Casual contemporary clothing in muted earth tones. "
+    "Include at least one dog. "
+)
+
+
+def get_people_snippet(arch_id: str) -> str:
+    """Return activity-specific people description for an archetype."""
+    for keyword, snippet in ACTIVITY_PEOPLE.items():
+        if keyword in arch_id:
+            return snippet + PEOPLE_CAMERA_SUFFIX
+    return DEFAULT_PEOPLE + PEOPLE_CAMERA_SUFFIX
+
+
+# Keep backward-compatible constant for non-openspace code paths
+PEOPLE_SNIPPET = DEFAULT_PEOPLE + PEOPLE_CAMERA_SUFFIX
 
 NO_PEOPLE = (
     "Absolutely no people, no human figures, no pedestrians, no silhouettes, "
@@ -103,7 +168,7 @@ LANDSCAPE_STYLE = (
     "Street-level perspective from a pedestrian viewpoint, approximately 20 meters away, "
     "at a 3/4 angle showing the full scene. "
     "{description} "
-    + STYLE_ANCHOR + " " + PEOPLE_SNIPPET
+    + STYLE_ANCHOR + " {people}"
 )
 
 LANDSCAPE_NO_PEOPLE_STYLE = (
@@ -247,7 +312,7 @@ def load_street_archetypes() -> list[dict]:
         out_dir = _PUBLIC_DIR / "streets" / slug
         thumb_url = f"/archetypes/streets/{slug}/hero.png"
 
-        # Streets get abstract people silhouettes
+        # Streets get photorealistic people (Style 6)
         cards.append({
             "arch_id": arch_id,
             "title": title,
@@ -258,6 +323,27 @@ def load_street_archetypes() -> list[dict]:
             "include_people": True,
             "category": "street",
         })
+
+        # Also generate variant images if present
+        variants = arch.get("variants", [])
+        for vi, variant in enumerate(variants):
+            v_title = variant.get("label", f"Variant {vi}")
+            v_desc = variant.get("description", "")
+
+            v_card_desc = f"{title} — {v_title} variant. {v_desc}"
+            v_card_desc += " Surrounding context shows urban buildings or landscape."
+
+            v_thumb_url = f"/archetypes/streets/{slug}/variant_{vi}.png"
+            cards.append({
+                "arch_id": f"{arch_id}__variant_{vi}",
+                "title": f"{title} — {v_title}",
+                "filename": f"variant_{vi}.png",
+                "output_dir": out_dir,
+                "thumbnail_url": v_thumb_url,
+                "description": v_card_desc,
+                "include_people": True,
+                "category": "street",
+            })
 
     return cards
 
@@ -310,6 +396,27 @@ def load_openspace_archetypes() -> list[dict]:
             "include_people": include_people,
             "category": "openspace",
         })
+
+        # Also generate variant images if present
+        variants = arch.get("variants", [])
+        for vi, variant in enumerate(variants):
+            v_title = variant.get("label", f"Variant {vi}")
+            v_desc = variant.get("description", "")
+
+            v_card_desc = f"{title} — {v_title} variant. {v_desc}"
+            v_card_desc += " Surrounding context shows urban buildings in the background."
+
+            v_thumb_url = f"/archetypes/openspaces/{slug}/variant_{vi}.png"
+            cards.append({
+                "arch_id": f"{arch_id}__variant_{vi}",
+                "title": f"{title} — {v_title}",
+                "filename": f"variant_{vi}.png",
+                "output_dir": out_dir,
+                "thumbnail_url": v_thumb_url,
+                "description": v_card_desc,
+                "include_people": include_people,
+                "category": "openspace",
+            })
 
     return cards
 
@@ -519,7 +626,8 @@ def main():
         if card["category"] == "building":
             prompt = BUILDING_STYLE.format(description=card["description"])
         elif card["include_people"]:
-            prompt = LANDSCAPE_STYLE.format(description=card["description"])
+            people = get_people_snippet(card["arch_id"])
+            prompt = LANDSCAPE_STYLE.format(description=card["description"], people=people)
         else:
             prompt = LANDSCAPE_NO_PEOPLE_STYLE.format(description=card["description"])
 

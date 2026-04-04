@@ -4605,30 +4605,30 @@
       "variants": [
         {
           "id": "toronto_ravine_v0",
-          "label": "Variant 1",
+          "label": "Spring Bloom Trail",
           "color": "#4CAF50",
-          "description": "Toronto Ravine Park variant 1",
+          "description": "Early spring ravine with white trilliums carpeting the forest floor, pale green budding canopy overhead, muddy trail edges with exposed tree roots, and a swollen creek running milky brown with snowmelt. Soft diffused light filters through bare upper branches.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_0.png"
         },
         {
           "id": "toronto_ravine_v1",
-          "label": "Variant 2",
+          "label": "Summer Creek Shade",
           "color": "#388E3C",
-          "description": "Toronto Ravine Park variant 2",
+          "description": "Deep summer ravine with full dense canopy creating heavy shade, a clear shallow creek over exposed shale and limestone, lush fern undergrowth along the banks, and a packed-earth trail dappled with bright sun spots. Rich saturated greens dominate.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_1.png"
         },
         {
           "id": "toronto_ravine_v2",
-          "label": "Variant 3",
+          "label": "Autumn Canopy Walk",
           "color": "#2E7D32",
-          "description": "Toronto Ravine Park variant 3",
+          "description": "Peak autumn ravine with brilliant orange-red sugar maples, golden birch, and russet oaks forming a fiery overhead canopy. Thick leaf litter covers the trail in warm tones, the creek runs clear and low, and slanted afternoon light catches the color.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_2.png"
         },
         {
           "id": "toronto_ravine_v3",
-          "label": "Variant 4",
+          "label": "Winter Frost Walk",
           "color": "#1B5E20",
-          "description": "Toronto Ravine Park variant 4",
+          "description": "Mid-winter ravine with bare grey-brown hardwood branches, a frozen creek edged with ice shelves, light snow dusting the trail and fallen logs, and low pale sunlight casting long blue shadows across the ravine slopes. Muted palette of whites, greys, and tans.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-ravine-park/variant_3.png"
         }
       ],
@@ -4677,30 +4677,30 @@
       "variants": [
         {
           "id": "toronto_urban_square_v0",
-          "label": "Variant 1",
+          "label": "Winter Ice Rink",
           "color": "#4CAF50",
-          "description": "Toronto Urban Square variant 1",
+          "description": "Winter civic square with an active outdoor ice rink surrounded by string lights, a heated pavilion with warm amber glow, snow-dusted granite pavers, and a lit Christmas tree or public art installation. Evening atmosphere with skaters and spectators.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_0.png"
         },
         {
           "id": "toronto_urban_square_v1",
-          "label": "Variant 2",
+          "label": "Summer Market Plaza",
           "color": "#388E3C",
-          "description": "Toronto Urban Square variant 2",
+          "description": "Bright summer day with a farmers market or artisan fair filling the square with white canvas tent stalls, colourful produce displays, movable cafe chairs and tables on pale granite, and shade umbrellas. Mature honey locust trees provide dappled shade at the edges.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_1.png"
         },
         {
           "id": "toronto_urban_square_v2",
-          "label": "Variant 3",
+          "label": "Nathan Phillips Style",
           "color": "#2E7D32",
-          "description": "Toronto Urban Square variant 3",
+          "description": "Modernist civic square inspired by Nathan Phillips Square with a large reflecting pool, curved concrete arched canopy or walkway, raised planters with ornamental grasses, polished concrete and granite surfaces, and the city hall facade as backdrop. Overcast sky, clean minimalist palette.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_2.png"
         },
         {
           "id": "toronto_urban_square_v3",
-          "label": "Variant 4",
+          "label": "Contemporary Redesign",
           "color": "#1B5E20",
-          "description": "Toronto Urban Square variant 4",
+          "description": "Contemporary urban plaza with rain gardens in corten steel planters, permeable unit pavers in warm grey tones, integrated LED ground lighting, timber bench seating, and a digital art screen. Native meadow grasses soften the hardscape edges under clear blue sky.",
           "thumbnailUrl": "/archetypes/openspaces/toronto-urban-square/variant_3.png"
         }
       ],
@@ -4748,30 +4748,30 @@
       "variants": [
         {
           "id": "calgary_princes_island_v0",
-          "label": "Variant 1",
+          "label": "Summer Festival Ground",
           "color": "#4CAF50",
-          "description": "Prince's Island Park variant 1",
+          "description": "Warm summer day with a folk festival stage and tent canopies set up on the central meadow, mature cottonwood trees in full leaf, crowds on gravel walking paths along the Bow River, and the downtown Calgary skyline visible beyond. Bright blue prairie sky with scattered cumulus clouds.",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_0.png"
         },
         {
           "id": "calgary_princes_island_v1",
-          "label": "Variant 2",
+          "label": "Autumn Cottonwood Gold",
           "color": "#388E3C",
-          "description": "Prince's Island Park variant 2",
+          "description": "Early October with towering cottonwood trees turned brilliant gold and amber, fallen leaves covering the grass meadow, the Bow River running steel-blue and low, weathered timber footbridges, and sharp afternoon light under a deep blue chinook-arch sky.",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_1.png"
         },
         {
           "id": "calgary_princes_island_v2",
-          "label": "Variant 3",
+          "label": "Winter Wonderland",
           "color": "#2E7D32",
-          "description": "Prince's Island Park variant 3",
+          "description": "Deep winter with heavy snow blanketing the island, bare cottonwood branches coated in hoarfrost, a frozen lagoon with cleared skating path, warm-lit timber shelters, and cross-country ski tracks on the paths. Rocky Mountains faintly visible on the western horizon.",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_2.png"
         },
         {
           "id": "calgary_princes_island_v3",
-          "label": "Variant 4",
+          "label": "Spring Flood Season",
           "color": "#1B5E20",
-          "description": "Prince's Island Park variant 4",
+          "description": "Late spring with the Bow River running high and turbid after snowmelt, swollen channels lapping at the island edges, fresh bright-green cottonwood and willow leaves, muddy trail sections with temporary boardwalks, and dramatic storm clouds building over the Rockies to the west.",
           "thumbnailUrl": "/archetypes/openspaces/princes-island-park/variant_3.png"
         }
       ],
@@ -4820,30 +4820,30 @@
       "variants": [
         {
           "id": "calgary_prairie_plaza_v0",
-          "label": "Variant 1",
+          "label": "Winter Prairie Plaza",
           "color": "#4CAF50",
-          "description": "Calgary Prairie Urban Plaza variant 1",
+          "description": "Wind-swept winter plaza with snow drifts against corten steel wind screens, heated concrete seating pads, bare ornamental grasses poking through snow, and warm downlighting on sandstone-clad walls. Chinook arch cloud formation in the western sky, long blue shadows on white ground.",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_0.png"
         },
         {
           "id": "calgary_prairie_plaza_v1",
-          "label": "Variant 2",
+          "label": "Summer Market Square",
           "color": "#388E3C",
-          "description": "Calgary Prairie Urban Plaza variant 2",
+          "description": "Sunny summer plaza hosting an outdoor market with timber-frame vendor stalls, colourful canvas awnings, native prairie wildflower planters in bloom with black-eyed Susans and purple coneflower, sandstone pavers, and families gathered around a central water feature.",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_1.png"
         },
         {
           "id": "calgary_prairie_plaza_v2",
-          "label": "Variant 3",
+          "label": "Indigenous Art Garden",
           "color": "#2E7D32",
-          "description": "Calgary Prairie Urban Plaza variant 3",
+          "description": "Plaza centred on a large-scale Indigenous public art installation with medicine wheel ground pattern in coloured stone, native prairie grass plantings of blue grama and fescue, interpretive signage, and tipi-inspired tensile shade structures in white fabric against a clear prairie sky.",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2.png"
         },
         {
           "id": "calgary_prairie_plaza_v3",
-          "label": "Variant 4",
+          "label": "Corporate Campus Green",
           "color": "#1B5E20",
-          "description": "Calgary Prairie Urban Plaza variant 4",
+          "description": "Polished corporate plaza with linear rows of columnar aspens, dark charcoal granite benches, glass-and-steel office tower frontages, a shallow linear reflecting pool, and manicured lawn panels. Clean modernist aesthetic with plus-15 skybridge connections visible overhead.",
           "thumbnailUrl": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_3.png"
         }
       ],
@@ -4891,30 +4891,30 @@
       "variants": [
         {
           "id": "halifax_public_gardens_v0",
-          "label": "Variant 1",
+          "label": "Rose Garden Peak",
           "color": "#4CAF50",
-          "description": "Halifax Public Gardens variant 1",
+          "description": "Mid-July with the formal rose beds in full bloom showing deep reds, pinks, and whites against dark green boxwood hedging, wrought-iron Victorian fencing, gravel promenade paths, and the ornate painted bandstand visible beyond. Warm humid maritime light.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_0.png"
         },
         {
           "id": "halifax_public_gardens_v1",
-          "label": "Variant 2",
+          "label": "Bandstand Concert",
           "color": "#388E3C",
-          "description": "Halifax Public Gardens variant 2",
+          "description": "Sunday afternoon concert at the Victorian bandstand with a brass ensemble on the covered stage, audience seated on green-painted wrought-iron benches on the lawn, mature elm and beech canopy overhead, and formal carpet bedding displays in geometric patterns nearby.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_1.png"
         },
         {
           "id": "halifax_public_gardens_v2",
-          "label": "Variant 3",
+          "label": "Autumn Foliage Stroll",
           "color": "#2E7D32",
-          "description": "Halifax Public Gardens variant 3",
+          "description": "Peak October foliage with towering elms and copper beeches in rich amber, crimson, and burgundy tones, fallen leaves floating on the ornamental duck pond, stone bridges, and empty Victorian benches along winding gravel paths. Soft overcast Atlantic sky.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_2.png"
         },
         {
           "id": "halifax_public_gardens_v3",
-          "label": "Variant 4",
+          "label": "Spring Tulip Display",
           "color": "#1B5E20",
-          "description": "Halifax Public Gardens variant 4",
+          "description": "Late May with formal tulip beds in vivid red, yellow, and purple mass plantings arranged in Victorian carpet-bedding patterns, fresh lime-green canopy leafing out on heritage trees, daffodils along the pond edge, and the ornamental iron gates framing the entrance.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-public-gardens/variant_3.png"
         }
       ],
@@ -4963,35 +4963,2511 @@
       "variants": [
         {
           "id": "halifax_coastal_park_v0",
-          "label": "Variant 1",
+          "label": "Storm Watch Point",
           "color": "#4CAF50",
-          "description": "Halifax Coastal Forest Park variant 1",
+          "description": "Dramatic late-autumn Atlantic storm with dark slate-grey waves crashing against granite boulders, wind-bent white spruce trees, a weathered timber lookout platform with cable railings, rain-slicked boardwalk, and heavy low cloud cover with streaks of silver light on the horizon.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_0.png"
         },
         {
           "id": "halifax_coastal_park_v1",
-          "label": "Variant 2",
+          "label": "Summer Beach Trail",
           "color": "#388E3C",
-          "description": "Halifax Coastal Forest Park variant 2",
+          "description": "Bright summer day with a crushed-gravel trail winding through dense coastal spruce and birch forest, opening to a rocky beach cove with calm turquoise-green Atlantic water, wild rose and bayberry shrubs in bloom, and families on the smooth granite shore ledges.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_1.png"
         },
         {
           "id": "halifax_coastal_park_v2",
-          "label": "Variant 3",
+          "label": "Foggy Morning Path",
           "color": "#2E7D32",
-          "description": "Halifax Coastal Forest Park variant 3",
+          "description": "Dense maritime fog enveloping the coastal forest, visibility under 50 metres, moisture beading on spruce needles and lichen-covered granite outcrops, a barely visible boardwalk trail disappearing into white mist, muted grey-green palette with no horizon line.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_2.png"
         },
         {
           "id": "halifax_coastal_park_v3",
-          "label": "Variant 4",
+          "label": "Sunset Boardwalk",
           "color": "#1B5E20",
-          "description": "Halifax Coastal Forest Park variant 4",
+          "description": "Golden hour sunset over the Atlantic with warm orange and pink sky reflecting on calm ocean water, a cedar boardwalk leading to a cantilevered viewing deck, long shadows from coastal spruce silhouettes, and the rocky shoreline glowing in warm amber light.",
           "thumbnailUrl": "/archetypes/openspaces/halifax-coastal-forest-park/variant_3.png"
         }
       ],
       "districtKit": "halifax",
       "suggestedAreaSqm": 8000
+    },
+    {
+      "id": "basketball_court",
+      "title": "Basketball Court",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Outdoor basketball courts with regulation hoops at 3.05m, painted line markings, chain-link fencing, and player seating areas",
+      "generationTags": [
+        "park",
+        "basketball",
+        "courts",
+        "recreation",
+        "sports",
+        "hoops"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "One to two outdoor basketball courts viewed from drone altitude. Each court is a dark asphalt or colored acrylic rectangle (28m x 15m) with white or yellow painted boundary lines, free-throw lanes, three-point arcs, and center circle. Orange-rimmed hoops with white backboards on steel poles at each end. Chain-link fencing 3m high encloses the courts. Player benches sit outside the fence at mid-court. A narrow concrete apron surrounds the playing surface. LED floodlight poles at four corners for evening play.",
+        "pavingType": "Asphalt or acrylic sport surface with painted lines",
+        "plantingType": "None inside courts — shade trees at perimeter outside fence",
+        "seatingRealm": "Player benches at mid-court, small bleacher section",
+        "waterFeatures": "None — drinking fountain at entry",
+        "opennessEnclosure": "Fenced rectangular enclosure, open sky"
+      },
+      "prompt": {
+        "subject": "Aerial view of outdoor basketball courts with regulation markings",
+        "details": [
+          "One or two rectangular courts with painted boundary lines, free-throw lanes, and three-point arcs",
+          "Orange hoops with white rectangular backboards on steel poles at each end",
+          "Chain-link fencing enclosing the courts as a faint grid pattern",
+          "Dark asphalt or colored acrylic playing surface",
+          "LED floodlight poles at corners",
+          "Player benches and small bleacher outside the fence"
+        ],
+        "negative": [
+          "No buildings inside the court area",
+          "No trees overhanging the courts",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "asphalt",
+        "shade_strategy": "none",
+        "court_dimensions": "28.65m x 15.24m (NBA) or 28m x 15m (FIBA)",
+        "hoop_height": "3.05m (10ft)",
+        "fence_height": "3.0-3.66m (10-12ft)",
+        "three_point_distance": "7.24m (NBA) / 6.75m (FIBA)"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/basketball-court/hero.png",
+      "variants": [
+        {
+          "id": "basketball_court_v0",
+          "label": "Classic Asphalt",
+          "color": "#8B5E3C",
+          "description": "Basketball Court in classic public park style. Dark asphalt surface, white painted lines, chain-link fencing, concrete pad, steel backboards, single floodlight pole at each end.",
+          "suggestedAreaSqm": 900,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/basketball-court/variant_0.png"
+        },
+        {
+          "id": "basketball_court_v1",
+          "label": "Pro Sport Surface",
+          "color": "#1E88E5",
+          "description": "Basketball Court with professional acrylic sport surface. Blue and red court zones, cushioned acrylic coating, glass backboards, padded pole bases, LED scoreboard, aluminum bleachers.",
+          "suggestedAreaSqm": 1800,
+          "minAreaSqm": 1200,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/basketball-court/variant_1.png"
+        },
+        {
+          "id": "basketball_court_v2",
+          "label": "Community Half-Court",
+          "color": "#FF6F00",
+          "description": "Basketball Court as a single half-court setup. Compact 14m x 15m footprint ideal for small lots, colorful painted surface mural, single hoop, low fence, surrounded by seating wall.",
+          "suggestedAreaSqm": 350,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 550,
+          "thumbnailUrl": "/archetypes/openspaces/basketball-court/variant_2.png"
+        },
+        {
+          "id": "basketball_court_v3",
+          "label": "Urban Streetball",
+          "color": "#37474F",
+          "description": "Basketball Court in urban streetball style. Worn asphalt with colorful art-painted surface graphics, chain nets on hoops, graffiti-art fence panels, spectator seating on concrete steps, integrated with street plaza.",
+          "suggestedAreaSqm": 650,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/basketball-court/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with photorealistic outdoor basketball courts. Dark asphalt or acrylic surface with white painted boundary lines, free-throw lanes, three-point arcs, center circle. Orange hoops with white backboards on steel poles. Chain-link fencing enclosure. LED floodlight poles. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with rectangular basketball court surfaces showing painted line markings — boundary lines, free-throw lanes, three-point arcs, center circle. Hoop shadows at each end. Faint chain-link grid at perimeter. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside courts"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1200,
+      "minAreaSqm": 650,
+      "maxAreaSqm": 2500
+    },
+    {
+      "id": "pickleball_courts",
+      "title": "Pickleball Courts",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Multi-court pickleball complex with regulation 13.4m x 6.1m courts, low nets, colorful acrylic surfaces, and spectator areas",
+      "generationTags": [
+        "park",
+        "pickleball",
+        "courts",
+        "recreation",
+        "sports",
+        "racquet"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A cluster of four to eight pickleball courts viewed from drone altitude. Each court is a compact colored rectangle — typically blue playing area with green surround — with white boundary lines and a kitchen (non-volley zone) line on each side of the net. Courts are arranged in pairs sharing a center walkway. Low nets (0.86m) appear as thin white lines. Chain-link or mesh fencing 3m high encloses the complex. Shade structures or covered spectator areas at one end. Surface is acrylic-coated asphalt in vivid sport colors.",
+        "pavingType": "Colored acrylic sport surface on asphalt base",
+        "plantingType": "None inside courts — shade trees or hedges at perimeter",
+        "seatingRealm": "Covered spectator pavilion, player benches between courts",
+        "waterFeatures": "None — drinking fountain station",
+        "opennessEnclosure": "Fenced multi-court complex with covered spectator areas"
+      },
+      "prompt": {
+        "subject": "Aerial view of a multi-court pickleball complex",
+        "details": [
+          "Four to eight compact rectangular courts with blue playing surface and green surround",
+          "White boundary lines and kitchen (non-volley zone) lines visible on each court",
+          "Low nets as thin white lines at center of each court",
+          "Courts paired side-by-side with walkways between",
+          "Chain-link or mesh fencing enclosing the complex",
+          "Covered shade structure or spectator pavilion at one end"
+        ],
+        "negative": [
+          "No trees overhanging courts",
+          "No buildings inside the complex",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "acrylic",
+        "shade_strategy": "shade_structure",
+        "court_dimensions": "13.41m x 6.10m per court",
+        "net_height": "0.86m center / 0.914m posts",
+        "fence_height": "3.0m (10ft)",
+        "kitchen_depth": "2.13m (7ft) each side"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/hero.png",
+      "variants": [
+        {
+          "id": "pickleball_courts_v0",
+          "label": "Competition Grade",
+          "color": "#2E7D32",
+          "description": "Pickleball Courts in competition-grade facility. Regulation acrylic surfaces with tournament-standard lighting, aluminum bleacher seating, electronic scoreboards, covered player pavilion.",
+          "suggestedAreaSqm": 3200,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 4000,
+          "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_0.png"
+        },
+        {
+          "id": "pickleball_courts_v1",
+          "label": "Community Recreation",
+          "color": "#29B6F6",
+          "description": "Pickleball Courts in community recreation style. Bright colored surfaces, shade sail canopies, family seating areas, adjacent playground, drinking fountains, inclusive design with accessible pathways.",
+          "suggestedAreaSqm": 1400,
+          "minAreaSqm": 800,
+          "maxAreaSqm": 2200,
+          "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_1.png"
+        },
+        {
+          "id": "pickleball_courts_v2",
+          "label": "Park-Integrated",
+          "color": "#7CB342",
+          "description": "Pickleball Courts integrated into park landscape. Courts set within natural grading, native grass borders, timber post fencing, crushed stone pathways, bench seating under mature trees.",
+          "suggestedAreaSqm": 1000,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 1800,
+          "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_2.png"
+        },
+        {
+          "id": "pickleball_courts_v3",
+          "label": "Indoor-Outdoor Hybrid",
+          "color": "#546E7A",
+          "description": "Pickleball Courts with partial roof canopy. Tensile fabric shade structure over courts, rubber sport flooring, wind screens on fencing, LED strip lighting, year-round playability.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 700,
+          "maxAreaSqm": 2000,
+          "thumbnailUrl": "/archetypes/openspaces/pickleball-courts/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with photorealistic pickleball courts. Compact colored acrylic rectangles — blue courts with green surrounds — with white boundary lines and kitchen zone lines. Low nets. Courts paired with walkways. Chain-link fencing enclosure. Shade structure at one end. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with grid of compact blue-and-green pickleball court rectangles with white line markings. Low net lines at center. Faint fence grid. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside courts"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1500,
+      "minAreaSqm": 400,
+      "maxAreaSqm": 4000
+    },
+    {
+      "id": "soccer_pitch_caged",
+      "title": "Caged Soccer Pitch",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Enclosed 5-a-side or futsal pitch with artificial turf, perimeter cage fencing, rebound boards, and floodlighting for year-round play",
+      "generationTags": [
+        "park",
+        "soccer",
+        "football",
+        "futsal",
+        "pitch",
+        "caged",
+        "sports"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A caged soccer mini-pitch viewed from drone altitude. A bright green artificial turf rectangle (30m x 18m) enclosed by 3-4m high steel mesh fencing with white rebound boards along the base (1.2m high). White painted lines mark the halfway line, penalty areas, and corner arcs. Two small goals (3m x 2m) with white nets at each end. LED floodlight poles at four corners. The turf has a slightly striped mowing pattern. A narrow gate entrance on one side. Player benches outside the cage.",
+        "pavingType": "Artificial turf (3G/4G) with rubber crumb infill",
+        "plantingType": "None inside — turf perimeter outside cage",
+        "seatingRealm": "Player benches outside cage, small spectator standing area",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Fully enclosed cage with open sky"
+      },
+      "prompt": {
+        "subject": "Aerial view of a caged 5-a-side soccer pitch with artificial turf",
+        "details": [
+          "Bright green artificial turf rectangle with white painted line markings",
+          "Steel mesh cage fencing 3-4m high enclosing the pitch",
+          "White rebound boards along the base of the fencing",
+          "Two small white-netted goals at each end",
+          "LED floodlight poles at corners",
+          "Player benches and entry gate visible outside the cage"
+        ],
+        "negative": [
+          "No buildings inside the pitch",
+          "No trees overhanging the pitch",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "artificial_turf",
+        "shade_strategy": "none",
+        "pitch_dimensions": "30m x 18m (5-a-side) or 40m x 20m (futsal)",
+        "goal_dimensions": "3.0m x 2.0m",
+        "fence_height": "3.0-4.0m",
+        "rebound_board_height": "1.0-1.2m"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/hero.png",
+      "variants": [
+        {
+          "id": "soccer_pitch_caged_v0",
+          "label": "European Street Cage",
+          "color": "#1B5E20",
+          "description": "Caged Soccer Pitch in European street-cage style. Full steel mesh enclosure, synthetic turf, white line markings, rebound boards, integrated into dense urban block. Barcelona or Amsterdam character.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 900,
+          "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_0.png"
+        },
+        {
+          "id": "soccer_pitch_caged_v1",
+          "label": "Community Recreation",
+          "color": "#EF6C00",
+          "description": "Caged Soccer Pitch in community recreation facility. Multi-sport markings on turf (soccer + basketball overlay), lower fencing, spectator seating area, adjacent parking, family-friendly design.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 800,
+          "maxAreaSqm": 1800,
+          "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_1.png"
+        },
+        {
+          "id": "soccer_pitch_caged_v2",
+          "label": "Youth Training Complex",
+          "color": "#1565C0",
+          "description": "Caged Soccer Pitch as youth training facility. Two side-by-side pitches, coaching observation deck, equipment storage shed, professional-grade LED lighting, branded turf markings.",
+          "suggestedAreaSqm": 1800,
+          "minAreaSqm": 1200,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_2.png"
+        },
+        {
+          "id": "soccer_pitch_caged_v3",
+          "label": "Rooftop Urban Pitch",
+          "color": "#37474F",
+          "description": "Caged Soccer Pitch on elevated rooftop or parking structure. Full cage enclosure, synthetic turf, city skyline backdrop, access stairs, integrated into mixed-use development rooftop.",
+          "suggestedAreaSqm": 700,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/caged-soccer-pitch/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic caged soccer pitch. Bright green artificial turf rectangle with white line markings. Steel mesh cage fencing with white rebound boards at base. Small white-netted goals at each end. LED floodlight poles. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with bright green artificial turf rectangle with white line markings — halfway line, penalty areas, corner arcs. Rectangular cage fence outline. Goal shadows at each end. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside pitch"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 800,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 2000
+    },
+    {
+      "id": "running_track_oval",
+      "title": "Running Track & Athletic Oval",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Standard 400m rubberized running track with eight lanes, grass infield for field sports, and perimeter spectator areas",
+      "generationTags": [
+        "park",
+        "running",
+        "track",
+        "athletics",
+        "oval",
+        "sports",
+        "field"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A standard 400m athletic track viewed from drone altitude. The red-brown rubberized oval track has eight white-lined lanes curving around a bright green grass infield. White stagger marks are painted at the start of each curve. Two straight sections run parallel, each 84m long. The grass infield contains a soccer-sized field with white markings. A long-jump sand pit appears as a pale rectangle on one straight. Small equipment storage buildings sit outside the track. Metal bleachers or a grandstand along one straight. Perimeter path surrounds the complex.",
+        "pavingType": "Rubberized polyurethane track surface (red-brown)",
+        "plantingType": "Grass infield, shade trees outside track perimeter",
+        "seatingRealm": "Metal bleachers or grandstand along one straight, benches at intervals",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open oval with perimeter planting"
+      },
+      "prompt": {
+        "subject": "Aerial view of a 400m rubberized athletic track with grass infield",
+        "details": [
+          "Red-brown rubberized oval track surface with eight white-lined lanes",
+          "White stagger marks painted at curve starts",
+          "Bright green grass infield with soccer field markings",
+          "Long-jump sand pit as pale rectangle on one straight",
+          "Metal bleachers or grandstand along one straight section",
+          "Overall oval shape approximately 185m x 100m"
+        ],
+        "negative": [
+          "No buildings inside the track",
+          "No trees inside the track oval",
+          "No parking lots inside the track",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "rubberized_polyurethane",
+        "shade_strategy": "perimeter_trees",
+        "track_distance": "400m (1/4 mile)",
+        "lane_count": "8",
+        "lane_width": "1.22m",
+        "overall_footprint": "185m x 100m"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/hero.png",
+      "variants": [
+        {
+          "id": "running_track_oval_v0",
+          "label": "Competition Standard",
+          "color": "#C62828",
+          "description": "Running Track in competition-standard configuration. IAAF-certified red polyurethane surface, electronic timing equipment, photo-finish tower, covered grandstand, athlete warm-up area, equipment storage.",
+          "suggestedAreaSqm": 19000,
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 25000,
+          "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_0.png"
+        },
+        {
+          "id": "running_track_oval_v1",
+          "label": "Community Fitness",
+          "color": "#E65100",
+          "description": "Running Track in community fitness style. Six-lane track with softer surface, integrated fitness stations around perimeter, open grass infield for community sports, walking lane marked separately.",
+          "suggestedAreaSqm": 14000,
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 18000,
+          "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_1.png"
+        },
+        {
+          "id": "running_track_oval_v2",
+          "label": "School Athletic",
+          "color": "#1565C0",
+          "description": "Running Track at school athletic facility. Eight-lane track adjacent to school buildings, football/soccer infield, small metal bleachers, long-jump and shot-put areas, equipment shed.",
+          "suggestedAreaSqm": 17000,
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 22000,
+          "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_2.png"
+        },
+        {
+          "id": "running_track_oval_v3",
+          "label": "Park Loop Trail",
+          "color": "#558B2F",
+          "description": "Running Track as informal park loop. Rubberized path winding through parkland, distance markers, fitness stations at intervals, natural landscape setting rather than formal oval, integrated with park trail system.",
+          "suggestedAreaSqm": 8000,
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 15000,
+          "thumbnailUrl": "/archetypes/openspaces/running-track-athletic-oval/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic 400m running track. Red-brown rubberized oval with eight white-lined lanes. Bright green grass infield with soccer markings. Bleachers along one straight. Long-jump sand pit. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a red-brown oval running track shape with white lane lines. Green grass infield. Pale sand rectangle for long jump. Bleacher shadow along one straight. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside track"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 18000,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 25000
+    },
+    {
+      "id": "outdoor_fitness_circuit",
+      "title": "Outdoor Fitness Circuit",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Calisthenics park and outdoor gym with pull-up bars, parallel bars, exercise stations, rubberized surfacing, and fitness trail loop",
+      "generationTags": [
+        "park",
+        "fitness",
+        "gym",
+        "calisthenics",
+        "exercise",
+        "outdoor",
+        "workout"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An outdoor fitness area viewed from drone altitude. A cluster of steel exercise stations on rubberized safety surfacing — pull-up bar frames, parallel dip bars, sit-up benches, and balance beams arranged in a circuit. A rubberized fitness trail loop (200-400m) connects stations through parkland. Each station sits on a colored rubber pad. Information signage boards at each station. Shade trees along the trail. Central gathering area with stretching mats. Water fountain station at entry.",
+        "pavingType": "Poured rubber or rubber tile pads at stations, rubberized trail surface",
+        "plantingType": "Shade trees along trail, grass between stations",
+        "seatingRealm": "Stretching area, benches at entry, water station",
+        "waterFeatures": "None — drinking fountain",
+        "opennessEnclosure": "Open circuit through parkland with station clusters"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor fitness circuit with exercise stations and trail",
+        "details": [
+          "Steel exercise station frames — pull-up bars, parallel bars, sit-up benches — on colored rubber pads",
+          "Rubberized fitness trail loop connecting stations through parkland",
+          "Information signage boards at each station as small rectangles",
+          "Shade trees along the trail creating dappled shadows",
+          "Central stretching area with open rubber pad surface",
+          "Water fountain station visible at entry point"
+        ],
+        "negative": [
+          "No buildings",
+          "No playground equipment (adult fitness only)",
+          "No sports courts",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "rubber",
+        "shade_strategy": "canopy_trees",
+        "station_count": "8-12",
+        "station_spacing": "2.4-3.0m clearance",
+        "pullup_bar_height": "2.1-2.4m",
+        "parallel_bar_height": "1.2-1.5m"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/hero.png",
+      "variants": [
+        {
+          "id": "outdoor_fitness_circuit_v0",
+          "label": "Urban Calisthenics Park",
+          "color": "#37474F",
+          "description": "Outdoor Fitness Circuit as dedicated calisthenics park. Heavy-duty steel frames, multiple pull-up bar heights, dip stations, monkey bars, muscle-up bars, concrete and rubber surface, urban industrial aesthetic.",
+          "suggestedAreaSqm": 500,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_0.png"
+        },
+        {
+          "id": "outdoor_fitness_circuit_v1",
+          "label": "Parkour & Movement",
+          "color": "#D84315",
+          "description": "Outdoor Fitness Circuit with parkour elements. Vault walls, precision platforms, climbing walls, balance rails, varied-height obstacles, rubber safety surfacing, designed for freerunning movement.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_1.png"
+        },
+        {
+          "id": "outdoor_fitness_circuit_v2",
+          "label": "Nature Trail Circuit",
+          "color": "#33691E",
+          "description": "Outdoor Fitness Circuit as nature-integrated fitness trail. Timber and rope equipment, log balance beams, boulder climbing, natural materials, trail winding through wooded parkland.",
+          "suggestedAreaSqm": 2000,
+          "minAreaSqm": 800,
+          "maxAreaSqm": 3000,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_2.png"
+        },
+        {
+          "id": "outdoor_fitness_circuit_v3",
+          "label": "Senior-Friendly Wellness",
+          "color": "#0097A7",
+          "description": "Outdoor Fitness Circuit for senior wellness. Low-impact cardio machines (outdoor ellipticals), gentle stretching stations, tai chi platform, ADA-accessible paths, shade canopies, seated exercise stations.",
+          "suggestedAreaSqm": 700,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-fitness-circuit/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic outdoor fitness circuit. Steel exercise stations on colored rubber pads — pull-up bars, parallel bars, sit-up benches. Rubberized trail loop connecting stations through parkland. Shade trees. Stretching area. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with outdoor fitness station pads as colored rectangles connected by curving rubberized trail. Steel frame shadows at stations. Tree canopy circles along trail. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside circuit"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 800,
+      "minAreaSqm": 200,
+      "maxAreaSqm": 3000
+    },
+    {
+      "id": "baseball_softball_diamond",
+      "title": "Baseball / Softball Diamond",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Regulation baseball or softball diamond with dirt infield, grass outfield, backstop, dugouts, and perimeter fencing",
+      "generationTags": [
+        "park",
+        "baseball",
+        "softball",
+        "diamond",
+        "sports",
+        "field"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A baseball diamond viewed from drone altitude. The distinctive fan-shaped field radiates outward from home plate. A brown dirt infield diamond with white baseline chalk marks connects four bases. The pitcher's mound is a raised brown circle at center. Bright green grass outfield extends to the outfield fence. A tall backstop (wire mesh) behind home plate. Two small dugout structures flank the infield along first and third base lines. Bleacher seating behind the backstop. The outfield fence is a continuous low barrier with distance markers.",
+        "pavingType": "Dirt/clay infield, grass outfield, concrete walkways",
+        "plantingType": "Maintained grass outfield, shade trees beyond outfield fence",
+        "seatingRealm": "Covered dugouts at first and third base, bleachers behind backstop",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open fan-shaped field with backstop and outfield fence"
+      },
+      "prompt": {
+        "subject": "Aerial view of a baseball diamond with dirt infield and grass outfield",
+        "details": [
+          "Fan-shaped field radiating from home plate",
+          "Brown dirt infield diamond with white chalk baselines connecting four bases",
+          "Raised brown pitcher's mound at center of infield",
+          "Bright green grass outfield extending to outfield fence",
+          "Tall wire mesh backstop behind home plate",
+          "Small dugout structures along first and third base lines"
+        ],
+        "negative": [
+          "No buildings inside the outfield",
+          "No trees inside the playing field",
+          "No soccer or football markings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "dirt_clay",
+        "shade_strategy": "perimeter_trees",
+        "basepath_length": "27.43m (90ft baseball) or 18.29m (60ft softball)",
+        "pitching_distance": "18.44m (60ft 6in baseball)",
+        "backstop_height": "4.88-7.62m (16-25ft)",
+        "outfield_fence_distance": "91-107m (300-350ft)"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/hero.png",
+      "variants": [
+        {
+          "id": "baseball_softball_diamond_v0",
+          "label": "Classic Park Diamond",
+          "color": "#6D4C41",
+          "description": "Baseball Diamond in classic municipal park style. Well-maintained dirt infield, manicured grass outfield, aluminum backstop, wooden dugout benches, small aluminum bleachers, scoreboard.",
+          "suggestedAreaSqm": 12000,
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 18000,
+          "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_0.png"
+        },
+        {
+          "id": "baseball_softball_diamond_v1",
+          "label": "Youth League Complex",
+          "color": "#2E7D32",
+          "description": "Baseball Diamond as youth league facility. Multiple diamonds sharing outfield space, covered dugouts, concession stand, batting cages behind backstop, parking area, LED field lighting.",
+          "suggestedAreaSqm": 18000,
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 25000,
+          "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_1.png"
+        },
+        {
+          "id": "baseball_softball_diamond_v2",
+          "label": "Softball Field",
+          "color": "#E65100",
+          "description": "Softball Diamond with shorter base paths (60ft). Smaller diamond, lower outfield fence, wider infield dirt area, covered bleachers, press box, warm-up areas along foul lines.",
+          "suggestedAreaSqm": 6500,
+          "minAreaSqm": 4000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_2.png"
+        },
+        {
+          "id": "baseball_softball_diamond_v3",
+          "label": "Vintage Sandlot",
+          "color": "#8D6E63",
+          "description": "Baseball Diamond in vintage sandlot style. Informal backstop, no outfield fence, worn dirt paths between bases, wooden bleacher planks, surrounding neighborhood character, nostalgic Americana.",
+          "suggestedAreaSqm": 5000,
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 8000,
+          "thumbnailUrl": "/archetypes/openspaces/baseball-softball-diamond/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic baseball diamond. Fan-shaped field with brown dirt infield, white chalk baselines, raised pitcher's mound. Bright green grass outfield to fence. Wire mesh backstop behind home plate. Dugouts along baselines. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a baseball diamond shape — brown dirt infield square rotated 45 degrees, white baseline marks, bright green fan-shaped grass outfield. Backstop arc behind home plate. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside field"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 12000,
+      "minAreaSqm": 4000,
+      "maxAreaSqm": 20000
+    },
+    {
+      "id": "cricket_pitch_oval",
+      "title": "Cricket Ground",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Oval cricket ground with central wicket strip, manicured turf outfield, boundary rope, sight screens, and pavilion",
+      "generationTags": [
+        "park",
+        "cricket",
+        "oval",
+        "sports",
+        "pitch",
+        "wicket"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A cricket ground viewed from drone altitude. A large oval grass field (typically 140m diameter) with a central rectangular wicket strip — a lighter-colored closely mown pitch (20m x 3m) at center. The outfield is darker green manicured turf. A white boundary rope traces the oval perimeter. Two white sight screens at each end of the wicket. A traditional pavilion or clubhouse structure at one edge. Practice nets visible beyond the boundary. The overall shape is a distinctive large oval or circle.",
+        "pavingType": "Grass — closely mown wicket, maintained turf outfield",
+        "plantingType": "Maintained grass oval, mature trees beyond boundary",
+        "seatingRealm": "Pavilion with covered seating, ground-level benches around boundary",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Large open oval with perimeter tree ring"
+      },
+      "prompt": {
+        "subject": "Aerial view of a cricket ground with central wicket and oval outfield",
+        "details": [
+          "Large oval green grass field approximately 140m across",
+          "Central rectangular wicket strip as a lighter-colored closely mown pitch",
+          "White boundary rope tracing the oval perimeter",
+          "Two white sight screens at ends of the wicket",
+          "Traditional pavilion or clubhouse at one edge of the oval",
+          "Practice nets visible beyond the boundary"
+        ],
+        "negative": [
+          "No buildings inside the playing oval",
+          "No trees inside the boundary",
+          "No soccer or football markings on the pitch",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "grass",
+        "shade_strategy": "perimeter_trees",
+        "oval_diameter": "137-150m (450-500ft)",
+        "wicket_length": "20.12m (22 yards)",
+        "boundary_rope_diameter": "59-82m (65-90 yards) from center"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/cricket-ground/hero.png",
+      "variants": [
+        {
+          "id": "cricket_pitch_oval_v0",
+          "label": "Village Green",
+          "color": "#1B5E20",
+          "description": "Cricket Ground as traditional English village green. White picket fence boundary, thatched-roof pavilion, mature oak trees, church spire backdrop, quintessential pastoral setting.",
+          "suggestedAreaSqm": 10000,
+          "minAreaSqm": 6000,
+          "maxAreaSqm": 14000,
+          "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_0.png"
+        },
+        {
+          "id": "cricket_pitch_oval_v1",
+          "label": "Municipal Oval",
+          "color": "#558B2F",
+          "description": "Cricket Ground as municipal sporting oval. Shared-use ground with removable wicket, multi-sport field markings, small grandstand, modern scoreboard, practice nets, community clubhouse.",
+          "suggestedAreaSqm": 15000,
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 20000,
+          "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_1.png"
+        },
+        {
+          "id": "cricket_pitch_oval_v2",
+          "label": "South Asian Ground",
+          "color": "#E65100",
+          "description": "Cricket Ground in South Asian style. Large open maidan-style ground, multiple practice pitches, concrete spectator walls, food vendor stalls at perimeter, intense community atmosphere.",
+          "suggestedAreaSqm": 18000,
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 25000,
+          "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_2.png"
+        },
+        {
+          "id": "cricket_pitch_oval_v3",
+          "label": "Caribbean Beach Pitch",
+          "color": "#00838F",
+          "description": "Cricket Ground in Caribbean beach-side character. Sandy outfield edges, palm trees at boundary, colorful wooden spectator stands, relaxed coastal setting, informal boundary markers.",
+          "suggestedAreaSqm": 6000,
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/cricket-ground/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic cricket ground. Large oval green grass field with central lighter-colored wicket strip. White boundary rope at perimeter. Sight screens at wicket ends. Pavilion at one edge. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a large green grass oval. Central lighter rectangular wicket strip. Thin white boundary rope line at perimeter. Pavilion shadow at one edge. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside oval"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 16000,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 22000
+    },
+    {
+      "id": "disc_golf_course",
+      "title": "Disc Golf Course",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "9 or 18-hole disc golf course winding through parkland with tee pads, metal basket targets, and fairway clearings between trees",
+      "generationTags": [
+        "park",
+        "disc-golf",
+        "frisbee",
+        "course",
+        "recreation",
+        "trail"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A disc golf course viewed from drone altitude. A series of narrow fairway clearings wind through mixed woodland and open parkland. Each hole has a concrete tee pad (1.2m x 3m) at one end and a metal chain basket target at the other. Fairways vary from open meadow lanes to wooded corridors with strategic tree obstacles. Dirt or mown-grass pathways connect holes. Numbered tee signs are visible as small posts. The course integrates with existing park terrain — hills, creeks, and tree stands create natural hazards.",
+        "pavingType": "Concrete tee pads, mown grass or dirt connecting paths",
+        "plantingType": "Existing woodland and meadow — course carved through natural landscape",
+        "seatingRealm": "Benches at tee pads, picnic area at first tee/last hole",
+        "waterFeatures": "Natural creeks or ponds as course hazards",
+        "opennessEnclosure": "Mixed — open fairways alternating with wooded corridors"
+      },
+      "prompt": {
+        "subject": "Aerial view of a disc golf course winding through parkland and woodland",
+        "details": [
+          "Narrow fairway clearings carved through mixed woodland",
+          "Concrete tee pads as small gray rectangles at start of each hole",
+          "Metal chain basket targets as tiny metallic circles at end of fairways",
+          "Mown grass paths connecting holes through park terrain",
+          "Strategic tree obstacles along fairways",
+          "Mixed open meadow and wooded corridor character"
+        ],
+        "negative": [
+          "No buildings inside the course",
+          "No parking lots on fairways",
+          "No ball golf greens or sand bunkers",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.7,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "grass",
+        "shade_strategy": "existing_woodland",
+        "hole_count": "9 or 18",
+        "tee_pad_size": "1.2m x 3.0m concrete",
+        "fairway_length": "60-150m per hole",
+        "total_course_length": "1.5-3.0km"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/hero.png",
+      "variants": [
+        {
+          "id": "disc_golf_course_v0",
+          "label": "Wooded Championship",
+          "color": "#1B5E20",
+          "description": "Disc Golf Course in championship wooded layout. Technical holes through dense forest, concrete tee pads, professional basket targets, course map signage, spectator viewing areas at key holes.",
+          "suggestedAreaSqm": 65000,
+          "minAreaSqm": 40000,
+          "maxAreaSqm": 80000,
+          "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_0.png"
+        },
+        {
+          "id": "disc_golf_course_v1",
+          "label": "Open Park Layout",
+          "color": "#7CB342",
+          "description": "Disc Golf Course in open parkland. Wide fairways through meadow with scattered tree obstacles, beginner-friendly distances, visible baskets from tee pads, family-friendly layout.",
+          "suggestedAreaSqm": 18000,
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 30000,
+          "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_1.png"
+        },
+        {
+          "id": "disc_golf_course_v2",
+          "label": "Hillside Terrain",
+          "color": "#795548",
+          "description": "Disc Golf Course on hilly terrain. Elevation changes creating dramatic uphill and downhill throws, natural terrain hazards, scenic overlook holes, creek crossings.",
+          "suggestedAreaSqm": 55000,
+          "minAreaSqm": 30000,
+          "maxAreaSqm": 80000,
+          "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_2.png"
+        },
+        {
+          "id": "disc_golf_course_v3",
+          "label": "Urban Short Course",
+          "color": "#455A64",
+          "description": "Disc Golf Course as compact 9-hole urban layout. Short holes in city park, rubber tee pads, portable baskets, integrated with walking trails, shared-use parkland with other activities.",
+          "suggestedAreaSqm": 12000,
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 20000,
+          "thumbnailUrl": "/archetypes/openspaces/disc-golf-course/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic disc golf course. Narrow fairway clearings through mixed woodland and meadow. Concrete tee pads. Metal chain basket targets. Mown grass connecting paths. Strategic tree obstacles. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with alternating wooded and open meadow areas with narrow mown fairway corridors between. Small gray tee pad rectangles and tiny basket target circles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings on fairways"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 20000,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 80000
+    },
+    {
+      "id": "bocce_petanque_court",
+      "title": "Bocce / Pétanque Court",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Rectangular bocce or pétanque courts with crushed stone or oyster shell surface, low timber borders, and shaded spectator seating",
+      "generationTags": [
+        "park",
+        "bocce",
+        "petanque",
+        "boules",
+        "courts",
+        "recreation",
+        "social"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Two to four bocce courts viewed from drone altitude. Each court is a long narrow rectangle (27m x 4m) of pale crushed stone, oyster shell, or decomposed granite, bordered by low timber or stone edging (15cm high). Courts are arranged side-by-side with narrow walkways between. A covered pergola or shade structure at one end provides spectator seating. Mature trees overhang the courts. A small storage shed for equipment. The courts have a distinctly Mediterranean or European character — elegant simplicity.",
+        "pavingType": "Crushed oyster shell, decomposed granite, or fine gravel court surface",
+        "plantingType": "Shade trees overhanging courts, Mediterranean planting at perimeter",
+        "seatingRealm": "Covered pergola with benches, bistro chairs and tables at court ends",
+        "waterFeatures": "None — possible small drinking fountain",
+        "opennessEnclosure": "Semi-enclosed by pergola and trees, intimate social character"
+      },
+      "prompt": {
+        "subject": "Aerial view of bocce or pétanque courts with crushed stone surfaces",
+        "details": [
+          "Two to four long narrow rectangular courts of pale crushed stone surface",
+          "Low timber or stone edging bordering each court",
+          "Covered pergola or shade structure at one end",
+          "Shade tree canopies overhanging the courts",
+          "Narrow walkways between courts",
+          "Bistro chairs and tables at court ends"
+        ],
+        "negative": [
+          "No buildings inside the courts",
+          "No ball court markings",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "crushed_stone",
+        "shade_strategy": "pergola_and_trees",
+        "court_dimensions": "27.4m x 4.0m (90ft x 13ft) bocce / 15m x 4m pétanque",
+        "border_height": "0.15m (6in)"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/hero.png",
+      "variants": [
+        {
+          "id": "bocce_petanque_court_v0",
+          "label": "Italian Piazza Style",
+          "color": "#A1887F",
+          "description": "Bocce Court in Italian piazza character. Oyster shell surface, stone border walls, pergola with climbing grapevines, olive trees, terracotta planter accents, warm Mediterranean atmosphere.",
+          "suggestedAreaSqm": 800,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_0.png"
+        },
+        {
+          "id": "bocce_petanque_court_v1",
+          "label": "French Pétanque Terrain",
+          "color": "#6D4C41",
+          "description": "Pétanque Court in French village style. Fine gravel terrain, plane tree canopy, bistro café adjacent, string lights overhead, casual open-boundary court, convivial gathering character.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_1.png"
+        },
+        {
+          "id": "bocce_petanque_court_v2",
+          "label": "Modern Park Court",
+          "color": "#546E7A",
+          "description": "Bocce Court in modern park design. Clean decomposed granite surface, corten steel borders, contemporary shade pavilion, integrated LED lighting, concrete and timber seating walls.",
+          "suggestedAreaSqm": 400,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 700,
+          "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_2.png"
+        },
+        {
+          "id": "bocce_petanque_court_v3",
+          "label": "Community Senior Court",
+          "color": "#689F38",
+          "description": "Bocce Court at senior community center. ADA-accessible approach, covered seating pavilion, low-maintenance surface, adjacent restrooms, gentle lighting, social gathering focus.",
+          "suggestedAreaSqm": 500,
+          "minAreaSqm": 250,
+          "maxAreaSqm": 900,
+          "thumbnailUrl": "/archetypes/openspaces/bocce-pétanque-court/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with photorealistic bocce or pétanque courts. Long narrow rectangles of pale crushed stone with low timber borders. Covered pergola at one end. Shade trees overhanging. Bistro seating. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with pale long narrow rectangular courts of crushed stone. Low border lines. Pergola shadow at one end. Tree canopy circles overhanging. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside courts"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 600,
+      "minAreaSqm": 200,
+      "maxAreaSqm": 1500
+    },
+    {
+      "id": "climbing_bouldering_wall",
+      "title": "Outdoor Climbing & Bouldering Wall",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Outdoor bouldering wall and climbing structure with textured surfaces, colored holds, safety fall-zone surfacing, and spectator seating",
+      "generationTags": [
+        "park",
+        "climbing",
+        "bouldering",
+        "wall",
+        "recreation",
+        "adventure"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An outdoor bouldering and climbing facility viewed from drone altitude. Angular concrete or timber climbing walls (3-5m high) with colorful holds dot the surface. The walls have varied angles — vertical, overhanging, and slab faces. Thick rubberized safety surfacing (300mm deep) extends 2m beyond each wall base. A low perimeter fence separates the climbing area from the park. Spectator benches face the walls. The structure casts dramatic angular shadows. Some walls incorporate natural rock features.",
+        "pavingType": "Poured rubber safety surfacing at wall bases, concrete paths",
+        "plantingType": "Low plantings at perimeter, shade trees outside climbing zone",
+        "seatingRealm": "Spectator benches facing walls, shade pavilion for rest area",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open area with vertical wall structures"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor bouldering wall and climbing facility",
+        "details": [
+          "Angular concrete or timber climbing walls 3-5m high with colorful holds",
+          "Varied wall angles — vertical, overhanging, slab faces",
+          "Thick rubberized safety surfacing around wall bases",
+          "Dramatic angular shadows cast by wall structures",
+          "Low perimeter fence separating climbing area",
+          "Spectator benches and rest area adjacent"
+        ],
+        "negative": [
+          "No tall buildings nearby",
+          "No playground slides or swings",
+          "No sports courts",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "rubber",
+        "shade_strategy": "shade_pavilion",
+        "wall_height": "3.0-5.0m (10-16ft) bouldering",
+        "fall_zone_depth": "300mm (12in) rubberized surfacing",
+        "fall_zone_clearance": "2.0m (6.5ft) beyond wall base"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/hero.png",
+      "variants": [
+        {
+          "id": "climbing_bouldering_wall_v0",
+          "label": "Competition Boulder",
+          "color": "#37474F",
+          "description": "Climbing Wall as competition-grade bouldering park. Multiple angular plywood walls, professional route-setting, colorful tape markers, thick crash pads, spectator viewing deck, competition-ready.",
+          "suggestedAreaSqm": 1000,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png"
+        },
+        {
+          "id": "climbing_bouldering_wall_v1",
+          "label": "Natural Rock Feature",
+          "color": "#795548",
+          "description": "Climbing Wall integrated with natural rock outcrops. Sculpted concrete mimicking natural stone, varied terrain, embedded in hillside, natural landscape setting, adventure character.",
+          "suggestedAreaSqm": 800,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_1.png"
+        },
+        {
+          "id": "climbing_bouldering_wall_v2",
+          "label": "Kids Adventure Climb",
+          "color": "#EF6C00",
+          "description": "Climbing Wall as children's adventure climbing structure. Lower walls (2-3m), chunky colorful holds, rope net elements, tunnel crawl-throughs, integrated with adventure playground, safety surfacing.",
+          "suggestedAreaSqm": 350,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 600,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_2.png"
+        },
+        {
+          "id": "climbing_bouldering_wall_v3",
+          "label": "Urban Art Wall",
+          "color": "#7B1FA2",
+          "description": "Climbing Wall as urban art installation. Concrete walls with mural artwork, colored LED accent lighting, sculptural climbing features, designed as both art and sport, plaza integration.",
+          "suggestedAreaSqm": 400,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 700,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic outdoor bouldering wall facility. Angular concrete climbing walls with colorful holds. Thick rubberized safety surfacing. Varied wall angles. Spectator seating. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with angular climbing wall structures casting dramatic shadows. Colored rubber safety surface pads at bases. Spectator seating area. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings blocking walls"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 500,
+      "minAreaSqm": 150,
+      "maxAreaSqm": 1500
+    },
+    {
+      "id": "nature_play_area",
+      "title": "Nature Play Area",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "Risk-positive nature play environment with log climbing structures, mud kitchen, sand and water play, rope bridges, and natural materials",
+      "generationTags": [
+        "park",
+        "nature-play",
+        "children",
+        "adventure",
+        "playground",
+        "natural"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A nature play area viewed from drone altitude. Logs of various sizes arranged as balance beams and climbing structures on a woodchip surface. A sand play area with large boulders for climbing. A small water channel (rill) winds through the space. Log stumps of varying heights form stepping stone paths. Willow tunnels or woven branch structures create enclosed play spaces. A mud kitchen area with timber counters. Rope bridges and swings hang from timber frames. The overall character is natural, earthy, and adventurous — no plastic or bright colors.",
+        "pavingType": "Woodchip, sand, compacted earth, stepping logs",
+        "plantingType": "Native trees for climbing, willow structures, meadow edges",
+        "seatingRealm": "Log benches, boulder seating for parents, shade under tree canopy",
+        "waterFeatures": "Small water channel (rill) for water play, hand pump",
+        "opennessEnclosure": "Semi-enclosed by trees and willow structures, varied microclimates"
+      },
+      "prompt": {
+        "subject": "Aerial view of a nature play area with log structures and natural materials",
+        "details": [
+          "Log balance beams and climbing structures on woodchip surface",
+          "Sand play area with large boulders for climbing",
+          "Small water channel winding through the space",
+          "Log stumps at varying heights forming stepping paths",
+          "Willow tunnel or woven branch enclosed play structures",
+          "Natural earthy palette — no bright plastic colors"
+        ],
+        "negative": [
+          "No plastic playground equipment",
+          "No bright primary colors",
+          "No metal structures",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.6,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "woodchip",
+        "shade_strategy": "canopy_trees",
+        "equipment_height": "0.9-2.0m (3-6.5ft)",
+        "fall_zone_depth": "300mm (12in) woodchip",
+        "water_play": true
+      },
+      "thumbnailUrl": "/archetypes/openspaces/nature-play-area/hero.png",
+      "variants": [
+        {
+          "id": "nature_play_area_v0",
+          "label": "Forest Adventure",
+          "color": "#33691E",
+          "description": "Nature Play Area as forest adventure zone. Dense tree canopy, log forts, rope swings from branches, climbing trees with platforms, stream crossing stones, wild and immersive character.",
+          "suggestedAreaSqm": 1500,
+          "minAreaSqm": 800,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_0.png"
+        },
+        {
+          "id": "nature_play_area_v1",
+          "label": "Sensory Garden Play",
+          "color": "#558B2F",
+          "description": "Nature Play Area as sensory garden. Herb gardens for touch and smell, textured path surfaces, wind chimes, water play rills, musical log instruments, inclusive design for varied abilities.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_1.png"
+        },
+        {
+          "id": "nature_play_area_v2",
+          "label": "Mud & Water Play",
+          "color": "#6D4C41",
+          "description": "Nature Play Area focused on mud and water play. Mud kitchen with timber counters, water pump and channel system, dam-building zone, sand excavation area, messy play encouraged.",
+          "suggestedAreaSqm": 500,
+          "minAreaSqm": 250,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_2.png"
+        },
+        {
+          "id": "nature_play_area_v3",
+          "label": "Toddler Nature Garden",
+          "color": "#8BC34A",
+          "description": "Nature Play Area for toddlers. Low stumps and logs, gentle slopes, sand pit with shade cover, small water table, soft grass mounds, fully fenced with gate, parent seating circle.",
+          "suggestedAreaSqm": 300,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 500,
+          "thumbnailUrl": "/archetypes/openspaces/nature-play-area/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic nature play area. Log climbing structures and balance beams on woodchip surface. Sand play area with boulders. Small water channel. Willow tunnel structures. Log stump stepping paths. Natural earthy palette. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, dappled tree shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a nature play area. Woodchip surface with log structure shadows. Sand circles. Water channel as thin dark line. Tree canopy circles. Woven willow structures. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, plastic equipment, bright primary colors"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 600,
+      "minAreaSqm": 200,
+      "maxAreaSqm": 2000
+    },
+    {
+      "id": "inclusive_playground",
+      "title": "Inclusive Accessible Playground",
+      "aestheticCategory": "neighborhood_public_realm",
+      "spaceType": "park",
+      "description": "ADA-compliant playground with wheelchair-accessible ramps, adaptive swings, sensory panels, rubberized surfaces, and equipment for all abilities",
+      "generationTags": [
+        "park",
+        "playground",
+        "inclusive",
+        "accessible",
+        "ADA",
+        "adaptive",
+        "children"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An inclusive playground viewed from drone altitude. A large play structure with ramps (1:12 slope) connecting elevated platforms and slides. Wheelchair-accessible merry-go-round at ground level. Adaptive bucket swings alongside standard swings. Sensory play panels along accessible pathways. Poured-in-place rubberized surfacing in multiple colors creates a smooth, wheelchair-navigable surface. Wide pathways (1.5m+) connect all play zones. Shade structures over key areas. The design is colorful and welcoming with smooth transitions between all zones — no steps or barriers.",
+        "pavingType": "Poured-in-place rubber surfacing, wide concrete accessible pathways",
+        "plantingType": "Shade trees at perimeter, sensory planting beds along paths",
+        "seatingRealm": "Accessible benches with companion seating, shade pavilions, picnic tables",
+        "waterFeatures": "Accessible splash pad jets at ground level",
+        "opennessEnclosure": "Open, barrier-free layout with clear sightlines for caregivers"
+      },
+      "prompt": {
+        "subject": "Aerial view of an inclusive accessible playground with ramps and adaptive equipment",
+        "details": [
+          "Large play structure with ramps connecting platforms — no stairs only",
+          "Colorful poured-rubber surfacing creating smooth wheelchair-navigable surface",
+          "Adaptive swings (bucket seats) alongside standard swings",
+          "Wheelchair-accessible merry-go-round at ground level",
+          "Wide pathways connecting all play zones",
+          "Shade structures and accessible seating throughout"
+        ],
+        "negative": [
+          "No steps or barriers between play zones",
+          "No gravel or mulch surfacing",
+          "No inaccessible equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.3,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "poured_rubber",
+        "shade_strategy": "shade_structures_and_trees",
+        "ramp_slope": "1:12 maximum (8.3%)",
+        "pathway_width": "1.525m (60in) minimum",
+        "transfer_platform_height": "0.28-0.38m (11-15in)",
+        "accessible_components": "minimum 50% on accessible route"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/hero.png",
+      "variants": [
+        {
+          "id": "inclusive_playground_v0",
+          "label": "Universal Design",
+          "color": "#0277BD",
+          "description": "Inclusive Playground with universal design principles. Every element accessible to all abilities, sensory-rich environment, smooth rubber surfacing throughout, adaptive swings, accessible water play.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 2000,
+          "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_0.png"
+        },
+        {
+          "id": "inclusive_playground_v1",
+          "label": "Sensory Explorer",
+          "color": "#7B1FA2",
+          "description": "Inclusive Playground focused on sensory exploration. Musical instruments, textured panels, fragrant garden beds, quiet zones and active zones, visual contrast design for low-vision users.",
+          "suggestedAreaSqm": 1400,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_1.png"
+        },
+        {
+          "id": "inclusive_playground_v2",
+          "label": "Mega All-Abilities",
+          "color": "#E65100",
+          "description": "Inclusive Playground as large destination facility. Multiple connected play structures with ramps, zip line with harness seat, accessible climbing wall, liberty swing for wheelchairs, splash pad.",
+          "suggestedAreaSqm": 4000,
+          "minAreaSqm": 2500,
+          "maxAreaSqm": 6000,
+          "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_2.png"
+        },
+        {
+          "id": "inclusive_playground_v3",
+          "label": "Nature-Inclusive",
+          "color": "#43A047",
+          "description": "Inclusive Playground blending nature play with accessibility. Accessible treehouses with ramps, wheelchair-navigable nature trails, raised garden beds at wheelchair height, natural materials with smooth surfaces.",
+          "suggestedAreaSqm": 1500,
+          "minAreaSqm": 700,
+          "maxAreaSqm": 3000,
+          "thumbnailUrl": "/archetypes/openspaces/inclusive-accessible-playground/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic inclusive accessible playground. Large play structure with ramps (no stairs). Colorful poured-rubber surfacing. Adaptive swings. Wheelchair-accessible merry-go-round. Wide accessible pathways. Shade structures. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with colorful poured-rubber surfacing in geometric patterns. Play structure with ramp shadows. Swing set shadows. Wide pathway network. Shade structure shadows. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, steps or barriers, inaccessible equipment"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1500,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 5000
+    },
+    {
+      "id": "mini_golf_course",
+      "title": "Mini Golf / Putting Course",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Miniature golf course with themed landscaped holes, artificial turf putting greens, water hazards, and decorative obstacles",
+      "generationTags": [
+        "park",
+        "mini-golf",
+        "putting",
+        "recreation",
+        "family",
+        "entertainment"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A miniature golf course viewed from drone altitude. Nine to eighteen compact putting holes arranged in a winding circuit through landscaped grounds. Each hole has a bright green artificial turf putting surface with varied shapes — doglegs, straights, curves. Decorative obstacles include small bridges, rock formations, water features, and windmills. Narrow concrete walkways connect holes. Lush planted borders between holes create screening. A small clubhouse or kiosk at the start/finish. The overall impression is colorful and landscaped — a garden with embedded putting greens.",
+        "pavingType": "Artificial turf putting greens, concrete walkways between holes",
+        "plantingType": "Dense ornamental planting between holes, flower beds, small trees",
+        "seatingRealm": "Benches at each hole, clubhouse with seating, picnic area",
+        "waterFeatures": "Small water hazards, decorative streams, fountains at feature holes",
+        "opennessEnclosure": "Enclosed by planting between holes, intimate garden rooms"
+      },
+      "prompt": {
+        "subject": "Aerial view of a miniature golf course with landscaped putting holes",
+        "details": [
+          "Nine to eighteen compact bright green artificial turf putting surfaces",
+          "Varied hole shapes — doglegs, curves, straights",
+          "Decorative obstacles — bridges, rock formations, windmill, water features",
+          "Concrete walkways connecting holes in a winding circuit",
+          "Dense ornamental planting and flower borders between holes",
+          "Small clubhouse or kiosk at start/finish area"
+        ],
+        "negative": [
+          "No real golf fairways or sand bunkers",
+          "No sports fields",
+          "No large buildings",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "artificial_turf",
+        "shade_strategy": "ornamental_trees",
+        "hole_count": "9 or 18",
+        "hole_length": "3-15m per hole",
+        "green_width": "1.5-3.0m"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/hero.png",
+      "variants": [
+        {
+          "id": "mini_golf_course_v0",
+          "label": "Classic Themed",
+          "color": "#1B5E20",
+          "description": "Mini Golf Course with classic themed obstacles. Windmills, castle turrets, pirate ships, loop-de-loops, bright primary colors, family entertainment character, neon accents for evening play.",
+          "suggestedAreaSqm": 2500,
+          "minAreaSqm": 1500,
+          "maxAreaSqm": 4000,
+          "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_0.png"
+        },
+        {
+          "id": "mini_golf_course_v1",
+          "label": "Garden Putting Green",
+          "color": "#7CB342",
+          "description": "Mini Golf Course as elegant garden putting course. Natural rock obstacles, ornamental planting, subtle topography, refined landscape design, adults-focused, wine bar at clubhouse.",
+          "suggestedAreaSqm": 1000,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 1800,
+          "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_1.png"
+        },
+        {
+          "id": "mini_golf_course_v2",
+          "label": "Urban Art Course",
+          "color": "#455A64",
+          "description": "Mini Golf Course with urban art installations as obstacles. Sculptural elements by local artists, LED light features, concrete and corten steel materials, integrated into city plaza or rooftop.",
+          "suggestedAreaSqm": 900,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_2.png"
+        },
+        {
+          "id": "mini_golf_course_v3",
+          "label": "Nature Adventure",
+          "color": "#6D4C41",
+          "description": "Mini Golf Course in nature adventure style. Holes wind through natural landscape, log and stone obstacles, stream crossings, hillside terrain, woodland setting, eco-friendly materials.",
+          "suggestedAreaSqm": 3500,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 5000,
+          "thumbnailUrl": "/archetypes/openspaces/mini-golf-putting-course/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic miniature golf course. Bright green putting surfaces in varied shapes winding through landscaped grounds. Decorative obstacles — bridges, rock formations, water features. Dense planted borders. Concrete walkways. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with bright green putting surfaces in winding circuit. Dense planting between holes. Decorative obstacle shapes. Walkway lines connecting holes. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, real golf course scale"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1500,
+      "minAreaSqm": 800,
+      "maxAreaSqm": 4000
+    },
+    {
+      "id": "pollinator_meadow",
+      "title": "Pollinator Meadow & Wildflower Garden",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Native wildflower meadow supporting bees, butterflies, and pollinators with mown path network, interpretive signage, and seasonal color displays",
+      "generationTags": [
+        "park",
+        "wildflower",
+        "meadow",
+        "pollinator",
+        "ecological",
+        "native",
+        "butterfly"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A pollinator meadow viewed from drone altitude. A large field of mixed native wildflowers and grasses in varied heights (0.5-1.5m tall), showing seasonal color — purples, yellows, oranges, whites, and pinks intermingled with green grass. Narrow mown paths wind through the tall meadow, creating a path network for walking. Small clearings with benches serve as resting spots. A butterfly observation shelter sits at one edge. The meadow has a naturalistic, slightly wild character — intentionally unmanicured. Seed head textures and grass plumes visible. Interpretive signage posts at path entrances.",
+        "pavingType": "Mown grass paths through tall meadow",
+        "plantingType": "Native wildflowers, prairie grasses, pollinator host plants",
+        "seatingRealm": "Benches in small clearings, observation shelter",
+        "waterFeatures": "None or small wildlife pond",
+        "opennessEnclosure": "Open meadow enclosed by tree line at perimeter"
+      },
+      "prompt": {
+        "subject": "Aerial view of a native wildflower pollinator meadow with mown paths",
+        "details": [
+          "Large field of mixed native wildflowers in varied colors — purples, yellows, oranges, whites",
+          "Tall grasses and seed heads creating textured surface",
+          "Narrow mown grass paths winding through tall meadow",
+          "Small clearings with benches as resting spots",
+          "Butterfly observation shelter at one edge",
+          "Naturalistic, slightly wild character — intentionally unmanicured"
+        ],
+        "negative": [
+          "No buildings inside the meadow",
+          "No manicured lawn",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "mown_grass",
+        "shade_strategy": "none"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/hero.png",
+      "variants": [
+        {
+          "id": "pollinator_meadow_v0",
+          "label": "Prairie Restoration",
+          "color": "#F9A825",
+          "description": "Pollinator Meadow as prairie restoration. Tall native grasses (big bluestem, switchgrass), coneflowers, black-eyed Susans, controlled burn management, vast open character, Great Plains reference.",
+          "suggestedAreaSqm": 15000,
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 25000,
+          "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_0.png"
+        },
+        {
+          "id": "pollinator_meadow_v1",
+          "label": "Butterfly Garden",
+          "color": "#E65100",
+          "description": "Pollinator Meadow as curated butterfly garden. Host plants for specific butterfly species, nectar stations, sheltered sunny areas, educational signage, viewing benches, enclosed by hedgerow.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_1.png"
+        },
+        {
+          "id": "pollinator_meadow_v2",
+          "label": "Urban Meadow Strip",
+          "color": "#689F38",
+          "description": "Pollinator Meadow as urban roadside or median strip. Compact wildflower planting in urban context, stormwater function, low maintenance, seasonal color along streets or bike paths.",
+          "suggestedAreaSqm": 400,
+          "minAreaSqm": 100,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_2.png"
+        },
+        {
+          "id": "pollinator_meadow_v3",
+          "label": "Formal Wildflower Border",
+          "color": "#8E24AA",
+          "description": "Pollinator Meadow as formal wildflower borders along park paths. Designed naturalistic planting in drifts, seasonal succession planning, educational labels, integrated into formal park structure.",
+          "suggestedAreaSqm": 300,
+          "minAreaSqm": 100,
+          "maxAreaSqm": 800,
+          "thumbnailUrl": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic wildflower pollinator meadow. Mixed native wildflowers in varied colors — purples, yellows, oranges. Tall grasses and seed heads. Mown paths winding through. Small clearings with benches. Naturalistic wild character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with textured wildflower meadow in varied colors. Narrow mown paths as light green lines winding through. Small clearing circles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, manicured lawn, formal hedges"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 3000,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 20000
+    },
+    {
+      "id": "urban_orchard_food_forest",
+      "title": "Urban Orchard & Food Forest",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Multi-layered edible landscape with fruit and nut trees, berry shrubs, herb ground cover, communal harvest areas, and educational signage",
+      "generationTags": [
+        "park",
+        "orchard",
+        "food-forest",
+        "edible",
+        "urban-agriculture",
+        "fruit-trees",
+        "permaculture"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An urban orchard and food forest viewed from drone altitude. Rows of fruit trees (apple, pear, cherry, plum) in organized spacing (4-6m apart) with understory berry shrubs and ground-cover herbs beneath. Gravel or mown-grass paths wind between rows. Raised herb beds at entry areas. A communal harvesting and gathering area with picnic tables under a shade pavilion. Compost bins and tool storage shed at one edge. The orchard has a productive, garden-like character — organized but lush. Some trees in blossom (spring) or fruit-laden (summer/fall). Educational signage identifying species.",
+        "pavingType": "Mown grass or gravel paths between tree rows",
+        "plantingType": "Fruit trees, berry shrubs, herb ground cover, pollinator flowers",
+        "seatingRealm": "Picnic tables under shade pavilion, benches among trees",
+        "waterFeatures": "Irrigation lines (drip), possible small pond for biodiversity",
+        "opennessEnclosure": "Semi-enclosed by tree canopy, ordered rows creating aisles"
+      },
+      "prompt": {
+        "subject": "Aerial view of an urban orchard and food forest with fruit trees",
+        "details": [
+          "Rows of fruit trees in organized spacing with varied canopy sizes",
+          "Understory berry shrubs and ground-cover herbs beneath trees",
+          "Gravel or mown-grass paths winding between tree rows",
+          "Communal gathering area with picnic tables and shade pavilion",
+          "Raised herb beds at entry areas",
+          "Productive garden-like character — organized but lush"
+        ],
+        "negative": [
+          "No buildings inside the orchard",
+          "No sports equipment",
+          "No parking lots",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "high",
+        "tree_density": 0.65,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "gravel",
+        "shade_strategy": "fruit_tree_canopy",
+        "tree_spacing": "4-6m between trees",
+        "layers": "canopy trees, understory shrubs, ground cover herbs"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/hero.png",
+      "variants": [
+        {
+          "id": "urban_orchard_food_forest_v0",
+          "label": "Heritage Apple Orchard",
+          "color": "#C62828",
+          "description": "Urban Orchard as heritage apple orchard. Traditional apple varieties in rows, wildflower meadow between rows, cider press shed, autumn harvest festival area, rustic timber structures.",
+          "suggestedAreaSqm": 6000,
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_0.png"
+        },
+        {
+          "id": "urban_orchard_food_forest_v1",
+          "label": "Permaculture Food Forest",
+          "color": "#33691E",
+          "description": "Urban Orchard as permaculture food forest. Seven-layer design — tall fruit/nut trees, smaller fruit trees, shrubs, herbs, ground cover, root crops, climbers. Dense, diverse, and productive.",
+          "suggestedAreaSqm": 2000,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 5000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_1.png"
+        },
+        {
+          "id": "urban_orchard_food_forest_v2",
+          "label": "Community Pick-Your-Own",
+          "color": "#E65100",
+          "description": "Urban Orchard as community pick-your-own. Labeled fruit trees, berry picking rows, washing station, farm stand, family picnic area, educational programs, seasonal events.",
+          "suggestedAreaSqm": 4000,
+          "minAreaSqm": 1500,
+          "maxAreaSqm": 8000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_2.png"
+        },
+        {
+          "id": "urban_orchard_food_forest_v3",
+          "label": "Citrus Grove Park",
+          "color": "#F57F17",
+          "description": "Urban Orchard as warm-climate citrus grove. Orange, lemon, and grapefruit trees in Mediterranean garden setting, gravel paths, terra cotta planters, café seating, warm-climate character.",
+          "suggestedAreaSqm": 3000,
+          "minAreaSqm": 1000,
+          "maxAreaSqm": 6000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-orchard-food-forest/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic urban orchard and food forest. Rows of fruit trees with varied canopy sizes. Understory shrubs and herbs. Gravel paths between rows. Gathering area with picnic tables. Raised herb beds. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, dappled shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with organized rows of fruit tree canopies of varied sizes. Understory planting texture between trees. Gravel path lines. Gathering area clearing. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside orchard"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2000,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 8000
+    },
+    {
+      "id": "bioswale_rain_garden",
+      "title": "Bioswale & Rain Garden Corridor",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "Engineered vegetated stormwater corridor with planted bioswales, permeable surfaces, check dams, and interpretive signage about the water cycle",
+      "generationTags": [
+        "park",
+        "bioswale",
+        "rain-garden",
+        "stormwater",
+        "green-infrastructure",
+        "ecological",
+        "water"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A bioswale rain garden corridor viewed from drone altitude. A linear vegetated swale (3-5m wide) winds through parkland or along a street edge, planted with native rushes, sedges, and moisture-loving perennials. The swale is lower than the surrounding grade, with gentle side slopes. Small check dams of stone or timber slow water flow. Permeable paving or gravel paths run alongside. Interpretive signage boards explain the water cycle. The plantings are lush and dense in wet areas, transitioning to drier meadow at edges. Stone weirs or gabion walls create small pools along the corridor.",
+        "pavingType": "Permeable pavers or gravel paths alongside swale",
+        "plantingType": "Native rushes, sedges, moisture-loving perennials, rain garden species",
+        "seatingRealm": "Benches overlooking swale, interpretive stops",
+        "waterFeatures": "Engineered stormwater flow through planted swale, check dam pools",
+        "opennessEnclosure": "Linear open corridor with vegetated edges"
+      },
+      "prompt": {
+        "subject": "Aerial view of a bioswale rain garden corridor with native plantings",
+        "details": [
+          "Linear vegetated swale winding through parkland or street edge",
+          "Dense native rushes, sedges, and moisture-loving perennials in swale",
+          "Small check dams of stone or timber slowing water flow",
+          "Permeable paving or gravel paths running alongside",
+          "Lush dense planting in wet areas, transitioning to meadow at edges",
+          "Stone weirs creating small pools along the corridor"
+        ],
+        "negative": [
+          "No concrete channels or pipes",
+          "No buildings inside the corridor",
+          "No sports equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.3,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "permeable_pavers",
+        "shade_strategy": "riparian_trees",
+        "swale_width": "3-5m",
+        "swale_depth": "0.3-0.6m below grade"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/hero.png",
+      "variants": [
+        {
+          "id": "bioswale_rain_garden_v0",
+          "label": "Streetside Bioswale",
+          "color": "#0277BD",
+          "description": "Bioswale as streetside stormwater planter. Linear rain garden between sidewalk and road, curb cuts for water entry, native plantings, overflow connection to storm drain, urban green infrastructure.",
+          "suggestedAreaSqm": 100,
+          "minAreaSqm": 30,
+          "maxAreaSqm": 300,
+          "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_0.png"
+        },
+        {
+          "id": "bioswale_rain_garden_v1",
+          "label": "Park Rain Garden",
+          "color": "#43A047",
+          "description": "Bioswale as park rain garden. Sculptural planted depression in park, boulder edges, varied moisture zones, boardwalk crossings, educational signage, demonstration garden character.",
+          "suggestedAreaSqm": 800,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 2000,
+          "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_1.png"
+        },
+        {
+          "id": "bioswale_rain_garden_v2",
+          "label": "Terraced Rain Steps",
+          "color": "#546E7A",
+          "description": "Bioswale as terraced rain steps on slope. Cascading planted terraces stepping down hillside, stone retaining walls, pools at each level, stairway alongside, dramatic topographic design.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_2.png"
+        },
+        {
+          "id": "bioswale_rain_garden_v3",
+          "label": "Parking Lot Bioswale",
+          "color": "#6D4C41",
+          "description": "Bioswale integrated into parking lot. Planted rain garden islands between parking rows, permeable paving, tree canopy shade, captures and filters parking lot runoff, functional landscape.",
+          "suggestedAreaSqm": 400,
+          "minAreaSqm": 100,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/bioswale-rain-garden-corridor/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic bioswale rain garden corridor. Linear vegetated swale with native rushes and sedges. Check dams of stone. Permeable paths alongside. Lush dense planting. Small pools. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a linear vegetated swale of dense green planting. Path lines alongside. Check dam marks across swale. Pool areas. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, concrete channels, pipes"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1000,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 5000
+    },
+    {
+      "id": "urban_beach",
+      "title": "Urban Beach",
+      "aestheticCategory": "waterfront_spaces",
+      "spaceType": "park",
+      "description": "Artificial urban beach with imported sand, lounge seating, shade umbrellas, water misting, and seasonal pop-up programming — Paris Plages style",
+      "generationTags": [
+        "park",
+        "beach",
+        "urban",
+        "sand",
+        "seasonal",
+        "waterfront",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An urban beach viewed from drone altitude. A large area of imported sand (pale golden color) spread along a waterfront promenade or in an urban plaza. Rows of colorful beach umbrellas and sun loungers arranged on the sand. Palm trees in planters line the edges. A shallow wading pool or water misting zone at one end. Beach volleyball courts marked in the sand. A pop-up bar or food kiosk with bright awning. Deck chair clusters and hammock areas. The scene has a festive summer character despite being in a city — Paris Plages or London Beach style.",
+        "pavingType": "Sand surface, timber boardwalk edges, concrete promenade adjacent",
+        "plantingType": "Palm trees in planters, ornamental grasses at transitions",
+        "seatingRealm": "Sun loungers, beach chairs, hammocks, deck furniture, bar seating",
+        "waterFeatures": "Shallow wading pool, water misting stations, adjacent river/canal",
+        "opennessEnclosure": "Open sandy area with shade umbrellas creating rhythm"
+      },
+      "prompt": {
+        "subject": "Aerial view of an urban beach with sand, umbrellas, and loungers",
+        "details": [
+          "Large area of pale golden imported sand along waterfront or plaza",
+          "Rows of colorful beach umbrellas creating circular shadows on sand",
+          "Sun loungers and deck chairs arranged in clusters",
+          "Palm trees in planters lining the edges",
+          "Shallow wading pool or misting zone at one end",
+          "Pop-up bar or kiosk with bright awning"
+        ],
+        "negative": [
+          "No buildings on the sand",
+          "No cars or parking on the beach",
+          "No heavy construction",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "sand",
+        "shade_strategy": "umbrellas_and_palms"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/urban-beach/hero.png",
+      "variants": [
+        {
+          "id": "urban_beach_v0",
+          "label": "Paris Plages Style",
+          "color": "#FDD835",
+          "description": "Urban Beach in Paris Plages style. Sand along river quay, blue-and-white striped umbrellas, palm trees, misting stations, café kiosks, summer-only seasonal installation.",
+          "suggestedAreaSqm": 6000,
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_0.png"
+        },
+        {
+          "id": "urban_beach_v1",
+          "label": "Riverfront Beach Bar",
+          "color": "#E64A19",
+          "description": "Urban Beach as riverfront beach bar. Sand with lounge furniture, tiki bar, string lights, DJ booth, volleyball court, evening event programming, social gathering character.",
+          "suggestedAreaSqm": 1500,
+          "minAreaSqm": 800,
+          "maxAreaSqm": 3000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_1.png"
+        },
+        {
+          "id": "urban_beach_v2",
+          "label": "Family Splash Beach",
+          "color": "#0288D1",
+          "description": "Urban Beach for families. Sand play area with shade sails, shallow splash zone, children's water play features, lifeguard station, accessible boardwalk, picnic facilities.",
+          "suggestedAreaSqm": 2500,
+          "minAreaSqm": 1000,
+          "maxAreaSqm": 5000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_2.png"
+        },
+        {
+          "id": "urban_beach_v3",
+          "label": "Plaza Sand Garden",
+          "color": "#546E7A",
+          "description": "Urban Beach as permanent plaza sand garden. Sculptural sand area in hardscape plaza, timber deck surrounds, zen garden character, year-round installation, modern landscape design.",
+          "suggestedAreaSqm": 500,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/urban-beach/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic urban beach. Pale golden sand area with colorful beach umbrellas and sun loungers. Palm trees in planters. Shallow wading pool. Pop-up bar kiosk. Festive summer character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with pale golden sand area. Circular umbrella shadows in rows. Lounger rectangles. Palm tree canopy circles. Wading pool shape. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings on sand"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2000,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 8000
+    },
+    {
+      "id": "sculpture_garden",
+      "title": "Sculpture Garden & Art Park",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "Outdoor gallery with permanent and rotating sculptural installations set among landscaped paths, lawns, and specimen plantings",
+      "generationTags": [
+        "park",
+        "sculpture",
+        "art",
+        "gallery",
+        "garden",
+        "cultural",
+        "installation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A sculpture garden viewed from drone altitude. A landscaped park with scattered large-scale sculptural artworks placed at intervals along winding paths. Each sculpture sits on a gravel or paved pad with clear viewing space around it. Manicured lawns between sculpture stations. Specimen trees and ornamental planting beds frame views to sculptures. A formal entry with gates or walls. Gravel or stone paths meander through the garden. Some sculptures are abstract metal forms, others are figurative stone pieces. The overall character is calm, contemplative, and curated — a museum without walls.",
+        "pavingType": "Fine gravel or stone slab paths, paved sculpture pads",
+        "plantingType": "Specimen trees, ornamental borders, manicured lawns",
+        "seatingRealm": "Benches facing key sculptures, contemplation seating",
+        "waterFeatures": "Possible reflecting pool or water sculpture",
+        "opennessEnclosure": "Open lawns framed by planting, intimate sculpture rooms"
+      },
+      "prompt": {
+        "subject": "Aerial view of a sculpture garden with artworks among landscaped paths",
+        "details": [
+          "Large-scale sculptural artworks placed at intervals along winding paths",
+          "Each sculpture on a gravel or paved pad with viewing space around it",
+          "Manicured lawns between sculpture stations",
+          "Specimen trees and ornamental planting framing views",
+          "Gravel or stone paths meandering through the garden",
+          "Abstract metal and stone sculptures casting dramatic shadows"
+        ],
+        "negative": [
+          "No buildings inside the garden",
+          "No sports equipment",
+          "No playground",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "gravel",
+        "shade_strategy": "specimen_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/hero.png",
+      "variants": [
+        {
+          "id": "sculpture_garden_v0",
+          "label": "Museum Sculpture Court",
+          "color": "#455A64",
+          "description": "Sculpture Garden as formal museum courtyard. White gravel ground, minimalist plantings, curated permanent collection, gallery walls at perimeter, dramatic lighting design.",
+          "suggestedAreaSqm": 1000,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_0.png"
+        },
+        {
+          "id": "sculpture_garden_v1",
+          "label": "Landscape Art Park",
+          "color": "#558B2F",
+          "description": "Sculpture Garden as large landscape art park. Monumental sculptures in rolling parkland, meadow settings, long sight lines, trail circuit, works integrated with natural terrain.",
+          "suggestedAreaSqm": 15000,
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 30000,
+          "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_1.png"
+        },
+        {
+          "id": "sculpture_garden_v2",
+          "label": "Interactive & Kinetic",
+          "color": "#E65100",
+          "description": "Sculpture Garden with interactive and kinetic art. Wind-powered sculptures, touch-and-play installations, sound sculptures, water kinetic features, family-friendly engagement.",
+          "suggestedAreaSqm": 1500,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 3000,
+          "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_2.png"
+        },
+        {
+          "id": "sculpture_garden_v3",
+          "label": "Rotating Exhibition",
+          "color": "#7B1FA2",
+          "description": "Sculpture Garden as rotating exhibition space. Flexible display pads, temporary installations, emerging artist program, opening night event lawn, gallery shop at entry.",
+          "suggestedAreaSqm": 700,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/sculpture-garden-art-park/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic sculpture garden. Sculptural artworks on paved pads along winding gravel paths. Manicured lawns between sculptures. Specimen trees framing views. Contemplative, curated garden character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with manicured lawns and gravel paths. Sculpture shapes casting dramatic shadows on paved pads. Specimen tree canopy circles. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside garden"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 3000,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 20000
+    },
+    {
+      "id": "labyrinth_meditation",
+      "title": "Labyrinth & Meditation Garden",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "Walking labyrinth and meditation garden with concentric path pattern, contemplative plantings, water features, and quiet seating areas",
+      "generationTags": [
+        "park",
+        "labyrinth",
+        "meditation",
+        "zen",
+        "contemplative",
+        "garden",
+        "wellness"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A labyrinth and meditation garden viewed from drone altitude. A large circular labyrinth pattern (12-15m diameter) is the central feature — concentric walking paths in stone, gravel, or mown grass creating a single winding route to center. The labyrinth sits within a garden of contemplative character — raked gravel areas, specimen plantings, a small reflecting pool, and meditation seating alcoves. Low hedges or stone walls define garden rooms. A bamboo grove or stand of birch trees creates screening from the surrounding park. The overall character is serene and ordered.",
+        "pavingType": "Stone or gravel labyrinth path, raked gravel meditation areas",
+        "plantingType": "Contemplative plantings — bamboo, ornamental grasses, moss, specimen trees",
+        "seatingRealm": "Meditation benches in alcoves, seating at labyrinth center",
+        "waterFeatures": "Small reflecting pool, trickling water feature, stone basin",
+        "opennessEnclosure": "Enclosed contemplative garden rooms, screened from surroundings"
+      },
+      "prompt": {
+        "subject": "Aerial view of a walking labyrinth and meditation garden",
+        "details": [
+          "Large circular labyrinth pattern with concentric walking paths",
+          "Stone, gravel, or mown grass labyrinth surface",
+          "Raked gravel meditation areas surrounding the labyrinth",
+          "Small reflecting pool or water feature",
+          "Low hedges or stone walls defining garden rooms",
+          "Bamboo grove or birch trees screening from surroundings"
+        ],
+        "negative": [
+          "No buildings inside the garden",
+          "No sports equipment",
+          "No bright colors or playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "stone_and_gravel",
+        "shade_strategy": "specimen_trees",
+        "labyrinth_diameter": "12-15m (40-50ft)"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/hero.png",
+      "variants": [
+        {
+          "id": "labyrinth_meditation_v0",
+          "label": "Classical Stone Labyrinth",
+          "color": "#795548",
+          "description": "Labyrinth Garden with classical Chartres-style stone labyrinth. Concentric stone paths on grass, medieval cathedral pattern, formal hedged garden, stone bench at center.",
+          "suggestedAreaSqm": 800,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_0.png"
+        },
+        {
+          "id": "labyrinth_meditation_v1",
+          "label": "Zen Rock Garden",
+          "color": "#546E7A",
+          "description": "Labyrinth Garden as zen rock garden. Raked white gravel with placed boulders, minimal plantings, moss accents, timber-framed viewing platform, Japanese aesthetic, contemplative silence.",
+          "suggestedAreaSqm": 350,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 700,
+          "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_1.png"
+        },
+        {
+          "id": "labyrinth_meditation_v2",
+          "label": "Healing Garden",
+          "color": "#43A047",
+          "description": "Labyrinth Garden as healing garden. Fragrant therapeutic plantings, accessible wheelchair path, quiet water feature, sheltered seating alcoves, adjacent to healthcare facility, restorative design.",
+          "suggestedAreaSqm": 700,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_2.png"
+        },
+        {
+          "id": "labyrinth_meditation_v3",
+          "label": "Modern Mindfulness",
+          "color": "#0277BD",
+          "description": "Labyrinth Garden in modern minimalist style. Geometric labyrinth in polished concrete, corten steel walls, linear water channel, contemporary sculpture, LED accent lighting, yoga/tai chi lawn.",
+          "suggestedAreaSqm": 500,
+          "minAreaSqm": 200,
+          "maxAreaSqm": 1000,
+          "thumbnailUrl": "/archetypes/openspaces/labyrinth-meditation-garden/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic labyrinth and meditation garden. Circular labyrinth pattern with concentric walking paths. Raked gravel areas. Reflecting pool. Contemplative plantings. Low hedges defining rooms. Serene character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, soft shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with circular concentric labyrinth pattern. Raked gravel texture. Reflecting pool rectangle. Hedge lines. Tree canopy circles at screening edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, bright playground colors, sports equipment"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 800,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 2000
+    },
+    {
+      "id": "festival_event_lawn",
+      "title": "Festival Grounds & Event Lawn",
+      "aestheticCategory": "social_event_spaces",
+      "spaceType": "park",
+      "description": "Large flat flexible lawn with utility hookups, hardened vehicle access, and perimeter infrastructure for markets, festivals, concerts, and temporary installations",
+      "generationTags": [
+        "park",
+        "festival",
+        "event",
+        "lawn",
+        "market",
+        "concert",
+        "gathering",
+        "flexible"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Festival grounds viewed from drone altitude. A large flat expanse of manicured grass lawn, bright green and open. Perimeter utility bollards with power and water hookups spaced at regular intervals. A hardened vehicle access road (reinforced grass or gravel) runs along one edge for service vehicles. A permanent stage platform or band shell at one end. Trees line the perimeter but the center is entirely open. Food truck parking pads at entry points. The space reads as deliberately empty and versatile — ready for any event configuration.",
+        "pavingType": "Reinforced grass lawn, gravel service roads, concrete utility pads",
+        "plantingType": "Open grass lawn center, mature trees at perimeter only",
+        "seatingRealm": "Temporary — event-dependent. Permanent benches at perimeter path.",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Vast open center with tree-framed perimeter"
+      },
+      "prompt": {
+        "subject": "Aerial view of a large flat event lawn ready for festivals and markets",
+        "details": [
+          "Large flat expanse of bright green manicured grass lawn",
+          "Deliberately open and empty center — versatile event space",
+          "Permanent stage platform or band shell at one end",
+          "Perimeter utility bollards spaced at regular intervals",
+          "Hardened gravel service access road along one edge",
+          "Mature trees lining the perimeter only"
+        ],
+        "negative": [
+          "No permanent structures in the lawn center",
+          "No sports field markings",
+          "No playground equipment",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "reinforced_grass",
+        "shade_strategy": "perimeter_trees"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/hero.png",
+      "variants": [
+        {
+          "id": "festival_event_lawn_v0",
+          "label": "Concert & Festival",
+          "color": "#E64A19",
+          "description": "Festival Grounds for concerts and music festivals. Large stage structure with roof, front-of-house sound position, crowd barrier layout, VIP area, food vendor row, portable facilities zone.",
+          "suggestedAreaSqm": 20000,
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 40000,
+          "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_0.png"
+        },
+        {
+          "id": "festival_event_lawn_v1",
+          "label": "Farmers Market Square",
+          "color": "#689F38",
+          "description": "Festival Grounds as weekly farmers market. Grid of vendor pad positions, covered market pavilion, food truck lane, community gathering space, permanent market infrastructure.",
+          "suggestedAreaSqm": 5000,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_1.png"
+        },
+        {
+          "id": "festival_event_lawn_v2",
+          "label": "Great Lawn",
+          "color": "#2E7D32",
+          "description": "Festival Grounds as classic great lawn. Vast open grass field, Central Park-style character, passive recreation when not hosting events, gentle topography, iconic landmark quality.",
+          "suggestedAreaSqm": 30000,
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 50000,
+          "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_2.png"
+        },
+        {
+          "id": "festival_event_lawn_v3",
+          "label": "Winter Market & Rink",
+          "color": "#0277BD",
+          "description": "Festival Grounds with winter programming. Seasonal ice rink installation, holiday market chalets, hot chocolate kiosk, string light canopy, evergreen tree displays, year-round activation.",
+          "suggestedAreaSqm": 5000,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 10000,
+          "thumbnailUrl": "/archetypes/openspaces/festival-grounds-event-lawn/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic festival event lawn. Large flat bright green grass expanse. Stage or band shell at one end. Perimeter utility bollards. Service access road. Trees at perimeter only. Open versatile character. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with large bright green open grass lawn. Stage structure shadow at one end. Perimeter tree canopy circles. Service road line at one edge. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, structures in lawn center"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 5000,
+      "minAreaSqm": 2000,
+      "maxAreaSqm": 40000
+    },
+    {
+      "id": "pump_track",
+      "title": "Pump Track",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Continuous loop asphalt or dirt pump track with rollers, berms, and rhythm sections for bikes, scooters, skateboards, and wheelchairs",
+      "generationTags": [
+        "park",
+        "pump-track",
+        "bike",
+        "scooter",
+        "BMX",
+        "recreation",
+        "cycling"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A pump track viewed from drone altitude. A continuous looping track of smooth asphalt or compacted dirt with a series of rollers (bumps 0.3-0.6m high) and banked turns (berms). The track is 2-3m wide and forms figure-eight or cloverleaf patterns. The surface is smooth dark asphalt or packed earth. Bermed turns are raised at the outside edge. The overall shape reads as a flowing organic circuit from above. A start mound at one point. Grass or gravel surrounds the track. Spectator area with benches at one side.",
+        "pavingType": "Smooth asphalt or compacted dirt/clay",
+        "plantingType": "Grass surrounds, shade trees at spectator area",
+        "seatingRealm": "Spectator benches, viewing mound",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Open flowing circuit in parkland"
+      },
+      "prompt": {
+        "subject": "Aerial view of a pump track with rollers and bermed turns",
+        "details": [
+          "Continuous looping track of smooth asphalt or packed dirt",
+          "Series of rollers (bumps) and banked bermed turns",
+          "Track 2-3m wide forming figure-eight or cloverleaf pattern",
+          "Smooth dark surface with raised berms at outside of turns",
+          "Start mound at one point",
+          "Grass surrounds and spectator seating area"
+        ],
+        "negative": [
+          "No buildings",
+          "No skatepark bowls or ramps (different from skatepark)",
+          "No sports courts",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "asphalt",
+        "shade_strategy": "perimeter_trees",
+        "track_width": "2-3m",
+        "roller_height": "0.3-0.6m",
+        "berm_height": "0.6-1.2m"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/pump-track/hero.png",
+      "variants": [
+        {
+          "id": "pump_track_v0",
+          "label": "Asphalt Competition",
+          "color": "#37474F",
+          "description": "Pump Track in asphalt competition grade. Smooth sealed surface, technical rhythm sections, banked berms, timing system, spectator grandstand, night lighting, professional design.",
+          "suggestedAreaSqm": 3000,
+          "minAreaSqm": 1500,
+          "maxAreaSqm": 5000,
+          "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_0.png"
+        },
+        {
+          "id": "pump_track_v1",
+          "label": "Dirt BMX Track",
+          "color": "#6D4C41",
+          "description": "Pump Track in natural dirt/clay. Compacted earth jumps and berms, table-top features, BMX character, hand-built aesthetic, surrounded by trees, adventure riding.",
+          "suggestedAreaSqm": 3500,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 6000,
+          "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_1.png"
+        },
+        {
+          "id": "pump_track_v2",
+          "label": "Family All-Wheels",
+          "color": "#E65100",
+          "description": "Pump Track designed for all wheel types. Gentle rollers for beginners, scooter and wheelchair friendly, bright colored surface markings, adjacent learn-to-ride area, family gathering space.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_2.png"
+        },
+        {
+          "id": "pump_track_v3",
+          "label": "Modular Pop-Up",
+          "color": "#0097A7",
+          "description": "Pump Track as modular prefabricated system. Interlocking composite panels, reconfigurable layout, temporary or permanent installation, urban plaza integration, event-ready design.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/pump-track/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic pump track. Continuous looping asphalt or dirt track with rollers and banked berms. Figure-eight or cloverleaf pattern. Smooth dark surface. Grass surrounds. Spectator area. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with flowing organic pump track circuit shape. Dark asphalt or packed earth surface. Roller bumps and berm shadows. Grass fill between loops. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, skatepark bowls"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 1500,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 5000
+    },
+    {
+      "id": "outdoor_ice_rink",
+      "title": "Outdoor Ice Rink",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Seasonal outdoor ice skating rink with refrigerated surface, boards, skate rental facility, warming hut, and string-light canopy",
+      "generationTags": [
+        "park",
+        "ice-rink",
+        "skating",
+        "winter",
+        "seasonal",
+        "recreation"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "An outdoor ice rink viewed from drone altitude. A rectangular or oval ice surface (typically 30m x 60m for NHL-size or 20m x 40m for recreational) with white ice bordered by low dasher boards (1.0-1.2m high). Skaters as small figures on the ice. A warming hut or skate rental building at one end. String lights or festive lighting overhead. Snow banks at edges in winter. A Zamboni or ice resurfacing area at one corner. Benches for lacing up skates line the perimeter. The scene has a festive winter character — holiday markets or food vendors may be adjacent.",
+        "pavingType": "Ice surface (refrigerated or natural), concrete pad beneath",
+        "plantingType": "Evergreen trees at perimeter for winter character",
+        "seatingRealm": "Skate lacing benches, warming hut, hot beverage stand",
+        "waterFeatures": "Ice surface (frozen water)",
+        "opennessEnclosure": "Open rink with low board enclosure"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor ice skating rink with boards and lighting",
+        "details": [
+          "Rectangular or oval white ice surface bordered by low dasher boards",
+          "Skaters as small figures on the ice creating movement blur",
+          "Warming hut or skate rental building at one end",
+          "String lights or festive lighting overhead",
+          "Skate lacing benches lining the perimeter",
+          "Winter character — snow banks, evergreen trees, festive atmosphere"
+        ],
+        "negative": [
+          "No hockey goals unless specified",
+          "No buildings on the ice",
+          "No summer vegetation",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.1,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "ice",
+        "shade_strategy": "none",
+        "rink_dimensions": "30m x 60m (NHL) or 20m x 40m (recreational)",
+        "board_height": "1.0-1.2m (3.3-4ft)"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/hero.png",
+      "variants": [
+        {
+          "id": "outdoor_ice_rink_v0",
+          "label": "Holiday Market Rink",
+          "color": "#C62828",
+          "description": "Outdoor Ice Rink with holiday market. Christmas market chalets surrounding rink, giant Christmas tree, string lights, mulled wine stands, festive European character.",
+          "suggestedAreaSqm": 3000,
+          "minAreaSqm": 1500,
+          "maxAreaSqm": 5000,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_0.png"
+        },
+        {
+          "id": "outdoor_ice_rink_v1",
+          "label": "Urban Plaza Rink",
+          "color": "#0277BD",
+          "description": "Outdoor Ice Rink in urban plaza setting. Surrounded by office towers, iconic city backdrop, professional refrigeration, late-night skating hours, café and bar adjacent.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 2500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_1.png"
+        },
+        {
+          "id": "outdoor_ice_rink_v2",
+          "label": "Nature Skating Trail",
+          "color": "#2E7D32",
+          "description": "Outdoor Ice Rink as winding skating trail through parkland. Looping frozen path through trees, lantern-lit, rustic warming stations, Canadian Rideau Canal character, scenic nature setting.",
+          "suggestedAreaSqm": 4000,
+          "minAreaSqm": 2000,
+          "maxAreaSqm": 8000,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_2.png"
+        },
+        {
+          "id": "outdoor_ice_rink_v3",
+          "label": "Multipurpose Pad",
+          "color": "#37474F",
+          "description": "Outdoor Ice Rink as year-round multi-use pad. Ice rink in winter, roller skating or basketball in summer, convertible surface, permanent boards and lighting, community recreation hub.",
+          "suggestedAreaSqm": 900,
+          "minAreaSqm": 500,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/outdoor-ice-rink/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic outdoor ice skating rink. White ice surface with low dasher boards. Warming hut at one end. String lights overhead. Skaters on ice. Winter festive character with snow and evergreens. Keep surrounding satellite map context exactly as-is. Oblique aerial view, winter day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with white rectangular ice surface bordered by boards. Skater figures. Building shadow at one end. String light lines overhead. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, summer vegetation on ice"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 2500,
+      "minAreaSqm": 800,
+      "maxAreaSqm": 5000
+    },
+    {
+      "id": "beach_volleyball_courts",
+      "title": "Beach Volleyball Courts",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "Sand volleyball courts with regulation nets, boundary lines, deep sand playing surface, and spectator seating areas",
+      "generationTags": [
+        "park",
+        "volleyball",
+        "beach",
+        "sand",
+        "courts",
+        "recreation",
+        "sports"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "Beach volleyball courts viewed from drone altitude. Two to four rectangular sand courts (16m x 8m each) with deep golden sand. Nets stretched across the center of each court at 2.43m height (men's) creating thin horizontal lines with shadows. White boundary lines (ribbons) mark court edges in the sand. A narrow walkway between courts. Small bleacher or bench seating at ends. Posts and guy-wires anchoring nets. The sand is raked smooth and bright. Surrounding area is grass, concrete path, or more sand.",
+        "pavingType": "Deep sand playing surface (minimum 400mm depth)",
+        "plantingType": "None inside courts — grass or palms at perimeter",
+        "seatingRealm": "Bleacher benches at court ends, spectator standing area",
+        "waterFeatures": "None — outdoor shower station at entry",
+        "opennessEnclosure": "Open sand courts, no fencing required"
+      },
+      "prompt": {
+        "subject": "Aerial view of beach volleyball courts with sand and nets",
+        "details": [
+          "Two to four rectangular golden sand courts side by side",
+          "Nets stretched across center of each court as thin horizontal lines",
+          "White boundary ribbon lines in the sand",
+          "Deep raked sand surface, bright golden color",
+          "Small bleacher seating at court ends",
+          "Net post and guy-wire shadows visible"
+        ],
+        "negative": [
+          "No buildings on the courts",
+          "No trees overhanging courts",
+          "No grass on courts",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "sand",
+        "shade_strategy": "none",
+        "court_dimensions": "16m x 8m per court",
+        "net_height": "2.43m (men) / 2.24m (women)",
+        "sand_depth": "400mm (16in) minimum"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/hero.png",
+      "variants": [
+        {
+          "id": "beach_volleyball_courts_v0",
+          "label": "Competition Standard",
+          "color": "#FDD835",
+          "description": "Beach Volleyball Courts in competition standard. FIVB regulation dimensions, stadium seating, referee stand, electronic scoreboard, broadcast lighting, tournament-ready.",
+          "suggestedAreaSqm": 1800,
+          "minAreaSqm": 1000,
+          "maxAreaSqm": 3000,
+          "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_0.png"
+        },
+        {
+          "id": "beach_volleyball_courts_v1",
+          "label": "Beachside Recreation",
+          "color": "#0288D1",
+          "description": "Beach Volleyball Courts at waterfront beach. Integrated into beach park, palm trees nearby, outdoor shower, beach bar adjacent, casual recreation, coastal atmosphere.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 350,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_1.png"
+        },
+        {
+          "id": "beach_volleyball_courts_v2",
+          "label": "Park Sand Courts",
+          "color": "#689F38",
+          "description": "Beach Volleyball Courts in city park. Sand courts surrounded by grass, shade trees at perimeter, picnic area adjacent, community recreation, family-friendly, evening lighting.",
+          "suggestedAreaSqm": 1000,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 1800,
+          "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_2.png"
+        },
+        {
+          "id": "beach_volleyball_courts_v3",
+          "label": "Indoor-Outdoor Complex",
+          "color": "#37474F",
+          "description": "Beach Volleyball Courts with partial roof cover. Tensile fabric canopy over courts, sand surface, LED lighting for evening play, year-round use, sports club character.",
+          "suggestedAreaSqm": 2200,
+          "minAreaSqm": 1200,
+          "maxAreaSqm": 3500,
+          "thumbnailUrl": "/archetypes/openspaces/beach-volleyball-courts/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with photorealistic beach volleyball courts. Golden sand rectangles with nets stretched across centers. White boundary ribbons. Bleacher seating at ends. Raked sand surface. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with golden sand court rectangles. Thin net line shadows across centers. White boundary ribbon lines in sand. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, grass courts"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 800,
+      "minAreaSqm": 400,
+      "maxAreaSqm": 3000
+    },
+    {
+      "id": "kayak_launch_dock",
+      "title": "Kayak & Canoe Launch",
+      "aestheticCategory": "waterfront_spaces",
+      "spaceType": "park",
+      "description": "Waterfront kayak and canoe launch with floating dock, boat storage racks, rigging area, and small boathouse or kiosk",
+      "generationTags": [
+        "park",
+        "kayak",
+        "canoe",
+        "launch",
+        "dock",
+        "waterfront",
+        "paddling",
+        "boathouse"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A kayak and canoe launch viewed from drone altitude. A floating dock or ramp extends into a river, lake, or harbour. A boat storage rack area with kayaks and canoes on horizontal racks in bright colors (red, yellow, blue, green). A rigging and staging area on a concrete or gravel pad. A small boathouse or rental kiosk. A gentle ramp or stepped entry into the water. Parking for trailers. The dock area has a working waterfront character. Kayaks may be visible on the water as colorful elongated shapes.",
+        "pavingType": "Concrete launch pad, floating dock, gravel staging area",
+        "plantingType": "Riparian plantings at water edge, shade trees at parking",
+        "seatingRealm": "Benches at viewing area, picnic tables near kiosk",
+        "waterFeatures": "Adjacent water body — river, lake, or harbour",
+        "opennessEnclosure": "Open waterfront with dock extending into water"
+      },
+      "prompt": {
+        "subject": "Aerial view of a kayak and canoe launch with dock and storage racks",
+        "details": [
+          "Floating dock or ramp extending into water",
+          "Boat storage racks with colorful kayaks and canoes — red, yellow, blue, green",
+          "Concrete or gravel rigging and staging area",
+          "Small boathouse or rental kiosk",
+          "Gentle ramp entry into water",
+          "Colorful kayaks visible on water as elongated shapes"
+        ],
+        "negative": [
+          "No large marina structures",
+          "No motorboats",
+          "No industrial waterfront",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "paving_material": "concrete",
+        "shade_strategy": "shade_structure"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/hero.png",
+      "variants": [
+        {
+          "id": "kayak_launch_dock_v0",
+          "label": "River Launch",
+          "color": "#0277BD",
+          "description": "Kayak Launch on river bank. Floating dock on current, upstream staging area, boat slide launch, riverside trail connection, riparian plantings, adventure outfitter kiosk.",
+          "suggestedAreaSqm": 350,
+          "minAreaSqm": 150,
+          "maxAreaSqm": 700,
+          "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_0.png"
+        },
+        {
+          "id": "kayak_launch_dock_v1",
+          "label": "Urban Harbour Dock",
+          "color": "#455A64",
+          "description": "Kayak Launch in urban harbour. Modern floating pontoon, kayak storage lockers, rental shop, café, city skyline backdrop, evening paddle programs, waterfront promenade integration.",
+          "suggestedAreaSqm": 800,
+          "minAreaSqm": 400,
+          "maxAreaSqm": 1500,
+          "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_1.png"
+        },
+        {
+          "id": "kayak_launch_dock_v2",
+          "label": "Lake Beach Launch",
+          "color": "#43A047",
+          "description": "Kayak Launch at lake beach. Sandy beach entry, rack storage under shade structure, picnic area, swimming beach adjacent, nature interpretation centre, provincial/state park character.",
+          "suggestedAreaSqm": 600,
+          "minAreaSqm": 300,
+          "maxAreaSqm": 1200,
+          "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_2.png"
+        },
+        {
+          "id": "kayak_launch_dock_v3",
+          "label": "Community Boathouse",
+          "color": "#795548",
+          "description": "Kayak Launch with community boathouse. Timber boathouse with indoor storage, club meeting room, training dock, rowing shell storage, community paddling programs, heritage waterfront.",
+          "suggestedAreaSqm": 1200,
+          "minAreaSqm": 600,
+          "maxAreaSqm": 2000,
+          "thumbnailUrl": "/archetypes/openspaces/kayak-canoe-launch/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored park zone with a photorealistic kayak and canoe launch. Floating dock extending into water. Colorful kayaks on storage racks — red, yellow, blue. Concrete staging area. Small boathouse kiosk. Launch ramp into water. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with dock extending into water. Colorful kayak shapes on storage racks. Concrete pad. Boathouse shadow. Water body adjacent. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, large marina, motorboats"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 600,
+      "minAreaSqm": 200,
+      "maxAreaSqm": 2000
     }
   ]
 }
