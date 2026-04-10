@@ -86,7 +86,8 @@
       "Read(//tmp/**)",
       "Bash(uvicorn app.main:app --reload --port 8000)",
       "Bash(taskkill //F //FI \"WINDOWTITLE eq *uvicorn*\")",
-      "Bash(taskkill //F //FI \"IMAGENAME eq python.exe\")"
+      "Bash(taskkill //F //FI \"IMAGENAME eq python.exe\")",
+      "Bash(git tag:*)"
     ]
   }
 }

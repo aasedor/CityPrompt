@@ -346,7 +346,7 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    console.log('[Globe] Creating zone with', finalCoords.length, 'coords');
+    // Zone creation logged for debugging
     const propsWithTerrain = {
       ...(activeToolProperties || {}),
       terrain_elevation_m:
@@ -505,7 +505,7 @@ export function GlobeSitePlannerMap({
       }
 
       if (hitZoneId) {
-        console.log('[Globe] Zone selected:', hitZoneId);
+        // Zone selected
         onZoneSelected(hitZoneId);
       } else {
         onZoneSelected(null);
@@ -518,7 +518,7 @@ export function GlobeSitePlannerMap({
     const lngLat: [number, number] = [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG];
 
     // Every click adds a point. Double-click finish is handled by the dblclick listener.
-    console.log('[Globe] Point placed:', lngLat[0].toFixed(4), lngLat[1].toFixed(4), 'total:', drawingPointsRef.current.length + 1, 'click:', e.clientX, e.clientY, 'ndc:', ndcX.toFixed(3), ndcY.toFixed(3));
+    // Point placed — add to drawing
     const newPts = [...drawingPointsRef.current, lngLat];
     drawingPointsRef.current = newPts;
     setDrawingPoints(newPts);

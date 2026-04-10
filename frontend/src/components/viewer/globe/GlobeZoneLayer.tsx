@@ -2,8 +2,9 @@
  * GlobeZoneLayer.tsx — Renders SiteForge zones on the 3D tile globe.
  *
  * Uses EastNorthUpFrame to position zones at their geographic centroid,
- * then renders geometry in local ENU meters (X=East, Y=Up, Z=-North).
- * This avoids ECEF vertex manipulation entirely.
+ * then renders geometry in local ENU meters (X=East, Y=North, Z=Up).
+ * Buildings are extruded along Z (up). Flat zones (parks, roads) use
+ * depthTest=false to render on top of terrain.
  */
 
 import { useMemo } from 'react';
@@ -167,8 +168,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     return createStencilVolume(pts, Math.max(extrudeHeight * 2, 200));
   }, [zone.coordinates, centroid, isBuilding, extrudeHeight]);
 
-  console.log(`[ZoneMesh] ${zone.name || zone.zone_type}: isBuilding=${isBuilding}, extrudeHeight=${extrudeHeight}, terrainH=${zoneTerrainHeight}, storedTerrain=${storedTerrain}, coords=${zone.coordinates.length}, geoData=${!!geoData}`);
-
   if (!geoData) return null;
 
   return (
@@ -238,7 +237,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
         <lineBasicMaterial
           color={isSelected ? '#ffffff' : color}
           linewidth={isSelected ? 3 : 1.5}
-          depthTest
+          depthTest={isBuilding}
           depthWrite={false}
         />
       </line>
