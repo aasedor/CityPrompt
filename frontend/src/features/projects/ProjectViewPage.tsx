@@ -10,6 +10,8 @@ import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
+import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
+import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
@@ -32,6 +34,8 @@ export function ProjectViewPage() {
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
   const [showTour, setShowTour] = useState(false);
+  const [showGlobeRender, setShowGlobeRender] = useState(false);
+  const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
 
@@ -47,6 +51,7 @@ export function ProjectViewPage() {
     mapInstance,
     workflowStep,
     setWorkflowStep,
+    settings,
   } = useViewerStore();
 
   const {
@@ -235,6 +240,88 @@ export function ProjectViewPage() {
 
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
   if (!project) return <div className="text-center text-primary-950/50">Project not found</div>;
+
+  // --- Globe mode: full-screen Google 3D Tiles ---
+  if (settings.mapMode === 'globe') {
+    return (
+      <div className="fixed inset-0 z-50 bg-black" style={{ top: 0 }}>
+        <GlobeSitePlannerMap
+          latitude={project.location?.latitude}
+          longitude={project.location?.longitude}
+          siteZones={siteZones}
+          onZoneCreated={handleZoneCreated}
+          onZoneUpdated={handleZoneUpdated}
+          onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
+          onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+          onGlobeReady={setGlobeRefs}
+        />
+
+        {/* Toolbar */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
+          <SitePlannerToolbar />
+        </div>
+
+        {/* Zone properties panel */}
+        {selectedZone && !showGlobeRender && (
+          <div className="absolute top-16 right-4 bottom-20 z-30 w-96 overflow-y-auto rounded-xl">
+            <ZonePropertiesPanel
+              key={selectedZone.id}
+              zone={selectedZone}
+              onUpdate={(zoneId, data) => {
+                updateZone.mutate({ zoneId, data });
+                if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
+              }}
+              onDelete={(zoneId) => deleteZone.mutate(zoneId)}
+              onClose={() => selectZone(null)}
+              onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              buildings={project.buildings}
+              allZones={siteZones}
+            />
+          </div>
+        )}
+
+        {/* AI Render button + panel */}
+        <div className="absolute top-16 right-4 z-30">
+          {!showGlobeRender ? (
+            <button
+              onClick={() => setShowGlobeRender(true)}
+              className="flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-amber-600 transition-colors"
+            >
+              <Sparkles size={16} />
+              AI Render
+            </button>
+          ) : (
+            <div className="w-80">
+              <GlobeAIRenderPanel
+                canvas={globeRefs?.canvas ?? null}
+                camera={globeRefs?.camera ?? null}
+                siteZones={siteZones}
+                terrainHeight={globeRefs?.terrainHeight ?? 1045}
+                projectId={project?.id}
+              />
+              <button
+                onClick={() => setShowGlobeRender(false)}
+                className="mt-2 w-full rounded-lg bg-gray-800/80 px-3 py-1.5 text-xs text-gray-300 hover:bg-gray-700/80"
+              >
+                Close
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Back button */}
+        <div className="absolute top-4 left-4 z-30 flex items-center gap-3">
+          <Link to="/projects" className="rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
+            <ArrowLeft size={18} className="text-white" />
+          </Link>
+          <span className="text-sm font-medium text-white/80">{project.name}</span>
+        </div>
+
+        {/* Street View Panel */}
+        <StreetViewPanel siteZones={siteZones} projectId={project?.id} />
+      </div>
+    );
+  }
 
   return (
     <div>

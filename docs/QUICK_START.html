@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Prompt — Quick Start</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0f1117;
+    color: #e4e4e7;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f97316, #eab308, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 18px;
+    color: #a1a1aa;
+  }
+  .header .badge {
+    display: inline-block;
+    background: #1e1e2e;
+    border: 1px solid #3f3f46;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #a1a1aa;
+    margin-top: 12px;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .step {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .step:hover {
+    border-color: #f97316;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+  }
+  .step:nth-child(1) .step-number { background: linear-gradient(135deg, #f97316, #ea580c); }
+  .step:nth-child(2) .step-number { background: linear-gradient(135deg, #eab308, #ca8a04); }
+  .step:nth-child(3) .step-number { background: linear-gradient(135deg, #22c55e, #16a34a); }
+  .step:nth-child(4) .step-number { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .step:nth-child(5) .step-number { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+
+  .step-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .step-content p {
+    font-size: 15px;
+    color: #a1a1aa;
+    line-height: 1.5;
+  }
+  .step-content .emoji-row {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #27273a;
+    border: 1px solid #3f3f46;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #d4d4d8;
+  }
+  .chip .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Style Grid */
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .section-subtitle {
+    font-size: 14px;
+    color: #71717a;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .style-card {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .style-card:hover {
+    border-color: #f97316;
+    transform: translateY(-2px);
+  }
+  .style-card .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .style-card .name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .style-card .desc {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+  }
+  .style-card.recommended {
+    border-color: #f97316;
+    background: #1a1a2e;
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
+  }
+  .style-card.recommended .name::after {
+    content: ' *';
+    color: #f97316;
+  }
+
+  /* Tips */
+  .tips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .tip {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .tip .tip-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  .tip h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .tip p {
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.5;
+  }
+
+  /* Models */
+  .models {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .model-card {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .model-card.rec {
+    border-color: #22c55e;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+  }
+  .model-card .model-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .model-card .model-speed {
+    font-size: 13px;
+    color: #a1a1aa;
+  }
+  .model-card .model-rec {
+    display: inline-block;
+    background: #22c55e20;
+    color: #22c55e;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid #2a2a3e;
+    color: #52525b;
+    font-size: 13px;
+  }
+
+  /* Street View Section */
+  .street-view-box {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .street-view-box .sv-icon {
+    font-size: 64px;
+    flex-shrink: 0;
+  }
+  .street-view-box h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .street-view-box p {
+    font-size: 14px;
+    color: #a1a1aa;
+    line-height: 1.6;
+  }
+  .street-view-box .steps-inline {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sv-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #d4d4d8;
+  }
+  .sv-step::after {
+    content: '\2192';
+    color: #52525b;
+    margin-left: 4px;
+  }
+  .sv-step:last-child::after {
+    content: '';
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>City Prompt</h1>
+    <p>AI-powered site planning in 5 steps</p>
+    <div class="badge">Draw zones on a real map. Get photorealistic renders in seconds.</div>
+  </div>
+
+  <!-- 5 Steps -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Create a Project</h3>
+        <p>Name your project and search for a location. The map centers on your site with satellite imagery.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Draw Your Site Boundary</h3>
+        <p>Click the <strong>Site Boundary</strong> tool and trace the perimeter of your development area. This tells the AI where the project ends and the real world begins.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Add Zones</h3>
+        <p>Draw buildings, streets, and parks. Click each zone to set its architectural style.</p>
+        <div class="emoji-row">
+          <div class="chip"><div class="dot" style="background:#E03C31"></div>Buildings</div>
+          <div class="chip"><div class="dot" style="background:#616161"></div>Streets</div>
+          <div class="chip"><div class="dot" style="background:#4CAF50"></div>Parks</div>
+          <div class="chip"><div class="dot" style="background:#4A90D9"></div>Water</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>Pick an Archetype</h3>
+        <p>This is the secret sauce. Click any zone and choose a style like <strong>Parisian Mid-Rise</strong>, <strong>Adaptive Reuse Warehouse</strong>, or <strong>Eco-Urban Block</strong>. Each comes with specific materials and design details that the AI renders faithfully.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h3>Hit Render</h3>
+        <p>Switch to the <strong>AI Render</strong> tab, pick a style and model, and click <strong>Generate Previews</strong>. Your design appears as a photorealistic aerial image overlaid on the real satellite map.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Render Styles -->
+  <h2 class="section-title">Choose Your Look</h2>
+  <p class="section-subtitle">12 render styles from photorealistic to artistic</p>
+  <div class="style-grid">
+    <div class="style-card recommended">
+      <div class="icon">&#x1F4F7;</div>
+      <div class="name">Photomontage</div>
+      <div class="desc">Looks like a real drone photo</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x2728;</div>
+      <div class="name">Photo Realistic</div>
+      <div class="desc">Golden hour, warm light</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F327;</div>
+      <div class="name">Atmospheric</div>
+      <div class="desc">Cinematic, dramatic</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F5FA;</div>
+      <div class="name">Site Plan Photo</div>
+      <div class="desc">Overhead drone survey</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F3A8;</div>
+      <div class="name">Watercolour</div>
+      <div class="desc">Soft washes, textured paper</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F58B;</div>
+      <div class="name">Ink Wash</div>
+      <div class="desc">Monochromatic, fluid</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F3DB;</div>
+      <div class="name">Clay Maquette</div>
+      <div class="desc">All-white plaster model</div>
+    </div>
+    <div class="style-card">
+      <div class="icon">&#x1F9CA;</div>
+      <div class="name">Isometric</div>
+      <div class="desc">Clean vector diagram</div>
+    </div>
+  </div>
+
+  <!-- AI Models -->
+  <h2 class="section-title">Pick Your Engine</h2>
+  <p class="section-subtitle">3 AI models — speed vs quality</p>
+  <div class="models">
+    <div class="model-card">
+      <div class="model-name">Flash 2.5</div>
+      <div class="model-speed">~30 seconds</div>
+      <div class="model-speed">Quick drafts</div>
+    </div>
+    <div class="model-card rec">
+      <div class="model-name">Flash 3.1</div>
+      <div class="model-speed">~60-90 seconds</div>
+      <div class="model-rec">Recommended</div>
+    </div>
+    <div class="model-card">
+      <div class="model-name">Pro 3</div>
+      <div class="model-speed">~2-3 minutes</div>
+      <div class="model-speed">Maximum detail</div>
+    </div>
+  </div>
+
+  <!-- Street View -->
+  <div class="street-view-box">
+    <div class="sv-icon">&#x1F6B6;</div>
+    <div>
+      <h3>Street View</h3>
+      <p>See your design from the ground. Drop a pegman on any street and generate a eye-level perspective render. The AI reads the street archetype you're standing on — pedestrian promenade, tree-lined boulevard, or neighborhood lane — and renders the right character.</p>
+      <div class="steps-inline">
+        <span class="sv-step">Click Street View</span>
+        <span class="sv-step">Drop pegman on street</span>
+        <span class="sv-step">Rotate direction</span>
+        <span class="sv-step">Generate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pro Tips -->
+  <h2 class="section-title">Pro Tips</h2>
+  <p class="section-subtitle">Small things that make a big difference</p>
+  <div class="tips">
+    <div class="tip">
+      <div class="tip-icon">&#x1F3AF;</div>
+      <h4>Always set archetypes</h4>
+      <p>A zone with "Parisian Mid-Rise" renders limestone and zinc. A generic "building" gets generic results. Archetypes are the #1 quality lever.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#x1F50D;</div>
+      <h4>Zoom in for detail</h4>
+      <p>Rendering 5 buildings up close produces sharper materials than 25 buildings zoomed out. Render in sections for best quality.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#x1F4F7;</div>
+      <h4>Photomontage is sharpest</h4>
+      <p>It simulates a real Hasselblad camera sensor. Best for client presentations and realistic outputs.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#x26A1;</div>
+      <h4>Flash 3.1 > Pro 3</h4>
+      <p>Flash follows zone boundaries more reliably. Pro has more reasoning but Flash is optimized for image generation. Use Flash 3.1 for most renders.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#x1F4D0;</div>
+      <h4>Oblique angle works best</h4>
+      <p>Tilt the map to 45-60 degrees before rendering. You see both rooftops and facades — the AI handles this angle best.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">&#x1F6E4;</div>
+      <h4>Set realistic road widths</h4>
+      <p>Pedestrian: 3-5m. Local: 8-10m. Main: 18-22m. Boulevard: 28-34m. The width shows on the map and affects renders.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    City Prompt &mdash; AI-powered site planning
+  </div>
+
+</div>
+</body>
+</html>

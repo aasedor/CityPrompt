@@ -105,6 +105,7 @@ class Settings(BaseSettings):
     tripo_api_base: str = "https://api.tripo3d.ai"
     default_generation_engine: str = "meshy"
     gemini_api_key: str = ""
+    google_maps_api_key: str = ""
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"
     gemini_2d_image_model: str = "gemini-3-pro-image-preview"

@@ -82,6 +82,7 @@ const defaultViewerSettings: ViewerSettings = {
   enablePostProcessing: true,
   enableFog: true,
   show3DTiles: true,
+  mapMode: 'globe' as 'mapbox' | 'globe',
 };
 
 export interface CameraKeyframe {

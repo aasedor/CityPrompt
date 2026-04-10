@@ -822,6 +822,7 @@ export interface ViewerSettings {
   enablePostProcessing: boolean;
   enableFog: boolean;
   show3DTiles: boolean;
+  mapMode: 'mapbox' | 'globe';
 }
 
 export interface SceneObject {

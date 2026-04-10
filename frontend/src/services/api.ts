@@ -34,7 +34,7 @@ import type {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
@@ -1187,6 +1187,18 @@ export const rendersApi = {
 
   delete: async (projectId: string, renderId: string): Promise<void> => {
     await api.delete(`/api/v1/render/projects/${projectId}/renders/${renderId}`);
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Elevation API
+// ---------------------------------------------------------------------------
+
+export const elevationApi = {
+  /** Get terrain elevation at a lat/lng coordinate */
+  get: async (lat: number, lng: number): Promise<{ elevation: number; ellipsoidal_height: number; resolution: number }> => {
+    const { data } = await api.get('/api/v1/elevation', { params: { lat, lng } });
+    return data;
   },
 };
 
