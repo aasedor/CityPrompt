@@ -670,6 +670,7 @@ export function GlobeSitePlannerMap({
                 zone={zone}
                 terrainHeight={terrainElevation}
                 onZoneUpdated={onZoneUpdated}
+                globeControlsRef={globeControlsRef}
               />
             ) : null;
           })()}

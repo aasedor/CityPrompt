@@ -24,11 +24,22 @@ interface GlobeEditModeProps {
   zone: SiteZone;
   terrainHeight: number;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
+  globeControlsRef?: React.RefObject<any>;
 }
 
-export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditModeProps) {
+export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControlsRef }: GlobeEditModeProps) {
   const { camera, gl } = useThree();
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Disable/enable GlobeControls during drag
+  const setControlsEnabled = useCallback((enabled: boolean) => {
+    const controls = globeControlsRef?.current;
+    const target = controls?.controls ?? controls;
+    if (target && typeof target === 'object' && 'enabled' in target) {
+      target.enabled = enabled;
+    }
+  }, [globeControlsRef]);
   const originalCoordsRef = useRef<number[][] | null>(null);
   const zoneProps = zone.properties as Record<string, unknown> | undefined;
   const storedTerrain = Number(
@@ -83,6 +94,7 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
     bodyDragStartRef.current = startLatLng;
     bodyDragCoordsRef.current = zone.coordinates.map(c => [...c]);
     setIsDraggingBody(true);
+    setControlsEnabled(false); // Disable globe orbit during body drag
     gl.domElement.style.cursor = 'grabbing';
 
     const handlePointerMove = (moveEv: PointerEvent) => {
@@ -100,6 +112,7 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
       setIsDraggingBody(false);
       bodyDragStartRef.current = null;
       bodyDragCoordsRef.current = null;
+      setControlsEnabled(true); // Re-enable globe orbit
       gl.domElement.style.cursor = '';
       gl.domElement.removeEventListener('pointermove', handlePointerMove);
       gl.domElement.removeEventListener('pointerup', handlePointerUp);
@@ -135,6 +148,8 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
   const handleVertexPointerDown = useCallback((index: number, e: any) => {
     e.stopPropagation();
     setDragIndex(index);
+    setControlsEnabled(false); // Disable globe orbit during vertex drag
+    gl.domElement.style.cursor = 'grabbing';
     originalCoordsRef.current = zone.coordinates.map(c => [...c]);
 
     const canvas = gl.domElement;
@@ -155,6 +170,8 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
     const handlePointerUp = () => {
       setDragIndex(null);
       originalCoordsRef.current = null;
+      setControlsEnabled(true); // Re-enable globe orbit
+      gl.domElement.style.cursor = '';
       canvas.removeEventListener('pointermove', handlePointerMove);
       canvas.removeEventListener('pointerup', handlePointerUp);
     };
@@ -185,7 +202,7 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
         </EastNorthUpFrame>
       )}
 
-      {/* Vertex handles */}
+      {/* Vertex handles — HTML-based for reliable click/drag */}
       {zone.coordinates.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
@@ -193,22 +210,39 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated }: GlobeEditM
           lon={coord[0] * DEG_TO_RAD}
           height={zoneTerrainHeight}
         >
+          {/* Invisible large sphere for 3D hit detection */}
           <mesh
             renderOrder={900}
             onPointerDown={(e) => handleVertexPointerDown(i, e)}
+            onPointerEnter={() => { setHoveredIndex(i); gl.domElement.style.cursor = 'grab'; }}
+            onPointerLeave={() => { if (hoveredIndex === i) setHoveredIndex(null); if (dragIndex === null) gl.domElement.style.cursor = ''; }}
           >
-            <sphereGeometry args={[4, 12, 12]} />
+            <sphereGeometry args={[8, 12, 12]} />
             <meshBasicMaterial
               color={dragIndex === i ? '#f59e0b' : '#ffffff'}
+              transparent
+              opacity={0.01}
               depthTest={false}
               depthWrite={false}
             />
           </mesh>
-          <Html center style={{ pointerEvents: 'none' }}>
+          {/* Visible dot via HTML — pointer events ENABLED for reliable click-through */}
+          <Html center>
             <div
-              className={`h-3 w-3 rounded-full border-2 shadow-md cursor-grab ${
-                dragIndex === i ? 'border-amber-500 bg-amber-400' : 'border-white bg-white'
+              className={`rounded-full border-2 shadow-lg transition-transform duration-150 ${
+                dragIndex === i
+                  ? 'h-6 w-6 border-amber-400 bg-amber-500 scale-125'
+                  : hoveredIndex === i
+                    ? 'h-6 w-6 border-white bg-white scale-110'
+                    : 'h-5 w-5 border-white bg-white/90'
               }`}
+              style={{ cursor: dragIndex === i ? 'grabbing' : 'grab' }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                handleVertexPointerDown(i, e as any);
+              }}
+              onPointerEnter={() => { setHoveredIndex(i); gl.domElement.style.cursor = 'grab'; }}
+              onPointerLeave={() => { if (hoveredIndex === i) setHoveredIndex(null); if (dragIndex === null) gl.domElement.style.cursor = ''; }}
             />
           </Html>
         </EastNorthUpFrame>

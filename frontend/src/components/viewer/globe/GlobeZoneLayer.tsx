@@ -46,7 +46,7 @@ function createLocalGeometry(
   extrudeHeight: number,
 ): { fillGeo: THREE.BufferGeometry; outlineGeo: THREE.BufferGeometry } | null {
   if (coords.length < 3) return null;
-  const flatLift = 2; // Small lift above terrain + polygonOffset for z-fighting
+  const flatLift = 0.5; // Base height for thin slab extrusion
 
   const mPerDegLon = metersPerDegLon(centroidLat);
 
@@ -64,13 +64,14 @@ function createLocalGeometry(
   );
 
   if (extrudeHeight > 0) {
-    // Extruded building: bottom face at Z=0, top face at Z=extrudeHeight
+    // Extruded geometry: bottom at Z=0 (ground), top at Z=extrudeHeight
+    const baseZ = 0;
     const n = localPts.length;
     const allVerts: number[] = [];
     const allIdx: number[] = [];
 
-    // Bottom face vertices (0..n-1) at Z=0
-    for (const p of localPts) allVerts.push(p.x, p.y, 0);
+    // Bottom face vertices (0..n-1) at Z=baseZ
+    for (const p of localPts) allVerts.push(p.x, p.y, baseZ);
     // Top face vertices (n..2n-1) at Z=extrudeHeight
     for (const p of localPts) allVerts.push(p.x, p.y, extrudeHeight);
 
@@ -99,10 +100,10 @@ function createLocalGeometry(
     const outlineGeo = new THREE.BufferGeometry();
     outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
-    return { fillGeo, outlineGeo };
+    return { fillGeo, outlineGeo, flatTopGeo: undefined as THREE.BufferGeometry | undefined };
   }
 
-  // Flat polygon at Z = flatLift
+  // Flat zone: create a polygon at Z=0.5 (will be rendered with depthTest=false)
   const flatVerts: number[] = [];
   for (const p of localPts) flatVerts.push(p.x, p.y, flatLift);
 
@@ -121,7 +122,7 @@ function createLocalGeometry(
   const outlineGeo = new THREE.BufferGeometry();
   outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
-  return { fillGeo, outlineGeo };
+  return { fillGeo, outlineGeo, flatTopGeo: fillGeo };
 }
 
 function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
@@ -146,6 +147,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     || ((zone.properties?.floors as number) || 0) * 3.2
     || 0;
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
+  // Buildings get real extrusion; flat zones stay at 0 (use separate flatTopGeo for rendering)
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
 
   const geoData = useMemo(() => {
@@ -165,6 +167,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     return createStencilVolume(pts, Math.max(extrudeHeight * 2, 200));
   }, [zone.coordinates, centroid, isBuilding, extrudeHeight]);
 
+  console.log(`[ZoneMesh] ${zone.name || zone.zone_type}: isBuilding=${isBuilding}, extrudeHeight=${extrudeHeight}, terrainH=${zoneTerrainHeight}, storedTerrain=${storedTerrain}, coords=${zone.coordinates.length}, geoData=${!!geoData}`);
+
   if (!geoData) return null;
 
   return (
@@ -178,11 +182,34 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
         <primitive object={stencilMesh} />
       )}
 
-      {/* Fill */}
-      <mesh
-        geometry={geoData.fillGeo}
-        renderOrder={isBuilding ? 100 : 200}
-        frustumCulled={false}
+      {/* Fill — for flat zones, use a separate high-Z geometry with depthTest=false */}
+      {!isBuilding && geoData.flatTopGeo && (
+        <mesh
+          geometry={geoData.flatTopGeo}
+          renderOrder={200}
+          frustumCulled={false}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            onZoneClick?.(zone.id);
+          }}
+        >
+          <meshBasicMaterial
+            color={color}
+            transparent
+            opacity={0.5}
+            side={THREE.DoubleSide}
+            depthTest={false}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+
+      {/* Fill — buildings use standard depth-tested extrusion */}
+      {isBuilding && (
+        <mesh
+          geometry={geoData.fillGeo}
+          renderOrder={100}
+          frustumCulled={false}
         onPointerDown={(e) => {
           e.stopPropagation();
           onZoneClick?.(zone.id);
@@ -193,13 +220,14 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
           transparent
           opacity={isBuilding ? 0.85 : 0.5}
           side={THREE.DoubleSide}
-          depthTest={isBuilding}
+          depthTest
           depthWrite={false}
-          polygonOffset={isBuilding}
+          polygonOffset
           polygonOffsetFactor={-1}
           polygonOffsetUnits={-1}
         />
       </mesh>
+      )}
 
       {/* Outline */}
       {/* @ts-expect-error R3F line vs SVG line type conflict */}
@@ -210,7 +238,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
         <lineBasicMaterial
           color={isSelected ? '#ffffff' : color}
           linewidth={isSelected ? 3 : 1.5}
-          depthTest={isBuilding}
+          depthTest
           depthWrite={false}
         />
       </line>
