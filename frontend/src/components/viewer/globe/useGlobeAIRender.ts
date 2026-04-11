@@ -118,30 +118,44 @@ function hexToHsl(hex: string): [number, number, number] {
   return [h * 360, s * 100, l * 100];
 }
 
-/** Map hex color to a human-readable name for prompts */
+/**
+ * Map hex color to a UNIQUE human-readable name for prompts.
+ * Always includes the hex value so Gemini can match the exact shade,
+ * even when multiple zones share similar hue names like "red".
+ */
 function colorName(hex: string): string {
-  const genericMap: Record<string, string> = {
-    '#E03C31': 'red', '#e03c31': 'red',
-    '#FF6B6B': 'coral', '#ff6b6b': 'coral',
-    '#E8927C': 'salmon', '#e8927c': 'salmon',
-    '#F5A623': 'amber', '#f5a623': 'amber',
-    '#FFD700': 'gold', '#ffd700': 'gold',
-    '#FFEB3B': 'yellow', '#ffeb3b': 'yellow',
-    '#F0E68C': 'khaki', '#f0e68c': 'khaki',
-    '#4CAF50': 'green', '#4caf50': 'green',
-    '#66BB6A': 'spring green', '#66bb6a': 'spring green',
-    '#2E7D32': 'forest green', '#2e7d32': 'forest green',
+  const normalized = hex.toLowerCase();
+  const knownNames: Record<string, string> = {
+    '#e03c31': 'red',
+    '#ff6b6b': 'coral',
+    '#e8927c': 'salmon',
+    '#f5a623': 'amber',
+    '#ffd700': 'gold',
+    '#ffeb3b': 'yellow',
+    '#f0e68c': 'khaki',
+    '#4caf50': 'green',
+    '#66bb6a': 'spring green',
+    '#2e7d32': 'forest green',
     '#009688': 'teal',
-    '#4169E1': 'royal blue', '#4169e1': 'royal blue',
-    '#3F51B5': 'indigo', '#3f51b5': 'indigo',
-    '#2196F3': 'blue', '#2196f3': 'blue',
-    '#9C27B0': 'purple', '#9c27b0': 'purple',
+    '#4169e1': 'royal blue',
+    '#3f51b5': 'indigo',
+    '#2196f3': 'blue',
+    '#9c27b0': 'purple',
     '#795548': 'brown',
-    '#607D8B': 'blue grey', '#607d8b': 'blue grey',
-    '#BDBDBD': 'silver', '#bdbdbd': 'silver',
-    '#ffffff': 'white', '#FFFFFF': 'white',
+    '#607d8b': 'blue grey',
+    '#bdbdbd': 'silver',
+    '#c62828': 'dark red',
+    '#d84315': 'deep orange',
+    '#ad1457': 'dark pink',
+    '#6a1b9a': 'deep purple',
+    '#4527a0': 'deep indigo',
+    '#b71c1c': 'crimson',
+    '#e65100': 'burnt orange',
   };
-  if (genericMap[hex]) return genericMap[hex];
+
+  const name = knownNames[normalized];
+  if (name) return `${name} ${hex}`;
+
   try {
     const [h, , l] = hexToHsl(hex);
     const lightness = l < 35 ? 'dark ' : l > 65 ? 'light ' : '';
@@ -154,7 +168,7 @@ function colorName(hex: string): string {
     else if (h < 210) hueName = 'blue';
     else if (h < 270) hueName = 'indigo';
     else if (h < 330) hueName = 'purple';
-    return `${lightness}${hueName} (${hex})`;
+    return `${lightness}${hueName} ${hex}`;
   } catch {
     return hex;
   }
