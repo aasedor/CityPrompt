@@ -378,7 +378,8 @@ export function useGlobeAIRender() {
 
       // 4. Collect archetype reference card images (up to 6)
       console.log('[GlobeAIRender] Collecting archetype reference images...');
-      const archetypeImages = await collectArchetypeImages(zones);
+      // Archetype images disabled — full-size PNGs cause 502 payload errors
+      const archetypeImages: Awaited<ReturnType<typeof collectArchetypeImages>> = [];
       if (archetypeImages.length > 0) {
         prompt += `\n\nARCHETYPE STYLE REFERENCES (Images 2+): ${archetypeImages.length} reference images show the exact architectural style for specific zones. Use Image 1 as the spatial context. Apply each reference style to the matching colored zone.`;
         for (let i = 0; i < archetypeImages.length; i++) {
