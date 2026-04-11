@@ -28,6 +28,7 @@ import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeEditMode } from './GlobeEditMode';
+import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
 import {
@@ -230,7 +231,10 @@ export function GlobeSitePlannerMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const globeControlsRef = useRef<any>(null);
-  const { selectedZoneId, activeSitePlannerTool, activeToolProperties, streetViewPegman } = useViewerStore();
+  const {
+    selectedZoneId, activeSitePlannerTool, activeToolProperties,
+    streetViewPegman, setStreetViewPosition, setStreetViewAngle, setStreetViewActive,
+  } = useViewerStore();
 
   const isDrawing = activeSitePlannerTool !== null;
   const linear = isLinearTool(activeSitePlannerTool);
@@ -399,10 +403,28 @@ export function GlobeSitePlannerMap({
         return;
       }
 
-      // Escape to deselect
+      // Escape — remove pegman or deselect zone
       if (e.key === 'Escape') {
-        onZoneSelected(null);
+        if (streetViewPegman?.position) {
+          setStreetViewActive(false);
+        } else {
+          onZoneSelected(null);
+        }
         return;
+      }
+
+      // Arrow keys rotate street view pegman (when placed)
+      if (streetViewPegman?.position) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          setStreetViewAngle((streetViewPegman.angle - 45 + 360) % 360);
+          return;
+        }
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          setStreetViewAngle((streetViewPegman.angle + 45) % 360);
+          return;
+        }
       }
 
       // Copy (Ctrl+C / Cmd+C)
@@ -481,6 +503,12 @@ export function GlobeSitePlannerMap({
 
     const clickCarto = terrainEllipsoidRef.current.getPositionToCartographic(hit, {} as any);
     const clickLngLat: [number, number] = [clickCarto.lon * RAD_TO_DEG, clickCarto.lat * RAD_TO_DEG];
+
+    // Street view mode: place pegman on click
+    if (!isDrawing && streetViewPegman !== null) {
+      setStreetViewPosition(clickLngLat);
+      return;
+    }
 
     // In select mode: check if click is inside any zone polygon using turf.js
     if (!isDrawing) {
@@ -674,6 +702,15 @@ export function GlobeSitePlannerMap({
               />
             ) : null;
           })()}
+
+          {/* Street view pegman */}
+          {streetViewPegman?.position && (
+            <GlobePegman
+              position={streetViewPegman.position as [number, number]}
+              angle={streetViewPegman.angle}
+              terrainHeight={terrainElevation}
+            />
+          )}
         </TilesRenderer>
 
         {/* Click handling is attached in onCreated (canvas click + dblclick listeners) */}
@@ -709,6 +746,15 @@ export function GlobeSitePlannerMap({
           </div>
         );
       })()}
+
+      {/* Street view hint */}
+      {!isDrawing && streetViewPegman && (
+        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-amber-900/80 px-3 py-1.5 text-center text-[11px] text-amber-100 backdrop-blur-sm border border-amber-500/30">
+          {streetViewPegman.position
+            ? 'Arrow keys to rotate view · Esc to remove pegman'
+            : 'Click to place street view camera'}
+        </div>
+      )}
 
       {/* Select mode hint */}
       {!isDrawing && !streetViewPegman && (

@@ -103,10 +103,112 @@ export function useGlobeCamera() {
     flyToLatLng(cLat, cLng, altitude);
   }, [flyToLatLng]);
 
+  /**
+   * Position camera at street level (1.7m eye height) facing a compass heading.
+   * Used for street view capture — positions camera as if standing on the ground looking ahead.
+   *
+   * @param lat - Latitude
+   * @param lng - Longitude
+   * @param headingDeg - Compass heading: 0=North, 90=East, 180=South, 270=West
+   * @param terrainHeight - Elevation above WGS84 ellipsoid (from elevation API)
+   */
+  const flyToStreetLevel = useCallback((
+    lat: number,
+    lng: number,
+    headingDeg: number = 0,
+    terrainHeight: number = 0,
+  ) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+
+    const eyeHeight = 1.7; // meters above ground
+
+    // Surface position at terrain height
+    const surfacePos = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(
+      lat * DEG_TO_RAD, lng * DEG_TO_RAD, terrainHeight, surfacePos,
+    );
+
+    // Surface normal (up direction)
+    const normal = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToNormal(lat * DEG_TO_RAD, lng * DEG_TO_RAD, normal);
+
+    // East and North axes at this position
+    const east = new THREE.Vector3();
+    const north = new THREE.Vector3();
+    const up = new THREE.Vector3();
+    WGS84_ELLIPSOID.getEastNorthUpAxes(lat * DEG_TO_RAD, lng * DEG_TO_RAD, east, north, up);
+
+    // Camera at eye height above terrain
+    const cameraPos = surfacePos.clone().add(normal.clone().multiplyScalar(eyeHeight));
+
+    // Look direction from compass heading: 0=North (+north), 90=East (+east)
+    const headingRad = headingDeg * DEG_TO_RAD;
+    const forward = new THREE.Vector3()
+      .addScaledVector(north, Math.cos(headingRad))
+      .addScaledVector(east, Math.sin(headingRad))
+      .normalize();
+
+    // Look target = camera + forward * 50m
+    const lookTarget = cameraPos.clone().add(forward.multiplyScalar(50));
+
+    // Set camera
+    camera.position.copy(cameraPos);
+    camera.lookAt(lookTarget);
+    camera.up.copy(normal); // Ensure "up" is the surface normal
+    camera.updateMatrixWorld();
+
+    // Disable controls during street view to prevent orbit
+    if (controlsRef.current) {
+      const target = controlsRef.current.controls ?? controlsRef.current;
+      if (target && 'enabled' in target) target.enabled = false;
+    }
+  }, []);
+
+  /**
+   * Restore camera to aerial view after street-level capture.
+   */
+  const restoreAerialView = useCallback((savedState: {
+    position: THREE.Vector3;
+    quaternion: THREE.Quaternion;
+    up: THREE.Vector3;
+  }) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+
+    camera.position.copy(savedState.position);
+    camera.quaternion.copy(savedState.quaternion);
+    camera.up.copy(savedState.up);
+    camera.updateMatrixWorld();
+
+    // Re-enable controls
+    if (controlsRef.current) {
+      const target = controlsRef.current.controls ?? controlsRef.current;
+      if (target && 'enabled' in target) target.enabled = true;
+      if (controlsRef.current.update) controlsRef.current.update();
+    }
+  }, []);
+
+  /**
+   * Save current camera state for later restoration.
+   */
+  const saveCameraState = useCallback(() => {
+    const camera = cameraRef.current;
+    if (!camera) return null;
+    return {
+      position: camera.position.clone(),
+      quaternion: camera.quaternion.clone(),
+      up: camera.up.clone(),
+    };
+  }, []);
+
   return {
     controlsRef,
     cameraRef,
     flyToLatLng,
     flyToZone,
+    flyToStreetLevel,
+    restoreAerialView,
+    saveCameraState,
   };
 }

@@ -228,5 +228,51 @@ export function useGlobeAIRender() {
     }
   }, []);
 
-  return { render, isRenderingRef };
+  /**
+   * Capture the Google 3D Tiles from street level.
+   * Moves camera to street height, waits for tiles, captures, then restores camera.
+   */
+  const captureStreetView = useCallback(async (
+    canvas: HTMLCanvasElement,
+    camera: THREE.Camera,
+    lat: number,
+    lng: number,
+    headingDeg: number,
+    terrainHeight: number,
+    flyToStreetLevel: (lat: number, lng: number, heading: number, terrainH: number) => void,
+    restoreAerialView: (state: any) => void,
+    saveCameraState: () => any,
+  ): Promise<string | null> => {
+    // Save current camera state
+    const savedState = saveCameraState();
+    if (!savedState) return null;
+
+    try {
+      // Move camera to street level
+      flyToStreetLevel(lat, lng, headingDeg, terrainHeight);
+
+      // Wait for tiles to load at new LOD (street level needs higher detail)
+      // Multiple frames to ensure the renderer processes the new camera position
+      for (let i = 0; i < 5; i++) {
+        await new Promise(r => requestAnimationFrame(r));
+      }
+      // Additional wait for tile streaming
+      await new Promise(r => setTimeout(r, 3000));
+      // A few more frames for the final render
+      for (let i = 0; i < 3; i++) {
+        await new Promise(r => requestAnimationFrame(r));
+      }
+
+      // Capture the street-level view
+      console.log('[GlobeAIRender] Capturing street-level view...');
+      const imageBase64 = await captureCanvasBase64(canvas);
+
+      return imageBase64 || null;
+    } finally {
+      // Always restore the camera
+      restoreAerialView(savedState);
+    }
+  }, []);
+
+  return { render, captureStreetView, isRenderingRef };
 }

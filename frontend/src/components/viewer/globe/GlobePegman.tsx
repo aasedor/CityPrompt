@@ -16,9 +16,10 @@ const DEG_TO_RAD = Math.PI / 180;
 interface GlobePegmanProps {
   position: [number, number]; // [lng, lat]
   angle: number; // compass degrees, 0=N
+  terrainHeight?: number; // meters above WGS84 ellipsoid
 }
 
-export function GlobePegman({ position, angle }: GlobePegmanProps) {
+export function GlobePegman({ position, angle, terrainHeight = 1045 }: GlobePegmanProps) {
   const [lng, lat] = position;
 
   // View cone geometry in local ENU coordinates
@@ -50,7 +51,7 @@ export function GlobePegman({ position, angle }: GlobePegmanProps) {
   }, [angle]);
 
   return (
-    <EastNorthUpFrame lat={lat * DEG_TO_RAD} lon={lng * DEG_TO_RAD} height={0}>
+    <EastNorthUpFrame lat={lat * DEG_TO_RAD} lon={lng * DEG_TO_RAD} height={terrainHeight}>
       {/* Pegman sphere */}
       <mesh position={[0, 0, 5]}>
         <sphereGeometry args={[5, 16, 16]} />
