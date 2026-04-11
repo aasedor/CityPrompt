@@ -12,6 +12,8 @@ import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
+import { useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
+import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
@@ -38,6 +40,23 @@ export function ProjectViewPage() {
   const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
+
+  // Globe street view capture
+  const { captureStreetView } = useGlobeAIRender();
+  const { flyToStreetLevel, restoreAerialView, saveCameraState } = useGlobeCamera();
+
+  const handleGlobeStreetCapture = useCallback(async (): Promise<string | null> => {
+    if (!globeRefs?.canvas || !globeRefs?.camera) return null;
+    const pegman = useViewerStore.getState().streetViewPegman;
+    if (!pegman?.position) return null;
+    const [lng, lat] = pegman.position;
+    return captureStreetView(
+      globeRefs.canvas, globeRefs.camera,
+      lat, lng, pegman.angle,
+      globeRefs.terrainHeight,
+      flyToStreetLevel, restoreAerialView, saveCameraState,
+    );
+  }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
   useUndoRedoKeyboard();
@@ -317,8 +336,8 @@ export function ProjectViewPage() {
           <span className="text-sm font-medium text-white/80">{project.name}</span>
         </div>
 
-        {/* Street View Panel */}
-        <StreetViewPanel siteZones={siteZones} projectId={project?.id} />
+        {/* Street View Panel — with globe 3D tiles capture */}
+        <StreetViewPanel siteZones={siteZones} projectId={project?.id} globeCapture={handleGlobeStreetCapture} />
       </div>
     );
   }

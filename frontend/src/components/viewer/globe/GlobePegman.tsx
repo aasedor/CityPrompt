@@ -53,29 +53,31 @@ export function GlobePegman({ position, angle, terrainHeight = 1045 }: GlobePegm
   return (
     <EastNorthUpFrame lat={lat * DEG_TO_RAD} lon={lng * DEG_TO_RAD} height={terrainHeight}>
       {/* Pegman sphere */}
-      <mesh position={[0, 0, 5]}>
+      <mesh position={[0, 0, 5]} renderOrder={302} frustumCulled={false}>
         <sphereGeometry args={[5, 16, 16]} />
-        <meshBasicMaterial color="#f59e0b" depthWrite={false} />
+        <meshBasicMaterial color="#f59e0b" depthTest={false} depthWrite={false} />
       </mesh>
 
-      {/* View cone */}
-      <mesh geometry={coneGeometry} position={[0, 0, 1]} rotation={[0, 0, 0]}>
+      {/* View cone fill */}
+      <mesh geometry={coneGeometry} position={[0, 0, 2]} renderOrder={300} frustumCulled={false}>
         <meshBasicMaterial
           color="#f59e0b"
           transparent
-          opacity={0.25}
+          opacity={0.2}
           side={THREE.DoubleSide}
+          depthTest={false}
           depthWrite={false}
         />
       </mesh>
 
       {/* Cone outline */}
-      <mesh geometry={coneGeometry} position={[0, 0, 1.1]}>
+      <mesh geometry={coneGeometry} position={[0, 0, 2.1]} renderOrder={301} frustumCulled={false}>
         <meshBasicMaterial
           color="#f59e0b"
           transparent
-          opacity={0.6}
+          opacity={0.5}
           wireframe
+          depthTest={false}
           depthWrite={false}
         />
       </mesh>

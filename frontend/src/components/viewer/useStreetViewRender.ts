@@ -1942,6 +1942,7 @@ export async function generateStreetView(
     styleModifier?: string;
     model?: string;
     previousRenderBase64?: string; // For dual anchoring on re-render
+    overrideGuideImage?: string; // Base64 image to use instead of clay render (e.g. 3D tiles capture)
   },
 ): Promise<StreetViewResult | null> {
   const fov = options?.fovDeg ?? 70;
@@ -1983,14 +1984,19 @@ export async function generateStreetView(
   const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo);
   console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
-  // 5. Generate 3D clay render as spatial guide (gray massing model)
+  // 5. Generate guide image — use override (e.g. 3D tiles capture) or clay render
   let guideImageBase64: string;
-  try {
-    guideImageBase64 = generateClayRender(pegmanPos, angleDeg, visible);
-    console.log('[StreetView] Clay render generated successfully');
-  } catch (clayErr) {
-    console.warn('[StreetView] Clay render failed, falling back to flat depth map:', clayErr);
-    guideImageBase64 = generateDepthMap(pegmanPos, angleDeg, visible);
+  if (options?.overrideGuideImage) {
+    guideImageBase64 = options.overrideGuideImage;
+    console.log('[StreetView] Using override guide image (3D tiles capture)');
+  } else {
+    try {
+      guideImageBase64 = generateClayRender(pegmanPos, angleDeg, visible);
+      console.log('[StreetView] Clay render generated successfully');
+    } catch (clayErr) {
+      console.warn('[StreetView] Clay render failed, falling back to flat depth map:', clayErr);
+      guideImageBase64 = generateDepthMap(pegmanPos, angleDeg, visible);
+    }
   }
 
   // 6. Collect archetype card images for multi-image routing (up to 6)
@@ -2001,19 +2007,29 @@ export async function generateStreetView(
     console.warn('[StreetView] Failed to collect archetype images:', archErr);
   }
 
-  // 7. Call render API with clay render + archetype images + optional dual anchor
+  // 7. Call render API with guide image + archetype images + optional dual anchor
+  const isRealContext = !!options?.overrideGuideImage;
   try {
+    const spatialRef = isRealContext
+      ? '\n\nSPATIAL REFERENCE (Image 1): This is a photorealistic 3D capture from street level showing the REAL existing urban context. ' +
+        'The colored polygon overlays are new architectural interventions — render them as described in the COLOR-TO-ZONE MAPPING above. ' +
+        'STRICT RULES: ' +
+        '1. Preserve ALL existing buildings, trees, roads, and terrain visible in the photograph EXACTLY as they appear. ' +
+        '2. Replace ONLY the colored overlay areas with photorealistic architecture matching their zone descriptions. ' +
+        '3. Match the lighting, shadows, and atmospheric conditions of the existing photograph. ' +
+        '4. Seamlessly blend new architecture into the existing streetscape — it should look like a real photograph. ' +
+        '5. Maintain camera height (1.7m) and viewing angle exactly.'
+      : '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
+        'Each colored volume maps to a specific architectural zone described in the COLOR-TO-ZONE MAPPING above. ' +
+        'The ground plane grid provides perspective and scale calibration. ' +
+        'STRICT RULES: ' +
+        '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the massing model. ' +
+        '2. Replace each colored volume with photorealistic materials matching its zone description. ' +
+        '3. Render ONLY the structures shown in the massing model as listed in the NUMERICAL INVENTORY. ' +
+        '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
+        '5. Maintain camera height (1.7m) and viewing angle exactly.';
     const enhancedPrompt =
-      prompt +
-      '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
-      'Each colored volume maps to a specific architectural zone described in the COLOR-TO-ZONE MAPPING above. ' +
-      'The ground plane grid provides perspective and scale calibration. ' +
-      'STRICT RULES: ' +
-      '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the massing model. ' +
-      '2. Replace each colored volume with photorealistic materials matching its zone description. ' +
-      '3. Render ONLY the structures shown in the massing model as listed in the NUMERICAL INVENTORY. ' +
-      '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
-      '5. Maintain camera height (1.7m) and viewing angle exactly.' +
+      prompt + spatialRef +
       (archetypeImages.length > 0
         ? '\n\nARCHETYPE STYLE REFERENCES (Images 2+): Additional images show the exact architectural ' +
           'style and materials for specific zones. Use Image 1 strictly as the structural foundation. ' +

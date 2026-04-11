@@ -77,9 +77,11 @@ function compassLabel(angle: number): string {
 interface StreetViewPanelProps {
   siteZones: SiteZone[];
   projectId?: string;
+  /** When provided, captures 3D tiles from street level instead of clay render */
+  globeCapture?: () => Promise<string | null>;
 }
 
-export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) {
+export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetViewPanelProps) {
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -116,6 +118,19 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         ? `PHOTO STYLE: ${styleObj.prompt}`
         : undefined;
 
+      // If globe mode: capture 3D tiles from street level as guide image
+      let overrideGuideImage: string | undefined;
+      if (globeCapture) {
+        console.log('[StreetViewPanel] Capturing 3D tiles from street level...');
+        const captured = await globeCapture();
+        if (captured) {
+          overrideGuideImage = captured;
+          console.log('[StreetViewPanel] 3D tiles capture successful');
+        } else {
+          console.warn('[StreetViewPanel] 3D tiles capture failed, falling back to clay render');
+        }
+      }
+
       const res = await generateStreetView(
         streetViewPegman.position,
         streetViewPegman.angle,
@@ -123,6 +138,7 @@ export function StreetViewPanel({ siteZones, projectId }: StreetViewPanelProps) 
         {
           previousRenderBase64,
           styleModifier,
+          overrideGuideImage,
         },
       );
       if (res) {

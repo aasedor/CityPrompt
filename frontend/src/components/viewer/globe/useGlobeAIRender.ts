@@ -239,17 +239,17 @@ export function useGlobeAIRender() {
     lng: number,
     headingDeg: number,
     terrainHeight: number,
-    flyToStreetLevel: (lat: number, lng: number, heading: number, terrainH: number) => void,
-    restoreAerialView: (state: any) => void,
-    saveCameraState: () => any,
+    flyToStreetLevel: (lat: number, lng: number, heading: number, terrainH: number, cam?: THREE.Camera) => void,
+    restoreAerialView: (state: any, cam?: THREE.Camera) => void,
+    saveCameraState: (cam?: THREE.Camera) => any,
   ): Promise<string | null> => {
     // Save current camera state
-    const savedState = saveCameraState();
+    const savedState = saveCameraState(camera);
     if (!savedState) return null;
 
     try {
       // Move camera to street level
-      flyToStreetLevel(lat, lng, headingDeg, terrainHeight);
+      flyToStreetLevel(lat, lng, headingDeg, terrainHeight, camera);
 
       // Wait for tiles to load at new LOD (street level needs higher detail)
       // Multiple frames to ensure the renderer processes the new camera position
@@ -270,7 +270,7 @@ export function useGlobeAIRender() {
       return imageBase64 || null;
     } finally {
       // Always restore the camera
-      restoreAerialView(savedState);
+      restoreAerialView(savedState, camera);
     }
   }, []);
 

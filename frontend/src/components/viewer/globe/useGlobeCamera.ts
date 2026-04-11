@@ -117,8 +117,9 @@ export function useGlobeCamera() {
     lng: number,
     headingDeg: number = 0,
     terrainHeight: number = 0,
+    externalCamera?: THREE.Camera,
   ) => {
-    const camera = cameraRef.current;
+    const camera = externalCamera || cameraRef.current;
     if (!camera) return;
 
     const eyeHeight = 1.7; // meters above ground
@@ -172,8 +173,8 @@ export function useGlobeCamera() {
     position: THREE.Vector3;
     quaternion: THREE.Quaternion;
     up: THREE.Vector3;
-  }) => {
-    const camera = cameraRef.current;
+  }, externalCamera?: THREE.Camera) => {
+    const camera = externalCamera || cameraRef.current;
     if (!camera) return;
 
     camera.position.copy(savedState.position);
@@ -192,8 +193,8 @@ export function useGlobeCamera() {
   /**
    * Save current camera state for later restoration.
    */
-  const saveCameraState = useCallback(() => {
-    const camera = cameraRef.current;
+  const saveCameraState = useCallback((externalCamera?: THREE.Camera) => {
+    const camera = externalCamera || cameraRef.current;
     if (!camera) return null;
     return {
       position: camera.position.clone(),
