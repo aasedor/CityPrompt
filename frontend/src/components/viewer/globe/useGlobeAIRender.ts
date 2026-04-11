@@ -1264,7 +1264,15 @@ export function useGlobeAIRender() {
 
       // Initialize cumulative result with the base screenshot
       let cumulativeDataUri = `data:image/png;base64,${baseScreenshot}`;
-      let finalPrompt = '';
+
+      // Build ONE full prompt with all zones — reused for every pass
+      // Each pass gets the full urban context but only edits within its mask
+      const allEntries = renderZones.map(z => zoneToPromptEntry(z));
+      let fullPrompt = buildSCHEMAPrompt(allEntries, style, 'full');
+      fullPrompt += '\nMASK SCOPE: This render uses a multi-pass approach. The white mask defines which zones to render in THIS pass. Zones outside the mask are listed for adjacency context only — do NOT modify them. Render only the masked zones, matching their style to the surrounding urban fabric.';
+      if (customPrompt) fullPrompt += `\nADDITIONAL: ${customPrompt}`;
+
+      console.log(`[GlobeAIRender] Full prompt for all passes (${fullPrompt.length} chars, ${allEntries.length} zones)`);
 
       // ── Execute each pass ──
       for (let pi = 0; pi < passes.length; pi++) {
@@ -1272,32 +1280,27 @@ export function useGlobeAIRender() {
         onProgress?.(`Pass ${pi + 1}/${totalSteps}: ${pass.label} (${pass.zones.length} zones)...`, pi + 1, totalSteps);
         console.log(`[GlobeAIRender] Pass ${pi + 1}/${totalSteps}: ${pass.label} — ${pass.zones.length} zones`);
 
-        // Generate combined mask for this category
+        // Generate mask for THIS pass's zones only
         // For buildings, use binary mask with headroom; for ground, combined mask
         const passMask = pass.mode === 'building'
           ? generateBinaryMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight)
           : generateCombinedMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight);
 
-        // Paint zone polygons onto the cumulative result
+        // Paint ALL zone polygons onto the cumulative result (not just this pass)
+        // so Gemini sees the full colored site plan and can render contextually
         let paintedScreenshot = cumulativeDataUri.split(',')[1];
-        for (const zone of pass.zones) {
+        for (const zone of renderZones) {
           const painted = await paintZoneOnScreenshot(paintedScreenshot, zone, camera, canvas.width, canvas.height, terrainHeight);
           paintedScreenshot = painted.split(',')[1];
         }
 
-        // Build category-specific prompt
-        const entries = pass.zones.map(z => zoneToPromptEntry(z));
-        let passPrompt = buildSCHEMAPrompt(entries, style, pass.mode);
-        if (customPrompt) passPrompt += `\nADDITIONAL: ${customPrompt}`;
-        finalPrompt = passPrompt;
-
-        // API call
+        // API call — same full prompt every pass, different mask
         const resp = await api.post(
           '/api/v1/render/generate',
           {
             image_base64: paintedScreenshot,
             mask_base64: passMask,
-            prompt: passPrompt,
+            prompt: fullPrompt,
             negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
             model,
             temperature: 0.0,
@@ -1327,7 +1330,7 @@ export function useGlobeAIRender() {
 
       return {
         imageUrl: cumulativeDataUri,
-        prompt: finalPrompt,
+        prompt: fullPrompt,
       };
 
     } catch (err) {
