@@ -251,15 +251,23 @@ export function useGlobeAIRender() {
       // Move camera to street level
       flyToStreetLevel(lat, lng, headingDeg, terrainHeight, camera);
 
-      // Wait for tiles to load at new LOD (street level needs higher detail)
-      // Multiple frames to ensure the renderer processes the new camera position
-      for (let i = 0; i < 5; i++) {
+      // Wait for tiles to load at street-level LOD
+      // Phase 1: Let renderer process new camera position
+      for (let i = 0; i < 10; i++) {
         await new Promise(r => requestAnimationFrame(r));
       }
-      // Additional wait for tile streaming
-      await new Promise(r => setTimeout(r, 3000));
-      // A few more frames for the final render
-      for (let i = 0; i < 3; i++) {
+
+      // Phase 2: Wait for tile streaming with timeout
+      // Poll every 500ms for up to 8 seconds
+      console.log('[GlobeAIRender] Waiting for street-level tiles to load...');
+      for (let attempt = 0; attempt < 16; attempt++) {
+        await new Promise(r => setTimeout(r, 500));
+        // Render a frame to trigger tile updates
+        await new Promise(r => requestAnimationFrame(r));
+      }
+
+      // Phase 3: Final frames for render completion
+      for (let i = 0; i < 5; i++) {
         await new Promise(r => requestAnimationFrame(r));
       }
 

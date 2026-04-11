@@ -2011,14 +2011,16 @@ export async function generateStreetView(
   const isRealContext = !!options?.overrideGuideImage;
   try {
     const spatialRef = isRealContext
-      ? '\n\nSPATIAL REFERENCE (Image 1): This is a photorealistic 3D capture from street level showing the REAL existing urban context. ' +
-        'The colored polygon overlays are new architectural interventions — render them as described in the COLOR-TO-ZONE MAPPING above. ' +
-        'STRICT RULES: ' +
-        '1. Preserve ALL existing buildings, trees, roads, and terrain visible in the photograph EXACTLY as they appear. ' +
-        '2. Replace ONLY the colored overlay areas with photorealistic architecture matching their zone descriptions. ' +
-        '3. Match the lighting, shadows, and atmospheric conditions of the existing photograph. ' +
-        '4. Seamlessly blend new architecture into the existing streetscape — it should look like a real photograph. ' +
-        '5. Maintain camera height (1.7m) and viewing angle exactly.'
+      ? '\n\nSPATIAL REFERENCE (Image 1): This is a real 3D photorealistic capture of the existing site from street level. ' +
+        'You can see the actual existing buildings, trees, roads, and terrain of this real-world location. ' +
+        'The colored semi-transparent polygon overlays visible in the image mark where NEW architectural interventions should be placed. ' +
+        'CRITICAL INSTRUCTIONS: ' +
+        '1. The existing real buildings, streets, trees, and terrain visible in the photograph are GROUND TRUTH — preserve them EXACTLY. Do NOT alter, remove, or reimagine any existing structures. ' +
+        '2. The colored overlay areas indicate where NEW architecture should be rendered, as described in the zone descriptions above. ' +
+        '3. Render the new architecture so it seamlessly integrates with the REAL surrounding buildings — match the exact lighting direction, shadow angles, atmospheric haze, and color temperature visible in the photograph. ' +
+        '4. The result must be indistinguishable from a real photograph — a photomontage where new buildings appear to genuinely exist alongside the real ones. ' +
+        '5. Camera is at human eye level (1.7m), maintain exact perspective and focal length. ' +
+        '6. Add realistic street-level details: people walking, parked cars, street furniture, trees with accurate shadow casting.'
       : '\n\nSPATIAL REFERENCE (Image 1): The attached color-coded 3D massing model is the STRUCTURAL ANCHOR. ' +
         'Each colored volume maps to a specific architectural zone described in the COLOR-TO-ZONE MAPPING above. ' +
         'The ground plane grid provides perspective and scale calibration. ' +
