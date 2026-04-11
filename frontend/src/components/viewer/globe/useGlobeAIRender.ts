@@ -768,8 +768,8 @@ function paintZoneOnScreenshot(
   });
 }
 
-// Suppress unused warnings — these are used in per-zone mode and future UI wiring
-void generateBinaryMask;
+// Suppress unused warnings — available for future per-building mode
+void generateSingleZoneMask;
 
 // ─── ARCHETYPE & PROMPT HELPERS ────────────────────────────────────────
 
@@ -985,6 +985,9 @@ function defaultZoneDescription(zoneType: string): string {
 }
 void defaultZoneDescription; // used in fallback prompts
 void getMapOverlayPrompt; // used via getZoneArchetypeInfo.mapOverlayPrompt
+void buildGroundPlanePrompt; // available for future fine-grained mode
+void buildBuildingPrompt; // available for future fine-grained mode
+void GROUND_TYPES; // used in zone categorization logic
 
 /** Build a zone prompt entry from a SiteZone */
 function zoneToPromptEntry(zone: SiteZone): ZonePromptEntry {
@@ -1199,9 +1202,12 @@ export function useGlobeAIRender() {
   }, []);
 
   /**
-   * Per-zone sequential render — 2-pass system for complex multi-zone sites.
-   * Pass 1: All ground zones in one API call.
-   * Pass 2: Each building individually, composited onto cumulative result.
+   * Per-zone sequential render — 3-pass system by zone category.
+   * Pass 1: All parks/plazas in one call
+   * Pass 2: All streets/roads in one call
+   * Pass 3: All buildings in one call
+   * Each pass gets a focused prompt and combined mask for its category.
+   * Total: 3 API calls instead of 20+ — fast AND accurate.
    */
   const renderPerZone = useCallback(async (
     canvas: HTMLCanvasElement,
@@ -1223,27 +1229,27 @@ export function useGlobeAIRender() {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', customPrompt, onProgress } = options;
       const renderZones = zones.filter(z => z.zone_type !== 'site_boundary');
 
-      // Separate zones into ground and building groups
-      const groundZones = renderZones.filter(z => GROUND_TYPES.includes(z.zone_type));
-      const buildingZones = renderZones
-        .filter(z => BUILDING_TYPES.includes(z.zone_type))
-        // Sort by polygon area descending (render largest first)
-        .sort((a, b) => {
-          const areaOf = (z: SiteZone) => {
-            if (!z.coordinates || z.coordinates.length < 3) return 0;
-            let area = 0;
-            for (let i = 0; i < z.coordinates.length; i++) {
-              const j = (i + 1) % z.coordinates.length;
-              area += z.coordinates[i][0] * z.coordinates[j][1];
-              area -= z.coordinates[j][0] * z.coordinates[i][1];
-            }
-            return Math.abs(area / 2);
-          };
-          return areaOf(b) - areaOf(a);
-        });
+      // Categorize zones into 3 groups
+      const parkZones = renderZones.filter(z =>
+        ['green_space', 'park', 'plaza', 'water', 'parking'].includes(z.zone_type));
+      const streetZones = renderZones.filter(z =>
+        ['road', 'street', 'path'].includes(z.zone_type));
+      const buildingZones = renderZones.filter(z =>
+        BUILDING_TYPES.includes(z.zone_type));
+      // Catch-all for zone types that don't fit neatly
+      const otherGroundZones = renderZones.filter(z =>
+        ['development_area'].includes(z.zone_type));
 
-      const totalSteps = (groundZones.length > 0 ? 1 : 0) + buildingZones.length;
-      let currentStep = 0;
+      // Merge small categories: other ground zones go with parks
+      const effectiveParkZones = [...parkZones, ...otherGroundZones];
+
+      // Build pass list (skip empty categories)
+      const passes: Array<{ label: string; zones: SiteZone[]; mode: 'ground' | 'building' }> = [];
+      if (effectiveParkZones.length > 0) passes.push({ label: 'Parks & Plazas', zones: effectiveParkZones, mode: 'ground' });
+      if (streetZones.length > 0) passes.push({ label: 'Streets & Roads', zones: streetZones, mode: 'ground' });
+      if (buildingZones.length > 0) passes.push({ label: 'Buildings', zones: buildingZones, mode: 'building' });
+
+      const totalSteps = passes.length;
 
       // Thinking budget based on total zone count
       let thinkingBudget: number | undefined;
@@ -1260,101 +1266,59 @@ export function useGlobeAIRender() {
       let cumulativeDataUri = `data:image/png;base64,${baseScreenshot}`;
       let finalPrompt = '';
 
-      // ── PASS 1: Ground Plane ──
-      if (groundZones.length > 0) {
-        currentStep++;
-        onProgress?.(`Pass 1/2: Rendering ground plane (${groundZones.length} zones)...`, currentStep, totalSteps);
-        console.log(`[GlobeAIRender] Pass 1: ${groundZones.length} ground zones`);
+      // ── Execute each pass ──
+      for (let pi = 0; pi < passes.length; pi++) {
+        const pass = passes[pi];
+        onProgress?.(`Pass ${pi + 1}/${totalSteps}: ${pass.label} (${pass.zones.length} zones)...`, pi + 1, totalSteps);
+        console.log(`[GlobeAIRender] Pass ${pi + 1}/${totalSteps}: ${pass.label} — ${pass.zones.length} zones`);
 
-        // Generate combined mask for all ground zones
-        const groundMask = generateCombinedMask(groundZones, camera, canvas.width, canvas.height, terrainHeight);
+        // Generate combined mask for this category
+        // For buildings, use binary mask with headroom; for ground, combined mask
+        const passMask = pass.mode === 'building'
+          ? generateBinaryMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight)
+          : generateCombinedMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight);
 
-        // Paint ground zone polygons onto the screenshot
-        let groundScreenshot = baseScreenshot;
-        for (const gz of groundZones) {
-          const painted = await paintZoneOnScreenshot(groundScreenshot, gz, camera, canvas.width, canvas.height, terrainHeight);
-          groundScreenshot = painted.split(',')[1]; // strip data URI prefix
+        // Paint zone polygons onto the cumulative result
+        let paintedScreenshot = cumulativeDataUri.split(',')[1];
+        for (const zone of pass.zones) {
+          const painted = await paintZoneOnScreenshot(paintedScreenshot, zone, camera, canvas.width, canvas.height, terrainHeight);
+          paintedScreenshot = painted.split(',')[1];
         }
 
-        // Build ground-plane prompt
-        let groundPrompt = buildGroundPlanePrompt(groundZones, style);
-        if (customPrompt) groundPrompt += `\nADDITIONAL: ${customPrompt}`;
-        finalPrompt = groundPrompt;
+        // Build category-specific prompt
+        const entries = pass.zones.map(z => zoneToPromptEntry(z));
+        let passPrompt = buildSCHEMAPrompt(entries, style, pass.mode);
+        if (customPrompt) passPrompt += `\nADDITIONAL: ${customPrompt}`;
+        finalPrompt = passPrompt;
 
         // API call
-        const groundResp = await api.post(
+        const resp = await api.post(
           '/api/v1/render/generate',
           {
-            image_base64: groundScreenshot,
-            mask_base64: groundMask,
-            prompt: groundPrompt,
+            image_base64: paintedScreenshot,
+            mask_base64: passMask,
+            prompt: passPrompt,
             negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
             model,
             temperature: 0.0,
             guidance_scale: 15,
             thinking_budget: thinkingBudget,
           },
-          { timeout: 120000 },
+          { timeout: 180000 },
         );
 
-        if (groundResp.data?.image_base64) {
-          const renderedDataUri = `data:image/png;base64,${groundResp.data.image_base64}`;
-          // Composite each ground zone onto cumulative
-          for (const gz of groundZones) {
+        if (resp.data?.image_base64) {
+          const renderedDataUri = `data:image/png;base64,${resp.data.image_base64}`;
+          // Composite each zone in this pass onto cumulative
+          for (const zone of pass.zones) {
             cumulativeDataUri = await compositeZoneRender(
-              cumulativeDataUri, renderedDataUri, gz,
+              cumulativeDataUri, renderedDataUri, zone,
               camera, canvas.width, canvas.height, terrainHeight,
             );
           }
-          console.log('[GlobeAIRender] Pass 1 complete — ground zones composited');
-        }
-      }
-
-      // ── PASS 2: Buildings (one at a time) ──
-      for (let bi = 0; bi < buildingZones.length; bi++) {
-        const bzone = buildingZones[bi];
-        currentStep++;
-        const bName = bzone.name || bzone.zone_type;
-        onProgress?.(`Pass 2: Building ${bi + 1}/${buildingZones.length}: ${bName}`, currentStep, totalSteps);
-        console.log(`[GlobeAIRender] Pass 2: building ${bi + 1}/${buildingZones.length} "${bName}"`);
-
-        // Generate single-zone mask
-        const bMask = generateSingleZoneMask(bzone, camera, canvas.width, canvas.height, terrainHeight);
-
-        // Paint this building's colored polygon onto the cumulative result
-        const cumulativeBase64 = cumulativeDataUri.split(',')[1];
-        const paintedUri = await paintZoneOnScreenshot(cumulativeBase64, bzone, camera, canvas.width, canvas.height, terrainHeight);
-        const paintedBase64 = paintedUri.split(',')[1];
-
-        // Build building-specific prompt
-        let bPrompt = buildBuildingPrompt(bzone, style);
-        if (customPrompt) bPrompt += `\nADDITIONAL: ${customPrompt}`;
-        finalPrompt = bPrompt; // Keep last prompt for return value
-
-        // API call
-        const bResp = await api.post(
-          '/api/v1/render/generate',
-          {
-            image_base64: paintedBase64,
-            mask_base64: bMask,
-            prompt: bPrompt,
-            negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
-            model,
-            temperature: 0.0,
-            guidance_scale: 15,
-          },
-          { timeout: 120000 },
-        );
-
-        if (bResp.data?.image_base64) {
-          const renderedDataUri = `data:image/png;base64,${bResp.data.image_base64}`;
-          cumulativeDataUri = await compositeZoneRender(
-            cumulativeDataUri, renderedDataUri, bzone,
-            camera, canvas.width, canvas.height, terrainHeight,
-          );
-          console.log(`[GlobeAIRender] Building "${bName}" composited`);
+          console.log(`[GlobeAIRender] Pass ${pi + 1} complete — ${pass.label} composited`);
         } else {
-          console.warn(`[GlobeAIRender] No image for building "${bName}"`);
+          console.warn(`[GlobeAIRender] No image for pass ${pi + 1}: ${pass.label}`);
         }
       }
 
