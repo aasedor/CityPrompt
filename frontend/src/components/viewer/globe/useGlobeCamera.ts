@@ -153,10 +153,10 @@ export function useGlobeCamera() {
     // Look target = camera + forward * 50m
     const lookTarget = cameraPos.clone().add(forward.multiplyScalar(50));
 
-    // Set camera
+    // Set camera — up MUST be set before lookAt for correct orientation
     camera.position.copy(cameraPos);
+    camera.up.copy(normal); // Surface normal = "up" on the globe
     camera.lookAt(lookTarget);
-    camera.up.copy(normal); // Ensure "up" is the surface normal
     camera.updateMatrixWorld();
 
     // Disable controls during street view to prevent orbit
