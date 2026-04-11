@@ -13,9 +13,13 @@ import { useCallback, useRef } from 'react';
 import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
+import { ZONE_TYPE_CONFIG } from '@/types';
 import { api } from '@/services/api';
+import { resolveZoneColor } from '../mapEngine/geoUtils';
+import archetypeCatalog from '@/data/buildingArchetypes.json';
 
 const DEG_TO_RAD = Math.PI / 180;
+const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
 
 export interface GlobeRenderResult {
   imageUrl: string;  // data:image/png;base64,...
@@ -122,39 +126,135 @@ function generateMask(
 }
 
 /**
- * Build a simple prompt from zone archetypes.
+ * Extract archetype metadata from zone properties.
+ */
+function getZoneArchetypeInfo(zone: SiteZone): {
+  archetypeTitle?: string;
+  facadeDescription?: string;
+  roofDescription?: string;
+  materials?: string;
+  aerialAppearance?: string;
+  publicRealm?: string;
+  colorScheme?: string;
+} {
+  if (!zone.properties || !catalog) return {};
+
+  for (const prefix of ['development', 'road', 'green_space', 'plaza'] as const) {
+    const archetypeId = zone.properties[`${prefix}_archetype_id`] as string | undefined;
+    if (!archetypeId) continue;
+
+    const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
+    if (!entry) continue;
+
+    const sp = entry.styleProfile || {};
+    const fd = entry.facadeDetail || {};
+    const rd = entry.roofDetail || {};
+
+    const facadeParts: string[] = [];
+    if (fd.primaryMaterial) facadeParts.push(fd.primaryMaterial);
+    if (fd.groundFloor) facadeParts.push(fd.groundFloor);
+    if (fd.upperFloors) facadeParts.push(fd.upperFloors);
+    if (fd.colorScheme) facadeParts.push(fd.colorScheme);
+
+    const roofParts: string[] = [];
+    if (rd.form) roofParts.push(rd.form);
+    if (rd.material) roofParts.push(rd.material);
+    if (rd.aerialAppearance) roofParts.push(rd.aerialAppearance);
+
+    return {
+      archetypeTitle: entry.title,
+      facadeDescription: facadeParts.join(', ') || undefined,
+      roofDescription: roofParts.join(', ') || undefined,
+      materials: Array.isArray(sp.materials) ? sp.materials.join(', ') : sp.materials,
+      aerialAppearance: rd.aerialAppearance || undefined,
+      publicRealm: sp.publicRealm || undefined,
+      colorScheme: fd.colorScheme || undefined,
+    };
+  }
+  return {};
+}
+
+/**
+ * Build SCHEMA-style structured prompt for aerial renders.
+ * Based on the proven Mapbox aerial prompt structure.
  */
 function buildPrompt(zones: SiteZone[], style: string): string {
-  const zoneDescriptions: string[] = [];
-
-  for (const zone of zones) {
-    const props = zone.properties || {};
-    const archetypeId = (props.development_subcategory as string)
-      || (props.green_space_subcategory as string)
-      || (props.road_subcategory as string)
-      || (props.plaza_subcategory as string)
-      || (props.development_archetype_id as string)
-      || (props.green_space_archetype_id as string)
-      || '';
-
-    const height = (props.height_m as number) || (props.height as number) || ((props.floors as number) || 0) * 3.2 || 0;
-    const name = zone.name || archetypeId.replace(/_/g, ' ') || zone.zone_type;
-
-    let desc = `${name}`;
-    if (height > 0) desc += ` (${Math.round(height)}m tall)`;
-    zoneDescriptions.push(desc);
-  }
-
+  // --- STYLE ---
   const stylePrompts: Record<string, string> = {
     photorealistic: 'Photorealistic architectural visualization, photomontage quality, golden hour afternoon sunlight, sharp detail on materials and facades.',
-    winter: 'Photorealistic winter scene with fresh snow on roofs and ground, bare deciduous trees, cool winter afternoon light, frost on surfaces.',
-    atmospheric: 'Photorealistic dusk scene, warm orange sunset light from the west, long shadows, building windows glowing warm, twilight sky.',
-    spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors, people enjoying the outdoors.',
-    night: 'Photorealistic nighttime scene, city lights illuminating the scene, warm interior glow from windows, moonlit sky, wet reflective streets.',
+    winter: 'Photorealistic winter scene with fresh snow on roofs and ground, bare deciduous trees, cool winter afternoon light, frost on surfaces. Snow-covered roofs, frosted ground plane, bare deciduous trees, evergreens with heavy snow-load.',
+    atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze, warm orange light from the west.',
+    spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors.',
+    night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
   };
-  const stylePrompt = stylePrompts[style] || stylePrompts.photorealistic;
 
-  return `This is a hybrid spatial blueprint captured from a 3D photorealistic city model. Areas with photographic textures are existing real-world context — strictly preserve their geometry, appearance, and lighting. The white masked areas are new architectural interventions — render these as: ${zoneDescriptions.join('; ')}. ${stylePrompt} Match the lighting, shadows, and perspective of the surrounding 3D photograph exactly. CRITICAL: Only modify pixels within the white masked areas. Do NOT alter, extend, or bleed outside the mask boundary. All existing buildings, roads, trees, and terrain outside the mask must remain pixel-perfect identical to the input image.`;
+  // --- COMPOSITION ---
+  const hasBuildings = zones.some(z => z.zone_type === 'building' || z.zone_type === 'residential');
+  const composition = hasBuildings
+    ? 'Oblique aerial view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context.'
+    : 'Oblique aerial view, ground-level zones only on photorealistic 3D terrain.';
+
+  // --- LIGHTING ---
+  const lightingMap: Record<string, string> = {
+    photorealistic: 'Golden hour, warm southwest sun, crisp architectural shadows.',
+    winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
+    atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
+    spring: 'Bright spring midday sun, vivid colors, fresh green light.',
+    night: 'Moonlight and city glow, artificial lighting, warm window light.',
+  };
+
+  // --- ZONES (SCHEMA format) ---
+  const zoneLines: string[] = [];
+  for (let i = 0; i < zones.length; i++) {
+    const zone = zones[i];
+    const color = resolveZoneColor(zone);
+    const props = zone.properties || {};
+    const info = getZoneArchetypeInfo(zone);
+
+    const floors = (props.floors as number) || 0;
+    const heightM = (props.height_m as number) || (props.height as number) || floors * 3.2 || 0;
+    const name = info.archetypeTitle || zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
+
+    // Scale descriptor
+    let scale = '';
+    if (zone.zone_type === 'building' || zone.zone_type === 'residential') {
+      if (floors > 0 && heightM > 0) scale = `${floors}F ${Math.round(heightM)}m`;
+      else if (floors > 0) scale = `${floors}F`;
+      else if (heightM > 0) scale = `${Math.round(heightM)}m`;
+      else scale = 'multi-story';
+    } else {
+      scale = 'gnd';
+    }
+
+    // Feature keywords from archetype metadata
+    const features: string[] = [];
+    if (info.facadeDescription) features.push(info.facadeDescription);
+    if (info.roofDescription) features.push(info.roofDescription);
+    if (info.materials) features.push(info.materials);
+    if (info.aerialAppearance) features.push(`Aerial: ${info.aerialAppearance}`);
+    if (info.publicRealm) features.push(info.publicRealm);
+
+    // User description override
+    const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
+    if (userDesc.length > 10) features.push(userDesc);
+
+    const featureStr = features.join(', ').substring(0, 160);
+    zoneLines.push(`${i + 1}. [${color}] ${name} | ${scale} | ${featureStr || 'render as described'}`);
+  }
+
+  // --- ASSEMBLE SCHEMA PROMPT ---
+  const sections = [
+    `STYLE: ${stylePrompts[style] || stylePrompts.photorealistic}`,
+    `COMPOSITION: ${composition}`,
+    `LIGHTING: ${lightingMap[style] || lightingMap.photorealistic}`,
+    `CONTEXT: This image is captured from a 3D photorealistic city model with real Google Earth buildings. Preserve ALL unmasked photographic context exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent real buildings.`,
+    `NUMERICAL INVENTORY: This scene contains exactly ${zones.length} zone${zones.length > 1 ? 's' : ''}: ${zones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${zones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${zones.filter(z => z.zone_type === 'green_space').length} park${zones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${zones.filter(z => z.zone_type === 'road').length} road${zones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
+    `ZONES:\n${zoneLines.join('\n')}`,
+    `MANDATORY: Each zone renders ONLY within its colored polygon boundary on the white mask. Realistic rooftop materials — no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate architectural materials. New buildings must match the scale and density of surrounding real 3D buildings.`,
+    `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines or outlines visible in final image, text overlays or watermarks${style === 'winter' ? ', lush green vegetation on deciduous trees, summer foliage, bright green lawns' : ''}`,
+  ];
+
+  return sections.join('\n');
 }
 
 export function useGlobeAIRender() {
