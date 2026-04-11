@@ -168,6 +168,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     || ((zone.properties?.floors as number) || 0) * 3.2
     || 0;
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
+  const isSiteBoundary = zone.zone_type === 'site_boundary';
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
 
   const geoData = useMemo(() => {
@@ -286,10 +287,34 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
       )}
 
       {/* Fill — flat zones with terrain draping */}
+      {/* Fill — flat zones: layered by type */}
+      {/* Render order: site_boundary(100) < green_space(110) < road(120) < buildings(200) */}
       {!isBuilding && geoData.flatTopGeo && (
         <mesh
           ref={flatMeshRef}
-          geometry={geoData.flatTopGeo.clone()} // Clone so draping doesn't mutate shared geo
+          geometry={geoData.flatTopGeo.clone()}
+          renderOrder={isSiteBoundary ? 100 : zone.zone_type === 'green_space' ? 110 : 120}
+          frustumCulled={false}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            onZoneClick?.(zone.id);
+          }}
+        >
+          <meshBasicMaterial
+            color={isSiteBoundary ? '#ffffff' : color}
+            transparent
+            opacity={isSiteBoundary ? 0.15 : 1.0}
+            side={THREE.DoubleSide}
+            depthTest={false}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+
+      {/* Fill — buildings on top of everything */}
+      {isBuilding && (
+        <mesh
+          geometry={geoData.fillGeo}
           renderOrder={200}
           frustumCulled={false}
           onPointerDown={(e) => {
@@ -300,29 +325,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
           <meshBasicMaterial
             color={color}
             transparent
-            opacity={0.5}
-            side={THREE.DoubleSide}
-            depthTest={false}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
-
-      {/* Fill — buildings use standard depth-tested extrusion */}
-      {isBuilding && (
-        <mesh
-          geometry={geoData.fillGeo}
-          renderOrder={100}
-          frustumCulled={false}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onZoneClick?.(zone.id);
-          }}
-        >
-          <meshBasicMaterial
-            color={color}
-            transparent
-            opacity={0.85}
+            opacity={1.0}
             side={THREE.DoubleSide}
             depthTest
             depthWrite={false}
@@ -338,7 +341,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
       <line
         ref={!isBuilding ? flatOutlineRef : undefined}
         geometry={!isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo}
-        renderOrder={isBuilding ? 101 : 201}
+        renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
         frustumCulled={false}
         onPointerDown={(e) => {
           e.stopPropagation();

@@ -17,9 +17,15 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { api } from '@/services/api';
 import { resolveZoneColor } from '../mapEngine/geoUtils';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
+import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
+import streetPathCatalog from '@/data/streetPathArchetypes.json';
 
 const DEG_TO_RAD = Math.PI / 180;
-const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
+const catalog = [
+  ...((archetypeCatalog as any)?.archetypes || []),
+  ...((openSpaceCatalog as any)?.archetypes || (openSpaceCatalog as any) || []),
+  ...((streetPathCatalog as any)?.archetypes || (streetPathCatalog as any) || []),
+] as any[];
 
 export interface GlobeRenderResult {
   imageUrl: string;  // data:image/png;base64,...
@@ -66,8 +72,9 @@ function projectToPixels(
 }
 
 /**
- * Generate a binary mask from zone polygons.
- * White = zone area (to be replaced by AI), Black = keep as-is.
+ * Generate a COLOR-CODED mask from zone polygons.
+ * Each zone drawn in its actual map color so Gemini can match the COLOR-TO-ZONE legend.
+ * Black = keep as-is, colored = render this zone.
  */
 function generateMask(
   zones: SiteZone[],
@@ -85,10 +92,13 @@ function generateMask(
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
 
-  // Draw each zone as white
-  ctx.fillStyle = '#ffffff';
+  // Draw each zone in its ACTUAL color — skip site_boundary
   for (const zone of zones) {
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    if (zone.zone_type === 'site_boundary') continue;
+
+    const zoneColor = resolveZoneColor(zone);
+    ctx.fillStyle = zoneColor;
 
     const pixels = zone.coordinates
       .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
@@ -123,6 +133,72 @@ function generateMask(
   }
 
   return canvas.toDataURL('image/png').split(',')[1];
+}
+
+/**
+ * Collect archetype reference card images for multi-image rendering.
+ * Returns up to 6 images with their zone labels.
+ */
+async function collectArchetypeImages(
+  zones: SiteZone[],
+): Promise<Array<{ image_base64: string; label: string; zone_color: string }>> {
+  const images: Array<{ image_base64: string; label: string; zone_color: string }> = [];
+
+  for (const zone of zones) {
+    if (images.length >= 6) break;
+    if (zone.zone_type === 'site_boundary') continue;
+
+    const props = zone.properties || {};
+    const archetypeId = (props.development_archetype_id as string)
+      || (props.green_space_archetype_id as string)
+      || (props.road_archetype_id as string)
+      || (props.plaza_archetype_id as string)
+      || (props.development_subcategory as string)
+      || (props.green_space_subcategory as string)
+      || '';
+
+    if (!archetypeId) continue;
+
+    const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
+    if (!entry?.thumbnailUrl) continue;
+
+    // Fetch the card image
+    try {
+      const resp = await fetch(entry.thumbnailUrl);
+      if (!resp.ok) continue;
+      const blob = await resp.blob();
+      const base64 = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+        reader.readAsDataURL(blob);
+      });
+
+      images.push({
+        image_base64: base64,
+        label: entry.title || archetypeId,
+        zone_color: resolveZoneColor(zone),
+      });
+    } catch { /* skip failed fetches */ }
+  }
+
+  return images;
+}
+
+/**
+ * Get the map overlay render prompt for a zone's archetype.
+ */
+function getMapOverlayPrompt(zone: SiteZone): string | undefined {
+  const props = zone.properties || {};
+  const archetypeId = (props.development_archetype_id as string)
+    || (props.green_space_archetype_id as string)
+    || (props.road_archetype_id as string)
+    || (props.plaza_archetype_id as string)
+    || '';
+
+  if (!archetypeId) return undefined;
+
+  const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
+  return entry?.renderPrompt?.mapOverlay || entry?.prompt?.subject || undefined;
 }
 
 /**
@@ -203,10 +279,11 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     night: 'Moonlight and city glow, artificial lighting, warm window light.',
   };
 
-  // --- ZONES (SCHEMA format) ---
+  // --- ZONES (SCHEMA format) — skip site_boundary ---
+  const renderZones = zones.filter(z => z.zone_type !== 'site_boundary');
   const zoneLines: string[] = [];
-  for (let i = 0; i < zones.length; i++) {
-    const zone = zones[i];
+  for (let i = 0; i < renderZones.length; i++) {
+    const zone = renderZones[i];
     const color = resolveZoneColor(zone);
     const props = zone.properties || {};
     const info = getZoneArchetypeInfo(zone);
@@ -226,19 +303,27 @@ function buildPrompt(zones: SiteZone[], style: string): string {
       scale = 'gnd';
     }
 
+    // Map overlay prompt (archetype-specific aerial rendering instruction)
+    const overlayPrompt = getMapOverlayPrompt(zone);
+
     // Feature keywords from archetype metadata
     const features: string[] = [];
-    if (info.facadeDescription) features.push(info.facadeDescription);
-    if (info.roofDescription) features.push(info.roofDescription);
-    if (info.materials) features.push(info.materials);
-    if (info.aerialAppearance) features.push(`Aerial: ${info.aerialAppearance}`);
-    if (info.publicRealm) features.push(info.publicRealm);
+    if (overlayPrompt) {
+      // Use the archetype's own rendering instruction if available
+      features.push(overlayPrompt);
+    } else {
+      if (info.facadeDescription) features.push(info.facadeDescription);
+      if (info.roofDescription) features.push(info.roofDescription);
+      if (info.materials) features.push(info.materials);
+      if (info.aerialAppearance) features.push(`Aerial: ${info.aerialAppearance}`);
+      if (info.publicRealm) features.push(info.publicRealm);
+    }
 
     // User description override
     const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
     if (userDesc.length > 10) features.push(userDesc);
 
-    const featureStr = features.join(', ').substring(0, 160);
+    const featureStr = features.join(', ').substring(0, 200);
     zoneLines.push(`${i + 1}. [${color}] ${name} | ${scale} | ${featureStr || 'render as described'}`);
   }
 
@@ -248,7 +333,7 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     `COMPOSITION: ${composition}`,
     `LIGHTING: ${lightingMap[style] || lightingMap.photorealistic}`,
     `CONTEXT: This image is captured from a 3D photorealistic city model with real Google Earth buildings. Preserve ALL unmasked photographic context exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent real buildings.`,
-    `NUMERICAL INVENTORY: This scene contains exactly ${zones.length} zone${zones.length > 1 ? 's' : ''}: ${zones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${zones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${zones.filter(z => z.zone_type === 'green_space').length} park${zones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${zones.filter(z => z.zone_type === 'road').length} road${zones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
+    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
     `ZONES:\n${zoneLines.join('\n')}`,
     `MANDATORY: Each zone renders ONLY within its colored polygon boundary on the white mask. Realistic rooftop materials — no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate architectural materials. New buildings must match the scale and density of surrounding real 3D buildings.`,
     `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines or outlines visible in final image, text overlays or watermarks${style === 'winter' ? ', lush green vegetation on deciduous trees, summer foliage, bright green lawns' : ''}`,
@@ -287,12 +372,23 @@ export function useGlobeAIRender() {
       console.log('[GlobeAIRender] Generating mask...');
       const maskBase64 = generateMask(zones, camera, canvas.width, canvas.height, terrainHeight);
 
-      // 3. Build prompt from zone archetypes
+      // 3. Build SCHEMA prompt from zone archetypes
       let prompt = buildPrompt(zones, style);
-      if (customPrompt) prompt += ` Additional instructions: ${customPrompt}`;
-      console.log('[GlobeAIRender] Prompt:', prompt.substring(0, 200) + '...');
+      if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
-      // 4. Send to backend render API
+      // 4. Collect archetype reference card images (up to 6)
+      console.log('[GlobeAIRender] Collecting archetype reference images...');
+      const archetypeImages = await collectArchetypeImages(zones);
+      if (archetypeImages.length > 0) {
+        prompt += `\n\nARCHETYPE STYLE REFERENCES (Images 2+): ${archetypeImages.length} reference images show the exact architectural style for specific zones. Use Image 1 as the spatial context. Apply each reference style to the matching colored zone.`;
+        for (let i = 0; i < archetypeImages.length; i++) {
+          prompt += `\nImage ${i + 2}: Style reference for [${archetypeImages[i].zone_color}] ${archetypeImages[i].label}`;
+        }
+      }
+
+      console.log(`[GlobeAIRender] Prompt (${prompt.length} chars, ${zones.filter(z => z.zone_type !== 'site_boundary').length} zones, ${archetypeImages.length} ref images):`, prompt.substring(0, 200) + '...');
+
+      // 5. Send to backend render API with archetype images
       console.log('[GlobeAIRender] Sending to Gemini via backend...');
       const resp = await api.post(
         '/api/v1/render/generate',
@@ -304,6 +400,7 @@ export function useGlobeAIRender() {
           model,
           temperature: 0.0,
           guidance_scale: 15,
+          archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
         },
         { timeout: 120000 },
       );
