@@ -834,7 +834,7 @@ export function useGlobeAIRender() {
           guidance_scale: 15,
           archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
         },
-        { timeout: 120000 },
+        { timeout: 300000 }, // 5 minutes — globe renders take longer due to 3D tile complexity
       );
 
       if (resp.data?.image_base64) {
