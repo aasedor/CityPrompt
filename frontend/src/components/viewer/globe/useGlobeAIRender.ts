@@ -92,6 +92,24 @@ function generateMask(
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, width, height);
 
+  // If site boundary exists, clip all zone rendering to within it
+  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  if (siteBoundary) {
+    const boundaryPixels = siteBoundary.coordinates
+      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+
+    if (boundaryPixels.length >= 3) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+      for (let i = 1; i < boundaryPixels.length; i++) ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+      ctx.closePath();
+      ctx.clip(); // All subsequent drawing is clipped to the boundary
+      console.log(`[GlobeAIRender] Mask clipped to site boundary (${boundaryPixels.length} vertices)`);
+    }
+  }
+
   // Draw each zone in its ACTUAL color — skip site_boundary
   for (const zone of zones) {
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
@@ -131,6 +149,9 @@ function generateMask(
 
     ctx.fill();
   }
+
+  // Restore context (remove clip)
+  if (siteBoundary) ctx.restore();
 
   return canvas.toDataURL('image/png').split(',')[1];
 }
