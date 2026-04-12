@@ -21,7 +21,9 @@ import {
   UpdateOnChangePlugin,
   UnloadTilesPlugin,
   TilesFadePlugin,
+  GLTFExtensionsPlugin,
 } from '3d-tiles-renderer/plugins';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { Html } from '@react-three/drei';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
@@ -670,6 +672,8 @@ export function GlobeSitePlannerMap({
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true } as any} />
           <TilesPlugin plugin={TileCompressionPlugin} />
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <TilesPlugin plugin={GLTFExtensionsPlugin} args={{ dracoLoader: new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') } as any} />
           <TilesPlugin plugin={UpdateOnChangePlugin} />
           <TilesPlugin plugin={UnloadTilesPlugin} />
           <TilesPlugin plugin={TilesFadePlugin} />
