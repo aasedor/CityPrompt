@@ -242,13 +242,22 @@ function generateMask(
     }
   }
 
-  // Draw each zone in its ACTUAL color — skip site_boundary
+  // Draw each zone in its ACTUAL color with ~2m dilation — skip site_boundary
+  // The dilation gives Gemini "peripheral vision" to see adjacent context (curbs,
+  // sidewalks, neighboring facades) so it can render seamless edges.
+  // The post-processing clip will use the original tight polygons to cut away excess.
+  const DILATION_PX = 8; // ~2m at typical aerial zoom
+
   for (const zone of zones) {
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
 
     const zoneColor = resolveZoneColor(zone);
     ctx.fillStyle = zoneColor;
+    // Dilate: draw with a thick stroke around each polygon for bleed room
+    ctx.strokeStyle = zoneColor;
+    ctx.lineWidth = DILATION_PX * 2;
+    ctx.lineJoin = 'round';
 
     const pixels = zone.coordinates
       .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
@@ -280,6 +289,7 @@ function generateMask(
     }
 
     ctx.fill();
+    ctx.stroke(); // Dilation: thick stroke adds ~2m bleed room around polygon
   }
 
   // Restore context (remove clip)
@@ -622,7 +632,7 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
     `SITE BOUNDARY: Do NOT add any NEW buildings, structures, roads, people, vehicles, or landscaping outside the colored zone polygons. However, rendered zones MUST blend seamlessly into the surrounding landscape at their edges — match lighting, ground plane, and context so there is no visible seam between rendered and existing areas.`,
     `OCCLUSION: Some zones may be partially or fully hidden behind taller buildings from this camera angle. This is CORRECT — do NOT distort the perspective to make hidden zones visible. If a zone is occluded by a building in front of it, leave it hidden. Render only what would naturally be visible from this specific camera position and angle.`,
-    `CRITICAL FINAL INSTRUCTION: Do NOT modify ANY pixels outside the colored polygon zones. Every existing building, house, tree, road, car, and terrain feature outside the zones MUST remain pixel-perfect identical to the input photograph. The white mask defines the EXACT boundary — nothing renders outside it.`,
+    `FINAL CONSTRAINT: Stay strictly within each colored zone polygon. Do not alter pixels outside the mask. Accuracy to the polygon boundary is more important than architectural flair. Each zone renders ONLY within its own colored boundary — never overlapping into adjacent zones.`,
   ];
 
   return sections.join('\n');
