@@ -545,7 +545,7 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  * Build SCHEMA-style structured prompt for aerial renders.
  * Based on the proven Mapbox aerial prompt structure.
  */
-function buildPrompt(zones: SiteZone[], style: string): string {
+function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, terrainHeight?: number): string {
   // --- STYLE ---
   const stylePrompts: Record<string, string> = {
     photorealistic: 'Photorealistic architectural visualization, photomontage quality, golden hour afternoon sunlight, sharp detail on materials and facades.',
@@ -555,11 +555,26 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
   };
 
+  // --- CAMERA ANGLE ---
+  let pitchDesc = 'oblique aerial (~50°)';
+  if (camera && terrainHeight != null) {
+    // Estimate pitch from camera direction vs surface normal
+    const camDir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize();
+    const camPos = camera.position.clone().normalize(); // surface normal at camera position
+    const cosAngle = Math.abs(camDir.dot(camPos.clone().negate()));
+    const pitchDeg = Math.round(Math.acos(Math.min(1, cosAngle)) * 180 / Math.PI);
+    if (pitchDeg < 20) pitchDesc = `near top-down (~${pitchDeg}°)`;
+    else if (pitchDeg < 40) pitchDesc = `steep aerial (~${pitchDeg}°)`;
+    else if (pitchDeg < 60) pitchDesc = `oblique aerial (~${pitchDeg}°)`;
+    else pitchDesc = `low-angle oblique (~${pitchDeg}°)`;
+    console.log(`[GlobeAIRender] Camera pitch: ${pitchDeg}° → "${pitchDesc}"`);
+  }
+
   // --- COMPOSITION ---
   const hasBuildings = zones.some(z => z.zone_type === 'building' || z.zone_type === 'residential');
   const composition = hasBuildings
-    ? 'Oblique aerial view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context.'
-    : 'Oblique aerial view, ground-level zones only on photorealistic 3D terrain.';
+    ? `${pitchDesc} view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context. Render buildings with correct 3D perspective for this viewing angle.`
+    : `${pitchDesc} view, ground-level zones only on photorealistic 3D terrain.`;
 
   // --- LIGHTING ---
   const lightingMap: Record<string, string> = {
@@ -792,7 +807,7 @@ export function useGlobeAIRender() {
       const maskBase64 = generateMask(visibleZones, camera, canvas.width, canvas.height, terrainHeight);
 
       // 3. Build SCHEMA prompt from VISIBLE zone archetypes only
-      let prompt = buildPrompt(visibleZones, style);
+      let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
       // 4. Collect archetype reference card images (up to 6, compressed to ~30-50KB JPEG each)
