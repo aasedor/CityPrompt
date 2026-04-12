@@ -119,56 +119,79 @@ function hexToHsl(hex: string): [number, number, number] {
 }
 
 /**
- * Map hex color to a UNIQUE human-readable name for prompts.
- * Always includes the hex value so Gemini can match the exact shade,
- * even when multiple zones share similar hue names like "red".
+ * Map hex color to a UNIQUE, visually descriptive name for prompts.
+ * Uses specific color vocabulary (vermillion, maroon, sienna, etc.)
+ * so Gemini can distinguish between similar shades.
+ * Always includes the hex value for precise matching.
  */
 function colorName(hex: string): string {
   const normalized = hex.toLowerCase();
+  // Use highly specific, visually distinct color names
   const knownNames: Record<string, string> = {
-    '#e03c31': 'red',
-    '#ff6b6b': 'coral',
-    '#e8927c': 'salmon',
-    '#f5a623': 'amber',
-    '#ffd700': 'gold',
-    '#ffeb3b': 'yellow',
-    '#f0e68c': 'khaki',
-    '#4caf50': 'green',
-    '#66bb6a': 'spring green',
-    '#2e7d32': 'forest green',
-    '#009688': 'teal',
+    '#e03c31': 'bright vermillion',
+    '#ff6b6b': 'light coral pink',
+    '#e8927c': 'warm salmon',
+    '#f5a623': 'vivid amber',
+    '#ffd700': 'bright gold',
+    '#ffeb3b': 'lemon yellow',
+    '#f0e68c': 'pale khaki',
+    '#4caf50': 'medium green',
+    '#66bb6a': 'fresh spring green',
+    '#2e7d32': 'deep forest green',
+    '#009688': 'dark teal',
     '#4169e1': 'royal blue',
-    '#3f51b5': 'indigo',
-    '#2196f3': 'blue',
-    '#9c27b0': 'purple',
-    '#795548': 'brown',
-    '#607d8b': 'blue grey',
-    '#bdbdbd': 'silver',
-    '#c62828': 'dark red',
-    '#d84315': 'deep orange',
-    '#ad1457': 'dark pink',
-    '#6a1b9a': 'deep purple',
-    '#4527a0': 'deep indigo',
-    '#b71c1c': 'crimson',
-    '#e65100': 'burnt orange',
+    '#3f51b5': 'deep indigo',
+    '#2196f3': 'sky blue',
+    '#9c27b0': 'rich purple',
+    '#795548': 'warm brown',
+    '#607d8b': 'cool blue-grey',
+    '#bdbdbd': 'light silver',
+    '#c62828': 'deep maroon',
+    '#d84315': 'burnt sienna',
+    '#ad1457': 'dark magenta',
+    '#6a1b9a': 'deep violet',
+    '#4527a0': 'dark royal purple',
+    '#b71c1c': 'dark crimson',
+    '#e65100': 'dark burnt orange',
+    '#ff5722': 'bright orange-red',
+    '#ff9800': 'bright orange',
+    '#8bc34a': 'lime green',
+    '#00bcd4': 'bright cyan',
+    '#e91e63': 'hot pink',
+    '#cddc39': 'yellow-green',
+    '#ff7043': 'warm tangerine',
+    '#a1887f': 'dusty mauve',
+    '#90a4ae': 'steel grey',
   };
 
   const name = knownNames[normalized];
   if (name) return `${name} ${hex}`;
 
+  // Generate a descriptive name from HSL for unknown colors
   try {
-    const [h, , l] = hexToHsl(hex);
-    const lightness = l < 35 ? 'dark ' : l > 65 ? 'light ' : '';
+    const [h, s, l] = hexToHsl(hex);
+    // Lightness descriptor
+    const lightDesc = l < 25 ? 'very dark ' : l < 40 ? 'dark ' : l > 75 ? 'very light ' : l > 60 ? 'light ' : '';
+    // Saturation descriptor
+    const satDesc = s < 20 ? 'muted ' : s > 80 ? 'vivid ' : '';
+    // Hue name with fine-grained distinctions
     let hueName = 'brown';
-    if (h < 15 || h >= 345) hueName = 'red';
-    else if (h < 45) hueName = 'orange';
-    else if (h < 65) hueName = 'amber';
-    else if (h < 80) hueName = 'gold';
-    else if (h < 150) hueName = 'green';
-    else if (h < 210) hueName = 'blue';
-    else if (h < 270) hueName = 'indigo';
-    else if (h < 330) hueName = 'purple';
-    return `${lightness}${hueName} ${hex}`;
+    if (h < 10 || h >= 350) hueName = 'red';
+    else if (h < 20) hueName = 'red-orange';
+    else if (h < 35) hueName = 'orange';
+    else if (h < 50) hueName = 'amber-orange';
+    else if (h < 65) hueName = 'golden yellow';
+    else if (h < 80) hueName = 'yellow-green';
+    else if (h < 100) hueName = 'chartreuse';
+    else if (h < 140) hueName = 'green';
+    else if (h < 170) hueName = 'teal-green';
+    else if (h < 200) hueName = 'cyan';
+    else if (h < 230) hueName = 'blue';
+    else if (h < 260) hueName = 'blue-violet';
+    else if (h < 290) hueName = 'purple';
+    else if (h < 320) hueName = 'magenta';
+    else if (h < 350) hueName = 'rose';
+    return `${lightDesc}${satDesc}${hueName} ${hex}`;
   } catch {
     return hex;
   }
@@ -1103,6 +1126,11 @@ function buildSCHEMAPrompt(
     const parkCount = entries.filter(e => e.zoneType === 'green_space' || e.zoneType === 'park').length;
     const roadCount = entries.filter(e => e.zoneType === 'road' || e.zoneType === 'street' || e.zoneType === 'path').length;
     lines.push(`NUMERICAL INVENTORY: ${entries.length} zones: ${bldgCount} building${bldgCount !== 1 ? 's' : ''}, ${parkCount} park${parkCount !== 1 ? 's' : ''}, ${roadCount} road${roadCount !== 1 ? 's' : ''}.`);
+  }
+
+  // ── COLOR DIFFERENTIATION ──
+  if (entries.length > 5) {
+    lines.push('COLOR DIFFERENTIATION: The colored polygons use DISTINCT shades — pay close attention to the exact hue. Bright vermillion ≠ deep maroon ≠ burnt sienna. Each numbered zone has a UNIQUE color. Match each zone\'s architectural style PRECISELY to its specific polygon color and number.');
   }
 
   // ── ZONES ──
