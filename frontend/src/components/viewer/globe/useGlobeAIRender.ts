@@ -184,6 +184,95 @@ async function collectArchetypeImages(
   return images;
 }
 
+// ─── COLOR NAMING ──────────────────────────────────────────────────────
+
+function hexToHsl(hex: string): [number, number, number] {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l * 100];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return [h * 360, s * 100, l * 100];
+}
+
+/**
+ * Map hex color to a visually descriptive, unique name for prompts.
+ * Uses specific color vocabulary so Gemini can distinguish similar shades.
+ * Always includes the hex value for precise matching.
+ */
+function colorName(hex: string): string {
+  const normalized = hex.toLowerCase();
+  const knownNames: Record<string, string> = {
+    '#e03c31': 'bright vermillion',
+    '#ff6b6b': 'light coral pink',
+    '#e8927c': 'warm salmon',
+    '#f5a623': 'vivid amber',
+    '#ffd700': 'bright gold',
+    '#ffeb3b': 'lemon yellow',
+    '#f0e68c': 'pale khaki',
+    '#4caf50': 'medium green',
+    '#66bb6a': 'fresh spring green',
+    '#2e7d32': 'deep forest green',
+    '#009688': 'dark teal',
+    '#4169e1': 'royal blue',
+    '#3f51b5': 'deep indigo',
+    '#2196f3': 'sky blue',
+    '#9c27b0': 'rich purple',
+    '#795548': 'warm brown',
+    '#607d8b': 'cool blue-grey',
+    '#bdbdbd': 'light silver',
+    '#c62828': 'deep maroon',
+    '#d84315': 'burnt sienna',
+    '#ad1457': 'dark magenta',
+    '#6a1b9a': 'deep violet',
+    '#4527a0': 'dark royal purple',
+    '#b71c1c': 'dark crimson',
+    '#e65100': 'dark burnt orange',
+    '#ff5722': 'bright orange-red',
+    '#ff9800': 'bright orange',
+    '#8bc34a': 'lime green',
+    '#00bcd4': 'bright cyan',
+    '#e91e63': 'hot pink',
+    '#ff7043': 'warm tangerine',
+    '#a1887f': 'dusty mauve',
+    '#90a4ae': 'steel grey',
+  };
+
+  const name = knownNames[normalized];
+  if (name) return `${name} ${hex}`;
+
+  try {
+    const [h, s, l] = hexToHsl(hex);
+    const lightDesc = l < 25 ? 'very dark ' : l < 40 ? 'dark ' : l > 75 ? 'very light ' : l > 60 ? 'light ' : '';
+    const satDesc = s < 20 ? 'muted ' : s > 80 ? 'vivid ' : '';
+    let hueName = 'brown';
+    if (h < 10 || h >= 350) hueName = 'red';
+    else if (h < 20) hueName = 'red-orange';
+    else if (h < 35) hueName = 'orange';
+    else if (h < 50) hueName = 'amber-orange';
+    else if (h < 65) hueName = 'golden yellow';
+    else if (h < 80) hueName = 'yellow-green';
+    else if (h < 140) hueName = 'green';
+    else if (h < 170) hueName = 'teal-green';
+    else if (h < 200) hueName = 'cyan';
+    else if (h < 230) hueName = 'blue';
+    else if (h < 260) hueName = 'blue-violet';
+    else if (h < 290) hueName = 'purple';
+    else if (h < 320) hueName = 'magenta';
+    else if (h < 350) hueName = 'rose';
+    return `${lightDesc}${satDesc}${hueName} ${hex}`;
+  } catch {
+    return hex;
+  }
+}
+
 /**
  * Get the map overlay render prompt for a zone's archetype.
  */
@@ -284,7 +373,7 @@ function buildPrompt(zones: SiteZone[], style: string): string {
   const zoneLines: string[] = [];
   for (let i = 0; i < renderZones.length; i++) {
     const zone = renderZones[i];
-    const color = resolveZoneColor(zone);
+    const color = colorName(resolveZoneColor(zone));
     const props = zone.properties || {};
     const info = getZoneArchetypeInfo(zone);
 
