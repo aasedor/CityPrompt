@@ -1,14 +1,13 @@
 /**
- * GlobeAIRenderPanel.tsx — AI render controls for the 3D globe.
+ * GlobeAIRenderPanel.tsx — Simplified AI render controls for the 3D globe.
  *
- * Supports two modes:
- * - Single-shot: all zones in one API call (fast, <10 zones)
- * - Per-zone: 2-pass sequential rendering (accurate, 10+ zones)
+ * Captures the globe canvas with photorealistic 3D tile context,
+ * generates a mask from zone polygons, and sends to Gemini.
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import * as THREE from 'three';
-import { Sparkles, Loader2, Download, Layers } from 'lucide-react';
+import { Sparkles, Loader2, Download } from 'lucide-react';
 import type { SiteZone } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult } from './useGlobeAIRender';
 import { rendersApi } from '@/services/api';
@@ -30,8 +29,6 @@ const STYLES = [
   { id: 'night', label: 'Night' },
 ] as const;
 
-const PER_ZONE_THRESHOLD = 10;
-
 export function GlobeAIRenderPanel({
   canvas,
   camera,
@@ -40,7 +37,7 @@ export function GlobeAIRenderPanel({
   projectId,
   onRenderComplete,
 }: GlobeAIRenderPanelProps) {
-  const { render, renderPerZone } = useGlobeAIRender();
+  const { render } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
@@ -48,19 +45,13 @@ export function GlobeAIRenderPanel({
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [renderTime, setRenderTime] = useState(0);
-  const [progressStatus, setProgressStatus] = useState('');
-  const [usePerZone, setUsePerZone] = useState<boolean | null>(null); // null = auto
-
-  const editableZones = useMemo(
-    () => siteZones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates.length >= 3),
-    [siteZones],
-  );
-
-  // Auto-detect: per-zone for 10+ zones, single-shot for fewer
-  const effectivePerZone = usePerZone ?? (editableZones.length >= PER_ZONE_THRESHOLD);
 
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
+
+    const editableZones = siteZones.filter(z =>
+      z.zone_type !== 'site_boundary' && z.coordinates.length >= 3
+    );
 
     if (editableZones.length === 0) {
       setError('Draw some zones first before rendering');
@@ -70,31 +61,15 @@ export function GlobeAIRenderPanel({
     setIsRendering(true);
     setResult(null);
     setError(null);
-    setProgressStatus('');
     const startTime = Date.now();
     const timer = setInterval(() => setRenderTime(Math.round((Date.now() - startTime) / 1000)), 1000);
 
     try {
-      let renderResult: GlobeRenderResult | null;
-
-      if (effectivePerZone) {
-        // Per-zone sequential rendering
-        renderResult = await renderPerZone(canvas, camera, editableZones, terrainHeight, {
-          style: selectedStyle,
-          projectId,
-          customPrompt: customPrompt.trim() || undefined,
-          onProgress: (status, current, total) => {
-            setProgressStatus(`${status} (${current}/${total})`);
-          },
-        });
-      } else {
-        // Single-shot rendering
-        renderResult = await render(canvas, camera, editableZones, terrainHeight, {
-          style: selectedStyle,
-          projectId,
-          customPrompt: customPrompt.trim() || undefined,
-        });
-      }
+      const renderResult = await render(canvas, camera, editableZones, terrainHeight, {
+        style: selectedStyle,
+        projectId,
+        customPrompt: customPrompt.trim() || undefined,
+      });
 
       if (renderResult) {
         setResult(renderResult);
@@ -107,10 +82,9 @@ export function GlobeAIRenderPanel({
     } finally {
       clearInterval(timer);
       setRenderTime(0);
-      setProgressStatus('');
       setIsRendering(false);
     }
-  }, [canvas, camera, editableZones, terrainHeight, selectedStyle, isRendering, render, renderPerZone, effectivePerZone, projectId, customPrompt, onRenderComplete]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, projectId, onRenderComplete]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
@@ -168,30 +142,6 @@ export function GlobeAIRenderPanel({
         </div>
       </div>
 
-      {/* Per-zone toggle */}
-      <div className="px-4 py-2 border-b border-white/10">
-        <button
-          onClick={() => setUsePerZone(prev => prev === null ? !effectivePerZone : prev === effectivePerZone ? null : !prev)}
-          className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-xs transition ${
-            effectivePerZone
-              ? 'bg-amber-500/20 border border-amber-500/30 text-amber-300'
-              : 'bg-white/5 border border-white/10 text-gray-400'
-          }`}
-        >
-          <span className="flex items-center gap-2">
-            <Layers size={12} />
-            Per-Zone Rendering
-            {editableZones.length >= PER_ZONE_THRESHOLD && usePerZone === null && (
-              <span className="text-[9px] opacity-60">(auto)</span>
-            )}
-          </span>
-          <span className="text-[10px] opacity-70">
-            {editableZones.length} zone{editableZones.length !== 1 ? 's' : ''}
-            {effectivePerZone ? ' — sequential' : ' — single-shot'}
-          </span>
-        </button>
-      </div>
-
       {/* Custom prompt */}
       <div className="px-4 py-2 border-b border-white/10">
         <textarea
@@ -212,7 +162,7 @@ export function GlobeAIRenderPanel({
         </div>
       )}
 
-      {/* Render button + progress */}
+      {/* Render button */}
       <div className="px-4 py-3">
         <button
           onClick={handleRender}
@@ -231,11 +181,6 @@ export function GlobeAIRenderPanel({
             </>
           )}
         </button>
-        {progressStatus && (
-          <p className="mt-1.5 text-[10px] text-amber-400/80 text-center truncate">
-            {progressStatus}
-          </p>
-        )}
       </div>
 
       {/* Result */}
@@ -269,7 +214,7 @@ export function GlobeAIRenderPanel({
             onClick={() => setResult(null)}
             className="mt-1.5 w-full text-center text-[10px] text-gray-500 hover:text-gray-300"
           >
-            Close
+            Clear result
           </button>
         </div>
       )}

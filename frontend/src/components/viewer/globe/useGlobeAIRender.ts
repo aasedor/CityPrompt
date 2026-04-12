@@ -2,13 +2,8 @@
  * useGlobeAIRender.ts — AI render pipeline for the 3D globe.
  *
  * Captures the R3F canvas screenshot (with photorealistic 3D tiles context),
- * generates masks from zone polygons using Three.js camera projection,
- * builds structured prompts from zone archetypes, and sends to the Gemini API.
- *
- * Supports two render modes:
- * - Single-shot: all zones in one API call (fast, good for <10 zones)
- * - Per-zone sequential: 2-pass rendering (ground first, then each building)
- *   for complex multi-zone sites with higher accuracy
+ * generates a binary mask from zone polygons using Three.js camera projection,
+ * builds the prompt from zone archetypes, and sends to the Gemini API.
  *
  * Key advantage over Mapbox version: the screenshot includes real 3D buildings
  * from Google Photorealistic Tiles, giving Gemini much better spatial context.
@@ -32,34 +27,10 @@ const catalog = [
   ...((streetPathCatalog as any)?.archetypes || (streetPathCatalog as any) || []),
 ] as any[];
 
-const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
-const GROUND_TYPES = ['green_space', 'park', 'road', 'street', 'path', 'plaza', 'parking', 'water', 'development_area'];
-
 export interface GlobeRenderResult {
   imageUrl: string;  // data:image/png;base64,...
   prompt: string;
   seed?: number;
-}
-
-/** Prompt entry for structured per-zone prompt generation */
-interface ZonePromptEntry {
-  color: string;
-  zoneType: string;
-  zoneName: string;
-  descriptionText?: string;
-  floors?: number;
-  heightM?: number;
-  archetypeTitle?: string;
-  facadeDescription?: string;
-  roofDescription?: string;
-  materials?: string;
-  massing?: string;
-  heightTendency?: string;
-  publicRealm?: string;
-  mapOverlayPrompt?: string;
-  colorScheme?: string;
-  aerialAppearance?: string;
-  corridorDescription?: string;
 }
 
 /**
@@ -100,162 +71,12 @@ function projectToPixels(
   };
 }
 
-// ─── COLOR UTILITIES ───────────────────────────────────────────────────
-
-function hexToHsl(hex: string): [number, number, number] {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  const l = (max + min) / 2;
-  if (max === min) return [0, 0, l * 100];
-  const d = max - min;
-  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  let h = 0;
-  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-  else if (max === g) h = ((b - r) / d + 2) / 6;
-  else h = ((r - g) / d + 4) / 6;
-  return [h * 360, s * 100, l * 100];
-}
-
-/**
- * Map hex color to a UNIQUE, visually descriptive name for prompts.
- * Uses specific color vocabulary (vermillion, maroon, sienna, etc.)
- * so Gemini can distinguish between similar shades.
- * Always includes the hex value for precise matching.
- */
-function colorName(hex: string): string {
-  const normalized = hex.toLowerCase();
-  // Use highly specific, visually distinct color names
-  const knownNames: Record<string, string> = {
-    '#e03c31': 'bright vermillion',
-    '#ff6b6b': 'light coral pink',
-    '#e8927c': 'warm salmon',
-    '#f5a623': 'vivid amber',
-    '#ffd700': 'bright gold',
-    '#ffeb3b': 'lemon yellow',
-    '#f0e68c': 'pale khaki',
-    '#4caf50': 'medium green',
-    '#66bb6a': 'fresh spring green',
-    '#2e7d32': 'deep forest green',
-    '#009688': 'dark teal',
-    '#4169e1': 'royal blue',
-    '#3f51b5': 'deep indigo',
-    '#2196f3': 'sky blue',
-    '#9c27b0': 'rich purple',
-    '#795548': 'warm brown',
-    '#607d8b': 'cool blue-grey',
-    '#bdbdbd': 'light silver',
-    '#c62828': 'deep maroon',
-    '#d84315': 'burnt sienna',
-    '#ad1457': 'dark magenta',
-    '#6a1b9a': 'deep violet',
-    '#4527a0': 'dark royal purple',
-    '#b71c1c': 'dark crimson',
-    '#e65100': 'dark burnt orange',
-    '#ff5722': 'bright orange-red',
-    '#ff9800': 'bright orange',
-    '#8bc34a': 'lime green',
-    '#00bcd4': 'bright cyan',
-    '#e91e63': 'hot pink',
-    '#cddc39': 'yellow-green',
-    '#ff7043': 'warm tangerine',
-    '#a1887f': 'dusty mauve',
-    '#90a4ae': 'steel grey',
-  };
-
-  const name = knownNames[normalized];
-  if (name) return `${name} ${hex}`;
-
-  // Generate a descriptive name from HSL for unknown colors
-  try {
-    const [h, s, l] = hexToHsl(hex);
-    // Lightness descriptor
-    const lightDesc = l < 25 ? 'very dark ' : l < 40 ? 'dark ' : l > 75 ? 'very light ' : l > 60 ? 'light ' : '';
-    // Saturation descriptor
-    const satDesc = s < 20 ? 'muted ' : s > 80 ? 'vivid ' : '';
-    // Hue name with fine-grained distinctions
-    let hueName = 'brown';
-    if (h < 10 || h >= 350) hueName = 'red';
-    else if (h < 20) hueName = 'red-orange';
-    else if (h < 35) hueName = 'orange';
-    else if (h < 50) hueName = 'amber-orange';
-    else if (h < 65) hueName = 'golden yellow';
-    else if (h < 80) hueName = 'yellow-green';
-    else if (h < 100) hueName = 'chartreuse';
-    else if (h < 140) hueName = 'green';
-    else if (h < 170) hueName = 'teal-green';
-    else if (h < 200) hueName = 'cyan';
-    else if (h < 230) hueName = 'blue';
-    else if (h < 260) hueName = 'blue-violet';
-    else if (h < 290) hueName = 'purple';
-    else if (h < 320) hueName = 'magenta';
-    else if (h < 350) hueName = 'rose';
-    return `${lightDesc}${satDesc}${hueName} ${hex}`;
-  } catch {
-    return hex;
-  }
-}
-
-// ─── PERSPECTIVE HEADROOM ──────────────────────────────────────────────
-
-/**
- * Calculate the upward pixel expansion needed for a building mask
- * to accommodate 3D perspective height. In an oblique aerial view,
- * a tall building's roof shifts "up-screen" relative to its footprint.
- *
- * Globe-specific: derives pitch from the camera and uses projectToPixels()
- * for the pixels-per-meter calculation instead of Mapbox's map.project().
- */
-function calculateGlobeHeadroom(
-  camera: THREE.Camera,
-  lat: number,
-  lng: number,
-  buildingHeightM: number,
-  canvasWidth: number,
-  canvasHeight: number,
-  terrainHeight: number,
-): number {
-  if (buildingHeightM <= 0) return 0;
-
-  // Estimate camera pitch from the camera's forward vector vs surface normal
-  // (the angle between camera-look-direction and the surface tangent plane)
-  const camDir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize();
-  const surfacePos = new THREE.Vector3();
-  WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, terrainHeight, surfacePos);
-  const surfaceNormal = surfacePos.clone().normalize();
-  // Pitch = angle between camera forward and surface tangent plane
-  // dot(camDir, -surfaceNormal) gives cos(angle from nadir)
-  const cosAngle = Math.abs(camDir.dot(surfaceNormal.clone().negate()));
-  const pitchFromNadir = Math.acos(Math.min(1, cosAngle)); // 0 = looking straight down
-  const pitchDeg = pitchFromNadir * 180 / Math.PI;
-
-  if (pitchDeg < 5) return 0; // Near top-down, no headroom needed
-
-  // Project two points at ground and at building height to get pixel shift
-  const groundPx = projectToPixels(lng, lat, terrainHeight, camera, canvasWidth, canvasHeight);
-  const roofPx = projectToPixels(lng, lat, terrainHeight + buildingHeightM, camera, canvasWidth, canvasHeight);
-
-  if (!groundPx || !roofPx) {
-    // Fallback: estimate from pitch
-    return 80;
-  }
-
-  // The vertical pixel distance between ground and roof
-  const verticalShift = Math.abs(groundPx.y - roofPx.y);
-
-  // Apply 2.0x safety margin for perspective distortion at edges
-  return verticalShift * 2.0;
-}
-
-// ─── MASK GENERATION (Phase 1) ─────────────────────────────────────────
-
 /**
  * Generate a COLOR-CODED mask from zone polygons.
  * Each zone drawn in its actual map color so Gemini can match the COLOR-TO-ZONE legend.
  * Black = keep as-is, colored = render this zone.
  */
-function generateColorCodedMask(
+function generateMask(
   zones: SiteZone[],
   camera: THREE.Camera,
   width: number,
@@ -364,526 +185,6 @@ async function collectArchetypeImages(
 }
 
 /**
- * Generate a BINARY mask from zone polygons.
- * White (255) = area to edit (inside zone polygons), Black (0) = keep untouched.
- * For building zones, expands upward with feathered edges to accommodate 3D height.
- */
-function generateBinaryMask(
-  zones: SiteZone[],
-  camera: THREE.Camera,
-  width: number,
-  height: number,
-  terrainHeight: number,
-): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d')!;
-
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = '#ffffff';
-
-  const boundaries = zones.filter(z => z.zone_type === 'site_boundary');
-  const others = zones.filter(z => z.zone_type !== 'site_boundary');
-  let drawnCount = 0;
-
-  for (const zone of [...boundaries, ...others]) {
-    if (!zone.coordinates || zone.coordinates.length < 3) continue;
-
-    const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
-      .filter(Boolean) as { x: number; y: number }[];
-    if (pixels.length < 3) continue;
-
-    ctx.beginPath();
-    ctx.moveTo(pixels[0].x, pixels[0].y);
-    for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-    ctx.closePath();
-    ctx.fill();
-
-    // For buildings, expand mask upward for 3D height
-    if (BUILDING_TYPES.includes(zone.zone_type)) {
-      const buildingHeight = (zone.properties?.height_m as number)
-        || (zone.properties?.height as number)
-        || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
-      const centroid = zone.coordinates.reduce(
-        (acc, c) => [acc[0] + c[0] / zone.coordinates!.length, acc[1] + c[1] / zone.coordinates!.length],
-        [0, 0],
-      );
-      const headroom = buildingHeight > 0
-        ? calculateGlobeHeadroom(camera, centroid[1], centroid[0], buildingHeight, width, height, terrainHeight)
-        : 80;
-
-      if (headroom > 0) {
-        const minY = Math.min(...pixels.map(p => p.y));
-        const minX = Math.min(...pixels.map(p => p.x));
-        const maxX = Math.max(...pixels.map(p => p.x));
-        const expandedTop = Math.max(0, minY - headroom);
-        ctx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
-
-        // Soft feathered edge at the top
-        const featherHeight = Math.min(20, headroom * 0.25);
-        if (featherHeight > 2) {
-          const gradient = ctx.createLinearGradient(0, expandedTop, 0, expandedTop + featherHeight);
-          gradient.addColorStop(0, 'rgba(0,0,0,1)');
-          gradient.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.globalCompositeOperation = 'destination-out';
-          ctx.fillStyle = gradient;
-          ctx.fillRect(minX, expandedTop, maxX - minX, featherHeight);
-          ctx.globalCompositeOperation = 'source-over';
-          ctx.fillStyle = '#ffffff';
-        }
-      }
-    }
-
-    drawnCount++;
-  }
-  console.log(`[GlobeAIRender] Binary mask: ${drawnCount}/${zones.length} zones on ${width}x${height}`);
-  return canvas.toDataURL('image/png').split(',')[1];
-}
-
-/**
- * Generate a binary mask for a SINGLE zone polygon.
- * White = the zone's footprint (+ headroom for buildings), Black = everything else.
- */
-function generateSingleZoneMask(
-  zone: SiteZone,
-  camera: THREE.Camera,
-  width: number,
-  height: number,
-  terrainHeight: number,
-): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d')!;
-
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, width, height);
-
-  if (!zone.coordinates || zone.coordinates.length < 3) {
-    return canvas.toDataURL('image/png').split(',')[1];
-  }
-
-  const pixels = zone.coordinates
-    .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
-    .filter(Boolean) as { x: number; y: number }[];
-  if (pixels.length < 3) return canvas.toDataURL('image/png').split(',')[1];
-
-  const isBuilding = BUILDING_TYPES.includes(zone.zone_type);
-  const buildingHeight = (zone.properties?.height_m as number)
-    || (zone.properties?.height as number)
-    || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
-
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.moveTo(pixels[0].x, pixels[0].y);
-  for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-  ctx.closePath();
-  ctx.fill();
-
-  if (isBuilding && buildingHeight > 0) {
-    const centroid = zone.coordinates.reduce(
-      (acc, c) => [acc[0] + c[0] / zone.coordinates!.length, acc[1] + c[1] / zone.coordinates!.length],
-      [0, 0],
-    );
-    const headroom = calculateGlobeHeadroom(camera, centroid[1], centroid[0], buildingHeight, width, height, terrainHeight);
-
-    if (headroom > 0) {
-      const minY = Math.min(...pixels.map(p => p.y));
-      const minX = Math.min(...pixels.map(p => p.x));
-      const maxX = Math.max(...pixels.map(p => p.x));
-      const expandedTop = Math.max(0, minY - headroom);
-      ctx.fillRect(minX, expandedTop, maxX - minX, minY - expandedTop);
-
-      const featherHeight = Math.min(20, headroom * 0.3);
-      if (featherHeight > 2) {
-        const gradient = ctx.createLinearGradient(0, expandedTop, 0, expandedTop + featherHeight);
-        gradient.addColorStop(0, 'rgba(0,0,0,1)');
-        gradient.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.fillStyle = gradient;
-        ctx.fillRect(minX, expandedTop, maxX - minX, featherHeight);
-        ctx.globalCompositeOperation = 'source-over';
-      }
-    }
-    console.log(`[GlobeAIRender] Single-zone mask: building headroom ${headroom.toFixed(0)}px for ${buildingHeight}m, zone="${zone.name || zone.zone_type}"`);
-  }
-
-  // Debug coverage
-  const imgData = ctx.getImageData(0, 0, width, height).data;
-  let whiteCount = 0;
-  for (let i = 0; i < imgData.length; i += 4) if (imgData[i] > 128) whiteCount++;
-  console.log(`[GlobeAIRender] Single-zone mask: white=${whiteCount}/${width * height} (${((whiteCount / (width * height)) * 100).toFixed(1)}%), zone="${zone.name || zone.zone_type}"`);
-
-  return canvas.toDataURL('image/png').split(',')[1];
-}
-
-/**
- * Generate a combined binary mask for MULTIPLE zones.
- * White = union of all provided zone polygons, Black = keep.
- * Used in Pass 1 to mask all ground-level zones at once.
- */
-function generateCombinedMask(
-  zones: SiteZone[],
-  camera: THREE.Camera,
-  width: number,
-  height: number,
-  terrainHeight: number,
-): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d')!;
-
-  ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = '#ffffff';
-
-  let drawnCount = 0;
-  for (const zone of zones) {
-    if (!zone.coordinates || zone.coordinates.length < 3) continue;
-    const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
-      .filter(Boolean) as { x: number; y: number }[];
-    if (pixels.length < 3) continue;
-
-    ctx.beginPath();
-    ctx.moveTo(pixels[0].x, pixels[0].y);
-    for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-    ctx.closePath();
-    ctx.fill();
-    drawnCount++;
-  }
-
-  const imgData = ctx.getImageData(0, 0, width, height).data;
-  let whiteCount = 0;
-  for (let i = 0; i < imgData.length; i += 4) if (imgData[i] > 128) whiteCount++;
-  console.log(`[GlobeAIRender] Combined mask: ${drawnCount} zones, white=${whiteCount}/${width * height} (${((whiteCount / (width * height)) * 100).toFixed(1)}%)`);
-
-  return canvas.toDataURL('image/png').split(',')[1];
-}
-
-// ─── COMPOSITING ENGINE (Phase 2) ─────────────────────────────────────
-
-/** Load an image from a data URI and return an HTMLImageElement */
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = (e) => reject(new Error(`Failed to load image: ${e}`));
-    img.src = src;
-  });
-}
-
-/**
- * Composite a single zone's AI render onto a cumulative canvas.
- * Ground zones: strict polygon clip with feathered edges.
- * Buildings: polygon clip for footprint + pixel-diff above for 3D silhouette.
- */
-async function compositeZoneRender(
-  baseDataUri: string,
-  renderedDataUri: string,
-  zone: SiteZone,
-  camera: THREE.Camera,
-  canvasWidth: number,
-  canvasHeight: number,
-  terrainHeight: number,
-): Promise<string> {
-  const [baseImg, renderedImg] = await Promise.all([
-    loadImage(baseDataUri),
-    loadImage(renderedDataUri),
-  ]);
-
-  const w = baseImg.naturalWidth;
-  const h = baseImg.naturalHeight;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(baseImg, 0, 0, w, h);
-
-  if (!zone.coordinates || zone.coordinates.length < 3) {
-    return canvas.toDataURL('image/png');
-  }
-
-  const pixels = zone.coordinates
-    .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
-    .filter(Boolean) as { x: number; y: number }[];
-  if (pixels.length < 3) return canvas.toDataURL('image/png');
-
-  const isBuilding = BUILDING_TYPES.includes(zone.zone_type);
-
-  // Step 1: Mask-based composite with feathered edges
-  const maskCanvas = document.createElement('canvas');
-  maskCanvas.width = w;
-  maskCanvas.height = h;
-  const maskCtx = maskCanvas.getContext('2d')!;
-  maskCtx.fillStyle = '#000000';
-  maskCtx.fillRect(0, 0, w, h);
-  maskCtx.fillStyle = '#ffffff';
-
-  // Draw zone footprint polygon
-  maskCtx.beginPath();
-  maskCtx.moveTo(pixels[0].x, pixels[0].y);
-  for (let i = 1; i < pixels.length; i++) maskCtx.lineTo(pixels[i].x, pixels[i].y);
-  maskCtx.closePath();
-  maskCtx.fill();
-
-  // For buildings, extend mask upward by perspective headroom
-  if (isBuilding) {
-    const bldgH = (zone.properties?.height_m as number)
-      || (zone.properties?.height as number)
-      || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
-    const centroid = zone.coordinates.reduce(
-      (acc, c) => [acc[0] + c[0] / zone.coordinates!.length, acc[1] + c[1] / zone.coordinates!.length],
-      [0, 0],
-    );
-    const hr = bldgH > 0
-      ? calculateGlobeHeadroom(camera, centroid[1], centroid[0], bldgH, canvasWidth, canvasHeight, terrainHeight)
-      : 100;
-    if (hr > 0) {
-      const mnX = Math.min(...pixels.map(p => p.x));
-      const mxX = Math.max(...pixels.map(p => p.x));
-      const mnY = Math.min(...pixels.map(p => p.y));
-      const expTop = Math.max(0, Math.floor(mnY - hr));
-      maskCtx.fillRect(mnX, expTop, mxX - mnX, mnY - expTop);
-    }
-  }
-
-  // Apply soft feather to mask edges (4px blur)
-  const featherPx = 4;
-  const featherCanvas = document.createElement('canvas');
-  featherCanvas.width = w;
-  featherCanvas.height = h;
-  const featherCtx = featherCanvas.getContext('2d')!;
-  featherCtx.filter = `blur(${featherPx}px)`;
-  featherCtx.drawImage(maskCanvas, 0, 0);
-
-  // Composite: AI render masked with feathered edges, then drawn onto base
-  const aiCanvas = document.createElement('canvas');
-  aiCanvas.width = w;
-  aiCanvas.height = h;
-  const aiCtx = aiCanvas.getContext('2d')!;
-  aiCtx.drawImage(renderedImg, 0, 0, w, h);
-  aiCtx.globalCompositeOperation = 'destination-in';
-  aiCtx.drawImage(featherCanvas, 0, 0);
-  ctx.drawImage(aiCanvas, 0, 0);
-
-  // Step 2: For buildings, pixel-diff above the polygon for 3D silhouette
-  if (isBuilding) {
-    const bldgHeight = (zone.properties?.height_m as number)
-      || (zone.properties?.height as number)
-      || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
-    const centroid = zone.coordinates.reduce(
-      (acc, c) => [acc[0] + c[0] / zone.coordinates!.length, acc[1] + c[1] / zone.coordinates!.length],
-      [0, 0],
-    );
-    const headroom = bldgHeight > 0
-      ? calculateGlobeHeadroom(camera, centroid[1], centroid[0], bldgHeight, canvasWidth, canvasHeight, terrainHeight)
-      : 100;
-
-    const minX = Math.min(...pixels.map(p => p.x));
-    const maxX = Math.max(...pixels.map(p => p.x));
-    const minY = Math.min(...pixels.map(p => p.y));
-    const expandedTop = Math.max(0, Math.floor(minY - headroom));
-
-    const regionX = Math.max(0, Math.floor(minX));
-    const regionR = Math.min(w, Math.ceil(maxX));
-    const regionY = expandedTop;
-    const regionB = Math.floor(minY);
-
-    if (regionB > regionY && regionR > regionX) {
-      const rw = regionR - regionX;
-      const rh = regionB - regionY;
-
-      const baseTmpCanvas = document.createElement('canvas');
-      baseTmpCanvas.width = w;
-      baseTmpCanvas.height = h;
-      const baseTmpCtx = baseTmpCanvas.getContext('2d')!;
-      baseTmpCtx.drawImage(baseImg, 0, 0, w, h);
-
-      const rendTmpCanvas = document.createElement('canvas');
-      rendTmpCanvas.width = w;
-      rendTmpCanvas.height = h;
-      const rendTmpCtx = rendTmpCanvas.getContext('2d')!;
-      rendTmpCtx.drawImage(renderedImg, 0, 0, w, h);
-
-      const baseRegion = baseTmpCtx.getImageData(regionX, regionY, rw, rh);
-      const rendRegion = rendTmpCtx.getImageData(regionX, regionY, rw, rh);
-      const currentData = ctx.getImageData(0, 0, w, h);
-      const currentPx = currentData.data;
-
-      const DIFF_THRESHOLD = 18;
-      for (let row = 0; row < rh; row++) {
-        for (let col = 0; col < rw; col++) {
-          const idx = (row * rw + col) * 4;
-          const dr = Math.abs(baseRegion.data[idx] - rendRegion.data[idx]);
-          const dg = Math.abs(baseRegion.data[idx + 1] - rendRegion.data[idx + 1]);
-          const db = Math.abs(baseRegion.data[idx + 2] - rendRegion.data[idx + 2]);
-
-          if (Math.max(dr, dg, db) > DIFF_THRESHOLD) {
-            const globalIdx = ((regionY + row) * w + (regionX + col)) * 4;
-            currentPx[globalIdx] = rendRegion.data[idx];
-            currentPx[globalIdx + 1] = rendRegion.data[idx + 1];
-            currentPx[globalIdx + 2] = rendRegion.data[idx + 2];
-            currentPx[globalIdx + 3] = rendRegion.data[idx + 3];
-          }
-        }
-      }
-
-      ctx.putImageData(currentData, 0, 0);
-      console.log(`[GlobeAIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip + pixel-diff ${rw}x${rh}px above`);
-    } else {
-      console.log(`[GlobeAIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip only`);
-    }
-  } else {
-    console.log(`[GlobeAIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
-  }
-
-  return canvas.toDataURL('image/png');
-}
-
-/**
- * 30 maximally distinct rainbow colors for render-time zone identification.
- * These are ONLY used during rendering — the zone's actual color is never changed.
- * Chosen for maximum visual contrast even at small polygon sizes.
- */
-const RAINBOW_PALETTE = [
-  '#FF0000', // 1  pure red
-  '#0066FF', // 2  blue
-  '#00CC00', // 3  green
-  '#FF00FF', // 4  magenta
-  '#FFCC00', // 5  yellow
-  '#00CCCC', // 6  cyan
-  '#FF6600', // 7  orange
-  '#9933FF', // 8  purple
-  '#00FF66', // 9  spring green
-  '#FF3399', // 10 hot pink
-  '#006633', // 11 dark green
-  '#CC0000', // 12 dark red
-  '#3366FF', // 13 royal blue
-  '#996600', // 14 brown-gold
-  '#66FF00', // 15 lime
-  '#CC00CC', // 16 dark magenta
-  '#009999', // 17 dark cyan
-  '#FF9966', // 18 peach
-  '#6600CC', // 19 dark purple
-  '#33CC33', // 20 bright green
-  '#CC3366', // 21 raspberry
-  '#0099FF', // 22 sky blue
-  '#CC9900', // 23 amber
-  '#66CCCC', // 24 light teal
-  '#993333', // 25 brick red
-  '#3399CC', // 26 steel blue
-  '#669900', // 27 olive green
-  '#FF66CC', // 28 pink
-  '#333399', // 29 navy
-  '#99CC33', // 30 yellow-green
-];
-
-/** Map from rainbow hex to a human-readable unique name */
-const RAINBOW_NAMES: Record<string, string> = {
-  '#FF0000': 'pure red',
-  '#0066FF': 'blue',
-  '#00CC00': 'green',
-  '#FF00FF': 'magenta',
-  '#FFCC00': 'yellow',
-  '#00CCCC': 'cyan',
-  '#FF6600': 'orange',
-  '#9933FF': 'purple',
-  '#00FF66': 'spring green',
-  '#FF3399': 'hot pink',
-  '#006633': 'dark green',
-  '#CC0000': 'dark red',
-  '#3366FF': 'royal blue',
-  '#996600': 'brown-gold',
-  '#66FF00': 'lime',
-  '#CC00CC': 'dark magenta',
-  '#009999': 'dark cyan',
-  '#FF9966': 'peach',
-  '#6600CC': 'dark purple',
-  '#33CC33': 'bright green',
-  '#CC3366': 'raspberry',
-  '#0099FF': 'sky blue',
-  '#CC9900': 'amber',
-  '#66CCCC': 'light teal',
-  '#993333': 'brick red',
-  '#3399CC': 'steel blue',
-  '#669900': 'olive green',
-  '#FF66CC': 'pink',
-  '#333399': 'navy',
-  '#99CC33': 'yellow-green',
-};
-
-/**
- * Build a map from zone index to rainbow color for render-time use.
- * Each zone gets a maximally distinct color so Gemini can tell them apart.
- */
-function buildRainbowColorMap(zones: SiteZone[]): Map<number, string> {
-  const map = new Map<number, string>();
-  for (let i = 0; i < zones.length; i++) {
-    map.set(i, RAINBOW_PALETTE[i % RAINBOW_PALETTE.length]);
-  }
-  return map;
-}
-
-/**
- * Paint ALL zone polygons onto a screenshot using RAINBOW colors.
- * Each zone gets a maximally distinct color from the rainbow palette
- * so Gemini can easily distinguish between zones.
- */
-function paintAllZonesOnScreenshot(
-  screenshotBase64: string,
-  zones: SiteZone[],
-  camera: THREE.Camera,
-  canvasWidth: number,
-  canvasHeight: number,
-  terrainHeight: number,
-  rainbowMap: Map<number, string>,
-): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0);
-
-      for (let zi = 0; zi < zones.length; zi++) {
-        const zone = zones[zi];
-        if (!zone.coordinates || zone.coordinates.length < 3) continue;
-        const pixels = zone.coordinates
-          .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
-          .filter(Boolean) as { x: number; y: number }[];
-        if (pixels.length < 3) continue;
-
-        // Use rainbow color instead of zone's actual color
-        ctx.fillStyle = rainbowMap.get(zi) || resolveZoneColor(zone);
-        ctx.globalAlpha = 0.7;
-        ctx.beginPath();
-        ctx.moveTo(pixels[0].x, pixels[0].y);
-        for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      ctx.globalAlpha = 1.0;
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.src = `data:image/png;base64,${screenshotBase64}`;
-  });
-}
-
-// Suppress unused warnings — available for future per-building mode
-void generateSingleZoneMask;
-
-// ─── ARCHETYPE & PROMPT HELPERS ────────────────────────────────────────
-
-/**
  * Get the map overlay render prompt for a zone's archetype.
  */
 function getMapOverlayPrompt(zone: SiteZone): string | undefined {
@@ -902,20 +203,15 @@ function getMapOverlayPrompt(zone: SiteZone): string | undefined {
 
 /**
  * Extract archetype metadata from zone properties.
- * Enriched version with corridor, massing, and height tendency data.
  */
 function getZoneArchetypeInfo(zone: SiteZone): {
   archetypeTitle?: string;
   facadeDescription?: string;
   roofDescription?: string;
   materials?: string;
-  massing?: string;
-  heightTendency?: string;
   aerialAppearance?: string;
   publicRealm?: string;
-  mapOverlayPrompt?: string;
   colorScheme?: string;
-  corridorDescription?: string;
 } {
   if (!zone.properties || !catalog) return {};
 
@@ -932,307 +228,121 @@ function getZoneArchetypeInfo(zone: SiteZone): {
 
     const facadeParts: string[] = [];
     if (fd.primaryMaterial) facadeParts.push(fd.primaryMaterial);
-    if (fd.groundFloor) facadeParts.push(`Ground floor: ${fd.groundFloor}`);
-    if (fd.upperFloors) facadeParts.push(`Upper floors: ${fd.upperFloors}`);
-    if (fd.cornice) facadeParts.push(`Cornice: ${fd.cornice}`);
-    if (fd.colorScheme) facadeParts.push(`Colors: ${fd.colorScheme}`);
+    if (fd.groundFloor) facadeParts.push(fd.groundFloor);
+    if (fd.upperFloors) facadeParts.push(fd.upperFloors);
+    if (fd.colorScheme) facadeParts.push(fd.colorScheme);
 
     const roofParts: string[] = [];
     if (rd.form) roofParts.push(rd.form);
     if (rd.material) roofParts.push(rd.material);
-    if (rd.features) roofParts.push(rd.features);
-    if (rd.aerialAppearance) roofParts.push(`Aerial: ${rd.aerialAppearance}`);
-
-    // Road/corridor specific
-    const corridorParts: string[] = [];
-    if (sp.corridorCharacter) corridorParts.push(sp.corridorCharacter);
-    if (sp.movementHierarchy) corridorParts.push(sp.movementHierarchy);
-    if (sp.surfaceType) corridorParts.push(`Surface: ${sp.surfaceType}`);
-    if (sp.plantingCharacter) corridorParts.push(sp.plantingCharacter);
-    if (sp.edgeConditions) corridorParts.push(`Edges: ${sp.edgeConditions}`);
-    if (sp.publicRealm) corridorParts.push(sp.publicRealm);
+    if (rd.aerialAppearance) roofParts.push(rd.aerialAppearance);
 
     return {
       archetypeTitle: entry.title,
-      facadeDescription: facadeParts.length > 0 ? facadeParts.join('. ') : undefined,
-      roofDescription: roofParts.length > 0 ? roofParts.join('. ') : undefined,
+      facadeDescription: facadeParts.join(', ') || undefined,
+      roofDescription: roofParts.join(', ') || undefined,
       materials: Array.isArray(sp.materials) ? sp.materials.join(', ') : sp.materials,
-      massing: sp.massing || undefined,
-      heightTendency: sp.heightTendency || undefined,
       aerialAppearance: rd.aerialAppearance || undefined,
       publicRealm: sp.publicRealm || undefined,
-      mapOverlayPrompt: entry.renderPrompt?.mapOverlay || entry.prompt?.subject || undefined,
       colorScheme: fd.colorScheme || undefined,
-      corridorDescription: corridorParts.length > 0 ? corridorParts.join('. ') : undefined,
     };
   }
   return {};
 }
 
-// ─── STRUCTURED PROMPT SYSTEM (Phase 4) ────────────────────────────────
-
-const STYLE_PROMPTS: Record<string, string> = {
-  photorealistic: 'Photorealistic architectural visualization, photomontage quality, golden hour afternoon sunlight, sharp detail on materials and facades.',
-  winter: 'Photorealistic winter scene with fresh snow on roofs and ground, bare deciduous trees, cool winter afternoon light, frost on surfaces. Snow-covered roofs, frosted ground plane, bare deciduous trees, evergreens with heavy snow-load.',
-  atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze, warm orange light from the west.',
-  spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors.',
-  night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
-};
-
-const LIGHTING_MAP: Record<string, string> = {
-  photorealistic: 'Golden hour, warm southwest sun, crisp architectural shadows.',
-  winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky. Snow-covered roofs, frosted ground plane, bare deciduous trees with visible branch structure, evergreens with heavy snow-load.',
-  atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
-  spring: 'Bright spring midday sun, vivid colors, fresh green light.',
-  night: 'Moonlight and city glow, artificial lighting, warm window light.',
-};
-
-/** Extract N keywords from verbose description text, joining with '+' */
-function condenseToKeywords(text: string | undefined, maxTokens = 4): string {
-  if (!text) return '';
-  const tokens = text
-    .replace(/\.\s+/g, ', ')
-    .split(/[,;:]+/)
-    .map(t => t.trim())
-    .filter(t => t.length > 2)
-    .map(t => t.replace(/^(a |an |the |with |and |or |in |on |at |of |for |is |are |has |have |its |this )/gi, '').trim())
-    .filter(t => t.length > 2)
-    .slice(0, maxTokens);
-  return tokens.join('+');
-}
-
-/** Check if a zone is a "priority" type that needs richer description */
-function isPriorityZone(entry: ZonePromptEntry): boolean {
-  const name = (entry.archetypeTitle || entry.zoneName || '').toLowerCase();
-  const PRIORITY_KEYWORDS = [
-    'arena', 'stadium', 'colosseum', 'amphitheater',
-    'hotel', 'resort', 'chateauesque',
-    'transit', 'station', 'vertiport', 'terminal',
-    'church', 'mosque', 'temple', 'cathedral',
-    'museum', 'courthouse', 'monument',
-    'climbing', 'data center', 'vertical farm',
-    'fire station', 'brewery', 'distillery',
-    'waste-to-energy', 'solar farm',
-    'immersive', 'concert hall', 'opera',
-    'mall redevelopment', 'terraced',
-  ];
-  return PRIORITY_KEYWORDS.some(kw => name.includes(kw));
-}
-
-/** Build a compressed SCHEMA zone label from a ZonePromptEntry.
- *  Standard zones: ~100 chars. Priority zones: ~160 chars for richer detail. */
-function buildCompressedZoneLabel(entry: ZonePromptEntry): string {
-  const isBuilding = BUILDING_TYPES.includes(entry.zoneType);
-  const isRoad = ['road', 'street', 'path'].includes(entry.zoneType);
-  const isPark = ['green_space', 'park', 'plaza', 'water'].includes(entry.zoneType);
-  const priority = isPriorityZone(entry);
-
-  const name = entry.archetypeTitle || entry.zoneName || entry.zoneType;
-
-  // Scale
-  let scale = 'gnd';
-  if (isBuilding) {
-    if (entry.floors && entry.heightM) scale = `${entry.floors}F ${entry.heightM}m`;
-    else if (entry.floors) scale = `${entry.floors}F`;
-    else if (entry.heightM) scale = `${entry.heightM}m`;
-    else scale = 'multi-story';
-  }
-
-  // Materials/features — priority zones get more keywords
-  const maxKeywords = priority ? 6 : 3;
-  let features = '';
-
-  if (isBuilding) {
-    const parts: string[] = [];
-    if (entry.materials) parts.push(condenseToKeywords(entry.materials, priority ? 3 : 2));
-    if (entry.facadeDescription) parts.push(condenseToKeywords(entry.facadeDescription, priority ? 3 : 2));
-    if (entry.roofDescription) parts.push(condenseToKeywords(entry.roofDescription, priority ? 2 : 1));
-    if (priority && entry.aerialAppearance) parts.push(condenseToKeywords(entry.aerialAppearance, 2));
-    if (priority && entry.massing) parts.push(condenseToKeywords(entry.massing, 2));
-    features = parts.filter(Boolean).join(', ');
-  } else if (isRoad) {
-    const roadDesc = entry.corridorDescription || entry.publicRealm || entry.materials || entry.descriptionText;
-    features = condenseToKeywords(roadDesc, maxKeywords);
-  } else if (isPark) {
-    const parkDesc = entry.publicRealm || entry.materials || entry.descriptionText;
-    features = condenseToKeywords(parkDesc, maxKeywords);
-  } else {
-    features = condenseToKeywords(entry.descriptionText || entry.materials || entry.publicRealm, maxKeywords);
-  }
-
-  // User description appended if present
-  if (entry.descriptionText?.trim() && entry.descriptionText.trim().length > 10) {
-    const userKeywords = condenseToKeywords(entry.descriptionText, 3);
-    if (userKeywords && !features.includes(userKeywords)) {
-      features = features ? `${features}, ${userKeywords}` : userKeywords;
-    }
-  }
-
-  if (!features) features = entry.zoneType.replace(/_/g, ' ');
-
-  const maxLen = priority ? 160 : 100;
-  const label = `[${entry.color}] ${name} | ${scale} | ${features}`;
-  return label.length > maxLen ? label.slice(0, maxLen - 3) + '...' : label;
-}
-
-/** Default zone description for zones with no archetype */
-function defaultZoneDescription(zoneType: string): string {
-  switch (zoneType) {
-    case 'building': return 'photorealistic commercial/mixed-use buildings with glass and concrete facades, multiple stories';
-    case 'residential': return 'photorealistic residential buildings — townhouses or apartment blocks with warm materials, balconies';
-    case 'road': case 'street': case 'path':
-      return 'urban streetscape with asphalt, lane markings, sidewalks, street trees, pedestrian lighting';
-    case 'green_space': case 'park':
-      return 'landscaped urban park with mature trees, lawns, walking paths, benches, flower beds';
-    case 'plaza':
-      return 'public plaza with premium paving, cafe seating, water feature, accent planting';
-    case 'parking':
-      return 'surface parking lot with painted stalls, directional arrows, perimeter landscaping';
-    case 'water':
-      return 'water feature — pond, fountain, or reflecting pool';
-    default: return 'photorealistic urban development appropriate to the zone type';
-  }
-}
-void defaultZoneDescription; // used in fallback prompts
-void getMapOverlayPrompt; // used via getZoneArchetypeInfo.mapOverlayPrompt
-void buildGroundPlanePrompt; // available for future fine-grained mode
-void buildBuildingPrompt; // available for future fine-grained mode
-void GROUND_TYPES; // used in zone categorization logic
-
-/** Build a zone prompt entry from a SiteZone, optionally with a rainbow color override */
-function zoneToPromptEntry(zone: SiteZone, rainbowColor?: string): ZonePromptEntry {
-  const info = getZoneArchetypeInfo(zone);
-  // Use rainbow color name if provided, otherwise fall back to zone's actual color
-  const color = rainbowColor
-    ? `${RAINBOW_NAMES[rainbowColor] || rainbowColor} ${rainbowColor}`
-    : colorName(resolveZoneColor(zone));
-  const props = zone.properties || {};
-  const floors = (props.floors as number) || (props.num_floors as number) || undefined;
-  const heightM = (props.height_m as number) || (props.height as number) || undefined;
-
-  return {
-    color,
-    zoneType: zone.zone_type,
-    zoneName: zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type,
-    descriptionText: (props.description as string) || (props.descriptive_text as string) || (props.description_text as string) || undefined,
-    floors: typeof floors === 'number' ? floors : undefined,
-    heightM: typeof heightM === 'number' ? heightM : undefined,
-    archetypeTitle: info.archetypeTitle,
-    facadeDescription: info.facadeDescription,
-    roofDescription: info.roofDescription,
-    materials: info.materials,
-    massing: info.massing,
-    heightTendency: info.heightTendency,
-    publicRealm: info.publicRealm,
-    mapOverlayPrompt: info.mapOverlayPrompt,
-    colorScheme: info.colorScheme,
-    aerialAppearance: info.aerialAppearance,
-    corridorDescription: info.corridorDescription,
-  };
-}
-
 /**
  * Build SCHEMA-style structured prompt for aerial renders.
- * Supports three modes:
- * - 'full': all zones in one prompt (single-shot render)
- * - 'ground': ground-level zones only (Pass 1 of per-zone)
- * - 'building': single building zone (Pass 2 of per-zone)
+ * Based on the proven Mapbox aerial prompt structure.
  */
-function buildSCHEMAPrompt(
-  entries: ZonePromptEntry[],
-  style: string,
-  mode: 'full' | 'ground' | 'building' = 'full',
-): string {
-  const lines: string[] = [];
-
-  // ── STYLE ──
-  lines.push(`STYLE: ${STYLE_PROMPTS[style] || STYLE_PROMPTS.photorealistic}`);
-
-  // ── COMPOSITION (mode-specific) ──
-  if (mode === 'ground') {
-    lines.push('COMPOSITION: Oblique aerial view from 3D photorealistic city model, ground-level zones only, no vertical structures.');
-  } else if (mode === 'building') {
-    const entry = entries[0];
-    lines.push(`COMPOSITION: Oblique aerial view from 3D photorealistic city model, single building on ${entry?.color || 'colored'} footprint, full 3D mass extending into sky.`);
-  } else {
-    const hasBuildings = entries.some(e => BUILDING_TYPES.includes(e.zoneType));
-    lines.push(hasBuildings
-      ? 'COMPOSITION: Oblique aerial view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context.'
-      : 'COMPOSITION: Oblique aerial view, ground-level zones only on photorealistic 3D terrain.');
-  }
-
-  // ── LIGHTING ──
-  lines.push(`LIGHTING: ${LIGHTING_MAP[style] || LIGHTING_MAP.photorealistic}`);
-
-  // ── CONTEXT (globe-specific) ──
-  lines.push('CONTEXT: This image is captured from a 3D photorealistic city model with real Google Earth buildings. Preserve ALL unmasked photographic context exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent real buildings.');
-  lines.push('COLOR TEMPERATURE MATCHING: Analyze the color temperature and atmospheric conditions of the EXISTING buildings and terrain in the photograph. Match the EXACT same warm/cool tone, haze level, and ambient light color on all rendered zones. If the scene has golden-hour warmth, render buildings with the same warm amber tones — NOT neutral daylight grey. Rendered materials must look like they exist in the same atmosphere and light as the surrounding real buildings.');
-  lines.push('ATMOSPHERIC PERSPECTIVE: Apply the same atmospheric haze and aerial perspective visible on surrounding buildings at similar distances. Distant rendered zones should have reduced contrast and shifted color matching the existing depth cues in the photograph.');
-
-  // ── NUMERICAL INVENTORY (full mode only) ──
-  if (mode === 'full' && entries.length > 1) {
-    const bldgCount = entries.filter(e => BUILDING_TYPES.includes(e.zoneType)).length;
-    const parkCount = entries.filter(e => e.zoneType === 'green_space' || e.zoneType === 'park').length;
-    const roadCount = entries.filter(e => e.zoneType === 'road' || e.zoneType === 'street' || e.zoneType === 'path').length;
-    lines.push(`NUMERICAL INVENTORY: ${entries.length} zones: ${bldgCount} building${bldgCount !== 1 ? 's' : ''}, ${parkCount} park${parkCount !== 1 ? 's' : ''}, ${roadCount} road${roadCount !== 1 ? 's' : ''}.`);
-  }
-
-  // ── COLOR LEGEND ──
-  if (entries.length > 5) {
-    lines.push('COLOR LEGEND: Each zone polygon has a UNIQUE, visually distinct color — red, blue, green, magenta, yellow, cyan, orange, purple, etc. Match each zone\'s architectural style to its SPECIFIC colored polygon. The colors are maximally different from each other — use the color to identify which zone is which.');
-  }
-
-  // ── ZONES ──
-  if (entries.length > 0) {
-    lines.push('ZONES (each zone is identified by its unique colored polygon on the image):');
-    entries.forEach((entry, i) => {
-      lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry)}`);
-    });
-  }
-
-  // ── MANDATORY ──
-  lines.push('MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible. Replace ALL colored overlays with appropriate architectural materials. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.');
-
-  // ── PROHIBITIONS ──
-  const prohibitions = [
-    'buildings extending beyond polygon boundaries',
-    'colored polygon fills visible on rooftops or facades',
-    'boundary lines visible',
-    'text overlays',
-    'watermarks',
-    'color temperature mismatch between rendered and existing buildings',
-    'rendered buildings appearing unnaturally crisp or clean compared to surroundings',
-  ];
-  if (style === 'winter') {
-    prohibitions.push('lush green vegetation', 'summer foliage', 'bright green lawns');
-  }
-  lines.push(`PROHIBITIONS: ${prohibitions.join(', ')}`);
-
-  // ── CRITICAL FINAL ──
-  lines.push('CRITICAL FINAL INSTRUCTION: Do NOT modify ANY pixels outside the colored polygon zones. Every existing building, house, tree, road, car, and terrain feature outside the zones MUST remain pixel-perfect identical to the input photograph. The white mask defines the EXACT boundary — nothing renders outside it.');
-
-  const result = lines.join('\n');
-  console.log(`[GlobeAIRender] SCHEMA prompt (${result.length} chars, ${entries.length} zones, mode=${mode}):\n${result.substring(0, 300)}...`);
-  return result;
-}
-
-/** Build prompt for all zones (single-shot) */
 function buildPrompt(zones: SiteZone[], style: string): string {
+  // --- STYLE ---
+  const stylePrompts: Record<string, string> = {
+    photorealistic: 'Photorealistic architectural visualization, photomontage quality, golden hour afternoon sunlight, sharp detail on materials and facades.',
+    winter: 'Photorealistic winter scene with fresh snow on roofs and ground, bare deciduous trees, cool winter afternoon light, frost on surfaces. Snow-covered roofs, frosted ground plane, bare deciduous trees, evergreens with heavy snow-load.',
+    atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze, warm orange light from the west.',
+    spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors.',
+    night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
+  };
+
+  // --- COMPOSITION ---
+  const hasBuildings = zones.some(z => z.zone_type === 'building' || z.zone_type === 'residential');
+  const composition = hasBuildings
+    ? 'Oblique aerial view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context.'
+    : 'Oblique aerial view, ground-level zones only on photorealistic 3D terrain.';
+
+  // --- LIGHTING ---
+  const lightingMap: Record<string, string> = {
+    photorealistic: 'Golden hour, warm southwest sun, crisp architectural shadows.',
+    winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
+    atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
+    spring: 'Bright spring midday sun, vivid colors, fresh green light.',
+    night: 'Moonlight and city glow, artificial lighting, warm window light.',
+  };
+
+  // --- ZONES (SCHEMA format) — skip site_boundary ---
   const renderZones = zones.filter(z => z.zone_type !== 'site_boundary');
-  const entries = renderZones.map(z => zoneToPromptEntry(z));
-  return buildSCHEMAPrompt(entries, style, 'full');
-}
+  const zoneLines: string[] = [];
+  for (let i = 0; i < renderZones.length; i++) {
+    const zone = renderZones[i];
+    const color = resolveZoneColor(zone);
+    const props = zone.properties || {};
+    const info = getZoneArchetypeInfo(zone);
 
-/** Build prompt for ground-level zones only (Pass 1 of per-zone) */
-function buildGroundPlanePrompt(groundZones: SiteZone[], style: string): string {
-  const entries = groundZones.map(z => zoneToPromptEntry(z));
-  return buildSCHEMAPrompt(entries, style, 'ground');
-}
+    const floors = (props.floors as number) || 0;
+    const heightM = (props.height_m as number) || (props.height as number) || floors * 3.2 || 0;
+    const name = info.archetypeTitle || zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
 
-/** Build prompt for a single building zone (Pass 2 of per-zone) */
-function buildBuildingPrompt(zone: SiteZone, style: string): string {
-  const entry = zoneToPromptEntry(zone);
-  return buildSCHEMAPrompt([entry], style, 'building');
+    // Scale descriptor
+    let scale = '';
+    if (zone.zone_type === 'building' || zone.zone_type === 'residential') {
+      if (floors > 0 && heightM > 0) scale = `${floors}F ${Math.round(heightM)}m`;
+      else if (floors > 0) scale = `${floors}F`;
+      else if (heightM > 0) scale = `${Math.round(heightM)}m`;
+      else scale = 'multi-story';
+    } else {
+      scale = 'gnd';
+    }
+
+    // Map overlay prompt (archetype-specific aerial rendering instruction)
+    const overlayPrompt = getMapOverlayPrompt(zone);
+
+    // Feature keywords from archetype metadata
+    const features: string[] = [];
+    if (overlayPrompt) {
+      // Use the archetype's own rendering instruction if available
+      features.push(overlayPrompt);
+    } else {
+      if (info.facadeDescription) features.push(info.facadeDescription);
+      if (info.roofDescription) features.push(info.roofDescription);
+      if (info.materials) features.push(info.materials);
+      if (info.aerialAppearance) features.push(`Aerial: ${info.aerialAppearance}`);
+      if (info.publicRealm) features.push(info.publicRealm);
+    }
+
+    // User description override
+    const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
+    if (userDesc.length > 10) features.push(userDesc);
+
+    const featureStr = features.join(', ').substring(0, 200);
+    zoneLines.push(`${i + 1}. [${color}] ${name} | ${scale} | ${featureStr || 'render as described'}`);
+  }
+
+  // --- ASSEMBLE SCHEMA PROMPT ---
+  const sections = [
+    `STYLE: ${stylePrompts[style] || stylePrompts.photorealistic}`,
+    `COMPOSITION: ${composition}`,
+    `LIGHTING: ${lightingMap[style] || lightingMap.photorealistic}`,
+    `CONTEXT: This image is captured from a 3D photorealistic city model with real Google Earth buildings. Preserve ALL unmasked photographic context exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent real buildings.`,
+    `COLOR TEMPERATURE MATCHING: Analyze the color temperature and atmospheric conditions of the EXISTING buildings and terrain in the photograph. Match the EXACT same warm/cool tone, haze level, and ambient light color on all rendered zones. If the scene has golden-hour warmth, render buildings with the same warm amber tones — NOT neutral daylight grey. Rendered materials must look like they exist in the same atmosphere and light as the surrounding real buildings.`,
+    `ATMOSPHERIC PERSPECTIVE: Apply the same atmospheric haze and aerial perspective visible on surrounding buildings at similar distances. Distant rendered zones should have reduced contrast and shifted color matching the existing depth cues in the photograph.`,
+    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
+    `ZONES:\n${zoneLines.join('\n')}`,
+    `MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible. Replace ALL colored overlays with appropriate architectural materials. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
+    `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
+    `CRITICAL FINAL INSTRUCTION: Do NOT modify ANY pixels outside the colored polygon zones. Every existing building, house, tree, road, car, and terrain feature outside the zones MUST remain pixel-perfect identical to the input photograph. The white mask defines the EXACT boundary — nothing renders outside it.`,
+  ];
+
+  return sections.join('\n');
 }
 
 export function useGlobeAIRender() {
@@ -1263,7 +373,7 @@ export function useGlobeAIRender() {
 
       // 2. Generate binary mask from zone polygons
       console.log('[GlobeAIRender] Generating mask...');
-      const maskBase64 = generateColorCodedMask(zones, camera, canvas.width, canvas.height, terrainHeight);
+      const maskBase64 = generateMask(zones, camera, canvas.width, canvas.height, terrainHeight);
 
       // 3. Build SCHEMA prompt from zone archetypes
       let prompt = buildPrompt(zones, style);
@@ -1313,149 +423,6 @@ export function useGlobeAIRender() {
 
     } catch (err) {
       console.error('[GlobeAIRender] Error:', err);
-      return null;
-    } finally {
-      isRenderingRef.current = false;
-    }
-  }, []);
-
-  /**
-   * Per-zone sequential render — 3-pass system by zone category.
-   * Pass 1: All parks/plazas in one call
-   * Pass 2: All streets/roads in one call
-   * Pass 3: All buildings in one call
-   * Each pass gets a focused prompt and combined mask for its category.
-   * Total: 3 API calls instead of 20+ — fast AND accurate.
-   */
-  const renderPerZone = useCallback(async (
-    canvas: HTMLCanvasElement,
-    camera: THREE.Camera,
-    zones: SiteZone[],
-    terrainHeight: number,
-    options: {
-      style?: string;
-      model?: string;
-      projectId?: string;
-      customPrompt?: string;
-      onProgress?: (status: string, current: number, total: number) => void;
-    } = {},
-  ): Promise<GlobeRenderResult | null> => {
-    if (isRenderingRef.current) return null;
-    isRenderingRef.current = true;
-
-    try {
-      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', customPrompt, onProgress } = options;
-      const renderZones = zones.filter(z => z.zone_type !== 'site_boundary');
-
-      // Categorize zones into 3 groups
-      const parkZones = renderZones.filter(z =>
-        ['green_space', 'park', 'plaza', 'water', 'parking'].includes(z.zone_type));
-      const streetZones = renderZones.filter(z =>
-        ['road', 'street', 'path'].includes(z.zone_type));
-      const buildingZones = renderZones.filter(z =>
-        BUILDING_TYPES.includes(z.zone_type));
-      // Catch-all for zone types that don't fit neatly
-      const otherGroundZones = renderZones.filter(z =>
-        ['development_area'].includes(z.zone_type));
-
-      // Merge small categories: other ground zones go with parks
-      const effectiveParkZones = [...parkZones, ...otherGroundZones];
-
-      // Build pass list (skip empty categories)
-      const passes: Array<{ label: string; zones: SiteZone[]; mode: 'ground' | 'building' }> = [];
-      if (effectiveParkZones.length > 0) passes.push({ label: 'Parks & Plazas', zones: effectiveParkZones, mode: 'ground' });
-      if (streetZones.length > 0) passes.push({ label: 'Streets & Roads', zones: streetZones, mode: 'ground' });
-      if (buildingZones.length > 0) passes.push({ label: 'Buildings', zones: buildingZones, mode: 'building' });
-
-      const totalSteps = passes.length;
-
-      // Thinking budget based on total zone count
-      let thinkingBudget: number | undefined;
-      if (renderZones.length >= 30) thinkingBudget = 24576;
-      else if (renderZones.length >= 16) thinkingBudget = 16384;
-      else if (renderZones.length >= 6) thinkingBudget = 8192;
-
-      // Capture base screenshot (Google 3D Tiles context)
-      console.log('[GlobeAIRender] Per-zone: capturing base screenshot...');
-      const baseScreenshot = await captureCanvasBase64(canvas);
-      if (!baseScreenshot) throw new Error('Failed to capture canvas');
-
-      // Initialize cumulative result with the base screenshot
-      let cumulativeDataUri = `data:image/png;base64,${baseScreenshot}`;
-
-      // Assign rainbow colors so Gemini can distinguish every zone
-      const rainbowMap = buildRainbowColorMap(renderZones);
-      console.log(`[GlobeAIRender] Rainbow colors assigned to ${renderZones.length} zones`);
-
-      // Build ONE full prompt with all zones using rainbow colors
-      const allEntries = renderZones.map((z, i) => zoneToPromptEntry(z, rainbowMap.get(i)));
-      let fullPrompt = buildSCHEMAPrompt(allEntries, style, 'full');
-      fullPrompt += '\nMASK SCOPE: This render uses a multi-pass approach. The white mask defines which zones to render in THIS pass. Zones outside the mask are listed for adjacency context only — do NOT modify them. Render only the masked zones, matching their style to the surrounding urban fabric.';
-      if (customPrompt) fullPrompt += `\nADDITIONAL: ${customPrompt}`;
-
-      console.log(`[GlobeAIRender] Full prompt for all passes (${fullPrompt.length} chars, ${allEntries.length} zones)`);
-
-      // ── Execute each pass ──
-      for (let pi = 0; pi < passes.length; pi++) {
-        const pass = passes[pi];
-        onProgress?.(`Pass ${pi + 1}/${totalSteps}: ${pass.label} (${pass.zones.length} zones)...`, pi + 1, totalSteps);
-        console.log(`[GlobeAIRender] Pass ${pi + 1}/${totalSteps}: ${pass.label} — ${pass.zones.length} zones`);
-
-        // Generate mask for THIS pass's zones only
-        // For buildings, use binary mask with headroom; for ground, combined mask
-        const passMask = pass.mode === 'building'
-          ? generateBinaryMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight)
-          : generateCombinedMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight);
-
-        // Paint ALL zone polygons with rainbow colors onto the cumulative result
-        // so Gemini sees maximally distinct colors for each zone
-        const paintedUri = await paintAllZonesOnScreenshot(
-          cumulativeDataUri.split(',')[1], renderZones,
-          camera, canvas.width, canvas.height, terrainHeight, rainbowMap,
-        );
-        const paintedScreenshot = paintedUri.split(',')[1];
-
-        // API call — same full prompt every pass, different mask
-        const resp = await api.post(
-          '/api/v1/render/generate',
-          {
-            image_base64: paintedScreenshot,
-            mask_base64: passMask,
-            prompt: fullPrompt,
-            negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
-            model,
-            temperature: 0.0,
-            guidance_scale: 15,
-            thinking_budget: thinkingBudget,
-          },
-          { timeout: 180000 },
-        );
-
-        if (resp.data?.image_base64) {
-          const renderedDataUri = `data:image/png;base64,${resp.data.image_base64}`;
-          // Composite each zone in this pass onto cumulative
-          for (const zone of pass.zones) {
-            cumulativeDataUri = await compositeZoneRender(
-              cumulativeDataUri, renderedDataUri, zone,
-              camera, canvas.width, canvas.height, terrainHeight,
-            );
-          }
-          console.log(`[GlobeAIRender] Pass ${pi + 1} complete — ${pass.label} composited`);
-        } else {
-          console.warn(`[GlobeAIRender] No image for pass ${pi + 1}: ${pass.label}`);
-        }
-      }
-
-      onProgress?.('Render complete!', totalSteps, totalSteps);
-      console.log(`[GlobeAIRender] Per-zone render complete! ${totalSteps} API calls`);
-
-      return {
-        imageUrl: cumulativeDataUri,
-        prompt: fullPrompt,
-      };
-
-    } catch (err) {
-      console.error('[GlobeAIRender] Per-zone error:', err);
       return null;
     } finally {
       isRenderingRef.current = false;
@@ -1516,5 +483,5 @@ export function useGlobeAIRender() {
     }
   }, []);
 
-  return { render, renderPerZone, captureStreetView, isRenderingRef };
+  return { render, captureStreetView, isRenderingRef };
 }
