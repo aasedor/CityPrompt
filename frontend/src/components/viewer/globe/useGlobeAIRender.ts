@@ -747,9 +747,93 @@ async function compositeZoneRender(
 }
 
 /**
- * Paint ALL zone polygons with numbered labels onto a screenshot.
- * Each zone gets its colored polygon fill + a bold number label at its centroid.
- * The number matches the ZONES list in the prompt so Gemini can identify each zone.
+ * 30 maximally distinct rainbow colors for render-time zone identification.
+ * These are ONLY used during rendering — the zone's actual color is never changed.
+ * Chosen for maximum visual contrast even at small polygon sizes.
+ */
+const RAINBOW_PALETTE = [
+  '#FF0000', // 1  pure red
+  '#0066FF', // 2  blue
+  '#00CC00', // 3  green
+  '#FF00FF', // 4  magenta
+  '#FFCC00', // 5  yellow
+  '#00CCCC', // 6  cyan
+  '#FF6600', // 7  orange
+  '#9933FF', // 8  purple
+  '#00FF66', // 9  spring green
+  '#FF3399', // 10 hot pink
+  '#006633', // 11 dark green
+  '#CC0000', // 12 dark red
+  '#3366FF', // 13 royal blue
+  '#996600', // 14 brown-gold
+  '#66FF00', // 15 lime
+  '#CC00CC', // 16 dark magenta
+  '#009999', // 17 dark cyan
+  '#FF9966', // 18 peach
+  '#6600CC', // 19 dark purple
+  '#33CC33', // 20 bright green
+  '#CC3366', // 21 raspberry
+  '#0099FF', // 22 sky blue
+  '#CC9900', // 23 amber
+  '#66CCCC', // 24 light teal
+  '#993333', // 25 brick red
+  '#3399CC', // 26 steel blue
+  '#669900', // 27 olive green
+  '#FF66CC', // 28 pink
+  '#333399', // 29 navy
+  '#99CC33', // 30 yellow-green
+];
+
+/** Map from rainbow hex to a human-readable unique name */
+const RAINBOW_NAMES: Record<string, string> = {
+  '#FF0000': 'pure red',
+  '#0066FF': 'blue',
+  '#00CC00': 'green',
+  '#FF00FF': 'magenta',
+  '#FFCC00': 'yellow',
+  '#00CCCC': 'cyan',
+  '#FF6600': 'orange',
+  '#9933FF': 'purple',
+  '#00FF66': 'spring green',
+  '#FF3399': 'hot pink',
+  '#006633': 'dark green',
+  '#CC0000': 'dark red',
+  '#3366FF': 'royal blue',
+  '#996600': 'brown-gold',
+  '#66FF00': 'lime',
+  '#CC00CC': 'dark magenta',
+  '#009999': 'dark cyan',
+  '#FF9966': 'peach',
+  '#6600CC': 'dark purple',
+  '#33CC33': 'bright green',
+  '#CC3366': 'raspberry',
+  '#0099FF': 'sky blue',
+  '#CC9900': 'amber',
+  '#66CCCC': 'light teal',
+  '#993333': 'brick red',
+  '#3399CC': 'steel blue',
+  '#669900': 'olive green',
+  '#FF66CC': 'pink',
+  '#333399': 'navy',
+  '#99CC33': 'yellow-green',
+};
+
+/**
+ * Build a map from zone index to rainbow color for render-time use.
+ * Each zone gets a maximally distinct color so Gemini can tell them apart.
+ */
+function buildRainbowColorMap(zones: SiteZone[]): Map<number, string> {
+  const map = new Map<number, string>();
+  for (let i = 0; i < zones.length; i++) {
+    map.set(i, RAINBOW_PALETTE[i % RAINBOW_PALETTE.length]);
+  }
+  return map;
+}
+
+/**
+ * Paint ALL zone polygons onto a screenshot using RAINBOW colors.
+ * Each zone gets a maximally distinct color from the rainbow palette
+ * so Gemini can easily distinguish between zones.
  */
 function paintAllZonesOnScreenshot(
   screenshotBase64: string,
@@ -758,6 +842,7 @@ function paintAllZonesOnScreenshot(
   canvasWidth: number,
   canvasHeight: number,
   terrainHeight: number,
+  rainbowMap: Map<number, string>,
 ): Promise<string> {
   return new Promise((resolve) => {
     const img = new Image();
@@ -768,25 +853,6 @@ function paintAllZonesOnScreenshot(
       const ctx = canvas.getContext('2d')!;
       ctx.drawImage(img, 0, 0);
 
-      // Pass 1: Draw all colored polygon fills
-      for (const zone of zones) {
-        if (!zone.coordinates || zone.coordinates.length < 3) continue;
-        const pixels = zone.coordinates
-          .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
-          .filter(Boolean) as { x: number; y: number }[];
-        if (pixels.length < 3) continue;
-
-        ctx.fillStyle = resolveZoneColor(zone);
-        ctx.globalAlpha = 0.7;
-        ctx.beginPath();
-        ctx.moveTo(pixels[0].x, pixels[0].y);
-        for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      // Pass 2: Draw numbered labels on top
-      ctx.globalAlpha = 1.0;
       for (let zi = 0; zi < zones.length; zi++) {
         const zone = zones[zi];
         if (!zone.coordinates || zone.coordinates.length < 3) continue;
@@ -795,37 +861,17 @@ function paintAllZonesOnScreenshot(
           .filter(Boolean) as { x: number; y: number }[];
         if (pixels.length < 3) continue;
 
-        // Calculate centroid
-        const cx = pixels.reduce((s, p) => s + p.x, 0) / pixels.length;
-        const cy = pixels.reduce((s, p) => s + p.y, 0) / pixels.length;
-
-        // Calculate polygon size to scale font
-        const minX = Math.min(...pixels.map(p => p.x));
-        const maxX = Math.max(...pixels.map(p => p.x));
-        const polyWidth = maxX - minX;
-        const fontSize = Math.max(12, Math.min(32, polyWidth * 0.3));
-
-        const label = String(zi + 1);
-
-        // Draw white circle background
-        ctx.fillStyle = 'white';
+        // Use rainbow color instead of zone's actual color
+        ctx.fillStyle = rainbowMap.get(zi) || resolveZoneColor(zone);
+        ctx.globalAlpha = 0.7;
         ctx.beginPath();
-        ctx.arc(cx, cy, fontSize * 0.7, 0, Math.PI * 2);
+        ctx.moveTo(pixels[0].x, pixels[0].y);
+        for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
+        ctx.closePath();
         ctx.fill();
-
-        // Draw black border
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Draw number
-        ctx.fillStyle = 'black';
-        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(label, cx, cy);
       }
 
+      ctx.globalAlpha = 1.0;
       resolve(canvas.toDataURL('image/png'));
     };
     img.src = `data:image/png;base64,${screenshotBase64}`;
@@ -1053,10 +1099,13 @@ void buildGroundPlanePrompt; // available for future fine-grained mode
 void buildBuildingPrompt; // available for future fine-grained mode
 void GROUND_TYPES; // used in zone categorization logic
 
-/** Build a zone prompt entry from a SiteZone */
-function zoneToPromptEntry(zone: SiteZone): ZonePromptEntry {
+/** Build a zone prompt entry from a SiteZone, optionally with a rainbow color override */
+function zoneToPromptEntry(zone: SiteZone, rainbowColor?: string): ZonePromptEntry {
   const info = getZoneArchetypeInfo(zone);
-  const color = colorName(resolveZoneColor(zone));
+  // Use rainbow color name if provided, otherwise fall back to zone's actual color
+  const color = rainbowColor
+    ? `${RAINBOW_NAMES[rainbowColor] || rainbowColor} ${rainbowColor}`
+    : colorName(resolveZoneColor(zone));
   const props = zone.properties || {};
   const floors = (props.floors as number) || (props.num_floors as number) || undefined;
   const heightM = (props.height_m as number) || (props.height as number) || undefined;
@@ -1128,14 +1177,14 @@ function buildSCHEMAPrompt(
     lines.push(`NUMERICAL INVENTORY: ${entries.length} zones: ${bldgCount} building${bldgCount !== 1 ? 's' : ''}, ${parkCount} park${parkCount !== 1 ? 's' : ''}, ${roadCount} road${roadCount !== 1 ? 's' : ''}.`);
   }
 
-  // ── COLOR DIFFERENTIATION ──
+  // ── COLOR LEGEND ──
   if (entries.length > 5) {
-    lines.push('COLOR DIFFERENTIATION: The colored polygons use DISTINCT shades — pay close attention to the exact hue. Bright vermillion ≠ deep maroon ≠ burnt sienna. Each numbered zone has a UNIQUE color. Match each zone\'s architectural style PRECISELY to its specific polygon color and number.');
+    lines.push('COLOR LEGEND: Each zone polygon has a UNIQUE, visually distinct color — red, blue, green, magenta, yellow, cyan, orange, purple, etc. Match each zone\'s architectural style to its SPECIFIC colored polygon. The colors are maximally different from each other — use the color to identify which zone is which.');
   }
 
   // ── ZONES ──
   if (entries.length > 0) {
-    lines.push('ZONES (each zone is marked with a numbered circle label on the image AND a colored polygon — use BOTH the number and the color to identify each zone):');
+    lines.push('ZONES (each zone is identified by its unique colored polygon on the image):');
     entries.forEach((entry, i) => {
       lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry)}`);
     });
@@ -1334,9 +1383,12 @@ export function useGlobeAIRender() {
       // Initialize cumulative result with the base screenshot
       let cumulativeDataUri = `data:image/png;base64,${baseScreenshot}`;
 
-      // Build ONE full prompt with all zones — reused for every pass
-      // Each pass gets the full urban context but only edits within its mask
-      const allEntries = renderZones.map(z => zoneToPromptEntry(z));
+      // Assign rainbow colors so Gemini can distinguish every zone
+      const rainbowMap = buildRainbowColorMap(renderZones);
+      console.log(`[GlobeAIRender] Rainbow colors assigned to ${renderZones.length} zones`);
+
+      // Build ONE full prompt with all zones using rainbow colors
+      const allEntries = renderZones.map((z, i) => zoneToPromptEntry(z, rainbowMap.get(i)));
       let fullPrompt = buildSCHEMAPrompt(allEntries, style, 'full');
       fullPrompt += '\nMASK SCOPE: This render uses a multi-pass approach. The white mask defines which zones to render in THIS pass. Zones outside the mask are listed for adjacency context only — do NOT modify them. Render only the masked zones, matching their style to the surrounding urban fabric.';
       if (customPrompt) fullPrompt += `\nADDITIONAL: ${customPrompt}`;
@@ -1355,11 +1407,11 @@ export function useGlobeAIRender() {
           ? generateBinaryMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight)
           : generateCombinedMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight);
 
-        // Paint ALL zone polygons with numbered labels onto the cumulative result
-        // so Gemini sees the full colored + numbered site plan
+        // Paint ALL zone polygons with rainbow colors onto the cumulative result
+        // so Gemini sees maximally distinct colors for each zone
         const paintedUri = await paintAllZonesOnScreenshot(
           cumulativeDataUri.split(',')[1], renderZones,
-          camera, canvas.width, canvas.height, terrainHeight,
+          camera, canvas.width, canvas.height, terrainHeight, rainbowMap,
         );
         const paintedScreenshot = paintedUri.split(',')[1];
 
