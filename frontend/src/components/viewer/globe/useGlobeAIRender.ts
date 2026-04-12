@@ -132,6 +132,29 @@ function generateMask(
     ctx.fill();
   }
 
+  // Clip to site boundary — erase anything outside the boundary polygon
+  // This prevents Gemini from editing areas outside the site
+  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  if (siteBoundary) {
+    const boundaryPixels = siteBoundary.coordinates
+      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+
+    if (boundaryPixels.length >= 3) {
+      // Create a clipping path: fill everything OUTSIDE the boundary with black
+      // Use 'destination-in' — keeps existing pixels only where the new shape is drawn
+      ctx.globalCompositeOperation = 'destination-in';
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+      for (let i = 1; i < boundaryPixels.length; i++) ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
+      console.log(`[GlobeAIRender] Mask clipped to site boundary (${boundaryPixels.length} vertices)`);
+    }
+  }
+
   return canvas.toDataURL('image/png').split(',')[1];
 }
 
