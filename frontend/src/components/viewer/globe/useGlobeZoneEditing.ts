@@ -105,9 +105,17 @@ export function useGlobeZoneEditing({
 
   /**
    * Handle mouse move during drag.
+   * Throttled to ~60fps to avoid overwhelming the GPU with re-renders
+   * while Google 3D Tiles are loaded.
    */
+  const lastDragTimeRef = useRef(0);
   const handleDragMove = useCallback((event: MouseEvent) => {
     if (!isDragging || !selectedZoneId || !originalCoordsRef.current) return;
+
+    // Throttle to ~60fps (16ms) — prevents GPU overload with 3D tiles
+    const now = performance.now();
+    if (now - lastDragTimeRef.current < 16) return;
+    lastDragTimeRef.current = now;
 
     const currentLngLat = raycastToLatLng(event);
     if (!currentLngLat) return;
