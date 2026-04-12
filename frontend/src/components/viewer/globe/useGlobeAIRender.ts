@@ -71,6 +71,138 @@ function projectToPixels(
   };
 }
 
+// ─── OCCLUSION CULLING ─────────────────────────────────────────────────
+
+/**
+ * Check which zones are significantly occluded by other (taller) zones
+ * in screen space. Returns a Set of zone IDs that should be culled.
+ *
+ * Algorithm: For each zone, render all OTHER building zones (that are taller
+ * or in front) as filled polygons onto a test canvas, then check how many
+ * pixels of the target zone's footprint are covered.
+ * If >60% covered, the zone is occluded and should be removed from the prompt.
+ */
+function findOccludedZones(
+  zones: SiteZone[],
+  camera: THREE.Camera,
+  width: number,
+  height: number,
+  terrainHeight: number,
+  threshold = 0.6,
+): Set<string> {
+  const occluded = new Set<string>();
+  const renderZones = zones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates?.length >= 3);
+
+  // Project all zones to screen pixels and calculate their properties
+  const projected = renderZones.map(zone => {
+    const pixels = zone.coordinates
+      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+
+    const buildingHeight = (zone.properties?.height_m as number)
+      || (zone.properties?.height as number)
+      || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
+
+    // Project roof height too for buildings
+    const roofPixels = buildingHeight > 0
+      ? zone.coordinates
+          .map(c => projectToPixels(c[0], c[1], terrainHeight + buildingHeight, camera, width, height))
+          .filter(Boolean) as { x: number; y: number }[]
+      : [];
+
+    // Average Y position (lower Y = higher on screen = closer to camera in oblique view)
+    const avgY = pixels.length > 0 ? pixels.reduce((s, p) => s + p.y, 0) / pixels.length : 0;
+
+    return { zone, pixels, roofPixels, buildingHeight, avgY };
+  });
+
+  // Use a small canvas for fast pixel testing (1/4 resolution)
+  const scale = 0.25;
+  const sw = Math.round(width * scale);
+  const sh = Math.round(height * scale);
+
+  for (const target of projected) {
+    if (target.pixels.length < 3) continue;
+
+    // Find zones that could occlude this one:
+    // - taller buildings whose screen footprint overlaps
+    // - zones that are closer to camera (lower avgY in oblique view)
+    const occluders = projected.filter(other =>
+      other.zone.id !== target.zone.id &&
+      other.pixels.length >= 3 &&
+      (other.buildingHeight > target.buildingHeight || other.avgY > target.avgY) &&
+      ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(other.zone.zone_type),
+    );
+
+    if (occluders.length === 0) continue;
+
+    // Draw target zone footprint
+    const targetCanvas = document.createElement('canvas');
+    targetCanvas.width = sw;
+    targetCanvas.height = sh;
+    const targetCtx = targetCanvas.getContext('2d')!;
+    targetCtx.fillStyle = '#ffffff';
+    targetCtx.beginPath();
+    targetCtx.moveTo(target.pixels[0].x * scale, target.pixels[0].y * scale);
+    for (let i = 1; i < target.pixels.length; i++) {
+      targetCtx.lineTo(target.pixels[i].x * scale, target.pixels[i].y * scale);
+    }
+    targetCtx.closePath();
+    targetCtx.fill();
+
+    // Count target pixels
+    const targetData = targetCtx.getImageData(0, 0, sw, sh).data;
+    let targetPixelCount = 0;
+    for (let i = 0; i < targetData.length; i += 4) {
+      if (targetData[i] > 128) targetPixelCount++;
+    }
+    if (targetPixelCount === 0) continue;
+
+    // Draw occluder buildings (footprint + height extent) on top
+    const occluderCanvas = document.createElement('canvas');
+    occluderCanvas.width = sw;
+    occluderCanvas.height = sh;
+    const occCtx = occluderCanvas.getContext('2d')!;
+
+    for (const occ of occluders) {
+      occCtx.fillStyle = '#ffffff';
+      // Draw footprint
+      occCtx.beginPath();
+      occCtx.moveTo(occ.pixels[0].x * scale, occ.pixels[0].y * scale);
+      for (let i = 1; i < occ.pixels.length; i++) {
+        occCtx.lineTo(occ.pixels[i].x * scale, occ.pixels[i].y * scale);
+      }
+      // Extend upward with roof pixels for 3D height
+      if (occ.roofPixels.length >= 3) {
+        for (const p of occ.roofPixels) {
+          occCtx.lineTo(p.x * scale, p.y * scale);
+        }
+      }
+      occCtx.closePath();
+      occCtx.fill();
+    }
+
+    // Check overlap: how many target pixels are covered by occluders
+    const occData = occCtx.getImageData(0, 0, sw, sh).data;
+    let coveredCount = 0;
+    for (let i = 0; i < targetData.length; i += 4) {
+      if (targetData[i] > 128 && occData[i] > 128) coveredCount++;
+    }
+
+    const coverageRatio = coveredCount / targetPixelCount;
+    if (coverageRatio >= threshold) {
+      occluded.add(target.zone.id || '');
+      console.log(`[GlobeAIRender] Occlusion: "${target.zone.name || target.zone.zone_type}" is ${(coverageRatio * 100).toFixed(0)}% occluded — CULLED from prompt`);
+    }
+  }
+
+  if (occluded.size > 0) {
+    console.log(`[GlobeAIRender] Occlusion culling: ${occluded.size} zone(s) removed from render`);
+  }
+
+  return occluded;
+}
+
 /**
  * Generate a COLOR-CODED mask from zone polygons.
  * Each zone drawn in its actual map color so Gemini can match the COLOR-TO-ZONE legend.
@@ -522,17 +654,23 @@ export function useGlobeAIRender() {
       const imageBase64 = await captureCanvasBase64(canvas);
       if (!imageBase64) throw new Error('Failed to capture canvas');
 
-      // 2. Generate binary mask from zone polygons
-      console.log('[GlobeAIRender] Generating mask...');
-      const maskBase64 = generateMask(zones, camera, canvas.width, canvas.height, terrainHeight);
+      // 1b. Occlusion culling — remove zones hidden behind taller buildings
+      const occludedIds = findOccludedZones(zones, camera, canvas.width, canvas.height, terrainHeight);
+      const visibleZones = occludedIds.size > 0
+        ? zones.filter(z => !occludedIds.has(z.id || ''))
+        : zones;
 
-      // 3. Build SCHEMA prompt from zone archetypes
-      let prompt = buildPrompt(zones, style);
+      // 2. Generate binary mask from VISIBLE zone polygons only
+      console.log('[GlobeAIRender] Generating mask...');
+      const maskBase64 = generateMask(visibleZones, camera, canvas.width, canvas.height, terrainHeight);
+
+      // 3. Build SCHEMA prompt from VISIBLE zone archetypes only
+      let prompt = buildPrompt(visibleZones, style);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
       // 4. Collect archetype reference card images (up to 6, compressed to ~30-50KB JPEG each)
       console.log('[GlobeAIRender] Collecting archetype reference images...');
-      const archetypeImages = await collectArchetypeImages(zones);
+      const archetypeImages = await collectArchetypeImages(visibleZones);
       if (archetypeImages.length > 0) {
         prompt += `\n\nARCHETYPE STYLE REFERENCES (Images 2+): ${archetypeImages.length} reference images show the exact architectural style for specific zones. Use Image 1 as the spatial context. Apply each reference style to the matching colored zone.`;
         for (let i = 0; i < archetypeImages.length; i++) {
