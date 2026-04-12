@@ -849,7 +849,7 @@ export function useGlobeAIRender() {
           model,
           temperature: 0.0,
           guidance_scale: 15,
-          image_size: '1K', // 1K output instead of 2K default — cuts generation time ~50%
+          image_size: '2K', // 2K output for architectural detail accuracy
           thinking_budget: 0, // Disable thinking — no benefit for image generation, saves ~30-50% latency
           archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
         },
