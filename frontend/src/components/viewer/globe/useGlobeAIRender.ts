@@ -34,7 +34,9 @@ export interface GlobeRenderResult {
 }
 
 /**
- * Capture the R3F canvas as a base64 PNG string.
+ * Capture the R3F canvas as a base64 JPEG string.
+ * JPEG at 85% quality reduces payload from ~2-5MB (PNG) to ~300-800KB,
+ * significantly reducing API call latency.
  * Requires Canvas gl={{ preserveDrawingBuffer: true }}
  */
 function captureCanvasBase64(canvas: HTMLCanvasElement): Promise<string> {
@@ -47,7 +49,7 @@ function captureCanvasBase64(canvas: HTMLCanvasElement): Promise<string> {
         resolve(dataUrl.split(',')[1]); // Raw base64 without prefix
       };
       reader.readAsDataURL(blob);
-    }, 'image/png');
+    }, 'image/jpeg', 0.85);
   });
 }
 
@@ -376,7 +378,7 @@ async function collectArchetypeImages(
       images.push({
         image_base64: base64,
         label: entry.title || archetypeId,
-        zone_color: colorName(resolveZoneColor(zone)),
+        zone_color: colorName(resolveZoneColor(zone)), // e.g. "bright vermillion #E03C31"
       });
     } catch { /* skip failed fetches */ }
   }
@@ -583,8 +585,23 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     night: 'Moonlight and city glow, artificial lighting, warm window light.',
   };
 
-  // --- ZONES (SCHEMA format) — skip site_boundary ---
-  const renderZones = zones.filter(z => z.zone_type !== 'site_boundary');
+  // --- ZONES (SCHEMA format) — skip site_boundary, sort by polygon area descending ---
+  // Largest zones first = most visually dominant archetypes get highest attention weight
+  const renderZones = zones
+    .filter(z => z.zone_type !== 'site_boundary')
+    .sort((a, b) => {
+      const polyArea = (z: SiteZone) => {
+        if (!z.coordinates || z.coordinates.length < 3) return 0;
+        let area = 0;
+        for (let i = 0; i < z.coordinates.length; i++) {
+          const j = (i + 1) % z.coordinates.length;
+          area += z.coordinates[i][0] * z.coordinates[j][1];
+          area -= z.coordinates[j][0] * z.coordinates[i][1];
+        }
+        return Math.abs(area / 2);
+      };
+      return polyArea(b) - polyArea(a);
+    });
   const zoneLines: string[] = [];
   for (let i = 0; i < renderZones.length; i++) {
     const zone = renderZones[i];
@@ -832,9 +849,11 @@ export function useGlobeAIRender() {
           model,
           temperature: 0.0,
           guidance_scale: 15,
+          image_size: '1K', // 1K output instead of 2K default — cuts generation time ~50%
+          thinking_budget: 0, // Disable thinking — no benefit for image generation, saves ~30-50% latency
           archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
         },
-        { timeout: 300000 }, // 5 minutes — globe renders take longer due to 3D tile complexity
+        { timeout: 300000 },
       );
 
       if (resp.data?.image_base64) {
