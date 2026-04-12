@@ -208,10 +208,20 @@ async function collectArchetypeImages(
       || (props.green_space_subcategory as string)
       || '';
 
-    if (!archetypeId) continue;
+    if (!archetypeId) {
+      console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — no archetype ID`);
+      continue;
+    }
 
     const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
-    if (!entry?.thumbnailUrl) continue;
+    if (!entry) {
+      console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — archetype "${archetypeId}" not found in catalog`);
+      continue;
+    }
+    if (!entry.thumbnailUrl) {
+      console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — archetype "${archetypeId}" has no thumbnailUrl`);
+      continue;
+    }
 
     // Fetch and compress the card image (512px wide JPEG ~30-50KB)
     try {
