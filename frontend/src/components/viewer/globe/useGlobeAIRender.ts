@@ -132,26 +132,6 @@ function generateMask(
     ctx.fill();
   }
 
-  // Draw site boundary outline on the mask so Gemini can see the site limits
-  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
-  if (siteBoundary) {
-    const boundaryPixels = siteBoundary.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
-      .filter(Boolean) as { x: number; y: number }[];
-
-    if (boundaryPixels.length >= 3) {
-      // Draw a thin white outline of the site boundary
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
-      for (let i = 1; i < boundaryPixels.length; i++) ctx.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
-      ctx.closePath();
-      ctx.stroke();
-      console.log(`[GlobeAIRender] Site boundary outline drawn (${boundaryPixels.length} vertices)`);
-    }
-  }
-
   return canvas.toDataURL('image/png').split(',')[1];
 }
 
@@ -477,7 +457,6 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     `ZONES:\n${zoneLines.join('\n')}`,
     `MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible. Replace ALL colored overlays with appropriate architectural materials. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
     `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
-    `SITE BOUNDARY: A thin white outline on the mask shows the site boundary. Do NOT render or modify ANYTHING outside this boundary line. All buildings, landscaping, roads, and features must stay within the site boundary.`,
     `CRITICAL FINAL INSTRUCTION: Do NOT modify ANY pixels outside the colored polygon zones. Every existing building, house, tree, road, car, and terrain feature outside the zones MUST remain pixel-perfect identical to the input photograph. The white mask defines the EXACT boundary — nothing renders outside it.`,
   ];
 
