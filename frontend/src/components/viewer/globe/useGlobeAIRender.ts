@@ -457,6 +457,7 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     `ZONES:\n${zoneLines.join('\n')}`,
     `MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible. Replace ALL colored overlays with appropriate architectural materials. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
     `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
+    `SITE BOUNDARY: The site has a defined boundary. Do NOT render any buildings, landscaping, roads, people, vehicles, or features outside the site boundary. Only render within the colored zone polygons.`,
     `CRITICAL FINAL INSTRUCTION: Do NOT modify ANY pixels outside the colored polygon zones. Every existing building, house, tree, road, car, and terrain feature outside the zones MUST remain pixel-perfect identical to the input photograph. The white mask defines the EXACT boundary — nothing renders outside it.`,
   ];
 
