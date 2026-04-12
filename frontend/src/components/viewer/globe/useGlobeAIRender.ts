@@ -628,6 +628,123 @@ function buildPrompt(zones: SiteZone[], style: string): string {
   return sections.join('\n');
 }
 
+// ─── POST-PROCESSING: POLYGON CLIP ─────────────────────────────────────
+
+/**
+ * Load an image from a data URI and return an HTMLImageElement.
+ */
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (e) => reject(new Error(`Failed to load image: ${e}`));
+    img.src = src;
+  });
+}
+
+/**
+ * Post-process: clip the AI render to zone polygons with feathered edges.
+ * For each zone, only keep the AI render within that zone's polygon
+ * (with a soft 6px blur feather). Everything outside zone polygons
+ * reverts to the original screenshot.
+ *
+ * This is the "fail-safe" — no matter what Gemini produces, each zone
+ * only shows within its polygon boundary.
+ */
+async function clipRenderToZones(
+  originalBase64: string,
+  renderedBase64: string,
+  zones: SiteZone[],
+  camera: THREE.Camera,
+  canvasWidth: number,
+  canvasHeight: number,
+  terrainHeight: number,
+): Promise<string> {
+  const [origImg, rendImg] = await Promise.all([
+    loadImage(`data:image/png;base64,${originalBase64}`),
+    loadImage(`data:image/png;base64,${renderedBase64}`),
+  ]);
+
+  const w = origImg.naturalWidth;
+  const h = origImg.naturalHeight;
+
+  // Start with the original screenshot as the base
+  const resultCanvas = document.createElement('canvas');
+  resultCanvas.width = w;
+  resultCanvas.height = h;
+  const resultCtx = resultCanvas.getContext('2d')!;
+  resultCtx.drawImage(origImg, 0, 0, w, h);
+
+  // Build a combined feathered mask for ALL non-boundary zones
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = w;
+  maskCanvas.height = h;
+  const maskCtx = maskCanvas.getContext('2d')!;
+  maskCtx.fillStyle = '#000000';
+  maskCtx.fillRect(0, 0, w, h);
+  maskCtx.fillStyle = '#ffffff';
+
+  for (const zone of zones) {
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    if (zone.zone_type === 'site_boundary') continue;
+
+    const pixels = zone.coordinates
+      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (pixels.length < 3) continue;
+
+    // Draw zone polygon
+    maskCtx.beginPath();
+    maskCtx.moveTo(pixels[0].x, pixels[0].y);
+    for (let i = 1; i < pixels.length; i++) maskCtx.lineTo(pixels[i].x, pixels[i].y);
+    maskCtx.closePath();
+    maskCtx.fill();
+
+    // For buildings, extend upward for 3D height
+    const buildingHeight = (zone.properties?.height_m as number)
+      || (zone.properties?.height as number)
+      || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
+
+    if (buildingHeight > 0 && (zone.zone_type === 'building' || zone.zone_type === 'residential')) {
+      const topPixels = zone.coordinates
+        .map(c => projectToPixels(c[0], c[1], terrainHeight + buildingHeight, camera, canvasWidth, canvasHeight))
+        .filter(Boolean) as { x: number; y: number }[];
+
+      if (topPixels.length >= 3) {
+        // Draw expanded rectangle from footprint top to roof top
+        const minY = Math.min(...pixels.map(p => p.y));
+        const minX = Math.min(...pixels.map(p => p.x));
+        const maxX = Math.max(...pixels.map(p => p.x));
+        const roofMinY = Math.min(...topPixels.map(p => p.y));
+        maskCtx.fillRect(minX, roofMinY, maxX - minX, minY - roofMinY);
+      }
+    }
+  }
+
+  // Apply feathered blur to mask edges (6px)
+  const featherCanvas = document.createElement('canvas');
+  featherCanvas.width = w;
+  featherCanvas.height = h;
+  const featherCtx = featherCanvas.getContext('2d')!;
+  featherCtx.filter = 'blur(6px)';
+  featherCtx.drawImage(maskCanvas, 0, 0);
+
+  // Composite: AI render masked with feathered zones, drawn onto original
+  const aiCanvas = document.createElement('canvas');
+  aiCanvas.width = w;
+  aiCanvas.height = h;
+  const aiCtx = aiCanvas.getContext('2d')!;
+  aiCtx.drawImage(rendImg, 0, 0, w, h);
+  aiCtx.globalCompositeOperation = 'destination-in';
+  aiCtx.drawImage(featherCanvas, 0, 0);
+
+  // Draw the masked AI render on top of the original
+  resultCtx.drawImage(aiCanvas, 0, 0);
+
+  console.log('[GlobeAIRender] Post-process: clipped render to zone polygons with 6px feathered edges');
+  return resultCanvas.toDataURL('image/png').split(',')[1];
+}
+
 export function useGlobeAIRender() {
   const isRenderingRef = useRef(false);
 
@@ -698,9 +815,17 @@ export function useGlobeAIRender() {
       );
 
       if (resp.data?.image_base64) {
-        console.log('[GlobeAIRender] Render complete!');
+        console.log('[GlobeAIRender] Render complete! Applying polygon clip...');
+
+        // Post-process: clip the AI render to zone polygons with feathered edges
+        // This ensures no zone bleeds into adjacent zones or outside boundaries
+        const clippedBase64 = await clipRenderToZones(
+          imageBase64, resp.data.image_base64,
+          visibleZones, camera, canvas.width, canvas.height, terrainHeight,
+        );
+
         return {
-          imageUrl: `data:image/png;base64,${resp.data.image_base64}`,
+          imageUrl: `data:image/png;base64,${clippedBase64}`,
           prompt,
           seed: resp.data.seed,
         };
