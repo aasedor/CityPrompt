@@ -136,8 +136,38 @@ function generateMask(
 }
 
 /**
+ * Compress an image blob to JPEG at a target max width.
+ * Returns base64 string without data URI prefix.
+ */
+function compressImage(blob: Blob, maxWidth = 512, quality = 0.7): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.naturalWidth);
+      const w = Math.round(img.naturalWidth * scale);
+      const h = Math.round(img.naturalHeight * scale);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0, w, h);
+
+      canvas.toBlob((outBlob) => {
+        if (!outBlob) return reject(new Error('Compression failed'));
+        const reader = new FileReader();
+        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+        reader.readAsDataURL(outBlob);
+      }, 'image/jpeg', quality);
+    };
+    img.onerror = () => reject(new Error('Failed to load image for compression'));
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+/**
  * Collect archetype reference card images for multi-image rendering.
- * Returns up to 6 images with their zone labels.
+ * Returns up to 6 images, compressed to ~30-50KB JPEG each.
  */
 async function collectArchetypeImages(
   zones: SiteZone[],
@@ -162,21 +192,20 @@ async function collectArchetypeImages(
     const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
     if (!entry?.thumbnailUrl) continue;
 
-    // Fetch the card image
+    // Fetch and compress the card image (512px wide JPEG ~30-50KB)
     try {
       const resp = await fetch(entry.thumbnailUrl);
       if (!resp.ok) continue;
       const blob = await resp.blob();
-      const base64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
-        reader.readAsDataURL(blob);
-      });
+      const base64 = await compressImage(blob, 512, 0.7);
+
+      const sizeKB = Math.round(base64.length * 0.75 / 1024);
+      console.log(`[GlobeAIRender] Archetype image: ${entry.title} — ${sizeKB}KB (compressed)`);
 
       images.push({
         image_base64: base64,
         label: entry.title || archetypeId,
-        zone_color: resolveZoneColor(zone),
+        zone_color: colorName(resolveZoneColor(zone)),
       });
     } catch { /* skip failed fetches */ }
   }
@@ -468,10 +497,9 @@ export function useGlobeAIRender() {
       let prompt = buildPrompt(zones, style);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
-      // 4. Collect archetype reference card images (up to 6)
+      // 4. Collect archetype reference card images (up to 6, compressed to ~30-50KB JPEG each)
       console.log('[GlobeAIRender] Collecting archetype reference images...');
-      // Archetype images disabled — full-size PNGs cause 502 payload errors
-      const archetypeImages: Awaited<ReturnType<typeof collectArchetypeImages>> = [];
+      const archetypeImages = await collectArchetypeImages(zones);
       if (archetypeImages.length > 0) {
         prompt += `\n\nARCHETYPE STYLE REFERENCES (Images 2+): ${archetypeImages.length} reference images show the exact architectural style for specific zones. Use Image 1 as the spatial context. Apply each reference style to the matching colored zone.`;
         for (let i = 0; i < archetypeImages.length; i++) {
