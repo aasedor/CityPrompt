@@ -37,6 +37,9 @@ export function useGlobeZoneEditing({
   const [isDragging, setIsDragging] = useState(false);
   const [dragVertexIndex, setDragVertexIndex] = useState<number | null>(null);
   const [dragArea, setDragArea] = useState(0);
+  // Live drag coordinates — updated every frame WITHOUT triggering React re-render.
+  // The zone layer reads this ref directly to update geometry.
+  const dragCoordsRef = useRef<number[][] | null>(null);
 
   const dragStartRef = useRef<[number, number] | null>(null);
   const originalCoordsRef = useRef<number[][] | null>(null);
@@ -105,23 +108,15 @@ export function useGlobeZoneEditing({
 
   /**
    * Handle mouse move during drag.
-   * Throttled to ~60fps to avoid overwhelming the GPU with re-renders
-   * while Google 3D Tiles are loaded.
+   * Updates dragCoordsRef directly WITHOUT triggering React re-render.
+   * The R3F useFrame loop in GlobeZoneLayer reads this ref to update geometry.
+   * React state (onZoneUpdated) is only called on drag END.
    */
-  const lastDragTimeRef = useRef(0);
   const handleDragMove = useCallback((event: MouseEvent) => {
     if (!isDragging || !selectedZoneId || !originalCoordsRef.current) return;
 
-    // Throttle to ~60fps (16ms) — prevents GPU overload with 3D tiles
-    const now = performance.now();
-    if (now - lastDragTimeRef.current < 16) return;
-    lastDragTimeRef.current = now;
-
     const currentLngLat = raycastToLatLng(event);
     if (!currentLngLat) return;
-
-    const zone = zones.find(z => z.id === selectedZoneId);
-    if (!zone) return;
 
     let newCoords: number[][];
 
@@ -139,22 +134,31 @@ export function useGlobeZoneEditing({
       return;
     }
 
+    // Update ref directly — no React re-render, no tile re-render
+    dragCoordsRef.current = newCoords;
     setDragArea(geodesicArea(newCoords));
-    onZoneUpdated(selectedZoneId, newCoords);
-  }, [isDragging, selectedZoneId, dragVertexIndex, zones, raycastToLatLng, onZoneUpdated]);
+    // R3F invalidate to trigger a frame render (only zone geometry updates, not tiles)
+    gl.domElement.dispatchEvent(new Event('invalidate'));
+  }, [isDragging, selectedZoneId, dragVertexIndex, raycastToLatLng, gl]);
 
   /**
    * End drag operation.
    */
   const endDrag = useCallback(() => {
+    // Commit final coordinates to React state (single re-render)
+    if (dragCoordsRef.current && selectedZoneId) {
+      onZoneUpdated(selectedZoneId, dragCoordsRef.current);
+    }
+
     setIsDragging(false);
     setDragVertexIndex(null);
     setDragArea(0);
     dragStartRef.current = null;
     originalCoordsRef.current = null;
+    dragCoordsRef.current = null;
 
     if (controlsRef.current) controlsRef.current.enabled = true;
-  }, [controlsRef]);
+  }, [controlsRef, selectedZoneId, onZoneUpdated]);
 
   // Attach drag event listeners
   useEffect(() => {
@@ -173,6 +177,7 @@ export function useGlobeZoneEditing({
   return {
     isDragging,
     dragArea,
+    dragCoordsRef,
     selectedZone,
     startZoneDrag,
     startVertexDrag,
