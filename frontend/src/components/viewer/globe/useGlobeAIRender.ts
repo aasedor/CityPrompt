@@ -351,7 +351,6 @@ function getZoneArchetypeInfo(zone: SiteZone): {
   aerialAppearance?: string;
   publicRealm?: string;
   colorScheme?: string;
-  corridorDescription?: string;
 } {
   if (!zone.properties || !catalog) return {};
 
@@ -377,17 +376,6 @@ function getZoneArchetypeInfo(zone: SiteZone): {
     if (rd.material) roofParts.push(rd.material);
     if (rd.aerialAppearance) roofParts.push(rd.aerialAppearance);
 
-    // Road/corridor specific — build a rich description from styleProfile
-    let corridorDescription: string | undefined;
-    if (sp.corridorCharacter || sp.surfaceType || sp.plantingCharacter || sp.edgeConditions) {
-      const parts: string[] = [];
-      if (sp.corridorCharacter) parts.push(sp.corridorCharacter);
-      if (sp.surfaceType) parts.push(`Surface: ${sp.surfaceType}`);
-      if (sp.plantingCharacter) parts.push(sp.plantingCharacter);
-      if (sp.edgeConditions) parts.push(`Edges: ${sp.edgeConditions}`);
-      corridorDescription = parts.join('. ');
-    }
-
     return {
       archetypeTitle: entry.title,
       facadeDescription: facadeParts.join(', ') || undefined,
@@ -396,7 +384,6 @@ function getZoneArchetypeInfo(zone: SiteZone): {
       aerialAppearance: rd.aerialAppearance || undefined,
       publicRealm: sp.publicRealm || undefined,
       colorScheme: fd.colorScheme || undefined,
-      corridorDescription,
     };
   }
   return {};
@@ -464,8 +451,6 @@ function buildPrompt(zones: SiteZone[], style: string): string {
       // Use the archetype's own rendering instruction if available
       features.push(overlayPrompt);
     } else {
-      // Street/road: use corridor description first
-      if (info.corridorDescription) features.push(info.corridorDescription);
       if (info.facadeDescription) features.push(info.facadeDescription);
       if (info.roofDescription) features.push(info.roofDescription);
       if (info.materials) features.push(info.materials);
@@ -477,11 +462,7 @@ function buildPrompt(zones: SiteZone[], style: string): string {
     const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
     if (userDesc.length > 10) features.push(userDesc);
 
-    // Streets/parks need longer descriptions — their mapOverlay prompts are ~400 chars
-    const isGroundZone = zone.zone_type === 'road' || zone.zone_type === 'green_space'
-      || zone.zone_type === 'parking' || zone.zone_type === 'water' || zone.zone_type === 'development_area';
-    const maxLen = isGroundZone ? 500 : 200;
-    const featureStr = features.join(', ').substring(0, maxLen);
+    const featureStr = features.join(', ').substring(0, 200);
     zoneLines.push(`${i + 1}. [${color}] ${name} | ${scale} | ${featureStr || 'render as described'}`);
   }
 
