@@ -724,13 +724,13 @@ async function compositeZoneRender(
 }
 
 /**
- * Paint a single zone's colored polygon onto a screenshot copy.
- * Used in per-zone rendering to show the zone on the cumulative result
- * without needing to manipulate the live 3D scene.
+ * Paint ALL zone polygons with numbered labels onto a screenshot.
+ * Each zone gets its colored polygon fill + a bold number label at its centroid.
+ * The number matches the ZONES list in the prompt so Gemini can identify each zone.
  */
-function paintZoneOnScreenshot(
+function paintAllZonesOnScreenshot(
   screenshotBase64: string,
-  zone: SiteZone,
+  zones: SiteZone[],
   camera: THREE.Camera,
   canvasWidth: number,
   canvasHeight: number,
@@ -745,21 +745,62 @@ function paintZoneOnScreenshot(
       const ctx = canvas.getContext('2d')!;
       ctx.drawImage(img, 0, 0);
 
-      if (zone.coordinates && zone.coordinates.length >= 3) {
+      // Pass 1: Draw all colored polygon fills
+      for (const zone of zones) {
+        if (!zone.coordinates || zone.coordinates.length < 3) continue;
         const pixels = zone.coordinates
           .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
           .filter(Boolean) as { x: number; y: number }[];
+        if (pixels.length < 3) continue;
 
-        if (pixels.length >= 3) {
-          ctx.fillStyle = resolveZoneColor(zone);
-          ctx.globalAlpha = 0.7;
-          ctx.beginPath();
-          ctx.moveTo(pixels[0].x, pixels[0].y);
-          for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
-          ctx.closePath();
-          ctx.fill();
-          ctx.globalAlpha = 1.0;
-        }
+        ctx.fillStyle = resolveZoneColor(zone);
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(pixels[0].x, pixels[0].y);
+        for (let i = 1; i < pixels.length; i++) ctx.lineTo(pixels[i].x, pixels[i].y);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Pass 2: Draw numbered labels on top
+      ctx.globalAlpha = 1.0;
+      for (let zi = 0; zi < zones.length; zi++) {
+        const zone = zones[zi];
+        if (!zone.coordinates || zone.coordinates.length < 3) continue;
+        const pixels = zone.coordinates
+          .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
+          .filter(Boolean) as { x: number; y: number }[];
+        if (pixels.length < 3) continue;
+
+        // Calculate centroid
+        const cx = pixels.reduce((s, p) => s + p.x, 0) / pixels.length;
+        const cy = pixels.reduce((s, p) => s + p.y, 0) / pixels.length;
+
+        // Calculate polygon size to scale font
+        const minX = Math.min(...pixels.map(p => p.x));
+        const maxX = Math.max(...pixels.map(p => p.x));
+        const polyWidth = maxX - minX;
+        const fontSize = Math.max(12, Math.min(32, polyWidth * 0.3));
+
+        const label = String(zi + 1);
+
+        // Draw white circle background
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(cx, cy, fontSize * 0.7, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw black border
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw number
+        ctx.fillStyle = 'black';
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, cx, cy);
       }
 
       resolve(canvas.toDataURL('image/png'));
@@ -1066,7 +1107,7 @@ function buildSCHEMAPrompt(
 
   // ── ZONES ──
   if (entries.length > 0) {
-    lines.push('ZONES:');
+    lines.push('ZONES (each zone is marked with a numbered circle label on the image AND a colored polygon — use BOTH the number and the color to identify each zone):');
     entries.forEach((entry, i) => {
       lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry)}`);
     });
@@ -1286,13 +1327,13 @@ export function useGlobeAIRender() {
           ? generateBinaryMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight)
           : generateCombinedMask(pass.zones, camera, canvas.width, canvas.height, terrainHeight);
 
-        // Paint ALL zone polygons onto the cumulative result (not just this pass)
-        // so Gemini sees the full colored site plan and can render contextually
-        let paintedScreenshot = cumulativeDataUri.split(',')[1];
-        for (const zone of renderZones) {
-          const painted = await paintZoneOnScreenshot(paintedScreenshot, zone, camera, canvas.width, canvas.height, terrainHeight);
-          paintedScreenshot = painted.split(',')[1];
-        }
+        // Paint ALL zone polygons with numbered labels onto the cumulative result
+        // so Gemini sees the full colored + numbered site plan
+        const paintedUri = await paintAllZonesOnScreenshot(
+          cumulativeDataUri.split(',')[1], renderZones,
+          camera, canvas.width, canvas.height, terrainHeight,
+        );
+        const paintedScreenshot = paintedUri.split(',')[1];
 
         // API call — same full prompt every pass, different mask
         const resp = await api.post(
