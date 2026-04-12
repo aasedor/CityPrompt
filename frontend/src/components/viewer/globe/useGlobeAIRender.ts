@@ -242,22 +242,20 @@ function generateMask(
     }
   }
 
-  // Draw each zone in its ACTUAL color with ~2m dilation — skip site_boundary
-  // The dilation gives Gemini "peripheral vision" to see adjacent context (curbs,
-  // sidewalks, neighboring facades) so it can render seamless edges.
-  // The post-processing clip will use the original tight polygons to cut away excess.
+  // Draw each zone as WHITE (binary mask) with ~2m dilation — skip site_boundary
+  // Binary mask: white = edit area, black = preserve. No colors in the mask.
+  // Zone identification comes from the colored polygons already visible in the
+  // screenshot + prompt text + archetype reference images.
+  // The dilation gives Gemini "peripheral vision" to see adjacent context.
   const DILATION_PX = 8; // ~2m at typical aerial zoom
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = DILATION_PX * 2;
+  ctx.lineJoin = 'round';
 
   for (const zone of zones) {
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
-
-    const zoneColor = resolveZoneColor(zone);
-    ctx.fillStyle = zoneColor;
-    // Dilate: draw with a thick stroke around each polygon for bleed room
-    ctx.strokeStyle = zoneColor;
-    ctx.lineWidth = DILATION_PX * 2;
-    ctx.lineJoin = 'round';
 
     const pixels = zone.coordinates
       .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
@@ -289,7 +287,7 @@ function generateMask(
     }
 
     ctx.fill();
-    ctx.stroke(); // Dilation: thick stroke adds ~2m bleed room around polygon
+    ctx.stroke(); // Dilation: thick white stroke adds ~2m bleed room
   }
 
   // Restore context (remove clip)
@@ -643,8 +641,8 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     `ATMOSPHERIC PERSPECTIVE: Apply the same atmospheric haze and aerial perspective visible on surrounding buildings at similar distances. Distant rendered zones should have reduced contrast and shifted color matching the existing depth cues in the photograph.`,
     `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
     `ZONES:\n${zoneLines.join('\n')}`,
-    `MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible. Replace ALL colored overlays with appropriate architectural materials. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
-    `PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
+    `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. Each colored polygon in the screenshot corresponds to a zone in the ZONES list above — match by color. Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
+    `PROHIBITIONS: colored polygon fills visible on ANY rendered surface (rooftops, facades, ground), boundary lines or outlines visible, text overlays, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
     `SITE BOUNDARY: Do NOT add any NEW buildings, structures, roads, people, vehicles, or landscaping outside the colored zone polygons. However, rendered zones MUST blend seamlessly into the surrounding landscape at their edges — match lighting, ground plane, and context so there is no visible seam between rendered and existing areas.`,
     `OCCLUSION: Some zones may be partially or fully hidden behind taller buildings from this camera angle. This is CORRECT — do NOT distort the perspective to make hidden zones visible. If a zone is occluded by a building in front of it, leave it hidden. Render only what would naturally be visible from this specific camera position and angle.`,
     `FINAL CONSTRAINT: Stay strictly within each colored zone polygon. Do not alter pixels outside the mask. Accuracy to the polygon boundary is more important than architectural flair. Each zone renders ONLY within its own colored boundary — never overlapping into adjacent zones.`,
