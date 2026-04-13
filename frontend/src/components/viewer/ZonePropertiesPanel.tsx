@@ -69,6 +69,13 @@ type DevelopmentAestheticOption = {
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  minWidth_m?: number;
+  maxWidth_m?: number;
+  minDepth_m?: number;
+  maxDepth_m?: number;
+  aspectRatio?: string;
   variants?: CatalogArchetypeVariant[];
 };
 
@@ -977,6 +984,36 @@ const resolveOptionCategory = (
                               ? `Zone is small for this archetype (${pct}%) — render may look cramped`
                               : `Zone is large for this archetype (+${pct}%) — render may look sparse`}
                         </div>
+                        {(() => {
+                          const opt = (selectedBuildingVariant ?? selectedBuildingOption) as any;
+                          if (!opt?.suggestedWidth_m || !opt?.suggestedDepth_m) return null;
+                          return (
+                            <div className="mt-1.5 pt-1.5 border-t border-primary-950/[0.06]">
+                              <div className="flex justify-between items-baseline">
+                                <span className="text-[10px] text-primary-950/50">Optimal footprint</span>
+                                <span className="text-[11px] font-medium text-primary-950/70">{opt.suggestedWidth_m}m × {opt.suggestedDepth_m}m</span>
+                              </div>
+                              {opt.minWidth_m != null && opt.maxWidth_m != null && (
+                                <div className="flex justify-between items-baseline mt-0.5">
+                                  <span className="text-[10px] text-primary-950/50">Width range</span>
+                                  <span className="text-[11px] text-primary-950/50">{opt.minWidth_m}–{opt.maxWidth_m}m</span>
+                                </div>
+                              )}
+                              {opt.minDepth_m != null && opt.maxDepth_m != null && (
+                                <div className="flex justify-between items-baseline mt-0.5">
+                                  <span className="text-[10px] text-primary-950/50">Depth range</span>
+                                  <span className="text-[11px] text-primary-950/50">{opt.minDepth_m}–{opt.maxDepth_m}m</span>
+                                </div>
+                              )}
+                              {opt.aspectRatio && (
+                                <div className="flex justify-between items-baseline mt-0.5">
+                                  <span className="text-[10px] text-primary-950/50">Proportions</span>
+                                  <span className="text-[11px] text-primary-950/50">{opt.aspectRatio}</span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </div>
                     );
                   })()}

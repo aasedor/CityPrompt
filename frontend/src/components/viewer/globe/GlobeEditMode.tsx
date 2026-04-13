@@ -16,6 +16,7 @@ import { Html } from '@react-three/drei';
 import { Ellipsoid } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
+import { useGlobeDragRef } from './useGlobeDragRef';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
@@ -31,6 +32,7 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
   const { camera, gl } = useThree();
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const dragRef = useGlobeDragRef();
 
   // Disable/enable GlobeControls during drag
   const setControlsEnabled = useCallback((enabled: boolean) => {
@@ -105,14 +107,29 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       const dlat = currentLatLng[1] - bodyDragStartRef.current[1];
 
       const newCoords = bodyDragCoordsRef.current.map(c => [c[0] + dlng, c[1] + dlat]);
-      onZoneUpdated(zone.id, newCoords);
+
+      // Write to drag ref (no React state update — useFrame reads this)
+      dragRef.current.zoneId = zone.id;
+      dragRef.current.type = 'body';
+      dragRef.current.coords = newCoords as [number, number][];
+      dragRef.current.version++;
     };
 
     const handlePointerUp = () => {
+      // Commit final coordinates to React state (one re-render)
+      if (dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0) {
+        onZoneUpdated(zone.id, dragRef.current.coords);
+      }
+      // Clear drag state
+      dragRef.current.zoneId = null;
+      dragRef.current.type = null;
+      dragRef.current.coords = [];
+      dragRef.current.version++;
+
       setIsDraggingBody(false);
       bodyDragStartRef.current = null;
       bodyDragCoordsRef.current = null;
-      setControlsEnabled(true); // Re-enable globe orbit
+      setControlsEnabled(true);
       gl.domElement.style.cursor = '';
       gl.domElement.removeEventListener('pointermove', handlePointerMove);
       gl.domElement.removeEventListener('pointerup', handlePointerUp);
@@ -158,19 +175,32 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       const lngLat = pointerToLatLng(pe);
       if (!lngLat || !originalCoordsRef.current) return;
 
-      // Update this vertex
       const newCoords = originalCoordsRef.current.map((c, i) =>
         i === index ? [...lngLat] : [...c]
       );
 
-      // Live update
-      onZoneUpdated(zone.id, newCoords);
+      // Write to drag ref (no React state update)
+      dragRef.current.zoneId = zone.id;
+      dragRef.current.type = 'vertex';
+      dragRef.current.vertexIndex = index;
+      dragRef.current.coords = newCoords as [number, number][];
+      dragRef.current.version++;
     };
 
     const handlePointerUp = () => {
+      // Commit final coordinates to React state
+      if (dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0) {
+        onZoneUpdated(zone.id, dragRef.current.coords);
+      }
+      // Clear drag state
+      dragRef.current.zoneId = null;
+      dragRef.current.type = null;
+      dragRef.current.coords = [];
+      dragRef.current.version++;
+
       setDragIndex(null);
       originalCoordsRef.current = null;
-      setControlsEnabled(true); // Re-enable globe orbit
+      setControlsEnabled(true);
       gl.domElement.style.cursor = '';
       canvas.removeEventListener('pointermove', handlePointerMove);
       canvas.removeEventListener('pointerup', handlePointerUp);

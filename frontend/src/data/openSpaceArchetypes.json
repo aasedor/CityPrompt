@@ -61,6 +61,16 @@
   "archetypes": [
     {
       "id": "urban_pocket_park",
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 10,
+      "maxWidth_m": 30,
+      "minDepth_m": 10,
+      "maxDepth_m": 30,
+      "minAreaSqm": 200,
+      "maxAreaSqm": 900,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Urban Pocket Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -102,6 +112,7 @@
         "has_benches": true,
         "shade_strategy": "canopy_trees"
       },
+      "suggestedAreaSqm": 400,
       "thumbnailUrl": "/archetypes/openspaces/urban-pocket-park/hero.png",
       "variants": [
         {
@@ -142,6 +153,16 @@
     },
     {
       "id": "neighborhood_park",
+      "suggestedWidth_m": 100,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 50,
+      "maxWidth_m": 200,
+      "minDepth_m": 40,
+      "maxDepth_m": 160,
+      "minAreaSqm": 2000,
+      "maxAreaSqm": 32000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Neighborhood Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -184,6 +205,7 @@
         "has_benches": true,
         "shade_strategy": "scattered_canopy"
       },
+      "suggestedAreaSqm": 8000,
       "thumbnailUrl": "/archetypes/openspaces/neighborhood-park/hero.png",
       "variants": [
         {
@@ -224,6 +246,16 @@
     },
     {
       "id": "community_park",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 160,
+      "minWidth_m": 100,
+      "maxWidth_m": 400,
+      "minDepth_m": 80,
+      "maxDepth_m": 250,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 100000,
+      "aspectRatio": "1.6:1",
+      "shape": "irregular",
       "title": "Community Park",
       "aestheticCategory": "landscape_parks",
       "spaceType": "park",
@@ -266,6 +298,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
+      "suggestedAreaSqm": 40000,
       "thumbnailUrl": "/archetypes/openspaces/community-park/hero.png",
       "variants": [
         {
@@ -306,6 +339,16 @@
     },
     {
       "id": "regional_park",
+      "suggestedWidth_m": 500,
+      "suggestedDepth_m": 400,
+      "minWidth_m": 200,
+      "maxWidth_m": 1000,
+      "minDepth_m": 150,
+      "maxDepth_m": 800,
+      "minAreaSqm": 30000,
+      "maxAreaSqm": 800000,
+      "aspectRatio": "1.25:1",
+      "shape": "irregular",
       "title": "Regional Park",
       "aestheticCategory": "landscape_parks",
       "spaceType": "park",
@@ -348,6 +391,7 @@
         "has_benches": false,
         "shade_strategy": "natural_forest"
       },
+      "suggestedAreaSqm": 200000,
       "thumbnailUrl": "/archetypes/openspaces/regional-park/hero.png",
       "variants": [
         {
@@ -388,6 +432,16 @@
     },
     {
       "id": "dog_park",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 20,
+      "maxDepth_m": 100,
+      "minAreaSqm": 600,
+      "maxAreaSqm": 15000,
+      "aspectRatio": "1.6:1",
+      "shape": "irregular",
       "title": "Dog Park",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -430,6 +484,7 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
+      "suggestedAreaSqm": 4000,
       "thumbnailUrl": "/archetypes/openspaces/dog-park/hero.png",
       "variants": [
         {
@@ -470,6 +525,16 @@
     },
     {
       "id": "skate_park",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 20,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 60,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 4800,
+      "aspectRatio": "1.3:1",
+      "shape": "irregular",
       "title": "Skate Park",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -554,6 +619,16 @@
     },
     {
       "id": "sports_field_complex",
+      "suggestedWidth_m": 120,
+      "suggestedDepth_m": 90,
+      "minWidth_m": 70,
+      "maxWidth_m": 250,
+      "minDepth_m": 50,
+      "maxDepth_m": 180,
+      "minAreaSqm": 3500,
+      "maxAreaSqm": 45000,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Sports Field Complex",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -637,6 +712,16 @@
     },
     {
       "id": "tennis_court_cluster",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 36,
+      "minWidth_m": 20,
+      "maxWidth_m": 80,
+      "minDepth_m": 18,
+      "maxDepth_m": 72,
+      "minAreaSqm": 360,
+      "maxAreaSqm": 5760,
+      "aspectRatio": "1.1:1",
+      "shape": "rectangular",
       "title": "Tennis Court Cluster",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -721,6 +806,16 @@
     },
     {
       "id": "botanical_garden",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 150,
+      "minWidth_m": 80,
+      "maxWidth_m": 400,
+      "minDepth_m": 60,
+      "maxDepth_m": 300,
+      "minAreaSqm": 4800,
+      "maxAreaSqm": 120000,
+      "aspectRatio": "1.3:1",
+      "shape": "irregular",
       "title": "Botanical Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -763,6 +858,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
+      "suggestedAreaSqm": 30000,
       "thumbnailUrl": "/archetypes/openspaces/botanical-garden/hero.png",
       "variants": [
         {
@@ -803,6 +899,16 @@
     },
     {
       "id": "japanese_garden",
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 70,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 30,
+      "maxDepth_m": 150,
+      "minAreaSqm": 900,
+      "maxAreaSqm": 22500,
+      "aspectRatio": "1:1",
+      "shape": "irregular",
       "title": "Japanese Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -845,6 +951,7 @@
         "has_benches": true,
         "shade_strategy": "specimen_trees"
       },
+      "suggestedAreaSqm": 5000,
       "thumbnailUrl": "/archetypes/openspaces/japanese-garden/hero.png",
       "variants": [
         {
@@ -885,6 +992,16 @@
     },
     {
       "id": "memorial_garden",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 20,
+      "maxWidth_m": 100,
+      "minDepth_m": 15,
+      "maxDepth_m": 80,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 8000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Memorial Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -927,6 +1044,7 @@
         "has_benches": true,
         "shade_strategy": "formal_rows"
       },
+      "suggestedAreaSqm": 2000,
       "thumbnailUrl": "/archetypes/openspaces/memorial-garden/hero.png",
       "variants": [
         {
@@ -967,6 +1085,16 @@
     },
     {
       "id": "urban_forest",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 200,
+      "minWidth_m": 100,
+      "maxWidth_m": 500,
+      "minDepth_m": 80,
+      "maxDepth_m": 400,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 200000,
+      "aspectRatio": "1.25:1",
+      "shape": "irregular",
       "title": "Urban Forest",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -1010,6 +1138,7 @@
         "has_benches": false,
         "shade_strategy": "natural_forest"
       },
+      "suggestedAreaSqm": 50000,
       "thumbnailUrl": "/archetypes/openspaces/urban-forest/hero.png",
       "variants": [
         {
@@ -1050,6 +1179,16 @@
     },
     {
       "id": "riparian_buffer",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 50,
+      "maxWidth_m": 500,
+      "minDepth_m": 15,
+      "maxDepth_m": 100,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 50000,
+      "aspectRatio": "4:1",
+      "shape": "linear",
       "title": "Riparian Buffer / Creek Corridor",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -1093,6 +1232,7 @@
         "has_benches": true,
         "shade_strategy": "riparian_canopy"
       },
+      "suggestedAreaSqm": 10000,
       "thumbnailUrl": "/archetypes/openspaces/riparian-buffer-creek-corridor/hero.png",
       "variants": [
         {
@@ -1133,6 +1273,16 @@
     },
     {
       "id": "wetland_rain_garden",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 20,
+      "maxDepth_m": 120,
+      "minAreaSqm": 600,
+      "maxAreaSqm": 18000,
+      "aspectRatio": "1.3:1",
+      "shape": "organic",
       "title": "Wetland / Rain Garden",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -1176,6 +1326,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
+      "suggestedAreaSqm": 5000,
       "thumbnailUrl": "/archetypes/openspaces/wetland-rain-garden/hero.png",
       "variants": [
         {
@@ -1216,6 +1367,16 @@
     },
     {
       "id": "playground_adventure",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 35,
+      "minWidth_m": 20,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 60,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 4800,
+      "aspectRatio": "1.15:1",
+      "shape": "irregular",
       "title": "Playground / Adventure Play",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -1258,6 +1419,7 @@
         "has_benches": true,
         "shade_strategy": "shade_structures"
       },
+      "suggestedAreaSqm": 1500,
       "thumbnailUrl": "/archetypes/openspaces/playground-adventure-play/hero.png",
       "variants": [
         {
@@ -1298,6 +1460,16 @@
     },
     {
       "id": "splash_pad_area",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 15,
+      "maxWidth_m": 50,
+      "minDepth_m": 12,
+      "maxDepth_m": 40,
+      "minAreaSqm": 180,
+      "maxAreaSqm": 2000,
+      "aspectRatio": "1.2:1",
+      "shape": "circular",
       "title": "Splash Pad / Water Play",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -1340,6 +1512,7 @@
         "paving_material": "concrete",
         "shade_strategy": "shade_structures"
       },
+      "suggestedAreaSqm": 800,
       "thumbnailUrl": "/archetypes/openspaces/splash-pad-water-play/hero.png",
       "variants": [
         {
@@ -1380,6 +1553,16 @@
     },
     {
       "id": "amphitheater_lawn",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 40,
+      "maxWidth_m": 150,
+      "minDepth_m": 30,
+      "maxDepth_m": 120,
+      "minAreaSqm": 1200,
+      "maxAreaSqm": 18000,
+      "aspectRatio": "1.3:1",
+      "shape": "semi-circular",
       "title": "Amphitheater / Performance Lawn",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "park",
@@ -1421,6 +1604,7 @@
         "has_benches": true,
         "shade_strategy": "perimeter_trees"
       },
+      "suggestedAreaSqm": 5000,
       "thumbnailUrl": "/archetypes/openspaces/amphitheater-performance-lawn/hero.png",
       "variants": [
         {
@@ -1461,6 +1645,16 @@
     },
     {
       "id": "community_garden",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 20,
+      "maxWidth_m": 100,
+      "minDepth_m": 20,
+      "maxDepth_m": 100,
+      "minAreaSqm": 400,
+      "maxAreaSqm": 10000,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Community Garden / Allotments",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -1503,6 +1697,7 @@
         "has_benches": true,
         "shade_strategy": "none"
       },
+      "suggestedAreaSqm": 2500,
       "thumbnailUrl": "/archetypes/openspaces/community-garden-allotments/hero.png",
       "variants": [
         {
@@ -1543,6 +1738,16 @@
     },
     {
       "id": "cemetery_memorial_grounds",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 200,
+      "minWidth_m": 100,
+      "maxWidth_m": 500,
+      "minDepth_m": 80,
+      "maxDepth_m": 400,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 200000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Cemetery / Memorial Grounds",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -1585,6 +1790,7 @@
         "has_benches": true,
         "shade_strategy": "scattered_canopy"
       },
+      "suggestedAreaSqm": 50000,
       "thumbnailUrl": "/archetypes/openspaces/cemetery-memorial-grounds/hero.png",
       "variants": [
         {
@@ -1625,6 +1831,16 @@
     },
     {
       "id": "formal_civic_plaza",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 75,
+      "minWidth_m": 40,
+      "maxWidth_m": 150,
+      "minDepth_m": 35,
+      "maxDepth_m": 140,
+      "minAreaSqm": 1400,
+      "maxAreaSqm": 21000,
+      "aspectRatio": "1.07:1",
+      "shape": "rectangular",
       "title": "Formal Civic Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
@@ -1666,6 +1882,7 @@
         "shade_strategy": "tree_grove",
         "plaza_program": "civic"
       },
+      "suggestedAreaSqm": 6000,
       "thumbnailUrl": "/archetypes/openspaces/formal-civic-plaza/hero.png",
       "variants": [
         {
@@ -1706,6 +1923,16 @@
     },
     {
       "id": "market_square",
+      "suggestedWidth_m": 65,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 30,
+      "maxWidth_m": 120,
+      "minDepth_m": 28,
+      "maxDepth_m": 110,
+      "minAreaSqm": 840,
+      "maxAreaSqm": 13200,
+      "aspectRatio": "1.08:1",
+      "shape": "rectangular",
       "title": "Market Square",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "plaza",
@@ -1747,6 +1974,7 @@
         "shade_strategy": "tree_grove",
         "plaza_program": "market"
       },
+      "suggestedAreaSqm": 4000,
       "thumbnailUrl": "/archetypes/openspaces/market-square/hero.png",
       "variants": [
         {
@@ -1787,6 +2015,16 @@
     },
     {
       "id": "courtyard_plaza",
+      "suggestedWidth_m": 35,
+      "suggestedDepth_m": 35,
+      "minWidth_m": 15,
+      "maxWidth_m": 60,
+      "minDepth_m": 15,
+      "maxDepth_m": 60,
+      "minAreaSqm": 225,
+      "maxAreaSqm": 3600,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Courtyard",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
@@ -1829,6 +2067,7 @@
         "shade_strategy": "central_tree",
         "plaza_program": "courtyard"
       },
+      "suggestedAreaSqm": 1200,
       "thumbnailUrl": "/archetypes/openspaces/courtyard/hero.png",
       "variants": [
         {
@@ -1869,6 +2108,16 @@
     },
     {
       "id": "promenade_boardwalk",
+      "suggestedWidth_m": 300,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 100,
+      "maxWidth_m": 600,
+      "minDepth_m": 8,
+      "maxDepth_m": 40,
+      "minAreaSqm": 800,
+      "maxAreaSqm": 24000,
+      "aspectRatio": "15:1",
+      "shape": "linear",
       "title": "Promenade / Boardwalk",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "plaza",
@@ -1910,6 +2159,7 @@
         "shade_strategy": "tree_row",
         "plaza_program": "promenade"
       },
+      "suggestedAreaSqm": 6000,
       "thumbnailUrl": "/archetypes/openspaces/promenade-boardwalk/hero.png",
       "variants": [
         {
@@ -1950,6 +2200,16 @@
     },
     {
       "id": "transit_plaza",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 25,
+      "maxWidth_m": 100,
+      "minDepth_m": 20,
+      "maxDepth_m": 80,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 8000,
+      "aspectRatio": "1.2:1",
+      "shape": "rectangular",
       "title": "Transit Plaza",
       "aestheticCategory": "civic_plazas",
       "spaceType": "plaza",
@@ -1991,6 +2251,7 @@
         "shade_strategy": "tree_planters",
         "plaza_program": "transit"
       },
+      "suggestedAreaSqm": 3000,
       "thumbnailUrl": "/archetypes/openspaces/transit-plaza/hero.png",
       "variants": [
         {
@@ -2031,6 +2292,16 @@
     },
     {
       "id": "amphitheater_performance_space",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 20,
+      "maxDepth_m": 65,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 5200,
+      "aspectRatio": "1.25:1",
+      "shape": "semi-circular",
       "title": "Outdoor Amphitheater / Performance Space",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "plaza",
@@ -2113,6 +2384,16 @@
     },
     {
       "id": "surface_parking_lot",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 25,
+      "maxWidth_m": 100,
+      "minDepth_m": 20,
+      "maxDepth_m": 80,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 8000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Surface Parking Lot",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
@@ -2192,6 +2473,16 @@
     },
     {
       "id": "structured_parking_garage",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 30,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 30,
+      "minAreaSqm": 450,
+      "maxAreaSqm": 2400,
+      "aspectRatio": "2.5:1",
+      "shape": "rectangular",
       "title": "Structured Parking Garage",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
@@ -2272,6 +2563,16 @@
     },
     {
       "id": "underground_parking_entry",
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 10,
+      "maxWidth_m": 35,
+      "minDepth_m": 10,
+      "maxDepth_m": 35,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 1225,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Underground Parking (Entry Only)",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
@@ -2311,6 +2612,7 @@
         "covered": true,
         "paving_material": "concrete"
       },
+      "suggestedAreaSqm": 400,
       "thumbnailUrl": "/archetypes/openspaces/underground-parking-entry-only/hero.png",
       "variants": [
         {
@@ -2351,6 +2653,16 @@
     },
     {
       "id": "green_parking_lot",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 20,
+      "maxWidth_m": 70,
+      "minDepth_m": 15,
+      "maxDepth_m": 50,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 3500,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Green Parking (Permeable)",
       "aestheticCategory": "parking_areas",
       "spaceType": "plaza",
@@ -2390,6 +2702,7 @@
         "covered": false,
         "paving_material": "permeable_paver"
       },
+      "suggestedAreaSqm": 1200,
       "thumbnailUrl": "/archetypes/openspaces/green-parking-permeable/hero.png",
       "variants": [
         {
@@ -2430,6 +2743,16 @@
     },
     {
       "id": "pond_lake",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 20,
+      "maxWidth_m": 200,
+      "minDepth_m": 15,
+      "maxDepth_m": 150,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 30000,
+      "aspectRatio": "1.3:1",
+      "shape": "organic",
       "title": "Pond / Lake",
       "aestheticCategory": "water_features",
       "spaceType": "park",
@@ -2509,6 +2832,16 @@
     },
     {
       "id": "fountain_water_feature",
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 5,
+      "maxWidth_m": 50,
+      "minDepth_m": 5,
+      "maxDepth_m": 50,
+      "minAreaSqm": 25,
+      "maxAreaSqm": 2500,
+      "aspectRatio": "1:1",
+      "shape": "circular",
       "title": "Fountain / Decorative Water Feature",
       "aestheticCategory": "water_features",
       "spaceType": "plaza",
@@ -2548,6 +2881,7 @@
         "shade_strategy": "none",
         "plaza_program": "fountain"
       },
+      "suggestedAreaSqm": 400,
       "thumbnailUrl": "/archetypes/openspaces/fountain-decorative-water-feature/hero.png",
       "variants": [
         {
@@ -2588,6 +2922,16 @@
     },
     {
       "id": "stormwater_retention_pond",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 20,
+      "maxWidth_m": 120,
+      "minDepth_m": 15,
+      "maxDepth_m": 80,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 9600,
+      "aspectRatio": "1.5:1",
+      "shape": "organic",
       "title": "Stormwater Retention Pond",
       "aestheticCategory": "water_features",
       "spaceType": "park",
@@ -2668,6 +3012,16 @@
     },
     {
       "id": "swimming_pool_complex",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 25,
+      "maxWidth_m": 100,
+      "minDepth_m": 20,
+      "maxDepth_m": 70,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 7000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
       "title": "Swimming Pool Complex",
       "aestheticCategory": "water_features",
       "spaceType": "plaza",
@@ -2746,6 +3100,16 @@
     },
     {
       "id": "canal_waterway",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 50,
+      "maxWidth_m": 500,
+      "minDepth_m": 10,
+      "maxDepth_m": 50,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 25000,
+      "aspectRatio": "8:1",
+      "shape": "linear",
       "title": "Canal / Waterway",
       "aestheticCategory": "water_features",
       "spaceType": "park",
@@ -2784,6 +3148,7 @@
         "tree_density_level": "medium",
         "tree_density": 0.3
       },
+      "suggestedAreaSqm": 5000,
       "thumbnailUrl": "/archetypes/openspaces/canal-waterway/hero.png",
       "variants": [
         {
@@ -2824,6 +3189,16 @@
     },
     {
       "id": "custom_parks_plazas",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 10,
+      "maxWidth_m": 200,
+      "minDepth_m": 10,
+      "maxDepth_m": 200,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 40000,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Custom Parks / Plazas",
       "aestheticCategory": "custom",
       "spaceType": "park",
@@ -2859,6 +3234,7 @@
         "has_benches": true,
         "shade_strategy": "layered_canopy"
       },
+      "suggestedAreaSqm": 5000,
       "thumbnailUrl": "/archetypes/openspaces/custom-parks-plazas/hero.png",
       "variants": [
         {
@@ -2899,6 +3275,16 @@
     },
     {
       "id": "linear_park_greenway",
+      "suggestedWidth_m": 400,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 100,
+      "maxWidth_m": 1000,
+      "minDepth_m": 15,
+      "maxDepth_m": 60,
+      "minAreaSqm": 1500,
+      "maxAreaSqm": 60000,
+      "aspectRatio": "13:1",
+      "shape": "linear",
       "title": "Linear Park / Greenway",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -2939,6 +3325,7 @@
         "has_benches": true,
         "shade_strategy": "riparian_canopy"
       },
+      "suggestedAreaSqm": 12000,
       "thumbnailUrl": "/archetypes/openspaces/linear-park-greenway/hero.png",
       "variants": [
         {
@@ -2979,6 +3366,16 @@
     },
     {
       "id": "nature_preserve",
+      "suggestedWidth_m": 400,
+      "suggestedDepth_m": 250,
+      "minWidth_m": 150,
+      "maxWidth_m": 800,
+      "minDepth_m": 100,
+      "maxDepth_m": 500,
+      "minAreaSqm": 15000,
+      "maxAreaSqm": 400000,
+      "aspectRatio": "1.6:1",
+      "shape": "irregular",
       "title": "Nature Preserve",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -3021,6 +3418,7 @@
         "has_benches": false,
         "shade_strategy": "natural_canopy"
       },
+      "suggestedAreaSqm": 100000,
       "thumbnailUrl": "/archetypes/openspaces/nature-preserve/hero.png",
       "variants": [
         {
@@ -3061,6 +3459,16 @@
     },
     {
       "id": "rooftop_garden",
+      "suggestedWidth_m": 25,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 10,
+      "maxWidth_m": 50,
+      "minDepth_m": 8,
+      "maxDepth_m": 40,
+      "minAreaSqm": 80,
+      "maxAreaSqm": 2000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Rooftop Garden",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -3100,6 +3508,7 @@
         "has_benches": true,
         "shade_strategy": "pergola_structure"
       },
+      "suggestedAreaSqm": 500,
       "thumbnailUrl": "/archetypes/openspaces/rooftop-garden/hero.png",
       "variants": [
         {
@@ -3140,6 +3549,16 @@
     },
     {
       "id": "riverfront_park_beach",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 75,
+      "minWidth_m": 80,
+      "maxWidth_m": 400,
+      "minDepth_m": 30,
+      "maxDepth_m": 150,
+      "minAreaSqm": 2400,
+      "maxAreaSqm": 60000,
+      "aspectRatio": "2.7:1",
+      "shape": "linear",
       "title": "Riverfront Park / Beach",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
@@ -3180,6 +3599,7 @@
         "has_benches": true,
         "shade_strategy": "canopy_trees"
       },
+      "suggestedAreaSqm": 15000,
       "thumbnailUrl": "/archetypes/openspaces/riverfront-park-beach/hero.png",
       "variants": [
         {
@@ -3220,6 +3640,16 @@
     },
     {
       "id": "street_plaza_parklet",
+      "suggestedWidth_m": 10,
+      "suggestedDepth_m": 6,
+      "minWidth_m": 5,
+      "maxWidth_m": 20,
+      "minDepth_m": 3,
+      "maxDepth_m": 12,
+      "minAreaSqm": 15,
+      "maxAreaSqm": 240,
+      "aspectRatio": "1.7:1",
+      "shape": "rectangular",
       "title": "Street Plaza / Parklet",
       "aestheticCategory": "civic_plazas",
       "spaceType": "park",
@@ -3259,6 +3689,7 @@
         "has_benches": true,
         "shade_strategy": "parasols_canopies"
       },
+      "suggestedAreaSqm": 60,
       "thumbnailUrl": "/archetypes/openspaces/street-plaza-parklet/hero.png",
       "variants": [
         {
@@ -3299,6 +3730,16 @@
     },
     {
       "id": "community_garden_enhanced",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 25,
+      "maxWidth_m": 120,
+      "minDepth_m": 20,
+      "maxDepth_m": 100,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.2:1",
+      "shape": "rectangular",
       "title": "Community Garden (Design Variants)",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -3331,6 +3772,7 @@
           "No sports fields"
         ]
       },
+      "suggestedAreaSqm": 3000,
       "variants": [
         {
           "id": "garden_classic_allotment",
@@ -3370,6 +3812,16 @@
     },
     {
       "id": "parisian_place",
+      "suggestedWidth_m": 120,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 50,
+      "maxWidth_m": 250,
+      "minDepth_m": 35,
+      "maxDepth_m": 170,
+      "minAreaSqm": 1750,
+      "maxAreaSqm": 42500,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
       "title": "Place Royale",
       "aestheticCategory": "parisian_civic",
       "spaceType": "plaza",
@@ -3400,6 +3852,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 10000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Parisian place (formal square). Stone-paved with central monument or fountain, surrounded by uniform classical facades. No grass. Cafe terrasses at edges. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3440,6 +3893,16 @@
     },
     {
       "id": "parisian_square",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 25,
+      "maxDepth_m": 110,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 16500,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Square Parisien",
       "aestheticCategory": "parisian_garden",
       "spaceType": "park",
@@ -3470,6 +3933,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 5000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Parisian square garden. Iron fence with gates, gravel paths, green cast-iron benches, mature plane trees, flower beds. Intimate neighbourhood scale. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3510,6 +3974,16 @@
     },
     {
       "id": "parisian_jardin",
+      "suggestedWidth_m": 180,
+      "suggestedDepth_m": 140,
+      "minWidth_m": 80,
+      "maxWidth_m": 350,
+      "minDepth_m": 60,
+      "maxDepth_m": 270,
+      "minAreaSqm": 4800,
+      "maxAreaSqm": 94500,
+      "aspectRatio": "1.3:1",
+      "shape": "irregular",
       "title": "Jardin a la Francaise",
       "aestheticCategory": "parisian_formal_garden",
       "spaceType": "park",
@@ -3540,6 +4014,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 25000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Jardin a la Francaise. Formal axial garden with geometric parterres, clipped hedges, gravel paths, circular bassin, moveable green metal chairs, statues. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3580,6 +4055,16 @@
     },
     {
       "id": "amsterdam_vondelpark",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 160,
+      "minWidth_m": 100,
+      "maxWidth_m": 500,
+      "minDepth_m": 70,
+      "maxDepth_m": 300,
+      "minAreaSqm": 7000,
+      "maxAreaSqm": 150000,
+      "aspectRatio": "1.6:1",
+      "shape": "irregular",
       "title": "Vondelpark Garden",
       "aestheticCategory": "amsterdam_landscape",
       "spaceType": "park",
@@ -3610,6 +4095,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 40000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Vondelpark-style English landscape park. Winding paths, irregular ponds with footbridges, mature tree canopy, open lawns, naturalistic planting. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3650,6 +4136,16 @@
     },
     {
       "id": "amsterdam_hofje_garden",
+      "suggestedWidth_m": 25,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 10,
+      "maxWidth_m": 50,
+      "minDepth_m": 10,
+      "maxDepth_m": 50,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 2500,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "Hofje Courtyard Garden",
       "aestheticCategory": "amsterdam_courtyard",
       "spaceType": "park",
@@ -3680,6 +4176,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 600,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Amsterdam hofje courtyard garden. Enclosed by small brick dwellings, gravel paths, low box hedges, central pump or well, roses and lavender. Hidden from street. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3720,6 +4217,16 @@
     },
     {
       "id": "amsterdam_plein",
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 55,
+      "minWidth_m": 30,
+      "maxWidth_m": 120,
+      "minDepth_m": 25,
+      "maxDepth_m": 100,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Amsterdam Plein",
       "aestheticCategory": "amsterdam_civic",
       "spaceType": "plaza",
@@ -3750,6 +4257,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 4000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Amsterdam plein (civic square). Irregular shape, brick-paved, church or historic building as focus, cafe terrasses, market stalls, bicycles. Mature trees at edges. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3790,6 +4298,16 @@
     },
     {
       "id": "barcelona_pati_interior",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 20,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 65,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 5200,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Eixample Interior Courtyard",
       "aestheticCategory": "barcelona_courtyard",
       "spaceType": "park",
@@ -3820,6 +4338,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 2000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Barcelona Eixample interior courtyard garden. Green oasis with Mediterranean planting (palms, bougainvillea, citrus), gravel paths, central fountain, benches. Hidden inside a city block. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3860,6 +4379,16 @@
     },
     {
       "id": "barcelona_placa_xamfra",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 28,
+      "minWidth_m": 15,
+      "maxWidth_m": 50,
+      "minDepth_m": 14,
+      "maxDepth_m": 45,
+      "minAreaSqm": 210,
+      "maxAreaSqm": 2250,
+      "aspectRatio": "1.07:1",
+      "shape": "octagonal",
       "title": "Chamfer Plaza",
       "aestheticCategory": "barcelona_civic",
       "spaceType": "plaza",
@@ -3890,6 +4419,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 800,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Barcelona chamfer plaza (placa de xamfra). Diamond-shaped open space at intersection of four chamfered corners, cafe terraces, single tree, hexagonal Gaudi tiles. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -3930,6 +4460,16 @@
     },
     {
       "id": "barcelona_superilla",
+      "suggestedWidth_m": 130,
+      "suggestedDepth_m": 130,
+      "minWidth_m": 80,
+      "maxWidth_m": 200,
+      "minDepth_m": 80,
+      "maxDepth_m": 200,
+      "minAreaSqm": 6400,
+      "maxAreaSqm": 40000,
+      "aspectRatio": "1:1",
+      "shape": "square",
       "title": "Barcelona Superblock",
       "aestheticCategory": "barcelona_urban",
       "spaceType": "plaza",
@@ -3960,6 +4500,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 16000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Barcelona superblock (superilla). Pedestrianized street with bold colored pavement patterns, planters, benches, play equipment, trees. Pop-up market stalls. People-friendly reclaimed road space. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4000,6 +4541,16 @@
     },
     {
       "id": "london_garden_square",
+      "suggestedWidth_m": 100,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 40,
+      "maxWidth_m": 200,
+      "minDepth_m": 30,
+      "maxDepth_m": 160,
+      "minAreaSqm": 1200,
+      "maxAreaSqm": 32000,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "London Garden Square",
       "aestheticCategory": "london_georgian",
       "spaceType": "park",
@@ -4030,6 +4581,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 8000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic London garden square. Rectangular fenced garden enclosed by terraces, mature plane trees, gravel paths, central lawn, iron railings with locked gate, benches. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4070,6 +4622,16 @@
     },
     {
       "id": "london_circus",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 30,
+      "maxDepth_m": 150,
+      "minAreaSqm": 900,
+      "maxAreaSqm": 22500,
+      "aspectRatio": "1:1",
+      "shape": "circular",
       "title": "London Circus",
       "aestheticCategory": "london_georgian",
       "spaceType": "park",
@@ -4100,6 +4662,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 5000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic London circus garden. Round garden enclosed by circular classical terrace, mature trees, gravel paths, iron railings. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4140,6 +4703,16 @@
     },
     {
       "id": "newyork_pocket_park",
+      "suggestedWidth_m": 18,
+      "suggestedDepth_m": 18,
+      "minWidth_m": 8,
+      "maxWidth_m": 30,
+      "minDepth_m": 8,
+      "maxDepth_m": 30,
+      "minAreaSqm": 64,
+      "maxAreaSqm": 900,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
       "title": "New York Pocket Park",
       "aestheticCategory": "newyork_urban",
       "spaceType": "park",
@@ -4170,6 +4743,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 350,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic New York pocket park (Paley Park style). Tiny urban oasis between tall buildings, waterfall wall at back, moveable wire chairs, honey locust trees, ivy on walls. Elevated from sidewalk. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4210,6 +4784,16 @@
     },
     {
       "id": "newyork_community_garden",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 12,
+      "maxWidth_m": 50,
+      "minDepth_m": 10,
+      "maxDepth_m": 45,
+      "minAreaSqm": 120,
+      "maxAreaSqm": 2250,
+      "aspectRatio": "1.2:1",
+      "shape": "rectangular",
       "title": "New York Community Garden",
       "aestheticCategory": "newyork_urban",
       "spaceType": "park",
@@ -4240,6 +4824,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 800,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic New York community garden. Fenced former vacant lot, raised planting beds, hand-painted murals on walls, small casita shed, sunflowers, tomato plants. Volunteer-run community space. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4280,6 +4865,16 @@
     },
     {
       "id": "montreal_mount_royal",
+      "suggestedWidth_m": 500,
+      "suggestedDepth_m": 400,
+      "minWidth_m": 200,
+      "maxWidth_m": 800,
+      "minDepth_m": 150,
+      "maxDepth_m": 650,
+      "minAreaSqm": 30000,
+      "maxAreaSqm": 520000,
+      "aspectRatio": "1.25:1",
+      "shape": "irregular",
       "title": "Mount Royal Park",
       "aestheticCategory": "montreal_landscape",
       "spaceType": "park",
@@ -4352,6 +4947,16 @@
     },
     {
       "id": "montreal_square",
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 55,
+      "minWidth_m": 30,
+      "maxWidth_m": 120,
+      "minDepth_m": 25,
+      "maxDepth_m": 100,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.27:1",
+      "shape": "rectangular",
       "title": "Montreal Neighbourhood Square",
       "aestheticCategory": "montreal_civic",
       "spaceType": "park",
@@ -4382,6 +4987,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 4000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Montreal neighbourhood square. Small formal garden with fountain, iron fence, benches, mature trees. Surrounded by triplex facades. Intimate scale. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4422,6 +5028,16 @@
     },
     {
       "id": "vancouver_seawall",
+      "suggestedWidth_m": 300,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 100,
+      "maxWidth_m": 600,
+      "minDepth_m": 10,
+      "maxDepth_m": 50,
+      "minAreaSqm": 1000,
+      "maxAreaSqm": 30000,
+      "aspectRatio": "12:1",
+      "shape": "linear",
       "title": "Vancouver Seawall Promenade",
       "aestheticCategory": "vancouver_waterfront",
       "spaceType": "park",
@@ -4453,6 +5069,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 8000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Vancouver seawall promenade. Continuous waterfront path with ocean on one side and forest or city on the other. Mountain views across the water. Separated walk/bike lanes. Public art. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4493,6 +5110,16 @@
     },
     {
       "id": "vancouver_beach_park",
+      "suggestedWidth_m": 150,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 60,
+      "maxWidth_m": 300,
+      "minDepth_m": 30,
+      "maxDepth_m": 150,
+      "minAreaSqm": 1800,
+      "maxAreaSqm": 45000,
+      "aspectRatio": "1.9:1",
+      "shape": "irregular",
       "title": "Vancouver Beach Park",
       "aestheticCategory": "vancouver_waterfront",
       "spaceType": "park",
@@ -4565,6 +5192,16 @@
     },
     {
       "id": "toronto_ravine",
+      "suggestedWidth_m": 300,
+      "suggestedDepth_m": 100,
+      "minWidth_m": 100,
+      "maxWidth_m": 600,
+      "minDepth_m": 40,
+      "maxDepth_m": 200,
+      "minAreaSqm": 4000,
+      "maxAreaSqm": 120000,
+      "aspectRatio": "3:1",
+      "shape": "linear",
       "title": "Toronto Ravine Park",
       "aestheticCategory": "toronto_landscape",
       "spaceType": "park",
@@ -4637,6 +5274,16 @@
     },
     {
       "id": "toronto_urban_square",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 25,
+      "maxDepth_m": 110,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 16500,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Toronto Urban Square",
       "aestheticCategory": "toronto_civic",
       "spaceType": "plaza",
@@ -4668,6 +5315,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 5000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Toronto urban square. Hard-paved civic plaza with reflecting pool, public art, event space. Surrounded by towers. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4708,6 +5356,16 @@
     },
     {
       "id": "calgary_princes_island",
+      "suggestedWidth_m": 400,
+      "suggestedDepth_m": 200,
+      "minWidth_m": 150,
+      "maxWidth_m": 700,
+      "minDepth_m": 80,
+      "maxDepth_m": 350,
+      "minAreaSqm": 12000,
+      "maxAreaSqm": 245000,
+      "aspectRatio": "2:1",
+      "shape": "irregular",
       "title": "Prince's Island Park",
       "aestheticCategory": "calgary_river",
       "spaceType": "park",
@@ -4780,6 +5438,16 @@
     },
     {
       "id": "calgary_prairie_plaza",
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 55,
+      "minWidth_m": 30,
+      "maxWidth_m": 120,
+      "minDepth_m": 25,
+      "maxDepth_m": 100,
+      "minAreaSqm": 750,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.27:1",
+      "shape": "rectangular",
       "title": "Calgary Prairie Urban Plaza",
       "aestheticCategory": "calgary_civic",
       "spaceType": "plaza",
@@ -4811,6 +5479,7 @@
           "No fantasy"
         ]
       },
+      "suggestedAreaSqm": 4000,
       "renderPrompt": {
         "mapOverlay": "Replace the colored zone with a photorealistic Calgary prairie urban plaza. Open civic space with big sky, reflecting pool, mountain views on horizon. Wind-swept, expansive character. Seasonal market potential. Maintain satellite context. Oblique aerial view, photorealistic, 8k",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
@@ -4851,6 +5520,16 @@
     },
     {
       "id": "halifax_public_gardens",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 150,
+      "minWidth_m": 80,
+      "maxWidth_m": 350,
+      "minDepth_m": 60,
+      "maxDepth_m": 260,
+      "minAreaSqm": 4800,
+      "maxAreaSqm": 91000,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
       "title": "Halifax Public Gardens",
       "aestheticCategory": "halifax_victorian",
       "spaceType": "park",
@@ -4923,6 +5602,16 @@
     },
     {
       "id": "halifax_coastal_park",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 100,
+      "minWidth_m": 80,
+      "maxWidth_m": 500,
+      "minDepth_m": 40,
+      "maxDepth_m": 200,
+      "minAreaSqm": 3200,
+      "maxAreaSqm": 100000,
+      "aspectRatio": "2.5:1",
+      "shape": "irregular",
       "title": "Halifax Coastal Forest Park",
       "aestheticCategory": "halifax_natural",
       "spaceType": "park",
@@ -4995,6 +5684,16 @@
     },
     {
       "id": "basketball_court",
+      "suggestedWidth_m": 32,
+      "suggestedDepth_m": 19,
+      "minWidth_m": 26,
+      "maxWidth_m": 40,
+      "minDepth_m": 15,
+      "maxDepth_m": 24,
+      "minAreaSqm": 390,
+      "maxAreaSqm": 960,
+      "aspectRatio": "1.7:1",
+      "shape": "rectangular",
       "title": "Basketball Court",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5099,6 +5798,16 @@
     },
     {
       "id": "pickleball_courts",
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 14,
+      "minWidth_m": 10,
+      "maxWidth_m": 40,
+      "minDepth_m": 7,
+      "maxDepth_m": 28,
+      "minAreaSqm": 70,
+      "maxAreaSqm": 1120,
+      "aspectRatio": "1.4:1",
+      "shape": "rectangular",
       "title": "Pickleball Courts",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5203,6 +5912,16 @@
     },
     {
       "id": "soccer_pitch_caged",
+      "suggestedWidth_m": 105,
+      "suggestedDepth_m": 68,
+      "minWidth_m": 45,
+      "maxWidth_m": 120,
+      "minDepth_m": 30,
+      "maxDepth_m": 90,
+      "minAreaSqm": 1350,
+      "maxAreaSqm": 10800,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
       "title": "Caged Soccer Pitch",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5308,6 +6027,16 @@
     },
     {
       "id": "running_track_oval",
+      "suggestedWidth_m": 177,
+      "suggestedDepth_m": 93,
+      "minWidth_m": 140,
+      "maxWidth_m": 200,
+      "minDepth_m": 75,
+      "maxDepth_m": 110,
+      "minAreaSqm": 10500,
+      "maxAreaSqm": 22000,
+      "aspectRatio": "1.9:1",
+      "shape": "oval",
       "title": "Running Track & Athletic Oval",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5413,6 +6142,16 @@
     },
     {
       "id": "outdoor_fitness_circuit",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 25,
+      "minWidth_m": 15,
+      "maxWidth_m": 60,
+      "minDepth_m": 12,
+      "maxDepth_m": 50,
+      "minAreaSqm": 180,
+      "maxAreaSqm": 3000,
+      "aspectRatio": "1.2:1",
+      "shape": "irregular",
       "title": "Outdoor Fitness Circuit",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5518,6 +6257,16 @@
     },
     {
       "id": "baseball_softball_diamond",
+      "suggestedWidth_m": 120,
+      "suggestedDepth_m": 120,
+      "minWidth_m": 60,
+      "maxWidth_m": 150,
+      "minDepth_m": 60,
+      "maxDepth_m": 150,
+      "minAreaSqm": 3600,
+      "maxAreaSqm": 22500,
+      "aspectRatio": "1:1",
+      "shape": "diamond",
       "title": "Baseball / Softball Diamond",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5622,6 +6371,16 @@
     },
     {
       "id": "cricket_pitch_oval",
+      "suggestedWidth_m": 150,
+      "suggestedDepth_m": 140,
+      "minWidth_m": 100,
+      "maxWidth_m": 180,
+      "minDepth_m": 90,
+      "maxDepth_m": 170,
+      "minAreaSqm": 9000,
+      "maxAreaSqm": 30600,
+      "aspectRatio": "1.07:1",
+      "shape": "oval",
       "title": "Cricket Ground",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5725,6 +6484,16 @@
     },
     {
       "id": "disc_golf_course",
+      "suggestedWidth_m": 300,
+      "suggestedDepth_m": 200,
+      "minWidth_m": 150,
+      "maxWidth_m": 500,
+      "minDepth_m": 100,
+      "maxDepth_m": 350,
+      "minAreaSqm": 15000,
+      "maxAreaSqm": 175000,
+      "aspectRatio": "1.5:1",
+      "shape": "irregular",
       "title": "Disc Golf Course",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5829,6 +6598,16 @@
     },
     {
       "id": "bocce_petanque_court",
+      "suggestedWidth_m": 28,
+      "suggestedDepth_m": 16,
+      "minWidth_m": 20,
+      "maxWidth_m": 35,
+      "minDepth_m": 12,
+      "maxDepth_m": 20,
+      "minAreaSqm": 240,
+      "maxAreaSqm": 700,
+      "aspectRatio": "1.75:1",
+      "shape": "rectangular",
       "title": "Bocce / Pétanque Court",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -5932,6 +6711,16 @@
     },
     {
       "id": "climbing_bouldering_wall",
+      "suggestedWidth_m": 25,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 12,
+      "maxWidth_m": 40,
+      "minDepth_m": 10,
+      "maxDepth_m": 35,
+      "minAreaSqm": 120,
+      "maxAreaSqm": 1400,
+      "aspectRatio": "1.25:1",
+      "shape": "rectangular",
       "title": "Outdoor Climbing & Bouldering Wall",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -6035,6 +6824,16 @@
     },
     {
       "id": "nature_play_area",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 20,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 60,
+      "minAreaSqm": 300,
+      "maxAreaSqm": 4800,
+      "aspectRatio": "1.3:1",
+      "shape": "organic",
       "title": "Nature Play Area",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -6138,6 +6937,16 @@
     },
     {
       "id": "inclusive_playground",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 20,
+      "maxDepth_m": 65,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 5200,
+      "aspectRatio": "1.25:1",
+      "shape": "irregular",
       "title": "Inclusive Accessible Playground",
       "aestheticCategory": "neighborhood_public_realm",
       "spaceType": "park",
@@ -6243,6 +7052,16 @@
     },
     {
       "id": "mini_golf_course",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 50,
+      "minAreaSqm": 375,
+      "maxAreaSqm": 4000,
+      "aspectRatio": "1.7:1",
+      "shape": "irregular",
       "title": "Mini Golf / Putting Course",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -6346,6 +7165,16 @@
     },
     {
       "id": "pollinator_meadow",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 60,
+      "minWidth_m": 30,
+      "maxWidth_m": 200,
+      "minDepth_m": 20,
+      "maxDepth_m": 150,
+      "minAreaSqm": 600,
+      "maxAreaSqm": 30000,
+      "aspectRatio": "1.3:1",
+      "shape": "organic",
       "title": "Pollinator Meadow & Wildflower Garden",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -6447,6 +7276,16 @@
     },
     {
       "id": "urban_orchard_food_forest",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 25,
+      "maxWidth_m": 120,
+      "minDepth_m": 20,
+      "maxDepth_m": 100,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.2:1",
+      "shape": "irregular",
       "title": "Urban Orchard & Food Forest",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -6550,6 +7389,16 @@
     },
     {
       "id": "bioswale_rain_garden",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 15,
+      "minWidth_m": 20,
+      "maxWidth_m": 150,
+      "minDepth_m": 5,
+      "maxDepth_m": 30,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 4500,
+      "aspectRatio": "4:1",
+      "shape": "linear",
       "title": "Bioswale & Rain Garden Corridor",
       "aestheticCategory": "ecological_resilience",
       "spaceType": "park",
@@ -6653,6 +7502,16 @@
     },
     {
       "id": "urban_beach",
+      "suggestedWidth_m": 80,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 30,
+      "maxWidth_m": 150,
+      "minDepth_m": 15,
+      "maxDepth_m": 80,
+      "minAreaSqm": 450,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "2:1",
+      "shape": "irregular",
       "title": "Urban Beach",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",
@@ -6754,6 +7613,16 @@
     },
     {
       "id": "sculpture_garden",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 25,
+      "maxWidth_m": 120,
+      "minDepth_m": 20,
+      "maxDepth_m": 100,
+      "minAreaSqm": 500,
+      "maxAreaSqm": 12000,
+      "aspectRatio": "1.2:1",
+      "shape": "irregular",
       "title": "Sculpture Garden & Art Park",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -6855,6 +7724,16 @@
     },
     {
       "id": "labyrinth_meditation",
+      "suggestedWidth_m": 20,
+      "suggestedDepth_m": 20,
+      "minWidth_m": 10,
+      "maxWidth_m": 35,
+      "minDepth_m": 10,
+      "maxDepth_m": 35,
+      "minAreaSqm": 100,
+      "maxAreaSqm": 1225,
+      "aspectRatio": "1:1",
+      "shape": "circular",
       "title": "Labyrinth & Meditation Garden",
       "aestheticCategory": "specialty_gardens",
       "spaceType": "park",
@@ -6957,6 +7836,16 @@
     },
     {
       "id": "festival_event_lawn",
+      "suggestedWidth_m": 120,
+      "suggestedDepth_m": 80,
+      "minWidth_m": 50,
+      "maxWidth_m": 250,
+      "minDepth_m": 35,
+      "maxDepth_m": 170,
+      "minAreaSqm": 1750,
+      "maxAreaSqm": 42500,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
       "title": "Festival Grounds & Event Lawn",
       "aestheticCategory": "social_event_spaces",
       "spaceType": "park",
@@ -7059,6 +7948,16 @@
     },
     {
       "id": "pump_track",
+      "suggestedWidth_m": 50,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 50,
+      "minAreaSqm": 375,
+      "maxAreaSqm": 4000,
+      "aspectRatio": "1.7:1",
+      "shape": "loop",
       "title": "Pump Track",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -7163,6 +8062,16 @@
     },
     {
       "id": "outdoor_ice_rink",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 30,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 15,
+      "maxDepth_m": 50,
+      "minAreaSqm": 375,
+      "maxAreaSqm": 4000,
+      "aspectRatio": "2:1",
+      "shape": "rectangular",
       "title": "Outdoor Ice Rink",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -7265,6 +8174,16 @@
     },
     {
       "id": "beach_volleyball_courts",
+      "suggestedWidth_m": 24,
+      "suggestedDepth_m": 16,
+      "minWidth_m": 16,
+      "maxWidth_m": 50,
+      "minDepth_m": 10,
+      "maxDepth_m": 32,
+      "minAreaSqm": 160,
+      "maxAreaSqm": 1600,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
       "title": "Beach Volleyball Courts",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
@@ -7369,6 +8288,16 @@
     },
     {
       "id": "kayak_launch_dock",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 15,
+      "minWidth_m": 15,
+      "maxWidth_m": 80,
+      "minDepth_m": 8,
+      "maxDepth_m": 30,
+      "minAreaSqm": 120,
+      "maxAreaSqm": 2400,
+      "aspectRatio": "2.7:1",
+      "shape": "linear",
       "title": "Kayak & Canoe Launch",
       "aestheticCategory": "waterfront_spaces",
       "spaceType": "park",

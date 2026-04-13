@@ -9,7 +9,7 @@ import { useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { Sparkles, Loader2, Download } from 'lucide-react';
 import type { SiteZone } from '@/types';
-import { useGlobeAIRender, type GlobeRenderResult } from './useGlobeAIRender';
+import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi } from '@/services/api';
 
 interface GlobeAIRenderPanelProps {
@@ -23,10 +23,19 @@ interface GlobeAIRenderPanelProps {
 
 const STYLES = [
   { id: 'photorealistic', label: 'Photo' },
-  { id: 'winter', label: 'Winter' },
+  { id: 'photomontage', label: 'Montage' },
   { id: 'atmospheric', label: 'Dusk' },
   { id: 'spring', label: 'Spring' },
+  { id: 'winter', label: 'Winter' },
   { id: 'night', label: 'Night' },
+  { id: 'watercolour', label: 'Watercolour' },
+  { id: 'charcoal', label: 'Charcoal' },
+  { id: 'marker-render', label: 'Marker' },
+  { id: 'clay-maquette', label: 'Clay' },
+  { id: 'woodblock', label: 'Wood Block' },
+  { id: 'collage', label: 'Collage' },
+  { id: 'risograph', label: 'Risograph' },
+  { id: 'pixel-art', label: 'Pixel Art' },
 ] as const;
 
 export function GlobeAIRenderPanel({
@@ -37,7 +46,7 @@ export function GlobeAIRenderPanel({
   projectId,
   onRenderComplete,
 }: GlobeAIRenderPanelProps) {
-  const { render } = useGlobeAIRender();
+  const { render, renderPerZone } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
@@ -45,6 +54,7 @@ export function GlobeAIRenderPanel({
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [renderTime, setRenderTime] = useState(0);
+  const [renderProgress, setRenderProgress] = useState<GlobeRenderProgress | null>(null);
 
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
@@ -61,15 +71,36 @@ export function GlobeAIRenderPanel({
     setIsRendering(true);
     setResult(null);
     setError(null);
+    setRenderProgress(null);
     const startTime = Date.now();
     const timer = setInterval(() => setRenderTime(Math.round((Date.now() - startTime) / 1000)), 1000);
 
     try {
-      const renderResult = await render(canvas, camera, editableZones, terrainHeight, {
-        style: selectedStyle,
-        projectId,
-        customPrompt: customPrompt.trim() || undefined,
-      });
+      // Use per-zone when: 5+ zones, OR mixing roads/streets with buildings
+      // (roads and buildings have such different archetypes that single-shot confuses Gemini)
+      const ROAD_TYPES = ['road', 'street', 'path'];
+      const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
+      const hasRoads = editableZones.some(z => ROAD_TYPES.includes(z.zone_type));
+      const hasBuildings = editableZones.some(z => BUILDING_TYPES.includes(z.zone_type));
+      const hasMixedTypes = hasRoads && hasBuildings;
+      const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
+      let renderResult: GlobeRenderResult | null;
+
+      if (usePerZone) {
+        console.log(`[GlobeAIRenderPanel] Using per-zone rendering (${editableZones.length} zones, mixed=${hasMixedTypes})`);
+        renderResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
+          style: selectedStyle,
+          projectId,
+          customPrompt: customPrompt.trim() || undefined,
+          onProgress: (progress) => setRenderProgress(progress),
+        });
+      } else {
+        renderResult = await render(canvas, camera, editableZones, terrainHeight, {
+          style: selectedStyle,
+          projectId,
+          customPrompt: customPrompt.trim() || undefined,
+        });
+      }
 
       if (renderResult) {
         setResult(renderResult);
@@ -82,9 +113,10 @@ export function GlobeAIRenderPanel({
     } finally {
       clearInterval(timer);
       setRenderTime(0);
+      setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, projectId, onRenderComplete]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPerZone, projectId, onRenderComplete, customPrompt]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
@@ -172,7 +204,10 @@ export function GlobeAIRenderPanel({
           {isRendering ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Rendering... {renderTime > 0 && `(${renderTime}s)`}
+              {renderProgress
+                ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                : `Rendering... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+              }
             </>
           ) : (
             <>

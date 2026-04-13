@@ -111,6 +111,9 @@ export type ArchetypeVariant = {
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  aspectRatio?: string;
 };
 
 export type AestheticOption = {
@@ -133,6 +136,13 @@ export type AestheticOption = {
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  minWidth_m?: number;
+  maxWidth_m?: number;
+  minDepth_m?: number;
+  maxDepth_m?: number;
+  aspectRatio?: string;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
 };
@@ -180,6 +190,13 @@ type ArchetypeSeed = {
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
+  suggestedWidth_m?: number;
+  suggestedDepth_m?: number;
+  minWidth_m?: number;
+  maxWidth_m?: number;
+  minDepth_m?: number;
+  maxDepth_m?: number;
+  aspectRatio?: string;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
   thumbnailUrl?: string;
@@ -358,6 +375,13 @@ function toAestheticOption(
     suggestedAreaSqm: seed.suggestedAreaSqm,
     minAreaSqm: seed.minAreaSqm,
     maxAreaSqm: seed.maxAreaSqm,
+    suggestedWidth_m: seed.suggestedWidth_m,
+    suggestedDepth_m: seed.suggestedDepth_m,
+    minWidth_m: seed.minWidth_m,
+    maxWidth_m: seed.maxWidth_m,
+    minDepth_m: seed.minDepth_m,
+    maxDepth_m: seed.maxDepth_m,
+    aspectRatio: seed.aspectRatio,
     propertyPresets: seed.propertyPresets,
     variants: seed.variants,
     generationStyleInput: {

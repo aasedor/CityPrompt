@@ -22,6 +22,7 @@ import {
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
 import { createStencilVolume } from './StencilMaskPlugin';
+import { useGlobeDragRef } from './useGlobeDragRef';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -180,10 +181,72 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
   // --- Terrain draping for flat zones ---
   // Raycast each vertex onto the tile mesh to get precise ground elevation offsets
   const flatMeshRef = useRef<THREE.Mesh>(null);
-  const flatOutlineRef = useRef<THREE.Line>(null);
+  const flatOutlineRef = useRef<any>(null);
+  const buildingMeshRef = useRef<THREE.Mesh>(null);
+  const buildingOutlineRef = useRef<any>(null);
   const raycasterRef = useRef(new THREE.Raycaster());
   const drapedRef = useRef(false);
   const drapeAttemptRef = useRef(0);
+
+  // ── Drag performance: useFrame-based geometry update ──
+  // Reads the shared drag ref and updates BufferGeometry positions directly,
+  // bypassing React state to avoid re-rendering the entire scene.
+  const dragRef = useGlobeDragRef();
+  const lastDragVersionRef = useRef(0);
+
+  useFrame(() => {
+    const drag = dragRef.current;
+    if (drag.zoneId !== zone.id) return;
+    if (drag.version === lastDragVersionRef.current) return;
+    lastDragVersionRef.current = drag.version;
+
+    // Recompute local ENU positions from drag coords
+    const mPerDegLon = metersPerDegLon(centroid[1]);
+    const coords = drag.coords;
+    const n = coords.length;
+
+    // Update fill geometry
+    const meshRef = isBuilding ? buildingMeshRef : flatMeshRef;
+    const outRef = isBuilding ? buildingOutlineRef : flatOutlineRef;
+
+    if (meshRef.current) {
+      const posAttr = meshRef.current.geometry.attributes.position;
+      if (posAttr) {
+        for (let i = 0; i < n && i < posAttr.count; i++) {
+          const localX = (coords[i][0] - centroid[0]) * mPerDegLon;
+          const localY = (coords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
+          posAttr.setX(i, localX);
+          posAttr.setY(i, localY);
+          // For extruded buildings, also update the top ring (indices n..2n-1)
+          if (isBuilding && i + n < posAttr.count) {
+            posAttr.setX(i + n, localX);
+            posAttr.setY(i + n, localY);
+          }
+        }
+        posAttr.needsUpdate = true;
+        meshRef.current.geometry.computeBoundingSphere();
+      }
+    }
+
+    // Update outline geometry
+    if (outRef.current) {
+      const outPos = outRef.current.geometry.attributes.position;
+      if (outPos) {
+        for (let i = 0; i < n && i < outPos.count; i++) {
+          const localX = (coords[i][0] - centroid[0]) * mPerDegLon;
+          const localY = (coords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
+          outPos.setX(i, localX);
+          outPos.setY(i, localY);
+        }
+        // Close-loop vertex
+        if (outPos.count > n) {
+          outPos.setX(n, outPos.getX(0));
+          outPos.setY(n, outPos.getY(0));
+        }
+        outPos.needsUpdate = true;
+      }
+    }
+  });
 
   const drapeToTerrain = useCallback(() => {
     if (!tiles?.group || !geoData || isBuilding || drapedRef.current) return;
@@ -314,6 +377,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
       {/* Fill — buildings on top of everything */}
       {isBuilding && (
         <mesh
+          ref={buildingMeshRef}
           geometry={geoData.fillGeo}
           renderOrder={200}
           frustumCulled={false}
@@ -336,10 +400,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
         </mesh>
       )}
 
-      {/* Outline */}
-      {/* @ts-expect-error R3F line vs SVG line type conflict */}
+      {/* Outline — R3F <line> type conflicts with SVG <line>, suppress with any refs */}
       <line
-        ref={!isBuilding ? flatOutlineRef : undefined}
+        ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
         geometry={!isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo}
         renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
         frustumCulled={false}

@@ -30,6 +30,7 @@ import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeEditMode } from './GlobeEditMode';
+import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
@@ -233,6 +234,7 @@ export function GlobeSitePlannerMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const globeControlsRef = useRef<any>(null);
+  const globeDragRef = useCreateGlobeDragRef();
   const {
     selectedZoneId, activeSitePlannerTool, activeToolProperties,
     streetViewPegman, setStreetViewPosition, setStreetViewAngle, setStreetViewActive,
@@ -664,6 +666,7 @@ export function GlobeSitePlannerMap({
           };
         }}
       >
+        <GlobeDragProvider value={globeDragRef}>
         <CameraExposer cameraRef={cameraRef} />
         <PitchMonitor onPitchChange={setPitchAngle} />
         {/* Atmospheric fog — grounds the horizon and hides the infinite void */}
@@ -718,6 +721,7 @@ export function GlobeSitePlannerMap({
         </TilesRenderer>
 
         {/* Click handling is attached in onCreated (canvas click + dblclick listeners) */}
+        </GlobeDragProvider>
       </Canvas>
 
       {/* Context-sensitive hints bar */}
