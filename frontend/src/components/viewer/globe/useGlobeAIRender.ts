@@ -853,7 +853,7 @@ export interface GlobeRenderProgress {
   phase: 'ground' | 'building';
 }
 
-export const PERZONE_THRESHOLD = 5; // Auto-select per-zone for 5+ zones
+export const PERZONE_THRESHOLD = 99; // Single-shot is always used — per-zone disabled (text labels + borders handle zone identification)
 
 /**
  * Generate a binary mask for a SINGLE zone, with building height extension.
@@ -1147,10 +1147,6 @@ export function useGlobeAIRender() {
         labelCanvas.height = img.naturalHeight;
         const ctx = labelCanvas.getContext('2d')!;
         ctx.drawImage(img, 0, 0);
-
-        ctx.font = 'bold 28px Arial, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
 
         const editableZones = zones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates?.length >= 3);
         const scaleX = labelCanvas.width / canvas.width;
