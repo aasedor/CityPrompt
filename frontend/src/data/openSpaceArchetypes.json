@@ -8397,6 +8397,726 @@
       "suggestedAreaSqm": 600,
       "minAreaSqm": 200,
       "maxAreaSqm": 2000
+    },
+    {
+        "id": "academic_courtyard",
+        "title": "Academic Courtyard",
+        "spaceType": "plaza",
+        "aestheticCategory": "civic_plazas",
+        "description": "A Academic Courtyard.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "civic-plazas"
+        ],
+        "variants": [
+            {
+                "id": "academic_courtyard_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Academic Courtyard — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_0.png"
+            },
+            {
+                "id": "academic_courtyard_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Academic Courtyard — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_1.png"
+            },
+            {
+                "id": "academic_courtyard_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Academic Courtyard — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_2.png"
+            },
+            {
+                "id": "academic_courtyard_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Academic Courtyard — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "airport_airfield",
+        "title": "Airport Airfield",
+        "spaceType": "plaza",
+        "aestheticCategory": "parking_areas",
+        "description": "A Airport Airfield.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/airport-airfield/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "parking-areas"
+        ],
+        "variants": [
+            {
+                "id": "airport_airfield_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Airport Airfield — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_0.png"
+            },
+            {
+                "id": "airport_airfield_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Airport Airfield — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_1.png"
+            },
+            {
+                "id": "airport_airfield_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Airport Airfield — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_2.png"
+            },
+            {
+                "id": "airport_airfield_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Airport Airfield — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "athletics_precinct_sports_fields",
+        "title": "Athletics Precinct Sports Fields",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Athletics Precinct Sports Fields.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "athletics_precinct_sports_fields_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Athletics Precinct Sports Fields — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_0.png"
+            },
+            {
+                "id": "athletics_precinct_sports_fields_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Athletics Precinct Sports Fields — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_1.png"
+            },
+            {
+                "id": "athletics_precinct_sports_fields_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Athletics Precinct Sports Fields — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_2.png"
+            },
+            {
+                "id": "athletics_precinct_sports_fields_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Athletics Precinct Sports Fields — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "campus_central_quad",
+        "title": "Campus Central Quad",
+        "spaceType": "plaza",
+        "aestheticCategory": "civic_plazas",
+        "description": "A Campus Central Quad.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "civic-plazas"
+        ],
+        "variants": [
+            {
+                "id": "campus_central_quad_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Campus Central Quad — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_0.png"
+            },
+            {
+                "id": "campus_central_quad_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Campus Central Quad — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_1.png"
+            },
+            {
+                "id": "campus_central_quad_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Campus Central Quad — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_2.png"
+            },
+            {
+                "id": "campus_central_quad_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Campus Central Quad — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "campus_pedestrian_spine",
+        "title": "Campus Pedestrian Spine",
+        "spaceType": "plaza",
+        "aestheticCategory": "civic_plazas",
+        "description": "A Campus Pedestrian Spine.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "civic-plazas"
+        ],
+        "variants": [
+            {
+                "id": "campus_pedestrian_spine_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Campus Pedestrian Spine — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_0.png"
+            },
+            {
+                "id": "campus_pedestrian_spine_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Campus Pedestrian Spine — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_1.png"
+            },
+            {
+                "id": "campus_pedestrian_spine_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Campus Pedestrian Spine — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_2.png"
+            },
+            {
+                "id": "campus_pedestrian_spine_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Campus Pedestrian Spine — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "constructed_wetland_eco_park",
+        "title": "Constructed Wetland Eco Park",
+        "spaceType": "park",
+        "aestheticCategory": "ecological_resilience",
+        "description": "A Constructed Wetland Eco Park.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "ecological-resilience"
+        ],
+        "variants": [
+            {
+                "id": "constructed_wetland_eco_park_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Constructed Wetland Eco Park — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png"
+            },
+            {
+                "id": "constructed_wetland_eco_park_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Constructed Wetland Eco Park — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png"
+            },
+            {
+                "id": "constructed_wetland_eco_park_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Constructed Wetland Eco Park — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png"
+            },
+            {
+                "id": "constructed_wetland_eco_park_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Constructed Wetland Eco Park — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "equestrian_center",
+        "title": "Equestrian Center",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Equestrian Center.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/equestrian-center/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "equestrian_center_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Equestrian Center — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_0.png"
+            },
+            {
+                "id": "equestrian_center_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Equestrian Center — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_1.png"
+            },
+            {
+                "id": "equestrian_center_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Equestrian Center — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_2.png"
+            },
+            {
+                "id": "equestrian_center_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Equestrian Center — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "golf_course_18_hole",
+        "title": "Golf Course 18 Hole",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Golf Course 18 Hole.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "golf_course_18_hole_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Golf Course 18 Hole — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_0.png"
+            },
+            {
+                "id": "golf_course_18_hole_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Golf Course 18 Hole — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_1.png"
+            },
+            {
+                "id": "golf_course_18_hole_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Golf Course 18 Hole — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_2.png"
+            },
+            {
+                "id": "golf_course_18_hole_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Golf Course 18 Hole — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "golf_driving_range",
+        "title": "Golf Driving Range",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Golf Driving Range.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "golf_driving_range_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Golf Driving Range — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_0.png"
+            },
+            {
+                "id": "golf_driving_range_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Golf Driving Range — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_1.png"
+            },
+            {
+                "id": "golf_driving_range_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Golf Driving Range — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_2.png"
+            },
+            {
+                "id": "golf_driving_range_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Golf Driving Range — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "mountain_bike_park",
+        "title": "Mountain Bike Park",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Mountain Bike Park.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "mountain_bike_park_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Mountain Bike Park — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_0.png"
+            },
+            {
+                "id": "mountain_bike_park_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Mountain Bike Park — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_1.png"
+            },
+            {
+                "id": "mountain_bike_park_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Mountain Bike Park — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_2.png"
+            },
+            {
+                "id": "mountain_bike_park_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Mountain Bike Park — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "multi_sport_complex",
+        "title": "Multi Sport Complex",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Multi Sport Complex.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "multi_sport_complex_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Multi Sport Complex — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_0.png"
+            },
+            {
+                "id": "multi_sport_complex_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Multi Sport Complex — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_1.png"
+            },
+            {
+                "id": "multi_sport_complex_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Multi Sport Complex — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_2.png"
+            },
+            {
+                "id": "multi_sport_complex_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Multi Sport Complex — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "research_garden_teaching_arboretum",
+        "title": "Research Garden Teaching Arboretum",
+        "spaceType": "park",
+        "aestheticCategory": "specialty_gardens",
+        "description": "A Research Garden Teaching Arboretum.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "specialty-gardens"
+        ],
+        "variants": [
+            {
+                "id": "research_garden_teaching_arboretum_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Research Garden Teaching Arboretum — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png"
+            },
+            {
+                "id": "research_garden_teaching_arboretum_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Research Garden Teaching Arboretum — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_1.png"
+            },
+            {
+                "id": "research_garden_teaching_arboretum_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Research Garden Teaching Arboretum — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png"
+            },
+            {
+                "id": "research_garden_teaching_arboretum_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Research Garden Teaching Arboretum — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "rewilding_ecological_restoration_zone",
+        "title": "Rewilding Ecological Restoration Zone",
+        "spaceType": "park",
+        "aestheticCategory": "ecological_resilience",
+        "description": "A Rewilding Ecological Restoration Zone.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "ecological-resilience"
+        ],
+        "variants": [
+            {
+                "id": "rewilding_ecological_restoration_zone_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Rewilding Ecological Restoration Zone — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png"
+            },
+            {
+                "id": "rewilding_ecological_restoration_zone_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Rewilding Ecological Restoration Zone — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png"
+            },
+            {
+                "id": "rewilding_ecological_restoration_zone_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Rewilding Ecological Restoration Zone — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png"
+            },
+            {
+                "id": "rewilding_ecological_restoration_zone_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Rewilding Ecological Restoration Zone — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "stormwater_naturalized_drainage_corridor",
+        "title": "Stormwater Naturalized Drainage Corridor",
+        "spaceType": "park",
+        "aestheticCategory": "ecological_resilience",
+        "description": "A Stormwater Naturalized Drainage Corridor.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "ecological-resilience"
+        ],
+        "variants": [
+            {
+                "id": "stormwater_naturalized_drainage_corridor_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Stormwater Naturalized Drainage Corridor — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png"
+            },
+            {
+                "id": "stormwater_naturalized_drainage_corridor_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Stormwater Naturalized Drainage Corridor — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png"
+            },
+            {
+                "id": "stormwater_naturalized_drainage_corridor_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Stormwater Naturalized Drainage Corridor — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_2.png"
+            },
+            {
+                "id": "stormwater_naturalized_drainage_corridor_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Stormwater Naturalized Drainage Corridor — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "stormwater_resilience_park",
+        "title": "Stormwater Resilience Park",
+        "spaceType": "park",
+        "aestheticCategory": "ecological_resilience",
+        "description": "A Stormwater Resilience Park.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "ecological-resilience"
+        ],
+        "variants": [
+            {
+                "id": "stormwater_resilience_park_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Stormwater Resilience Park — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_0.png"
+            },
+            {
+                "id": "stormwater_resilience_park_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Stormwater Resilience Park — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_1.png"
+            },
+            {
+                "id": "stormwater_resilience_park_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Stormwater Resilience Park — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_2.png"
+            },
+            {
+                "id": "stormwater_resilience_park_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Stormwater Resilience Park — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_3.png"
+            }
+        ]
+    },
+    {
+        "id": "velodrome_cycling_track",
+        "title": "Velodrome Cycling Track",
+        "spaceType": "park",
+        "aestheticCategory": "sports_recreation",
+        "description": "A Velodrome Cycling Track.",
+        "suggestedWidth_m": 40,
+        "suggestedDepth_m": 30,
+        "suggestedAreaSqm": 1200,
+        "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/hero.png",
+        "shape": "rectangular",
+        "generationTags": [
+            "sports-recreation"
+        ],
+        "variants": [
+            {
+                "id": "velodrome_cycling_track_variant_0",
+                "label": "Style Variant 1",
+                "color": "#8B6914",
+                "description": "Velodrome Cycling Track — style variant 1.",
+                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_0.png"
+            },
+            {
+                "id": "velodrome_cycling_track_variant_1",
+                "label": "Style Variant 2",
+                "color": "#5B7065",
+                "description": "Velodrome Cycling Track — style variant 2.",
+                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_1.png"
+            },
+            {
+                "id": "velodrome_cycling_track_variant_2",
+                "label": "Style Variant 3",
+                "color": "#6B8A4A",
+                "description": "Velodrome Cycling Track — style variant 3.",
+                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_2.png"
+            },
+            {
+                "id": "velodrome_cycling_track_variant_3",
+                "label": "Style Variant 4",
+                "color": "#8A6B4A",
+                "description": "Velodrome Cycling Track — style variant 4.",
+                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_3.png"
+            }
+        ]
     }
   ]
 }

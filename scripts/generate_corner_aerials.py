@@ -1278,6 +1278,7 @@ def load_catalog_jobs(catalog: str, angle: int) -> list[dict[str, Any]]:
 
             jobs.append({
                 "name": f"{arch_title} — {variant_label}",
+                "arch_id": arch.get("id") or "",
                 "zone_type": zone_type,
                 "subject": subject,
                 "ref_path": ref_path,
@@ -1544,6 +1545,7 @@ def build_prompt(subject: str, zone_type: str, angle: int) -> str:
 def main() -> int:
     # CLI args
     only_filter: str | None = None
+    ids_file: Path | None = None
     catalog: str | None = None
     angle = 60
     limit: int | None = None
@@ -1553,6 +1555,8 @@ def main() -> int:
     for arg in sys.argv[1:]:
         if arg.startswith("--only="):
             only_filter = arg.split("=", 1)[1].lower()
+        elif arg.startswith("--ids-file="):
+            ids_file = Path(arg.split("=", 1)[1])
         elif arg.startswith("--angle="):
             angle = int(arg.split("=", 1)[1])
         elif arg.startswith("--catalog="):
@@ -1589,6 +1593,14 @@ def main() -> int:
     # Apply filters
     if only_filter:
         jobs = [j for j in jobs if only_filter in j["name"].lower()]
+    if ids_file:
+        if not ids_file.exists():
+            print(f"ERROR: --ids-file not found: {ids_file}")
+            return 1
+        allowed_ids = {line.strip() for line in ids_file.read_text(encoding="utf-8").splitlines() if line.strip()}
+        before = len(jobs)
+        jobs = [j for j in jobs if j.get("arch_id") in allowed_ids]
+        print(f"Filter --ids-file: kept {len(jobs)}/{before} jobs matching {len(allowed_ids)} archetype IDs")
     before_preserve = len(jobs)
     jobs = [j for j in jobs if j["out_path"].resolve() not in {p.resolve() for p in PRESERVE_PATHS}]
     preserved = before_preserve - len(jobs)
