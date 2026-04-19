@@ -1,0 +1,50 @@
+=== PROMPT DUMP: Pass 2 (single-shot) — Globe — SCENARIO 1 NOMINAL 18×8m at NADIR (pitch 0°) ===
+Source           : frontend/src/components/viewer/globe/useGlobeAIRender.ts
+Builder          : buildPrompt (line 744)
+Archetype        : brownstone_rowhouse_frontage
+Polygon          : same 4-vertex 18×8m rectangle as scenario 1 oblique
+Camera           : pitch=0° → pitchDeg=0 → bucket "near top-down" (line 753)
+Reconstructed    : YES
+
+-------------------- WHAT CHANGES vs SCENARIO 1 OBLIQUE --------------------
+Exactly ONE line changes. `pitchDesc` at line 746 becomes "near top-down (~0°)" and is
+substituted into COMPOSITION (line 763). Every other word in the prompt is identical:
+
+  COMPOSITION: near top-down (~0°) view from 3D photorealistic city model, colored
+  polygons mark proposed zones on the existing photographic context. Render buildings
+  with correct 3D perspective for this viewing angle.
+
+Compared with Mapbox's `buildSCHEMAPrompt`, globe DOES inject pitch into composition
+(good). But unlike Mapbox, globe does NOT branch feature emphasis on pitch —
+`info.aerialAppearance` ("dark flat surface with brick chimneys") is pushed into the
+zone-line features regardless of whether the camera is nadir or oblique:
+
+  ZONES:
+  1. [deep maroon #c62828] Brownstone Rowhouse Frontage | 3F 12m ~150m² | Replace the colored building block with a photorealistic brownstone rowhouse frontage. Keep the exact same building footprint and height. The building has warm brown sandstone facades with carved entry stoops, tall do… | polygon@(…)
+
+Note: because `getMapOverlayPrompt(zone)` (line 819) returns `renderPrompt.mapOverlay`
+and that is pushed into `features` as-is, the "carved entry stoops, tall double-hung
+windows" language reaches Gemini at nadir too — where those facade features are
+invisible pixels. `roofView` text exists on the archetype (brownstone line 388:
+"flat or low-slope brownstone roof with brick chimneys, dark membrane roofing, low
+stone parapet walls") but globe never switches to `roofView` at nadir — it always
+takes `mapOverlay`. This is a CONCRETE gap.
+
+Mapbox §5 of prior audit flagged the same issue for Mapbox. Globe has NOT addressed it.
+
+-------------------- HEIGHT AT NADIR --------------------
+Scale token "3F 12m" is carried at nadir even though at 0° the only height cue is
+shadow length + color shift. Nothing in the prompt translates "12m" to "expect a
+~6m-long shadow northeast of the footprint". The mask dilates ~2m laterally — not
+the shadow direction — so the mask edges cut off the expected shadow.
+
+Height-extension of the mask (line 364-372) extrudes the polygon UPWARD in screen
+space. At nadir, "upward" has zero screen displacement — `topPixels ≈ pixels` — so
+the height extension collapses and the mask is just the footprint. Consistent, but
+means no extra shadow room; Gemini might compress or drop the shadow entirely.
+
+-------------------- SAME SHAPE, TWO CAMERAS, SAME PROMPT --------------------
+Between scenario 1 oblique and scenario 1 nadir, only COMPOSITION differs. ZONES,
+MANDATORY, PROHIBITIONS, FINAL CONSTRAINT are all byte-identical. Polygon shape
+description is identical. So globe communicates the same polygon shape regardless of
+angle — good for consistency, bad for the angle-specific failure modes above.

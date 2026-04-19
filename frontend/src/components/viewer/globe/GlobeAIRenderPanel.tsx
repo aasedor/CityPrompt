@@ -5,11 +5,13 @@
  * generates a mask from zone polygons, and sends to Gemini.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import * as THREE from 'three';
 import { Sparkles, Loader2, Download } from 'lucide-react';
 import type { SiteZone } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
+
+const PREVIEW_COUNT = 3;
 import { rendersApi } from '@/services/api';
 
 interface GlobeAIRenderPanelProps {
@@ -22,17 +24,26 @@ interface GlobeAIRenderPanelProps {
 }
 
 const STYLES = [
-  { id: 'photorealistic', label: 'Photo' },
-  { id: 'photomontage', label: 'Montage' },
-  { id: 'atmospheric', label: 'Dusk' },
+  // Photo family
+  { id: 'photorealistic', label: 'Photo Realistic' },
+  { id: 'photomontage', label: 'Photomontage' },
+  { id: 'atmospheric', label: 'Atmospheric' },
+  // Site plan family (ported from codex — near-top-down styles)
+  { id: 'site-plan', label: 'Site Plan' },
+  { id: 'site-plan-photo', label: 'Site Plan Photo' },
+  { id: 'site-plan-watercolor', label: 'Site Plan WC' },
+  // Seasonal
   { id: 'spring', label: 'Spring' },
   { id: 'winter', label: 'Winter' },
   { id: 'night', label: 'Night' },
+  // Artistic
   { id: 'watercolour', label: 'Watercolour' },
   { id: 'charcoal', label: 'Charcoal' },
+  { id: 'isometric', label: 'Isometric' },
+  { id: 'woodblock', label: 'Wood Block' },
   { id: 'marker-render', label: 'Marker' },
   { id: 'clay-maquette', label: 'Clay' },
-  { id: 'woodblock', label: 'Wood Block' },
+  // Experimental
   { id: 'collage', label: 'Collage' },
   { id: 'risograph', label: 'Risograph' },
   { id: 'pixel-art', label: 'Pixel Art' },
@@ -46,15 +57,20 @@ export function GlobeAIRenderPanel({
   projectId,
   onRenderComplete,
 }: GlobeAIRenderPanelProps) {
-  const { render, renderPerZone } = useGlobeAIRender();
+  const { render, renderPreviews, renderPerZone } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
+  const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
+  const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [customPrompt, setCustomPrompt] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [renderTime, setRenderTime] = useState(0);
   const [renderProgress, setRenderProgress] = useState<GlobeRenderProgress | null>(null);
+  // Lightbox: URL of the image currently shown full-screen (null = closed).
+  // Opens on double-click of any preview thumbnail or the main result image.
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
@@ -70,6 +86,8 @@ export function GlobeAIRenderPanel({
 
     setIsRendering(true);
     setResult(null);
+    setPreviews([]);
+    setSelectedPreviewIndex(null);
     setError(null);
     setRenderProgress(null);
     const startTime = Date.now();
@@ -87,6 +105,7 @@ export function GlobeAIRenderPanel({
       let renderResult: GlobeRenderResult | null;
 
       if (usePerZone) {
+        // Per-zone path is already sequential and slow — don't fan out previews.
         console.log(`[GlobeAIRenderPanel] Using per-zone rendering (${editableZones.length} zones, mixed=${hasMixedTypes})`);
         renderResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
           style: selectedStyle,
@@ -94,19 +113,30 @@ export function GlobeAIRenderPanel({
           customPrompt: customPrompt.trim() || undefined,
           onProgress: (progress) => setRenderProgress(progress),
         });
+        if (renderResult) {
+          setResult(renderResult);
+          onRenderComplete?.(renderResult);
+        } else {
+          setError('Render returned no image. Try adjusting your view or zones.');
+        }
       } else {
-        renderResult = await render(canvas, camera, editableZones, terrainHeight, {
+        // Single-shot: fan out N parallel previews with different server seeds.
+        // First preview is auto-selected so the user sees a large image
+        // immediately; clicking a thumbnail switches the selection.
+        const results = await renderPreviews(canvas, camera, editableZones, terrainHeight, {
           style: selectedStyle,
           projectId,
           customPrompt: customPrompt.trim() || undefined,
+          count: PREVIEW_COUNT,
         });
-      }
-
-      if (renderResult) {
-        setResult(renderResult);
-        onRenderComplete?.(renderResult);
-      } else {
-        setError('Render returned no image. Try adjusting your view or zones.');
+        if (results.length > 0) {
+          setPreviews(results);
+          setSelectedPreviewIndex(0);
+          setResult(results[0]);
+          onRenderComplete?.(results[0]);
+        } else {
+          setError('Render returned no image. Try adjusting your view or zones.');
+        }
       }
     } catch (err: any) {
       setError(err?.response?.data?.detail || err?.message || 'Render failed. Please try again.');
@@ -116,7 +146,22 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPerZone, projectId, onRenderComplete, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPreviews, renderPerZone, projectId, onRenderComplete, customPrompt]);
+
+  // Close lightbox on Esc
+  useEffect(() => {
+    if (!lightboxImage) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxImage(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightboxImage]);
+
+  const handleSelectPreview = useCallback((index: number) => {
+    if (index < 0 || index >= previews.length) return;
+    setSelectedPreviewIndex(index);
+    setResult(previews[index]);
+    onRenderComplete?.(previews[index]);
+  }, [previews, onRenderComplete]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;
@@ -143,6 +188,7 @@ export function GlobeAIRenderPanel({
   }, [result, projectId, selectedStyle, saving]);
 
   return (
+    <>
     <div className="w-full rounded-xl bg-gray-900/95 backdrop-blur-sm shadow-2xl border border-white/10">
       {/* Header */}
       <div className="px-4 py-3 border-b border-white/10">
@@ -212,11 +258,45 @@ export function GlobeAIRenderPanel({
           ) : (
             <>
               <Sparkles size={16} />
-              Generate Render
+              Generate Previews
             </>
           )}
         </button>
       </div>
+
+      {/* Preview grid (only when multiple previews exist) */}
+      {previews.length > 1 && (
+        <div className="px-4 pb-2">
+          <div className="mb-1 flex items-center justify-between text-[10px] text-gray-400">
+            <span>Variant {selectedPreviewIndex !== null ? selectedPreviewIndex + 1 : '?'} of {previews.length}</span>
+            <span>click to switch</span>
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {previews.map((p, i) => (
+              <button
+                key={i}
+                onClick={() => handleSelectPreview(i)}
+                onDoubleClick={() => setLightboxImage(p.imageUrl)}
+                className={`relative aspect-square overflow-hidden rounded border-2 transition ${
+                  selectedPreviewIndex === i
+                    ? 'border-amber-400 ring-2 ring-amber-400/40'
+                    : 'border-white/10 hover:border-white/40'
+                }`}
+                title={`Preview ${i + 1}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} — double-click to enlarge`}
+              >
+                <img
+                  src={p.imageUrl}
+                  alt={`Preview ${i + 1}`}
+                  className="h-full w-full object-cover"
+                />
+                <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/60 px-1 text-[10px] font-bold text-white">
+                  {i + 1}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Result */}
       {result && (
@@ -227,6 +307,8 @@ export function GlobeAIRenderPanel({
               alt="AI Render"
               className="w-full cursor-pointer"
               onClick={handleDownload}
+              onDoubleClick={() => setLightboxImage(result.imageUrl)}
+              title="Click to download · Double-click to enlarge"
             />
             <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center bg-gradient-to-t from-black/80 to-transparent px-2 py-1.5">
               <button
@@ -246,7 +328,11 @@ export function GlobeAIRenderPanel({
             </div>
           </div>
           <button
-            onClick={() => setResult(null)}
+            onClick={() => {
+              setResult(null);
+              setPreviews([]);
+              setSelectedPreviewIndex(null);
+            }}
             className="mt-1.5 w-full text-center text-[10px] text-gray-500 hover:text-gray-300"
           >
             Clear result
@@ -254,5 +340,39 @@ export function GlobeAIRenderPanel({
         </div>
       )}
     </div>
+
+    {/* Lightbox overlay — click ANYWHERE (including the image), press Esc, or
+        click the explicit ✕ button to close. Rendered at the root so it
+        overlays the whole viewport regardless of where the panel is mounted. */}
+    {lightboxImage && (
+      <div
+        className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-6"
+        onClick={() => setLightboxImage(null)}
+        role="dialog"
+        aria-label="Render preview — click anywhere or press Esc to close"
+      >
+        {/* Explicit, high-contrast close button — always reachable. */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}
+          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl font-bold text-white shadow-lg ring-2 ring-white/30 hover:bg-white hover:text-black"
+          aria-label="Close"
+          title="Close (Esc)"
+        >
+          ✕
+        </button>
+        {/* Hint text at the bottom — helps first-time users discover how to close. */}
+        <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1.5 text-xs text-white/80">
+          Click anywhere or press Esc to close
+        </div>
+        <img
+          src={lightboxImage}
+          alt="Enlarged render"
+          className="max-h-full max-w-full rounded-lg shadow-2xl"
+          /* NOTE: no stopPropagation here — clicking the image also closes
+             the lightbox, which is the standard UX users expect. */
+        />
+      </div>
+    )}
+    </>
   );
 }

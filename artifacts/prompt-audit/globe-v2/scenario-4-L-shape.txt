@@ -1,0 +1,55 @@
+=== PROMPT DUMP: Pass 2 (single-shot) — Globe — SCENARIO 4 L-SHAPE 8 vertices, ~200m² ===
+Source           : frontend/src/components/viewer/globe/useGlobeAIRender.ts
+Builder          : buildPrompt (line 744)
+Archetype        : brownstone_rowhouse_frontage (convex-rectangle archetype)
+Polygon          : 8 vertices forming an L shape:
+                   (lng0, lat0), (lng0+15m, lat0),
+                   (lng0+15m, lat0-8m), (lng0+25m, lat0-8m),
+                   (lng0+25m, lat0-16m), (lng0, lat0-16m),
+                   → pixel projection yields 6 distinct corners plus 2 notch vertices,
+                   combined area ≈ 200m².
+Camera           : pitch=45° oblique
+Reconstructed    : YES
+
+-------------------- WHAT CHANGES vs SCENARIO 1 --------------------
+The zone sorting step (buildPrompt line 780-789) uses the SHOELACE formula on raw
+lat/lng — that's polygon area in degrees-squared, NOT meters-squared. The sort is
+consistent within a render but meaningless as an absolute number. It does work
+correctly for relative "largest first" ordering of zones in the SAME render.
+
+The prompt-critical differences for this one zone:
+  - Mask: precise L-shaped white polygon with 2m dilation rounded corners — accurate
+    to the polygon shape.
+  - polygon@(…) token: 8 pixel pairs instead of 4:
+       polygon@(830,515)(940,515)(940,575)(1005,575)(1005,645)(830,645)(830,515)(830,515)
+    Gemini can in principle infer "L" from this — but nothing ever says "L".
+
+-------------------- CONTRADICTION: IRREGULAR POLYGON vs CONVEX ARCHETYPE --------------------
+The archetype image depicts a single rectangular rowhouse. The polygon is L-shaped. The
+prompt text has no token that says "L-shape", "notched", "irregular", or "8-sided".
+
+Gemini's plausible failure modes:
+  (a) Render the archetype rectangular building in the L's bounding box, extending
+      beyond the white mask — will be clipped by `clipRenderToZones` (line 904) back to
+      the polygon BUT with a straight cut across the notch, leaving a severed-looking
+      building.
+  (b) Render a correct L-shape by piecing together the archetype image — needs Gemini
+      to do the geometry; nothing in the prompt asks it to.
+  (c) Render TWO buildings, one in each leg of the L — because the archetype is designed
+      for one parcel, not an L. This mode is especially likely with the "match scale
+      and density of surrounding real 3D buildings" instruction: neighbouring buildings
+      are individual rectangles, so two-rectangles-in-an-L is a locally plausible fit.
+  (d) Fill the L with archetype walls but leave the "inside corner" of the L as a
+      courtyard / garden — which CONFLICTS with the Mapbox MANDATORY (not ported to globe)
+      "Do NOT render landscaping, driveways, plazas, gardens, or any unused space between
+      the building and the polygon edge".
+
+Polygon-clip post-processing (line 904 `clipRenderToZones`) guarantees the VISUAL
+result is L-shaped, but only by cropping — architecture is not re-rendered to honour
+the shape. This is a cosmetic fix, not a semantic one.
+
+-------------------- INFLECTION / CORNER AWARENESS --------------------
+Code path: nothing in `buildPrompt` or `getZoneArchetypeInfo` computes convex-hull,
+vertex count, inward-angle count, bounding-box-to-area ratio, or any "is this a simple
+rectangle?" predicate. Vertex count reaches the model only through the `polygon@(…)`
+pixel-list string length, which Gemini is unlikely to reason about directly.

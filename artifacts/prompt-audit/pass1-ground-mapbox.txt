@@ -1,0 +1,28 @@
+=== PROMPT DUMP: Pass 1 Ground Plane — Mapbox pipeline ===
+Source             : frontend/src/components/viewer/useAIRender.ts
+Builder            : buildGroundPlanePrompt (line 1597) -> buildSCHEMAPrompt mode='ground' (line 1832)
+Zone line builder  : buildCompressedZoneLabel (line 1750, 'ground' path; no imageIndex)
+Camera angle       : HARDCODED "Oblique aerial, drone 60m altitude" (line 1863)
+Fixture            : Two ground zones
+                       - green_space "Central Plaza Park" archetype urban_courtyard_park
+                       - road "Main Avenue" archetype arterial_boulevard
+Style              : photorealistic
+Reconstructed      : YES — captured logs not found; constructed from code paths.
+
+-------------------- ASSEMBLED PROMPT --------------------
+STYLE: Hyper-realistic exterior architectural rendering with cinematic lighting.
+COMPOSITION: Oblique aerial, drone 60m altitude, ground-level zones only, no vertical structures
+LIGHTING: Golden hour, warm southwest sun, crisp architectural shadows
+CONTEXT: Preserve all unmasked satellite imagery exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent satellite context.
+ZONES:
+1. [green] Central Plaza Park | gnd | 42m×28m | paved+grass+tree+bench
+2. [gray] Main Avenue | gnd | 85m×12m | boulevard+asphalt+planted median
+MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate materials. If a zone is partially occluded by a foreground building, render only the visible portion — do not relocate the zone to a clear area. All rendered changes must remain strictly within the site boundary polygon; preserve the satellite imagery exactly as-is beyond it. THE POLYGON EDGES ARE THE BUILDING'S EXTERIOR WALLS. The building MUST FILL the entire polygon area — its footprint must match the polygon shape and size exactly, edge-to-edge. Do NOT render landscaping, driveways, plazas, gardens, or any unused space between the building and the polygon edge. Do NOT place a smaller building inside a larger polygon. The building's floor plan conforms to the polygon's shape. Archetype metadata (floor count, height, nominal dimensions) describes STYLE, MATERIALS, and CHARACTER only — adjust facade rhythm, window density, roof pitch, and ornamental density to suit the polygon's actual footprint, but the footprint itself MUST equal the polygon.
+PROHIBITIONS: buildings extending beyond polygon boundaries, colored polygon fills visible on rooftops or facades, boundary lines or outlines visible in final image, people or pedestrians, text overlays or watermarks, relocating partially-occluded zones to a more visible area instead of rendering only the visible portion
+
+-------------------- KEY OBSERVATION --------------------
+The MANDATORY block is reused verbatim from the building mode (same call site, line 1900).
+Gemini sees "THE POLYGON EDGES ARE THE BUILDING'S EXTERIOR WALLS" and "Archetype metadata
+(floor count, height…)" while being asked to render **a park and a road**. This is the
+clearest "contradictory signal" in the whole pipeline: a ground-plane prompt literally
+tells the model to treat the park boundary as a building wall.

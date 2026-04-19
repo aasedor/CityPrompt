@@ -24,18 +24,26 @@ const DEG_TO_RAD = Math.PI / 180;
 
 // ─── SHARED STYLE PROMPTS ────────────────────────────────────────────
 // Single source of truth for all render style prompts (used by single-shot, per-zone, and ground passes)
+// Style prompts: the overlapping ones are imported from codex verbatim for
+// richer material/lens/weathering language. Stable-only styles (spring, night,
+// marker-render, collage, risograph, pixel-art) are preserved as-is. Codex-only
+// styles (site-plan variants, isometric) are added.
 const GLOBE_STYLE_PROMPTS: Record<string, string> = {
-  photorealistic: 'Photorealistic architectural visualization, photomontage quality, golden hour afternoon sunlight, sharp detail on materials and facades.',
-  photomontage: 'Professional architectural photomontage indistinguishable from a real drone photograph. DJI Mavic 3 at 60m altitude, Hasselblad sensor. Proposed development appears fully constructed. Lighting and shadows match surroundings. Atmospheric haze increasing with distance. Realistic material weathering.',
-  atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze, warm orange light from the west.',
+  photorealistic: 'Hyper-realistic exterior architectural rendering with cinematic lighting. Golden hour sunlight casting realistic shadows. Highly detailed materials including reflective glass facades, textured concrete, natural stone, and weathered brick with visible grain. Lush realistic landscaping. Sharp focus, 8k resolution, ray-traced lighting, professional architectural photography.',
+  photomontage: 'Professional architectural photomontage indistinguishable from a real drone photograph. DJI Mavic 3 at 60m altitude, Hasselblad sensor, 24mm lens f/5.6. Proposed development appears fully constructed within existing site context. Lighting and shadows match surroundings. Atmospheric haze increasing with distance. Realistic material weathering 1-2 years post-completion. Natural lens vignetting and chromatic aberration. Documentary aerial photography of an existing place.',
+  atmospheric: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials — real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
+  'site-plan': 'Top-down 2D architectural site plan in strict orthographic projection. Clean architectural linework with soft flat pastel colors. Stylized trees as simple green circles from above. Professional urban planning drawing quality.',
+  'site-plan-photo': 'Professional near-top-down drone photomontage at 100m altitude, 15-20 degrees from nadir. DJI Mavic 3, Hasselblad sensor, 24mm lens f/5.6. Photorealistic materials, accurate short shadows, real rooftop equipment visible. Seamless integration with surrounding satellite context. Documentary drone survey photography of a completed development. CRITICAL: Replace all colored polygon fills completely with photorealistic materials. No flat green, red, blue, or orange overlay colors should remain visible.',
+  'site-plan-watercolor': 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
   spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors.',
-  winter: 'Photorealistic winter scene with fresh snow on roofs and ground, bare deciduous trees, cool winter afternoon light, frost on surfaces.',
+  winter: 'Photorealistic winter scene. Snow-covered roofs with drift patterns. Bare deciduous trees, snow-laden evergreens. Frosted surfaces, salt-grit on plowed paths. Soft diffuse winter light, pale blue-grey sky, long blue-tinted shadows. Specular melt/ice sheen on horizontal surfaces. Warm window glow.',
   night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
-  watercolour: 'Beautiful watercolor architectural painting on textured paper. Soft bleeding edges, translucent layered washes with white paper glowing through. Pigment granulation in shadows. Muted earth-tone palette with sage green, ochre, and ultramarine accents.',
-  charcoal: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
+  watercolour: 'Beautiful watercolor architectural painting on textured paper. Soft bleeding edges where colors mix organically, translucent layered washes with white paper glowing through. Loose and artistic, pigment granulation in shadows. Muted earth-tone palette with sage green, ochre, and ultramarine accents.',
+  charcoal: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
+  isometric: 'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Smooth matte pastel colors with crisp hard edges and thin black outlines. Vector-art aesthetic, contemporary infographic style.',
   'marker-render': 'Handcrafted architectural marker rendering on smooth paper. Precise black ink linework with Copic marker shading. Visible overlapping streaky strokes following surface planes. Warm greys and ochres for facades, olive greens for landscape. White gaps for highlights.',
-  'clay-maquette': 'Photorealistic macro photography of a physical architectural scale model carved from PURE WHITE matte plaster. Every element — buildings, trees, roads — is the SAME pure white material with ZERO color. Only shadows define form. Studio lighting with soft overhead softbox and deep ambient occlusion.',
-  woodblock: 'Stylized woodblock print. Bold thick black outlines, flat limited vintage color palette of 4-6 colors with crisp separation. Visible wood grain texture. Zero gradation or blending. Graphic retro architectural illustration.',
+  'clay-maquette': 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element — buildings, trees, roads, parks, vehicles — is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
+  woodblock: 'Stylized woodblock print. Bold thick black outlines, flat limited vintage color palette of 4-6 colors with crisp separation. Visible wood grain texture. Zero gradation or blending. Graphic retro architectural illustration, museum-quality fine art print.',
   collage: 'Vibrant post-digital architectural collage as a mixed media composition. Flat unshaded colour blocks, photographic texture cut-outs with torn edges. Vintage botanical illustrations for trees. Flat illustrative lighting. Visible paper texture. Avant-garde competition aesthetic.',
   risograph: 'Risograph-printed architectural visualization. Halftone dot patterns, limited 2-3 spot color palette (fluorescent pink, teal, yellow), slight misregistration between color layers, grain texture, overprint where colors overlap.',
   'pixel-art': '16-bit pixel art architectural scene, grid-aligned with uniform square pixels. Nearest-neighbour scaling, zero anti-aliasing. Strict limited palette of 16 colors. Shading via checkerboard dithering patterns. Dark selective outlines. SNES-era JRPG city aesthetic.',
@@ -351,17 +359,46 @@ function compressImage(blob: Blob, maxWidth = 512, quality = 0.7): Promise<strin
   });
 }
 
+/** Cap on total reference images sent to Gemini. Raised from 6 → 48 to allow
+ *  multi-angle references per zone (street-level + 30°/60°/90° aerials).
+ *  Per pilot memory: Gemini accepts ~3600 images / 20MB total; 48 at ~40KB
+ *  each = ~2MB, well within limits. Sweet spot for reference-count was 3
+ *  angles per zone (street + 60° + 90°), so up to ~16 zones × 3 = 48. */
+const MAX_ARCHETYPE_IMAGES = 48;
+
+/** Aerial angle suffixes to look for alongside the street-level variant_N.png.
+ *  Files are named `variant_N_angle_XX.jpg` where XX is one of these values.
+ *  Order matters — each zone's refs go to Gemini in this order. Street-level
+ *  always comes first; then aerials from low-oblique to top-down. */
+const AERIAL_ANGLE_SUFFIXES: Array<{ suffix: number; label: string }> = [
+  { suffix: 30, label: '30° low-oblique aerial' },
+  { suffix: 60, label: '60° steep-oblique aerial' },
+  { suffix: 90, label: '90° nadir / top-down aerial' },
+];
+
 /**
  * Collect archetype reference card images for multi-image rendering.
- * Returns up to 6 images, compressed to ~30-50KB JPEG each.
+ *
+ * For each zone, discovers and loads up to 4 reference images:
+ *   1. street-level (the variant_N.png thumbnail)
+ *   2. 30° low-oblique aerial (variant_N_angle_30.jpg, if present)
+ *   3. 60° steep-oblique aerial (variant_N_angle_60.jpg, if present)
+ *   4. 90° nadir / top-down aerial (variant_N_angle_90.jpg, if present)
+ *
+ * Each image is compressed to 512px JPEG @ 0.7 (~30-50KB) and tagged with
+ * the viewing angle so the prompt can explain what each reference shows.
+ *
+ * Aerial variants that don't exist on disk (most archetypes don't have them
+ * generated yet — pilot covers only 4 building + 3 open-space archetypes)
+ * are silently skipped; the zone falls back to just its street-level ref.
  */
 async function collectArchetypeImages(
   zones: SiteZone[],
-): Promise<Array<{ image_base64: string; label: string; zone_color: string }>> {
-  const images: Array<{ image_base64: string; label: string; zone_color: string }> = [];
+): Promise<Array<{ image_base64: string; label: string; zone_color: string; angle: string }>> {
+  const images: Array<{ image_base64: string; label: string; zone_color: string; angle: string }> = [];
 
   for (const zone of zones) {
-    if (images.length >= 6) break;
+    if (images.length >= MAX_ARCHETYPE_IMAGES) break;
     if (zone.zone_type === 'site_boundary') continue;
 
     const props = zone.properties || {};
@@ -371,6 +408,15 @@ async function collectArchetypeImages(
       || (props.plaza_archetype_id as string)
       || (props.development_subcategory as string)
       || (props.green_space_subcategory as string)
+      || '';
+
+    // Selected variant ID is stored separately from the parent archetype ID.
+    // Without this, we'd always resolve to the archetype's hero.png and miss
+    // the user's actual variant choice. See `ZonePropertiesPanel.tsx:470`.
+    const selectedVariantId = (props.development_selected_variant_id as string)
+      || (props.green_space_selected_variant_id as string)
+      || (props.road_selected_variant_id as string)
+      || (props.plaza_selected_variant_id as string)
       || '';
 
     if (!archetypeId) {
@@ -384,30 +430,112 @@ async function collectArchetypeImages(
       continue;
     }
 
-    // Use variant-specific thumbnail if available, fall back to parent
-    const variant = entry.variants?.find((v: any) => v.id === archetypeId);
-    const thumbnailUrl = variant?.thumbnailUrl || entry.thumbnailUrl;
+    // Resolve the specific variant the user selected. Preference order:
+    //   1. Variant whose id matches `*_selected_variant_id`.
+    //   2. Variant whose id matches the archetypeId directly (legacy).
+    //   3. First variant in the list (sensible default — avoids hero.png).
+    //   4. Parent entry.thumbnailUrl (last resort — usually the hero).
+    let variant: any = null;
+    if (Array.isArray(entry.variants) && entry.variants.length > 0) {
+      if (selectedVariantId) {
+        variant = entry.variants.find((v: any) => v.id === selectedVariantId);
+      }
+      if (!variant) {
+        variant = entry.variants.find((v: any) => v.id === archetypeId);
+      }
+      if (!variant) {
+        variant = entry.variants[0];
+      }
+    }
+    const thumbnailUrl: string | undefined = variant?.thumbnailUrl || entry.thumbnailUrl;
     if (!thumbnailUrl) {
       console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — archetype "${archetypeId}" has no thumbnailUrl`);
       continue;
     }
+    if (variant) {
+      console.log(`[GlobeAIRender] Zone variant resolved: archetype="${archetypeId}" → variant="${variant.id}" → ${thumbnailUrl}`);
+    } else {
+      console.warn(`[GlobeAIRender] Zone "${zone.name || zone.zone_type}" has no variant — using parent hero (${thumbnailUrl}). Aerial refs won't match.`);
+    }
 
-    // Fetch and compress the card image (512px wide JPEG ~30-50KB)
-    try {
-      const resp = await fetch(thumbnailUrl);
-      if (!resp.ok) continue;
-      const blob = await resp.blob();
-      const base64 = await compressImage(blob, 512, 0.7);
+    const zoneColor = colorName(resolveZoneColor(zone));
+    const title = entry.title || archetypeId;
 
-      const sizeKB = Math.round(base64.length * 0.75 / 1024);
-      console.log(`[GlobeAIRender] Archetype image: ${entry.title} — ${sizeKB}KB (compressed)`);
+    // Build the list of thumbnail stems we'll probe for aerials.
+    //   1. The SELECTED variant's stem (preferred — exact archetype match).
+    //   2. ALL other variants of the same archetype as fallback.
+    // If the user picked variant 0 but we only generated aerials for
+    // variant 3 of the same archetype, the fallback still finds them.
+    // Variants within an archetype share the archetype's functional type,
+    // so even a fallback aerial is the right *typology* of reference.
+    const stripExt = (u: string) => u.replace(/\.[^./]+$/, '');
+    const selectedStem = stripExt(thumbnailUrl);
+    const stems: string[] = [selectedStem];
+    if (Array.isArray(entry.variants)) {
+      for (const v of entry.variants) {
+        if (v.thumbnailUrl) {
+          const s = stripExt(v.thumbnailUrl);
+          if (!stems.includes(s)) stems.push(s);
+        }
+      }
+    }
 
-      images.push({
-        image_base64: base64,
-        label: entry.title || archetypeId,
-        zone_color: colorName(resolveZoneColor(zone)), // e.g. "bright vermillion #E03C31"
-      });
-    } catch { /* skip failed fetches */ }
+    console.log(`[GlobeAIRender] Zone "${zone.name || zone.zone_type}" → archetype="${archetypeId}", selected stem=${selectedStem}, ${stems.length - 1} fallback stem(s)`);
+
+    // 1. Street-level: always the selected variant's thumbnail (no fallback).
+    if (images.length < MAX_ARCHETYPE_IMAGES) {
+      try {
+        const resp = await fetch(thumbnailUrl);
+        if (resp.ok) {
+          const blob = await resp.blob();
+          const base64 = await compressImage(blob, 512, 0.7);
+          const sizeKB = Math.round(base64.length * 0.75 / 1024);
+          console.log(`[GlobeAIRender] Archetype image: ${title} [street-level ground view] — ${sizeKB}KB`);
+          images.push({
+            image_base64: base64,
+            label: `${title} — street-level ground view`,
+            zone_color: zoneColor,
+            angle: 'street-level ground view',
+          });
+        } else {
+          console.warn(`[GlobeAIRender] street-level fetch ${resp.status}: ${thumbnailUrl}`);
+        }
+      } catch (e) {
+        console.warn(`[GlobeAIRender] street-level fetch error: ${thumbnailUrl}`, e);
+      }
+    }
+
+    // 2. Aerial angles: probe selected stem first, then fall back to other
+    //    variants of the same archetype. Use the first hit per angle.
+    for (const angleConfig of AERIAL_ANGLE_SUFFIXES) {
+      if (images.length >= MAX_ARCHETYPE_IMAGES) break;
+      let found = false;
+      for (const stem of stems) {
+        const url = `${stem}_angle_${angleConfig.suffix}.jpg`;
+        try {
+          const resp = await fetch(url);
+          if (!resp.ok) continue;
+          const blob = await resp.blob();
+          const base64 = await compressImage(blob, 512, 0.7);
+          const sizeKB = Math.round(base64.length * 0.75 / 1024);
+          const fallbackNote = stem === selectedStem ? '' : ' (fallback variant)';
+          console.log(`[GlobeAIRender] Archetype image: ${title} [${angleConfig.label}]${fallbackNote} — ${sizeKB}KB`);
+          images.push({
+            image_base64: base64,
+            label: `${title} — ${angleConfig.label}`,
+            zone_color: zoneColor,
+            angle: angleConfig.label,
+          });
+          found = true;
+          break;
+        } catch {
+          /* probe next stem */
+        }
+      }
+      if (!found) {
+        console.log(`[GlobeAIRender]   no ${angleConfig.label} found for ${title} (tried ${stems.length} stem(s))`);
+      }
+    }
   }
 
   return images;
@@ -621,7 +749,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
 
   // --- LIGHTING ---
   const lightingMap: Record<string, string> = {
-    photorealistic: 'Golden hour, warm southwest sun, crisp architectural shadows.',
+    photorealistic: 'Golden hour, low warm southwest sun creating strong directional light. Long crisp architectural shadows with deep material contrast — sunlit facades should read bright and textured, shadowed facades cool and recessive. Sharp highlight-to-shadow transitions emphasizing facade depth (cornices, mullions, balcony edges, podium returns) rather than flat global illumination.',
     winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
     atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
     spring: 'Bright spring midday sun, vivid colors, fresh green light.',
@@ -645,10 +773,48 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
       };
       return polyArea(b) - polyArea(a);
     });
+  // --- POSITION ANCHORING (screen-space quadrant per zone) ---
+  // Gives Gemini a SECOND identification axis alongside color, reducing the
+  // "wrong archetype at wrong polygon" failure mode when fill colors alone
+  // aren't discriminating. We use SCREEN-SPACE position (upper-left, center,
+  // lower-right, etc.) — not cardinal direction — because Gemini sees a 2D
+  // image from some oblique camera bearing, not a north-up map. Screen
+  // position is verifiable against pixels Gemini actually sees; cardinal
+  // direction would require Gemini to know which way is north.
+  const screenPositionForZone = (zone: SiteZone): string => {
+    const coords = zone.coordinates || [];
+    if (coords.length === 0) return 'CENTER';
+    if (!camera || terrainHeight == null) return 'CENTER';
+    const lng = coords.reduce((s, c) => s + c[0], 0) / coords.length;
+    const lat = coords.reduce((s, c) => s + c[1], 0) / coords.length;
+    // Project to a normalized 1000×1000 virtual frame — we only care about
+    // the relative quadrant, not absolute pixel values, so the exact size
+    // doesn't matter.
+    const W = 1000;
+    const H = 1000;
+    const pixel = projectToPixels(lng, lat, terrainHeight, camera, W, H);
+    if (!pixel) return 'BEHIND-CAMERA'; // Gemini won't render it anyway
+    const fx = pixel.x / W; // 0 = left, 1 = right
+    const fy = pixel.y / H; // 0 = top, 1 = bottom (screen coords)
+    // 3×3 grid buckets, relaxed middle band for "center-ish" zones
+    const colLeft = fx < 0.35, colRight = fx >= 0.65;
+    const rowTop = fy < 0.35, rowBot = fy >= 0.65;
+    if (rowTop && colLeft) return 'UPPER-LEFT';
+    if (rowTop && colRight) return 'UPPER-RIGHT';
+    if (rowTop) return 'UPPER-CENTER';
+    if (rowBot && colLeft) return 'LOWER-LEFT';
+    if (rowBot && colRight) return 'LOWER-RIGHT';
+    if (rowBot) return 'LOWER-CENTER';
+    if (colLeft) return 'MIDDLE-LEFT';
+    if (colRight) return 'MIDDLE-RIGHT';
+    return 'CENTER';
+  };
+
   const zoneLines: string[] = [];
   for (let i = 0; i < renderZones.length; i++) {
     const zone = renderZones[i];
     const color = colorName(resolveZoneColor(zone));
+    const position = screenPositionForZone(zone);
     const props = zone.properties || {};
     const info = getZoneArchetypeInfo(zone);
 
@@ -692,7 +858,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     if (userDesc.length > 10) features.push(userDesc);
 
     const featureStr = features.join(', ').substring(0, 200);
-    zoneLines.push(`${i + 1}. [${color}] ${name} | ${scale} | ${featureStr || 'render as described'}`);
+    zoneLines.push(`${i + 1}. [${color}] @ ${position} of frame | ${name} | ${scale} | ${featureStr || 'render as described'}`);
   }
 
   // --- ASSEMBLE SCHEMA PROMPT ---
@@ -706,6 +872,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
     `ZONES:\n${zoneLines.join('\n')}`,
     `ZONE IDENTIFICATION: Each zone polygon has TWO visual identifiers: (1) its archetype name written as colored text on the polygon, and (2) a unique bright DASHED BORDER in a distinct color (red, blue, magenta, cyan, yellow, etc.). The text label color matches the border color. Use BOTH the text label AND the border color to identify each zone. Zones with similar fill colors can be distinguished by their different border colors. Road/street zones can be distinguished from existing roads by their dashed border — only polygons with dashed borders are zones to render.`,
+    `ZONE ASSIGNMENT: Each zone line in the ZONES list above begins with "@ SCREEN-POSITION" (values: UPPER-LEFT, UPPER-CENTER, UPPER-RIGHT, MIDDLE-LEFT, CENTER, MIDDLE-RIGHT, LOWER-LEFT, LOWER-CENTER, LOWER-RIGHT) — this is the location of that zone's polygon within THIS image's 2D frame. It is a THIRD identification axis alongside color and text label. Verify color, label, AND screen position all match before rendering an archetype at a polygon. If a line says "[magenta] @ LOWER-RIGHT | Grand Magasin", render the Grand Magasin archetype at the polygon in the lower-right region of the frame — NOT at a polygon elsewhere even if its color looks similar. Never swap archetypes between polygons. When two zones have similar fill colors, the SCREEN-POSITION resolves the ambiguity — trust the position anchor over color similarity.`,
     `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. Read the text label on each polygon to identify what to render there. Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`,
     `PROHIBITIONS: colored polygon fills visible on ANY rendered surface (rooftops, facades, ground), dashed boundary lines or outlines visible, text labels visible, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`,
     `SITE BOUNDARY: Do NOT add any NEW buildings, structures, roads, people, vehicles, or landscaping outside the colored zone polygons. However, rendered zones MUST blend seamlessly into the surrounding landscape at their edges — match lighting, ground plane, and context so there is no visible seam between rendered and existing areas.`,
@@ -1126,10 +1293,13 @@ export function useGlobeAIRender() {
       model?: string;
       projectId?: string;
       customPrompt?: string;
+      // Internal: skip the isRenderingRef lock so renderPreviews can fan out
+      // N parallel calls. renderPreviews sets the ref itself around the batch.
+      _skipLock?: boolean;
     } = {},
   ): Promise<GlobeRenderResult | null> => {
-    if (isRenderingRef.current) return null;
-    isRenderingRef.current = true;
+    if (!options._skipLock && isRenderingRef.current) return null;
+    if (!options._skipLock) isRenderingRef.current = true;
 
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', customPrompt } = options;
@@ -1250,13 +1420,35 @@ export function useGlobeAIRender() {
       let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
-      // 4. Collect archetype reference card images (up to 6, compressed to ~30-50KB JPEG each)
+      // 4. Collect archetype reference card images (multi-view: street-level +
+      //    up to 3 aerial angles per zone — 30°/60°/90° where available).
+      //    Each image is compressed to 512px JPEG @ 0.7 (~30-50KB). Cap 48.
       console.log('[GlobeAIRender] Collecting archetype reference images...');
       const archetypeImages = await collectArchetypeImages(visibleZones);
       if (archetypeImages.length > 0) {
-        prompt += `\n\nARCHETYPE STYLE REFERENCES (Images 2+): ${archetypeImages.length} reference images show the exact architectural style for specific zones. Use Image 1 as the spatial context. Apply each reference style to the matching colored zone.`;
+        prompt += (
+          `\n\nARCHETYPE REFERENCE IMAGES (Images 2+): ${archetypeImages.length} ` +
+          `images provide the visual identity for the drawn zones. Each image is ` +
+          `labeled with its VIEWING ANGLE so you can match your output angle to ` +
+          `the right reference:\n` +
+          `  • "street-level ground view" — eye-level photograph; shows facade ` +
+          `detail, materials, ornament, colors, ground-level character.\n` +
+          `  • "30° low-oblique aerial" — drone ~50m up looking down shallowly; ` +
+          `shows facade + partial rooftop.\n` +
+          `  • "60° steep-oblique aerial" — drone ~80m up looking down steeply; ` +
+          `shows rooftop + upper facade from a corner, triangulates 3D form.\n` +
+          `  • "90° nadir / top-down aerial" — drone ~150m up looking straight ` +
+          `down; shows rooftop plan, site layout, roof materials.\n` +
+          `HOW TO USE: when rendering at an oblique camera angle (30-70°), weight ` +
+          `the 60° aerial and street-level refs most heavily. When rendering top-` +
+          `down or near-nadir, weight the 90° nadir ref most heavily. Use ALL ` +
+          `available refs per zone to build a complete 3D understanding of its ` +
+          `materials, form, and site layout before rendering. Each ref is ` +
+          `tagged with the zone's fill color in [brackets] to identify which ` +
+          `polygon it belongs to.`
+        );
         for (let i = 0; i < archetypeImages.length; i++) {
-          prompt += `\nImage ${i + 2}: Style reference for [${archetypeImages[i].zone_color}] ${archetypeImages[i].label}`;
+          prompt += `\nImage ${i + 2}: [${archetypeImages[i].zone_color}] ${archetypeImages[i].label}`;
         }
       }
 
@@ -1305,9 +1497,51 @@ export function useGlobeAIRender() {
       console.error('[GlobeAIRender] Error:', err);
       return null;
     } finally {
-      isRenderingRef.current = false;
+      if (!options._skipLock) isRenderingRef.current = false;
     }
   }, []);
+
+  /**
+   * Generate N preview renders in parallel with different server-side seeds.
+   * Each preview is a full-quality render — this is not a low-res preview pass;
+   * it's N independent variants the user can compare and pick the best one.
+   *
+   * The isRenderingRef lock is held by renderPreviews around the whole batch,
+   * and individual render() calls bypass their own lock via _skipLock.
+   */
+  const renderPreviews = useCallback(async (
+    canvas: HTMLCanvasElement,
+    camera: THREE.Camera,
+    zones: SiteZone[],
+    terrainHeight: number,
+    options: {
+      style?: string;
+      model?: string;
+      projectId?: string;
+      customPrompt?: string;
+      count?: number;
+    } = {},
+  ): Promise<GlobeRenderResult[]> => {
+    if (isRenderingRef.current) return [];
+    isRenderingRef.current = true;
+    const count = options.count ?? 3;
+    try {
+      console.log(`[GlobeAIRender] Generating ${count} previews in parallel...`);
+      const promises: Promise<GlobeRenderResult | null>[] = Array.from({ length: count }, () =>
+        render(canvas, camera, zones, terrainHeight, { ...options, _skipLock: true })
+          .catch((err) => {
+            console.warn('[GlobeAIRender:Preview] one variant failed:', err);
+            return null;
+          }),
+      );
+      const settled = await Promise.all(promises);
+      const successful = settled.filter((r): r is GlobeRenderResult => r !== null);
+      console.log(`[GlobeAIRender] Previews complete: ${successful.length}/${count} succeeded`);
+      return successful;
+    } finally {
+      isRenderingRef.current = false;
+    }
+  }, [render]);
 
   /**
    * Capture the Google 3D Tiles from street level.
@@ -1577,5 +1811,5 @@ export function useGlobeAIRender() {
     }
   }, []);
 
-  return { render, renderPerZone, captureStreetView, isRenderingRef };
+  return { render, renderPreviews, renderPerZone, captureStreetView, isRenderingRef };
 }

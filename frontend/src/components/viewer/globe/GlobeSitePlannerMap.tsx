@@ -1,11 +1,11 @@
-/**
- * GlobeSitePlannerMap.tsx — Google Earth-style 3D globe with SiteForge tools.
+﻿/**
+ * GlobeSitePlannerMap.tsx â€” Google Earth-style 3D globe with SiteForge tools.
  *
  * Full-screen globe with drawing handled at the DOM level (not inside R3F).
- * GlobeControls always enabled — drawing uses click vs drag detection.
+ * GlobeControls always enabled â€” drawing uses click vs drag detection.
  */
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import { Canvas, useThree } from '@react-three/fiber';
 import {
@@ -14,6 +14,7 @@ import {
   GlobeControls,
   TilesAttributionOverlay,
   EastNorthUpFrame,
+  TilesRendererContext,
 } from '3d-tiles-renderer/r3f';
 import {
   GoogleCloudAuthPlugin,
@@ -24,9 +25,10 @@ import {
   GLTFExtensionsPlugin,
 } from '3d-tiles-renderer/plugins';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
+import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { Html } from '@react-three/drei';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
+import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeEditMode } from './GlobeEditMode';
@@ -34,6 +36,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
+import { getRepresentativeTerrainHeight } from './globeTerrainUtils';
 import {
   getToolDisplayLabel,
   isLinearTool,
@@ -41,6 +44,7 @@ import {
   smoothPolyline,
   bufferLineToPolygon,
   computeCentroid,
+  haversineDistance,
   geodesicArea,
   polylineLength,
   formatDistance,
@@ -57,10 +61,26 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 
-// Default fallback elevation (Calgary) — used until dynamic fetch completes
+// Default fallback elevation (Calgary) â€” used until dynamic fetch completes
 const DEFAULT_TERRAIN_ELEVATION = 1045;
-
-import { Ellipsoid } from '3d-tiles-renderer';
+const DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 250;
+const MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND;
+const MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 1800;
+const MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND = 40000;
+export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
+export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
+const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
+const VIEWPORT_FIT_INITIAL_CAMERA_MULTIPLIER = 2;
+const DRAWING_FILL_LIFT_METERS = 3;
+const DRAWING_OUTLINE_LIFT_METERS = 4;
+const DRAWING_VERTEX_LIFT_METERS = 7;
+const DRAWING_VERTEX_RADIUS_METERS = 2.25;
+const GLOBE_NAV_MIN_HEIGHT_ABOVE_GROUND = 20;
+const GLOBE_NAV_HORIZONTAL_SPEED_FACTOR = 0.02;
+const GLOBE_NAV_VERTICAL_SPEED_FACTOR = 0.02;
+const GLOBE_NAV_MIN_STEP_METERS = 2;
+const GLOBE_NAV_MAX_STEP_METERS = 120;
+export const SELECTED_ZONE_KEYBOARD_NUDGE_DELTA = 0.00005; // ~5m in latitude degrees
 
 /** Create a terrain-adjusted ellipsoid for accurate raycasting at a given elevation */
 function createTerrainEllipsoid(elevation: number): Ellipsoid {
@@ -69,6 +89,418 @@ function createTerrainEllipsoid(elevation: number): Ellipsoid {
     6378137.0 + elevation,
     6356752.3142 + elevation,
   );
+}
+
+export function buildZoneCreateProperties(
+  tool: SiteZoneType,
+  properties: SiteZoneProperties | null | undefined,
+  terrainElevation: number,
+): SiteZoneProperties {
+  return {
+    ...ZONE_TYPE_CONFIG[tool].defaultProperties,
+    ...(properties ?? {}),
+    terrain_elevation_m: terrainElevation,
+  };
+}
+
+export function shouldMirrorCtrlPointerAsShift(
+  event: Pick<PointerEvent, 'button' | 'ctrlKey' | 'shiftKey'>,
+): boolean {
+  return event.button === 0 && event.ctrlKey && !event.shiftKey;
+}
+
+export function getGlobeNavigationMovement(keysDown: ReadonlySet<string>) {
+  let forward = 0;
+  let strafe = 0;
+
+  if (keysDown.has('w') || keysDown.has('arrowup')) forward += 1;
+  if (keysDown.has('s') || keysDown.has('arrowdown')) forward -= 1;
+  if (keysDown.has('d') || keysDown.has('arrowright')) strafe += 1;
+  if (keysDown.has('a') || keysDown.has('arrowleft')) strafe -= 1;
+
+  return { forward, strafe, vertical: 0 };
+}
+
+function hasFiniteQuaternion(camera: THREE.Camera | null | undefined): camera is THREE.Camera & { quaternion: THREE.Quaternion } {
+  const quaternion = camera?.quaternion as Partial<THREE.Quaternion> | undefined;
+  return !!quaternion && [quaternion.x, quaternion.y, quaternion.z, quaternion.w].every(Number.isFinite);
+}
+
+function hasFiniteVector3(vector: Partial<THREE.Vector3> | null | undefined): vector is THREE.Vector3 {
+  return !!vector && [vector.x, vector.y, vector.z].every(Number.isFinite);
+}
+
+function pointToCartographic(
+  point: THREE.Vector3,
+  fallbackEllipsoid: Ellipsoid,
+): { lon: number; lat: number } {
+  const ellipsoidWithCartographic = WGS84_ELLIPSOID as Ellipsoid & {
+    getPositionToCartographic?: (point: THREE.Vector3, target: unknown) => { lon: number; lat: number };
+  };
+  const cartographicSource = typeof ellipsoidWithCartographic.getPositionToCartographic === 'function'
+    ? ellipsoidWithCartographic
+    : fallbackEllipsoid;
+  return cartographicSource.getPositionToCartographic(point, {} as never);
+}
+
+function normalizeBearing(bearing: number): number {
+  return ((bearing + 180) % 360 + 360) % 360 - 180;
+}
+
+function projectOntoTangentPlane(
+  vector: THREE.Vector3,
+  normal: THREE.Vector3,
+  fallback: THREE.Vector3,
+) {
+  const tangent = vector.clone().addScaledVector(normal, -vector.dot(normal));
+  if (tangent.lengthSq() < 1e-10) {
+    return fallback.clone();
+  }
+  return tangent.normalize();
+}
+
+function decomposeOnBasis(
+  vector: THREE.Vector3,
+  east: THREE.Vector3,
+  north: THREE.Vector3,
+  up: THREE.Vector3,
+) {
+  return {
+    east: vector.dot(east),
+    north: vector.dot(north),
+    up: vector.dot(up),
+  };
+}
+
+function composeFromBasis(
+  basis: { east: number; north: number; up: number },
+  east: THREE.Vector3,
+  north: THREE.Vector3,
+  up: THREE.Vector3,
+) {
+  return new THREE.Vector3()
+    .addScaledVector(east, basis.east)
+    .addScaledVector(north, basis.north)
+    .addScaledVector(up, basis.up);
+}
+
+export function translateGlobeCamera(
+  camera: THREE.Camera,
+  controls: { pivotPoint?: THREE.Vector3; update?: () => void } | null | undefined,
+  terrainEllipsoid: Ellipsoid,
+  movement: {
+    forward: number;
+    strafe: number;
+    vertical: number;
+  },
+) {
+  const pivotPoint = controls?.pivotPoint?.clone();
+  if (!pivotPoint) {
+    return false;
+  }
+
+  const pivotCartographic = pointToCartographic(pivotPoint, terrainEllipsoid);
+  if (!Number.isFinite(pivotCartographic.lat) || !Number.isFinite(pivotCartographic.lon)) {
+    return false;
+  }
+
+  const latRad = pivotCartographic.lat;
+  const lngRad = pivotCartographic.lon;
+  const latDeg = latRad * RAD_TO_DEG;
+  const lngDeg = lngRad * RAD_TO_DEG;
+
+  const up = new THREE.Vector3();
+  const east = new THREE.Vector3();
+  const north = new THREE.Vector3();
+  terrainEllipsoid.getCartographicToNormal(latRad, lngRad, up);
+  terrainEllipsoid.getEastNorthUpAxes(latRad, lngRad, east, north, new THREE.Vector3());
+
+  const cameraOffset = camera.position.clone().sub(pivotPoint);
+  const offsetBasis = decomposeOnBasis(cameraOffset, east, north, up);
+  const currentHeight = Math.max(offsetBasis.up, GLOBE_NAV_MIN_HEIGHT_ABOVE_GROUND);
+
+  const cameraForward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize();
+  const tangentForward = projectOntoTangentPlane(cameraForward, up, north);
+  const tangentRight = tangentForward.clone().cross(up).normalize();
+  const forwardBasis = decomposeOnBasis(cameraForward, east, north, up);
+
+  const horizontalMagnitude = Math.hypot(movement.forward, movement.strafe);
+  const horizontalStep = THREE.MathUtils.clamp(
+    currentHeight * GLOBE_NAV_HORIZONTAL_SPEED_FACTOR,
+    GLOBE_NAV_MIN_STEP_METERS,
+    GLOBE_NAV_MAX_STEP_METERS,
+  );
+  const verticalStep = THREE.MathUtils.clamp(
+    currentHeight * GLOBE_NAV_VERTICAL_SPEED_FACTOR,
+    GLOBE_NAV_MIN_STEP_METERS,
+    GLOBE_NAV_MAX_STEP_METERS,
+  );
+
+  let eastMeters = 0;
+  let northMeters = 0;
+  if (horizontalMagnitude > 0) {
+    const movementScale = 1 / Math.max(1, horizontalMagnitude);
+    const horizontalDelta = new THREE.Vector3()
+      .addScaledVector(tangentForward, movement.forward * movementScale * horizontalStep)
+      .addScaledVector(tangentRight, movement.strafe * movementScale * horizontalStep);
+    eastMeters = horizontalDelta.dot(east);
+    northMeters = horizontalDelta.dot(north);
+  }
+
+  const metersPerLon = Math.max(metersPerDegLon(latDeg), 1e-6);
+  const nextLatDeg = latDeg + northMeters / METERS_PER_DEG_LAT;
+  const nextLngDeg = lngDeg + eastMeters / metersPerLon;
+  const nextLatRad = nextLatDeg * DEG_TO_RAD;
+  const nextLngRad = nextLngDeg * DEG_TO_RAD;
+
+  const nextPivotPoint = new THREE.Vector3();
+  terrainEllipsoid.getCartographicToPosition(nextLatRad, nextLngRad, 0, nextPivotPoint);
+
+  const nextUp = new THREE.Vector3();
+  const nextEast = new THREE.Vector3();
+  const nextNorth = new THREE.Vector3();
+  terrainEllipsoid.getCartographicToNormal(nextLatRad, nextLngRad, nextUp);
+  terrainEllipsoid.getEastNorthUpAxes(nextLatRad, nextLngRad, nextEast, nextNorth, new THREE.Vector3());
+
+  const nextCameraOffset = composeFromBasis(
+    {
+      east: offsetBasis.east,
+      north: offsetBasis.north,
+      up: Math.max(
+        GLOBE_NAV_MIN_HEIGHT_ABOVE_GROUND,
+        offsetBasis.up + movement.vertical * verticalStep,
+      ),
+    },
+    nextEast,
+    nextNorth,
+    nextUp,
+  );
+
+  const nextForward = composeFromBasis(forwardBasis, nextEast, nextNorth, nextUp).normalize();
+  if (nextForward.lengthSq() < 1e-10) {
+    return false;
+  }
+
+  camera.position.copy(nextPivotPoint).add(nextCameraOffset);
+  camera.up.copy(nextUp);
+  camera.lookAt(camera.position.clone().add(nextForward));
+  camera.updateMatrixWorld();
+
+  controls?.pivotPoint?.copy(nextPivotPoint);
+  controls?.update?.();
+
+  return true;
+}
+
+export function getSelectedZoneKeyboardNudgeDelta(
+  latDeg: number,
+  lngDeg: number,
+  camera: THREE.Camera | null | undefined,
+  movement: { forward: number; strafe: number },
+) {
+  const horizontalMagnitude = Math.hypot(movement.forward, movement.strafe);
+  if (horizontalMagnitude === 0) {
+    return [0, 0] as const;
+  }
+
+  const latRad = latDeg * DEG_TO_RAD;
+  const lngRad = lngDeg * DEG_TO_RAD;
+  const up = new THREE.Vector3();
+  const east = new THREE.Vector3();
+  const north = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(latRad, lngRad, up);
+  WGS84_ELLIPSOID.getEastNorthUpAxes(latRad, lngRad, east, north, new THREE.Vector3());
+
+  const tangentForward = hasFiniteQuaternion(camera)
+    ? projectOntoTangentPlane(
+      new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize(),
+      up,
+      north,
+    )
+    : north.clone();
+  const tangentRight = tangentForward.clone().cross(up).normalize();
+  const stepMeters = SELECTED_ZONE_KEYBOARD_NUDGE_DELTA * METERS_PER_DEG_LAT;
+  const movementScale = 1 / Math.max(1, horizontalMagnitude);
+  const horizontalDelta = new THREE.Vector3()
+    .addScaledVector(tangentForward, movement.forward * movementScale * stepMeters)
+    .addScaledVector(tangentRight, movement.strafe * movementScale * stepMeters);
+
+  const eastMeters = horizontalDelta.dot(east);
+  const northMeters = horizontalDelta.dot(north);
+
+  return [
+    eastMeters / Math.max(metersPerDegLon(latDeg), 1e-6),
+    northMeters / METERS_PER_DEG_LAT,
+  ] as const;
+}
+
+export function syncGlobeControlsFallbackPlane(
+  controls:
+    | {
+        fallbackPlane?: THREE.Plane;
+        pivotPoint?: THREE.Vector3;
+        getPivotPoint?: (target: THREE.Vector3) => THREE.Vector3 | null | undefined;
+        useFallbackPlane?: boolean;
+      }
+    | null
+    | undefined,
+  camera: THREE.Camera | null | undefined,
+) {
+  if (!controls?.fallbackPlane || !camera) {
+    return false;
+  }
+
+  const planePoint = new THREE.Vector3();
+  let hasPlanePoint = false;
+
+  if (hasFiniteVector3(controls.pivotPoint)) {
+    planePoint.copy(controls.pivotPoint);
+    hasPlanePoint = true;
+  } else if (typeof controls.getPivotPoint === 'function') {
+    controls.getPivotPoint(planePoint);
+    hasPlanePoint = hasFiniteVector3(planePoint);
+  }
+
+  if (!hasPlanePoint) {
+    return false;
+  }
+
+  const planeNormal = hasFiniteQuaternion(camera)
+    ? new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize()
+    : hasFiniteVector3(camera.position)
+      ? planePoint.clone().sub(camera.position).normalize()
+      : new THREE.Vector3(0, 0, -1);
+
+  if (!hasFiniteVector3(planeNormal) || planeNormal.lengthSq() < 1e-10) {
+    return false;
+  }
+
+  controls.fallbackPlane.setFromNormalAndCoplanarPoint(planeNormal, planePoint);
+  if ('useFallbackPlane' in controls) {
+    controls.useFallbackPlane = true;
+  }
+  return true;
+}
+
+export function computeCameraPose(
+  lat: number,
+  lng: number,
+  heightAboveGroundMeters: number,
+  terrainHeightMeters: number = 0,
+) {
+  const surfacePos = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(
+    lat * DEG_TO_RAD,
+    lng * DEG_TO_RAD,
+    terrainHeightMeters,
+    surfacePos,
+  );
+
+  const normal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(lat * DEG_TO_RAD, lng * DEG_TO_RAD, normal);
+
+  const east = new THREE.Vector3();
+  const north = new THREE.Vector3();
+  WGS84_ELLIPSOID.getEastNorthUpAxes(
+    lat * DEG_TO_RAD,
+    lng * DEG_TO_RAD,
+    east,
+    north,
+    new THREE.Vector3(),
+  );
+
+  const cameraPos = surfacePos.clone().add(normal.clone().multiplyScalar(heightAboveGroundMeters));
+  const eastSkew = 0.25;
+  const horizontalOffset = heightAboveGroundMeters * Math.tan(DEFAULT_INITIAL_CAMERA_PITCH_DEGREES * DEG_TO_RAD);
+  const northOffset = horizontalOffset / Math.hypot(1, eastSkew);
+  cameraPos.add(north.multiplyScalar(-northOffset));
+  cameraPos.add(east.multiplyScalar(northOffset * eastSkew));
+
+  // cameraUp defaults to the surface normal when no handoff up-vector is
+  // supplied; returning it here keeps the type uniform across all return
+  // paths so callers can read pose.cameraUp without TypeScript flagging
+  // it as missing on this branch.
+  return { cameraPos, surfacePos, normal, cameraUp: normal };
+}
+
+function computeBearingFromCamera(
+  focusLat: number,
+  focusLng: number,
+  cameraPosition: THREE.Vector3 | null | undefined,
+  terrainHeightMeters: number,
+): number | null {
+  if (
+    !cameraPosition
+    || !Number.isFinite(cameraPosition.x)
+    || !Number.isFinite(cameraPosition.y)
+    || !Number.isFinite(cameraPosition.z)
+  ) {
+    return null;
+  }
+
+  const surfacePos = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(
+    focusLat * DEG_TO_RAD,
+    focusLng * DEG_TO_RAD,
+    terrainHeightMeters,
+    surfacePos,
+  );
+
+  const normal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(focusLat * DEG_TO_RAD, focusLng * DEG_TO_RAD, normal);
+
+  const east = new THREE.Vector3();
+  const north = new THREE.Vector3();
+  WGS84_ELLIPSOID.getEastNorthUpAxes(
+    focusLat * DEG_TO_RAD,
+    focusLng * DEG_TO_RAD,
+    east,
+    north,
+    new THREE.Vector3(),
+  );
+
+  const focusToCamera = cameraPosition.clone().sub(surfacePos);
+  const horizontalOffset = focusToCamera.sub(
+    normal.clone().multiplyScalar(focusToCamera.dot(normal)),
+  );
+  const eastComponent = horizontalOffset.dot(east);
+  const northComponent = horizontalOffset.dot(north);
+
+  if (!Number.isFinite(eastComponent) || !Number.isFinite(northComponent)) {
+    return null;
+  }
+
+  if (Math.hypot(eastComponent, northComponent) < 1e-3) {
+    return null;
+  }
+
+  return normalizeBearing(Math.atan2(-eastComponent, -northComponent) * RAD_TO_DEG);
+}
+
+function computePitchFromCamera(camera: THREE.Camera | null | undefined): number | null {
+  const quaternion = camera?.quaternion as Partial<THREE.Quaternion> | undefined;
+  const position = camera?.position as Partial<THREE.Vector3> | undefined;
+  if (
+    !camera
+    || !quaternion
+    || !position
+    || !Number.isFinite(quaternion.x)
+    || !Number.isFinite(quaternion.y)
+    || !Number.isFinite(quaternion.z)
+    || !Number.isFinite(quaternion.w)
+    || !Number.isFinite(position.x)
+    || !Number.isFinite(position.y)
+    || !Number.isFinite(position.z)
+  ) {
+    return null;
+  }
+
+  const lookDirection = new THREE.Vector3(0, 0, -1)
+    .applyQuaternion(camera.quaternion)
+    .normalize();
+  const surfaceNormal = new THREE.Vector3(position.x, position.y, position.z).normalize();
+
+  return Math.acos(THREE.MathUtils.clamp(-lookDirection.dot(surfaceNormal), -1, 1)) * RAD_TO_DEG;
 }
 
 function sanitizeCoords(coords: number[][]): number[][] {
@@ -89,11 +521,230 @@ function sanitizeCoords(coords: number[][]): number[][] {
   }
   return cleaned;
 }
+function buildInitialViewFromViewport(
+  latitude: number,
+  longitude: number,
+  bounds?: {
+    west: number;
+    south: number;
+    east: number;
+    north: number;
+  },
+) {
+  if (!bounds) {
+    return {
+      lat: latitude,
+      lng: longitude,
+      altitude: DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
+    };
+  }
+
+  const corners: [number, number][] = [
+    [bounds.west, bounds.south],
+    [bounds.west, bounds.north],
+    [bounds.east, bounds.south],
+    [bounds.east, bounds.north],
+  ];
+
+  let maxDistMeters = 0;
+  for (const corner of corners) {
+    const distMeters = haversineDistance([longitude, latitude], corner);
+    if (Number.isFinite(distMeters)) {
+      maxDistMeters = Math.max(maxDistMeters, distMeters);
+    }
+  }
+
+  return {
+    lat: latitude,
+    lng: longitude,
+    altitude: Math.min(
+      MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND,
+      Math.max(
+        MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
+        maxDistMeters * VIEWPORT_FIT_INITIAL_CAMERA_MULTIPLIER,
+      ),
+    ),
+  };
+}
+
+interface GlobePreferredView {
+  latitude: number;
+  longitude: number;
+  bounds?: {
+    west: number;
+    south: number;
+    east: number;
+    north: number;
+  };
+  cameraPosition?: {
+    latitude: number;
+    longitude: number;
+    altitude: number;
+    pitch?: number;
+    bearing?: number;
+  };
+  cameraOrientation?: {
+    forward: {
+      x: number;
+      y: number;
+      z: number;
+    };
+    up?: {
+      x: number;
+      y: number;
+      z: number;
+    };
+  };
+}
+
+function isFiniteOrientationVector(value: unknown): value is { x: number; y: number; z: number } {
+  return typeof value === 'object'
+    && value !== null
+    && 'x' in value
+    && 'y' in value
+    && 'z' in value
+    && Number.isFinite(value.x)
+    && Number.isFinite(value.y)
+    && Number.isFinite(value.z);
+}
+
+function mapboxMercatorVectorToWorldDirection(
+  latitude: number,
+  longitude: number,
+  vector: { x: number; y: number; z: number },
+) {
+  const east = new THREE.Vector3();
+  const north = new THREE.Vector3();
+  const up = new THREE.Vector3();
+  WGS84_ELLIPSOID.getEastNorthUpAxes(
+    latitude * DEG_TO_RAD,
+    longitude * DEG_TO_RAD,
+    east,
+    north,
+    up,
+  );
+
+  const worldDirection = east.multiplyScalar(vector.x)
+    .add(north.multiplyScalar(-vector.y))
+    .add(up.multiplyScalar(vector.z));
+
+  if (worldDirection.lengthSq() < 1e-12) {
+    return null;
+  }
+
+  return worldDirection.normalize();
+}
+
+function buildCameraPoseFromPreferredView(
+  preferredView: GlobePreferredView,
+  terrainHeightMeters: number,
+) {
+  const cameraPosition = preferredView.cameraPosition;
+  if (!cameraPosition) {
+    return null;
+  }
+
+  const rawValues = [
+    preferredView.latitude,
+    preferredView.longitude,
+    cameraPosition.latitude,
+    cameraPosition.longitude,
+    cameraPosition.altitude,
+  ];
+  if (rawValues.some((value) => !Number.isFinite(value))) {
+    return null;
+  }
+
+  const surfacePos = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(
+    preferredView.latitude * DEG_TO_RAD,
+    preferredView.longitude * DEG_TO_RAD,
+    terrainHeightMeters,
+    surfacePos,
+  );
+
+  const normal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(
+    preferredView.latitude * DEG_TO_RAD,
+    preferredView.longitude * DEG_TO_RAD,
+    normal,
+  );
+
+  const cameraAltitude = Math.max(cameraPosition.altitude, terrainHeightMeters + 10);
+  const rawCameraPos = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(
+    cameraPosition.latitude * DEG_TO_RAD,
+    cameraPosition.longitude * DEG_TO_RAD,
+    cameraAltitude,
+    rawCameraPos,
+  );
+
+  const cameraNormal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(
+    cameraPosition.latitude * DEG_TO_RAD,
+    cameraPosition.longitude * DEG_TO_RAD,
+    cameraNormal,
+  );
+
+  const handedOffForward = preferredView.cameraOrientation?.forward;
+  if (isFiniteOrientationVector(handedOffForward)) {
+    const worldForward = mapboxMercatorVectorToWorldDirection(
+      cameraPosition.latitude,
+      cameraPosition.longitude,
+      handedOffForward,
+    );
+
+    if (worldForward) {
+      const terrainEllipsoid = createTerrainEllipsoid(terrainHeightMeters);
+      const intersection = new THREE.Vector3();
+      const hit = terrainEllipsoid.intersectRay(
+        new THREE.Ray(rawCameraPos.clone(), worldForward.clone()),
+        intersection,
+      );
+      const fallbackDistance = Math.max(
+        rawCameraPos.distanceTo(surfacePos),
+        cameraAltitude * 4,
+        1000,
+      );
+      const targetPos = hit
+        ? intersection.clone()
+        : rawCameraPos.clone().add(worldForward.multiplyScalar(fallbackDistance));
+      const handedOffUp = isFiniteOrientationVector(preferredView.cameraOrientation?.up)
+        ? mapboxMercatorVectorToWorldDirection(
+            cameraPosition.latitude,
+            cameraPosition.longitude,
+            preferredView.cameraOrientation.up,
+          )
+        : null;
+
+      return {
+        cameraPos: rawCameraPos,
+        surfacePos: targetPos,
+        normal,
+        cameraUp: handedOffUp ?? cameraNormal,
+      };
+    }
+  }
+
+  return { cameraPos: rawCameraPos, surfacePos, normal, cameraUp: cameraNormal };
+}
 
 /** Expose R3F camera to parent via ref */
 function CameraExposer({ cameraRef }: { cameraRef: React.MutableRefObject<THREE.Camera | null> }) {
   const { camera } = useThree();
   useEffect(() => { cameraRef.current = camera; }, [camera, cameraRef]);
+  return null;
+}
+
+function TilesExposer({
+  tilesRef,
+}: {
+  tilesRef: React.MutableRefObject<{ group?: THREE.Object3D | null } | null>;
+}) {
+  const tiles = useContext(TilesRendererContext);
+  useEffect(() => {
+    tilesRef.current = tiles as { group?: THREE.Object3D | null } | null;
+  }, [tiles, tilesRef]);
   return null;
 }
 
@@ -104,19 +755,46 @@ function PitchMonitor({ onPitchChange }: { onPitchChange: (pitch: number) => voi
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Compute pitch: angle between camera look direction and surface normal
-      const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
-      const camPos = camera.position.clone().normalize(); // Surface normal at camera position
-      const dot = dir.dot(camPos);
-      // dot ≈ -1 means looking straight down (0° pitch), dot ≈ 0 means looking at horizon (90°)
-      const pitch = Math.round(Math.acos(Math.min(1, Math.max(-1, -dot))) * (180 / Math.PI));
-      if (pitch !== lastPitchRef.current) {
-        lastPitchRef.current = pitch;
-        onPitchChange(pitch);
+      const pitch = computePitchFromCamera(camera);
+      if (pitch == null || !Number.isFinite(pitch)) {
+        return;
+      }
+
+      const roundedPitch = Math.round(pitch);
+      if (roundedPitch !== lastPitchRef.current) {
+        lastPitchRef.current = roundedPitch;
+        onPitchChange(roundedPitch);
       }
     }, 200); // Update 5x per second
     return () => clearInterval(interval);
   }, [camera, onPitchChange]);
+
+  return null;
+}
+
+function FallbackPlaneSync({
+  controlsRef,
+}: {
+  controlsRef: React.MutableRefObject<{
+    fallbackPlane?: THREE.Plane;
+    pivotPoint?: THREE.Vector3;
+    getPivotPoint?: (target: THREE.Vector3) => THREE.Vector3 | null | undefined;
+    useFallbackPlane?: boolean;
+  } | null>;
+}) {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateFallbackPlane = () => {
+      syncGlobeControlsFallbackPlane(controlsRef.current, camera);
+      rafId = window.requestAnimationFrame(updateFallbackPlane);
+    };
+
+    updateFallbackPlane();
+    return () => window.cancelAnimationFrame(rafId);
+  }, [camera, controlsRef]);
 
   return null;
 }
@@ -134,7 +812,7 @@ function DrawingPreviewFill({ points, terrainHeight }: { points: number[][]; ter
     ));
     const indices = THREE.ShapeUtils.triangulateShape(localPts, []);
     const verts: number[] = [];
-    for (const p of localPts) verts.push(p.x, p.y, 3); // Z=3m above ground
+    for (const p of localPts) verts.push(p.x, p.y, DRAWING_FILL_LIFT_METERS);
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
     const idx: number[] = [];
@@ -153,25 +831,89 @@ function DrawingPreviewFill({ points, terrainHeight }: { points: number[][]; ter
   );
 }
 
-function DrawingDots({ points, terrainHeight }: { points: number[][]; terrainHeight: number }) {
+function raycastTerrainHeightAtLngLat(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+): number | null {
+  const origin = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, 50000, origin);
+  const normal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(lat * DEG_TO_RAD, lng * DEG_TO_RAD, normal);
+  raycaster.set(origin, normal.negate());
+  raycaster.far = 100000;
+
+  const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
+  return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
+}
+
+function DrawingDots({
+  points,
+  pointHeights,
+  terrainHeight,
+}: {
+  points: number[][];
+  pointHeights: number[];
+  terrainHeight: number;
+}) {
+  const tiles = useContext(TilesRendererContext);
+  const sampledPointHeights = useMemo(() => {
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup?.children?.length) {
+      return points.map((_, index) => pointHeights[index] ?? terrainHeight);
+    }
+
+    const raycaster = new THREE.Raycaster();
+    return points.map((point, index) => (
+      pointHeights[index]
+      ?? raycastTerrainHeightAtLngLat(point[0], point[1], tilesGroup, raycaster)
+      ?? terrainHeight
+    ));
+  }, [pointHeights, points, terrainHeight, tiles]);
+  const previewHeight = useMemo(() => {
+    const finiteHeights = sampledPointHeights.filter(Number.isFinite);
+    if (finiteHeights.length === 0) {
+      return terrainHeight;
+    }
+    return finiteHeights.reduce((sum, height) => sum + height, 0) / finiteHeights.length;
+  }, [sampledPointHeights, terrainHeight]);
+
   if (points.length === 0) return null;
   return (
     <>
       {/* Preview fill polygon */}
-      <DrawingPreviewFill points={points} terrainHeight={terrainHeight} />
+      <DrawingPreviewFill points={points} terrainHeight={previewHeight} />
 
       {/* Vertex dots */}
-      {points.map((pt, i) => (
-        <EastNorthUpFrame key={`dot-${i}-${pt[0]}-${pt[1]}`} lat={pt[1] * DEG_TO_RAD} lon={pt[0] * DEG_TO_RAD} height={terrainHeight}>
-          <mesh renderOrder={999}>
-            <sphereGeometry args={[5, 12, 12]} />
-            <meshBasicMaterial color="#f59e0b" depthTest={false} depthWrite={false} />
-          </mesh>
-          <Html center style={{ pointerEvents: 'none' }}>
-            <div className="h-3 w-3 rounded-full border-2 border-white bg-amber-500 shadow-lg" />
-          </Html>
-        </EastNorthUpFrame>
-      ))}
+      {points.map((pt, i) => {
+        const pointHeight = sampledPointHeights[i] ?? terrainHeight;
+        return (
+          <EastNorthUpFrame key={`dot-${i}-${pt[0]}-${pt[1]}`} lat={pt[1] * DEG_TO_RAD} lon={pt[0] * DEG_TO_RAD} height={pointHeight}>
+            <mesh position={[0, 0, DRAWING_VERTEX_LIFT_METERS * 0.45]} renderOrder={998} frustumCulled={false}>
+              <cylinderGeometry args={[0.22, 0.22, DRAWING_VERTEX_LIFT_METERS * 0.9, 10]} />
+              <meshBasicMaterial color="#fbbf24" transparent opacity={0.45} depthTest={false} depthWrite={false} />
+            </mesh>
+            <group position={[0, 0, DRAWING_VERTEX_LIFT_METERS]}>
+              <mesh renderOrder={999} frustumCulled={false}>
+                <sphereGeometry args={[i === points.length - 1 ? DRAWING_VERTEX_RADIUS_METERS + 0.45 : DRAWING_VERTEX_RADIUS_METERS, 16, 16]} />
+                <meshBasicMaterial color={i === points.length - 1 ? '#f59e0b' : '#fbbf24'} depthTest={false} depthWrite={false} />
+              </mesh>
+              <Html center zIndexRange={[220, 0]} style={{ pointerEvents: 'none' }}>
+                <div
+                  className={`pointer-events-none flex items-center justify-center rounded-full border-2 font-semibold text-white shadow-lg ${
+                    i === points.length - 1
+                      ? 'h-6 w-6 border-white bg-amber-500 text-[10px]'
+                      : 'h-5 w-5 border-white/90 bg-amber-400 text-[9px]'
+                  }`}
+                >
+                  {i + 1}
+                </div>
+              </Html>
+            </group>
+          </EastNorthUpFrame>
+        );
+      })}
 
       {/* Outline connecting dots */}
       {points.length >= 2 && (() => {
@@ -182,7 +924,7 @@ function DrawingDots({ points, terrainHeight }: { points: number[][]; terrainHei
           outVerts.push(
             (c[0] - centroid[0]) * mPerDegLon,
             (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
-            3.5,
+            DRAWING_OUTLINE_LIFT_METERS,
           );
         }
         // Close the loop for polygons (3+ points)
@@ -190,13 +932,13 @@ function DrawingDots({ points, terrainHeight }: { points: number[][]; terrainHei
           outVerts.push(
             (points[0][0] - centroid[0]) * mPerDegLon,
             (points[0][1] - centroid[1]) * METERS_PER_DEG_LAT,
-            3.5,
+            DRAWING_OUTLINE_LIFT_METERS,
           );
         }
         const lineGeo = new THREE.BufferGeometry();
         lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outVerts, 3));
         return (
-          <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={terrainHeight}>
+          <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={previewHeight}>
             {/* @ts-expect-error R3F line type conflict */}
             <line geometry={lineGeo} renderOrder={999} frustumCulled={false}>
               <lineBasicMaterial color="#f59e0b" linewidth={2} depthTest={false} depthWrite={false} />
@@ -211,50 +953,372 @@ function DrawingDots({ points, terrainHeight }: { points: number[][]; terrainHei
 interface GlobeSitePlannerMapProps {
   latitude?: number;
   longitude?: number;
+  preferredView?: GlobePreferredView;
   siteZones: SiteZone[];
   massingFeatures?: unknown[];
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
   onZoneDeleted?: (zoneId: string) => void;
-  /** Expose canvas + camera + terrain height for AI render panel */
+  onCopyZone?: (zoneId: string) => void;
+  onPasteZone?: () => void;
+  canPasteZone?: boolean;
+  /**
+   * Emitted when the R3F canvas, THREE camera, and terrain elevation are all
+   * available. Downstream `GlobeAIRenderPanel` consumes `{canvas, camera,
+   * terrainHeight}` directly (stable's contract, not codex's Mapbox-shim
+   * viewport). The Mapbox-shim `GlobeAIRenderViewport` is preserved below as
+   * dead code for any future code that wants to adapt the globe to that API.
+   */
   onGlobeReady?: (refs: { canvas: HTMLCanvasElement; camera: THREE.Camera; terrainHeight: number; isSettled?: boolean }) => void;
+}
+
+export interface GlobeAIRenderViewport {
+  getCanvas: () => HTMLCanvasElement;
+  getBounds: () => {
+    getWest: () => number;
+    getSouth: () => number;
+    getEast: () => number;
+    getNorth: () => number;
+  };
+  getCenter: () => { lng: number; lat: number };
+  getPitch: () => number;
+  getBearing: () => number;
+  project: (lngLat: [number, number] | { lng: number; lat: number }, altitudeAboveTerrain?: number) => { x: number; y: number };
+  unproject: (point: [number, number]) => { lng: number; lat: number };
+  getLayer: (_id: string) => null;
+  setLayoutProperty: (_id: string, _name: string, _value: string) => void;
+  /**
+   * Toggle visibility of the user-drawn zone overlays (colored fills,
+   * outlines, labels). Used by the AI render capture pipeline to grab
+   * a clean satellite screenshot without the colored polygon fills
+   * bleeding through into Gemini's output.
+   */
+  setZoneOverlaysVisible: (visible: boolean) => void;
 }
 
 export function GlobeSitePlannerMap({
   latitude: _latitude = 51.045,
   longitude: _longitude = -114.07,
+  preferredView,
   siteZones,
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
   onZoneDeleted: _onZoneDeleted,
+  onCopyZone,
+  onPasteZone,
+  canPasteZone = false,
   onGlobeReady,
 }: GlobeSitePlannerMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const globeControlsRef = useRef<any>(null);
   const globeDragRef = useCreateGlobeDragRef();
+  const isRedispatchingCtrlPointerRef = useRef(false);
   const {
     selectedZoneId, activeSitePlannerTool, activeToolProperties,
     streetViewPegman, setStreetViewPosition, setStreetViewAngle, setStreetViewActive,
   } = useViewerStore();
 
-  const isDrawing = activeSitePlannerTool !== null;
+  const hasDrawingTool = activeSitePlannerTool !== null;
   const linear = isLinearTool(activeSitePlannerTool);
 
-  // LOD settlement state — true when 3D tiles have fully loaded
+  // LOD settlement state â€” true when 3D tiles have fully loaded
   const [isSceneSettled, setIsSceneSettled] = useState(false);
-  // Camera pitch angle (0=top-down, 90=horizon)
+  // Camera pitch angle (0=top-down, 90=horizon, >90 looking uphill past the horizon)
   const [pitchAngle, setPitchAngle] = useState(0);
+  const pitchAngleRef = useRef(0);
+  pitchAngleRef.current = pitchAngle;
 
-  // Dynamic terrain elevation — fetched from Google Elevation API on mount
+  // Zone overlay visibility â€” flipped off by the AI render pipeline
+  // so the captured screenshot contains only the real satellite/3D tiles,
+  // without colored polygon fills baked into it. Default true so users
+  // normally see their drawn zones.
+  const [zoneOverlaysVisible, setZoneOverlaysVisible] = useState(true);
+
+  // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
+  const [isTerrainReady, setIsTerrainReady] = useState(false);
+  const terrainElevationRef = useRef(DEFAULT_TERRAIN_ELEVATION);
+  terrainElevationRef.current = terrainElevation;
   const terrainEllipsoidRef = useRef(createTerrainEllipsoid(DEFAULT_TERRAIN_ELEVATION));
+  const tilesRendererRef = useRef<{ group?: THREE.Object3D | null } | null>(null);
+  const [sceneReady, setSceneReady] = useState(false);
+  const [globeControlsReady, setGlobeControlsReady] = useState(false);
+  const [isInitialCameraApplied, setIsInitialCameraApplied] = useState(false);
+  const hasAppliedProjectViewRef = useRef(false);
+  const hasAppliedZoneViewRef = useRef(false);
+  const hasUserInteractedRef = useRef(false);
+  const hasAppliedSettledViewRef = useRef(false);
+  const cameraRevealGenerationRef = useRef(0);
+
+  const projectZonePoints = useMemo(() => (
+    siteZones.flatMap((zone) => (
+      Array.isArray(zone.coordinates)
+        ? zone.coordinates.filter(
+            (coord): coord is [number, number] =>
+              Array.isArray(coord)
+              && coord.length >= 2
+              && Number.isFinite(coord[0])
+              && Number.isFinite(coord[1]),
+          )
+        : []
+    ))
+  ), [siteZones]);
+
+  const focusLatitude = preferredView?.latitude ?? _latitude;
+  const focusLongitude = preferredView?.longitude ?? _longitude;
+  const fallbackRenderBounds = useMemo(() => {
+    if (preferredView?.bounds) {
+      return preferredView.bounds;
+    }
+
+    if (projectZonePoints.length >= 3) {
+      let west = Infinity;
+      let south = Infinity;
+      let east = -Infinity;
+      let north = -Infinity;
+
+      for (const [lng, lat] of projectZonePoints) {
+        west = Math.min(west, lng);
+        south = Math.min(south, lat);
+        east = Math.max(east, lng);
+        north = Math.max(north, lat);
+      }
+
+      const lngPad = Math.max((east - west) * 0.18, 0.0015);
+      const latPad = Math.max((north - south) * 0.18, 0.0015);
+      return {
+        west: west - lngPad,
+        south: south - latPad,
+        east: east + lngPad,
+        north: north + latPad,
+      };
+    }
+
+    return {
+      west: focusLongitude - 0.01,
+      south: focusLatitude - 0.01,
+      east: focusLongitude + 0.01,
+      north: focusLatitude + 0.01,
+    };
+  }, [focusLatitude, focusLongitude, preferredView?.bounds, projectZonePoints]);
+
+  const initialView = useMemo(() => {
+    if (preferredView) {
+      return buildInitialViewFromViewport(
+        preferredView.latitude,
+        preferredView.longitude,
+        preferredView.bounds,
+      );
+    }
+
+    if (projectZonePoints.length >= 3) {
+      const [focusLng, focusLat] = computeCentroid(projectZonePoints);
+      let maxDistMeters = 0;
+
+      for (const coord of projectZonePoints) {
+        const distMeters = haversineDistance([focusLng, focusLat], coord);
+        if (Number.isFinite(distMeters)) {
+          maxDistMeters = Math.max(maxDistMeters, distMeters);
+        }
+      }
+
+      return {
+        lat: focusLat,
+        lng: focusLng,
+        altitude: Math.min(
+          MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
+          Math.max(MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND, maxDistMeters * ZONE_FIT_INITIAL_CAMERA_MULTIPLIER),
+        ),
+      };
+    }
+
+    return {
+      lat: _latitude,
+      lng: _longitude,
+      altitude: DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
+    };
+  }, [_latitude, _longitude, preferredView, projectZonePoints]);
+
+  const preferredCameraPose = useMemo(() => (
+    preferredView
+      ? buildCameraPoseFromPreferredView(preferredView, terrainElevation)
+      : null
+  ), [preferredView, terrainElevation]);
+
+  const getCanvasViewportSize = useCallback((canvas: HTMLCanvasElement) => ({
+    width: canvas.clientWidth || canvas.width || 1,
+    height: canvas.clientHeight || canvas.height || 1,
+  }), []);
+
+  const projectLngLatToViewport = useCallback((
+    lngLat: [number, number] | { lng: number; lat: number },
+    altitudeAboveTerrain?: number,
+  ) => {
+    const canvas = canvasRef.current;
+    const camera = cameraRef.current;
+    const { lng, lat } = Array.isArray(lngLat)
+      ? { lng: lngLat[0], lat: lngLat[1] }
+      : lngLat;
+
+    if (!canvas || !camera) {
+      return { x: 0, y: 0 };
+    }
+
+    const world = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(
+      lat * DEG_TO_RAD,
+      lng * DEG_TO_RAD,
+      terrainElevationRef.current + (altitudeAboveTerrain ?? 0),
+      world,
+    );
+    world.project(camera as THREE.Camera);
+
+    const { width, height } = getCanvasViewportSize(canvas);
+    return {
+      x: ((world.x + 1) / 2) * width,
+      y: ((1 - world.y) / 2) * height,
+    };
+  }, [getCanvasViewportSize]);
+
+  const raycastSurfacePoint = useCallback((ndcX: number, ndcY: number): {
+    lngLat: [number, number];
+    height: number;
+  } | null => {
+    const camera = cameraRef.current;
+    if (!camera) return null;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera as THREE.Camera);
+
+    const tilesGroup = tilesRendererRef.current?.group;
+    if (tilesGroup && tilesGroup.children.length > 0) {
+      const hits = raycaster.intersectObjects(tilesGroup.children, true);
+      if (hits.length > 0) {
+        const cartographic = pointToCartographic(hits[0].point, terrainEllipsoidRef.current);
+        return {
+          lngLat: [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG],
+          height: WGS84_ELLIPSOID.getPositionElevation(hits[0].point),
+        };
+      }
+    }
+
+    const hit = new THREE.Vector3();
+    const result = terrainEllipsoidRef.current.intersectRay(raycaster.ray, hit);
+    if (!result) return null;
+
+    const cartographic = pointToCartographic(hit, terrainEllipsoidRef.current);
+    return {
+      lngLat: [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG],
+      height: terrainElevationRef.current,
+    };
+  }, []);
+  const raycastLngLat = useCallback((ndcX: number, ndcY: number): [number, number] | null => (
+    raycastSurfacePoint(ndcX, ndcY)?.lngLat ?? null
+  ), [raycastSurfacePoint]);
+
+  const unprojectViewportPoint = useCallback((point: [number, number]) => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return { lng: focusLongitude, lat: focusLatitude };
+    }
+
+    const { width, height } = getCanvasViewportSize(canvas);
+    const clampedX = Math.min(Math.max(point[0], 0), width);
+    const clampedY = Math.min(Math.max(point[1], 0), height);
+    const ndcX = (clampedX / width) * 2 - 1;
+    const ndcY = -(clampedY / height) * 2 + 1;
+    const lngLat = raycastLngLat(ndcX, ndcY);
+    if (!lngLat) {
+      return { lng: focusLongitude, lat: focusLatitude };
+    }
+    return {
+      lng: lngLat[0],
+      lat: lngLat[1],
+    };
+  }, [focusLatitude, focusLongitude, getCanvasViewportSize, raycastLngLat]);
+
+  const applyCameraPose = useCallback((pose: {
+    cameraPos: THREE.Vector3;
+    surfacePos: THREE.Vector3;
+    normal: THREE.Vector3;
+    cameraUp?: THREE.Vector3;
+  }) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+
+    camera.position.copy(pose.cameraPos);
+    camera.up.copy(pose.cameraUp ?? pose.normal);
+    camera.lookAt(pose.surfacePos);
+    camera.updateMatrixWorld();
+
+    const controls = globeControlsRef.current;
+    if (controls?.pivotPoint) {
+      controls.pivotPoint.copy(pose.surfacePos);
+    }
+    if (controls?.update) {
+      controls.update();
+    }
+  }, []);
+
+  const applyCameraView = useCallback((lat: number, lng: number, altitudeMeters: number) => {
+    applyCameraPose(
+      computeCameraPose(
+        lat,
+        lng,
+        altitudeMeters,
+        terrainElevation,
+      ),
+    );
+  }, [applyCameraPose, terrainElevation]);
+
+  const hideCanvasUntilPose = useCallback(() => {
+    cameraRevealGenerationRef.current += 1;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.style.visibility = 'hidden';
+    canvas.style.opacity = '0';
+  }, []);
+
+  const revealCanvasAfterPose = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const revealGeneration = cameraRevealGenerationRef.current;
+
+    const reveal = () => {
+      if (cameraRevealGenerationRef.current !== revealGeneration) return;
+      if (canvasRef.current !== canvas) return;
+      canvas.style.visibility = 'visible';
+      canvas.style.opacity = '1';
+    };
+
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(reveal);
+      });
+    } else {
+      reveal();
+    }
+  }, []);
+
+  const handleGlobeControlsRef = useCallback((controls: any | null) => {
+    globeControlsRef.current = controls;
+    if (controls) {
+      syncGlobeControlsFallbackPlane(controls, cameraRef.current);
+    }
+    setGlobeControlsReady(Boolean(controls));
+  }, []);
+
+  const markUserInteracted = useCallback(() => {
+    hasUserInteractedRef.current = true;
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
-    elevationApi.get(_latitude, _longitude)
+    setIsTerrainReady(false);
+    elevationApi.get(focusLatitude, focusLongitude)
       .then((data) => {
         if (!cancelled && Number.isFinite(data.ellipsoidal_height)) {
           const lowFidelityFallback = data.elevation === 0 && data.resolution >= 900;
@@ -268,20 +1332,93 @@ export function GlobeSitePlannerMap({
           // 3D tiles are positioned in WGS84/ECEF space, so ellipsoidal height
           // grounds overlays better than orthometric (MSL) height.
           const terrainHeight = data.ellipsoidal_height;
-          console.log('[Globe] Elevation fetched:', terrainHeight, 'm for', _latitude, _longitude);
+          console.log('[Globe] Elevation fetched:', terrainHeight, 'm for', focusLatitude, focusLongitude);
           setTerrainElevation(terrainHeight);
           terrainEllipsoidRef.current = createTerrainEllipsoid(terrainHeight);
         }
       })
       .catch((err) => {
         console.warn('[Globe] Elevation API failed, using default:', DEFAULT_TERRAIN_ELEVATION, err);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsTerrainReady(true);
+        }
       });
     return () => { cancelled = true; };
-  }, [_latitude, _longitude]);
+  }, [focusLatitude, focusLongitude]);
 
-  // Drawing state — managed at DOM level
+  useEffect(() => {
+    hasAppliedProjectViewRef.current = false;
+    hasAppliedZoneViewRef.current = false;
+    setIsInitialCameraApplied(false);
+    hideCanvasUntilPose();
+  }, [_latitude, _longitude, hideCanvasUntilPose, preferredView]);
+
+  useEffect(() => {
+    hasAppliedSettledViewRef.current = false;
+  }, [initialView, preferredCameraPose]);
+
+  useEffect(() => {
+    if (!sceneReady) return;
+    if (hasUserInteractedRef.current) return;
+    if (preferredView && (!isTerrainReady || !globeControlsReady)) return;
+
+    if (preferredCameraPose) {
+      if (hasAppliedProjectViewRef.current) return;
+      applyCameraPose(preferredCameraPose);
+      hasAppliedProjectViewRef.current = true;
+      setIsInitialCameraApplied(true);
+      revealCanvasAfterPose();
+      return;
+    }
+
+    if (projectZonePoints.length >= 3) {
+      if (hasAppliedZoneViewRef.current) return;
+      applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
+      hasAppliedZoneViewRef.current = true;
+      setIsInitialCameraApplied(true);
+      revealCanvasAfterPose();
+      return;
+    }
+
+    if (hasAppliedProjectViewRef.current) return;
+    applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
+    hasAppliedProjectViewRef.current = true;
+    setIsInitialCameraApplied(true);
+    revealCanvasAfterPose();
+  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isTerrainReady, preferredCameraPose, preferredView, projectZonePoints.length, revealCanvasAfterPose, sceneReady]);
+
+  useEffect(() => {
+    if (!sceneReady || !isSceneSettled) return;
+    if (hasUserInteractedRef.current || hasAppliedSettledViewRef.current) return;
+    if (preferredView && (!isTerrainReady || !globeControlsReady)) return;
+
+    let cancelled = false;
+    const reapply = () => {
+      if (cancelled || hasUserInteractedRef.current) return;
+      if (preferredCameraPose) {
+        applyCameraPose(preferredCameraPose);
+      } else {
+        applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
+      }
+      hasAppliedSettledViewRef.current = true;
+      setIsInitialCameraApplied(true);
+      revealCanvasAfterPose();
+    };
+
+    const timeoutId = window.setTimeout(reapply, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isSceneSettled, isTerrainReady, preferredCameraPose, preferredView, revealCanvasAfterPose, sceneReady]);
+
+  // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
+  const [drawingPointHeights, setDrawingPointHeights] = useState<number[]>([]);
   const drawingPointsRef = useRef<number[][]>([]);
+  const drawingPointHeightsRef = useRef<number[]>([]);
   const handleCanvasClickRef = useRef<((e: MouseEvent) => void) | null>(null);
   const finishDrawingRef = useRef<(() => void) | null>(null);
   const cleanupCanvasListenersRef = useRef<(() => void) | null>(null);
@@ -292,39 +1429,156 @@ export function GlobeSitePlannerMap({
 
   // Sync ref
   useEffect(() => { drawingPointsRef.current = drawingPoints; }, [drawingPoints]);
+  useEffect(() => { drawingPointHeightsRef.current = drawingPointHeights; }, [drawingPointHeights]);
 
   // Clear drawing when tool changes
   useEffect(() => {
     setDrawingPoints([]);
+    setDrawingPointHeights([]);
     drawingPointsRef.current = [];
+    drawingPointHeightsRef.current = [];
   }, [activeSitePlannerTool]);
-
-  // Disable globe orbit controls while drawing so click placement is reliable.
-  useEffect(() => {
-    const controls = globeControlsRef.current;
-    const target = controls?.controls ?? controls;
-    if (target && typeof target === 'object' && 'enabled' in target) {
-      target.enabled = !isDrawing;
-    }
-  }, [isDrawing]);
 
   // Cursor styling based on mode
   useEffect(() => {
     const cvs = canvasRef.current;
     if (!cvs) return;
-    cvs.style.cursor = isDrawing ? 'crosshair' : '';
+    cvs.style.cursor = hasDrawingTool ? 'crosshair' : '';
     return () => { cvs.style.cursor = ''; };
-  }, [isDrawing]);
+  }, [hasDrawingTool]);
 
-  // Keep AI render refs synced after async terrain updates.
+  const globeAIRenderViewport = useMemo<GlobeAIRenderViewport | null>(() => {
+    if (!sceneReady || !canvasRef.current || !cameraRef.current) {
+      return null;
+    }
+
+    const getViewportBounds = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        return fallbackRenderBounds;
+      }
+
+      const { width, height } = getCanvasViewportSize(canvas);
+      const maxX = Math.max(width - 1, 0);
+      const maxY = Math.max(height - 1, 0);
+      const samplePoints: [number, number][] = [
+        [0, 0],
+        [width / 2, 0],
+        [maxX, 0],
+        [0, height / 2],
+        [maxX, height / 2],
+        [0, maxY],
+        [width / 2, maxY],
+        [maxX, maxY],
+      ];
+      const samples = samplePoints
+        .map((point) => unprojectViewportPoint(point))
+        .filter(
+          (sample): sample is { lng: number; lat: number } => (
+            Number.isFinite(sample.lng) && Number.isFinite(sample.lat)
+          ),
+        );
+
+      if (samples.length < 2) {
+        return fallbackRenderBounds;
+      }
+
+      let west = Infinity;
+      let south = Infinity;
+      let east = -Infinity;
+      let north = -Infinity;
+
+      for (const sample of samples) {
+        west = Math.min(west, sample.lng);
+        south = Math.min(south, sample.lat);
+        east = Math.max(east, sample.lng);
+        north = Math.max(north, sample.lat);
+      }
+
+      if (![west, south, east, north].every(Number.isFinite)) {
+        return fallbackRenderBounds;
+      }
+
+      return { west, south, east, north };
+    };
+
+    return {
+      getCanvas: () => canvasRef.current ?? document.createElement('canvas'),
+      getBounds: () => {
+        const bounds = getViewportBounds();
+        return {
+          getWest: () => bounds.west,
+          getSouth: () => bounds.south,
+          getEast: () => bounds.east,
+          getNorth: () => bounds.north,
+        };
+      },
+        getCenter: () => {
+          const canvas = canvasRef.current;
+          if (!canvas) {
+            return { lng: focusLongitude, lat: focusLatitude };
+          }
+
+          const { width, height } = getCanvasViewportSize(canvas);
+          return unprojectViewportPoint([width / 2, height / 2]);
+        },
+        getPitch: () => {
+          const camera = cameraRef.current;
+          if (!camera) {
+            return pitchAngleRef.current;
+          }
+
+          const pitch = computePitchFromCamera(camera);
+          return pitch ?? pitchAngleRef.current;
+        },
+        getBearing: () => {
+          const canvas = canvasRef.current;
+          const camera = cameraRef.current;
+          if (!canvas || !camera) {
+            return preferredView?.cameraPosition?.bearing ?? 0;
+        }
+
+        const { width, height } = getCanvasViewportSize(canvas);
+        const center = unprojectViewportPoint([width / 2, height / 2]);
+        const bearing = computeBearingFromCamera(
+          center.lat,
+          center.lng,
+          camera.position,
+          terrainElevationRef.current,
+        );
+        return bearing ?? preferredView?.cameraPosition?.bearing ?? 0;
+      },
+      project: projectLngLatToViewport,
+      unproject: unprojectViewportPoint,
+      getLayer: () => null,
+      setLayoutProperty: () => undefined,
+      setZoneOverlaysVisible: (visible: boolean) => setZoneOverlaysVisible(visible),
+    };
+  }, [
+    fallbackRenderBounds,
+    focusLatitude,
+    focusLongitude,
+    getCanvasViewportSize,
+    projectLngLatToViewport,
+    sceneReady,
+    unprojectViewportPoint,
+  ]);
+
+  // Emit stable's {canvas, camera, terrainHeight} contract when all three refs
+  // are populated. Gated on globeAIRenderViewport so we only fire once the
+  // scene is ready (the viewport memo guards on sceneReady + both refs).
   useEffect(() => {
-    if (!onGlobeReady || !canvasRef.current || !cameraRef.current) return;
+    if (!onGlobeReady || !globeAIRenderViewport) return;
+    const canvas = canvasRef.current;
+    const camera = cameraRef.current;
+    if (!canvas || !camera) return;
     onGlobeReady({
-      canvas: canvasRef.current,
-      camera: cameraRef.current,
+      canvas,
+      camera,
       terrainHeight: terrainElevation,
+      isSettled: sceneReady,
     });
-  }, [onGlobeReady, terrainElevation]);
+  }, [globeAIRenderViewport, onGlobeReady, terrainElevation, sceneReady]);
 
   // Prevent page scroll
   useEffect(() => {
@@ -335,15 +1589,80 @@ export function GlobeSitePlannerMap({
     return () => el.removeEventListener('wheel', handler);
   }, []);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof PointerEvent === 'undefined') return;
+
+    const handlePointerDownCapture = (event: PointerEvent) => {
+      if (isRedispatchingCtrlPointerRef.current || !shouldMirrorCtrlPointerAsShift(event)) {
+        return;
+      }
+
+      const target = event.target;
+      if (!(target instanceof EventTarget)) {
+        return;
+      }
+
+      const mirroredEvent = new PointerEvent(event.type, {
+        bubbles: true,
+        cancelable: event.cancelable,
+        composed: true,
+        pointerId: event.pointerId,
+        width: event.width,
+        height: event.height,
+        pressure: event.pressure,
+        tangentialPressure: event.tangentialPressure,
+        tiltX: event.tiltX,
+        tiltY: event.tiltY,
+        twist: event.twist,
+        pointerType: event.pointerType,
+        isPrimary: event.isPrimary,
+        button: event.button,
+        buttons: event.buttons,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        screenX: event.screenX,
+        screenY: event.screenY,
+        altKey: event.altKey,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        shiftKey: true,
+      });
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation?.();
+
+      isRedispatchingCtrlPointerRef.current = true;
+      try {
+        target.dispatchEvent(mirroredEvent);
+      } finally {
+        isRedispatchingCtrlPointerRef.current = false;
+      }
+    };
+
+    el.addEventListener('pointerdown', handlePointerDownCapture, { capture: true });
+    return () => el.removeEventListener('pointerdown', handlePointerDownCapture, { capture: true });
+  }, []);
+
   // Finish drawing
   const finishDrawing = useCallback(() => {
     const pts = sanitizeCoords(drawingPointsRef.current);
     if (!activeSitePlannerTool || pts.length < minPointsForTool(activeSitePlannerTool)) return;
+    const drawnTerrainElevation = getRepresentativeTerrainHeight(
+      drawingPointHeightsRef.current,
+      terrainElevation,
+    );
+    const zoneProperties = buildZoneCreateProperties(
+      activeSitePlannerTool,
+      activeToolProperties,
+      drawnTerrainElevation,
+    );
 
     let finalCoords: number[][];
     if (linear) {
       const smoothed = smoothPolyline(pts);
-      const width = (activeToolProperties?.width as number) || 10;
+      const width = (zoneProperties.width as number) || 10;
       finalCoords = sanitizeCoords(bufferLineToPolygon(smoothed, width));
     } else {
       finalCoords = [...pts];
@@ -354,45 +1673,44 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    // Zone creation logged for debugging
-    const propsWithTerrain = {
-      ...(activeToolProperties || {}),
-      terrain_elevation_m:
-        (activeToolProperties as Record<string, unknown> | null)?.terrain_elevation_m
-        ?? terrainElevation,
-    } as SiteZoneProperties;
-    onZoneCreated(finalCoords, activeSitePlannerTool, propsWithTerrain);
+    onZoneCreated(finalCoords, activeSitePlannerTool, zoneProperties);
     setDrawingPoints([]);
+    setDrawingPointHeights([]);
     drawingPointsRef.current = [];
+    drawingPointHeightsRef.current = [];
   }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, terrainElevation]);
   finishDrawingRef.current = finishDrawing;
 
   // Keyboard handler for drawing
   useEffect(() => {
-    if (!isDrawing) return;
+    if (!hasDrawingTool) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') finishDrawing();
-      else if (e.key === 'Escape') { setDrawingPoints([]); drawingPointsRef.current = []; }
+      else if (e.key === 'Escape') {
+        e.preventDefault();
+        setDrawingPoints([]);
+        setDrawingPointHeights([]);
+        drawingPointsRef.current = [];
+        drawingPointHeightsRef.current = [];
+      }
       else if (e.key === 'Backspace' && drawingPointsRef.current.length > 0) {
         const newPts = drawingPointsRef.current.slice(0, -1);
+        const newHeights = drawingPointHeightsRef.current.slice(0, -1);
         drawingPointsRef.current = newPts;
+        drawingPointHeightsRef.current = newHeights;
         setDrawingPoints(newPts);
+        setDrawingPointHeights(newHeights);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isDrawing, finishDrawing]);
+  }, [finishDrawing, hasDrawingTool]);
 
-  // Clipboard for copy/paste
-  const clipboardRef = useRef<{ coordinates: number[][]; zoneType: SiteZoneType; properties?: SiteZoneProperties } | null>(null);
-
-  // Keyboard handler for Select mode — Delete, Escape, WASD, Copy/Paste
+  // Selection-mode keyboard shortcuts (delete, escape, copy/paste, zone nudging)
   useEffect(() => {
-    if (isDrawing) return;
-
-    const MOVE_DELTA = 0.0003; // ~30m in degrees
+    if (hasDrawingTool) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -407,7 +1725,7 @@ export function GlobeSitePlannerMap({
         return;
       }
 
-      // Escape — remove pegman or deselect zone
+      // Escape â€” remove pegman or deselect zone
       if (e.key === 'Escape') {
         if (streetViewPegman?.position) {
           setStreetViewActive(false);
@@ -434,42 +1752,34 @@ export function GlobeSitePlannerMap({
       // Copy (Ctrl+C / Cmd+C)
       if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
         if (selectedZoneId) {
-          const zone = siteZones.find(z => z.id === selectedZoneId);
-          if (zone) {
-            clipboardRef.current = {
-              coordinates: zone.coordinates.map(c => [...c]),
-              zoneType: zone.zone_type,
-              properties: zone.properties ? { ...zone.properties } : undefined,
-            };
-          }
+          onCopyZone?.(selectedZoneId);
         }
         return;
       }
 
       // Paste (Ctrl+V / Cmd+V)
       if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-        if (clipboardRef.current) {
-          const offset = MOVE_DELTA;
-          const newCoords = clipboardRef.current.coordinates.map(c => [c[0] + offset, c[1] + offset]);
-          onZoneCreated(newCoords, clipboardRef.current.zoneType, clipboardRef.current.properties);
+        if (canPasteZone) {
+          onPasteZone?.();
         }
         return;
       }
 
-      // WASD / Arrow keys — move selected zone or pan camera
-      const moveKeys: Record<string, [number, number]> = {
-        'w': [0, MOVE_DELTA], 'ArrowUp': [0, MOVE_DELTA],
-        's': [0, -MOVE_DELTA], 'ArrowDown': [0, -MOVE_DELTA],
-        'a': [-MOVE_DELTA, 0], 'ArrowLeft': [-MOVE_DELTA, 0],
-        'd': [MOVE_DELTA, 0], 'ArrowRight': [MOVE_DELTA, 0],
-      };
-
-      const delta = moveKeys[e.key];
-      if (delta && selectedZoneId) {
+      // WASD / Arrow keys â€” nudge selected zone relative to the current view heading.
+      const movement = getGlobeNavigationMovement(new Set([e.key.toLowerCase()]));
+      if ((movement.forward !== 0 || movement.strafe !== 0) && selectedZoneId) {
         e.preventDefault();
+        markUserInteracted();
         const zone = siteZones.find(z => z.id === selectedZoneId);
         if (zone) {
-          const newCoords = zone.coordinates.map(c => [c[0] + delta[0], c[1] + delta[1]]);
+          const [centroidLng, centroidLat] = computeCentroid(zone.coordinates);
+          const [lngDelta, latDelta] = getSelectedZoneKeyboardNudgeDelta(
+            centroidLat,
+            centroidLng,
+            cameraRef.current,
+            movement,
+          );
+          const newCoords = zone.coordinates.map(c => [c[0] + lngDelta, c[1] + latDelta]);
           onZoneUpdated(selectedZoneId, newCoords);
         }
       }
@@ -477,45 +1787,109 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isDrawing, selectedZoneId, onZoneSelected, _onZoneDeleted, siteZones, onZoneUpdated, onZoneCreated]);
+  }, [canPasteZone, hasDrawingTool, markUserInteracted, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
 
-  // Canvas onPointerMissed — fires when click doesn't hit any R3F mesh
+  useEffect(() => {
+    if ((!hasDrawingTool && selectedZoneId) || streetViewPegman?.position) return;
+
+    const navigationKeys = new Set([
+      'w', 'a', 's', 'd',
+      'arrowup', 'arrowdown', 'arrowleft', 'arrowright',
+    ]);
+    const keysDown = new Set<string>();
+    let rafId = 0;
+
+    const isEditableTarget = (target: EventTarget | null) => {
+      const element = target as HTMLElement | null;
+      const tag = element?.tagName;
+      return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || !!element?.isContentEditable;
+    };
+
+    const tick = () => {
+      const camera = cameraRef.current;
+      if (!camera || keysDown.size === 0) {
+        rafId = 0;
+        return;
+      }
+
+      const { forward, strafe, vertical } = getGlobeNavigationMovement(keysDown);
+
+      const didMove = translateGlobeCamera(
+        camera,
+        globeControlsRef.current,
+        terrainEllipsoidRef.current,
+        { forward, strafe, vertical },
+      );
+
+      if (didMove) {
+        hasUserInteractedRef.current = true;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isEditableTarget(e.target)) return;
+
+      const key = e.key.toLowerCase();
+      if (!navigationKeys.has(key)) return;
+
+      if (key.startsWith('arrow') || ['w', 'a', 's', 'd'].includes(key)) {
+        e.preventDefault();
+      }
+
+      keysDown.add(key);
+      if (!rafId) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (!navigationKeys.has(key)) return;
+      keysDown.delete(key);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, [hasDrawingTool, selectedZoneId, streetViewPegman?.position]);
+
+  // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    hasUserInteractedRef.current = true;
     if (ignoreNextCanvasClickRef.current) {
       ignoreNextCanvasClickRef.current = false;
       return;
     }
 
-    const camera = cameraRef.current;
-    if (!camera) return;
-
     // Get canvas rect for NDC calculation
-    const canvas = containerRef.current?.querySelector('canvas');
+    const canvas = canvasRef.current ?? containerRef.current?.querySelector('canvas');
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
     const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-    // Raycast against terrain-adjusted ellipsoid to get lat/lng
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
-    const hit = new THREE.Vector3();
-    const result = terrainEllipsoidRef.current.intersectRay(raycaster.ray, hit);
-    if (!result) return;
-
-    const clickCarto = terrainEllipsoidRef.current.getPositionToCartographic(hit, {} as any);
-    const clickLngLat: [number, number] = [clickCarto.lon * RAD_TO_DEG, clickCarto.lat * RAD_TO_DEG];
+    const clickSurface = raycastSurfacePoint(ndcX, ndcY);
+    if (!clickSurface) return;
+    const { lngLat: clickLngLat, height: clickHeight } = clickSurface;
 
     // Street view mode: place pegman on click
-    if (!isDrawing && streetViewPegman !== null) {
+    if (!hasDrawingTool && streetViewPegman !== null) {
       setStreetViewPosition(clickLngLat);
       return;
     }
 
     // In select mode: check if click is inside any zone polygon using turf.js
-    if (!isDrawing) {
+    if (!hasDrawingTool) {
       const clickPt = turfPoint(clickLngLat);
       let hitZoneId: string | null = null;
       let hitZoneArea = Infinity;
@@ -545,22 +1919,21 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    // Convert back using the terrain ellipsoid (gives same lat/lng, just at terrain height)
-    const cartographic = terrainEllipsoidRef.current.getPositionToCartographic(hit, {} as any);
-    const lngLat: [number, number] = [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG];
-
     // Every click adds a point. Double-click finish is handled by the dblclick listener.
-    // Point placed — add to drawing
-    const newPts = [...drawingPointsRef.current, lngLat];
+    // Point placed â€” add to drawing
+    const newPts = [...drawingPointsRef.current, clickLngLat];
+    const newHeights = [...drawingPointHeightsRef.current, clickHeight];
     drawingPointsRef.current = newPts;
+    drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
-  }, [isDrawing, finishDrawing, onZoneSelected, siteZones]);
+    setDrawingPointHeights(newHeights);
+  }, [hasDrawingTool, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
-    if (isDrawing) return;
+    if (hasDrawingTool) return;
     ignoreNextCanvasClickRef.current = true;
     onZoneSelected(zoneId);
-  }, [isDrawing, onZoneSelected]);
+  }, [hasDrawingTool, onZoneSelected]);
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
@@ -583,26 +1956,32 @@ export function GlobeSitePlannerMap({
     );
   }
 
-  // Compute initial camera position near the project location
-  const initialCameraPosition = (() => {
-    const surface = new THREE.Vector3();
-    WGS84_ELLIPSOID.getCartographicToPosition(_latitude * DEG_TO_RAD, _longitude * DEG_TO_RAD, 0, surface);
-    const normal = new THREE.Vector3();
-    WGS84_ELLIPSOID.getCartographicToNormal(_latitude * DEG_TO_RAD, _longitude * DEG_TO_RAD, normal);
-    const pos = surface.clone().add(normal.multiplyScalar(3000));
-    return [pos.x, pos.y, pos.z] as [number, number, number];
-  })();
+  const initialCameraPose = useMemo(
+    () => preferredCameraPose ?? computeCameraPose(initialView.lat, initialView.lng, initialView.altitude, terrainElevation),
+    [initialView, preferredCameraPose, terrainElevation],
+  );
+  const initialThreeCameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  if (!initialThreeCameraRef.current) {
+    const camera = new THREE.PerspectiveCamera(75, 1, 1, 1e11);
+    camera.position.copy(initialCameraPose.cameraPos);
+    camera.up.copy(initialCameraPose.cameraUp ?? initialCameraPose.normal);
+    camera.lookAt(initialCameraPose.surfacePos);
+    camera.updateMatrixWorld();
+    initialThreeCameraRef.current = camera;
+  }
+  const initialThreeCamera = initialThreeCameraRef.current;
 
   return (
     <div ref={containerRef} className="relative h-full w-full bg-black" style={{ overflow: 'hidden' }}>
       <Canvas
-        camera={{ position: initialCameraPosition, near: 1, far: 1e11 }}
+        style={{ visibility: isInitialCameraApplied ? 'visible' : 'hidden' }}
+        camera={initialThreeCamera}
         gl={{ antialias: true, logarithmicDepthBuffer: true, preserveDrawingBuffer: true, stencil: true }}
         onCreated={({ gl, camera }) => {
-          // Expose canvas + camera for AI render panel
           canvasRef.current = gl.domElement;
+          hideCanvasUntilPose();
           cameraRef.current = camera;
-          onGlobeReady?.({ canvas: gl.domElement, camera, terrainHeight: terrainElevation });
+          setSceneReady(true);
 
           // Attach pointer handlers directly to WebGL canvas for drawing
           const cvs = gl.domElement;
@@ -618,23 +1997,28 @@ export function GlobeSitePlannerMap({
               draggedSincePointerDownRef.current = false;
               return;
             }
-            // Every click adds a point — dblclick handler will pop the duplicate
+            // Every click adds a point â€” dblclick handler will pop the duplicate
             handleCanvasClickRef.current?.(e);
           };
 
           const handleDblClick = (e: MouseEvent) => {
-            const isDrawingNow = useViewerStore.getState().activeSitePlannerTool !== null;
+            const isDrawingNow = useViewerStore.getState().activeSitePlannerTool !== null
+              && drawingPointsRef.current.length > 0;
             if (!isDrawingNow) return;
             e.preventDefault();
             e.stopPropagation();
             // Remove the duplicate point added by the first click of the double-click
             if (drawingPointsRef.current.length > 0) {
               drawingPointsRef.current = drawingPointsRef.current.slice(0, -1);
+              drawingPointHeightsRef.current = drawingPointHeightsRef.current.slice(0, -1);
+              setDrawingPoints(drawingPointsRef.current);
+              setDrawingPointHeights(drawingPointHeightsRef.current);
             }
             finishDrawingRef.current?.();
           };
 
           const handlePointerDown = (e: PointerEvent) => {
+            hasUserInteractedRef.current = true;
             pointerDownRef.current = { x: e.clientX, y: e.clientY };
             draggedSincePointerDownRef.current = false;
           };
@@ -644,7 +2028,7 @@ export function GlobeSitePlannerMap({
             if (!start || draggedSincePointerDownRef.current) return;
             const dx = e.clientX - start.x;
             const dy = e.clientY - start.y;
-            if ((dx * dx + dy * dy) > 36) draggedSincePointerDownRef.current = true; // 6px threshold — forgiving for globe orbiting
+            if ((dx * dx + dy * dy) > 36) draggedSincePointerDownRef.current = true; // 6px threshold â€” forgiving for globe orbiting
           };
 
           const handlePointerUp = () => {
@@ -669,6 +2053,15 @@ export function GlobeSitePlannerMap({
         <GlobeDragProvider value={globeDragRef}>
         <CameraExposer cameraRef={cameraRef} />
         <PitchMonitor onPitchChange={setPitchAngle} />
+        <FallbackPlaneSync controlsRef={globeControlsRef} />
+        <color attach="background" args={['#dbeafe']} />
+        <ambientLight intensity={1.35} />
+        <hemisphereLight args={['#f8fbff', '#5b6775', 1.5]} />
+        <directionalLight
+          position={[8_000_000, 10_000_000, 7_000_000]}
+          intensity={1.8}
+          color="#fff7d6"
+        />
         {/* Atmospheric fog — grounds the horizon and hides the infinite void */}
         <fog attach="fog" args={['#b8c8d8', 8000, 80000]} />
         <TilesRenderer>
@@ -680,25 +2073,39 @@ export function GlobeSitePlannerMap({
           <TilesPlugin plugin={UpdateOnChangePlugin} />
           <TilesPlugin plugin={UnloadTilesPlugin} />
           <TilesPlugin plugin={TilesFadePlugin} />
-          <GlobeControls ref={globeControlsRef} />
+          <TilesExposer tilesRef={tilesRendererRef} />
+          <GlobeControls
+            ref={handleGlobeControlsRef}
+            maxAltitude={MAX_GLOBE_CAMERA_PITCH_DEGREES * DEG_TO_RAD}
+            useFallbackPlane
+          />
           <TilesAttributionOverlay />
           <SceneSettledMonitor onSettledChange={setIsSceneSettled} />
           <TileStencilPatcher zones={siteZones} />
           {/* Camera starts at project location via Canvas camera prop */}
 
-          {/* Zone visualization */}
-          <GlobeZoneLayer
-            zones={siteZones}
-            selectedZoneId={selectedZoneId}
-            terrainHeight={terrainElevation}
-            onZoneClick={handleZoneMeshClick}
-          />
+          {/* Zone visualization â€” wrapped in a group whose visibility is
+              toggled by the AI render pipeline so the prompt screenshot
+              can capture the scene without colored polygon fills. */}
+          <group visible={zoneOverlaysVisible}>
+            <GlobeZoneLayer
+              zones={siteZones}
+              selectedZoneId={selectedZoneId}
+              terrainHeight={terrainElevation}
+              onZoneClick={handleZoneMeshClick}
+              selectionEnabled={!hasDrawingTool}
+            />
+          </group>
 
           {/* Drawing preview dots */}
-          <DrawingDots points={drawingPoints} terrainHeight={terrainElevation} />
+          <DrawingDots
+            points={drawingPoints}
+            pointHeights={drawingPointHeights}
+            terrainHeight={terrainElevation}
+          />
 
-          {/* Edit mode — vertex handles when zone selected in Select mode */}
-          {!isDrawing && selectedZoneId && (() => {
+          {/* Edit mode â€” vertex handles when zone selected in Select mode */}
+          {!hasDrawingTool && selectedZoneId && (() => {
             const zone = siteZones.find(z => z.id === selectedZoneId);
             return zone ? (
               <GlobeEditMode
@@ -706,6 +2113,7 @@ export function GlobeSitePlannerMap({
                 terrainHeight={terrainElevation}
                 onZoneUpdated={onZoneUpdated}
                 globeControlsRef={globeControlsRef}
+                onInteractionStart={markUserInteracted}
               />
             ) : null;
           })()}
@@ -713,7 +2121,7 @@ export function GlobeSitePlannerMap({
           {/* Street view pegman */}
           {streetViewPegman?.position && (
             <GlobePegman
-              position={streetViewPegman.position as [number, number]}
+              position={streetViewPegman?.position as [number, number]}
               angle={streetViewPegman.angle}
               terrainHeight={terrainElevation}
             />
@@ -725,7 +2133,7 @@ export function GlobeSitePlannerMap({
       </Canvas>
 
       {/* Context-sensitive hints bar */}
-      {isDrawing && (() => {
+      {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
         const label = getToolDisplayLabel(tool);
@@ -741,11 +2149,11 @@ export function GlobeSitePlannerMap({
 
         let hint: string;
         if (n === 0) {
-          hint = `Click to place first ${label} point`;
+          hint = `Click to place first ${label} point | Drag to orbit | Scroll to zoom`;
         } else if (n < min) {
-          hint = `${n} point${n > 1 ? 's' : ''} — need ${min} min — Backspace to undo`;
+          hint = `${n} point${n > 1 ? 's' : ''} - need ${min} min - Drag to orbit - Backspace to undo`;
         } else {
-          hint = `${n} points${measurement ? ` · ${measurement}` : ''} — Double-click or Enter to finish — Esc to cancel`;
+          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to orbit - Double-click or Enter to finish - Esc to cancel`;
         }
 
         return (
@@ -756,24 +2164,40 @@ export function GlobeSitePlannerMap({
       })()}
 
       {/* Street view hint */}
-      {!isDrawing && streetViewPegman && (
+      {false && !hasDrawingTool && streetViewPegman && (
         <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-amber-900/80 px-3 py-1.5 text-center text-[11px] text-amber-100 backdrop-blur-sm border border-amber-500/30">
-          {streetViewPegman.position
-            ? 'Arrow keys to rotate view · Esc to remove pegman'
+          {streetViewPegman?.position
+            ? 'Arrow keys to rotate view - Esc to remove pegman'
+            : 'Click to place street view camera'}
+        </div>
+      )}
+
+      {!hasDrawingTool && streetViewPegman && (
+        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-amber-900/80 px-3 py-1.5 text-center text-[11px] text-amber-100 backdrop-blur-sm border border-amber-500/30">
+          {streetViewPegman?.position
+            ? 'Arrow keys to rotate view | Esc to remove pegman'
             : 'Click to place street view camera'}
         </div>
       )}
 
       {/* Select mode hint */}
-      {!isDrawing && !streetViewPegman && (
+      {false && !hasDrawingTool && !streetViewPegman && (
         <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-gray-900/70 px-3 py-1.5 text-center text-[11px] text-white/70 backdrop-blur-sm">
           {selectedZoneId
-            ? 'Drag body to move · Drag vertices to reshape · Del to delete · Ctrl+C to copy'
-            : 'Click zone to select · Scroll to zoom · Drag to orbit'}
+            ? 'Drag body to move - Drag vertices to reshape - Del to delete - Ctrl+C to copy'
+            : 'Click zone to select - Scroll to zoom - Drag to orbit'}
         </div>
       )}
 
-      {/* 3D Globe badge + pitch + LOD status — offset below back button */}
+      {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
+      {!hasDrawingTool && !streetViewPegman && (
+        <div className="pointer-events-none absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-gray-900/70 px-3 py-1.5 text-center text-[11px] text-white/70 backdrop-blur-sm select-none">
+          {selectedZoneId
+            ? 'Drag body to move | Drag vertices to reshape | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
+            : 'Click zone to select | Drag to orbit | Scroll to zoom | WASD/Arrows to move | Shift/Ctrl to rise/lower'}
+        </div>
+      )}
+
       <div className="absolute top-14 left-4 z-20 flex items-center gap-2">
         <div className="rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg">
           <span className="text-[11px] font-medium text-emerald-400">3D Globe</span>
@@ -784,7 +2208,7 @@ export function GlobeSitePlannerMap({
           pitchAngle < 70 ? 'text-emerald-400' :
           pitchAngle < 80 ? 'text-amber-400' : 'text-red-400'
         }`}>
-          {pitchAngle}° {
+          {pitchAngle} deg {
             pitchAngle < 20 ? 'flat' :
             pitchAngle < 40 ? 'low' :
             pitchAngle < 60 ? 'good' :

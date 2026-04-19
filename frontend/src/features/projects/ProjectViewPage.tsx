@@ -275,9 +275,9 @@ export function ProjectViewPage() {
           onGlobeReady={setGlobeRefs}
         />
 
-        {/* Toolbar */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30">
-          <SitePlannerToolbar />
+        {/* Toolbar — left sidebar placement (ported from codex UX) */}
+        <div className="absolute top-20 left-4 bottom-4 z-30 w-64 overflow-y-auto">
+          <SitePlannerToolbar layout="sidebar" />
         </div>
 
         {/* Zone properties panel */}

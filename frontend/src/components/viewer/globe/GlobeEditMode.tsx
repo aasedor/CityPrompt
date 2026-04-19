@@ -8,15 +8,16 @@
  * Uses the terrain-adjusted ellipsoid raycast for vertex snapping.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
-import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
+import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { Html } from '@react-three/drei';
-import { Ellipsoid } from '3d-tiles-renderer';
+import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
+import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
@@ -26,13 +27,90 @@ interface GlobeEditModeProps {
   terrainHeight: number;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   globeControlsRef?: React.RefObject<any>;
+  onInteractionStart?: () => void;
 }
 
-export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControlsRef }: GlobeEditModeProps) {
+function coordsMatch(a: number[][], b: number[][], epsilon = 1e-7): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((coord, index) => (
+    Math.abs(coord[0] - b[index][0]) <= epsilon
+    && Math.abs(coord[1] - b[index][1]) <= epsilon
+  ));
+}
+
+function pointToLngLat(
+  point: THREE.Vector3,
+  fallbackEllipsoid: Ellipsoid,
+): [number, number] {
+  const ellipsoidWithCartographic = WGS84_ELLIPSOID as Ellipsoid & {
+    getPositionToCartographic?: (
+      point: THREE.Vector3,
+      target: unknown,
+    ) => { lon: number; lat: number };
+  };
+  const cartographicSource = typeof ellipsoidWithCartographic.getPositionToCartographic === 'function'
+    ? ellipsoidWithCartographic
+    : fallbackEllipsoid;
+  const cartographic = cartographicSource.getPositionToCartographic(point, {} as never);
+  return [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG];
+}
+
+function raycastTerrainHeightAtLatLng(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+): number | null {
+  const origin = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, 50000, origin);
+  const normal = new THREE.Vector3();
+  WGS84_ELLIPSOID.getCartographicToNormal(lat * DEG_TO_RAD, lng * DEG_TO_RAD, normal);
+  raycaster.set(origin, normal.negate());
+  raycaster.far = 100000;
+
+  const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
+  return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
+}
+
+function getTerrainProbePoints(
+  coords: number[][],
+  centroid: [number, number],
+): Array<[number, number]> {
+  const probes: Array<[number, number]> = [centroid];
+  if (coords.length === 0) {
+    return probes;
+  }
+
+  const step = Math.max(1, Math.ceil(coords.length / 8));
+  for (let index = 0; index < coords.length; index += step) {
+    probes.push([coords[index][0], coords[index][1]]);
+  }
+
+  const last = coords[coords.length - 1];
+  if (last) {
+    probes.push([last[0], last[1]]);
+  }
+
+  return probes;
+}
+
+export function GlobeEditMode({
+  zone,
+  terrainHeight,
+  onZoneUpdated,
+  globeControlsRef,
+  onInteractionStart,
+}: GlobeEditModeProps) {
   const { camera, gl } = useThree();
+  const tiles = useContext(TilesRendererContext);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [liveCoords, setLiveCoords] = useState<number[][] | null>(null);
+  const [pendingCommitCoords, setPendingCommitCoords] = useState<number[][] | null>(null);
+  const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const dragRef = useGlobeDragRef();
+  const renderedCoords = liveCoords ?? zone.coordinates;
+  const zoneCentroid = useMemo(() => computeCentroid(zone.coordinates), [zone.coordinates]);
 
   // Disable/enable GlobeControls during drag
   const setControlsEnabled = useCallback((enabled: boolean) => {
@@ -49,7 +127,12 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
     ?? zoneProps?.terrain_height
     ?? zoneProps?.terrainElevation,
   );
-  const zoneTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : terrainHeight;
+  const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
+  const zoneTerrainHeight = resolveZoneTerrainHeight(
+    sampledTerrainHeight,
+    storedTerrainHeight,
+    terrainHeight,
+  );
   const terrainEllipsoid = useRef(new Ellipsoid(
     6378137.0 + zoneTerrainHeight,
     6378137.0 + zoneTerrainHeight,
@@ -64,6 +147,43 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
     );
   }, [zoneTerrainHeight]);
 
+  const sampleZoneTerrainHeight = useCallback(() => {
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup?.children?.length) return false;
+
+    const raycaster = new THREE.Raycaster();
+    const sampledHeight = getRepresentativeTerrainHeight(
+      getTerrainProbePoints(zone.coordinates, zoneCentroid).map(([lng, lat]) => (
+        raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
+      )),
+      zoneTerrainHeight,
+    );
+
+    if (!Number.isFinite(sampledHeight)) {
+      return false;
+    }
+
+    setSampledTerrainHeight((previousHeight) => (
+      previousHeight !== null && Math.abs(previousHeight - sampledHeight) < 0.01
+        ? previousHeight
+        : sampledHeight
+    ));
+    return true;
+  }, [tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
+
+  useEffect(() => {
+    setSampledTerrainHeight(null);
+    if (sampleZoneTerrainHeight()) return undefined;
+
+    const timers = [
+      setTimeout(sampleZoneTerrainHeight, 1500),
+      setTimeout(sampleZoneTerrainHeight, 4000),
+      setTimeout(sampleZoneTerrainHeight, 8000),
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
+
   // Raycast to get lat/lng from pointer event
   const pointerToLatLng = useCallback((e: PointerEvent): [number, number] | null => {
     const rect = gl.domElement.getBoundingClientRect();
@@ -73,18 +193,33 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
 
+    const tilesGroup = tiles?.group;
+    if (tilesGroup?.children?.length) {
+      const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
+      if (hit) {
+        return pointToLngLat(hit, terrainEllipsoid.current);
+      }
+    }
+
     const hit = new THREE.Vector3();
     const result = terrainEllipsoid.current.intersectRay(raycaster.ray, hit);
     if (!result) return null;
 
-    const carto = terrainEllipsoid.current.getPositionToCartographic(hit, {} as any);
-    return [carto.lon * RAD_TO_DEG, carto.lat * RAD_TO_DEG];
-  }, [camera, gl]);
+    return pointToLngLat(hit, terrainEllipsoid.current);
+  }, [camera, gl, tiles]);
 
   // --- Body drag state ---
   const [isDraggingBody, setIsDraggingBody] = useState(false);
   const bodyDragStartRef = useRef<[number, number] | null>(null);
   const bodyDragCoordsRef = useRef<number[][] | null>(null);
+
+  useEffect(() => {
+    if (isDraggingBody || dragIndex !== null || !pendingCommitCoords) return;
+    if (coordsMatch(zone.coordinates, pendingCommitCoords)) {
+      setLiveCoords(null);
+      setPendingCommitCoords(null);
+    }
+  }, [dragIndex, isDraggingBody, pendingCommitCoords, zone.coordinates]);
 
   // Start dragging the zone body
   const handleBodyPointerDown = useCallback((e: any) => {
@@ -92,9 +227,12 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
     const pe = e.nativeEvent ?? e;
     const startLatLng = pointerToLatLng(pe as PointerEvent);
     if (!startLatLng) return;
+    const ownerWindow = gl.domElement.ownerDocument?.defaultView ?? window;
 
+    onInteractionStart?.();
+    setPendingCommitCoords(null);
     bodyDragStartRef.current = startLatLng;
-    bodyDragCoordsRef.current = zone.coordinates.map(c => [...c]);
+    bodyDragCoordsRef.current = renderedCoords.map(c => [...c]);
     setIsDraggingBody(true);
     setControlsEnabled(false); // Disable globe orbit during body drag
     gl.domElement.style.cursor = 'grabbing';
@@ -113,16 +251,26 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       dragRef.current.type = 'body';
       dragRef.current.coords = newCoords as [number, number][];
       dragRef.current.version++;
+      setLiveCoords(newCoords);
     };
 
     const handlePointerUp = () => {
+      const finalCoords = dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0
+        ? dragRef.current.coords.map((coord) => [...coord])
+        : null;
+
       // Commit final coordinates to React state (one re-render)
-      if (dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0) {
-        onZoneUpdated(zone.id, dragRef.current.coords);
+      if (finalCoords) {
+        setPendingCommitCoords(finalCoords);
+        onZoneUpdated(zone.id, finalCoords);
+      } else {
+        setPendingCommitCoords(null);
+        setLiveCoords(null);
       }
       // Clear drag state
       dragRef.current.zoneId = null;
       dragRef.current.type = null;
+      dragRef.current.vertexIndex = -1;
       dragRef.current.coords = [];
       dragRef.current.version++;
 
@@ -131,21 +279,25 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       bodyDragCoordsRef.current = null;
       setControlsEnabled(true);
       gl.domElement.style.cursor = '';
-      gl.domElement.removeEventListener('pointermove', handlePointerMove);
-      gl.domElement.removeEventListener('pointerup', handlePointerUp);
+      ownerWindow.removeEventListener('pointermove', handlePointerMove);
+      ownerWindow.removeEventListener('pointerup', handlePointerUp);
+      ownerWindow.removeEventListener('pointercancel', handlePointerUp);
+      ownerWindow.removeEventListener('blur', handlePointerUp);
     };
 
-    gl.domElement.addEventListener('pointermove', handlePointerMove);
-    gl.domElement.addEventListener('pointerup', handlePointerUp);
-  }, [zone, gl, pointerToLatLng, onZoneUpdated]);
+    ownerWindow.addEventListener('pointermove', handlePointerMove);
+    ownerWindow.addEventListener('pointerup', handlePointerUp);
+    ownerWindow.addEventListener('pointercancel', handlePointerUp);
+    ownerWindow.addEventListener('blur', handlePointerUp);
+  }, [gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
 
   // --- Build drag surface geometry (same shape as zone, invisible) ---
   // ENU frame: X=East, Y=North, Z=Up. Ground plane = XY.
   const dragSurfaceGeo = useMemo(() => {
-    if (zone.coordinates.length < 3) return null;
-    const centroid = computeCentroid(zone.coordinates);
+    if (renderedCoords.length < 3) return null;
+    const centroid = computeCentroid(renderedCoords);
     const mPerDegLon = metersPerDegLon(centroid[1]);
-    const localPts = zone.coordinates.map(c => new THREE.Vector2(
+    const localPts = renderedCoords.map(c => new THREE.Vector2(
       (c[0] - centroid[0]) * mPerDegLon,       // East (X)
       (c[1] - centroid[1]) * METERS_PER_DEG_LAT, // North (Y)
     ));
@@ -159,17 +311,18 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
     for (const tri of indices) idx.push(tri[0], tri[1], tri[2]);
     geo.setIndex(idx);
     return { geo, centroid };
-  }, [zone.coordinates]);
+  }, [renderedCoords]);
 
   // Start dragging a vertex
   const handleVertexPointerDown = useCallback((index: number, e: any) => {
     e.stopPropagation();
+    onInteractionStart?.();
     setDragIndex(index);
     setControlsEnabled(false); // Disable globe orbit during vertex drag
     gl.domElement.style.cursor = 'grabbing';
-    originalCoordsRef.current = zone.coordinates.map(c => [...c]);
-
-    const canvas = gl.domElement;
+    setPendingCommitCoords(null);
+    originalCoordsRef.current = renderedCoords.map(c => [...c]);
+    const ownerWindow = gl.domElement.ownerDocument?.defaultView ?? window;
 
     const handlePointerMove = (pe: PointerEvent) => {
       const lngLat = pointerToLatLng(pe);
@@ -185,16 +338,26 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       dragRef.current.vertexIndex = index;
       dragRef.current.coords = newCoords as [number, number][];
       dragRef.current.version++;
+      setLiveCoords(newCoords);
     };
 
     const handlePointerUp = () => {
+      const finalCoords = dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0
+        ? dragRef.current.coords.map((coord) => [...coord])
+        : null;
+
       // Commit final coordinates to React state
-      if (dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0) {
-        onZoneUpdated(zone.id, dragRef.current.coords);
+      if (finalCoords) {
+        setPendingCommitCoords(finalCoords);
+        onZoneUpdated(zone.id, finalCoords);
+      } else {
+        setPendingCommitCoords(null);
+        setLiveCoords(null);
       }
       // Clear drag state
       dragRef.current.zoneId = null;
       dragRef.current.type = null;
+      dragRef.current.vertexIndex = -1;
       dragRef.current.coords = [];
       dragRef.current.version++;
 
@@ -202,13 +365,17 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       originalCoordsRef.current = null;
       setControlsEnabled(true);
       gl.domElement.style.cursor = '';
-      canvas.removeEventListener('pointermove', handlePointerMove);
-      canvas.removeEventListener('pointerup', handlePointerUp);
+      ownerWindow.removeEventListener('pointermove', handlePointerMove);
+      ownerWindow.removeEventListener('pointerup', handlePointerUp);
+      ownerWindow.removeEventListener('pointercancel', handlePointerUp);
+      ownerWindow.removeEventListener('blur', handlePointerUp);
     };
 
-    canvas.addEventListener('pointermove', handlePointerMove);
-    canvas.addEventListener('pointerup', handlePointerUp);
-  }, [zone, gl, pointerToLatLng, onZoneUpdated]);
+    ownerWindow.addEventListener('pointermove', handlePointerMove);
+    ownerWindow.addEventListener('pointerup', handlePointerUp);
+    ownerWindow.addEventListener('pointercancel', handlePointerUp);
+    ownerWindow.addEventListener('blur', handlePointerUp);
+  }, [gl, onInteractionStart, onZoneUpdated, pointerToLatLng, renderedCoords, setControlsEnabled, zone]);
 
   return (
     <>
@@ -233,7 +400,7 @@ export function GlobeEditMode({ zone, terrainHeight, onZoneUpdated, globeControl
       )}
 
       {/* Vertex handles — HTML-based for reliable click/drag */}
-      {zone.coordinates.map((coord, i) => (
+      {renderedCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

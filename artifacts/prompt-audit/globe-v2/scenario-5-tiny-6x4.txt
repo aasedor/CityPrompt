@@ -1,0 +1,41 @@
+=== PROMPT DUMP: Pass 2 (single-shot) — Globe — SCENARIO 5 TINY 6m × 4m ===
+Source           : frontend/src/components/viewer/globe/useGlobeAIRender.ts
+Builder          : buildPrompt (line 744)
+Archetype        : brownstone_rowhouse_frontage (expects ≥150m², typically ~15m frontage)
+Polygon          : 4 vertices, rectangle 6m × 4m (24m²)
+Camera           : pitch=45° oblique
+Reconstructed    : YES
+
+-------------------- ZONE LINE --------------------
+1. [deep maroon #c62828] Brownstone Rowhouse Frontage | 3F 12m ~150m² | … | polygon@(895,545)(945,545)(945,570)(895,570)
+
+-------------------- CONTRADICTIONS STACKED --------------------
+1. `~150m²` in the zone line (archetype) vs ~24m² in the mask (polygon). The prompt
+   says "150" out loud. Gemini sees a 24m² hole. NO code warns that the polygon is
+   smaller than archetype nominal.
+
+2. "3F 12m" reads as a 3-storey 12m-tall building on a 6×4m footprint. That's a
+   floor plate area of 24m² — approximately one tiny apartment unit per floor. The
+   archetype image depicts a rowhouse with a ~15m frontage. Gemini will either:
+     - Render a stack of tiny boxes matching the 24m² footprint at 12m height →
+       tower silhouette, not "rowhouse".
+     - Render a rowhouse and let it leak outside the mask → cropped awkwardly by
+       `clipRenderToZones`.
+     - Render the archetype scaled to fit — loses all of the "stoop, tall double-hung
+       windows, carved cornice" detail because there's literally no room for those
+       features at 6m width.
+
+3. Dilation (line 334: `DILATION_PX = 8`) adds ~2m of white around the polygon. At a
+   polygon 4m wide, the dilation is HALF the polygon width. The mask is effectively
+   50% larger than the user drew.
+
+4. The Mapbox-only fix commit 7202d32 explicitly handles this:
+     "Polygon size is authoritative. Archetype metadata describes style and materials
+      only; do NOT extend the building beyond the polygon to match nominal floor count
+      or height. If the polygon is smaller than a typical archetype example, render a
+      smaller building in that style."
+   Globe's MANDATORY line (useGlobeAIRender.ts:871) has NO such text.
+
+Expected failure: architectural incoherence. The archetype metadata + image together
+demand details that cannot fit; the polygon demands those details NOT extend outward;
+the prompt never tells Gemini which to drop.

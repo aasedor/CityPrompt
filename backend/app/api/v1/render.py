@@ -396,10 +396,15 @@ async def generate_render(
             }
         })
 
-    # Add archetype reference images for multi-image composition
+    # Add archetype reference images for multi-image composition.
+    # Cap raised from 6 → 48 to support multi-view refs (street-level +
+    # 30°/60°/90° aerials per zone). Each ref is ~30-50KB compressed JPEG,
+    # so 48 at ~40KB = ~2MB, well within Gemini's ~20MB request limit.
+    # The prompt's "ARCHETYPE REFERENCE IMAGES" section now explains which
+    # angle each ref is taken from, so the label already carries the angle.
     if req.archetype_images:
         base_index = 3 if req.previous_render_base64 else 2
-        for i, arch_img in enumerate(req.archetype_images[:6]):  # Max 6 archetype refs
+        for i, arch_img in enumerate(req.archetype_images[:48]):  # Max 48 archetype refs
             img_idx = base_index + i
             color_ref = f" Located in the {arch_img.zone_color} zone." if arch_img.zone_color else ""
             parts.append({

@@ -7,7 +7,7 @@
  * terrain draping via raycast to sit precisely on the tile mesh.
  */
 
-import { useMemo, useContext, useRef, useEffect, useCallback } from 'react';
+import { useMemo, useContext, useRef, useEffect, useCallback, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
@@ -23,6 +23,7 @@ import {
 } from '../mapEngine/geoUtils';
 import { createStencilVolume } from './StencilMaskPlugin';
 import { useGlobeDragRef } from './useGlobeDragRef';
+import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -31,6 +32,7 @@ interface GlobeZoneLayerProps {
   selectedZoneId: string | null;
   terrainHeight?: number;
   onZoneClick?: (zoneId: string) => void;
+  selectionEnabled?: boolean;
 }
 
 /**
@@ -146,11 +148,44 @@ function raycastTerrainAtLatLng(
   return hits.length > 0 ? hits[0].point.clone() : null;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
+function raycastTerrainHeightAtLatLng(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+): number | null {
+  const hit = raycastTerrainAtLatLng(lng, lat, tilesGroup, raycaster);
+  return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
+}
+
+function getTerrainProbePoints(
+  coords: number[][],
+  centroid: [number, number],
+): Array<[number, number]> {
+  const probes: Array<[number, number]> = [centroid];
+  if (coords.length === 0) {
+    return probes;
+  }
+
+  const step = Math.max(1, Math.ceil(coords.length / 8));
+  for (let index = 0; index < coords.length; index += step) {
+    probes.push([coords[index][0], coords[index][1]]);
+  }
+
+  const last = coords[coords.length - 1];
+  if (last) {
+    probes.push([last[0], last[1]]);
+  }
+
+  return probes;
+}
+
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
   onZoneClick?: (zoneId: string) => void;
+  selectionEnabled?: boolean;
 }) {
   const color = resolveZoneColor(zone);
   const label = resolveZoneLabel(zone);
@@ -162,7 +197,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     ?? zoneProps?.terrain_height
     ?? zoneProps?.terrainElevation,
   );
-  const zoneTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : terrainHeight;
+  const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
 
   const buildingHeight = (zone.properties?.height_m as number)
     || (zone.properties?.height as number)
@@ -187,12 +222,42 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
   const raycasterRef = useRef(new THREE.Raycaster());
   const drapedRef = useRef(false);
   const drapeAttemptRef = useRef(0);
+  const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
+  const zoneTerrainHeight = resolveZoneTerrainHeight(
+    sampledTerrainHeight,
+    storedTerrainHeight,
+    terrainHeight,
+  );
 
   // ── Drag performance: useFrame-based geometry update ──
   // Reads the shared drag ref and updates BufferGeometry positions directly,
   // bypassing React state to avoid re-rendering the entire scene.
   const dragRef = useGlobeDragRef();
   const lastDragVersionRef = useRef(0);
+
+  const sampleZoneTerrainHeight = useCallback(() => {
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup || tilesGroup.children.length === 0) return false;
+
+    const raycaster = raycasterRef.current;
+    const sampledHeight = getRepresentativeTerrainHeight(
+      getTerrainProbePoints(zone.coordinates, centroid).map(([lng, lat]) => (
+        raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
+      )),
+      zoneTerrainHeight,
+    );
+
+    if (!Number.isFinite(sampledHeight)) {
+      return false;
+    }
+
+    setSampledTerrainHeight((previousHeight) => (
+      previousHeight !== null && Math.abs(previousHeight - sampledHeight) < 0.01
+        ? previousHeight
+        : sampledHeight
+    ));
+    return true;
+  }, [centroid, tiles, zone.coordinates, zoneTerrainHeight]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -305,6 +370,19 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     }
   }, [tiles, geoData, isBuilding, zone.coordinates, centroid, zoneTerrainHeight]);
 
+  useEffect(() => {
+    setSampledTerrainHeight(null);
+    if (sampleZoneTerrainHeight()) return undefined;
+
+    const timers = [
+      setTimeout(sampleZoneTerrainHeight, 1500),
+      setTimeout(sampleZoneTerrainHeight, 4000),
+      setTimeout(sampleZoneTerrainHeight, 8000),
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
+
   // Progressive drape: try at 2s, 5s, 10s after mount (tiles need time to load)
   useEffect(() => {
     if (isBuilding || !tiles) return;
@@ -316,10 +394,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
       setTimeout(drapeToTerrain, 10000),
     ];
     return () => timers.forEach(clearTimeout);
-  }, [tiles, drapeToTerrain, isBuilding]);
+  }, [tiles, drapeToTerrain, isBuilding, zoneTerrainHeight]);
 
   // Periodic re-drape for LOD updates (low frequency)
   useFrame(() => {
+    if (sampledTerrainHeight === null && tiles?.group && Math.random() < 0.003) {
+      sampleZoneTerrainHeight();
+    }
     if (isBuilding || drapedRef.current || drapeAttemptRef.current >= 15) return;
     if (!tiles?.group) return;
     if (Math.random() < 0.005) drapeToTerrain(); // ~0.5% chance per frame
@@ -335,6 +416,14 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
     }));
     return createStencilVolume(pts, Math.max(extrudeHeight * 2, 200));
   }, [zone.coordinates, centroid, isBuilding, extrudeHeight]);
+
+  const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
+    // When the zone is already selected, let the edit surface behind it
+    // receive the pointer event so body dragging can start.
+    if (isSelected || selectionEnabled === false) return;
+    e.stopPropagation();
+    onZoneClick?.(zone.id);
+  }, [isSelected, onZoneClick, selectionEnabled, zone.id]);
 
   if (!geoData) return null;
 
@@ -358,10 +447,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
           geometry={geoData.flatTopGeo.clone()}
           renderOrder={isSiteBoundary ? 100 : zone.zone_type === 'green_space' ? 110 : 120}
           frustumCulled={false}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onZoneClick?.(zone.id);
-          }}
+          onPointerDown={handleZonePointerDown}
         >
           <meshBasicMaterial
             color={isSiteBoundary ? '#ffffff' : color}
@@ -381,10 +467,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
           geometry={geoData.fillGeo}
           renderOrder={200}
           frustumCulled={false}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-            onZoneClick?.(zone.id);
-          }}
+          onPointerDown={handleZonePointerDown}
         >
           <meshBasicMaterial
             color={color}
@@ -406,10 +489,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick }: {
         geometry={!isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo}
         renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
         frustumCulled={false}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onZoneClick?.(zone.id);
-        }}
+        onPointerDown={handleZonePointerDown}
       >
         <lineBasicMaterial
           color={isSelected ? '#ffffff' : color}
@@ -436,6 +516,7 @@ export function GlobeZoneLayer({
   selectedZoneId,
   terrainHeight = 1045,
   onZoneClick,
+  selectionEnabled = true,
 }: GlobeZoneLayerProps) {
   return (
     <>
@@ -446,6 +527,7 @@ export function GlobeZoneLayer({
           isSelected={zone.id === selectedZoneId}
           terrainHeight={terrainHeight}
           onZoneClick={onZoneClick}
+          selectionEnabled={selectionEnabled}
         />
       ))}
     </>

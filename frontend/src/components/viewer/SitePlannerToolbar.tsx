@@ -52,6 +52,9 @@ const CORE_TOOLS: CoreToolDef[] = [
 
 interface SitePlannerToolbarProps {
   onShowGuide?: () => void;
+  /** 'sidebar' stacks zone-type cards in a single column (for left-rail placement).
+   *  'default' keeps the existing 2x2 / 1x4 grid (for bottom-center placement). */
+  layout?: 'default' | 'sidebar';
 }
 
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -69,10 +72,11 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
   return parksSubtype === 'plaza' ? 'parking' : 'green_space';
 }
 
-export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
+export function SitePlannerToolbar({ onShowGuide, layout = 'default' }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const isSidebar = layout === 'sidebar';
 
   const activeCoreTool = useMemo(
     () => mapToolToCoreTool(activeSitePlannerTool),
@@ -104,8 +108,8 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
   };
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded-xl bg-white/95 px-3 py-2 shadow-2xl backdrop-blur-sm">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+    <div className={`flex w-full flex-col gap-2 rounded-xl bg-white/95 ${isSidebar ? 'px-2.5 py-2' : 'px-3 py-2'} shadow-2xl backdrop-blur-sm`}>
+      <div className={`grid gap-2 ${isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
         {CORE_TOOLS.map((tool) => {
           const isActive = activeCoreTool === tool.id;
           return (
@@ -113,7 +117,11 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
               key={tool.id}
               data-tour={`tool-${tool.id}`}
               onClick={() => activateCoreTool(tool.id)}
-              className={`group flex min-h-[86px] flex-col items-start rounded-xl border px-3 py-2 text-left transition-all ${
+              className={`group flex rounded-xl border text-left transition-all ${
+                isSidebar
+                  ? 'min-h-[56px] items-center gap-2.5 px-2.5 py-2'
+                  : 'min-h-[86px] flex-col items-start px-3 py-2'
+              } ${
                 isActive
                   ? 'border-primary-500 bg-primary-500/10 ring-2 ring-primary-500/25'
                   : 'border-primary-950/[0.08] bg-white hover:border-primary-300 hover:bg-primary-950/[0.03]'
@@ -123,11 +131,20 @@ export function SitePlannerToolbar({ onShowGuide }: SitePlannerToolbarProps) {
               <img
                 src={tool.icon}
                 alt=""
-                className="h-9 w-9 rounded-md object-cover"
+                className={`${isSidebar ? 'h-8 w-8' : 'h-9 w-9'} rounded-md object-cover`}
                 aria-hidden
               />
-              <span className="mt-2 text-sm font-semibold text-primary-950">{tool.label}</span>
-              <span className="mt-0.5 text-[11px] text-primary-950/60">{tool.drawType}</span>
+              {isSidebar ? (
+                <div className="flex min-w-0 flex-col leading-tight">
+                  <span className="text-[13px] font-semibold text-primary-950 truncate">{tool.label}</span>
+                  <span className="text-[11px] text-primary-950/60 truncate">{tool.drawType}</span>
+                </div>
+              ) : (
+                <>
+                  <span className="mt-2 text-sm font-semibold text-primary-950">{tool.label}</span>
+                  <span className="mt-0.5 text-[11px] text-primary-950/60">{tool.drawType}</span>
+                </>
+              )}
             </button>
           );
         })}

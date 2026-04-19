@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useContext, useRef } from 'react';
+import * as THREE from 'three';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
 import { patchMaterialForStencil, unpatchMaterialStencil } from './StencilMaskPlugin';
 import type { SiteZone } from '@/types';
