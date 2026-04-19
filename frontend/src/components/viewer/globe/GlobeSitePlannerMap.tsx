@@ -1931,9 +1931,12 @@ export function GlobeSitePlannerMap({
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (hasDrawingTool) return;
+    // Street View pegman-drop mode: let the click fall through to the canvas
+    // handler so the pin drops on the zone instead of selecting it.
+    if (streetViewPegman !== null) return;
     ignoreNextCanvasClickRef.current = true;
     onZoneSelected(zoneId);
-  }, [hasDrawingTool, onZoneSelected]);
+  }, [hasDrawingTool, onZoneSelected, streetViewPegman]);
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;

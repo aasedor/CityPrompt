@@ -186,8 +186,29 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
     setResult(null);
   }, [setStreetViewPosition, setStreetViewActive]);
 
-  // Don't render if pegman is not placed
-  if (!streetViewPegman?.position) return null;
+  // Don't render until Street View mode is active
+  if (!streetViewPegman) return null;
+
+  // Pegman mode is active but no pin has been dropped yet — show the "drop a pin" prompt.
+  if (!streetViewPegman.position) {
+    return (
+      <div className="absolute bottom-4 left-1/2 z-40 -translate-x-1/2">
+        <div className="flex items-center gap-3 rounded-xl bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-sm">
+          <Eye size={16} className="text-amber-600" />
+          <span className="text-sm font-medium text-primary-950">
+            Click on the map to drop a Street View pin
+          </span>
+          <button
+            onClick={() => setStreetViewActive(false)}
+            className="rounded-lg p-1 text-primary-950/50 transition hover:bg-primary-950/[0.08] hover:text-primary-950"
+            title="Cancel Street View"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Full-screen modal when we have a result
   if (result) {

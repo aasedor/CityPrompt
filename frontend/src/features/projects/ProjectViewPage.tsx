@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Building2, Plus, Loader2, CheckCircle, AlertCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowLeft, Building2, Plus, Loader2, CheckCircle, AlertCircle, Share2, MapPin, FileDown, Sparkles, Trash2, Eye } from 'lucide-react';
 import { projectsApi, buildingsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -71,6 +71,8 @@ export function ProjectViewPage() {
     workflowStep,
     setWorkflowStep,
     settings,
+    streetViewPegman,
+    setStreetViewActive,
   } = useViewerStore();
 
   const {
@@ -276,8 +278,35 @@ export function ProjectViewPage() {
         />
 
         {/* Toolbar — left sidebar placement (ported from codex UX) */}
-        <div className="absolute top-20 left-4 bottom-4 z-30 w-64 overflow-y-auto">
-          <SitePlannerToolbar layout="sidebar" />
+        <div className="absolute top-[272px] left-4 bottom-4 z-30 w-64 overflow-y-auto">
+          <SitePlannerToolbar
+            layout="sidebar"
+            bottomSlot={
+              !showGlobeRender ? (
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setShowGlobeRender(true)}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-3 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-amber-600"
+                  >
+                    <Sparkles size={16} />
+                    AI Render
+                  </button>
+                  <button
+                    onClick={() => setStreetViewActive(!streetViewPegman)}
+                    className={`flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold shadow-md transition-colors ${
+                      streetViewPegman
+                        ? 'bg-amber-700 text-white hover:bg-amber-800'
+                        : 'bg-amber-500 text-white hover:bg-amber-600'
+                    }`}
+                    title="Drop a pin to generate a street-level view"
+                  >
+                    <Eye size={16} />
+                    Street View
+                  </button>
+                </div>
+              ) : null
+            }
+          />
         </div>
 
         {/* Zone properties panel */}
@@ -299,17 +328,9 @@ export function ProjectViewPage() {
           </div>
         )}
 
-        {/* AI Render button + panel */}
-        <div className="absolute top-16 right-4 z-30">
-          {!showGlobeRender ? (
-            <button
-              onClick={() => setShowGlobeRender(true)}
-              className="flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-amber-600 transition-colors"
-            >
-              <Sparkles size={16} />
-              AI Render
-            </button>
-          ) : (
+        {/* AI Render expanded panel — stays on right side (wider than sidebar); collapsed button now lives in the left sidebar stack */}
+        {showGlobeRender && (
+          <div className="absolute top-16 right-4 z-30">
             <div className="w-80">
               <GlobeAIRenderPanel
                 canvas={globeRefs?.canvas ?? null}
@@ -325,8 +346,8 @@ export function ProjectViewPage() {
                 Close
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Back button */}
         <div className="absolute top-4 left-4 z-30 flex items-center gap-3">
@@ -338,6 +359,9 @@ export function ProjectViewPage() {
 
         {/* Street View Panel — with globe 3D tiles capture */}
         <StreetViewPanel siteZones={siteZones} projectId={project?.id} globeCapture={handleGlobeStreetCapture} />
+
+        {/* Double-click a variant to open large preview */}
+        <ImageLightbox />
       </div>
     );
   }

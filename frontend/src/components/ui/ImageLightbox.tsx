@@ -41,10 +41,12 @@ export function ImageLightbox() {
       onClick={() => setLightboxImage(null)}
     >
       <button
-        className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white/80 hover:bg-black/70 hover:text-white"
-        onClick={() => setLightboxImage(null)}
+        onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}
+        className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl font-bold text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
+        aria-label="Close"
+        title="Close (Esc)"
       >
-        <X size={20} />
+        <X size={22} strokeWidth={2.5} />
       </button>
       <div className="flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
         <img

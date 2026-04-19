@@ -41,6 +41,21 @@ Check both with `git log origin/master --oneline -5` and `git log beeman/master 
 - Critical constraints go at the END of the prompt (Gemini weights later instructions more heavily)
 - Street view: 200m view cone, 70° FOV, occlusion culling, Montage style produces best results
 
+## Collaboration Patterns (the working rhythm)
+
+Default operating style for non-trivial work in this repo. Preserved from the 2026-04-18 session where a full catalog overhaul + 2,000+ Gemini calls landed with zero rollbacks.
+
+1. **Pilot → confirm → scale.** Never fire a $50+ full-catalog run without a cheap smoke test first: dry-run (0 API calls) → 1-archetype pilot (~$0.25, <1 min) → show output → green light → execute. Applied for Collegiate Gothic, Neighborhood Park, Haussmann Boulevard before every catalog-wide run.
+2. **Show images inline for visual verification.** Don't just report "4/4 succeeded" — read the generated JPGs back so the user sees the actual output. Quality issues (e.g. 75° perspective creep on a 90° nadir) are invisible in a success count.
+3. **Offer 2–3 options with tradeoffs.** When decisions exist, present A/B/C with cost, time, risk. Don't silently pick.
+4. **Validate after every bulk change.** For catalog edits: JSON still parses, thumbnailUrl count unchanged, no duplicate archetype IDs, known-good entries untouched. For bulk deletes: verify targets gone AND non-targets still intact.
+5. **Backup before destructive edits.** Every catalog splice / recategorization / bulk migration saves a `.bak` or `.bak-<operation>` file. Enables one-line rollback.
+6. **Scope commits tightly.** Never bundle unrelated work. If a commit accidentally sweeps in pre-staged files, flag it immediately and offer `git reset --soft HEAD~1` to split.
+7. **Check existing research first.** `docs/*-RESEARCH-AndrewDesk.md` and `docs/*_AUDIT_REPORT*.md` files may already have answers. Align to them before inventing new structures.
+8. **Diagnose root cause, not symptoms.** When something breaks, fix the underlying logic (e.g. id-collision check in the orphan detector), not a one-off patch.
+9. **Parallel only when genuinely safe.** Background tasks writing to different folders with no race conditions = OK. Otherwise chain sequentially.
+10. **When a data change doesn't show in UI, check which field the consumer actually reads.** The UI picker filters by `developmentType`, not `buildingSubcategory` — updating the wrong field silently fails.
+
 ## Architecture
 
 ### Render Pipeline
