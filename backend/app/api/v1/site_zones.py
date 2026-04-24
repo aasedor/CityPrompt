@@ -10,18 +10,18 @@ from datetime import datetime, timezone
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_Intersects
 from geoalchemy2.shape import to_shape
 from shapely.geometry import Polygon
-from sqlalchemy import select
+from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import is_admin_or_above, require_auth
-from app.models.models import Building, Project, ProjectShare, SiteZone, User
+from app.models.models import Building, Project, ProjectShare, SiteZone, User, ZoneHistory
 from app.schemas.schemas import (
     ApplyLayoutRequest,
     BuildingResponse,
@@ -34,6 +34,10 @@ from app.schemas.schemas import (
     SiteZoneCreate,
     SiteZoneResponse,
     SiteZoneUpdate,
+    ZoneSnapshotRestoreRequest,
+    ZoneSnapshotRestoreResponse,
+    ZoneHistoryResponse,
+    ZoneHistoryListResponse,
 )
 from app.api.v1.buildings import _building_to_response
 from app.services.generation_queue import queue_ai_generation_task
@@ -252,6 +256,152 @@ def _zone_to_response(zone: SiteZone) -> dict:
     }
 
 
+def _snapshot_from_zone(zone: SiteZone) -> dict:
+    """Build a JSON-safe snapshot dict from a SiteZone ORM object."""
+    snapshot = _zone_to_response(zone)
+    for key in ("id", "project_id", "building_id"):
+        if snapshot.get(key) is not None:
+            snapshot[key] = str(snapshot[key])
+    if snapshot.get("building_ids"):
+        snapshot["building_ids"] = [str(b) for b in snapshot["building_ids"]]
+    for key in ("created_at", "updated_at"):
+        if snapshot.get(key) is not None:
+            snapshot[key] = snapshot[key].isoformat() if hasattr(snapshot[key], "isoformat") else str(snapshot[key])
+    return snapshot
+
+
+def _optional_uuid(value) -> uuid.UUID | None:
+    if value is None:
+        return None
+    return value if isinstance(value, uuid.UUID) else uuid.UUID(str(value))
+
+
+def _wkt_from_snapshot(snapshot: dict) -> str:
+    coords = [list(coord) for coord in snapshot.get("coordinates", [])]
+    if len(coords) < 3:
+        raise HTTPException(status_code=400, detail="Snapshot has insufficient coordinates to restore")
+    if coords[0] != coords[-1]:
+        coords.append(coords[0])
+    return ", ".join(f"{c[0]} {c[1]}" for c in coords)
+
+
+async def _restore_zone_snapshot(
+    db: AsyncSession,
+    snapshot: dict,
+    *,
+    project_id: uuid.UUID,
+    expected_zone_id: uuid.UUID | None = None,
+) -> SiteZone:
+    """Apply a zone snapshot without recording history."""
+    try:
+        zone_id = uuid.UUID(str(snapshot["id"]))
+    except (KeyError, TypeError, ValueError):
+        raise HTTPException(status_code=400, detail="Snapshot is missing a valid zone id")
+
+    if expected_zone_id is not None and zone_id != expected_zone_id:
+        raise HTTPException(status_code=400, detail="Snapshot zone id does not match request zone id")
+
+    snapshot_project_id = _optional_uuid(snapshot.get("project_id")) or project_id
+    if snapshot_project_id != project_id:
+        raise HTTPException(status_code=400, detail="Snapshot project id does not match request project id")
+
+    coords_str = _wkt_from_snapshot(snapshot)
+    building_ids = snapshot.get("building_ids")
+    if building_ids:
+        building_ids = [str(bid) for bid in building_ids]
+
+    zone_result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = zone_result.scalar_one_or_none()
+
+    if zone and zone.project_id != project_id:
+        raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
+
+    if zone:
+        zone.name = snapshot.get("name")
+        zone.zone_type = snapshot["zone_type"]
+        zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
+        zone.color = snapshot.get("color", "#9b59b6")
+        zone.properties = snapshot.get("properties")
+        zone.sort_order = snapshot.get("sort_order", 0)
+        zone.building_id = _optional_uuid(snapshot.get("building_id"))
+        zone.building_ids = building_ids
+    else:
+        zone = SiteZone(
+            id=zone_id,
+            project_id=project_id,
+            name=snapshot.get("name"),
+            zone_type=snapshot["zone_type"],
+            geometry=WKTElement(f"POLYGON(({coords_str}))", srid=4326),
+            color=snapshot.get("color", "#9b59b6"),
+            properties=snapshot.get("properties"),
+            sort_order=snapshot.get("sort_order", 0),
+            building_id=_optional_uuid(snapshot.get("building_id")),
+            building_ids=building_ids,
+        )
+        db.add(zone)
+
+    await db.flush()
+    await db.refresh(zone)
+    return zone
+
+
+async def _record_zone_history(
+    db: AsyncSession,
+    zone: SiteZone,
+    action: str,
+    user: User,
+    description: str | None = None,
+    previous_snapshot: dict | None = None,
+) -> None:
+    """Record a zone snapshot in the history table."""
+    entry = ZoneHistory(
+        zone_id=zone.id,
+        project_id=zone.project_id,
+        action=action,
+        snapshot=_snapshot_from_zone(zone),
+        previous_snapshot=previous_snapshot,
+        user_id=user.id,
+        user_email=user.email,
+        description=description,
+    )
+    db.add(entry)
+
+
+async def _ensure_project_access(
+    db: AsyncSession,
+    project_id: uuid.UUID,
+    user: User,
+    *,
+    write: bool = False,
+) -> Project:
+    """Verify that the user can read or edit project-scoped zone history."""
+    result = await db.execute(select(Project).where(Project.id == project_id))
+    project = result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id == user.id or is_admin_or_above(user):
+        return project
+
+    permission_filter = (
+        ProjectShare.permission == "editor"
+        if write
+        else ProjectShare.permission.in_(("viewer", "editor"))
+    )
+    share_result = await db.execute(
+        select(ProjectShare).where(
+            ProjectShare.project_id == project_id,
+            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+            permission_filter,
+        )
+    )
+    if not share_result.scalar_one_or_none():
+        action = "edit" if write else "view"
+        raise HTTPException(status_code=403, detail=f"Not authorized to {action} zones in this project")
+
+    return project
+
+
 @router.get("/projects/{project_id}/zones", response_model=list[SiteZoneResponse])
 async def list_zones(
     project_id: uuid.UUID,
@@ -275,6 +425,7 @@ async def list_zones(
 async def create_zone(
     project_id: uuid.UUID,
     zone_in: SiteZoneCreate,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -345,6 +496,10 @@ async def create_zone(
             )
         except Exception as e:
             logger.warning("Failed to auto-fetch OSM context for zone %s: %s", zone.id, e)
+
+    # Record history (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        await _record_zone_history(db, zone, "create", user, f"Created {zone_in.zone_type} zone")
 
     return _zone_to_response(zone)
 
@@ -420,6 +575,7 @@ async def fetch_context(
 async def update_zone(
     zone_id: uuid.UUID,
     zone_in: SiteZoneUpdate,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -442,6 +598,9 @@ async def update_zone(
         )
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to edit zones in this project")
+
+    # Capture state BEFORE the update for diff / revert
+    before_snapshot = _snapshot_from_zone(zone)
 
     update_data = zone_in.model_dump(exclude_unset=True)
 
@@ -482,12 +641,20 @@ async def update_zone(
             await db.flush()
 
     await db.refresh(zone)
+
+    # Record history with before/after (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        changed = list(zone_in.model_dump(exclude_unset=True).keys())
+        desc_parts = ", ".join(changed[:3])
+        await _record_zone_history(db, zone, "update", user, f"Updated {desc_parts}", previous_snapshot=before_snapshot)
+
     return _zone_to_response(zone)
 
 
 @router.delete("/{zone_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_zone(
     zone_id: uuid.UUID,
+    request: Request,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -510,6 +677,10 @@ async def delete_zone(
         )
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to delete zones in this project")
+
+    # Record history before deletion (skip during undo/redo)
+    if not request.headers.get("x-skip-history"):
+        await _record_zone_history(db, zone, "delete", user, f"Deleted {zone.zone_type} zone{(' ' + zone.name) if zone.name else ''}")
 
     await db.delete(zone)
 
@@ -2299,4 +2470,146 @@ async def generate_site_massing(
             status_code=500,
             detail=f"Massing generation failed: {str(e)[:200]}",
         )
+
+
+# =============================================================================
+# Zone History / Version Control Endpoints
+# =============================================================================
+
+@router.post("/projects/{project_id}/restore-snapshot", response_model=ZoneSnapshotRestoreResponse)
+async def restore_working_snapshot(
+    project_id: uuid.UUID,
+    body: ZoneSnapshotRestoreRequest,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """Silently restore or delete a zone working snapshot for client-side undo/redo."""
+    await _ensure_project_access(db, project_id, user, write=True)
+
+    if body.snapshot is None:
+        zone_result = await db.execute(select(SiteZone).where(SiteZone.id == body.zone_id))
+        zone = zone_result.scalar_one_or_none()
+        if zone:
+            if zone.project_id != project_id:
+                raise HTTPException(status_code=403, detail="Not authorized to restore this zone")
+            await db.delete(zone)
+            await db.flush()
+        return {
+            "zone_id": body.zone_id,
+            "deleted": True,
+            "zone": None,
+        }
+
+    zone = await _restore_zone_snapshot(
+        db,
+        body.snapshot,
+        project_id=project_id,
+        expected_zone_id=body.zone_id,
+    )
+    return {
+        "zone_id": zone.id,
+        "deleted": False,
+        "zone": _zone_to_response(zone),
+    }
+
+
+@router.get("/projects/{project_id}/history", response_model=ZoneHistoryListResponse)
+async def list_project_history(
+    project_id: uuid.UUID,
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+    zone_id: Optional[uuid.UUID] = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """List zone change history for a project, newest first. Optionally filter by zone_id."""
+    await _ensure_project_access(db, project_id, user)
+
+    query = select(ZoneHistory).where(ZoneHistory.project_id == project_id)
+    count_query = select(sa_func.count()).select_from(ZoneHistory).where(ZoneHistory.project_id == project_id)
+
+    if zone_id is not None:
+        query = query.where(ZoneHistory.zone_id == zone_id)
+        count_query = count_query.where(ZoneHistory.zone_id == zone_id)
+
+    total_result = await db.execute(count_query)
+    total = total_result.scalar() or 0
+
+    query = query.order_by(desc(ZoneHistory.created_at)).offset(offset).limit(limit)
+    result = await db.execute(query)
+    entries = result.scalars().all()
+
+    return {
+        "items": entries,
+        "total": total,
+        "has_more": (offset + limit) < total,
+    }
+
+
+@router.get("/history/{history_id}", response_model=ZoneHistoryResponse)
+async def get_history_entry(
+    history_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(require_auth),
+):
+    """Get a specific history entry by ID."""
+    result = await db.execute(select(ZoneHistory).where(ZoneHistory.id == history_id))
+    entry = result.scalar_one_or_none()
+    if not entry:
+        raise HTTPException(status_code=404, detail="History entry not found")
+    await _ensure_project_access(db, entry.project_id, user)
+    return entry
+
+
+@router.post("/history/{history_id}/revert", response_model=SiteZoneResponse)
+async def revert_to_version(
+    history_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Restore a zone to the state represented by a history entry.
+
+    Restores behave like checking out an older working state. They intentionally
+    do not create another history row; the next user edit records the new branch.
+    """
+    result = await db.execute(select(ZoneHistory).where(ZoneHistory.id == history_id))
+    entry = result.scalar_one_or_none()
+    if not entry:
+        raise HTTPException(status_code=404, detail="History entry not found")
+    await _ensure_project_access(db, entry.project_id, user, write=True)
+
+    if entry.action == "create":
+        zone_result = await db.execute(select(SiteZone).where(SiteZone.id == entry.zone_id))
+        zone = zone_result.scalar_one_or_none()
+        if not zone:
+            raise HTTPException(status_code=404, detail="Zone no longer exists")
+
+        response = _zone_to_response(zone)
+        await db.delete(zone)
+        return response
+
+    # For updates, revert to the BEFORE state; for deletes, restore the zone
+    if entry.action == "update" and entry.previous_snapshot:
+        snapshot = entry.previous_snapshot
+    elif entry.action == "update":
+        # No previous_snapshot stored — find the prior entry for this zone
+        prev_result = await db.execute(
+            select(ZoneHistory)
+            .where(ZoneHistory.zone_id == entry.zone_id)
+            .where(ZoneHistory.created_at < entry.created_at)
+            .order_by(desc(ZoneHistory.created_at))
+            .limit(1)
+        )
+        prev_entry = prev_result.scalar_one_or_none()
+        snapshot = prev_entry.snapshot if prev_entry else entry.snapshot
+    else:
+        snapshot = entry.snapshot
+    zone = await _restore_zone_snapshot(
+        db,
+        snapshot,
+        project_id=entry.project_id,
+        expected_zone_id=entry.zone_id,
+    )
+
+    return _zone_to_response(zone)
 

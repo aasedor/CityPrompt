@@ -338,6 +338,45 @@ class SiteZoneResponse(BaseModel):
 
 
 # =============================================================================
+# Zone History Schemas
+# =============================================================================
+
+class ZoneHistoryResponse(BaseModel):
+    """A single zone history entry."""
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    zone_id: uuid.UUID
+    project_id: uuid.UUID
+    action: str  # 'create' | 'update' | 'delete'
+    snapshot: dict[str, Any]
+    previous_snapshot: Optional[dict[str, Any]] = None
+    user_id: Optional[uuid.UUID] = None
+    user_email: Optional[str] = None
+    description: Optional[str] = None
+    created_at: datetime
+
+
+class ZoneHistoryListResponse(BaseModel):
+    """Paginated zone history."""
+    items: list[ZoneHistoryResponse]
+    total: int
+    has_more: bool
+
+
+class ZoneSnapshotRestoreRequest(BaseModel):
+    """Restore a zone working state without creating a history entry."""
+    zone_id: uuid.UUID
+    snapshot: Optional[dict[str, Any]] = None
+
+
+class ZoneSnapshotRestoreResponse(BaseModel):
+    """Result from silently restoring or deleting a zone working snapshot."""
+    zone_id: uuid.UUID
+    deleted: bool = False
+    zone: Optional[SiteZoneResponse] = None
+
+
+# =============================================================================
 # AI Layout Generation Schemas
 # =============================================================================
 

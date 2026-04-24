@@ -8,7 +8,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSONB, ENUM
 import geoalchemy2
 
 # revision identifiers, used by Alembic.
@@ -20,9 +20,10 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     # Create zone_type enum
-    zone_type_enum = sa.Enum(
+    zone_type_enum = ENUM(
         "building", "residential", "road", "green_space", "parking", "water",
         name="zone_type",
+        create_type=False,
     )
     zone_type_enum.create(op.get_bind(), checkfirst=True)
 

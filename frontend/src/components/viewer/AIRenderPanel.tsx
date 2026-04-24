@@ -6,6 +6,7 @@
  * and the result image with download/clear controls.
  */
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone, SavedRender } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
@@ -33,13 +34,15 @@ interface AIRenderPanelProps {
   onStyleChange?: (styleId: string) => void;
   /** Project ID for saving/loading renders */
   projectId?: string;
+  /** Gives parent UI a chance to hide selection handles before capture. */
+  onBeforeRender?: () => void | Promise<void>;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender }: AIRenderPanelProps) {
   const {
     render,
     renderPerZone,
@@ -172,12 +175,13 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const handleGeneratePreviews = useCallback(async () => {
     const map = mapRef.current;
     if (!map) return;
+    await onBeforeRender?.();
     const results = await renderPreviews(map, buildRenderOptions());
     if (results.length > 0) {
       onPreviewsReady?.(results);
     }
     refreshCredits();
-  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady, refreshCredits]);
+  }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady, onBeforeRender, refreshCredits]);
 
   /** Select a preview and trigger full-quality render with its seed */
   const handleSelectPreview = useCallback(async (index: number) => {
@@ -199,6 +203,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     const map = mapRef.current;
     if (!map) return;
 
+    await onBeforeRender?.();
     const opts = buildRenderOptions();
     const res = perZoneMode
       ? await renderPerZone(map, opts)
@@ -206,7 +211,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     if (res) {
       onRenderComplete?.(res);
     }
-  }, [mapRef, render, renderPerZone, perZoneMode, buildRenderOptions, onRenderComplete]);
+  }, [mapRef, render, renderPerZone, perZoneMode, buildRenderOptions, onRenderComplete, onBeforeRender]);
 
   const handleClear = useCallback(() => {
     reset();
@@ -611,7 +616,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       )}
 
       {/* Render result lightbox — click aerial render to enlarge */}
-      {renderLightbox && result && (
+      {renderLightbox && result && createPortal(
         <div
           className="fixed inset-0 z-[300] flex items-center justify-center bg-black/85 backdrop-blur-sm"
           onClick={() => setRenderLightbox(false)}
@@ -646,11 +651,12 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               </svg>
             </a>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
       {/* Gallery lightbox */}
-      {galleryLightbox && (
+      {galleryLightbox && createPortal(
         <div
           className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 backdrop-blur-sm"
           onClick={() => setGalleryLightbox(null)}
@@ -689,7 +695,8 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
               </svg>
             </a>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

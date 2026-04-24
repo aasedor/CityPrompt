@@ -4,7 +4,7 @@ Project management API endpoints.
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from geoalchemy2.shape import to_shape
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -93,8 +93,8 @@ async def create_project(
 
 @router.get("/", response_model=list[ProjectListResponse])
 async def list_projects(
-    skip: int = 0,
-    limit: int = 20,
+    skip: int = Query(0, ge=0),
+    limit: int | None = Query(None, ge=1),
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -109,8 +109,9 @@ async def list_projects(
             .join(User, Project.owner_id == User.id)
             .order_by(Project.updated_at.desc())
             .offset(skip)
-            .limit(limit)
         )
+        if limit is not None:
+            query = query.limit(limit)
         result = await db.execute(query)
         rows = result.all()
         return [_project_to_dict(p, owner_email=email) for p, email in rows]
@@ -129,8 +130,9 @@ async def list_projects(
         .where(or_(Project.owner_id == user.id, Project.id.in_(shared_ids)) if shared_ids else Project.owner_id == user.id)
         .order_by(Project.updated_at.desc())
         .offset(skip)
-        .limit(limit)
     )
+    if limit is not None:
+        query = query.limit(limit)
 
     result = await db.execute(query)
     projects = result.scalars().all()

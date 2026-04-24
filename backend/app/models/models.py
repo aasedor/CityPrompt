@@ -194,6 +194,28 @@ class SiteZone(Base):
     building: Mapped["Building | None"] = relationship()
 
 
+class ZoneHistory(Base):
+    """Audit log for zone changes — stores a full snapshot on every create/update/delete."""
+    __tablename__ = "zone_history"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    zone_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    action: Mapped[str] = mapped_column(
+        Enum("create", "update", "delete", name="zone_history_action", create_type=False),
+        nullable=False,
+    )
+    snapshot: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    previous_snapshot: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    user_email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    description: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), index=True)
+
+    # Relationships
+    project: Mapped["Project"] = relationship()
+
+
 class RenderPreview(Base):
     __tablename__ = "render_previews"
 

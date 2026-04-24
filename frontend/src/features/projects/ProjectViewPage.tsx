@@ -1,15 +1,16 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Building2, Plus, Loader2, CheckCircle, AlertCircle, Share2, MapPin, FileDown, Sparkles, Trash2, Eye } from 'lucide-react';
-import { projectsApi, buildingsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
+import { ArrowLeft, CheckCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
+import { projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
+import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeSitePlannerMap } from '@/components/viewer/globe/GlobeSitePlannerMap';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
@@ -37,6 +38,7 @@ export function ProjectViewPage() {
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
@@ -71,8 +73,6 @@ export function ProjectViewPage() {
     workflowStep,
     setWorkflowStep,
     settings,
-    streetViewPegman,
-    setStreetViewActive,
   } = useViewerStore();
 
   const {
@@ -110,6 +110,24 @@ export function ProjectViewPage() {
 
   const handleZoneSelected = useCallback((zoneId: string | null) => {
     selectZone(zoneId);
+  }, [selectZone]);
+
+  const handleToggleHistory = useCallback(() => {
+    setShowGlobeRender(false);
+    setShowHistory((open) => !open);
+  }, []);
+
+  const handleOpenGlobeRender = useCallback(() => {
+    setShowHistory(false);
+    setShowGlobeRender(true);
+  }, []);
+
+  const prepareForAIRenderCapture = useCallback(async () => {
+    if (useViewerStore.getState().selectedZoneId) {
+      selectZone(null);
+    }
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
   }, [selectZone]);
 
   // ── AI Render state ────────────────────────────────────────────────
@@ -233,32 +251,6 @@ export function ProjectViewPage() {
     }
   }, [project?.documents]);
 
-  // Generation elapsed timer
-  const generatingBuildingCount = useMemo(() => {
-    if (!project?.buildings) return 0;
-    return project.buildings.filter((b: { generation_status?: string }) => b.generation_status === 'generating').length;
-  }, [project?.buildings]);
-
-  const [genStartTime, setGenStartTime] = useState<number | null>(null);
-  const [genElapsed, setGenElapsed] = useState(0);
-
-  useEffect(() => {
-    if (generatingBuildingCount > 0) {
-      setGenStartTime((prev) => prev ?? Date.now());
-    } else if (genStartTime) {
-      setGenStartTime(null);
-      setGenElapsed(0);
-    }
-  }, [generatingBuildingCount, genStartTime]);
-
-  useEffect(() => {
-    if (!genStartTime) return;
-    const tick = setInterval(() => {
-      setGenElapsed(Math.floor((Date.now() - genStartTime) / 1000));
-    }, 1000);
-    return () => clearInterval(tick);
-  }, [genStartTime]);
-
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
   if (!project) return <div className="text-center text-primary-950/50">Project not found</div>;
 
@@ -281,37 +273,26 @@ export function ProjectViewPage() {
         <div className="absolute top-[272px] left-4 bottom-4 z-30 w-64 overflow-y-auto">
           <SitePlannerToolbar
             layout="sidebar"
+            isGlobeMode
+            onToggleHistory={handleToggleHistory}
+            historyOpen={showHistory}
             bottomSlot={
               !showGlobeRender ? (
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => setShowGlobeRender(true)}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-3 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-amber-600"
-                  >
-                    <Sparkles size={16} />
-                    AI Render
-                  </button>
-                  <button
-                    onClick={() => setStreetViewActive(!streetViewPegman)}
-                    className={`flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold shadow-md transition-colors ${
-                      streetViewPegman
-                        ? 'bg-amber-700 text-white hover:bg-amber-800'
-                        : 'bg-amber-500 text-white hover:bg-amber-600'
-                    }`}
-                    title="Drop a pin to generate a street-level view"
-                  >
-                    <Eye size={16} />
-                    Street View
-                  </button>
-                </div>
+                <button
+                  onClick={handleOpenGlobeRender}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-3 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-amber-600"
+                >
+                  <Sparkles size={16} />
+                  AI Render
+                </button>
               ) : null
             }
           />
         </div>
 
         {/* Zone properties panel */}
-        {selectedZone && !showGlobeRender && (
-          <div className="absolute top-16 right-4 bottom-20 z-30 w-96 overflow-y-auto rounded-xl">
+        {selectedZone && !showHistory && (
+          <div className="absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
@@ -328,16 +309,25 @@ export function ProjectViewPage() {
           </div>
         )}
 
-        {/* AI Render expanded panel — stays on right side (wider than sidebar); collapsed button now lives in the left sidebar stack */}
+        {showHistory && !showGlobeRender && id && (
+          <HistoryPanel
+            projectId={id}
+            siteZones={siteZones}
+            onClose={() => setShowHistory(false)}
+          />
+        )}
+
+        {/* AI Render expanded panel — bottom dock keeps the properties panel reachable. */}
         {showGlobeRender && (
-          <div className="absolute top-16 right-4 z-30">
-            <div className="w-80">
+          <div className="absolute bottom-3 left-1/2 z-30 -translate-x-1/2">
+            <div className="w-[44rem] max-w-[calc(100vw-2rem)]">
               <GlobeAIRenderPanel
                 canvas={globeRefs?.canvas ?? null}
                 camera={globeRefs?.camera ?? null}
                 siteZones={siteZones}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
+                onBeforeRender={prepareForAIRenderCapture}
               />
               <button
                 onClick={() => setShowGlobeRender(false)}
@@ -430,8 +420,16 @@ export function ProjectViewPage() {
           {/* Street View Panel */}
           <StreetViewPanel siteZones={siteZones} projectId={project?.id} />
 
+          {showHistory && id && (
+            <HistoryPanel
+              projectId={id}
+              siteZones={siteZones}
+              onClose={() => setShowHistory(false)}
+            />
+          )}
+
           {/* Step 1: Zone properties panel */}
-          {workflowStep === 1 && selectedZone && (
+          {workflowStep === 1 && selectedZone && !showHistory && (
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
@@ -459,6 +457,7 @@ export function ProjectViewPage() {
               onPreviewsReady={handlePreviewsReady}
               onClearOverlay={handleClearAIOverlay}
               projectId={project?.id}
+              onBeforeRender={prepareForAIRenderCapture}
             />
           )}
 
@@ -483,7 +482,11 @@ export function ProjectViewPage() {
         {/* Bottom toolbar — context-sensitive per step */}
         <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
           <div className="flex-1 min-w-0">
-            <SitePlannerToolbar onShowGuide={() => setShowTour(true)} />
+            <SitePlannerToolbar
+              onShowGuide={() => setShowTour(true)}
+              onToggleHistory={handleToggleHistory}
+              historyOpen={showHistory}
+            />
           </div>
 
           {/* Step 1: Render button to advance to step 2 */}

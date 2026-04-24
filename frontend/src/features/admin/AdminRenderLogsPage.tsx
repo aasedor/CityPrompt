@@ -1,50 +1,133 @@
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ArrowLeftRight, Loader2, Search, Trash2, Eye, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowLeftRight, Loader2, Search, Trash2, Eye, X, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { adminApi } from '@/services/api';
 import type { RenderAuditLog, RenderLogStats } from '@/services/api';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
-/** Fetch an image through the authenticated API and return an object URL */
-function useAuthImage(url: string | undefined | null) {
+function useAuthImage(url: string | undefined | null, enabled: boolean) {
   const [src, setSrc] = useState<string | null>(null);
+
   useEffect(() => {
-    if (!url) { setSrc(null); return; }
+    let cancelled = false;
+    let objectUrl: string | null = null;
+
+    if (!url || !enabled) {
+      setSrc((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
+      return () => {};
+    }
+
     const token = localStorage.getItem('access_token');
     const fullUrl = url.startsWith('/') ? `${API_BASE}${url}` : url;
+
     fetch(fullUrl, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
-      .then((r) => r.ok ? r.blob() : Promise.reject())
-      .then((blob) => setSrc(URL.createObjectURL(blob)))
-      .catch(() => setSrc(null));
-    return () => { if (src) URL.revokeObjectURL(src); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+      .then((r) => (r.ok ? r.blob() : Promise.reject()))
+      .then((blob) => {
+        if (cancelled) return;
+        objectUrl = URL.createObjectURL(blob);
+        setSrc((prev) => {
+          if (prev) URL.revokeObjectURL(prev);
+          return objectUrl;
+        });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSrc((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return null;
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [url, enabled]);
+
   return src;
 }
 
-function AuditImage({ url, label, onClick }: { url: string | null | undefined; label: string; onClick?: () => void }) {
-  const src = useAuthImage(url);
-  if (!src) return <span className="text-primary-950/30 text-xs">-</span>;
+function useInView(ref: React.RefObject<HTMLElement>, rootMargin = '200px') {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, rootMargin]);
+
+  return inView;
+}
+
+function AuditImage({
+  url,
+  label,
+  onClick,
+  eager,
+}: {
+  url: string | null | undefined;
+  label: string;
+  onClick?: () => void;
+  eager?: boolean;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const visible = useInView(ref);
+  const src = useAuthImage(url, Boolean(eager || visible));
+
   return (
-    <button
-      onClick={onClick}
-      className="group relative h-12 w-16 overflow-hidden rounded border border-primary-950/[0.1] bg-primary-950/[0.04] cursor-pointer"
-      title={`Click to view ${label}`}
-    >
-      <img src={src} alt={label} className="h-full w-full object-cover" />
-      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors">
-        <Eye size={14} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-      </div>
-    </button>
+    <span ref={ref} className="inline-block">
+      {src ? (
+        <button
+          onClick={onClick}
+          className="group relative h-12 w-16 cursor-pointer overflow-hidden rounded border border-primary-950/[0.1] bg-primary-950/[0.04]"
+          title={`Click to view ${label}`}
+        >
+          <img src={src} alt={label} className="h-full w-full object-cover" />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+            <Eye size={14} className="text-white opacity-0 transition-opacity group-hover:opacity-100" />
+          </div>
+        </button>
+      ) : (
+        <span className="flex h-12 w-16 items-center justify-center rounded border border-primary-950/[0.06] bg-primary-950/[0.02]">
+          <span className="text-xs text-primary-950/20">{visible || eager ? '...' : '-'}</span>
+        </span>
+      )}
+    </span>
   );
 }
 
-function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }: { inputUrl: string | null | undefined; outputUrl: string | null | undefined; startOnOutput?: boolean; onClose: () => void }) {
+function CompareLightbox({
+  inputUrl,
+  outputUrl,
+  startOnOutput = false,
+  onClose,
+}: {
+  inputUrl: string | null | undefined;
+  outputUrl: string | null | undefined;
+  startOnOutput?: boolean;
+  onClose: () => void;
+}) {
   const [showOutput, setShowOutput] = useState(startOnOutput);
-  const inputSrc = useAuthImage(inputUrl);
-  const outputSrc = useAuthImage(outputUrl);
+  const inputSrc = useAuthImage(inputUrl, true);
+  const outputSrc = useAuthImage(outputUrl, true);
   const currentSrc = showOutput ? outputSrc : inputSrc;
   const label = showOutput ? 'Output (render)' : 'Input (screenshot)';
 
@@ -70,7 +153,6 @@ function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }
         <div className="relative">
           <img src={currentSrc} alt={label} className="max-h-[80vh] max-w-[85vw] rounded-lg shadow-2xl" />
 
-          {/* Left arrow */}
           {inputSrc && (
             <button
               onClick={() => setShowOutput(false)}
@@ -82,7 +164,6 @@ function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }
             </button>
           )}
 
-          {/* Right arrow */}
           {outputSrc && (
             <button
               onClick={() => setShowOutput(true)}
@@ -114,7 +195,65 @@ function CompareLightbox({ inputUrl, outputUrl, startOnOutput = false, onClose }
             Output
           </button>
         </div>
-        <p className="mt-1 text-xs text-white/40">Use arrow keys to switch</p>
+        <p className="mt-1 text-xs text-white/40">Left/Right switches image. Up/Down changes render.</p>
+      </div>
+    </div>
+  );
+}
+
+function ExpandedLogDetail({
+  log,
+  onCompare,
+}: {
+  log: RenderAuditLog;
+  onCompare: (output: boolean) => void;
+}) {
+  const inputSrc = useAuthImage(log.input_image_url, true);
+  const outputSrc = useAuthImage(log.output_image_url, true);
+
+  return (
+    <div className="flex gap-6 p-4">
+      <div className="flex gap-3">
+        {inputSrc ? (
+          <button
+            onClick={() => onCompare(false)}
+            className="group relative h-40 w-52 cursor-pointer overflow-hidden rounded-lg border border-primary-950/[0.1] bg-primary-950/[0.04]"
+          >
+            <img src={inputSrc} alt="Input" className="h-full w-full object-cover" />
+            <span className="absolute bottom-1.5 left-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">Input</span>
+            <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+              <Eye size={20} className="text-white opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+          </button>
+        ) : (
+          <div className="flex h-40 w-52 items-center justify-center rounded-lg border border-dashed border-primary-950/[0.1]">
+            <Loader2 size={16} className="animate-spin text-primary-950/20" />
+          </div>
+        )}
+
+        {outputSrc ? (
+          <button
+            onClick={() => onCompare(true)}
+            className="group relative h-40 w-52 cursor-pointer overflow-hidden rounded-lg border border-primary-950/[0.1] bg-primary-950/[0.04]"
+          >
+            <img src={outputSrc} alt="Output" className="h-full w-full object-cover" />
+            <span className="absolute bottom-1.5 left-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">Output</span>
+            <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+              <Eye size={20} className="text-white opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+          </button>
+        ) : (
+          <div className="flex h-40 w-52 items-center justify-center rounded-lg border border-dashed border-primary-950/[0.1]">
+            <Loader2 size={16} className="animate-spin text-primary-950/20" />
+          </div>
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="mb-1 text-xs font-medium uppercase text-primary-950/40">Full Prompt</p>
+        <p className="max-h-36 overflow-y-auto whitespace-pre-wrap break-words text-sm leading-relaxed text-primary-950/70">
+          {log.prompt_preview || 'No prompt recorded'}
+        </p>
       </div>
     </div>
   );
@@ -126,8 +265,18 @@ export function AdminRenderLogsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [compareLog, setCompareLog] = useState<RenderAuditLog | null>(null);
   const [compareStartOutput, setCompareStartOutput] = useState(false);
+
+  const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map());
+  const expandedIdRef = useRef<string | null>(null);
+  const logsRef = useRef<RenderAuditLog[]>([]);
+  const compareLogRef = useRef<RenderAuditLog | null>(null);
+
+  expandedIdRef.current = expandedId;
+  logsRef.current = logs;
+  compareLogRef.current = compareLog;
 
   const fetchStats = useCallback(() => {
     adminApi.renderLogStats().then(setStats).catch(() => {});
@@ -155,6 +304,54 @@ export function AdminRenderLogsPage() {
     return () => clearTimeout(timer);
   }, [fetchLogs]);
 
+  const toggleExpand = useCallback((id: string) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  }, []);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+
+      const target = e.target as HTMLElement | null;
+      if (
+        target
+        && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
+      ) {
+        return;
+      }
+
+      const currentLogs = logsRef.current;
+      if (currentLogs.length === 0) return;
+
+      e.preventDefault();
+
+      const activeLightbox = compareLogRef.current;
+      if (activeLightbox) {
+        const idx = currentLogs.findIndex((log) => log.id === activeLightbox.id);
+        const next = e.key === 'ArrowDown'
+          ? (idx < currentLogs.length - 1 ? idx + 1 : 0)
+          : (idx > 0 ? idx - 1 : currentLogs.length - 1);
+        const nextLog = currentLogs[next];
+        if (nextLog) setCompareLog(nextLog);
+        return;
+      }
+
+      const currentId = expandedIdRef.current;
+      const idx = currentId ? currentLogs.findIndex((log) => log.id === currentId) : -1;
+      const next = e.key === 'ArrowDown'
+        ? (idx < currentLogs.length - 1 ? idx + 1 : 0)
+        : (idx > 0 ? idx - 1 : currentLogs.length - 1);
+      const nextId = currentLogs[next]?.id;
+      if (nextId) {
+        setExpandedId(nextId);
+        rowRefs.current.get(nextId)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    };
+
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
   const toggleSelect = (id: string) => {
     setSelected((prev) => {
       const next = new Set(prev);
@@ -168,7 +365,7 @@ export function AdminRenderLogsPage() {
     if (selected.size === logs.length) {
       setSelected(new Set());
     } else {
-      setSelected(new Set(logs.map((l) => l.id)));
+      setSelected(new Set(logs.map((log) => log.id)));
     }
   };
 
@@ -177,7 +374,7 @@ export function AdminRenderLogsPage() {
     if (!confirm(`Delete ${selected.size} render log(s)? This also removes images from storage.`)) return;
     try {
       await adminApi.deleteRenderLogs(Array.from(selected));
-      setLogs((prev) => prev.filter((l) => !selected.has(l.id)));
+      setLogs((prev) => prev.filter((log) => !selected.has(log.id)));
       toast.success(`Deleted ${selected.size} render log(s)`);
       setSelected(new Set());
       fetchStats();
@@ -198,22 +395,21 @@ export function AdminRenderLogsPage() {
         </span>
       </div>
 
-      {/* Storage stats */}
       {stats && (
         <div className="mb-4 rounded-xl border border-primary-950/[0.08] bg-white p-4">
           <div className="flex flex-wrap items-center gap-6">
             <div>
-              <p className="text-xs text-primary-950/40 uppercase font-medium">Total Renders</p>
+              <p className="text-xs font-medium uppercase text-primary-950/40">Total Renders</p>
               <p className="text-xl font-bold text-primary-950">{stats.total_renders.toLocaleString()}</p>
             </div>
-            <div className="flex-1 min-w-[200px]">
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-primary-950/40 uppercase font-medium">Storage Used</p>
+            <div className="min-w-[200px] flex-1">
+              <div className="mb-1 flex items-center justify-between">
+                <p className="text-xs font-medium uppercase text-primary-950/40">Storage Used</p>
                 <p className="text-xs font-medium text-primary-950/60">
                   {stats.storage_gb < 1 ? `${stats.storage_mb} MB` : `${stats.storage_gb} GB`} / {stats.storage_limit_gb} GB
                 </p>
               </div>
-              <div className="h-2.5 w-full rounded-full bg-primary-950/[0.06] overflow-hidden">
+              <div className="h-2.5 w-full overflow-hidden rounded-full bg-primary-950/[0.06]">
                 <div
                   className={`h-full rounded-full transition-all ${
                     stats.storage_gb / stats.storage_limit_gb > 0.8
@@ -228,7 +424,7 @@ export function AdminRenderLogsPage() {
             </div>
             {stats.oldest_render && (
               <div>
-                <p className="text-xs text-primary-950/40 uppercase font-medium">Since</p>
+                <p className="text-xs font-medium uppercase text-primary-950/40">Since</p>
                 <p className="text-sm font-medium text-primary-950/60">{new Date(stats.oldest_render).toLocaleDateString()}</p>
               </div>
             )}
@@ -237,7 +433,7 @@ export function AdminRenderLogsPage() {
       )}
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-md">
+        <div className="relative max-w-md flex-1">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/50" />
           <input
             type="text"
@@ -247,15 +443,18 @@ export function AdminRenderLogsPage() {
             className="w-full rounded-lg border border-primary-950/[0.1] bg-white py-2 pl-9 pr-3 text-sm text-primary-950 placeholder:text-primary-950/40 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
           />
         </div>
-        {selected.size > 0 && (
-          <button
-            onClick={handleBulkDelete}
-            className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-500/20"
-          >
-            <Trash2 size={14} />
-            Delete {selected.size} selected
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-primary-950/30">Up/Down to navigate</span>
+          {selected.size > 0 && (
+            <button
+              onClick={handleBulkDelete}
+              className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-500/20"
+            >
+              <Trash2 size={14} />
+              Delete {selected.size} selected
+            </button>
+          )}
+        </div>
       </div>
 
       {loading ? (
@@ -269,7 +468,7 @@ export function AdminRenderLogsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
-                <th className="px-3 py-3">
+                <th className="w-8 px-3 py-3">
                   <input
                     type="checkbox"
                     checked={selected.size === logs.length && logs.length > 0}
@@ -283,44 +482,77 @@ export function AdminRenderLogsPage() {
                 <th className="px-3 py-3">Preview</th>
                 <th className="px-3 py-3">Prompt</th>
                 <th className="px-3 py-3">Time</th>
+                <th className="w-8 px-3 py-3" />
               </tr>
             </thead>
             <tbody className="divide-y divide-primary-950/[0.06]">
-              {logs.map((log) => (
-                <tr key={log.id} className={`hover:bg-white ${selected.has(log.id) ? 'bg-primary-500/[0.04]' : ''}`}>
-                  <td className="px-3 py-3">
-                    <input
-                      type="checkbox"
-                      checked={selected.has(log.id)}
-                      onChange={() => toggleSelect(log.id)}
-                      className="rounded border-primary-950/20"
-                    />
-                  </td>
-                  <td className="px-3 py-3 text-primary-950/70">{log.user_email}</td>
-                  <td className="px-3 py-3">
-                    <span className="rounded-full bg-primary-950/[0.06] px-2 py-0.5 text-xs">{log.model.replace('gemini-', '').replace('-image', '').replace('-preview', '')}</span>
-                  </td>
-                  <td className="px-3 py-3 text-primary-950/50">{log.tokens_spent}</td>
-                  <td className="px-3 py-2">
-                    <div className="flex items-center gap-1.5">
-                    <AuditImage url={log.input_image_url} label="Input" onClick={() => { setCompareStartOutput(false); setCompareLog(log); }} />
-                    <AuditImage url={log.output_image_url} label="Output" onClick={() => { setCompareStartOutput(true); setCompareLog(log); }} />
-                    </div>
-                  </td>
-                  {/* removed separate output column */}
-                  <td className="px-3 py-2 hidden">
-                    <AuditImage url={log.output_image_url} label="Render output" />
-                  </td>
-                  <td className="px-3 py-3 max-w-[200px]">
-                    <p className="truncate text-xs text-primary-950/50" title={log.prompt_preview || ''}>
-                      {log.prompt_preview ? log.prompt_preview.substring(0, 80) + '...' : '-'}
-                    </p>
-                  </td>
-                  <td className="px-3 py-3 text-primary-950/50 whitespace-nowrap" title={new Date(log.created_at).toLocaleString()}>
-                    {new Date(log.created_at).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
+              {logs.map((log) => {
+                const isExpanded = expandedId === log.id;
+                return (
+                  <React.Fragment key={log.id}>
+                    <tr
+                      ref={(el) => {
+                        if (el) rowRefs.current.set(log.id, el);
+                        else rowRefs.current.delete(log.id);
+                      }}
+                      className={`group cursor-pointer transition-colors ${
+                        isExpanded
+                          ? 'bg-primary-500/[0.04]'
+                          : selected.has(log.id)
+                            ? 'bg-primary-500/[0.02]'
+                            : 'hover:bg-primary-950/[0.02]'
+                      }`}
+                    >
+                      <td className="px-3 py-3 align-top" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selected.has(log.id)}
+                          onChange={() => toggleSelect(log.id)}
+                          className="rounded border-primary-950/20"
+                        />
+                      </td>
+                      <td className="px-3 py-3 align-top text-primary-950/70" onClick={() => toggleExpand(log.id)}>
+                        {log.user_email}
+                      </td>
+                      <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                        <span className="rounded-full bg-primary-950/[0.06] px-2 py-0.5 text-xs">
+                          {log.model.replace('gemini-', '').replace('-image', '').replace('-preview', '')}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)}>
+                        {log.tokens_spent}
+                      </td>
+                      <td className="px-3 py-2 align-top">
+                        <div className="flex items-center gap-1.5">
+                          <AuditImage url={log.input_image_url} label="Input" onClick={() => { setCompareStartOutput(false); setCompareLog(log); }} />
+                          <AuditImage url={log.output_image_url} label="Output" onClick={() => { setCompareStartOutput(true); setCompareLog(log); }} />
+                        </div>
+                      </td>
+                      <td className="max-w-[200px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                        <p className="truncate text-xs text-primary-950/50" title={log.prompt_preview || ''}>
+                          {log.prompt_preview ? `${log.prompt_preview.substring(0, 80)}...` : '-'}
+                        </p>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)} title={new Date(log.created_at).toLocaleString()}>
+                        {new Date(log.created_at).toLocaleDateString()}
+                      </td>
+                      <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                        <ChevronDown size={14} className={`text-primary-950/30 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </td>
+                    </tr>
+                    {isExpanded && (
+                      <tr className="bg-primary-50/50">
+                        <td colSpan={8} className="p-0">
+                          <ExpandedLogDetail
+                            log={log}
+                            onCompare={(output) => { setCompareStartOutput(output); setCompareLog(log); }}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

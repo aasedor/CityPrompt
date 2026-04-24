@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { MousePointer, HelpCircle } from 'lucide-react';
+import { MousePointer, HelpCircle, Layers3, Eye, Building2, History } from 'lucide-react';
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
@@ -52,6 +52,9 @@ const CORE_TOOLS: CoreToolDef[] = [
 
 interface SitePlannerToolbarProps {
   onShowGuide?: () => void;
+  onToggleHistory?: () => void;
+  historyOpen?: boolean;
+  isGlobeMode?: boolean;
   /** 'sidebar' stacks zone-type cards in a single column (for left-rail placement).
    *  'default' keeps the existing 2x2 / 1x4 grid (for bottom-center placement). */
   layout?: 'default' | 'sidebar';
@@ -74,10 +77,26 @@ function resolveZoneTypeForCoreTool(id: CoreToolId, parksSubtype: ParksSubtype):
   return parksSubtype === 'plaza' ? 'parking' : 'green_space';
 }
 
-export function SitePlannerToolbar({ onShowGuide, layout = 'default', bottomSlot }: SitePlannerToolbarProps) {
-  const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive } = useViewerStore();
+export function SitePlannerToolbar({
+  onShowGuide,
+  onToggleHistory,
+  historyOpen,
+  isGlobeMode = false,
+  layout = 'default',
+  bottomSlot,
+}: SitePlannerToolbarProps) {
+  const {
+    activeSitePlannerTool,
+    setActiveSitePlannerTool,
+    streetViewPegman,
+    setStreetViewActive,
+    settings,
+    updateSettings,
+  } = useViewerStore();
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const isSidebar = layout === 'sidebar';
+  const showExistingBuildings = settings.showExistingBuildings;
 
   const activeCoreTool = useMemo(
     () => mapToolToCoreTool(activeSitePlannerTool),
@@ -168,6 +187,62 @@ export function SitePlannerToolbar({ onShowGuide, layout = 'default', bottomSlot
           </button>
 
           <UndoRedoButtons />
+
+          <button
+            onClick={() => setStreetViewActive(!streetViewPegman)}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              streetViewPegman
+                ? 'bg-amber-500/15 text-amber-700 ring-1 ring-amber-500/25'
+                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            }`}
+            title="Drop a pin to generate a street-level view"
+          >
+            <Eye size={14} />
+            Street View
+          </button>
+
+          {!isGlobeMode && (
+            <button
+              onClick={() => updateSettings({ showExistingBuildings: !showExistingBuildings })}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                showExistingBuildings
+                  ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
+                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+              }`}
+              title={showExistingBuildings ? 'Hide existing 3D buildings' : 'Show existing 3D buildings'}
+            >
+              <Building2 size={14} />
+              Buildings
+            </button>
+          )}
+
+          {onToggleHistory && (
+            <button
+              onClick={onToggleHistory}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                historyOpen
+                  ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
+                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+              }`}
+              title="Version history"
+            >
+              <History size={14} />
+              History
+            </button>
+          )}
+
+          <button
+            onClick={() => setShowAdvanced((v) => !v)}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              showAdvanced
+                ? 'bg-primary-950/[0.08] text-primary-950'
+                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+            }`}
+            title="Show additional technical tools"
+          >
+            <Layers3 size={14} />
+            More Tools
+          </button>
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
@@ -206,6 +281,33 @@ export function SitePlannerToolbar({ onShowGuide, layout = 'default', bottomSlot
           )}
         </div>
       </div>
+
+      {showAdvanced && (
+        <div className={`rounded-lg border border-primary-950/[0.08] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
+          <span className="text-[11px] font-medium uppercase text-primary-950/50">Advanced</span>
+          <button
+            onClick={() => setActiveSitePlannerTool('residential')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Residential (Polygon)"
+          >
+            Residential
+          </button>
+          <button
+            onClick={() => setActiveSitePlannerTool('development_area')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Development Area (Polygon)"
+          >
+            Development Area
+          </button>
+          <button
+            onClick={() => setActiveSitePlannerTool('water')}
+            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            title="Water (Polygon)"
+          >
+            Water
+          </button>
+        </div>
+      )}
 
       {bottomSlot}
     </div>

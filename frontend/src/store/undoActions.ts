@@ -1,7 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { siteZonesApi, buildingsApi } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { ZONE_TYPE_CONFIG } from '@/types';
 import type { UndoableAction } from './undoRedo';
 
 // =============================================================================
@@ -30,10 +29,13 @@ export function createZoneCreateAction(
   createdZone: SiteZone,
   queryClient: QueryClient,
 ): UndoableAction {
+  const originalZoneId = createdZone.id;
   const idRef: IdRef = { current: createdZone.id };
 
   return {
     label: 'Create zone',
+    getZoneId: () => idRef.current,
+    matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
       await siteZonesApi.delete(idRef.current);
       invalidateZones(queryClient, projectId);
@@ -58,10 +60,13 @@ export function createZoneDeleteAction(
   deletedZone: SiteZone,
   queryClient: QueryClient,
 ): UndoableAction {
+  const originalZoneId = deletedZone.id;
   const idRef: IdRef = { current: deletedZone.id };
 
   return {
     label: 'Delete zone',
+    getZoneId: () => idRef.current,
+    matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
       const zone = await siteZonesApi.create(projectId, {
         name: deletedZone.name,
@@ -90,6 +95,7 @@ export function createZoneUpdateAction(
 ): UndoableAction {
   return {
     label: 'Update zone',
+    zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, prevData);
       invalidateZones(queryClient, projectId);
@@ -110,6 +116,7 @@ export function createZoneCoordinatesAction(
 ): UndoableAction {
   return {
     label: 'Move zone',
+    zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, { coordinates: prevCoords });
       invalidateZones(queryClient, projectId);

@@ -30,6 +30,9 @@ import type {
   MasterPlan3DGenerateResponse,
   SiteMassingResponse,
   SavedRender,
+  ZoneHistoryListResponse,
+  ZoneHistoryEntry,
+  ZoneSnapshotRestoreResponse,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -91,10 +94,17 @@ export function getApiErrorMessage(error: unknown, fallback = 'Something went wr
   );
 }
 // Request interceptor for auth token
+/** Set by the undo/redo store during system actions to skip history recording. */
+let _skipHistoryFlag = false;
+export function setSkipHistory(v: boolean) { _skipHistoryFlag = v; }
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (_skipHistoryFlag) {
+    config.headers['X-Skip-History'] = '1';
   }
   return config;
 });
@@ -206,8 +216,10 @@ export const authApi = {
 // =============================================================================
 
 export const projectsApi = {
-  list: async (skip = 0, limit = 20): Promise<Project[]> => {
-    const { data } = await api.get(`/api/v1/projects/?skip=${skip}&limit=${limit}`);
+  list: async (skip = 0, limit?: number): Promise<Project[]> => {
+    const params: { skip: number; limit?: number } = { skip };
+    if (limit !== undefined) params.limit = limit;
+    const { data } = await api.get('/api/v1/projects/', { params });
     return data;
   },
 
@@ -657,6 +669,40 @@ export const siteZonesApi = {
 
   generateSiteMassing: async (projectId: string): Promise<SiteMassingResponse> => {
     const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/generate-site-massing`, {}, { timeout: 90000 });
+    return data;
+  },
+};
+
+
+// =============================================================================
+// Zone History / Version Control
+// =============================================================================
+
+export const zoneHistoryApi = {
+  list: async (projectId: string, params?: { limit?: number; offset?: number; zone_id?: string }): Promise<ZoneHistoryListResponse> => {
+    const { data } = await api.get(`/api/v1/site-zones/projects/${projectId}/history`, { params });
+    return data;
+  },
+
+  get: async (historyId: string): Promise<ZoneHistoryEntry> => {
+    const { data } = await api.get(`/api/v1/site-zones/history/${historyId}`);
+    return data;
+  },
+
+  revert: async (historyId: string): Promise<SiteZone> => {
+    const { data } = await api.post(`/api/v1/site-zones/history/${historyId}/revert`);
+    return data;
+  },
+
+  restoreSnapshot: async (
+    projectId: string,
+    zoneId: string,
+    snapshot: SiteZone | null,
+  ): Promise<ZoneSnapshotRestoreResponse> => {
+    const { data } = await api.post(`/api/v1/site-zones/projects/${projectId}/restore-snapshot`, {
+      zone_id: zoneId,
+      snapshot,
+    });
     return data;
   },
 };
@@ -1190,14 +1236,14 @@ export const rendersApi = {
   },
 };
 
-// ---------------------------------------------------------------------------
-// Elevation API
-// ---------------------------------------------------------------------------
-
 export const elevationApi = {
-  /** Get terrain elevation at a lat/lng coordinate */
-  get: async (lat: number, lng: number): Promise<{ elevation: number; ellipsoidal_height: number; resolution: number }> => {
-    const { data } = await api.get('/api/v1/elevation', { params: { lat, lng } });
+  get: async (
+    lat: number,
+    lng: number,
+  ): Promise<{ elevation: number; ellipsoidal_height: number; resolution: number }> => {
+    const { data } = await api.get('/api/v1/elevation', {
+      params: { lat, lng },
+    });
     return data;
   },
 };

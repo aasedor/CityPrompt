@@ -6,6 +6,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { Sparkles, Loader2, Download, X, Check, Image as ImageIcon } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
@@ -21,6 +22,7 @@ interface GlobeAIRenderPanelProps {
   terrainHeight: number;
   projectId?: string;
   onRenderComplete?: (result: GlobeRenderResult) => void;
+  onBeforeRender?: () => void | Promise<void>;
 }
 
 const STYLES = [
@@ -64,6 +66,7 @@ export function GlobeAIRenderPanel({
   terrainHeight,
   projectId,
   onRenderComplete,
+  onBeforeRender,
 }: GlobeAIRenderPanelProps) {
   const { render, renderPreviews, renderPerZone } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
@@ -113,6 +116,8 @@ export function GlobeAIRenderPanel({
       setError('Draw some zones first before rendering');
       return;
     }
+
+    await onBeforeRender?.();
 
     setIsRendering(true);
     setResult(null);
@@ -176,7 +181,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPreviews, renderPerZone, projectId, onRenderComplete, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -245,9 +250,9 @@ export function GlobeAIRenderPanel({
 
   return (
     <>
-    <div className="w-full rounded-xl bg-gray-900/95 backdrop-blur-sm shadow-2xl border border-white/10">
+    <div className="max-h-[44vh] w-full overflow-y-auto rounded-xl border border-white/10 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-white/10">
+      <div className="border-b border-white/10 px-4 py-2.5">
         <h3 className="text-sm font-semibold text-white flex items-center gap-2">
           <Sparkles size={14} className="text-amber-400" />
           AI Render (Globe)
@@ -257,34 +262,38 @@ export function GlobeAIRenderPanel({
         </p>
       </div>
 
-      {/* Style selector */}
-      <div className="px-4 py-2 border-b border-white/10">
-        <div className="flex flex-wrap gap-1.5">
-          {STYLES.map(s => (
-            <button
-              key={s.id}
-              onClick={() => setSelectedStyle(s.id)}
-              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                selectedStyle === s.id
-                  ? 'bg-amber-500 text-black'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20'
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
+      <div className="grid gap-3 border-b border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
+        {/* Style selector */}
+        <div>
+          <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Style</div>
+          <div className="flex flex-wrap gap-1">
+            {STYLES.map(s => (
+              <button
+                key={s.id}
+                onClick={() => setSelectedStyle(s.id)}
+                className={`rounded-lg px-2 py-1 text-[11px] font-medium transition ${
+                  selectedStyle === s.id
+                    ? 'bg-amber-500 text-black'
+                    : 'bg-white/10 text-white/70 hover:bg-white/20'
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Custom prompt */}
-      <div className="px-4 py-2 border-b border-white/10">
-        <textarea
-          value={customPrompt}
-          onChange={(e) => setCustomPrompt(e.target.value)}
-          placeholder="Additional instructions (optional)..."
-          rows={2}
-          className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-xs text-white placeholder-gray-500 resize-none focus:outline-none focus:border-amber-500/50"
-        />
+        {/* Custom prompt */}
+        <div>
+          <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Prompt</div>
+          <textarea
+            value={customPrompt}
+            onChange={(e) => setCustomPrompt(e.target.value)}
+            placeholder="Additional instructions (optional)..."
+            rows={2}
+            className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-amber-500/50 focus:outline-none"
+          />
+        </div>
       </div>
 
       {/* Error display */}
@@ -458,7 +467,7 @@ export function GlobeAIRenderPanel({
     {/* Lightbox overlay — click ANYWHERE (including the image), press Esc, or
         click the explicit ✕ button to close. Rendered at the root so it
         overlays the whole viewport regardless of where the panel is mounted. */}
-    {lightboxRender && (
+    {lightboxRender && createPortal(
       <div
         className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-6"
         onClick={() => setLightboxRender(null)}
@@ -503,7 +512,8 @@ export function GlobeAIRenderPanel({
             </div>
           )}
         </div>
-      </div>
+      </div>,
+      document.body,
     )}
     </>
   );

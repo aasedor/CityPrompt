@@ -343,7 +343,7 @@ async def list_all_buildings(
 @router.get("/projects", response_model=list[AdminProjectListResponse])
 async def list_all_projects(
     skip: int = Query(0, ge=0),
-    limit: int = Query(50, ge=1, le=100),
+    limit: int | None = Query(None, ge=1),
     search: Optional[str] = Query(None),
     project_status: Optional[str] = Query(
         None, alias="status", pattern="^(draft|processing|ready|archived)$"
@@ -372,7 +372,9 @@ async def list_all_projects(
     if project_status:
         query = query.where(Project.status == project_status)
 
-    query = query.order_by(Project.updated_at.desc()).offset(skip).limit(limit)
+    query = query.order_by(Project.updated_at.desc()).offset(skip)
+    if limit is not None:
+        query = query.limit(limit)
     rows = (await db.execute(query)).all()
 
     return [

@@ -514,6 +514,31 @@ export interface SiteZone {
   updated_at: string;
 }
 
+export interface ZoneHistoryEntry {
+  id: string;
+  zone_id: string;
+  project_id: string;
+  action: 'create' | 'update' | 'delete';
+  snapshot: SiteZone & Record<string, unknown>;
+  previous_snapshot?: (SiteZone & Record<string, unknown>) | null;
+  user_id?: string;
+  user_email?: string;
+  description?: string;
+  created_at: string;
+}
+
+export interface ZoneHistoryListResponse {
+  items: ZoneHistoryEntry[];
+  total: number;
+  has_more: boolean;
+}
+
+export interface ZoneSnapshotRestoreResponse {
+  zone_id: string;
+  deleted: boolean;
+  zone?: SiteZone | null;
+}
+
 export interface ZoneTypeConfig {
   label: string;
   color: string;
