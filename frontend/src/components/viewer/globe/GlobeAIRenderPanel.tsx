@@ -7,12 +7,12 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import * as THREE from 'three';
-import { Sparkles, Loader2, Download } from 'lucide-react';
-import type { SiteZone } from '@/types';
+import { Sparkles, Loader2, Download, X, Check, Image as ImageIcon } from 'lucide-react';
+import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
+import { rendersApi, resolveApiFileUrl } from '@/services/api';
 
 const PREVIEW_COUNT = 3;
-import { rendersApi } from '@/services/api';
 
 interface GlobeAIRenderPanelProps {
   canvas: HTMLCanvasElement | null;
@@ -49,6 +49,14 @@ const STYLES = [
   { id: 'pixel-art', label: 'Pixel Art' },
 ] as const;
 
+type LightboxRender = {
+  imageUrl: string;
+  prompt?: string;
+  style?: string;
+  createdAt?: string;
+  downloadName: string;
+};
+
 export function GlobeAIRenderPanel({
   canvas,
   camera,
@@ -66,11 +74,33 @@ export function GlobeAIRenderPanel({
   const [customPrompt, setCustomPrompt] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
+  const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
+  const [showSavedRenders, setShowSavedRenders] = useState(false);
   const [renderTime, setRenderTime] = useState(0);
   const [renderProgress, setRenderProgress] = useState<GlobeRenderProgress | null>(null);
-  // Lightbox: URL of the image currently shown full-screen (null = closed).
-  // Opens on double-click of any preview thumbnail or the main result image.
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  // Lightbox: render currently shown full-screen (null = closed).
+  const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
+
+  const refreshSavedRenders = useCallback(async () => {
+    if (!projectId) {
+      setSavedRenders([]);
+      return;
+    }
+    try {
+      setSavedRenders(await rendersApi.list(projectId));
+    } catch {
+      // The gallery is supplemental; render controls should stay usable.
+    }
+  }, [projectId]);
+
+  useEffect(() => {
+    refreshSavedRenders();
+  }, [refreshSavedRenders]);
+
+  useEffect(() => {
+    setSaveStatus('idle');
+  }, [result?.imageUrl]);
 
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
@@ -150,11 +180,11 @@ export function GlobeAIRenderPanel({
 
   // Close lightbox on Esc
   useEffect(() => {
-    if (!lightboxImage) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxImage(null); };
+    if (!lightboxRender) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxRender(null); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [lightboxImage]);
+  }, [lightboxRender]);
 
   const handleSelectPreview = useCallback((index: number) => {
     if (index < 0 || index >= previews.length) return;
@@ -174,18 +204,44 @@ export function GlobeAIRenderPanel({
   const handleSave = useCallback(async () => {
     if (!result?.imageUrl || !projectId || saving) return;
     setSaving(true);
+    setSaveStatus('idle');
     try {
-      const base64 = result.imageUrl.split(',')[1];
-      await rendersApi.save(projectId, {
+      let base64 = '';
+      if (result.imageUrl.startsWith('data:')) {
+        base64 = result.imageUrl.split(',')[1] || '';
+      } else {
+        const resp = await fetch(result.imageUrl);
+        const blob = await resp.blob();
+        base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve((reader.result as string).split(',')[1] || '');
+          reader.readAsDataURL(blob);
+        });
+      }
+      const saved = await rendersApi.save(projectId, {
         image_base64: base64,
         prompt: result.prompt,
         style: selectedStyle,
         seed: result.seed,
       });
+      setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+      setShowSavedRenders(true);
+      setSaveStatus('saved');
+    } catch {
+      setSaveStatus('error');
     } finally {
       setSaving(false);
     }
   }, [result, projectId, selectedStyle, saving]);
+
+  const openResultLightbox = useCallback((renderResult: GlobeRenderResult, label: string) => {
+    setLightboxRender({
+      imageUrl: renderResult.imageUrl,
+      prompt: renderResult.prompt,
+      style: selectedStyle,
+      downloadName: `${label}-${Date.now()}.png`,
+    });
+  }, [selectedStyle]);
 
   return (
     <>
@@ -269,20 +325,22 @@ export function GlobeAIRenderPanel({
         <div className="px-4 pb-2">
           <div className="mb-1 flex items-center justify-between text-[10px] text-gray-400">
             <span>Variant {selectedPreviewIndex !== null ? selectedPreviewIndex + 1 : '?'} of {previews.length}</span>
-            <span>click to switch</span>
+            <span>open any preview</span>
           </div>
           <div className="grid grid-cols-3 gap-1.5">
             {previews.map((p, i) => (
               <button
                 key={i}
-                onClick={() => handleSelectPreview(i)}
-                onDoubleClick={() => setLightboxImage(p.imageUrl)}
+                onClick={() => {
+                  handleSelectPreview(i);
+                  openResultLightbox(p, `siteforge-globe-preview-${i + 1}`);
+                }}
                 className={`relative aspect-square overflow-hidden rounded border-2 transition ${
                   selectedPreviewIndex === i
                     ? 'border-amber-400 ring-2 ring-amber-400/40'
                     : 'border-white/10 hover:border-white/40'
                 }`}
-                title={`Preview ${i + 1}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} — double-click to enlarge`}
+                title={`Preview ${i + 1}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} - open larger`}
               >
                 <img
                   src={p.imageUrl}
@@ -305,18 +363,19 @@ export function GlobeAIRenderPanel({
             <img
               src={result.imageUrl}
               alt="AI Render"
-              className="w-full cursor-pointer"
-              onClick={handleDownload}
-              onDoubleClick={() => setLightboxImage(result.imageUrl)}
-              title="Click to download · Double-click to enlarge"
+              className="w-full cursor-zoom-in"
+              onClick={() => openResultLightbox(result, 'siteforge-globe-render')}
+              title="Click to enlarge"
             />
             <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center bg-gradient-to-t from-black/80 to-transparent px-2 py-1.5">
               <button
                 onClick={handleSave}
-                disabled={saving}
-                className="text-[10px] text-white/80 hover:text-white"
+                disabled={saving || saveStatus === 'saved'}
+                className="flex items-center gap-1 text-[10px] text-white/80 hover:text-white disabled:opacity-70"
               >
-                {saving ? 'Saving...' : 'Save to Project'}
+                {saving && <Loader2 size={10} className="animate-spin" />}
+                {saveStatus === 'saved' && <Check size={10} />}
+                {saving ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Retry save' : 'Save to Project'}
               </button>
               <button
                 onClick={handleDownload}
@@ -339,38 +398,111 @@ export function GlobeAIRenderPanel({
           </button>
         </div>
       )}
+
+      {/* Saved renders gallery */}
+      {projectId && (
+        <div className="border-t border-white/10 px-4 py-3">
+          <button
+            onClick={() => setShowSavedRenders((v) => !v)}
+            className="flex w-full items-center justify-between text-xs font-medium text-gray-400 transition hover:text-gray-200"
+          >
+            <span className="flex items-center gap-1.5">
+              <ImageIcon size={13} />
+              Saved Renders
+            </span>
+            <span>{savedRenders.length}</span>
+          </button>
+
+          {showSavedRenders && (
+            <div className="mt-3">
+              {savedRenders.length === 0 ? (
+                <p className="py-3 text-center text-xs text-gray-500">
+                  Save a render to keep it with this project.
+                </p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {savedRenders.map((saved) => {
+                    const savedUrl = resolveApiFileUrl(saved.image_url);
+                    return (
+                      <button
+                        key={saved.id}
+                        onClick={() => setLightboxRender({
+                          imageUrl: savedUrl,
+                          prompt: saved.prompt,
+                          style: saved.style,
+                          createdAt: saved.created_at,
+                          downloadName: `render-${saved.id}.png`,
+                        })}
+                        className="group relative aspect-square overflow-hidden rounded border border-white/10 transition hover:border-amber-400/60"
+                        title="Open saved render"
+                      >
+                        <img
+                          src={savedUrl}
+                          alt={saved.prompt || 'Saved render'}
+                          className="h-full w-full object-cover"
+                        />
+                        <span className="absolute inset-x-0 bottom-0 truncate bg-black/65 px-1 py-0.5 text-left text-[9px] text-white/80 opacity-0 transition group-hover:opacity-100">
+                          {saved.style || new Date(saved.created_at).toLocaleDateString()}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
 
     {/* Lightbox overlay — click ANYWHERE (including the image), press Esc, or
         click the explicit ✕ button to close. Rendered at the root so it
         overlays the whole viewport regardless of where the panel is mounted. */}
-    {lightboxImage && (
+    {lightboxRender && (
       <div
         className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-black/90 p-6"
-        onClick={() => setLightboxImage(null)}
+        onClick={() => setLightboxRender(null)}
         role="dialog"
         aria-label="Render preview — click anywhere or press Esc to close"
       >
         {/* Explicit, high-contrast close button — always reachable. */}
+        <a
+          href={lightboxRender.imageUrl}
+          download={lightboxRender.downloadName}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute top-4 right-16 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
+          aria-label="Download render"
+          title="Download"
+        >
+          <Download size={20} />
+        </a>
         <button
-          onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}
-          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl font-bold text-white shadow-lg ring-2 ring-white/30 hover:bg-white hover:text-black"
+          onClick={(e) => { e.stopPropagation(); setLightboxRender(null); }}
+          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
           aria-label="Close"
           title="Close (Esc)"
         >
-          ✕
+          <X size={22} />
         </button>
-        {/* Hint text at the bottom — helps first-time users discover how to close. */}
-        <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1.5 text-xs text-white/80">
-          Click anywhere or press Esc to close
+        <div className="flex max-h-full max-w-full flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
+          <img
+            src={lightboxRender.imageUrl}
+            alt="Enlarged render"
+            className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+          />
+          {(lightboxRender.prompt || lightboxRender.style || lightboxRender.createdAt) && (
+            <div className="max-w-3xl rounded-lg bg-black/60 px-4 py-2 text-center text-xs text-white/75">
+              {lightboxRender.prompt && <p className="line-clamp-2">{lightboxRender.prompt}</p>}
+              {(lightboxRender.style || lightboxRender.createdAt) && (
+                <p className="mt-1 text-white/45">
+                  {[lightboxRender.style, lightboxRender.createdAt ? new Date(lightboxRender.createdAt).toLocaleDateString() : null]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </p>
+              )}
+            </div>
+          )}
         </div>
-        <img
-          src={lightboxImage}
-          alt="Enlarged render"
-          className="max-h-full max-w-full rounded-lg shadow-2xl"
-          /* NOTE: no stopPropagation here — clicking the image also closes
-             the lightbox, which is the standard UX users expect. */
-        />
       </div>
     )}
     </>

@@ -6,7 +6,7 @@
  *   2. Selected preview triggers full-quality render
  *   3. Full result displayed with download + save buttons
  */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { AIRenderResult } from './useAIRender';
 import { rendersApi } from '@/services/api';
 
@@ -46,6 +46,16 @@ export function RenderResultModal({
   onSaved,
 }: RenderResultModalProps) {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!expandedImage) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpandedImage(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [expandedImage]);
 
   const handleDownload = useCallback(() => {
     const url = fullResult?.imageUrl;
@@ -168,7 +178,9 @@ export function RenderResultModal({
             <img
               src={displayImage}
               alt="AI Render"
-              className="max-h-[60vh] max-w-full rounded-lg object-contain shadow-xl"
+              className="max-h-[60vh] max-w-full cursor-zoom-in rounded-lg object-contain shadow-xl transition hover:opacity-95"
+              onClick={() => setExpandedImage(displayImage)}
+              title="Click to enlarge"
             />
           ) : (
             <div className="flex flex-col items-center gap-4 text-gray-500">
@@ -228,6 +240,31 @@ export function RenderResultModal({
           </div>
         </div>
       </div>
+      {expandedImage && (
+        <div
+          className="fixed inset-0 z-[260] flex items-center justify-center bg-black/90 p-6"
+          onClick={() => setExpandedImage(null)}
+          role="dialog"
+          aria-label="Expanded AI render"
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setExpandedImage(null); }}
+            className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
+            aria-label="Close"
+            title="Close (Esc)"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <img
+            src={expandedImage}
+            alt="Expanded AI render"
+            className="max-h-[86vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
