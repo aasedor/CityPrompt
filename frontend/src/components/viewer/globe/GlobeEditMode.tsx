@@ -17,7 +17,7 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
-import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight, shouldUseStableSurfaceHeight } from './globeTerrainUtils';
+import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
@@ -128,9 +128,8 @@ export function GlobeEditMode({
     ?? zoneProps?.terrainElevation,
   );
   const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
-  const usesStableSurfaceHeight = shouldUseStableSurfaceHeight(zone.zone_type);
   const zoneTerrainHeight = resolveZoneTerrainHeight(
-    usesStableSurfaceHeight ? null : sampledTerrainHeight,
+    sampledTerrainHeight,
     storedTerrainHeight,
     terrainHeight,
   );
@@ -149,8 +148,6 @@ export function GlobeEditMode({
   }, [zoneTerrainHeight]);
 
   const sampleZoneTerrainHeight = useCallback(() => {
-    if (usesStableSurfaceHeight) return false;
-
     const tilesGroup = tiles?.group;
     if (!tilesGroup?.children?.length) return false;
 
@@ -172,11 +169,10 @@ export function GlobeEditMode({
         : sampledHeight
     ));
     return true;
-  }, [tiles, usesStableSurfaceHeight, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
+  }, [tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
-    if (usesStableSurfaceHeight) return undefined;
     if (sampleZoneTerrainHeight()) return undefined;
 
     const timers = [
@@ -186,7 +182,7 @@ export function GlobeEditMode({
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [sampleZoneTerrainHeight, usesStableSurfaceHeight, zone.id, zone.updated_at]);
+  }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
 
   // Raycast to get lat/lng from pointer event
   const pointerToLatLng = useCallback((e: PointerEvent): [number, number] | null => {

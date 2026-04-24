@@ -36,7 +36,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
-import { getRepresentativeTerrainHeight, shouldUseStableSurfaceHeight } from './globeTerrainUtils';
+import { getRepresentativeTerrainHeight } from './globeTerrainUtils';
 import {
   getToolDisplayLabel,
   isLinearTool,
@@ -857,20 +857,14 @@ function DrawingDots({
   pointHeights,
   terrainHeight,
   linear,
-  stableSurfaceHeight,
 }: {
   points: number[][];
   pointHeights: number[];
   terrainHeight: number;
   linear: boolean;
-  stableSurfaceHeight: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const sampledPointHeights = useMemo(() => {
-    if (stableSurfaceHeight) {
-      return points.map(() => terrainHeight);
-    }
-
     const tilesGroup = tiles?.group;
     if (!tilesGroup?.children?.length) {
       return points.map((_, index) => pointHeights[index] ?? terrainHeight);
@@ -882,18 +876,14 @@ function DrawingDots({
       ?? raycastTerrainHeightAtLngLat(point[0], point[1], tilesGroup, raycaster)
       ?? terrainHeight
     ));
-  }, [pointHeights, points, stableSurfaceHeight, terrainHeight, tiles]);
+  }, [pointHeights, points, terrainHeight, tiles]);
   const previewHeight = useMemo(() => {
-    if (stableSurfaceHeight) {
-      return terrainHeight;
-    }
-
     const finiteHeights = sampledPointHeights.filter(Number.isFinite);
     if (finiteHeights.length === 0) {
       return terrainHeight;
     }
     return finiteHeights.reduce((sum, height) => sum + height, 0) / finiteHeights.length;
-  }, [sampledPointHeights, stableSurfaceHeight, terrainHeight]);
+  }, [sampledPointHeights, terrainHeight]);
   const liveArea = useMemo(() => (
     !linear && points.length >= 3 ? polygonAreaM2(points) : 0
   ), [linear, points]);
@@ -1957,15 +1947,12 @@ export function GlobeSitePlannerMap({
     // Every click adds a point. Double-click finish is handled by the dblclick listener.
     // Point placed â€” add to drawing
     const newPts = [...drawingPointsRef.current, clickLngLat];
-    const drawingHeight = shouldUseStableSurfaceHeight(activeSitePlannerTool)
-      ? terrainElevationRef.current
-      : clickHeight;
-    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+    const newHeights = [...drawingPointHeightsRef.current, clickHeight];
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
-  }, [activeSitePlannerTool, hasDrawingTool, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
+  }, [hasDrawingTool, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (hasDrawingTool) return;
@@ -2144,7 +2131,6 @@ export function GlobeSitePlannerMap({
             pointHeights={drawingPointHeights}
             terrainHeight={terrainElevation}
             linear={linear}
-            stableSurfaceHeight={shouldUseStableSurfaceHeight(activeSitePlannerTool)}
           />
 
           {/* Edit mode â€” vertex handles when zone selected in Select mode */}
