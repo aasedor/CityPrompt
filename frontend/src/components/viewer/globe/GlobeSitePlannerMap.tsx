@@ -63,10 +63,11 @@ const RAD_TO_DEG = 180 / Math.PI;
 
 // Default fallback elevation (Calgary) â€” used until dynamic fetch completes
 const DEFAULT_TERRAIN_ELEVATION = 1045;
-const DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 250;
+const DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 120;
 const MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND;
 const MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 1800;
 const MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND = 40000;
+const INITIAL_CAMERA_REVEAL_FALLBACK_MS = 2500;
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
@@ -386,12 +387,35 @@ export function syncGlobeControlsFallbackPlane(
   return true;
 }
 
+interface GlobeCameraPose {
+  cameraPos: THREE.Vector3;
+  surfacePos: THREE.Vector3;
+  normal: THREE.Vector3;
+  cameraUp?: THREE.Vector3;
+}
+
+function applyCameraPoseToCamera(
+  camera: THREE.Camera,
+  pose: GlobeCameraPose,
+  controls?: { pivotPoint?: THREE.Vector3; update?: () => void } | null,
+) {
+  camera.position.copy(pose.cameraPos);
+  camera.up.copy(pose.cameraUp ?? pose.normal);
+  camera.lookAt(pose.surfacePos);
+  camera.updateMatrixWorld();
+
+  if (controls?.pivotPoint) {
+    controls.pivotPoint.copy(pose.surfacePos);
+  }
+  controls?.update?.();
+}
+
 export function computeCameraPose(
   lat: number,
   lng: number,
   heightAboveGroundMeters: number,
   terrainHeightMeters: number = 0,
-) {
+): GlobeCameraPose {
   const surfacePos = new THREE.Vector3();
   WGS84_ELLIPSOID.getCartographicToPosition(
     lat * DEG_TO_RAD,
@@ -642,7 +666,7 @@ function mapboxMercatorVectorToWorldDirection(
 function buildCameraPoseFromPreferredView(
   preferredView: GlobePreferredView,
   terrainHeightMeters: number,
-) {
+): GlobeCameraPose | null {
   const cameraPosition = preferredView.cameraPosition;
   if (!cameraPosition) {
     return null;
@@ -1072,11 +1096,14 @@ export function GlobeSitePlannerMap({
   const [sceneReady, setSceneReady] = useState(false);
   const [globeControlsReady, setGlobeControlsReady] = useState(false);
   const [isInitialCameraApplied, setIsInitialCameraApplied] = useState(false);
+  const [initialRevealFallbackReady, setInitialRevealFallbackReady] = useState(false);
   const hasAppliedProjectViewRef = useRef(false);
   const hasAppliedZoneViewRef = useRef(false);
   const hasUserInteractedRef = useRef(false);
   const hasAppliedSettledViewRef = useRef(false);
+  const hasVisibleInitialCameraRef = useRef(false);
   const cameraRevealGenerationRef = useRef(0);
+  const initialCameraPoseRef = useRef<GlobeCameraPose | null>(null);
 
   const projectZonePoints = useMemo(() => (
     siteZones.flatMap((zone) => (
@@ -1274,18 +1301,7 @@ export function GlobeSitePlannerMap({
     const camera = cameraRef.current;
     if (!camera) return;
 
-    camera.position.copy(pose.cameraPos);
-    camera.up.copy(pose.cameraUp ?? pose.normal);
-    camera.lookAt(pose.surfacePos);
-    camera.updateMatrixWorld();
-
-    const controls = globeControlsRef.current;
-    if (controls?.pivotPoint) {
-      controls.pivotPoint.copy(pose.surfacePos);
-    }
-    if (controls?.update) {
-      controls.update();
-    }
+    applyCameraPoseToCamera(camera, pose, globeControlsRef.current);
   }, []);
 
   const applyCameraView = useCallback((lat: number, lng: number, altitudeMeters: number) => {
@@ -1332,12 +1348,17 @@ export function GlobeSitePlannerMap({
     globeControlsRef.current = controls;
     if (controls) {
       syncGlobeControlsFallbackPlane(controls, cameraRef.current);
+      if (isTerrainReady && !hasUserInteractedRef.current && cameraRef.current && initialCameraPoseRef.current) {
+        applyCameraPoseToCamera(cameraRef.current, initialCameraPoseRef.current, controls);
+      }
     }
     setGlobeControlsReady(Boolean(controls));
-  }, []);
+  }, [isTerrainReady]);
 
   const markUserInteracted = useCallback(() => {
-    hasUserInteractedRef.current = true;
+    if (hasVisibleInitialCameraRef.current) {
+      hasUserInteractedRef.current = true;
+    }
   }, []);
 
   useEffect(() => {
@@ -1374,11 +1395,23 @@ export function GlobeSitePlannerMap({
   }, [focusLatitude, focusLongitude]);
 
   useEffect(() => {
+    hasUserInteractedRef.current = false;
+    hasVisibleInitialCameraRef.current = false;
     hasAppliedProjectViewRef.current = false;
     hasAppliedZoneViewRef.current = false;
     setIsInitialCameraApplied(false);
+    setInitialRevealFallbackReady(false);
     hideCanvasUntilPose();
   }, [_latitude, _longitude, hideCanvasUntilPose, preferredView]);
+
+  useEffect(() => {
+    setInitialRevealFallbackReady(false);
+    const timeoutId = window.setTimeout(
+      () => setInitialRevealFallbackReady(true),
+      INITIAL_CAMERA_REVEAL_FALLBACK_MS,
+    );
+    return () => window.clearTimeout(timeoutId);
+  }, [_latitude, _longitude, initialView, preferredCameraPose]);
 
   useEffect(() => {
     hasAppliedSettledViewRef.current = false;
@@ -1387,14 +1420,12 @@ export function GlobeSitePlannerMap({
   useEffect(() => {
     if (!sceneReady) return;
     if (hasUserInteractedRef.current) return;
-    if (preferredView && (!isTerrainReady || !globeControlsReady)) return;
+    if (!isTerrainReady || !globeControlsReady) return;
 
     if (preferredCameraPose) {
       if (hasAppliedProjectViewRef.current) return;
       applyCameraPose(preferredCameraPose);
       hasAppliedProjectViewRef.current = true;
-      setIsInitialCameraApplied(true);
-      revealCanvasAfterPose();
       return;
     }
 
@@ -1402,22 +1433,19 @@ export function GlobeSitePlannerMap({
       if (hasAppliedZoneViewRef.current) return;
       applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
       hasAppliedZoneViewRef.current = true;
-      setIsInitialCameraApplied(true);
-      revealCanvasAfterPose();
       return;
     }
 
     if (hasAppliedProjectViewRef.current) return;
     applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
     hasAppliedProjectViewRef.current = true;
-    setIsInitialCameraApplied(true);
-    revealCanvasAfterPose();
-  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isTerrainReady, preferredCameraPose, preferredView, projectZonePoints.length, revealCanvasAfterPose, sceneReady]);
+  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isTerrainReady, preferredCameraPose, preferredView, projectZonePoints.length, sceneReady]);
 
   useEffect(() => {
-    if (!sceneReady || !isSceneSettled) return;
+    if (!sceneReady) return;
     if (hasUserInteractedRef.current || hasAppliedSettledViewRef.current) return;
-    if (preferredView && (!isTerrainReady || !globeControlsReady)) return;
+    if (!isTerrainReady || !globeControlsReady) return;
+    if (!isSceneSettled && !initialRevealFallbackReady) return;
 
     let cancelled = false;
     const reapply = () => {
@@ -1428,6 +1456,7 @@ export function GlobeSitePlannerMap({
         applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
       }
       hasAppliedSettledViewRef.current = true;
+      hasVisibleInitialCameraRef.current = true;
       setIsInitialCameraApplied(true);
       revealCanvasAfterPose();
     };
@@ -1437,7 +1466,7 @@ export function GlobeSitePlannerMap({
       cancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isSceneSettled, isTerrainReady, preferredCameraPose, preferredView, revealCanvasAfterPose, sceneReady]);
+  }, [applyCameraPose, applyCameraView, globeControlsReady, initialRevealFallbackReady, initialView, isSceneSettled, isTerrainReady, preferredCameraPose, preferredView, revealCanvasAfterPose, sceneReady]);
 
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
@@ -1847,7 +1876,7 @@ export function GlobeSitePlannerMap({
       );
 
       if (didMove) {
-        hasUserInteractedRef.current = true;
+        markUserInteracted();
       }
 
       rafId = requestAnimationFrame(tick);
@@ -1885,12 +1914,12 @@ export function GlobeSitePlannerMap({
         cancelAnimationFrame(rafId);
       }
     };
-  }, [hasDrawingTool, selectedZoneId, streetViewPegman?.position]);
+  }, [hasDrawingTool, markUserInteracted, selectedZoneId, streetViewPegman?.position]);
 
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
-    hasUserInteractedRef.current = true;
+    markUserInteracted();
     if (ignoreNextCanvasClickRef.current) {
       ignoreNextCanvasClickRef.current = false;
       return;
@@ -1952,7 +1981,7 @@ export function GlobeSitePlannerMap({
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
-  }, [hasDrawingTool, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
+  }, [hasDrawingTool, markUserInteracted, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (hasDrawingTool) return;
@@ -1988,14 +2017,14 @@ export function GlobeSitePlannerMap({
     () => preferredCameraPose ?? computeCameraPose(initialView.lat, initialView.lng, initialView.altitude, terrainElevation),
     [initialView, preferredCameraPose, terrainElevation],
   );
+  initialCameraPoseRef.current = initialCameraPose;
   const initialThreeCameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   if (!initialThreeCameraRef.current) {
     const camera = new THREE.PerspectiveCamera(75, 1, 1, 1e11);
-    camera.position.copy(initialCameraPose.cameraPos);
-    camera.up.copy(initialCameraPose.cameraUp ?? initialCameraPose.normal);
-    camera.lookAt(initialCameraPose.surfacePos);
-    camera.updateMatrixWorld();
+    applyCameraPoseToCamera(camera, initialCameraPose);
     initialThreeCameraRef.current = camera;
+  } else if (!cameraRef.current) {
+    applyCameraPoseToCamera(initialThreeCameraRef.current, initialCameraPose);
   }
   const initialThreeCamera = initialThreeCameraRef.current;
 
@@ -2009,6 +2038,7 @@ export function GlobeSitePlannerMap({
           canvasRef.current = gl.domElement;
           hideCanvasUntilPose();
           cameraRef.current = camera;
+          applyCameraPoseToCamera(camera, initialCameraPoseRef.current ?? initialCameraPose, globeControlsRef.current);
           setSceneReady(true);
 
           // Attach pointer handlers directly to WebGL canvas for drawing
@@ -2046,7 +2076,7 @@ export function GlobeSitePlannerMap({
           };
 
           const handlePointerDown = (e: PointerEvent) => {
-            hasUserInteractedRef.current = true;
+            markUserInteracted();
             pointerDownRef.current = { x: e.clientX, y: e.clientY };
             draggedSincePointerDownRef.current = false;
           };
@@ -2160,6 +2190,24 @@ export function GlobeSitePlannerMap({
         {/* Click handling is attached in onCreated (canvas click + dblclick listeners) */}
         </GlobeDragProvider>
       </Canvas>
+
+      {!isInitialCameraApplied && (
+        <div className="absolute inset-0 z-40 flex items-center justify-center bg-black text-white">
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-white/10 bg-gray-950/80 px-5 py-4 shadow-2xl backdrop-blur-sm">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-400/25 border-t-amber-300" />
+            <div className="text-center">
+              <p className="text-sm font-semibold text-white">Preparing project view...</p>
+              <p className="mt-1 text-xs text-white/55">
+                {!isTerrainReady
+                  ? 'Checking terrain height'
+                  : !globeControlsReady
+                    ? 'Starting globe controls'
+                    : 'Loading nearby 3D tiles'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Context-sensitive hints bar */}
       {hasDrawingTool && (() => {
