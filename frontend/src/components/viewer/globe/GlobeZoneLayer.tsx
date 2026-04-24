@@ -23,7 +23,7 @@ import {
 } from '../mapEngine/geoUtils';
 import { createStencilVolume } from './StencilMaskPlugin';
 import { useGlobeDragRef } from './useGlobeDragRef';
-import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight, shouldUseStableSurfaceHeight } from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -205,6 +205,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || 0;
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
+  const usesStableSurfaceHeight = shouldUseStableSurfaceHeight(zone.zone_type);
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
 
   const geoData = useMemo(() => {
@@ -224,7 +225,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const drapeAttemptRef = useRef(0);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const zoneTerrainHeight = resolveZoneTerrainHeight(
-    sampledTerrainHeight,
+    usesStableSurfaceHeight ? null : sampledTerrainHeight,
     storedTerrainHeight,
     terrainHeight,
   );
@@ -236,6 +237,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const lastDragVersionRef = useRef(0);
 
   const sampleZoneTerrainHeight = useCallback(() => {
+    if (usesStableSurfaceHeight) return false;
+
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return false;
 
@@ -257,7 +260,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : sampledHeight
     ));
     return true;
-  }, [centroid, tiles, zone.coordinates, zoneTerrainHeight]);
+  }, [centroid, tiles, usesStableSurfaceHeight, zone.coordinates, zoneTerrainHeight]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -314,12 +317,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   });
 
   const drapeToTerrain = useCallback(() => {
-    if (!tiles?.group || !geoData || isBuilding || drapedRef.current) return;
+    if (!tiles?.group || !geoData || usesStableSurfaceHeight || drapedRef.current) return;
     if (!flatMeshRef.current) return;
     drapeAttemptRef.current++;
 
     const raycaster = raycasterRef.current;
-    const mPerDegLon = metersPerDegLon(centroid[1]);
     let hitCount = 0;
 
     // For each vertex, raycast to find terrain Z in ENU frame
@@ -368,10 +370,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, zone.coordinates, centroid, zoneTerrainHeight]);
+  }, [tiles, geoData, usesStableSurfaceHeight, zone.coordinates, zoneTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
+    if (usesStableSurfaceHeight) return undefined;
     if (sampleZoneTerrainHeight()) return undefined;
 
     const timers = [
@@ -381,11 +384,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
+  }, [sampleZoneTerrainHeight, usesStableSurfaceHeight, zone.id, zone.updated_at]);
 
   // Progressive drape: try at 2s, 5s, 10s after mount (tiles need time to load)
   useEffect(() => {
-    if (isBuilding || !tiles) return;
+    if (usesStableSurfaceHeight || !tiles) return;
     drapedRef.current = false;
     drapeAttemptRef.current = 0;
     const timers = [
@@ -394,14 +397,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       setTimeout(drapeToTerrain, 10000),
     ];
     return () => timers.forEach(clearTimeout);
-  }, [tiles, drapeToTerrain, isBuilding, zoneTerrainHeight]);
+  }, [tiles, drapeToTerrain, usesStableSurfaceHeight, zoneTerrainHeight]);
 
   // Periodic re-drape for LOD updates (low frequency)
   useFrame(() => {
+    if (usesStableSurfaceHeight) return;
     if (sampledTerrainHeight === null && tiles?.group && Math.random() < 0.003) {
       sampleZoneTerrainHeight();
     }
-    if (isBuilding || drapedRef.current || drapeAttemptRef.current >= 15) return;
+    if (drapedRef.current || drapeAttemptRef.current >= 15) return;
     if (!tiles?.group) return;
     if (Math.random() < 0.005) drapeToTerrain(); // ~0.5% chance per frame
   });

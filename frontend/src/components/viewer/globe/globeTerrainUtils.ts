@@ -1,3 +1,14 @@
+const STABLE_SURFACE_ZONE_TYPES = new Set([
+  'building',
+  'residential',
+  'green_space',
+  'site_boundary',
+]);
+
+export function shouldUseStableSurfaceHeight(zoneType: string | null | undefined): boolean {
+  return !!zoneType && STABLE_SURFACE_ZONE_TYPES.has(zoneType);
+}
+
 export function getRepresentativeTerrainHeight(
   samples: Array<number | null | undefined>,
   fallback: number,
