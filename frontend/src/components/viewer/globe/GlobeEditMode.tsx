@@ -407,14 +407,16 @@ export function GlobeEditMode({
           lon={coord[0] * DEG_TO_RAD}
           height={zoneTerrainHeight}
         >
-          {/* Invisible large sphere for 3D hit detection */}
+          {/* Invisible 3D fallback hit target.
+              Keep this close to the visible dot size so small buildings still
+              have a selectable body area between vertices. */}
           <mesh
             renderOrder={900}
             onPointerDown={(e) => handleVertexPointerDown(i, e)}
             onPointerEnter={() => { setHoveredIndex(i); gl.domElement.style.cursor = 'grab'; }}
             onPointerLeave={() => { if (hoveredIndex === i) setHoveredIndex(null); if (dragIndex === null) gl.domElement.style.cursor = ''; }}
           >
-            <sphereGeometry args={[8, 12, 12]} />
+            <sphereGeometry args={[2, 10, 10]} />
             <meshBasicMaterial
               color={dragIndex === i ? '#f59e0b' : '#ffffff'}
               transparent

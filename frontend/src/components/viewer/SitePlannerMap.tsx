@@ -369,6 +369,7 @@ export function SitePlannerMap({
 
   // Drag state for zone/vertex editing
   const dragStateRef = useRef<DragState | null>(null);
+  const suppressNextClickRef = useRef(false);
   // Ref to track pending coords during drag for persistence on mouseup
   const pendingCoordsRef = useRef<{ zoneId: string; coords: number[][] } | null>(null);
   // Live area display during drag/resize
@@ -1013,10 +1014,27 @@ export function SitePlannerMap({
       setMapReady(true);
     });
 
+    const zoneHitLayers = () => ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l));
+    const selectedZoneAtPoint = (point: mapboxgl.PointLike) => {
+      const selectedId = selectedZoneIdRef.current;
+      if (!selectedId) return null;
+      const selectedZone = siteZonesRef.current.find((zone) => zone.id === selectedId) || null;
+      if (!selectedZone || (selectedZone.zone_type !== 'building' && selectedZone.zone_type !== 'residential')) {
+        return null;
+      }
+      const hits = map.queryRenderedFeatures(point, { layers: zoneHitLayers() });
+      return hits.some((feature) => feature.properties?.id === selectedId)
+        ? selectedZone
+        : null;
+    };
+
     // ─── Click to place points (drawing mode) OR select zones ───
     map.on('click', (e) => {
       // Don't process click events during/right after drag
-      if (dragStateRef.current) return;
+      if (dragStateRef.current || suppressNextClickRef.current) {
+        suppressNextClickRef.current = false;
+        return;
+      }
 
       const tool = activeSitePlannerToolRef.current;
       if (tool) {
@@ -1051,12 +1069,7 @@ export function SitePlannerMap({
       } else {
         // Selection mode — but only if not coming from a drag
         // Query both flat fill and extruded layers so building zones (with height) are clickable
-        const queryLayers = ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(
-          (l) => map.getLayer(l),
-        );
-        const features = map.queryRenderedFeatures(e.point, {
-          layers: queryLayers,
-        });
+        const features = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
         if (features.length > 0) {
           const zoneId = pickSmallestFeature(features).properties?.id;
           if (zoneId) {
@@ -1093,7 +1106,25 @@ export function SitePlannerMap({
     // ─── Mousedown: start drag (zone body or vertex) ───
     map.on('mousedown', (e) => {
       const tool = activeSitePlannerToolRef.current;
-      if (tool) return; // Drawing mode — don't interfere
+      if (tool) {
+        // Drawing mode still allows moving the currently selected zone by
+        // dragging from inside its body, which avoids accidental new vertices.
+        const selectedZone = selectedZoneAtPoint(e.point);
+        if (!selectedZone) return;
+
+        e.preventDefault();
+        suppressNextClickRef.current = true;
+        dragStateRef.current = {
+          type: 'zone',
+          zoneId: selectedZone.id,
+          startLngLat: [e.lngLat.lng, e.lngLat.lat],
+          originalCoords: selectedZone.coordinates.map((c) => [...c]),
+        };
+        map.dragPan.disable();
+        map.getCanvas().style.cursor = 'grabbing';
+        setDraggingZone(true);
+        return;
+      }
 
       // Check vertex handles first (higher priority)
       const vertexFeatures = map.queryRenderedFeatures(e.point, {
@@ -1153,9 +1184,7 @@ export function SitePlannerMap({
       }
 
       // Check zone body for zone dragging (include extrusions so buildings can be dragged)
-      const zoneFeatures = map.queryRenderedFeatures(e.point, {
-        layers: ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l)),
-      });
+      const zoneFeatures = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
       if (zoneFeatures.length > 0) {
         const zoneId = pickSmallestFeature(zoneFeatures).properties?.id as string;
         const zone = siteZonesRef.current.find((z) => z.id === zoneId);
@@ -1258,6 +1287,10 @@ export function SitePlannerMap({
         // Cursor hints when not dragging
         const tool = activeSitePlannerToolRef.current;
         if (tool) {
+          if (selectedZoneAtPoint(e.point)) {
+            map.getCanvas().style.cursor = 'grab';
+            return;
+          }
           map.getCanvas().style.cursor = 'crosshair';
           return;
         }
@@ -1278,9 +1311,7 @@ export function SitePlannerMap({
           return;
         }
         // Check if hovering zone body (include extrusions for buildings)
-        const zoneHits = map.queryRenderedFeatures(e.point, {
-          layers: ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l)),
-        });
+        const zoneHits = map.queryRenderedFeatures(e.point, { layers: zoneHitLayers() });
         if (zoneHits.length > 0) {
           map.getCanvas().style.cursor = 'grab';
           return;
@@ -1389,6 +1420,10 @@ export function SitePlannerMap({
         onZoneUpdatedRef.current(pending.zoneId, pending.coords);
         pendingCoordsRef.current = null;
       }
+
+      window.setTimeout(() => {
+        suppressNextClickRef.current = false;
+      }, 0);
     };
 
     window.addEventListener('mouseup', handleMouseUp);
