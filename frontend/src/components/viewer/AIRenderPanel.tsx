@@ -87,11 +87,16 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [showGallery, setShowGallery] = useState(false);
   const [galleryLightbox, setGalleryLightbox] = useState<SavedRender | null>(null);
   const [renderLightbox, setRenderLightbox] = useState(false);
+  const [renderSaveStatus, setRenderSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   useEffect(() => {
     if (!projectId || !showGallery) return;
     rendersApi.list(projectId).then(setSavedRenders).catch(() => {});
   }, [projectId, showGallery]);
+
+  useEffect(() => {
+    setRenderSaveStatus('idle');
+  }, [result?.imageUrl]);
 
   // Hide zone polygon layers when a render result is displayed, restore when cleared
   const ZONE_LAYERS = [
@@ -229,6 +234,36 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     a.click();
     document.body.removeChild(a);
   }, [result]);
+
+  const handleSaveResult = useCallback(async () => {
+    if (!result?.imageUrl || !projectId || renderSaveStatus === 'saving' || renderSaveStatus === 'saved') return;
+    setRenderSaveStatus('saving');
+    try {
+      let base64 = '';
+      if (result.imageUrl.startsWith('data:')) {
+        base64 = result.imageUrl.split(',')[1] || '';
+      } else {
+        const resp = await fetch(result.imageUrl);
+        const blob = await resp.blob();
+        base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve((reader.result as string).split(',')[1] || '');
+          reader.readAsDataURL(blob);
+        });
+      }
+      const saved = await rendersApi.save(projectId, {
+        image_base64: base64,
+        prompt: result.prompt || '',
+        style: selectedStyle,
+        seed: result.seed,
+      });
+      setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+      setShowGallery(true);
+      setRenderSaveStatus('saved');
+    } catch {
+      setRenderSaveStatus('error');
+    }
+  }, [projectId, renderSaveStatus, result, selectedStyle]);
 
   // Build summary text for generate button
   const summaryText = useMemo(() => {
@@ -632,24 +667,57 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
                 <p className="text-xs text-white/80 line-clamp-2">{result.prompt}</p>
               )}
             </div>
-            <button
-              onClick={() => setRenderLightbox(false)}
-              className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <a
-              href={result.imageUrl}
-              download={`siteforge-render-${Date.now()}.png`}
-              className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
-              title="Download"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-              </svg>
-            </a>
+            <div className="absolute right-3 top-3 flex items-center gap-2">
+              {projectId && (
+                <button
+                  onClick={handleSaveResult}
+                  disabled={renderSaveStatus === 'saving' || renderSaveStatus === 'saved'}
+                  className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold shadow-lg transition disabled:cursor-default ${
+                    renderSaveStatus === 'saved'
+                      ? 'bg-green-600 text-white'
+                      : renderSaveStatus === 'error'
+                        ? 'bg-red-600 text-white hover:bg-red-500'
+                        : 'bg-black/60 text-white/85 hover:bg-black/80 hover:text-white'
+                  }`}
+                  title="Save to Project"
+                >
+                  {renderSaveStatus === 'saving' ? (
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
+                      <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" className="opacity-75" />
+                    </svg>
+                  ) : renderSaveStatus === 'saved' ? (
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  ) : (
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                    </svg>
+                  )}
+                  {renderSaveStatus === 'saving' ? 'Saving...' : renderSaveStatus === 'saved' ? 'Saved' : renderSaveStatus === 'error' ? 'Retry Save' : 'Save to Project'}
+                </button>
+              )}
+              <a
+                href={result.imageUrl}
+                download={`siteforge-render-${Date.now()}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Download"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+              </a>
+              <button
+                onClick={() => setRenderLightbox(false)}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Close"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>,
         document.body,

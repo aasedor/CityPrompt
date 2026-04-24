@@ -55,8 +55,10 @@ type LightboxRender = {
   imageUrl: string;
   prompt?: string;
   style?: string;
+  seed?: number;
   createdAt?: string;
   downloadName: string;
+  canSave?: boolean;
 };
 
 export function GlobeAIRenderPanel({
@@ -206,16 +208,16 @@ export function GlobeAIRenderPanel({
     a.click();
   }, [result]);
 
-  const handleSave = useCallback(async () => {
-    if (!result?.imageUrl || !projectId || saving) return;
+  const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed'>) => {
+    if (!renderToSave.imageUrl || !projectId || saving) return;
     setSaving(true);
     setSaveStatus('idle');
     try {
       let base64 = '';
-      if (result.imageUrl.startsWith('data:')) {
-        base64 = result.imageUrl.split(',')[1] || '';
+      if (renderToSave.imageUrl.startsWith('data:')) {
+        base64 = renderToSave.imageUrl.split(',')[1] || '';
       } else {
-        const resp = await fetch(result.imageUrl);
+        const resp = await fetch(renderToSave.imageUrl);
         const blob = await resp.blob();
         base64 = await new Promise<string>((resolve) => {
           const reader = new FileReader();
@@ -225,28 +227,49 @@ export function GlobeAIRenderPanel({
       }
       const saved = await rendersApi.save(projectId, {
         image_base64: base64,
-        prompt: result.prompt,
-        style: selectedStyle,
-        seed: result.seed,
+        prompt: renderToSave.prompt || '',
+        style: renderToSave.style || selectedStyle,
+        seed: renderToSave.seed,
       });
       setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
       setShowSavedRenders(true);
       setSaveStatus('saved');
+      setLightboxRender((current) => current?.imageUrl === renderToSave.imageUrl
+        ? {
+            ...current,
+            prompt: saved.prompt || current.prompt,
+            style: saved.style || current.style,
+            createdAt: saved.created_at,
+            downloadName: `render-${saved.id}.png`,
+          }
+        : current);
     } catch {
       setSaveStatus('error');
     } finally {
       setSaving(false);
     }
-  }, [result, projectId, selectedStyle, saving]);
+  }, [projectId, selectedStyle, saving]);
+
+  const handleSave = useCallback(async () => {
+    if (!result?.imageUrl) return;
+    await saveRenderToProject({
+      imageUrl: result.imageUrl,
+      prompt: result.prompt,
+      style: selectedStyle,
+      seed: result.seed,
+    });
+  }, [result, saveRenderToProject, selectedStyle]);
 
   const openResultLightbox = useCallback((renderResult: GlobeRenderResult, label: string) => {
     setLightboxRender({
       imageUrl: renderResult.imageUrl,
       prompt: renderResult.prompt,
       style: selectedStyle,
+      seed: renderResult.seed,
       downloadName: `${label}-${Date.now()}.png`,
+      canSave: Boolean(projectId),
     });
-  }, [selectedStyle]);
+  }, [projectId, selectedStyle]);
 
   return (
     <>
@@ -441,6 +464,7 @@ export function GlobeAIRenderPanel({
                           style: saved.style,
                           createdAt: saved.created_at,
                           downloadName: `render-${saved.id}.png`,
+                          canSave: false,
                         })}
                         className="group relative aspect-square overflow-hidden rounded border border-white/10 transition hover:border-amber-400/60"
                         title="Open saved render"
@@ -474,25 +498,43 @@ export function GlobeAIRenderPanel({
         role="dialog"
         aria-label="Render preview — click anywhere or press Esc to close"
       >
-        {/* Explicit, high-contrast close button — always reachable. */}
-        <a
-          href={lightboxRender.imageUrl}
-          download={lightboxRender.downloadName}
-          onClick={(e) => e.stopPropagation()}
-          className="absolute top-4 right-16 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
-          aria-label="Download render"
-          title="Download"
-        >
-          <Download size={20} />
-        </a>
-        <button
-          onClick={(e) => { e.stopPropagation(); setLightboxRender(null); }}
-          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
-          aria-label="Close"
-          title="Close (Esc)"
-        >
-          <X size={22} />
-        </button>
+        <div className="absolute right-4 top-4 z-10 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          {lightboxRender.canSave && (
+            <button
+              onClick={() => saveRenderToProject(lightboxRender)}
+              disabled={saving || saveStatus === 'saved'}
+              className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold shadow-lg ring-2 ring-white/30 transition disabled:cursor-default ${
+                saveStatus === 'saved'
+                  ? 'bg-green-600 text-white'
+                  : saveStatus === 'error'
+                    ? 'bg-red-600 text-white hover:bg-red-500'
+                    : 'bg-black text-white hover:bg-white hover:text-black'
+              }`}
+              aria-label="Save render to project"
+              title="Save to Project"
+            >
+              {saving ? <Loader2 size={16} className="animate-spin" /> : saveStatus === 'saved' ? <Check size={16} /> : null}
+              {saving ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Retry Save' : 'Save to Project'}
+            </button>
+          )}
+          <a
+            href={lightboxRender.imageUrl}
+            download={lightboxRender.downloadName}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
+            aria-label="Download render"
+            title="Download"
+          >
+            <Download size={20} />
+          </a>
+          <button
+            onClick={() => setLightboxRender(null)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg ring-2 ring-white/30 transition hover:bg-white hover:text-black"
+            aria-label="Close"
+            title="Close (Esc)"
+          >
+            <X size={22} />
+          </button>
+        </div>
         <div className="flex max-h-full max-w-full flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
           <img
             src={lightboxRender.imageUrl}
