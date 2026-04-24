@@ -1,11 +1,12 @@
 ﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Plus, FolderOpen, Clock, X, MapPin } from 'lucide-react';
-import { getApiErrorMessage, projectsApi } from '@/services/api';
+import { Download, Images, Plus, FolderOpen, Clock, X, MapPin } from 'lucide-react';
+import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
-import type { Project, Location } from '@/types';
+import type { Project, Location, SavedRender } from '@/types';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -29,6 +30,7 @@ export function ProjectListPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [error, setError] = useState('');
+  const [expandedRender, setExpandedRender] = useState<{ project: Project; render: SavedRender } | null>(null);
   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
@@ -113,6 +115,24 @@ export function ProjectListPage() {
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: () => projectsApi.list(),
+  });
+
+  const { data: rendersByProject = {}, isLoading: rendersLoading } = useQuery({
+    queryKey: ['projects', 'saved-renders', projects?.map((project) => project.id) ?? []],
+    enabled: Boolean(projects?.length),
+    queryFn: async () => {
+      const entries = await Promise.all(
+        (projects ?? []).map(async (project) => {
+          try {
+            return [project.id, await rendersApi.list(project.id)] as const;
+          } catch {
+            return [project.id, []] as const;
+          }
+        }),
+      );
+      return Object.fromEntries(entries) as Record<string, SavedRender[]>;
+    },
+    staleTime: 30_000,
   });
 
   const createMutation = useMutation({
@@ -281,29 +301,125 @@ export function ProjectListPage() {
         </div>
       ) : (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects?.map((project: Project) => (
-            <Link key={project.id} to={`/projects/${project.id}`} className="card-hover group">
-              <div className="flex items-start justify-between">
-                <h3 className="font-semibold text-primary-950 group-hover:text-coral-500">{project.name}</h3>
-                <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
+          {projects?.map((project: Project) => {
+            const projectRenders = rendersByProject[project.id] ?? [];
+            const previewRenders = projectRenders.slice(0, 4);
+            return (
+              <div key={project.id} className="card-hover group flex flex-col">
+                <Link to={`/projects/${project.id}`} className="block flex-1">
+                  <div className="flex items-start justify-between">
+                    <h3 className="font-semibold text-primary-950 group-hover:text-coral-500">{project.name}</h3>
+                    <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
+                  </div>
+                  {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50">{project.description}</p>}
+                  {isAdmin && project.owner_email && (
+                    <div className="mt-1.5 truncate text-xs text-primary-500/70">{project.owner_email}</div>
+                  )}
+                  {project.location?.address && (
+                    <div className="mt-2 flex items-center text-xs text-primary-950/40">
+                      <MapPin size={11} className="mr-1 flex-shrink-0" />
+                      <span className="truncate">{project.location.address}</span>
+                    </div>
+                  )}
+                  <div className="mt-4 flex items-center text-xs text-primary-950/40">
+                    <Clock size={12} className="mr-1" />
+                    Updated {new Date(project.updated_at).toLocaleDateString()}
+                  </div>
+                </Link>
+
+                {rendersLoading ? (
+                  <div className="mt-4 border-t border-primary-950/[0.06] pt-3">
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {[0, 1, 2, 3].map((slot) => (
+                        <div key={slot} className="aspect-video animate-pulse rounded-lg bg-primary-950/[0.05]" />
+                      ))}
+                    </div>
+                  </div>
+                ) : projectRenders.length > 0 ? (
+                  <div className="mt-4 border-t border-primary-950/[0.06] pt-3">
+                    <div className="mb-2 flex items-center justify-between text-[11px] font-medium text-primary-950/45">
+                      <span className="flex items-center gap-1">
+                        <Images size={12} />
+                        Saved renders
+                      </span>
+                      <span>{projectRenders.length}</span>
+                    </div>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {previewRenders.map((render, index) => {
+                        const hiddenCount = projectRenders.length - 4;
+                        return (
+                          <button
+                            key={render.id}
+                            type="button"
+                            onClick={() => setExpandedRender({ project, render })}
+                            className="group/render relative aspect-video overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] transition hover:border-coral-400/60 hover:shadow-sm"
+                            title="Open saved render"
+                          >
+                            <img
+                              src={resolveApiFileUrl(render.image_url)}
+                              alt={render.prompt || `${project.name} saved render`}
+                              className="h-full w-full object-cover transition group-hover/render:scale-105"
+                            />
+                            {index === 3 && hiddenCount > 0 && (
+                              <span className="absolute inset-0 flex items-center justify-center bg-black/55 text-xs font-semibold text-white">
+                                +{hiddenCount}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
               </div>
-              {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50">{project.description}</p>}
-              {isAdmin && project.owner_email && (
-                <div className="mt-1.5 text-xs text-primary-500/70 truncate">{project.owner_email}</div>
-              )}
-              {project.location?.address && (
-                <div className="mt-2 flex items-center text-xs text-primary-950/40">
-                  <MapPin size={11} className="mr-1 flex-shrink-0" />
-                  <span className="truncate">{project.location.address}</span>
-                </div>
-              )}
-              <div className="mt-4 flex items-center text-xs text-primary-950/40">
-                <Clock size={12} className="mr-1" />
-                Updated {new Date(project.updated_at).toLocaleDateString()}
-              </div>
-            </Link>
-          ))}
+            );
+          })}
         </div>
+      )}
+
+      {expandedRender && createPortal(
+        <div
+          className="fixed inset-0 z-[250] flex cursor-zoom-out items-center justify-center bg-black/85 p-6 backdrop-blur-sm"
+          onClick={() => setExpandedRender(null)}
+          role="dialog"
+          aria-label="Saved project render"
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw] cursor-default" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={resolveApiFileUrl(expandedRender.render.image_url)}
+              alt={expandedRender.render.prompt || `${expandedRender.project.name} saved render`}
+              className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+            />
+            <div className="absolute inset-x-0 bottom-0 rounded-b-xl bg-gradient-to-t from-black/85 to-transparent px-5 py-4">
+              <p className="text-sm font-semibold text-white">{expandedRender.project.name}</p>
+              {expandedRender.render.prompt && (
+                <p className="mt-1 line-clamp-2 text-xs text-white/75">{expandedRender.render.prompt}</p>
+              )}
+              <p className="mt-1 text-[11px] text-white/50">
+                {new Date(expandedRender.render.created_at).toLocaleDateString()}
+                {expandedRender.render.style && ` - ${expandedRender.render.style}`}
+              </p>
+            </div>
+            <div className="absolute right-3 top-3 flex gap-2">
+              <a
+                href={resolveApiFileUrl(expandedRender.render.image_url)}
+                download={`render-${expandedRender.render.id}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Download"
+              >
+                <Download size={18} />
+              </a>
+              <button
+                onClick={() => setExpandedRender(null)}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
