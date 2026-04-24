@@ -15,6 +15,11 @@ interface GeocodeSuggestion {
   center: [number, number]; // [lng, lat]
 }
 
+function isTextEntryTarget(target: EventTarget | null): boolean {
+  const element = target as HTMLElement | null;
+  return Boolean(element?.closest('input, textarea, select, [contenteditable="true"]'));
+}
+
 export function ProjectListPage() {
   const { user: currentUser } = useAuthStore();
   const isAdmin = currentUser?.role === 'admin' || currentUser?.role === 'cofounder';
@@ -185,6 +190,32 @@ export function ProjectListPage() {
     ready: 'bg-emerald-500/15 text-emerald-400',
     archived: 'bg-primary-500/15 text-primary-400',
   };
+
+  const stepExpandedRender = useCallback((direction: -1 | 1) => {
+    if (!expandedRender) return;
+    const projectRenders = rendersByProject[expandedRender.project.id] ?? [];
+    if (projectRenders.length < 2) return;
+    const currentIndex = projectRenders.findIndex((render) => render.id === expandedRender.render.id);
+    const startIndex = currentIndex >= 0 ? currentIndex : 0;
+    const nextIndex = (startIndex + direction + projectRenders.length) % projectRenders.length;
+    setExpandedRender({ project: expandedRender.project, render: projectRenders[nextIndex] });
+  }, [expandedRender, rendersByProject]);
+
+  useEffect(() => {
+    if (!expandedRender) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setExpandedRender(null);
+        return;
+      }
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (isTextEntryTarget(e.target)) return;
+      e.preventDefault();
+      stepExpandedRender(e.key === 'ArrowRight' ? 1 : -1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [expandedRender, stepExpandedRender]);
 
   return (
     <div>

@@ -162,8 +162,85 @@ export function geodesicArea(coords: number[][]): number {
   return Math.abs(total * radius * radius / 2);
 }
 
+export function projectLngLatToLocalMeters(coords: number[][]): Array<{ x: number; y: number }> {
+  if (coords.length === 0) return [];
+  const center = computeCentroid(coords);
+  const mPerDegLon = metersPerDegLon(center[1]);
+  return coords.map((coord) => ({
+    x: (coord[0] - center[0]) * mPerDegLon,
+    y: (coord[1] - center[1]) * METERS_PER_DEG_LAT,
+  }));
+}
+
+export function polygonAreaM2(coords: number[][]): number {
+  const points = projectLngLatToLocalMeters(coords);
+  if (points.length < 3) return 0;
+
+  let area = 0;
+  for (let i = 0; i < points.length; i += 1) {
+    const j = (i + 1) % points.length;
+    area += points[i].x * points[j].y;
+    area -= points[j].x * points[i].y;
+  }
+  return Math.abs(area) / 2;
+}
+
+export function polygonDimensionsMeters(coords: number[][]): {
+  width: number;
+  depth: number;
+  area: number;
+} {
+  const points = projectLngLatToLocalMeters(coords);
+  const area = polygonAreaM2(coords);
+  if (points.length === 0) return { width: 0, depth: 0, area };
+  if (points.length === 1) return { width: 0, depth: 0, area };
+
+  const angles = new Set<number>();
+  for (let i = 0; i < points.length; i += 1) {
+    const j = (i + 1) % points.length;
+    const dx = points[j].x - points[i].x;
+    const dy = points[j].y - points[i].y;
+    if (Math.hypot(dx, dy) < 1e-6) continue;
+    const normalized = ((Math.atan2(dy, dx) % (Math.PI / 2)) + Math.PI / 2) % (Math.PI / 2);
+    angles.add(Number(normalized.toFixed(8)));
+  }
+  if (angles.size === 0) angles.add(0);
+
+  let bestWidth = 0;
+  let bestDepth = 0;
+  let bestArea = Infinity;
+  for (const angle of angles) {
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    for (const point of points) {
+      const x = point.x * cos + point.y * sin;
+      const y = -point.x * sin + point.y * cos;
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+    }
+
+    const width = Math.max(0, maxX - minX);
+    const depth = Math.max(0, maxY - minY);
+    const boxArea = width * depth;
+    if (boxArea < bestArea) {
+      bestArea = boxArea;
+      bestWidth = Math.max(width, depth);
+      bestDepth = Math.min(width, depth);
+    }
+  }
+
+  return { width: bestWidth, depth: bestDepth, area };
+}
+
 export function formatArea(squareMeters: number): string {
-  if (squareMeters < 10000) return `${Math.round(squareMeters).toLocaleString()} m2`;
+  if (squareMeters < 10000) return `${Math.round(squareMeters).toLocaleString()} m²`;
   return `${(squareMeters / 10000).toFixed(1)} ha`;
 }
 

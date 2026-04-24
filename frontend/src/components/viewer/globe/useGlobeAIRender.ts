@@ -15,12 +15,14 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { api } from '@/services/api';
-import { resolveZoneColor } from '../mapEngine/geoUtils';
+import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
 
 const DEG_TO_RAD = Math.PI / 180;
+const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
+const BUILDING_ZONE_TYPES = new Set(['building', 'residential', 'commercial', 'industrial', 'mixed_use']);
 
 // ─── SHARED STYLE PROMPTS ────────────────────────────────────────────
 // Single source of truth for all render style prompts (used by single-shot, per-zone, and ground passes)
@@ -58,6 +60,50 @@ export interface GlobeRenderResult {
   imageUrl: string;  // data:image/png;base64,...
   prompt: string;
   seed?: number;
+  model?: string;
+  providerLabel?: string;
+  error?: string;
+}
+
+export interface GlobeRenderVariant {
+  model: string;
+  label: string;
+}
+
+function getRenderErrorMessage(err: any): string {
+  const detail = err?.response?.data?.detail;
+  if (typeof detail === 'string' && detail.trim()) return detail;
+  if (typeof err?.message === 'string' && err.message.trim()) return err.message;
+  return 'Render failed. Please try again.';
+}
+
+function createErrorPreviewImage(providerLabel: string, message: string): string {
+  const safeLabel = providerLabel.replace(/[<>&"]/g, (char) => ({
+    '<': '&lt;',
+    '>': '&gt;',
+    '&': '&amp;',
+    '"': '&quot;',
+  }[char] || char));
+  const safeMessage = message
+    .replace(/[<>&"]/g, (char) => ({
+      '<': '&lt;',
+      '>': '&gt;',
+      '&': '&amp;',
+      '"': '&quot;',
+    }[char] || char))
+    .slice(0, 360);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+      <rect width="1200" height="675" fill="#1f2937"/>
+      <rect x="40" y="40" width="1120" height="595" rx="24" fill="#111827" stroke="#ef4444" stroke-width="4"/>
+      <text x="80" y="150" fill="#fca5a5" font-family="Arial, sans-serif" font-size="46" font-weight="700">${safeLabel}</text>
+      <text x="80" y="215" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Preview failed</text>
+      <foreignObject x="80" y="260" width="1040" height="280">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="color:#d1d5db;font-family:Arial,sans-serif;font-size:26px;line-height:1.35;word-break:break-word;">${safeMessage}</div>
+      </foreignObject>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 /**
@@ -102,6 +148,51 @@ function projectToPixels(
 
 // ─── OCCLUSION CULLING ─────────────────────────────────────────────────
 
+function readFiniteNumber(value: unknown): number | null {
+  const numeric = typeof value === 'number'
+    ? value
+    : typeof value === 'string' && value.trim().length > 0
+      ? Number(value)
+      : NaN;
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function getZoneTerrainHeight(zone: SiteZone, fallback: number): number {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  return readFiniteNumber(props?.terrain_elevation_m)
+    ?? readFiniteNumber(props?.terrain_height_m)
+    ?? readFiniteNumber(props?.terrain_height)
+    ?? readFiniteNumber(props?.terrainElevation)
+    ?? readFiniteNumber(props?.terrainHeight)
+    ?? fallback;
+}
+
+function getZoneBuildingHeight(zone: SiteZone): number {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  const floors = readFiniteNumber(props?.floors) ?? 0;
+  const explicitHeight = readFiniteNumber(props?.height_m) ?? readFiniteNumber(props?.height);
+  if (explicitHeight != null && explicitHeight > 0) return explicitHeight;
+  return floors > 0 ? floors * 3.2 : 0;
+}
+
+function isBuildingZone(zone: SiteZone): boolean {
+  return BUILDING_ZONE_TYPES.has(zone.zone_type);
+}
+
+function zoneAreaM2(zone: SiteZone): number {
+  if (!zone.coordinates || zone.coordinates.length < 3) return 0;
+  return polygonDimensionsMeters(zone.coordinates).area;
+}
+
+function formatFootprintMetrics(zone: SiteZone): string {
+  if (!zone.coordinates || zone.coordinates.length < 3) return '';
+  const metrics = polygonDimensionsMeters(zone.coordinates);
+  if (!Number.isFinite(metrics.area) || metrics.area <= 0) return '';
+  const width = Math.max(1, Math.round(metrics.width));
+  const depth = Math.max(1, Math.round(metrics.depth));
+  return `${width.toLocaleString()}m x ${depth.toLocaleString()}m (${formatArea(metrics.area)})`;
+}
+
 /**
  * Check which zones are significantly occluded by other (taller) zones
  * in screen space. Returns a Set of zone IDs that should be culled.
@@ -124,18 +215,17 @@ function findOccludedZones(
 
   // Project all zones to screen pixels and calculate their properties
   const projected = renderZones.map(zone => {
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
     const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
       .filter(Boolean) as { x: number; y: number }[];
 
-    const buildingHeight = (zone.properties?.height_m as number)
-      || (zone.properties?.height as number)
-      || ((zone.properties?.floors as number) || 0) * 3.2 || 0;
+    const buildingHeight = getZoneBuildingHeight(zone);
 
     // Project roof height too for buildings
     const roofPixels = buildingHeight > 0
       ? zone.coordinates
-          .map(c => projectToPixels(c[0], c[1], terrainHeight + buildingHeight, camera, width, height))
+          .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight + buildingHeight, camera, width, height))
           .filter(Boolean) as { x: number; y: number }[]
       : [];
 
@@ -151,11 +241,9 @@ function findOccludedZones(
   const sh = Math.round(height * scale);
 
   // Ground-level zone types should never be culled — they're visible between buildings
-  const GROUND_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
-
   for (const target of projected) {
     if (target.pixels.length < 3) continue;
-    if (GROUND_TYPES.has(target.zone.zone_type)) continue; // Never cull ground zones
+    if (GROUND_ZONE_TYPES.has(target.zone.zone_type)) continue; // Never cull ground zones
 
     // Find zones that could occlude this one:
     // - taller buildings whose screen footprint overlaps
@@ -164,7 +252,7 @@ function findOccludedZones(
       other.zone.id !== target.zone.id &&
       other.pixels.length >= 3 &&
       (other.buildingHeight > target.buildingHeight || other.avgY > target.avgY) &&
-      ['building', 'residential', 'commercial', 'industrial', 'mixed_use'].includes(other.zone.zone_type),
+      isBuildingZone(other.zone),
     );
 
     if (occluders.length === 0) continue;
@@ -279,15 +367,13 @@ function zoneSilhouette(
   height: number,
   terrainHeight: number,
 ): { x: number; y: number }[] {
-  const buildingHeight = (zone.properties?.height_m as number)
-    || (zone.properties?.height as number)
-    || ((zone.properties?.floors as number) || 0) * 3.2
-    || 0;
-  if (buildingHeight <= 0 || (zone.zone_type !== 'building' && zone.zone_type !== 'residential')) {
+  const buildingHeight = getZoneBuildingHeight(zone);
+  if (buildingHeight <= 0 || !isBuildingZone(zone)) {
     return basePixels;
   }
+  const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
   const topPixels = zone.coordinates
-    .map(c => projectToPixels(c[0], c[1], terrainHeight + buildingHeight, camera, width, height))
+    .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight + buildingHeight, camera, width, height))
     .filter(Boolean) as { x: number; y: number }[];
   if (topPixels.length < 3) return basePixels;
   return convexHull2D([...basePixels, ...topPixels]);
@@ -317,8 +403,9 @@ function generateMask(
   // If site boundary exists, clip all zone rendering to within it
   const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
   if (siteBoundary) {
+    const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
     const boundaryPixels = siteBoundary.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .map(c => projectToPixels(c[0], c[1], boundaryTerrainHeight, camera, width, height))
       .filter(Boolean) as { x: number; y: number }[];
 
     if (boundaryPixels.length >= 3) {
@@ -346,13 +433,14 @@ function generateMask(
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
 
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
     const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
       .filter(Boolean) as { x: number; y: number }[];
 
     if (pixels.length < 3) continue;
 
-    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, terrainHeight);
+    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight);
 
     ctx.beginPath();
     ctx.moveTo(silhouette[0].x, silhouette[0].y);
@@ -781,7 +869,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
   }
 
   // --- COMPOSITION ---
-  const hasBuildings = zones.some(z => z.zone_type === 'building' || z.zone_type === 'residential');
+  const hasBuildings = zones.some(isBuildingZone);
   const composition = hasBuildings
     ? `${pitchDesc} view from 3D photorealistic city model, colored polygons mark proposed zones on the existing photographic context. Render buildings with correct 3D perspective for this viewing angle.`
     : `${pitchDesc} view, ground-level zones only on photorealistic 3D terrain.`;
@@ -799,19 +887,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
   // Largest zones first = most visually dominant archetypes get highest attention weight
   const renderZones = zones
     .filter(z => z.zone_type !== 'site_boundary')
-    .sort((a, b) => {
-      const polyArea = (z: SiteZone) => {
-        if (!z.coordinates || z.coordinates.length < 3) return 0;
-        let area = 0;
-        for (let i = 0; i < z.coordinates.length; i++) {
-          const j = (i + 1) % z.coordinates.length;
-          area += z.coordinates[i][0] * z.coordinates[j][1];
-          area -= z.coordinates[j][0] * z.coordinates[i][1];
-        }
-        return Math.abs(area / 2);
-      };
-      return polyArea(b) - polyArea(a);
-    });
+    .sort((a, b) => zoneAreaM2(b) - zoneAreaM2(a));
   // --- POSITION ANCHORING (screen-space quadrant per zone) ---
   // Gives Gemini a SECOND identification axis alongside color, reducing the
   // "wrong archetype at wrong polygon" failure mode when fill colors alone
@@ -831,7 +907,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     // doesn't matter.
     const W = 1000;
     const H = 1000;
-    const pixel = projectToPixels(lng, lat, terrainHeight, camera, W, H);
+    const pixel = projectToPixels(lng, lat, getZoneTerrainHeight(zone, terrainHeight), camera, W, H);
     if (!pixel) return 'BEHIND-CAMERA'; // Gemini won't render it anyway
     const fx = pixel.x / W; // 0 = left, 1 = right
     const fy = pixel.y / H; // 0 = top, 1 = bottom (screen coords)
@@ -857,23 +933,28 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     const props = zone.properties || {};
     const info = getZoneArchetypeInfo(zone);
 
-    const floors = (props.floors as number) || 0;
-    const heightM = (props.height_m as number) || (props.height as number) || floors * 3.2 || 0;
+    const floors = readFiniteNumber(props.floors) ?? 0;
+    const heightM = getZoneBuildingHeight(zone);
     const name = info.archetypeTitle || zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
+    const footprint = formatFootprintMetrics(zone);
 
     // Scale descriptor
     let scale = '';
-    if (zone.zone_type === 'building' || zone.zone_type === 'residential') {
+    if (isBuildingZone(zone)) {
+      const scaleParts: string[] = [];
       if (floors > 0 && heightM > 0) scale = `${floors}F ${Math.round(heightM)}m`;
       else if (floors > 0) scale = `${floors}F`;
       else if (heightM > 0) scale = `${Math.round(heightM)}m`;
       else if (info.minFloors && info.maxFloors) {
         scale = info.minFloors === info.maxFloors ? `${info.minFloors}F` : `${info.minFloors}-${info.maxFloors}F`;
       } else scale = 'multi-story';
-      if (info.suggestedWidth_m && info.suggestedDepth_m) scale += ` ~${info.suggestedWidth_m}×${info.suggestedDepth_m}m`;
-      else if (info.suggestedAreaSqm) scale += ` ~${info.suggestedAreaSqm}m²`;
+      scaleParts.push(scale);
+      if (footprint) scaleParts.push(`drawn footprint ${footprint}`);
+      if (info.suggestedWidth_m && info.suggestedDepth_m) scaleParts.push(`archetype typical ${info.suggestedWidth_m}m x ${info.suggestedDepth_m}m`);
+      else if (info.suggestedAreaSqm) scaleParts.push(`archetype typical ${info.suggestedAreaSqm} m2`);
+      scale = scaleParts.join(' | ');
     } else {
-      scale = 'gnd';
+      scale = footprint ? `drawn footprint ${footprint}` : 'gnd';
     }
 
     // Map overlay prompt (archetype-specific aerial rendering instruction)
@@ -947,7 +1028,8 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     // Artistic styles skip these — they contradict the STYLE instruction.
     !isArtistic ? `COLOR TEMPERATURE MATCHING: Analyze the color temperature and atmospheric conditions of the EXISTING buildings and terrain in the photograph. Match the EXACT same warm/cool tone, haze level, and ambient light color on all rendered zones. If the scene has golden-hour warmth, render buildings with the same warm amber tones — NOT neutral daylight grey. Rendered materials must look like they exist in the same atmosphere and light as the surrounding real buildings.` : null,
     !isArtistic ? `ATMOSPHERIC PERSPECTIVE: Apply the same atmospheric haze and aerial perspective visible on surrounding buildings at similar distances. Distant rendered zones should have reduced contrast and shifted color matching the existing depth cues in the photograph.` : null,
-    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length} building${renderZones.filter(z => z.zone_type === 'building' || z.zone_type === 'residential').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
+    `MAP SCALE: The drawn footprint measurements in ZONES are computed from the longitude/latitude map and are authoritative. Adapt each archetype to fit that footprint; do not enlarge buildings to match a reference image or typical archetype scale.`,
+    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(isBuildingZone).length} building${renderZones.filter(isBuildingZone).length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
     `ZONES:\n${zoneLines.join('\n')}`,
     `ZONE IDENTIFICATION: Each zone polygon has TWO visual identifiers: (1) its archetype name written as colored text on the polygon, and (2) a unique bright DASHED BORDER in a distinct color (red, blue, magenta, cyan, yellow, etc.). The text label color matches the border color. Use BOTH the text label AND the border color to identify each zone. Zones with similar fill colors can be distinguished by their different border colors. Road/street zones can be distinguished from existing roads by their dashed border — only polygons with dashed borders are zones to render.`,
     `ZONE ASSIGNMENT: Each zone line in the ZONES list above begins with "@ SCREEN-POSITION" (values: UPPER-LEFT, UPPER-CENTER, UPPER-RIGHT, MIDDLE-LEFT, CENTER, MIDDLE-RIGHT, LOWER-LEFT, LOWER-CENTER, LOWER-RIGHT) — this is the location of that zone's polygon within THIS image's 2D frame. It is a THIRD identification axis alongside color and text label. Verify color, label, AND screen position all match before rendering an archetype at a polygon. If a line says "[magenta] @ LOWER-RIGHT | Grand Magasin", render the Grand Magasin archetype at the polygon in the lower-right region of the frame — NOT at a polygon elsewhere even if its color looks similar. Never swap archetypes between polygons. When two zones have similar fill colors, the SCREEN-POSITION resolves the ambiguity — trust the position anchor over color similarity.`,
@@ -955,6 +1037,7 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     prohibitionsClause,
     siteBoundaryClause,
     `OCCLUSION: Some zones may be partially or fully hidden behind taller buildings from this camera angle. This is CORRECT — do NOT distort the perspective to make hidden zones visible. If a zone is occluded by a building in front of it, leave it hidden. Render only what would naturally be visible from this specific camera position and angle.`,
+    `FOOTPRINT CONSTRAINT: Rendered building footprints must match the drawn footprint. Do not make roofs, podiums, walls, or landscaping spill beyond the polygon or mask.`,
     `FINAL CONSTRAINT: Stay strictly within each colored zone polygon. Do not alter pixels outside the mask. Accuracy to the polygon boundary is more important than architectural flair. Each zone renders ONLY within its own colored boundary — never overlapping into adjacent zones.`,
     // Artistic styles re-anchor the STYLE instruction at the end, since Gemini
     // weights later instructions more heavily. This fights the drift back to
@@ -1116,13 +1199,14 @@ async function clipRenderToZones(
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
 
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
     const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, canvasWidth, canvasHeight))
       .filter(Boolean) as { x: number; y: number }[];
     if (pixels.length < 3) continue;
 
     // Silhouette = convex hull of base + roof for buildings, base polygon otherwise.
-    const silhouette = zoneSilhouette(zone, pixels, camera, canvasWidth, canvasHeight, terrainHeight);
+    const silhouette = zoneSilhouette(zone, pixels, camera, canvasWidth, canvasHeight, zoneTerrainHeight);
     maskCtx.beginPath();
     maskCtx.moveTo(silhouette[0].x, silhouette[0].y);
     for (let i = 1; i < silhouette.length; i++) maskCtx.lineTo(silhouette[i].x, silhouette[i].y);
@@ -1203,8 +1287,9 @@ function generateSingleZoneMask(
   // Clip to site boundary if present
   const siteBoundary = allZones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
   if (siteBoundary) {
+    const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
     const boundaryPixels = siteBoundary.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .map(c => projectToPixels(c[0], c[1], boundaryTerrainHeight, camera, width, height))
       .filter(Boolean) as { x: number; y: number }[];
     if (boundaryPixels.length >= 3) {
       ctx.save();
@@ -1223,12 +1308,13 @@ function generateSingleZoneMask(
   ctx.lineWidth = DILATION_PX * 2;
   ctx.lineJoin = 'round';
 
+  const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
   const pixels = zone.coordinates
-    .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+    .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
     .filter(Boolean) as { x: number; y: number }[];
 
   if (pixels.length >= 3) {
-    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, terrainHeight);
+    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight);
     ctx.beginPath();
     ctx.moveTo(silhouette[0].x, silhouette[0].y);
     for (let i = 1; i < silhouette.length; i++) ctx.lineTo(silhouette[i].x, silhouette[i].y);
@@ -1255,12 +1341,13 @@ function buildSingleZonePromptForPerZone(
   const info = getZoneArchetypeInfo(zone);
   const overlayPrompt = getMapOverlayPrompt(zone);
   const props = zone.properties || {};
-  const floors = (props.floors as number) || 0;
-  const heightM = (props.height_m as number) || (props.height as number) || floors * 3.2 || 0;
+  const floors = readFiniteNumber(props.floors) ?? 0;
+  const heightM = getZoneBuildingHeight(zone);
   const name = info.archetypeTitle || zone.name || zone.zone_type;
+  const footprint = formatFootprintMetrics(zone);
 
   let scale = '';
-  if (zone.zone_type === 'building' || zone.zone_type === 'residential') {
+  if (isBuildingZone(zone)) {
     if (floors > 0 && heightM > 0) scale = `${floors} floors, ${Math.round(heightM)}m tall`;
     else if (floors > 0) scale = `${floors} floors`;
     else if (heightM > 0) scale = `${Math.round(heightM)}m tall`;
@@ -1271,12 +1358,13 @@ function buildSingleZonePromptForPerZone(
         : `${info.minFloors}-${info.maxFloors} floors`;
       if (info.heightTendency) scale += ` (${info.heightTendency})`;
     }
-    // Add recommended footprint dimensions so Gemini renders at realistic scale
+    if (footprint) scale += `${scale ? ', ' : ''}drawn footprint ${footprint}`;
+    // Add recommended footprint dimensions as a secondary archetype reference.
     if (info.suggestedWidth_m && info.suggestedDepth_m) {
-      scale += `, typical footprint ~${info.suggestedWidth_m}m × ${info.suggestedDepth_m}m`;
+      scale += `, archetype typical footprint ~${info.suggestedWidth_m}m x ${info.suggestedDepth_m}m`;
       if (info.aspectRatio) scale += ` (${info.aspectRatio} proportions)`;
     } else if (info.suggestedAreaSqm) {
-      scale += `, typical footprint ~${info.suggestedAreaSqm}m²`;
+      scale += `, archetype typical footprint ~${info.suggestedAreaSqm} m2`;
     }
   }
 
@@ -1290,11 +1378,12 @@ function buildSingleZonePromptForPerZone(
 
   const sections = [
     `STYLE: ${GLOBE_STYLE_PROMPTS[style] || GLOBE_STYLE_PROMPTS.photorealistic}`,
-    `TASK: Render ONE building in the white masked area. The colored polygon [${color}] marks the footprint.`,
+    `TASK: Render ONE building in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
     `BUILDING: ${name}${scale ? ` | ${scale}` : ''}`,
+    footprint ? `DRAWN FOOTPRINT: ${footprint}. This measured longitude/latitude footprint is authoritative; adapt the archetype to fit it exactly.` : '',
     features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, 300)}` : '',
     `CONTEXT: Preserve ALL existing photographic context outside the mask. Match lighting, color temperature, and atmosphere of surrounding real buildings.`,
-    `MANDATORY: Replace the colored polygon with a photorealistic building. Render ONLY within the masked area. Match scale and density of surrounding real 3D buildings.`,
+    `MANDATORY: Replace the colored polygon with a photorealistic building. Render ONLY within the masked area. Match surrounding real 3D buildings, but do not enlarge the building beyond the drawn footprint.`,
     customPrompt ? `ADDITIONAL: ${customPrompt}` : '',
   ].filter(Boolean);
 
@@ -1344,13 +1433,14 @@ async function compositeZoneRenderForPerZone(
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
 
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
     const pixels = zone.coordinates
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, canvasWidth, canvasHeight))
       .filter(Boolean) as { x: number; y: number }[];
     if (pixels.length < 3) continue;
 
     // Silhouette = convex hull of base + roof for buildings, base polygon otherwise.
-    const silhouette = zoneSilhouette(zone, pixels, camera, canvasWidth, canvasHeight, terrainHeight);
+    const silhouette = zoneSilhouette(zone, pixels, camera, canvasWidth, canvasHeight, zoneTerrainHeight);
     maskCtx.beginPath();
     maskCtx.moveTo(silhouette[0].x, silhouette[0].y);
     for (let i = 1; i < silhouette.length; i++) maskCtx.lineTo(silhouette[i].x, silhouette[i].y);
@@ -1365,8 +1455,9 @@ async function compositeZoneRenderForPerZone(
     maskCtx.fillStyle = '#ffffff';
     for (const bz of subtractZones) {
       if (!bz.coordinates || bz.coordinates.length < 3) continue;
+      const buildingTerrainHeight = getZoneTerrainHeight(bz, terrainHeight);
       const bPixels = bz.coordinates
-        .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvasWidth, canvasHeight))
+        .map(c => projectToPixels(c[0], c[1], buildingTerrainHeight, camera, canvasWidth, canvasHeight))
         .filter(Boolean) as { x: number; y: number }[];
       if (bPixels.length < 3) continue;
       maskCtx.beginPath();
@@ -1488,8 +1579,9 @@ export function useGlobeAIRender() {
           const borderColor = BORDER_COLORS[Math.abs(hash) % BORDER_COLORS.length];
           zoneBorderMap.set(zone.id, borderColor);
 
+          const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
           const pixels = zone.coordinates
-            .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, canvas.width, canvas.height))
+            .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, canvas.width, canvas.height))
             .filter(Boolean) as { x: number; y: number }[];
           if (pixels.length < 2) continue;
 
@@ -1514,11 +1606,12 @@ export function useGlobeAIRender() {
 
         for (let zi = 0; zi < editableZones.length; zi++) {
           const zone = editableZones[zi];
+          const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
           const centroid = zone.coordinates.reduce(
             (acc, c) => [acc[0] + c[0] / zone.coordinates.length, acc[1] + c[1] / zone.coordinates.length],
             [0, 0],
           );
-          const screenPos = projectToPixels(centroid[0], centroid[1], terrainHeight, camera, canvas.width, canvas.height);
+          const screenPos = projectToPixels(centroid[0], centroid[1], zoneTerrainHeight, camera, canvas.width, canvas.height);
           if (!screenPos) continue;
 
           const info = getZoneArchetypeInfo(zone);
@@ -1620,6 +1713,7 @@ export function useGlobeAIRender() {
           imageUrl: `data:image/png;base64,${clippedBase64}`,
           prompt,
           seed: resp.data.seed,
+          model,
         };
       }
 
@@ -1627,7 +1721,11 @@ export function useGlobeAIRender() {
       return null;
 
     } catch (err) {
-      console.error('[GlobeAIRender] Error:', err);
+      const message = getRenderErrorMessage(err);
+      console.error('[GlobeAIRender] Error:', message, err);
+      if (options._skipLock) {
+        throw new Error(message);
+      }
       return null;
     } finally {
       if (!options._skipLock) isRenderingRef.current = false;
@@ -1653,24 +1751,49 @@ export function useGlobeAIRender() {
       projectId?: string;
       customPrompt?: string;
       count?: number;
+      variants?: GlobeRenderVariant[];
     } = {},
   ): Promise<GlobeRenderResult[]> => {
     if (isRenderingRef.current) return [];
     isRenderingRef.current = true;
     const count = options.count ?? 3;
+    const previewVariants = options.variants ?? Array.from({ length: count }, (_, index) => ({
+      model: options.model ?? 'gemini-3.1-flash-image-preview',
+      label: `Preview ${index + 1}`,
+    }));
+    const renderOptions = {
+      style: options.style,
+      projectId: options.projectId,
+      customPrompt: options.customPrompt,
+    };
     try {
-      console.log(`[GlobeAIRender] Generating ${count} previews in parallel...`);
-      const promises: Promise<GlobeRenderResult | null>[] = Array.from({ length: count }, () =>
-        render(canvas, camera, zones, terrainHeight, { ...options, _skipLock: true })
+      console.log(`[GlobeAIRender] Generating ${previewVariants.length} previews in parallel...`);
+      const promises: Promise<GlobeRenderResult | null>[] = previewVariants.map((variant) =>
+        render(canvas, camera, zones, terrainHeight, {
+          ...renderOptions,
+          model: variant.model,
+          _skipLock: true,
+        })
+          .then((renderResult) => renderResult
+            ? { ...renderResult, model: variant.model, providerLabel: variant.label }
+            : null)
           .catch((err) => {
-            console.warn('[GlobeAIRender:Preview] one variant failed:', err);
-            return null;
+            const message = getRenderErrorMessage(err);
+            console.warn(`[GlobeAIRender:Preview] ${variant.label} failed:`, message, err);
+            return {
+              imageUrl: createErrorPreviewImage(variant.label, message),
+              prompt: '',
+              model: variant.model,
+              providerLabel: variant.label,
+              error: message,
+            };
           }),
       );
       const settled = await Promise.all(promises);
-      const successful = settled.filter((r): r is GlobeRenderResult => r !== null);
-      console.log(`[GlobeAIRender] Previews complete: ${successful.length}/${count} succeeded`);
-      return successful;
+      const previews = settled.filter((r): r is GlobeRenderResult => r !== null);
+      const successfulCount = previews.filter((preview) => !preview.error).length;
+      console.log(`[GlobeAIRender] Previews complete: ${successfulCount}/${previewVariants.length} succeeded`);
+      return previews;
     } finally {
       isRenderingRef.current = false;
     }
@@ -1765,27 +1888,11 @@ export function useGlobeAIRender() {
         : zones;
 
       // 3. Classify zones
-      const GROUND_TYPES = ['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area'];
-      const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
-
       const editableZones = visibleZones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates?.length >= 3);
-      const groundZones = editableZones.filter(z => GROUND_TYPES.includes(z.zone_type));
+      const groundZones = editableZones.filter(z => GROUND_ZONE_TYPES.has(z.zone_type));
       const buildingZones = editableZones
-        .filter(z => BUILDING_TYPES.includes(z.zone_type))
-        .sort((a, b) => {
-          // Largest area first
-          const polyArea = (z: SiteZone) => {
-            if (!z.coordinates || z.coordinates.length < 3) return 0;
-            let area = 0;
-            for (let i = 0; i < z.coordinates.length; i++) {
-              const j = (i + 1) % z.coordinates.length;
-              area += z.coordinates[i][0] * z.coordinates[j][1];
-              area -= z.coordinates[j][0] * z.coordinates[i][1];
-            }
-            return Math.abs(area / 2);
-          };
-          return polyArea(b) - polyArea(a);
-        });
+        .filter(isBuildingZone)
+        .sort((a, b) => zoneAreaM2(b) - zoneAreaM2(a));
 
       // ALL zones rendered individually — ground first (largest area first), then buildings
       const allRenderZones = [...groundZones, ...buildingZones];
@@ -1810,11 +1917,12 @@ export function useGlobeAIRender() {
 
         for (const zone of editableZones) {
           if (!zone.coordinates || zone.coordinates.length < 3) continue;
+          const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
           const centroid = zone.coordinates.reduce(
             (acc, c) => [acc[0] + c[0] / zone.coordinates.length, acc[1] + c[1] / zone.coordinates.length],
             [0, 0],
           );
-          const screenPos = projectToPixels(centroid[0], centroid[1], terrainHeight, camera, canvas.width, canvas.height);
+          const screenPos = projectToPixels(centroid[0], centroid[1], zoneTerrainHeight, camera, canvas.width, canvas.height);
           if (!screenPos) continue;
 
           const info = getZoneArchetypeInfo(zone);
@@ -1843,7 +1951,7 @@ export function useGlobeAIRender() {
       // ── RENDER EACH ZONE INDIVIDUALLY ──
       for (let i = 0; i < allRenderZones.length; i++) {
         const zone = allRenderZones[i];
-        const isBuilding = BUILDING_TYPES.includes(zone.zone_type);
+        const isBuilding = isBuildingZone(zone);
         currentStep++;
         const zoneName = zone.name || getZoneArchetypeInfo(zone).archetypeTitle || zone.zone_type;
         onProgress?.({ step: currentStep, total: totalSteps, zoneName, phase: isBuilding ? 'building' : 'ground' });
@@ -1871,17 +1979,18 @@ export function useGlobeAIRender() {
             if (info.publicRealm) features.push(info.publicRealm);
           }
           let dimHint = '';
+          const footprint = formatFootprintMetrics(zone);
           if (info.suggestedWidth_m && info.suggestedDepth_m) {
-            dimHint = `, typical dimensions ~${info.suggestedWidth_m}m × ${info.suggestedDepth_m}m`;
+            dimHint = `, archetype typical dimensions ~${info.suggestedWidth_m}m x ${info.suggestedDepth_m}m`;
           }
 
           singlePrompt = [
             `STYLE: ${GLOBE_STYLE_PROMPTS[style] || GLOBE_STYLE_PROMPTS.photorealistic}`,
-            `TASK: Render ONE ground zone in the white masked area. The colored polygon [${color}] marks the zone.`,
-            `ZONE: ${info.archetypeTitle || zoneName}${dimHint}`,
+            `TASK: Render ONE ground zone in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
+            `ZONE: ${info.archetypeTitle || zoneName}${footprint ? `, drawn footprint ${footprint}` : ''}${dimHint}`,
             features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, 400)}` : '',
             `CONTEXT: Preserve ALL existing photographic context outside the mask. Match lighting and atmosphere.`,
-            `MANDATORY: Replace the colored polygon with photorealistic ground materials. Render ONLY within the masked area.`,
+            `MANDATORY: Replace the colored polygon with photorealistic ground materials. Render ONLY within the masked area; the drawn footprint is authoritative.`,
             customPrompt ? `ADDITIONAL: ${customPrompt}` : '',
           ].filter(Boolean).join('\n');
         }
@@ -1935,6 +2044,7 @@ export function useGlobeAIRender() {
         imageUrl: `data:image/png;base64,${cumulativeBase64}`,
         prompt: allPrompts.join('\n---\n'),
         seed: undefined,
+        model,
       };
 
     } catch (err) {

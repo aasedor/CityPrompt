@@ -17,6 +17,7 @@ _BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
 # Pre-load GOOGLE_APPLICATION_CREDENTIALS from .env into os.environ so that
 # google.auth.default() can discover it before Settings is constructed.
 _dotenv = dotenv_values(_BACKEND_ROOT / ".env")
+_root_dotenv = dotenv_values(_BACKEND_ROOT.parent / ".env")
 if _gac := _dotenv.get("GOOGLE_APPLICATION_CREDENTIALS"):
     # Resolve relative paths against the backend root directory
     _gac_path = Path(_gac)
@@ -113,6 +114,17 @@ class Settings(BaseSettings):
     master_plan_2d_image_provider: str = "vertex"
     master_plan_3d_image_provider: str = "vertex"
     layout_ai_provider: str = "claude"
+
+    @model_validator(mode="after")
+    def _normalize_openai_api_key(self) -> "Settings":
+        """Accept the temporary OPENAI alias while local testing GPT Image 2."""
+        if not self.openai_api_key:
+            self.openai_api_key = (
+                os.environ.get("OPENAI", "")
+                or _dotenv.get("OPENAI", "")
+                or _root_dotenv.get("OPENAI", "")
+            )
+        return self
 
     # --- Vertex AI (Imagen 3) ---
     vertex_ai_project: str = ""

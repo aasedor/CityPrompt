@@ -9,6 +9,7 @@ import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
+import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
   BUILDING_AESTHETIC_OPTIONS_V2,
@@ -753,8 +754,10 @@ const resolveOptionCategory = (
     });
   };
 
-  // Compute approximate area from coordinates (in square meters)
-  const area = zone.coordinates && zone.coordinates.length >= 3 ? computePolygonAreaM2(zone.coordinates) : 0;
+  const footprintMetrics = zone.coordinates && zone.coordinates.length >= 3
+    ? polygonDimensionsMeters(zone.coordinates)
+    : { width: 0, depth: 0, area: 0 };
+  const area = footprintMetrics.area;
 
   return (
     <>
@@ -799,13 +802,19 @@ const resolveOptionCategory = (
 
         {/* Area display */}
         <div className="flex justify-between">
-          <span className="text-xs text-primary-950/50">Area</span>
+          <span className="text-xs text-primary-950/50">Map area</span>
           <span className="text-xs font-medium text-primary-950/60">
-            {area >= 10000
-              ? `${(area / 10000).toFixed(2)} ha`
-              : `${Math.round(area).toLocaleString()} m\u00B2`}
+            {formatArea(area)}
           </span>
         </div>
+        {footprintMetrics.width > 0 && footprintMetrics.depth > 0 && (
+          <div className="flex justify-between">
+            <span className="text-xs text-primary-950/50">Footprint</span>
+            <span className="text-xs font-medium text-primary-950/60">
+              {Math.round(footprintMetrics.width).toLocaleString()} m x {Math.round(footprintMetrics.depth).toLocaleString()} m
+            </span>
+          </div>
+        )}
 
         {/* ============================================================= */}
         {/* LAYOUT PREVIEW ? shown at top when preview is active           */}
@@ -3370,19 +3379,9 @@ function composeZonePrompt(zone: SiteZone): string {
 
   // 2. Approximate dimensions from coordinates
   if (zone.coordinates && zone.coordinates.length >= 3) {
-    const area = zone.coordinates && zone.coordinates.length >= 3 ? computePolygonAreaM2(zone.coordinates) : 0;
-    if (area > 1) {
-      // Approximate bounding box dimensions
-      const centerLat = zone.coordinates.reduce((s, c) => s + c[1], 0) / zone.coordinates.length;
-      const metersPerDegLat = 111320;
-      const metersPerDegLon = metersPerDegLat * Math.cos((centerLat * Math.PI) / 180);
-      const lngs = zone.coordinates.map(c => c[0]);
-      const lats = zone.coordinates.map(c => c[1]);
-      const width = (Math.max(...lngs) - Math.min(...lngs)) * metersPerDegLon;
-      const depth = (Math.max(...lats) - Math.min(...lats)) * metersPerDegLat;
-      if (width > 1 && depth > 1) {
-        parts.push(`Building footprint approximately ${width.toFixed(0)}m wide by ${depth.toFixed(0)}m deep (${area.toFixed(0)} sq meters)`);
-      }
+    const { width, depth, area } = polygonDimensionsMeters(zone.coordinates);
+    if (area > 1 && width > 1 && depth > 1) {
+      parts.push(`Building footprint approximately ${width.toFixed(0)}m wide by ${depth.toFixed(0)}m deep (${area.toFixed(0)} sq meters)`);
     }
   }
 
@@ -3432,30 +3431,5 @@ function composeZonePrompt(zone: SiteZone): string {
   }
 
   return parts.join('. ');
-}
-
-/**
- * Compute area of a polygon given in [lng, lat] coordinates.
- * Uses the Shoelace formula projected to meters.
- */
-function computePolygonAreaM2(coords: number[][]): number {
-  if (coords.length < 3) return 0;
-
-  // Approximate center for projection
-  const centerLat = coords.reduce((s, c) => s + c[1], 0) / coords.length;
-  const metersPerDegLat = 111320;
-  const metersPerDegLon = metersPerDegLat * Math.cos((centerLat * Math.PI) / 180);
-
-  // Convert to meters
-  const mCoords = coords.map((c) => [c[0] * metersPerDegLon, c[1] * metersPerDegLat]);
-
-  // Shoelace
-  let area = 0;
-  for (let i = 0; i < mCoords.length; i++) {
-    const j = (i + 1) % mCoords.length;
-    area += mCoords[i][0] * mCoords[j][1];
-    area -= mCoords[j][0] * mCoords[i][1];
-  }
-  return Math.abs(area) / 2;
 }
 

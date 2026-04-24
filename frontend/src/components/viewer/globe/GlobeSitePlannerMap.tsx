@@ -46,9 +46,9 @@ import {
   computeCentroid,
   haversineDistance,
   geodesicArea,
+  polygonAreaM2,
   polylineLength,
   formatDistance,
-  formatArea,
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
@@ -81,6 +81,10 @@ const GLOBE_NAV_VERTICAL_SPEED_FACTOR = 0.02;
 const GLOBE_NAV_MIN_STEP_METERS = 2;
 const GLOBE_NAV_MAX_STEP_METERS = 120;
 export const SELECTED_ZONE_KEYBOARD_NUDGE_DELTA = 0.00005; // ~5m in latitude degrees
+
+function formatDrawingArea(squareMeters: number): string {
+  return `${Math.round(squareMeters).toLocaleString()} m²`;
+}
 
 /** Create a terrain-adjusted ellipsoid for accurate raycasting at a given elevation */
 function createTerrainEllipsoid(elevation: number): Ellipsoid {
@@ -852,10 +856,12 @@ function DrawingDots({
   points,
   pointHeights,
   terrainHeight,
+  linear,
 }: {
   points: number[][];
   pointHeights: number[];
   terrainHeight: number;
+  linear: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const sampledPointHeights = useMemo(() => {
@@ -878,12 +884,31 @@ function DrawingDots({
     }
     return finiteHeights.reduce((sum, height) => sum + height, 0) / finiteHeights.length;
   }, [sampledPointHeights, terrainHeight]);
+  const liveArea = useMemo(() => (
+    !linear && points.length >= 3 ? polygonAreaM2(points) : 0
+  ), [linear, points]);
 
   if (points.length === 0) return null;
   return (
     <>
       {/* Preview fill polygon */}
       <DrawingPreviewFill points={points} terrainHeight={previewHeight} />
+
+      {/* Live polygon area */}
+      {liveArea > 0 && (() => {
+        const centroid = computeCentroid(points);
+        return (
+          <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={previewHeight}>
+            <group position={[0, 0, DRAWING_VERTEX_LIFT_METERS + 6]}>
+              <Html center zIndexRange={[240, 0]} style={{ pointerEvents: 'none' }}>
+                <div className="pointer-events-none whitespace-nowrap rounded-full border border-white/70 bg-blue-600/95 px-3 py-1 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">
+                  {formatDrawingArea(liveArea)}
+                </div>
+              </Html>
+            </group>
+          </EastNorthUpFrame>
+        );
+      })()}
 
       {/* Vertex dots */}
       {points.map((pt, i) => {
@@ -2105,6 +2130,7 @@ export function GlobeSitePlannerMap({
             points={drawingPoints}
             pointHeights={drawingPointHeights}
             terrainHeight={terrainElevation}
+            linear={linear}
           />
 
           {/* Edit mode â€” vertex handles when zone selected in Select mode */}
@@ -2147,7 +2173,7 @@ export function GlobeSitePlannerMap({
         if (n >= 2 && linear) {
           measurement = formatDistance(polylineLength(drawingPoints));
         } else if (n >= 3 && !linear) {
-          measurement = formatArea(geodesicArea(drawingPoints));
+          measurement = formatDrawingArea(polygonAreaM2(drawingPoints));
         }
 
         let hint: string;

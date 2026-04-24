@@ -13,7 +13,15 @@ import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 
-const PREVIEW_COUNT = 3;
+const COMPARE_RENDER_MODELS = [
+  { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
+  { model: 'gpt-image-2', label: 'GPT Image 2' },
+];
+
+function isTextEntryTarget(target: EventTarget | null): boolean {
+  const element = target as HTMLElement | null;
+  return Boolean(element?.closest('input, textarea, select, [contenteditable="true"]'));
+}
 
 interface GlobeAIRenderPanelProps {
   canvas: HTMLCanvasElement | null;
@@ -56,6 +64,8 @@ type LightboxRender = {
   prompt?: string;
   style?: string;
   seed?: number;
+  providerLabel?: string;
+  savedRenderId?: string;
   createdAt?: string;
   downloadName: string;
   canSave?: boolean;
@@ -70,7 +80,7 @@ export function GlobeAIRenderPanel({
   onRenderComplete,
   onBeforeRender,
 }: GlobeAIRenderPanelProps) {
-  const { render, renderPreviews, renderPerZone } = useGlobeAIRender();
+  const { renderPreviews, renderPerZone } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
@@ -139,20 +149,38 @@ export function GlobeAIRenderPanel({
       const hasBuildings = editableZones.some(z => BUILDING_TYPES.includes(z.zone_type));
       const hasMixedTypes = hasRoads && hasBuildings;
       const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
-      let renderResult: GlobeRenderResult | null;
-
       if (usePerZone) {
-        // Per-zone path is already sequential and slow — don't fan out previews.
+        // Per-zone path is already sequential and slow, so compare providers one at a time.
         console.log(`[GlobeAIRenderPanel] Using per-zone rendering (${editableZones.length} zones, mixed=${hasMixedTypes})`);
-        renderResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
-          style: selectedStyle,
-          projectId,
-          customPrompt: customPrompt.trim() || undefined,
-          onProgress: (progress) => setRenderProgress(progress),
-        });
-        if (renderResult) {
-          setResult(renderResult);
-          onRenderComplete?.(renderResult);
+        const results: GlobeRenderResult[] = [];
+        for (const provider of COMPARE_RENDER_MODELS) {
+          const providerResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
+            style: selectedStyle,
+            model: provider.model,
+            projectId,
+            customPrompt: customPrompt.trim() || undefined,
+            onProgress: (progress) => setRenderProgress({
+              ...progress,
+              zoneName: `${provider.label}: ${progress.zoneName}`,
+            }),
+          });
+          if (providerResult) {
+            results.push({ ...providerResult, model: provider.model, providerLabel: provider.label });
+          }
+        }
+        if (results.length > 0) {
+          setPreviews(results);
+          const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
+          const selected = results[firstSuccessfulIndex];
+          setSelectedPreviewIndex(firstSuccessfulIndex);
+          setResult(selected);
+          if (!selected.error) {
+            onRenderComplete?.(selected);
+          }
+          const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
+          if (failedLabels.length > 0) {
+            setError(`${failedLabels.join(', ')} failed. Open the labeled preview for details.`);
+          }
         } else {
           setError('Render returned no image. Try adjusting your view or zones.');
         }
@@ -164,13 +192,21 @@ export function GlobeAIRenderPanel({
           style: selectedStyle,
           projectId,
           customPrompt: customPrompt.trim() || undefined,
-          count: PREVIEW_COUNT,
+          variants: COMPARE_RENDER_MODELS,
         });
         if (results.length > 0) {
           setPreviews(results);
-          setSelectedPreviewIndex(0);
-          setResult(results[0]);
-          onRenderComplete?.(results[0]);
+          const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
+          const selected = results[firstSuccessfulIndex];
+          setSelectedPreviewIndex(firstSuccessfulIndex);
+          setResult(selected);
+          if (!selected.error) {
+            onRenderComplete?.(selected);
+          }
+          const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
+          if (failedLabels.length > 0) {
+            setError(`${failedLabels.join(', ')} failed. Open the labeled preview for details.`);
+          }
         } else {
           setError('Render returned no image. Try adjusting your view or zones.');
         }
@@ -183,7 +219,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, render, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -195,20 +231,55 @@ export function GlobeAIRenderPanel({
 
   const handleSelectPreview = useCallback((index: number) => {
     if (index < 0 || index >= previews.length) return;
+    const selected = previews[index];
     setSelectedPreviewIndex(index);
-    setResult(previews[index]);
-    onRenderComplete?.(previews[index]);
-  }, [previews, onRenderComplete]);
+    setResult(selected);
+    setLightboxRender((current) => current
+      ? {
+          ...current,
+          imageUrl: selected.imageUrl,
+          prompt: selected.error || selected.prompt,
+          style: selectedStyle,
+          seed: selected.seed,
+          providerLabel: selected.providerLabel,
+          downloadName: `siteforge-globe-${selected.providerLabel || `preview-${index + 1}`}-${Date.now()}.png`,
+          canSave: Boolean(projectId) && !selected.error,
+        }
+      : current);
+    if (!selected.error) {
+      onRenderComplete?.(selected);
+    }
+  }, [previews, onRenderComplete, projectId, selectedStyle]);
+
+  const handleStepPreview = useCallback((direction: -1 | 1) => {
+    if (previews.length < 2) return;
+    const currentIndex = selectedPreviewIndex ?? 0;
+    const nextIndex = (currentIndex + direction + previews.length) % previews.length;
+    handleSelectPreview(nextIndex);
+  }, [handleSelectPreview, previews.length, selectedPreviewIndex]);
+
+  useEffect(() => {
+    if (previews.length < 2 || isRendering || lightboxRender?.savedRenderId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (isTextEntryTarget(e.target)) return;
+      e.preventDefault();
+      handleStepPreview(e.key === 'ArrowRight' ? 1 : -1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [handleStepPreview, isRendering, lightboxRender?.savedRenderId, previews.length]);
 
   const handleDownload = useCallback(() => {
-    if (!result?.imageUrl) return;
+    if (!result?.imageUrl || result.error) return;
+    const providerSlug = (result.providerLabel || 'render').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const a = document.createElement('a');
     a.href = result.imageUrl;
-    a.download = `siteforge-globe-render-${Date.now()}.png`;
+    a.download = `siteforge-globe-${providerSlug}-${Date.now()}.png`;
     a.click();
   }, [result]);
 
-  const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed'>) => {
+  const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed' | 'providerLabel'>) => {
     if (!renderToSave.imageUrl || !projectId || saving) return;
     setSaving(true);
     setSaveStatus('idle');
@@ -228,7 +299,9 @@ export function GlobeAIRenderPanel({
       const saved = await rendersApi.save(projectId, {
         image_base64: base64,
         prompt: renderToSave.prompt || '',
-        style: renderToSave.style || selectedStyle,
+        style: renderToSave.providerLabel
+          ? `${renderToSave.providerLabel} / ${renderToSave.style || selectedStyle}`
+          : renderToSave.style || selectedStyle,
         seed: renderToSave.seed,
       });
       setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
@@ -251,12 +324,13 @@ export function GlobeAIRenderPanel({
   }, [projectId, selectedStyle, saving]);
 
   const handleSave = useCallback(async () => {
-    if (!result?.imageUrl) return;
+    if (!result?.imageUrl || result.error) return;
     await saveRenderToProject({
       imageUrl: result.imageUrl,
       prompt: result.prompt,
       style: selectedStyle,
       seed: result.seed,
+      providerLabel: result.providerLabel,
     });
   }, [result, saveRenderToProject, selectedStyle]);
 
@@ -266,10 +340,44 @@ export function GlobeAIRenderPanel({
       prompt: renderResult.prompt,
       style: selectedStyle,
       seed: renderResult.seed,
+      providerLabel: renderResult.providerLabel,
       downloadName: `${label}-${Date.now()}.png`,
       canSave: Boolean(projectId),
     });
   }, [projectId, selectedStyle]);
+
+  const openSavedRenderLightbox = useCallback((saved: SavedRender) => {
+    setLightboxRender({
+      imageUrl: resolveApiFileUrl(saved.image_url),
+      prompt: saved.prompt,
+      style: saved.style,
+      createdAt: saved.created_at,
+      savedRenderId: saved.id,
+      downloadName: `render-${saved.id}.png`,
+      canSave: false,
+    });
+  }, []);
+
+  const handleStepSavedRender = useCallback((direction: -1 | 1) => {
+    const savedRenderId = lightboxRender?.savedRenderId;
+    if (!savedRenderId || savedRenders.length < 2) return;
+    const currentIndex = savedRenders.findIndex((saved) => saved.id === savedRenderId);
+    const startIndex = currentIndex >= 0 ? currentIndex : 0;
+    const nextIndex = (startIndex + direction + savedRenders.length) % savedRenders.length;
+    openSavedRenderLightbox(savedRenders[nextIndex]);
+  }, [lightboxRender?.savedRenderId, openSavedRenderLightbox, savedRenders]);
+
+  useEffect(() => {
+    if (!lightboxRender?.savedRenderId || savedRenders.length < 2) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      if (isTextEntryTarget(e.target)) return;
+      e.preventDefault();
+      handleStepSavedRender(e.key === 'ArrowRight' ? 1 : -1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [handleStepSavedRender, lightboxRender?.savedRenderId, savedRenders.length]);
 
   return (
     <>
@@ -281,7 +389,7 @@ export function GlobeAIRenderPanel({
           AI Render (Globe)
         </h3>
         <p className="mt-0.5 text-[10px] text-gray-400">
-          Renders use photorealistic 3D context from Google Earth tiles
+          Test renders compare Gemini 3.1 Flash and GPT Image 2
         </p>
       </div>
 
@@ -356,32 +464,43 @@ export function GlobeAIRenderPanel({
       {previews.length > 1 && (
         <div className="px-4 pb-2">
           <div className="mb-1 flex items-center justify-between text-[10px] text-gray-400">
-            <span>Variant {selectedPreviewIndex !== null ? selectedPreviewIndex + 1 : '?'} of {previews.length}</span>
-            <span>open any preview</span>
+            <span>{selectedPreviewIndex !== null ? previews[selectedPreviewIndex]?.providerLabel || `Preview ${selectedPreviewIndex + 1}` : 'Choose a render'}</span>
+            <span>{previews.length} provider test</span>
           </div>
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5">
             {previews.map((p, i) => (
               <button
                 key={i}
                 onClick={() => {
                   handleSelectPreview(i);
-                  openResultLightbox(p, `siteforge-globe-preview-${i + 1}`);
+                  if (!p.error) {
+                    openResultLightbox(p, `siteforge-globe-${p.providerLabel || `preview-${i + 1}`}`);
+                  }
                 }}
-                className={`relative aspect-square overflow-hidden rounded border-2 transition ${
-                  selectedPreviewIndex === i
-                    ? 'border-amber-400 ring-2 ring-amber-400/40'
-                    : 'border-white/10 hover:border-white/40'
+                className={`relative aspect-video overflow-hidden rounded border-2 transition ${
+                  p.error
+                    ? 'border-red-400/70 hover:border-red-300'
+                    : selectedPreviewIndex === i
+                      ? 'border-amber-400 ring-2 ring-amber-400/40'
+                      : 'border-white/10 hover:border-white/40'
                 }`}
-                title={`Preview ${i + 1}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} - open larger`}
+                title={p.error
+                  ? `${p.providerLabel || `Preview ${i + 1}`} failed: ${p.error}`
+                  : `${p.providerLabel || `Preview ${i + 1}`}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} - open larger`}
               >
                 <img
                   src={p.imageUrl}
-                  alt={`Preview ${i + 1}`}
+                  alt={`${p.providerLabel || `Preview ${i + 1}`} render`}
                   className="h-full w-full object-cover"
                 />
-                <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/60 px-1 text-[10px] font-bold text-white">
-                  {i + 1}
+                <span className="pointer-events-none absolute left-1 top-1 max-w-[calc(100%-0.5rem)] truncate rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                  {p.providerLabel || `Preview ${i + 1}`}
                 </span>
+                {p.error && (
+                  <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                    Failed
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -392,30 +511,43 @@ export function GlobeAIRenderPanel({
       {result && (
         <div className="px-4 pb-3">
           <div className="relative rounded-lg overflow-hidden border border-white/10">
+            {result.providerLabel && (
+              <span className="pointer-events-none absolute left-2 top-2 z-10 rounded bg-black/70 px-2 py-1 text-[10px] font-bold text-white">
+                {result.providerLabel}
+              </span>
+            )}
             <img
               src={result.imageUrl}
-              alt="AI Render"
+              alt={`${result.providerLabel || 'AI'} render`}
               className="w-full cursor-zoom-in"
               onClick={() => openResultLightbox(result, 'siteforge-globe-render')}
               title="Click to enlarge"
             />
             <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center bg-gradient-to-t from-black/80 to-transparent px-2 py-1.5">
-              <button
-                onClick={handleSave}
-                disabled={saving || saveStatus === 'saved'}
-                className="flex items-center gap-1 text-[10px] text-white/80 hover:text-white disabled:opacity-70"
-              >
-                {saving && <Loader2 size={10} className="animate-spin" />}
-                {saveStatus === 'saved' && <Check size={10} />}
-                {saving ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Retry save' : 'Save to Project'}
-              </button>
-              <button
-                onClick={handleDownload}
-                className="text-[10px] text-white/80 hover:text-white flex items-center gap-1"
-              >
-                <Download size={10} />
-                Download
-              </button>
+              {result.error ? (
+                <span className="text-[10px] font-medium text-red-200">
+                  {result.error}
+                </span>
+              ) : (
+                <>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving || saveStatus === 'saved'}
+                    className="flex items-center gap-1 text-[10px] text-white/80 hover:text-white disabled:opacity-70"
+                  >
+                    {saving && <Loader2 size={10} className="animate-spin" />}
+                    {saveStatus === 'saved' && <Check size={10} />}
+                    {saving ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : saveStatus === 'error' ? 'Retry save' : 'Save to Project'}
+                  </button>
+                  <button
+                    onClick={handleDownload}
+                    className="text-[10px] text-white/80 hover:text-white flex items-center gap-1"
+                  >
+                    <Download size={10} />
+                    Download
+                  </button>
+                </>
+              )}
             </div>
           </div>
           <button
@@ -458,14 +590,7 @@ export function GlobeAIRenderPanel({
                     return (
                       <button
                         key={saved.id}
-                        onClick={() => setLightboxRender({
-                          imageUrl: savedUrl,
-                          prompt: saved.prompt,
-                          style: saved.style,
-                          createdAt: saved.created_at,
-                          downloadName: `render-${saved.id}.png`,
-                          canSave: false,
-                        })}
+                        onClick={() => openSavedRenderLightbox(saved)}
                         className="group relative aspect-square overflow-hidden rounded border border-white/10 transition hover:border-amber-400/60"
                         title="Open saved render"
                       >
@@ -541,12 +666,12 @@ export function GlobeAIRenderPanel({
             alt="Enlarged render"
             className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
           />
-          {(lightboxRender.prompt || lightboxRender.style || lightboxRender.createdAt) && (
+          {(lightboxRender.prompt || lightboxRender.providerLabel || lightboxRender.style || lightboxRender.createdAt) && (
             <div className="max-w-3xl rounded-lg bg-black/60 px-4 py-2 text-center text-xs text-white/75">
               {lightboxRender.prompt && <p className="line-clamp-2">{lightboxRender.prompt}</p>}
-              {(lightboxRender.style || lightboxRender.createdAt) && (
+              {(lightboxRender.providerLabel || lightboxRender.style || lightboxRender.createdAt) && (
                 <p className="mt-1 text-white/45">
-                  {[lightboxRender.style, lightboxRender.createdAt ? new Date(lightboxRender.createdAt).toLocaleDateString() : null]
+                  {[lightboxRender.providerLabel, lightboxRender.style, lightboxRender.createdAt ? new Date(lightboxRender.createdAt).toLocaleDateString() : null]
                     .filter(Boolean)
                     .join(' · ')}
                 </p>

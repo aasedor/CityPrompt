@@ -44,6 +44,7 @@ router = APIRouter()
 # Gemini model for render pipeline — must support image generation
 # (responseModalities: ["TEXT", "IMAGE"])
 _GEMINI_RENDER_MODEL = "gemini-3.1-flash-image-preview"
+_OPENAI_RENDER_MODEL = "gpt-image-2"
 
 
 # ---------------------------------------------------------------------------
@@ -257,13 +258,18 @@ _ALLOWED_MODELS = {
     "gemini-2.5-flash-image",
     "gemini-3-pro-image-preview",
     "gemini-3.1-flash-image-preview",
+    "gpt-image-2",
+    "gpt-image-2-2026-04-21",
 }
+_OPENAI_MODELS = {"gpt-image-2", "gpt-image-2-2026-04-21"}
 
 # Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
 _MODEL_TOKEN_COST: dict[str, int] = {
     "gemini-2.5-flash-image": 8,        # ~$0.039
     "gemini-3.1-flash-image-preview": 13, # ~$0.067
     "gemini-3-pro-image-preview": 27,     # ~$0.134
+    "gpt-image-2": 13,
+    "gpt-image-2-2026-04-21": 13,
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
 _WEEKLY_TOKEN_ALLOWANCE = 99999
@@ -316,6 +322,219 @@ def _get_auth_headers(settings) -> dict[str, str]:
     return headers
 
 
+def _is_openai_model(model: str) -> bool:
+    return model in _OPENAI_MODELS
+
+
+def _prompt_with_negative(req: RenderRequest) -> str:
+    prompt_text = req.prompt
+    if req.negative_prompt:
+        prompt_text += f"\n\nDo NOT include: {req.negative_prompt}"
+    return prompt_text
+
+
+def _decode_base64_payload(image_b64: str) -> bytes:
+    """Decode a raw base64 image string, tolerating data URL prefixes."""
+    payload = image_b64.split(",", 1)[1] if "," in image_b64[:64] else image_b64
+    return base64.b64decode(payload)
+
+
+def _guess_image_mime(image_b64: str) -> str:
+    if image_b64.startswith("/9j/"):
+        return "image/jpeg"
+    if image_b64.startswith("iVBOR"):
+        return "image/png"
+    if image_b64.startswith("UklGR"):
+        return "image/webp"
+    return "image/png"
+
+
+def _extension_for_mime(mime: str) -> str:
+    if mime == "image/jpeg":
+        return "jpg"
+    if mime == "image/webp":
+        return "webp"
+    return "png"
+
+
+def _openai_mask_png_bytes(mask_b64: str) -> bytes:
+    """Convert the existing white-edit/black-keep mask to alpha-edit PNG."""
+    raw = _decode_base64_payload(mask_b64)
+    try:
+        mask = Image.open(io.BytesIO(raw)).convert("L")
+        alpha = mask.point(lambda pixel: 0 if pixel > 127 else 255)
+        rgba = Image.new("RGBA", mask.size, (0, 0, 0, 255))
+        rgba.putalpha(alpha)
+        buf = io.BytesIO()
+        rgba.save(buf, format="PNG")
+        return buf.getvalue()
+    except Exception as exc:
+        logger.warning("Could not convert OpenAI edit mask to alpha PNG: %s", exc)
+        return raw
+
+
+def _build_openai_files(
+    req: RenderRequest,
+    include_mask: bool,
+) -> list[tuple[str, tuple[str, bytes, str]]]:
+    """Build multipart image files for OpenAI image editing."""
+    if not req.image_base64:
+        raise HTTPException(status_code=400, detail="OpenAI image editing requires image_base64.")
+
+    input_mime = _guess_image_mime(req.image_base64)
+    input_ext = _extension_for_mime(input_mime)
+    files: list[tuple[str, tuple[str, bytes, str]]] = [
+        ("image[]", (f"site-context.{input_ext}", _decode_base64_payload(req.image_base64), input_mime)),
+    ]
+
+    # GPT image edit models support up to 16 input images. Keep one slot for
+    # the site screenshot and use the rest for archetype references.
+    for idx, arch_img in enumerate((req.archetype_images or [])[:15], start=1):
+        mime = _guess_image_mime(arch_img.image_base64)
+        ext = _extension_for_mime(mime)
+        safe_idx = str(idx).zfill(2)
+        files.append((
+            "image[]",
+            (f"archetype-reference-{safe_idx}.{ext}", _decode_base64_payload(arch_img.image_base64), mime),
+        ))
+
+    if include_mask and req.mask_base64:
+        files.append(("mask", ("edit-mask.png", _openai_mask_png_bytes(req.mask_base64), "image/png")))
+
+    return files
+
+
+async def _call_openai_image_edit(
+    req: RenderRequest,
+    settings,
+    render_model: str,
+    *,
+    include_mask: bool,
+) -> httpx.Response:
+    prompt_text = _prompt_with_negative(req)
+    prompt_text = (
+        "Use the first attached image as the source city/site context. "
+        "Preserve the camera angle, lighting, terrain, surrounding buildings, "
+        "and all unedited context. If an edit mask is attached, edit only the "
+        "masked site areas. Additional attached images are archetype references "
+        "for the proposed zones.\n\n"
+        + prompt_text
+    )
+    if len(prompt_text) > 32_000:
+        prompt_text = prompt_text[:31_900] + "\n\n[Prompt truncated to fit the OpenAI image prompt limit.]"
+
+    data = {
+        "model": render_model,
+        "prompt": prompt_text,
+        "n": "1",
+        "size": "auto",
+        "quality": "auto",
+        "output_format": "png",
+    }
+    headers = {"Authorization": f"Bearer {settings.openai_api_key}"}
+
+    async with httpx.AsyncClient(timeout=300.0) as client:
+        return await client.post(
+            "https://api.openai.com/v1/images/edits",
+            data=data,
+            files=_build_openai_files(req, include_mask=include_mask),
+            headers=headers,
+        )
+
+
+async def _generate_openai_render(req: RenderRequest, settings, render_model: str) -> str:
+    """Generate one render through OpenAI's image edit endpoint."""
+    if not settings.openai_api_key:
+        raise HTTPException(
+            status_code=503,
+            detail="OpenAI is not configured. Set OPENAI_API_KEY in .env, or use the temporary OPENAI alias.",
+        )
+
+    logger.info(
+        "Calling OpenAI image edit — model=%s, prompt_length=%d, has_mask=%s, refs=%d",
+        render_model,
+        len(req.prompt),
+        bool(req.mask_base64),
+        len(req.archetype_images or []),
+    )
+
+    resp = await _call_openai_image_edit(req, settings, render_model, include_mask=bool(req.mask_base64))
+    if resp.status_code == 400 and req.mask_base64 and "mask" in resp.text.lower():
+        logger.warning("OpenAI rejected the edit mask; retrying without mask for comparison render.")
+        resp = await _call_openai_image_edit(req, settings, render_model, include_mask=False)
+
+    if resp.status_code != 200:
+        error_body = resp.text[:500]
+        logger.error("OpenAI image edit returned %d: %s", resp.status_code, error_body)
+        raise HTTPException(
+            status_code=502,
+            detail=f"OpenAI image error ({resp.status_code}): {error_body}",
+        )
+
+    body = resp.json()
+    data = body.get("data") or []
+    if not data:
+        raise HTTPException(status_code=502, detail="OpenAI image response did not include image data.")
+
+    image_b64 = data[0].get("b64_json")
+    if image_b64:
+        logger.info("OpenAI success — image size: %d chars", len(image_b64))
+        return image_b64
+
+    image_url = data[0].get("url")
+    if image_url:
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            image_resp = await client.get(image_url)
+            image_resp.raise_for_status()
+            return base64.b64encode(image_resp.content).decode()
+
+    raise HTTPException(status_code=502, detail="OpenAI image response did not include b64_json or url.")
+
+
+async def _finalize_render_success(
+    db: AsyncSession,
+    user: User,
+    req: RenderRequest,
+    render_model: str,
+    token_cost: int,
+    image_b64: str,
+) -> RenderResponse:
+    if req.post_process:
+        image_b64 = _post_process(image_b64)
+
+    # Deduct tokens for non-admin users
+    if not is_admin_or_above(user):
+        user.render_credits = max(0, user.render_credits - token_cost)
+        db.add(user)
+        await db.commit()
+        logger.info(
+            "User %s: %d tokens deducted (%s) — %d remaining",
+            user.email,
+            token_cost,
+            render_model,
+            user.render_credits,
+        )
+
+    # Save audit log with input/output images to S3
+    try:
+        await _save_render_audit(
+            db=db,
+            user=user,
+            render_model=render_model,
+            token_cost=token_cost if not is_admin_or_above(user) else 0,
+            input_b64=req.image_base64,
+            output_b64=image_b64,
+            prompt_preview=req.prompt[:500] if req.prompt else None,
+        )
+    except Exception as audit_exc:
+        logger.warning("Failed to save render audit log: %s", audit_exc)
+
+    return RenderResponse(
+        image_base64=image_b64,
+        seed=req.seed,
+    )
+
+
 # ---------------------------------------------------------------------------
 # Endpoint
 # ---------------------------------------------------------------------------
@@ -327,10 +546,9 @@ async def generate_render(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Generate a photorealistic architectural render via Gemini.
+    """Generate a photorealistic architectural render via Gemini or OpenAI.
 
-    Sends the map screenshot + prompt to Gemini's generateContent API
-    with responseModalities: ["TEXT", "IMAGE"] to get an edited image back.
+    Sends the map screenshot + prompt to the selected image edit model.
     Requires authentication. Non-admin users must have render tokens.
     """
     # Weekly token reset for non-admin users
@@ -356,6 +574,17 @@ async def generate_render(
         )
 
     settings = get_settings()
+
+    if _is_openai_model(render_model):
+        image_b64 = await _generate_openai_render(req, settings, render_model)
+        return await _finalize_render_success(
+            db=db,
+            user=user,
+            req=req,
+            render_model=render_model,
+            token_cost=token_cost,
+            image_b64=image_b64,
+        )
 
     if not settings.gemini_api_key and not settings.vertex_ai_project:
         raise HTTPException(
@@ -437,9 +666,7 @@ async def generate_render(
         })
 
     # Build the final prompt text
-    prompt_text = req.prompt
-    if req.negative_prompt:
-        prompt_text += f"\n\nDo NOT include: {req.negative_prompt}"
+    prompt_text = _prompt_with_negative(req)
 
     parts.append({"text": prompt_text})
 
