@@ -18,6 +18,30 @@ import * as THREE from 'three';
 // Stencil reference value used for zone masking
 const STENCIL_REF = 1;
 
+const STENCIL_PATCH_STATE_KEY = '__siteforgeTileStencilPatch';
+
+interface MaterialStencilState {
+  stencilWrite: boolean;
+  stencilWriteMask: number;
+  stencilFunc: THREE.StencilFunc;
+  stencilRef: number;
+  stencilFuncMask: number;
+  stencilFail: THREE.StencilOp;
+  stencilZFail: THREE.StencilOp;
+  stencilZPass: THREE.StencilOp;
+}
+
+export function shouldCreateTileStencilMask(zoneType: string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential';
+}
+
+export function getTileStencilVolumeHeight(
+  _zoneType: string | null | undefined,
+  extrudeHeight: number,
+): number {
+  return Math.max(extrudeHeight * 2, 200);
+}
+
 /**
  * Create a stencil volume (invisible extruded column) for a zone polygon.
  * The volume writes to the stencil buffer but doesn't render visually.
@@ -87,10 +111,29 @@ export function createStencilVolume(
  * Fragments where stencil === STENCIL_REF will be discarded.
  */
 export function patchMaterialForStencil(material: THREE.Material): void {
-  material.stencilTest = true;
+  if (!material.userData[STENCIL_PATCH_STATE_KEY]) {
+    material.userData[STENCIL_PATCH_STATE_KEY] = {
+      stencilWrite: material.stencilWrite,
+      stencilWriteMask: material.stencilWriteMask,
+      stencilFunc: material.stencilFunc,
+      stencilRef: material.stencilRef,
+      stencilFuncMask: material.stencilFuncMask,
+      stencilFail: material.stencilFail,
+      stencilZFail: material.stencilZFail,
+      stencilZPass: material.stencilZPass,
+    } satisfies MaterialStencilState;
+  }
+
+  // Three enables the stencil test from stencilWrite. A zero write-mask lets
+  // tile materials test against zone masks without changing the stencil buffer.
+  material.stencilWrite = true;
+  material.stencilWriteMask = 0x00;
   material.stencilRef = STENCIL_REF;
   material.stencilFunc = THREE.NotEqualStencilFunc; // Only render where stencil !== ref
-  material.stencilWrite = false; // Don't modify stencil
+  material.stencilFuncMask = 0xff;
+  material.stencilFail = THREE.KeepStencilOp;
+  material.stencilZFail = THREE.KeepStencilOp;
+  material.stencilZPass = THREE.KeepStencilOp;
   material.needsUpdate = true;
 }
 
@@ -98,6 +141,20 @@ export function patchMaterialForStencil(material: THREE.Material): void {
  * Remove stencil patching from a material.
  */
 export function unpatchMaterialStencil(material: THREE.Material): void {
-  material.stencilTest = false;
+  const previousState = material.userData[STENCIL_PATCH_STATE_KEY] as MaterialStencilState | undefined;
+  if (previousState) {
+    material.stencilWrite = previousState.stencilWrite;
+    material.stencilWriteMask = previousState.stencilWriteMask;
+    material.stencilFunc = previousState.stencilFunc;
+    material.stencilRef = previousState.stencilRef;
+    material.stencilFuncMask = previousState.stencilFuncMask;
+    material.stencilFail = previousState.stencilFail;
+    material.stencilZFail = previousState.stencilZFail;
+    material.stencilZPass = previousState.stencilZPass;
+    delete material.userData[STENCIL_PATCH_STATE_KEY];
+  } else {
+    material.stencilWrite = false;
+  }
+
   material.needsUpdate = true;
 }

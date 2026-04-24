@@ -21,11 +21,21 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
-import { createStencilVolume } from './StencilMaskPlugin';
+import {
+  createStencilVolume,
+  getTileStencilVolumeHeight,
+  shouldCreateTileStencilMask,
+} from './StencilMaskPlugin';
 import { useGlobeDragRef } from './useGlobeDragRef';
-import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import {
+  getObjectFilteredTerrainHeight,
+  getRepresentativeTerrainHeight,
+  resolveZoneTerrainHeight,
+  shouldFilterObjectTerrainHeight,
+} from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
+const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 
 interface GlobeZoneLayerProps {
   zones: SiteZone[];
@@ -158,6 +168,38 @@ function raycastTerrainHeightAtLatLng(
   return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
 }
 
+function raycastObjectFilteredTerrainHeightAtLatLng(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+  fallback: number | null | undefined,
+): number | null {
+  const mPerDegLon = Math.max(1, Math.abs(metersPerDegLon(lat)));
+  const diagonal = OBJECT_FILTER_SAMPLE_RADIUS_METERS * 0.7;
+  const offsets: Array<[number, number]> = [
+    [0, 0],
+    [OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [-OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [0, OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [0, -OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [diagonal, diagonal],
+    [diagonal, -diagonal],
+    [-diagonal, diagonal],
+    [-diagonal, -diagonal],
+  ];
+  const samples = offsets.map(([eastMeters, northMeters]) => (
+    raycastTerrainHeightAtLatLng(
+      lng + eastMeters / mPerDegLon,
+      lat + northMeters / METERS_PER_DEG_LAT,
+      tilesGroup,
+      raycaster,
+    )
+  ));
+
+  return getObjectFilteredTerrainHeight(samples, samples[0] ?? fallback);
+}
+
 function getTerrainProbePoints(
   coords: number[][],
   centroid: [number, number],
@@ -205,6 +247,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || 0;
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
+  const shouldRespectTileDepth = isBuilding || zone.zone_type === 'green_space';
+  const shouldMaskTileGeometry = shouldCreateTileStencilMask(zone.zone_type);
+  const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
 
   const geoData = useMemo(() => {
@@ -242,7 +287,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const raycaster = raycasterRef.current;
     const sampledHeight = getRepresentativeTerrainHeight(
       getTerrainProbePoints(zone.coordinates, centroid).map(([lng, lat]) => (
-        raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
+        filterObjectHeights
+          ? raycastObjectFilteredTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster, null)
+          : raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
       )),
       zoneTerrainHeight,
     );
@@ -257,7 +304,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : sampledHeight
     ));
     return true;
-  }, [centroid, tiles, zone.coordinates, zoneTerrainHeight]);
+  }, [centroid, filterObjectHeights, tiles, zone.coordinates, zoneTerrainHeight]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -319,7 +366,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     drapeAttemptRef.current++;
 
     const raycaster = raycasterRef.current;
-    const mPerDegLon = metersPerDegLon(centroid[1]);
     let hitCount = 0;
 
     // For each vertex, raycast to find terrain Z in ENU frame
@@ -328,10 +374,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
     for (let i = 0; i < zone.coordinates.length && i < posAttr.count; i++) {
       const coord = zone.coordinates[i];
-      const hit = raycastTerrainAtLatLng(coord[0], coord[1], tiles.group, raycaster);
-      if (hit) {
-        // Convert ECEF hit point to elevation
-        const hitElev = WGS84_ELLIPSOID.getPositionElevation(hit);
+      const hitElev = filterObjectHeights
+        ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
+        : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
+      if (hitElev !== null) {
         // Z offset in ENU = hitElev - zoneTerrainHeight (the ENU frame origin elevation)
         const zOffset = hitElev - zoneTerrainHeight + 1.0; // +1m above terrain surface
         posAttr.setZ(i, zOffset);
@@ -349,9 +395,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         if (outPos) {
           for (let i = 0; i < zone.coordinates.length && i < outPos.count - 1; i++) {
             const coord = zone.coordinates[i];
-            const hit = raycastTerrainAtLatLng(coord[0], coord[1], tiles.group, raycaster);
-            if (hit) {
-              const hitElev = WGS84_ELLIPSOID.getPositionElevation(hit);
+            const hitElev = filterObjectHeights
+              ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
+              : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
+            if (hitElev !== null) {
               const zOffset = hitElev - zoneTerrainHeight + 1.2;
               outPos.setZ(i, zOffset);
             }
@@ -368,7 +415,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, zone.coordinates, centroid, zoneTerrainHeight]);
+  }, [tiles, geoData, isBuilding, filterObjectHeights, zone.coordinates, zoneTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
@@ -406,16 +453,19 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     if (Math.random() < 0.005) drapeToTerrain(); // ~0.5% chance per frame
   });
 
-  // Stencil volume for building zones
+  // Stencil volume for zones that should clear existing Google tile geometry.
   const stencilMesh = useMemo(() => {
-    if (!isBuilding || zone.coordinates.length < 3) return null;
+    if (!shouldMaskTileGeometry || zone.coordinates.length < 3) return null;
     const mPerDegLon = metersPerDegLon(centroid[1]);
     const pts = zone.coordinates.map(c => ({
       x: (c[0] - centroid[0]) * mPerDegLon,
       y: (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
     }));
-    return createStencilVolume(pts, Math.max(extrudeHeight * 2, 200));
-  }, [zone.coordinates, centroid, isBuilding, extrudeHeight]);
+    return createStencilVolume(
+      pts,
+      getTileStencilVolumeHeight(zone.zone_type, extrudeHeight),
+    );
+  }, [zone.coordinates, centroid, shouldMaskTileGeometry, zone.zone_type, extrudeHeight]);
 
   const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
     // When the zone is already selected, let the edit surface behind it
@@ -454,8 +504,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
             transparent
             opacity={isSiteBoundary ? 0.15 : 1.0}
             side={THREE.DoubleSide}
-            depthTest={false}
+            depthTest={shouldRespectTileDepth}
             depthWrite={false}
+            polygonOffset={shouldRespectTileDepth}
+            polygonOffsetFactor={-1}
+            polygonOffsetUnits={-1}
           />
         </mesh>
       )}
@@ -483,10 +536,10 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         </mesh>
       )}
 
-      {/* Outline — R3F <line> type conflicts with SVG <line>, suppress with any refs */}
+      {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
       <line
         ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
-        geometry={!isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo}
+        {...({ geometry: !isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo } as any)}
         renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
         frustumCulled={false}
         onPointerDown={handleZonePointerDown}
@@ -494,7 +547,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         <lineBasicMaterial
           color={isSelected ? '#ffffff' : color}
           linewidth={isSelected ? 3 : 1.5}
-          depthTest={isBuilding}
+          depthTest={shouldRespectTileDepth}
           depthWrite={false}
         />
       </line>

@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react';
-import { MousePointer, HelpCircle, Layers3, Eye, Building2, History } from 'lucide-react';
+import { MousePointer, HelpCircle, Layers3, Eye, Building2, History, Ruler } from 'lucide-react';
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
@@ -54,6 +54,8 @@ interface SitePlannerToolbarProps {
   onShowGuide?: () => void;
   onToggleHistory?: () => void;
   historyOpen?: boolean;
+  measureActive?: boolean;
+  onMeasureModeChange?: (active: boolean) => void;
   isGlobeMode?: boolean;
   /** 'sidebar' stacks zone-type cards in a single column (for left-rail placement).
    *  'default' keeps the existing 2x2 / 1x4 grid (for bottom-center placement). */
@@ -81,6 +83,8 @@ export function SitePlannerToolbar({
   onShowGuide,
   onToggleHistory,
   historyOpen,
+  measureActive = false,
+  onMeasureModeChange,
   isGlobeMode = false,
   layout = 'default',
   bottomSlot,
@@ -106,6 +110,7 @@ export function SitePlannerToolbar({
   const activateCoreTool = (id: CoreToolId) => {
     // Deactivate street view when switching to a drawing tool
     if (streetViewPegman) setStreetViewActive(false);
+    onMeasureModeChange?.(false);
     const zoneType = resolveZoneTypeForCoreTool(id, parksSubtype);
     if (activeSitePlannerTool === zoneType) {
       setActiveSitePlannerTool(null);
@@ -117,7 +122,14 @@ export function SitePlannerToolbar({
   const handleSelectMode = () => {
     // Deactivate street view when switching to select mode
     if (streetViewPegman) setStreetViewActive(false);
+    onMeasureModeChange?.(false);
     setActiveSitePlannerTool(null);
+  };
+
+  const handleMeasureMode = () => {
+    if (streetViewPegman) setStreetViewActive(false);
+    setActiveSitePlannerTool(null);
+    onMeasureModeChange?.(!measureActive);
   };
 
   const onChangeParksSubtype = (next: ParksSubtype) => {
@@ -189,7 +201,10 @@ export function SitePlannerToolbar({
           <UndoRedoButtons />
 
           <button
-            onClick={() => setStreetViewActive(!streetViewPegman)}
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setStreetViewActive(!streetViewPegman);
+            }}
             className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
               streetViewPegman
                 ? 'bg-amber-500/15 text-amber-700 ring-1 ring-amber-500/25'
@@ -200,6 +215,21 @@ export function SitePlannerToolbar({
             <Eye size={14} />
             Street View
           </button>
+
+          {onMeasureModeChange && (
+            <button
+              onClick={handleMeasureMode}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+                measureActive
+                  ? 'bg-sky-500/15 text-sky-700 ring-1 ring-sky-500/25'
+                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+              }`}
+              title="Measure distance"
+            >
+              <Ruler size={14} />
+              Measure
+            </button>
+          )}
 
           {!isGlobeMode && (
             <button
@@ -286,21 +316,30 @@ export function SitePlannerToolbar({
         <div className={`rounded-lg border border-primary-950/[0.08] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
           <span className="text-[11px] font-medium uppercase text-primary-950/50">Advanced</span>
           <button
-            onClick={() => setActiveSitePlannerTool('residential')}
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('residential');
+            }}
             className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
             title="Residential (Polygon)"
           >
             Residential
           </button>
           <button
-            onClick={() => setActiveSitePlannerTool('development_area')}
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('development_area');
+            }}
             className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
             title="Development Area (Polygon)"
           >
             Development Area
           </button>
           <button
-            onClick={() => setActiveSitePlannerTool('water')}
+            onClick={() => {
+              onMeasureModeChange?.(false);
+              setActiveSitePlannerTool('water');
+            }}
             className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
             title="Water (Polygon)"
           >

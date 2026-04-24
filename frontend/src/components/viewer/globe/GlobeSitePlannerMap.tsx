@@ -36,7 +36,11 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
-import { getRepresentativeTerrainHeight } from './globeTerrainUtils';
+import {
+  getObjectFilteredTerrainHeight,
+  getRepresentativeTerrainHeight,
+  shouldFilterObjectTerrainHeight,
+} from './globeTerrainUtils';
 import {
   getToolDisplayLabel,
   isLinearTool,
@@ -76,6 +80,9 @@ const DRAWING_FILL_LIFT_METERS = 0.3;
 const DRAWING_OUTLINE_LIFT_METERS = 0.6;
 const DRAWING_VERTEX_LIFT_METERS = 1;
 const DRAWING_VERTEX_RADIUS_METERS = 2.25;
+const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+const MEASURE_LINE_LIFT_METERS = 2;
+const MEASURE_POINT_RADIUS_METERS = 1.8;
 const GLOBE_NAV_MIN_HEIGHT_ABOVE_GROUND = 20;
 const GLOBE_NAV_HORIZONTAL_SPEED_FACTOR = 0.02;
 const GLOBE_NAV_VERTICAL_SPEED_FACTOR = 0.02;
@@ -876,16 +883,50 @@ function raycastTerrainHeightAtLngLat(
   return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
 }
 
+function raycastObjectFilteredTerrainHeightAtLngLat(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+  fallback: number | null | undefined,
+): number | null {
+  const mPerDegLon = Math.max(1, Math.abs(metersPerDegLon(lat)));
+  const diagonal = OBJECT_FILTER_SAMPLE_RADIUS_METERS * 0.7;
+  const offsets: Array<[number, number]> = [
+    [0, 0],
+    [OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [-OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [0, OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [0, -OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [diagonal, diagonal],
+    [diagonal, -diagonal],
+    [-diagonal, diagonal],
+    [-diagonal, -diagonal],
+  ];
+  const samples = offsets.map(([eastMeters, northMeters]) => (
+    raycastTerrainHeightAtLngLat(
+      lng + eastMeters / mPerDegLon,
+      lat + northMeters / METERS_PER_DEG_LAT,
+      tilesGroup,
+      raycaster,
+    )
+  ));
+
+  return getObjectFilteredTerrainHeight(samples, samples[0] ?? fallback);
+}
+
 function DrawingDots({
   points,
   pointHeights,
   terrainHeight,
   linear,
+  filterObjectHeights,
 }: {
   points: number[][];
   pointHeights: number[];
   terrainHeight: number;
   linear: boolean;
+  filterObjectHeights: boolean;
 }) {
   const tiles = useContext(TilesRendererContext);
   const sampledPointHeights = useMemo(() => {
@@ -895,12 +936,26 @@ function DrawingDots({
     }
 
     const raycaster = new THREE.Raycaster();
+    if (filterObjectHeights) {
+      return points.map((point, index) => (
+        raycastObjectFilteredTerrainHeightAtLngLat(
+          point[0],
+          point[1],
+          tilesGroup,
+          raycaster,
+          pointHeights[index] ?? terrainHeight,
+        )
+        ?? pointHeights[index]
+        ?? terrainHeight
+      ));
+    }
+
     return points.map((point, index) => (
       pointHeights[index]
       ?? raycastTerrainHeightAtLngLat(point[0], point[1], tilesGroup, raycaster)
       ?? terrainHeight
     ));
-  }, [pointHeights, points, terrainHeight, tiles]);
+  }, [filterObjectHeights, pointHeights, points, terrainHeight, tiles]);
   const previewHeight = useMemo(() => {
     const finiteHeights = sampledPointHeights.filter(Number.isFinite);
     if (finiteHeights.length === 0) {
@@ -999,6 +1054,121 @@ function DrawingDots({
   );
 }
 
+function MeasurementOverlay({
+  points,
+  pointHeights,
+  terrainHeight,
+}: {
+  points: number[][];
+  pointHeights: number[];
+  terrainHeight: number;
+}) {
+  const totalDistance = useMemo(() => polylineLength(points), [points]);
+  const lineHeight = useMemo(() => {
+    const finiteHeights = pointHeights.filter(Number.isFinite);
+    if (finiteHeights.length === 0) return terrainHeight;
+    return finiteHeights.reduce((sum, height) => sum + height, 0) / finiteHeights.length;
+  }, [pointHeights, terrainHeight]);
+  const segments = useMemo(() => {
+    const result: Array<{ key: string; midpoint: [number, number]; height: number; distance: number }> = [];
+    for (let index = 1; index < points.length; index += 1) {
+      const start = points[index - 1];
+      const end = points[index];
+      const startHeight = pointHeights[index - 1] ?? terrainHeight;
+      const endHeight = pointHeights[index] ?? terrainHeight;
+      result.push({
+        key: `${index}-${start[0]}-${start[1]}-${end[0]}-${end[1]}`,
+        midpoint: [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2],
+        height: (startHeight + endHeight) / 2,
+        distance: haversineDistance([start[0], start[1]], [end[0], end[1]]),
+      });
+    }
+    return result;
+  }, [pointHeights, points, terrainHeight]);
+
+  if (points.length === 0) return null;
+
+  const lastPoint = points[points.length - 1];
+  const lastPointHeight = pointHeights[points.length - 1] ?? terrainHeight;
+
+  return (
+    <>
+      {points.length >= 2 && (() => {
+        const centroid = computeCentroid(points);
+        const mPerDegLon = metersPerDegLon(centroid[1]);
+        const verts: number[] = [];
+        for (const c of points) {
+          verts.push(
+            (c[0] - centroid[0]) * mPerDegLon,
+            (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
+            MEASURE_LINE_LIFT_METERS,
+          );
+        }
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+        return (
+          <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={lineHeight}>
+            {/* @ts-expect-error R3F line type conflict */}
+            <line geometry={lineGeo} renderOrder={1002} frustumCulled={false}>
+              <lineBasicMaterial color="#38bdf8" linewidth={3} depthTest={false} depthWrite={false} />
+            </line>
+          </EastNorthUpFrame>
+        );
+      })()}
+
+      {points.map((point, index) => (
+        <EastNorthUpFrame
+          key={`measure-point-${index}-${point[0]}-${point[1]}`}
+          lat={point[1] * DEG_TO_RAD}
+          lon={point[0] * DEG_TO_RAD}
+          height={pointHeights[index] ?? terrainHeight}
+        >
+          <mesh position={[0, 0, MEASURE_LINE_LIFT_METERS]} renderOrder={1003} frustumCulled={false}>
+            <sphereGeometry args={[MEASURE_POINT_RADIUS_METERS, 16, 16]} />
+            <meshBasicMaterial color="#38bdf8" depthTest={false} depthWrite={false} />
+          </mesh>
+          <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 0.4]}>
+            <Html center zIndexRange={[230, 0]} style={{ pointerEvents: 'none' }}>
+              <div className="pointer-events-none flex h-5 min-w-5 items-center justify-center rounded-full border border-white/80 bg-sky-500 px-1.5 text-[10px] font-bold text-white shadow-lg">
+                {index + 1}
+              </div>
+            </Html>
+          </group>
+        </EastNorthUpFrame>
+      ))}
+
+      {segments.map((segment) => (
+        <EastNorthUpFrame
+          key={`measure-segment-${segment.key}`}
+          lat={segment.midpoint[1] * DEG_TO_RAD}
+          lon={segment.midpoint[0] * DEG_TO_RAD}
+          height={segment.height}
+        >
+          <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 2.5]}>
+            <Html center zIndexRange={[225, 0]} style={{ pointerEvents: 'none' }}>
+              <div className="pointer-events-none whitespace-nowrap rounded-full border border-sky-200/80 bg-gray-950/85 px-2 py-0.5 text-[11px] font-semibold text-sky-100 shadow-lg backdrop-blur-sm">
+                {formatDistance(segment.distance)}
+              </div>
+            </Html>
+          </group>
+        </EastNorthUpFrame>
+      ))}
+
+      {points.length >= 2 && (
+        <EastNorthUpFrame lat={lastPoint[1] * DEG_TO_RAD} lon={lastPoint[0] * DEG_TO_RAD} height={lastPointHeight}>
+          <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 7]}>
+            <Html center zIndexRange={[235, 0]} style={{ pointerEvents: 'none' }}>
+              <div className="pointer-events-none whitespace-nowrap rounded-full border border-white/80 bg-sky-600 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                Total {formatDistance(totalDistance)}
+              </div>
+            </Html>
+          </group>
+        </EastNorthUpFrame>
+      )}
+    </>
+  );
+}
+
 interface GlobeSitePlannerMapProps {
   latitude?: number;
   longitude?: number;
@@ -1012,6 +1182,8 @@ interface GlobeSitePlannerMapProps {
   onCopyZone?: (zoneId: string) => void;
   onPasteZone?: () => void;
   canPasteZone?: boolean;
+  measureModeActive?: boolean;
+  onMeasureModeChange?: (active: boolean) => void;
   /**
    * Emitted when the R3F canvas, THREE camera, and terrain elevation are all
    * available. Downstream `GlobeAIRenderPanel` consumes `{canvas, camera,
@@ -1058,6 +1230,8 @@ export function GlobeSitePlannerMap({
   onCopyZone,
   onPasteZone,
   canPasteZone = false,
+  measureModeActive = false,
+  onMeasureModeChange,
   onGlobeReady,
 }: GlobeSitePlannerMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1471,8 +1645,12 @@ export function GlobeSitePlannerMap({
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
   const [drawingPointHeights, setDrawingPointHeights] = useState<number[]>([]);
+  const [measurePoints, setMeasurePoints] = useState<number[][]>([]);
+  const [measurePointHeights, setMeasurePointHeights] = useState<number[]>([]);
   const drawingPointsRef = useRef<number[][]>([]);
   const drawingPointHeightsRef = useRef<number[]>([]);
+  const measurePointsRef = useRef<number[][]>([]);
+  const measurePointHeightsRef = useRef<number[]>([]);
   const handleCanvasClickRef = useRef<((e: MouseEvent) => void) | null>(null);
   const finishDrawingRef = useRef<(() => void) | null>(null);
   const cleanupCanvasListenersRef = useRef<(() => void) | null>(null);
@@ -1484,6 +1662,15 @@ export function GlobeSitePlannerMap({
   // Sync ref
   useEffect(() => { drawingPointsRef.current = drawingPoints; }, [drawingPoints]);
   useEffect(() => { drawingPointHeightsRef.current = drawingPointHeights; }, [drawingPointHeights]);
+  useEffect(() => { measurePointsRef.current = measurePoints; }, [measurePoints]);
+  useEffect(() => { measurePointHeightsRef.current = measurePointHeights; }, [measurePointHeights]);
+
+  const clearMeasurePoints = useCallback(() => {
+    measurePointsRef.current = [];
+    measurePointHeightsRef.current = [];
+    setMeasurePoints([]);
+    setMeasurePointHeights([]);
+  }, []);
 
   // Clear drawing when tool changes
   useEffect(() => {
@@ -1493,13 +1680,19 @@ export function GlobeSitePlannerMap({
     drawingPointHeightsRef.current = [];
   }, [activeSitePlannerTool]);
 
+  useEffect(() => {
+    if (!measureModeActive) {
+      clearMeasurePoints();
+    }
+  }, [clearMeasurePoints, measureModeActive]);
+
   // Cursor styling based on mode
   useEffect(() => {
     const cvs = canvasRef.current;
     if (!cvs) return;
-    cvs.style.cursor = hasDrawingTool ? 'crosshair' : '';
+    cvs.style.cursor = hasDrawingTool || measureModeActive ? 'crosshair' : '';
     return () => { cvs.style.cursor = ''; };
-  }, [hasDrawingTool]);
+  }, [hasDrawingTool, measureModeActive]);
 
   const globeAIRenderViewport = useMemo<GlobeAIRenderViewport | null>(() => {
     if (!sceneReady || !canvasRef.current || !cameraRef.current) {
@@ -1762,9 +1955,36 @@ export function GlobeSitePlannerMap({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [finishDrawing, hasDrawingTool]);
 
+  // Keyboard handler for quick measuring
+  useEffect(() => {
+    if (!measureModeActive) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        clearMeasurePoints();
+        onMeasureModeChange?.(false);
+      } else if (e.key === 'Backspace' && measurePointsRef.current.length > 0) {
+        e.preventDefault();
+        const newPts = measurePointsRef.current.slice(0, -1);
+        const newHeights = measurePointHeightsRef.current.slice(0, -1);
+        measurePointsRef.current = newPts;
+        measurePointHeightsRef.current = newHeights;
+        setMeasurePoints(newPts);
+        setMeasurePointHeights(newHeights);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [clearMeasurePoints, measureModeActive, onMeasureModeChange]);
+
   // Selection-mode keyboard shortcuts (delete, escape, copy/paste, zone nudging)
   useEffect(() => {
-    if (hasDrawingTool) return;
+    if (hasDrawingTool || measureModeActive) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -1841,7 +2061,7 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [canPasteZone, hasDrawingTool, markUserInteracted, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
+  }, [canPasteZone, hasDrawingTool, markUserInteracted, measureModeActive, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
 
   useEffect(() => {
     if ((!hasDrawingTool && selectedZoneId) || streetViewPegman?.position) return;
@@ -1936,6 +2156,16 @@ export function GlobeSitePlannerMap({
     if (!clickSurface) return;
     const { lngLat: clickLngLat, height: clickHeight } = clickSurface;
 
+    if (measureModeActive) {
+      const newPts = [...measurePointsRef.current, clickLngLat];
+      const newHeights = [...measurePointHeightsRef.current, clickHeight];
+      measurePointsRef.current = newPts;
+      measurePointHeightsRef.current = newHeights;
+      setMeasurePoints(newPts);
+      setMeasurePointHeights(newHeights);
+      return;
+    }
+
     // Street view mode: place pegman on click
     if (!hasDrawingTool && streetViewPegman !== null) {
       setStreetViewPosition(clickLngLat);
@@ -1976,21 +2206,32 @@ export function GlobeSitePlannerMap({
     // Every click adds a point. Double-click finish is handled by the dblclick listener.
     // Point placed â€” add to drawing
     const newPts = [...drawingPointsRef.current, clickLngLat];
-    const newHeights = [...drawingPointHeightsRef.current, clickHeight];
+    const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
+    const tilesGroup = tilesRendererRef.current?.group;
+    const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
+      ? raycastObjectFilteredTerrainHeightAtLngLat(
+        clickLngLat[0],
+        clickLngLat[1],
+        tilesGroup,
+        new THREE.Raycaster(),
+        clickHeight,
+      ) ?? clickHeight
+      : clickHeight;
+    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
-  }, [hasDrawingTool, markUserInteracted, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
+  }, [activeSitePlannerTool, hasDrawingTool, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
-    if (hasDrawingTool) return;
+    if (hasDrawingTool || measureModeActive) return;
     // Street View pegman-drop mode: let the click fall through to the canvas
     // handler so the pin drops on the zone instead of selecting it.
     if (streetViewPegman !== null) return;
     ignoreNextCanvasClickRef.current = true;
     onZoneSelected(zoneId);
-  }, [hasDrawingTool, onZoneSelected, streetViewPegman]);
+  }, [hasDrawingTool, measureModeActive, onZoneSelected, streetViewPegman]);
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
@@ -2151,7 +2392,7 @@ export function GlobeSitePlannerMap({
               selectedZoneId={selectedZoneId}
               terrainHeight={terrainElevation}
               onZoneClick={handleZoneMeshClick}
-              selectionEnabled={!hasDrawingTool}
+              selectionEnabled={!hasDrawingTool && !measureModeActive}
             />
           </group>
 
@@ -2161,10 +2402,17 @@ export function GlobeSitePlannerMap({
             pointHeights={drawingPointHeights}
             terrainHeight={terrainElevation}
             linear={linear}
+            filterObjectHeights={shouldFilterObjectTerrainHeight(activeSitePlannerTool)}
+          />
+
+          <MeasurementOverlay
+            points={measurePoints}
+            pointHeights={measurePointHeights}
+            terrainHeight={terrainElevation}
           />
 
           {/* Edit mode â€” vertex handles when zone selected in Select mode */}
-          {!hasDrawingTool && selectedZoneId && (() => {
+          {!hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
             const zone = siteZones.find(z => z.id === selectedZoneId);
             return zone ? (
               <GlobeEditMode
@@ -2205,6 +2453,30 @@ export function GlobeSitePlannerMap({
                     : 'Loading nearby 3D tiles'}
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {measureModeActive && (
+        <div className="absolute left-1/2 bottom-24 z-30 -translate-x-1/2 rounded-lg border border-sky-400/40 bg-gray-900/90 px-3 py-2 text-center text-xs text-white shadow-lg backdrop-blur-sm">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-sky-200">Measure</span>
+            <span className="text-white/75">
+              {measurePoints.length >= 2
+                ? `Total ${formatDistance(polylineLength(measurePoints))}`
+                : measurePoints.length === 1
+                  ? 'Place next point'
+                  : 'Place first point'}
+            </span>
+            {measurePoints.length > 0 && (
+              <button
+                type="button"
+                onClick={clearMeasurePoints}
+                className="pointer-events-auto rounded-md bg-white/10 px-2 py-0.5 text-[11px] text-white/80 hover:bg-white/20 hover:text-white"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -2267,7 +2539,7 @@ export function GlobeSitePlannerMap({
       )}
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
-      {!hasDrawingTool && !streetViewPegman && (
+      {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-gray-900/70 px-3 py-1.5 text-center text-[11px] text-white/70 backdrop-blur-sm select-none">
           {selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'

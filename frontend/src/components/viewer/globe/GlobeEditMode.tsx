@@ -17,10 +17,16 @@ import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
-import { getRepresentativeTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import {
+  getObjectFilteredTerrainHeight,
+  getRepresentativeTerrainHeight,
+  resolveZoneTerrainHeight,
+  shouldFilterObjectTerrainHeight,
+} from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
+const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 
 interface GlobeEditModeProps {
   zone: SiteZone;
@@ -70,6 +76,38 @@ function raycastTerrainHeightAtLatLng(
 
   const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
   return hit ? WGS84_ELLIPSOID.getPositionElevation(hit) : null;
+}
+
+function raycastObjectFilteredTerrainHeightAtLatLng(
+  lng: number,
+  lat: number,
+  tilesGroup: THREE.Object3D,
+  raycaster: THREE.Raycaster,
+  fallback: number | null | undefined,
+): number | null {
+  const mPerDegLon = Math.max(1, Math.abs(metersPerDegLon(lat)));
+  const diagonal = OBJECT_FILTER_SAMPLE_RADIUS_METERS * 0.7;
+  const offsets: Array<[number, number]> = [
+    [0, 0],
+    [OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [-OBJECT_FILTER_SAMPLE_RADIUS_METERS, 0],
+    [0, OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [0, -OBJECT_FILTER_SAMPLE_RADIUS_METERS],
+    [diagonal, diagonal],
+    [diagonal, -diagonal],
+    [-diagonal, diagonal],
+    [-diagonal, -diagonal],
+  ];
+  const samples = offsets.map(([eastMeters, northMeters]) => (
+    raycastTerrainHeightAtLatLng(
+      lng + eastMeters / mPerDegLon,
+      lat + northMeters / METERS_PER_DEG_LAT,
+      tilesGroup,
+      raycaster,
+    )
+  ));
+
+  return getObjectFilteredTerrainHeight(samples, samples[0] ?? fallback);
 }
 
 function getTerrainProbePoints(
@@ -128,6 +166,7 @@ export function GlobeEditMode({
     ?? zoneProps?.terrainElevation,
   );
   const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
+  const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
   const zoneTerrainHeight = resolveZoneTerrainHeight(
     sampledTerrainHeight,
     storedTerrainHeight,
@@ -154,7 +193,9 @@ export function GlobeEditMode({
     const raycaster = new THREE.Raycaster();
     const sampledHeight = getRepresentativeTerrainHeight(
       getTerrainProbePoints(zone.coordinates, zoneCentroid).map(([lng, lat]) => (
-        raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
+        filterObjectHeights
+          ? raycastObjectFilteredTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster, null)
+          : raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycaster)
       )),
       zoneTerrainHeight,
     );
@@ -169,7 +210,7 @@ export function GlobeEditMode({
         : sampledHeight
     ));
     return true;
-  }, [tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
+  }, [filterObjectHeights, tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);

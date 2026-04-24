@@ -39,6 +39,7 @@ export function ProjectViewPage() {
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [measureActive, setMeasureActive] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
@@ -112,13 +113,24 @@ export function ProjectViewPage() {
     selectZone(zoneId);
   }, [selectZone]);
 
+  const handleMeasureModeChange = useCallback((active: boolean) => {
+    setMeasureActive(active);
+    if (active) {
+      setShowGlobeRender(false);
+      selectZone(null);
+      setActiveSitePlannerTool(null);
+    }
+  }, [selectZone, setActiveSitePlannerTool]);
+
   const handleToggleHistory = useCallback(() => {
     setShowGlobeRender(false);
+    setMeasureActive(false);
     setShowHistory((open) => !open);
   }, []);
 
   const handleOpenGlobeRender = useCallback(() => {
     setShowHistory(false);
+    setMeasureActive(false);
     setShowGlobeRender(true);
   }, []);
 
@@ -267,6 +279,8 @@ export function ProjectViewPage() {
           onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
           onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
           onGlobeReady={setGlobeRefs}
+          measureModeActive={measureActive}
+          onMeasureModeChange={handleMeasureModeChange}
         />
 
         {/* Toolbar — left sidebar placement (ported from codex UX) */}
@@ -276,6 +290,8 @@ export function ProjectViewPage() {
             isGlobeMode
             onToggleHistory={handleToggleHistory}
             historyOpen={showHistory}
+            measureActive={measureActive}
+            onMeasureModeChange={handleMeasureModeChange}
             bottomSlot={
               !showGlobeRender ? (
                 <button
@@ -291,7 +307,7 @@ export function ProjectViewPage() {
         </div>
 
         {/* Zone properties panel */}
-        {selectedZone && !showHistory && (
+        {selectedZone && !showHistory && !measureActive && (
           <div className="absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
             <ZonePropertiesPanel
               key={selectedZone.id}

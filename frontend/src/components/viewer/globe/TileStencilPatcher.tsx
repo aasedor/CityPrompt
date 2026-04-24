@@ -9,11 +9,15 @@
 import { useEffect, useContext, useRef } from 'react';
 import * as THREE from 'three';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
-import { patchMaterialForStencil, unpatchMaterialStencil } from './StencilMaskPlugin';
+import {
+  patchMaterialForStencil,
+  shouldCreateTileStencilMask,
+  unpatchMaterialStencil,
+} from './StencilMaskPlugin';
 import type { SiteZone } from '@/types';
 
 interface TileStencilPatcherProps {
-  /** Only patch when there are building zones that need masking */
+  /** Only patch when there are zones that need tile masking. */
   zones: SiteZone[];
 }
 
@@ -21,13 +25,13 @@ export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
   const tiles = useContext(TilesRendererContext);
   const patchedMaterials = useRef(new Set<THREE.Material>());
 
-  const hasBuildingZones = zones.some(
-    z => (z.zone_type === 'building' || z.zone_type === 'residential') && z.coordinates.length >= 3
+  const hasMaskZones = zones.some(
+    z => shouldCreateTileStencilMask(z.zone_type) && z.coordinates.length >= 3
   );
 
   useEffect(() => {
-    if (!tiles || !hasBuildingZones) {
-      // Unpatch all if no building zones
+    if (!tiles || !hasMaskZones) {
+      // Unpatch all if no zones need masking.
       patchedMaterials.current.forEach(m => unpatchMaterialStencil(m));
       patchedMaterials.current.clear();
       return;
@@ -76,7 +80,7 @@ export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
       patchedMaterials.current.forEach(m => unpatchMaterialStencil(m));
       patchedMaterials.current.clear();
     };
-  }, [tiles, hasBuildingZones]);
+  }, [tiles, hasMaskZones]);
 
   return null;
 }
