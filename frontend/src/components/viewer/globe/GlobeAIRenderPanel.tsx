@@ -5,10 +5,10 @@
  * generates a mask from zone polygons, and sends to Gemini.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type HTMLAttributes } from 'react';
 import { createPortal } from 'react-dom';
 import * as THREE from 'three';
-import { Sparkles, Loader2, Download, X, Check, Image as ImageIcon } from 'lucide-react';
+import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
@@ -31,6 +31,9 @@ interface GlobeAIRenderPanelProps {
   projectId?: string;
   onRenderComplete?: (result: GlobeRenderResult) => void;
   onBeforeRender?: () => void | Promise<void>;
+  dragHandleProps?: HTMLAttributes<HTMLDivElement>;
+  isDragging?: boolean;
+  onClose?: () => void;
 }
 
 const STYLES = [
@@ -79,6 +82,9 @@ export function GlobeAIRenderPanel({
   projectId,
   onRenderComplete,
   onBeforeRender,
+  dragHandleProps,
+  isDragging = false,
+  onClose,
 }: GlobeAIRenderPanelProps) {
   const { renderPreviews, renderPerZone } = useGlobeAIRender();
   const [isRendering, setIsRendering] = useState(false);
@@ -379,17 +385,48 @@ export function GlobeAIRenderPanel({
     return () => window.removeEventListener('keydown', onKey);
   }, [handleStepSavedRender, lightboxRender?.savedRenderId, savedRenders.length]);
 
+  const { className: dragHandleClassName, ...dragHandleRest } = dragHandleProps ?? {};
+
   return (
     <>
-    <div className="max-h-[44vh] w-full overflow-y-auto rounded-xl border border-white/10 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
+    <div className="max-h-[44vh] w-full overflow-y-auto rounded-xl border border-cyan-300/20 bg-slate-950/95 shadow-2xl shadow-cyan-950/30 backdrop-blur-sm">
       {/* Header */}
-      <div className="border-b border-white/10 px-4 py-2.5">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Sparkles size={14} className="text-amber-400" />
-          AI Render (Globe)
-        </h3>
-        <p className="mt-0.5 text-[10px] text-gray-400">
-          Test renders compare Gemini 3.1 Flash and GPT Image 2
+      <div
+        {...dragHandleRest}
+        className={`select-none border-b border-cyan-300/15 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.98),rgba(12,74,110,0.78))] px-4 py-2.5 ${
+          isDragging ? 'cursor-grabbing' : 'cursor-grab'
+        } ${dragHandleClassName ?? ''}`}
+        title="Drag to move"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="flex items-center gap-2 text-sm font-semibold text-white">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-300/25 bg-cyan-300/10 text-cyan-200">
+              <Orbit size={15} />
+            </span>
+            AI Render (Globe)
+          </h3>
+          <div className="flex items-center gap-2 text-[10px] font-medium uppercase text-cyan-100/60">
+            <Camera size={12} />
+            3D Capture
+            <GripHorizontal size={13} className="text-cyan-100/35" />
+            {onClose && (
+              <button
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClose();
+                }}
+                className="ml-1 flex h-6 w-6 items-center justify-center rounded bg-red-600 text-white shadow-sm ring-1 ring-white/20 transition hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-200"
+                aria-label="Close AI Render panel"
+                title="Close"
+              >
+                <X size={14} strokeWidth={3} />
+              </button>
+            )}
+          </div>
+        </div>
+        <p className="mt-1 text-[10px] text-cyan-50/55">
+          Compare Gemini 3.1 Flash and GPT Image 2 from the active globe view
         </p>
       </div>
 
@@ -441,7 +478,7 @@ export function GlobeAIRenderPanel({
         <button
           onClick={handleRender}
           disabled={isRendering || !canvas || !camera}
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-amber-400 hover:to-orange-400 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 via-sky-400 to-amber-300 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-950/25 transition hover:from-cyan-300 hover:via-sky-300 hover:to-amber-200 disabled:opacity-50"
         >
           {isRendering ? (
             <>
@@ -453,8 +490,8 @@ export function GlobeAIRenderPanel({
             </>
           ) : (
             <>
-              <Sparkles size={16} />
-              Generate Previews
+              <Camera size={16} />
+              Generate Globe Previews
             </>
           )}
         </button>

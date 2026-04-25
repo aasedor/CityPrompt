@@ -1,8 +1,8 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, CheckCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -29,6 +29,8 @@ import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
+const GLOBE_RENDER_PANEL_WIDTH = 704;
+
 export function ProjectViewPage() {
   const { id } = useParams<{ id: string }>();
   const [showAddBuilding, setShowAddBuilding] = useState(false);
@@ -40,9 +42,12 @@ export function ProjectViewPage() {
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [measureActive, setMeasureActive] = useState(false);
+  const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
+  const globeRenderDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
 
   // Globe street view capture
   const { captureStreetView } = useGlobeAIRender();
@@ -113,6 +118,73 @@ export function ProjectViewPage() {
     selectZone(zoneId);
   }, [selectZone]);
 
+  const clampGlobeRenderPosition = useCallback((position: { x: number; y: number }) => {
+    if (typeof window === 'undefined') return position;
+    const panelWidth = Math.min(GLOBE_RENDER_PANEL_WIDTH, Math.max(320, window.innerWidth - 32));
+    return {
+      x: Math.min(Math.max(12, position.x), Math.max(12, window.innerWidth - panelWidth - 12)),
+      y: Math.min(Math.max(12, position.y), Math.max(12, window.innerHeight - 96)),
+    };
+  }, []);
+
+  const getDefaultGlobeRenderPosition = useCallback(() => {
+    if (typeof window === 'undefined') return { x: 320, y: 420 };
+    const panelWidth = Math.min(GLOBE_RENDER_PANEL_WIDTH, Math.max(320, window.innerWidth - 32));
+    return clampGlobeRenderPosition({
+      x: (window.innerWidth - panelWidth) / 2,
+      y: Math.max(16, window.innerHeight - 440),
+    });
+  }, [clampGlobeRenderPosition]);
+
+  const handleGlobeRenderDragStart = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+
+    const origin = globeRenderPosition ?? getDefaultGlobeRenderPosition();
+    globeRenderDragRef.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: origin.x,
+      originY: origin.y,
+    };
+    setGlobeRenderPosition(origin);
+    setIsDraggingGlobeRender(true);
+
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      const drag = globeRenderDragRef.current;
+      if (!drag) return;
+      setGlobeRenderPosition(clampGlobeRenderPosition({
+        x: drag.originX + moveEvent.clientX - drag.startX,
+        y: drag.originY + moveEvent.clientY - drag.startY,
+      }));
+    };
+
+    const handlePointerUp = () => {
+      globeRenderDragRef.current = null;
+      setIsDraggingGlobeRender(false);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointercancel', handlePointerUp);
+  }, [clampGlobeRenderPosition, getDefaultGlobeRenderPosition, globeRenderPosition]);
+
+  useEffect(() => {
+    if (!showGlobeRender || globeRenderPosition) return;
+    setGlobeRenderPosition(getDefaultGlobeRenderPosition());
+  }, [getDefaultGlobeRenderPosition, globeRenderPosition, showGlobeRender]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setGlobeRenderPosition((position) => position ? clampGlobeRenderPosition(position) : position);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [clampGlobeRenderPosition]);
+
   const handleMeasureModeChange = useCallback((active: boolean) => {
     setMeasureActive(active);
     if (active) {
@@ -131,8 +203,9 @@ export function ProjectViewPage() {
   const handleOpenGlobeRender = useCallback(() => {
     setShowHistory(false);
     setMeasureActive(false);
+    setGlobeRenderPosition((position) => position ?? getDefaultGlobeRenderPosition());
     setShowGlobeRender(true);
-  }, []);
+  }, [getDefaultGlobeRenderPosition]);
 
   const prepareForAIRenderCapture = useCallback(async () => {
     if (useViewerStore.getState().selectedZoneId) {
@@ -296,9 +369,9 @@ export function ProjectViewPage() {
               !showGlobeRender ? (
                 <button
                   onClick={handleOpenGlobeRender}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-3 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-amber-600"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-500 px-3 py-2.5 text-sm font-semibold text-slate-950 shadow-md transition-colors hover:bg-cyan-400"
                 >
-                  <Sparkles size={16} />
+                  <Camera size={16} />
                   AI Render
                 </button>
               ) : null
@@ -335,7 +408,15 @@ export function ProjectViewPage() {
 
         {/* AI Render expanded panel — bottom dock keeps the properties panel reachable. */}
         {showGlobeRender && (
-          <div className="absolute bottom-3 left-1/2 z-30 -translate-x-1/2">
+          <div
+            className="absolute z-30"
+            style={{
+              left: globeRenderPosition?.x ?? '50%',
+              top: globeRenderPosition?.y,
+              bottom: globeRenderPosition ? undefined : 12,
+              transform: globeRenderPosition ? undefined : 'translateX(-50%)',
+            }}
+          >
             <div className="w-[44rem] max-w-[calc(100vw-2rem)]">
               <GlobeAIRenderPanel
                 canvas={globeRefs?.canvas ?? null}
@@ -344,13 +425,12 @@ export function ProjectViewPage() {
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
                 onBeforeRender={prepareForAIRenderCapture}
+                isDragging={isDraggingGlobeRender}
+                dragHandleProps={{
+                  onPointerDown: handleGlobeRenderDragStart,
+                }}
+                onClose={() => setShowGlobeRender(false)}
               />
-              <button
-                onClick={() => setShowGlobeRender(false)}
-                className="mt-2 w-full rounded-lg bg-gray-800/80 px-3 py-1.5 text-xs text-gray-300 hover:bg-gray-700/80"
-              >
-                Close
-              </button>
             </div>
           </div>
         )}
