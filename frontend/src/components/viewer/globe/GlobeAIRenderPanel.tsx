@@ -10,13 +10,43 @@ import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
-import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, PERZONE_THRESHOLD } from './useGlobeAIRender';
+import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 
 const COMPARE_RENDER_MODELS = [
   { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
   { model: 'gpt-image-2', label: 'GPT Image 2' },
 ];
+
+const OPENAI_IMAGE_QUALITY_OPTIONS: { value: OpenAIImageQuality; label: string }[] = [
+  { value: 'auto', label: 'Auto' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+];
+
+function isOpenAIImageModel(model?: string): boolean {
+  return Boolean(model?.startsWith('gpt-image-2'));
+}
+
+function getQualityForModel(model: string, quality: OpenAIImageQuality): OpenAIImageQuality | undefined {
+  return isOpenAIImageModel(model) ? quality : undefined;
+}
+
+function formatImageQualityLabel(quality?: OpenAIImageQuality): string | null {
+  if (!quality) return null;
+  return `GPT ${OPENAI_IMAGE_QUALITY_OPTIONS.find((option) => option.value === quality)?.label ?? quality}`;
+}
+
+function getLightboxMetaParts(render: LightboxRender): string[] {
+  const qualityLabel = formatImageQualityLabel(render.imageQuality);
+  return [
+    render.providerLabel,
+    qualityLabel && !render.style?.includes(qualityLabel) ? qualityLabel : null,
+    render.style,
+    render.createdAt ? new Date(render.createdAt).toLocaleDateString() : null,
+  ].filter(Boolean) as string[];
+}
 
 function isTextEntryTarget(target: EventTarget | null): boolean {
   const element = target as HTMLElement | null;
@@ -67,6 +97,8 @@ type LightboxRender = {
   prompt?: string;
   style?: string;
   seed?: number;
+  model?: string;
+  imageQuality?: OpenAIImageQuality;
   providerLabel?: string;
   savedRenderId?: string;
   createdAt?: string;
@@ -92,6 +124,7 @@ export function GlobeAIRenderPanel({
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
+  const [selectedImageQuality, setSelectedImageQuality] = useState<OpenAIImageQuality>('auto');
   const [customPrompt, setCustomPrompt] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -155,14 +188,19 @@ export function GlobeAIRenderPanel({
       const hasBuildings = editableZones.some(z => BUILDING_TYPES.includes(z.zone_type));
       const hasMixedTypes = hasRoads && hasBuildings;
       const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
+      const compareRenderVariants = COMPARE_RENDER_MODELS.map((provider) => ({
+        ...provider,
+        imageQuality: getQualityForModel(provider.model, selectedImageQuality),
+      }));
       if (usePerZone) {
         // Per-zone path is already sequential and slow, so compare providers one at a time.
         console.log(`[GlobeAIRenderPanel] Using per-zone rendering (${editableZones.length} zones, mixed=${hasMixedTypes})`);
         const results: GlobeRenderResult[] = [];
-        for (const provider of COMPARE_RENDER_MODELS) {
+        for (const provider of compareRenderVariants) {
           const providerResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
             style: selectedStyle,
             model: provider.model,
+            imageQuality: provider.imageQuality,
             projectId,
             customPrompt: customPrompt.trim() || undefined,
             onProgress: (progress) => setRenderProgress({
@@ -171,7 +209,7 @@ export function GlobeAIRenderPanel({
             }),
           });
           if (providerResult) {
-            results.push({ ...providerResult, model: provider.model, providerLabel: provider.label });
+            results.push({ ...providerResult, model: provider.model, imageQuality: provider.imageQuality, providerLabel: provider.label });
           }
         }
         if (results.length > 0) {
@@ -198,7 +236,7 @@ export function GlobeAIRenderPanel({
           style: selectedStyle,
           projectId,
           customPrompt: customPrompt.trim() || undefined,
-          variants: COMPARE_RENDER_MODELS,
+          variants: compareRenderVariants,
         });
         if (results.length > 0) {
           setPreviews(results);
@@ -225,7 +263,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, selectedImageQuality, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -245,9 +283,11 @@ export function GlobeAIRenderPanel({
           ...current,
           imageUrl: selected.imageUrl,
           prompt: selected.error || selected.prompt,
-          style: selectedStyle,
+          style: [formatImageQualityLabel(selected.imageQuality), selectedStyle].filter(Boolean).join(' / '),
           seed: selected.seed,
           providerLabel: selected.providerLabel,
+          model: selected.model,
+          imageQuality: selected.imageQuality,
           downloadName: `siteforge-globe-${selected.providerLabel || `preview-${index + 1}`}-${Date.now()}.png`,
           canSave: Boolean(projectId) && !selected.error,
         }
@@ -285,7 +325,7 @@ export function GlobeAIRenderPanel({
     a.click();
   }, [result]);
 
-  const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed' | 'providerLabel'>) => {
+  const saveRenderToProject = useCallback(async (renderToSave: Pick<LightboxRender, 'imageUrl' | 'prompt' | 'style' | 'seed' | 'providerLabel' | 'model' | 'imageQuality'>) => {
     if (!renderToSave.imageUrl || !projectId || saving) return;
     setSaving(true);
     setSaveStatus('idle');
@@ -306,9 +346,11 @@ export function GlobeAIRenderPanel({
         image_base64: base64,
         prompt: renderToSave.prompt || '',
         style: renderToSave.providerLabel
-          ? `${renderToSave.providerLabel} / ${renderToSave.style || selectedStyle}`
+          ? [renderToSave.providerLabel, formatImageQualityLabel(renderToSave.imageQuality), renderToSave.style || selectedStyle].filter(Boolean).join(' / ')
           : renderToSave.style || selectedStyle,
         seed: renderToSave.seed,
+        model: renderToSave.model,
+        image_quality: renderToSave.imageQuality,
       });
       setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
       setShowSavedRenders(true);
@@ -318,6 +360,8 @@ export function GlobeAIRenderPanel({
             ...current,
             prompt: saved.prompt || current.prompt,
             style: saved.style || current.style,
+            model: saved.model || current.model,
+            imageQuality: saved.image_quality || current.imageQuality,
             createdAt: saved.created_at,
             downloadName: `render-${saved.id}.png`,
           }
@@ -337,6 +381,8 @@ export function GlobeAIRenderPanel({
       style: selectedStyle,
       seed: result.seed,
       providerLabel: result.providerLabel,
+      model: result.model,
+      imageQuality: result.imageQuality,
     });
   }, [result, saveRenderToProject, selectedStyle]);
 
@@ -344,8 +390,10 @@ export function GlobeAIRenderPanel({
     setLightboxRender({
       imageUrl: renderResult.imageUrl,
       prompt: renderResult.prompt,
-      style: selectedStyle,
+      style: [formatImageQualityLabel(renderResult.imageQuality), selectedStyle].filter(Boolean).join(' / '),
       seed: renderResult.seed,
+      model: renderResult.model,
+      imageQuality: renderResult.imageQuality,
       providerLabel: renderResult.providerLabel,
       downloadName: `${label}-${Date.now()}.png`,
       canSave: Boolean(projectId),
@@ -357,6 +405,8 @@ export function GlobeAIRenderPanel({
       imageUrl: resolveApiFileUrl(saved.image_url),
       prompt: saved.prompt,
       style: saved.style,
+      model: saved.model,
+      imageQuality: saved.image_quality,
       createdAt: saved.created_at,
       savedRenderId: saved.id,
       downloadName: `render-${saved.id}.png`,
@@ -453,7 +503,23 @@ export function GlobeAIRenderPanel({
 
         {/* Custom prompt */}
         <div>
-          <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Prompt</div>
+          <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium uppercase text-gray-500">
+            <span>Prompt</span>
+            <label className="flex items-center gap-1 normal-case text-gray-400" title="Used for GPT Image 2 renders">
+              <span>GPT quality</span>
+              <select
+                value={selectedImageQuality}
+                onChange={(e) => setSelectedImageQuality(e.target.value as OpenAIImageQuality)}
+                className="h-6 rounded border border-white/10 bg-slate-900 px-1.5 text-[10px] font-medium text-white focus:border-amber-500/50 focus:outline-none"
+              >
+                {OPENAI_IMAGE_QUALITY_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           <textarea
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
@@ -523,7 +589,7 @@ export function GlobeAIRenderPanel({
                 }`}
                 title={p.error
                   ? `${p.providerLabel || `Preview ${i + 1}`} failed: ${p.error}`
-                  : `${p.providerLabel || `Preview ${i + 1}`}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} - open larger`}
+                  : `${p.providerLabel || `Preview ${i + 1}`}${formatImageQualityLabel(p.imageQuality) ? ` / ${formatImageQualityLabel(p.imageQuality)}` : ''}${p.seed !== undefined ? ` (seed ${p.seed})` : ''} - open larger`}
               >
                 <img
                   src={p.imageUrl}
@@ -531,7 +597,7 @@ export function GlobeAIRenderPanel({
                   className="h-full w-full object-cover"
                 />
                 <span className="pointer-events-none absolute left-1 top-1 max-w-[calc(100%-0.5rem)] truncate rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                  {p.providerLabel || `Preview ${i + 1}`}
+                  {[p.providerLabel || `Preview ${i + 1}`, formatImageQualityLabel(p.imageQuality)].filter(Boolean).join(' / ')}
                 </span>
                 {p.error && (
                   <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold text-white">
@@ -550,7 +616,7 @@ export function GlobeAIRenderPanel({
           <div className="relative rounded-lg overflow-hidden border border-white/10">
             {result.providerLabel && (
               <span className="pointer-events-none absolute left-2 top-2 z-10 rounded bg-black/70 px-2 py-1 text-[10px] font-bold text-white">
-                {result.providerLabel}
+                {[result.providerLabel, formatImageQualityLabel(result.imageQuality)].filter(Boolean).join(' / ')}
               </span>
             )}
             <img
@@ -703,10 +769,10 @@ export function GlobeAIRenderPanel({
             alt="Enlarged render"
             className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
           />
-          {(lightboxRender.prompt || lightboxRender.providerLabel || lightboxRender.style || lightboxRender.createdAt) && (
+          {(lightboxRender.prompt || getLightboxMetaParts(lightboxRender).length > 0) && (
             <div className="max-w-3xl rounded-lg bg-black/60 px-4 py-2 text-center text-xs text-white/75">
               {lightboxRender.prompt && <p className="line-clamp-2">{lightboxRender.prompt}</p>}
-              {(lightboxRender.providerLabel || lightboxRender.style || lightboxRender.createdAt) && (
+              {getLightboxMetaParts(lightboxRender).length > 0 && (
                 <p className="mt-1 text-white/45">
                   {[lightboxRender.providerLabel, lightboxRender.style, lightboxRender.createdAt ? new Date(lightboxRender.createdAt).toLocaleDateString() : null]
                     .filter(Boolean)

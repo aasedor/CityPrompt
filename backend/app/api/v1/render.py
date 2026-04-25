@@ -122,6 +122,15 @@ class RenderRequest(BaseModel):
         pattern=r"^(512|1K|2K|4K)$",
         description="Output image resolution: 512, 1K, 2K, or 4K. Model-dependent.",
     )
+    image_quality: Optional[str] = Field(
+        default="auto",
+        pattern=r"^(auto|low|medium|high)$",
+        description="OpenAI GPT Image quality: auto, low, medium, or high.",
+    )
+    project_id: Optional[_uuid.UUID] = Field(
+        default=None,
+        description="Project associated with this render for admin audit log linking.",
+    )
 
 
 class RenderResponse(BaseModel):
@@ -204,6 +213,7 @@ async def _save_render_audit(
     input_b64: str | None,
     output_b64: str | None,
     prompt_preview: str | None = None,
+    project_id: _uuid.UUID | None = None,
 ):
     """Save input/output images to S3 and create an audit log row."""
     import boto3
@@ -245,6 +255,7 @@ async def _save_render_audit(
         user_email=user.email,
         model=render_model,
         tokens_spent=token_cost,
+        project_id=project_id,
         input_image_key=input_key,
         output_image_key=output_key,
         prompt_preview=prompt_preview,
@@ -423,12 +434,13 @@ async def _call_openai_image_edit(
     if len(prompt_text) > 32_000:
         prompt_text = prompt_text[:31_900] + "\n\n[Prompt truncated to fit the OpenAI image prompt limit.]"
 
+    image_quality = req.image_quality or "auto"
     data = {
         "model": render_model,
         "prompt": prompt_text,
         "n": "1",
         "size": "auto",
-        "quality": "auto",
+        "quality": image_quality,
         "output_format": "png",
     }
     headers = {"Authorization": f"Bearer {settings.openai_api_key}"}
@@ -451,8 +463,9 @@ async def _generate_openai_render(req: RenderRequest, settings, render_model: st
         )
 
     logger.info(
-        "Calling OpenAI image edit — model=%s, prompt_length=%d, has_mask=%s, refs=%d",
+        "Calling OpenAI image edit — model=%s, quality=%s, size=auto, prompt_length=%d, has_mask=%s, refs=%d",
         render_model,
+        req.image_quality or "auto",
         len(req.prompt),
         bool(req.mask_base64),
         len(req.archetype_images or []),
@@ -525,6 +538,7 @@ async def _finalize_render_success(
             input_b64=req.image_base64,
             output_b64=image_b64,
             prompt_preview=req.prompt[:500] if req.prompt else None,
+            project_id=req.project_id,
         )
     except Exception as audit_exc:
         logger.warning("Failed to save render audit log: %s", audit_exc)
@@ -565,6 +579,9 @@ async def generate_render(
     # Calculate cost for this render
     render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
+
+    if req.project_id:
+        await check_project_permission(req.project_id, user, db, required="viewer")
 
     # Check render tokens for non-admin users
     if not is_admin_or_above(user) and user.render_credits < token_cost:
@@ -818,6 +835,7 @@ async def generate_render(
                 input_b64=req.image_base64,
                 output_b64=image_b64,
                 prompt_preview=req.prompt[:500] if req.prompt else None,
+                project_id=req.project_id,
             )
         except Exception as audit_exc:
             logger.warning("Failed to save render audit log: %s", audit_exc)
@@ -844,6 +862,8 @@ class SaveRenderRequest(BaseModel):
     prompt: str = Field(..., description="Prompt used for the render.")
     style: Optional[str] = Field(default=None, description="Style preset name.")
     seed: Optional[int] = Field(default=None, description="Seed used for generation.")
+    model: Optional[str] = Field(default=None, description="Model used for generation.")
+    image_quality: Optional[str] = Field(default=None, pattern=r"^(auto|low|medium|high)$", description="Image quality used for generation.")
 
 
 class SavedRenderResponse(BaseModel):
@@ -852,6 +872,8 @@ class SavedRenderResponse(BaseModel):
     prompt: str
     style: Optional[str] = None
     seed: Optional[int] = None
+    model: Optional[str] = None
+    image_quality: Optional[str] = None
     created_at: str
 
 
@@ -889,6 +911,8 @@ async def save_render(
         "prompt": req.prompt,
         "style": req.style,
         "seed": req.seed,
+        "model": req.model,
+        "image_quality": req.image_quality,
         "created_at": now,
     }
 
@@ -899,7 +923,13 @@ async def save_render(
     project.metadata_ = meta
 
     await db.commit()
-    logger.info("Saved render %s for project %s", render_id, project_id)
+    logger.info(
+        "Saved render %s for project %s (model=%s, quality=%s)",
+        render_id,
+        project_id,
+        req.model or "unknown",
+        req.image_quality or "unknown",
+    )
 
     return SavedRenderResponse(**entry)
 

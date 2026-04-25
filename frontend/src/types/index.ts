@@ -69,6 +69,8 @@ export interface SavedRender {
   prompt: string;
   style?: string;
   seed?: number;
+  model?: string;
+  image_quality?: 'auto' | 'low' | 'medium' | 'high';
   created_at: string;
 }
 

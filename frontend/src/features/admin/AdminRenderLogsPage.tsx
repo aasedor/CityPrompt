@@ -477,6 +477,7 @@ export function AdminRenderLogsPage() {
                   />
                 </th>
                 <th className="px-3 py-3">User</th>
+                <th className="px-3 py-3">Project</th>
                 <th className="px-3 py-3">Model</th>
                 <th className="px-3 py-3">Tokens</th>
                 <th className="px-3 py-3">Preview</th>
@@ -514,6 +515,20 @@ export function AdminRenderLogsPage() {
                       <td className="px-3 py-3 align-top text-primary-950/70" onClick={() => toggleExpand(log.id)}>
                         {log.user_email}
                       </td>
+                      <td className="max-w-[180px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                        {log.project_id ? (
+                          <Link
+                            to={`/projects/${log.project_id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="block truncate font-medium text-primary-700 hover:text-coral-500 hover:underline"
+                            title={log.project_name || log.project_id}
+                          >
+                            {log.project_name || 'Open project'}
+                          </Link>
+                        ) : (
+                          <span className="text-primary-950/30">-</span>
+                        )}
+                      </td>
                       <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
                         <span className="rounded-full bg-primary-950/[0.06] px-2 py-0.5 text-xs">
                           {log.model.replace('gemini-', '').replace('-image', '').replace('-preview', '')}
@@ -542,7 +557,7 @@ export function AdminRenderLogsPage() {
                     </tr>
                     {isExpanded && (
                       <tr className="bg-primary-50/50">
-                        <td colSpan={8} className="p-0">
+                        <td colSpan={9} className="p-0">
                           <ExpandedLogDetail
                             log={log}
                             onCompare={(output) => { setCompareStartOutput(output); setCompareLog(log); }}

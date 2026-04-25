@@ -139,6 +139,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
           previousRenderBase64,
           styleModifier,
           overrideGuideImage,
+          projectId,
         },
       );
       if (res) {
@@ -152,7 +153,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result, globeCapture, projectId]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl) return;

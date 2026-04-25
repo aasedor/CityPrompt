@@ -1941,6 +1941,7 @@ export async function generateStreetView(
     distanceMeters?: number;
     styleModifier?: string;
     model?: string;
+    projectId?: string;
     previousRenderBase64?: string; // For dual anchoring on re-render
     overrideGuideImage?: string; // Base64 image to use instead of clay render (e.g. 3D tiles capture)
   },
@@ -2054,6 +2055,9 @@ export async function generateStreetView(
     if (options?.model) {
       body.model = options.model;
     }
+    if (options?.projectId) {
+      body.project_id = options.projectId;
+    }
 
     // Multi-image archetype routing
     if (archetypeImages.length > 0) {
@@ -2100,7 +2104,8 @@ export async function generateStreetView(
           image_base64: guideImageBase64,
           previous_render_base64: resultBase64,
           aspect_ratio: '16:9',
-          model: options.model,
+          model: options?.model,
+          project_id: options?.projectId,
         };
 
         if (archetypeImages.length > 0) {
@@ -2156,7 +2161,9 @@ export function useStreetViewRender() {
         distanceMeters?: number;
         styleModifier?: string;
         model?: string;
+        projectId?: string;
         previousRenderBase64?: string;
+        overrideGuideImage?: string;
       },
     ) => generateStreetView(pegmanPos, angleDeg, siteZones, options),
     [],

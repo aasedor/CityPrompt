@@ -828,6 +828,8 @@ def _backfill_thumbnails_task(building_entries: list[tuple[str, str, str, str | 
 class RenderAuditResponse(BaseModel):
     id: str
     user_email: str
+    project_id: Optional[str] = None
+    project_name: Optional[str] = None
     model: str
     tokens_spent: int
     input_image_url: Optional[str] = None
@@ -888,21 +890,24 @@ async def list_render_logs(
     db: AsyncSession = Depends(get_db),
 ):
     """List render audit logs with S3 image URLs. Admin+ only."""
-    settings = get_settings()
-    s3_base = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}"
-
-    query = select(RenderAuditLog).order_by(RenderAuditLog.created_at.desc())
+    query = (
+        select(RenderAuditLog, Project)
+        .outerjoin(Project, RenderAuditLog.project_id == Project.id)
+        .order_by(RenderAuditLog.created_at.desc())
+    )
     if user_email:
         query = query.where(RenderAuditLog.user_email.ilike(f"%{user_email}%"))
     query = query.offset(skip).limit(limit)
 
     result = await db.execute(query)
-    logs = result.scalars().all()
+    rows = result.all()
 
     return [
         RenderAuditResponse(
             id=str(log.id),
             user_email=log.user_email,
+            project_id=str(project.id) if project else (str(log.project_id) if log.project_id else None),
+            project_name=project.name if project else None,
             model=log.model,
             tokens_spent=log.tokens_spent,
             input_image_url=f"/api/v1/admin/render-logs/{log.id}/input" if log.input_image_key else None,
@@ -910,7 +915,7 @@ async def list_render_logs(
             prompt_preview=log.prompt_preview,
             created_at=log.created_at.isoformat(),
         )
-        for log in logs
+        for log, project in rows
     ]
 
 

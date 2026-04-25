@@ -78,6 +78,8 @@ export interface AIRenderOptions {
   siteZones?: SiteZone[];
   /** Gemini model ID override (e.g. 'gemini-3-pro-image-preview') */
   model?: string;
+  /** Project ID for render audit log linking */
+  projectId?: string;
 }
 
 export interface AIRenderResult {
@@ -2231,6 +2233,7 @@ async function callVertexAI(
   negativePrompt?: string,
   guidanceScale?: number,
   model?: string,
+  projectId?: string,
   archetypeImages?: Array<{ image_base64: string; label: string; zone_color?: string }>,
   thinkingBudget?: number,
   imageSize?: string,
@@ -2254,6 +2257,9 @@ async function callVertexAI(
   }
   if (model) {
     body.model = model;
+  }
+  if (projectId) {
+    body.project_id = projectId;
   }
   if (archetypeImages && archetypeImages.length > 0) {
     body.archetype_images = archetypeImages;
@@ -2359,6 +2365,7 @@ export function useAIRender(): UseAIRenderReturn {
           negativePrompt || undefined,
           guidanceScale,
           options.model,
+          options.projectId,
           undefined,
           thinkingBudget,
         );
@@ -2449,6 +2456,7 @@ export function useAIRender(): UseAIRenderReturn {
               'summer vegetation, lush green trees, bright green grass, warm golden sunlight',
               options.guidanceScale ?? 15,
               options.model,
+              options.projectId,
             );
 
             if (pass2DataUri) {
@@ -2926,6 +2934,7 @@ export function useAIRender(): UseAIRenderReturn {
               negativePrompt || undefined,
               guidanceScale,
               options.model,
+              options.projectId,
               groundArchetypeImages,
               groundThinkingBudget,
             );
@@ -3057,6 +3066,7 @@ export function useAIRender(): UseAIRenderReturn {
               negativePrompt || undefined,
               guidanceScale,
               options.model,
+              options.projectId,
               allBuildingImages.length > 0 ? allBuildingImages : undefined,
               undefined, // thinkingBudget — single building, let backend auto-default
             );

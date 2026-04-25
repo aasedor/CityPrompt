@@ -23,6 +23,7 @@ import streetPathCatalog from '@/data/streetPathArchetypes.json';
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
 const BUILDING_ZONE_TYPES = new Set(['building', 'residential', 'commercial', 'industrial', 'mixed_use']);
+export type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 
 // ─── SHARED STYLE PROMPTS ────────────────────────────────────────────
 // Single source of truth for all render style prompts (used by single-shot, per-zone, and ground passes)
@@ -61,6 +62,7 @@ export interface GlobeRenderResult {
   prompt: string;
   seed?: number;
   model?: string;
+  imageQuality?: OpenAIImageQuality;
   providerLabel?: string;
   error?: string;
 }
@@ -68,6 +70,7 @@ export interface GlobeRenderResult {
 export interface GlobeRenderVariant {
   model: string;
   label: string;
+  imageQuality?: OpenAIImageQuality;
 }
 
 function getRenderErrorMessage(err: any): string {
@@ -1514,6 +1517,7 @@ export function useGlobeAIRender() {
     options: {
       style?: string;
       model?: string;
+      imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
       // Internal: skip the isRenderingRef lock so renderPreviews can fan out
@@ -1525,7 +1529,7 @@ export function useGlobeAIRender() {
     if (!options._skipLock) isRenderingRef.current = true;
 
     try {
-      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', customPrompt } = options;
+      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt } = options;
 
       // 1. Capture the globe canvas
       console.log('[GlobeAIRender] Capturing canvas...');
@@ -1680,7 +1684,7 @@ export function useGlobeAIRender() {
       console.log(`[GlobeAIRender] Prompt (${prompt.length} chars, ${zones.filter(z => z.zone_type !== 'site_boundary').length} zones, ${archetypeImages.length} ref images):`, prompt.substring(0, 200) + '...');
 
       // 5. Send to backend render API with archetype images
-      console.log('[GlobeAIRender] Sending to Gemini via backend...');
+      console.log('[GlobeAIRender] Sending to render backend...');
       const resp = await api.post(
         '/api/v1/render/generate',
         {
@@ -1689,6 +1693,8 @@ export function useGlobeAIRender() {
           prompt,
           negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
           model,
+          image_quality: imageQuality,
+          project_id: options.projectId,
           temperature: 0.0,
           guidance_scale: 15,
           image_size: '2K', // 2K output for architectural detail accuracy
@@ -1714,6 +1720,7 @@ export function useGlobeAIRender() {
           prompt,
           seed: resp.data.seed,
           model,
+          imageQuality,
         };
       }
 
@@ -1748,6 +1755,7 @@ export function useGlobeAIRender() {
     options: {
       style?: string;
       model?: string;
+      imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
       count?: number;
@@ -1760,6 +1768,7 @@ export function useGlobeAIRender() {
     const previewVariants = options.variants ?? Array.from({ length: count }, (_, index) => ({
       model: options.model ?? 'gemini-3.1-flash-image-preview',
       label: `Preview ${index + 1}`,
+      imageQuality: options.imageQuality,
     }));
     const renderOptions = {
       style: options.style,
@@ -1772,10 +1781,11 @@ export function useGlobeAIRender() {
         render(canvas, camera, zones, terrainHeight, {
           ...renderOptions,
           model: variant.model,
+          imageQuality: variant.imageQuality,
           _skipLock: true,
         })
           .then((renderResult) => renderResult
-            ? { ...renderResult, model: variant.model, providerLabel: variant.label }
+            ? { ...renderResult, model: variant.model, imageQuality: variant.imageQuality, providerLabel: variant.label }
             : null)
           .catch((err) => {
             const message = getRenderErrorMessage(err);
@@ -1784,6 +1794,7 @@ export function useGlobeAIRender() {
               imageUrl: createErrorPreviewImage(variant.label, message),
               prompt: '',
               model: variant.model,
+              imageQuality: variant.imageQuality,
               providerLabel: variant.label,
               error: message,
             };
@@ -1865,6 +1876,7 @@ export function useGlobeAIRender() {
     options: {
       style?: string;
       model?: string;
+      imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
       onProgress?: (progress: GlobeRenderProgress) => void;
@@ -1874,7 +1886,7 @@ export function useGlobeAIRender() {
     isRenderingRef.current = true;
 
     try {
-      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', customPrompt, onProgress } = options;
+      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt, onProgress } = options;
 
       // 1. Capture base screenshot
       console.log('[GlobeAIRender:PerZone] Capturing canvas...');
@@ -2015,6 +2027,8 @@ export function useGlobeAIRender() {
               prompt,
               negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark' + (isBuilding ? ', colored polygon fill' : ''),
               model,
+              image_quality: imageQuality,
+              project_id: options.projectId,
               temperature: 0.0,
               guidance_scale: 15,
               image_size: '2K',
@@ -2045,6 +2059,7 @@ export function useGlobeAIRender() {
         prompt: allPrompts.join('\n---\n'),
         seed: undefined,
         model,
+        imageQuality,
       };
 
     } catch (err) {

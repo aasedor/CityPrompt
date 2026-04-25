@@ -173,8 +173,9 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
       siteBoundaryCoords,
       // Pass all zones for inpainting mask generation
       siteZones: siteZones.length > 0 ? siteZones : undefined,
+      projectId,
     };
-  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones]);
+  }, [selectedStyle, customPrompt, controlStrength, guidanceScale, referenceImage, referenceStrength, useArchetypes, hasArchetypes, archetypeInputs, siteZones, projectId]);
 
   /** Generate 3 preview renders in parallel */
   const handleGeneratePreviews = useCallback(async () => {

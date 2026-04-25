@@ -836,6 +836,8 @@ export interface AdminProject {
 export interface RenderAuditLog {
   id: string;
   user_email: string;
+  project_id?: string | null;
+  project_name?: string | null;
   model: string;
   tokens_spent: number;
   input_image_url?: string;
@@ -1221,6 +1223,8 @@ export const rendersApi = {
     prompt: string;
     style?: string;
     seed?: number;
+    model?: string;
+    image_quality?: 'auto' | 'low' | 'medium' | 'high';
   }): Promise<SavedRender> => {
     const { data } = await api.post(`/api/v1/render/projects/${projectId}/save`, render, { timeout: 30000 });
     return data;

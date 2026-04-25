@@ -130,9 +130,10 @@ export function ProjectViewPage() {
   const getDefaultGlobeRenderPosition = useCallback(() => {
     if (typeof window === 'undefined') return { x: 320, y: 420 };
     const panelWidth = Math.min(GLOBE_RENDER_PANEL_WIDTH, Math.max(320, window.innerWidth - 32));
+    const panelHeight = Math.min(420, window.innerHeight * 0.44);
     return clampGlobeRenderPosition({
       x: (window.innerWidth - panelWidth) / 2,
-      y: Math.max(16, window.innerHeight - 440),
+      y: window.innerHeight - panelHeight - 16,
     });
   }, [clampGlobeRenderPosition]);
 
@@ -140,7 +141,12 @@ export function ProjectViewPage() {
     if (event.button !== 0) return;
     event.preventDefault();
 
-    const origin = globeRenderPosition ?? getDefaultGlobeRenderPosition();
+    const handleRect = event.currentTarget.getBoundingClientRect();
+    const origin = globeRenderPosition ?? (
+      handleRect.width > 0 && handleRect.height > 0
+        ? clampGlobeRenderPosition({ x: handleRect.left, y: handleRect.top })
+        : getDefaultGlobeRenderPosition()
+    );
     globeRenderDragRef.current = {
       startX: event.clientX,
       startY: event.clientY,
@@ -173,11 +179,6 @@ export function ProjectViewPage() {
   }, [clampGlobeRenderPosition, getDefaultGlobeRenderPosition, globeRenderPosition]);
 
   useEffect(() => {
-    if (!showGlobeRender || globeRenderPosition) return;
-    setGlobeRenderPosition(getDefaultGlobeRenderPosition());
-  }, [getDefaultGlobeRenderPosition, globeRenderPosition, showGlobeRender]);
-
-  useEffect(() => {
     const handleResize = () => {
       setGlobeRenderPosition((position) => position ? clampGlobeRenderPosition(position) : position);
     };
@@ -203,9 +204,9 @@ export function ProjectViewPage() {
   const handleOpenGlobeRender = useCallback(() => {
     setShowHistory(false);
     setMeasureActive(false);
-    setGlobeRenderPosition((position) => position ?? getDefaultGlobeRenderPosition());
+    setGlobeRenderPosition(null);
     setShowGlobeRender(true);
-  }, [getDefaultGlobeRenderPosition]);
+  }, []);
 
   const prepareForAIRenderCapture = useCallback(async () => {
     if (useViewerStore.getState().selectedZoneId) {
@@ -413,7 +414,7 @@ export function ProjectViewPage() {
             style={{
               left: globeRenderPosition?.x ?? '50%',
               top: globeRenderPosition?.y,
-              bottom: globeRenderPosition ? undefined : 12,
+              bottom: globeRenderPosition ? undefined : 48,
               transform: globeRenderPosition ? undefined : 'translateX(-50%)',
             }}
           >
