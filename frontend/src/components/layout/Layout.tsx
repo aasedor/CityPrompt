@@ -14,6 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { useAuthStore } from '@/store';
+import { TileTrail } from '@/components/ui/TileTrail';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Layout() {
@@ -55,13 +56,14 @@ export function Layout() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#fff9ec] text-[#151515]">
       <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.11] dark:opacity-[0.18]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.22] dark:opacity-[0.34]"
         style={{
           backgroundImage:
-            'linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
+            'linear-gradient(var(--city-grid-line) 2px, transparent 2px), linear-gradient(90deg, var(--city-grid-line) 2px, transparent 2px), linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
+          backgroundSize: '128px 128px, 128px 128px, 32px 32px, 32px 32px',
         }}
       />
+      <TileTrail />
 
       <header className="relative z-[100] border-b-2 border-[#151515] bg-[#fff9ec]/95 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
