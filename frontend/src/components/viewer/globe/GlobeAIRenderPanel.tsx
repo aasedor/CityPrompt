@@ -18,12 +18,13 @@ const COMPARE_RENDER_MODELS = [
   { model: 'gpt-image-2', label: 'GPT Image 2' },
 ];
 
-const OPENAI_IMAGE_QUALITY_OPTIONS: { value: OpenAIImageQuality; label: string }[] = [
-  { value: 'auto', label: 'Auto' },
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-];
+const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';
+const OPENAI_IMAGE_QUALITY_LABELS: Record<OpenAIImageQuality, string> = {
+  auto: 'Auto',
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+};
 
 function isOpenAIImageModel(model?: string): boolean {
   return Boolean(model?.startsWith('gpt-image-2'));
@@ -35,7 +36,7 @@ function getQualityForModel(model: string, quality: OpenAIImageQuality): OpenAII
 
 function formatImageQualityLabel(quality?: OpenAIImageQuality): string | null {
   if (!quality) return null;
-  return `GPT ${OPENAI_IMAGE_QUALITY_OPTIONS.find((option) => option.value === quality)?.label ?? quality}`;
+  return `GPT ${OPENAI_IMAGE_QUALITY_LABELS[quality] ?? quality}`;
 }
 
 function getLightboxMetaParts(render: LightboxRender): string[] {
@@ -133,7 +134,6 @@ export function GlobeAIRenderPanel({
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
-  const [selectedImageQuality, setSelectedImageQuality] = useState<OpenAIImageQuality>('auto');
   const [customPrompt, setCustomPrompt] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -199,7 +199,7 @@ export function GlobeAIRenderPanel({
       const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
       const compareRenderVariants = COMPARE_RENDER_MODELS.map((provider) => ({
         ...provider,
-        imageQuality: getQualityForModel(provider.model, selectedImageQuality),
+        imageQuality: getQualityForModel(provider.model, DEFAULT_OPENAI_IMAGE_QUALITY),
       }));
       if (usePerZone) {
         // Per-zone path is already sequential and slow, so compare providers one at a time.
@@ -272,7 +272,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, selectedImageQuality, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -523,23 +523,7 @@ export function GlobeAIRenderPanel({
 
         {/* Custom prompt */}
         <div>
-          <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium uppercase text-gray-500">
-            <span>Prompt</span>
-            <label className="flex items-center gap-1 normal-case text-gray-400" title="Used for GPT Image 2 renders">
-              <span>GPT quality</span>
-              <select
-                value={selectedImageQuality}
-                onChange={(e) => setSelectedImageQuality(e.target.value as OpenAIImageQuality)}
-                className="h-6 rounded border border-white/10 bg-slate-900 px-1.5 text-[10px] font-medium text-white focus:border-amber-500/50 focus:outline-none"
-              >
-                {OPENAI_IMAGE_QUALITY_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Prompt</div>
           <textarea
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}

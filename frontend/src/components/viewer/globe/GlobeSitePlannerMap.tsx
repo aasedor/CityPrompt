@@ -2557,7 +2557,7 @@ export function GlobeSitePlannerMap({
           pitchAngle < 70 ? 'text-emerald-400' :
           pitchAngle < 80 ? 'text-amber-400' : 'text-red-400'
         }`}>
-          {pitchAngle} deg {
+          {pitchAngle}° {
             pitchAngle < 20 ? 'flat' :
             pitchAngle < 40 ? 'low' :
             pitchAngle < 60 ? 'good' :
