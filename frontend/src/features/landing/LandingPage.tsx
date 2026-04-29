@@ -17,9 +17,9 @@ import {
 import { useAuthStore } from '@/store';
 
 const imageAssets = {
-  prompt: '/images/style-lab-prompt.jpg',
-  render: '/images/style-lab-render.png',
-  collage: '/images/style-lab-pic2.png',
+  prompt: '/images/landing-prompt.jpg',
+  render: '/images/landing-render.png',
+  collage: '/images/landing-collage.png',
 };
 
 function GridBackground() {

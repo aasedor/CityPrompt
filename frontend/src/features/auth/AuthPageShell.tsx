@@ -99,12 +99,12 @@ export function AuthPageShell({
 
           <div className="relative mt-10 h-80 max-w-[36rem]">
             <MiniTile
-              src="/images/style-lab-pic2.png"
+              src="/images/landing-collage.png"
               label="Prompt view"
               className="absolute left-0 top-0 z-10 h-44 w-72 rotate-[-5deg]"
             />
             <MiniTile
-              src="/images/style-lab-render.png"
+              src="/images/landing-render.png"
               label="Final render"
               className="absolute left-52 top-20 z-20 h-40 w-72 rotate-[4deg]"
             />
