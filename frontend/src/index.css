@@ -163,6 +163,8 @@ html.dark .bg-\[\#c9ff3d\],
 html.dark .bg-\[\#c9ff3d\].text-\[\#151515\],
 html.dark .bg-\[\#d7ff66\],
 html.dark .bg-\[\#f2b84b\],
+html.dark .bg-\[\#ff9f0a\],
+html.dark .bg-\[\#ffb13b\],
 html.dark .bg-\[\#fefaf7\],
 html.dark .bg-\[\#fefaf7\].text-\[\#151515\] {
   color: #151515;
@@ -216,7 +218,8 @@ html.dark .hover\:bg-primary-950\/\[0\.1\]:hover  { background-color: rgba(255,2
 html.dark .hover\:bg-\[\#151515\]\/5:hover { background-color: rgba(255,249,236,0.08); }
 html.dark .hover\:bg-white:hover { background-color: rgba(255,249,236,0.12); }
 html.dark .hover\:bg-\[\#c9ff3d\]:hover,
-html.dark .hover\:bg-\[\#d7ff66\]:hover {
+html.dark .hover\:bg-\[\#d7ff66\]:hover,
+html.dark .hover\:bg-\[\#ffb13b\]:hover {
   color: #151515;
 }
 html.dark .hover\:text-primary-950:hover { color: #fefaf7; }
@@ -260,3 +263,161 @@ html.dark .glass {
 }
 
 html.dark .divider { border-color: rgba(255,255,255,0.06); }
+
+html.dark .bg-\[\#c9ff3d\],
+html.dark .bg-\[\#d7ff66\],
+html.dark .bg-\[\#f2b84b\],
+html.dark .bg-\[\#ff9f0a\],
+html.dark .bg-\[\#ffb13b\],
+html.dark .bg-\[\#fefaf7\] {
+  color: #151515;
+}
+
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\],
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\],
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\],
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\],
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\],
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\] {
+  color: #151515;
+}
+
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\]\/55,
+html.dark .bg-\[\#c9ff3d\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#d7ff66\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#f2b84b\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#ff9f0a\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#ffb13b\] .text-\[\#151515\]\/60,
+html.dark .bg-\[\#fefaf7\] .text-\[\#151515\]\/60 {
+  color: rgba(21,21,21,0.62);
+}
+
+.city-account-button {
+  color: #151515;
+}
+
+.city-account-button:hover,
+html.dark .city-account-button:hover {
+  background-color: #c9ff3d;
+  border-color: #151515;
+  color: #151515;
+}
+
+html.dark .city-account-button {
+  background-color: var(--city-surface);
+  color: #fff9ec;
+}
+
+html.dark .city-account-button:hover * {
+  color: #151515;
+}
+
+.street-view-card {
+  border: 2px solid #151515;
+  background: rgba(255, 249, 236, 0.96);
+  color: #151515;
+}
+
+.street-view-card--prompt {
+  box-shadow: 6px 6px 0 0 #151515;
+}
+
+.street-view-card--panel {
+  box-shadow: 10px 10px 0 0 #151515;
+}
+
+.street-view-badge,
+.street-view-icon-button,
+.street-view-compass,
+.street-view-style-list {
+  border: 2px solid #151515;
+  color: #151515;
+}
+
+.street-view-badge {
+  background: #f2b84b;
+}
+
+.street-view-icon-button,
+.street-view-style-list {
+  background: #ffffff;
+}
+
+.street-view-icon-button:hover {
+  background: #c9ff3d;
+}
+
+.street-view-compass {
+  background: #fefaf7;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-compass-needle {
+  background: #ff9f0a;
+}
+
+.street-view-helper,
+.street-view-group-label {
+  color: rgba(21, 21, 21, 0.55);
+}
+
+.street-view-divider {
+  background: rgba(21, 21, 21, 0.2);
+}
+
+.street-view-style-pill {
+  border: 2px solid #151515;
+  color: #151515;
+}
+
+.street-view-style-pill--active {
+  background: #f2b84b;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-style-pill--idle {
+  background: #fff9ec;
+  color: rgba(21, 21, 21, 0.7);
+}
+
+.street-view-style-pill--idle:hover {
+  background: #c9ff3d;
+  color: #151515;
+}
+
+.street-view-generate-button {
+  border: 2px solid #151515;
+  background: #ff9f0a;
+  color: #151515;
+  box-shadow: 5px 5px 0 0 #151515;
+}
+
+.street-view-generate-button:hover {
+  background: #ffb13b;
+}
+
+.street-view-close-button {
+  border: 2px solid #151515;
+  background: #ff5a3d;
+  color: #ffffff;
+  box-shadow: 2px 2px 0 0 #151515;
+}
+
+.street-view-close-button:hover {
+  background: #ff725c;
+}
+
+.street-view-close-button--small {
+  background: #ffffff;
+  color: #151515;
+}
+
+.street-view-close-button--small:hover {
+  background: #ff5a3d;
+  color: #ffffff;
+}

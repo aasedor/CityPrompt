@@ -30,7 +30,7 @@ export function Layout() {
   const mobileLinkClassName =
     'rounded-lg border-2 border-transparent px-3 py-2 text-sm font-black uppercase text-[#151515]/70 hover:border-[#151515] hover:bg-[#c9ff3d] hover:text-[#151515]';
   const menuItemClassName =
-    'flex w-full items-center gap-2 px-4 py-2 text-sm font-black uppercase text-[#151515]/70 hover:bg-[#c9ff3d] hover:text-[#151515]';
+    'flex w-full items-center gap-2 px-4 py-2 text-sm font-black uppercase text-[#151515]/70 hover:bg-[#c9ff3d] hover:text-[#151515] dark:hover:text-[#151515]';
 
   const handleLogout = () => {
     logout();
@@ -113,7 +113,7 @@ export function Layout() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex max-w-[260px] items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d]"
+                  className="city-account-button flex max-w-[260px] items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d] hover:text-[#151515] dark:text-[#fff9ec] dark:hover:text-[#151515]"
                 >
                   <User size={14} />
                   <span className="truncate">{user?.full_name || user?.email}</span>

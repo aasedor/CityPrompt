@@ -211,14 +211,16 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
   if (!streetViewPegman.position) {
     return (
       <div className="absolute bottom-4 left-1/2 z-40 -translate-x-1/2">
-        <div className="flex items-center gap-3 rounded-xl bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-sm">
-          <Eye size={16} className="text-amber-600" />
-          <span className="text-sm font-medium text-primary-950">
+        <div className="street-view-card street-view-card--prompt flex items-center gap-3 rounded-lg px-4 py-3 backdrop-blur-xl">
+          <span className="street-view-badge flex h-8 w-8 items-center justify-center rounded-full">
+            <Eye size={16} />
+          </span>
+          <span className="text-sm font-black">
             Click on the map to drop a Street View pin
           </span>
           <button
             onClick={() => setStreetViewActive(false)}
-            className="rounded-lg p-1 text-primary-950/50 transition hover:bg-primary-950/[0.08] hover:text-primary-950"
+            className="street-view-close-button street-view-close-button--small rounded-full p-1 transition"
             title="Cancel Street View"
           >
             <X size={14} />
@@ -349,13 +351,13 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
 
   // Floating panel on the map
   return (
-    <div className="absolute bottom-4 left-1/2 z-40 -translate-x-1/2">
-      <div className="flex items-center gap-3 rounded-xl bg-white/95 px-4 py-3 shadow-2xl backdrop-blur-sm">
+    <div className="absolute bottom-4 left-1/2 z-40 w-[min(94vw,760px)] -translate-x-1/2">
+      <div className="street-view-card street-view-card--panel flex flex-wrap items-center justify-center gap-3 rounded-lg px-4 py-3 backdrop-blur-xl">
         {/* Direction controls */}
         <button
           onClick={handleRotateLeft}
-          className="rounded-lg bg-primary-950/[0.06] p-2 text-primary-950/70 hover:bg-primary-950/[0.12] hover:text-primary-950"
-          title="Rotate left 45° (← arrow key)"
+          className="street-view-icon-button flex h-9 w-9 items-center justify-center rounded-full transition"
+          title="Rotate left 45 degrees"
         >
           <ArrowLeft size={16} />
         </button>
@@ -363,41 +365,41 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         {/* Compass */}
         <div className="flex flex-col items-center">
           <div
-            className="relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-amber-400 bg-amber-50"
+            className="street-view-compass relative flex h-12 w-12 items-center justify-center rounded-full"
           >
             <div
-              className="absolute h-5 w-0.5 bg-amber-500 origin-bottom"
+              className="street-view-compass-needle absolute h-5 w-0.5 origin-bottom"
               style={{
                 transform: `rotate(${streetViewPegman.angle}deg)`,
                 bottom: '50%',
               }}
             />
-            <span className="text-[10px] font-bold text-amber-700">
+            <span className="text-[10px] font-black">
               {compassLabel(streetViewPegman.angle)}
             </span>
           </div>
-          <span className="mt-1 text-[10px] text-primary-950/50">
-            ← → to rotate
+          <span className="street-view-helper mt-1 text-[9px] font-black uppercase">
+            Rotate
           </span>
         </div>
 
         <button
           onClick={handleRotateRight}
-          className="rounded-lg bg-primary-950/[0.06] p-2 text-primary-950/70 hover:bg-primary-950/[0.12] hover:text-primary-950"
-          title="Rotate right 45° (→ arrow key)"
+          className="street-view-icon-button flex h-9 w-9 items-center justify-center rounded-full transition"
+          title="Rotate right 45 degrees"
         >
           <ArrowRight size={16} />
         </button>
 
         {/* Divider */}
-        <div className="h-8 w-px bg-primary-950/10" />
+        <div className="street-view-divider hidden h-16 w-px sm:block" />
 
         {/* Style selector */}
-        <div className="flex flex-col gap-1.5">
+        <div className="street-view-style-list max-h-36 min-w-[220px] flex-1 overflow-y-auto rounded-lg p-2">
           {STREET_VIEW_STYLE_GROUPS.map(group => (
             <div key={group.label}>
-              <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-primary-950/30">{group.label}</div>
-              <div className="flex flex-col gap-0.5">
+              <div className="street-view-group-label mb-1 text-[9px] font-black uppercase tracking-wider">{group.label}</div>
+              <div className="mb-2 flex flex-wrap gap-1.5 last:mb-0">
                 {group.ids.map(id => {
                   const s = STREET_VIEW_STYLES.find(x => x.id === id);
                   if (!s) return null;
@@ -405,10 +407,10 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
                     <button
                       key={s.id}
                       onClick={() => setSelectedStyle(s.id)}
-                      className={`rounded px-2 py-0.5 text-[10px] font-medium transition ${
+                      className={`street-view-style-pill rounded-full px-2.5 py-1 text-[10px] font-black uppercase transition ${
                         selectedStyle === s.id
-                          ? 'bg-amber-500/20 text-amber-700'
-                          : 'text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950/70'
+                          ? 'street-view-style-pill--active'
+                          : 'street-view-style-pill--idle'
                       }`}
                     >
                       {s.label}
@@ -421,23 +423,23 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         </div>
 
         {/* Divider */}
-        <div className="h-8 w-px bg-primary-950/10" />
+        <div className="street-view-divider hidden h-16 w-px sm:block" />
 
         {/* Generate button */}
         <button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-amber-600 disabled:opacity-50 transition-all"
+          className="street-view-generate-button flex min-h-12 items-center gap-2 rounded-full px-5 py-3 text-sm font-black uppercase transition disabled:opacity-50"
         >
           {isGenerating ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Generating...
+              Generating
             </>
           ) : (
             <>
               <Eye size={16} />
-              Generate Street View
+              Generate
             </>
           )}
         </button>
@@ -445,7 +447,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         {/* Close */}
         <button
           onClick={handleClose}
-          className="rounded-lg p-1.5 text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950"
+          className="street-view-close-button flex h-8 w-8 items-center justify-center rounded-full transition"
           title="Close street view"
         >
           <X size={16} />
