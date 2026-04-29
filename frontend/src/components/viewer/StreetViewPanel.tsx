@@ -6,7 +6,7 @@
 import { useState, useCallback } from 'react';
 import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save } from 'lucide-react';
 import { useViewerStore } from '@/store';
-import { useStreetViewRender } from './useStreetViewRender';
+import { useStreetViewRender, type StreetViewResult } from './useStreetViewRender';
 import type { SiteZone } from '@/types';
 import { rendersApi } from '@/services/api';
 import toast from 'react-hot-toast';
@@ -86,6 +86,38 @@ const STREET_VIEW_STYLE_GROUPS = [
   { label: 'Stylized', ids: ['clay-model', 'collage', 'pixel-art'] },
 ] as const;
 
+const STREET_VIEW_RENDER_MODELS = [
+  { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
+  { model: 'gpt-image-2', label: 'GPT Image 2', imageQuality: 'auto' as const },
+];
+const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image 2';
+
+function escapeSvgText(value: string): string {
+  return value.replace(/[<>&"]/g, (char) => ({
+    '<': '&lt;',
+    '>': '&gt;',
+    '&': '&amp;',
+    '"': '&quot;',
+  }[char] || char));
+}
+
+function createErrorPreviewImage(providerLabel: string, message: string): string {
+  const safeLabel = escapeSvgText(providerLabel);
+  const safeMessage = escapeSvgText(message).slice(0, 320);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+      <rect width="1200" height="675" fill="#1f2937"/>
+      <rect x="44" y="44" width="1112" height="587" rx="18" fill="#111827" stroke="#ef4444" stroke-width="4"/>
+      <text x="84" y="150" fill="#fca5a5" font-family="Arial, sans-serif" font-size="46" font-weight="700">${safeLabel}</text>
+      <text x="84" y="216" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">Street view render failed</text>
+      <foreignObject x="84" y="270" width="1032" height="260">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="color:#d1d5db;font-family:Arial,sans-serif;font-size:26px;line-height:1.35;word-break:break-word;">${safeMessage}</div>
+      </foreignObject>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
 function compassLabel(angle: number): string {
   const norm = ((angle % 360) + 360) % 360;
   return COMPASS_LABELS[norm] || `${norm}°`;
@@ -102,7 +134,9 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState<{ imageUrl: string; prompt: string } | null>(null);
+  const [result, setResult] = useState<StreetViewResult | null>(null);
+  const [previews, setPreviews] = useState<StreetViewResult[]>([]);
+  const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -119,6 +153,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
 
   const handleGenerate = useCallback(async () => {
     if (!streetViewPegman?.position) return;
+    const pegmanPosition = streetViewPegman.position;
+    const pegmanAngle = streetViewPegman.angle;
     setIsGenerating(true);
     try {
       // For re-renders: extract previous render base64 for dual anchoring
@@ -126,6 +162,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
       if (result?.imageUrl?.startsWith('data:image/')) {
         previousRenderBase64 = result.imageUrl.split(',')[1];
       }
+      setPreviews([]);
+      setSelectedPreviewIndex(null);
 
       const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
       const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric', 'winter'];
@@ -148,19 +186,53 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         }
       }
 
-      const res = await generateStreetView(
-        streetViewPegman.position,
-        streetViewPegman.angle,
-        siteZones,
-        {
-          previousRenderBase64,
-          styleModifier,
-          overrideGuideImage,
-          projectId,
-        },
-      );
-      if (res) {
-        setResult(res);
+      const results = await Promise.all(STREET_VIEW_RENDER_MODELS.map(async (provider) => {
+        try {
+          const providerResult = await generateStreetView(
+            pegmanPosition,
+            pegmanAngle,
+            siteZones,
+            {
+              model: provider.model,
+              imageQuality: provider.imageQuality,
+              previousRenderBase64,
+              styleModifier,
+              overrideGuideImage,
+              projectId,
+            },
+          );
+          return providerResult
+            ? { ...providerResult, model: provider.model, imageQuality: provider.imageQuality, providerLabel: provider.label }
+            : {
+                imageUrl: createErrorPreviewImage(provider.label, 'The backend returned no image. Check backend logs for provider details.'),
+                prompt: '',
+                model: provider.model,
+                imageQuality: provider.imageQuality,
+                providerLabel: provider.label,
+                error: 'The backend returned no image.',
+              };
+        } catch (err) {
+          const message = err instanceof Error ? err.message : 'Render failed. Check backend logs for provider details.';
+          return {
+            imageUrl: createErrorPreviewImage(provider.label, message),
+            prompt: '',
+            model: provider.model,
+            imageQuality: provider.imageQuality,
+            providerLabel: provider.label,
+            error: message,
+          };
+        }
+      }));
+
+      if (results.length > 0) {
+        setPreviews(results);
+        const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
+        setSelectedPreviewIndex(firstSuccessfulIndex);
+        setResult(results[firstSuccessfulIndex]);
+        const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
+        if (failedLabels.length > 0) {
+          toast.error(`${failedLabels.join(', ')} failed`);
+        }
       } else {
         toast.error('Street view generation failed');
       }
@@ -173,7 +245,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
   }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result, globeCapture, projectId]);
 
   const handleDownload = useCallback(() => {
-    if (!result?.imageUrl) return;
+    if (!result?.imageUrl || result.error) return;
     const a = document.createElement('a');
     a.href = result.imageUrl;
     a.download = `siteforge-streetview-${Date.now()}.png`;
@@ -181,14 +253,14 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
   }, [result]);
 
   const handleSave = useCallback(async () => {
-    if (!result?.imageUrl || !projectId) return;
+    if (!result?.imageUrl || result.error || !projectId) return;
     setSaving(true);
     try {
       const b64 = result.imageUrl.replace(/^data:image\/\w+;base64,/, '');
       await rendersApi.save(projectId, {
         image_base64: b64,
         prompt: result.prompt,
-        style: 'street-view',
+        style: result.providerLabel ? `street-view / ${result.providerLabel}` : 'street-view',
       });
       toast.success('Street view saved');
     } catch {
@@ -202,6 +274,8 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
     setStreetViewPosition(null);
     setStreetViewActive(false);
     setResult(null);
+    setPreviews([]);
+    setSelectedPreviewIndex(null);
   }, [setStreetViewPosition, setStreetViewActive]);
 
   // Don't render until Street View mode is active
@@ -239,12 +313,15 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
           <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
             <div className="flex items-center gap-2 text-white">
               <Eye size={18} className="text-amber-400" />
-              <span className="font-semibold">Street View — Looking {compassLabel(streetViewPegman.angle)}</span>
+              <span className="font-semibold">
+                Street View AI Render ({result.providerLabel || STREET_VIEW_RENDER_LABEL}) — Looking {compassLabel(streetViewPegman.angle)}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleDownload}
-                className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600"
+                disabled={!!result.error}
+                className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Download size={14} />
                 Download PNG
@@ -252,7 +329,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
               {projectId && (
                 <button
                   onClick={handleSave}
-                  disabled={saving}
+                  disabled={saving || !!result.error}
                   className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
                 >
                   <Save size={14} />
@@ -269,13 +346,59 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
           </div>
           {/* Image — click to enlarge */}
           <div className="flex-1 overflow-auto p-4">
-            <img
-              src={result.imageUrl}
-              alt="Street view render"
-              className="h-auto w-full cursor-pointer rounded-lg transition hover:opacity-90"
-              onClick={() => setLightboxOpen(true)}
-              title="Click to enlarge"
-            />
+            <div className="relative">
+              <img
+                src={result.imageUrl}
+                alt={`${result.providerLabel || 'Street view'} render`}
+                className={`h-auto w-full rounded-lg transition ${result.error ? '' : 'cursor-pointer hover:opacity-90'}`}
+                onClick={() => !result.error && setLightboxOpen(true)}
+                title={result.error ? result.error : 'Click to enlarge'}
+              />
+              <span className={`pointer-events-none absolute left-3 top-3 rounded px-2 py-1 text-xs font-bold text-white ${result.error ? 'bg-red-500/90' : 'bg-black/70'}`}>
+                {result.providerLabel || 'Street View'}
+              </span>
+            </div>
+            {previews.length > 1 && (
+              <div className="mt-3">
+                <div className="mb-1 flex items-center justify-between text-[11px] text-white/50">
+                  <span>{previews[selectedPreviewIndex ?? 0]?.providerLabel || 'Choose a render'}</span>
+                  <span>{previews.length} provider test</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {previews.map((preview, index) => (
+                    <button
+                      key={preview.providerLabel || preview.model || index}
+                      onClick={() => {
+                        setSelectedPreviewIndex(index);
+                        setResult(preview);
+                      }}
+                      className={`relative aspect-video overflow-hidden rounded-lg border-2 transition ${
+                        preview.error
+                          ? 'border-red-400/70 hover:border-red-300'
+                          : selectedPreviewIndex === index
+                            ? 'border-amber-400 ring-2 ring-amber-400/40'
+                            : 'border-white/10 hover:border-white/40'
+                      }`}
+                      title={preview.error ? `${preview.providerLabel} failed: ${preview.error}` : `${preview.providerLabel} preview`}
+                    >
+                      <img
+                        src={preview.imageUrl}
+                        alt={`${preview.providerLabel || `Preview ${index + 1}`} render`}
+                        className="h-full w-full object-cover"
+                      />
+                      <span className="pointer-events-none absolute left-1 top-1 max-w-[calc(100%-0.5rem)] truncate rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                        {preview.providerLabel || `Preview ${index + 1}`}
+                      </span>
+                      {preview.error && (
+                        <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-red-500/90 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                          Failed
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           {/* Footer — re-render controls */}
           <div className="flex items-center justify-between border-t border-white/10 px-5 py-3">
@@ -304,7 +427,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
               className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 disabled:opacity-50"
             >
               {isGenerating ? <Loader2 size={14} className="animate-spin" /> : <Eye size={14} />}
-              Re-render
+              {isGenerating ? 'Rendering...' : 'Re-render Previews'}
             </button>
           </div>
         </div>
@@ -434,12 +557,12 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
           {isGenerating ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              Generating
+              Rendering {STREET_VIEW_RENDER_LABEL}
             </>
           ) : (
             <>
               <Eye size={16} />
-              Generate
+              AI Render
             </>
           )}
         </button>

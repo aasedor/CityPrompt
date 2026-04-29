@@ -283,9 +283,6 @@ _MODEL_TOKEN_COST: dict[str, int] = {
     "gpt-image-2-2026-04-21": 13,
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
-_WEEKLY_TOKEN_ALLOWANCE = 99999
-
-
 def _build_gemini_url(settings, model: str | None = None) -> str:
     """Build the Gemini API URL.
 
@@ -398,9 +395,22 @@ def _build_openai_files(
         ("image[]", (f"site-context.{input_ext}", _decode_base64_payload(req.image_base64), input_mime)),
     ]
 
-    # GPT image edit models support up to 16 input images. Keep one slot for
-    # the site screenshot and use the rest for archetype references.
-    for idx, arch_img in enumerate((req.archetype_images or [])[:15], start=1):
+    if req.previous_render_base64:
+        previous_mime = _guess_image_mime(req.previous_render_base64)
+        previous_ext = _extension_for_mime(previous_mime)
+        files.append((
+            "image[]",
+            (
+                f"previous-street-view-render.{previous_ext}",
+                _decode_base64_payload(req.previous_render_base64),
+                previous_mime,
+            ),
+        ))
+
+    # GPT image edit models support up to 16 input images. Keep slots for the
+    # site screenshot and optional previous render, then use the rest for refs.
+    max_refs = 14 if req.previous_render_base64 else 15
+    for idx, arch_img in enumerate((req.archetype_images or [])[:max_refs], start=1):
         mime = _guess_image_mime(arch_img.image_base64)
         ext = _extension_for_mime(mime)
         safe_idx = str(idx).zfill(2)
@@ -428,7 +438,9 @@ async def _call_openai_image_edit(
         "Preserve the camera angle, lighting, terrain, surrounding buildings, "
         "and all unedited context. If an edit mask is attached, edit only the "
         "masked site areas. Additional attached images are archetype references "
-        "for the proposed zones.\n\n"
+        "for the proposed zones. If a previous render is attached, use it as a "
+        "visual continuity reference while keeping the source context and prompt "
+        "instructions authoritative.\n\n"
         + prompt_text
     )
     if len(prompt_text) > 32_000:
@@ -565,17 +577,6 @@ async def generate_render(
     Sends the map screenshot + prompt to the selected image edit model.
     Requires authentication. Non-admin users must have render tokens.
     """
-    # Weekly token reset for non-admin users
-    if not is_admin_or_above(user):
-        now = datetime.now(timezone.utc)
-        if user.credits_reset_at is None or (now - user.credits_reset_at).days >= 7:
-            user.render_credits = _WEEKLY_TOKEN_ALLOWANCE
-            user.credits_reset_at = now
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-            logger.info("Weekly token reset for %s — %d tokens", user.email, user.render_credits)
-
     # Calculate cost for this render
     render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
@@ -587,7 +588,7 @@ async def generate_render(
     if not is_admin_or_above(user) and user.render_credits < token_cost:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}. Tokens reset weekly.",
+            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}.",
         )
 
     settings = get_settings()
