@@ -3431,7 +3431,7 @@
           }
         }
       ],
-      "minFloors": 4,
+      "minFloors": 2,
       "maxFloors": 8,
       "suggestedAreaSqm": 600,
       "developmentType": "residential_multifamily"
@@ -3783,7 +3783,7 @@
           }
         }
       ],
-      "minFloors": 3,
+      "minFloors": 1,
       "maxFloors": 6,
       "suggestedAreaSqm": 800,
       "developmentType": "commercial_retail"
@@ -4841,7 +4841,7 @@
           }
         }
       ],
-      "minFloors": 2,
+      "minFloors": 1,
       "maxFloors": 4,
       "suggestedAreaSqm": 250,
       "developmentType": "residential_duplex"
@@ -6577,7 +6577,7 @@
           }
         }
       ],
-      "minFloors": 20,
+      "minFloors": 3,
       "maxFloors": 50,
       "suggestedAreaSqm": 3000,
       "developmentType": "commercial_office"
@@ -11176,148 +11176,6 @@
       }
     },
     {
-      "id": "midcentury_distribution_warehouse",
-    "suggestedWidth_m": 80,
-    "suggestedDepth_m": 50,
-    "minWidth_m": 55,
-    "maxWidth_m": 110,
-    "minDepth_m": 35,
-    "maxDepth_m": 70,
-    "aspectRatio": "8:5",
-      "shadeId": "#A0A0A0",
-      "title": "Mid-Century Distribution Warehouse",
-      "aestheticCategory": "midcentury_distribution",
-      "description": "Post-war distribution warehouse with efficient clear-span construction, minimal ornament, and functional design for",
-      "buildingSubcategory": "Industrial",
-      "generationTags": [
-        "midcentury_distribution"
-      ],
-      "palette": {
-        "skyTop": "#8fa2b8",
-        "skyBottom": "#c4b896",
-        "ground": "#8a8a7a",
-        "accent": "#A0A0A0"
-      },
-      "styleProfile": {
-        "era": "",
-        "influences": [],
-        "keywords": [],
-        "materials": [
-          "concrete block",
-          "steel framing",
-          "painted steel overhead doors",
-          "built-up roof or metal deck"
-        ]
-      },
-      "facadeDetail": {
-        "primaryMaterial": "concrete block, brick, or tilt-up concrete walls",
-        "secondaryMaterial": "steel framing, minimal glazing",
-        "accentMaterial": "painted steel overhead doors, concrete loading dock",
-        "groundFloor": "truck-height loading dock with multiple overhead doors",
-        "upperFloors": "minimal or no upper floors -- single clear-span volume",
-        "cornice": "simple metal coping or concrete cap",
-        "colorScheme": "neutral grey or buff masonry, painted steel trim"
-      },
-      "roofDetail": {
-        "form": "flat, low-pitched gable, or bowstring truss",
-        "material": "built-up roof or metal deck",
-        "features": "roof-mounted HVAC units, skylights",
-        "aerialAppearance": "flat grey or white membrane roof with HVAC units"
-      },
-      "thumbnailUrl": "/archetypes/buildings/midcentury_distribution_warehouse/hero.png",
-      "variants": [
-        {
-          "id": "warehouse_flat_roof_masonry",
-          "label": "Flat-Roof Masonry Box",
-          "thumbnailUrl": "/archetypes/buildings/midcentury_distribution_warehouse/variant_0.png",
-          "description": "Simple rectangular concrete block or brick warehouse with flat roof, truck dock, and minimal architectural treatment.",
-          "facadeDetail": {
-            "primaryMaterial": "painted concrete masonry block (CMU) walls",
-            "secondaryMaterial": "multiple painted steel overhead doors, aluminum office windows",
-            "groundFloor": "raised loading dock with dock levelers, office entry with metal canopy",
-            "colorScheme": "buff or grey painted CMU, white overhead doors, grey metal trim"
-          },
-          "roofDetail": {
-            "form": "flat with metal coping",
-            "material": "built-up roof with gravel"
-          },
-          "shadeId": null,
-          "palette": {
-            "primary": "#B0B0A0"
-          }
-        },
-        {
-          "id": "warehouse_clear_span_steel",
-          "label": "Clear-Span Steel",
-          "thumbnailUrl": "/archetypes/buildings/midcentury_distribution_warehouse/variant_1.png",
-          "description": "Steel-framed clear-span warehouse with rigid-frame construction, metal wall cladding, and maximum unobstructed interior floor area.",
-          "facadeDetail": {
-            "primaryMaterial": "horizontal corrugated metal cladding in charcoal grey",
-            "secondaryMaterial": "translucent fiberglass daylight panels, glass office front",
-            "groundFloor": "large truck roller doors, glass office entrance",
-            "colorScheme": "charcoal grey metal walls, silver roof, translucent light panels"
-          },
-          "roofDetail": {
-            "form": "low-pitched gable with ridge ventilator",
-            "material": "metal deck with metal cladding"
-          },
-          "shadeId": null,
-          "palette": {
-            "primary": "#634e42"
-          }
-        },
-        {
-          "id": "warehouse_dock_high_concrete",
-          "label": "Dock-High Concrete",
-          "thumbnailUrl": "/archetypes/buildings/midcentury_distribution_warehouse/variant_2.png",
-          "description": "Reinforced concrete dock-high warehouse designed specifically for truck logistics with multiple loading positions and a raised concrete dock.",
-          "facadeDetail": {
-            "primaryMaterial": "tilt-up concrete panels on raised concrete platform",
-            "secondaryMaterial": "continuous concrete loading dock, steel overhead doors",
-            "groundFloor": "raised 1.2m concrete dock platform, dock levelers, bumpers",
-            "colorScheme": "light grey concrete, painted steel doors, yellow bollards"
-          },
-          "roofDetail": {
-            "form": "flat concrete deck with minimal parapet",
-            "material": "concrete slab with membrane"
-          },
-          "shadeId": null,
-          "palette": {
-            "primary": "#cadbbc"
-          }
-        },
-        {
-          "id": "warehouse_glulam_arch",
-          "label": "Glulam Arch",
-          "thumbnailUrl": "/archetypes/buildings/midcentury_distribution_warehouse/variant_3.png",
-          "description": "Warehouse with elegant glued-laminated timber (glulam) arched roof structure, combining the warmth of wood with the clear-span efficiency of an arch.",
-          "facadeDetail": {
-            "primaryMaterial": "glued-laminated timber arches in warm honey color",
-            "secondaryMaterial": "glazed gable end showing arches, corrugated metal side cladding",
-            "groundFloor": "concrete base with loading openings between arch bases",
-            "colorScheme": "warm honey timber arches, silver corrugated metal, glass gable end"
-          },
-          "roofDetail": {
-            "form": "curved glulam three-pin arch (arch IS the roof)",
-            "material": "corrugated metal over timber arches"
-          },
-          "shadeId": null,
-          "palette": {
-            "primary": "#7ef16b"
-          }
-        }
-      ],
-      "minFloors": 1,
-      "maxFloors": 2,
-      "suggestedAreaSqm": 6000,
-      "developmentType": "industrial_warehouse",
-      "renderPrompt": {
-        "mapOverlay": "Replace the colored building block with a photorealistic mid-century distribution warehouse. Keep the exact same building footprint and height. concrete block facades with truck-height loading dock with multiple overhead doors. minimal or no upper floors -- single clear-span volume. simple metal coping or concrete cap. 1-2 storey. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
-        "roofView": "Replace the colored block viewed from above with a flat, low-pitched gable, or bowstring truss with built-up roof or metal deck. roof-mounted HVAC units. Keep surrounding context exactly as-is.",
-        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
-      }
-    },
-    {
       "id": "modern_bigbox_warehouse",
     "suggestedWidth_m": 180,
     "suggestedDepth_m": 90,
@@ -13502,7 +13360,7 @@
         }
       ],
       "minFloors": 1,
-      "maxFloors": 6,
+      "maxFloors": 35,
       "suggestedAreaSqm": 5000,
       "developmentType": "recreational",
       "renderPrompt": {
@@ -14152,8 +14010,8 @@
           "thumbnailUrl": "/archetypes/buildings/solar_farm_agrivoltaics/variant_3.png",
           "minFloors": 1,
           "maxFloors": 1,
-          "suggestedFloorHeight": 200.0,
-          "suggestedAreaSqm": 500000,
+          "suggestedFloorHeight": 10.0,
+          "suggestedAreaSqm": 400,
           "description": "Concentrated solar power plant with a gleaming 200-meter tower, over 10,000 heliostats in precise radial concentric rings, and molten salt storage at base",
           "facadeDetail": {
             "primaryMaterial": "gleaming white concrete tower with receiver at top",
@@ -15058,11 +14916,9 @@
       "developmentType": "mixed_use",
       "buildingSubcategory": "Commercial — Mixed-Use Mid-Rise",
       "description": "Suburban shopping mall site transformed into walkable mixed-use development, adaptive reuse campus, or eco-district",
-      "floorRange": [
-        1,
-        5
-      ],
-      "suggestedArea_m2": 50000,
+      "minFloors": 1,
+      "maxFloors": 8,
+      "suggestedAreaSqm": 50000,
       "variants": [
         {
           "id": "mall_new_town_center",
@@ -15145,11 +15001,9 @@
       "developmentType": "residential_multifamily",
       "buildingSubcategory": "Residential — Rowhouse / Townhouse / Terrace",
       "description": "Stepped or cascading building form where each level sets back to create generous outdoor terraces, inspired by BIG,",
-      "floorRange": [
-        3,
-        20
-      ],
-      "suggestedArea_m2": 5000,
+      "minFloors": 2,
+      "maxFloors": 27,
+      "suggestedAreaSqm": 6500,
       "variants": [
         {
           "id": "terraced_ridgeline",
@@ -31609,8 +31463,9 @@
         "description": "A Glass Tower Modern archetype.",
         "suggestedWidth_m": 30,
         "suggestedDepth_m": 20,
-        "minFloors": 2,
-        "maxFloors": 6,
+        "minFloors": 12,
+        "maxFloors": 50,
+        "suggestedAreaSqm": 2500,
         "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/hero.png",
         "variants": [
             {
@@ -32650,151 +32505,6 @@
                 "roofDetail": {
                     "form": "flat operational rooftop truck court with parapet guard rail and ramp access",
                     "material": "exposed concrete deck with waterproof wearing course; perimeter steel safety railing"
-                }
-            }
-        ]
-    },
-    {
-        "id": "nordic_timber_mid_rise",
-        "title": "Nordic Timber Mid Rise",
-        "buildingSubcategory": "Residential — Mid-Rise Apartment",
-        "developmentType": "residential_multifamily",
-        "aestheticCategory": "contemporary_nordic_timber",
-        "description": "The Nordic Timber Mid-Rise is a mass-timber residential typology drawing on Scandinavian building traditions to deliver warm, biophilic urban housing at mid-rise densities. Structural and cladding timber — ranging from shou sugi ban charred boards to pale CLT panels and stacked log construction — defines each variant's aesthetic identity while sharing a common commitment to natural materials and craft. Programs typically combine residential apartments over active ground-floor uses — cafés, co-working, or community spaces — with generous balconies, planted terraces, and rooftop gardens fostering connection to nature. The typology is well-suited to urban infill, suburban neighbourhood intensification, and eco-quarter masterplans seeking low-carbon structural systems. Renders share a golden-hour warmth that emphasises timber grain, greenery, and a quiet domesticity rarely achieved in conventional concrete mid-rises.",
-        "generationTags": [
-            "mass timber",
-            "CLT",
-            "nordic residential",
-            "biophilic",
-            "balcony facade",
-            "shou sugi ban",
-            "green roof",
-            "sustainable housing",
-            "scandinavian"
-        ],
-        "styleProfile": {
-            "materials": [
-                "cross-laminated timber (CLT)",
-                "charred timber cladding (shou sugi ban)",
-                "natural pine board cladding",
-                "round log structural members",
-                "aluminium-framed glazing",
-                "planted green roof substrate"
-            ],
-            "facadeRhythm": "regular vertical timber bays punctuated by recessed windows and balcony modules; rhythm shifts from tight slatted screens to bold log-stack horizontals depending on variant",
-            "roofForm": "varies from flat planted roof with rooftop pavilion to pitched gable with deep eave overhangs; green sedum roofs prominent in upper variants",
-            "frontageType": "active transparent ground floor with timber columns framing glazed retail or community uses; residential floors above with balcony projections",
-            "windowStyle": "timber-framed casements and fixed picture windows; floor-to-ceiling glazing in gable ends; warm-toned oak or pine reveals",
-            "massing": "compact rectilinear block ranging from intimate 3-storey cottage scale to 10-storey stepped tower with cascading terraces",
-            "heightTendency": "low-to-mid rise, 3–10 storeys depending on variant; taller variant uses setback upper floors with planted terraces",
-            "streetRelationship": "building edge aligned to pavement with transparent ground-floor activation; cyclist parking and street trees reinforce pedestrian-friendly frontage",
-            "renderingMood": "warm golden-hour light enriching timber grain; soft atmospheric haze in lower variants; lush green planting contrasting against dark or pale wood tones",
-            "articulation": "expressed structural timber grid, slatted balcony screens, deep window reveals, and textured log or board cladding provide strong tactile surface quality",
-            "publicRealm": "street-level glazed community or retail uses, bike racks, street trees, planted balcony boxes, and rooftop terraces form a layered green-public interface"
-        },
-        "prompt": {
-            "subject": "A Nordic mass-timber mid-rise residential building with expressed CLT or log structure, warm timber cladding, planted balconies, and active glazed ground floor, set on an urban street in golden-hour light.",
-            "details": [
-                "Facade dominated by natural timber — pale CLT panels, vertical pine boards, charred shou sugi ban cladding, or stacked round logs — giving a warm honey-to-ebony tonal range",
-                "Balconies and terraces feature slatted timber screens, planter boxes with trailing greenery, and steel or timber railings integrated into the structural grid",
-                "Ground floor fully glazed behind expressed timber columns, revealing interior community space, café seating, or co-working with warm artificial lighting",
-                "Roofline varies by variant: flat planted sedum roof with penthouse pavilion, deep-eave pitched gable, or lush green meadow roof with wildflower planting",
-                "Street context includes mature deciduous trees, wide pavements with bicycle parking, and neighbouring low-rise urban fabric reinforcing a neighbourhood-scale presence",
-                "Rendering rendered in soft golden-hour or early-morning light that saturates timber grain with amber warmth and casts long shadows across balcony reveals"
-            ]
-        },
-        "suggestedWidth_m": 28,
-        "suggestedDepth_m": 18,
-        "minFloors": 3,
-        "maxFloors": 10,
-        "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/hero.png",
-        "variants": [
-            {
-                "id": "clt_tower_cascading_terraces",
-                "label": "CLT Tower with Cascading Planted Terraces",
-                "description": "Ten-storey mass-timber tower clad entirely in warm honey-toned vertical timber boards; upper floors step back in section to create cascading planted terraces with lush green balcony boxes; expressed timber structural grid and slatted screens across full facade; glazed ground-floor community hall visible through open timber colonnade.",
-                "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/variant_0.png",
-                "color": "#C8874A",
-                "minFloors": 8,
-                "maxFloors": 10,
-                "suggestedFloorHeight": 3.4,
-                "suggestedAreaSqm": 5200,
-                "facadeDetail": {
-                    "primaryMaterial": "vertical natural pine timber boards",
-                    "secondaryMaterial": "expressed CLT structural columns and beams",
-                    "accentMaterial": "slatted timber balcony screens with planted green boxes",
-                    "groundFloor": "full-height glazing behind open timber colonnade; community dining space visible within",
-                    "colorScheme": "warm honey-amber timber with green planting accents and pale sky backdrop"
-                },
-                "roofDetail": {
-                    "form": "flat planted rooftop terrace with timber pergola pavilion and rooftop garden at crown",
-                    "material": "sedum green roof membrane with timber decking and steel balustrade"
-                }
-            },
-            {
-                "id": "charred_timber_cottage_block",
-                "label": "Shou Sugi Ban Charred Cottage Block",
-                "description": "Compact 3-storey charred-timber residential block with deep-pitched gable roof and broad overhanging eaves; entire facade clad in vertical shou sugi ban blackened boards contrasted by natural oak window reveals and a warm timber ground-floor entry portal; intimate suburban neighbourhood scale with residential setback and mature street trees.",
-                "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/variant_1.png",
-                "color": "#2C2318",
-                "minFloors": 3,
-                "maxFloors": 4,
-                "suggestedFloorHeight": 3.2,
-                "suggestedAreaSqm": 900,
-                "facadeDetail": {
-                    "primaryMaterial": "charred shou sugi ban vertical timber cladding",
-                    "secondaryMaterial": "natural oak window frames and reveals",
-                    "accentMaterial": "warm timber entry door portal with brass hardware",
-                    "groundFloor": "flush charred-board facade with recessed timber entry and flanking windows showing warm interior lighting",
-                    "colorScheme": "near-black charred timber with amber oak reveals against a soft misty morning sky"
-                },
-                "roofDetail": {
-                    "form": "steep symmetrical pitched gable with deep eave overhangs and small rooftop terrace cutouts at corners",
-                    "material": "dark metal standing-seam roof matching charred cladding palette"
-                }
-            },
-            {
-                "id": "pale_clt_panel_infill",
-                "label": "Pale CLT Panel Urban Infill Block",
-                "description": "Five-storey contemporary infill block clad in large-format pale blonde CLT or plywood composite panels with dark aluminium window frames and corner reveals; flat roofline with accessible rooftop terrace and small penthouse volume clad in vertical timber strips; glazed active ground floor housing community or retail uses; clean modernist massing on urban street corner.",
-                "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/variant_2.png",
-                "color": "#D4C5A0",
-                "minFloors": 4,
-                "maxFloors": 6,
-                "suggestedFloorHeight": 3.3,
-                "suggestedAreaSqm": 2000,
-                "facadeDetail": {
-                    "primaryMaterial": "large-format pale blonde CLT panel cladding",
-                    "secondaryMaterial": "dark charcoal aluminium window frames and corner trim",
-                    "accentMaterial": "vertical natural timber strips on rooftop penthouse volume",
-                    "groundFloor": "full-width glazing with slim dark framing revealing community workshop and café interior",
-                    "colorScheme": "pale straw-blonde timber panels with dark graphite frame accents and light grey pavement"
-                },
-                "roofDetail": {
-                    "form": "flat roof with accessible terrace, steel-rail balustrade, and set-back penthouse pavilion",
-                    "material": "membrane flat roof with timber-decked terrace and dark aluminium coping"
-                }
-            },
-            {
-                "id": "log_stack_green_roof_block",
-                "label": "Round Log Stack with Meadow Green Roof",
-                "description": "Five-storey urban corner block constructed with exposed stacked round-log structural members forming a bold horizontal textured facade; large picture windows set between log columns across all floors; generous projecting ground-floor colonnade with outdoor seating; lush wildflower meadow green roof crowning the building and a planted mid-level terrace belt at first-floor setback.",
-                "thumbnailUrl": "/archetypes/buildings/nordic-timber-mid-rise/variant_3.png",
-                "color": "#A07D52",
-                "minFloors": 4,
-                "maxFloors": 6,
-                "suggestedFloorHeight": 3.5,
-                "suggestedAreaSqm": 2400,
-                "facadeDetail": {
-                    "primaryMaterial": "exposed stacked round log structural members",
-                    "secondaryMaterial": "dark aluminium-framed floor-to-ceiling picture windows",
-                    "accentMaterial": "planted green terrace belt and wildflower meadow roof edge",
-                    "groundFloor": "open round-log colonnade with recessed outdoor seating terrace and low planting beds",
-                    "colorScheme": "mid-tone natural log brown with deep green wildflower roof and warm golden sunlight glancing across log texture"
-                },
-                "roofDetail": {
-                    "form": "low-pitched gable roofline buried under thick wildflower meadow green roof; planted terrace at first-floor setback level",
-                    "material": "extensive sedum and wildflower meadow green roof over insulated timber structure; timber fascia at eaves"
                 }
             }
         ]

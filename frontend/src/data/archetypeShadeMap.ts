@@ -150,7 +150,6 @@ export const SHADE_MAP: Record<string, string> = {
   brutalist_utility_heavy_industrial: '#833a20',
   early_20c_megastructure_industrial: '#944328',
   romanesque_revival_warehouse:       '#682a14',
-  midcentury_distribution_warehouse:  '#79331c',
   modern_bigbox_warehouse:            '#8a3c24',
 
   // ── Red family: Hospitality ───────────────────────────────────────
