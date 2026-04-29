@@ -28,7 +28,7 @@ export type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 // ─── SHARED STYLE PROMPTS ────────────────────────────────────────────
 // Single source of truth for all render style prompts (used by single-shot, per-zone, and ground passes)
 // Style prompts: the overlapping ones are imported from codex verbatim for
-// richer material/lens/weathering language. Stable-only styles (spring, night,
+// richer material/lens/weathering language. Stable-only styles (night,
 // marker-render, collage, risograph, pixel-art) are preserved as-is. Codex-only
 // styles (site-plan variants, isometric) are added.
 const GLOBE_STYLE_PROMPTS: Record<string, string> = {
@@ -38,11 +38,12 @@ const GLOBE_STYLE_PROMPTS: Record<string, string> = {
   'site-plan': 'Top-down 2D architectural site plan in strict orthographic projection. Clean architectural linework with soft flat pastel colors. Stylized trees as simple green circles from above. Professional urban planning drawing quality.',
   'site-plan-photo': 'Professional near-top-down drone photomontage at 100m altitude, 15-20 degrees from nadir. DJI Mavic 3, Hasselblad sensor, 24mm lens f/5.6. Photorealistic materials, accurate short shadows, real rooftop equipment visible. Seamless integration with surrounding satellite context. Documentary drone survey photography of a completed development. CRITICAL: Replace all colored polygon fills completely with photorealistic materials. No flat green, red, blue, or orange overlay colors should remain visible.',
   'site-plan-watercolor': 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
-  spring: 'Photorealistic spring scene, fresh green foliage on trees, cherry blossoms, bright midday sunlight, vivid colors.',
+  blueprint: 'Architectural blueprint cyanotype rendering on aged blueprint paper. Strict orthographic projection looking straight down. Pure white linework on deep Prussian-blue ground — crisp construction lines defining building footprints, roads, property lines, landscape elements. Hatched line patterns indicate grass and pavement. Trees as small white circular symbols. Roads as parallel white lines. Faint vintage paper mottling. No tonal shading, no gradients, no realistic materials. Drafted-by-hand mid-20th-century architectural drawing convention.',
   winter: 'Photorealistic winter scene. Snow-covered roofs with drift patterns. Bare deciduous trees, snow-laden evergreens. Frosted surfaces, salt-grit on plowed paths. Soft diffuse winter light, pale blue-grey sky, long blue-tinted shadows. Specular melt/ice sheen on horizontal surfaces. Warm window glow.',
   night: 'Nighttime scene, city lights, warm interior glow from windows, moonlit sky, wet reflective streets.',
   watercolour: 'Beautiful watercolor architectural painting on textured paper. Soft bleeding edges where colors mix organically, translucent layered washes with white paper glowing through. Loose and artistic, pigment granulation in shadows. Muted earth-tone palette with sage green, ochre, and ultramarine accents.',
   charcoal: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
+  'pen-and-ink': 'Architectural pen-and-ink line drawing on cream-toned drawing paper. Pure ink-only linework, zero colour, zero tonal smudging — every mark is a discrete pen line. Crisp construction lines for footprints and edges. Cross-hatching and parallel-line hatching for shadow, denser where shadows deepen. Line-weight variation from delicate hairlines for distance to confident foreground strokes. Stippling for foliage and weathered surfaces. Trees as outlined forms. Hand-drafted urban-sketcher / mid-20th-century architectural illustration tradition. Cream paper glowing through as highlights.',
   isometric: 'Isometric 3D architectural diagram with clean parallel projection and zero perspective distortion. Perfect 30-degree axonometric geometry. Smooth matte pastel colors with crisp hard edges and thin black outlines. Vector-art aesthetic, contemporary infographic style.',
   'marker-render': 'Handcrafted architectural marker rendering on smooth paper. Precise black ink linework with Copic marker shading. Visible overlapping streaky strokes following surface planes. Warm greys and ochres for facades, olive greens for landscape. White gaps for highlights.',
   'clay-maquette': 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element — buildings, trees, roads, parks, vehicles — is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
@@ -882,7 +883,6 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     photorealistic: 'Golden hour, low warm southwest sun creating strong directional light. Long crisp architectural shadows with deep material contrast — sunlit facades should read bright and textured, shadowed facades cool and recessive. Sharp highlight-to-shadow transitions emphasizing facade depth (cornices, mullions, balcony edges, podium returns) rather than flat global illumination.',
     winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
     atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
-    spring: 'Bright spring midday sun, vivid colors, fresh green light.',
     night: 'Moonlight and city glow, artificial lighting, warm window light.',
   };
 
@@ -992,8 +992,10 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
   const ARTISTIC_STYLES = new Set([
     'site-plan',
     'site-plan-watercolor',
+    'blueprint',
     'watercolour',
     'charcoal',
+    'pen-and-ink',
     'isometric',
     'marker-render',
     'clay-maquette',
@@ -1075,7 +1077,6 @@ const STYLE_GRADES: Record<string, StyleGrade> = {
   'site-plan-photo':   { shadowLift: 5,  highlightWarmth: 6,  saturation: 1.08, vignette: 0.10 },
   winter:              { shadowLift: 8,  highlightWarmth: -3, saturation: 0.85, vignette: 0.10, coolCast: 8 },
   night:               { shadowLift: -8, highlightWarmth: 8,  saturation: 1.08, vignette: 0.35, coolCast: 6 },
-  spring:              { shadowLift: 5,  highlightWarmth: 8,  saturation: 1.15, vignette: 0.08 },
 };
 // Any style not listed gets no grade — artistic stylizations (watercolour,
 // charcoal, isometric, woodblock, marker-render, clay-maquette, collage,

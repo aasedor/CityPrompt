@@ -147,6 +147,7 @@ export interface UseAIRenderReturn {
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
+  // ── Realistic — photo-style final-stage visualization ──
   {
     id: 'photorealistic',
     label: 'Photo Realistic',
@@ -172,6 +173,40 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'flat lighting, generic blue sky, midday sun, sterile, clinical, uniform exposure, low quality, blurry, text, watermark, people, pedestrians, colored polygon fills, flat colored roofs, green roofs on non-eco buildings, blue facades, purple walls, orange surfaces',
   },
   {
+    id: 'winter',
+    label: 'Winter',
+    strength: 0.75,
+    prompt:
+      'Photorealistic winter scene aerial architectural visualization. Snow-covered roofs with realistic drift patterns and accumulation on all horizontal surfaces — ledges, parapets, window sills. Bare deciduous trees with visible branch architecture and no foliage. Evergreen conifers with heavy snow-load clumps on branches. Frosted ground plane showing plowed vs. unplowed contrast — plowed paths with salt-grit residue and thin slush, undisturbed areas with soft powder drifts. Soft diffuse winter daylight from a pale blue-grey overcast sky. Low sun angle casting long blue-tinted shadows. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Warm incandescent glow visible through windows. Frost on exposed metal and glass surfaces.',
+    negative: 'lush green vegetation, summer foliage, bright green lawns, tropical plants, vibrant green trees, warm golden sunlight, low quality, blurry',
+  },
+  // ── Concept — hand-drawn / painterly early-stage exploration ──
+  {
+    id: 'watercolour',
+    label: 'Water Colour',
+    strength: 0.65,
+    prompt:
+      'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
+    negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
+  },
+  {
+    id: 'charcoal',
+    label: 'Charcoal',
+    strength: 0.65,
+    prompt:
+      'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
+    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, smooth, clean lines, low quality, blurry',
+  },
+  {
+    id: 'pen-and-ink',
+    label: 'Pen & Ink',
+    strength: 0.65,
+    prompt:
+      'Architectural pen-and-ink line drawing on cream-toned drawing paper. Strict ink-only linework with zero colour and zero tonal smudging — every mark is a discrete line drawn by a technical pen. Crisp construction lines defining building footprints, roof planes, openings, and material transitions. Cross-hatching and parallel-line hatching for shadow areas, denser hatching for deeper shadows. Visible line-weight variation from delicate hairlines for distant elements to confident heavier strokes for foreground edges. Stippling for soft transitions like foliage, gravel, or weathered surfaces. Trees as outlined forms with minimal shadow hatching. Background dissolves into lighter, sparser linework. Cream paper showing through as the only highlight. Hand-drafted mid-20th-century architectural illustration / contemporary urban-sketcher tradition.',
+    negative: 'photorealistic, photograph, color, paint, watercolor wash, charcoal smudge, tonal blending, gradients, shading without lines, 3D render, perspective distortion, low quality, blurry, text, watermark',
+  },
+  // ── Plan — top-down orthographic / drafted planning views ──
+  {
     id: 'site-plan',
     label: 'Site Plan',
     strength: 0.65,
@@ -188,6 +223,14 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'cartoon, illustration, sketch, painting, artistic, stylized, CGI look, diagram, linework, pastel colors, perfect pristine surfaces, floating buildings, unrealistic shadows, low quality, blurry, text, watermark, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills',
   },
   {
+    id: 'blueprint',
+    label: 'Blueprint',
+    strength: 0.65,
+    prompt:
+      'Architectural blueprint cyanotype rendering on aged blueprint paper. Strict orthographic projection looking straight down at the site. Pure white architectural linework on a deep Prussian-blue ground — crisp construction lines defining building footprints, roads, property lines, and landscape elements. Hatched line patterns indicate grass, pavement, and parking areas. Trees as small white circular symbols with crosshair centers. Roads as parallel white lines. Building footprints shown with thin white outlines and subtle internal cross-hatching. Faint vintage paper texture with slight mottling and edge fade. No tonal shading, no gradients, no realistic materials — pure 2D architectural drawing convention. Drafted-by-hand quality reminiscent of mid-20th-century architectural drawings.',
+    negative: 'photorealistic, photograph, color other than blue and white, gradients, shading, 3D, perspective, oblique angle, eye-level, painterly, watercolor, sketch, pencil grey tones, realistic materials, low quality, blurry, text, watermark, people, vehicles',
+  },
+  {
     id: 'site-plan-watercolor',
     label: 'Site Plan WC',
     strength: 0.65,
@@ -195,22 +238,7 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
       'Near-top-down architectural site plan rendered as a beautiful hand-painted watercolor illustration on heavy textured watercolor paper, viewed from approximately 15-20 degrees above nadir. The layout shows the proposed development from almost directly overhead, maintaining accurate spatial relationships and building footprints. Soft translucent watercolor washes define each zone — warm ochre and sienna for buildings, sage green washes for parks and landscaping, soft grey for roads and paving, ultramarine blue for water features. Building rooftops shown as watercolor-washed forms with faint pencil construction lines visible beneath. Trees depicted as loose circular watercolor daubs in varied greens with wet-on-wet bloom effects. Shadows painted as soft blue-grey washes indicating building height. White watercolor paper glowing through as highlights. Pigment granulation and sedimentation in shadow areas. Bleeding edges where colors mix organically at zone boundaries, creating natural soft transitions. Surrounding context rendered in lighter, more transparent washes fading to white at the edges. Hand-painted architectural competition entry quality.',
     negative: 'photorealistic, photograph, digital, 3D render, sharp edges, perfect lines, perspective, eye-level view, neon colors, flat colored polygon fills, green overlay, red overlay, blue overlay, colored zone fills, low quality, blurry',
   },
-  {
-    id: 'winter',
-    label: 'Winter',
-    strength: 0.75,
-    prompt:
-      'Photorealistic winter scene aerial architectural visualization. Snow-covered roofs with realistic drift patterns and accumulation on all horizontal surfaces — ledges, parapets, window sills. Bare deciduous trees with visible branch architecture and no foliage. Evergreen conifers with heavy snow-load clumps on branches. Frosted ground plane showing plowed vs. unplowed contrast — plowed paths with salt-grit residue and thin slush, undisturbed areas with soft powder drifts. Soft diffuse winter daylight from a pale blue-grey overcast sky. Low sun angle casting long blue-tinted shadows. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Warm incandescent glow visible through windows. Frost on exposed metal and glass surfaces.',
-    negative: 'lush green vegetation, summer foliage, bright green lawns, tropical plants, vibrant green trees, warm golden sunlight, low quality, blurry',
-  },
-  {
-    id: 'charcoal',
-    label: 'Charcoal',
-    strength: 0.65,
-    prompt:
-      'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows and expressive gestural line work. High contrast black and white, full tonal range from bright white paper to deep velvety black charcoal. Focus on the interplay of stark light and heavy shadow. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Visible paper grain and charcoal particle texture throughout. Artistic and raw gallery-quality architectural drawing.',
-    negative: 'photorealistic, photograph, color, painting, watercolor, digital, 3D render, cartoon, smooth, clean lines, low quality, blurry',
-  },
+  // ── Stylized — bold, graphic, distinctive ──
   {
     id: 'isometric',
     label: 'Isometric',
@@ -220,28 +248,20 @@ export const AI_RENDER_STYLES: AIRenderStyle[] = [
     negative: 'photorealistic, photograph, perspective, vanishing point, gradients, shading, realistic shadows, texture, painterly, sketch, rough, low quality, blurry',
   },
   {
-    id: 'woodblock',
-    label: 'Wood Block',
-    strength: 0.65,
-    prompt:
-      'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
-    negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, smooth, modern, low quality, blurry',
-  },
-  {
-    id: 'watercolour',
-    label: 'Water Colour',
-    strength: 0.65,
-    prompt:
-      'Beautiful watercolor architectural painting on highly textured watercolor paper. Soft bleeding edges where colors mix organically, translucent layered color washes with white paper glowing through as highlights. Bright airy and inviting atmosphere. Loose and artistic representation with pigment granulation and sedimentation in shadow areas. Faint underlying pencil construction lines visible beneath washes. Wet-on-wet bloom effects and cauliflower edges. Muted earth-tone palette with sage green, ochre, and ultramarine accents. Hand-painted competition entry by a master watercolourist.',
-    negative: 'photorealistic, photograph, digital, sharp edges, perfect lines, 3D render, high contrast, neon colors, acrylic, oil paint, low quality, blurry',
-  },
-  {
     id: 'clay-maquette',
     label: 'Clay Maquette',
     strength: 0.65,
     prompt:
       'Photorealistic macro photography of a physical architectural scale model carved entirely from a single block of pure white matte plaster or foam board. CRITICAL: EVERY element in the entire scene — every building, every tree, every road, every park, every fence, every vehicle — is made of the SAME pure white matte material with ZERO color variation. No colored surfaces whatsoever. No green for parks, no gray for roads, no brown for brick — everything is identical pure white plaster. The ONLY visual differentiation comes from form, shadow, and depth. Studio lighting with a single soft overhead softbox creating deep ambient occlusion shadows in cool gray tones that define every edge, setback, roof pitch, and topographic contour. High-angle isometric aerial view. Shallow depth of field with tilt-shift miniature effect. The model sits on a white base board. This is a monochromatic white architectural maquette — a physical object photographed in a studio.',
     negative: 'ANY color whatsoever, green parks, gray roads, brown brick, blue water, red buildings, orange surfaces, purple walls, colored roofs, realistic materials, photorealistic buildings, realistic vegetation, people, cars, outdoor lighting, sky background, clouds, digital rendering',
+  },
+  {
+    id: 'woodblock',
+    label: 'Wood Block',
+    strength: 0.65,
+    prompt:
+      'Stylized woodblock print of an urban architectural scene. Bold thick black outlines defining all forms, flat and limited vintage color palette of 4-6 colors with crisp clean separation. Visible wood grain texture heavily integrated into the image. Zero gradation or blending within color areas. Graphic retro and stylized architectural illustration with strong balanced composition. Decorative patterned elements, depth through layered overlapping color planes. Museum-quality fine art print.',
+    negative: 'photorealistic, photograph, digital, 3D render, gradients, shading, blending, watercolor bleeding, cartoon, smooth, modern, low quality, blurry',
   },
 ];
 
@@ -296,6 +316,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     label: 'Charcoal',
     prompt: 'Dramatic charcoal sketch on rough textured paper with deep black smudged shadows. High contrast black and white, full tonal range. Soft blended areas for atmosphere, sharp charcoal edge lines for architectural definition. Gallery-quality architectural drawing.',
   },
+  'pen-and-ink': {
+    id: 'pen-and-ink',
+    label: 'Pen & Ink',
+    prompt: 'Architectural pen-and-ink line drawing on cream paper. Pure ink-only linework with zero colour and zero tonal smudging. Crisp construction lines, cross-hatching for shadow, line-weight variation for depth. Stippling for foliage and weathered surfaces. Hand-drafted urban-sketcher tradition. Cream paper as the only highlight.',
+  },
   isometric: {
     id: 'isometric',
     label: 'Isometric',
@@ -315,6 +340,11 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     id: 'clay-maquette',
     label: 'Clay Maquette',
     prompt: 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element — buildings, trees, roads, parks, vehicles — is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
+  },
+  blueprint: {
+    id: 'blueprint',
+    label: 'Blueprint',
+    prompt: 'Architectural blueprint cyanotype on aged blueprint paper. Strict orthographic projection straight down. Pure white linework on deep Prussian-blue ground — crisp construction lines, building footprints, property lines, hatched landscape patterns. Trees as small white circular symbols. Faint vintage paper mottling. No tonal shading, no gradients, no realistic materials. Mid-20th-century architectural drafting convention.',
   },
 };
 
@@ -1306,7 +1336,7 @@ function buildSCHEMAPrompt(
 ): string {
   const styleId = options.renderStyleId || options.style || 'photorealistic';
   const style = GEMINI_STYLE_MODIFIERS[styleId];
-  const isArtistic = ['watercolour', 'charcoal', 'isometric', 'woodblock', 'site-plan', 'site-plan-watercolor', 'clay-maquette'].includes(styleId);
+  const isArtistic = ['watercolour', 'charcoal', 'isometric', 'woodblock', 'site-plan', 'site-plan-watercolor', 'clay-maquette', 'blueprint', 'pen-and-ink'].includes(styleId);
   const isSitePlan = styleId === 'site-plan' || styleId === 'site-plan-watercolor' || styleId === 'site-plan-photo';
   const isClay = styleId === 'clay-maquette';
 

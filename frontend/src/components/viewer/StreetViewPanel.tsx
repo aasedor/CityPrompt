@@ -17,6 +17,7 @@ const COMPASS_LABELS: Record<number, string> = {
 };
 
 const STREET_VIEW_STYLES = [
+  // ── Realistic — photo-style final-stage visualization ──
   {
     id: 'photorealistic',
     label: 'Photo',
@@ -33,6 +34,12 @@ const STREET_VIEW_STYLES = [
     prompt: 'Cinematic street-level architectural photograph emphasizing dramatic atmospheric conditions and emotional lighting. Camera at human eye height, 50mm lens, f/2.8 with shallow depth of field -- foreground architectural details tack-sharp while the distant streetscape dissolves into soft atmospheric bokeh. The scene is captured during blue hour, approximately 20 minutes after sunset. The sky transitions from deep indigo overhead through bands of magenta and burnt orange at the horizon. All ambient exterior light is cool blue-violet while interior lights glow intensely warm amber and gold through floor-to-ceiling glazing, creating strong warm-cool colour temperature contrast that defines every window bay and entrance. Recent rainfall has left the entire street surface wet -- pavement, sidewalks, and plaza surfaces act as dark mirrors reflecting the glowing building facades, the coloured sky gradient, and the amber pools of light spilling from ground-floor retail. Shallow puddles collected in slight pavement depressions create concentrated reflections. Subtle volumetric moisture visible in the air around exterior light sources, creating soft haloes and gentle god rays where interior light spills outward through entrance lobbies. Building materials respond to the wet conditions -- concrete darkened two shades, brushed stainless steel panels showing streaky water rivulets, timber cladding saturated to a richer tone. Atmospheric perspective compresses the background -- distant buildings reduced to cool blue-grey silhouettes with pinpoints of warm window light. Thin wisps of low cloud or mist drifting at rooftop level. The mood is contemplative, cinematic, and deeply atmospheric -- this is an award-winning architectural photograph, not a technical documentation image.',
   },
   {
+    id: 'winter',
+    label: 'Winter',
+    prompt: 'Photorealistic winter street-level architectural scene. Snow accumulation on all horizontal surfaces -- rooftops, ledges, window sills, and parapets show realistic drift patterns. Bare deciduous trees with visible branch architecture and zero foliage. Evergreen conifers with heavy snow-load clumps on branches. Frost visible on metal railings, glass surfaces, and exposed stone. Plowed street surfaces with salt-grit residue, thin slush patches, and tire tracks in compacted snow. Cobblestone crevices packed with white snow while dark wet stone crowns create high-contrast grid pattern. Snow piled in sculptural windrows at curb edges. Warm incandescent glow spilling from shop windows and entrance lobbies contrasting against the cool winter palette. Pale blue-grey overcast sky with soft diffuse winter daylight. Low sun angle casting long blue-tinted shadows. Exhaled breath vapor from any figures. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Snow-capped stone lintels and frosted wrought-iron fences on heritage buildings.',
+  },
+  // ── Concept — hand-drawn / painterly early-stage exploration ──
+  {
     id: 'watercolour',
     label: 'Watercolour',
     prompt: 'A beautiful, evocative architectural watercolour painting on rough cold-pressed watercolour paper. The artistic style is intentionally loose, expressive, and highly atmospheric, heavily utilizing traditional wet-on-wet painting techniques with visible fluid brushstrokes and natural unpredictable pigment bleeds at the edges of forms. Architecture outlined very loosely with delicate jittery black ink pen linework mimicking a masterful ink and wash architectural sketch. Colour palette of highly translucent luminous pastels — soft ochre and raw sienna for stone and facades, muted atmospheric cyan for sky, sap green and viridian for foliage, concentrated splashes of colour on awnings and signage to draw the eye. Lighting is bright and ethereal, leaving generous amounts of stark white negative space on the textured paper to represent glaring sunlight — the paper itself creates the highlights since watercolourists cannot paint white. Pigment granulation visible in shadow areas. Foreground facades rendered with tighter detail, background elements dissolve into soft suggestive washes. Masterful traditional media, concept art, architectural sketch.',
@@ -48,6 +55,13 @@ const STREET_VIEW_STYLES = [
     prompt: 'A classic handcrafted architectural marker rendering on smooth bleedproof presentation paper. The scene is drafted with precise straight black ink linework using a technical pen defining all architectural edges and material boundaries. Colour and shading applied using simulated alcohol-based Copic design markers. The image must clearly display characteristic overlapping streaky marker strokes with visible stroke direction following surface planes, and subtle ink bleeds at the edges of colour blocks. Colour palette is vibrant but highly controlled — warm greys and ochres for building facades, olive and sap greens for landscape, bold teal and cerulean for sky. Stark white gaps deliberately left between marker strokes to represent highlights and reflected light. Bright optimistic illustrative lighting. White gel pen highlights on glass reflections and material edges. Entourage elements like trees and street furniture rendered in quick confident marker strokes. Traditional architectural presentation board aesthetic, retro design illustration, highly tactile.',
   },
   {
+    id: 'pen-and-ink',
+    label: 'Pen & Ink',
+    prompt: 'A detailed architectural pen-and-ink line drawing of the streetscape on cream drawing paper. Strict ink-only linework with absolutely zero colour and zero tonal smudging — every mark is a deliberate line drawn by a technical pen. Strong perspective with vanishing points and accurate eye-level composition. Building facades defined by precise technical-pen linework with cross-hatching for shadow areas — denser hatching in deeper shadows, sparser hatching in mid-tones, cream paper showing through for highlights. Line-weight variation: delicate hairlines for distant elements, confident heavier lines for foreground edges. Stippling for foliage, paving texture, and weathered surfaces. Street furniture and entourage drawn with quick economical line work. Background facades dissolve into lighter sketchy linework. Cream paper glowing through as the brightest tones. Urban-sketcher tradition, masterful technical pen drawing, architectural illustration.',
+  },
+  // ── Stylized — bold, graphic, distinctive ──
+  // (Plan group omitted — street view excludes orthographic styles by design.)
+  {
     id: 'clay-model',
     label: 'Clay',
     prompt: 'A pristine physical white clay architectural massing model of the entire streetscape. The entirety of the scene — buildings, streets, sidewalks, trees, street furniture — is constructed from a single matte untextured white plaster material. There are absolutely zero colours or distinct material finishes present anywhere. All visual definition relies exclusively on high-quality Ambient Occlusion rendering to define sharp edges, depth, and spatial relationships of intersecting geometric volumes. Lighting is soft highly diffused studio softbox setup casting smooth gradient shadows across the pure white forms, emphasizing architectural massing and volumetric proportions without visual distractions. Trees represented as simplified smooth white sculptural forms. The scene resembles a physical foam-board scale model photographed in a professional studio. Minimalist clean exhibition-quality physical scale model, architectural review presentation.',
@@ -58,15 +72,18 @@ const STREET_VIEW_STYLES = [
     prompt: 'A vibrant post-digital architectural collage depicting the streetscape as a highly stylized mixed media composition resembling a physical mood board. Architecture represented by flat unshaded blocks of pastel colours and oversized mismatched photographic textures of brick concrete and wood applied like rough paper cut-outs with visible torn edges. Trees and landscape elements are vintage botanical illustration cut-outs pasted at varied scales. The sky is an abstract geometric pattern rather than realistic. Pedestrian figures represented by monochromatic vintage photographic cut-outs with stark white paper borders pasted seemingly at varied scales into the scene. Lighting is intentionally flat and illustrative emphasizing the overlapping layers and surreal disjointed scale of different elements. Visible paper texture and adhesive marks throughout. Avant-garde architectural visualization, artistic narrative presentation, Dadaist pop-art influences, design competition aesthetic.',
   },
   {
-    id: 'winter',
-    label: 'Winter',
-    prompt: 'Photorealistic winter street-level architectural scene. Snow accumulation on all horizontal surfaces -- rooftops, ledges, window sills, and parapets show realistic drift patterns. Bare deciduous trees with visible branch architecture and zero foliage. Evergreen conifers with heavy snow-load clumps on branches. Frost visible on metal railings, glass surfaces, and exposed stone. Plowed street surfaces with salt-grit residue, thin slush patches, and tire tracks in compacted snow. Cobblestone crevices packed with white snow while dark wet stone crowns create high-contrast grid pattern. Snow piled in sculptural windrows at curb edges. Warm incandescent glow spilling from shop windows and entrance lobbies contrasting against the cool winter palette. Pale blue-grey overcast sky with soft diffuse winter daylight. Low sun angle casting long blue-tinted shadows. Exhaled breath vapor from any figures. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Snow-capped stone lintels and frosted wrought-iron fences on heritage buildings.',
-  },
-  {
     id: 'pixel-art',
     label: 'Pixel Art',
     prompt: '16-bit pixel art architectural streetscape, strictly grid-aligned with every element constructed from uniform square pixels on a rigid pixel grid. Nearest-neighbour scaling with absolutely zero anti-aliasing, zero smoothing, zero sub-pixel rendering -- only hard stepped pixel edges throughout. Strict limited palette of exactly 16 carefully chosen colours. All shading and tonal transitions achieved exclusively through deliberate checkerboard dithering patterns and ordered Bayer-matrix dithering -- zero smooth gradients anywhere. Each window is an exact small pixel rectangle, each brick course a precise alternating pixel row, each roofline a clean 2:1 stepped pixel diagonal. Dark selective outlines on architectural edges transitioning to lighter colour outlines on sunlit sides. Warm amber pixel-glow from windows contrasting against cool blue-purple evening sky. Atmospheric pixel haze in the background with reduced palette depth for distance. Trees as stylized rounded pixel clusters with dithered foliage. SNES Final Fantasy VI town background, Chrono Trigger overworld, classic 16-bit JRPG city scene, demoscene pixel art, waneella atmospheric pixel cityscape.',
   },
+] as const;
+
+// UI grouping for the style picker — Plan group omitted because street view
+// excludes orthographic styles by design.
+const STREET_VIEW_STYLE_GROUPS = [
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
+  { label: 'Stylized', ids: ['clay-model', 'collage', 'pixel-art'] },
 ] as const;
 
 function compassLabel(angle: number): string {
@@ -376,19 +393,30 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         <div className="h-8 w-px bg-primary-950/10" />
 
         {/* Style selector */}
-        <div className="flex flex-col gap-0.5">
-          {STREET_VIEW_STYLES.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => setSelectedStyle(s.id)}
-              className={`rounded px-2 py-0.5 text-[10px] font-medium transition ${
-                selectedStyle === s.id
-                  ? 'bg-amber-500/20 text-amber-700'
-                  : 'text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950/70'
-              }`}
-            >
-              {s.label}
-            </button>
+        <div className="flex flex-col gap-1.5">
+          {STREET_VIEW_STYLE_GROUPS.map(group => (
+            <div key={group.label}>
+              <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-primary-950/30">{group.label}</div>
+              <div className="flex flex-col gap-0.5">
+                {group.ids.map(id => {
+                  const s = STREET_VIEW_STYLES.find(x => x.id === id);
+                  if (!s) return null;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => setSelectedStyle(s.id)}
+                      className={`rounded px-2 py-0.5 text-[10px] font-medium transition ${
+                        selectedStyle === s.id
+                          ? 'bg-amber-500/20 text-amber-700'
+                          : 'text-primary-950/40 hover:bg-primary-950/[0.06] hover:text-primary-950/70'
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ))}
         </div>
 

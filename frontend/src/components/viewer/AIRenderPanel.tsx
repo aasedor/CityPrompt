@@ -16,6 +16,19 @@ import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 
 // ---------------------------------------------------------------------------
+// UI grouping for the style picker
+// ---------------------------------------------------------------------------
+// Keeps the new-user taxonomy (Realistic / Concept / Plan / Stylized) visible
+// in the picker. Update this when adding a style so it lands in the right group.
+
+const STYLE_GROUPS = [
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Concept', ids: ['watercolour', 'charcoal', 'pen-and-ink'] },
+  { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
+  { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock'] },
+] as const;
+
+// ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
 
@@ -318,19 +331,30 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
         {/* ── Style picker ─────────────────────────────────────────────── */}
         <div>
           <label className="mb-1.5 block text-xs font-medium text-gray-400">Style</label>
-          <div className="grid grid-cols-3 gap-1">
-            {AI_RENDER_STYLES.map((style) => (
-              <button
-                key={style.id}
-                onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
-                className={`rounded-lg px-2 py-1.5 text-[11px] font-medium transition ${
-                  selectedStyle === style.id
-                    ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
-                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
-                }`}
-              >
-                {style.label}
-              </button>
+          <div className="space-y-2">
+            {STYLE_GROUPS.map(group => (
+              <div key={group.label}>
+                <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-500">{group.label}</div>
+                <div className="grid grid-cols-3 gap-1">
+                  {group.ids.map(id => {
+                    const style = AI_RENDER_STYLES.find(s => s.id === id);
+                    if (!style) return null;
+                    return (
+                      <button
+                        key={style.id}
+                        onClick={() => { setSelectedStyle(style.id); onStyleChange?.(style.id); }}
+                        className={`rounded-lg px-2 py-1.5 text-[11px] font-medium transition ${
+                          selectedStyle === style.id
+                            ? 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/50'
+                            : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-300'
+                        }`}
+                      >
+                        {style.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </div>

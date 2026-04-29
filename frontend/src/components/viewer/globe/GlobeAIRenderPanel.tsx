@@ -67,29 +67,38 @@ interface GlobeAIRenderPanelProps {
 }
 
 const STYLES = [
-  // Photo family
+  // ── Realistic — photo-style final-stage visualization ──
   { id: 'photorealistic', label: 'Photo Realistic' },
   { id: 'photomontage', label: 'Photomontage' },
   { id: 'atmospheric', label: 'Atmospheric' },
-  // Site plan family (ported from codex — near-top-down styles)
-  { id: 'site-plan', label: 'Site Plan' },
-  { id: 'site-plan-photo', label: 'Site Plan Photo' },
-  { id: 'site-plan-watercolor', label: 'Site Plan WC' },
-  // Seasonal
-  { id: 'spring', label: 'Spring' },
   { id: 'winter', label: 'Winter' },
   { id: 'night', label: 'Night' },
-  // Artistic
+  // ── Concept — hand-drawn / painterly early-stage exploration ──
   { id: 'watercolour', label: 'Watercolour' },
   { id: 'charcoal', label: 'Charcoal' },
-  { id: 'isometric', label: 'Isometric' },
-  { id: 'woodblock', label: 'Wood Block' },
   { id: 'marker-render', label: 'Marker' },
+  { id: 'pen-and-ink', label: 'Pen & Ink' },
+  // ── Plan — top-down orthographic / drafted planning views ──
+  { id: 'site-plan', label: 'Site Plan' },
+  { id: 'site-plan-photo', label: 'Site Plan Photo' },
+  { id: 'blueprint', label: 'Blueprint' },
+  { id: 'site-plan-watercolor', label: 'Site Plan WC' },
+  // ── Stylized — bold, graphic, distinctive ──
+  { id: 'isometric', label: 'Isometric' },
   { id: 'clay-maquette', label: 'Clay' },
-  // Experimental
+  { id: 'woodblock', label: 'Wood Block' },
   { id: 'collage', label: 'Collage' },
   { id: 'risograph', label: 'Risograph' },
   { id: 'pixel-art', label: 'Pixel Art' },
+] as const;
+
+// UI grouping for the style picker — keeps the new-user taxonomy visible.
+// Update this when adding a style so it lands in the right group in the UI.
+const STYLE_GROUPS = [
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter', 'night'] },
+  { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
+  { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
+  { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },
 ] as const;
 
 type LightboxRender = {
@@ -484,19 +493,30 @@ export function GlobeAIRenderPanel({
         {/* Style selector */}
         <div>
           <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Style</div>
-          <div className="flex flex-wrap gap-1">
-            {STYLES.map(s => (
-              <button
-                key={s.id}
-                onClick={() => setSelectedStyle(s.id)}
-                className={`rounded-lg px-2 py-1 text-[11px] font-medium transition ${
-                  selectedStyle === s.id
-                    ? 'bg-amber-500 text-black'
-                    : 'bg-white/10 text-white/70 hover:bg-white/20'
-                }`}
-              >
-                {s.label}
-              </button>
+          <div className="space-y-1.5">
+            {STYLE_GROUPS.map(group => (
+              <div key={group.label}>
+                <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-gray-500/70">{group.label}</div>
+                <div className="flex flex-wrap gap-1">
+                  {group.ids.map(id => {
+                    const s = STYLES.find(x => x.id === id);
+                    if (!s) return null;
+                    return (
+                      <button
+                        key={s.id}
+                        onClick={() => setSelectedStyle(s.id)}
+                        className={`rounded-lg px-2 py-1 text-[11px] font-medium transition ${
+                          selectedStyle === s.id
+                            ? 'bg-amber-500 text-black'
+                            : 'bg-white/10 text-white/70 hover:bg-white/20'
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </div>
