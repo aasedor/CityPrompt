@@ -9,22 +9,18 @@ import {
   LogOut,
   Menu,
   MessageSquare,
-  Monitor,
-  Moon,
   Shield,
-  Sun,
   User,
   X,
 } from 'lucide-react';
 import { useAuthStore } from '@/store';
-import { useThemeStore } from '@/store/themeStore';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Layout() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const { theme, setTheme } = useThemeStore();
   const userMenuRef = useRef<HTMLDivElement>(null);
   const canAdmin = Boolean(user?.role && ['admin', 'cofounder'].includes(user.role));
   const canAnalytics = user?.role === 'cofounder';
@@ -56,18 +52,13 @@ export function Layout() {
     }
   }, [userMenuOpen]);
 
-  const themeButtonClassName = (value: 'light' | 'system' | 'dark') =>
-    `p-1.5 transition-colors ${
-      theme === value ? 'bg-[#c9ff3d] text-[#151515]' : 'text-[#151515]/45 hover:text-[#151515]'
-    }`;
-
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#fff9ec] text-[#151515]">
       <div
-        className="pointer-events-none fixed inset-0 z-0 opacity-[0.11]"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.11] dark:opacity-[0.18]"
         style={{
           backgroundImage:
-            'linear-gradient(#151515 1px, transparent 1px), linear-gradient(90deg, #151515 1px, transparent 1px)',
+            'linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
@@ -75,7 +66,7 @@ export function Layout() {
       <header className="relative z-[100] border-b-2 border-[#151515] bg-[#fff9ec]/95 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 sm:h-10 sm:w-10" />
+            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 dark:invert sm:h-10 sm:w-10" />
             <span className="text-sm font-black uppercase text-[#151515] sm:text-base">City Prompt</span>
           </Link>
 
@@ -116,29 +107,7 @@ export function Layout() {
               </div>
             )}
 
-            <div className="flex items-center rounded-full border-2 border-[#151515] bg-white">
-              <button
-                onClick={() => setTheme('light')}
-                className={`rounded-l-full ${themeButtonClassName('light')}`}
-                title="Light mode"
-              >
-                <Sun size={14} />
-              </button>
-              <button
-                onClick={() => setTheme('system')}
-                className={themeButtonClassName('system')}
-                title="System theme"
-              >
-                <Monitor size={14} />
-              </button>
-              <button
-                onClick={() => setTheme('dark')}
-                className={`rounded-r-full ${themeButtonClassName('dark')}`}
-                title="Dark mode"
-              >
-                <Moon size={14} />
-              </button>
-            </div>
+            <ThemeToggle />
 
             {isAuthenticated ? (
               <div className="relative" ref={userMenuRef}>
@@ -225,6 +194,7 @@ export function Layout() {
             )}
             {isAuthenticated ? (
               <>
+                <ThemeToggle className="mb-2 w-max" />
                 <div className="flex items-center gap-1.5 px-3 py-2 text-sm font-black text-[#151515]/60">
                   <User size={14} />
                   {user?.full_name || user?.email}
@@ -243,14 +213,17 @@ export function Layout() {
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`mt-1 flex items-center gap-1 ${mobileLinkClassName}`}
-              >
-                <LogIn size={14} />
-                Sign in
-              </Link>
+              <>
+                <ThemeToggle className="mb-2 mt-1 w-max" />
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-1 ${mobileLinkClassName}`}
+                >
+                  <LogIn size={14} />
+                  Sign in
+                </Link>
+              </>
             )}
           </div>
         )}

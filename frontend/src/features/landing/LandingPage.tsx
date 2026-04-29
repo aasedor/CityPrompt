@@ -15,6 +15,7 @@ import {
   WandSparkles,
 } from 'lucide-react';
 import { useAuthStore } from '@/store';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const imageAssets = {
   prompt: '/images/landing-prompt.jpg',
@@ -25,10 +26,10 @@ const imageAssets = {
 function GridBackground() {
   return (
     <div
-      className="pointer-events-none absolute inset-0 opacity-[0.16]"
+      className="pointer-events-none absolute inset-0 opacity-[0.16] dark:opacity-[0.22]"
       style={{
         backgroundImage:
-          'linear-gradient(#151515 1px, transparent 1px), linear-gradient(90deg, #151515 1px, transparent 1px)',
+          'linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
         backgroundSize: '32px 32px',
       }}
     />
@@ -38,7 +39,7 @@ function GridBackground() {
 function BrandMark() {
   return (
     <Link to="/" className="inline-flex items-center gap-2 rounded-md px-1 py-1 text-[#151515]">
-      <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9" />
+      <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 dark:invert" />
       <span className="text-sm font-black uppercase">City Prompt</span>
     </Link>
   );
@@ -242,6 +243,7 @@ export function LandingPage() {
             </nav>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               {isAuthenticated ? (
                 <Link
                   to="/projects"

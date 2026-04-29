@@ -185,7 +185,7 @@ export function ProjectListPage() {
   };
 
   const statusColors: Record<string, string> = {
-    draft: 'border-2 border-[#151515] bg-white text-[#151515]',
+    draft: 'border-2 border-[#151515] bg-[#fefaf7] text-[#151515]',
     processing: 'border-2 border-[#151515] bg-[#f2b84b] text-[#151515]',
     ready: 'border-2 border-[#151515] bg-[#c9ff3d] text-[#151515]',
     archived: 'border-2 border-[#151515] bg-[#d7d2c6] text-[#151515]',

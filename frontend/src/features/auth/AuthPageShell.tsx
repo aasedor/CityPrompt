@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Image as ImageIcon, Layers3, Sparkles } from 'lucide-react';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 export const authFormClassName =
   'space-y-4 rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[10px_10px_0_0_#151515] sm:p-6';
@@ -32,10 +33,10 @@ interface AuthPageShellProps {
 function GridBackground() {
   return (
     <div
-      className="pointer-events-none absolute inset-0 opacity-[0.16]"
+      className="pointer-events-none absolute inset-0 opacity-[0.16] dark:opacity-[0.22]"
       style={{
         backgroundImage:
-          'linear-gradient(#151515 1px, transparent 1px), linear-gradient(90deg, #151515 1px, transparent 1px)',
+          'linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
         backgroundSize: '32px 32px',
       }}
     />
@@ -72,16 +73,19 @@ export function AuthPageShell({
 
       <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/" className="inline-flex items-center gap-2 rounded-md px-1 py-1">
-          <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9" />
+          <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 dark:invert" />
           <span className="text-sm font-black uppercase">City Prompt</span>
         </Link>
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 rounded-full border-2 border-[#151515] bg-white px-4 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-[#c9ff3d]"
-        >
-          <ArrowLeft size={14} />
-          Home
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-[#151515] bg-white px-4 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] hover:bg-[#c9ff3d]"
+          >
+            <ArrowLeft size={14} />
+            Home
+          </Link>
+        </div>
       </header>
 
       <main className="relative z-10 mx-auto grid min-h-[calc(100vh-76px)] max-w-7xl items-center gap-8 px-4 pb-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_440px] lg:px-8">
