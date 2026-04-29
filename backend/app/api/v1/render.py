@@ -283,6 +283,9 @@ _MODEL_TOKEN_COST: dict[str, int] = {
     "gpt-image-2-2026-04-21": 13,
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
+_WEEKLY_TOKEN_ALLOWANCE = 1000
+
+
 def _build_gemini_url(settings, model: str | None = None) -> str:
     """Build the Gemini API URL.
 
@@ -577,6 +580,17 @@ async def generate_render(
     Sends the map screenshot + prompt to the selected image edit model.
     Requires authentication. Non-admin users must have render tokens.
     """
+    # Weekly token reset for non-admin users.
+    if not is_admin_or_above(user):
+        now = datetime.now(timezone.utc)
+        if user.credits_reset_at is None or (now - user.credits_reset_at).days >= 7:
+            user.render_credits = _WEEKLY_TOKEN_ALLOWANCE
+            user.credits_reset_at = now
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
+            logger.info("Weekly token reset for %s — %d tokens", user.email, user.render_credits)
+
     # Calculate cost for this render
     render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
@@ -588,7 +602,7 @@ async def generate_render(
     if not is_admin_or_above(user) and user.render_credits < token_cost:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}.",
+            detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}. Tokens reset weekly.",
         )
 
     settings = get_settings()
