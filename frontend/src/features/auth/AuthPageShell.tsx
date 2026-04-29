@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Image as ImageIcon, Layers3, Sparkles } from 'lucide-react';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { TileTrail } from '@/components/ui/TileTrail';
 
 export const authFormClassName =
   'space-y-4 rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[10px_10px_0_0_#151515] sm:p-6';
@@ -33,11 +34,11 @@ interface AuthPageShellProps {
 function GridBackground() {
   return (
     <div
-      className="pointer-events-none absolute inset-0 opacity-[0.16] dark:opacity-[0.22]"
+      className="pointer-events-none absolute inset-0 opacity-[0.22] dark:opacity-[0.34]"
       style={{
         backgroundImage:
-          'linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
-        backgroundSize: '32px 32px',
+          'linear-gradient(var(--city-grid-line) 2px, transparent 2px), linear-gradient(90deg, var(--city-grid-line) 2px, transparent 2px), linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
+        backgroundSize: '128px 128px, 128px 128px, 32px 32px, 32px 32px',
       }}
     />
   );
@@ -70,6 +71,7 @@ export function AuthPageShell({
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#fff9ec] text-[#151515]">
       <GridBackground />
+      <TileTrail />
 
       <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link to="/" className="inline-flex items-center gap-2 rounded-md px-1 py-1">
