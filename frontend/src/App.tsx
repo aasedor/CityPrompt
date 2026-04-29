@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { GenerationProgressBar } from '@/components/GenerationProgressBar';
@@ -56,6 +56,7 @@ export default function App() {
     <Routes>
       {/* Public landing page */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="/style-lab" element={<Navigate to="/" replace />} />
 
       {/* Auth routes */}
       <Route path="/login" element={<LoginPage />} />

@@ -16,6 +16,37 @@
   100% { background-position: -200% 0; }
 }
 
+@keyframes globe-ai-panel-flow {
+  0%, 100% { background-position: 50% 50%, 6% 22%, 92% 18%, 46% 110%, 50% 50%, 50% 50%; }
+  50% { background-position: 50% 50%, 96% 42%, 8% 78%, 28% -10%, 50% 50%, 50% 50%; }
+}
+
+.globe-ai-dynamic-bg {
+  --globe-ai-x: 50%;
+  --globe-ai-y: 46%;
+  background:
+    radial-gradient(circle at var(--globe-ai-x) var(--globe-ai-y), rgba(255, 255, 255, 0.17), transparent 18rem),
+    radial-gradient(circle at 12% 16%, rgba(40, 199, 232, 0.46), transparent 44%),
+    radial-gradient(circle at 82% 18%, rgba(201, 255, 61, 0.32), transparent 40%),
+    radial-gradient(circle at 48% 105%, rgba(255, 90, 61, 0.3), transparent 42%),
+    linear-gradient(105deg, rgba(40, 199, 232, 0.18), rgba(201, 255, 61, 0.12), rgba(255, 90, 61, 0.14), rgba(40, 199, 232, 0.12)),
+    linear-gradient(125deg, #091721 0%, #112f36 34%, #18272b 62%, #0d1c27 100%);
+  background-size: 100% 100%, 170% 170%, 185% 185%, 190% 190%, 220% 220%, 240% 240%;
+  background-repeat: no-repeat;
+  animation: globe-ai-panel-flow 16s ease-in-out infinite;
+  transition: background-position 180ms ease;
+}
+
+.globe-ai-rendering {
+  animation-duration: 8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-ai-dynamic-bg {
+    animation: none;
+  }
+}
+
 @layer components {
   /* -- Buttons ------------------------------------------------- */
   .btn-primary {

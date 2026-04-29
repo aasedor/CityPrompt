@@ -101,6 +101,9 @@ export function SitePlannerToolbar({
   const [showAdvanced, setShowAdvanced] = useState(false);
   const isSidebar = layout === 'sidebar';
   const showExistingBuildings = settings.showExistingBuildings;
+  const smallToolButtonBase = 'flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all';
+  const smallToolButtonActive = 'bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]';
+  const smallToolButtonIdle = 'bg-white hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515]';
 
   const activeCoreTool = useMemo(
     () => mapToolToCoreTool(activeSitePlannerTool),
@@ -140,7 +143,7 @@ export function SitePlannerToolbar({
   };
 
   return (
-    <div className={`flex w-full flex-col gap-2 rounded-xl bg-white/95 ${isSidebar ? 'px-2.5 py-2' : 'px-3 py-2'} shadow-2xl backdrop-blur-sm`}>
+    <div className={`flex w-full flex-col gap-2 rounded-lg border-2 border-[#151515] bg-[#fff9ec]/95 ${isSidebar ? 'px-2.5 py-2' : 'px-3 py-2'} shadow-[8px_8px_0_0_#151515] backdrop-blur-xl`}>
       <div className={`grid gap-2 ${isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
         {CORE_TOOLS.map((tool) => {
           const isActive = activeCoreTool === tool.id;
@@ -149,14 +152,14 @@ export function SitePlannerToolbar({
               key={tool.id}
               data-tour={`tool-${tool.id}`}
               onClick={() => activateCoreTool(tool.id)}
-              className={`group flex rounded-xl border text-left transition-all ${
+              className={`group flex rounded-lg border-2 text-left transition-all ${
                 isSidebar
                   ? 'min-h-[56px] items-center gap-2.5 px-2.5 py-2'
                   : 'min-h-[86px] flex-col items-start px-3 py-2'
               } ${
                 isActive
-                  ? 'border-primary-500 bg-primary-500/10 ring-2 ring-primary-500/25'
-                  : 'border-primary-950/[0.08] bg-white hover:border-primary-300 hover:bg-primary-950/[0.03]'
+                  ? 'border-[#151515] bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]'
+                  : 'border-[#151515] bg-white hover:bg-[#fff9ec] hover:shadow-[3px_3px_0_0_#151515]'
               }`}
               title={`${tool.label} (${tool.drawType})`}
             >
@@ -168,13 +171,13 @@ export function SitePlannerToolbar({
               />
               {isSidebar ? (
                 <div className="flex min-w-0 flex-col leading-tight">
-                  <span className="text-[13px] font-semibold text-primary-950 truncate">{tool.label}</span>
-                  <span className="text-[11px] text-primary-950/60 truncate">{tool.drawType}</span>
+                  <span className="truncate text-[13px] font-black text-[#151515]">{tool.label}</span>
+                  <span className="truncate text-[10px] font-bold uppercase text-[#151515]/55">{tool.drawType}</span>
                 </div>
               ) : (
                 <>
-                  <span className="mt-2 text-sm font-semibold text-primary-950">{tool.label}</span>
-                  <span className="mt-0.5 text-[11px] text-primary-950/60">{tool.drawType}</span>
+                  <span className="mt-2 text-sm font-black text-[#151515]">{tool.label}</span>
+                  <span className="mt-0.5 text-[10px] font-bold uppercase text-[#151515]/55">{tool.drawType}</span>
                 </>
               )}
             </button>
@@ -182,15 +185,15 @@ export function SitePlannerToolbar({
         })}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-primary-950/[0.03] px-2 py-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5">
         <div className="flex flex-wrap items-center gap-1.5">
           <button
             data-tour="select-btn"
             onClick={handleSelectMode}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+            className={`${smallToolButtonBase} ${
               activeSitePlannerTool === null
-                ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
-                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                ? smallToolButtonActive
+                : smallToolButtonIdle
             }`}
             title="Select and edit existing zones"
           >
@@ -205,10 +208,10 @@ export function SitePlannerToolbar({
               onMeasureModeChange?.(false);
               setStreetViewActive(!streetViewPegman);
             }}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+            className={`${smallToolButtonBase} ${
               streetViewPegman
-                ? 'bg-amber-500/15 text-amber-700 ring-1 ring-amber-500/25'
-                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                ? 'bg-[#ffb000] shadow-[3px_3px_0_0_#151515]'
+                : smallToolButtonIdle
             }`}
             title="Drop a pin to generate a street-level view"
           >
@@ -219,10 +222,10 @@ export function SitePlannerToolbar({
           {onMeasureModeChange && (
             <button
               onClick={handleMeasureMode}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              className={`${smallToolButtonBase} ${
                 measureActive
-                  ? 'bg-sky-500/15 text-sky-700 ring-1 ring-sky-500/25'
-                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                  ? 'bg-[#28c7e8] shadow-[3px_3px_0_0_#151515]'
+                  : smallToolButtonIdle
               }`}
               title="Measure distance"
             >
@@ -234,10 +237,10 @@ export function SitePlannerToolbar({
           {!isGlobeMode && (
             <button
               onClick={() => updateSettings({ showExistingBuildings: !showExistingBuildings })}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              className={`${smallToolButtonBase} ${
                 showExistingBuildings
-                  ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
-                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                  ? smallToolButtonActive
+                  : smallToolButtonIdle
               }`}
               title={showExistingBuildings ? 'Hide existing 3D buildings' : 'Show existing 3D buildings'}
             >
@@ -249,10 +252,10 @@ export function SitePlannerToolbar({
           {onToggleHistory && (
             <button
               onClick={onToggleHistory}
-              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+              className={`${smallToolButtonBase} ${
                 historyOpen
-                  ? 'bg-primary-950/[0.08] text-primary-950 ring-1 ring-primary-950/20'
-                  : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                  ? smallToolButtonActive
+                  : smallToolButtonIdle
               }`}
               title="Version history"
             >
@@ -263,10 +266,10 @@ export function SitePlannerToolbar({
 
           <button
             onClick={() => setShowAdvanced((v) => !v)}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
+            className={`${smallToolButtonBase} ${
               showAdvanced
-                ? 'bg-primary-950/[0.08] text-primary-950'
-                : 'text-primary-950/70 hover:bg-primary-950/[0.05] hover:text-primary-950'
+                ? smallToolButtonActive
+                : smallToolButtonIdle
             }`}
             title="Show additional technical tools"
           >
@@ -277,11 +280,11 @@ export function SitePlannerToolbar({
 
         <div className="flex flex-wrap items-center gap-1.5">
           {activeCoreTool === 'parksPlazas' && (
-            <div className="mr-1 inline-flex rounded-lg border border-primary-950/[0.1] bg-white p-0.5 text-xs">
+            <div className="mr-1 inline-flex rounded-full border-2 border-[#151515] bg-white p-0.5 text-xs shadow-[3px_3px_0_0_#151515]">
               <button
                 onClick={() => onChangeParksSubtype('park')}
-                className={`rounded-md px-2 py-1 font-medium ${
-                  parksSubtype === 'park' ? 'bg-emerald-500/15 text-emerald-700' : 'text-primary-950/60 hover:text-primary-950'
+                className={`rounded-full px-2 py-1 font-black uppercase ${
+                  parksSubtype === 'park' ? 'bg-[#c9ff3d] text-[#151515]' : 'text-[#151515]/60 hover:text-[#151515]'
                 }`}
                 title="Draw park zones"
               >
@@ -289,8 +292,8 @@ export function SitePlannerToolbar({
               </button>
               <button
                 onClick={() => onChangeParksSubtype('plaza')}
-                className={`rounded-md px-2 py-1 font-medium ${
-                  parksSubtype === 'plaza' ? 'bg-sky-500/15 text-sky-700' : 'text-primary-950/60 hover:text-primary-950'
+                className={`rounded-full px-2 py-1 font-black uppercase ${
+                  parksSubtype === 'plaza' ? 'bg-[#28c7e8] text-[#151515]' : 'text-[#151515]/60 hover:text-[#151515]'
                 }`}
                 title="Draw plaza zones"
               >
@@ -302,7 +305,7 @@ export function SitePlannerToolbar({
           {onShowGuide && (
             <button
               onClick={onShowGuide}
-              className="flex items-center gap-1.5 rounded-lg border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100 hover:border-amber-400/60 transition-all"
+              className={`${smallToolButtonBase} bg-[#ff5a3d] text-white shadow-[3px_3px_0_0_#151515] hover:bg-[#ff725c]`}
               title="Show quick-start guide"
             >
               <HelpCircle size={14} />
@@ -313,14 +316,14 @@ export function SitePlannerToolbar({
       </div>
 
       {showAdvanced && (
-        <div className={`rounded-lg border border-primary-950/[0.08] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
-          <span className="text-[11px] font-medium uppercase text-primary-950/50">Advanced</span>
+        <div className={`rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 ${isSidebar ? 'flex flex-col items-stretch gap-1.5' : 'flex flex-wrap items-center gap-1.5'}`}>
+          <span className="text-[10px] font-black uppercase text-[#151515]/55">Advanced</span>
           <button
             onClick={() => {
               onMeasureModeChange?.(false);
               setActiveSitePlannerTool('residential');
             }}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            className="rounded-full border-2 border-[#151515] bg-white px-2 py-1 text-[11px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
             title="Residential (Polygon)"
           >
             Residential
@@ -330,7 +333,7 @@ export function SitePlannerToolbar({
               onMeasureModeChange?.(false);
               setActiveSitePlannerTool('development_area');
             }}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            className="rounded-full border-2 border-[#151515] bg-white px-2 py-1 text-[11px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
             title="Development Area (Polygon)"
           >
             Development Area
@@ -340,7 +343,7 @@ export function SitePlannerToolbar({
               onMeasureModeChange?.(false);
               setActiveSitePlannerTool('water');
             }}
-            className="rounded-md border border-primary-950/[0.08] px-2 py-1 text-xs text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-950"
+            className="rounded-full border-2 border-[#151515] bg-white px-2 py-1 text-[11px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
             title="Water (Polygon)"
           >
             Water

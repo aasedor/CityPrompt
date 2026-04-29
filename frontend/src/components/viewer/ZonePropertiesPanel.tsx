@@ -758,6 +758,11 @@ const resolveOptionCategory = (
     ? polygonDimensionsMeters(zone.coordinates)
     : { width: 0, depth: 0, area: 0 };
   const area = footprintMetrics.area;
+  const panelLabelClass = 'block text-[10px] font-black uppercase text-[#151515]/55';
+  const panelMetricLabelClass = 'text-[10px] font-black uppercase text-[#151515]/50';
+  const panelMetricValueClass = 'text-xs font-black text-[#151515]/65';
+  const panelFieldClass = 'mt-0.5 w-full rounded-lg border-2 border-[#151515] bg-white px-2.5 py-1.5 text-sm font-semibold text-[#151515] shadow-[2px_2px_0_0_rgba(21,21,21,0.2)] focus:bg-[#fff9ec] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]';
+  const panelTextareaClass = `${panelFieldClass} resize-none`;
 
   return (
     <>
@@ -766,22 +771,22 @@ const resolveOptionCategory = (
         className="fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="glass fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-2xl p-4 shadow-2xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-xl">
+      <div ref={panelRef} className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-lg">
         {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
-          <div className="h-1 w-10 rounded-full bg-primary-950/[0.06]" />
+          <div className="h-1 w-10 rounded-full bg-[#151515]" />
         </div>
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
             <span
-              className="inline-block h-4 w-4 rounded"
+              className="inline-block h-4 w-4 rounded border-2 border-[#151515]"
               style={{ backgroundColor: zone.color }}
             />
-            <h3 className="text-sm font-semibold text-primary-950">{config?.label || zone.zone_type}</h3>
+            <h3 className="text-sm font-black uppercase text-[#151515]">{config?.label || zone.zone_type}</h3>
           </div>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-primary-950/50 hover:bg-primary-950/[0.04] hover:text-primary-950/60"
+            className="rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff5a3d] hover:text-white"
           >
             <X size={14} />
           </button>
@@ -790,27 +795,27 @@ const resolveOptionCategory = (
         <div className="mt-3 space-y-2.5 text-sm">
         {/* Name */}
         <div>
-          <label className="block text-xs text-primary-950/50">Name</label>
+          <label className={panelLabelClass}>Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={config?.label || 'Zone'}
-            className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+            className={panelFieldClass}
           />
         </div>
 
         {/* Area display */}
         <div className="flex justify-between">
-          <span className="text-xs text-primary-950/50">Map area</span>
-          <span className="text-xs font-medium text-primary-950/60">
+          <span className={panelMetricLabelClass}>Map area</span>
+          <span className={panelMetricValueClass}>
             {formatArea(area)}
           </span>
         </div>
         {footprintMetrics.width > 0 && footprintMetrics.depth > 0 && (
           <div className="flex justify-between">
-            <span className="text-xs text-primary-950/50">Footprint</span>
-            <span className="text-xs font-medium text-primary-950/60">
+            <span className={panelMetricLabelClass}>Footprint</span>
+            <span className={panelMetricValueClass}>
               {Math.round(footprintMetrics.width).toLocaleString()} m x {Math.round(footprintMetrics.depth).toLocaleString()} m
             </span>
           </div>
@@ -845,11 +850,11 @@ const resolveOptionCategory = (
           <>
             {/* Development Type */}
             <div>
-              <label className="block text-xs text-primary-950/50">Development Type</label>
+              <label className={panelLabelClass}>Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
                 onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select --</option>
                 <optgroup label="Residential">
@@ -895,7 +900,7 @@ const resolveOptionCategory = (
             {/* Development Aesthetic – only shown after a development type is chosen */}
             {props.development_type && (
             <div>
-              <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
+              <label className={panelLabelClass}>Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
@@ -923,7 +928,7 @@ const resolveOptionCategory = (
               return (
                 <>
                   <div>
-                    <label className="block text-xs text-primary-950/50">Floors</label>
+                    <label className={panelLabelClass}>Floors</label>
                     <input
                       type="number"
                       step="1"
@@ -938,7 +943,7 @@ const resolveOptionCategory = (
                           return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
                         });
                       }}
-                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                      className={panelFieldClass}
                     />
                     {archMinFloors != null && archMaxFloors != null && (
                       <p className="mt-0.5 text-[10px] text-primary-950/40">Suggested: {archMinFloors}–{archMaxFloors} floors</p>
@@ -948,7 +953,7 @@ const resolveOptionCategory = (
                     )}
                   </div>
                   <div>
-                    <label className="block text-xs text-primary-950/50">Height (m)</label>
+                    <label className={panelLabelClass}>Height (m)</label>
                     <input
                       type="number"
                       step="1"
@@ -961,7 +966,7 @@ const resolveOptionCategory = (
                           return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
                         });
                       }}
-                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                      className={panelFieldClass}
                     />
                     {(() => {
                       const floors = (props.floors as number) || (config?.defaultProperties.floors as number);
@@ -1039,11 +1044,11 @@ const resolveOptionCategory = (
         {zone.zone_type === 'green_space' && (
           <>
             <div>
-              <label className="block text-xs text-primary-950/50">Park Category</label>
+              <label className={panelLabelClass}>Park Category</label>
               <select
                 value={selectedGreenSpaceCategory || ''}
                 onChange={(e) => applyGreenSpaceCategory(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select Category --</option>
                 {GREEN_SPACE_AESTHETIC_CATEGORIES.map((category) => (
@@ -1059,7 +1064,7 @@ const resolveOptionCategory = (
               )}
             </div>
             <div>
-              <label className="block text-xs text-primary-950/50">Park Typology</label>
+              <label className={panelLabelClass}>Park Typology</label>
               <div className="mt-1">
                 <GreenSpaceAestheticPicker
                   value={(props.green_space_aesthetic as string) || undefined}
@@ -1130,11 +1135,11 @@ const resolveOptionCategory = (
           <>
             {/* Transportation Aesthetic Category */}
             <div>
-              <label className="block text-xs text-primary-950/50">Streets and Paths Category</label>
+              <label className={panelLabelClass}>Streets and Paths Category</label>
               <select
                 value={selectedRoadAestheticCategory || ''}
                 onChange={(e) => applyRoadAestheticCategory(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select Category --</option>
                 {ROADWAY_AESTHETIC_CATEGORIES.map((category) => (
@@ -1152,7 +1157,7 @@ const resolveOptionCategory = (
 
             {/* Transportation Aesthetic */}
             <div>
-              <label className="block text-xs text-primary-950/50">Streets and Paths Aesthetic (Top 20)</label>
+              <label className={panelLabelClass}>Streets and Paths Aesthetic (Top 20)</label>
               <div className="mt-1">
                 <RoadwayAestheticPicker
                   value={(props.road_aesthetic as string) || undefined}
@@ -1167,11 +1172,11 @@ const resolveOptionCategory = (
 
             {/* Volume */}
             <div>
-              <label className="block text-xs text-primary-950/50">Streets and Paths Volume</label>
+              <label className={panelLabelClass}>Streets and Paths Volume</label>
               <select
                 value={(props.volume as string) || ''}
                 onChange={(e) => applyRoadVolume(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select --</option>
                 <option value="high">High</option>
@@ -1181,13 +1186,13 @@ const resolveOptionCategory = (
             </div>
 
             <div>
-              <label className="block text-xs text-primary-950/50">Width (m)</label>
+              <label className={panelLabelClass}>Width (m)</label>
               <input
                 type="number"
                 step="1"
                 value={props.width ?? config?.defaultProperties.width ?? 10}
                 onChange={(e) => setProps((p) => ({ ...p, width: parseFloat(e.target.value) || undefined }))}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               />
             </div>
           </>
@@ -1199,11 +1204,11 @@ const resolveOptionCategory = (
         {zone.zone_type === 'parking' && (
           <>
             <div>
-              <label className="block text-xs text-primary-950/50">Plaza Category</label>
+              <label className={panelLabelClass}>Plaza Category</label>
               <select
                 value={selectedPlazaCategory || ''}
                 onChange={(e) => applyPlazaCategory(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select Category --</option>
                 {PLAZA_AESTHETIC_CATEGORIES.map((category) => (
@@ -1219,7 +1224,7 @@ const resolveOptionCategory = (
               )}
             </div>
             <div>
-              <label className="block text-xs text-primary-950/50">Plaza Typology</label>
+              <label className={panelLabelClass}>Plaza Typology</label>
               <div className="mt-1">
                 <PlazaAestheticPicker
                   value={(props.plaza_aesthetic as string) || undefined}
@@ -1239,11 +1244,11 @@ const resolveOptionCategory = (
         {zone.zone_type === 'development_area' && (
           <>
             <div>
-              <label className="block text-xs text-primary-950/50">Development Type</label>
+              <label className={panelLabelClass}>Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
                 onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
-                className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                className={panelFieldClass}
               >
                 <option value="">-- Select --</option>
                 <optgroup label="Residential">
@@ -1283,7 +1288,7 @@ const resolveOptionCategory = (
             </div>
             {props.development_type && (
             <div>
-              <label className="block text-xs text-primary-950/50">Building Sub-Category</label>
+              <label className={panelLabelClass}>Building Sub-Category</label>
               <div className="mt-1">
                 <DevelopmentAestheticPicker
                   value={(props.development_aesthetic as string) || undefined}
@@ -1310,7 +1315,7 @@ const resolveOptionCategory = (
               return (
                 <>
                   <div>
-                    <label className="block text-xs text-primary-950/50">Floors</label>
+                    <label className={panelLabelClass}>Floors</label>
                     <input
                       type="number"
                       step="1"
@@ -1325,7 +1330,7 @@ const resolveOptionCategory = (
                           return { ...p, floors, height: Math.round(floors * floorH * 10) / 10 };
                         });
                       }}
-                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                      className={panelFieldClass}
                     />
                     {devMinFloors != null && devMaxFloors != null && (
                       <p className="mt-0.5 text-[10px] text-primary-950/40">Suggested: {devMinFloors}–{devMaxFloors} floors</p>
@@ -1335,7 +1340,7 @@ const resolveOptionCategory = (
                     )}
                   </div>
                   <div>
-                    <label className="block text-xs text-primary-950/50">Height (m)</label>
+                    <label className={panelLabelClass}>Height (m)</label>
                     <input
                       type="number"
                       step="1"
@@ -1348,7 +1353,7 @@ const resolveOptionCategory = (
                           return { ...p, height, floor_height: Math.round((height / floors) * 100) / 100 };
                         });
                       }}
-                      className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950"
+                      className={panelFieldClass}
                     />
                     {(() => {
                       const floors = (props.floors as number);
@@ -1394,13 +1399,13 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type !== 'site_boundary' && (
           <div>
-            <label className="block text-xs text-primary-950/50">Descriptive Text</label>
+            <label className={panelLabelClass}>Descriptive Text</label>
             <textarea
               value={(props.description_text as string) || ''}
               onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
               placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
               rows={2}
-              className="mt-0.5 w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-sm text-primary-950 resize-none"
+              className={panelTextareaClass}
             />
           </div>
         )}
@@ -1417,7 +1422,7 @@ const resolveOptionCategory = (
 
         <button
           onClick={handleSave}
-          className="mt-1 w-full rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-700"
+          className="mt-1 w-full rounded-full border-2 border-[#151515] bg-[#151515] px-3 py-2 text-xs font-black uppercase text-white shadow-[4px_4px_0_0_#c9ff3d] transition hover:bg-[#2b2b2b]"
         >
           Save Changes
         </button>
@@ -1441,7 +1446,7 @@ const resolveOptionCategory = (
 
         <button
           onClick={() => onDelete(zone.id)}
-          className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-100"
+          className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff0ec] px-3 py-2 text-xs font-black uppercase text-[#d92618] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#ffddd4]"
         >
           <Trash2 size={12} />
           Delete Zone
@@ -2746,12 +2751,12 @@ function ReferenceImagesSection({
 
   return (
     <div>
-      <label className="block text-xs text-primary-950/50 mb-1">Reference Images</label>
+      <label className="mb-1 block text-[10px] font-black uppercase text-[#151515]/55">Reference Images</label>
       {/* Thumbnails */}
       {images.length > 0 && (
         <div className="flex gap-1.5 mb-1.5 flex-wrap">
           {images.map((imgUrl, idx) => (
-            <div key={idx} className="relative group w-16 h-16 rounded border border-primary-950/[0.08] overflow-hidden bg-primary-950/[0.04]">
+            <div key={idx} className="group relative h-16 w-16 overflow-hidden rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]">
               <img
                 src={imgUrl}
                 alt={`Ref ${idx + 1}`}
@@ -2760,7 +2765,7 @@ function ReferenceImagesSection({
               />
               <button
                 onClick={() => handleRemove(idx)}
-                className="absolute top-0 right-0 bg-red-500 text-white rounded-bl p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute right-0 top-0 rounded-bl bg-[#ff5a3d] p-0.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
               >
                 <X size={10} />
               </button>
@@ -2776,13 +2781,13 @@ function ReferenceImagesSection({
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Paste image URL and press Enter"
-            className="flex-1 rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-xs text-primary-950"
+            className="min-w-0 flex-1 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 text-xs font-semibold text-[#151515] focus:bg-[#fff9ec] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]"
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
           />
           <button
             onClick={handleAdd}
             disabled={!url.trim()}
-            className="rounded bg-primary-950/[0.04] px-2 py-1 text-xs font-medium text-primary-950/60 hover:bg-primary-950/[0.08] disabled:opacity-40"
+            className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1 text-[11px] font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#d8ff68] disabled:opacity-40"
           >
             Add
           </button>
