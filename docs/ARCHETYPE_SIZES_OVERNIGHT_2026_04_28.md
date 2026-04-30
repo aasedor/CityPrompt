@@ -26,15 +26,21 @@ git checkout HEAD~3 -- frontend/src/data/archetypeShadeMap.ts
 
 ## Important things you should know
 
-### 1. Browser smoke test was *not* run
+### 1. Browser smoke test — PASSED (programmatic only)
 
-I deferred starting a dev server overnight. Before merging this branch you should:
-- Open http://localhost:5174, load the picker
-- Confirm `glass_tower_modern` card appears with the new floor range visible
-- Confirm `nordic_timber_mid_rise` and `midcentury_distribution_warehouse` cards are **gone** (only the canonical-slug versions remain)
-- Spot-check a few of the 5 Phase 3A archetypes — see that variant cards behave normally
+I ran a quick programmatic smoke test before stopping for the night:
+- Started the Vite dev server (port 5175 — 5174 was in use), no startup errors.
+- Loaded the catalog through the dev server: 218 archetypes / 872 variants. Both losers absent (`nordic_timber_mid_rise`, `midcentury_distribution_warehouse`); both survivors present.
+- Verified `glass_tower_modern` parent floors = 12-50 via fetch.
+- Verified `art_deco_setback_tower` parent 8-55 with all 4 variants carrying distinct ranges (35-55, 20-35, 30-45, 8-15).
+- No console errors, no duplicate IDs, app shell renders (`document.title === "City Prompt"`).
 
-`npm run type-check` still has the same pre-existing errors as before (unrelated: auth pages, landing page unused imports, viewer test type drift). My changes did not introduce new type errors.
+What I did *not* do: open the picker UI, click an archetype card, or render a zone. Those need a human in the loop. So before merging:
+- Open the picker, find `glass_tower_modern`, confirm the floor range shows "12-50" (or whatever the panel renders).
+- Confirm the picker has fewer total cards than yesterday by 2 (the duplicate removals).
+- Spot-render with one of the Phase 3A archetypes to confirm Gemini behaves the same.
+
+`npm run type-check` has the same pre-existing errors as before (auth pages, landing page unused imports, viewer test type drift). My changes did not introduce new type errors.
 
 ### 2. Surprise discovery: a misplaced archetype hiding in `data.categories`
 
