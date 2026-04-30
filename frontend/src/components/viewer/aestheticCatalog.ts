@@ -133,6 +133,7 @@ export type AestheticOption = {
   generationStyleInput?: Partial<GenerationStyleInput>;
   minFloors?: number;
   maxFloors?: number;
+  suggestedFloorHeight?: number;
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
@@ -187,6 +188,7 @@ type ArchetypeSeed = {
   };
   minFloors?: number;
   maxFloors?: number;
+  suggestedFloorHeight?: number;
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
@@ -372,6 +374,7 @@ function toAestheticOption(
     styleProfile,
     minFloors: seed.minFloors,
     maxFloors: seed.maxFloors,
+    suggestedFloorHeight: seed.suggestedFloorHeight,
     suggestedAreaSqm: seed.suggestedAreaSqm,
     minAreaSqm: seed.minAreaSqm,
     maxAreaSqm: seed.maxAreaSqm,

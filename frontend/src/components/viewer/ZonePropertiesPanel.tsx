@@ -589,18 +589,21 @@ const resolveOptionCategory = (
       const variantFloorHeight = selectedVariant?.suggestedFloorHeight;
       const hasVariantOverride = variantMinFloors != null && variantMaxFloors != null;
 
+      const archetypeFloorHeight = selectedOption?.suggestedFloorHeight;
       if (hasVariantOverride) {
-        // Variant has per-variant floor specs — always apply when switching variants
+        // Variant has per-variant floor specs — always apply when switching variants.
+        // Floor-height precedence: variant override > existing zone value > archetype typology default > 3m fallback.
         const suggestedFloors = Math.floor((variantMinFloors + variantMaxFloors) / 2);
         nextProps.floors = suggestedFloors;
-        const floorH = variantFloorHeight || (p.floor_height as number) || 3;
+        const floorH = variantFloorHeight || (p.floor_height as number) || archetypeFloorHeight || 3;
         nextProps.floor_height = floorH;
         nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
       } else if (selectedOption?.minFloors && selectedOption?.maxFloors && !p.floors) {
         // Fallback to archetype-level floors only when floors haven't been set
         const suggestedFloors = Math.floor((selectedOption.minFloors + selectedOption.maxFloors) / 2);
         nextProps.floors = suggestedFloors;
-        const floorH = (p.floor_height as number) || 3;
+        const floorH = (p.floor_height as number) || archetypeFloorHeight || 3;
+        nextProps.floor_height = floorH;
         nextProps.height = Math.round(suggestedFloors * floorH * 10) / 10;
       }
       return nextProps;
