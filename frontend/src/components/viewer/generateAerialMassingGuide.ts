@@ -20,7 +20,7 @@ const GUIDE_WIDTH = 1024;
 const GUIDE_HEIGHT = 1024;
 const DEG_TO_RAD = Math.PI / 180;
 const METERS_PER_DEG_LAT = 110_540;
-const FLOOR_HEIGHT_M = 3.2;
+const FALLBACK_FLOOR_HEIGHT_M = 3.2; // used only when a zone has no floor_height property
 
 // Orientation color scheme
 const COLOR_FRONT = '#FF4400';   // orange-red — entrance facade
@@ -196,7 +196,8 @@ export function generateAerialMassingGuide(
 
     if (isBuilding) {
       const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || 4;
-      const heightM = floors * FLOOR_HEIGHT_M;
+      const floorH = Number(zone.properties?.floor_height) || FALLBACK_FLOOR_HEIGHT_M;
+      const heightM = floors * floorH;
       const entranceFacing = typeof zone.properties?.entrance_facing === 'number'
         ? zone.properties.entrance_facing
         : null;

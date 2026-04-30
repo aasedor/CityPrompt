@@ -1236,7 +1236,7 @@ export function buildStreetViewPrompt(
 const DEPTH_MAP_WIDTH = 1024;
 const DEPTH_MAP_HEIGHT = 576; // 16:9
 const EYE_HEIGHT_M = 1.7;
-const FLOOR_HEIGHT_M = 3.2;
+const FALLBACK_FLOOR_HEIGHT_M = 3.2; // used only when a zone has no floor_height property
 // sky color used inline in gradient
 const GROUND_COLOR = '#808075';
 const DEFAULT_ZONE_COLORS: Record<string, string> = {
@@ -1297,7 +1297,8 @@ export function generateDepthMap(
     // Determine building height and apparent size based on distance
     const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
     const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || (isBuilding ? 4 : 0);
-    const heightM = floors * FLOOR_HEIGHT_M;
+    const floorH = Number(zone.properties?.floor_height) || FALLBACK_FLOOR_HEIGHT_M;
+    const heightM = floors * floorH;
 
     // Distance-based perspective: closer = taller and lower base
     // Normalize distance: 10m = very close, 150m = far
@@ -1614,7 +1615,8 @@ export function generateClayRender(
     if (isBuilding) {
       // Extruded box for buildings
       const floors = Number(zone.properties?.floors) || Number(zone.properties?.max_floors) || 4;
-      const heightM = floors * FLOOR_HEIGHT_M;
+      const floorH = Number(zone.properties?.floor_height) || FALLBACK_FLOOR_HEIGHT_M;
+      const heightM = floors * floorH;
 
       const geo = new THREE.BoxGeometry(
         Math.max(widthM, 5),
