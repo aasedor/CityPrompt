@@ -3877,6 +3877,10 @@
           "id": "parametric_fluid_organic",
           "label": "Fluid Organic Shell",
           "thumbnailUrl": "/archetypes/buildings/parametric_future_hub/variant_0.png",
+          "minFloors": 5,
+          "maxFloors": 15,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 2500,
           "description": "Zaha Hadid-inspired fluid organic form with seamless white composite shell, parametric perforations for light, and sweeping curves.",
           "facadeDetail": {
             "primaryMaterial": "glass-fiber reinforced concrete (GFRC) shell panels",
@@ -3921,6 +3925,10 @@
           "id": "parametric_voronoi_lattice",
           "label": "Voronoi Lattice Screen",
           "thumbnailUrl": "/archetypes/buildings/parametric_future_hub/variant_2.png",
+          "minFloors": 10,
+          "maxFloors": 25,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 2500,
           "description": "Building wrapped in a gold-anodized aluminum Voronoi lattice screen, creating dappled shade patterns, with planted sky gardens between screen and glass.",
           "facadeDetail": {
             "primaryMaterial": "glass curtain wall behind lattice",
@@ -3941,6 +3949,10 @@
           "id": "parametric_kinetic_facade",
           "label": "Kinetic Responsive Facade",
           "thumbnailUrl": "/archetypes/buildings/parametric_future_hub/variant_3.png",
+          "minFloors": 15,
+          "maxFloors": 35,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 2500,
           "description": "Responsive kinetic facade with motorized aluminum fins that rotate to track the sun, creating constantly changing patterns of light and shadow.",
           "facadeDetail": {
             "primaryMaterial": "structural glass wall",
@@ -3959,7 +3971,7 @@
         }
       ],
       "minFloors": 5,
-      "maxFloors": 30,
+      "maxFloors": 50,
       "suggestedAreaSqm": 2500,
       "developmentType": "commercial_office"
     },
@@ -4076,6 +4088,10 @@
           "id": "tech_campus_biophilic",
           "label": "Biophilic Green Campus",
           "thumbnailUrl": "/archetypes/buildings/autonomous_tech_campus/variant_1.png",
+          "minFloors": 4,
+          "maxFloors": 7,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 10000,
           "description": "Dense green campus with living walls covering facades, rooftop forests, timber construction, and nature trails connecting buildings.",
           "facadeDetail": {
             "primaryMaterial": "mass timber structure with CLT panels",
@@ -4120,6 +4136,10 @@
           "id": "tech_campus_research_lab",
           "label": "Research Lab Complex",
           "thumbnailUrl": "/archetypes/buildings/autonomous_tech_campus/variant_3.png",
+          "minFloors": 5,
+          "maxFloors": 10,
+          "suggestedFloorHeight": 4.5,
+          "suggestedAreaSqm": 12000,
           "description": "Research laboratory campus with clean white precast concrete, horizontal ribbon windows, service towers, and covered walkways connecting wings.",
           "facadeDetail": {
             "primaryMaterial": "white precast concrete panels with bush-hammered texture",
@@ -4137,7 +4157,7 @@
           }
         }
       ],
-      "minFloors": 3,
+      "minFloors": 1,
       "maxFloors": 10,
       "suggestedAreaSqm": 5000,
       "developmentType": "institutional_education"
@@ -4231,6 +4251,10 @@
           "id": "art_deco_cream_terracotta",
           "label": "Cream Terra Cotta & Gold",
           "thumbnailUrl": "/archetypes/buildings/art_deco_setback_tower/variant_0.png",
+          "minFloors": 35,
+          "maxFloors": 55,
+          "suggestedFloorHeight": 3.6,
+          "suggestedAreaSqm": 1500,
           "description": "Classic Art Deco tower in cream glazed terra cotta with gold leaf geometric ornament, stepped setbacks, and a gilded crown.",
           "facadeDetail": {
             "primaryMaterial": "cream glazed architectural terra cotta",
@@ -4251,6 +4275,10 @@
           "id": "art_deco_black_chrome",
           "label": "Black Granite & Chrome",
           "thumbnailUrl": "/archetypes/buildings/art_deco_setback_tower/variant_1.png",
+          "minFloors": 20,
+          "maxFloors": 35,
+          "suggestedFloorHeight": 3.6,
+          "suggestedAreaSqm": 1500,
           "description": "Sleek black granite Art Deco tower with polished chrome vertical fins, geometric glass block windows, and a streamlined chrome crown.",
           "facadeDetail": {
             "primaryMaterial": "polished black granite cladding",
@@ -4271,6 +4299,10 @@
           "id": "art_deco_polychrome",
           "label": "Polychrome Zigzag Moderne",
           "thumbnailUrl": "/archetypes/buildings/art_deco_setback_tower/variant_2.png",
+          "minFloors": 30,
+          "maxFloors": 45,
+          "suggestedFloorHeight": 3.6,
+          "suggestedAreaSqm": 1500,
           "description": "Exuberant Zigzag Moderne with polychrome terra cotta in turquoise, gold, and orange, geometric chevron patterns, and a colorful crown.",
           "facadeDetail": {
             "primaryMaterial": "polychrome glazed terra cotta in geometric patterns",
@@ -4291,6 +4323,10 @@
           "id": "art_deco_streamline_moderne",
           "label": "Streamline Moderne",
           "thumbnailUrl": "/archetypes/buildings/art_deco_setback_tower/variant_3.png",
+          "minFloors": 8,
+          "maxFloors": 15,
+          "suggestedFloorHeight": 3.6,
+          "suggestedAreaSqm": 1500,
           "description": "Streamline Moderne with smooth white render, horizontal speed lines, curved glass corners, porthole windows, and a rounded aerodynamic profile.",
           "facadeDetail": {
             "primaryMaterial": "smooth white cement render",
@@ -4309,7 +4345,7 @@
         }
       ],
       "minFloors": 8,
-      "maxFloors": 25,
+      "maxFloors": 55,
       "suggestedAreaSqm": 1500,
       "developmentType": "residential_highrise"
     },
@@ -28662,7 +28698,7 @@
         "maxDepth_m": 50,
         "aspectRatio": "1.1:1",
         "minFloors": 3,
-        "maxFloors": 20,
+        "maxFloors": 22,
         "thumbnailUrl": "/archetypes/buildings/boutique-hotel/hero.png",
         "variants": [
             {
@@ -31608,6 +31644,10 @@
                 "label": "Style Variant 1",
                 "description": "Glass Tower Modern — style variant 1.",
                 "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_0.png",
+                "minFloors": 18,
+                "maxFloors": 30,
+                "suggestedFloorHeight": 3.8,
+                "suggestedAreaSqm": 2500,
                 "color": "#4A6B8A"
             },
             {
@@ -31615,6 +31655,10 @@
                 "label": "Style Variant 2",
                 "description": "Glass Tower Modern — style variant 2.",
                 "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_1.png",
+                "minFloors": 30,
+                "maxFloors": 50,
+                "suggestedFloorHeight": 3.8,
+                "suggestedAreaSqm": 2500,
                 "color": "#8A6B4A"
             },
             {
@@ -31622,6 +31666,10 @@
                 "label": "Style Variant 3",
                 "description": "Glass Tower Modern — style variant 3.",
                 "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_2.png",
+                "minFloors": 12,
+                "maxFloors": 22,
+                "suggestedFloorHeight": 3.8,
+                "suggestedAreaSqm": 2500,
                 "color": "#5B7065"
             },
             {
@@ -31629,6 +31677,10 @@
                 "label": "Style Variant 4",
                 "description": "Glass Tower Modern — style variant 4.",
                 "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_3.png",
+                "minFloors": 35,
+                "maxFloors": 50,
+                "suggestedFloorHeight": 3.8,
+                "suggestedAreaSqm": 2500,
                 "color": "#6B4A8A"
             }
         ]
