@@ -2522,7 +2522,7 @@ export function GlobeSitePlannerMap({
       )}
 
       {!hasDrawingTool && streetViewPegman && (
-        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-amber-900/80 px-3 py-1.5 text-center text-[11px] text-amber-100 backdrop-blur-sm border border-amber-500/30">
+        <div className="absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] backdrop-blur-xl">
           {streetViewPegman?.position
             ? 'Arrow keys to rotate view | Esc to remove pegman'
             : 'Click to place street view camera'}
@@ -2540,7 +2540,7 @@ export function GlobeSitePlannerMap({
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
-        <div className="pointer-events-none absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-lg bg-gray-900/70 px-3 py-1.5 text-center text-[11px] text-white/70 backdrop-blur-sm select-none">
+        <div className="pointer-events-none absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none">
           {selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
             : 'Click zone to select | Drag to orbit | Scroll to zoom | WASD/Arrows to move | Shift/Ctrl to rise/lower'}
@@ -2548,16 +2548,16 @@ export function GlobeSitePlannerMap({
       )}
 
       <div className="absolute top-14 left-4 z-20 flex items-center gap-2">
-        <div className="rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg">
-          <span className="text-[11px] font-medium text-emerald-400">3D Globe</span>
+        <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
+          <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>
-        <div className={`rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg text-[11px] font-medium ${
+        <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${
           pitchAngle < 30 ? 'text-red-400' :
           pitchAngle < 50 ? 'text-amber-400' :
-          pitchAngle < 70 ? 'text-emerald-400' :
+          pitchAngle < 70 ? 'text-[#138f45]' :
           pitchAngle < 80 ? 'text-amber-400' : 'text-red-400'
         }`}>
-          {pitchAngle} deg {
+          {pitchAngle}° {
             pitchAngle < 20 ? 'flat' :
             pitchAngle < 40 ? 'low' :
             pitchAngle < 60 ? 'good' :
@@ -2565,9 +2565,9 @@ export function GlobeSitePlannerMap({
           }
         </div>
         {!isSceneSettled && (
-          <div className="rounded-lg bg-gray-900/75 px-2.5 py-1.5 backdrop-blur-sm shadow-lg flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-[10px] text-amber-300">Loading tiles...</span>
+            <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>
           </div>
         )}
       </div>

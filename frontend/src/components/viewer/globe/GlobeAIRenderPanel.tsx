@@ -5,7 +5,7 @@
  * generates a mask from zone polygons, and sends to Gemini.
  */
 
-import { useState, useCallback, useEffect, type HTMLAttributes } from 'react';
+import { useState, useCallback, useEffect, useRef, type HTMLAttributes, type PointerEvent as ReactPointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
@@ -18,12 +18,13 @@ const COMPARE_RENDER_MODELS = [
   { model: 'gpt-image-2', label: 'GPT Image 2' },
 ];
 
-const OPENAI_IMAGE_QUALITY_OPTIONS: { value: OpenAIImageQuality; label: string }[] = [
-  { value: 'auto', label: 'Auto' },
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-];
+const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';
+const OPENAI_IMAGE_QUALITY_LABELS: Record<OpenAIImageQuality, string> = {
+  auto: 'Auto',
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+};
 
 function isOpenAIImageModel(model?: string): boolean {
   return Boolean(model?.startsWith('gpt-image-2'));
@@ -35,7 +36,7 @@ function getQualityForModel(model: string, quality: OpenAIImageQuality): OpenAII
 
 function formatImageQualityLabel(quality?: OpenAIImageQuality): string | null {
   if (!quality) return null;
-  return `GPT ${OPENAI_IMAGE_QUALITY_OPTIONS.find((option) => option.value === quality)?.label ?? quality}`;
+  return `GPT ${OPENAI_IMAGE_QUALITY_LABELS[quality] ?? quality}`;
 }
 
 function getLightboxMetaParts(render: LightboxRender): string[] {
@@ -133,7 +134,6 @@ export function GlobeAIRenderPanel({
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
-  const [selectedImageQuality, setSelectedImageQuality] = useState<OpenAIImageQuality>('auto');
   const [customPrompt, setCustomPrompt] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -144,6 +144,7 @@ export function GlobeAIRenderPanel({
   const [renderProgress, setRenderProgress] = useState<GlobeRenderProgress | null>(null);
   // Lightbox: render currently shown full-screen (null = closed).
   const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   const refreshSavedRenders = useCallback(async () => {
     if (!projectId) {
@@ -199,7 +200,7 @@ export function GlobeAIRenderPanel({
       const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
       const compareRenderVariants = COMPARE_RENDER_MODELS.map((provider) => ({
         ...provider,
-        imageQuality: getQualityForModel(provider.model, selectedImageQuality),
+        imageQuality: getQualityForModel(provider.model, DEFAULT_OPENAI_IMAGE_QUALITY),
       }));
       if (usePerZone) {
         // Per-zone path is already sequential and slow, so compare providers one at a time.
@@ -272,7 +273,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, selectedImageQuality, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -446,28 +447,48 @@ export function GlobeAIRenderPanel({
 
   const { className: dragHandleClassName, ...dragHandleRest } = dragHandleProps ?? {};
 
+  const handlePanelPointerMove = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    event.currentTarget.style.setProperty('--globe-ai-x', `${x.toFixed(2)}%`);
+    event.currentTarget.style.setProperty('--globe-ai-y', `${y.toFixed(2)}%`);
+  }, []);
+
+  const handlePanelPointerLeave = useCallback(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    panel.style.setProperty('--globe-ai-x', '50%');
+    panel.style.setProperty('--globe-ai-y', '46%');
+  }, []);
+
   return (
     <>
-    <div className="max-h-[44vh] w-full overflow-y-auto rounded-xl border border-cyan-300/20 bg-slate-950/95 shadow-2xl shadow-cyan-950/30 backdrop-blur-sm">
+    <div
+      ref={panelRef}
+      onPointerMove={handlePanelPointerMove}
+      onPointerLeave={handlePanelPointerLeave}
+      className={`globe-ai-dynamic-bg max-h-[44vh] w-full overflow-y-auto rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'globe-ai-rendering' : ''}`}
+    >
       {/* Header */}
       <div
         {...dragHandleRest}
-        className={`select-none border-b border-cyan-300/15 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_34%),linear-gradient(135deg,rgba(15,23,42,0.98),rgba(12,74,110,0.78))] px-4 py-2.5 ${
+        className={`select-none border-b-2 border-[#151515] bg-[#fff9ec] px-4 py-2.5 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         } ${dragHandleClassName ?? ''}`}
         title="Drag to move"
       >
         <div className="flex items-center justify-between gap-3">
-          <h3 className="flex items-center gap-2 text-sm font-semibold text-white">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-300/25 bg-cyan-300/10 text-cyan-200">
+          <h3 className="flex items-center gap-2 text-sm font-black uppercase text-[#151515]">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[#151515] bg-[#28c7e8] text-[#151515] shadow-[2px_2px_0_0_#151515]">
               <Orbit size={15} />
             </span>
             AI Render (Globe)
           </h3>
-          <div className="flex items-center gap-2 text-[10px] font-medium uppercase text-cyan-100/60">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase text-[#151515]/60">
             <Camera size={12} />
             3D Capture
-            <GripHorizontal size={13} className="text-cyan-100/35" />
+            <GripHorizontal size={13} className="text-[#151515]/35" />
             {onClose && (
               <button
                 onPointerDown={(event) => event.stopPropagation()}
@@ -475,7 +496,7 @@ export function GlobeAIRenderPanel({
                   event.stopPropagation();
                   onClose();
                 }}
-                className="ml-1 flex h-6 w-6 items-center justify-center rounded bg-red-600 text-white shadow-sm ring-1 ring-white/20 transition hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-200"
+                className="ml-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#151515] bg-[#ff5a3d] text-white shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff725c] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]"
                 aria-label="Close AI Render panel"
                 title="Close"
               >
@@ -484,19 +505,19 @@ export function GlobeAIRenderPanel({
             )}
           </div>
         </div>
-        <p className="mt-1 text-[10px] text-cyan-50/55">
+        <p className="mt-1 text-[10px] font-bold text-[#151515]/55">
           Compare Gemini 3.1 Flash and GPT Image 2 from the active globe view
         </p>
       </div>
 
-      <div className="grid gap-3 border-b border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
+      <div className="grid gap-3 border-b-2 border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
         {/* Style selector */}
         <div>
-          <div className="mb-1 text-[10px] font-medium uppercase text-gray-500">Style</div>
+          <div className="mb-1 text-[10px] font-black uppercase text-white/50">Style</div>
           <div className="space-y-1.5">
             {STYLE_GROUPS.map(group => (
               <div key={group.label}>
-                <div className="mb-0.5 text-[9px] font-semibold uppercase tracking-wider text-gray-500/70">{group.label}</div>
+                <div className="mb-0.5 text-[9px] font-black uppercase tracking-wider text-white/40">{group.label}</div>
                 <div className="flex flex-wrap gap-1">
                   {group.ids.map(id => {
                     const s = STYLES.find(x => x.id === id);
@@ -505,10 +526,10 @@ export function GlobeAIRenderPanel({
                       <button
                         key={s.id}
                         onClick={() => setSelectedStyle(s.id)}
-                        className={`rounded-lg px-2 py-1 text-[11px] font-medium transition ${
+                        className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
                           selectedStyle === s.id
-                            ? 'bg-amber-500 text-black'
-                            : 'bg-white/10 text-white/70 hover:bg-white/20'
+                            ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
+                            : 'border-white/15 bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
                         }`}
                       >
                         {s.label}
@@ -523,29 +544,13 @@ export function GlobeAIRenderPanel({
 
         {/* Custom prompt */}
         <div>
-          <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium uppercase text-gray-500">
-            <span>Prompt</span>
-            <label className="flex items-center gap-1 normal-case text-gray-400" title="Used for GPT Image 2 renders">
-              <span>GPT quality</span>
-              <select
-                value={selectedImageQuality}
-                onChange={(e) => setSelectedImageQuality(e.target.value as OpenAIImageQuality)}
-                className="h-6 rounded border border-white/10 bg-slate-900 px-1.5 text-[10px] font-medium text-white focus:border-amber-500/50 focus:outline-none"
-              >
-                {OPENAI_IMAGE_QUALITY_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <div className="mb-1 text-[10px] font-black uppercase text-white/50">Prompt</div>
           <textarea
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
             placeholder="Additional instructions (optional)..."
             rows={2}
-            className="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-amber-500/50 focus:outline-none"
+            className="w-full resize-none rounded-lg border-2 border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-white placeholder-white/35 focus:border-[#c9ff3d] focus:outline-none"
           />
         </div>
       </div>
@@ -553,7 +558,7 @@ export function GlobeAIRenderPanel({
       {/* Error display */}
       {error && (
         <div className="px-4 py-2">
-          <div className="rounded-lg bg-red-500/20 border border-red-500/30 px-3 py-2 text-xs text-red-300">
+          <div className="rounded-lg border-2 border-[#ff5a3d] bg-red-500/20 px-3 py-2 text-xs font-bold text-red-200">
             {error}
           </div>
         </div>
@@ -564,7 +569,7 @@ export function GlobeAIRenderPanel({
         <button
           onClick={handleRender}
           disabled={isRendering || !canvas || !camera}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 via-sky-400 to-amber-300 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-950/25 transition hover:from-cyan-300 hover:via-sky-300 hover:to-amber-200 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
         >
           {isRendering ? (
             <>
@@ -688,10 +693,10 @@ export function GlobeAIRenderPanel({
 
       {/* Saved renders gallery */}
       {projectId && (
-        <div className="border-t border-white/10 px-4 py-3">
+        <div className="border-t-2 border-white/10 px-4 py-3">
           <button
             onClick={() => setShowSavedRenders((v) => !v)}
-            className="flex w-full items-center justify-between text-xs font-medium text-gray-400 transition hover:text-gray-200"
+            className="flex w-full items-center justify-between text-xs font-black uppercase text-white/55 transition hover:text-white"
           >
             <span className="flex items-center gap-1.5">
               <ImageIcon size={13} />

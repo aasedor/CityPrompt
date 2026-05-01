@@ -1,16 +1,37 @@
-import { useState, useRef, useEffect } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { BarChart3, Box, ChevronDown, Crown, KeyRound, LogIn, LogOut, MessageSquare, Shield, User, Menu, X, Sun, Moon, Monitor } from 'lucide-react';
-import { useThemeStore } from '@/store/themeStore';
+import { useEffect, useRef, useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import {
+  BarChart3,
+  ChevronDown,
+  Crown,
+  KeyRound,
+  LogIn,
+  LogOut,
+  Menu,
+  MessageSquare,
+  Shield,
+  User,
+  X,
+} from 'lucide-react';
 import { useAuthStore } from '@/store';
+import { TileTrail } from '@/components/ui/TileTrail';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Layout() {
   const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const { theme, setTheme } = useThemeStore();
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const canAdmin = Boolean(user?.role && ['admin', 'cofounder'].includes(user.role));
+  const canAnalytics = user?.role === 'cofounder';
+
+  const navLinkClassName =
+    'rounded-full px-3 py-2 text-xs font-black uppercase text-[#151515]/70 transition hover:bg-[#c9ff3d] hover:text-[#151515]';
+  const mobileLinkClassName =
+    'rounded-lg border-2 border-transparent px-3 py-2 text-sm font-black uppercase text-[#151515]/70 hover:border-[#151515] hover:bg-[#c9ff3d] hover:text-[#151515]';
+  const menuItemClassName =
+    'flex w-full items-center gap-2 px-4 py-2 text-sm font-black uppercase text-[#151515]/70 hover:bg-[#c9ff3d] hover:text-[#151515] dark:hover:text-[#151515]';
 
   const handleLogout = () => {
     logout();
@@ -19,13 +40,13 @@ export function Layout() {
     navigate('/login');
   };
 
-  // Close desktop dropdown on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
         setUserMenuOpen(false);
       }
     }
+
     if (userMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -33,128 +54,99 @@ export function Layout() {
   }, [userMenuOpen]);
 
   return (
-    <div className="min-h-screen">
-      <header className="relative z-[100] border-b border-primary-950/[0.06] bg-accent-50/80 backdrop-blur-xl">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#fff9ec] text-[#151515]">
+      <div
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.22] dark:opacity-[0.34]"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--city-grid-line) 2px, transparent 2px), linear-gradient(90deg, var(--city-grid-line) 2px, transparent 2px), linear-gradient(var(--city-grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--city-grid-line) 1px, transparent 1px)',
+          backgroundSize: '128px 128px, 128px 128px, 32px 32px, 32px 32px',
+        }}
+      />
+      <TileTrail />
+
+      <header className="relative z-[100] border-b-2 border-[#151515] bg-[#fff9ec]/95 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 sm:h-10 sm:w-10" />
-            <span className="text-lg font-bold text-primary-950 sm:text-xl">City Prompt</span>
+            <img src="/images/city-prompt-logo.png" alt="City Prompt" className="h-9 w-9 dark:invert sm:h-10 sm:w-10" />
+            <span className="text-sm font-black uppercase text-[#151515] sm:text-base">City Prompt</span>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-4 sm:flex">
-            <Link to="/projects" className="text-sm font-medium text-primary-950/60 transition-colors hover:text-primary-950">
+          <nav className="hidden items-center gap-3 sm:flex">
+            <Link to="/projects" className={navLinkClassName}>
               Projects
             </Link>
-            {user?.role && ['admin', 'cofounder'].includes(user.role) && (
-              <Link to="/admin" className="flex items-center gap-1 text-sm font-medium text-primary-950/60 transition-colors hover:text-primary-950">
-                {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
+            {canAdmin && (
+              <Link to="/admin" className={`flex items-center gap-1 ${navLinkClassName}`}>
+                {user?.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
               </Link>
             )}
-            {user?.role === 'cofounder' && (
-              <Link to="/admin/analytics" className="flex items-center gap-1 text-sm font-medium text-primary-950/60 transition-colors hover:text-primary-950">
+            {canAnalytics && (
+              <Link to="/admin/analytics" className={`flex items-center gap-1 ${navLinkClassName}`}>
                 <BarChart3 size={14} />
                 Analytics
               </Link>
             )}
-            {/* Token balance — non-admin only */}
-            {isAuthenticated && user && !['admin', 'cofounder'].includes(user.role) && (
-              <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
-                user.render_credits <= 0
-                  ? 'bg-red-500/10 text-red-500 ring-1 ring-red-500/20'
-                  : user.render_credits <= 100
-                    ? 'bg-amber-500/10 text-amber-600 ring-1 ring-amber-500/20'
-                    : 'bg-primary-500/10 text-primary-600 ring-1 ring-primary-500/20'
-              }`}>
+
+            {isAuthenticated && user && !canAdmin && (
+              <div
+                className={`flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] ${
+                  user.render_credits <= 0
+                    ? 'bg-red-50 text-red-600'
+                    : user.render_credits <= 100
+                      ? 'bg-[#f2b84b] text-[#151515]'
+                      : 'bg-[#c9ff3d] text-[#151515]'
+                }`}
+              >
                 <svg viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
                   <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                  <text x="8" y="11.5" textAnchor="middle" fontSize="9" fontWeight="bold">T</text>
+                  <text x="8" y="11.5" textAnchor="middle" fontSize="9" fontWeight="bold">
+                    T
+                  </text>
                 </svg>
                 {user.render_credits.toLocaleString()} tokens
               </div>
             )}
 
-            {/* Theme toggle */}
-            <div className="flex items-center rounded-lg border border-primary-950/[0.06]">
-              <button
-                onClick={() => setTheme('light')}
-                className={`rounded-l-lg p-1.5 transition-colors ${theme === 'light' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
-                title="Light mode"
-              >
-                <Sun size={14} />
-              </button>
-              <button
-                onClick={() => setTheme('system')}
-                className={`p-1.5 transition-colors ${theme === 'system' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
-                title="System theme"
-              >
-                <Monitor size={14} />
-              </button>
-              <button
-                onClick={() => setTheme('dark')}
-                className={`rounded-r-lg p-1.5 transition-colors ${theme === 'dark' ? 'bg-primary-950/[0.06] text-primary-950' : 'text-primary-950/40 hover:text-primary-950'}`}
-                title="Dark mode"
-              >
-                <Moon size={14} />
-              </button>
-            </div>
+            <ThemeToggle />
 
             {isAuthenticated ? (
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-primary-950/60 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950"
+                  className="city-account-button flex max-w-[260px] items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d] hover:text-[#151515] dark:text-[#fff9ec] dark:hover:text-[#151515]"
                 >
                   <User size={14} />
-                  {user?.full_name || user?.email}
-                  <ChevronDown size={14} className={`transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+                  <span className="truncate">{user?.full_name || user?.email}</span>
+                  <ChevronDown size={14} className={`shrink-0 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {userMenuOpen && (
-                  <div className="absolute right-0 z-50 mt-2 w-48 rounded-xl border border-primary-950/[0.08] bg-white py-1 shadow-elevated backdrop-blur-xl animate-scale-in">
-                    {user?.role && ['admin', 'cofounder'].includes(user.role) && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                      >
-                        {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
+                  <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-lg border-2 border-[#151515] bg-white py-1 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl animate-scale-in">
+                    {canAdmin && (
+                      <Link to="/admin" onClick={() => setUserMenuOpen(false)} className={menuItemClassName}>
+                        {user?.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                         Admin Dashboard
                       </Link>
                     )}
-                    {user?.role && ['admin', 'cofounder'].includes(user.role) && (
-                      <Link
-                        to="/admin/feedback"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                      >
+                    {canAdmin && (
+                      <Link to="/admin/feedback" onClick={() => setUserMenuOpen(false)} className={menuItemClassName}>
                         <MessageSquare size={14} />
                         Feedback Inbox
                       </Link>
                     )}
-                    {user?.role === 'cofounder' && (
-                      <Link
-                        to="/admin/analytics"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                      >
+                    {canAnalytics && (
+                      <Link to="/admin/analytics" onClick={() => setUserMenuOpen(false)} className={menuItemClassName}>
                         <BarChart3 size={14} />
                         Analytics
                       </Link>
                     )}
-                    <Link
-                      to="/settings/password"
-                      onClick={() => setUserMenuOpen(false)}
-                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                    >
+                    <Link to="/settings/password" onClick={() => setUserMenuOpen(false)} className={menuItemClassName}>
                       <KeyRound size={14} />
                       Change Password
                     </Link>
-                    <div className="my-1 border-t border-primary-950/[0.06]" />
-                    <button
-                      onClick={handleLogout}
-                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                    >
+                    <div className="my-1 border-t-2 border-[#151515]" />
+                    <button onClick={handleLogout} className={menuItemClassName}>
                       <LogOut size={14} />
                       Sign out
                     </button>
@@ -164,7 +156,7 @@ export function Layout() {
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1 rounded-lg border border-primary-950/[0.1] px-3 py-1.5 text-sm font-medium text-primary-950/70 transition-colors hover:bg-primary-950/[0.04]"
+                className="flex items-center gap-1 rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d]"
               >
                 <LogIn size={14} />
                 Sign in
@@ -172,41 +164,31 @@ export function Layout() {
             )}
           </nav>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen((v) => !v)}
-            className="rounded-lg p-2 text-primary-950/60 transition-colors hover:bg-primary-950/[0.04] hover:text-primary-950 sm:hidden"
+            className="rounded-full border-2 border-[#151515] bg-white p-2 text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#c9ff3d] sm:hidden"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Mobile dropdown */}
         {mobileMenuOpen && (
-          <div className="border-t border-primary-950/[0.06] bg-accent-50/95 px-4 pb-4 pt-2 backdrop-blur-xl sm:hidden">
-            <Link
-              to="/projects"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-            >
+          <div className="border-t-2 border-[#151515] bg-[#fff9ec]/95 px-4 pb-4 pt-2 backdrop-blur-xl sm:hidden">
+            <Link to="/projects" onClick={() => setMobileMenuOpen(false)} className={`block ${mobileLinkClassName}`}>
               Projects
             </Link>
-            {user?.role && ['admin', 'cofounder'].includes(user.role) && (
-              <Link
-                to="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-              >
-                {user.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
+            {canAdmin && (
+              <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className={`flex items-center gap-1 ${mobileLinkClassName}`}>
+                {user?.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
                 Admin
               </Link>
             )}
-            {user?.role === 'cofounder' && (
+            {canAnalytics && (
               <Link
                 to="/admin/analytics"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
+                className={`flex items-center gap-1 ${mobileLinkClassName}`}
               >
                 <BarChart3 size={14} />
                 Analytics
@@ -214,42 +196,42 @@ export function Layout() {
             )}
             {isAuthenticated ? (
               <>
-                <div className="flex items-center gap-1.5 px-3 py-2 text-sm text-primary-950/40">
+                <ThemeToggle className="mb-2 w-max" />
+                <div className="flex items-center gap-1.5 px-3 py-2 text-sm font-black text-[#151515]/60">
                   <User size={14} />
                   {user?.full_name || user?.email}
                 </div>
                 <Link
                   to="/settings/password"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
+                  className={`flex items-center gap-2 ${mobileLinkClassName}`}
                 >
                   <KeyRound size={14} />
                   Change Password
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-primary-950/60 hover:bg-primary-950/[0.04] hover:text-primary-950"
-                >
+                <button onClick={handleLogout} className={`flex w-full items-center gap-2 ${mobileLinkClassName}`}>
                   <LogOut size={14} />
                   Sign out
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="mt-1 flex items-center gap-1 rounded-lg border border-primary-950/[0.1] px-3 py-2 text-sm font-medium text-primary-950/70 hover:bg-primary-950/[0.04]"
-              >
-                <LogIn size={14} />
-                Sign in
-              </Link>
+              <>
+                <ThemeToggle className="mb-2 mt-1 w-max" />
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-1 ${mobileLinkClassName}`}
+                >
+                  <LogIn size={14} />
+                  Sign in
+                </Link>
+              </>
             )}
           </div>
         )}
-        {/* Glow accent line */}
-        <div className="absolute inset-x-0 bottom-0 glow-line" />
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+
+      <main className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <Outlet />
       </main>
     </div>

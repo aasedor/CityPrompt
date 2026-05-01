@@ -185,10 +185,10 @@ export function ProjectListPage() {
   };
 
   const statusColors: Record<string, string> = {
-    draft: 'bg-primary-950/[0.06] text-primary-950/50',
-    processing: 'bg-amber-500/15 text-amber-400',
-    ready: 'bg-emerald-500/15 text-emerald-400',
-    archived: 'bg-primary-500/15 text-primary-400',
+    draft: 'border-2 border-[#151515] bg-[#fefaf7] text-[#151515]',
+    processing: 'border-2 border-[#151515] bg-[#f2b84b] text-[#151515]',
+    ready: 'border-2 border-[#151515] bg-[#c9ff3d] text-[#151515]',
+    archived: 'border-2 border-[#151515] bg-[#d7d2c6] text-[#151515]',
   };
 
   const stepExpandedRender = useCallback((direction: -1 | 1) => {
@@ -218,14 +218,22 @@ export function ProjectListPage() {
   }, [expandedRender, stepExpandedRender]);
 
   return (
-    <div>
+    <div className="pb-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-bold text-primary-950 sm:text-2xl">Projects</h1>
-          <p className="mt-1 text-sm text-primary-950/50">Manage your 3D development visualizations</p>
+          <p className="text-xs font-black uppercase text-[#b5652f]">Workspace</p>
+          <h1 className="mt-1 text-4xl font-black uppercase leading-none tracking-normal text-[#151515] sm:text-5xl">
+            Projects
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-[#5c554d]">
+            Manage site plans, saved generations, and visual planning studies.
+          </p>
         </div>
         {!showCreate && (
-          <button onClick={() => setShowCreate(true)} className="btn-primary self-start">
+          <button
+            onClick={() => setShowCreate(true)}
+            className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-5 py-3 text-sm font-black uppercase text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:bg-[#d7ff66] active:translate-x-0.5 active:translate-y-0.5"
+          >
             <Plus size={16} className="mr-2" />
             New Project
           </button>
@@ -233,10 +241,10 @@ export function ProjectListPage() {
       </div>
 
       {showCreate && (
-        <div className="card mt-6">
+        <div className="mt-6 rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[8px_8px_0_0_#151515] sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Create New Project</h2>
-            <button onClick={handleCancel} className="text-primary-950/40 hover:text-primary-950/70">
+            <h2 className="text-lg font-black uppercase">Create New Project</h2>
+            <button onClick={handleCancel} className="rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] hover:bg-[#c9ff3d]">
               <X size={20} />
             </button>
           </div>
@@ -309,10 +317,19 @@ export function ProjectListPage() {
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <div className="flex gap-3">
-              <button onClick={handleCreate} disabled={createMutation.isPending} className="btn-primary">
+              <button
+                onClick={handleCreate}
+                disabled={createMutation.isPending}
+                className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
+              >
                 {createMutation.isPending ? 'Creating...' : 'Create Project'}
               </button>
-              <button onClick={handleCancel} className="btn-secondary">Cancel</button>
+              <button
+                onClick={handleCancel}
+                className="inline-flex items-center rounded-full border-2 border-[#151515] bg-white px-5 py-2.5 text-sm font-black text-[#151515] hover:bg-[#c9ff3d]"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -321,11 +338,16 @@ export function ProjectListPage() {
       {isLoading ? (
         <div className="mt-8 text-center text-primary-950/40">Loading projects...</div>
       ) : !projects?.length && !showCreate ? (
-        <div className="mt-16 text-center">
-          <FolderOpen className="mx-auto h-12 w-12 text-primary-950/20" />
-          <h3 className="mt-4 text-lg font-medium text-primary-950">No projects yet</h3>
-          <p className="mt-2 text-sm text-primary-950/50">Create your first project to start visualizing developments in 3D.</p>
-          <button onClick={() => setShowCreate(true)} className="btn-primary mt-6 inline-flex">
+        <div className="mx-auto mt-16 max-w-md rounded-lg border-2 border-[#151515] bg-white p-8 text-center shadow-[8px_8px_0_0_#151515]">
+          <FolderOpen className="mx-auto h-12 w-12 text-[#151515]" />
+          <h3 className="mt-4 text-2xl font-black uppercase text-[#151515]">No projects yet</h3>
+          <p className="mt-2 text-sm font-semibold text-[#5c554d]">
+            Create your first project to start visualizing developments in 3D.
+          </p>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="mt-6 inline-flex items-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-5 py-3 text-sm font-black uppercase text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:bg-[#d7ff66]"
+          >
             <Plus size={16} className="mr-2" />
             Create Project
           </button>
@@ -336,23 +358,26 @@ export function ProjectListPage() {
             const projectRenders = rendersByProject[project.id] ?? [];
             const previewRenders = projectRenders.slice(0, 4);
             return (
-              <div key={project.id} className="card-hover group flex flex-col">
+              <div
+                key={project.id}
+                className="group flex flex-col rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[6px_6px_0_0_#151515] transition-transform hover:-translate-y-0.5 sm:p-6"
+              >
                 <Link to={`/projects/${project.id}`} className="block flex-1">
                   <div className="flex items-start justify-between">
-                    <h3 className="font-semibold text-primary-950 group-hover:text-coral-500">{project.name}</h3>
+                    <h3 className="font-black text-[#151515] group-hover:text-[#0aa6a6]">{project.name}</h3>
                     <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
                   </div>
-                  {project.description && <p className="mt-2 line-clamp-2 text-sm text-primary-950/50">{project.description}</p>}
+                  {project.description && <p className="mt-2 line-clamp-2 text-sm font-semibold text-[#5c554d]">{project.description}</p>}
                   {isAdmin && project.owner_email && (
-                    <div className="mt-1.5 truncate text-xs text-primary-500/70">{project.owner_email}</div>
+                    <div className="mt-1.5 truncate text-xs font-bold text-[#0aa6a6]">{project.owner_email}</div>
                   )}
                   {project.location?.address && (
-                    <div className="mt-2 flex items-center text-xs text-primary-950/40">
+                    <div className="mt-2 flex items-center text-xs font-semibold text-[#151515]/50">
                       <MapPin size={11} className="mr-1 flex-shrink-0" />
                       <span className="truncate">{project.location.address}</span>
                     </div>
                   )}
-                  <div className="mt-4 flex items-center text-xs text-primary-950/40">
+                  <div className="mt-4 flex items-center text-xs font-semibold text-[#151515]/50">
                     <Clock size={12} className="mr-1" />
                     Updated {new Date(project.updated_at).toLocaleDateString()}
                   </div>

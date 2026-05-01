@@ -358,7 +358,7 @@ export function ProjectViewPage() {
         />
 
         {/* Toolbar — left sidebar placement (ported from codex UX) */}
-        <div className="absolute top-[272px] left-4 bottom-4 z-30 w-64 overflow-y-auto">
+        <div className="absolute top-[272px] left-4 bottom-4 z-30 w-64 overflow-visible">
           <SitePlannerToolbar
             layout="sidebar"
             isGlobeMode
@@ -370,7 +370,7 @@ export function ProjectViewPage() {
               !showGlobeRender ? (
                 <button
                   onClick={handleOpenGlobeRender}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-500 px-3 py-2.5 text-sm font-semibold text-slate-950 shadow-md transition-colors hover:bg-cyan-400"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
                 >
                   <Camera size={16} />
                   AI Render

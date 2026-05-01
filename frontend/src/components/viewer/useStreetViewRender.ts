@@ -21,6 +21,8 @@ const API_BASE = import.meta.env.VITE_API_URL || '';
 const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 const DEG_TO_RAD = Math.PI / 180;
 const EARTH_RADIUS_M = 6_371_000;
+const STREET_VIEW_RENDER_MODEL = 'gpt-image-2';
+type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 
 /** Meters per degree of latitude (roughly constant). */
 const METERS_PER_DEG_LAT = 110_540;
@@ -1836,6 +1838,14 @@ export interface StreetViewResult {
   imageUrl: string;
   /** The prompt that was sent to the API. */
   prompt: string;
+  /** Render model used by the backend. */
+  model?: string;
+  /** OpenAI image quality when using GPT Image models. */
+  imageQuality?: OpenAIImageQuality;
+  /** Friendly provider label for comparison UIs. */
+  providerLabel?: string;
+  /** Render error for provider comparison cards. */
+  error?: string;
 }
 
 /**
@@ -1943,6 +1953,7 @@ export async function generateStreetView(
     distanceMeters?: number;
     styleModifier?: string;
     model?: string;
+    imageQuality?: OpenAIImageQuality;
     projectId?: string;
     previousRenderBase64?: string; // For dual anchoring on re-render
     overrideGuideImage?: string; // Base64 image to use instead of clay render (e.g. 3D tiles capture)
@@ -1950,6 +1961,7 @@ export async function generateStreetView(
 ): Promise<StreetViewResult | null> {
   const fov = options?.fovDeg ?? 70;
   const distance = options?.distanceMeters ?? 200;
+  const renderModel = options?.model ?? STREET_VIEW_RENDER_MODEL;
 
   // 0. Pre-process: buffer street/path polylines into polygons
   const processedZones = preprocessZonesForStreetView(siteZones);
@@ -2046,6 +2058,7 @@ export async function generateStreetView(
       prompt: enhancedPrompt,
       image_base64: guideImageBase64,
       aspect_ratio: '16:9',
+      model: renderModel,
       // Optimal API config from research: temp=0.35 prevents hallucinations while
       // preserving photorealistic material variance; topP=0.85 trims long-tail
       // improbable elements; topK=32 restricts to probable geometric interpretations
@@ -2054,8 +2067,8 @@ export async function generateStreetView(
       top_k: 32,
     };
 
-    if (options?.model) {
-      body.model = options.model;
+    if (renderModel.startsWith('gpt-image-2')) {
+      body.image_quality = options?.imageQuality ?? 'auto';
     }
     if (options?.projectId) {
       body.project_id = options.projectId;
@@ -2088,7 +2101,7 @@ export async function generateStreetView(
     // --- TWO-PASS GENERATION ---
     // When using Pro model, do a refinement pass for better spatial accuracy.
     // Pass 1 establishes the spatial layout, Pass 2 refines materials and details.
-    const isProModel = options?.model === 'gemini-3-pro-image-preview';
+    const isProModel = renderModel === 'gemini-3-pro-image-preview';
     if (isProModel && !options?.previousRenderBase64) {
       console.log('[StreetView] Pass 2: Refining spatial layout with dual anchoring...');
       try {
@@ -2106,7 +2119,7 @@ export async function generateStreetView(
           image_base64: guideImageBase64,
           previous_render_base64: resultBase64,
           aspect_ratio: '16:9',
-          model: options?.model,
+          model: renderModel,
           project_id: options?.projectId,
         };
 
@@ -2132,7 +2145,7 @@ export async function generateStreetView(
     }
 
     const imageUrl = `data:image/png;base64,${resultBase64}`;
-    return { imageUrl, prompt };
+    return { imageUrl, prompt, model: renderModel, imageQuality: options?.imageQuality };
   } catch (err) {
     console.error('[useStreetViewRender] Render API call failed:', err);
     return null;
@@ -2163,6 +2176,7 @@ export function useStreetViewRender() {
         distanceMeters?: number;
         styleModifier?: string;
         model?: string;
+        imageQuality?: OpenAIImageQuality;
         projectId?: string;
         previousRenderBase64?: string;
         overrideGuideImage?: string;

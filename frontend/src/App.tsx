@@ -25,6 +25,7 @@ import { AdminFeedbackPage } from '@/features/admin/AdminFeedbackPage';
 import { FeedbackWidget } from '@/components/FeedbackWidget';
 import { useAuthStore } from '@/store';
 import { authApi } from '@/services/api';
+import '@/store/themeStore';
 
 
 export default function App() {
