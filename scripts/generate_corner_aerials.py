@@ -126,14 +126,26 @@ CAMERA_BLOCKS = {
         "rooftop footprint must fit within the frame."
     ),
     (90, "open_space"): (
-        "CAMERA: Drone photograph from TRUE NADIR — camera pointing STRAIGHT "
-        "DOWN at the ground. Camera is approximately 150 METERS above ground "
-        "level. The view shows the open-space site from directly above — "
-        "FLAT ground-plane layout with no perspective, no foreshortening, "
-        "no horizon, no sky visible. Like a satellite image or overhead "
-        "diagram. Playing surfaces, paths, court lines, tee pads, baskets, "
-        "paved areas, landscape, and site fixtures are all visible in "
-        "plan. 35mm equivalent lens. "
+        "CAMERA: TRUE NADIR satellite-style overhead view — camera pointing "
+        "STRAIGHT DOWN, perfectly perpendicular to the ground. Camera is "
+        "approximately 150 METERS above ground level. ORTHOGRAPHIC "
+        "PROJECTION — absolutely no perspective, no foreshortening, no "
+        "vanishing points, NO oblique angle, NO isometric view, NO 3/4 "
+        "view, NO axonometric view, NO tilted angle, NO drone tilt. The "
+        "result must look like a Google Earth screenshot or an aerial "
+        "site plan, NOT like a drone photo. NO horizon, NO sky, NO "
+        "clouds visible anywhere in the frame. "
+        "NO 3D DEPTH ON OBJECTS: trees read as flat round canopy circles "
+        "from directly above (you see the TOP of the canopy, never its "
+        "side); buildings, kiosks, and pavilions read as flat rooftop "
+        "shapes only — NO facades, NO walls, NO sides visible; benches, "
+        "tables, and planters read as thin rectangles or small shapes "
+        "with no visible vertical face. The only visible face of every "
+        "object is its top. Shadows on the ground reveal object height, "
+        "but the objects themselves never show a side. "
+        "Ground-plane content — playing surfaces, paths, court lines, "
+        "tee pads, baskets, paved areas, landscape patches, and site "
+        "fixtures — is all rendered as a flat plan. 35mm equivalent lens. "
         "DOMINANT SUBJECT: the characteristic site features MUST FILL the "
         "majority of the frame — do NOT show the site as a small patch "
         "inside a larger generic field. Crop tight to the FOCUSED facility."
@@ -253,10 +265,10 @@ FIDELITY_BLOCK_OPEN_SPACE = (
     "appearance of this archetype at ground level. Preserve EXACTLY the same "
     "ground surface materials, fixtures, colors, landscape elements, and "
     "overall character. The ONLY thing that should change is the camera "
-    "position — it is now 80 meters in the air looking down at the site, "
-    "instead of at eye level. Do not invent new structures or fixtures not "
-    "present in the reference. The reference is a GROUND-LEVEL OPEN SPACE "
-    "and the output must also be the same ground-level open space — not a "
+    "position — it has moved to the aerial angle described in the CAMERA "
+    "block above. Do not invent new structures or fixtures not present in "
+    "the reference. The reference is a GROUND-LEVEL OPEN SPACE and the "
+    "output must also be the same ground-level open space — not a "
     "building, not a structure, not a roof. The characteristic features "
     "of the site (as shown in the reference) must DOMINATE the output — "
     "the image must unambiguously read as THIS specific type of open "
@@ -1525,6 +1537,22 @@ def generate_image(
     return None
 
 
+_NADIR_TAIL = (
+    "CRITICAL FINAL CONSTRAINT (highest priority, overrides any conflict "
+    "above): The image MUST be a TRUE NADIR satellite-style overhead view — "
+    "camera straight down, ORTHOGRAPHIC, NO oblique angle, NO drone tilt, "
+    "NO 3/4 view, NO isometric, NO axonometric. Trees show only their TOP "
+    "canopy as flat circles. Buildings, pavilions, and kiosks show only "
+    "their FLAT ROOFTOPS — no facades, no walls, no sides, no vertical "
+    "faces visible anywhere in the frame. Benches, tables, and planters "
+    "show only their TOPS as small flat shapes. If you would normally "
+    "show a rooftop archetype with skyline edge or surrounding building "
+    "facades, you MUST instead show those neighbouring buildings as flat "
+    "rooftop rectangles only. Like Google Earth, like a satellite image, "
+    "like an aerial site plan — NEVER like a drone photo."
+)
+
+
 def build_prompt(subject: str, zone_type: str, angle: int) -> str:
     camera = CAMERA_BLOCKS.get((angle, zone_type))
     if camera is None:
@@ -1538,14 +1566,20 @@ def build_prompt(subject: str, zone_type: str, angle: int) -> str:
     else:
         framing = FRAMING_BLOCK_BUILDING
         fidelity = FIDELITY_BLOCK_BUILDING
-    return "\n\n".join([
+
+    blocks: list[str] = [
         f"SUBJECT: {subject}",
         camera,
         framing,
         STYLE_BLOCK,
         fidelity,
         NO_PEOPLE_BLOCK,
-    ])
+    ]
+    # Critical constraints go at the END of the prompt (Gemini weights later
+    # instructions more heavily) — see CLAUDE.md.
+    if angle == 90:
+        blocks.append(_NADIR_TAIL)
+    return "\n\n".join(blocks)
 
 
 def main() -> int:

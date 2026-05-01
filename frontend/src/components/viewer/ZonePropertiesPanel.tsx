@@ -19,6 +19,8 @@ import {
   GREEN_SPACE_AESTHETIC_OPTIONS_V2,
   PLAZA_AESTHETIC_CATEGORIES_V2,
   PLAZA_AESTHETIC_OPTIONS_V2,
+  OPENSPACE_AESTHETIC_CATEGORIES_V2,
+  OPENSPACE_AESTHETIC_OPTIONS_V2,
   ROADWAY_AESTHETIC_PRESETS_V2,
   GREEN_SPACE_AESTHETIC_PRESETS_V2,
   PLAZA_AESTHETIC_PRESETS_V2,
@@ -91,6 +93,10 @@ const GREEN_SPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = GREEN_SPACE_
 
 const PLAZA_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = PLAZA_AESTHETIC_CATEGORIES_V2;
 const PLAZA_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = PLAZA_AESTHETIC_OPTIONS_V2;
+
+// Combined parks + plazas — used by the unified "Parks / Plazas" picker.
+const OPENSPACE_AESTHETIC_CATEGORIES: DevelopmentAestheticCategory[] = OPENSPACE_AESTHETIC_CATEGORIES_V2;
+const OPENSPACE_AESTHETIC_OPTIONS: DevelopmentAestheticOption[] = OPENSPACE_AESTHETIC_OPTIONS_V2;
 
 const ROADWAY_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = ROADWAY_AESTHETIC_PRESETS_V2;
 const GREEN_SPACE_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = GREEN_SPACE_AESTHETIC_PRESETS_V2;
@@ -529,6 +535,12 @@ const resolveOptionCategory = (
   const selectedGreenSpaceReferenceId = (props.green_space_archetype_id as string) || ((props.green_space_selected_reference as { id?: string } | undefined)?.id) || undefined;
   const selectedPlazaReferenceId = (props.plaza_archetype_id as string) || ((props.plaza_selected_reference as { id?: string } | undefined)?.id) || undefined;
 
+  // Unified Parks / Plazas selection — reads from whichever prefix has data
+  const selectedOpenSpaceAesthetic = (props.green_space_aesthetic as string) || (props.plaza_aesthetic as string) || undefined;
+  const selectedOpenSpaceCategory = selectedGreenSpaceCategory || selectedPlazaCategory;
+  const selectedOpenSpaceReferenceId = selectedGreenSpaceReferenceId || selectedPlazaReferenceId;
+  const selectedOpenSpaceVariantId = (props.green_space_selected_variant_id as string) || (props.plaza_selected_variant_id as string) || undefined;
+
   const selectedTransportModes = inferTransportModesFromProperties(props);
 
   const applyBuildingDevelopmentType = (nextDevelopmentType: string | undefined) => {
@@ -748,6 +760,33 @@ const resolveOptionCategory = (
       }
       return nextProps;
     });
+  };
+
+  // Unified Parks / Plazas handlers — route by archetype's spaceType so a
+  // single picker can drive both park-typed and plaza-typed archetypes from
+  // the same panel. The renderer iterates all prefixes (development, road,
+  // green_space, plaza) and picks up whichever has data, so it doesn't matter
+  // for rendering which prefix the data lands in — but we keep the data tidy
+  // by clearing the OTHER prefix when switching spaceTypes.
+  const applyOpenSpaceCategory = (nextCategory: string | undefined) => {
+    applyGreenSpaceCategory(nextCategory);
+    applyPlazaCategory(nextCategory);
+  };
+
+  const applyOpenSpaceAesthetic = (next: string | undefined, archetypeImageId?: string, variantId?: string) => {
+    if (!next) {
+      applyGreenSpaceAesthetic(undefined);
+      applyPlazaAesthetic(undefined);
+      return;
+    }
+    const isPlaza = PLAZA_AESTHETIC_OPTIONS.some((o) => o.id === next);
+    if (isPlaza) {
+      applyGreenSpaceAesthetic(undefined);
+      applyPlazaAesthetic(next, archetypeImageId, variantId);
+    } else {
+      applyPlazaAesthetic(undefined);
+      applyGreenSpaceAesthetic(next, archetypeImageId, variantId);
+    }
   };
 
   const applyRoadVolume = (nextVolume: string | undefined) => {
@@ -1042,57 +1081,57 @@ const resolveOptionCategory = (
 
 
         {/* ============================================================= */}
-        {/* GREEN SPACE                                                    */}
+        {/* PARKS / PLAZAS (combined park + plaza picker)                  */}
         {/* ============================================================= */}
-        {zone.zone_type === 'green_space' && (
+        {(zone.zone_type === 'green_space' || zone.zone_type === 'parking') && (
           <>
             <div>
-              <label className={panelLabelClass}>Park Category</label>
+              <label className={panelLabelClass}>Park / Plaza Category</label>
               <select
-                value={selectedGreenSpaceCategory || ''}
-                onChange={(e) => applyGreenSpaceCategory(e.target.value || undefined)}
+                value={selectedOpenSpaceCategory || ''}
+                onChange={(e) => applyOpenSpaceCategory(e.target.value || undefined)}
                 className={panelFieldClass}
               >
                 <option value="">-- Select Category --</option>
-                {GREEN_SPACE_AESTHETIC_CATEGORIES.map((category) => (
+                {OPENSPACE_AESTHETIC_CATEGORIES.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.label}
                   </option>
                 ))}
               </select>
-              {selectedGreenSpaceCategory && (
+              {selectedOpenSpaceCategory && (
                 <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {GREEN_SPACE_AESTHETIC_CATEGORIES.find((item) => item.id === selectedGreenSpaceCategory)?.description}
+                  {OPENSPACE_AESTHETIC_CATEGORIES.find((item) => item.id === selectedOpenSpaceCategory)?.description}
                 </p>
               )}
             </div>
             <div>
-              <label className={panelLabelClass}>Park Typology</label>
+              <label className={panelLabelClass}>Park / Plaza Typology</label>
               <div className="mt-1">
-                <GreenSpaceAestheticPicker
-                  value={(props.green_space_aesthetic as string) || undefined}
-                  category={selectedGreenSpaceCategory}
-                  selectedReferenceId={selectedGreenSpaceReferenceId}
-                  selectedVariantId={(props.green_space_selected_variant_id as string) || undefined}
-                  onChange={applyGreenSpaceAesthetic}
+                <OpenSpaceAestheticPicker
+                  value={selectedOpenSpaceAesthetic}
+                  category={selectedOpenSpaceCategory}
+                  selectedReferenceId={selectedOpenSpaceReferenceId}
+                  selectedVariantId={selectedOpenSpaceVariantId}
+                  onChange={applyOpenSpaceAesthetic}
                 />
               </div>
             </div>
-            {/* Area size check for selected park archetype */}
+            {/* Area size check for selected archetype (works across both spaceTypes) */}
             {(() => {
-              const selectedParkOption = GREEN_SPACE_AESTHETIC_OPTIONS.find(
-                (o) => o.id === (props.green_space_aesthetic as string)
+              const selectedOption = OPENSPACE_AESTHETIC_OPTIONS.find(
+                (o) => o.id === selectedOpenSpaceAesthetic,
               );
-              if (!selectedParkOption) return null;
-              const selectedParkVariant = (props.green_space_selected_variant_id && selectedParkOption?.variants)
-                ? selectedParkOption.variants.find((v) => v.id === props.green_space_selected_variant_id)
+              if (!selectedOption) return null;
+              const selectedVariant = (selectedOpenSpaceVariantId && selectedOption?.variants)
+                ? selectedOption.variants.find((v) => v.id === selectedOpenSpaceVariantId)
                 : undefined;
-              const parkMinArea = selectedParkVariant?.minAreaSqm ?? selectedParkOption?.minAreaSqm;
-              const parkMaxArea = selectedParkVariant?.maxAreaSqm ?? selectedParkOption?.maxAreaSqm;
-              const parkSuggestedArea = selectedParkVariant?.suggestedAreaSqm ?? selectedParkOption?.suggestedAreaSqm;
-              if (parkSuggestedArea == null && parkMinArea == null) return null;
-              const tooSmall = parkMinArea != null && area < parkMinArea;
-              const tooLarge = parkMaxArea != null && area > parkMaxArea;
+              const minArea = selectedVariant?.minAreaSqm ?? selectedOption?.minAreaSqm;
+              const maxArea = selectedVariant?.maxAreaSqm ?? selectedOption?.maxAreaSqm;
+              const suggestedArea = selectedVariant?.suggestedAreaSqm ?? selectedOption?.suggestedAreaSqm;
+              if (suggestedArea == null && minArea == null) return null;
+              const tooSmall = minArea != null && area < minArea;
+              const tooLarge = maxArea != null && area > maxArea;
               const areaOutOfRange = tooSmall || tooLarge;
               return (
                 <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5">
@@ -1104,26 +1143,26 @@ const resolveOptionCategory = (
                         : `${Math.round(area).toLocaleString()} m²`}
                     </span>
                   </div>
-                  {parkMinArea != null && parkMaxArea != null && (
+                  {minArea != null && maxArea != null && (
                     <div className="flex justify-between items-baseline mt-0.5">
                       <span className="text-[10px] text-primary-950/50">Typical range</span>
                       <span className="text-[11px] font-medium text-primary-950/70">
-                        {parkMinArea >= 10000
-                          ? `${(parkMinArea / 10000).toFixed(1)} ha`
-                          : `${parkMinArea.toLocaleString()} m²`}
+                        {minArea >= 10000
+                          ? `${(minArea / 10000).toFixed(1)} ha`
+                          : `${minArea.toLocaleString()} m²`}
                         {' – '}
-                        {parkMaxArea >= 10000
-                          ? `${(parkMaxArea / 10000).toFixed(1)} ha`
-                          : `${parkMaxArea.toLocaleString()} m²`}
+                        {maxArea >= 10000
+                          ? `${(maxArea / 10000).toFixed(1)} ha`
+                          : `${maxArea.toLocaleString()} m²`}
                       </span>
                     </div>
                   )}
                   <div className={`mt-1 text-[10px] font-medium ${areaOutOfRange ? 'text-orange-500' : 'text-green-600'}`}>
                     {tooSmall
-                      ? `Zone is too small for this park type — minimum ${parkMinArea!.toLocaleString()} m² recommended`
+                      ? `Zone is too small for this typology — minimum ${minArea!.toLocaleString()} m² recommended`
                       : tooLarge
-                        ? `Zone is very large for this park type — maximum ${parkMaxArea!.toLocaleString()} m² typical`
-                        : 'Good fit for this park type'}
+                        ? `Zone is very large for this typology — maximum ${maxArea!.toLocaleString()} m² typical`
+                        : 'Good fit for this typology'}
                   </div>
                 </div>
               );
@@ -1201,45 +1240,7 @@ const resolveOptionCategory = (
           </>
         )}
 
-        {/* ============================================================= */}
-        {/* PARKING                                                        */}
-        {/* ============================================================= */}
-        {zone.zone_type === 'parking' && (
-          <>
-            <div>
-              <label className={panelLabelClass}>Plaza Category</label>
-              <select
-                value={selectedPlazaCategory || ''}
-                onChange={(e) => applyPlazaCategory(e.target.value || undefined)}
-                className={panelFieldClass}
-              >
-                <option value="">-- Select Category --</option>
-                {PLAZA_AESTHETIC_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-              {selectedPlazaCategory && (
-                <p className="mt-0.5 text-[10px] text-primary-950/50">
-                  {PLAZA_AESTHETIC_CATEGORIES.find((item) => item.id === selectedPlazaCategory)?.description}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className={panelLabelClass}>Plaza Typology</label>
-              <div className="mt-1">
-                <PlazaAestheticPicker
-                  value={(props.plaza_aesthetic as string) || undefined}
-                  category={selectedPlazaCategory}
-                  selectedReferenceId={selectedPlazaReferenceId}
-                  selectedVariantId={(props.plaza_selected_variant_id as string) || undefined}
-                  onChange={applyPlazaAesthetic}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        {/* PARKING block merged into combined PARKS / PLAZAS block above */}
 
         {/* ============================================================= */}
         {/* DEVELOPMENT AREA                                               */}
@@ -2619,6 +2620,71 @@ function RoadwayAestheticPicker({
 // Reference Images sub-component
 // =============================================================================
 
+/**
+ * Combined Parks / Plazas typology picker — shows every openspace archetype
+ * regardless of spaceType. The panel routes the selection to the correct
+ * persistence prefix (green_space vs plaza) based on the picked archetype's
+ * spaceType. Used by the unified "Parks / Plazas" zone block.
+ */
+function OpenSpaceAestheticPicker({
+  value,
+  category,
+  selectedReferenceId,
+  selectedVariantId,
+  onChange,
+}: {
+  value?: string;
+  category?: string;
+  selectedReferenceId?: string;
+  selectedVariantId?: string;
+  onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
+}) {
+  const categoryOptions = category
+    ? OPENSPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
+    : [];
+
+  return (
+    <div className="space-y-2">
+      {!category && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          Select a category to view typologies.
+        </div>
+      )}
+
+      {category && categoryOptions.length === 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
+          No typologies found for this category.
+        </div>
+      )}
+
+      {categoryOptions.length > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          {categoryOptions.map((option) => (
+            <AestheticOptionCard
+              key={option.id}
+              option={option}
+              value={value}
+              selectedReferenceId={selectedReferenceId}
+              selectedVariantId={selectedVariantId}
+              onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+            />
+          ))}
+        </div>
+      )}
+      <button
+        type="button"
+        onClick={() => onChange(undefined)}
+        disabled={!value}
+        className="w-full rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-1 text-[11px] font-medium text-primary-950/60 hover:bg-primary-950/[0.08] disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Clear Typology
+      </button>
+    </div>
+  );
+}
+
+// Legacy individual pickers — kept for any callers that still reference them.
+// New code should use OpenSpaceAestheticPicker above.
 function GreenSpaceAestheticPicker({
   value,
   category,

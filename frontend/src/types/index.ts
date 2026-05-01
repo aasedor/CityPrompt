@@ -585,7 +585,7 @@ export const ZONE_TYPE_CONFIG: Record<SiteZoneType, ZoneTypeConfig> = {
     defaultProperties: { width: 10 },
   },
   green_space: {
-    label: 'Parks / Green Space',
+    label: 'Parks / Plazas',
     color: '#4CAF50',       // APA Open Space Green
     icon: 'G',
     defaultProperties: { tree_density: 0.3 },

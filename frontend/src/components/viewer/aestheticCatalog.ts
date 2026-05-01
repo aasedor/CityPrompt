@@ -472,6 +472,16 @@ export const PLAZA_AESTHETIC_OPTIONS_V2: AestheticOption[] = OPEN_SPACE_OPTIONS.
   return seed?.spaceType === 'plaza';
 });
 
+// Combined parks + plazas — used by the unified "Parks / Plazas" picker so
+// users see all openspace archetypes regardless of the zone subtype they
+// drew the polygon with. The panel routes the selection to the correct
+// persistence prefix (green_space vs plaza) based on the picked archetype's
+// spaceType.
+export const OPENSPACE_AESTHETIC_OPTIONS_V2: AestheticOption[] = OPEN_SPACE_OPTIONS;
+export const OPENSPACE_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = OPEN_SPACE_LIBRARY.categories.filter(
+  (category) => GREEN_SPACE_CATEGORY_IDS.has(category.id) || PLAZA_CATEGORY_IDS.has(category.id),
+);
+
 export const ROADWAY_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(ROADWAY_AESTHETIC_OPTIONS_V2);
 export const GREEN_SPACE_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(GREEN_SPACE_AESTHETIC_OPTIONS_V2);
 export const PLAZA_AESTHETIC_PRESETS_V2: Record<string, Partial<SiteZoneProperties>> = mapPresetRecord(PLAZA_AESTHETIC_OPTIONS_V2);
