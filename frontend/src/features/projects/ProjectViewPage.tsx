@@ -79,6 +79,7 @@ export function ProjectViewPage() {
     workflowStep,
     setWorkflowStep,
     settings,
+    activeSitePlannerTool,
   } = useViewerStore();
 
   const {
@@ -104,7 +105,7 @@ export function ProjectViewPage() {
 
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool('building');
+    setActiveSitePlannerTool(null);
     setWorkflowStep(1);
     return () => {
       setSitePlannerActive(false);
@@ -357,8 +358,8 @@ export function ProjectViewPage() {
           onMeasureModeChange={handleMeasureModeChange}
         />
 
-        {/* Toolbar — left sidebar placement (ported from codex UX) */}
-        <div className="absolute top-[272px] left-4 bottom-4 z-30 w-64 overflow-visible">
+        {/* Toolbar — hidden on phones during focused vertex placement. */}
+        <div className={`absolute inset-x-3 z-30 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[272px] sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}>
           <SitePlannerToolbar
             layout="sidebar"
             isGlobeMode
@@ -437,11 +438,13 @@ export function ProjectViewPage() {
         )}
 
         {/* Back button */}
-        <div className="absolute top-4 left-4 z-30 flex items-center gap-3">
-          <Link to="/projects" className="rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
+        <div className="absolute left-4 top-4 z-30 flex max-w-[calc(100vw-2rem)] items-center gap-3">
+          <Link to="/projects" className="shrink-0 rounded-lg bg-gray-900/75 p-2 backdrop-blur-sm hover:bg-gray-900/90">
             <ArrowLeft size={18} className="text-white" />
           </Link>
-          <span className="text-sm font-medium text-white/80">{project.name}</span>
+          <span className="min-w-0 max-w-[calc(100vw-5.5rem)] truncate text-sm font-medium text-white/80 sm:max-w-none">
+            {project.name}
+          </span>
         </div>
 
         {/* Street View Panel — with globe 3D tiles capture */}

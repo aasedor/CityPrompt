@@ -42,7 +42,6 @@ import {
   shouldFilterObjectTerrainHeight,
 } from './globeTerrainUtils';
 import {
-  getToolDisplayLabel,
   isLinearTool,
   minPointsForTool,
   smoothPolyline,
@@ -80,6 +79,7 @@ const DRAWING_FILL_LIFT_METERS = 0.3;
 const DRAWING_OUTLINE_LIFT_METERS = 0.6;
 const DRAWING_VERTEX_LIFT_METERS = 1;
 const DRAWING_VERTEX_RADIUS_METERS = 2.25;
+const CONNECT_VERTEX_RADIUS_METERS = 30;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const MEASURE_LINE_LIFT_METERS = 2;
 const MEASURE_POINT_RADIUS_METERS = 1.8;
@@ -971,7 +971,7 @@ function DrawingDots({
   return (
     <>
       {/* Preview fill polygon */}
-      <DrawingPreviewFill points={points} terrainHeight={previewHeight} />
+      {!linear && <DrawingPreviewFill points={points} terrainHeight={previewHeight} />}
 
       {/* Live polygon area */}
       {liveArea > 0 && (() => {
@@ -1031,8 +1031,8 @@ function DrawingDots({
             DRAWING_OUTLINE_LIFT_METERS,
           );
         }
-        // Close the loop for polygons (3+ points)
-        if (points.length >= 3) {
+        // Close the loop for polygons only. Linear tools stay open while placing waypoints.
+        if (!linear && points.length >= 3) {
           outVerts.push(
             (points[0][0] - centroid[0]) * mPerDegLon,
             (points[0][1] - centroid[1]) * METERS_PER_DEG_LAT,
@@ -1241,6 +1241,7 @@ export function GlobeSitePlannerMap({
   const isRedispatchingCtrlPointerRef = useRef(false);
   const {
     selectedZoneId, activeSitePlannerTool, activeToolProperties,
+    setActiveSitePlannerTool,
     streetViewPegman, setStreetViewPosition, setStreetViewAngle, setStreetViewActive,
   } = useViewerStore();
 
@@ -1645,6 +1646,7 @@ export function GlobeSitePlannerMap({
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
   const [drawingPointHeights, setDrawingPointHeights] = useState<number[]>([]);
+  const [centerNearStartVertex, setCenterNearStartVertex] = useState(false);
   const [measurePoints, setMeasurePoints] = useState<number[][]>([]);
   const [measurePointHeights, setMeasurePointHeights] = useState<number[]>([]);
   const drawingPointsRef = useRef<number[][]>([]);
@@ -1676,6 +1678,7 @@ export function GlobeSitePlannerMap({
   useEffect(() => {
     setDrawingPoints([]);
     setDrawingPointHeights([]);
+    setCenterNearStartVertex(false);
     drawingPointsRef.current = [];
     drawingPointHeightsRef.current = [];
   }, [activeSitePlannerTool]);
@@ -1923,9 +1926,11 @@ export function GlobeSitePlannerMap({
     onZoneCreated(finalCoords, activeSitePlannerTool, zoneProperties);
     setDrawingPoints([]);
     setDrawingPointHeights([]);
+    setCenterNearStartVertex(false);
     drawingPointsRef.current = [];
     drawingPointHeightsRef.current = [];
-  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, terrainElevation]);
+    setActiveSitePlannerTool(null);
+  }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation]);
   finishDrawingRef.current = finishDrawing;
 
   // Keyboard handler for drawing
@@ -1938,8 +1943,10 @@ export function GlobeSitePlannerMap({
         e.preventDefault();
         setDrawingPoints([]);
         setDrawingPointHeights([]);
+        setCenterNearStartVertex(false);
         drawingPointsRef.current = [];
         drawingPointHeightsRef.current = [];
+        setActiveSitePlannerTool(null);
       }
       else if (e.key === 'Backspace' && drawingPointsRef.current.length > 0) {
         const newPts = drawingPointsRef.current.slice(0, -1);
@@ -1953,7 +1960,7 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [finishDrawing, hasDrawingTool]);
+  }, [finishDrawing, hasDrawingTool, setActiveSitePlannerTool]);
 
   // Keyboard handler for quick measuring
   useEffect(() => {
@@ -2136,6 +2143,94 @@ export function GlobeSitePlannerMap({
     };
   }, [hasDrawingTool, markUserInteracted, selectedZoneId, streetViewPegman?.position]);
 
+  const updateCenterConnectionState = useCallback(() => {
+    if (!hasDrawingTool || linear || !activeSitePlannerTool) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    const pts = drawingPointsRef.current;
+    if (pts.length < minPointsForTool(activeSitePlannerTool)) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    const centerSurface = raycastSurfacePoint(0, 0);
+    if (!centerSurface) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    setCenterNearStartVertex(haversineDistance(centerSurface.lngLat, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
+  }, [activeSitePlannerTool, hasDrawingTool, linear, raycastSurfacePoint]);
+
+  const addDrawingPointFromSurface = useCallback((surface: { lngLat: [number, number]; height: number }) => {
+    if (!activeSitePlannerTool) return;
+
+    const newPts = [...drawingPointsRef.current, surface.lngLat];
+    const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
+    const tilesGroup = tilesRendererRef.current?.group;
+    const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
+      ? raycastObjectFilteredTerrainHeightAtLngLat(
+        surface.lngLat[0],
+        surface.lngLat[1],
+        tilesGroup,
+        new THREE.Raycaster(),
+        surface.height,
+      ) ?? surface.height
+      : surface.height;
+    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+
+    drawingPointsRef.current = newPts;
+    drawingPointHeightsRef.current = newHeights;
+    setDrawingPoints(newPts);
+    setDrawingPointHeights(newHeights);
+    requestAnimationFrame(updateCenterConnectionState);
+  }, [activeSitePlannerTool, updateCenterConnectionState]);
+
+  const placeCenterVertex = useCallback(() => {
+    if (!activeSitePlannerTool) return;
+
+    if (centerNearStartVertex && drawingPointsRef.current.length >= minPointsForTool(activeSitePlannerTool)) {
+      finishDrawingRef.current?.();
+      return;
+    }
+
+    const centerSurface = raycastSurfacePoint(0, 0);
+    if (centerSurface) addDrawingPointFromSurface(centerSurface);
+  }, [activeSitePlannerTool, addDrawingPointFromSurface, centerNearStartVertex, raycastSurfacePoint]);
+
+  const undoDrawingPoint = useCallback(() => {
+    if (drawingPointsRef.current.length === 0) return;
+    const newPts = drawingPointsRef.current.slice(0, -1);
+    const newHeights = drawingPointHeightsRef.current.slice(0, -1);
+    drawingPointsRef.current = newPts;
+    drawingPointHeightsRef.current = newHeights;
+    setDrawingPoints(newPts);
+    setDrawingPointHeights(newHeights);
+    requestAnimationFrame(updateCenterConnectionState);
+  }, [updateCenterConnectionState]);
+
+  const cancelDrawing = useCallback(() => {
+    setDrawingPoints([]);
+    setDrawingPointHeights([]);
+    setCenterNearStartVertex(false);
+    drawingPointsRef.current = [];
+    drawingPointHeightsRef.current = [];
+    setActiveSitePlannerTool(null);
+  }, [setActiveSitePlannerTool]);
+
+  useEffect(() => {
+    if (!hasDrawingTool) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    updateCenterConnectionState();
+    const interval = window.setInterval(updateCenterConnectionState, 150);
+    return () => window.clearInterval(interval);
+  }, [drawingPoints.length, hasDrawingTool, updateCenterConnectionState]);
+
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
@@ -2203,8 +2298,6 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    // Every click adds a point. Double-click finish is handled by the dblclick listener.
-    // Point placed â€” add to drawing
     const newPts = [...drawingPointsRef.current, clickLngLat];
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
@@ -2222,7 +2315,8 @@ export function GlobeSitePlannerMap({
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
-  }, [activeSitePlannerTool, hasDrawingTool, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman]);
+    requestAnimationFrame(updateCenterConnectionState);
+  }, [activeSitePlannerTool, hasDrawingTool, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (hasDrawingTool || measureModeActive) return;
@@ -2481,11 +2575,75 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {hasDrawingTool && (() => {
+        const n = drawingPoints.length;
+        const tool = activeSitePlannerTool!;
+        const min = minPointsForTool(tool);
+        const isLineTool = isLinearTool(tool);
+        const canFinish = n >= min;
+        const canConnect = !isLineTool && canFinish && centerNearStartVertex;
+        const placeLabel = canConnect
+          ? 'Connect & Finish'
+          : n === 0
+            ? 'Place First Vertex'
+            : isLineTool
+              ? 'Place Waypoint'
+              : 'Place Vertex';
+
+        return (
+          <>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
+              <div className={`h-8 w-8 rounded-full border-2 ${canConnect ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
+                <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
+                <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
+              </div>
+            </div>
+            <div className="absolute inset-x-3 bottom-4 z-50 mx-auto max-w-[34rem] sm:left-1/2 sm:-translate-x-1/2">
+              <div
+                className="grid grid-cols-3 gap-2 rounded-2xl border border-white/15 bg-gray-950/80 p-2 shadow-2xl backdrop-blur-md"
+                onPointerDown={(event) => event.stopPropagation()}
+                onPointerUp={(event) => event.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={placeCenterVertex}
+                  className={`col-span-3 min-h-12 rounded-xl px-3 py-2 text-sm font-black shadow-lg ${canConnect ? 'bg-emerald-400 text-slate-950 shadow-emerald-500/25' : 'bg-amber-500 text-slate-950 shadow-amber-500/25'}`}
+                >
+                  {placeLabel}
+                </button>
+                <button
+                  type="button"
+                  onClick={undoDrawingPoint}
+                  disabled={n === 0}
+                  className="min-h-11 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50"
+                >
+                  Undo
+                </button>
+                <button
+                  type="button"
+                  onClick={cancelDrawing}
+                  className="min-h-11 rounded-xl bg-slate-800 px-3 py-2 text-xs font-semibold text-white shadow-lg ring-1 ring-white/10"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={finishDrawing}
+                  disabled={!canFinish}
+                  className="min-h-11 rounded-xl bg-amber-500 px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-500/25 disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50 disabled:shadow-none"
+                >
+                  Finish
+                </button>
+              </div>
+            </div>
+          </>
+        );
+      })()}
+
       {/* Context-sensitive hints bar */}
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
-        const label = getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
@@ -2498,15 +2656,21 @@ export function GlobeSitePlannerMap({
 
         let hint: string;
         if (n === 0) {
-          hint = `Click to place first ${label} point | Drag to orbit | Scroll to zoom`;
+          hint = `Center the crosshair, then tap Place First Vertex`;
         } else if (n < min) {
-          hint = `${n} point${n > 1 ? 's' : ''} - need ${min} min - Drag to orbit - Backspace to undo`;
+          hint = linear
+            ? `${n} waypoint${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`
+            : `${n} point${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`;
+        } else if (!linear && centerNearStartVertex) {
+          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - near start vertex - connect to finish`;
+        } else if (linear) {
+          hint = `${n} waypoint${n > 1 ? 's' : ''}${measurement ? ` - ${measurement}` : ''} - tap Finish when ready`;
         } else {
-          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to orbit - Double-click or Enter to finish - Esc to cancel`;
+          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - move crosshair near start or tap Finish`;
         }
 
         return (
-          <div className="absolute left-1/2 bottom-24 z-30 -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30">
+          <div className="absolute left-1/2 top-20 z-30 -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:top-auto sm:bottom-24">
             {hint}
           </div>
         );
@@ -2540,7 +2704,7 @@ export function GlobeSitePlannerMap({
 
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
-        <div className="pointer-events-none absolute left-1/2 top-4 z-30 -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none">
+        <div className="pointer-events-none absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none sm:block">
           {selectedZoneId
             ? 'Drag body to move | Drag vertices to reshape | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
             : 'Click zone to select | Drag to orbit | Scroll to zoom | WASD/Arrows to move | Shift/Ctrl to rise/lower'}

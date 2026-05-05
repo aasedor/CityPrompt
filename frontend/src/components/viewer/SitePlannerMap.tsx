@@ -74,6 +74,7 @@ function shiftHex(hex: string, hueShift: number, lightnessShift: number): string
 }
 
 const VARIANT_SHIFTS: [number, number][] = [[0, 0], [8, -0.06], [-8, 0.06], [16, -0.03]];
+const CONNECT_VERTEX_RADIUS_PX = 34;
 
 /** Resolve zone color: per-archetype shade + variant shift, else dev-type color, else zone-type fallback */
 function resolveZoneColor(zone: SiteZone): string {
@@ -340,12 +341,13 @@ export function SitePlannerMap({
 }: SitePlannerMapProps) {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewActive, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
+  const { activeSitePlannerTool, activeToolProperties, selectedZoneId, setActiveSitePlannerTool, setDraggingZone, setMapInstance, streetViewPegman, setStreetViewActive, setStreetViewPosition, setStreetViewAngle } = useViewerStore();
 
   // Drawing state
   const drawingPointsRef = useRef<number[][]>([]);
   const removedPointsRef = useRef<number[][]>([]);  // stack for redo of removed vertices
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
+  const [centerNearStartVertex, setCenterNearStartVertex] = useState(false);
   const onZoneCreatedRef = useRef(onZoneCreated);
   onZoneCreatedRef.current = onZoneCreated;
   const onZoneDeletedRef = useRef(onZoneDeleted);
@@ -461,6 +463,33 @@ export function SitePlannerMap({
   }, [buildPreviewFeatures]);
 
   // ─── Drawing interceptor: lets undo button / Ctrl+Z remove vertices ───
+  const updateCenterConnectionState = useCallback(() => {
+    const map = mapRef.current;
+    const tool = activeSitePlannerToolRef.current;
+    const pts = drawingPointsRef.current;
+
+    if (!map || !tool || isLinearTool(tool) || pts.length < minPointsForTool(tool)) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    const centerPx = map.project(map.getCenter());
+    const startPx = map.project({ lng: pts[0][0], lat: pts[0][1] });
+    const dx = centerPx.x - startPx.x;
+    const dy = centerPx.y - startPx.y;
+    setCenterNearStartVertex(Math.sqrt(dx * dx + dy * dy) <= CONNECT_VERTEX_RADIUS_PX);
+  }, []);
+
+  const addDrawingPoint = useCallback((point: number[]) => {
+    drawingPointsRef.current = [...drawingPointsRef.current, point];
+    removedPointsRef.current = [];
+    setDrawingPoints([...drawingPointsRef.current]);
+    requestAnimationFrame(() => {
+      updateDrawingPreview();
+      updateCenterConnectionState();
+    });
+  }, [updateCenterConnectionState, updateDrawingPreview]);
+
   const { setDrawingInterceptor, clearDrawingInterceptor } = useUndoRedoStore.getState();
 
   // Helper to remove last drawing vertex (shared by interceptor and Backspace handler)
@@ -470,8 +499,9 @@ export function SitePlannerMap({
     removedPointsRef.current.push(removed);
     setDrawingPoints([...drawingPointsRef.current]);
     updateDrawingPreview();
+    updateCenterConnectionState();
     return true;
-  }, [updateDrawingPreview]);
+  }, [updateCenterConnectionState, updateDrawingPreview]);
 
   // Helper to redo a removed vertex
   const redoLastVertex = useCallback(() => {
@@ -480,8 +510,9 @@ export function SitePlannerMap({
     drawingPointsRef.current.push(restored);
     setDrawingPoints([...drawingPointsRef.current]);
     updateDrawingPreview();
+    updateCenterConnectionState();
     return true;
-  }, [updateDrawingPreview]);
+  }, [updateCenterConnectionState, updateDrawingPreview]);
 
   // Register / clear interceptor whenever drawing points change
   useEffect(() => {
@@ -524,8 +555,47 @@ export function SitePlannerMap({
     drawingPointsRef.current = [];
     removedPointsRef.current = [];
     setDrawingPoints([]);
+    setCenterNearStartVertex(false);
+    setActiveSitePlannerTool(null);
     updateDrawingPreview();
-  }, [updateDrawingPreview, finishDrawing]);
+  }, [setActiveSitePlannerTool, updateDrawingPreview, finishDrawing]);
+
+  const cancelDrawing = useCallback(() => {
+    drawingPointsRef.current = [];
+    removedPointsRef.current = [];
+    setDrawingPoints([]);
+    setCenterNearStartVertex(false);
+    setActiveSitePlannerTool(null);
+    updateDrawingPreview();
+  }, [setActiveSitePlannerTool, updateDrawingPreview]);
+
+  const placeCenterVertex = useCallback(() => {
+    const map = mapRef.current;
+    const tool = activeSitePlannerToolRef.current;
+    if (!map || !tool) return;
+
+    if (centerNearStartVertex && drawingPointsRef.current.length >= minPointsForTool(tool)) {
+      finishPolygon();
+      return;
+    }
+
+    const center = map.getCenter();
+    addDrawingPoint([center.lng, center.lat]);
+  }, [addDrawingPoint, centerNearStartVertex, finishPolygon]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady || !activeSitePlannerTool) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    updateCenterConnectionState();
+    map.on('move', updateCenterConnectionState);
+    return () => {
+      map.off('move', updateCenterConnectionState);
+    };
+  }, [activeSitePlannerTool, drawingPoints.length, mapReady, updateCenterConnectionState]);
 
   /** Build zone features for the map source, optionally with modified coords for a specific zone */
   const buildZoneFeatures = useCallback((zones: SiteZone[], overrideZoneId?: string, overrideCoords?: number[][]): GeoJSON.Feature[] => {
@@ -1038,30 +1108,7 @@ export function SitePlannerMap({
 
       const tool = activeSitePlannerToolRef.current;
       if (tool) {
-        drawingPointsRef.current = [
-          ...drawingPointsRef.current,
-          [e.lngLat.lng, e.lngLat.lat],
-        ];
-        removedPointsRef.current = [];  // clear redo stack on new point
-        setDrawingPoints([...drawingPointsRef.current]);
-        requestAnimationFrame(() => {
-          const m = mapRef.current;
-          if (!m || !mapLoadedRef.current) return;
-          const src = m.getSource('drawing-preview') as mapboxgl.GeoJSONSource | undefined;
-          if (!src) return;
-
-          const currentTool = activeSitePlannerToolRef.current;
-          const color = currentTool ? ZONE_TYPE_CONFIG[currentTool].color : '#fbbf24';
-          try {
-            m.setPaintProperty('drawing-preview-fill', 'fill-color', color);
-            m.setPaintProperty('drawing-preview-line', 'line-color', color);
-            m.setPaintProperty('drawing-preview-points', 'circle-color', color);
-          } catch { /* layers may not exist yet */ }
-
-          const pts = drawingPointsRef.current;
-          const features = buildPreviewFeatures(pts, currentTool);
-          src.setData({ type: 'FeatureCollection', features });
-        });
+        addDrawingPoint([e.lngLat.lng, e.lngLat.lat]);
       } else if (streetViewPegmanRef.current) {
         // Street view mode — place the pegman at the clicked location
         setStreetViewPosition([e.lngLat.lng, e.lngLat.lat]);
@@ -1376,7 +1423,7 @@ export function SitePlannerMap({
       mapRef.current = null;
       setMapInstance(null);
     };
-  }, [latitude, longitude, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
+  }, [latitude, longitude, addDrawingPoint, buildPreviewFeatures, finishDrawing, setDraggingZone, setMapInstance, updateVertexHandles]);
 
   // Helper to update a zone's geometry on the map in real-time
   function updateZoneOnMap(zoneId: string, newCoords: number[][]) {
@@ -1603,6 +1650,8 @@ export function SitePlannerMap({
         drawingPointsRef.current = [];
         removedPointsRef.current = [];
         setDrawingPoints([]);
+        setCenterNearStartVertex(false);
+        setActiveSitePlannerTool(null);
         updateDrawingPreview();
       }
       if (e.key === 'Enter' && tool && drawingPointsRef.current.length >= minPointsForTool(tool)) {
@@ -1642,7 +1691,7 @@ export function SitePlannerMap({
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
+  }, [setActiveSitePlannerTool, updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -1763,6 +1812,15 @@ export function SitePlannerMap({
   const minPts = minPointsForTool(activeSitePlannerTool);
   const currentLength = linear && drawingPoints.length >= 2 ? polylineLength(drawingPoints) : 0;
   const currentArea = !linear && drawingPoints.length >= 3 ? geodesicArea(drawingPoints) : 0;
+  const canFinishDrawing = drawingPoints.length >= minPts;
+  const canConnectToStart = !!activeSitePlannerTool && !linear && centerNearStartVertex && canFinishDrawing;
+  const placeVertexLabel = canConnectToStart
+    ? 'Connect & Finish'
+    : drawingPoints.length === 0
+      ? 'Place First Vertex'
+      : linear
+        ? 'Place Waypoint'
+        : 'Place Vertex';
 
   return (
     <>
@@ -1772,15 +1830,65 @@ export function SitePlannerMap({
         <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
           {drawingPoints.length === 0
             ? linear
-              ? `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Line)`
-              : `Click to start drawing ${getToolDisplayLabel(activeSitePlannerTool)} (Polygon)`
+              ? `Center the crosshair, then place ${getToolDisplayLabel(activeSitePlannerTool)} waypoint`
+              : `Center the crosshair, then place ${getToolDisplayLabel(activeSitePlannerTool)} vertex`
             : drawingPoints.length < minPts
             ? linear
-              ? `Click to add waypoints (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
-              : `Click to add points (${drawingPoints.length}/${minPts} min) — Ctrl+Z to undo`
+              ? `Place waypoints (${drawingPoints.length}/${minPts} min)`
+              : `Place vertices (${drawingPoints.length}/${minPts} min)`
             : linear
-            ? `${drawingPoints.length} waypoints · ${formatDistance(currentLength)} — Double-click or Enter to finish — Esc to cancel`
-            : `${drawingPoints.length} points · ${formatArea(currentArea)} — Double-click or Enter to finish — Esc to cancel`}
+            ? `${drawingPoints.length} waypoints - ${formatDistance(currentLength)} - Tap Finish when ready`
+            : centerNearStartVertex
+              ? `${drawingPoints.length} points - near start vertex - connect to finish`
+              : `${drawingPoints.length} points - ${formatArea(currentArea)} - move crosshair near start or tap Finish`}
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
+          <div className={`h-8 w-8 rounded-full border-2 ${canConnectToStart ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
+            <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
+            <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
+          </div>
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="absolute inset-x-3 bottom-4 z-40 mx-auto max-w-[34rem] sm:left-1/2 sm:-translate-x-1/2">
+          <div
+            className="grid grid-cols-3 gap-2 rounded-2xl border border-white/15 bg-gray-950/80 p-2 shadow-2xl backdrop-blur-md"
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={placeCenterVertex}
+              className={`col-span-3 min-h-12 rounded-xl px-3 py-2 text-sm font-black shadow-lg ${canConnectToStart ? 'bg-emerald-400 text-slate-950 shadow-emerald-500/25' : 'bg-amber-500 text-slate-950 shadow-amber-500/25'}`}
+            >
+              {placeVertexLabel}
+            </button>
+            <button
+              type="button"
+              onClick={undoLastVertex}
+              disabled={drawingPoints.length === 0}
+              className="min-h-11 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50"
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              onClick={cancelDrawing}
+              className="min-h-11 rounded-xl bg-slate-800 px-3 py-2 text-xs font-semibold text-white shadow-lg ring-1 ring-white/10"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={finishPolygon}
+              disabled={!canFinishDrawing}
+              className="min-h-11 rounded-xl bg-amber-500 px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-500/25 disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50 disabled:shadow-none"
+            >
+              Finish
+            </button>
+          </div>
         </div>
       )}
       {/* Live distance badge for roads */}

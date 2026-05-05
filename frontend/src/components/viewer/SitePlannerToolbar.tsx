@@ -100,6 +100,7 @@ export function SitePlannerToolbar({
   const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const isSidebar = layout === 'sidebar';
+  const compactDrawingDock = isSidebar && activeSitePlannerTool !== null;
   const showExistingBuildings = settings.showExistingBuildings;
   const smallToolButtonBase = 'flex items-center gap-1.5 rounded-full border-2 border-[#151515] px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all';
   const smallToolButtonActive = 'bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]';
@@ -143,8 +144,8 @@ export function SitePlannerToolbar({
   };
 
   return (
-    <div className={`flex w-full flex-col gap-2 rounded-lg border-2 border-[#151515] bg-[#fff9ec]/95 ${isSidebar ? 'px-2.5 py-2' : 'px-3 py-2'} shadow-[8px_8px_0_0_#151515] backdrop-blur-xl`}>
-      <div className={`grid gap-2 ${isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-4'}`}>
+    <div className={`flex w-full flex-col gap-1.5 rounded-lg border-2 border-[#151515] bg-[#fff9ec]/95 ${isSidebar ? 'px-2 py-1.5 sm:px-2.5 sm:py-2' : 'px-3 py-2'} ${compactDrawingDock ? 'shadow-[4px_4px_0_0_#151515]' : 'shadow-[6px_6px_0_0_#151515]'} backdrop-blur-xl sm:gap-2 sm:shadow-[8px_8px_0_0_#151515]`}>
+      <div className={`grid gap-1.5 sm:gap-2 ${isSidebar ? compactDrawingDock ? 'grid-cols-4 sm:grid-cols-1' : 'grid-cols-2 sm:grid-cols-1' : 'grid-cols-4'}`}>
         {CORE_TOOLS.map((tool) => {
           const isActive = activeCoreTool === tool.id;
           return (
@@ -154,8 +155,10 @@ export function SitePlannerToolbar({
               onClick={() => activateCoreTool(tool.id)}
               className={`group flex rounded-lg border-2 text-left transition-all ${
                 isSidebar
-                  ? 'min-h-[56px] items-center gap-2.5 px-2.5 py-2'
-                  : 'min-h-[86px] flex-col items-start px-3 py-2'
+                  ? compactDrawingDock
+                    ? 'min-h-[54px] flex-col items-center justify-center gap-1 px-1 py-1 text-center sm:min-h-[56px] sm:flex-row sm:justify-start sm:gap-2.5 sm:px-2.5 sm:py-2 sm:text-left'
+                    : 'min-h-[48px] items-center gap-2 px-2 py-1.5 sm:min-h-[56px] sm:gap-2.5 sm:px-2.5 sm:py-2'
+                  : 'min-h-[66px] flex-col items-center px-1.5 py-1.5 text-center sm:min-h-[86px] sm:items-start sm:px-3 sm:py-2 sm:text-left'
               } ${
                 isActive
                   ? 'border-[#151515] bg-[#c9ff3d] shadow-[3px_3px_0_0_#151515]'
@@ -166,18 +169,18 @@ export function SitePlannerToolbar({
               <img
                 src={tool.icon}
                 alt=""
-                className={`${isSidebar ? 'h-8 w-8' : 'h-9 w-9'} rounded-md object-cover`}
+                className={`${isSidebar ? compactDrawingDock ? 'h-6 w-6 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-8 sm:w-8' : 'h-7 w-7 sm:h-9 sm:w-9'} rounded-md object-cover`}
                 aria-hidden
               />
               {isSidebar ? (
-                <div className="flex min-w-0 flex-col leading-tight">
-                  <span className="truncate text-[13px] font-black text-[#151515]">{tool.label}</span>
-                  <span className="truncate text-[10px] font-bold uppercase text-[#151515]/55">{tool.drawType}</span>
+                <div className={`flex min-w-0 flex-col leading-tight ${compactDrawingDock ? 'items-center sm:items-start' : ''}`}>
+                  <span className={`${compactDrawingDock ? 'line-clamp-2 text-center text-[9px] sm:truncate sm:text-left sm:text-[13px]' : 'truncate text-[11px] sm:text-[13px]'} font-black text-[#151515]`}>{tool.label}</span>
+                  <span className="hidden truncate text-[10px] font-bold uppercase text-[#151515]/55 sm:block">{tool.drawType}</span>
                 </div>
               ) : (
                 <>
-                  <span className="mt-2 text-sm font-black text-[#151515]">{tool.label}</span>
-                  <span className="mt-0.5 text-[10px] font-bold uppercase text-[#151515]/55">{tool.drawType}</span>
+                  <span className="mt-1 text-[10px] font-black leading-tight text-[#151515] sm:mt-2 sm:text-sm">{tool.label}</span>
+                  <span className="mt-0.5 hidden text-[10px] font-bold uppercase text-[#151515]/55 sm:block">{tool.drawType}</span>
                 </>
               )}
             </button>
@@ -185,8 +188,8 @@ export function SitePlannerToolbar({
         })}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5">
-        <div className="flex flex-wrap items-center gap-1.5">
+      <div className={`${compactDrawingDock ? 'hidden sm:flex' : 'flex'} flex-wrap items-center justify-between gap-1.5 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 sm:gap-2`}>
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
           <button
             data-tour="select-btn"
             onClick={handleSelectMode}
@@ -278,7 +281,7 @@ export function SitePlannerToolbar({
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
           {activeCoreTool === 'parksPlazas' && (
             <div className="mr-1 inline-flex rounded-full border-2 border-[#151515] bg-white p-0.5 text-xs shadow-[3px_3px_0_0_#151515]">
               <button

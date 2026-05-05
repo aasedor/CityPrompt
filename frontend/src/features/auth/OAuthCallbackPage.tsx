@@ -45,7 +45,9 @@ export function OAuthCallbackPage() {
       .then((user) => {
         setUser(user);
         toast.success(`Welcome, ${user.full_name || user.email}!`);
-        navigate('/projects', { replace: true });
+        const returnTo = localStorage.getItem('oauth_return_to');
+        localStorage.removeItem('oauth_return_to');
+        navigate(returnTo?.startsWith('/') ? returnTo : '/projects', { replace: true });
       })
       .catch(() => {
         toast.error('Failed to load user profile after OAuth login');

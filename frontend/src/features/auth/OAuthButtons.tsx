@@ -4,12 +4,17 @@ import toast from 'react-hot-toast';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-export function OAuthButtons() {
+interface OAuthButtonsProps {
+  returnTo?: string;
+}
+
+export function OAuthButtons({ returnTo = '/projects' }: OAuthButtonsProps) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
   const handleOAuth = async (provider: 'google' | 'microsoft') => {
     setLoadingProvider(provider);
     try {
+      localStorage.setItem('oauth_return_to', returnTo);
       const url = new URL(`${API_BASE}/api/v1/auth/oauth/${provider}`);
       url.searchParams.set('frontend_origin', window.location.origin);
 

@@ -18,7 +18,10 @@ export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUser } = useAuthStore();
-  const from = (location.state as any)?.from?.pathname || '/projects';
+  const fromLocation = (location.state as any)?.from;
+  const from = fromLocation
+    ? `${fromLocation.pathname || '/projects'}${fromLocation.search || ''}${fromLocation.hash || ''}`
+    : '/projects';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -118,7 +121,7 @@ export function LoginPage() {
           </div>
         </div>
 
-        <OAuthButtons />
+        <OAuthButtons returnTo={from} />
       </form>
 
       <p className="mt-5 text-center text-sm font-semibold text-[#151515]/60">

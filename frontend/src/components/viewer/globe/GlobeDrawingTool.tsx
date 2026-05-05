@@ -25,6 +25,14 @@ import {
 
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
+const CONNECT_VERTEX_RADIUS_METERS = 30;
+
+function distanceMeters(a: number[], b: number[]): number {
+  const lat = ((a[1] + b[1]) / 2) * DEG_TO_RAD;
+  const dx = (a[0] - b[0]) * 111320 * Math.cos(lat);
+  const dy = (a[1] - b[1]) * 110540;
+  return Math.sqrt(dx * dx + dy * dy);
+}
 
 interface GlobeDrawingToolProps {
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
@@ -35,9 +43,10 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
   const { activeSitePlannerTool, activeToolProperties } = useViewerStore();
 
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
+  const [centerNearStartVertex, setCenterNearStartVertex] = useState(false);
   const drawingPointsRef = useRef<number[][]>([]);
   const lastClickTime = useRef(0);
-  const mouseDownPos = useRef<{ x: number; y: number } | null>(null);
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
 
   const isActive = activeSitePlannerTool !== null;
   const linear = isLinearTool(activeSitePlannerTool);
@@ -51,7 +60,7 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
   }, [drawingPoints]);
 
   // Raycast mouse position to lat/lng on globe surface
-  const mouseToLatLng = useCallback((event: MouseEvent): [number, number] | null => {
+  const pointerToLatLng = useCallback((event: Pick<PointerEvent, 'clientX' | 'clientY'>): [number, number] | null => {
     const rect = gl.domElement.getBoundingClientRect();
     const ndcX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     const ndcY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -66,6 +75,38 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
     const cartographic = WGS84_ELLIPSOID.getPositionToCartographic(hit, {} as any);
     return [cartographic.lon * RAD_TO_DEG, cartographic.lat * RAD_TO_DEG];
   }, [camera, gl]);
+
+  const getCanvasCenterLatLng = useCallback((): [number, number] | null => {
+    const rect = gl.domElement.getBoundingClientRect();
+    return pointerToLatLng({
+      clientX: rect.left + rect.width / 2,
+      clientY: rect.top + rect.height / 2,
+    });
+  }, [gl, pointerToLatLng]);
+
+  const updateCenterConnectionState = useCallback(() => {
+    const center = getCanvasCenterLatLng();
+    const pts = drawingPointsRef.current;
+    if (
+      !center ||
+      !activeSitePlannerTool ||
+      linear ||
+      pts.length < minPointsForTool(activeSitePlannerTool)
+    ) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    setCenterNearStartVertex(distanceMeters(center, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
+  }, [activeSitePlannerTool, getCanvasCenterLatLng, linear]);
+
+  const addDrawingPoint = useCallback((lngLat: [number, number]) => {
+    console.log('[GlobeDrawingTool] Point placed:', lngLat, 'total:', drawingPointsRef.current.length + 1);
+    const newPts = [...drawingPointsRef.current, lngLat];
+    drawingPointsRef.current = newPts;
+    setDrawingPoints(newPts);
+    requestAnimationFrame(updateCenterConnectionState);
+  }, [updateCenterConnectionState]);
 
   const finishDrawing = useCallback(() => {
     const pts = drawingPointsRef.current;
@@ -85,6 +126,7 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
     onZoneCreated(finalCoords, activeSitePlannerTool, activeToolProperties || undefined);
     setDrawingPoints([]);
     drawingPointsRef.current = [];
+    setCenterNearStartVertex(false);
   }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated]);
 
   // Keyboard handlers
@@ -124,18 +166,18 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
 
     const canvas = gl.domElement;
 
-    const handleMouseDown = (e: MouseEvent) => {
-      mouseDownPos.current = { x: e.clientX, y: e.clientY };
+    const handlePointerDown = (e: PointerEvent) => {
+      pointerDownPos.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseUp = (e: MouseEvent) => {
-      if (!mouseDownPos.current) return;
+    const handlePointerUp = (e: PointerEvent) => {
+      if (!pointerDownPos.current) return;
 
       // Only place a point if mouse didn't move much (click, not drag)
-      const dx = e.clientX - mouseDownPos.current.x;
-      const dy = e.clientY - mouseDownPos.current.y;
+      const dx = e.clientX - pointerDownPos.current.x;
+      const dy = e.clientY - pointerDownPos.current.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      mouseDownPos.current = null;
+      pointerDownPos.current = null;
 
       if (dist > 5) return; // Was a drag, not a click
 
@@ -152,36 +194,132 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
         return;
       }
 
-      const lngLat = mouseToLatLng(e);
+      const lngLat = pointerToLatLng(e);
       if (!lngLat) return;
 
-      console.log('[GlobeDrawingTool] Point placed:', lngLat, 'total:', drawingPointsRef.current.length + 1);
-      const newPts = [...drawingPointsRef.current, lngLat];
-      drawingPointsRef.current = newPts;
-      setDrawingPoints(newPts);
+      addDrawingPoint(lngLat);
     };
 
     console.log('[GlobeDrawingTool] Attaching click handlers to canvas:', canvas.tagName, canvas.width, canvas.height);
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('pointerdown', handlePointerDown);
+    canvas.addEventListener('pointerup', handlePointerUp);
     canvas.style.cursor = 'crosshair';
 
     return () => {
-      canvas.removeEventListener('mousedown', handleMouseDown);
-      canvas.removeEventListener('mouseup', handleMouseUp);
+      canvas.removeEventListener('pointerdown', handlePointerDown);
+      canvas.removeEventListener('pointerup', handlePointerUp);
       canvas.style.cursor = '';
     };
-  }, [isActive, gl, mouseToLatLng, finishDrawing]);
+  }, [isActive, gl, pointerToLatLng, finishDrawing, addDrawingPoint]);
 
   // Clear drawing when tool changes
   useEffect(() => {
     setDrawingPoints([]);
     drawingPointsRef.current = [];
+    setCenterNearStartVertex(false);
   }, [activeSitePlannerTool]);
 
-  if (!isActive || drawingPoints.length === 0) return null;
+  const cancelDrawing = useCallback(() => {
+    setDrawingPoints([]);
+    drawingPointsRef.current = [];
+    setCenterNearStartVertex(false);
+  }, []);
 
-  return <DrawingPreview points={drawingPoints} linear={linear} />;
+  const undoLastPoint = useCallback(() => {
+    if (drawingPointsRef.current.length === 0) return;
+    const newPts = drawingPointsRef.current.slice(0, -1);
+    drawingPointsRef.current = newPts;
+    setDrawingPoints(newPts);
+    requestAnimationFrame(updateCenterConnectionState);
+  }, [updateCenterConnectionState]);
+
+  const placeCenterVertex = useCallback(() => {
+    if (!activeSitePlannerTool) return;
+    if (centerNearStartVertex && drawingPointsRef.current.length >= minPointsForTool(activeSitePlannerTool)) {
+      finishDrawing();
+      return;
+    }
+
+    const lngLat = getCanvasCenterLatLng();
+    if (lngLat) addDrawingPoint(lngLat);
+  }, [activeSitePlannerTool, addDrawingPoint, centerNearStartVertex, finishDrawing, getCanvasCenterLatLng]);
+
+  useEffect(() => {
+    if (!isActive) {
+      setCenterNearStartVertex(false);
+      return;
+    }
+
+    updateCenterConnectionState();
+    const interval = window.setInterval(updateCenterConnectionState, 150);
+    return () => window.clearInterval(interval);
+  }, [drawingPoints.length, isActive, updateCenterConnectionState]);
+
+  if (!isActive) return null;
+
+  const canFinish = activeSitePlannerTool
+    ? drawingPoints.length >= minPointsForTool(activeSitePlannerTool)
+    : false;
+  const canConnectToStart = !!activeSitePlannerTool && !linear && centerNearStartVertex && canFinish;
+  const placeVertexLabel = canConnectToStart
+    ? 'Connect & Finish'
+    : drawingPoints.length === 0
+      ? 'Place First Vertex'
+      : linear
+        ? 'Place Waypoint'
+        : 'Place Vertex';
+
+  return (
+    <>
+      {drawingPoints.length > 0 && <DrawingPreview points={drawingPoints} linear={linear} />}
+      <Html fullscreen>
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
+          <div className={`h-8 w-8 rounded-full border-2 ${canConnectToStart ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
+            <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
+            <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
+          </div>
+        </div>
+        <div className="pointer-events-none absolute inset-x-3 top-24 z-50 mx-auto max-w-[34rem] sm:left-1/2 sm:top-20 sm:-translate-x-1/2">
+          <div
+            className="pointer-events-auto grid grid-cols-3 gap-2"
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={placeCenterVertex}
+              className={`col-span-3 min-h-12 rounded-xl px-3 py-2 text-sm font-black shadow-lg ${canConnectToStart ? 'bg-emerald-400 text-slate-950 shadow-emerald-500/25' : 'bg-amber-500 text-slate-950 shadow-amber-500/25'}`}
+            >
+              {placeVertexLabel}
+            </button>
+            <button
+              type="button"
+              onClick={undoLastPoint}
+              disabled={drawingPoints.length === 0}
+              className="min-h-11 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50"
+            >
+              Undo
+            </button>
+            <button
+              type="button"
+              onClick={cancelDrawing}
+              className="min-h-11 rounded-xl bg-slate-950/85 px-3 py-2 text-xs font-semibold text-white shadow-lg ring-1 ring-white/10"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={finishDrawing}
+              disabled={!canFinish}
+              className="min-h-11 rounded-xl bg-amber-500 px-3 py-2 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-500/25 disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-white/50 disabled:shadow-none"
+            >
+              Finish
+            </button>
+          </div>
+        </div>
+      </Html>
+    </>
+  );
 }
 
 /** Visual preview of the polygon being drawn */
