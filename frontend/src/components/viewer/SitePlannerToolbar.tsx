@@ -3,7 +3,6 @@ import { MousePointer, HelpCircle, Layers3, Eye, Building2, History, Ruler } fro
 import type { SiteZoneType } from '@/types';
 import { useViewerStore } from '@/store';
 import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
-import siteBoundaryIcon from '@/assets/site-planner-tools/site-boundary.svg';
 import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
 import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
 import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
@@ -20,13 +19,6 @@ interface CoreToolDef {
 }
 
 const CORE_TOOLS: CoreToolDef[] = [
-  {
-    id: 'siteBoundary',
-    label: 'Site Boundary',
-    drawType: 'Polygon',
-    description: 'Define the generation area',
-    icon: siteBoundaryIcon,
-  },
   {
     id: 'streetsPaths',
     label: 'Streets and Paths',
