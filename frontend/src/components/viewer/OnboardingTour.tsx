@@ -18,9 +18,9 @@ interface TourStep {
 
 const STEPS: TourStep[] = [
   {
-    target: '[data-tour="tool-siteBoundary"]',
+    target: '[data-tour="more-tools-btn"]',
     title: 'Draw Your Site Boundary',
-    body: 'Start by clicking here, then click around the edges of your development area on the map. Double-click or press Enter to complete the boundary.',
+    body: 'Open More Tools, choose Site Boundary, then click around the edges of your development area on the map. Double-click or press Enter to complete the boundary.',
     animation: 'draw-boundary',
     placement: 'top',
   },
