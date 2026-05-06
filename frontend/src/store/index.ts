@@ -216,9 +216,9 @@ interface ViewerState {
   setMasterPlan3DError: (projectId: string, optionId: string | null, message: string) => void;
   clearMasterPlan3D: () => void;
   // Street view pegman
-  streetViewPegman: { position: [number, number] | null; angle: number; isGenerating: boolean } | null;
+  streetViewPegman: { position: [number, number] | null; angle: number; isGenerating: boolean; terrainHeight?: number | null } | null;
   setStreetViewActive: (active: boolean) => void;
-  setStreetViewPosition: (pos: [number, number] | null) => void;
+  setStreetViewPosition: (pos: [number, number] | null, terrainHeight?: number | null) => void;
   setStreetViewAngle: (angle: number) => void;
   setStreetViewGenerating: (generating: boolean) => void;
   // Lightbox for expanded image view
@@ -519,8 +519,16 @@ export const useViewerStore = create<ViewerState>((set) => ({
   clearMasterPlan3D: () => set({ masterPlan3D: null }),
   // Street view pegman
   streetViewPegman: null,
-  setStreetViewActive: (active) => set({ streetViewPegman: active ? { position: null, angle: 0, isGenerating: false } : null, activeSitePlannerTool: null }),
-  setStreetViewPosition: (pos) => set((state) => ({ streetViewPegman: state.streetViewPegman ? { ...state.streetViewPegman, position: pos } : null })),
+  setStreetViewActive: (active) => set({ streetViewPegman: active ? { position: null, angle: 0, isGenerating: false, terrainHeight: null } : null, activeSitePlannerTool: null }),
+  setStreetViewPosition: (pos, terrainHeight = null) => set((state) => ({
+    streetViewPegman: state.streetViewPegman
+      ? {
+          ...state.streetViewPegman,
+          position: pos,
+          terrainHeight: pos && Number.isFinite(terrainHeight) ? terrainHeight : null,
+        }
+      : null,
+  })),
   setStreetViewAngle: (angle) => set((state) => ({ streetViewPegman: state.streetViewPegman ? { ...state.streetViewPegman, angle } : null })),
   setStreetViewGenerating: (generating) => set((state) => ({ streetViewPegman: state.streetViewPegman ? { ...state.streetViewPegman, isGenerating: generating } : null })),
   // Lightbox

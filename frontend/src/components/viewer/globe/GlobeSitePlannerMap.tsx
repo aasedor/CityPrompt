@@ -2267,7 +2267,7 @@ export function GlobeSitePlannerMap({
 
     // Street view mode: place pegman on click
     if (!hasDrawingTool && streetViewPegman !== null) {
-      setStreetViewPosition(clickLngLat);
+      setStreetViewPosition(clickLngLat, clickHeight);
       return;
     }
 
@@ -2528,7 +2528,7 @@ export function GlobeSitePlannerMap({
             <GlobePegman
               position={streetViewPegman?.position as [number, number]}
               angle={streetViewPegman.angle}
-              terrainHeight={terrainElevation}
+              terrainHeight={streetViewPegman.terrainHeight ?? terrainElevation}
             />
           )}
         </TilesRenderer>

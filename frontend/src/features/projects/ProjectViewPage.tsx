@@ -61,7 +61,7 @@ export function ProjectViewPage() {
     return captureStreetView(
       globeRefs.canvas, globeRefs.camera,
       lat, lng, pegman.angle,
-      globeRefs.terrainHeight,
+      pegman.terrainHeight ?? globeRefs.terrainHeight,
       flyToStreetLevel, restoreAerialView, saveCameraState,
     );
   }, [globeRefs, captureStreetView, flyToStreetLevel, restoreAerialView, saveCameraState]);
