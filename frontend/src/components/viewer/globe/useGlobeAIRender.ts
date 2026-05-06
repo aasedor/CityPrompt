@@ -16,6 +16,11 @@ import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { api } from '@/services/api';
 import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
+import {
+  describeCameraAngleForPrompt,
+  getAngleFromNadirLabelValue,
+  pitchFromNadirToCameraElevation,
+} from '../cameraAngles';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
@@ -858,18 +863,19 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  */
 function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, terrainHeight?: number): string {
   // --- CAMERA ANGLE ---
-  let pitchDesc = 'oblique aerial (~50°)';
+  let pitchDesc = 'oblique aerial (~40deg camera elevation above ground; ~50deg from nadir)';
   if (camera && terrainHeight != null) {
-    // Estimate pitch from camera direction vs surface normal
+    // Estimate angle from nadir, then convert to architectural camera elevation.
     const camDir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize();
     const camPos = camera.position.clone().normalize(); // surface normal at camera position
-    const cosAngle = Math.abs(camDir.dot(camPos.clone().negate()));
-    const pitchDeg = Math.round(Math.acos(Math.min(1, cosAngle)) * 180 / Math.PI);
-    if (pitchDeg < 20) pitchDesc = `near top-down (~${pitchDeg}°)`;
-    else if (pitchDeg < 40) pitchDesc = `steep aerial (~${pitchDeg}°)`;
-    else if (pitchDeg < 60) pitchDesc = `oblique aerial (~${pitchDeg}°)`;
-    else pitchDesc = `low-angle oblique (~${pitchDeg}°)`;
-    console.log(`[GlobeAIRender] Camera pitch: ${pitchDeg}° → "${pitchDesc}"`);
+    const cosAngle = THREE.MathUtils.clamp(camDir.dot(camPos.clone().negate()), -1, 1);
+    const pitchFromNadirDeg = Math.acos(cosAngle) * 180 / Math.PI;
+    const cameraElevationDeg = pitchFromNadirToCameraElevation(pitchFromNadirDeg);
+    pitchDesc = describeCameraAngleForPrompt(pitchFromNadirDeg);
+    console.log(
+      `[GlobeAIRender] Camera angle: ${cameraElevationDeg}° elevation, `
+      + `${getAngleFromNadirLabelValue(pitchFromNadirDeg)}° from nadir -> "${pitchDesc}"`,
+    );
   }
 
   // --- COMPOSITION ---

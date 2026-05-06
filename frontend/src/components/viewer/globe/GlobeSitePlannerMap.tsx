@@ -36,6 +36,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
+import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
 import {
   getObjectFilteredTerrainHeight,
   getRepresentativeTerrainHeight,
@@ -783,7 +784,7 @@ function TilesExposer({
   return null;
 }
 
-/** Monitor camera pitch angle (0=top-down, 90=horizon) */
+/** Monitor internal pitch from nadir (0=top-down, 90=horizon). */
 function PitchMonitor({ onPitchChange }: { onPitchChange: (pitch: number) => void }) {
   const { camera } = useThree();
   const lastPitchRef = useRef(-1);
@@ -1250,10 +1251,13 @@ export function GlobeSitePlannerMap({
 
   // LOD settlement state â€” true when 3D tiles have fully loaded
   const [isSceneSettled, setIsSceneSettled] = useState(false);
-  // Camera pitch angle (0=top-down, 90=horizon, >90 looking uphill past the horizon)
+  // Internal camera pitch from nadir (0=top-down, 90=horizon).
+  // UI and render prompts convert this to camera elevation (0=ground, 90=overhead).
   const [pitchAngle, setPitchAngle] = useState(0);
   const pitchAngleRef = useRef(0);
   pitchAngleRef.current = pitchAngle;
+  const cameraElevation = pitchFromNadirToCameraElevation(pitchAngle);
+  const cameraElevationBadge = getCameraElevationBadge(cameraElevation);
 
   // Zone overlay visibility â€” flipped off by the AI render pipeline
   // so the captured screenshot contains only the real satellite/3D tiles,
@@ -2715,18 +2719,8 @@ export function GlobeSitePlannerMap({
         <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
           <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>
-        <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${
-          pitchAngle < 30 ? 'text-red-400' :
-          pitchAngle < 50 ? 'text-amber-400' :
-          pitchAngle < 70 ? 'text-[#138f45]' :
-          pitchAngle < 80 ? 'text-amber-400' : 'text-red-400'
-        }`}>
-          {pitchAngle}° {
-            pitchAngle < 20 ? 'flat' :
-            pitchAngle < 40 ? 'low' :
-            pitchAngle < 60 ? 'good' :
-            pitchAngle < 75 ? 'optimal' : 'steep'
-          }
+        <div className={`rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl ${cameraElevationBadge.textClass}`}>
+          {cameraElevation}° {cameraElevationBadge.label}
         </div>
         {!isSceneSettled && (
           <div className="flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
