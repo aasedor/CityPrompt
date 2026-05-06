@@ -43,6 +43,7 @@ import {
   shouldFilterObjectTerrainHeight,
 } from './globeTerrainUtils';
 import {
+  getToolDisplayLabel,
   isLinearTool,
   minPointsForTool,
   smoothPolyline,
@@ -90,6 +91,11 @@ const GLOBE_NAV_VERTICAL_SPEED_FACTOR = 0.02;
 const GLOBE_NAV_MIN_STEP_METERS = 2;
 const GLOBE_NAV_MAX_STEP_METERS = 120;
 export const SELECTED_ZONE_KEYBOARD_NUDGE_DELTA = 0.00005; // ~5m in latitude degrees
+const MOBILE_DRAWING_MEDIA_QUERY = '(max-width: 639px)';
+
+function isMobileDrawingViewport(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia(MOBILE_DRAWING_MEDIA_QUERY).matches;
+}
 
 function formatDrawingArea(squareMeters: number): string {
   return `${Math.round(squareMeters).toLocaleString()} m²`;
@@ -1933,7 +1939,9 @@ export function GlobeSitePlannerMap({
     setCenterNearStartVertex(false);
     drawingPointsRef.current = [];
     drawingPointHeightsRef.current = [];
-    setActiveSitePlannerTool(null);
+    if (isMobileDrawingViewport()) {
+      setActiveSitePlannerTool(null);
+    }
   }, [activeSitePlannerTool, activeToolProperties, linear, onZoneCreated, setActiveSitePlannerTool, terrainElevation]);
   finishDrawingRef.current = finishDrawing;
 
@@ -1950,7 +1958,9 @@ export function GlobeSitePlannerMap({
         setCenterNearStartVertex(false);
         drawingPointsRef.current = [];
         drawingPointHeightsRef.current = [];
-        setActiveSitePlannerTool(null);
+        if (isMobileDrawingViewport()) {
+          setActiveSitePlannerTool(null);
+        }
       }
       else if (e.key === 'Backspace' && drawingPointsRef.current.length > 0) {
         const newPts = drawingPointsRef.current.slice(0, -1);
@@ -2596,13 +2606,13 @@ export function GlobeSitePlannerMap({
 
         return (
           <>
-            <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 sm:hidden">
               <div className={`h-8 w-8 rounded-full border-2 ${canConnect ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
                 <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
                 <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
               </div>
             </div>
-            <div className="absolute inset-x-3 bottom-4 z-50 mx-auto max-w-[34rem] sm:left-1/2 sm:-translate-x-1/2">
+            <div className="absolute inset-x-3 bottom-4 z-50 mx-auto max-w-[34rem] sm:hidden">
               <div
                 className="grid grid-cols-3 gap-2 rounded-2xl border border-white/15 bg-gray-950/80 p-2 shadow-2xl backdrop-blur-md"
                 onPointerDown={(event) => event.stopPropagation()}
@@ -2648,6 +2658,7 @@ export function GlobeSitePlannerMap({
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
+        const label = getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
@@ -2658,25 +2669,39 @@ export function GlobeSitePlannerMap({
           measurement = formatDrawingArea(polygonAreaM2(drawingPoints));
         }
 
-        let hint: string;
+        let mobileHint: string;
         if (n === 0) {
-          hint = `Center the crosshair, then tap Place First Vertex`;
+          mobileHint = `Center the crosshair, then tap Place First Vertex`;
         } else if (n < min) {
-          hint = linear
+          mobileHint = linear
             ? `${n} waypoint${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`
             : `${n} point${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`;
         } else if (!linear && centerNearStartVertex) {
-          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - near start vertex - connect to finish`;
+          mobileHint = `${n} points${measurement ? ` - ${measurement}` : ''} - near start vertex - connect to finish`;
         } else if (linear) {
-          hint = `${n} waypoint${n > 1 ? 's' : ''}${measurement ? ` - ${measurement}` : ''} - tap Finish when ready`;
+          mobileHint = `${n} waypoint${n > 1 ? 's' : ''}${measurement ? ` - ${measurement}` : ''} - tap Finish when ready`;
         } else {
-          hint = `${n} points${measurement ? ` - ${measurement}` : ''} - move crosshair near start or tap Finish`;
+          mobileHint = `${n} points${measurement ? ` - ${measurement}` : ''} - move crosshair near start or tap Finish`;
+        }
+
+        let desktopHint: string;
+        if (n === 0) {
+          desktopHint = `Click to place first ${label} point | Drag to orbit | Scroll to zoom`;
+        } else if (n < min) {
+          desktopHint = `${n} point${n > 1 ? 's' : ''} - need ${min} min - Drag to orbit - Backspace to undo`;
+        } else {
+          desktopHint = `${n} points${measurement ? ` - ${measurement}` : ''} - Drag to orbit - Double-click or Enter to finish - Esc to cancel`;
         }
 
         return (
-          <div className="absolute left-1/2 top-20 z-30 -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:top-auto sm:bottom-24">
-            {hint}
-          </div>
+          <>
+            <div className="absolute left-1/2 top-20 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:hidden">
+              {mobileHint}
+            </div>
+            <div className="absolute left-1/2 bottom-24 z-30 hidden -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:block">
+              {desktopHint}
+            </div>
+          </>
         );
       })()}
 

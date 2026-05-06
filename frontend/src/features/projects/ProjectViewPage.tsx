@@ -105,7 +105,7 @@ export function ProjectViewPage() {
 
   useEffect(() => {
     setSitePlannerActive(true);
-    setActiveSitePlannerTool(null);
+    setActiveSitePlannerTool(window.matchMedia('(min-width: 640px)').matches ? 'building' : null);
     setWorkflowStep(1);
     return () => {
       setSitePlannerActive(false);

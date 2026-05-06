@@ -76,6 +76,11 @@ function shiftHex(hex: string, hueShift: number, lightnessShift: number): string
 
 const VARIANT_SHIFTS: [number, number][] = [[0, 0], [8, -0.06], [-8, 0.06], [16, -0.03]];
 const CONNECT_VERTEX_RADIUS_PX = 34;
+const MOBILE_DRAWING_MEDIA_QUERY = '(max-width: 639px)';
+
+function isMobileDrawingViewport(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia(MOBILE_DRAWING_MEDIA_QUERY).matches;
+}
 
 /** Resolve zone color: per-archetype shade + variant shift, else dev-type color, else zone-type fallback */
 function resolveZoneColor(zone: SiteZone): string {
@@ -559,7 +564,9 @@ export function SitePlannerMap({
     removedPointsRef.current = [];
     setDrawingPoints([]);
     setCenterNearStartVertex(false);
-    setActiveSitePlannerTool(null);
+    if (isMobileDrawingViewport()) {
+      setActiveSitePlannerTool(null);
+    }
     updateDrawingPreview();
   }, [setActiveSitePlannerTool, updateDrawingPreview, finishDrawing]);
 
@@ -1654,7 +1661,9 @@ export function SitePlannerMap({
         removedPointsRef.current = [];
         setDrawingPoints([]);
         setCenterNearStartVertex(false);
-        setActiveSitePlannerTool(null);
+        if (isMobileDrawingViewport()) {
+          setActiveSitePlannerTool(null);
+        }
         updateDrawingPreview();
       }
       if (e.key === 'Enter' && tool && drawingPointsRef.current.length >= minPointsForTool(tool)) {
@@ -1830,7 +1839,7 @@ export function SitePlannerMap({
       <div ref={containerRef} className="h-full w-full" />
       {/* Drawing hint */}
       {activeSitePlannerTool && (
-        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm">
+        <div className="absolute left-1/2 top-16 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm sm:hidden">
           {drawingPoints.length === 0
             ? linear
               ? `Center the crosshair, then place ${getToolDisplayLabel(activeSitePlannerTool)} waypoint`
@@ -1847,7 +1856,18 @@ export function SitePlannerMap({
         </div>
       )}
       {activeSitePlannerTool && (
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-16 z-30 hidden max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/80 px-4 py-2 text-center text-xs text-white backdrop-blur-sm sm:block">
+          {drawingPoints.length === 0
+            ? `Click to place first ${getToolDisplayLabel(activeSitePlannerTool)} point`
+            : drawingPoints.length < minPts
+            ? `Click to place points (${drawingPoints.length}/${minPts} min) - Backspace to undo`
+            : linear
+            ? `${drawingPoints.length} points - ${formatDistance(currentLength)} - Double-click or Enter to finish`
+            : `${drawingPoints.length} points - ${formatArea(currentArea)} - Double-click or Enter to finish`}
+        </div>
+      )}
+      {activeSitePlannerTool && (
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 sm:hidden">
           <div className={`h-8 w-8 rounded-full border-2 ${canConnectToStart ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
             <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
             <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
@@ -1855,7 +1875,7 @@ export function SitePlannerMap({
         </div>
       )}
       {activeSitePlannerTool && (
-        <div className="absolute inset-x-3 bottom-4 z-40 mx-auto max-w-[34rem] sm:left-1/2 sm:-translate-x-1/2">
+        <div className="absolute inset-x-3 bottom-4 z-40 mx-auto max-w-[34rem] sm:hidden">
           <div
             className="grid grid-cols-3 gap-2 rounded-2xl border border-white/15 bg-gray-950/80 p-2 shadow-2xl backdrop-blur-md"
             onPointerDown={(event) => event.stopPropagation()}

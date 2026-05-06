@@ -273,13 +273,13 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
     <>
       {drawingPoints.length > 0 && <DrawingPreview points={drawingPoints} linear={linear} />}
       <Html fullscreen>
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 sm:hidden">
           <div className={`h-8 w-8 rounded-full border-2 ${canConnectToStart ? 'border-emerald-300 bg-emerald-400/20' : 'border-white/90 bg-black/15'} shadow-[0_0_0_1px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)]`}>
             <div className="absolute left-1/2 top-[-10px] h-8 w-px -translate-x-1/2 bg-white/90" />
             <div className="absolute left-[-10px] top-1/2 h-px w-8 -translate-y-1/2 bg-white/90" />
           </div>
         </div>
-        <div className="pointer-events-none absolute inset-x-3 top-24 z-50 mx-auto max-w-[34rem] sm:left-1/2 sm:top-20 sm:-translate-x-1/2">
+        <div className="pointer-events-none absolute inset-x-3 top-24 z-50 mx-auto max-w-[34rem] sm:hidden">
           <div
             className="pointer-events-auto grid grid-cols-3 gap-2"
             onPointerDown={(event) => event.stopPropagation()}
