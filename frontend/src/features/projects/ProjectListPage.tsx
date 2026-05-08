@@ -207,13 +207,6 @@ export function ProjectListPage() {
     }
   };
 
-  const statusColors: Record<string, string> = {
-    draft: 'border-2 border-[#151515] bg-[#fefaf7] text-[#151515]',
-    processing: 'border-2 border-[#151515] bg-[#f2b84b] text-[#151515]',
-    ready: 'border-2 border-[#151515] bg-[#c9ff3d] text-[#151515]',
-    archived: 'border-2 border-[#151515] bg-[#d7d2c6] text-[#151515]',
-  };
-
   const stepExpandedRender = useCallback((direction: -1 | 1) => {
     if (!expandedRender) return;
     const projectRenders = rendersByProject[expandedRender.project.id] ?? [];
@@ -385,36 +378,37 @@ export function ProjectListPage() {
                 key={project.id}
                 className="group flex flex-col rounded-lg border-2 border-[#151515] bg-white p-5 shadow-[6px_6px_0_0_#151515] transition-transform hover:-translate-y-0.5 sm:p-6"
               >
-                <Link to={`/projects/${project.id}`} className="block flex-1">
-                  <div className="flex items-start justify-between">
-                    <h3 className="font-black text-[#151515] group-hover:text-[#0aa6a6]">{project.name}</h3>
-                    <span className={`badge ${statusColors[project.status]}`}>{project.status}</span>
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-start justify-between gap-3">
+                    <Link to={`/projects/${project.id}`} className="min-w-0 flex-1">
+                      <h3 className="font-black text-[#151515] group-hover:text-[#0aa6a6]">{project.name}</h3>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setEditingProject(project)}
+                      className="inline-flex shrink-0 items-center rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] transition hover:bg-[#c9ff3d]"
+                      title="Edit project"
+                    >
+                      <Pencil size={13} className="mr-1.5" />
+                      Edit
+                    </button>
                   </div>
-                  {project.description && <p className="mt-2 line-clamp-2 text-sm font-semibold text-[#5c554d]">{project.description}</p>}
-                  {isAdmin && project.owner_email && (
-                    <div className="mt-1.5 truncate text-xs font-bold text-[#0aa6a6]">{project.owner_email}</div>
-                  )}
-                  {project.location?.address && (
-                    <div className="mt-2 flex items-center text-xs font-semibold text-[#151515]/50">
-                      <MapPin size={11} className="mr-1 flex-shrink-0" />
-                      <span className="truncate">{project.location.address}</span>
+                  <Link to={`/projects/${project.id}`} className="block flex-1">
+                    {project.description && <p className="mt-2 line-clamp-2 text-sm font-semibold text-[#5c554d]">{project.description}</p>}
+                    {isAdmin && project.owner_email && (
+                      <div className="mt-1.5 truncate text-xs font-bold text-[#0aa6a6]">{project.owner_email}</div>
+                    )}
+                    {project.location?.address && (
+                      <div className="mt-2 flex items-center text-xs font-semibold text-[#151515]/50">
+                        <MapPin size={11} className="mr-1 flex-shrink-0" />
+                        <span className="truncate">{project.location.address}</span>
+                      </div>
+                    )}
+                    <div className="mt-4 flex items-center text-xs font-semibold text-[#151515]/50">
+                      <Clock size={12} className="mr-1" />
+                      Updated {new Date(project.updated_at).toLocaleDateString()}
                     </div>
-                  )}
-                  <div className="mt-4 flex items-center text-xs font-semibold text-[#151515]/50">
-                    <Clock size={12} className="mr-1" />
-                    Updated {new Date(project.updated_at).toLocaleDateString()}
-                  </div>
-                </Link>
-
-                <div className="mt-4 flex justify-end border-t border-primary-950/[0.06] pt-3">
-                  <button
-                    type="button"
-                    onClick={() => setEditingProject(project)}
-                    className="inline-flex items-center rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] transition hover:bg-[#c9ff3d]"
-                  >
-                    <Pencil size={13} className="mr-1.5" />
-                    Edit
-                  </button>
+                  </Link>
                 </div>
 
                 {rendersLoading ? (
