@@ -486,7 +486,7 @@ export function GlobeAIRenderPanel({
       ref={panelRef}
       onPointerMove={handlePanelPointerMove}
       onPointerLeave={handlePanelPointerLeave}
-      className={`globe-ai-dynamic-bg flex max-h-[44vh] w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'globe-ai-rendering' : ''}`}
+      className={`globe-ai-dynamic-bg flex w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'mx-auto max-h-[13rem] max-w-md globe-ai-rendering' : 'max-h-[44vh]'}`}
     >
       {/* Header */}
       <div
@@ -524,11 +524,37 @@ export function GlobeAIRenderPanel({
           </div>
         </div>
         <p className="mt-1 text-[10px] font-bold text-[#151515]/55">
-          Compare Gemini 3.1 Flash and GPT Image 2 from the active globe view
+          Set the globe exactly how you want it. Previews capture the view on screen.
         </p>
       </div>
 
+      {isRendering ? (
+        <div className="min-h-0 flex-1 px-4 py-3">
+          <div className="flex items-center gap-3 rounded-lg border-2 border-white/15 bg-black/25 px-3 py-2 text-white">
+            <Loader2 size={18} className="shrink-0 animate-spin text-[#c9ff3d]" />
+            <div className="min-w-0">
+              <p className="truncate text-xs font-black uppercase">
+                Rendering the current globe view
+              </p>
+              <p className="mt-0.5 text-[11px] font-semibold text-white/65">
+                You can keep reviewing the map while this runs.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
       <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="border-b-2 border-white/10 px-4 py-2">
+        <div className="flex items-start gap-2 rounded-lg border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[#151515] shadow-[3px_3px_0_0_#151515]">
+          <Camera size={15} className="mt-0.5 shrink-0" />
+          <div className="min-w-0">
+            <p className="text-[11px] font-black uppercase">Current view becomes the render</p>
+            <p className="mt-0.5 text-[10px] font-bold leading-snug text-[#151515]/70">
+              Pan, zoom, and tilt the globe first. The preview button captures exactly what you see now.
+            </p>
+          </div>
+        </div>
+      </div>
       <div className="grid gap-3 border-b-2 border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
         {/* Style selector */}
         <div>
@@ -735,6 +761,7 @@ export function GlobeAIRenderPanel({
         </div>
       )}
       </div>
+      )}
 
       {/* Render button */}
       <div className="shrink-0 border-t-2 border-[#151515] bg-[#fff9ec] px-4 py-3">
@@ -746,15 +773,20 @@ export function GlobeAIRenderPanel({
           {isRendering ? (
             <>
               <Loader2 size={16} className="animate-spin" />
-              {renderProgress
-                ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
-                : `Rendering... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
-              }
+              <span className="min-w-0 truncate">
+                {renderProgress
+                  ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  : `Rendering current view... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                }
+              </span>
             </>
           ) : (
             <>
               <Camera size={16} />
-              Generate Globe Previews
+              <span className="flex min-w-0 flex-col leading-tight">
+                <span>Generate Current View Previews</span>
+                <span className="text-[10px] font-bold opacity-70">Uses the globe view on screen now</span>
+              </span>
             </>
           )}
         </button>
