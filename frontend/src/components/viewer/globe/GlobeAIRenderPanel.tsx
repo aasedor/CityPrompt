@@ -12,6 +12,7 @@ import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon
 import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
+import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 
 const COMPARE_RENDER_MODELS = [
   { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
@@ -65,6 +66,7 @@ interface GlobeAIRenderPanelProps {
   dragHandleProps?: HTMLAttributes<HTMLDivElement>;
   isDragging?: boolean;
   onLightboxOpenChange?: (open: boolean) => void;
+  onRenderSaved?: (render: SavedRender) => void;
   onClose?: () => void;
 }
 
@@ -128,6 +130,7 @@ export function GlobeAIRenderPanel({
   dragHandleProps,
   isDragging = false,
   onLightboxOpenChange,
+  onRenderSaved,
   onClose,
 }: GlobeAIRenderPanelProps) {
   const { renderPreviews, renderPerZone } = useGlobeAIRender();
@@ -147,6 +150,7 @@ export function GlobeAIRenderPanel({
   // Lightbox: render currently shown full-screen (null = closed).
   const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const savedImageKeysRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     onLightboxOpenChange?.(!!lightboxRender);
@@ -172,6 +176,57 @@ export function GlobeAIRenderPanel({
   useEffect(() => {
     setSaveStatus('idle');
   }, [result?.imageUrl]);
+
+  const rememberSavedRender = useCallback((saved: SavedRender) => {
+    setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+    onRenderSaved?.(saved);
+  }, [onRenderSaved]);
+
+  const autoSaveGlobeRenders = useCallback(async (rendersToSave: GlobeRenderResult[]) => {
+    if (!projectId) return false;
+    const unsaved = rendersToSave
+      .filter((renderToSave) => !renderToSave.error && renderToSave.imageUrl)
+      .map((renderToSave) => ({
+        render: renderToSave,
+        key: getRenderImageKey(renderToSave),
+      }))
+      .filter(({ key }) => {
+        if (savedImageKeysRef.current.has(key)) return false;
+        savedImageKeysRef.current.add(key);
+        return true;
+      });
+
+    if (unsaved.length === 0) return false;
+
+    const results = await Promise.allSettled(
+      unsaved.map(({ render }) => saveRenderedImage(
+        projectId,
+        render,
+        render.providerLabel
+          ? [render.providerLabel, formatImageQualityLabel(render.imageQuality), selectedStyle].filter(Boolean).join(' / ')
+          : selectedStyle,
+      )),
+    );
+
+    results.forEach((saveResult, index) => {
+      if (saveResult.status === 'rejected') {
+        savedImageKeysRef.current.delete(unsaved[index].key);
+      }
+    });
+
+    const saved = results
+      .filter((saveResult): saveResult is PromiseFulfilledResult<SavedRender> => saveResult.status === 'fulfilled')
+      .map((saveResult) => saveResult.value);
+
+    if (saved.length === 0) return false;
+    setSavedRenders((prev) => [
+      ...saved,
+      ...prev.filter((item) => !saved.some((savedRender) => savedRender.id === item.id)),
+    ]);
+    saved.forEach((savedRender) => onRenderSaved?.(savedRender));
+    setShowSavedRenders(true);
+    return true;
+  }, [onRenderSaved, projectId, selectedStyle]);
 
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
@@ -235,8 +290,12 @@ export function GlobeAIRenderPanel({
           const selected = results[firstSuccessfulIndex];
           setSelectedPreviewIndex(firstSuccessfulIndex);
           setResult(selected);
+          const savedAny = await autoSaveGlobeRenders(results);
           if (!selected.error) {
             onRenderComplete?.(selected);
+          }
+          if (savedAny) {
+            onClose?.();
           }
           const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
           if (failedLabels.length > 0) {
@@ -261,8 +320,12 @@ export function GlobeAIRenderPanel({
           const selected = results[firstSuccessfulIndex];
           setSelectedPreviewIndex(firstSuccessfulIndex);
           setResult(selected);
+          const savedAny = await autoSaveGlobeRenders(results);
           if (!selected.error) {
             onRenderComplete?.(selected);
+          }
+          if (savedAny) {
+            onClose?.();
           }
           const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
           if (failedLabels.length > 0) {
@@ -280,7 +343,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, autoSaveGlobeRenders, onClose]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -356,29 +419,15 @@ export function GlobeAIRenderPanel({
     setSaving(true);
     setSaveStatus('idle');
     try {
-      let base64 = '';
-      if (renderToSave.imageUrl.startsWith('data:')) {
-        base64 = renderToSave.imageUrl.split(',')[1] || '';
-      } else {
-        const resp = await fetch(renderToSave.imageUrl);
-        const blob = await resp.blob();
-        base64 = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve((reader.result as string).split(',')[1] || '');
-          reader.readAsDataURL(blob);
-        });
-      }
-      const saved = await rendersApi.save(projectId, {
-        image_base64: base64,
-        prompt: renderToSave.prompt || '',
-        style: renderToSave.providerLabel
+      const saved = await saveRenderedImage(
+        projectId,
+        renderToSave,
+        renderToSave.providerLabel
           ? [renderToSave.providerLabel, formatImageQualityLabel(renderToSave.imageQuality), renderToSave.style || selectedStyle].filter(Boolean).join(' / ')
           : renderToSave.style || selectedStyle,
-        seed: renderToSave.seed,
-        model: renderToSave.model,
-        image_quality: renderToSave.imageQuality,
-      });
-      setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+      );
+      savedImageKeysRef.current.add(getRenderImageKey(renderToSave));
+      rememberSavedRender(saved);
       setShowSavedRenders(true);
       setSaveStatus('saved');
       setLightboxRender((current) => current?.imageUrl === renderToSave.imageUrl
@@ -397,7 +446,7 @@ export function GlobeAIRenderPanel({
     } finally {
       setSaving(false);
     }
-  }, [projectId, selectedStyle, saving]);
+  }, [projectId, rememberSavedRender, selectedStyle, saving]);
 
   const handleSave = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;

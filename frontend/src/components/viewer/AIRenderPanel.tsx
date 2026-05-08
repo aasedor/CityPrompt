@@ -14,6 +14,7 @@ import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
 import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
+import { saveRenderedImage } from '@/utils/renderPersistence';
 
 // ---------------------------------------------------------------------------
 // UI grouping for the style picker
@@ -51,13 +52,15 @@ interface AIRenderPanelProps {
   onBeforeRender?: () => void | Promise<void>;
   /** Notifies parent that this panel is showing a full-screen render viewer. */
   onLightboxOpenChange?: (open: boolean) => void;
+  /** Called after a render is persisted to the project gallery. */
+  onRenderSaved?: (render: SavedRender) => void;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange, onRenderSaved }: AIRenderPanelProps) {
   const {
     renderPreviews,
     isRendering,
@@ -252,31 +255,15 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
     if (!result?.imageUrl || !projectId || renderSaveStatus === 'saving' || renderSaveStatus === 'saved') return;
     setRenderSaveStatus('saving');
     try {
-      let base64 = '';
-      if (result.imageUrl.startsWith('data:')) {
-        base64 = result.imageUrl.split(',')[1] || '';
-      } else {
-        const resp = await fetch(result.imageUrl);
-        const blob = await resp.blob();
-        base64 = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve((reader.result as string).split(',')[1] || '');
-          reader.readAsDataURL(blob);
-        });
-      }
-      const saved = await rendersApi.save(projectId, {
-        image_base64: base64,
-        prompt: result.prompt || '',
-        style: selectedStyle,
-        seed: result.seed,
-      });
+      const saved = await saveRenderedImage(projectId, result, selectedStyle);
       setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+      onRenderSaved?.(saved);
       setShowGallery(true);
       setRenderSaveStatus('saved');
     } catch {
       setRenderSaveStatus('error');
     }
-  }, [projectId, renderSaveStatus, result, selectedStyle]);
+  }, [onRenderSaved, projectId, renderSaveStatus, result, selectedStyle]);
 
   // Build summary text for generate button
   const summaryText = useMemo(() => {
@@ -645,7 +632,7 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
             <div className="mt-3">
               {savedRenders.length === 0 ? (
                 <p className="text-xs text-gray-500 text-center py-4">
-                  No saved renders yet. Generate a render and click "Save to Project" to add one.
+                  No saved renders yet. New project renders save automatically as they complete.
                 </p>
               ) : (
                 <div className="grid grid-cols-3 gap-2">

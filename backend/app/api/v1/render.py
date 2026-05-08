@@ -13,6 +13,7 @@ Supports two auth modes:
 from __future__ import annotations
 
 import base64
+import hashlib
 import io
 import logging
 import os
@@ -911,6 +912,13 @@ async def save_render(
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid base64 image data")
 
+    image_hash = hashlib.sha256(image_bytes).hexdigest()
+    meta = dict(project.metadata_) if project.metadata_ else {}
+    renders = list(meta.get("saved_renders", []))
+    for existing in renders:
+        if existing.get("image_hash") == image_hash:
+            return SavedRenderResponse(**existing)
+
     render_id = str(_uuid.uuid4())
     file_key = f"projects/{project_id}/renders/{render_id}.png"
 
@@ -928,11 +936,10 @@ async def save_render(
         "seed": req.seed,
         "model": req.model,
         "image_quality": req.image_quality,
+        "image_hash": image_hash,
         "created_at": now,
     }
 
-    meta = dict(project.metadata_) if project.metadata_ else {}
-    renders = list(meta.get("saved_renders", []))
     renders.insert(0, entry)
     meta["saved_renders"] = renders
     project.metadata_ = meta

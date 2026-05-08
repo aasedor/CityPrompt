@@ -7,9 +7,9 @@ import { useState, useCallback } from 'react';
 import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save } from 'lucide-react';
 import { useViewerStore } from '@/store';
 import { useStreetViewRender, type StreetViewResult } from './useStreetViewRender';
-import type { SiteZone } from '@/types';
-import { rendersApi } from '@/services/api';
+import type { SavedRender, SiteZone } from '@/types';
 import toast from 'react-hot-toast';
+import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
@@ -128,9 +128,10 @@ interface StreetViewPanelProps {
   projectId?: string;
   /** When provided, captures 3D tiles from street level instead of clay render */
   globeCapture?: () => Promise<string | null>;
+  onRenderSaved?: (render: SavedRender) => void;
 }
 
-export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetViewPanelProps) {
+export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSaved }: StreetViewPanelProps) {
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -138,8 +139,29 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
   const [previews, setPreviews] = useState<StreetViewResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
+  const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const saveStreetViewRender = useCallback(async (render: StreetViewResult, showToast = false) => {
+    if (!projectId || render.error || !render.imageUrl) return null;
+
+    const key = getRenderImageKey(render);
+    if (savedImageKeys.has(key)) {
+      if (showToast) toast.success('Already saved');
+      return null;
+    }
+
+    const saved = await saveRenderedImage(
+      projectId,
+      render,
+      render.providerLabel ? `street-view / ${render.providerLabel}` : 'street-view',
+    );
+    setSavedImageKeys((prev) => new Set(prev).add(key));
+    onRenderSaved?.(saved);
+    if (showToast) toast.success('Street view saved');
+    return saved;
+  }, [onRenderSaved, projectId, savedImageKeys]);
 
   const handleRotateLeft = useCallback(() => {
     if (!streetViewPegman) return;
@@ -229,6 +251,13 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
         const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
         setSelectedPreviewIndex(firstSuccessfulIndex);
         setResult(results[firstSuccessfulIndex]);
+        if (projectId) {
+          Promise.allSettled(
+            results
+              .filter((preview) => !preview.error)
+              .map((preview) => saveStreetViewRender(preview)),
+          ).catch(() => undefined);
+        }
         const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
         if (failedLabels.length > 0) {
           toast.error(`${failedLabels.join(', ')} failed`);
@@ -242,7 +271,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result, globeCapture, projectId]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result, globeCapture, projectId, saveStreetViewRender]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -256,19 +285,13 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
     if (!result?.imageUrl || result.error || !projectId) return;
     setSaving(true);
     try {
-      const b64 = result.imageUrl.replace(/^data:image\/\w+;base64,/, '');
-      await rendersApi.save(projectId, {
-        image_base64: b64,
-        prompt: result.prompt,
-        style: result.providerLabel ? `street-view / ${result.providerLabel}` : 'street-view',
-      });
-      toast.success('Street view saved');
+      await saveStreetViewRender(result, true);
     } catch {
       toast.error('Failed to save');
     } finally {
       setSaving(false);
     }
-  }, [result, projectId]);
+  }, [result, projectId, saveStreetViewRender]);
 
   const handleClose = useCallback(() => {
     setStreetViewPosition(null);
@@ -333,7 +356,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture }: StreetVi
                   className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
                 >
                   <Save size={14} />
-                  {saving ? 'Saving...' : 'Save'}
+                  {saving ? 'Saving...' : result && savedImageKeys.has(getRenderImageKey(result)) ? 'Saved' : 'Save'}
                 </button>
               )}
               <button

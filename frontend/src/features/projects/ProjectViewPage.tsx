@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect, type PointerEvent as ReactPoi
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, Share2, MapPin, FileDown, Sparkles, Trash2 } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, X } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -28,6 +28,7 @@ import { useSiteZones } from '@/hooks/useSiteZones';
 import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
+import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 
@@ -38,6 +39,7 @@ export function ProjectViewPage() {
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -227,6 +229,54 @@ export function ProjectViewPage() {
   const [isGeneratingFull, setIsGeneratingFull] = useState(false);
   const [fullRenderResult, setFullRenderResult] = useState<AIRenderResult | null>(null);
   const [renderProgressMessage, setRenderProgressMessage] = useState('');
+  const [activeAIStyle, setActiveAIStyle] = useState('photorealistic');
+  const autoSavedRenderKeysRef = useRef<Set<string>>(new Set());
+
+  const rememberSavedRender = useCallback((render: SavedRender) => {
+    setSavedRenders((current) => [render, ...current.filter((item) => item.id !== render.id)]);
+    setShowProjectRenders(true);
+  }, []);
+
+  const refreshSavedRenders = useCallback(() => {
+    if (!id) return;
+    rendersApi.list(id).then(setSavedRenders).catch(() => {});
+  }, [id]);
+
+  const autoSaveAIRenders = useCallback((renders: AIRenderResult[], style: string) => {
+    if (!id || renders.length === 0) return;
+
+    const unsaved = renders.map((render, index) => ({ render, index, key: getRenderImageKey(render) })).filter(({ key }) => {
+      if (autoSavedRenderKeysRef.current.has(key)) return false;
+      autoSavedRenderKeysRef.current.add(key);
+      return true;
+    });
+
+    if (unsaved.length === 0) return;
+
+    Promise.allSettled(
+      unsaved.map(({ render, index }) => saveRenderedImage(
+        id,
+        render,
+        renders.length > 1 ? `${style} preview ${index + 1}` : style,
+      )),
+    ).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          autoSavedRenderKeysRef.current.delete(unsaved[index].key);
+        }
+      });
+      const saved = results
+        .filter((result): result is PromiseFulfilledResult<SavedRender> => result.status === 'fulfilled')
+        .map((result) => result.value);
+
+      if (saved.length === 0) return;
+      setSavedRenders((current) => [
+        ...saved,
+        ...current.filter((item) => !saved.some((render) => render.id === item.id)),
+      ]);
+      setShowProjectRenders(true);
+    }).catch(() => undefined);
+  }, [id]);
 
   /** Handle AI render result — overlay on map */
   const handleAIRenderComplete = useCallback((result: AIRenderResult) => {
@@ -268,13 +318,15 @@ export function ProjectViewPage() {
     }
   }, [mapInstance]);
 
-  /** When AIRenderPanel produces previews, open the full-screen modal */
+  /** When AIRenderPanel produces previews, persist them and return to the project workspace. */
   const handlePreviewsReady = useCallback((previews: AIRenderResult[]) => {
     setRenderPreviews(previews);
     setRenderModalSelectedIdx(null);
     setFullRenderResult(null);
-    setShowRenderModal(true);
-  }, []);
+    setShowRenderModal(false);
+    autoSaveAIRenders(previews, activeAIStyle);
+    setWorkflowStep(1);
+  }, [activeAIStyle, autoSaveAIRenders, setWorkflowStep]);
 
   /** When user selects a preview in the modal */
   const handleModalSelectPreview = useCallback(async (index: number) => {
@@ -312,6 +364,17 @@ export function ProjectViewPage() {
 
   const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!lightboxImageUrl || aiPanelLightboxOpen;
 
+  const stepRenderLightbox = useCallback((direction: -1 | 1) => {
+    setRenderLightbox((current) => {
+      if (!current || savedRenders.length < 2) return current;
+      const currentIndex = savedRenders.findIndex((render) => render.id === current.id);
+      const startIndex = currentIndex >= 0 ? currentIndex : 0;
+      const nextIndex = (startIndex + direction + savedRenders.length) % savedRenders.length;
+      return savedRenders[nextIndex] ?? current;
+    });
+  }, [savedRenders]);
+
+
   useEffect(() => {
     if (!renderLightbox) return;
 
@@ -322,18 +385,34 @@ export function ProjectViewPage() {
         e.stopImmediatePropagation();
         setRenderLightbox(null);
         return;
-      }
+        }
 
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }
-    };
+        if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          stepRenderLightbox(-1);
+          return;
+        }
 
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [renderLightbox]);
+        if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          stepRenderLightbox(1);
+          return;
+        }
+
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown, true);
+      return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [renderLightbox, stepRenderLightbox]);
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
@@ -386,8 +465,13 @@ export function ProjectViewPage() {
           onMeasureModeChange={handleMeasureModeChange}
         />
 
-        {/* Toolbar — hidden on phones during focused vertex placement. */}
-        <div className={`absolute inset-x-3 z-30 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-[272px] sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}>
+        {/* Toolbar - hidden on phones during focused vertex placement. */}
+        <div
+          className={`absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          style={{
+            top: 'clamp(5rem, 22dvh, 17rem)',
+          }}
+        >
           <SitePlannerToolbar
             layout="sidebar"
             isGlobeMode
@@ -464,6 +548,7 @@ export function ProjectViewPage() {
                 onBeforeRender={prepareForAIRenderCapture}
                 isDragging={isDraggingGlobeRender}
                 onLightboxOpenChange={setAiPanelLightboxOpen}
+                onRenderSaved={rememberSavedRender}
                 dragHandleProps={{
                   onPointerDown: handleGlobeRenderDragStart,
                 }}
@@ -484,7 +569,84 @@ export function ProjectViewPage() {
         </div>
 
         {/* Street View Panel — with globe 3D tiles capture */}
-        <StreetViewPanel siteZones={siteZones} projectId={project?.id} globeCapture={handleGlobeStreetCapture} />
+
+        <ProjectRendersTray
+          renders={savedRenders}
+          open={showProjectRenders}
+          onToggle={() => setShowProjectRenders((open) => !open)}
+          onClose={() => setShowProjectRenders(false)}
+          onSelect={setRenderLightbox}
+        />
+
+        <StreetViewPanel
+          siteZones={siteZones}
+          projectId={project?.id}
+          globeCapture={handleGlobeStreetCapture}
+          onRenderSaved={rememberSavedRender}
+        />
+
+        {renderLightbox && (
+          <div
+            className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+            onClick={() => setRenderLightbox(null)}
+          >
+            <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(event) => event.stopPropagation()}>
+              <img
+                src={resolveApiFileUrl(renderLightbox.image_url)}
+                alt={renderLightbox.prompt || 'Saved render'}
+                className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
+              />
+              {savedRenders.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => stepRenderLightbox(-1)}
+                    className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                    aria-label="Previous render"
+                    title="Previous render (Left or A)"
+                  >
+                    <ArrowLeft size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => stepRenderLightbox(1)}
+                    className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                    aria-label="Next render"
+                    title="Next render (Right or D)"
+                  >
+                    <ArrowLeft size={20} className="rotate-180" />
+                  </button>
+                </>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+                {renderLightbox.prompt && (
+                  <p className="text-sm text-white/90 line-clamp-2">{renderLightbox.prompt}</p>
+                )}
+                <p className="mt-1 text-xs text-white/50">
+                  {new Date(renderLightbox.created_at).toLocaleDateString()}
+                  {renderLightbox.style && ` · ${renderLightbox.style}`}
+                </p>
+              </div>
+              <div className="absolute top-3 right-3 flex gap-2">
+                <a
+                  href={resolveApiFileUrl(renderLightbox.image_url)}
+                  download={`render-${renderLightbox.id}.png`}
+                  className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                  title="Download"
+                >
+                  <FileDown size={18} />
+                </a>
+                <button
+                  onClick={() => setRenderLightbox(null)}
+                  className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Close render"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Double-click a variant to open large preview */}
         <ImageLightbox />
@@ -555,7 +717,7 @@ export function ProjectViewPage() {
           <ZoneLegend siteZones={siteZones} />
 
           {/* Street View Panel */}
-          <StreetViewPanel siteZones={siteZones} projectId={project?.id} />
+          <StreetViewPanel siteZones={siteZones} projectId={project?.id} onRenderSaved={rememberSavedRender} />
 
           {showHistory && id && (
             <HistoryPanel
@@ -603,8 +765,18 @@ export function ProjectViewPage() {
               projectId={project?.id}
               onBeforeRender={prepareForAIRenderCapture}
               onLightboxOpenChange={setAiPanelLightboxOpen}
+              onStyleChange={setActiveAIStyle}
+              onRenderSaved={rememberSavedRender}
             />
           )}
+
+          <ProjectRendersTray
+            renders={savedRenders}
+            open={showProjectRenders}
+            onToggle={() => setShowProjectRenders((open) => !open)}
+            onClose={() => setShowProjectRenders(false)}
+            onSelect={setRenderLightbox}
+          />
 
           {/* AI render result indicator */}
           {aiRenderResult && (
@@ -625,7 +797,7 @@ export function ProjectViewPage() {
         {workflowStep === 1 && <OnboardingTour forceShow={showTour} onComplete={() => setShowTour(false)} />}
 
         {/* Bottom toolbar — context-sensitive per step */}
-        <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
+        <div className="flex min-h-0 items-center justify-between gap-3 px-4 py-2 bg-gray-900 border-t border-gray-800">
           <div className="flex-1 min-w-0">
             <SitePlannerToolbar
               onShowGuide={() => setShowTour(true)}
@@ -703,7 +875,7 @@ export function ProjectViewPage() {
               </div>
             ) : (
               <p className="mt-4 text-sm text-primary-950/50">
-                No saved renders yet. Use the AI Render panel to generate images, then click "Save to Project".
+                No saved renders yet. Aerial and street-view renders save here automatically as they complete.
               </p>
             )}
           </section>
@@ -774,6 +946,28 @@ export function ProjectViewPage() {
               alt={renderLightbox.prompt || 'Saved render'}
               className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
             />
+            {savedRenders.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => stepRenderLightbox(-1)}
+                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Previous render"
+                  title="Previous render (Left or A)"
+                >
+                  <ArrowLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => stepRenderLightbox(1)}
+                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white/85 shadow-lg ring-1 ring-white/20 transition hover:bg-black/80 hover:text-white"
+                  aria-label="Next render"
+                  title="Next render (Right or D)"
+                >
+                  <ArrowLeft size={20} className="rotate-180" />
+                </button>
+              </>
+            )}
             <div className="absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
               {renderLightbox.prompt && (
                 <p className="text-sm text-white/90 line-clamp-2">{renderLightbox.prompt}</p>
@@ -830,11 +1024,88 @@ export function ProjectViewPage() {
           fullResult={fullRenderResult}
           progressMessage={renderProgressMessage}
           projectId={project?.id}
+          style={activeAIStyle}
           onSaved={() => {
-            if (id) rendersApi.list(id).then(setSavedRenders).catch(() => {});
+            refreshSavedRenders();
           }}
         />
       )}
+    </div>
+  );
+}
+
+interface ProjectRendersTrayProps {
+  renders: SavedRender[];
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  onSelect: (render: SavedRender) => void;
+}
+
+function ProjectRendersTray({ renders, open, onToggle, onClose, onSelect }: ProjectRendersTrayProps) {
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={onToggle}
+        className="absolute bottom-3 left-3 z-30 flex items-center gap-2 rounded-lg bg-gray-900/90 px-3 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition hover:bg-gray-800/95"
+        title="Open project renders"
+      >
+        <Camera size={16} className="text-amber-300" />
+        Project Renders
+        <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs text-white/80">{renders.length}</span>
+      </button>
+    );
+  }
+
+  return (
+    <div className="absolute bottom-3 left-3 z-40 flex max-h-[min(28rem,calc(100%-1.5rem))] w-[22rem] max-w-[calc(100%-1.5rem)] flex-col overflow-hidden rounded-xl bg-white/95 shadow-2xl ring-1 ring-black/10 backdrop-blur-md">
+      <div className="flex items-center justify-between border-b border-primary-950/[0.08] px-4 py-3">
+        <div>
+          <h3 className="text-sm font-bold text-primary-950">Project Renders</h3>
+          <p className="text-xs text-primary-950/50">{renders.length} saved in this project</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center gap-1.5 rounded-lg border border-primary-950/[0.12] px-2.5 py-1.5 text-xs font-semibold text-primary-950/65 transition hover:bg-primary-950/[0.06] hover:text-primary-950"
+          aria-label="Close project renders"
+        >
+          <X size={14} />
+          Hide
+        </button>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto p-3">
+        {renders.length === 0 ? (
+          <div className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-primary-950/[0.12] px-4 py-6 text-center">
+            <Sparkles size={22} className="text-primary-950/25" />
+            <p className="mt-2 text-sm font-medium text-primary-950/70">No renders yet</p>
+            <p className="mt-1 text-xs text-primary-950/45">New aerial and street-view renders save here automatically.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            {renders.map((render) => (
+              <button
+                key={render.id}
+                type="button"
+                onClick={() => onSelect(render)}
+                className="group relative overflow-hidden rounded-lg border border-primary-950/[0.08] bg-primary-950/[0.03] text-left transition hover:border-amber-400/80"
+              >
+                <img
+                  src={resolveApiFileUrl(render.image_url)}
+                  alt={render.prompt || 'Saved render'}
+                  className="aspect-square w-full object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
+                  <p className="truncate text-[10px] font-semibold text-white">{render.style || 'render'}</p>
+                  <p className="text-[10px] text-white/65">{new Date(render.created_at).toLocaleDateString()}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
