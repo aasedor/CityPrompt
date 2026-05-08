@@ -36,6 +36,7 @@ import {
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 interface GlobeZoneLayerProps {
   zones: SiteZone[];
@@ -554,7 +555,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
       {/* Label — positioned above the zone */}
       <group position={[0, 0, extrudeHeight + 8]}>
-        <Html center style={{ pointerEvents: 'none' }}>
+        <Html
+          center
+          zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+          style={{ pointerEvents: 'none' }}
+        >
           <div className="whitespace-nowrap rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm">
             {label}
           </div>

@@ -49,13 +49,39 @@ export function RenderResultModal({
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!expandedImage) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setExpandedImage(null);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        if (expandedImage) {
+          setExpandedImage(null);
+        } else {
+          onClose();
+        }
+        return;
+      }
+
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      if (expandedImage || isGeneratingFull || previews.length <= 1) {
+        return;
+      }
+
+      const currentIndex = selectedIndex ?? (e.key === 'ArrowRight' ? -1 : 0);
+      const direction = e.key === 'ArrowRight' ? 1 : -1;
+      const nextIndex = (currentIndex + direction + previews.length) % previews.length;
+      onSelectPreview(nextIndex);
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [expandedImage]);
+    window.addEventListener('keydown', handleKey, true);
+    return () => window.removeEventListener('keydown', handleKey, true);
+  }, [expandedImage, isGeneratingFull, onClose, onSelectPreview, previews.length, selectedIndex]);
 
   const handleDownload = useCallback(() => {
     const url = fullResult?.imageUrl;

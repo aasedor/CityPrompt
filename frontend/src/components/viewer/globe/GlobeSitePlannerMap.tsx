@@ -79,6 +79,7 @@ const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
 const VIEWPORT_FIT_INITIAL_CAMERA_MULTIPLIER = 2;
 const DRAWING_FILL_LIFT_METERS = 0.3;
 const DRAWING_OUTLINE_LIFT_METERS = 0.6;
+const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 const DRAWING_VERTEX_LIFT_METERS = 1;
 const DRAWING_VERTEX_RADIUS_METERS = 2.25;
 const CONNECT_VERTEX_RADIUS_METERS = 30;
@@ -986,7 +987,7 @@ function DrawingDots({
         return (
           <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={previewHeight}>
             <group position={[0, 0, DRAWING_VERTEX_LIFT_METERS + 6]}>
-              <Html center zIndexRange={[240, 0]} style={{ pointerEvents: 'none' }}>
+              <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE} style={{ pointerEvents: 'none' }}>
                 <div className="pointer-events-none whitespace-nowrap rounded-full border border-white/70 bg-blue-600/95 px-3 py-1 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">
                   {formatDrawingArea(liveArea)}
                 </div>
@@ -1010,7 +1011,7 @@ function DrawingDots({
                 <sphereGeometry args={[i === points.length - 1 ? DRAWING_VERTEX_RADIUS_METERS + 0.45 : DRAWING_VERTEX_RADIUS_METERS, 16, 16]} />
                 <meshBasicMaterial color={i === points.length - 1 ? '#f59e0b' : '#fbbf24'} depthTest={false} depthWrite={false} />
               </mesh>
-              <Html center zIndexRange={[220, 0]} style={{ pointerEvents: 'none' }}>
+              <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE} style={{ pointerEvents: 'none' }}>
                 <div
                   className={`pointer-events-none flex items-center justify-center rounded-full border-2 font-semibold text-white shadow-lg ${
                     i === points.length - 1
@@ -1135,7 +1136,7 @@ function MeasurementOverlay({
             <meshBasicMaterial color="#38bdf8" depthTest={false} depthWrite={false} />
           </mesh>
           <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 0.4]}>
-            <Html center zIndexRange={[230, 0]} style={{ pointerEvents: 'none' }}>
+            <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE} style={{ pointerEvents: 'none' }}>
               <div className="pointer-events-none flex h-5 min-w-5 items-center justify-center rounded-full border border-white/80 bg-sky-500 px-1.5 text-[10px] font-bold text-white shadow-lg">
                 {index + 1}
               </div>
@@ -1152,7 +1153,7 @@ function MeasurementOverlay({
           height={segment.height}
         >
           <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 2.5]}>
-            <Html center zIndexRange={[225, 0]} style={{ pointerEvents: 'none' }}>
+            <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE} style={{ pointerEvents: 'none' }}>
               <div className="pointer-events-none whitespace-nowrap rounded-full border border-sky-200/80 bg-gray-950/85 px-2 py-0.5 text-[11px] font-semibold text-sky-100 shadow-lg backdrop-blur-sm">
                 {formatDistance(segment.distance)}
               </div>
@@ -1164,7 +1165,7 @@ function MeasurementOverlay({
       {points.length >= 2 && (
         <EastNorthUpFrame lat={lastPoint[1] * DEG_TO_RAD} lon={lastPoint[0] * DEG_TO_RAD} height={lastPointHeight}>
           <group position={[0, 0, MEASURE_LINE_LIFT_METERS + 7]}>
-            <Html center zIndexRange={[235, 0]} style={{ pointerEvents: 'none' }}>
+            <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE} style={{ pointerEvents: 'none' }}>
               <div className="pointer-events-none whitespace-nowrap rounded-full border border-white/80 bg-sky-600 px-3 py-1 text-xs font-bold text-white shadow-lg">
                 Total {formatDistance(totalDistance)}
               </div>
@@ -1190,6 +1191,7 @@ interface GlobeSitePlannerMapProps {
   onPasteZone?: () => void;
   canPasteZone?: boolean;
   measureModeActive?: boolean;
+  interactionPaused?: boolean;
   onMeasureModeChange?: (active: boolean) => void;
   /**
    * Emitted when the R3F canvas, THREE camera, and terrain elevation are all
@@ -1238,6 +1240,7 @@ export function GlobeSitePlannerMap({
   onPasteZone,
   canPasteZone = false,
   measureModeActive = false,
+  interactionPaused = false,
   onMeasureModeChange,
   onGlobeReady,
 }: GlobeSitePlannerMapProps) {
@@ -1947,6 +1950,7 @@ export function GlobeSitePlannerMap({
 
   // Keyboard handler for drawing
   useEffect(() => {
+    if (interactionPaused) return;
     if (!hasDrawingTool) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -1974,10 +1978,11 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [finishDrawing, hasDrawingTool, setActiveSitePlannerTool]);
+  }, [finishDrawing, hasDrawingTool, interactionPaused, setActiveSitePlannerTool]);
 
   // Keyboard handler for quick measuring
   useEffect(() => {
+    if (interactionPaused) return;
     if (!measureModeActive) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -2001,10 +2006,11 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [clearMeasurePoints, measureModeActive, onMeasureModeChange]);
+  }, [clearMeasurePoints, interactionPaused, measureModeActive, onMeasureModeChange]);
 
   // Selection-mode keyboard shortcuts (delete, escape, copy/paste, zone nudging)
   useEffect(() => {
+    if (interactionPaused) return;
     if (hasDrawingTool || measureModeActive) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -2082,9 +2088,10 @@ export function GlobeSitePlannerMap({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [canPasteZone, hasDrawingTool, markUserInteracted, measureModeActive, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
+  }, [canPasteZone, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onCopyZone, onPasteZone, onZoneCreated, onZoneSelected, onZoneUpdated, selectedZoneId, siteZones, streetViewPegman?.angle, streetViewPegman?.position, _onZoneDeleted]);
 
   useEffect(() => {
+    if (interactionPaused) return;
     if ((!hasDrawingTool && selectedZoneId) || streetViewPegman?.position) return;
 
     const navigationKeys = new Set([
@@ -2155,7 +2162,7 @@ export function GlobeSitePlannerMap({
         cancelAnimationFrame(rafId);
       }
     };
-  }, [hasDrawingTool, markUserInteracted, selectedZoneId, streetViewPegman?.position]);
+  }, [hasDrawingTool, interactionPaused, markUserInteracted, selectedZoneId, streetViewPegman?.position]);
 
   const updateCenterConnectionState = useCallback(() => {
     if (!hasDrawingTool || linear || !activeSitePlannerTool) {
@@ -2248,6 +2255,7 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (interactionPaused) return;
     markUserInteracted();
     if (ignoreNextCanvasClickRef.current) {
       ignoreNextCanvasClickRef.current = false;
@@ -2330,16 +2338,17 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [activeSitePlannerTool, hasDrawingTool, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
+  }, [activeSitePlannerTool, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
+    if (interactionPaused) return;
     if (hasDrawingTool || measureModeActive) return;
     // Street View pegman-drop mode: let the click fall through to the canvas
     // handler so the pin drops on the zone instead of selecting it.
     if (streetViewPegman !== null) return;
     ignoreNextCanvasClickRef.current = true;
     onZoneSelected(zoneId);
-  }, [hasDrawingTool, measureModeActive, onZoneSelected, streetViewPegman]);
+  }, [hasDrawingTool, interactionPaused, measureModeActive, onZoneSelected, streetViewPegman]);
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
@@ -2494,13 +2503,13 @@ export function GlobeSitePlannerMap({
           {/* Zone visualization â€” wrapped in a group whose visibility is
               toggled by the AI render pipeline so the prompt screenshot
               can capture the scene without colored polygon fills. */}
-          <group visible={zoneOverlaysVisible}>
+          <group visible={zoneOverlaysVisible && !interactionPaused}>
             <GlobeZoneLayer
               zones={siteZones}
-              selectedZoneId={selectedZoneId}
+              selectedZoneId={interactionPaused ? null : selectedZoneId}
               terrainHeight={terrainElevation}
               onZoneClick={handleZoneMeshClick}
-              selectionEnabled={!hasDrawingTool && !measureModeActive}
+              selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
             />
           </group>
 
@@ -2520,7 +2529,7 @@ export function GlobeSitePlannerMap({
           />
 
           {/* Edit mode â€” vertex handles when zone selected in Select mode */}
-          {!hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
+          {!interactionPaused && !hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
             const zone = siteZones.find(z => z.id === selectedZoneId);
             return zone ? (
               <GlobeEditMode

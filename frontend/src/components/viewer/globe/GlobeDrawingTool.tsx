@@ -26,6 +26,7 @@ import {
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
 const CONNECT_VERTEX_RADIUS_METERS = 30;
+const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 function distanceMeters(a: number[], b: number[]): number {
   const lat = ((a[1] + b[1]) / 2) * DEG_TO_RAD;
@@ -368,7 +369,11 @@ function DrawingPreview({ points, linear }: { points: number[][]; linear: boolea
           </mesh>
 
           {/* HTML marker — guaranteed visible */}
-          <Html center style={{ pointerEvents: 'none' }}>
+          <Html
+            center
+            zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+            style={{ pointerEvents: 'none' }}
+          >
             <div className="h-4 w-4 rounded-full border-2 border-white bg-amber-500 shadow-lg" />
           </Html>
         </EastNorthUpFrame>
@@ -408,7 +413,11 @@ function DrawingPreview({ points, linear }: { points: number[][]; linear: boolea
 
       {/* Point count indicator */}
       <EastNorthUpFrame lat={centroid[1] * DEG_TO_RAD} lon={centroid[0] * DEG_TO_RAD} height={30}>
-        <Html center style={{ pointerEvents: 'none' }}>
+        <Html
+          center
+          zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+          style={{ pointerEvents: 'none' }}
+        >
           <div className="rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold text-white shadow-lg">
             {points.length} pts
           </div>

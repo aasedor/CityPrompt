@@ -12,6 +12,7 @@ import { Html } from '@react-three/drei';
 // geoUtils available if needed for distance calculations
 
 const DEG_TO_RAD = Math.PI / 180;
+const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 interface GlobePegmanProps {
   position: [number, number]; // [lng, lat]
@@ -83,7 +84,12 @@ export function GlobePegman({ position, angle, terrainHeight = 1045 }: GlobePegm
       </mesh>
 
       {/* Direction label */}
-      <Html position={[0, 0, 15]} center style={{ pointerEvents: 'none' }}>
+      <Html
+        position={[0, 0, 15]}
+        center
+        zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+        style={{ pointerEvents: 'none' }}
+      >
         <div className="rounded-full bg-amber-500/90 px-2 py-0.5 text-[10px] font-bold text-white">
           👁️
         </div>

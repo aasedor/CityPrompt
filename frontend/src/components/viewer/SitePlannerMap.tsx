@@ -329,6 +329,7 @@ interface SitePlannerMapProps {
   longitude?: number;
   siteZones: SiteZone[];
   massingFeatures?: GeoJSON.FeatureCollection;
+  interactionPaused?: boolean;
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
   onZoneSelected: (zoneId: string | null) => void;
@@ -340,6 +341,7 @@ export function SitePlannerMap({
   longitude,
   siteZones,
   massingFeatures,
+  interactionPaused = false,
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
@@ -366,6 +368,8 @@ export function SitePlannerMap({
   activeSitePlannerToolRef.current = activeSitePlannerTool;
   const activeToolPropertiesRef = useRef(activeToolProperties);
   activeToolPropertiesRef.current = activeToolProperties;
+  const interactionPausedRef = useRef(interactionPaused);
+  interactionPausedRef.current = interactionPaused;
   const siteZonesRef = useRef(siteZones);
   siteZonesRef.current = siteZones;
   const streetViewPegmanRef = useRef(streetViewPegman);
@@ -737,7 +741,7 @@ export function SitePlannerMap({
     const vertexSrc = map.getSource('zone-edit-vertices') as mapboxgl.GeoJSONSource | undefined;
     const rotSrc = map.getSource('zone-rotation-handle') as mapboxgl.GeoJSONSource | undefined;
 
-    if (!zoneId) {
+    if (!zoneId || interactionPausedRef.current) {
       vertexSrc?.setData({ type: 'FeatureCollection', features: [] });
       rotSrc?.setData({ type: 'FeatureCollection', features: [] });
       return;
@@ -1539,22 +1543,56 @@ export function SitePlannerMap({
     const map = mapRef.current;
     if (!map || !mapReady) return;
     try {
-      map.setFilter('site-zones-selected', ['==', ['get', 'id'], selectedZoneId || '']);
+      map.setFilter('site-zones-selected', ['==', ['get', 'id'], interactionPaused ? '' : (selectedZoneId || '')]);
     } catch { /* Layer might not be ready yet */ }
 
     // Update vertex handles for selected zone (only in select mode)
-    if (!activeSitePlannerTool) {
+    if (!interactionPaused && !activeSitePlannerTool) {
       updateVertexHandles(selectedZoneId, siteZones);
     } else {
       updateVertexHandles(null, siteZones);
     }
-  }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, updateVertexHandles]);
+  }, [selectedZoneId, mapReady, siteZones, activeSitePlannerTool, interactionPaused, updateVertexHandles]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+
+    const hiddenWhilePaused = [
+      'site-zones-labels',
+      'zone-edit-vertices-layer',
+      'zone-rotation-line',
+      'zone-rotation-handle-layer',
+      'zone-rotation-north-label',
+    ];
+    const visibility = interactionPaused ? 'none' : 'visible';
+
+    for (const layerId of hiddenWhilePaused) {
+      try {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', visibility);
+        }
+      } catch { /* Layer might not be ready yet */ }
+    }
+
+    return () => {
+      try {
+        for (const layerId of hiddenWhilePaused) {
+          if (map.getLayer(layerId)) {
+            map.setLayoutProperty(layerId, 'visibility', 'visible');
+          }
+        }
+      } catch { /* map may already be destroyed */ }
+    };
+  }, [interactionPaused, mapReady]);
 
   // ─── WASD/Arrow movement + Q/E rotation ───
   // When a zone is selected: WASD and arrow keys move the zone.
   // When no zone is selected: WASD pans the map.
   // Q/E always rotate the map bearing.
   useEffect(() => {
+    if (interactionPaused) return;
+
     const keysDown = new Set<string>();
     const PAN_PX = 4; // pixels per frame for both panning and zone movement
     const ROTATE_SPEED = 1.5; // degrees per frame
@@ -1644,10 +1682,12 @@ export function SitePlannerMap({
       window.removeEventListener('keyup', onUp);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [updateZoneOnMap]);
+  }, [interactionPaused, updateZoneOnMap]);
 
   // ─── Keyboard shortcuts ───
   useEffect(() => {
+    if (interactionPaused) return;
+
     const handleKey = (e: KeyboardEvent) => {
       // Skip when focus is in an editable element
       const tag = (e.target as HTMLElement)?.tagName;
@@ -1703,7 +1743,7 @@ export function SitePlannerMap({
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [setActiveSitePlannerTool, updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
+  }, [interactionPaused, setActiveSitePlannerTool, updateDrawingPreview, finishPolygon, undoLastVertex, selectedZoneId]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -1785,6 +1825,7 @@ export function SitePlannerMap({
 
   // ─── Arrow key rotation for street view ───
   useEffect(() => {
+    if (interactionPaused) return;
     if (!streetViewPegman?.position) return;
 
     // Disable Mapbox keyboard navigation while street view is active
@@ -1818,7 +1859,7 @@ export function SitePlannerMap({
         map.keyboard.enable();
       }
     };
-  }, [streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition, setStreetViewActive]);
+  }, [interactionPaused, streetViewPegman?.position, setStreetViewAngle, setStreetViewPosition, setStreetViewActive]);
 
   const linear = isLinearTool(activeSitePlannerTool);
   const minPts = minPointsForTool(activeSitePlannerTool);

@@ -64,6 +64,7 @@ interface GlobeAIRenderPanelProps {
   onBeforeRender?: () => void | Promise<void>;
   dragHandleProps?: HTMLAttributes<HTMLDivElement>;
   isDragging?: boolean;
+  onLightboxOpenChange?: (open: boolean) => void;
   onClose?: () => void;
 }
 
@@ -126,6 +127,7 @@ export function GlobeAIRenderPanel({
   onBeforeRender,
   dragHandleProps,
   isDragging = false,
+  onLightboxOpenChange,
   onClose,
 }: GlobeAIRenderPanelProps) {
   const { renderPreviews, renderPerZone } = useGlobeAIRender();
@@ -145,6 +147,11 @@ export function GlobeAIRenderPanel({
   // Lightbox: render currently shown full-screen (null = closed).
   const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    onLightboxOpenChange?.(!!lightboxRender);
+    return () => onLightboxOpenChange?.(false);
+  }, [lightboxRender, onLightboxOpenChange]);
 
   const refreshSavedRenders = useCallback(async () => {
     if (!projectId) {
@@ -278,9 +285,16 @@ export function GlobeAIRenderPanel({
   // Close lightbox on Esc
   useEffect(() => {
     if (!lightboxRender) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxRender(null); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setLightboxRender(null);
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
   }, [lightboxRender]);
 
   const handleSelectPreview = useCallback((index: number) => {
@@ -320,10 +334,12 @@ export function GlobeAIRenderPanel({
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (isTextEntryTarget(e.target)) return;
       e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
       handleStepPreview(e.key === 'ArrowRight' ? 1 : -1);
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
   }, [handleStepPreview, isRendering, lightboxRender?.savedRenderId, previews.length]);
 
   const handleDownload = useCallback(() => {
@@ -439,10 +455,12 @@ export function GlobeAIRenderPanel({
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       if (isTextEntryTarget(e.target)) return;
       e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
       handleStepSavedRender(e.key === 'ArrowRight' ? 1 : -1);
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
   }, [handleStepSavedRender, lightboxRender?.savedRenderId, savedRenders.length]);
 
   const { className: dragHandleClassName, ...dragHandleRest } = dragHandleProps ?? {};

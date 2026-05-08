@@ -49,24 +49,21 @@ interface AIRenderPanelProps {
   projectId?: string;
   /** Gives parent UI a chance to hide selection handles before capture. */
   onBeforeRender?: () => void | Promise<void>;
+  /** Notifies parent that this panel is showing a full-screen render viewer. */
+  onLightboxOpenChange?: (open: boolean) => void;
 }
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender }: AIRenderPanelProps) {
+export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZones = [], onStyleChange, projectId, onBeforeRender, onLightboxOpenChange }: AIRenderPanelProps) {
   const {
-    render,
-    renderPerZone,
     renderPreviews,
-    renderFull,
     isRendering,
     progress,
     result,
-    previews,
     selectedPreviewIndex,
-    setSelectedPreviewIndex,
     error,
     reset,
     statusMessage,
@@ -102,6 +99,37 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const [renderLightbox, setRenderLightbox] = useState(false);
   const [renderSaveStatus, setRenderSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
+  const lightboxOpen = renderLightbox || !!galleryLightbox;
+
+  useEffect(() => {
+    onLightboxOpenChange?.(lightboxOpen);
+    return () => onLightboxOpenChange?.(false);
+  }, [lightboxOpen, onLightboxOpenChange]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setRenderLightbox(false);
+        setGalleryLightbox(null);
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [lightboxOpen]);
+
   useEffect(() => {
     if (!projectId || !showGallery) return;
     rendersApi.list(projectId).then(setSavedRenders).catch(() => {});
@@ -115,6 +143,7 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
   const ZONE_LAYERS = [
     'site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion',
     'site-zones-outline', 'site-zones-selected', 'site-zones-labels',
+    'zone-edit-vertices-layer', 'zone-rotation-line', 'zone-rotation-handle-layer', 'zone-rotation-north-label',
     'massing-preview-extrusion', 'massing-preview-green',
   ];
   useEffect(() => {
@@ -201,36 +230,6 @@ export function AIRenderPanel({ mapRef, onRenderComplete, onPreviewsReady, onCle
     }
     refreshCredits();
   }, [mapRef, renderPreviews, buildRenderOptions, onPreviewsReady, onBeforeRender, refreshCredits]);
-
-  /** Select a preview and trigger full-quality render with its seed */
-  const handleSelectPreview = useCallback(async (index: number) => {
-    setSelectedPreviewIndex(index);
-    const preview = previews[index];
-    if (!preview?.seed) return;
-
-    const map = mapRef.current;
-    if (!map) return;
-
-    const res = await renderFull(map, buildRenderOptions(), preview.seed);
-    if (res) {
-      onRenderComplete?.(res);
-    }
-  }, [previews, setSelectedPreviewIndex, mapRef, renderFull, buildRenderOptions, onRenderComplete]);
-
-  /** Fallback: single render without previews */
-  const handleRender = useCallback(async () => {
-    const map = mapRef.current;
-    if (!map) return;
-
-    await onBeforeRender?.();
-    const opts = buildRenderOptions();
-    const res = perZoneMode
-      ? await renderPerZone(map, opts)
-      : await render(map, opts);
-    if (res) {
-      onRenderComplete?.(res);
-    }
-  }, [mapRef, render, renderPerZone, perZoneMode, buildRenderOptions, onRenderComplete, onBeforeRender]);
 
   const handleClear = useCallback(() => {
     reset();

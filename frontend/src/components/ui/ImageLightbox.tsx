@@ -11,10 +11,22 @@ export function ImageLightbox() {
   useEffect(() => {
     if (!lightboxImageUrl) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxImage(null);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setLightboxImage(null);
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
     };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
+    window.addEventListener('keydown', handleKey, true);
+    return () => window.removeEventListener('keydown', handleKey, true);
   }, [lightboxImageUrl, setLightboxImage]);
 
   // Reset applying state when lightbox closes

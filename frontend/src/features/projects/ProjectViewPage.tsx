@@ -42,6 +42,7 @@ export function ProjectViewPage() {
   const [showGlobeRender, setShowGlobeRender] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [measureActive, setMeasureActive] = useState(false);
+  const [aiPanelLightboxOpen, setAiPanelLightboxOpen] = useState(false);
   const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
@@ -80,6 +81,7 @@ export function ProjectViewPage() {
     setWorkflowStep,
     settings,
     activeSitePlannerTool,
+    lightboxImageUrl,
   } = useViewerStore();
 
   const {
@@ -308,6 +310,31 @@ export function ProjectViewPage() {
     }
   }, [handleAIRenderComplete, showRenderModal]);
 
+  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!lightboxImageUrl || aiPanelLightboxOpen;
+
+  useEffect(() => {
+    if (!renderLightbox) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setRenderLightbox(null);
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [renderLightbox]);
+
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
     queryFn: () => projectsApi.get(id!),
@@ -355,6 +382,7 @@ export function ProjectViewPage() {
           onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
           onGlobeReady={setGlobeRefs}
           measureModeActive={measureActive}
+          interactionPaused={renderViewerActive}
           onMeasureModeChange={handleMeasureModeChange}
         />
 
@@ -428,6 +456,7 @@ export function ProjectViewPage() {
                 projectId={project?.id}
                 onBeforeRender={prepareForAIRenderCapture}
                 isDragging={isDraggingGlobeRender}
+                onLightboxOpenChange={setAiPanelLightboxOpen}
                 dragHandleProps={{
                   onPointerDown: handleGlobeRenderDragStart,
                 }}
@@ -513,6 +542,7 @@ export function ProjectViewPage() {
             onZoneUpdated={handleZoneUpdated}
             onZoneSelected={handleZoneSelected}
             onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+            interactionPaused={renderViewerActive}
           />
           {/* GIS color legend */}
           <ZoneLegend siteZones={siteZones} />
@@ -558,6 +588,7 @@ export function ProjectViewPage() {
               onClearOverlay={handleClearAIOverlay}
               projectId={project?.id}
               onBeforeRender={prepareForAIRenderCapture}
+              onLightboxOpenChange={setAiPanelLightboxOpen}
             />
           )}
 

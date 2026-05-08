@@ -27,6 +27,7 @@ import {
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 interface GlobeEditModeProps {
   zone: SiteZone;
@@ -467,7 +468,7 @@ export function GlobeEditMode({
             />
           </mesh>
           {/* Visible dot via HTML — pointer events ENABLED for reliable click-through */}
-          <Html center>
+          <Html center zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}>
             <div
               className={`rounded-full border-2 shadow-lg transition-transform duration-150 ${
                 dragIndex === i
