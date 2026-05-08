@@ -416,7 +416,14 @@ export function ProjectViewPage() {
               key={selectedZone.id}
               zone={selectedZone}
               onUpdate={(zoneId, data) => {
-                updateZone.mutate({ zoneId, data });
+                const previousZone = siteZones.find((z) => z.id === zoneId);
+                updateZone.mutate({
+                  zoneId,
+                  data,
+                  previousData: previousZone
+                    ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
+                    : undefined,
+                });
                 if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
               }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
@@ -564,7 +571,14 @@ export function ProjectViewPage() {
               key={selectedZone.id}
               zone={selectedZone}
               onUpdate={(zoneId, data) => {
-                updateZone.mutate({ zoneId, data });
+                const previousZone = siteZones.find((z) => z.id === zoneId);
+                updateZone.mutate({
+                  zoneId,
+                  data,
+                  previousData: previousZone
+                    ? { name: previousZone.name, color: previousZone.color, properties: previousZone.properties }
+                    : undefined,
+                });
                 // Re-buffer road polygon when width changes
                 if (siteZones) {
                   rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);

@@ -8,6 +8,7 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { getShadeForArchetype } from '@/data/archetypeShadeMap';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
+import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import {
@@ -161,9 +162,12 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
   const layoutPreview = useViewerStore((s) => s.layoutPreview);
+  const undoRedoHistoryVersion = useUndoRedoStore((s) => s.historyVersion);
+  const lastAppliedUndoRedoAction = useUndoRedoStore((s) => s.lastAppliedAction);
   const [name, setName] = useState(zone.name || '');
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
   const panelRef = useRef<HTMLDivElement>(null);
+  const lastSyncedUndoRedoVersionRef = useRef(0);
   const navigate = useNavigate();
 
   // Scroll panel to top when zone changes (e.g. after "Preview All" switches to buildable zone)
@@ -178,6 +182,16 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     setName(zone.name || '');
     setProps(zone.properties || {});
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (undoRedoHistoryVersion === 0) return;
+    if (lastSyncedUndoRedoVersionRef.current === undoRedoHistoryVersion) return;
+    lastSyncedUndoRedoVersionRef.current = undoRedoHistoryVersion;
+    if (lastAppliedUndoRedoAction?.label !== 'Update zone') return;
+    if (!undoableActionMatchesZoneId(lastAppliedUndoRedoAction, zone.id)) return;
+    setName(zone.name || '');
+    setProps(zone.properties || {});
+  }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
     // Resolve shade color from assigned archetype.

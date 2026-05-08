@@ -13,11 +13,11 @@ interface IdRef {
 }
 
 function invalidateZones(queryClient: QueryClient, projectId: string) {
-  queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+  return queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
 }
 
 function invalidateProject(queryClient: QueryClient, projectId: string) {
-  queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+  return queryClient.invalidateQueries({ queryKey: ['project', projectId] });
 }
 
 // =============================================================================
@@ -38,7 +38,7 @@ export function createZoneCreateAction(
     matchesZoneId: (zoneId) => zoneId === originalZoneId || zoneId === idRef.current,
     undo: async () => {
       await siteZonesApi.delete(idRef.current);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       const zone = await siteZonesApi.create(projectId, {
@@ -50,7 +50,7 @@ export function createZoneCreateAction(
         sort_order: createdZone.sort_order,
       });
       idRef.current = zone.id;
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -77,11 +77,11 @@ export function createZoneDeleteAction(
         sort_order: deletedZone.sort_order,
       });
       idRef.current = zone.id;
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.delete(idRef.current);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -89,8 +89,8 @@ export function createZoneDeleteAction(
 export function createZoneUpdateAction(
   projectId: string,
   zoneId: string,
-  prevData: { name?: string; properties?: SiteZoneProperties },
-  newData: { name?: string; properties?: SiteZoneProperties },
+  prevData: { name?: string; color?: string; properties?: SiteZoneProperties },
+  newData: { name?: string; color?: string; properties?: SiteZoneProperties },
   queryClient: QueryClient,
 ): UndoableAction {
   return {
@@ -98,11 +98,11 @@ export function createZoneUpdateAction(
     zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, prevData);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.update(zoneId, newData);
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -119,11 +119,11 @@ export function createZoneCoordinatesAction(
     zoneId,
     undo: async () => {
       await siteZonesApi.update(zoneId, { coordinates: prevCoords });
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
     redo: async () => {
       await siteZonesApi.update(zoneId, { coordinates: newCoords });
-      invalidateZones(queryClient, projectId);
+      await invalidateZones(queryClient, projectId);
     },
   };
 }
@@ -167,11 +167,11 @@ export function createBuildingDeleteAction(
         specifications: building.specifications,
       });
       idRef.current = created.id;
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
     redo: async () => {
       await buildingsApi.delete(idRef.current);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
   };
 }
@@ -188,11 +188,11 @@ export function createBuildingUpdateAction(
     label,
     undo: async () => {
       await buildingsApi.update(buildingId, prevData);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
     redo: async () => {
       await buildingsApi.update(buildingId, newData);
-      invalidateProject(queryClient, projectId);
+      await invalidateProject(queryClient, projectId);
     },
   };
 }

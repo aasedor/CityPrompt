@@ -29,6 +29,8 @@ interface UndoRedoState {
   redoStack: UndoableAction[];
   isUndoing: boolean;
   isRedoing: boolean;
+  historyVersion: number;
+  lastAppliedAction: UndoableAction | null;
   /** When true, mutation onSuccess callbacks should NOT push new actions */
   _isSystemAction: boolean;
   /** Optional interceptor for drawing-mode vertex undo/redo */
@@ -51,6 +53,8 @@ export const useUndoRedoStore = create<UndoRedoState>((set, get) => ({
   redoStack: [],
   isUndoing: false,
   isRedoing: false,
+  historyVersion: 0,
+  lastAppliedAction: null,
   _isSystemAction: false,
   _drawingInterceptor: null,
 
@@ -84,6 +88,8 @@ export const useUndoRedoStore = create<UndoRedoState>((set, get) => ({
       set((state) => ({
         undoStack: state.undoStack.slice(0, -1),
         redoStack: [...state.redoStack, action].slice(-MAX_STACK_SIZE),
+        historyVersion: state.historyVersion + 1,
+        lastAppliedAction: action,
       }));
     } finally {
       set({ isUndoing: false, _isSystemAction: false }); setSkipHistory(false);
@@ -109,6 +115,8 @@ export const useUndoRedoStore = create<UndoRedoState>((set, get) => ({
       set((state) => ({
         redoStack: state.redoStack.slice(0, -1),
         undoStack: [...state.undoStack, action].slice(-MAX_STACK_SIZE),
+        historyVersion: state.historyVersion + 1,
+        lastAppliedAction: action,
       }));
     } finally {
       set({ isRedoing: false, _isSystemAction: false }); setSkipHistory(false);
@@ -131,6 +139,8 @@ export const useUndoRedoStore = create<UndoRedoState>((set, get) => ({
       set((state) => ({
         undoStack: [...state.undoStack.slice(0, idx), ...state.undoStack.slice(idx + 1)],
         redoStack: [...state.redoStack, action].slice(-MAX_STACK_SIZE),
+        historyVersion: state.historyVersion + 1,
+        lastAppliedAction: action,
       }));
     } finally {
       set({ isUndoing: false, _isSystemAction: false }); setSkipHistory(false);
@@ -152,13 +162,15 @@ export const useUndoRedoStore = create<UndoRedoState>((set, get) => ({
       set((state) => ({
         redoStack: [...state.redoStack.slice(0, idx), ...state.redoStack.slice(idx + 1)],
         undoStack: [...state.undoStack, action].slice(-MAX_STACK_SIZE),
+        historyVersion: state.historyVersion + 1,
+        lastAppliedAction: action,
       }));
     } finally {
       set({ isRedoing: false, _isSystemAction: false }); setSkipHistory(false);
     }
   },
 
-  clearHistory: () => set({ undoStack: [], redoStack: [] }),
+  clearHistory: () => set({ undoStack: [], redoStack: [], lastAppliedAction: null }),
 
   setDrawingInterceptor: (interceptor) => set({ _drawingInterceptor: interceptor }),
   clearDrawingInterceptor: () => set({ _drawingInterceptor: null }),
