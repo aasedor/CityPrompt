@@ -1971,6 +1971,10 @@ export function GlobeSitePlannerMap({
     if (!hasDrawingTool) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if ((e.target as HTMLElement)?.isContentEditable) return;
+
       if (e.key === 'Enter') finishDrawing();
       else if (e.key === 'Escape') {
         e.preventDefault();
@@ -1983,7 +1987,12 @@ export function GlobeSitePlannerMap({
           setActiveSitePlannerTool(null);
         }
       }
-      else if (e.key === 'Backspace' && drawingPointsRef.current.length > 0) {
+      else if (
+        (e.key === 'Backspace' || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey)) &&
+        drawingPointsRef.current.length > 0
+      ) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         const newPts = drawingPointsRef.current.slice(0, -1);
         const newHeights = drawingPointHeightsRef.current.slice(0, -1);
         drawingPointsRef.current = newPts;
@@ -1993,8 +2002,8 @@ export function GlobeSitePlannerMap({
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [finishDrawing, hasDrawingTool, interactionPaused, setActiveSitePlannerTool]);
 
   // Keyboard handler for quick measuring

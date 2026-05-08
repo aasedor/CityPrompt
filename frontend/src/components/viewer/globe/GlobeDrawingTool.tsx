@@ -147,8 +147,10 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
           drawingPointsRef.current = newPts;
           setDrawingPoints(newPts);
         }
-      } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+      } else if (e.key.toLowerCase() === 'z' && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
         if (drawingPointsRef.current.length > 0) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
           const newPts = drawingPointsRef.current.slice(0, -1);
           drawingPointsRef.current = newPts;
           setDrawingPoints(newPts);
@@ -156,8 +158,8 @@ export function GlobeDrawingTool({ onZoneCreated }: GlobeDrawingToolProps) {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
   }, [isActive, finishDrawing]);
 
   // Click handler — uses mousedown+mouseup to distinguish clicks from drags

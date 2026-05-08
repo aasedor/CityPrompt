@@ -545,6 +545,38 @@ export function SitePlannerMap({
     return () => clearDrawingInterceptor();
   }, [clearDrawingInterceptor]);
 
+  // Capture drawing undo/redo before the global undo stack handles completed zones.
+  useEffect(() => {
+    if (interactionPaused) return;
+
+    const handleDrawingUndoRedo = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const tag = target?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (target?.isContentEditable) return;
+
+      const isMod = e.ctrlKey || e.metaKey;
+      if (!isMod || !activeSitePlannerToolRef.current) return;
+
+      const key = e.key.toLowerCase();
+      const wantsUndo = key === 'z' && !e.shiftKey;
+      const wantsRedo = key === 'y' || (key === 'z' && e.shiftKey);
+      if (!wantsUndo && !wantsRedo) return;
+
+      const handled = wantsUndo
+        ? undoLastVertex()
+        : redoLastVertex();
+
+      if (!handled) return;
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+
+    window.addEventListener('keydown', handleDrawingUndoRedo, true);
+    return () => window.removeEventListener('keydown', handleDrawingUndoRedo, true);
+  }, [interactionPaused, redoLastVertex, undoLastVertex]);
+
   /** Finish the current drawing and create a zone */
   const finishDrawing = useCallback((tool: SiteZoneType, pts: number[][], properties?: SiteZoneProperties | null) => {
     const props = properties ?? activeToolPropertiesRef.current;
