@@ -2503,7 +2503,7 @@ export function GlobeSitePlannerMap({
           {/* Zone visualization â€” wrapped in a group whose visibility is
               toggled by the AI render pipeline so the prompt screenshot
               can capture the scene without colored polygon fills. */}
-          <group visible={zoneOverlaysVisible && !interactionPaused}>
+          <group visible={zoneOverlaysVisible}>
             <GlobeZoneLayer
               zones={siteZones}
               selectedZoneId={interactionPaused ? null : selectedZoneId}
