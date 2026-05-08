@@ -73,6 +73,10 @@ const MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = DEFAULT_INITIAL_CAMERA_HEIGHT_ABO
 const MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 1800;
 const MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND = 40000;
 const INITIAL_CAMERA_REVEAL_FALLBACK_MS = 2500;
+
+function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential';
+}
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
@@ -2346,6 +2350,33 @@ export function GlobeSitePlannerMap({
       return;
     }
 
+    if (isBuildingZoneType(activeSitePlannerTool)) {
+      const clickPt = turfPoint(clickLngLat);
+      let hitZoneId: string | null = null;
+      let hitZoneArea = Infinity;
+
+      for (const zone of siteZones) {
+        if (!isBuildingZoneType(zone.zone_type) || !zone.coordinates || zone.coordinates.length < 3) continue;
+        try {
+          const closed = [...zone.coordinates, zone.coordinates[0]];
+          const poly = turfPolygon([closed]);
+          if (booleanPointInPolygon(clickPt, poly)) {
+            const area = geodesicArea(zone.coordinates);
+            if (area < hitZoneArea) {
+              hitZoneArea = area;
+              hitZoneId = zone.id;
+            }
+          }
+        } catch { /* skip invalid polygons */ }
+      }
+
+      if (hitZoneId) {
+        cancelDrawing();
+        onZoneSelected(hitZoneId);
+        return;
+      }
+    }
+
     const newPts = [...drawingPointsRef.current, clickLngLat];
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
@@ -2364,7 +2395,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [activeSitePlannerTool, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
+  }, [activeSitePlannerTool, cancelDrawing, hasDrawingTool, interactionPaused, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (interactionPaused) return;

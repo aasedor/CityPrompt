@@ -131,6 +131,10 @@ function isLinearTool(tool: SiteZoneType | null): boolean {
   return tool != null && LINEAR_ZONE_TYPES.includes(tool);
 }
 
+function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential';
+}
+
 /**
  * Haversine distance between two [lng, lat] points in meters.
  */
@@ -1131,6 +1135,11 @@ export function SitePlannerMap({
     });
 
     const zoneHitLayers = () => ['site-zones-boundary-fill', 'site-zones-fill', 'site-zones-extrusion'].filter(l => map.getLayer(l));
+    const buildingZoneFeaturesAtPoint = (point: mapboxgl.PointLike) => (
+      map
+        .queryRenderedFeatures(point, { layers: zoneHitLayers() })
+        .filter((feature) => isBuildingZoneType(feature.properties?.zone_type))
+    );
     const selectedZoneAtPoint = (point: mapboxgl.PointLike) => {
       const selectedId = selectedZoneIdRef.current;
       if (!selectedId) return null;
@@ -1154,6 +1163,23 @@ export function SitePlannerMap({
 
       const tool = activeSitePlannerToolRef.current;
       if (tool) {
+        if (isBuildingZoneType(tool)) {
+          const features = buildingZoneFeaturesAtPoint(e.point);
+          if (features.length > 0) {
+            const zoneId = pickSmallestFeature(features).properties?.id;
+            if (zoneId) {
+              drawingPointsRef.current = [];
+              removedPointsRef.current = [];
+              setDrawingPoints([]);
+              setCenterNearStartVertex(false);
+              setActiveSitePlannerTool(null);
+              const src = map.getSource('drawing-preview') as mapboxgl.GeoJSONSource | undefined;
+              if (src) src.setData({ type: 'FeatureCollection', features: [] });
+              onZoneSelectedRef.current(zoneId);
+              return;
+            }
+          }
+        }
         addDrawingPoint([e.lngLat.lng, e.lngLat.lat]);
       } else if (streetViewPegmanRef.current) {
         // Street view mode — place the pegman at the clicked location
