@@ -14,14 +14,14 @@ import {
   authSubmitClassName,
 } from './AuthPageShell';
 
-export function LoginPage() {
+interface LoginFormProps {
+  returnTo?: string;
+  showSignupPrompt?: boolean;
+}
+
+export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: LoginFormProps) {
   const navigate = useNavigate();
-  const location = useLocation();
   const { setUser } = useAuthStore();
-  const fromLocation = (location.state as any)?.from;
-  const from = fromLocation
-    ? `${fromLocation.pathname || '/projects'}${fromLocation.search || ''}${fromLocation.hash || ''}`
-    : '/projects';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,13 +37,13 @@ export function LoginPage() {
       const result = await authApi.login(email, password);
       setUser(result.user);
       toast.success(`Welcome back, ${result.user.full_name || result.user.email}!`);
-      navigate(from, { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (err: any) {
       const detail = err?.response?.data?.detail;
       if (typeof detail === 'string' && detail.trim()) {
         setError(detail);
       } else if (err?.code === 'ERR_NETWORK' || !err?.response) {
-        setError('Unable to reach the API server. Make sure the backend is running.');
+        setError('Unable to reach the API server. Make sure backend is running on http://localhost:8000.');
       } else {
         setError('Login failed');
       }
@@ -53,13 +53,7 @@ export function LoginPage() {
   };
 
   return (
-    <AuthPageShell
-      eyebrow="Welcome back"
-      title="Sign in"
-      description="Get back to your projects, saved images, and render experiments."
-      sideTitle="Plan visual futures."
-      sideDescription="A sharper sign-in page for the same creative planning machine: map context, style choices, and finished AI renders in one workspace."
-    >
+    <>
       <form onSubmit={handleSubmit} className={authFormClassName}>
         {error && <div className={authErrorClassName}>{error}</div>}
 
@@ -121,15 +115,37 @@ export function LoginPage() {
           </div>
         </div>
 
-        <OAuthButtons returnTo={from} />
+        <OAuthButtons returnTo={returnTo} />
       </form>
 
-      <p className="mt-5 text-center text-sm font-semibold text-[#151515]/60">
-        Don't have an account?{' '}
-        <Link to="/register" className="font-black text-[#0aa6a6] hover:text-[#151515]">
-          Sign up
-        </Link>
-      </p>
+      {showSignupPrompt && (
+        <p className="mt-5 text-center text-sm font-semibold text-[#151515]/60">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-black text-[#0aa6a6] hover:text-[#151515]">
+            Sign up
+          </Link>
+        </p>
+      )}
+    </>
+  );
+}
+
+export function LoginPage() {
+  const location = useLocation();
+  const fromLocation = (location.state as any)?.from;
+  const from = fromLocation
+    ? `${fromLocation.pathname || '/projects'}${fromLocation.search || ''}${fromLocation.hash || ''}`
+    : '/projects';
+
+  return (
+    <AuthPageShell
+      eyebrow="Welcome back"
+      title="Sign in"
+      description="Get back to your projects, saved images, and render experiments."
+      sideTitle="Plan visual futures."
+      sideDescription="Turn a real address into mapped zones, style systems, saved generations, and AI renders that make early development ideas feel tangible."
+    >
+      <LoginForm returnTo={from} />
     </AuthPageShell>
   );
 }
