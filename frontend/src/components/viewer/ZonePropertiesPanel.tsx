@@ -179,7 +179,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     setProps(zone.properties || {});
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSave = () => {
+  const handleSave = (closeAfterSave = false) => {
     // Resolve shade color from assigned archetype.
     // Check variant-specific shadeId first, then try subcategory ID (option-level,
     // e.g. "parisian_midrise_block") which directly matches shade map keys, then
@@ -212,6 +212,10 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
       color: shadeColor && shadeColor !== '#888888' ? shadeColor : undefined,
       properties: props,
     });
+
+    if (closeAfterSave) {
+      onClose();
+    }
   };
 
   // Auto-save when the user picks a new archetype card (any zone type)
@@ -1425,7 +1429,7 @@ const resolveOptionCategory = (
         )}
 
         <button
-          onClick={handleSave}
+          onClick={() => handleSave(true)}
           className="mt-1 w-full rounded-full border-2 border-[#151515] bg-[#151515] px-3 py-2 text-xs font-black uppercase text-white shadow-[4px_4px_0_0_#c9ff3d] transition hover:bg-[#2b2b2b]"
         >
           Save Changes
