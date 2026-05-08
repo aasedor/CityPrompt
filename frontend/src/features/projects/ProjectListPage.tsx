@@ -118,13 +118,14 @@ export function ProjectListPage() {
   }, [location.pathname]);
 
   const { data: projects, isLoading } = useQuery({
-    queryKey: ['projects'],
+    queryKey: ['projects', currentUser?.id],
+    enabled: Boolean(currentUser?.id),
     queryFn: () => projectsApi.list(),
   });
 
   const { data: rendersByProject = {}, isLoading: rendersLoading } = useQuery({
-    queryKey: ['projects', 'saved-renders', projects?.map((project) => project.id) ?? []],
-    enabled: Boolean(projects?.length),
+    queryKey: ['projects', currentUser?.id, 'saved-renders', projects?.map((project) => project.id) ?? []],
+    enabled: Boolean(currentUser?.id && projects?.length),
     queryFn: async () => {
       const entries = await Promise.all(
         (projects ?? []).map(async (project) => {
@@ -147,7 +148,7 @@ export function ProjectListPage() {
       location: selectedLocation || undefined,
     }),
     onSuccess: (newProject) => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['projects', currentUser?.id] });
       if (newProject?.id) {
         queryClient.setQueryData(['project', newProject.id], newProject);
       }
@@ -229,7 +230,7 @@ export function ProjectListPage() {
             Manage site plans, saved generations, and visual planning studies.
           </p>
         </div>
-        {!showCreate && (
+        {!showCreate && Boolean(projects?.length) && (
           <button
             onClick={() => setShowCreate(true)}
             className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-5 py-3 text-sm font-black uppercase text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:bg-[#d7ff66] active:translate-x-0.5 active:translate-y-0.5"

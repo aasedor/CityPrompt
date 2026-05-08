@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
+import { resetSessionState } from '@/utils/sessionReset';
 import { OAuthButtons } from './OAuthButtons';
 import {
   AuthPageShell,
@@ -21,6 +23,7 @@ interface LoginFormProps {
 
 export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: LoginFormProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { setUser } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +38,7 @@ export function LoginForm({ returnTo = '/projects', showSignupPrompt = true }: L
 
     try {
       const result = await authApi.login(email, password);
+      resetSessionState(queryClient);
       setUser(result.user);
       toast.success(`Welcome back, ${result.user.full_name || result.user.email}!`);
       navigate(returnTo, { replace: true });

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   BarChart3,
   ChevronDown,
@@ -16,15 +17,19 @@ import {
 import { useAuthStore } from '@/store';
 import { TileTrail } from '@/components/ui/TileTrail';
 import { ThemeToggle } from './ThemeToggle';
+import { resetSessionState } from '@/utils/sessionReset';
 
 export function Layout() {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const location = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const canAdmin = Boolean(user?.role && ['admin', 'cofounder'].includes(user.role));
   const canAnalytics = user?.role === 'cofounder';
+  const showProjectsNav = location.pathname.startsWith('/projects/') && location.pathname !== '/projects/new';
 
   const navLinkClassName =
     'rounded-full px-3 py-2 text-xs font-black uppercase text-[#151515]/70 transition hover:bg-[#c9ff3d] hover:text-[#151515]';
@@ -35,6 +40,7 @@ export function Layout() {
 
   const handleLogout = () => {
     logout();
+    resetSessionState(queryClient);
     setMobileMenuOpen(false);
     setUserMenuOpen(false);
     navigate('/login');
@@ -73,9 +79,11 @@ export function Layout() {
           </Link>
 
           <nav className="hidden items-center gap-3 sm:flex">
-            <Link to="/projects" className={navLinkClassName}>
-              Projects
-            </Link>
+            {showProjectsNav && (
+              <Link to="/projects" className={navLinkClassName}>
+                Projects
+              </Link>
+            )}
             {canAdmin && (
               <Link to="/admin" className={`flex items-center gap-1 ${navLinkClassName}`}>
                 {user?.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
@@ -175,9 +183,11 @@ export function Layout() {
 
         {mobileMenuOpen && (
           <div className="border-t-2 border-[#151515] bg-[#fff9ec]/95 px-4 pb-4 pt-2 backdrop-blur-xl sm:hidden">
-            <Link to="/projects" onClick={() => setMobileMenuOpen(false)} className={`block ${mobileLinkClassName}`}>
-              Projects
-            </Link>
+            {showProjectsNav && (
+              <Link to="/projects" onClick={() => setMobileMenuOpen(false)} className={`block ${mobileLinkClassName}`}>
+                Projects
+              </Link>
+            )}
             {canAdmin && (
               <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className={`flex items-center gap-1 ${mobileLinkClassName}`}>
                 {user?.role === 'cofounder' ? <Crown size={14} /> : <Shield size={14} />}
