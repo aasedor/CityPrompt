@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -105,6 +106,215 @@ const PLAZA_AESTHETIC_PRESETS: Record<string, Partial<SiteZoneProperties>> = PLA
 
 const FRONT_DAY_VARIANT_ID = 'variant_0';
 
+type BuildingWorkflowStep = 1 | 2 | 3 | 4;
+
+const BUILDING_WORKFLOW_STEPS: Array<{ step: BuildingWorkflowStep; label: string }> = [
+  { step: 1, label: 'Type' },
+  { step: 2, label: 'Archetype' },
+  { step: 3, label: 'Scale' },
+  { step: 4, label: 'Details' },
+];
+
+function formatCompactArea(areaSqm: number): string {
+  if (!Number.isFinite(areaSqm) || areaSqm <= 0) return '0 m²';
+  return areaSqm >= 10000
+    ? `${(areaSqm / 10000).toFixed(2)} ha`
+    : `${Math.round(areaSqm).toLocaleString()} m²`;
+}
+
+function getAestheticAreaFit(
+  option: DevelopmentAestheticOption | undefined,
+  selectedVariantId: string | undefined,
+  areaSqm: number,
+) {
+  if (!option || !Number.isFinite(areaSqm) || areaSqm <= 0) return null;
+
+  const variants = Array.isArray(option.variants) ? option.variants : [];
+  const selectedVariant = selectedVariantId
+    ? variants.find((variant) => variant.id === selectedVariantId)
+    : undefined;
+  const candidates = (selectedVariant ? [selectedVariant] : variants).concat(option);
+
+  const rankedCandidates = candidates
+    .map((candidate) => {
+      const suggestedArea = candidate.suggestedAreaSqm;
+      const minArea = candidate.minAreaSqm;
+      const maxArea = candidate.maxAreaSqm;
+      if (suggestedArea == null && minArea == null && maxArea == null) return null;
+
+      const ratio = suggestedArea ? areaSqm / suggestedArea : null;
+      const tooSmall = minArea != null ? areaSqm < minArea : ratio != null && ratio < 0.7;
+      const tooLarge = maxArea != null ? areaSqm > maxArea : ratio != null && ratio > 1.5;
+      const isGoodFit = !tooSmall && !tooLarge;
+      const fitSort = ratio != null
+        ? (isGoodFit ? 0 : 1) + Math.abs(Math.log(ratio))
+        : isGoodFit ? 0.25 : 2;
+
+      return {
+        candidate,
+        suggestedArea,
+        minArea,
+        maxArea,
+        ratio,
+        tooSmall,
+        tooLarge,
+        isGoodFit,
+        fitSort,
+      };
+    })
+    .filter(Boolean) as Array<{
+      candidate: DevelopmentAestheticOption | CatalogArchetypeVariant;
+      suggestedArea?: number;
+      minArea?: number;
+      maxArea?: number;
+      ratio: number | null;
+      tooSmall: boolean;
+      tooLarge: boolean;
+      isGoodFit: boolean;
+      fitSort: number;
+    }>;
+
+  if (rankedCandidates.length === 0) return null;
+
+  const best = rankedCandidates.sort((a, b) => a.fitSort - b.fitSort)[0];
+  const candidate = best.candidate;
+  const suggestedArea = best.suggestedArea;
+  const minArea = best.minArea;
+  const maxArea = best.maxArea;
+  const ratio = best.ratio;
+  const pct = ratio == null ? null : Math.round((ratio - 1) * 100);
+  const message = best.isGoodFit
+    ? pct == null ? 'Good fit' : `Good fit (${pct > 0 ? '+' : ''}${pct}%)`
+    : best.tooSmall
+      ? pct == null ? 'Small for this archetype' : `Small (${pct}%)`
+      : pct == null ? 'Large for this archetype' : `Large (+${pct}%)`;
+  const floorLabel = candidate.minFloors != null && candidate.maxFloors != null
+    ? `${candidate.minFloors}-${candidate.maxFloors} floors`
+    : undefined;
+  const footprintLabel = candidate.suggestedWidth_m && candidate.suggestedDepth_m
+    ? `${candidate.suggestedWidth_m}m x ${candidate.suggestedDepth_m}m`
+    : undefined;
+
+  return {
+    isGoodFit: best.isGoodFit,
+    fitSort: best.fitSort,
+    message,
+    zoneAreaLabel: formatCompactArea(areaSqm),
+    suggestedAreaLabel: suggestedArea ? `~${formatCompactArea(suggestedArea)}` : undefined,
+    typicalRangeLabel: minArea != null && maxArea != null
+      ? `${formatCompactArea(minArea)} - ${formatCompactArea(maxArea)}`
+      : undefined,
+    floorLabel,
+    footprintLabel,
+    fullWarning: best.tooSmall
+      ? 'This zone may render cramped for the selected archetype.'
+      : best.tooLarge
+        ? 'This zone may render sparse for the selected archetype.'
+        : undefined,
+  };
+}
+
+function PanelStep({
+  step,
+  title,
+  children,
+  muted = false,
+}: {
+  step: string;
+  title: string;
+  children: ReactNode;
+  muted?: boolean;
+}) {
+  return (
+    <section className={`border-l-2 border-[#151515] py-2 pl-2.5 pr-1 ${muted ? 'opacity-60' : ''}`}>
+      <div className="mb-2 flex items-center gap-2">
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] text-[10px] font-black text-[#151515]">
+          {step}
+        </span>
+        <h4 className="text-[10px] font-black uppercase text-[#151515]">{title}</h4>
+      </div>
+      <div className="space-y-2">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function BuildingWorkflowStepper({
+  activeStep,
+  developmentSelected,
+  onStepChange,
+}: {
+  activeStep: BuildingWorkflowStep;
+  developmentSelected: boolean;
+  onStepChange: (step: BuildingWorkflowStep) => void;
+}) {
+  return (
+    <div className="rounded-lg border-2 border-[#151515] bg-white/80 p-2 shadow-[3px_3px_0_0_rgba(21,21,21,0.16)]">
+      <div className="grid grid-cols-4 gap-1">
+        {BUILDING_WORKFLOW_STEPS.map(({ step, label }) => {
+          const disabled = step > 1 && !developmentSelected;
+          const active = activeStep === step;
+          return (
+            <button
+              key={step}
+              type="button"
+              disabled={disabled}
+              onClick={() => onStepChange(step)}
+              className={`rounded-md border px-1 py-1 text-[9px] font-black uppercase transition ${
+                active
+                  ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
+                  : 'border-[#151515]/20 bg-[#fff9ec] text-[#151515]/55 hover:border-[#151515]/50'
+              } disabled:cursor-not-allowed disabled:opacity-35`}
+            >
+              <span className="block text-[10px] leading-none">{step}</span>
+              <span className="block truncate">{label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function BuildingWorkflowPager({
+  activeStep,
+  developmentSelected,
+  onStepChange,
+}: {
+  activeStep: BuildingWorkflowStep;
+  developmentSelected: boolean;
+  onStepChange: (step: BuildingWorkflowStep) => void;
+}) {
+  const previousStep = Math.max(1, activeStep - 1) as BuildingWorkflowStep;
+  const nextStep = Math.min(4, activeStep + 1) as BuildingWorkflowStep;
+  const nextDisabled = activeStep === 4 || (nextStep > 1 && !developmentSelected);
+
+  return (
+    <div className="flex items-center justify-between gap-2 pt-1">
+      <button
+        type="button"
+        disabled={activeStep === 1}
+        onClick={() => onStepChange(previousStep)}
+        className="rounded-full border border-[#151515]/20 bg-white px-3 py-1 text-[10px] font-black uppercase text-[#151515]/65 hover:border-[#151515]/50 disabled:cursor-not-allowed disabled:opacity-35"
+      >
+        Back
+      </button>
+      <span className="text-[10px] font-black uppercase text-[#151515]/40">
+        Step {activeStep} of 4
+      </span>
+      <button
+        type="button"
+        disabled={nextDisabled}
+        onClick={() => onStepChange(nextStep)}
+        className="rounded-full border-2 border-[#151515] bg-[#151515] px-3 py-1 text-[10px] font-black uppercase text-white shadow-[2px_2px_0_0_#c9ff3d] hover:bg-[#2b2b2b] disabled:cursor-not-allowed disabled:opacity-35"
+      >
+        Next
+      </button>
+    </div>
+  );
+}
+
 const LEGACY_CATEGORY_ALIASES: Record<'development_aesthetic' | 'road_aesthetic' | 'green_space_aesthetic' | 'plaza_aesthetic', Record<string, string>> = {
   development_aesthetic: {
     historic: 'historical',
@@ -169,6 +379,8 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const panelRef = useRef<HTMLDivElement>(null);
   const lastSyncedUndoRedoVersionRef = useRef(0);
   const navigate = useNavigate();
+  const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
+  const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
 
   // Scroll panel to top when zone changes (e.g. after "Preview All" switches to buildable zone)
   useEffect(() => {
@@ -181,7 +393,14 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   useEffect(() => {
     setName(zone.name || '');
     setProps(zone.properties || {});
+    setActiveBuildingStep(1);
   }, [zone.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (usesBuildingWorkflow && !props.development_type && activeBuildingStep > 1) {
+      setActiveBuildingStep(1);
+    }
+  }, [activeBuildingStep, props.development_type, usesBuildingWorkflow]);
 
   useEffect(() => {
     if (undoRedoHistoryVersion === 0) return;
@@ -908,12 +1127,22 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential') && (
           <>
-            {/* Development Type */}
+            <BuildingWorkflowStepper
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            {activeBuildingStep === 1 && (
+            <PanelStep step="1" title="Choose development type">
             <div>
               <label className={panelLabelClass}>Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
-                onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
+                onChange={(e) => {
+                  const nextDevelopmentType = e.target.value || undefined;
+                  applyBuildingDevelopmentType(nextDevelopmentType);
+                  if (nextDevelopmentType) setActiveBuildingStep(2);
+                }}
                 className={panelFieldClass}
               >
                 <option value="">-- Select --</option>
@@ -957,8 +1186,16 @@ const resolveOptionCategory = (
                 <option value="other">Other</option>
               </select>
             </div>
+            <BuildingWorkflowPager
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            </PanelStep>
+            )}
             {/* Development Aesthetic – only shown after a development type is chosen */}
-            {props.development_type && (
+            {activeBuildingStep === 2 && props.development_type && (
+            <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
               <label className={panelLabelClass}>Building Sub-Category</label>
               <div className="mt-1">
@@ -968,12 +1205,33 @@ const resolveOptionCategory = (
                   selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                   zoneType={zone.zone_type}
                   developmentType={(props.development_type as string) || undefined}
-                  onChange={applyBuildingAesthetic}
+                  areaSqm={area}
+                  onChange={(next, archetypeImageId, variantId) => {
+                    applyBuildingAesthetic(next, archetypeImageId, variantId);
+                  }}
                 />
               </div>
             </div>
+            <BuildingWorkflowPager
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            </PanelStep>
             )}
-            {(() => {
+            {activeBuildingStep === 2 && !props.development_type && (
+              <PanelStep step="2" title="Pick an archetype and check fit" muted>
+                <p className="text-[11px] font-semibold text-[#151515]/55">
+                  Choose a development type first to narrow the archetype list.
+                </p>
+                <BuildingWorkflowPager
+                  activeStep={activeBuildingStep}
+                  developmentSelected={!!props.development_type}
+                  onStepChange={setActiveBuildingStep}
+                />
+              </PanelStep>
+            )}
+            {activeBuildingStep === 3 && (() => {
               const selectedBuildingOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
               // Check for per-variant overrides (e.g. Vertical Farm variants have different floor/area specs)
               const selectedBuildingVariant = (props.development_selected_variant_id && selectedBuildingOption?.variants)
@@ -986,7 +1244,7 @@ const resolveOptionCategory = (
               const floorOutOfRange = archMinFloors != null && archMaxFloors != null && currentFloors != null
                 && (currentFloors < archMinFloors || currentFloors > archMaxFloors);
               return (
-                <>
+                <PanelStep step="3" title="Tune height and scale">
                   <div>
                     <label className={panelLabelClass}>Floors</label>
                     <input
@@ -1091,7 +1349,12 @@ const resolveOptionCategory = (
                       </div>
                     );
                   })()}
-                </>
+                  <BuildingWorkflowPager
+                    activeStep={activeBuildingStep}
+                    developmentSelected={!!props.development_type}
+                    onStepChange={setActiveBuildingStep}
+                  />
+                </PanelStep>
               );
             })()}
           </>
@@ -1265,11 +1528,22 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'development_area' && (
           <>
+            <BuildingWorkflowStepper
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            {activeBuildingStep === 1 && (
+            <PanelStep step="1" title="Choose development type">
             <div>
               <label className={panelLabelClass}>Development Type</label>
               <select
                 value={(props.development_type as string) || ''}
-                onChange={(e) => applyBuildingDevelopmentType(e.target.value || undefined)}
+                onChange={(e) => {
+                  const nextDevelopmentType = e.target.value || undefined;
+                  applyBuildingDevelopmentType(nextDevelopmentType);
+                  if (nextDevelopmentType) setActiveBuildingStep(2);
+                }}
                 className={panelFieldClass}
               >
                 <option value="">-- Select --</option>
@@ -1308,7 +1582,15 @@ const resolveOptionCategory = (
                 </optgroup>
               </select>
             </div>
-            {props.development_type && (
+            <BuildingWorkflowPager
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            </PanelStep>
+            )}
+            {activeBuildingStep === 2 && props.development_type && (
+            <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
               <label className={panelLabelClass}>Building Sub-Category</label>
               <div className="mt-1">
@@ -1318,12 +1600,33 @@ const resolveOptionCategory = (
                   selectedVariantId={(props.development_selected_variant_id as string) || undefined}
                   zoneType={zone.zone_type}
                   developmentType={(props.development_type as string) || undefined}
-                  onChange={applyBuildingAesthetic}
+                  areaSqm={area}
+                  onChange={(next, archetypeImageId, variantId) => {
+                    applyBuildingAesthetic(next, archetypeImageId, variantId);
+                  }}
                 />
               </div>
             </div>
+            <BuildingWorkflowPager
+              activeStep={activeBuildingStep}
+              developmentSelected={!!props.development_type}
+              onStepChange={setActiveBuildingStep}
+            />
+            </PanelStep>
             )}
-            {(() => {
+            {activeBuildingStep === 2 && !props.development_type && (
+              <PanelStep step="2" title="Pick an archetype and check fit" muted>
+                <p className="text-[11px] font-semibold text-[#151515]/55">
+                  Choose a development type first to narrow the archetype list.
+                </p>
+                <BuildingWorkflowPager
+                  activeStep={activeBuildingStep}
+                  developmentSelected={!!props.development_type}
+                  onStepChange={setActiveBuildingStep}
+                />
+              </PanelStep>
+            )}
+            {activeBuildingStep === 3 && (() => {
               const selectedDevOption = DEVELOPMENT_AESTHETIC_OPTIONS.find((o) => o.id === (props.development_aesthetic as string));
               const selectedDevVariant = (props.development_selected_variant_id && selectedDevOption?.variants)
                 ? selectedDevOption.variants.find((v) => v.id === props.development_selected_variant_id)
@@ -1335,7 +1638,7 @@ const resolveOptionCategory = (
               const devFloorOutOfRange = devMinFloors != null && devMaxFloors != null && devCurrentFloors != null
                 && (devCurrentFloors < devMinFloors || devCurrentFloors > devMaxFloors);
               return (
-                <>
+                <PanelStep step="3" title="Tune height and scale">
                   <div>
                     <label className={panelLabelClass}>Floors</label>
                     <input
@@ -1410,36 +1713,63 @@ const resolveOptionCategory = (
                       </div>
                     );
                   })()}
-                </>
+                  <BuildingWorkflowPager
+                    activeStep={activeBuildingStep}
+                    developmentSelected={!!props.development_type}
+                    onStepChange={setActiveBuildingStep}
+                  />
+                </PanelStep>
               );
             })()}
           </>
         )}
 
         {/* ============================================================= */}
-        {/* SHARED: Descriptive Text (all zone types except site_boundary) */}
+        {/* SHARED: Descriptive Text + Reference Images                    */}
         {/* ============================================================= */}
         {zone.zone_type !== 'site_boundary' && (
-          <div>
-            <label className={panelLabelClass}>Descriptive Text</label>
-            <textarea
-              value={(props.description_text as string) || ''}
-              onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
-              placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
-              rows={2}
-              className={panelTextareaClass}
-            />
-          </div>
-        )}
-
-        {/* ============================================================= */}
-        {/* SHARED: Reference Images (all zone types except site_boundary) */}
-        {/* ============================================================= */}
-        {zone.zone_type !== 'site_boundary' && (
-          <ReferenceImagesSection
-            images={(props.reference_images as string[]) || []}
-            onChange={(imgs) => setProps((p) => ({ ...p, reference_images: imgs.length > 0 ? imgs : undefined }))}
-          />
+          usesBuildingWorkflow ? (
+            activeBuildingStep === 4 ? (
+              <PanelStep step="4" title="Add details">
+              <div>
+                <label className={panelLabelClass}>Descriptive Text</label>
+                <textarea
+                  value={(props.description_text as string) || ''}
+                  onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
+                  placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
+                  rows={2}
+                  className={panelTextareaClass}
+                />
+              </div>
+              <ReferenceImagesSection
+                images={(props.reference_images as string[]) || []}
+                onChange={(imgs) => setProps((p) => ({ ...p, reference_images: imgs.length > 0 ? imgs : undefined }))}
+              />
+              <BuildingWorkflowPager
+                activeStep={activeBuildingStep}
+                developmentSelected={!!props.development_type}
+                onStepChange={setActiveBuildingStep}
+              />
+            </PanelStep>
+            ) : null
+          ) : (
+            <>
+              <div>
+                <label className={panelLabelClass}>Descriptive Text</label>
+                <textarea
+                  value={(props.description_text as string) || ''}
+                  onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
+                  placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
+                  rows={2}
+                  className={panelTextareaClass}
+                />
+              </div>
+              <ReferenceImagesSection
+                images={(props.reference_images as string[]) || []}
+                onChange={(imgs) => setProps((p) => ({ ...p, reference_images: imgs.length > 0 ? imgs : undefined }))}
+              />
+            </>
+          )
         )}
 
         <button
@@ -2331,6 +2661,7 @@ function AestheticOptionCard({
   selectedVariantId,
   onSelect,
   modelPreviews,
+  areaSqm,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
@@ -2338,6 +2669,7 @@ function AestheticOptionCard({
   selectedVariantId?: string;
   onSelect: (id: string, archetypeImageId?: string, variantId?: string) => void;
   modelPreviews?: ArchetypeModelPreview[];
+  areaSqm?: number;
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
@@ -2359,6 +2691,8 @@ function AestheticOptionCard({
     : selectedArchetype
       ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
       : sources.slice(0, Math.max(1, sources.length));
+  const isSelected = value === option.id;
+  const areaFit = getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0);
 
   // Determine thumbnail slot content: prefer design variants, fall back to lighting variants
   const hasDesignVariants = variants.length > 0;
@@ -2411,13 +2745,55 @@ function AestheticOptionCard({
           onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
+        <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
+          areaFit
+            ? areaFit.isGoodFit
+              ? 'bg-green-100 text-green-700'
+              : 'bg-orange-100 text-orange-700'
+            : 'bg-white/85 text-[#151515]/55'
+        }`}>
+          {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+        </div>
         <div className="absolute inset-x-0 bottom-0 p-2">
           <p className="text-[10px] font-semibold text-white">{option.label}</p>
         </div>
       </div>
       <div className="px-2 py-1.5">
         <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-        <div className="mt-1 grid grid-cols-4 gap-1">
+        <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
+          areaFit
+            ? areaFit.isGoodFit
+              ? 'border-green-600/25 bg-green-50 text-green-700'
+              : 'border-orange-500/25 bg-orange-50 text-orange-600'
+            : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
+        }`}>
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-[9px] font-black uppercase">Site fit</span>
+            <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
+          </div>
+          <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
+            Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
+            {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
+            {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
+          </div>
+          {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
+            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
+              {areaFit.floorLabel || ''}
+              {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
+              {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+            </div>
+          )}
+        </div>
+        {isSelected && areaFit?.fullWarning && (
+          <div className={`mt-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold leading-tight ${
+            areaFit.isGoodFit
+              ? 'border-green-600/25 bg-green-50 text-green-700'
+              : 'border-orange-500/25 bg-orange-50 text-orange-600'
+          }`}>
+            {areaFit.fullWarning}
+          </div>
+        )}
+        <div className="mt-1.5 grid grid-cols-2 gap-1.5">
           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
           {modelSlots.map((model, idx) => (
             <button
@@ -2427,7 +2803,7 @@ function AestheticOptionCard({
                 event.stopPropagation();
                 openImageLightbox(model.preview_url, model.name || option.label);
               }}
-              className="relative h-9 overflow-hidden rounded border border-amber-500/40 bg-primary-950/[0.06] hover:border-amber-500/70"
+              className="relative h-14 overflow-hidden rounded border border-amber-500/40 bg-primary-950/[0.06] hover:border-amber-500/70"
               title={`${model.name || 'Generated model'} — click to preview`}
             >
               <img
@@ -2436,6 +2812,9 @@ function AestheticOptionCard({
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
+              <span className="absolute inset-x-0 bottom-0 bg-black/55 px-1 py-0.5 text-[8px] font-semibold leading-tight text-white">
+                {model.name || '3D preview'}
+              </span>
               {/* 3D badge */}
               <span className="absolute bottom-0 right-0 rounded-tl bg-amber-500/80 px-0.5 text-[7px] font-bold leading-tight text-white">
                 3D
@@ -2460,7 +2839,7 @@ function AestheticOptionCard({
                     openImageLightbox(variant.thumbnailUrl, `${option.label} — ${variant.label}`);
                   }
                 }}
-                className={`h-9 overflow-hidden rounded border ${
+                className={`relative h-14 overflow-hidden rounded border ${
                   isActive
                     ? 'border-primary-500 ring-2 ring-primary-500/35'
                     : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
@@ -2479,6 +2858,9 @@ function AestheticOptionCard({
                     {variant.label}
                   </span>
                 )}
+                <span className="absolute inset-x-0 bottom-0 bg-black/55 px-1 py-0.5 text-[8px] font-semibold leading-tight text-white">
+                  {variant.label}
+                </span>
               </button>
             );
           })}
@@ -2494,7 +2876,7 @@ function AestheticOptionCard({
                   event.stopPropagation();
                   onSelect(option.id, image.id);
                 }}
-                className={`h-9 overflow-hidden rounded border ${
+                className={`relative h-14 overflow-hidden rounded border ${
                   isSelected
                     ? 'border-primary-500 ring-2 ring-primary-500/35'
                     : 'border-primary-950/[0.08] bg-primary-950/[0.06] hover:border-primary-950/[0.2]'
@@ -2507,6 +2889,9 @@ function AestheticOptionCard({
                   className="h-full w-full object-cover"
                   onDoubleClick={(activeSource) => openImageLightbox(activeSource, image.label || option.label)}
                 />
+                <span className="absolute inset-x-0 bottom-0 bg-black/55 px-1 py-0.5 text-[8px] font-semibold leading-tight text-white">
+                  {image.label || `View ${idx + 1}`}
+                </span>
               </button>
             );
           })}
@@ -2521,6 +2906,7 @@ function DevelopmentAestheticPicker({
   selectedVariantId,
   zoneType,
   developmentType,
+  areaSqm,
   onChange,
 }: {
   value?: string;
@@ -2528,10 +2914,20 @@ function DevelopmentAestheticPicker({
   selectedVariantId?: string;
   zoneType?: string;
   developmentType?: string;
+  areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const allowedTypes = getAllowedDevelopmentTypes(zoneType || 'building', developmentType);
   const filteredOptions = filterOptionsByDevelopmentType(DEVELOPMENT_AESTHETIC_OPTIONS, allowedTypes);
+  const rankedOptions = [...filteredOptions].sort((a, b) => {
+    const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
+    const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
+    if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
+    if (aFit) return -1;
+    if (bFit) return 1;
+    return a.label.localeCompare(b.label);
+  });
+  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
   const archetypeModelPreviews = useArchetypeModelPreviews();
 
   return (
@@ -2542,9 +2938,16 @@ function DevelopmentAestheticPicker({
         </div>
       )}
 
-      {filteredOptions.length > 0 && (
+      {rankedOptions.length > 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
+          Best fits are sorted first for this drawn zone
+          {bestFitCount > 0 ? ` · ${bestFitCount} likely fit${bestFitCount === 1 ? '' : 's'}` : ''}.
+        </div>
+      )}
+
+      {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {filteredOptions.map((option) => (
+          {rankedOptions.map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -2553,6 +2956,7 @@ function DevelopmentAestheticPicker({
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
               modelPreviews={archetypeModelPreviews[option.id]}
+              areaSqm={areaSqm}
             />
           ))}
         </div>
