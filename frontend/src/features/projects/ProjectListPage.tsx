@@ -3,10 +3,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Download, Images, Plus, FolderOpen, Clock, X, MapPin } from 'lucide-react';
+import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil } from 'lucide-react';
 import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
-import type { Project, Location, SavedRender } from '@/types';
+import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
+import { ProjectEditModal } from './ProjectEditModal';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -36,6 +37,7 @@ export function ProjectListPage() {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [error, setError] = useState('');
   const [expandedRender, setExpandedRender] = useState<{ project: Project; render: SavedRender } | null>(null);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
@@ -165,6 +167,26 @@ export function ProjectListPage() {
     },
     onError: (err: any) => {
       setError(getApiErrorMessage(err, 'Failed to create project. Check that the backend is running.'));
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ projectId, updates }: { projectId: string; updates: UpdateProjectRequest }) =>
+      projectsApi.update(projectId, updates),
+    onSuccess: (updatedProject) => {
+      queryClient.setQueryData<Project[]>(['projects', currentUser?.id], (current) =>
+        current?.map((project) => project.id === updatedProject.id ? { ...project, ...updatedProject } : project)
+      );
+      queryClient.setQueryData<Project | undefined>(['project', updatedProject.id], (current) => (
+        current ? { ...current, ...updatedProject } : updatedProject
+      ));
+      queryClient.invalidateQueries({ queryKey: ['projects', currentUser?.id] });
+      queryClient.invalidateQueries({ queryKey: ['project', updatedProject.id] });
+      setEditingProject(null);
+      toast.success('Project updated');
+    },
+    onError: (err) => {
+      toast.error(getApiErrorMessage(err, 'Failed to update project'));
     },
   });
 
@@ -384,6 +406,17 @@ export function ProjectListPage() {
                   </div>
                 </Link>
 
+                <div className="mt-4 flex justify-end border-t border-primary-950/[0.06] pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setEditingProject(project)}
+                    className="inline-flex items-center rounded-full border-2 border-[#151515] bg-white px-3 py-1.5 text-xs font-black uppercase text-[#151515] transition hover:bg-[#c9ff3d]"
+                  >
+                    <Pencil size={13} className="mr-1.5" />
+                    Edit
+                  </button>
+                </div>
+
                 {rendersLoading ? (
                   <div className="mt-4 border-t border-primary-950/[0.06] pt-3">
                     <div className="grid grid-cols-4 gap-1.5">
@@ -432,6 +465,15 @@ export function ProjectListPage() {
             );
           })}
         </div>
+      )}
+
+      {editingProject && (
+        <ProjectEditModal
+          project={editingProject}
+          isSaving={updateMutation.isPending}
+          onClose={() => setEditingProject(null)}
+          onSave={(updates) => updateMutation.mutate({ projectId: editingProject.id, updates })}
+        />
       )}
 
       {expandedRender && createPortal(

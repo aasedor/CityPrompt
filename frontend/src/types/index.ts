@@ -5,7 +5,7 @@
 export interface Location {
   latitude: number;
   longitude: number;
-  address?: string;
+  address?: string | null;
 }
 
 export interface ConstructionPhase {
@@ -795,8 +795,8 @@ export interface CreateProjectRequest {
 
 export interface UpdateProjectRequest {
   name?: string;
-  description?: string;
-  location?: Location;
+  description?: string | null;
+  location?: Location | null;
   status?: string;
 }
 

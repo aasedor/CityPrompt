@@ -180,6 +180,13 @@ async def update_project(
             from geoalchemy2.elements import WKTElement
             point = f"POINT({value['longitude']} {value['latitude']})"
             project.location = WKTElement(point, srid=4326)
+            if "address" in value:
+                metadata = dict(project.metadata_ or {})
+                if value["address"]:
+                    metadata["address"] = value["address"]
+                else:
+                    metadata.pop("address", None)
+                project.metadata_ = metadata
         elif field != "location":
             setattr(project, field, value)
 

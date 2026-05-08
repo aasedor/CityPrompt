@@ -76,6 +76,7 @@ const INITIAL_CAMERA_REVEAL_FALLBACK_MS = 2500;
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
+const PROJECT_ZONE_FOCUS_THRESHOLD_METERS = 1000;
 const VIEWPORT_FIT_INITIAL_CAMERA_MULTIPLIER = 2;
 const DRAWING_FILL_LIFT_METERS = 0.3;
 const DRAWING_OUTLINE_LIFT_METERS = 0.6;
@@ -1307,6 +1308,32 @@ export function GlobeSitePlannerMap({
     ))
   ), [siteZones]);
 
+  const projectZoneFocus = useMemo(() => {
+    if (projectZonePoints.length < 3) return null;
+    const [focusLng, focusLat] = computeCentroid(projectZonePoints);
+    let maxDistMeters = 0;
+
+    for (const coord of projectZonePoints) {
+      const distMeters = haversineDistance([focusLng, focusLat], coord);
+      if (Number.isFinite(distMeters)) {
+        maxDistMeters = Math.max(maxDistMeters, distMeters);
+      }
+    }
+
+    return {
+      lat: focusLat,
+      lng: focusLng,
+      maxDistMeters,
+      distanceFromProjectMeters: haversineDistance([_longitude, _latitude], [focusLng, focusLat]),
+    };
+  }, [_latitude, _longitude, projectZonePoints]);
+
+  const shouldFitProjectZones = Boolean(
+    !preferredView
+    && projectZoneFocus
+    && projectZoneFocus.distanceFromProjectMeters <= PROJECT_ZONE_FOCUS_THRESHOLD_METERS,
+  );
+
   const focusLatitude = preferredView?.latitude ?? _latitude;
   const focusLongitude = preferredView?.longitude ?? _longitude;
   const fallbackRenderBounds = useMemo(() => {
@@ -1314,7 +1341,7 @@ export function GlobeSitePlannerMap({
       return preferredView.bounds;
     }
 
-    if (projectZonePoints.length >= 3) {
+    if (shouldFitProjectZones && projectZonePoints.length >= 3) {
       let west = Infinity;
       let south = Infinity;
       let east = -Infinity;
@@ -1343,7 +1370,7 @@ export function GlobeSitePlannerMap({
       east: focusLongitude + 0.01,
       north: focusLatitude + 0.01,
     };
-  }, [focusLatitude, focusLongitude, preferredView?.bounds, projectZonePoints]);
+  }, [focusLatitude, focusLongitude, preferredView?.bounds, projectZonePoints, shouldFitProjectZones]);
 
   const initialView = useMemo(() => {
     if (preferredView) {
@@ -1354,23 +1381,13 @@ export function GlobeSitePlannerMap({
       );
     }
 
-    if (projectZonePoints.length >= 3) {
-      const [focusLng, focusLat] = computeCentroid(projectZonePoints);
-      let maxDistMeters = 0;
-
-      for (const coord of projectZonePoints) {
-        const distMeters = haversineDistance([focusLng, focusLat], coord);
-        if (Number.isFinite(distMeters)) {
-          maxDistMeters = Math.max(maxDistMeters, distMeters);
-        }
-      }
-
+    if (shouldFitProjectZones && projectZoneFocus) {
       return {
-        lat: focusLat,
-        lng: focusLng,
+        lat: projectZoneFocus.lat,
+        lng: projectZoneFocus.lng,
         altitude: Math.min(
           MAX_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
-          Math.max(MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND, maxDistMeters * ZONE_FIT_INITIAL_CAMERA_MULTIPLIER),
+          Math.max(MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND, projectZoneFocus.maxDistMeters * ZONE_FIT_INITIAL_CAMERA_MULTIPLIER),
         ),
       };
     }
@@ -1380,7 +1397,7 @@ export function GlobeSitePlannerMap({
       lng: _longitude,
       altitude: DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND,
     };
-  }, [_latitude, _longitude, preferredView, projectZonePoints]);
+  }, [_latitude, _longitude, preferredView, projectZoneFocus, shouldFitProjectZones]);
 
   const preferredCameraPose = useMemo(() => (
     preferredView
@@ -1617,7 +1634,7 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    if (projectZonePoints.length >= 3) {
+    if (shouldFitProjectZones) {
       if (hasAppliedZoneViewRef.current) return;
       applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
       hasAppliedZoneViewRef.current = true;
@@ -1627,7 +1644,7 @@ export function GlobeSitePlannerMap({
     if (hasAppliedProjectViewRef.current) return;
     applyCameraView(initialView.lat, initialView.lng, initialView.altitude);
     hasAppliedProjectViewRef.current = true;
-  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isTerrainReady, preferredCameraPose, preferredView, projectZonePoints.length, sceneReady]);
+  }, [applyCameraPose, applyCameraView, globeControlsReady, initialView, isTerrainReady, preferredCameraPose, preferredView, sceneReady, shouldFitProjectZones]);
 
   useEffect(() => {
     if (!sceneReady) return;
