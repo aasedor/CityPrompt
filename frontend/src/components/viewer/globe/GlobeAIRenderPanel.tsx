@@ -486,12 +486,12 @@ export function GlobeAIRenderPanel({
       ref={panelRef}
       onPointerMove={handlePanelPointerMove}
       onPointerLeave={handlePanelPointerLeave}
-      className={`globe-ai-dynamic-bg max-h-[44vh] w-full overflow-y-auto rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'globe-ai-rendering' : ''}`}
+      className={`globe-ai-dynamic-bg flex max-h-[44vh] w-full flex-col overflow-hidden rounded-lg border-2 border-[#151515] shadow-[10px_10px_0_0_#151515] backdrop-blur-xl ${isRendering ? 'globe-ai-rendering' : ''}`}
     >
       {/* Header */}
       <div
         {...dragHandleRest}
-        className={`select-none border-b-2 border-[#151515] bg-[#fff9ec] px-4 py-2.5 ${
+        className={`shrink-0 select-none border-b-2 border-[#151515] bg-[#fff9ec] px-4 py-2.5 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         } ${dragHandleClassName ?? ''}`}
         title="Drag to move"
@@ -528,6 +528,7 @@ export function GlobeAIRenderPanel({
         </p>
       </div>
 
+      <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="grid gap-3 border-b-2 border-white/10 px-4 py-2 md:grid-cols-[1.35fr_0.9fr]">
         {/* Style selector */}
         <div>
@@ -581,30 +582,6 @@ export function GlobeAIRenderPanel({
           </div>
         </div>
       )}
-
-      {/* Render button */}
-      <div className="px-4 py-3">
-        <button
-          onClick={handleRender}
-          disabled={isRendering || !canvas || !camera}
-          className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
-        >
-          {isRendering ? (
-            <>
-              <Loader2 size={16} className="animate-spin" />
-              {renderProgress
-                ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
-                : `Rendering... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
-              }
-            </>
-          ) : (
-            <>
-              <Camera size={16} />
-              Generate Globe Previews
-            </>
-          )}
-        </button>
-      </div>
 
       {/* Preview grid (only when multiple previews exist) */}
       {previews.length > 1 && (
@@ -757,6 +734,31 @@ export function GlobeAIRenderPanel({
           )}
         </div>
       )}
+      </div>
+
+      {/* Render button */}
+      <div className="shrink-0 border-t-2 border-[#151515] bg-[#fff9ec] px-4 py-3">
+        <button
+          onClick={handleRender}
+          disabled={isRendering || !canvas || !camera}
+          className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+        >
+          {isRendering ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              {renderProgress
+                ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                : `Rendering... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+              }
+            </>
+          ) : (
+            <>
+              <Camera size={16} />
+              Generate Globe Previews
+            </>
+          )}
+        </button>
+      </div>
     </div>
 
     {/* Lightbox overlay — click ANYWHERE (including the image), press Esc, or
