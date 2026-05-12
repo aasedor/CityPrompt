@@ -66,13 +66,16 @@ def put_image_with_thumbnail(s3, bucket: str, image_key: str, image_bytes: bytes
         logger.warning("Failed to create render audit thumbnail for %s: %s", image_key, exc)
 
 
-def get_or_create_thumbnail(s3, bucket: str, image_key: str) -> bytes:
-    """Read a cached thumbnail, creating it from the full image if needed."""
+def get_or_create_thumbnail(s3, bucket: str, image_key: str) -> tuple[bytes, bool]:
+    """Read a cached thumbnail, creating it from the full image if needed.
+
+    Returns the thumbnail bytes plus whether the cached object already existed.
+    """
     thumbnail_key = thumbnail_key_for(image_key)
 
     try:
         obj = s3.get_object(Bucket=bucket, Key=thumbnail_key)
-        return obj["Body"].read()
+        return obj["Body"].read(), True
     except Exception:
         pass
 
@@ -86,4 +89,4 @@ def get_or_create_thumbnail(s3, bucket: str, image_key: str) -> bytes:
         Body=thumbnail_bytes,
         ContentType="image/jpeg",
     )
-    return thumbnail_bytes
+    return thumbnail_bytes, False

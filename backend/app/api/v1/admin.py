@@ -961,11 +961,22 @@ async def get_render_log_image(
 
     try:
         if is_thumbnail:
-            content = get_or_create_thumbnail(s3, settings.s3_bucket_name, key)
-            return Response(content=content, media_type="image/jpeg")
+            content, cache_hit = get_or_create_thumbnail(s3, settings.s3_bucket_name, key)
+            return Response(
+                content=content,
+                media_type="image/jpeg",
+                headers={
+                    "Cache-Control": "private, max-age=86400",
+                    "X-Thumbnail-Cache": "hit" if cache_hit else "miss",
+                },
+            )
 
         obj = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)
-        return Response(content=obj["Body"].read(), media_type="image/png")
+        return Response(
+            content=obj["Body"].read(),
+            media_type="image/png",
+            headers={"Cache-Control": "private, max-age=3600"},
+        )
     except Exception as exc:
         raise HTTPException(status_code=404, detail=f"Image not found in storage: {exc}")
 
