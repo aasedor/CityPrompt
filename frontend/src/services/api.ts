@@ -842,6 +842,8 @@ export interface RenderAuditLog {
   tokens_spent: number;
   input_image_url?: string;
   output_image_url?: string;
+  input_thumbnail_url?: string;
+  output_thumbnail_url?: string;
   prompt_preview?: string;
   created_at: string;
 }

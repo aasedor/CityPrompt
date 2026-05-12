@@ -17,6 +17,7 @@ from app.core.database import get_db
 from app.core.email import send_admin_welcome_email, send_cofounder_welcome_email
 from app.core.security import is_admin_or_above, require_admin
 from app.models.models import Building, Document, Project, RenderAuditLog, User
+from app.services.render_audit_images import get_or_create_thumbnail, thumbnail_key_for
 
 logger = logging.getLogger(__name__)
 from app.schemas.schemas import (
@@ -834,6 +835,8 @@ class RenderAuditResponse(BaseModel):
     tokens_spent: int
     input_image_url: Optional[str] = None
     output_image_url: Optional[str] = None
+    input_thumbnail_url: Optional[str] = None
+    output_thumbnail_url: Optional[str] = None
     prompt_preview: Optional[str] = None
     created_at: str
 
@@ -912,6 +915,8 @@ async def list_render_logs(
             tokens_spent=log.tokens_spent,
             input_image_url=f"/api/v1/admin/render-logs/{log.id}/input" if log.input_image_key else None,
             output_image_url=f"/api/v1/admin/render-logs/{log.id}/output" if log.output_image_key else None,
+            input_thumbnail_url=f"/api/v1/admin/render-logs/{log.id}/input-thumbnail" if log.input_image_key else None,
+            output_thumbnail_url=f"/api/v1/admin/render-logs/{log.id}/output-thumbnail" if log.output_image_key else None,
             prompt_preview=log.prompt_preview,
             created_at=log.created_at.isoformat(),
         )
@@ -931,14 +936,16 @@ async def get_render_log_image(
     from botocore.config import Config as BotoConfig
     from fastapi.responses import Response
 
-    if image_type not in ("input", "output"):
-        raise HTTPException(status_code=400, detail="image_type must be 'input' or 'output'")
+    if image_type not in ("input", "output", "input-thumbnail", "output-thumbnail"):
+        raise HTTPException(status_code=400, detail="image_type must be input, output, input-thumbnail, or output-thumbnail")
 
     log = await db.get(RenderAuditLog, log_id)
     if not log:
         raise HTTPException(status_code=404, detail="Render log not found")
 
-    key = log.input_image_key if image_type == "input" else log.output_image_key
+    is_thumbnail = image_type.endswith("-thumbnail")
+    source_type = image_type.removesuffix("-thumbnail")
+    key = log.input_image_key if source_type == "input" else log.output_image_key
     if not key:
         raise HTTPException(status_code=404, detail="No image available")
 
@@ -953,6 +960,10 @@ async def get_render_log_image(
     )
 
     try:
+        if is_thumbnail:
+            content = get_or_create_thumbnail(s3, settings.s3_bucket_name, key)
+            return Response(content=content, media_type="image/jpeg")
+
         obj = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)
         return Response(content=obj["Body"].read(), media_type="image/png")
     except Exception as exc:
@@ -989,7 +1000,9 @@ async def bulk_delete_render_logs(
         if not log:
             continue
         # Delete S3 objects
-        for key in [log.input_image_key, log.output_image_key]:
+        image_keys = [log.input_image_key, log.output_image_key]
+        keys = [*image_keys, *(thumbnail_key_for(key) for key in image_keys if key)]
+        for key in keys:
             if key:
                 try:
                     s3.delete_object(Bucket=bucket, Key=key)

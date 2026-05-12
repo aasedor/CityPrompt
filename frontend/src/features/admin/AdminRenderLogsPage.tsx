@@ -6,6 +6,7 @@ import { adminApi } from '@/services/api';
 import type { RenderAuditLog, RenderLogStats } from '@/services/api';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
+const RENDER_LOG_PAGE_SIZE = 200;
 
 function useAuthImage(url: string | undefined | null, enabled: boolean) {
   const [src, setSrc] = useState<string | null>(null);
@@ -208,18 +209,18 @@ function ExpandedLogDetail({
   log: RenderAuditLog;
   onCompare: (output: boolean) => void;
 }) {
-  const inputSrc = useAuthImage(log.input_image_url, true);
-  const outputSrc = useAuthImage(log.output_image_url, true);
+  const inputThumbSrc = useAuthImage(log.input_thumbnail_url ?? log.input_image_url, true);
+  const outputThumbSrc = useAuthImage(log.output_thumbnail_url ?? log.output_image_url, true);
 
   return (
     <div className="flex gap-6 p-4">
       <div className="flex gap-3">
-        {inputSrc ? (
+        {inputThumbSrc ? (
           <button
             onClick={() => onCompare(false)}
             className="group relative h-40 w-52 cursor-pointer overflow-hidden rounded-lg border border-primary-950/[0.1] bg-primary-950/[0.04]"
           >
-            <img src={inputSrc} alt="Input" className="h-full w-full object-cover" />
+            <img src={inputThumbSrc} alt="Input" className="h-full w-full object-cover" />
             <span className="absolute bottom-1.5 left-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">Input</span>
             <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
               <Eye size={20} className="text-white opacity-0 transition-opacity group-hover:opacity-100" />
@@ -231,12 +232,12 @@ function ExpandedLogDetail({
           </div>
         )}
 
-        {outputSrc ? (
+        {outputThumbSrc ? (
           <button
             onClick={() => onCompare(true)}
             className="group relative h-40 w-52 cursor-pointer overflow-hidden rounded-lg border border-primary-950/[0.1] bg-primary-950/[0.04]"
           >
-            <img src={outputSrc} alt="Output" className="h-full w-full object-cover" />
+            <img src={outputThumbSrc} alt="Output" className="h-full w-full object-cover" />
             <span className="absolute bottom-1.5 left-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">Output</span>
             <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
               <Eye size={20} className="text-white opacity-0 transition-opacity group-hover:opacity-100" />
@@ -263,6 +264,8 @@ export function AdminRenderLogsPage() {
   const [logs, setLogs] = useState<RenderAuditLog[]>([]);
   const [stats, setStats] = useState<RenderLogStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -289,9 +292,12 @@ export function AdminRenderLogsPage() {
     try {
       const data = await adminApi.listRenderLogs({
         user_email: search || undefined,
-        limit: 100,
+        limit: RENDER_LOG_PAGE_SIZE,
       });
       setLogs(data);
+      setHasMore(data.length === RENDER_LOG_PAGE_SIZE);
+      setSelected(new Set());
+      setExpandedId(null);
     } catch {
       toast.error('Failed to load render logs');
     } finally {
@@ -307,6 +313,56 @@ export function AdminRenderLogsPage() {
   const toggleExpand = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
   }, []);
+
+  const loadMoreLogs = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+    try {
+      const data = await adminApi.listRenderLogs({
+        user_email: search || undefined,
+        skip: logs.length,
+        limit: RENDER_LOG_PAGE_SIZE,
+      });
+      setLogs((prev) => [...prev, ...data]);
+      setHasMore(data.length === RENDER_LOG_PAGE_SIZE);
+    } catch {
+      toast.error('Failed to load more render logs');
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [hasMore, loadingMore, logs.length, search]);
+
+  const loadAllLogs = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+    try {
+      let skip = logsRef.current.length;
+      let nextHasMore = true;
+
+      while (nextHasMore) {
+        const data = await adminApi.listRenderLogs({
+          user_email: search || undefined,
+          skip,
+          limit: RENDER_LOG_PAGE_SIZE,
+        });
+
+        if (data.length > 0) {
+          setLogs((prev) => [...prev, ...data]);
+        }
+
+        skip += data.length;
+        nextHasMore = data.length === RENDER_LOG_PAGE_SIZE;
+      }
+
+      setHasMore(false);
+    } catch {
+      toast.error('Failed to load all render logs');
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [hasMore, loadingMore, search]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -391,7 +447,7 @@ export function AdminRenderLogsPage() {
         </Link>
         <h1 className="text-2xl font-bold text-primary-950">Render Audit Logs</h1>
         <span className="rounded-full bg-primary-950/[0.06] px-2.5 py-0.5 text-xs font-medium text-primary-950/50">
-          {logs.length} renders
+          {logs.length}{hasMore ? '+' : ''} renders
         </span>
       </div>
 
@@ -464,113 +520,139 @@ export function AdminRenderLogsPage() {
       ) : logs.length === 0 ? (
         <p className="py-8 text-center text-sm text-primary-950/50">No render logs found.</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
-                <th className="w-8 px-3 py-3">
-                  <input
-                    type="checkbox"
-                    checked={selected.size === logs.length && logs.length > 0}
-                    onChange={toggleAll}
-                    className="rounded border-primary-950/20"
-                  />
-                </th>
-                <th className="px-3 py-3">User</th>
-                <th className="px-3 py-3">Project</th>
-                <th className="px-3 py-3">Model</th>
-                <th className="px-3 py-3">Tokens</th>
-                <th className="px-3 py-3">Preview</th>
-                <th className="px-3 py-3">Prompt</th>
-                <th className="px-3 py-3">Time</th>
-                <th className="w-8 px-3 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-primary-950/[0.06]">
-              {logs.map((log) => {
-                const isExpanded = expandedId === log.id;
-                return (
-                  <React.Fragment key={log.id}>
-                    <tr
-                      ref={(el) => {
-                        if (el) rowRefs.current.set(log.id, el);
-                        else rowRefs.current.delete(log.id);
-                      }}
-                      className={`group cursor-pointer transition-colors ${
-                        isExpanded
-                          ? 'bg-primary-500/[0.04]'
-                          : selected.has(log.id)
-                            ? 'bg-primary-500/[0.02]'
-                            : 'hover:bg-primary-950/[0.02]'
-                      }`}
-                    >
-                      <td className="px-3 py-3 align-top" onClick={(e) => e.stopPropagation()}>
-                        <input
-                          type="checkbox"
-                          checked={selected.has(log.id)}
-                          onChange={() => toggleSelect(log.id)}
-                          className="rounded border-primary-950/20"
-                        />
-                      </td>
-                      <td className="px-3 py-3 align-top text-primary-950/70" onClick={() => toggleExpand(log.id)}>
-                        {log.user_email}
-                      </td>
-                      <td className="max-w-[180px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
-                        {log.project_id ? (
-                          <Link
-                            to={`/projects/${log.project_id}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="block truncate font-medium text-primary-700 hover:text-coral-500 hover:underline"
-                            title={log.project_name || log.project_id}
-                          >
-                            {log.project_name || 'Open project'}
-                          </Link>
-                        ) : (
-                          <span className="text-primary-950/30">-</span>
-                        )}
-                      </td>
-                      <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
-                        <span className="rounded-full bg-primary-950/[0.06] px-2 py-0.5 text-xs">
-                          {log.model.replace('gemini-', '').replace('-image', '').replace('-preview', '')}
-                        </span>
-                      </td>
-                      <td className="px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)}>
-                        {log.tokens_spent}
-                      </td>
-                      <td className="px-3 py-2 align-top">
-                        <div className="flex items-center gap-1.5">
-                          <AuditImage url={log.input_image_url} label="Input" onClick={() => { setCompareStartOutput(false); setCompareLog(log); }} />
-                          <AuditImage url={log.output_image_url} label="Output" onClick={() => { setCompareStartOutput(true); setCompareLog(log); }} />
-                        </div>
-                      </td>
-                      <td className="max-w-[200px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
-                        <p className="truncate text-xs text-primary-950/50" title={log.prompt_preview || ''}>
-                          {log.prompt_preview ? `${log.prompt_preview.substring(0, 80)}...` : '-'}
-                        </p>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)} title={new Date(log.created_at).toLocaleString()}>
-                        {new Date(log.created_at).toLocaleDateString()}
-                      </td>
-                      <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
-                        <ChevronDown size={14} className={`text-primary-950/30 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                      </td>
-                    </tr>
-                    {isExpanded && (
-                      <tr className="bg-primary-50/50">
-                        <td colSpan={9} className="p-0">
-                          <ExpandedLogDetail
-                            log={log}
-                            onCompare={(output) => { setCompareStartOutput(output); setCompareLog(log); }}
+        <>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-primary-950/[0.08] text-left text-xs font-medium uppercase text-primary-950/50">
+                  <th className="w-8 px-3 py-3">
+                    <input
+                      type="checkbox"
+                      checked={selected.size === logs.length && logs.length > 0}
+                      onChange={toggleAll}
+                      className="rounded border-primary-950/20"
+                    />
+                  </th>
+                  <th className="px-3 py-3">User</th>
+                  <th className="px-3 py-3">Project</th>
+                  <th className="px-3 py-3">Model</th>
+                  <th className="px-3 py-3">Tokens</th>
+                  <th className="px-3 py-3">Preview</th>
+                  <th className="px-3 py-3">Prompt</th>
+                  <th className="px-3 py-3">Time</th>
+                  <th className="w-8 px-3 py-3" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-primary-950/[0.06]">
+                {logs.map((log) => {
+                  const isExpanded = expandedId === log.id;
+                  return (
+                    <React.Fragment key={log.id}>
+                      <tr
+                        ref={(el) => {
+                          if (el) rowRefs.current.set(log.id, el);
+                          else rowRefs.current.delete(log.id);
+                        }}
+                        className={`group cursor-pointer transition-colors ${
+                          isExpanded
+                            ? 'bg-primary-500/[0.04]'
+                            : selected.has(log.id)
+                              ? 'bg-primary-500/[0.02]'
+                              : 'hover:bg-primary-950/[0.02]'
+                        }`}
+                      >
+                        <td className="px-3 py-3 align-top" onClick={(e) => e.stopPropagation()}>
+                          <input
+                            type="checkbox"
+                            checked={selected.has(log.id)}
+                            onChange={() => toggleSelect(log.id)}
+                            className="rounded border-primary-950/20"
                           />
                         </td>
+                        <td className="px-3 py-3 align-top text-primary-950/70" onClick={() => toggleExpand(log.id)}>
+                          {log.user_email}
+                        </td>
+                        <td className="max-w-[180px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                          {log.project_id ? (
+                            <Link
+                              to={`/projects/${log.project_id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="block truncate font-medium text-primary-700 hover:text-coral-500 hover:underline"
+                              title={log.project_name || log.project_id}
+                            >
+                              {log.project_name || 'Open project'}
+                            </Link>
+                          ) : (
+                            <span className="text-primary-950/30">-</span>
+                          )}
+                        </td>
+                        <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                          <span className="rounded-full bg-primary-950/[0.06] px-2 py-0.5 text-xs">
+                            {log.model.replace('gemini-', '').replace('-image', '').replace('-preview', '')}
+                          </span>
+                        </td>
+                        <td className="px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)}>
+                          {log.tokens_spent}
+                        </td>
+                        <td className="px-3 py-2 align-top">
+                          <div className="flex items-center gap-1.5">
+                            <AuditImage url={log.input_thumbnail_url ?? log.input_image_url} label="Input" onClick={() => { setCompareStartOutput(false); setCompareLog(log); }} />
+                            <AuditImage url={log.output_thumbnail_url ?? log.output_image_url} label="Output" onClick={() => { setCompareStartOutput(true); setCompareLog(log); }} />
+                          </div>
+                        </td>
+                        <td className="max-w-[200px] px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                          <p className="truncate text-xs text-primary-950/50" title={log.prompt_preview || ''}>
+                            {log.prompt_preview ? `${log.prompt_preview.substring(0, 80)}...` : '-'}
+                          </p>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-3 align-top text-primary-950/50" onClick={() => toggleExpand(log.id)} title={new Date(log.created_at).toLocaleString()}>
+                          {new Date(log.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-3 py-3 align-top" onClick={() => toggleExpand(log.id)}>
+                          <ChevronDown size={14} className={`text-primary-950/30 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                      {isExpanded && (
+                        <tr className="bg-primary-50/50">
+                          <td colSpan={9} className="p-0">
+                            <ExpandedLogDetail
+                              log={log}
+                              onCompare={(output) => { setCompareStartOutput(output); setCompareLog(log); }}
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {hasMore && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 border-t border-primary-950/[0.06] pt-4">
+              <button
+                onClick={loadMoreLogs}
+                disabled={loadingMore}
+                className="flex items-center gap-2 rounded-lg border border-primary-950/[0.1] bg-white px-4 py-2 text-sm font-medium text-primary-950/70 hover:bg-primary-950/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loadingMore ? <Loader2 size={14} className="animate-spin" /> : null}
+                Load more
+              </button>
+              <button
+                onClick={loadAllLogs}
+                disabled={loadingMore}
+                className="flex items-center gap-2 rounded-lg bg-primary-950 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loadingMore ? <Loader2 size={14} className="animate-spin" /> : null}
+                Load all
+              </button>
+              <span className="text-xs text-primary-950/40">
+                Showing {logs.length} logs
+              </span>
+            </div>
+          )}
+        </>
       )}
 
       {compareLog && (

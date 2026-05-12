@@ -33,6 +33,7 @@ from app.core.database import get_db
 from app.core.security import require_auth, check_project_permission, is_admin_or_above
 from app.models.models import User
 from app.models.models import Project, User
+from app.services.render_audit_images import put_image_with_thumbnail
 
 logger = logging.getLogger(__name__)
 
@@ -243,11 +244,11 @@ async def _save_render_audit(
 
     if input_b64:
         input_key = f"render-audit/{audit_id}/input.png"
-        s3.put_object(Bucket=bucket, Key=input_key, Body=base64.b64decode(input_b64), ContentType="image/png")
+        put_image_with_thumbnail(s3, bucket, input_key, base64.b64decode(input_b64))
 
     if output_b64:
         output_key = f"render-audit/{audit_id}/output.png"
-        s3.put_object(Bucket=bucket, Key=output_key, Body=base64.b64decode(output_b64), ContentType="image/png")
+        put_image_with_thumbnail(s3, bucket, output_key, base64.b64decode(output_b64))
 
     from app.models.models import RenderAuditLog
     log = RenderAuditLog(
