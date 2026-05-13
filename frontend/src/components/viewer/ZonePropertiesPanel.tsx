@@ -227,21 +227,23 @@ function PanelStep({
   title,
   children,
   muted = false,
+  roomy = false,
 }: {
   step: string;
   title: string;
   children: ReactNode;
   muted?: boolean;
+  roomy?: boolean;
 }) {
   return (
-    <section className={`border-l-2 border-[#151515] py-2 pl-2.5 pr-1 ${muted ? 'opacity-60' : ''}`}>
-      <div className="mb-2 flex items-center gap-2">
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] text-[10px] font-black text-[#151515]">
+    <section className={`border-l-2 border-[#151515] ${roomy ? 'py-3 pl-3 pr-1.5' : 'py-2 pl-2.5 pr-1'} ${muted ? 'opacity-60' : ''}`}>
+      <div className={`${roomy ? 'mb-2.5' : 'mb-2'} flex items-center gap-2`}>
+        <span className={`flex shrink-0 items-center justify-center rounded-full border-2 border-[#151515] bg-[#c9ff3d] font-black text-[#151515] ${roomy ? 'h-6 w-6 text-[11px]' : 'h-5 w-5 text-[10px]'}`}>
           {step}
         </span>
-        <h4 className="text-[10px] font-black uppercase text-[#151515]">{title}</h4>
+        <h4 className={`${roomy ? 'text-[11px]' : 'text-[10px]'} font-black uppercase text-[#151515]`}>{title}</h4>
       </div>
-      <div className="space-y-2">
+      <div className={roomy ? 'space-y-3' : 'space-y-2'}>
         {children}
       </div>
     </section>
@@ -1738,20 +1740,21 @@ const resolveOptionCategory = (
         {zone.zone_type !== 'site_boundary' && (
           usesBuildingWorkflow ? (
             activeBuildingStep === 4 ? (
-              <PanelStep step="4" title="Add details">
+              <PanelStep step="4" title="Add details" roomy>
               <div>
                 <label className={panelLabelClass}>Descriptive Text</label>
                 <textarea
                   value={(props.description_text as string) || ''}
                   onChange={(e) => setProps((p) => ({ ...p, description_text: e.target.value || undefined }))}
                   placeholder="E.g. Make the trees maple trees. Use cobblestone for the sidewalk."
-                  rows={2}
-                  className={panelTextareaClass}
+                  rows={4}
+                  className={`${panelTextareaClass} min-h-28 leading-relaxed`}
                 />
               </div>
               <ReferenceImagesSection
                 images={(props.reference_images as string[]) || []}
                 onChange={(imgs) => setProps((p) => ({ ...p, reference_images: imgs.length > 0 ? imgs : undefined }))}
+                roomy
               />
               <BuildingWorkflowPager
                 activeStep={activeBuildingStep}
@@ -3221,9 +3224,11 @@ function PlazaAestheticPicker({
 function ReferenceImagesSection({
   images,
   onChange,
+  roomy = false,
 }: {
   images: string[];
   onChange: (imgs: string[]) => void;
+  roomy?: boolean;
 }) {
   const [url, setUrl] = useState('');
 
@@ -3244,9 +3249,9 @@ function ReferenceImagesSection({
       <label className="mb-1 block text-[10px] font-black uppercase text-[#151515]/55">Reference Images</label>
       {/* Thumbnails */}
       {images.length > 0 && (
-        <div className="flex gap-1.5 mb-1.5 flex-wrap">
+        <div className={`${roomy ? 'mb-2 gap-2' : 'mb-1.5 gap-1.5'} flex flex-wrap`}>
           {images.map((imgUrl, idx) => (
-            <div key={idx} className="group relative h-16 w-16 overflow-hidden rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]">
+            <div key={idx} className={`group relative overflow-hidden rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_#151515] ${roomy ? 'h-20 w-20' : 'h-16 w-16'}`}>
               <img
                 src={imgUrl}
                 alt={`Ref ${idx + 1}`}
@@ -3265,19 +3270,19 @@ function ReferenceImagesSection({
       )}
       {/* Add input */}
       {images.length < 3 && (
-        <div className="flex gap-1">
+        <div className={`${roomy ? 'gap-1.5' : 'gap-1'} flex`}>
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Paste image URL and press Enter"
-            className="min-w-0 flex-1 rounded-lg border-2 border-[#151515] bg-white px-2 py-1.5 text-xs font-semibold text-[#151515] focus:bg-[#fff9ec] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d]"
+            className={`min-w-0 flex-1 rounded-lg border-2 border-[#151515] bg-white px-2 font-semibold text-[#151515] focus:bg-[#fff9ec] focus:outline-none focus:ring-2 focus:ring-[#c9ff3d] ${roomy ? 'py-2 text-sm' : 'py-1.5 text-xs'}`}
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
           />
           <button
             onClick={handleAdd}
             disabled={!url.trim()}
-            className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1 text-[11px] font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#d8ff68] disabled:opacity-40"
+            className={`rounded-full border-2 border-[#151515] bg-[#c9ff3d] font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#d8ff68] disabled:opacity-40 ${roomy ? 'px-3.5 py-1.5 text-xs' : 'px-3 py-1 text-[11px]'}`}
           >
             Add
           </button>
