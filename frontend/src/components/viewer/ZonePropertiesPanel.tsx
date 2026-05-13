@@ -133,7 +133,20 @@ function getAestheticAreaFit(
   const selectedVariant = selectedVariantId
     ? variants.find((variant) => variant.id === selectedVariantId)
     : undefined;
-  const candidates = (selectedVariant ? [selectedVariant] : variants).concat(option);
+  const selectedVariantFitCandidate = selectedVariant
+    ? {
+      ...option,
+      ...selectedVariant,
+      suggestedAreaSqm: selectedVariant.suggestedAreaSqm ?? option.suggestedAreaSqm,
+      minAreaSqm: selectedVariant.minAreaSqm ?? option.minAreaSqm,
+      maxAreaSqm: selectedVariant.maxAreaSqm ?? option.maxAreaSqm,
+      suggestedWidth_m: selectedVariant.suggestedWidth_m ?? option.suggestedWidth_m,
+      suggestedDepth_m: selectedVariant.suggestedDepth_m ?? option.suggestedDepth_m,
+      minFloors: selectedVariant.minFloors ?? option.minFloors,
+      maxFloors: selectedVariant.maxFloors ?? option.maxFloors,
+    }
+    : undefined;
+  const candidates = selectedVariantFitCandidate ? [selectedVariantFitCandidate] : variants.concat(option);
 
   const rankedCandidates = candidates
     .map((candidate) => {
