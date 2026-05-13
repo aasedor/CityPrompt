@@ -1404,6 +1404,7 @@ const resolveOptionCategory = (
                   category={selectedOpenSpaceCategory}
                   selectedReferenceId={selectedOpenSpaceReferenceId}
                   selectedVariantId={selectedOpenSpaceVariantId}
+                  areaSqm={area}
                   onChange={applyOpenSpaceAesthetic}
                 />
               </div>
@@ -3055,17 +3056,28 @@ function OpenSpaceAestheticPicker({
   category,
   selectedReferenceId,
   selectedVariantId,
+  areaSqm,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
+  areaSqm?: number;
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? OPENSPACE_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
     : [];
+  const rankedOptions = [...categoryOptions].sort((a, b) => {
+    const aFit = getAestheticAreaFit(a, undefined, areaSqm ?? 0);
+    const bFit = getAestheticAreaFit(b, undefined, areaSqm ?? 0);
+    if (aFit && bFit) return aFit.fitSort - bFit.fitSort;
+    if (aFit) return -1;
+    if (bFit) return 1;
+    return a.label.localeCompare(b.label);
+  });
+  const bestFitCount = rankedOptions.filter((option) => getAestheticAreaFit(option, undefined, areaSqm ?? 0)?.isGoodFit).length;
 
   return (
     <div className="space-y-2">
@@ -3081,9 +3093,16 @@ function OpenSpaceAestheticPicker({
         </div>
       )}
 
-      {categoryOptions.length > 0 && (
+      {rankedOptions.length > 0 && (
+        <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.03] px-2 py-1.5 text-[10px] font-semibold text-primary-950/55">
+          Best fits are sorted first for this drawn zone
+          {bestFitCount > 0 ? ` · ${bestFitCount} likely fit${bestFitCount === 1 ? '' : 's'}` : ''}.
+        </div>
+      )}
+
+      {rankedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {categoryOptions.map((option) => (
+          {rankedOptions.map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3091,6 +3110,7 @@ function OpenSpaceAestheticPicker({
               selectedReferenceId={selectedReferenceId}
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              areaSqm={areaSqm}
             />
           ))}
         </div>
