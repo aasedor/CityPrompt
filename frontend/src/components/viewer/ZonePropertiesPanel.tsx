@@ -788,8 +788,6 @@ const resolveOptionCategory = (
   const selectedOpenSpaceReferenceId = selectedGreenSpaceReferenceId || selectedPlazaReferenceId;
   const selectedOpenSpaceVariantId = (props.green_space_selected_variant_id as string) || (props.plaza_selected_variant_id as string) || undefined;
 
-  const selectedTransportModes = inferTransportModesFromProperties(props);
-
   const applyBuildingDevelopmentType = (nextDevelopmentType: string | undefined) => {
     setProps((p) => {
       const nextProps: SiteZoneProperties = {
@@ -1498,7 +1496,6 @@ const resolveOptionCategory = (
                   category={selectedRoadAestheticCategory}
                   selectedReferenceId={selectedRoadReferenceId}
                   selectedVariantId={(props.road_selected_variant_id as string) || undefined}
-                  selectedModes={selectedTransportModes}
                   onChange={applyRoadAesthetic}
                 />
               </div>
@@ -2674,6 +2671,7 @@ function AestheticOptionCard({
   onSelect,
   modelPreviews,
   areaSqm,
+  showSiteFit = true,
 }: {
   option: DevelopmentAestheticOption;
   value?: string;
@@ -2682,6 +2680,7 @@ function AestheticOptionCard({
   onSelect: (id: string, archetypeImageId?: string, variantId?: string) => void;
   modelPreviews?: ArchetypeModelPreview[];
   areaSqm?: number;
+  showSiteFit?: boolean;
 }) {
   const setLightboxImage = useViewerStore((s) => s.setLightboxImage);
   const sources = buildAestheticImageSources(option);
@@ -2704,7 +2703,7 @@ function AestheticOptionCard({
       ? [selectedArchetype.imageUrl, ...sources.filter((source) => source !== selectedArchetype.imageUrl)]
       : sources.slice(0, Math.max(1, sources.length));
   const isSelected = value === option.id;
-  const areaFit = getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0);
+  const areaFit = showSiteFit ? getAestheticAreaFit(option, isSelected ? selectedVariantId : undefined, areaSqm ?? 0) : null;
 
   // Determine thumbnail slot content: prefer design variants, fall back to lighting variants
   const hasDesignVariants = variants.length > 0;
@@ -2757,45 +2756,49 @@ function AestheticOptionCard({
           onDoubleClick={(activeSource) => openImageLightbox(activeSource, option.label)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-        <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
-          areaFit
-            ? areaFit.isGoodFit
-              ? 'bg-green-100 text-green-700'
-              : 'bg-orange-100 text-orange-700'
-            : 'bg-white/85 text-[#151515]/55'
-        }`}>
-          {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
-        </div>
+        {showSiteFit && (
+          <div className={`absolute right-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-black uppercase shadow-sm ${
+            areaFit
+              ? areaFit.isGoodFit
+                ? 'bg-green-100 text-green-700'
+                : 'bg-orange-100 text-orange-700'
+              : 'bg-white/85 text-[#151515]/55'
+          }`}>
+            {areaFit ? (areaFit.isGoodFit ? 'Good fit' : areaFit.message.split(' ')[0]) : 'No data'}
+          </div>
+        )}
         <div className="absolute inset-x-0 bottom-0 p-2">
           <p className="text-[10px] font-semibold text-white">{option.label}</p>
         </div>
       </div>
       <div className="px-2 py-1.5">
         <p className="line-clamp-2 text-[10px] text-primary-950/50">{option.description}</p>
-        <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
-          areaFit
-            ? areaFit.isGoodFit
-              ? 'border-green-600/25 bg-green-50 text-green-700'
-              : 'border-orange-500/25 bg-orange-50 text-orange-600'
-            : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
-        }`}>
-          <div className="flex items-center justify-between gap-1">
-            <span className="text-[9px] font-black uppercase">Site fit</span>
-            <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
-          </div>
-          <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
-            Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
-            {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
-            {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
-          </div>
-          {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
-            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
-              {areaFit.floorLabel || ''}
-              {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
-              {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+        {showSiteFit && (
+          <div className={`mt-1.5 rounded-md border px-1.5 py-1 ${
+            areaFit
+              ? areaFit.isGoodFit
+                ? 'border-green-600/25 bg-green-50 text-green-700'
+                : 'border-orange-500/25 bg-orange-50 text-orange-600'
+              : 'border-primary-950/[0.08] bg-primary-950/[0.03] text-primary-950/45'
+          }`}>
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[9px] font-black uppercase">Site fit</span>
+              <span className="text-[10px] font-black">{areaFit?.message || 'No area data'}</span>
             </div>
-          )}
-        </div>
+            <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-80">
+              Map {areaFit?.zoneAreaLabel || formatCompactArea(areaSqm ?? 0)}
+              {areaFit?.suggestedAreaLabel ? ` · Suggested ${areaFit.suggestedAreaLabel}` : ''}
+              {!areaFit?.suggestedAreaLabel && areaFit?.typicalRangeLabel ? ` · Typical ${areaFit.typicalRangeLabel}` : ''}
+            </div>
+            {(areaFit?.floorLabel || areaFit?.footprintLabel) && (
+              <div className="mt-0.5 text-[9px] font-semibold leading-tight opacity-75">
+                {areaFit.floorLabel || ''}
+                {areaFit.floorLabel && areaFit.footprintLabel ? ' · ' : ''}
+                {areaFit.footprintLabel ? `Footprint ${areaFit.footprintLabel}` : ''}
+              </div>
+            )}
+          </div>
+        )}
         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
           {modelSlots.map((model, idx) => (
@@ -2981,28 +2984,17 @@ function RoadwayAestheticPicker({
   category,
   selectedReferenceId,
   selectedVariantId,
-  selectedModes,
   onChange,
 }: {
   value?: string;
   category?: string;
   selectedReferenceId?: string;
   selectedVariantId?: string;
-  selectedModes: TransportModeKey[];
   onChange: (next: string | undefined, archetypeImageId?: string, variantId?: string) => void;
 }) {
   const categoryOptions = category
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
     : [];
-
-  const sortedOptions = [...categoryOptions].sort((a, b) => {
-    const aMatchesModes = !a.transportModes || a.transportModes.length === 0
-      || a.transportModes.some((mode) => selectedModes.includes(mode));
-    const bMatchesModes = !b.transportModes || b.transportModes.length === 0
-      || b.transportModes.some((mode) => selectedModes.includes(mode));
-    if (aMatchesModes !== bMatchesModes) return aMatchesModes ? -1 : 1;
-    return a.label.localeCompare(b.label);
-  });
 
   return (
     <div className="space-y-2">
@@ -3018,9 +3010,9 @@ function RoadwayAestheticPicker({
         </div>
       )}
 
-      {sortedOptions.length > 0 && (
+      {categoryOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {sortedOptions.map((option) => (
+          {categoryOptions.map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
@@ -3028,6 +3020,7 @@ function RoadwayAestheticPicker({
               selectedReferenceId={selectedReferenceId}
               selectedVariantId={selectedVariantId}
               onSelect={(id, archetypeImageId, variantId) => onChange(id, archetypeImageId, variantId)}
+              showSiteFit={false}
             />
           ))}
         </div>
