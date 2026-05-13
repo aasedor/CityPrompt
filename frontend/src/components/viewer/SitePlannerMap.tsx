@@ -380,6 +380,8 @@ export function SitePlannerMap({
   streetViewPegmanRef.current = streetViewPegman;
   const pegmanMarkerRef = useRef<mapboxgl.Marker | null>(null);
   const mapLoadedRef = useRef(false);
+  const hasUserInteractedRef = useRef(false);
+  const hasAppliedInitialZoneViewRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
   const [currentPitch, setCurrentPitch] = useState(60);
   const cameraElevation = pitchFromNadirToCameraElevation(currentPitch);
@@ -713,6 +715,36 @@ export function SitePlannerMap({
     source.setData({ type: 'FeatureCollection', features });
   }, [buildZoneFeatures]);
 
+  const getZoneBounds = useCallback((zones: SiteZone[]): mapboxgl.LngLatBounds | null => {
+    const sourceZones = zones.some((zone) => zone.zone_type === 'site_boundary')
+      ? zones.filter((zone) => zone.zone_type === 'site_boundary')
+      : zones;
+    const bounds = new mapboxgl.LngLatBounds();
+    let validPointCount = 0;
+
+    for (const zone of sourceZones) {
+      for (const coord of zone.coordinates ?? []) {
+        if (!Array.isArray(coord) || coord.length < 2) continue;
+        const lng = Number(coord[0]);
+        const lat = Number(coord[1]);
+        if (!Number.isFinite(lng) || !Number.isFinite(lat)) continue;
+        if (Math.abs(lng) > 180 || Math.abs(lat) > 90) continue;
+        bounds.extend([lng, lat]);
+        validPointCount += 1;
+      }
+    }
+
+    if (validPointCount < 2) return null;
+    if (
+      Math.abs(bounds.getEast() - bounds.getWest()) < 1e-10
+      && Math.abs(bounds.getNorth() - bounds.getSouth()) < 1e-10
+    ) {
+      return null;
+    }
+
+    return bounds;
+  }, []);
+
   // Update massing preview layer when massingFeatures prop changes
   useEffect(() => {
     const map = mapRef.current;
@@ -863,8 +895,18 @@ export function SitePlannerMap({
     map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     mapRef.current = map;
     setMapInstance(map);
+    hasUserInteractedRef.current = false;
+    hasAppliedInitialZoneViewRef.current = false;
 
     map.on('pitch', () => setCurrentPitch(Math.round(map.getPitch())));
+    const markUserInteracted = () => { hasUserInteractedRef.current = true; };
+    map.on('mousedown', markUserInteracted);
+    map.on('dragstart', markUserInteracted);
+    map.on('zoomstart', markUserInteracted);
+    map.on('rotatestart', markUserInteracted);
+    map.on('pitchstart', markUserInteracted);
+    map.getCanvas().addEventListener('wheel', markUserInteracted, { passive: true });
+    map.getCanvas().addEventListener('touchstart', markUserInteracted, { passive: true });
 
     map.on('load', () => {
       mapLoadedRef.current = true;
@@ -1593,8 +1635,25 @@ export function SitePlannerMap({
   useEffect(() => {
     if (mapReady) {
       syncZonesToMap(siteZones);
+      if (
+        !hasAppliedInitialZoneViewRef.current
+        && !hasUserInteractedRef.current
+        && siteZones.length > 0
+      ) {
+        hasAppliedInitialZoneViewRef.current = true;
+        const bounds = getZoneBounds(siteZones);
+        if (bounds) {
+          mapRef.current?.fitBounds(bounds, {
+            padding: 96,
+            duration: 0,
+            maxZoom: 18,
+            pitch: 60,
+            bearing: -30,
+          });
+        }
+      }
     }
-  }, [siteZones, mapReady, syncZonesToMap]);
+  }, [siteZones, mapReady, syncZonesToMap, getZoneBounds]);
 
   // ─── Selected zone highlight + vertex handles ───
   useEffect(() => {

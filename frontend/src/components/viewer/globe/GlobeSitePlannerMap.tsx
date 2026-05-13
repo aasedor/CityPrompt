@@ -80,7 +80,6 @@ function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined):
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
-const PROJECT_ZONE_FOCUS_THRESHOLD_METERS = 1000;
 const VIEWPORT_FIT_INITIAL_CAMERA_MULTIPLIER = 2;
 const DRAWING_FILL_LIFT_METERS = 0.3;
 const DRAWING_OUTLINE_LIFT_METERS = 0.6;
@@ -1328,15 +1327,10 @@ export function GlobeSitePlannerMap({
       lat: focusLat,
       lng: focusLng,
       maxDistMeters,
-      distanceFromProjectMeters: haversineDistance([_longitude, _latitude], [focusLng, focusLat]),
     };
-  }, [_latitude, _longitude, projectZonePoints]);
+  }, [projectZonePoints]);
 
-  const shouldFitProjectZones = Boolean(
-    !preferredView
-    && projectZoneFocus
-    && projectZoneFocus.distanceFromProjectMeters <= PROJECT_ZONE_FOCUS_THRESHOLD_METERS,
-  );
+  const shouldFitProjectZones = Boolean(!preferredView && projectZoneFocus);
 
   const focusLatitude = preferredView?.latitude ?? _latitude;
   const focusLongitude = preferredView?.longitude ?? _longitude;
