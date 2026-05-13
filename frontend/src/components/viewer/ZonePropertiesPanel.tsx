@@ -2995,10 +2995,13 @@ function RoadwayAestheticPicker({
     ? ROADWAY_AESTHETIC_OPTIONS.filter((option) => option.categoryId === category)
     : [];
 
-  const filteredOptions = categoryOptions.filter((option) => {
-    if (option.id === 'other') return true;
-    if (!option.transportModes || option.transportModes.length === 0) return true;
-    return option.transportModes.some((mode) => selectedModes.includes(mode));
+  const sortedOptions = [...categoryOptions].sort((a, b) => {
+    const aMatchesModes = !a.transportModes || a.transportModes.length === 0
+      || a.transportModes.some((mode) => selectedModes.includes(mode));
+    const bMatchesModes = !b.transportModes || b.transportModes.length === 0
+      || b.transportModes.some((mode) => selectedModes.includes(mode));
+    if (aMatchesModes !== bMatchesModes) return aMatchesModes ? -1 : 1;
+    return a.label.localeCompare(b.label);
   });
 
   return (
@@ -3009,15 +3012,15 @@ function RoadwayAestheticPicker({
         </div>
       )}
 
-      {category && filteredOptions.length === 0 && (
+      {category && categoryOptions.length === 0 && (
         <div className="rounded border border-primary-950/[0.08] bg-primary-950/[0.04] px-2 py-2 text-[11px] text-primary-950/60">
-          No transportation typologies match the selected mode combination.
+          No transportation typologies found for this category.
         </div>
       )}
 
-      {filteredOptions.length > 0 && (
+      {sortedOptions.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
-          {filteredOptions.map((option) => (
+          {sortedOptions.map((option) => (
             <AestheticOptionCard
               key={option.id}
               option={option}
