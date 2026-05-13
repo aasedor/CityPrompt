@@ -219,11 +219,6 @@ function getAestheticAreaFit(
       : undefined,
     floorLabel,
     footprintLabel,
-    fullWarning: best.tooSmall
-      ? 'This zone may render cramped for the selected archetype.'
-      : best.tooLarge
-        ? 'This zone may render sparse for the selected archetype.'
-        : undefined,
   };
 }
 
@@ -2797,15 +2792,6 @@ function AestheticOptionCard({
             </div>
           )}
         </div>
-        {isSelected && areaFit?.fullWarning && (
-          <div className={`mt-1 rounded-md border px-1.5 py-1 text-[9px] font-semibold leading-tight ${
-            areaFit.isGoodFit
-              ? 'border-green-600/25 bg-green-50 text-green-700'
-              : 'border-orange-500/25 bg-orange-50 text-orange-600'
-          }`}>
-            {areaFit.fullWarning}
-          </div>
-        )}
         <div className="mt-1.5 grid grid-cols-2 gap-1.5">
           {/* Model preview thumbnails (from real Meshy-generated buildings) */}
           {modelSlots.map((model, idx) => (
