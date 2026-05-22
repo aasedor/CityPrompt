@@ -11075,724 +11075,1591 @@
       "districtKit": null
     },
     {
-        "id": "academic_courtyard",
-        "title": "Academic Courtyard",
-        "spaceType": "plaza",
-        "aestheticCategory": "civic_plazas",
-        "description": "A Academic Courtyard.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "civic-plazas"
+      "id": "academic_courtyard",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 38,
+      "minWidth_m": 25,
+      "maxWidth_m": 60,
+      "minDepth_m": 25,
+      "maxDepth_m": 55,
+      "minAreaSqm": 800,
+      "maxAreaSqm": 3000,
+      "aspectRatio": "1:1",
+      "shape": "rectangular",
+      "title": "Academic Courtyard",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "A small enclosed courtyard nestled between academic buildings, offering a quiet outdoor room for study and gathering. Paved seating areas, raised planters of ornamental grasses and small trees, and a sculptural feature or canopy fill a compact rectangle framed on most sides by building walls, threaded by short paths between entrances.",
+      "generationTags": ["academic", "courtyard", "civic-plazas", "campus", "seating", "planting"],
+      "styleProfile": {
+        "landscapeCharacter": "A small academic courtyard seen from above, framed on most sides by the roofs and walls of surrounding buildings. The compact ground plane mixes paved seating terraces with raised planters of ornamental grasses, perennials, and a few small multi-stem trees. Short paths cross between building entrances, and a focal element — a sculptural screen, a glass canopy, or a cluster of timber seats — anchors the centre. The space reads as an intimate paved-and-planted room rather than open parkland.",
+        "pavingType": "Stone or concrete paving, cobble bands, timber decking accents",
+        "plantingType": "Raised planters of ornamental grasses and perennials, small multi-stem trees",
+        "seatingRealm": "Built-in benches, movable chairs, and ledge seating around planters",
+        "waterFeatures": "Occasional small fountain or rill; often none",
+        "opennessEnclosure": "Strong enclosure — a small outdoor room walled by surrounding buildings"
+      },
+      "prompt": {
+        "subject": "Aerial view of a small academic courtyard enclosed by buildings, with paving, planters, and seating",
+        "details": [
+          "A compact paved courtyard framed by surrounding building walls",
+          "Raised planters of ornamental grasses, perennials, and small multi-stem trees",
+          "Short paths crossing between building entrances",
+          "A focal element — sculptural screen, glass canopy, or timber seating cluster",
+          "Built-in benches and ledge seating around the planters"
         ],
-        "variants": [
-            {
-                "id": "academic_courtyard_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Academic Courtyard — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_0.png"
-            },
-            {
-                "id": "academic_courtyard_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Academic Courtyard — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_1.png"
-            },
-            {
-                "id": "academic_courtyard_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Academic Courtyard — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_2.png"
-            },
-            {
-                "id": "academic_courtyard_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Academic Courtyard — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_3.png"
-            }
+        "negative": [
+          "No large open lawns or sports fields",
+          "No vehicle roads or parking through the space",
+          "No ploughed fields or wild meadow",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.2,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "courtyard_trees"
+      },
+      "suggestedAreaSqm": 1500,
+      "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/hero.png",
+      "variants": [
+        {
+          "id": "academic_courtyard_variant_0",
+          "label": "Modern Planted Courtyard",
+          "color": "#8B6914",
+          "description": "A contemporary courtyard of crisp paving and raised planters brimming with ornamental grasses and perennials, with built-in benches beside a modern glazed academic building. A bright, garden-forward study court.",
+          "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_0.png",
+          "minAreaSqm": 800,
+          "maxAreaSqm": 2500,
+          "suggestedAreaSqm": 1500
+        },
+        {
+          "id": "academic_courtyard_variant_1",
+          "label": "Corten Hardscape Courtyard",
+          "color": "#5B7065",
+          "description": "A sleek hardscape courtyard with weathering-steel planters, broad stone paving, and minimalist benches against a brick academic facade. The tightest, most architectural of the set.",
+          "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_1.png",
+          "minAreaSqm": 800,
+          "maxAreaSqm": 2000,
+          "suggestedAreaSqm": 1200
+        },
+        {
+          "id": "academic_courtyard_variant_2",
+          "label": "Glass-Canopy Courtyard",
+          "color": "#6B8A4A",
+          "description": "A sheltered courtyard part-covered by a glazed pergola canopy, with cobble-and-stone paving, lush planting beds, and seating tucked beneath the structure beside brick buildings. The largest and most enclosed.",
+          "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_2.png",
+          "minAreaSqm": 1000,
+          "maxAreaSqm": 3000,
+          "suggestedAreaSqm": 1800
+        },
+        {
+          "id": "academic_courtyard_variant_3",
+          "label": "Cultural Timber-Screen Courtyard",
+          "color": "#8A6B4A",
+          "description": "A culturally themed courtyard anchored by a carved timber screen wall, with timber-log seating, cobblestone and gravel ground patterns, and naturalistic planting beside a brick academic building. A reflective, story-rich space.",
+          "thumbnailUrl": "/archetypes/openspaces/academic-courtyard/variant_3.png",
+          "minAreaSqm": 900,
+          "maxAreaSqm": 2500,
+          "suggestedAreaSqm": 1500
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic small academic courtyard: a compact paved court with raised planters of ornamental grasses and small trees, built-in benches, short connecting paths, and a focal screen, canopy, or seating cluster, framed by the surrounding building walls. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, soft shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a small paved rectangle with rectangular planters of greenery, a few small tree canopies, short paths, and a central feature, tightly framed by surrounding building roofs. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, open lawn, sports field, roads, parking, wild meadow"
+      },
+      "districtKit": null
     },
     {
-        "id": "airport_airfield",
-        "title": "Airport Airfield",
-        "spaceType": "plaza",
-        "aestheticCategory": "parking_areas",
-        "description": "A Airport Airfield.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/airport-airfield/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "parking-areas"
+      "id": "airport_airfield",
+      "suggestedWidth_m": 2200,
+      "suggestedDepth_m": 1360,
+      "minWidth_m": 550,
+      "maxWidth_m": 7500,
+      "minDepth_m": 450,
+      "maxDepth_m": 6700,
+      "minAreaSqm": 250000,
+      "maxAreaSqm": 50000000,
+      "aspectRatio": "1.6:1",
+      "shape": "rectangular",
+      "title": "Airport Airfield",
+      "aestheticCategory": "transport_infrastructure",
+      "spaceType": "plaza",
+      "description": "An airport or airfield: long paved runways and taxiways serving aircraft parked on concrete aprons beside terminal buildings and hangars. Marked runway thresholds and centrelines, taxiway networks, fuel and service areas, and landside roads and car parks complete the complex. Scale ranges from a small general-aviation field with a single short strip to a major multi-runway commercial hub.",
+      "generationTags": ["airport", "airfield", "aviation", "runway", "terminal", "transport-infrastructure"],
+      "styleProfile": {
+        "landscapeCharacter": "An airport seen from roughly 200m drone altitude. One or more long grey runways with painted thresholds, numbers, and dashed centrelines stretch across the site, linked by a network of taxiways to broad concrete parking aprons. Aircraft sit nose-in at terminal gates or scattered on the apron, with terminal buildings, control facilities, and rows of hangars alongside. Landside, access roads, multi-level car parks, and surface lots feed the terminals. Mown grass infill fills the spaces between paved surfaces, and the whole reads as a vast flat expanse of runway, apron, and building.",
+        "pavingType": "Asphalt and concrete runways, taxiways, and aprons; landside roads and car parks",
+        "plantingType": "Mown grass infield and verges between paved surfaces; minimal trees airside",
+        "seatingRealm": "Terminal forecourt and landside plaza seating; none airside",
+        "waterFeatures": "Drainage channels and balancing ponds at the edges; otherwise none",
+        "opennessEnclosure": "A vast open paved expanse of runway and apron framed by terminals and hangars"
+      },
+      "prompt": {
+        "subject": "Aerial view of an airport with runways, taxiways, aprons, terminals, and parked aircraft",
+        "details": [
+          "Long grey runways with painted thresholds, numbers, and dashed centrelines",
+          "A network of taxiways linking runways to broad concrete parking aprons",
+          "Aircraft parked nose-in at terminal gates and on the apron",
+          "Terminal buildings, control facilities, and rows of hangars",
+          "Landside access roads, multi-level car parks, and mown grass infill"
         ],
-        "variants": [
-            {
-                "id": "airport_airfield_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Airport Airfield — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_0.png"
-            },
-            {
-                "id": "airport_airfield_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Airport Airfield — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_1.png"
-            },
-            {
-                "id": "airport_airfield_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Airport Airfield — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_2.png"
-            },
-            {
-                "id": "airport_airfield_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Airport Airfield — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_3.png"
-            }
+        "negative": [
+          "No green parkland or gardens as the main subject",
+          "No sports fields or plazas",
+          "No dense housing across the airfield",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "none",
+        "tree_density": 0.02,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "none"
+      },
+      "suggestedAreaSqm": 3000000,
+      "thumbnailUrl": "/archetypes/openspaces/airport-airfield/hero.png",
+      "variants": [
+        {
+          "id": "airport_airfield_variant_0",
+          "label": "Major Hub Airport",
+          "color": "#8B6914",
+          "description": "A major commercial hub: multiple long runways and a dense taxiway network feeding sprawling terminal piers with jet bridges and dozens of parked airliners, ringed by car parks and access roads against the city skyline. The largest scale — a regional gateway.",
+          "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_0.png",
+          "minAreaSqm": 10000000,
+          "maxAreaSqm": 50000000,
+          "suggestedAreaSqm": 25000000
+        },
+        {
+          "id": "airport_airfield_variant_1",
+          "label": "Regional Airport",
+          "color": "#5B7065",
+          "description": "A regional airport: a single runway and apron serving a modern terminal with a handful of regional jets and turboprops nose-in at the gates, with a landside plaza and parking. A mid-scale civic airport.",
+          "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_1.png",
+          "minAreaSqm": 1500000,
+          "maxAreaSqm": 8000000,
+          "suggestedAreaSqm": 3000000
+        },
+        {
+          "id": "airport_airfield_variant_2",
+          "label": "General-Aviation Airfield",
+          "color": "#6B8A4A",
+          "description": "A small general-aviation airfield: a short runway and apron lined with rows of hangars and parked light aircraft beside a low terminal building, edged by grass and a modest car park. The smallest scale.",
+          "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_2.png",
+          "minAreaSqm": 200000,
+          "maxAreaSqm": 1500000,
+          "suggestedAreaSqm": 500000
+        },
+        {
+          "id": "airport_airfield_variant_3",
+          "label": "Mid-Size Airport",
+          "color": "#8A6B4A",
+          "description": "A mid-size airport: a long runway and taxiway loop serving a substantial terminal with several parked jets on the apron, control facilities, hangars, and structured parking against the skyline. A busy secondary airport.",
+          "thumbnailUrl": "/archetypes/openspaces/airport-airfield/variant_3.png",
+          "minAreaSqm": 3000000,
+          "maxAreaSqm": 15000000,
+          "suggestedAreaSqm": 6000000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic airport: long grey runways with painted thresholds and dashed centrelines, a taxiway network feeding broad concrete aprons, aircraft parked nose-in at terminal gates and on the apron, terminal buildings, hangars, and landside access roads and car parks, with mown grass infill between paved surfaces. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: long grey runway strips with painted markings, branching taxiways, broad concrete aprons with small parked aircraft, terminal and hangar roofs, and car parks, with grass infill between. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, green parkland, gardens, sports fields, plazas, dense housing"
+      },
+      "districtKit": null
     },
     {
-        "id": "athletics_precinct_sports_fields",
-        "title": "Athletics Precinct Sports Fields",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Athletics Precinct Sports Fields.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "athletics_precinct_sports_fields",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 160,
+      "minWidth_m": 170,
+      "maxWidth_m": 350,
+      "minDepth_m": 105,
+      "maxDepth_m": 230,
+      "minAreaSqm": 18000,
+      "maxAreaSqm": 80000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
+      "title": "Athletics Precinct Sports Fields",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "An outdoor athletics and playing-field precinct: a cluster of full-size rectangular sports pitches and oval fields served by a clubhouse or grandstand, floodlight masts, and paved entry plazas. Mown turf fields with crisp white markings dominate, edged by spectator seating, warm-up areas, and perimeter trees, with a brick or modern fieldhouse anchoring one end.",
+      "generationTags": ["athletics", "sports-recreation", "playing-fields", "grandstand", "oval", "soccer-pitch"],
+      "styleProfile": {
+        "landscapeCharacter": "An outdoor sports-field precinct seen from roughly 80m drone altitude. Two or more full-size rectangular playing pitches — or a large oval field — read as bright green panels with crisp white line markings, a regulation soccer pitch being a 105x68m rectangle for scale. A grandstand or low clubhouse with a long shadow sits along one edge, and tall floodlight masts throw thin lines across the turf. Paved entry plazas with benches and scattered trees border the fields, and short warm-up strips and ranks of parked cars fill the perimeter.",
+        "pavingType": "Concrete entry plazas, asphalt access lanes and parking, synthetic warm-up surfacing",
+        "plantingType": "Mown sports turf, plaza shade trees, low perimeter planting beds",
+        "seatingRealm": "Grandstand and bleacher seating along the main field; plaza benches at the clubhouse",
+        "waterFeatures": "None beyond drainage; no ornamental water",
+        "opennessEnclosure": "Open mown fields framed by a grandstand, floodlight masts, and perimeter trees"
+      },
+      "prompt": {
+        "subject": "Aerial view of an outdoor athletics precinct with multiple playing fields, a grandstand, and floodlights",
+        "details": [
+          "Full-size rectangular pitches or a large oval field as bright green panels with white markings (a 105x68m soccer pitch for scale)",
+          "A grandstand or low brick clubhouse with a long hard shadow along one edge",
+          "Tall floodlight masts casting thin shadows across the turf",
+          "Paved entry plazas with benches and scattered shade trees",
+          "Warm-up strips and ranks of parked cars at the perimeter"
         ],
-        "variants": [
-            {
-                "id": "athletics_precinct_sports_fields_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Athletics Precinct Sports Fields — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_0.png"
-            },
-            {
-                "id": "athletics_precinct_sports_fields_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Athletics Precinct Sports Fields — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_1.png"
-            },
-            {
-                "id": "athletics_precinct_sports_fields_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Athletics Precinct Sports Fields — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_2.png"
-            },
-            {
-                "id": "athletics_precinct_sports_fields_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Athletics Precinct Sports Fields — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_3.png"
-            }
+        "negative": [
+          "No indoor arena domes as the main subject",
+          "No ornamental flower gardens or playground equipment",
+          "No open water or water-park features",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "plaza_trees"
+      },
+      "suggestedAreaSqm": 40000,
+      "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/hero.png",
+      "variants": [
+        {
+          "id": "athletics_precinct_sports_fields_variant_0",
+          "label": "Playing Fields & Clubhouse",
+          "color": "#8B6914",
+          "description": "Several full-size rectangular playing pitches in mown green turf served by a low brick clubhouse and a short access drive, with simple rail fencing and a few perimeter trees. A neighbourhood or club-level sports ground of roughly five to ten acres.",
+          "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_0.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 45000,
+          "suggestedAreaSqm": 30000
+        },
+        {
+          "id": "athletics_precinct_sports_fields_variant_1",
+          "label": "University Grandstand",
+          "color": "#5B7065",
+          "description": "A university athletics stadium: a main pitch ringed by a cantilevered grandstand roof and tall floodlight masts, with branded perimeter fencing, secondary warm-up fields, and a paved forecourt. The largest scale — a competition venue of fifteen to twenty acres.",
+          "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_1.png",
+          "minAreaSqm": 40000,
+          "maxAreaSqm": 80000,
+          "suggestedAreaSqm": 60000
+        },
+        {
+          "id": "athletics_precinct_sports_fields_variant_2",
+          "label": "Campus Athletics Precinct",
+          "color": "#6B8A4A",
+          "description": "A campus athletics precinct combining open playing fields and an oval with a domed fieldhouse, modern academic buildings alongside, and a paved plaza threaded with planting and paths. A medium-large institutional facility of around ten acres.",
+          "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_2.png",
+          "minAreaSqm": 30000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 45000
+        },
+        {
+          "id": "athletics_precinct_sports_fields_variant_3",
+          "label": "Open Oval & Pavilion",
+          "color": "#8A6B4A",
+          "description": "A single large green oval playing field served by a low modern pavilion and a paved plaza with benches and trees, set against the city skyline. A medium-scale district sports ground of a few acres.",
+          "thumbnailUrl": "/archetypes/openspaces/athletics-precinct-sports-fields/variant_3.png",
+          "minAreaSqm": 18000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 25000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic outdoor athletics precinct. Two or more full-size green playing pitches or a large oval field with crisp white markings, a grandstand or low brick clubhouse along one edge, tall floodlight masts, paved entry plazas with benches and trees, and ranks of parked cars at the perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: bright green rectangular pitches or an oval field with white line markings, the long roof of a grandstand or clubhouse, thin floodlight-mast shadows, paved plazas, and rows of small parked cars at the edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, indoor arena dome, ornamental flower gardens, playground, open water"
+      },
+      "districtKit": null
     },
     {
-        "id": "campus_central_quad",
-        "title": "Campus Central Quad",
-        "spaceType": "plaza",
-        "aestheticCategory": "civic_plazas",
-        "description": "A Campus Central Quad.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "civic-plazas"
+      "id": "campus_central_quad",
+      "suggestedWidth_m": 150,
+      "suggestedDepth_m": 135,
+      "minWidth_m": 90,
+      "maxWidth_m": 280,
+      "minDepth_m": 80,
+      "maxDepth_m": 230,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 50000,
+      "aspectRatio": "1.1:1",
+      "shape": "rectangular",
+      "title": "Campus Central Quad",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "The central open quadrangle of a university or institutional campus, framed by academic buildings and serving as its social heart. A generous lawn or planted ground plane is crossed by gathering paths, shaded by trees, and dotted with seating, with a focal lawn, fountain, or garden at the centre. Character ranges from naturalized meadow to formal collegiate green to modern hardscape plaza.",
+      "generationTags": ["campus", "quad", "civic-plazas", "lawn", "university", "gathering"],
+      "styleProfile": {
+        "landscapeCharacter": "A campus central quad seen from roughly 60m drone altitude, framed by the roofs of surrounding academic buildings. A broad central ground plane — open lawn, meadow planting, or paved plaza — is crossed by direct desire-line paths between building entrances. Rows and clusters of mature trees cast canopy shadows along the edges, benches line the walks, and a focal element such as a circular lawn, fountain, or garden bed anchors the middle. The quad reads as a calm green or paved room at the campus core.",
+        "pavingType": "Stone and concrete plaza paving, decomposed-granite or paved cross paths",
+        "plantingType": "Open lawn or meadow, perimeter and allée trees, seasonal planting beds",
+        "seatingRealm": "Benches along paths, lawn edges for informal sitting, plaza seat-walls",
+        "waterFeatures": "Central fountain or reflecting basin in formal and modern variants",
+        "opennessEnclosure": "An open central space firmly enclosed by surrounding campus buildings"
+      },
+      "prompt": {
+        "subject": "Aerial view of a campus central quad framed by academic buildings, with lawn, paths, and trees",
+        "details": [
+          "A broad central lawn, meadow, or paved plaza at the campus core",
+          "Direct cross paths connecting building entrances",
+          "Clusters and rows of mature trees casting canopy shadows along the edges",
+          "Benches lining the walks and lawn edges",
+          "A focal circular lawn, fountain, or garden bed at the centre"
         ],
-        "variants": [
-            {
-                "id": "campus_central_quad_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Campus Central Quad — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_0.png"
-            },
-            {
-                "id": "campus_central_quad_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Campus Central Quad — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_1.png"
-            },
-            {
-                "id": "campus_central_quad_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Campus Central Quad — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_2.png"
-            },
-            {
-                "id": "campus_central_quad_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Campus Central Quad — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_3.png"
-            }
+        "negative": [
+          "No sports pitches or running tracks",
+          "No vehicle roads or parking lots through the quad",
+          "No dense buildings inside the open space",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "allee_and_canopy_trees"
+      },
+      "suggestedAreaSqm": 20000,
+      "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/hero.png",
+      "variants": [
+        {
+          "id": "campus_central_quad_variant_0",
+          "label": "Naturalized Meadow Quad",
+          "color": "#8B6914",
+          "description": "A naturalized quad where native meadow grasses and wildflowers replace mown lawn, threaded by decomposed-granite paths, boulders, and shade trees, framed by campus buildings. An ecological, low-input central green.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_0.png",
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 35000,
+          "suggestedAreaSqm": 20000
+        },
+        {
+          "id": "campus_central_quad_variant_1",
+          "label": "Modern Plaza Quad",
+          "color": "#5B7065",
+          "description": "A contemporary hardscape quad of broad stone paving, raised planters, and a central fountain, framed by modern glazed academic buildings. The most urban and built-up of the set.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_1.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 25000,
+          "suggestedAreaSqm": 15000
+        },
+        {
+          "id": "campus_central_quad_variant_2",
+          "label": "Garden Pavilion Quad",
+          "color": "#6B8A4A",
+          "description": "A garden quad anchored by a glass pavilion, with mixed seasonal and evergreen planting, paved walks, and clustered seating among the beds, framed by campus buildings. A four-season social green.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_2.png",
+          "minAreaSqm": 14000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 24000
+        },
+        {
+          "id": "campus_central_quad_variant_3",
+          "label": "Formal Collegiate Quad",
+          "color": "#8A6B4A",
+          "description": "A formal collegiate quadrangle: a manicured circular lawn and garden with a central feature, radiating paths, and framing allée trees, enclosed by traditional academic buildings. The largest and most ceremonial.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-central-quad/variant_3.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 50000,
+          "suggestedAreaSqm": 35000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic campus central quad: a broad central lawn, meadow, or paved plaza crossed by direct paths between building entrances, edged by clusters of mature trees, lined with benches, and anchored by a central lawn, fountain, or garden, framed by the surrounding campus buildings. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a central green or paved rectangle crossed by paths, rows of round tree canopies along the edges, and a central circular lawn, fountain, or garden, framed by surrounding building roofs. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, sports pitches, running track, roads, parking lots, dense buildings"
+      },
+      "districtKit": null
     },
     {
-        "id": "campus_pedestrian_spine",
-        "title": "Campus Pedestrian Spine",
-        "spaceType": "plaza",
-        "aestheticCategory": "civic_plazas",
-        "description": "A Campus Pedestrian Spine.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "civic-plazas"
+      "id": "campus_pedestrian_spine",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 240,
+      "minWidth_m": 15,
+      "maxWidth_m": 40,
+      "minDepth_m": 150,
+      "maxDepth_m": 450,
+      "minAreaSqm": 3000,
+      "maxAreaSqm": 15000,
+      "aspectRatio": "1:8",
+      "shape": "rectangular",
+      "title": "Campus Pedestrian Spine",
+      "aestheticCategory": "civic_plazas",
+      "spaceType": "plaza",
+      "description": "A long linear pedestrian promenade forming the main movement corridor of a campus or district, running between flanking buildings. A broad central walkway is lined with street trees, planting strips, benches, and lighting, occasionally widening into small plazas or punctuated by a pavilion or pergola. Character ranges from a green planted spine to an urban paved street to a garden walk.",
+      "generationTags": ["campus", "pedestrian-spine", "civic-plazas", "promenade", "linear", "walkway"],
+      "styleProfile": {
+        "landscapeCharacter": "A linear campus pedestrian spine seen from above, a long ribbon running between the roofs of flanking buildings. A broad paved central walkway runs the full length, edged by rows of street trees, planting strips or rain gardens, benches, and bollard lighting. The corridor occasionally widens into a small node or plaza and may be punctuated by a glass pavilion or a pergola structure. The overall read is a strong directional axis of paving and tree lines.",
+        "pavingType": "Broad concrete or stone walkway, cobble bands, accessible level surface",
+        "plantingType": "Street-tree allées, rain-garden and perennial planting strips along the edges",
+        "seatingRealm": "Benches and seat-walls along the route, clustered at widened nodes",
+        "waterFeatures": "Rain gardens and bioswales in green variants; otherwise none",
+        "opennessEnclosure": "A linear corridor enclosed by flanking buildings and tree lines"
+      },
+      "prompt": {
+        "subject": "Aerial view of a long linear campus pedestrian spine lined with trees and benches between buildings",
+        "details": [
+          "A broad paved central walkway running the full length of the corridor",
+          "Rows of street trees and planting strips or rain gardens along both edges",
+          "Benches and bollard lighting lining the route",
+          "Occasional widening into a small plaza node",
+          "A glass pavilion or pergola punctuating the spine"
         ],
-        "variants": [
-            {
-                "id": "campus_pedestrian_spine_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Campus Pedestrian Spine — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_0.png"
-            },
-            {
-                "id": "campus_pedestrian_spine_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Campus Pedestrian Spine — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_1.png"
-            },
-            {
-                "id": "campus_pedestrian_spine_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Campus Pedestrian Spine — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_2.png"
-            },
-            {
-                "id": "campus_pedestrian_spine_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Campus Pedestrian Spine — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_3.png"
-            }
+        "negative": [
+          "No vehicle traffic lanes or parking",
+          "No large open lawns or sports fields",
+          "No winding informal park paths",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "street_tree_allee"
+      },
+      "suggestedAreaSqm": 7000,
+      "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/hero.png",
+      "variants": [
+        {
+          "id": "campus_pedestrian_spine_variant_0",
+          "label": "Green Planted Spine",
+          "color": "#8B6914",
+          "description": "A green pedestrian spine where the central walk is flanked by generous rain-garden and meadow planting strips, dense street trees, and benches between campus buildings. The leafiest, most ecological corridor.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_0.png",
+          "minAreaSqm": 4000,
+          "maxAreaSqm": 14000,
+          "suggestedAreaSqm": 8000
+        },
+        {
+          "id": "campus_pedestrian_spine_variant_1",
+          "label": "Urban Paved Spine",
+          "color": "#5B7065",
+          "description": "An urban pedestrian street: a broad paved promenade between mixed-use buildings, with bollards, street trees in grates, and benches. The tightest, most hardscape corridor.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_1.png",
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 12000,
+          "suggestedAreaSqm": 6000
+        },
+        {
+          "id": "campus_pedestrian_spine_variant_2",
+          "label": "Pavilion Spine",
+          "color": "#6B8A4A",
+          "description": "A pedestrian spine punctuated by a glass pavilion or shelter at a widened node, with seasonal trees, paved walks, and clustered benches between brick campus buildings. A corridor with a social anchor.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_2.png",
+          "minAreaSqm": 4000,
+          "maxAreaSqm": 13000,
+          "suggestedAreaSqm": 7000
+        },
+        {
+          "id": "campus_pedestrian_spine_variant_3",
+          "label": "Pergola Garden Spine",
+          "color": "#8A6B4A",
+          "description": "A garden walk where a pergola or trellis runs above the path amid planted beds and cobble-and-stone paving between buildings. The most intimate, garden-like corridor.",
+          "thumbnailUrl": "/archetypes/openspaces/campus-pedestrian-spine/variant_3.png",
+          "minAreaSqm": 3000,
+          "maxAreaSqm": 10000,
+          "suggestedAreaSqm": 5000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic linear campus pedestrian spine: a broad paved central walkway running the length of the corridor, lined with rows of street trees, planting strips or rain gardens, benches, and lighting, occasionally widening into a small plaza node or punctuated by a glass pavilion or pergola, between the flanking buildings. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a long straight paved ribbon flanked by two rows of round tree canopies and planting strips, with bench dots and a small widened node, between the surrounding building roofs. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, vehicle lanes, parking, large open lawn, sports field, winding park paths"
+      },
+      "districtKit": null
     },
     {
-        "id": "constructed_wetland_eco_park",
-        "title": "Constructed Wetland Eco Park",
-        "spaceType": "park",
-        "aestheticCategory": "ecological_resilience",
-        "description": "A Constructed Wetland Eco Park.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "ecological-resilience"
+      "id": "constructed_wetland_eco_park",
+      "suggestedWidth_m": 230,
+      "suggestedDepth_m": 150,
+      "minWidth_m": 120,
+      "maxWidth_m": 400,
+      "minDepth_m": 85,
+      "maxDepth_m": 250,
+      "minAreaSqm": 10000,
+      "maxAreaSqm": 100000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
+      "title": "Constructed Wetland Eco Park",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A constructed wetland park that treats and slows water while creating habitat and public space. Shallow planted cells of reeds and sedges, open ponds, and meandering channels are linked by boardwalks and viewing decks, framed by meadow banks and a nature pavilion. From above it reads as a mosaic of water, reed bed, and path winding between built edges.",
+      "generationTags": ["wetland", "ecological-resilience", "water", "boardwalk", "habitat", "bioremediation"],
+      "styleProfile": {
+        "landscapeCharacter": "A constructed wetland eco-park seen from roughly 80m drone altitude. Shallow planted treatment cells of bright-green reeds and sedges alternate with open dark ponds and slow meandering channels, the water reading as irregular reflective shapes. Timber boardwalks and viewing decks thread across and around the cells, with meadow and shrub banks between. A nature pavilion or interpretive building sits at one edge, and waterfowl dot the open water. The whole reads as a wet mosaic of reed, pond, and walkway.",
+        "pavingType": "Timber boardwalks and viewing decks, decomposed-granite perimeter paths",
+        "plantingType": "Emergent reeds and sedges, wet meadow, bank shrubs, scattered trees",
+        "seatingRealm": "Deck and boardwalk overlooks, benches at the pavilion and along paths",
+        "waterFeatures": "Planted treatment cells, open ponds, and meandering channels throughout",
+        "opennessEnclosure": "Open water and reed beds loosely framed by meadow banks and built edges"
+      },
+      "prompt": {
+        "subject": "Aerial view of a constructed wetland eco-park with reed beds, ponds, and boardwalks",
+        "details": [
+          "Shallow planted treatment cells of bright-green reeds and sedges",
+          "Open dark ponds and slow meandering channels as reflective shapes",
+          "Timber boardwalks and viewing decks threading across the cells",
+          "Meadow and shrub banks between the water bodies",
+          "A nature pavilion at one edge and waterfowl on the open water"
         ],
-        "variants": [
-            {
-                "id": "constructed_wetland_eco_park_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Constructed Wetland Eco Park — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png"
-            },
-            {
-                "id": "constructed_wetland_eco_park_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Constructed Wetland Eco Park — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png"
-            },
-            {
-                "id": "constructed_wetland_eco_park_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Constructed Wetland Eco Park — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png"
-            },
-            {
-                "id": "constructed_wetland_eco_park_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Constructed Wetland Eco Park — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png"
-            }
+        "negative": [
+          "No swimming pools or formal water-park features",
+          "No mown sports fields or hard plazas dominating",
+          "No dense buildings across the wetland",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.25,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "bank_trees"
+      },
+      "suggestedAreaSqm": 35000,
+      "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/hero.png",
+      "variants": [
+        {
+          "id": "constructed_wetland_eco_park_variant_0",
+          "label": "Urban Boardwalk Wetland",
+          "color": "#8B6914",
+          "description": "A compact urban wetland park: boardwalks zig-zagging over reed beds and lily ponds, planted terraces and seating, and a timber pavilion, hemmed by city buildings. The most urban and intimate of the set.",
+          "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_0.png",
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 20000
+        },
+        {
+          "id": "constructed_wetland_eco_park_variant_1",
+          "label": "Tidal Treatment Wetland",
+          "color": "#5B7065",
+          "description": "A large tidal treatment wetland: a water-control weir feeding broad salt-marsh channels and grass flats, crossed by a long boardwalk, against a city skyline. The largest scale — a regional water-treatment landscape.",
+          "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_1.png",
+          "minAreaSqm": 40000,
+          "maxAreaSqm": 100000,
+          "suggestedAreaSqm": 70000
+        },
+        {
+          "id": "constructed_wetland_eco_park_variant_2",
+          "label": "Wildlife Wetland",
+          "color": "#6B8A4A",
+          "description": "A naturalistic wildlife wetland: reed beds and open ponds alive with waterfowl, a timber viewing deck, and wet meadow banks, edged by low suburban development. A habitat-first medium-scale wetland.",
+          "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_2.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 35000
+        },
+        {
+          "id": "constructed_wetland_eco_park_variant_3",
+          "label": "Eco-Park with Nature Center",
+          "color": "#8A6B4A",
+          "description": "A wetland eco-park anchored by a brick nature center with rooftop solar, fronting bioswales, planted basins, and looping interpretive paths among the cells. A medium-scale education-focused landscape.",
+          "thumbnailUrl": "/archetypes/openspaces/constructed-wetland-eco-park/variant_3.png",
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 50000,
+          "suggestedAreaSqm": 30000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic constructed wetland eco-park: shallow planted cells of bright-green reeds and sedges alternating with open dark ponds and meandering channels, timber boardwalks and viewing decks threading across, meadow banks, a nature pavilion at one edge, and waterfowl on the water. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, soft reflections, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: an irregular mosaic of reflective ponds and channels, bright reed-bed patches, thin boardwalk lines crossing the water, meadow banks, and a small building at one edge. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, swimming pool, water park, mown sports field, hard plaza, dense buildings"
+      },
+      "districtKit": null
     },
     {
-        "id": "equestrian_center",
-        "title": "Equestrian Center",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Equestrian Center.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/equestrian-center/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "equestrian_center",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 160,
+      "minWidth_m": 90,
+      "maxWidth_m": 500,
+      "minDepth_m": 90,
+      "maxDepth_m": 400,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 200000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
+      "title": "Equestrian Center",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A working equestrian centre organised around riding arenas, stable barns, and fenced turnout paddocks. Sand-surfaced dressage and jumping arenas sit beside gable-roofed stable blocks, circular round pens, horse-trailer parking, and hay and manure stores, the whole site stitched together by service lanes and white post-and-rail fencing.",
+      "generationTags": ["equestrian", "sports-recreation", "stables", "riding-arena", "paddocks", "horses"],
+      "styleProfile": {
+        "landscapeCharacter": "An equestrian centre seen from roughly 80m drone altitude. One or more rectangular sand riding arenas read as pale tan rectangles with crisp white rail borders — a regulation dressage court is a 20x60m rectangle. Long gable-roofed stable barns sit alongside, their ridge lines casting hard shadows. White post-and-rail paddocks form an irregular grid of green turnout fields, several with a single horse as a small dot. One or two circular round pens read as tan discs. A gravel service yard holds parked horse trailers and pickup trucks. Hay barns and a downwind manure-storage bay sit at the site edge, and mature trees line the perimeter as a windbreak.",
+        "pavingType": "Compacted sand and fibre arena footing, gravel service lanes, concrete barn aprons",
+        "plantingType": "Mown turnout-paddock grass, perimeter shade-tree windbreak, low scrub at field edges",
+        "seatingRealm": "Arena-side viewing rail and small bleachers; covered grandstand at competition scale",
+        "waterFeatures": "Paddock water troughs; no ornamental water",
+        "opennessEnclosure": "Open paddocks and arenas framed by post-and-rail fencing and long barn volumes"
+      },
+      "prompt": {
+        "subject": "Aerial view of an equestrian centre with riding arenas, stable barns, and fenced turnout paddocks",
+        "details": [
+          "Rectangular sand riding arenas as pale tan rectangles with white rail borders (a 20x60m dressage court for scale)",
+          "Long gable-roofed stable barns with hard ridge-line shadows",
+          "White post-and-rail paddocks forming a grid of green turnout fields, occasional single horse",
+          "One or two circular round pens reading as tan discs",
+          "Gravel yard with parked horse trailers and pickup trucks",
+          "Hay storage and a manure bay at the site edge, perimeter tree windbreak"
         ],
-        "variants": [
-            {
-                "id": "equestrian_center_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Equestrian Center — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_0.png"
-            },
-            {
-                "id": "equestrian_center_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Equestrian Center — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_1.png"
-            },
-            {
-                "id": "equestrian_center_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Equestrian Center — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_2.png"
-            },
-            {
-                "id": "equestrian_center_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Equestrian Center — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_3.png"
-            }
+        "negative": [
+          "No ploughed crop fields or row agriculture",
+          "No ornamental flower gardens or playground equipment",
+          "No open water or water-park features",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "perimeter_windbreak"
+      },
+      "suggestedAreaSqm": 40000,
+      "thumbnailUrl": "/archetypes/openspaces/equestrian-center/hero.png",
+      "variants": [
+        {
+          "id": "equestrian_center_variant_0",
+          "label": "Boarding & Lesson Stable",
+          "color": "#8B6914",
+          "description": "A refined suburban boarding and lesson barn: a brick-and-timber stable block with a rooftop cupola, a single outdoor sand arena, neatly hedged post-and-rail turnout paddocks, and a short tree-lined entry drive. Roughly six acres serving a few dozen boarded horses.",
+          "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_0.png",
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 25000
+        },
+        {
+          "id": "equestrian_center_variant_1",
+          "label": "Rustic Working Stable",
+          "color": "#5B7065",
+          "description": "A rustic working stable: a weathered timber barn with a rusted metal roof, wooden round-pen corrals, dirt paddocks with sparse grass, and an open hardpack yard. The smallest, most agrarian setup — a private or ranch-style yard of a few acres.",
+          "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_1.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 20000,
+          "suggestedAreaSqm": 12000
+        },
+        {
+          "id": "equestrian_center_variant_2",
+          "label": "Competition Show Grounds",
+          "color": "#6B8A4A",
+          "description": "A competition show ground: a covered spectator grandstand overlooking a large show-jumping and dressage arena, multiple warm-up rings, vendor tents, extensive stabling, and a deep gravel apron for horse-trailer parking. The largest scale — a regional events venue of twenty acres or more.",
+          "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_2.png",
+          "minAreaSqm": 70000,
+          "maxAreaSqm": 200000,
+          "suggestedAreaSqm": 120000
+        },
+        {
+          "id": "equestrian_center_variant_3",
+          "label": "Modern Riding Academy",
+          "color": "#8A6B4A",
+          "description": "A contemporary riding academy: a low timber-and-glass clubhouse and offices beside a large clear-span indoor arena, an adjoining outdoor sand arena, and tidy post-and-rail paddocks. A polished, design-forward facility of roughly ten acres.",
+          "thumbnailUrl": "/archetypes/openspaces/equestrian-center/variant_3.png",
+          "minAreaSqm": 25000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 40000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic equestrian centre. Rectangular sand riding arenas with white post-and-rail borders, long gable-roofed stable barns, white-fenced green turnout paddocks in an irregular grid, one or two circular round pens, and a gravel yard with parked horse trailers. Hay store and manure bay at the edge, perimeter tree windbreak. A few horses as small dots in the paddocks. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: pale tan rectangular arenas with thin white rail outlines, the long rectangular roofs of stable barns, a grid of green paddocks divided by white fence lines, circular round pens as tan discs, and a gravel yard with small rectangular trailers. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, ploughed crop fields, ornamental flower gardens, playground, open water, parking garage"
+      },
+      "districtKit": null
     },
     {
-        "id": "golf_course_18_hole",
-        "title": "Golf Course 18 Hole",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Golf Course 18 Hole.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "golf_course_18_hole",
+      "suggestedWidth_m": 1000,
+      "suggestedDepth_m": 600,
+      "minWidth_m": 800,
+      "maxWidth_m": 1150,
+      "minDepth_m": 500,
+      "maxDepth_m": 700,
+      "minAreaSqm": 400000,
+      "maxAreaSqm": 800000,
+      "aspectRatio": "1.6:1",
+      "shape": "rectangular",
+      "title": "Golf Course 18 Hole",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A full 18-hole golf course sprawling across roughly fifty to seventy-five hectares of manicured turf. Winding green fairways and circular putting greens are punctuated by pale sand bunkers, ponds and water hazards, and stands of mature trees, threaded by looping cart paths and anchored by a clubhouse with its practice putting green and parking. Character ranges from seaside links to parkland, desert, and modern championship layouts.",
+      "generationTags": ["golf", "sports-recreation", "fairways", "greens", "bunkers", "clubhouse"],
+      "styleProfile": {
+        "landscapeCharacter": "An 18-hole golf course seen from roughly 150m drone altitude. Broad winding fairways of striped mown turf curve between stands of mature trees and rough, each hole ending in a smooth circular putting green. Pale tan sand bunkers scatter as kidney-shaped patches, and irrigation ponds read as dark reflective shapes. Thin pale cart paths loop through the whole layout. A clubhouse with a practice putting green, a fleet of carts, and a parking lot anchors one corner. The overall read from above is a vast organic patchwork of greens against darker tree masses.",
+        "pavingType": "Narrow asphalt cart paths, clubhouse parking and forecourt",
+        "plantingType": "Manicured fairway and green turf, rough grass, mature specimen trees, native edge planting",
+        "seatingRealm": "Clubhouse terrace and starter areas; occasional on-course shelters",
+        "waterFeatures": "Irrigation ponds and water hazards integrated into the layout",
+        "opennessEnclosure": "Open rolling fairways loosely enclosed by tree belts and course furniture"
+      },
+      "prompt": {
+        "subject": "Aerial view of an 18-hole golf course with winding fairways, greens, bunkers, and a clubhouse",
+        "details": [
+          "Broad winding striped-turf fairways curving between tree stands",
+          "Smooth circular putting greens at the end of each hole",
+          "Pale tan sand bunkers as kidney-shaped patches",
+          "Irrigation ponds and water hazards as dark reflective shapes",
+          "Thin pale cart paths looping through the layout",
+          "A clubhouse with practice green, cart fleet, and parking at one corner"
         ],
-        "variants": [
-            {
-                "id": "golf_course_18_hole_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Golf Course 18 Hole — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_0.png"
-            },
-            {
-                "id": "golf_course_18_hole_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Golf Course 18 Hole — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_1.png"
-            },
-            {
-                "id": "golf_course_18_hole_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Golf Course 18 Hole — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_2.png"
-            },
-            {
-                "id": "golf_course_18_hole_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Golf Course 18 Hole — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_3.png"
-            }
+        "negative": [
+          "No rectangular sports pitches or running tracks",
+          "No dense buildings across the turf",
+          "No ploughed crop fields or row agriculture",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.4,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "specimen_trees"
+      },
+      "suggestedAreaSqm": 600000,
+      "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/hero.png",
+      "variants": [
+        {
+          "id": "golf_course_18_hole_variant_0",
+          "label": "Seaside Links",
+          "color": "#8B6914",
+          "description": "A seaside links course laid over rolling coastal dunes: firm fawn-and-green fairways between marram-grass mounds, deep revetted pot bunkers, few trees, and a modest stone clubhouse, with the sea and a links town on the horizon. A classic windswept links of fifty-plus hectares.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_0.png",
+          "minAreaSqm": 400000,
+          "maxAreaSqm": 700000,
+          "suggestedAreaSqm": 500000
+        },
+        {
+          "id": "golf_course_18_hole_variant_1",
+          "label": "Parkland Championship",
+          "color": "#5B7065",
+          "description": "A lush parkland championship course: emerald tree-lined fairways, bright white sand bunkers, ornamental ponds, and a grand verandahed clubhouse, set against a city skyline. A manicured tournament-grade layout of sixty to seventy-five hectares.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_1.png",
+          "minAreaSqm": 500000,
+          "maxAreaSqm": 800000,
+          "suggestedAreaSqm": 650000
+        },
+        {
+          "id": "golf_course_18_hole_variant_2",
+          "label": "Desert Course",
+          "color": "#6B8A4A",
+          "description": "A desert target course: green fairway corridors cut through tan desert scrub, red-rock outcrops, and cactus plantings, with an adobe Mediterranean-style clubhouse and a desert city beyond. A water-conscious resort layout of fifty to seventy hectares.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_2.png",
+          "minAreaSqm": 450000,
+          "maxAreaSqm": 750000,
+          "suggestedAreaSqm": 600000
+        },
+        {
+          "id": "golf_course_18_hole_variant_3",
+          "label": "Modern Championship Club",
+          "color": "#8A6B4A",
+          "description": "A modern championship club: crisp contoured fairways and greens, sculpted bunkering, an event lawn with hospitality tents, and a contemporary glass-and-timber clubhouse, against the city skyline. A polished tournament venue of sixty-plus hectares.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-course-18-hole/variant_3.png",
+          "minAreaSqm": 500000,
+          "maxAreaSqm": 800000,
+          "suggestedAreaSqm": 650000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic 18-hole golf course. Broad winding striped-turf fairways curve between stands of mature trees to smooth circular greens, with pale tan sand bunkers, dark irrigation ponds, thin looping cart paths, and a clubhouse with practice green and parking at one corner. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: an organic patchwork of winding green fairways and circular greens against darker tree masses, pale kidney-shaped bunkers, dark ponds, thin cart paths, and a clubhouse with parking at a corner. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, rectangular sports pitches, running track, dense buildings, ploughed crop fields"
+      },
+      "districtKit": null
     },
     {
-        "id": "golf_driving_range",
-        "title": "Golf Driving Range",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Golf Driving Range.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "golf_driving_range",
+      "suggestedWidth_m": 120,
+      "suggestedDepth_m": 290,
+      "minWidth_m": 70,
+      "maxWidth_m": 170,
+      "minDepth_m": 115,
+      "maxDepth_m": 400,
+      "minAreaSqm": 8000,
+      "maxAreaSqm": 70000,
+      "aspectRatio": "1:2.4",
+      "shape": "rectangular",
+      "title": "Golf Driving Range",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A golf driving range built around a long open grass landing field fronted by a row of hitting bays. Golfers tee off from a covered or two-tier bay structure toward distance markers and target greens spread down a deep mown corridor netted along its sides, with a small pro shop, putting green, and parking at the front. Forms range from a simple covered range to a multi-level entertainment venue.",
+      "generationTags": ["golf", "sports-recreation", "driving-range", "tee-bays", "practice", "nets"],
+      "styleProfile": {
+        "landscapeCharacter": "A golf driving range seen from roughly 80m drone altitude. A long deep rectangle of striped mown grass stretches away from a fronting row of hitting bays, dotted with circular target greens, distance flags, and ball-collection patterns. Tall perimeter netting on slim poles lines the long sides, casting fine shadows. At the near end sits the bay structure — a covered single-tier canopy or a two-storey building of stacked bays — beside a small pro shop, a practice putting green, and a parking lot. The field reads as one dominant green corridor.",
+        "pavingType": "Concrete tee deck and bay aprons, asphalt parking, paved front plaza",
+        "plantingType": "Mown range turf, target-green patches, low perimeter planting and trees",
+        "seatingRealm": "Bay seating and a small clubhouse terrace; benches at the front plaza",
+        "waterFeatures": "Occasional target pond; otherwise none",
+        "opennessEnclosure": "A long open turf corridor enclosed by tall side netting and the bay structure at one end"
+      },
+      "prompt": {
+        "subject": "Aerial view of a golf driving range with a long grass landing field and a row of hitting bays",
+        "details": [
+          "A long deep rectangle of striped mown grass with circular target greens and distance flags",
+          "A fronting row of hitting bays — a covered canopy or a two-storey stacked-bay building",
+          "Tall perimeter netting on slim poles along the long sides",
+          "A small pro shop, practice putting green, and parking at the near end",
+          "Ball-collection patterns reading faintly across the turf"
         ],
-        "variants": [
-            {
-                "id": "golf_driving_range_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Golf Driving Range — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_0.png"
-            },
-            {
-                "id": "golf_driving_range_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Golf Driving Range — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_1.png"
-            },
-            {
-                "id": "golf_driving_range_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Golf Driving Range — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_2.png"
-            },
-            {
-                "id": "golf_driving_range_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Golf Driving Range — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_3.png"
-            }
+        "negative": [
+          "No full golf course with winding fairways",
+          "No rectangular team-sport pitches",
+          "No dense housing or crop fields",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.12,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "perimeter_trees"
+      },
+      "suggestedAreaSqm": 35000,
+      "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/hero.png",
+      "variants": [
+        {
+          "id": "golf_driving_range_variant_0",
+          "label": "Covered Single-Tier Range",
+          "color": "#8B6914",
+          "description": "A straightforward covered driving range: a single-tier open-sided canopy of hitting bays facing a long grass field with target greens and side netting, plus a small pro shop and parking. A typical community range of a couple of acres.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_0.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 45000,
+          "suggestedAreaSqm": 30000
+        },
+        {
+          "id": "golf_driving_range_variant_1",
+          "label": "Two-Tier Entertainment Range",
+          "color": "#5B7065",
+          "description": "A large two-storey entertainment driving range: a brick-and-glass building of stacked climate-controlled bays with a rooftop terrace, firing onto a deep netted field with target greens, beside a big parking lot. The largest scale — a destination venue of several acres.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_1.png",
+          "minAreaSqm": 40000,
+          "maxAreaSqm": 70000,
+          "suggestedAreaSqm": 55000
+        },
+        {
+          "id": "golf_driving_range_variant_2",
+          "label": "Parkland Pavilion Range",
+          "color": "#6B8A4A",
+          "description": "A modest parkland range with a timber pavilion clubhouse and an open-sided bay shelter facing a tidy grass field with target greens, framed by trees and a putting green. The smallest, most genteel setup of a couple of acres.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_2.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 25000,
+          "suggestedAreaSqm": 15000
+        },
+        {
+          "id": "golf_driving_range_variant_3",
+          "label": "Modern Two-Tier Range",
+          "color": "#8A6B4A",
+          "description": "A contemporary two-tier driving range: a sleek timber-and-glass bay building with a planted front plaza firing onto a long netted grass field with target greens, beside structured parking. A medium-large modern facility of several acres.",
+          "thumbnailUrl": "/archetypes/openspaces/golf-driving-range/variant_3.png",
+          "minAreaSqm": 35000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 45000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic golf driving range. A long deep rectangle of striped mown grass with circular target greens and distance flags stretches away from a fronting row of hitting bays (a covered canopy or a two-storey stacked-bay building), with tall perimeter netting on slim poles, a small pro shop and putting green, and parking at the near end. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a long green grass corridor with circular target greens, the rectangular roof of a bay structure across the near end, faint side-netting lines, and a small building with parking. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, winding golf fairways, team-sport pitches, dense housing, crop fields"
+      },
+      "districtKit": null
     },
     {
-        "id": "mountain_bike_park",
-        "title": "Mountain Bike Park",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Mountain Bike Park.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "mountain_bike_park",
+      "suggestedWidth_m": 200,
+      "suggestedDepth_m": 150,
+      "minWidth_m": 70,
+      "maxWidth_m": 700,
+      "minDepth_m": 45,
+      "maxDepth_m": 430,
+      "minAreaSqm": 1500,
+      "maxAreaSqm": 300000,
+      "aspectRatio": "1.3:1",
+      "shape": "rectangular",
+      "title": "Mountain Bike Park",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A mountain-bike facility built from sculpted earth: pump tracks, dirt-jump lines, bermed flow trails, and skills features shaped into the ground. Looping ribbons of asphalt or hard-packed dirt wind between mounds, rollers, and tabletops, with a small lodge or shelter, bike racks, and seating at the entry. Forms range from a compact urban pump track to a hillside bike park laced with trails.",
+      "generationTags": ["mountain-bike", "sports-recreation", "pump-track", "dirt-jumps", "flow-trails", "bike-park"],
+      "styleProfile": {
+        "landscapeCharacter": "A mountain-bike park seen from roughly 70m drone altitude. Sculpted earth defines the site: looping pump tracks of smooth asphalt or hard-packed dirt snake between rounded berms and rollers, and parallel dirt-jump lines step down in series of tabletops. Flow trails ribbon across mounded terrain, sometimes climbing a planted hillside. Grass and shrub plantings fill the gaps, and a small timber lodge or shelter with bike racks and benches sits at the entry. The ground reads as a tight pattern of curved ridges, hollows, and winding tracks.",
+        "pavingType": "Asphalt pump tracks, hard-packed dirt jumps and trails, paved entry apron",
+        "plantingType": "Grass infill between features, shrub banks, hillside trees on larger sites",
+        "seatingRealm": "Benches and timber seating at the entry plaza and trail overlooks",
+        "waterFeatures": "None; occasional drainage swale",
+        "opennessEnclosure": "An open sculpted earthwork landscape framed by trees and built edges"
+      },
+      "prompt": {
+        "subject": "Aerial view of a mountain-bike park with pump tracks, dirt jumps, and bermed flow trails",
+        "details": [
+          "Looping pump tracks of asphalt or hard-packed dirt between rounded berms and rollers",
+          "Parallel dirt-jump lines stepping down in series of tabletops",
+          "Bermed flow trails ribboning across mounded terrain",
+          "Grass and shrub plantings filling the gaps between features",
+          "A small timber lodge or shelter with bike racks and benches at the entry"
         ],
-        "variants": [
-            {
-                "id": "mountain_bike_park_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Mountain Bike Park — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_0.png"
-            },
-            {
-                "id": "mountain_bike_park_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Mountain Bike Park — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_1.png"
-            },
-            {
-                "id": "mountain_bike_park_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Mountain Bike Park — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_2.png"
-            },
-            {
-                "id": "mountain_bike_park_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Mountain Bike Park — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_3.png"
-            }
+        "negative": [
+          "No paved car roads or parking dominating the space",
+          "No mown rectangular sports pitches",
+          "No water features or formal gardens",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.2,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "edge_trees"
+      },
+      "suggestedAreaSqm": 30000,
+      "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/hero.png",
+      "variants": [
+        {
+          "id": "mountain_bike_park_variant_0",
+          "label": "Paved Pump Track",
+          "color": "#8B6914",
+          "description": "A compact paved pump track: smooth undulating asphalt loops with rounded berms and rollers set in a small green park with trees and benches. The smallest, most urban of the set.",
+          "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_0.png",
+          "minAreaSqm": 1500,
+          "maxAreaSqm": 6000,
+          "suggestedAreaSqm": 3500
+        },
+        {
+          "id": "mountain_bike_park_variant_1",
+          "label": "Hillside Bike Park",
+          "color": "#5B7065",
+          "description": "A hillside bike park: graded dirt-jump lines and bermed flow trails descending a planted slope, served by a timber lodge and an entry plaza, against the city skyline. The largest scale — a destination park laced with trails.",
+          "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_1.png",
+          "minAreaSqm": 50000,
+          "maxAreaSqm": 300000,
+          "suggestedAreaSqm": 120000
+        },
+        {
+          "id": "mountain_bike_park_variant_2",
+          "label": "Skills & Dirt Park",
+          "color": "#6B8A4A",
+          "description": "A mixed skills park combining a pump track with dirt jumps, drops, and technical features around a small shelter, edged by city buildings. A medium-scale neighbourhood bike facility.",
+          "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_2.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 45000,
+          "suggestedAreaSqm": 18000
+        },
+        {
+          "id": "mountain_bike_park_variant_3",
+          "label": "Urban Dirt-Jump Lot",
+          "color": "#8A6B4A",
+          "description": "An urban dirt-jump lot: packed-earth jump lines and berms carved into a reclaimed city block with graffiti walls and a paved edge, tight against brick buildings. A gritty, compact street-bike space.",
+          "thumbnailUrl": "/archetypes/openspaces/mountain-bike-park/variant_3.png",
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 25000,
+          "suggestedAreaSqm": 12000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic mountain-bike park: looping pump tracks of asphalt or hard-packed dirt between rounded berms and rollers, parallel dirt-jump tabletop lines, bermed flow trails across mounded terrain, grass infill, and a small timber lodge with bike racks and benches at the entry. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a tight pattern of curved track loops, rows of rounded dirt-jump mounds, winding trail ribbons, grass gaps, and a small building at one edge. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, car roads, parking lots, mown sports pitch, water features, formal gardens"
+      },
+      "districtKit": null
     },
     {
-        "id": "multi_sport_complex",
-        "title": "Multi Sport Complex",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Multi Sport Complex.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "multi_sport_complex",
+      "suggestedWidth_m": 250,
+      "suggestedDepth_m": 160,
+      "minWidth_m": 130,
+      "maxWidth_m": 450,
+      "minDepth_m": 100,
+      "maxDepth_m": 320,
+      "minAreaSqm": 15000,
+      "maxAreaSqm": 120000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
+      "title": "Multi Sport Complex",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A clustered multi-sport recreation complex combining indoor sports buildings with outdoor fields and courts. A large fieldhouse, stadium grandstand, or fabric-domed arena anchors the site beside full-size playing pitches, hardcourt batteries, a running track, paved entry plazas, and deep parking aprons, the whole campus linked by walkways and dotted with floodlight masts.",
+      "generationTags": ["multi-sport", "sports-recreation", "athletics", "stadium", "fieldhouse", "recreation-complex"],
+      "styleProfile": {
+        "landscapeCharacter": "A multi-sport complex seen from roughly 80m drone altitude. A large-roofed sports building — a stadium grandstand, a clear-span fieldhouse, or a white fabric dome — anchors one side, casting a long hard shadow. Beside it lie one or more full-size rectangular playing fields as bright green panels with painted white lines, a battery of blue-and-green hardcourts, and often a 400m running track reading as a red oval ring around a green infield. Tall floodlight masts throw thin shadows across the turf. Paved entry plazas with trees and benches sit at the building fronts, and ranks of parked cars fill gravel-and-asphalt lots along the perimeter.",
+        "pavingType": "Asphalt and gravel parking aprons, concrete plazas, synthetic track and court surfacing",
+        "plantingType": "Mown sports turf, plaza shade trees, low perimeter planting beds",
+        "seatingRealm": "Grandstand and bleacher seating at the stadium; plaza benches at building entries",
+        "waterFeatures": "None beyond drainage; no ornamental water",
+        "opennessEnclosure": "Open fields and courts framed by large building volumes and floodlight masts"
+      },
+      "prompt": {
+        "subject": "Aerial view of a multi-sport recreation complex with a large sports building, playing fields, courts, and parking",
+        "details": [
+          "A large-roofed sports building — stadium grandstand, clear-span fieldhouse, or white fabric dome — anchoring the site",
+          "Full-size rectangular playing fields as bright green panels with painted white lines",
+          "A 400m running track reading as a red oval ring around a green infield",
+          "A battery of blue-and-green hardcourts and tall floodlight masts",
+          "Paved entry plazas with trees and benches at the building fronts",
+          "Ranks of parked cars in asphalt-and-gravel perimeter lots"
         ],
-        "variants": [
-            {
-                "id": "multi_sport_complex_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Multi Sport Complex — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_0.png"
-            },
-            {
-                "id": "multi_sport_complex_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Multi Sport Complex — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_1.png"
-            },
-            {
-                "id": "multi_sport_complex_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Multi Sport Complex — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_2.png"
-            },
-            {
-                "id": "multi_sport_complex_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Multi Sport Complex — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_3.png"
-            }
+        "negative": [
+          "No single-family houses or row agriculture",
+          "No ornamental flower gardens or playground-only spaces",
+          "No open water or water-park features",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.2,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "plaza_trees"
+      },
+      "suggestedAreaSqm": 40000,
+      "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/hero.png",
+      "variants": [
+        {
+          "id": "multi_sport_complex_variant_0",
+          "label": "Community Sports Pavilion",
+          "color": "#8B6914",
+          "description": "A modest community sports complex anchored by a low gable-roofed clubhouse with rooftop solar panels and a paved forecourt of benches and trees, with one or two multi-use courts and a small playing field behind. The smallest scale — a neighbourhood recreation hub of a few acres.",
+          "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_0.png",
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 30000,
+          "suggestedAreaSqm": 20000
+        },
+        {
+          "id": "multi_sport_complex_variant_1",
+          "label": "Stadium & Grandstands",
+          "color": "#5B7065",
+          "description": "A competition stadium: a covered grandstand and tall floodlight towers ringing a full-size main pitch, with secondary warm-up fields, a broad entry plaza, and deep parking aprons alongside. The largest scale — a regional sports venue set against the city skyline.",
+          "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_1.png",
+          "minAreaSqm": 60000,
+          "maxAreaSqm": 120000,
+          "suggestedAreaSqm": 100000
+        },
+        {
+          "id": "multi_sport_complex_variant_2",
+          "label": "Indoor Fieldhouse Dome",
+          "color": "#6B8A4A",
+          "description": "An indoor multi-sport fieldhouse under a large white tensile-membrane dome covering full-size turf and courts, paired with a glazed entry building and a few outdoor courts. A medium-large all-weather training facility of roughly ten acres.",
+          "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_2.png",
+          "minAreaSqm": 30000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 40000
+        },
+        {
+          "id": "multi_sport_complex_variant_3",
+          "label": "Track & Field Precinct",
+          "color": "#8A6B4A",
+          "description": "An outdoor track-and-field precinct: a 400m running track with red synthetic lanes wrapped around a green infield, beside a brick fieldhouse, throwing areas, and roadside spectator seating. A medium-scale athletics facility of a few acres.",
+          "thumbnailUrl": "/archetypes/openspaces/multi-sport-complex/variant_3.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 45000,
+          "suggestedAreaSqm": 30000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic multi-sport recreation complex. A large-roofed sports building (stadium grandstand, clear-span fieldhouse, or white fabric dome) anchors one side, with full-size green playing fields marked in white lines, a 400m red running track around a green infield, blue-and-green hardcourts, tall floodlight masts, paved entry plazas with trees, and ranks of parked cars in perimeter lots. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: the large rectangular roof of a sports building, bright green playing fields with white line markings, a red oval running track around a green infield, grids of blue-and-green courts, and rows of small parked cars in perimeter lots. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, single-family houses, ploughed crop fields, ornamental flower gardens, open water"
+      },
+      "districtKit": null
     },
     {
-        "id": "research_garden_teaching_arboretum",
-        "title": "Research Garden Teaching Arboretum",
-        "spaceType": "park",
-        "aestheticCategory": "specialty_gardens",
-        "description": "A Research Garden Teaching Arboretum.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "specialty-gardens"
+      "id": "research_garden_teaching_arboretum",
+      "suggestedWidth_m": 280,
+      "suggestedDepth_m": 180,
+      "minWidth_m": 120,
+      "maxWidth_m": 560,
+      "minDepth_m": 85,
+      "maxDepth_m": 360,
+      "minAreaSqm": 10000,
+      "maxAreaSqm": 200000,
+      "aspectRatio": "1.5:1",
+      "shape": "rectangular",
+      "title": "Research Garden Teaching Arboretum",
+      "aestheticCategory": "specialty_gardens",
+      "spaceType": "park",
+      "description": "A botanical research garden and teaching arboretum where labelled plant collections double as living laboratory and public landscape. Curated tree groves, themed planting beds, glasshouses, and demonstration plots are organised along interpretive paths with signage and seating, anchored by a research pavilion or conservatory. Forms range from a sprawling tree-collection arboretum to a compact greenhouse research garden.",
+      "generationTags": ["arboretum", "research-garden", "specialty-gardens", "botanical", "teaching", "tree-collection"],
+      "styleProfile": {
+        "landscapeCharacter": "A research garden and teaching arboretum seen from roughly 80m drone altitude. Curated groves of specimen trees, spaced for study, alternate with geometric themed planting beds, lawns, and demonstration plots, all stitched together by gravel and paved interpretive paths with signage. A glasshouse or conservatory and a research pavilion sit among the collections, with raised beds and trial rows nearby. The whole reads as an ordered patchwork of tree canopies, beds, and paths rather than wild parkland.",
+        "pavingType": "Gravel and paved interpretive paths, accessible loop walks, plaza at the pavilion",
+        "plantingType": "Specimen tree collections, themed perennial and shrub beds, demonstration and trial plots",
+        "seatingRealm": "Benches at collection nodes and overlooks, terrace seating at the pavilion",
+        "waterFeatures": "Occasional teaching pond or water-garden bed; otherwise none",
+        "opennessEnclosure": "An ordered botanical landscape loosely framed by collections and built edges"
+      },
+      "prompt": {
+        "subject": "Aerial view of a research garden and teaching arboretum with tree collections, beds, and a glasshouse",
+        "details": [
+          "Curated groves of spaced specimen trees as distinct canopies",
+          "Geometric themed planting beds, lawns, and demonstration plots",
+          "Gravel and paved interpretive paths with signage threading the collections",
+          "A glasshouse or conservatory and a research pavilion among the beds",
+          "Raised beds and trial rows near the buildings"
         ],
-        "variants": [
-            {
-                "id": "research_garden_teaching_arboretum_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Research Garden Teaching Arboretum — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png"
-            },
-            {
-                "id": "research_garden_teaching_arboretum_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Research Garden Teaching Arboretum — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_1.png"
-            },
-            {
-                "id": "research_garden_teaching_arboretum_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Research Garden Teaching Arboretum — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png"
-            },
-            {
-                "id": "research_garden_teaching_arboretum_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Research Garden Teaching Arboretum — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png"
-            }
+        "negative": [
+          "No wild unmanaged meadow as the whole site",
+          "No sports fields or hard civic plazas dominating",
+          "No dense housing across the garden",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.45,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "specimen_collections"
+      },
+      "suggestedAreaSqm": 50000,
+      "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/hero.png",
+      "variants": [
+        {
+          "id": "research_garden_teaching_arboretum_variant_0",
+          "label": "Tree-Collection Arboretum",
+          "color": "#8B6914",
+          "description": "A broad arboretum of labelled specimen-tree collections set in mown and meadow lawns, with looping interpretive paths, boulders, and signage, edged by the city. The largest scale — a living tree museum of many acres.",
+          "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_0.png",
+          "minAreaSqm": 50000,
+          "maxAreaSqm": 200000,
+          "suggestedAreaSqm": 120000
+        },
+        {
+          "id": "research_garden_teaching_arboretum_variant_1",
+          "label": "Greenhouse Research Garden",
+          "color": "#5B7065",
+          "description": "A botanical research garden built around a pitched-glass greenhouse, with brick-edged raised research beds, trial rows, and trim paths, hemmed by campus buildings. A working horticultural laboratory of a few acres.",
+          "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_1.png",
+          "minAreaSqm": 15000,
+          "maxAreaSqm": 60000,
+          "suggestedAreaSqm": 30000
+        },
+        {
+          "id": "research_garden_teaching_arboretum_variant_2",
+          "label": "Teaching Pavilion Garden",
+          "color": "#6B8A4A",
+          "description": "A teaching garden anchored by a modern timber-and-glass pavilion and deck, with mixed perennial and shrub collections, a water-garden bed, and accessible paths, against the city skyline. A medium-scale education garden.",
+          "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_2.png",
+          "minAreaSqm": 20000,
+          "maxAreaSqm": 80000,
+          "suggestedAreaSqm": 40000
+        },
+        {
+          "id": "research_garden_teaching_arboretum_variant_3",
+          "label": "Demonstration-Plot Garden",
+          "color": "#8A6B4A",
+          "description": "A compact demonstration garden of brick-edged raised beds and herb-and-vegetable trial plots under a timber shade structure, with cobble paths and seating, tight against urban buildings. The smallest, most intensive plot.",
+          "thumbnailUrl": "/archetypes/openspaces/research-garden-teaching-arboretum/variant_3.png",
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 20000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic research garden and teaching arboretum: curated groves of spaced specimen trees, geometric themed planting beds, lawns and demonstration plots, gravel and paved interpretive paths with signage, and a glasshouse or research pavilion with raised beds among the collections. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: an ordered patchwork of spaced tree canopies, rectangular planting beds and plots, looping paths, and the glass roof of a greenhouse with a small pavilion. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, wild unmanaged meadow, sports field, hard civic plaza, dense housing"
+      },
+      "districtKit": null
     },
     {
-        "id": "rewilding_ecological_restoration_zone",
-        "title": "Rewilding Ecological Restoration Zone",
-        "spaceType": "park",
-        "aestheticCategory": "ecological_resilience",
-        "description": "A Rewilding Ecological Restoration Zone.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "ecological-resilience"
+      "id": "rewilding_ecological_restoration_zone",
+      "suggestedWidth_m": 500,
+      "suggestedDepth_m": 300,
+      "minWidth_m": 250,
+      "maxWidth_m": 1300,
+      "minDepth_m": 160,
+      "maxDepth_m": 770,
+      "minAreaSqm": 40000,
+      "maxAreaSqm": 1000000,
+      "aspectRatio": "1.6:1",
+      "shape": "rectangular",
+      "title": "Rewilding Ecological Restoration Zone",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A landscape-scale zone given over to ecological recovery, where degraded or vacant land is restored to native habitat. Tall grass prairie, regenerating woodland, wetland, and riparian edges establish over time, with minimal infrastructure — a few boardwalks, overlooks, and interpretive nodes — and sometimes conservation grazing animals. From above it reads as wide, textured, low-intervention nature rather than designed parkland.",
+      "generationTags": ["rewilding", "ecological-resilience", "restoration", "habitat", "native-planting", "prairie"],
+      "styleProfile": {
+        "landscapeCharacter": "A rewilding and ecological restoration zone seen from roughly 120m drone altitude. Broad swathes of tall native grasses and wildflowers, regenerating tree saplings, scrub mosaics, and wetland or riparian edges blanket the site in textured greens and tawny tones. Habitat features — log and brush piles, snags, boulders, and shallow scrapes — dot the ground. A sparse network of boardwalks, mown trails, and a few overlooks or interpretive nodes is the only built intervention, and conservation grazers may appear as small dots. The whole reads as wide, wild, recovering land at the city edge.",
+        "pavingType": "Mown-grass and decomposed-granite trails, occasional boardwalks and timber overlooks",
+        "plantingType": "Native tall-grass prairie and wildflowers, regenerating woodland saplings, scrub and riparian planting",
+        "seatingRealm": "Sparse — overlook platforms and a few benches at interpretive nodes",
+        "waterFeatures": "Restored wetlands, scrapes, and naturalized stream edges where present",
+        "opennessEnclosure": "Wide open, low-intervention habitat with soft edges to surrounding development"
+      },
+      "prompt": {
+        "subject": "Aerial view of a landscape-scale rewilding and ecological restoration zone with native habitat",
+        "details": [
+          "Broad swathes of tall native grasses and wildflowers in textured greens and tawny tones",
+          "Regenerating tree saplings, scrub mosaics, and wetland or riparian edges",
+          "Habitat features — log piles, snags, boulders, and shallow scrapes",
+          "A sparse network of mown trails, boardwalks, and a few overlooks",
+          "Occasional conservation grazing animals as small dots"
         ],
-        "variants": [
-            {
-                "id": "rewilding_ecological_restoration_zone_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Rewilding Ecological Restoration Zone — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png"
-            },
-            {
-                "id": "rewilding_ecological_restoration_zone_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Rewilding Ecological Restoration Zone — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png"
-            },
-            {
-                "id": "rewilding_ecological_restoration_zone_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Rewilding Ecological Restoration Zone — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png"
-            },
-            {
-                "id": "rewilding_ecological_restoration_zone_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Rewilding Ecological Restoration Zone — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png"
-            }
+        "negative": [
+          "No manicured lawns or formal flower gardens",
+          "No sports fields, hard plazas, or dense paths",
+          "No buildings across the habitat",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "medium",
+        "tree_density": 0.35,
+        "has_paths": true,
+        "has_benches": false,
+        "shade_strategy": "regenerating_woodland"
+      },
+      "suggestedAreaSqm": 150000,
+      "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/hero.png",
+      "variants": [
+        {
+          "id": "rewilding_ecological_restoration_zone_variant_0",
+          "label": "Urban Prairie & Grazers",
+          "color": "#8B6914",
+          "description": "A reclaimed urban prairie of tall native grasses and wildflowers with conservation grazing animals, a single boardwalk and overlook, and the city rising behind. A bold rewilded grassland of many acres.",
+          "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_0.png",
+          "minAreaSqm": 50000,
+          "maxAreaSqm": 300000,
+          "suggestedAreaSqm": 120000
+        },
+        {
+          "id": "rewilding_ecological_restoration_zone_variant_1",
+          "label": "Reforestation Zone",
+          "color": "#5B7065",
+          "description": "An afforestation zone of densely planted tree saplings and wildflower understory with habitat log piles and mulch beds, framed by city towers. The largest scale — a young forest establishing across tens of hectares.",
+          "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_1.png",
+          "minAreaSqm": 80000,
+          "maxAreaSqm": 1000000,
+          "suggestedAreaSqm": 300000
+        },
+        {
+          "id": "rewilding_ecological_restoration_zone_variant_2",
+          "label": "Interpretive Restoration",
+          "color": "#6B8A4A",
+          "description": "A restoration zone with interpretive signage, boulders, and demonstration plantings along gravel paths through recovering meadow and scrub, edged by the city. A medium-scale education-forward restoration.",
+          "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_2.png",
+          "minAreaSqm": 50000,
+          "maxAreaSqm": 200000,
+          "suggestedAreaSqm": 100000
+        },
+        {
+          "id": "rewilding_ecological_restoration_zone_variant_3",
+          "label": "Riparian Restoration",
+          "color": "#8A6B4A",
+          "description": "A riparian restoration corridor: a re-naturalized stream with log structures and gravel bars, regenerating bank vegetation, and a riverside path, edged by housing. A medium-scale waterway recovery.",
+          "thumbnailUrl": "/archetypes/openspaces/rewilding-ecological-restoration-zone/variant_3.png",
+          "minAreaSqm": 40000,
+          "maxAreaSqm": 250000,
+          "suggestedAreaSqm": 100000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic landscape-scale rewilding and ecological restoration zone: broad swathes of tall native grasses and wildflowers, regenerating tree saplings, scrub and wetland edges, habitat log piles and scrapes, a sparse network of mown trails and a boardwalk overlook, and the occasional grazing animal. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a wide textured mosaic of tall grass, wildflower meadow, sapling clusters, and wetland patches, with thin mown trail lines and a small boardwalk, blending softly to the surrounding development. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, manicured lawn, formal flower garden, sports field, hard plaza, buildings"
+      },
+      "districtKit": null
     },
     {
-        "id": "stormwater_naturalized_drainage_corridor",
-        "title": "Stormwater Naturalized Drainage Corridor",
-        "spaceType": "park",
-        "aestheticCategory": "ecological_resilience",
-        "description": "A Stormwater Naturalized Drainage Corridor.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "ecological-resilience"
+      "id": "stormwater_naturalized_drainage_corridor",
+      "suggestedWidth_m": 40,
+      "suggestedDepth_m": 375,
+      "minWidth_m": 25,
+      "maxWidth_m": 90,
+      "minDepth_m": 170,
+      "maxDepth_m": 560,
+      "minAreaSqm": 5000,
+      "maxAreaSqm": 50000,
+      "aspectRatio": "1:9",
+      "shape": "rectangular",
+      "title": "Stormwater Naturalized Drainage Corridor",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A linear naturalized drainage corridor that carries and cleans stormwater along a green ribbon through the urban fabric. A meandering channel or daylit stream runs the length, flanked by sloped meadow and shrub banks, bioswales, and a walking path with footbridges. Forms range from a soft naturalized creek to a stepped urban daylit channel.",
+      "generationTags": ["stormwater", "drainage-corridor", "ecological-resilience", "creek", "linear", "bioswale"],
+      "styleProfile": {
+        "landscapeCharacter": "A linear naturalized drainage corridor seen from above, a long green ribbon following a watercourse between built edges. A meandering channel or daylit stream threads the centre, its water reading as a thin reflective line, flanked by sloped banks of meadow grasses, sedges, and shrubs. A walking path runs alongside with occasional footbridge crossings, and check dams or stepped pools mark grade changes. The corridor reads as a continuous wet-green seam through the surrounding development.",
+        "pavingType": "Decomposed-granite or paved side path, timber and stone footbridges, occasional concrete channel steps",
+        "plantingType": "Meadow grasses, sedges, and bank shrubs along the watercourse, scattered riparian trees",
+        "seatingRealm": "Benches at overlooks and bridge nodes along the path",
+        "waterFeatures": "A meandering channel or daylit stream with check dams or stepped pools",
+        "opennessEnclosure": "A linear riparian corridor enclosed by sloped banks and adjacent buildings"
+      },
+      "prompt": {
+        "subject": "Aerial view of a linear naturalized stormwater drainage corridor with a meandering channel and path",
+        "details": [
+          "A meandering channel or daylit stream running the length of the corridor",
+          "Sloped banks of meadow grasses, sedges, and shrubs flanking the water",
+          "A walking path alongside with footbridge crossings",
+          "Check dams or stepped pools marking grade changes",
+          "Riparian trees scattered along the banks"
         ],
-        "variants": [
-            {
-                "id": "stormwater_naturalized_drainage_corridor_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Stormwater Naturalized Drainage Corridor — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png"
-            },
-            {
-                "id": "stormwater_naturalized_drainage_corridor_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Stormwater Naturalized Drainage Corridor — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png"
-            },
-            {
-                "id": "stormwater_naturalized_drainage_corridor_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Stormwater Naturalized Drainage Corridor — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_2.png"
-            },
-            {
-                "id": "stormwater_naturalized_drainage_corridor_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Stormwater Naturalized Drainage Corridor — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_3.png"
-            }
+        "negative": [
+          "No wide open lake or formal water-park features",
+          "No mown sports fields",
+          "No straight concrete box culvert with no planting",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.3,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "riparian_trees"
+      },
+      "suggestedAreaSqm": 15000,
+      "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/hero.png",
+      "variants": [
+        {
+          "id": "stormwater_naturalized_drainage_corridor_variant_0",
+          "label": "Naturalized Creek",
+          "color": "#8B6914",
+          "description": "A soft naturalized creek corridor: a gently meandering stream through tall meadow banks, with a riverside path and timber footbridges, edged by housing. The most natural, gardenless of the set.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_0.png",
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 30000,
+          "suggestedAreaSqm": 15000
+        },
+        {
+          "id": "stormwater_naturalized_drainage_corridor_variant_1",
+          "label": "Urban Daylit Channel",
+          "color": "#5B7065",
+          "description": "An urban daylit channel: a stepped stone-and-planting watercourse with terraced bioswales and walkways tight between mixed-use buildings. The most engineered, hardscape corridor.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_1.png",
+          "minAreaSqm": 5000,
+          "maxAreaSqm": 25000,
+          "suggestedAreaSqm": 12000
+        },
+        {
+          "id": "stormwater_naturalized_drainage_corridor_variant_2",
+          "label": "Seasonal Planted Corridor",
+          "color": "#6B8A4A",
+          "description": "A planted drainage corridor with seasonal and evergreen banks and red-stemmed shrubs lining a slim channel, with a paved path and footbridges between residential blocks. A four-season green seam.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_2.png",
+          "minAreaSqm": 6000,
+          "maxAreaSqm": 30000,
+          "suggestedAreaSqm": 15000
+        },
+        {
+          "id": "stormwater_naturalized_drainage_corridor_variant_3",
+          "label": "Naturalized Stream & Shelter",
+          "color": "#8A6B4A",
+          "description": "A longer naturalized stream corridor with wide meadow banks, boulder grade controls, an interpretive shelter, and a path with overlooks, edged by suburban development. The largest, most park-like corridor.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-naturalized-drainage-corridor/variant_3.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 50000,
+          "suggestedAreaSqm": 25000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic linear naturalized stormwater drainage corridor: a meandering channel or daylit stream running the length, flanked by sloped meadow and shrub banks and bioswales, with a walking path alongside, footbridge crossings, and check dams or stepped pools, between the built edges. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: a long green ribbon with a thin meandering reflective channel down the middle, vegetated banks, a side path with small bridge crossings, and stepped pools, between the surrounding development. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, wide open lake, water park, mown sports field, bare concrete box culvert"
+      },
+      "districtKit": null
     },
     {
-        "id": "stormwater_resilience_park",
-        "title": "Stormwater Resilience Park",
-        "spaceType": "park",
-        "aestheticCategory": "ecological_resilience",
-        "description": "A Stormwater Resilience Park.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "ecological-resilience"
+      "id": "stormwater_resilience_park",
+      "suggestedWidth_m": 210,
+      "suggestedDepth_m": 145,
+      "minWidth_m": 120,
+      "maxWidth_m": 400,
+      "minDepth_m": 85,
+      "maxDepth_m": 250,
+      "minAreaSqm": 10000,
+      "maxAreaSqm": 100000,
+      "aspectRatio": "1.4:1",
+      "shape": "rectangular",
+      "title": "Stormwater Resilience Park",
+      "aestheticCategory": "ecological_resilience",
+      "spaceType": "park",
+      "description": "A multifunctional park engineered to capture, store, and slow stormwater while serving as everyday public space. Terraced detention basins, bioswales, and rain gardens hold water after storms and become planted lawns and meadows when dry, threaded by boardwalks and paths. Forms range from urban bioswale parks to naturalistic detention basins to engineered terraced water plazas.",
+      "generationTags": ["stormwater", "ecological-resilience", "bioswale", "detention", "water", "green-infrastructure"],
+      "styleProfile": {
+        "landscapeCharacter": "A stormwater resilience park seen from roughly 80m drone altitude. Broad shallow detention basins and terraced bioswales step down across the site, planted with rushes and meadow grasses and holding shallow water or reading as green sunken lawns when dry. Boardwalks and paths cross the basins, low check weirs mark the terraces, and a small pavilion or overlook sits on higher ground. Rain gardens and planted edges meet the surrounding streets and buildings. The whole reads as a sculpted, terraced green landscape built to flood and drain.",
+        "pavingType": "Boardwalks, decomposed-granite and paved paths, occasional concrete channel and weir steps",
+        "plantingType": "Rushes and wet-tolerant meadow in the basins, rain-garden perennials, perimeter trees",
+        "seatingRealm": "Benches and seat-walls at overlooks and the pavilion, terrace edges for sitting",
+        "waterFeatures": "Detention basins, bioswales, and rain gardens that hold water after storms",
+        "opennessEnclosure": "Open terraced basins framed by planted edges and surrounding development"
+      },
+      "prompt": {
+        "subject": "Aerial view of a stormwater resilience park with terraced detention basins, bioswales, and paths",
+        "details": [
+          "Broad shallow detention basins and terraced bioswales stepping across the site",
+          "Basins planted with rushes and meadow, holding shallow water or reading as sunken green lawns",
+          "Boardwalks and paths crossing the basins",
+          "Low check weirs marking the terraces and a small pavilion on higher ground",
+          "Rain gardens and planted edges meeting the surrounding streets"
         ],
-        "variants": [
-            {
-                "id": "stormwater_resilience_park_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Stormwater Resilience Park — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_0.png"
-            },
-            {
-                "id": "stormwater_resilience_park_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Stormwater Resilience Park — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_1.png"
-            },
-            {
-                "id": "stormwater_resilience_park_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Stormwater Resilience Park — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_2.png"
-            },
-            {
-                "id": "stormwater_resilience_park_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Stormwater Resilience Park — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_3.png"
-            }
+        "negative": [
+          "No swimming pools or formal fountains as the focus",
+          "No mown sports pitches dominating",
+          "No dense buildings across the basins",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.25,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "edge_and_terrace_trees"
+      },
+      "suggestedAreaSqm": 30000,
+      "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/hero.png",
+      "variants": [
+        {
+          "id": "stormwater_resilience_park_variant_0",
+          "label": "Urban Bioswale Park",
+          "color": "#8B6914",
+          "description": "An urban stormwater park of stepped bioswales and small terraced detention basins planted with rushes and perennials, crossed by boardwalks and seat-walls, hemmed by city buildings. The most urban and compact.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_0.png",
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 40000,
+          "suggestedAreaSqm": 25000
+        },
+        {
+          "id": "stormwater_resilience_park_variant_1",
+          "label": "Naturalistic Detention Park",
+          "color": "#5B7065",
+          "description": "A large naturalistic detention park: broad reed-fringed retention ponds and wet meadows with a pavilion, boardwalks, and looping paths, edged by development. The largest scale — a regional flood-storage landscape.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_1.png",
+          "minAreaSqm": 25000,
+          "maxAreaSqm": 100000,
+          "suggestedAreaSqm": 60000
+        },
+        {
+          "id": "stormwater_resilience_park_variant_2",
+          "label": "Engineered Terraced Plaza",
+          "color": "#6B8A4A",
+          "description": "An engineered water plaza: stepped concrete channels and water stairs interleaved with planted terraces and paved gathering space, set in a dense urban block. The most architectural, hardscape variant.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_2.png",
+          "minAreaSqm": 10000,
+          "maxAreaSqm": 35000,
+          "suggestedAreaSqm": 20000
+        },
+        {
+          "id": "stormwater_resilience_park_variant_3",
+          "label": "Arid Rock-Channel Park",
+          "color": "#8A6B4A",
+          "description": "An arid-climate stormwater park: rock-lined dry channels and gravel basins that run only after rain, with drought-tolerant planting, pergolas, and shaded seating. A water-wise desert-city resilience park.",
+          "thumbnailUrl": "/archetypes/openspaces/stormwater-resilience-park/variant_3.png",
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 45000,
+          "suggestedAreaSqm": 25000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic stormwater resilience park: broad shallow detention basins and terraced bioswales stepping across the site, planted with rushes and meadow and holding shallow water or reading as sunken green lawns, crossed by boardwalks and paths, with low check weirs, a small pavilion, and rain-garden edges meeting the streets. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: stepped green basins and bioswales with patches of shallow water, boardwalk and path lines crossing them, terrace edges, and a small building, framed by surrounding streets. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, swimming pool, formal fountain, mown sports pitch, dense buildings"
+      },
+      "districtKit": null
     },
     {
-        "id": "velodrome_cycling_track",
-        "title": "Velodrome Cycling Track",
-        "spaceType": "park",
-        "aestheticCategory": "sports_recreation",
-        "description": "A Velodrome Cycling Track.",
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "suggestedAreaSqm": 1200,
-        "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/hero.png",
-        "shape": "rectangular",
-        "generationTags": [
-            "sports-recreation"
+      "id": "velodrome_cycling_track",
+      "suggestedWidth_m": 160,
+      "suggestedDepth_m": 90,
+      "minWidth_m": 110,
+      "maxWidth_m": 220,
+      "minDepth_m": 65,
+      "maxDepth_m": 130,
+      "minAreaSqm": 7000,
+      "maxAreaSqm": 28000,
+      "aspectRatio": "1.8:1",
+      "shape": "oval",
+      "title": "Velodrome Cycling Track",
+      "aestheticCategory": "sports_recreation",
+      "spaceType": "park",
+      "description": "A velodrome built around a steeply banked oval cycling track enclosing a flat infield. The elongated track reads from above as a rounded-rectangle ring, wrapped by tiered spectator seating or a sweeping arena roof, with a timing tower, warm-up apron, and entry plaza alongside. Forms range from open-air concrete tracks to iconic timber-roofed indoor arenas.",
+      "generationTags": ["velodrome", "cycling", "sports-recreation", "banked-oval", "track", "arena"],
+      "styleProfile": {
+        "landscapeCharacter": "A velodrome seen from roughly 80m drone altitude. A steeply banked oval cycling track — a 250m circuit reads as an elongated rounded-rectangle ring about 135m long — encloses a flat grass or hardcourt infield. The track surface is pale timber or grey concrete with a blue inner cote d'azur band and a black measurement line. Tiered spectator seating runs along the home straight, or a sweeping curved arena roof covers the whole oval. A timing tower, a warm-up apron, and a small paved entry plaza with trees sit alongside, with parking at the perimeter.",
+        "pavingType": "Timber or concrete track surface, concrete concourse, asphalt parking apron",
+        "plantingType": "Grass infield, perimeter shade trees, low planting at the entry plaza",
+        "seatingRealm": "Tiered grandstand seating along the home straight; covered concourse at arena scale",
+        "waterFeatures": "None; no ornamental water",
+        "opennessEnclosure": "An oval track ringed by stands or fully enclosed under a sweeping arena roof"
+      },
+      "prompt": {
+        "subject": "Aerial view of a velodrome with a steeply banked oval cycling track and infield",
+        "details": [
+          "A banked oval track reading as an elongated rounded-rectangle ring (a 250m circuit ~135m long) around a flat infield",
+          "Pale timber or grey concrete track surface with a blue inner band",
+          "Tiered grandstand seating along the home straight, or a sweeping curved arena roof over the oval",
+          "A timing tower and warm-up apron alongside",
+          "A small paved entry plaza with trees and perimeter parking"
         ],
-        "variants": [
-            {
-                "id": "velodrome_cycling_track_variant_0",
-                "label": "Style Variant 1",
-                "color": "#8B6914",
-                "description": "Velodrome Cycling Track — style variant 1.",
-                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_0.png"
-            },
-            {
-                "id": "velodrome_cycling_track_variant_1",
-                "label": "Style Variant 2",
-                "color": "#5B7065",
-                "description": "Velodrome Cycling Track — style variant 2.",
-                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_1.png"
-            },
-            {
-                "id": "velodrome_cycling_track_variant_2",
-                "label": "Style Variant 3",
-                "color": "#6B8A4A",
-                "description": "Velodrome Cycling Track — style variant 3.",
-                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_2.png"
-            },
-            {
-                "id": "velodrome_cycling_track_variant_3",
-                "label": "Style Variant 4",
-                "color": "#8A6B4A",
-                "description": "Velodrome Cycling Track — style variant 4.",
-                "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_3.png"
-            }
+        "negative": [
+          "No straight running track or rectangular athletics oval",
+          "No ploughed fields or ornamental gardens",
+          "No open water or water-park features",
+          "No text overlays"
         ]
+      },
+      "propertyPresets": {
+        "tree_density_level": "low",
+        "tree_density": 0.15,
+        "has_paths": true,
+        "has_benches": true,
+        "shade_strategy": "plaza_trees"
+      },
+      "suggestedAreaSqm": 14000,
+      "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/hero.png",
+      "variants": [
+        {
+          "id": "velodrome_cycling_track_variant_0",
+          "label": "Open-Air Velodrome",
+          "color": "#8B6914",
+          "description": "An open-air velodrome: a banked outdoor oval track in pale concrete around a green grass infield, with open tiered bleachers along one straight, a small timing tower, and a paved approach. A classic uncovered competition track of a couple of acres.",
+          "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_0.png",
+          "minAreaSqm": 8000,
+          "maxAreaSqm": 16000,
+          "suggestedAreaSqm": 11000
+        },
+        {
+          "id": "velodrome_cycling_track_variant_1",
+          "label": "Indoor Velodrome Arena",
+          "color": "#5B7065",
+          "description": "An iconic indoor velodrome arena under a sweeping curved timber roof with a glazed facade and a generous concourse, the banked timber track fully enclosed. The largest scale — a flagship competition venue with surrounding plaza and parking.",
+          "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_1.png",
+          "minAreaSqm": 14000,
+          "maxAreaSqm": 28000,
+          "suggestedAreaSqm": 20000
+        },
+        {
+          "id": "velodrome_cycling_track_variant_2",
+          "label": "Velodrome in Parkland",
+          "color": "#6B8A4A",
+          "description": "A covered velodrome set in landscaped parkland: a curved-roof arena ringed by lawns, planting beds, and looping cycle paths, with a modest entry building and bike parking. A medium-large facility woven into a park.",
+          "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_2.png",
+          "minAreaSqm": 12000,
+          "maxAreaSqm": 22000,
+          "suggestedAreaSqm": 16000
+        },
+        {
+          "id": "velodrome_cycling_track_variant_3",
+          "label": "Community Training Track",
+          "color": "#8A6B4A",
+          "description": "A modest community training velodrome: a low banked concrete oval with simple low bleachers, a small clubhouse shed, and perimeter planting and benches. The smallest, most utilitarian setup of a couple of acres.",
+          "thumbnailUrl": "/archetypes/openspaces/velodrome-cycling-track/variant_3.png",
+          "minAreaSqm": 7000,
+          "maxAreaSqm": 14000,
+          "suggestedAreaSqm": 10000
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic velodrome. A steeply banked oval cycling track in pale timber or concrete reads as an elongated rounded-rectangle ring around a flat green infield, wrapped by tiered grandstand seating or a sweeping curved arena roof, with a timing tower, warm-up apron, and a small paved entry plaza with trees and perimeter parking. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, crisp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above: an elongated oval track ring around a flat infield, either open with tiered seating along one side or covered by a large curved oval roof, with a small adjacent building and parking. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, straight running track, ploughed fields, ornamental flower gardens, open water"
+      },
+      "districtKit": null
     }
   ]
 }

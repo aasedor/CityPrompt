@@ -496,30 +496,33 @@ function compressImage(blob: Blob, maxWidth = 512, quality = 0.7): Promise<strin
 }
 
 /** Cap on total reference images sent to Gemini. Raised from 6 → 48 to allow
- *  multi-angle references per zone (street-level + 30°/60°/90° aerials).
+ *  multi-angle references per zone (0° street-level + 45° + 90° aerials).
  *  Per pilot memory: Gemini accepts ~3600 images / 20MB total; 48 at ~40KB
  *  each = ~2MB, well within limits. Sweet spot for reference-count was 3
- *  angles per zone (street + 60° + 90°), so up to ~16 zones × 3 = 48. */
+ *  views per zone (0° + 45° + 90°), so up to ~16 zones × 3 = 48. */
 const MAX_ARCHETYPE_IMAGES = 48;
 
 /** Aerial angle suffixes to look for alongside the street-level variant_N.png.
  *  Files are named `variant_N_angle_XX.jpg` where XX is one of these values.
  *  Order matters — each zone's refs go to Gemini in this order. Street-level
- *  always comes first; then aerials from low-oblique to top-down. */
+ *  always comes first; then the aerial(s) from oblique to top-down. */
 const AERIAL_ANGLE_SUFFIXES: Array<{ suffix: number; label: string }> = [
-  { suffix: 30, label: '30° low-oblique aerial' },
-  { suffix: 60, label: '60° steep-oblique aerial' },
+  // `suffix` = on-disk filename number (variant_N_angle_60.jpg) — NOT renamed.
+  // `label`  = what Gemini sees; reflects the images' TRUE measured angle.
+  // The "60°" files actually generated at ~45-50° elevation, so we label them 45°
+  // (clean 0/45/90 set). See docs/REFERENCE_IMAGE_ANGLE_AUDIT_2026-05-21.md.
+  // The 30° probe was removed — those files exist for only 4 archetypes.
+  { suffix: 60, label: '45° oblique aerial' },
   { suffix: 90, label: '90° nadir / top-down aerial' },
 ];
 
 /**
  * Collect archetype reference card images for multi-image rendering.
  *
- * For each zone, discovers and loads up to 4 reference images:
- *   1. street-level (the variant_N.png thumbnail)
- *   2. 30° low-oblique aerial (variant_N_angle_30.jpg, if present)
- *   3. 60° steep-oblique aerial (variant_N_angle_60.jpg, if present)
- *   4. 90° nadir / top-down aerial (variant_N_angle_90.jpg, if present)
+ * For each zone, discovers and loads up to 3 reference images:
+ *   1. 0° eye-level / street view (the variant_N.png thumbnail)
+ *   2. 45° oblique aerial (variant_N_angle_60.jpg — labeled 45° per audit; file kept as _angle_60)
+ *   3. 90° nadir / top-down aerial (variant_N_angle_90.jpg, if present)
  *
  * Each image is compressed to 512px JPEG @ 0.7 (~30-50KB) and tagged with
  * the viewing angle so the prompt can explain what each reference shows.
@@ -626,12 +629,12 @@ async function collectArchetypeImages(
           const blob = await resp.blob();
           const base64 = await compressImage(blob, 512, 0.7);
           const sizeKB = Math.round(base64.length * 0.75 / 1024);
-          console.log(`[GlobeAIRender] Archetype image: ${title} [street-level ground view] — ${sizeKB}KB`);
+          console.log(`[GlobeAIRender] Archetype image: ${title} [0° eye-level / street view] — ${sizeKB}KB`);
           images.push({
             image_base64: base64,
-            label: `${title} — street-level ground view`,
+            label: `${title} — 0° eye-level / street view`,
             zone_color: zoneColor,
-            angle: 'street-level ground view',
+            angle: '0° eye-level / street view',
           });
         } else {
           console.warn(`[GlobeAIRender] street-level fetch ${resp.status}: ${thumbnailUrl}`);
@@ -1656,8 +1659,8 @@ export function useGlobeAIRender() {
       let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
 
-      // 4. Collect archetype reference card images (multi-view: street-level +
-      //    up to 3 aerial angles per zone — 30°/60°/90° where available).
+      // 4. Collect archetype reference card images (multi-view: 0° street-level +
+      //    up to 2 aerial angles per zone — 45°/90° where available).
       //    Each image is compressed to 512px JPEG @ 0.7 (~30-50KB). Cap 48.
       console.log('[GlobeAIRender] Collecting archetype reference images...');
       const archetypeImages = await collectArchetypeImages(visibleZones);
@@ -1667,16 +1670,15 @@ export function useGlobeAIRender() {
           `images provide the visual identity for the drawn zones. Each image is ` +
           `labeled with its VIEWING ANGLE so you can match your output angle to ` +
           `the right reference:\n` +
-          `  • "street-level ground view" — eye-level photograph; shows facade ` +
-          `detail, materials, ornament, colors, ground-level character.\n` +
-          `  • "30° low-oblique aerial" — drone ~50m up looking down shallowly; ` +
-          `shows facade + partial rooftop.\n` +
-          `  • "60° steep-oblique aerial" — drone ~80m up looking down steeply; ` +
-          `shows rooftop + upper facade from a corner, triangulates 3D form.\n` +
-          `  • "90° nadir / top-down aerial" — drone ~150m up looking straight ` +
-          `down; shows rooftop plan, site layout, roof materials.\n` +
-          `HOW TO USE: when rendering at an oblique camera angle (30-70°), weight ` +
-          `the 60° aerial and street-level refs most heavily. When rendering top-` +
+          `  • "0° eye-level / street view" — ground-level photograph at ~0° ` +
+          `elevation (90° from nadir): camera looks at the horizon, NOT downward. ` +
+          `Shows facade detail, materials, ornament, colors, ground-level character.\n` +
+          `  • "45° oblique aerial" — drone at ~45° elevation (45° from nadir); ` +
+          `shows rooftop + upper facades from a corner, triangulates 3D form.\n` +
+          `  • "90° nadir / top-down aerial" — drone at 90° elevation (0° from ` +
+          `nadir) looking straight down; shows rooftop plan, site layout, roof materials.\n` +
+          `HOW TO USE: when rendering at an oblique camera angle, weight ` +
+          `the 45° aerial and street-level refs most heavily. When rendering top-` +
           `down or near-nadir, weight the 90° nadir ref most heavily. Use ALL ` +
           `available refs per zone to build a complete 3D understanding of its ` +
           `materials, form, and site layout before rendering. Each ref is ` +

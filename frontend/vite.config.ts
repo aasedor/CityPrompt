@@ -15,6 +15,15 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 1000,
+      // Do NOT watch the generated archetype/entourage image dirs. The polling
+      // watcher repeatedly accesses these 1000+ binaries every second, which on
+      // Windows collides with `git stash` / branch-switch file deletions and
+      // causes "failed to remove" lock failures (see CLAUDE.md). These are static
+      // generated assets that don't need HMR, so ignoring them is free.
+      ignored: [
+        '**/public/archetypes/**',
+        '**/public/entourage/**',
+      ],
     },
     proxy: {
       '/api': {

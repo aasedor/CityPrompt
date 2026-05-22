@@ -137,150 +137,6 @@
       "description": "Station-area density with active multimodal frontage systems"
     },
     {
-        "id": "glass_tower_modern",
-        "title": "Glass Tower Modern",
-        "buildingSubcategory": "Commercial — Office / Office Tower",
-        "developmentType": "commercial_office",
-        "aestheticCategory": "contemporary_urban",
-        "description": "The Glass Tower Modern archetype represents the dominant form of contemporary urban office development: a full-curtain-wall tower rising from a distinguished podium base, delivering large floor-plate commercial office space to dense downtown cores. The typology ranges from rectilinear corporate slabs clad in reflective blue or dark tinted glass, to parametric sculpted towers with undulating balcony spandrels and integrated sky gardens. Ground-floor lobbies are expressed as transparent, double-height volumes with premium stone or structural glass entries that activate the street edge. Facades emphasize vertical continuity, with aluminum mullion grids, reflective glazing, and occasional setback crowns or spire elements marking the skyline. These towers anchor financial districts and mixed-use corridors, projecting corporate prestige while offering flexible, open-plan floorplates across a wide range of scales.",
-        "generationTags": [
-            "glass curtain wall",
-            "office tower",
-            "downtown commercial",
-            "reflective glazing",
-            "aluminum mullion",
-            "corporate headquarters",
-            "podium base",
-            "urban skyline"
-        ],
-        "styleProfile": {
-            "materials": [
-                "high-performance curtain-wall glazing",
-                "aluminum mullion framing",
-                "polished marble podium cladding",
-                "dark granite base stone",
-                "structural steel frame",
-                "concrete spandrel panels"
-            ],
-            "facadeRhythm": "continuous vertical grid of floor-to-ceiling glazing panels punctuated by horizontal spandrels or projecting balcony bands",
-            "roofForm": "flat or chamfered crown with spire or antenna element; some variants feature rooftop terrace gardens or tapered sculpted peaks",
-            "frontageType": "double-height glazed lobby set within stone podium, with canopy overhang and street-level plaza or landscaped apron",
-            "windowStyle": "full-height curtain-wall units, floor-to-ceiling, in blue reflective, clear, or dark tinted glass with aluminum framing",
-            "massing": "slender rectilinear or gently tapered tower shaft above a wider podium base; some variants adopt a curvilinear or sculpted profile",
-            "heightTendency": "mid-rise to high-rise, 8 to 30 storeys depending on variant and urban density context",
-            "streetRelationship": "podium base engages sidewalk with lobby canopy, plaza trees, and retail-ready transparency; tower setback from street line above base",
-            "renderingMood": "crisp daylight or golden-hour urban render with sky reflections in glazing, surrounding context buildings, and street-level trees",
-            "articulation": "vertical mullion lines dominate shaft; podium distinguished by stone cladding and cantilevered canopy; crown differentiated by chamfer, taper, or planted terrace",
-            "publicRealm": "landscaped plaza or wide sidewalk apron with mature street trees, entry canopy, and active glazed ground floor"
-        },
-        "prompt": {
-            "subject": "A contemporary glass-curtain-wall office tower rising from a polished stone podium base in a dense urban downtown setting.",
-            "details": [
-                "Full-height reflective glazing across tower shaft with aluminum mullion grid and visible floor spandrels",
-                "Ground-floor lobby expressed as double-height transparent volume within a marble or granite podium with projecting canopy",
-                "Tower crown differentiated by chamfered setback, sculptural taper, or rooftop terrace planting",
-                "Surrounding context of mid-rise brick and concrete buildings framing the tower at street level",
-                "Street-level trees, wide sidewalk, and warm interior lobby glow visible through ground-floor glazing",
-                "Sky reflections and cloud movement captured in the curtain-wall surface, conveying corporate prestige and urban scale"
-            ]
-        },
-        "suggestedWidth_m": 40,
-        "suggestedDepth_m": 30,
-        "minFloors": 8,
-        "maxFloors": 30,
-        "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/hero.png",
-        "variants": [
-            {
-                "id": "blue_reflective_corporate_tower",
-                "label": "Blue Reflective Corporate Tower",
-                "description": "Rectilinear high-rise sheathed in deep blue reflective curtain-wall glazing with a pronounced aluminum mullion grid. A wide white marble podium base with a cantilevered canopy and tall clear-glazed lobby volumes anchors the tower to street level. Slender spire at chamfered crown.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_0.png",
-                "color": "#4A7FB5",
-                "minFloors": 18,
-                "maxFloors": 28,
-                "suggestedFloorHeight": 4.0,
-                "suggestedAreaSqm": 28000,
-                "facadeDetail": {
-                    "primaryMaterial": "deep blue reflective curtain-wall glass",
-                    "secondaryMaterial": "aluminum mullion and spandrel framing",
-                    "accentMaterial": "polished white marble podium cladding",
-                    "groundFloor": "double-height glazed lobby with cantilevered flat canopy and transparent retail bays",
-                    "colorScheme": "deep cobalt blue glazing, white marble base, silver aluminum trim"
-                },
-                "roofDetail": {
-                    "form": "chamfered setback crown with slender vertical spire or antenna",
-                    "material": "aluminum-clad parapet and spire"
-                }
-            },
-            {
-                "id": "parametric_biophilic_sculpted_tower",
-                "label": "Parametric Biophilic Sculpted Tower",
-                "description": "A tall curvilinear tower with undulating white concrete balcony spandrels creating a wave-like horizontal rhythm across the glazed shaft. Lush planted terraces with mature trees appear at multiple floor levels. Ground floor features a dramatic arched structural glass atrium entry. Warm golden-hour glow.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_1.png",
-                "color": "#C8C0A8",
-                "minFloors": 22,
-                "maxFloors": 32,
-                "suggestedFloorHeight": 4.2,
-                "suggestedAreaSqm": 38000,
-                "facadeDetail": {
-                    "primaryMaterial": "clear curtain-wall glass with curved floor edges",
-                    "secondaryMaterial": "sculpted white concrete balcony spandrel bands",
-                    "accentMaterial": "integrated planted terraces with mature trees at sky-garden floors",
-                    "groundFloor": "triple-height arched structural glass atrium with angled steel supports",
-                    "colorScheme": "warm grey-white concrete spandrels, clear glass, green biophilic planting"
-                },
-                "roofDetail": {
-                    "form": "tapering curvilinear crown with open planted terrace at upper levels",
-                    "material": "glazed parapet with planted tray edging"
-                }
-            },
-            {
-                "id": "biophilic_green_midrise_office",
-                "label": "Biophilic Green Mid-Rise Office",
-                "description": "A compact mid-rise office block with full-height clear curtain-wall on the primary facade and cantilevered concrete floor-plate balconies densely planted with mature trees and shrubs on the return elevation. Rooftop garden with glazed penthouse. Transparent ground-floor lobby opening to plantings.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_2.png",
-                "color": "#5A8A5A",
-                "minFloors": 8,
-                "maxFloors": 12,
-                "suggestedFloorHeight": 3.9,
-                "suggestedAreaSqm": 8500,
-                "facadeDetail": {
-                    "primaryMaterial": "clear low-iron curtain-wall glass with black aluminum framing",
-                    "secondaryMaterial": "exposed concrete cantilevered balcony slabs",
-                    "accentMaterial": "dense planted troughs with full-size trees at each floor level",
-                    "groundFloor": "fully glazed transparent ground floor with interior tropical planting visible from street",
-                    "colorScheme": "clear glass and black framing, warm concrete slab edges, abundant green foliage"
-                },
-                "roofDetail": {
-                    "form": "flat roof with glazed penthouse level and extensive planted terrace",
-                    "material": "glazed parapet, green roof substrate, and terrace paving"
-                }
-            },
-            {
-                "id": "dark_tinted_minimalist_tower",
-                "label": "Dark Tinted Minimalist Tower",
-                "description": "A stark, rectilinear high-rise clad entirely in near-black tinted reflective curtain-wall glass with a regular vertical mullion grid. A monolithic dark granite base panel provides the only material change at street level. No canopy or ornamentation; pure corporate minimalism in a gritty urban setting.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_3.png",
-                "color": "#2A2A2A",
-                "minFloors": 18,
-                "maxFloors": 26,
-                "suggestedFloorHeight": 4.0,
-                "suggestedAreaSqm": 24000,
-                "facadeDetail": {
-                    "primaryMaterial": "near-black tinted reflective curtain-wall glass",
-                    "secondaryMaterial": "dark bronze or black aluminum mullion framing",
-                    "accentMaterial": "dark charcoal granite base panel",
-                    "groundFloor": "flush dark granite podium band with recessed minimal entry cut-out, no canopy",
-                    "colorScheme": "near-black reflective glass, dark bronze mullions, charcoal granite base"
-                },
-                "roofDetail": {
-                    "form": "flat rectilinear crown with flush parapet, no spire or setback",
-                    "material": "dark aluminum-clad flat parapet coping"
-                }
-            }
-        ]
-    },
-    {
       "id": "civic_monumental",
       "label": "Civic Monumental",
       "description": "Symbolic institutional forms with durable public presence"
@@ -31815,69 +31671,192 @@
         ]
     },
     {
-        "id": "glass_tower_modern",
-        "title": "Glass Tower Modern",
-        "buildingSubcategory": "Commercial — Office / Office Tower",
-        "developmentType": "commercial_office",
-        "description": "A Glass Tower Modern archetype.",
-        "suggestedWidth_m": 30,
-        "suggestedDepth_m": 20,
-        "suggestedFloorHeight": 4.0,
-        "minWidth_m": 20,
-        "maxWidth_m": 50,
-        "minDepth_m": 14,
-        "maxDepth_m": 35,
-        "aspectRatio": "3:2",
-        "minFloors": 12,
-        "maxFloors": 50,
-        "suggestedAreaSqm": 2500,
-        "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/hero.png",
-        "variants": [
-            {
-                "id": "glass_tower_modern_variant_0",
-                "label": "Style Variant 1",
-                "description": "Glass Tower Modern — style variant 1.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_0.png",
-                "minFloors": 18,
-                "maxFloors": 30,
-                "suggestedFloorHeight": 3.8,
-                "suggestedAreaSqm": 2500,
-                "color": "#4A6B8A"
-            },
-            {
-                "id": "glass_tower_modern_variant_1",
-                "label": "Style Variant 2",
-                "description": "Glass Tower Modern — style variant 2.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_1.png",
-                "minFloors": 30,
-                "maxFloors": 50,
-                "suggestedFloorHeight": 3.8,
-                "suggestedAreaSqm": 2500,
-                "color": "#8A6B4A"
-            },
-            {
-                "id": "glass_tower_modern_variant_2",
-                "label": "Style Variant 3",
-                "description": "Glass Tower Modern — style variant 3.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_2.png",
-                "minFloors": 12,
-                "maxFloors": 22,
-                "suggestedFloorHeight": 3.8,
-                "suggestedAreaSqm": 2500,
-                "color": "#5B7065"
-            },
-            {
-                "id": "glass_tower_modern_variant_3",
-                "label": "Style Variant 4",
-                "description": "Glass Tower Modern — style variant 4.",
-                "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_3.png",
-                "minFloors": 35,
-                "maxFloors": 50,
-                "suggestedFloorHeight": 3.8,
-                "suggestedAreaSqm": 2500,
-                "color": "#6B4A8A"
-            }
+      "id": "glass_tower_modern",
+      "suggestedWidth_m": 30,
+      "suggestedDepth_m": 20,
+      "suggestedFloorHeight": 4.0,
+      "minWidth_m": 20,
+      "maxWidth_m": 50,
+      "minDepth_m": 14,
+      "maxDepth_m": 35,
+      "aspectRatio": "3:2",
+      "title": "Glass Tower Modern",
+      "aestheticCategory": "contemporary_urban",
+      "description": "The dominant form of contemporary urban office development: a full-curtain-wall tower rising from a distinguished podium base, delivering large floor-plate commercial space to dense downtown cores. The typology ranges from rectilinear corporate slabs in reflective blue or dark tinted glass to parametric sculpted towers with undulating balcony spandrels and integrated sky gardens. Ground-floor lobbies are expressed as transparent, double-height volumes with premium stone or structural-glass entries that activate the street edge, while facades emphasize vertical continuity with aluminum mullion grids, reflective glazing, and occasional setback crowns or spire elements marking the skyline.",
+      "buildingSubcategory": "Commercial — Office / Office Tower",
+      "developmentType": "commercial_office",
+      "generationTags": [
+        "glass curtain wall",
+        "office tower",
+        "downtown commercial",
+        "reflective glazing",
+        "aluminum mullion",
+        "corporate headquarters",
+        "podium base",
+        "urban skyline"
+      ],
+      "palette": {
+        "skyTop": "#8fa2b8",
+        "skyBottom": "#ecf2f8",
+        "facadePrimary": "#4e6fa3",
+        "facadeSecondary": "#b9c2cc",
+        "accent": "#2b2f34",
+        "window": "#dff0ff",
+        "ground": "#cfc4b4",
+        "street": "#55504b",
+        "landscape": "#7a9a68"
+      },
+      "styleProfile": {
+        "materials": [
+          "high-performance curtain-wall glazing",
+          "aluminum mullion framing",
+          "polished marble podium cladding",
+          "dark granite base stone",
+          "structural steel frame",
+          "concrete spandrel panels"
+        ],
+        "facadeRhythm": "continuous vertical grid of floor-to-ceiling glazing panels punctuated by horizontal spandrels or projecting balcony bands",
+        "roofForm": "flat or chamfered crown with spire or antenna element; some variants feature rooftop terrace gardens or tapered sculpted peaks",
+        "frontageType": "double-height glazed lobby set within stone podium, with canopy overhang and street-level plaza or landscaped apron",
+        "windowStyle": "full-height curtain-wall units, floor-to-ceiling, in blue reflective, clear, or dark tinted glass with aluminum framing",
+        "massing": "slender rectilinear or gently tapered tower shaft above a wider podium base; some variants adopt a curvilinear or sculpted profile",
+        "heightTendency": "mid-rise to high-rise, 8 to 32 storeys depending on variant and urban density context",
+        "streetRelationship": "podium base engages sidewalk with lobby canopy, plaza trees, and retail-ready transparency; tower setback from street line above base",
+        "renderingMood": "crisp daylight or golden-hour urban render with sky reflections in glazing, surrounding context buildings, and street-level trees",
+        "articulation": "vertical mullion lines dominate shaft; podium distinguished by stone cladding and cantilevered canopy; crown differentiated by chamfer, taper, or planted terrace",
+        "publicRealm": "landscaped plaza or wide sidewalk apron with mature street trees, entry canopy, and active glazed ground floor"
+      },
+      "prompt": {
+        "subject": "A contemporary glass-curtain-wall office tower rising from a polished stone podium base in a dense urban downtown setting.",
+        "details": [
+          "Full-height reflective glazing across tower shaft with aluminum mullion grid and visible floor spandrels",
+          "Ground-floor lobby expressed as double-height transparent volume within a marble or granite podium with projecting canopy",
+          "Tower crown differentiated by chamfered setback, sculptural taper, or rooftop terrace planting",
+          "Surrounding context of mid-rise brick and concrete buildings framing the tower at street level",
+          "Street-level trees, wide sidewalk, and warm interior lobby glow visible through ground-floor glazing",
+          "Sky reflections and cloud movement captured in the curtain-wall surface, conveying corporate prestige and urban scale"
+        ],
+        "negative": [
+          "No low-rise suburban buildings as the subject",
+          "No historicist masonry ornament or pitched roofs",
+          "No text inside image",
+          "No fantasy distortions"
         ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored building block with a photorealistic modern glass curtain-wall office tower. Keep the exact same building footprint and height. Full-height reflective or clear glazing with an aluminum mullion grid and expressed floor spandrels, a stone-clad podium base with a double-height glazed lobby and entrance canopy, and a chamfered, tapered, or planted crown. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored block viewed from above with the roof of a tall tower: a flat or chamfered crown with a central mechanical penthouse, cooling towers and louvred screens, and possible setback terrace gardens or a spire base. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
+      },
+      "facadeDetail": {
+        "primaryMaterial": "high-performance curtain-wall glazing, clear or blue/dark tinted, with low-E coating",
+        "secondaryMaterial": "aluminum mullion and spandrel framing",
+        "accentMaterial": "polished marble or granite podium cladding with a metal entrance canopy",
+        "groundFloor": "double-height glazed lobby within a stone podium, with revolving doors, entrance canopy, and a landscaped plaza",
+        "upperFloors": "continuous curtain wall with expressed floor slabs as horizontal shadow lines and concealed operable vents",
+        "cornice": "minimal parapet with aluminum coping; chamfered, tapered, or planted crown with the mechanical penthouse set back",
+        "colorScheme": "silver-grey aluminum frame, blue-grey or near-black glass, stone podium base, polished metal accents"
+      },
+      "roofDetail": {
+        "form": "flat or chamfered crown with mechanical penthouse",
+        "material": "light-coloured membrane roof, possible green roof at setback terraces",
+        "features": "mechanical penthouse with cooling towers and louvred screens, window-washing track, spire or antenna on some variants",
+        "aerialAppearance": "grey flat or chamfered roof with a central mechanical penthouse and equipment arrays, with possible planted terrace patches at setbacks"
+      },
+      "minFloors": 8,
+      "maxFloors": 32,
+      "suggestedAreaSqm": 25000,
+      "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/hero.png",
+      "variants": [
+        {
+          "id": "glass_tower_modern_variant_0",
+          "label": "Blue Reflective Corporate Tower",
+          "description": "Rectilinear high-rise sheathed in deep blue reflective curtain-wall glazing with a pronounced aluminum mullion grid. A wide white marble podium base with a cantilevered canopy and tall clear-glazed lobby volumes anchors the tower to street level, capped by a slender spire at a chamfered crown.",
+          "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_0.png",
+          "color": "#4A7FB5",
+          "minFloors": 18,
+          "maxFloors": 28,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 28000,
+          "facadeDetail": {
+            "primaryMaterial": "deep blue reflective curtain-wall glass",
+            "secondaryMaterial": "aluminum mullion and spandrel framing",
+            "accentMaterial": "polished white marble podium cladding",
+            "groundFloor": "double-height glazed lobby with cantilevered flat canopy and transparent retail bays",
+            "colorScheme": "deep cobalt blue glazing, white marble base, silver aluminum trim"
+          },
+          "roofDetail": {
+            "form": "chamfered setback crown with slender vertical spire or antenna",
+            "material": "aluminum-clad parapet and spire"
+          }
+        },
+        {
+          "id": "glass_tower_modern_variant_1",
+          "label": "Parametric Biophilic Sculpted Tower",
+          "description": "A tall curvilinear tower with undulating white concrete balcony spandrels creating a wave-like horizontal rhythm across the glazed shaft. Lush planted terraces with mature trees appear at multiple floor levels, and the ground floor features a dramatic arched structural-glass atrium entry under a warm golden-hour glow.",
+          "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_1.png",
+          "color": "#C8C0A8",
+          "minFloors": 22,
+          "maxFloors": 32,
+          "suggestedFloorHeight": 4.2,
+          "suggestedAreaSqm": 38000,
+          "facadeDetail": {
+            "primaryMaterial": "clear curtain-wall glass with curved floor edges",
+            "secondaryMaterial": "sculpted white concrete balcony spandrel bands",
+            "accentMaterial": "integrated planted terraces with mature trees at sky-garden floors",
+            "groundFloor": "triple-height arched structural-glass atrium with angled steel supports",
+            "colorScheme": "warm grey-white concrete spandrels, clear glass, green biophilic planting"
+          },
+          "roofDetail": {
+            "form": "tapering curvilinear crown with open planted terrace at upper levels",
+            "material": "glazed parapet with planted tray edging"
+          }
+        },
+        {
+          "id": "glass_tower_modern_variant_2",
+          "label": "Biophilic Green Mid-Rise",
+          "description": "A compact mid-rise office block with full-height clear curtain-wall on the primary facade and cantilevered concrete floor-plate balconies densely planted with mature trees and shrubs on the return elevation. A rooftop garden with a glazed penthouse crowns the building, and the transparent ground-floor lobby opens to interior plantings.",
+          "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_2.png",
+          "color": "#5A8A5A",
+          "minFloors": 8,
+          "maxFloors": 12,
+          "suggestedFloorHeight": 3.9,
+          "suggestedAreaSqm": 8500,
+          "facadeDetail": {
+            "primaryMaterial": "clear low-iron curtain-wall glass with black aluminum framing",
+            "secondaryMaterial": "exposed concrete cantilevered balcony slabs",
+            "accentMaterial": "dense planted troughs with full-size trees at each floor level",
+            "groundFloor": "fully glazed transparent ground floor with interior tropical planting visible from street",
+            "colorScheme": "clear glass and black framing, warm concrete slab edges, abundant green foliage"
+          },
+          "roofDetail": {
+            "form": "flat roof with glazed penthouse level and extensive planted terrace",
+            "material": "glazed parapet, green roof substrate, and terrace paving"
+          }
+        },
+        {
+          "id": "glass_tower_modern_variant_3",
+          "label": "Dark Tinted Minimalist Tower",
+          "description": "A stark, rectilinear high-rise clad entirely in near-black tinted reflective curtain-wall glass with a regular vertical mullion grid. A monolithic dark granite base panel provides the only material change at street level — no canopy or ornamentation — pure corporate minimalism in a gritty urban setting.",
+          "thumbnailUrl": "/archetypes/buildings/glass-tower-modern/variant_3.png",
+          "color": "#2A2A2A",
+          "minFloors": 18,
+          "maxFloors": 26,
+          "suggestedFloorHeight": 4.0,
+          "suggestedAreaSqm": 24000,
+          "facadeDetail": {
+            "primaryMaterial": "near-black tinted reflective curtain-wall glass",
+            "secondaryMaterial": "dark bronze or black aluminum mullion framing",
+            "accentMaterial": "dark charcoal granite base panel",
+            "groundFloor": "flush dark granite podium band with recessed minimal entry cut-out, no canopy",
+            "colorScheme": "near-black reflective glass, dark bronze mullions, charcoal granite base"
+          },
+          "roofDetail": {
+            "form": "flat rectilinear crown with flush parapet, no spire or setback",
+            "material": "dark aluminum-clad flat parapet coping"
+          }
+        }
+      ]
     },
     {
         "id": "graduate_family_housing",
