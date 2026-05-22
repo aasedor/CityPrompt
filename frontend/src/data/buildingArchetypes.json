@@ -35451,6 +35451,408 @@
                 }
             }
         ]
+    },
+    {
+        "id": "rndsqr_missing_middle_townhomes",
+        "suggestedWidth_m": 28,
+        "suggestedDepth_m": 14,
+        "suggestedFloorHeight": 3.0,
+        "minWidth_m": 16,
+        "maxWidth_m": 60,
+        "minDepth_m": 10,
+        "maxDepth_m": 20,
+        "aspectRatio": "2:1",
+        "shadeId": "#c5a52c",
+        "title": "RNDSQR Missing Middle Townhomes",
+        "aestheticCategory": "contemporary_urban",
+        "description": "Contemporary inner-city Calgary infill townhomes in the manner of RNDSQR's 'missing middle' rowhouse work (in the spirit of Killarney 28, Altadore 50, and Peaks + Plains, designed with MODA and Vera Architecture). A row of three-storey ground-oriented homes sensitively inserted into an established single-family street — denser than a duplex, far smaller than a condo tower. The signature look pairs warm cedar and natural wood with charcoal-black metal panel and textural corrugated steel, crisp high-contrast black-and-white trim, matte-black hardware, and large black-framed windows. Massing is broken into distinct articulated bays so the row reads as individual homes rather than one block, frequently with a 'mountain / plains' juxtaposition of peaked and flat roofs, private rooftop patios, and basement secondary suites tucked underneath for affordability. Draws from RNDSQR's vocabulary rather than copying any single project.",
+        "buildingSubcategory": "Residential — Townhouse / Rowhouse (Missing Middle Infill)",
+        "districtKit": "calgary",
+        "generationTags": [
+            "rndsqr",
+            "missing_middle",
+            "townhouse",
+            "rowhouse",
+            "infill",
+            "calgary",
+            "inner_city",
+            "contemporary",
+            "cedar_and_black_metal",
+            "marda_loop",
+            "altadore",
+            "killarney",
+            "secondary_suite"
+        ],
+        "palette": {
+            "skyTop": "#6E92B8",
+            "skyBottom": "#C4D6E4",
+            "facadePrimary": "#3A3632",
+            "facadeSecondary": "#A8855C",
+            "accent": "#1C1A18",
+            "window": "#26303A",
+            "ground": "#8C8478",
+            "street": "#565250",
+            "landscape": "#5E7A46"
+        },
+        "styleProfile": {
+            "materials": [
+                "warm cedar and natural wood cladding",
+                "charcoal-black painted metal panel",
+                "textural corrugated steel siding",
+                "red or buff brick (contextual variants)",
+                "black-framed large windows and patio doors",
+                "matte-black metal railings and hardware"
+            ],
+            "facadeRhythm": "Repeating but individually articulated unit bays — each home expressed as a distinct vertical volume with its own entry, so a row of four to eight reads as separate houses sharing party walls",
+            "roofForm": "Juxtaposition of flat roofs (often over the rear lane) and peaked or single-slope forms toward the street, with private rooftop patios and stair-access bulkheads",
+            "frontageType": "Ground-oriented individual front doors onto the street with small landscaped setbacks and front stoops; rear-lane attached garages keep the street face active",
+            "windowStyle": "Large black-framed picture windows and full-height patio doors, generous glazing for an inner-city home, clerestory windows at the top floor",
+            "massing": "Three-storey row broken into individual articulated bays, stepping and offsetting in plan and roofline to avoid a monolithic wall; basement secondary suites under select units",
+            "heightTendency": "Low-rise (3 storeys typical, up to 4 where stacked over suites)",
+            "streetRelationship": "Sensitive insertion into an established single-family block — holds the street edge with front doors and stoops, scaled to neighbouring houses, lane-loaded parking",
+            "renderingMood": "Warm Calgary summer afternoon, crisp contemporary infill against mature elms, clear prairie sky with distant foothills",
+            "articulation": "Material changes between bays (wood versus black metal versus corrugated steel), offset roof planes, recessed entries, and high-contrast black-and-white trim defining each home",
+            "publicRealm": "Active street face of individual entries and landscaped stoops, street trees retained, bike-friendly lane access, private rooftop patios as the outdoor amenity"
+        },
+        "prompt": {
+            "subject": "Front-facing canonical archetype of a contemporary RNDSQR-style inner-city Calgary townhome row",
+            "details": [
+                "Three-storey infill rowhouses broken into distinct articulated bays, each a separate home",
+                "Cedar and warm wood paired with charcoal-black metal panel and corrugated steel, black-framed windows",
+                "Peaked-and-flat 'mountain / plains' roofline with private rooftop patios, lane-loaded garages at the rear"
+            ],
+            "negative": [
+                "No single-family detached house",
+                "No suburban cul-de-sac context",
+                "No high-rise tower",
+                "No text inside image"
+            ]
+        },
+        "renderPrompt": {
+            "mapOverlay": "Replace the colored building block with a row of contemporary three-storey RNDSQR-style infill townhomes. Keep the exact same footprint and height. Cedar and warm wood with charcoal-black metal panel and corrugated steel cladding, black-framed large windows, articulated individual bays, a mix of peaked and flat roofs with rooftop patios. Inner-city Calgary street with mature trees. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+            "roofView": "Replace the colored block viewed from above with a row of townhomes showing a mix of flat roofs and peaked roof planes, private rooftop patios with railings and stair bulkheads, and rear-lane garages. Keep surrounding context exactly as-is.",
+            "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, suburban, detached house, high-rise, ornate, heritage stone"
+        },
+        "facadeDetail": {
+            "primaryMaterial": "warm cedar and natural wood cladding in vertical boards, paired with charcoal-black standing-seam or flat metal panel",
+            "secondaryMaterial": "textural corrugated steel siding accent volumes; contextual red or buff brick on some units",
+            "accentMaterial": "matte-black metal railings, black window frames, high-contrast white-and-black trim, black metal entry canopies",
+            "groundFloor": "individual ground-oriented front doors with stoops and small landscaped setbacks, black-framed glazing, lane-loaded garages at the rear",
+            "upperFloors": "stacked bedrooms with large black-framed picture windows and recessed balconies, clerestory glazing at the third floor",
+            "cornice": "offset flat and peaked roof planes with slim black metal fascia, rooftop patio railings and stair bulkheads visible",
+            "colorScheme": "warm cedar wood, charcoal-black metal, corrugated-steel grey, black-and-white trim, brick-red accents on contextual units"
+        },
+        "roofDetail": {
+            "form": "mixed flat and peaked / single-slope roof planes offset bay-to-bay (a 'mountain and plains' silhouette), with private rooftop patios",
+            "material": "membrane flat roofs and standing-seam metal slopes, black metal railings around rooftop patios",
+            "features": "rooftop patios with glass or black-metal railings, stair-access bulkheads, solar-ready flat areas",
+            "aerialAppearance": "row of small offset roof rectangles alternating flat and sloped, rooftop patios and bulkheads, rear-lane garages and narrow private yards"
+        },
+        "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_0.png",
+        "variants": [
+            {
+                "id": "rndsqr_townhome_dark_wood_metal",
+                "label": "Cedar & Black-Metal Row",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_0.png",
+                "description": "The signature RNDSQR dark-and-warm townhome — a three-storey row clad in charcoal-black metal panel warmed by vertical cedar at the entries and top floor, in the spirit of the GROW and Killarney rowhouses. Each unit is a distinct articulated bay with a large black-framed picture window, a recessed front door under a black steel canopy, and a private rooftop patio above. Lane-loaded garages keep the street face all front doors and landscaping.",
+                "facadeDetail": {
+                    "primaryMaterial": "charcoal-black flat metal panel as the dominant cladding",
+                    "secondaryMaterial": "vertical cedar wood at entries, soffits and the top floor",
+                    "groundFloor": "recessed individual front doors with black steel entry canopies, landscaped stoops, black-framed glazing",
+                    "colorScheme": "charcoal-black metal, warm cedar accents, black window frames, white trim reveals"
+                },
+                "roofDetail": {
+                    "form": "flat roofs with private rooftop patios and black-metal stair bulkheads",
+                    "material": "membrane roof with black-metal patio railings and slim fascia"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#3A3632"
+                },
+                "minFloors": 3,
+                "maxFloors": 3,
+                "suggestedFloorHeight": 3.0,
+                "suggestedAreaSqm": 1800
+            },
+            {
+                "id": "rndsqr_townhome_scandinavian_peaks",
+                "label": "Scandinavian Mountain-Plains Row",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_1.png",
+                "description": "A lighter 'Modern Scandinavian' palette of white and warm wood with matte-black accents, in the spirit of RNDSQR's Peaks + Plains in Altadore. The defining feature is the roofline: peaked and flat planes juxtaposed across the row like a mountain-and-plains silhouette, each peak capping a top floor with clerestory glazing and a rooftop terrace. White stucco and light corrugated-metal bays alternate with cedar, large windows throughout.",
+                "facadeDetail": {
+                    "primaryMaterial": "white stucco / render with warm wood cladding bays",
+                    "secondaryMaterial": "light corrugated metal accent volumes, matte-black trim",
+                    "groundFloor": "individual front doors with timber-lined entries, white-framed landscaped setbacks",
+                    "colorScheme": "white and warm wood, matte-black accents, pale corrugated metal, large clear glazing"
+                },
+                "roofDetail": {
+                    "form": "alternating peaked and flat roof planes ('mountain / plains' silhouette) with rooftop terraces",
+                    "material": "standing-seam metal on slopes, membrane on flats, black metal terrace railings"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#D8CDBE"
+                },
+                "minFloors": 3,
+                "maxFloors": 3,
+                "suggestedFloorHeight": 3.0,
+                "suggestedAreaSqm": 2000
+            },
+            {
+                "id": "rndsqr_townhome_brick_contextual",
+                "label": "Brick Contextual Infill Row",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_2.png",
+                "description": "A brick-fronted variant that ties into older inner-city streets, in the spirit of RNDSQR's Killarney 29 and Cliff Bungalow rowhouses. Red or buff brick at the lower two storeys grounds the row in its heritage context, with cedar and charcoal-black metal above and crisp black-and-white trim. Distinct articulated bays, generous black-framed glazing, ground-oriented entries, and rooftop patios above.",
+                "facadeDetail": {
+                    "primaryMaterial": "red or buff brick at the lower two storeys",
+                    "secondaryMaterial": "cedar and charcoal-black metal panel at the upper floor and entries",
+                    "groundFloor": "brick-framed individual front doors with stoops, black-framed glazing, landscaped setbacks",
+                    "colorScheme": "brick red / buff, cedar warmth, charcoal-black metal, high-contrast black-and-white trim"
+                },
+                "roofDetail": {
+                    "form": "flat roofs with private rooftop patios, slim black-metal parapet",
+                    "material": "membrane roof, brick parapet returns, black-metal patio railings"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#9A5A3C"
+                },
+                "minFloors": 3,
+                "maxFloors": 3,
+                "suggestedFloorHeight": 3.0,
+                "suggestedAreaSqm": 1700
+            },
+            {
+                "id": "rndsqr_townhome_stacked_suites",
+                "label": "Stacked Homes + Secondary Suites",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-missing-middle-townhomes/variant_3.png",
+                "description": "The densest version of the missing-middle row — stacked townhomes over basement and ground-level secondary suites, in the spirit of RNDSQR's Killarney 28 (four townhomes above four studio suites). Three to four storeys of textural corrugated metal and cedar with charcoal-black metal, expressed as offset stacked volumes so the added density still reads at a human scale. More doors per metre of street, lane-loaded parking, and rooftop patios above.",
+                "facadeDetail": {
+                    "primaryMaterial": "textural corrugated steel siding with charcoal-black metal panel",
+                    "secondaryMaterial": "warm cedar at entries and stacked-balcony volumes",
+                    "groundFloor": "two tiers of entries — secondary-suite doors at grade and townhome entries above a half-level, black-framed glazing",
+                    "colorScheme": "corrugated-steel grey, charcoal-black metal, warm cedar, black window frames"
+                },
+                "roofDetail": {
+                    "form": "offset flat roofs at varying heights with rooftop patios and stair bulkheads",
+                    "material": "membrane roofs, black-metal railings, corrugated-metal parapet returns"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#6E6A64"
+                },
+                "minFloors": 3,
+                "maxFloors": 4,
+                "suggestedFloorHeight": 2.9,
+                "suggestedAreaSqm": 2600
+            }
+        ],
+        "minFloors": 3,
+        "maxFloors": 4,
+        "suggestedAreaSqm": 2000,
+        "developmentType": "residential_multifamily"
+    },
+    {
+        "id": "rndsqr_terraced_mixed_use_midrise",
+        "suggestedWidth_m": 38,
+        "suggestedDepth_m": 30,
+        "suggestedFloorHeight": 3.6,
+        "minWidth_m": 24,
+        "maxWidth_m": 60,
+        "minDepth_m": 20,
+        "maxDepth_m": 45,
+        "aspectRatio": "5:4",
+        "shadeId": "#762b27",
+        "title": "RNDSQR Terraced Mixed-Use Mid-Rise",
+        "aestheticCategory": "contemporary_urban",
+        "description": "A contemporary 'missing middle' mixed-use mid-rise in the manner of RNDSQR's flagship Calgary work (in the spirit of Courtyard 33 in Marda Loop, GROW and Village in Bankview, and the RNDSQR Block in Inglewood, designed with 5468796 Architecture and MODA). Four to six storeys is the norm, stepping down to two or three at the street corner and climbing toward the rear so it reads as several terraced masses rather than one block. A restrained palette of charcoal-black metal panel and corrugated steel is warmed by natural wood and brick; the ground floor is a fully glazed, active retail and restaurant frontage, often opening onto an elevated central courtyard — a 'neighbourhood living room' reached by a wide public stair. Recessed and lightly cantilevered balconies, an articulated almost 'pixelated' roofscape of pitched and flat planes, rooftop terraces and gardens, and local-artist murals complete the language. Resembles RNDSQR's vocabulary rather than copying any single building.",
+        "buildingSubcategory": "Mixed-Use — Residential over Retail (Mid-Rise Infill)",
+        "districtKit": "calgary",
+        "generationTags": [
+            "rndsqr",
+            "mixed_use",
+            "mid_rise",
+            "missing_middle",
+            "terraced",
+            "courtyard",
+            "calgary",
+            "inner_city",
+            "marda_loop",
+            "bankview",
+            "inglewood",
+            "ground_floor_retail",
+            "rooftop_garden",
+            "5468796",
+            "moda"
+        ],
+        "palette": {
+            "skyTop": "#6E92B8",
+            "skyBottom": "#C4D6E4",
+            "facadePrimary": "#34302C",
+            "facadeSecondary": "#9A7B52",
+            "accent": "#161412",
+            "window": "#28323C",
+            "ground": "#8C8478",
+            "street": "#565250",
+            "landscape": "#5E7A46"
+        },
+        "styleProfile": {
+            "materials": [
+                "charcoal-black metal panel",
+                "textural corrugated steel cladding",
+                "warm natural wood soffits and accent bays",
+                "red and buff brick (street base and heritage context)",
+                "large storefront glazing and curtain wall at retail",
+                "matte-black metal balcony railings and mullions"
+            ],
+            "facadeRhythm": "Composition of stepped, terraced masses — each expressed with its own material and rhythm — over a glazed, transparent retail base, with recessed and lightly cantilevered balconies breaking the upper floors",
+            "roofForm": "Articulated 'pixelated' roofscape of pitched and flat planes, rooftop terraces, communal gardens and urban agriculture, and (in the inverted variant) rooftop townhomes",
+            "frontageType": "Active, fully glazed ground-floor retail and restaurant CRUs opening to a wide sidewalk and, often, an elevated central courtyard reached by a wide public 'Spanish staircase'",
+            "windowStyle": "Storefront glazing and curtain wall at grade; large black-framed residential windows and full-height balcony doors above",
+            "massing": "Steps down to 2-3 storeys at the street corner and rises to 4-6 (up to about 12 at the largest) toward the rear or interior, reading as several terraced volumes rather than a monolith",
+            "heightTendency": "Mid-rise (4-6 storeys typical; 3 for the smallest terraced infill, 10-12 for the heritage-integrated outlier)",
+            "streetRelationship": "Holds and activates the street with transparent retail, steps down to respect neighbouring scale, and gives back an elevated public courtyard as a community amenity",
+            "renderingMood": "Warm Calgary summer afternoon, lively walkable inner-city street, clear prairie sky with distant Rocky Mountain foothills",
+            "articulation": "Stepped terraces, material shifts between masses (black metal, corrugated steel, wood, brick), cantilevered balconies, a public stair to a courtyard, and local-artist murals on blank walls",
+            "publicRealm": "Elevated central courtyard as a 'neighbourhood living room', wide active retail sidewalk, rooftop gardens and terraces, structural columns aligned to street trees, bike and transit access"
+        },
+        "prompt": {
+            "subject": "Front-facing canonical archetype of a contemporary RNDSQR-style terraced mixed-use mid-rise in inner-city Calgary",
+            "details": [
+                "Four-to-six-storey building of stepped, terraced masses over a fully glazed retail ground floor",
+                "Charcoal-black metal and corrugated steel warmed by wood and brick, recessed and cantilevered balconies",
+                "Elevated central courtyard reached by a wide public stair, articulated pitched-and-flat 'pixelated' roofscape with rooftop terraces"
+            ],
+            "negative": [
+                "No single monolithic glass tower",
+                "No suburban strip mall",
+                "No detached house",
+                "No text inside image"
+            ]
+        },
+        "renderPrompt": {
+            "mapOverlay": "Replace the colored building block with a contemporary RNDSQR-style terraced mixed-use mid-rise. Keep the exact same footprint and height. Stepped, terraced masses of charcoal-black metal panel and corrugated steel warmed by wood and brick, a fully glazed active retail ground floor, recessed and cantilevered balconies, and an articulated pitched-and-flat roofscape with rooftop terraces and gardens. Inner-city Calgary street with mature trees. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+            "roofView": "Replace the colored block viewed from above with an articulated 'pixelated' roofscape of pitched and flat planes, rooftop terraces and communal gardens, mechanical screened in matching cladding, and an interior courtyard void. Keep surrounding context exactly as-is.",
+            "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, suburban, strip mall, monolithic glass tower, detached house, ornate"
+        },
+        "facadeDetail": {
+            "primaryMaterial": "charcoal-black metal panel and textural corrugated steel across stepped, terraced masses",
+            "secondaryMaterial": "warm natural wood soffits and accent bays, red and buff brick at the street base and heritage context",
+            "accentMaterial": "matte-black metal balcony railings and mullions, local-artist murals on blank walls, slim black canopies over retail",
+            "groundFloor": "fully glazed active retail and restaurant frontage with storefront glazing and curtain wall, wide sidewalk, public stair up to an elevated central courtyard",
+            "upperFloors": "stepped residential floors with large black-framed windows, recessed and lightly cantilevered balconies, material shifts between terraced masses",
+            "cornice": "articulated pitched-and-flat roofline with slim black-metal fascia, rooftop terrace and garden railings, screened mechanical in matching cladding",
+            "colorScheme": "charcoal-black metal, corrugated-steel grey, warm wood, brick red / buff, black window frames, transparent retail base"
+        },
+        "roofDetail": {
+            "form": "articulated 'pixelated' roofscape of pitched and flat planes with rooftop terraces, communal gardens and urban agriculture, and an interior courtyard void",
+            "material": "membrane flat roofs, standing-seam metal slopes, timber decking and planters on terraces, black-metal railings",
+            "features": "rooftop terraces and gardens, communal urban-agriculture beds, screened mechanical, an elevated central courtyard open to the sky",
+            "aerialAppearance": "cluster of offset pitched and flat roof planes around a central courtyard void, green rooftop terraces and garden beds, retail frontage at the street edge"
+        },
+        "thumbnailUrl": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0.png",
+        "variants": [
+            {
+                "id": "rndsqr_midrise_courtyard",
+                "label": "Courtyard Mixed-Use",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_0.png",
+                "description": "The flagship: a five-to-six-storey mixed-use block over an active glazed retail and restaurant ground floor, opening onto an elevated central courtyard reached by a wide public 'Spanish staircase' — a neighbourhood living room, in the spirit of Courtyard 33 in Marda Loop. Charcoal-black metal and corrugated steel warmed by wood, with recessed and lightly cantilevered balconies and local-artist murals on blank end walls.",
+                "facadeDetail": {
+                    "primaryMaterial": "charcoal-black metal panel and corrugated steel over a glazed retail base",
+                    "secondaryMaterial": "warm wood soffits and accent bays, concrete at the lower retail level",
+                    "groundFloor": "fully glazed retail and restaurant CRUs with a wide public 'Spanish staircase' up to an elevated central courtyard",
+                    "colorScheme": "charcoal-black metal, corrugated-steel grey, warm wood, transparent glazed retail base, mural accents"
+                },
+                "roofDetail": {
+                    "form": "flat roofs around a central courtyard void with rooftop terraces",
+                    "material": "membrane roof, timber-decked terraces, black-metal railings, screened mechanical"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#34302C"
+                },
+                "minFloors": 5,
+                "maxFloors": 6,
+                "suggestedFloorHeight": 3.6,
+                "suggestedAreaSqm": 7000
+            },
+            {
+                "id": "rndsqr_midrise_inverted_rooftop_townhomes",
+                "label": "Inverted Rooftop-Townhome",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_1.png",
+                "description": "The 'inverted condo', in the spirit of RNDSQR / MODA's Village in Bankview: the building tapers to two storeys at the street corner and climbs to six at the rear, with townhouses placed on the roof that cascade down as a 'pixelated' pitched roofscape reading like a mini-skyline. Wood and charcoal-black metal, stacked private terraces, and a varied silhouette of peaked volumes.",
+                "facadeDetail": {
+                    "primaryMaterial": "charcoal-black metal panel with warm wood accent bays",
+                    "secondaryMaterial": "corrugated steel and stacked private-terrace volumes",
+                    "groundFloor": "glazed live-work and lobby frontage stepping down to two storeys at the street corner",
+                    "colorScheme": "charcoal-black metal, warm wood, corrugated-steel grey, black window frames"
+                },
+                "roofDetail": {
+                    "form": "pitched 'pixelated' roofscape of rooftop townhouses cascading down, reading as a mini-skyline",
+                    "material": "standing-seam metal pitched roofs, membrane terraces, black-metal railings"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#3C372F"
+                },
+                "minFloors": 4,
+                "maxFloors": 6,
+                "suggestedFloorHeight": 3.4,
+                "suggestedAreaSqm": 7500
+            },
+            {
+                "id": "rndsqr_midrise_terraced_garden",
+                "label": "Terraced Garden Small-Multi",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_2.png",
+                "description": "The smaller, greener terraced small-multi, in the spirit of RNDSQR / MODA's GROW in Bankview: three to four storeys composed as masses that step back to create planted terraces climbing across the façade, crowned by rooftop urban agriculture and communal gardens. A restrained palette of warm wood and charcoal-black metal, generous glazing, and a calm, leafy street presence.",
+                "facadeDetail": {
+                    "primaryMaterial": "warm wood cladding with charcoal-black metal panel",
+                    "secondaryMaterial": "planted terrace edges and corrugated-metal accents",
+                    "groundFloor": "glazed lobby and live-work frontage with a landscaped setback and bike access",
+                    "colorScheme": "warm wood, charcoal-black metal, planted greenery, black window frames"
+                },
+                "roofDetail": {
+                    "form": "stepped-back planted terraces climbing the façade, crowned by rooftop urban-agriculture beds",
+                    "material": "membrane roof with timber planters and growing beds, black-metal railings"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#5A6347"
+                },
+                "minFloors": 3,
+                "maxFloors": 4,
+                "suggestedFloorHeight": 3.3,
+                "suggestedAreaSqm": 3500
+            },
+            {
+                "id": "rndsqr_midrise_heritage_integrated",
+                "label": "Heritage-Integrated Tower",
+                "thumbnailUrl": "/archetypes/buildings/rndsqr-terraced-mixed-use-mid-rise/variant_3.png",
+                "description": "The largest outlier, in the spirit of the RNDSQR Block in Inglewood: a ten-to-twelve-storey mixed-use building (apartments with a boutique hotel, co-working and retail) that wraps and exposes a restored brick heritage building at its base. A contemporary charcoal-black metal and glass tower steps up behind the preserved masonry, with cantilevered balconies and an active, glazed heritage-fronted street.",
+                "facadeDetail": {
+                    "primaryMaterial": "charcoal-black metal panel and glass curtain wall on the upper tower",
+                    "secondaryMaterial": "restored red-brick heritage masonry at the base, warm wood accents",
+                    "groundFloor": "active glazed retail behind a preserved brick heritage façade, with hotel and co-working lobby entrances",
+                    "colorScheme": "charcoal-black metal and glass tower over warm restored red brick, black window frames"
+                },
+                "roofDetail": {
+                    "form": "flat roof with a rooftop terrace and amenity, mechanical screened in matching black cladding",
+                    "material": "membrane roof, timber-decked amenity terrace, black-metal and glass guardrails"
+                },
+                "shadeId": null,
+                "palette": {
+                    "primary": "#2E2A28"
+                },
+                "minFloors": 10,
+                "maxFloors": 12,
+                "suggestedFloorHeight": 3.6,
+                "suggestedAreaSqm": 18000
+            }
+        ],
+        "minFloors": 3,
+        "maxFloors": 12,
+        "suggestedAreaSqm": 7000,
+        "developmentType": "mixed_use"
     }
   ]
 }

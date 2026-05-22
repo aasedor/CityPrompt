@@ -54,6 +54,7 @@ export const SHADE_MAP: Record<string, string> = {
   custom_contextual_experiment:       '#d44211',
 
   // ── Yellow family: Residential ──────────────────────────────────────
+  rndsqr_missing_middle_townhomes:    '#c5a52c',
   classic_brownstone_streetwall:      '#a38529',
   contemporary_townhouse_courtyard:   '#c2a030',
   detached_contemporary_infill:       '#d1b347',
@@ -338,6 +339,7 @@ export const SHADE_MAP: Record<string, string> = {
   calgary_new_central_library:                  '#ba291a',
   calgary_plus_15_connected_tower:              '#c92816',
   calgary_sandstone_heritage:                   '#d92711',
+  rndsqr_terraced_mixed_use_midrise:            '#762b27',
   ecole_republicaine:                           '#bf4737',
   eixample_apartment_block:                     '#cc4935',
   gastown_heritage_commercial:                  '#8a2c1d',
