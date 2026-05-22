@@ -35572,7 +35572,7 @@
                 "minFloors": 3,
                 "maxFloors": 3,
                 "suggestedFloorHeight": 3.0,
-                "suggestedAreaSqm": 1800
+                "suggestedAreaSqm": 620
             },
             {
                 "id": "rndsqr_townhome_scandinavian_peaks",
@@ -35596,7 +35596,7 @@
                 "minFloors": 3,
                 "maxFloors": 3,
                 "suggestedFloorHeight": 3.0,
-                "suggestedAreaSqm": 2000
+                "suggestedAreaSqm": 680
             },
             {
                 "id": "rndsqr_townhome_brick_contextual",
@@ -35620,7 +35620,7 @@
                 "minFloors": 3,
                 "maxFloors": 3,
                 "suggestedFloorHeight": 3.0,
-                "suggestedAreaSqm": 1700
+                "suggestedAreaSqm": 560
             },
             {
                 "id": "rndsqr_townhome_stacked_suites",
@@ -35644,12 +35644,12 @@
                 "minFloors": 3,
                 "maxFloors": 4,
                 "suggestedFloorHeight": 2.9,
-                "suggestedAreaSqm": 2600
+                "suggestedAreaSqm": 820
             }
         ],
         "minFloors": 3,
         "maxFloors": 4,
-        "suggestedAreaSqm": 2000,
+        "suggestedAreaSqm": 650,
         "developmentType": "residential_multifamily"
     },
     {
@@ -35774,7 +35774,7 @@
                 "minFloors": 5,
                 "maxFloors": 6,
                 "suggestedFloorHeight": 3.6,
-                "suggestedAreaSqm": 7000
+                "suggestedAreaSqm": 2000
             },
             {
                 "id": "rndsqr_midrise_inverted_rooftop_townhomes",
@@ -35798,7 +35798,7 @@
                 "minFloors": 4,
                 "maxFloors": 6,
                 "suggestedFloorHeight": 3.4,
-                "suggestedAreaSqm": 7500
+                "suggestedAreaSqm": 1800
             },
             {
                 "id": "rndsqr_midrise_terraced_garden",
@@ -35822,7 +35822,7 @@
                 "minFloors": 3,
                 "maxFloors": 4,
                 "suggestedFloorHeight": 3.3,
-                "suggestedAreaSqm": 3500
+                "suggestedAreaSqm": 1300
             },
             {
                 "id": "rndsqr_midrise_heritage_integrated",
@@ -35846,12 +35846,12 @@
                 "minFloors": 10,
                 "maxFloors": 12,
                 "suggestedFloorHeight": 3.6,
-                "suggestedAreaSqm": 18000
+                "suggestedAreaSqm": 2400
             }
         ],
         "minFloors": 3,
         "maxFloors": 12,
-        "suggestedAreaSqm": 7000,
+        "suggestedAreaSqm": 2000,
         "developmentType": "mixed_use"
     }
   ]
