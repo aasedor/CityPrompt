@@ -486,7 +486,7 @@ export function ProjectViewPage() {
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
                 >
                   <Camera size={16} />
-                  AI Render
+                  Render
                 </button>
               ) : null
             }

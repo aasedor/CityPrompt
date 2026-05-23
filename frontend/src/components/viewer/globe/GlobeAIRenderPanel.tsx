@@ -550,7 +550,7 @@ export function GlobeAIRenderPanel({
             <span className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-[#151515] bg-[#28c7e8] text-[#151515] shadow-[2px_2px_0_0_#151515]">
               <Orbit size={15} />
             </span>
-            AI Render (Globe)
+            Render (Globe)
           </h3>
           <div className="flex items-center gap-2 text-[10px] font-black uppercase text-[#151515]/60">
             <Camera size={12} />

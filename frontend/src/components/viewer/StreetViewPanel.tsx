@@ -585,7 +585,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
           ) : (
             <>
               <Eye size={16} />
-              AI Render
+              Render
             </>
           )}
         </button>
