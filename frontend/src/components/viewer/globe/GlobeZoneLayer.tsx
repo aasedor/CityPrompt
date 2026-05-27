@@ -38,8 +38,8 @@ const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const FLAT_ZONE_SURFACE_LIFT_METERS = 1.4;
 const FLAT_ZONE_OUTLINE_LIFT_METERS = 1.9;
-const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 6;
-const FLAT_ZONE_MAX_RENDER_VERTICES = 260;
+const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 12;
+const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
 const FLAT_ZONE_DEPTH_OFFSET_FACTOR = -4;
 const FLAT_ZONE_DEPTH_OFFSET_UNITS = -8;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
@@ -200,7 +200,7 @@ function createLocalGeometry(
   const flatVerts: number[] = [];
   const fillCoords: number[][] = [];
   const idxArray: number[] = [];
-  const ringScales = [1, 0.72, 0.44, 0.18];
+  const ringScales = [1, 0.58, 0.24];
   const ringCount = ringScales.length;
   const vertexCountPerRing = localPts.length;
 
@@ -497,7 +497,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
     for (let i = 0; i < geoData.fillCoords.length && i < posAttr.count; i++) {
       const coord = geoData.fillCoords[i];
-      const hitElev = filterObjectHeights
+      const shouldFilterFillPoint = filterObjectHeights && i < renderCoordinates.length;
+      const hitElev = shouldFilterFillPoint
         ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
         : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
       if (hitElev !== null) {
