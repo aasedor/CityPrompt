@@ -36,6 +36,12 @@ import {
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
+const FLAT_ZONE_SURFACE_LIFT_METERS = 1.4;
+const FLAT_ZONE_OUTLINE_LIFT_METERS = 1.9;
+const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 6;
+const FLAT_ZONE_MAX_RENDER_VERTICES = 260;
+const FLAT_ZONE_DEPTH_OFFSET_FACTOR = -4;
+const FLAT_ZONE_DEPTH_OFFSET_UNITS = -8;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 
 interface GlobeZoneLayerProps {
@@ -44,6 +50,58 @@ interface GlobeZoneLayerProps {
   terrainHeight?: number;
   onZoneClick?: (zoneId: string) => void;
   selectionEnabled?: boolean;
+}
+
+function coordinatesNearlyEqual(a: number[], b: number[]): boolean {
+  return Math.abs(a[0] - b[0]) < 1e-7 && Math.abs(a[1] - b[1]) < 1e-7;
+}
+
+function coordinateDistanceMeters(a: number[], b: number[]): number {
+  const avgLat = (a[1] + b[1]) / 2;
+  const dx = (b[0] - a[0]) * metersPerDegLon(avgLat);
+  const dy = (b[1] - a[1]) * METERS_PER_DEG_LAT;
+  return Math.hypot(dx, dy);
+}
+
+function densifyFlatZoneCoordinates(coords: number[][]): number[][] {
+  const ring: number[][] = [];
+  for (const coord of coords) {
+    if (!coord || coord.length < 2) continue;
+    if (ring.length === 0 || !coordinatesNearlyEqual(ring[ring.length - 1], coord)) {
+      ring.push(coord);
+    }
+  }
+
+  if (ring.length > 1 && coordinatesNearlyEqual(ring[0], ring[ring.length - 1])) {
+    ring.pop();
+  }
+
+  if (ring.length < 3) return ring;
+
+  const perimeter = ring.reduce((sum, coord, index) => (
+    sum + coordinateDistanceMeters(coord, ring[(index + 1) % ring.length])
+  ), 0);
+  const maxEdgeLength = Math.max(
+    FLAT_ZONE_MAX_EDGE_LENGTH_METERS,
+    perimeter / FLAT_ZONE_MAX_RENDER_VERTICES,
+  );
+  const densified: number[][] = [];
+
+  ring.forEach((coord, index) => {
+    const next = ring[(index + 1) % ring.length];
+    densified.push(coord);
+
+    const segmentCount = Math.max(1, Math.ceil(coordinateDistanceMeters(coord, next) / maxEdgeLength));
+    for (let step = 1; step < segmentCount; step += 1) {
+      const t = step / segmentCount;
+      densified.push([
+        coord[0] + (next[0] - coord[0]) * t,
+        coord[1] + (next[1] - coord[1]) * t,
+      ]);
+    }
+  });
+
+  return densified;
 }
 
 /**
@@ -61,15 +119,15 @@ function createLocalGeometry(
   centroidLng: number,
   centroidLat: number,
   extrudeHeight: number,
+  useTerrainGridFlat: boolean,
 ): {
   fillGeo: THREE.BufferGeometry;
+  fillCoords: number[][];
   outlineGeo: THREE.BufferGeometry;
   flatTopGeo?: THREE.BufferGeometry;
   localPts: { x: number; y: number }[];
 } | null {
   if (coords.length < 3) return null;
-  const flatLift = 0.5;
-
   const mPerDegLon = metersPerDegLon(centroidLat);
 
   // Convert to local ENU meters relative to centroid
@@ -114,28 +172,83 @@ function createLocalGeometry(
     const outlineGeo = new THREE.BufferGeometry();
     outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
-    return { fillGeo, outlineGeo, localPts };
+    return { fillGeo, fillCoords: coords, outlineGeo, localPts };
   }
 
   // Flat zone
+  if (!useTerrainGridFlat) {
+    const flatVerts: number[] = [];
+    for (const p of localPts) flatVerts.push(p.x, p.y, FLAT_ZONE_SURFACE_LIFT_METERS);
+
+    const fillGeo = new THREE.BufferGeometry();
+    fillGeo.setAttribute('position', new THREE.Float32BufferAttribute(flatVerts, 3));
+    const idxArray: number[] = [];
+    for (const tri of indices) idxArray.push(tri[0], tri[1], tri[2]);
+    fillGeo.setIndex(idxArray);
+    fillGeo.computeVertexNormals();
+    fillGeo.computeBoundingSphere();
+
+    const outlineVerts: number[] = [];
+    for (const p of localPts) outlineVerts.push(p.x, p.y, FLAT_ZONE_OUTLINE_LIFT_METERS);
+    outlineVerts.push(localPts[0].x, localPts[0].y, FLAT_ZONE_OUTLINE_LIFT_METERS);
+    const outlineGeo = new THREE.BufferGeometry();
+    outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
+
+    return { fillGeo, fillCoords: coords, outlineGeo, flatTopGeo: fillGeo, localPts };
+  }
+
   const flatVerts: number[] = [];
-  for (const p of localPts) flatVerts.push(p.x, p.y, flatLift);
+  const fillCoords: number[][] = [];
+  const idxArray: number[] = [];
+  const ringScales = [1, 0.72, 0.44, 0.18];
+  const ringCount = ringScales.length;
+  const vertexCountPerRing = localPts.length;
+
+  for (const scale of ringScales) {
+    for (const p of localPts) {
+      const x = p.x * scale;
+      const y = p.y * scale;
+      flatVerts.push(x, y, FLAT_ZONE_SURFACE_LIFT_METERS);
+      fillCoords.push([
+        centroidLng + x / mPerDegLon,
+        centroidLat + y / METERS_PER_DEG_LAT,
+      ]);
+    }
+  }
+
+  const centerIndex = fillCoords.length;
+  flatVerts.push(0, 0, FLAT_ZONE_SURFACE_LIFT_METERS);
+  fillCoords.push([centroidLng, centroidLat]);
+
+  for (let ring = 0; ring < ringCount - 1; ring += 1) {
+    const outerOffset = ring * vertexCountPerRing;
+    const innerOffset = (ring + 1) * vertexCountPerRing;
+    for (let i = 0; i < vertexCountPerRing; i += 1) {
+      const next = (i + 1) % vertexCountPerRing;
+      idxArray.push(outerOffset + i, outerOffset + next, innerOffset + next);
+      idxArray.push(outerOffset + i, innerOffset + next, innerOffset + i);
+    }
+  }
+
+  const innerOffset = (ringCount - 1) * vertexCountPerRing;
+  for (let i = 0; i < vertexCountPerRing; i += 1) {
+    const next = (i + 1) % vertexCountPerRing;
+    idxArray.push(innerOffset + i, innerOffset + next, centerIndex);
+  }
 
   const fillGeo = new THREE.BufferGeometry();
   fillGeo.setAttribute('position', new THREE.Float32BufferAttribute(flatVerts, 3));
-  const idxArray: number[] = [];
-  for (const tri of indices) idxArray.push(tri[0], tri[1], tri[2]);
   fillGeo.setIndex(idxArray);
   fillGeo.computeVertexNormals();
   fillGeo.computeBoundingSphere();
 
   const outlineVerts: number[] = [];
-  for (const p of localPts) outlineVerts.push(p.x, p.y, flatLift + 0.2);
-  outlineVerts.push(localPts[0].x, localPts[0].y, flatLift + 0.2);
+  for (const p of localPts) outlineVerts.push(p.x, p.y, FLAT_ZONE_OUTLINE_LIFT_METERS);
+  outlineVerts.push(localPts[0].x, localPts[0].y, FLAT_ZONE_OUTLINE_LIFT_METERS);
   const outlineGeo = new THREE.BufferGeometry();
   outlineGeo.setAttribute('position', new THREE.Float32BufferAttribute(outlineVerts, 3));
 
-  return { fillGeo, outlineGeo, flatTopGeo: fillGeo, localPts };
+  return { fillGeo, fillCoords, outlineGeo, flatTopGeo: fillGeo, localPts };
 }
 
 /**
@@ -252,12 +365,19 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const shouldMaskTileGeometry = shouldCreateTileStencilMask(zone.zone_type);
   const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
+  const useTerrainGridFlat = zone.zone_type === 'green_space';
+  const renderCoordinates = useMemo(
+    () => (useTerrainGridFlat && zone.coordinates.length >= 3
+      ? densifyFlatZoneCoordinates(zone.coordinates)
+      : zone.coordinates),
+    [useTerrainGridFlat, zone.coordinates],
+  );
 
   const geoData = useMemo(() => {
     return createLocalGeometry(
-      zone.coordinates, centroid[0], centroid[1], extrudeHeight,
+      renderCoordinates, centroid[0], centroid[1], extrudeHeight, useTerrainGridFlat,
     );
-  }, [zone.coordinates, centroid, extrudeHeight]);
+  }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
 
   // --- Terrain draping for flat zones ---
   // Raycast each vertex onto the tile mesh to get precise ground elevation offsets
@@ -321,13 +441,15 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     // Update fill geometry
     const meshRef = isBuilding ? buildingMeshRef : flatMeshRef;
     const outRef = isBuilding ? buildingOutlineRef : flatOutlineRef;
+    const renderDragCoords = isBuilding ? coords : densifyFlatZoneCoordinates(coords);
+    const renderN = renderDragCoords.length;
 
-    if (meshRef.current) {
+    if (meshRef.current && !useTerrainGridFlat) {
       const posAttr = meshRef.current.geometry.attributes.position;
       if (posAttr) {
-        for (let i = 0; i < n && i < posAttr.count; i++) {
-          const localX = (coords[i][0] - centroid[0]) * mPerDegLon;
-          const localY = (coords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
+        for (let i = 0; i < renderN && i < posAttr.count; i++) {
+          const localX = (renderDragCoords[i][0] - centroid[0]) * mPerDegLon;
+          const localY = (renderDragCoords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
           posAttr.setX(i, localX);
           posAttr.setY(i, localY);
           // For extruded buildings, also update the top ring (indices n..2n-1)
@@ -345,16 +467,16 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     if (outRef.current) {
       const outPos = outRef.current.geometry.attributes.position;
       if (outPos) {
-        for (let i = 0; i < n && i < outPos.count; i++) {
-          const localX = (coords[i][0] - centroid[0]) * mPerDegLon;
-          const localY = (coords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
+        for (let i = 0; i < renderN && i < outPos.count; i++) {
+          const localX = (renderDragCoords[i][0] - centroid[0]) * mPerDegLon;
+          const localY = (renderDragCoords[i][1] - centroid[1]) * METERS_PER_DEG_LAT;
           outPos.setX(i, localX);
           outPos.setY(i, localY);
         }
         // Close-loop vertex
-        if (outPos.count > n) {
-          outPos.setX(n, outPos.getX(0));
-          outPos.setY(n, outPos.getY(0));
+        if (outPos.count > renderN) {
+          outPos.setX(renderN, outPos.getX(0));
+          outPos.setY(renderN, outPos.getY(0));
         }
         outPos.needsUpdate = true;
       }
@@ -373,14 +495,14 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     const posAttr = flatMeshRef.current.geometry.attributes.position;
     if (!posAttr) return;
 
-    for (let i = 0; i < zone.coordinates.length && i < posAttr.count; i++) {
-      const coord = zone.coordinates[i];
+    for (let i = 0; i < geoData.fillCoords.length && i < posAttr.count; i++) {
+      const coord = geoData.fillCoords[i];
       const hitElev = filterObjectHeights
         ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
         : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
       if (hitElev !== null) {
         // Z offset in ENU = hitElev - zoneTerrainHeight (the ENU frame origin elevation)
-        const zOffset = hitElev - zoneTerrainHeight + 1.0; // +1m above terrain surface
+        const zOffset = hitElev - zoneTerrainHeight + FLAT_ZONE_SURFACE_LIFT_METERS;
         posAttr.setZ(i, zOffset);
         hitCount++;
       }
@@ -394,29 +516,29 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       if (flatOutlineRef.current) {
         const outPos = flatOutlineRef.current.geometry.attributes.position;
         if (outPos) {
-          for (let i = 0; i < zone.coordinates.length && i < outPos.count - 1; i++) {
-            const coord = zone.coordinates[i];
+          for (let i = 0; i < renderCoordinates.length && i < outPos.count - 1; i++) {
+            const coord = renderCoordinates[i];
             const hitElev = filterObjectHeights
               ? raycastObjectFilteredTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster, zoneTerrainHeight)
               : raycastTerrainHeightAtLatLng(coord[0], coord[1], tiles.group, raycaster);
             if (hitElev !== null) {
-              const zOffset = hitElev - zoneTerrainHeight + 1.2;
+              const zOffset = hitElev - zoneTerrainHeight + FLAT_ZONE_OUTLINE_LIFT_METERS;
               outPos.setZ(i, zOffset);
             }
           }
           // Close the loop vertex
-          if (outPos.count > zone.coordinates.length) {
-            outPos.setZ(zone.coordinates.length, outPos.getZ(0));
+          if (outPos.count > renderCoordinates.length) {
+            outPos.setZ(renderCoordinates.length, outPos.getZ(0));
           }
           outPos.needsUpdate = true;
         }
       }
 
-      if (hitCount >= zone.coordinates.length * 0.5) {
+      if (hitCount >= geoData.fillCoords.length * 0.5) {
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, filterObjectHeights, zone.coordinates, zoneTerrainHeight]);
+  }, [tiles, geoData, isBuilding, filterObjectHeights, renderCoordinates, zoneTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
@@ -508,8 +630,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
             depthTest={shouldRespectTileDepth}
             depthWrite={false}
             polygonOffset={shouldRespectTileDepth}
-            polygonOffsetFactor={-1}
-            polygonOffsetUnits={-1}
+            polygonOffsetFactor={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_FACTOR}
+            polygonOffsetUnits={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_UNITS}
           />
         </mesh>
       )}
