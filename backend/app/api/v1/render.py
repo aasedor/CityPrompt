@@ -943,7 +943,12 @@ async def save_render(
     """Save an AI render image to the project's gallery in S3."""
     await check_project_permission(project_id, user, db, required="editor")
 
-    project = await db.get(Project, project_id)
+    project_result = await db.execute(
+        select(Project)
+        .where(Project.id == project_id)
+        .with_for_update()
+    )
+    project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 
