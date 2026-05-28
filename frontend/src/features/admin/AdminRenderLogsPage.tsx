@@ -6,7 +6,8 @@ import { adminApi } from '@/services/api';
 import type { RenderAuditLog, RenderLogStats } from '@/services/api';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
-const RENDER_LOG_PAGE_SIZE = 200;
+const RENDER_LOG_PAGE_SIZE = 50;
+const AUTH_IMAGE_TIMEOUT_MS = 12_000;
 
 function useAuthImage(url: string | undefined | null, enabled: boolean) {
   const [src, setSrc] = useState<string | null>(null);
@@ -26,7 +27,13 @@ function useAuthImage(url: string | undefined | null, enabled: boolean) {
     const token = localStorage.getItem('access_token');
     const fullUrl = url.startsWith('/') ? `${API_BASE}${url}` : url;
 
-    fetch(fullUrl, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), AUTH_IMAGE_TIMEOUT_MS);
+
+    fetch(fullUrl, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      signal: controller.signal,
+    })
       .then((r) => (r.ok ? r.blob() : Promise.reject()))
       .then((blob) => {
         if (cancelled) return;
@@ -43,10 +50,15 @@ function useAuthImage(url: string | undefined | null, enabled: boolean) {
             return null;
           });
         }
+      })
+      .finally(() => {
+        window.clearTimeout(timeoutId);
       });
 
     return () => {
       cancelled = true;
+      window.clearTimeout(timeoutId);
+      controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [url, enabled]);
@@ -54,7 +66,7 @@ function useAuthImage(url: string | undefined | null, enabled: boolean) {
   return src;
 }
 
-function useInView(ref: React.RefObject<HTMLElement>, rootMargin = '200px') {
+function useInView(ref: React.RefObject<HTMLElement>, rootMargin = '80px') {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -459,24 +471,33 @@ export function AdminRenderLogsPage() {
               <p className="text-xl font-bold text-primary-950">{stats.total_renders.toLocaleString()}</p>
             </div>
             <div className="min-w-[200px] flex-1">
-              <div className="mb-1 flex items-center justify-between">
-                <p className="text-xs font-medium uppercase text-primary-950/40">Storage Used</p>
-                <p className="text-xs font-medium text-primary-950/60">
-                  {stats.storage_gb < 1 ? `${stats.storage_mb} MB` : `${stats.storage_gb} GB`} / {stats.storage_limit_gb} GB
-                </p>
-              </div>
-              <div className="h-2.5 w-full overflow-hidden rounded-full bg-primary-950/[0.06]">
-                <div
-                  className={`h-full rounded-full transition-all ${
-                    stats.storage_gb / stats.storage_limit_gb > 0.8
-                      ? 'bg-red-500'
-                      : stats.storage_gb / stats.storage_limit_gb > 0.5
-                        ? 'bg-amber-500'
-                        : 'bg-emerald-500'
-                  }`}
-                  style={{ width: `${Math.max(stats.storage_bytes > 0 ? 2 : 0, Math.min(100, (stats.storage_gb / stats.storage_limit_gb) * 100))}%` }}
-                />
-              </div>
+              {stats.storage_bytes === null || stats.storage_mb === null || stats.storage_gb === null ? (
+                <>
+                  <p className="text-xs font-medium uppercase text-primary-950/40">Storage Used</p>
+                  <p className="text-sm font-medium text-primary-950/50">Storage scan skipped for faster loading</p>
+                </>
+              ) : (
+                <>
+                  <div className="mb-1 flex items-center justify-between">
+                    <p className="text-xs font-medium uppercase text-primary-950/40">Storage Used</p>
+                    <p className="text-xs font-medium text-primary-950/60">
+                      {stats.storage_gb < 1 ? `${stats.storage_mb} MB` : `${stats.storage_gb} GB`} / {stats.storage_limit_gb} GB
+                    </p>
+                  </div>
+                  <div className="h-2.5 w-full overflow-hidden rounded-full bg-primary-950/[0.06]">
+                    <div
+                      className={`h-full rounded-full transition-all ${
+                        stats.storage_gb / stats.storage_limit_gb > 0.8
+                          ? 'bg-red-500'
+                          : stats.storage_gb / stats.storage_limit_gb > 0.5
+                            ? 'bg-amber-500'
+                            : 'bg-emerald-500'
+                      }`}
+                      style={{ width: `${Math.max(stats.storage_bytes > 0 ? 2 : 0, Math.min(100, (stats.storage_gb / stats.storage_limit_gb) * 100))}%` }}
+                    />
+                  </div>
+                </>
+              )}
             </div>
             {stats.oldest_render && (
               <div>

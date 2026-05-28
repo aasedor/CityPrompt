@@ -850,9 +850,9 @@ export interface RenderAuditLog {
 
 export interface RenderLogStats {
   total_renders: number;
-  storage_bytes: number;
-  storage_mb: number;
-  storage_gb: number;
+  storage_bytes: number | null;
+  storage_mb: number | null;
+  storage_gb: number | null;
   storage_limit_gb: number;
   oldest_render?: string;
 }

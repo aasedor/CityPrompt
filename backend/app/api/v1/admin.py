@@ -843,42 +843,45 @@ class RenderAuditResponse(BaseModel):
 
 @router.get("/render-logs/stats")
 async def render_log_stats(
+    include_storage: bool = Query(False),
     user: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
     """Get render audit log statistics including S3 storage usage. Admin+ only."""
-    import boto3
-    from botocore.config import Config as BotoConfig
-
     count_result = await db.execute(select(func.count(RenderAuditLog.id)))
     total_count = count_result.scalar() or 0
 
     oldest_result = await db.execute(select(func.min(RenderAuditLog.created_at)))
     oldest = oldest_result.scalar()
 
-    settings = get_settings()
-    total_bytes = 0
-    try:
-        s3 = boto3.client(
-            "s3",
-            endpoint_url=settings.s3_endpoint_url,
-            aws_access_key_id=settings.s3_access_key,
-            aws_secret_access_key=settings.s3_secret_key,
-            region_name=settings.s3_region,
-            config=BotoConfig(signature_version="s3v4"),
-        )
-        paginator = s3.get_paginator("list_objects_v2")
-        for page in paginator.paginate(Bucket=settings.s3_bucket_name, Prefix="render-audit/"):
-            for obj in page.get("Contents", []):
-                total_bytes += obj.get("Size", 0)
-    except Exception:
-        pass
+    total_bytes: int | None = None
+    if include_storage:
+        import boto3
+        from botocore.config import Config as BotoConfig
+
+        settings = get_settings()
+        total_bytes = 0
+        try:
+            s3 = boto3.client(
+                "s3",
+                endpoint_url=settings.s3_endpoint_url,
+                aws_access_key_id=settings.s3_access_key,
+                aws_secret_access_key=settings.s3_secret_key,
+                region_name=settings.s3_region,
+                config=BotoConfig(signature_version="s3v4"),
+            )
+            paginator = s3.get_paginator("list_objects_v2")
+            for page in paginator.paginate(Bucket=settings.s3_bucket_name, Prefix="render-audit/"):
+                for obj in page.get("Contents", []):
+                    total_bytes += obj.get("Size", 0)
+        except Exception:
+            total_bytes = None
 
     return {
         "total_renders": total_count,
         "storage_bytes": total_bytes,
-        "storage_mb": round(total_bytes / (1024 * 1024), 1),
-        "storage_gb": round(total_bytes / (1024 * 1024 * 1024), 2),
+        "storage_mb": round(total_bytes / (1024 * 1024), 1) if total_bytes is not None else None,
+        "storage_gb": round(total_bytes / (1024 * 1024 * 1024), 2) if total_bytes is not None else None,
         "storage_limit_gb": 10.0,
         "oldest_render": oldest.isoformat() if oldest else None,
     }
