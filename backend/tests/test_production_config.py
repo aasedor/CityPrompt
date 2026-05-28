@@ -46,6 +46,29 @@ def test_production_accepts_explicit_safe_origin():
     assert settings.cors_allow_origin_regex is None
 
 
+def test_production_accepts_render_worker_env_contract():
+    settings = Settings(
+        app_env="production",
+        app_debug=False,
+        jwt_secret_key="safe-production-secret",
+        allowed_origins="https://cityprompt.ca,https://www.cityprompt.ca,https://threed-platform-frontend.onrender.com",
+        frontend_url="https://cityprompt.ca",
+        google_redirect_uri="https://threed-platform-api.onrender.com/api/v1/auth/oauth/google/callback",
+        microsoft_redirect_uri="https://threed-platform-api.onrender.com/api/v1/auth/oauth/microsoft/callback",
+        render_global_daily_token_cap=5000,
+    )
+
+    assert settings.is_production is True
+    assert settings.cors_origins == [
+        "https://cityprompt.ca",
+        "https://www.cityprompt.ca",
+        "https://threed-platform-frontend.onrender.com",
+    ]
+    assert settings.frontend_url == "https://cityprompt.ca"
+    assert settings.google_redirect_uri.startswith("https://threed-platform-api.onrender.com/")
+    assert settings.render_global_daily_token_cap == 5000
+
+
 def test_development_keeps_localhost_cors_regex():
     settings = Settings(app_env="development")
 
