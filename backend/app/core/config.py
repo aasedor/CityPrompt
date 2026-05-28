@@ -13,6 +13,18 @@ from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
+_UNSAFE_JWT_SECRET_VALUES = {
+    "",
+    "change-this-in-production",
+    "change-this-to-a-random-secret-in-production",
+}
+_LOCAL_ORIGIN_MARKERS = (
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+    "[::1]",
+    "::1",
+)
 
 # Pre-load GOOGLE_APPLICATION_CREDENTIALS from .env into os.environ so that
 # google.auth.default() can discover it before Settings is constructed.
@@ -82,7 +94,17 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins(self) -> List[str]:
-        return [origin.strip() for origin in self.allowed_origins.split(",")]
+        return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
+
+    @property
+    def is_production(self) -> bool:
+        return self.app_env.lower() == "production"
+
+    @property
+    def cors_allow_origin_regex(self) -> str | None:
+        if self.is_production:
+            return None
+        return r"^https?://localhost(:\d+)?$"
 
     # --- SMTP (Password Reset Emails) ---
     smtp_host: str = "smtp.gmail.com"
@@ -167,6 +189,33 @@ class Settings(BaseSettings):
     @property
     def max_upload_size_bytes(self) -> int:
         return self.max_upload_size_mb * 1024 * 1024
+
+    @model_validator(mode="after")
+    def _validate_production_safety(self) -> "Settings":
+        """Refuse unsafe defaults when running a production environment."""
+        if not self.is_production:
+            return self
+
+        if self.app_debug:
+            raise ValueError("APP_DEBUG must be false in production")
+
+        if self.jwt_secret_key.strip() in _UNSAFE_JWT_SECRET_VALUES:
+            raise ValueError("JWT_SECRET_KEY must be set to a strong secret in production")
+
+        origins = self.cors_origins
+        if not origins:
+            raise ValueError("ALLOWED_ORIGINS must be explicitly set in production")
+
+        unsafe_origins = [
+            origin for origin in origins
+            if origin == "*" or any(marker in origin.lower() for marker in _LOCAL_ORIGIN_MARKERS)
+        ]
+        if unsafe_origins:
+            raise ValueError(
+                "ALLOWED_ORIGINS must not include wildcard or localhost origins in production"
+            )
+
+        return self
 
 
 @lru_cache()
