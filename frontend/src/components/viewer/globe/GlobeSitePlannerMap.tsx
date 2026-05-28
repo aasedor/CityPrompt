@@ -96,7 +96,39 @@ const GLOBE_NAV_VERTICAL_SPEED_FACTOR = 0.02;
 const GLOBE_NAV_MIN_STEP_METERS = 2;
 const GLOBE_NAV_MAX_STEP_METERS = 120;
 export const SELECTED_ZONE_KEYBOARD_NUDGE_DELTA = 0.00005; // ~5m in latitude degrees
+const WHEEL_DELTA_MODE_PIXEL = 0;
+const TRACKPAD_WHEEL_DELTA_THRESHOLD_PX = 50;
+const TRACKPAD_ZOOM_MULTIPLIER = 4;
+const GLOBE_CONTROLS_WHEEL_ZOOM_SCALE = 0.25;
 const MOBILE_DRAWING_MEDIA_QUERY = '(max-width: 639px)';
+
+interface TrackpadZoomControls {
+  enabled?: boolean;
+  needsUpdate?: boolean;
+  zoomDelta?: number;
+  pointerTracker?: {
+    setHoverEvent?: (event: WheelEvent) => void;
+    updatePointer?: (event: WheelEvent) => void;
+  };
+}
+
+function isLikelyTrackpadWheel(event: WheelEvent): boolean {
+  const absY = Math.abs(event.deltaY);
+  return event.deltaMode === WHEEL_DELTA_MODE_PIXEL
+    && absY > 0
+    && absY < TRACKPAD_WHEEL_DELTA_THRESHOLD_PX;
+}
+
+function applyTrackpadZoom(event: WheelEvent, controls: TrackpadZoomControls | null): boolean {
+  const zoomDelta = controls?.zoomDelta;
+  if (!controls?.enabled || typeof zoomDelta !== 'number' || !isLikelyTrackpadWheel(event)) return false;
+
+  controls.pointerTracker?.setHoverEvent?.(event);
+  controls.pointerTracker?.updatePointer?.(event);
+  controls.zoomDelta = zoomDelta - GLOBE_CONTROLS_WHEEL_ZOOM_SCALE * event.deltaY * TRACKPAD_ZOOM_MULTIPLIER;
+  controls.needsUpdate = true;
+  return true;
+}
 
 function isMobileDrawingViewport(): boolean {
   return typeof window !== 'undefined' && window.matchMedia(MOBILE_DRAWING_MEDIA_QUERY).matches;
@@ -2537,6 +2569,14 @@ export function GlobeSitePlannerMap({
             pointerDownRef.current = null;
           };
 
+          const handleTrackpadWheel = (e: WheelEvent) => {
+            if (!applyTrackpadZoom(e, globeControlsRef.current)) return;
+            markUserInteracted();
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          };
+
+          cvs.addEventListener('wheel', handleTrackpadWheel, { capture: true, passive: false });
           cvs.addEventListener('pointerdown', handlePointerDown);
           cvs.addEventListener('pointermove', handlePointerMove);
           cvs.addEventListener('pointerup', handlePointerUp);
@@ -2544,6 +2584,7 @@ export function GlobeSitePlannerMap({
           cvs.addEventListener('dblclick', handleDblClick);
 
           cleanupCanvasListenersRef.current = () => {
+            cvs.removeEventListener('wheel', handleTrackpadWheel, { capture: true });
             cvs.removeEventListener('pointerdown', handlePointerDown);
             cvs.removeEventListener('pointermove', handlePointerMove);
             cvs.removeEventListener('pointerup', handlePointerUp);
