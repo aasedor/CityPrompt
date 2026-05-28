@@ -40,6 +40,8 @@ services:
         value: production
       - key: LOG_LEVEL
         value: INFO
+      - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+        value: "5000"
       - key: ALLOWED_ORIGINS
         value: https://threed-platform-frontend.onrender.com
       - key: FRONTEND_URL
@@ -76,6 +78,14 @@ services:
         value: production
       - key: LOG_LEVEL
         value: INFO
+      - key: RENDER_GLOBAL_DAILY_TOKEN_CAP
+        value: "5000"
+      - key: ALLOWED_ORIGINS
+        value: https://threed-platform-frontend.onrender.com
+      - key: FRONTEND_URL
+        value: https://threed-platform-frontend.onrender.com
+      - key: JWT_SECRET_KEY
+        generateValue: true
       - key: S3_BUCKET_NAME
         value: 3d-platform-uploads
       - key: S3_REGION

@@ -1,8 +1,31 @@
+from datetime import datetime, timezone
 from types import SimpleNamespace
 
+import pytest
+from fastapi import HTTPException
 from google.auth.exceptions import DefaultCredentialsError, TransportError
 
-from app.api.v1.render import _describe_google_auth_failure
+from app.api.v1.render import (
+    _describe_google_auth_failure,
+    _enforce_global_daily_render_cap,
+    _utc_day_start,
+)
+
+
+class _ScalarResult:
+    def __init__(self, value):
+        self.value = value
+
+    def scalar(self):
+        return self.value
+
+
+class _DbWithTokenTotal:
+    def __init__(self, tokens_spent_today):
+        self.tokens_spent_today = tokens_spent_today
+
+    async def execute(self, _statement):
+        return _ScalarResult(self.tokens_spent_today)
 
 
 def _settings(**overrides):
@@ -13,6 +36,43 @@ def _settings(**overrides):
     }
     base.update(overrides)
     return SimpleNamespace(**base)
+
+
+def test_utc_day_start_normalizes_to_midnight_utc():
+    now = datetime(2026, 5, 28, 18, 30, tzinfo=timezone.utc)
+
+    assert _utc_day_start(now) == datetime(2026, 5, 28, tzinfo=timezone.utc)
+
+
+@pytest.mark.asyncio
+async def test_global_daily_render_cap_allows_disabled_cap():
+    await _enforce_global_daily_render_cap(
+        _DbWithTokenTotal(tokens_spent_today=9999),
+        token_cost=13,
+        daily_cap=0,
+    )
+
+
+@pytest.mark.asyncio
+async def test_global_daily_render_cap_allows_render_under_cap():
+    await _enforce_global_daily_render_cap(
+        _DbWithTokenTotal(tokens_spent_today=37),
+        token_cost=13,
+        daily_cap=50,
+    )
+
+
+@pytest.mark.asyncio
+async def test_global_daily_render_cap_blocks_render_over_cap():
+    with pytest.raises(HTTPException) as exc_info:
+        await _enforce_global_daily_render_cap(
+            _DbWithTokenTotal(tokens_spent_today=38),
+            token_cost=13,
+            daily_cap=50,
+        )
+
+    assert exc_info.value.status_code == 429
+    assert "Daily render token cap reached" in exc_info.value.detail
 
 
 def test_describe_google_auth_failure_when_credentials_not_configured(monkeypatch):

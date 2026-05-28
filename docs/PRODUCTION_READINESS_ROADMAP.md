@@ -56,7 +56,7 @@ Suggested files to inspect:
 
 - [ ] Audit existing render-token flows and document exact coverage/gaps.
 - [ ] Add per-user render limits by day/month if weekly reset is not enough for beta.
-- [ ] Add global daily spend cap.
+- [x] Add configurable global daily render-token cap before provider calls.
 - [ ] Add per-job estimated and final provider cost fields where internal tokens are not enough.
 - [ ] Block or require confirmation for bulk render operations above a configured threshold.
 - [ ] Expose admin view of queued/running/succeeded/failed/cancelled jobs and estimated spend.

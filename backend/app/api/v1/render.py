@@ -26,13 +26,13 @@ import httpx
 from PIL import Image, ImageEnhance
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.core.security import require_auth, check_project_permission, is_admin_or_above
-from app.models.models import User
-from app.models.models import Project, User
+from app.models.models import Project, RenderAuditLog, User
 from app.services.render_audit_images import put_image_with_thumbnail
 
 logger = logging.getLogger(__name__)
@@ -250,7 +250,6 @@ async def _save_render_audit(
         output_key = f"render-audit/{audit_id}/output.png"
         put_image_with_thumbnail(s3, bucket, output_key, base64.b64decode(output_b64))
 
-    from app.models.models import RenderAuditLog
     log = RenderAuditLog(
         id=audit_id,
         user_id=user.id,
@@ -286,6 +285,41 @@ _MODEL_TOKEN_COST: dict[str, int] = {
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
 _WEEKLY_TOKEN_ALLOWANCE = 1000
+
+
+def _utc_day_start(now: datetime | None = None) -> datetime:
+    current = now or datetime.now(timezone.utc)
+    return current.astimezone(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+
+
+async def _get_tokens_spent_today(db: AsyncSession) -> int:
+    result = await db.execute(
+        select(func.coalesce(func.sum(RenderAuditLog.tokens_spent), 0))
+        .where(RenderAuditLog.created_at >= _utc_day_start())
+    )
+    return int(result.scalar() or 0)
+
+
+async def _enforce_global_daily_render_cap(
+    db: AsyncSession,
+    token_cost: int,
+    daily_cap: int,
+) -> None:
+    if daily_cap <= 0:
+        return
+
+    tokens_spent_today = await _get_tokens_spent_today(db)
+    if tokens_spent_today + token_cost <= daily_cap:
+        return
+
+    raise HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail=(
+            "Daily render token cap reached. "
+            f"Today has used {tokens_spent_today} of {daily_cap} tokens, "
+            f"and this render costs {token_cost} tokens."
+        ),
+    )
 
 
 def _build_gemini_url(settings, model: str | None = None) -> str:
@@ -551,7 +585,7 @@ async def _finalize_render_success(
             db=db,
             user=user,
             render_model=render_model,
-            token_cost=token_cost if not is_admin_or_above(user) else 0,
+            token_cost=token_cost,
             input_b64=req.image_base64,
             output_b64=image_b64,
             prompt_preview=req.prompt[:500] if req.prompt else None,
@@ -596,9 +630,16 @@ async def generate_render(
     # Calculate cost for this render
     render_model = req.model if req.model and req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
+    settings = get_settings()
 
     if req.project_id:
         await check_project_permission(req.project_id, user, db, required="viewer")
+
+    await _enforce_global_daily_render_cap(
+        db,
+        token_cost,
+        settings.render_global_daily_token_cap,
+    )
 
     # Check render tokens for non-admin users
     if not is_admin_or_above(user) and user.render_credits < token_cost:
@@ -606,8 +647,6 @@ async def generate_render(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=f"Not enough tokens. This render costs {token_cost} tokens but you have {user.render_credits}. Tokens reset weekly.",
         )
-
-    settings = get_settings()
 
     if _is_openai_model(render_model):
         image_b64 = await _generate_openai_render(req, settings, render_model)
@@ -848,7 +887,7 @@ async def generate_render(
                 db=db,
                 user=user,
                 render_model=render_model,
-                token_cost=token_cost if not is_admin_or_above(user) else 0,
+                token_cost=token_cost,
                 input_b64=req.image_base64,
                 output_b64=image_b64,
                 prompt_preview=req.prompt[:500] if req.prompt else None,

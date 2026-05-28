@@ -182,6 +182,10 @@ class Settings(BaseSettings):
     sentry_dsn: str = ""
     log_level: str = "INFO"
 
+    # --- Render Cost Controls ---
+    # 0 disables the global cap. Set in staging/production to stop runaway provider spend.
+    render_global_daily_token_cap: int = 0
+
     # --- Upload Limits ---
     max_upload_size_mb: int = 100
     processing_workers: int = 2
