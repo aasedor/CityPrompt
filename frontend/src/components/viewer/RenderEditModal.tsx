@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import toast from 'react-hot-toast';
-import { Brush, Check, Loader2, RotateCcw, Wand2, X } from 'lucide-react';
+import { Brush, Check, Loader2, Minus, Plus, RotateCcw, Undo2, Wand2, X } from 'lucide-react';
 import { getApiErrorMessage, rendersApi } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { imageUrlToBase64 } from '@/utils/renderPersistence';
@@ -15,6 +15,16 @@ interface RenderEditModalProps {
 
 const DEFAULT_BRUSH_SIZE = 44;
 const EDIT_MODEL = 'gpt-image-2';
+const MAX_UNDO_STEPS = 30;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 2.5;
+const ZOOM_STEP = 0.25;
+
+interface CanvasSnapshot {
+  overlay: ImageData;
+  mask: ImageData;
+  hasMask: boolean;
+}
 
 function getCanvasBase64(canvas: HTMLCanvasElement): string {
   return canvas.toDataURL('image/png').split(',')[1] || '';
@@ -31,24 +41,74 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
   const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawingRef = useRef(false);
   const lastPointRef = useRef<{ x: number; y: number } | null>(null);
+  const undoStackRef = useRef<CanvasSnapshot[]>([]);
 
   const [prompt, setPrompt] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
+  const [zoom, setZoom] = useState(1);
   const [imageSize, setImageSize] = useState<{ width: number; height: number } | null>(null);
+  const [displaySize, setDisplaySize] = useState<{ width: number; height: number } | null>(null);
   const [hasMask, setHasMask] = useState(false);
+  const [canUndo, setCanUndo] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const updateUndoAvailability = useCallback(() => {
+    setCanUndo(undoStackRef.current.length > 0);
+  }, []);
+
+  const pushUndoSnapshot = useCallback(() => {
+    const overlay = overlayCanvasRef.current;
+    const mask = maskCanvasRef.current;
+    const overlayCtx = overlay?.getContext('2d');
+    const maskCtx = mask?.getContext('2d');
+    if (!overlay || !mask || !overlayCtx || !maskCtx) return;
+
+    undoStackRef.current = [
+      ...undoStackRef.current.slice(-(MAX_UNDO_STEPS - 1)),
+      {
+        overlay: overlayCtx.getImageData(0, 0, overlay.width, overlay.height),
+        mask: maskCtx.getImageData(0, 0, mask.width, mask.height),
+        hasMask,
+      },
+    ];
+    updateUndoAvailability();
+  }, [hasMask, updateUndoAvailability]);
+
+  const undoLastStroke = useCallback(() => {
+    const snapshot = undoStackRef.current.pop();
+    const overlay = overlayCanvasRef.current;
+    const mask = maskCanvasRef.current;
+    const overlayCtx = overlay?.getContext('2d');
+    const maskCtx = mask?.getContext('2d');
+    if (!snapshot || !overlay || !mask || !overlayCtx || !maskCtx) {
+      updateUndoAvailability();
+      return;
+    }
+
+    overlayCtx.putImageData(snapshot.overlay, 0, 0);
+    maskCtx.putImageData(snapshot.mask, 0, 0);
+    setHasMask(snapshot.hasMask);
+    lastPointRef.current = null;
+    updateUndoAvailability();
+  }, [updateUndoAvailability]);
 
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && !submitting) {
         event.preventDefault();
         onClose();
+        return;
+      }
+
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && !submitting) {
+        event.preventDefault();
+        undoLastStroke();
       }
     };
     window.addEventListener('keydown', handleKey, true);
     return () => window.removeEventListener('keydown', handleKey, true);
-  }, [onClose, submitting]);
+  }, [onClose, submitting, undoLastStroke]);
 
   const clearMask = useCallback(() => {
     const overlay = overlayCanvasRef.current;
@@ -61,9 +121,11 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
       maskCtx.fillStyle = '#000';
       maskCtx.fillRect(0, 0, mask.width, mask.height);
     }
+    undoStackRef.current = [];
+    updateUndoAvailability();
     setHasMask(false);
     lastPointRef.current = null;
-  }, []);
+  }, [updateUndoAvailability]);
 
   const configureCanvases = useCallback((width: number, height: number) => {
     for (const canvas of [overlayCanvasRef.current, maskCanvasRef.current]) {
@@ -81,8 +143,20 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
       height: Math.max(1, img.naturalHeight),
     };
     setImageSize(nextSize);
-    requestAnimationFrame(() => configureCanvases(nextSize.width, nextSize.height));
+    setZoom(1);
+    requestAnimationFrame(() => {
+      const rect = img.getBoundingClientRect();
+      setDisplaySize({
+        width: Math.max(1, rect.width),
+        height: Math.max(1, rect.height),
+      });
+      configureCanvases(nextSize.width, nextSize.height);
+    });
   }, [configureCanvases]);
+
+  const adjustZoom = useCallback((delta: number) => {
+    setZoom((current) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Number((current + delta).toFixed(2)))));
+  }, []);
 
   const getCanvasPoint = useCallback((event: ReactPointerEvent<HTMLCanvasElement>) => {
     const canvas = overlayCanvasRef.current;
@@ -142,10 +216,11 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
     const point = getCanvasPoint(event);
     if (!point) return;
     event.currentTarget.setPointerCapture(event.pointerId);
+    pushUndoSnapshot();
     isDrawingRef.current = true;
     lastPointRef.current = null;
     drawAt(point);
-  }, [drawAt, getCanvasPoint, submitting]);
+  }, [drawAt, getCanvasPoint, pushUndoSnapshot, submitting]);
 
   const handlePointerMove = useCallback((event: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!isDrawingRef.current || submitting) return;
@@ -216,7 +291,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
         if (event.target === event.currentTarget && !submitting) onClose();
       }}
     >
-      <div className="flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl bg-gray-950 shadow-2xl ring-1 ring-white/10">
+      <div className="flex h-[82vh] max-h-[56rem] min-h-[38rem] w-full max-w-6xl flex-col overflow-hidden rounded-xl bg-gray-950 shadow-2xl ring-1 ring-white/10">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
           <div className="flex items-center gap-2">
             <Wand2 size={18} className="text-amber-300" />
@@ -237,31 +312,79 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
         </div>
 
         <div className="grid min-h-0 flex-1 gap-0 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div className="min-h-0 overflow-auto bg-black p-4">
-            <div className="mx-auto w-fit max-w-full">
-              <div className="relative overflow-hidden rounded-lg border border-white/10 bg-gray-900">
-                <img
-                  src={previewUrl || imageUrl}
-                  alt={render.prompt || 'Saved render'}
-                  onLoad={handleImageLoad}
-                  className="block max-h-[72vh] max-w-full select-none object-contain"
-                  draggable={false}
-                />
-                {!previewUrl && (
-                  <>
-                    <canvas ref={maskCanvasRef} className="hidden" />
-                    <canvas
-                      ref={overlayCanvasRef}
-                      className="absolute inset-0 h-full w-full cursor-crosshair touch-none"
-                      onPointerDown={handlePointerDown}
-                      onPointerMove={handlePointerMove}
-                      onPointerUp={stopDrawing}
-                      onPointerCancel={stopDrawing}
-                      onPointerLeave={stopDrawing}
-                      aria-label="Draw edit mask"
-                    />
-                  </>
-                )}
+          <div className="relative min-h-0 min-w-0 overflow-hidden bg-black">
+            <div className="absolute left-6 top-6 z-20 flex w-fit items-center gap-1 rounded-full bg-black/70 p-1 shadow-lg ring-1 ring-white/15 backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => adjustZoom(-ZOOM_STEP)}
+                disabled={submitting || zoom <= MIN_ZOOM}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                aria-label="Zoom out"
+                title="Zoom out"
+              >
+                <Minus size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setZoom(1)}
+                disabled={submitting || zoom === 1}
+                className="h-8 rounded-full px-2 text-[11px] font-bold text-white/80 transition hover:bg-white/15 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                title="Reset zoom"
+              >
+                {Math.round(zoom * 100)}%
+              </button>
+              <button
+                type="button"
+                onClick={() => adjustZoom(ZOOM_STEP)}
+                disabled={submitting || zoom >= MAX_ZOOM}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition hover:bg-white/15 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                aria-label="Zoom in"
+                title="Zoom in"
+              >
+                <Plus size={15} />
+              </button>
+            </div>
+
+            <div className="h-full w-full overflow-auto p-4">
+              <div
+                className="mx-auto"
+                style={displaySize ? {
+                  width: displaySize.width * zoom,
+                  height: displaySize.height * zoom,
+                } : undefined}
+              >
+                <div
+                  className="relative overflow-hidden rounded-lg border border-white/10 bg-gray-900"
+                  style={displaySize ? {
+                    width: displaySize.width,
+                    height: displaySize.height,
+                    transform: `scale(${zoom})`,
+                    transformOrigin: 'top left',
+                  } : undefined}
+                >
+                  <img
+                    src={previewUrl || imageUrl}
+                    alt={render.prompt || 'Saved render'}
+                    onLoad={handleImageLoad}
+                    className={displaySize ? 'block h-full w-full select-none object-contain' : 'block max-h-[72vh] max-w-full select-none object-contain'}
+                    draggable={false}
+                  />
+                  {!previewUrl && (
+                    <>
+                      <canvas ref={maskCanvasRef} className="hidden" />
+                      <canvas
+                        ref={overlayCanvasRef}
+                        className="absolute inset-0 h-full w-full cursor-crosshair touch-none"
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={stopDrawing}
+                        onPointerCancel={stopDrawing}
+                        onPointerLeave={stopDrawing}
+                        aria-label="Draw edit mask"
+                      />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -296,6 +419,16 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
             </label>
 
             <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={undoLastStroke}
+                disabled={submitting || !canUndo}
+                className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-semibold text-white/70 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+                title="Undo last brush stroke"
+              >
+                <Undo2 size={14} />
+                Undo
+              </button>
               <button
                 type="button"
                 onClick={clearMask}
