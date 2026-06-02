@@ -1220,6 +1220,20 @@ export const modelLibraryApi = {
 };
 
 export const rendersApi = {
+  generateEdit: async (request: {
+    image_base64: string;
+    mask_base64: string;
+    prompt: string;
+    previous_render_base64?: string;
+    project_id?: string;
+    seed?: number;
+    model?: string;
+    image_quality?: 'auto' | 'low' | 'medium' | 'high';
+  }): Promise<{ image_base64: string; seed?: number }> => {
+    const { data } = await api.post('/api/v1/render/generate', request, { timeout: 300000 });
+    return data;
+  },
+
   save: async (projectId: string, render: {
     image_base64: string;
     prompt: string;

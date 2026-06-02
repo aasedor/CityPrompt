@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect, type PointerEvent as ReactPoi
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -18,6 +18,7 @@ import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
+import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
@@ -39,6 +40,7 @@ export function ProjectViewPage() {
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
@@ -237,6 +239,11 @@ export function ProjectViewPage() {
     setShowProjectRenders(true);
   }, []);
 
+  const handleEditRender = useCallback((render: SavedRender) => {
+    setRenderEditTarget(render);
+    setRenderLightbox(null);
+  }, []);
+
   const refreshSavedRenders = useCallback(() => {
     if (!id) return;
     rendersApi.list(id).then(setSavedRenders).catch(() => {});
@@ -362,7 +369,7 @@ export function ProjectViewPage() {
     }
   }, [handleAIRenderComplete, showRenderModal]);
 
-  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!lightboxImageUrl || aiPanelLightboxOpen;
+  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!renderEditTarget || !!lightboxImageUrl || aiPanelLightboxOpen;
 
   const stepRenderLightbox = useCallback((direction: -1 | 1) => {
     setRenderLightbox((current) => {
@@ -628,6 +635,16 @@ export function ProjectViewPage() {
                 </p>
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleEditRender(renderLightbox)}
+                  className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
                 <a
                   href={resolveApiFileUrl(renderLightbox.image_url)}
                   download={`render-${renderLightbox.id}.png`}
@@ -650,6 +667,15 @@ export function ProjectViewPage() {
 
         {/* Double-click a variant to open large preview */}
         <ImageLightbox />
+        {id && renderEditTarget && (
+          <RenderEditModal
+            projectId={id}
+            render={renderEditTarget}
+            imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+            onSaved={rememberSavedRender}
+            onClose={() => setRenderEditTarget(null)}
+          />
+        )}
       </div>
     );
   }
@@ -978,6 +1004,16 @@ export function ProjectViewPage() {
               </p>
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleEditRender(renderLightbox)}
+                className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                title="Edit masked area"
+                aria-label="Edit render"
+              >
+                <Wand2 size={16} />
+                Edit Render
+              </button>
               <a
                 href={resolveApiFileUrl(renderLightbox.image_url)}
                 download={`render-${renderLightbox.id}.png`}
@@ -1028,6 +1064,15 @@ export function ProjectViewPage() {
           onSaved={() => {
             refreshSavedRenders();
           }}
+        />
+      )}
+      {id && renderEditTarget && (
+        <RenderEditModal
+          projectId={id}
+          render={renderEditTarget}
+          imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+          onSaved={rememberSavedRender}
+          onClose={() => setRenderEditTarget(null)}
         />
       )}
     </div>
