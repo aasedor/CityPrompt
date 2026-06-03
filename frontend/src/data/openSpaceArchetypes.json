@@ -12660,6 +12660,99 @@
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, straight running track, ploughed fields, ornamental flower gardens, open water"
       },
       "districtKit": null
+    },
+    {
+      "id": "suburban_retail_parking_lot",
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 50,
+      "minWidth_m": 30,
+      "maxWidth_m": 140,
+      "minDepth_m": 25,
+      "maxDepth_m": 100,
+      "minAreaSqm": 800,
+      "maxAreaSqm": 15000,
+      "aspectRatio": "1.4:1",
+      "shape": "rectangular",
+      "title": "Suburban Retail Parking Lot",
+      "aestheticCategory": "parking_areas",
+      "spaceType": "plaza",
+      "description": "A large suburban retail parking lot serving a strip mall, big-box store, gas station, or roadside hotel. A broad asphalt field of painted stalls and wide drive aisles fronts the storefronts, with cart corrals, accessible stalls near the entrance, pole-mounted area lighting, scattered landscaped islands, and a tall pylon sign at the highway edge. Typical of Canadian prairie-town commercial strips and highway service nodes.",
+      "generationTags": [
+        "parking",
+        "surface-lot",
+        "retail",
+        "suburban",
+        "big-box",
+        "asphalt",
+        "pylon-sign"
+      ],
+      "styleProfile": {
+        "landscapeCharacter": "A large suburban retail parking lot seen from drone altitude. A broad apron of dark grey asphalt fronts a line of storefronts, striped with white-painted parking stalls (each ~2.6m by 5.3m) in long rows separated by wide drive aisles. Parked cars and a few pickup trucks read as small colour rectangles. Cart-corral cages and accessible blue-marked stalls cluster near the store entrance. Tall pole-mounted light standards cast long thin shadows. A few small planted islands with one or two trees interrupt the rows, and a tall internally-lit pylon sign stands at the highway entrance. A wide flat prairie horizon and big sky surround the lot.",
+        "pavingType": "Asphalt with painted line markings, concrete entrance aprons",
+        "plantingType": "Sparse — a few trees in curbed planter islands, mown grass and ditch at the perimeter",
+        "seatingRealm": "None — utilitarian retail forecourt",
+        "waterFeatures": "None",
+        "opennessEnclosure": "Wide open flat asphalt expanse under a big prairie sky"
+      },
+      "prompt": {
+        "subject": "Aerial view of a large suburban retail parking lot fronting storefronts, with painted stalls, parked cars, and a highway pylon sign",
+        "details": [
+          "Dark grey asphalt apron covering the area, white-painted stall grid",
+          "Wide drive aisles between long rows of parked cars and pickup trucks",
+          "Cart corrals and blue accessible stalls near the store entrance",
+          "Tall pole-mounted area lights, a few curbed tree islands",
+          "Internally-lit pylon sign at the highway entrance",
+          "Flat prairie horizon, mown grass and ditch at the lot perimeter"
+        ],
+        "negative": [
+          "No large buildings occupying the parking area itself",
+          "No dense urban high-rise backdrop",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "parking_layout": "surface",
+        "covered": false,
+        "paving_material": "asphalt"
+      },
+      "thumbnailUrl": "/archetypes/openspaces/suburban-retail-parking-lot/variant_0.png",
+      "variants": [
+        {
+          "id": "suburban_retail_parking_lot_v0",
+          "label": "Big-Box Front Apron",
+          "color": "#5C6B7A",
+          "description": "A vast asphalt parking field fronting a big-box store or supermarket. Long uninterrupted rows of painted stalls, wide drive aisles, multiple cart corrals, tall pole lights, accessible stalls and a striped pedestrian crosswalk at the storefront, and a tall pylon sign at the road. Minimal landscaping — the asphalt dominates.",
+          "thumbnailUrl": "/archetypes/openspaces/suburban-retail-parking-lot/variant_0.png"
+        },
+        {
+          "id": "suburban_retail_parking_lot_v1",
+          "label": "Landscaped Retail Lot",
+          "color": "#4C8C5A",
+          "description": "A newer, code-compliant retail lot softened with landscaping: planted islands with shade trees every few rows, a vegetated bioswale along one edge, painted pedestrian walkways crossing the aisles, decorative pole lights, and curbed medians. Greener and more orderly than the bare big-box apron.",
+          "thumbnailUrl": "/archetypes/openspaces/suburban-retail-parking-lot/variant_1.png"
+        },
+        {
+          "id": "suburban_retail_parking_lot_v2",
+          "label": "Gravel Highway Overflow",
+          "color": "#8A7B5A",
+          "description": "A rough rural highway service lot, part-paved and part-compacted gravel, with faint or absent stall markings, generous pull-through bays for big-rig trucks and RVs, a fuel-island apron, and a simple gravel ditch edge. Utilitarian prairie-highway character with a tall illuminated price sign.",
+          "thumbnailUrl": "/archetypes/openspaces/suburban-retail-parking-lot/variant_2.png"
+        },
+        {
+          "id": "suburban_retail_parking_lot_v3",
+          "label": "Plaza Frontage Parking",
+          "color": "#5A7A9A",
+          "description": "A smaller wrap-around lot tight to a strip plaza: angled parking stalls along the storefront sidewalk, curbed planter islands, a continuous concrete walk under the canopy, accessible stalls by each entrance, and a modest tenant pylon sign. Intimate roadside-plaza scale rather than a big-box field.",
+          "thumbnailUrl": "/archetypes/openspaces/suburban-retail-parking-lot/variant_3.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic large suburban retail parking lot. Broad dark grey asphalt apron with white-painted parking stalls in long rows, wide drive aisles, parked cars and pickup trucks as colour rectangles, cart corrals and blue accessible stalls near the storefront edge, tall pole-mounted area lights, a few curbed tree islands, and a tall pylon sign at the highway entrance. Flat prairie surroundings, mown grass and ditch at the perimeter. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored zone viewed from directly above with a dark grey asphalt parking field, white painted stall-line grid, wide drive-aisle gaps, small colour car rectangles, a few green tree-island canopies, and a concrete entrance apron. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, large building in the parking area, dense urban high-rise backdrop"
+      },
+      "districtKit": null,
+      "suggestedAreaSqm": 3000
     }
   ]
 }

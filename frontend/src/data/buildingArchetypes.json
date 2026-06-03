@@ -35853,6 +35853,569 @@
         "maxFloors": 12,
         "suggestedAreaSqm": 2000,
         "developmentType": "mixed_use"
+    },
+    {
+      "id": "rural_gas_station",
+      "suggestedWidth_m": 35,
+      "suggestedDepth_m": 30,
+      "suggestedFloorHeight": 4.5,
+      "minWidth_m": 20,
+      "maxWidth_m": 55,
+      "minDepth_m": 18,
+      "maxDepth_m": 45,
+      "aspectRatio": "1.2:1",
+      "shadeId": "#d24f2a",
+      "title": "Rural Gas Station",
+      "aestheticCategory": "roadside_commercial",
+      "description": "A single-storey roadside gas station and convenience store typical of small-town and highway Canada. A flat steel fuel canopy on slender columns shelters several pump islands in front of a low convenience-store box with glazed storefront and bright fascia branding. A tall internally-lit price pylon stands at the road, with a paved apron, air/vacuum bay, and propane cage to the side. Set against an open prairie horizon with big sky and a distant grain elevator.",
+      "buildingSubcategory": "Commercial — Roadside Fuel & Convenience",
+      "districtKit": null,
+      "generationTags": [
+        "gas_station",
+        "fuel",
+        "convenience_store",
+        "roadside",
+        "rural",
+        "prairie",
+        "canopy",
+        "single_storey"
+      ],
+      "palette": {
+        "skyTop": "#5C8AC4",
+        "skyBottom": "#BBD6EC",
+        "facadePrimary": "#D9DEE2",
+        "facadeSecondary": "#C0472A",
+        "accent": "#E8B22E",
+        "window": "#9FC7DD",
+        "ground": "#8C857A",
+        "street": "#54514C",
+        "landscape": "#9CA86A"
+      },
+      "styleProfile": {
+        "materials": [
+          "painted steel canopy fascia with branded colour band",
+          "EIFS or composite-panel convenience-store walls",
+          "full-height aluminium-framed storefront glazing",
+          "concrete-filled steel bollards and pump islands"
+        ],
+        "facadeRhythm": "Low horizontal store box behind a wide flat canopy on regularly spaced slender steel columns",
+        "roofForm": "Flat fascia canopy over pump islands plus a flat-roofed store box with parapet sign band",
+        "frontageType": "Pump-island forecourt facing the highway, glazed store entrance under a small entry canopy",
+        "windowStyle": "Full-height glazed storefront across the store front, clerestory above the cooler wall",
+        "massing": "Wide flat canopy dominating a small single-storey store box set back behind the islands",
+        "heightTendency": "Single storey (canopy ~5-6 m clearance)",
+        "streetRelationship": "Set back behind a paved fuel apron with a tall pylon price sign at the road edge",
+        "renderingMood": "Bright clear prairie daylight, big sky, long flat horizon",
+        "articulation": "Bold canopy colour band, illuminated fascia, branded pylon, clean glazed store",
+        "publicRealm": "Paved fuel apron, air/vacuum bay, propane cage, a few parking stalls along the store"
+      },
+      "prompt": {
+        "subject": "Front-facing canonical archetype of a rural Canadian roadside gas station with fuel canopy and convenience store",
+        "details": [
+          "Wide flat steel fuel canopy on slender columns over several pump islands",
+          "Low glazed convenience-store box with bright fascia branding behind",
+          "Tall internally-lit price pylon at the road, paved apron, prairie horizon"
+        ],
+        "negative": [
+          "No multi-storey building",
+          "No dense city backdrop",
+          "No text inside the image other than implied signage"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored building block with a photorealistic single-storey rural gas station: a wide flat steel fuel canopy on slender columns sheltering pump islands, a low glazed convenience-store box behind with a bright branded fascia, a tall illuminated price pylon at the road, and a paved fuel apron. Keep the same footprint. Open prairie surroundings, big sky. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored block viewed from above with a large flat rectangular canopy roof (light metal) over parallel pump islands, an adjacent smaller flat-roofed store box with rooftop HVAC units, and surrounding paved apron with parking stalls. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, multi-storey tower, dense urban backdrop, pitched ornate roof"
+      },
+      "facadeDetail": {
+        "primaryMaterial": "EIFS or composite metal panel store walls in light grey/white with a branded colour fascia band",
+        "secondaryMaterial": "painted steel fuel canopy with illuminated fascia in a bold brand colour (red, green or blue)",
+        "accentMaterial": "aluminium-framed full-height storefront glazing, stainless pump-island bollards",
+        "groundFloor": "glazed convenience-store entrance under a small entry canopy, ice box and propane cage to one side",
+        "upperFloors": "none — single storey; canopy fascia forms the dominant horizontal line",
+        "cornice": "flat parapet sign band over the store, flat illuminated canopy fascia",
+        "colorScheme": "light grey/white store with a bold brand-colour fascia and illuminated price pylon"
+      },
+      "roofDetail": {
+        "form": "flat canopy over pump islands plus a flat-roofed store box",
+        "material": "standing-seam or membrane canopy roof, membrane store roof with parapet",
+        "features": "rooftop HVAC units on the store, canopy-edge lighting, branded fascia",
+        "aerialAppearance": "a large light rectangular canopy roof over pump-island rows beside a smaller flat store roof, paved apron around"
+      },
+      "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_0.png",
+      "variants": [
+        {
+          "id": "gas_modern_fuel_bar",
+          "label": "Modern Fuel Bar",
+          "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_0.png",
+          "description": "A contemporary fuel bar with a large bright-branded steel canopy over four to six pump islands, a glassy convenience store with a small QSR counter inside, LED price pylon, and a clean paved forecourt. The crisp current look of a Petro-Canada / Esso / Co-op style station.",
+          "facadeDetail": {
+            "primaryMaterial": "white composite metal panel store with a bold colour fascia band",
+            "secondaryMaterial": "large illuminated steel canopy in brand colour over 4-6 pump islands",
+            "groundFloor": "full-height glazed store front with automatic doors, interior QSR counter",
+            "colorScheme": "white and brand-colour (red/green/blue), bright LED pylon"
+          },
+          "roofDetail": {
+            "form": "flat canopy and flat store roof",
+            "material": "membrane roofs, illuminated canopy fascia"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C0472A"
+          },
+          "minFloors": 1,
+          "maxFloors": 1
+        },
+        {
+          "id": "gas_highway_truck_stop",
+          "label": "Highway Truck Stop",
+          "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_1.png",
+          "description": "A large highway truck stop: an extra-wide multi-island canopy with separate high-clearance diesel lanes for big rigs, a bigger store with an attached quick-service restaurant and washrooms, and a sprawling paved apron with truck-parking bays. The biggest format in the family.",
+          "facadeDetail": {
+            "primaryMaterial": "tan or beige EIFS store-and-restaurant block with signage band",
+            "secondaryMaterial": "very wide steel canopy with a separate tall diesel-lane canopy",
+            "groundFloor": "glazed store entrance plus a branded quick-service restaurant frontage",
+            "colorScheme": "warm beige and red/orange brand accents, large illuminated signs"
+          },
+          "roofDetail": {
+            "form": "two flat canopies (auto + high diesel) and a flat-roofed store/restaurant",
+            "material": "membrane and metal canopy roofs"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#C9772E"
+          },
+          "minFloors": 1,
+          "maxFloors": 2,
+          "suggestedAreaSqm": 3200
+        },
+        {
+          "id": "gas_prairie_coop_cardlock",
+          "label": "Prairie Co-op Cardlock",
+          "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_2.png",
+          "description": "A utilitarian agricultural fuel station in the prairie co-op vernacular: a metal-clad shed store, bulk fuel and propane tanks alongside, unmanned cardlock pump islands under a simple steel canopy, and a gravel apron. Plain, functional, small-town farm-country character.",
+          "facadeDetail": {
+            "primaryMaterial": "corrugated or ribbed metal cladding in co-op colours (green/white or red/white)",
+            "secondaryMaterial": "simple painted steel canopy, exposed bulk fuel tanks on stands",
+            "groundFloor": "small metal-clad store/office with a single glazed door and window",
+            "colorScheme": "co-op green-and-white or red-and-white ribbed metal, plain signage"
+          },
+          "roofDetail": {
+            "form": "simple flat or low-slope canopy and a gabled metal shed store",
+            "material": "ribbed metal roofing"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#5E8A4A"
+          },
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1400
+        },
+        {
+          "id": "gas_vintage_service_station",
+          "label": "Vintage Service Station",
+          "thumbnailUrl": "/archetypes/buildings/rural-gas-station/variant_3.png",
+          "description": "A small restored or weathered 1950s-60s service station: a compact flat or gently gabled canopy on slim painted posts over two pumps, a porcelain-enamel or painted-stucco office with a service-bay roll-up door, and retro signage. Mid-century roadside Americana, prairie edition.",
+          "facadeDetail": {
+            "primaryMaterial": "painted stucco or porcelain-enamel panel walls in cream with a colour stripe",
+            "secondaryMaterial": "slim steel canopy posts, glass-block or steel-sash service-bay window",
+            "groundFloor": "small glazed office, one or two service-bay roll-up doors, two vintage pumps",
+            "colorScheme": "cream and red/teal mid-century stripe, neon or painted retro sign"
+          },
+          "roofDetail": {
+            "form": "small flat or gently gabled canopy over a low office-and-bay box",
+            "material": "painted metal canopy, asphalt-shingle or flat roof"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#D2A24A"
+          },
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1100
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 2,
+      "suggestedAreaSqm": 1800,
+      "developmentType": "commercial_retail"
+    },
+    {
+      "id": "commercial_strip_mall",
+      "suggestedWidth_m": 60,
+      "suggestedDepth_m": 18,
+      "suggestedFloorHeight": 4.5,
+      "minWidth_m": 30,
+      "maxWidth_m": 120,
+      "minDepth_m": 14,
+      "maxDepth_m": 30,
+      "aspectRatio": "3.3:1",
+      "shadeId": "#c84d2b",
+      "title": "Commercial Strip Mall",
+      "aestheticCategory": "roadside_commercial",
+      "description": "A low-rise commercial strip mall typical of Canadian suburban arterials and prairie highway towns. A long single- or two-storey retail bar with a continuous covered sidewalk fronts a large parking apron, divided into a row of tenant bays — a grocery or pharmacy anchor at one end and smaller units (restaurant, salon, dollar store, clinic) along the run. A flat roof hides behind a signage parapet, with backlit tenant signs and a shared pylon at the road.",
+      "buildingSubcategory": "Commercial — Retail Strip",
+      "districtKit": null,
+      "generationTags": [
+        "strip_mall",
+        "commercial_strip",
+        "retail",
+        "suburban",
+        "prairie",
+        "anchor_tenant",
+        "low_rise",
+        "parking_apron"
+      ],
+      "palette": {
+        "skyTop": "#5C8AC4",
+        "skyBottom": "#BBD6EC",
+        "facadePrimary": "#CDB79A",
+        "facadeSecondary": "#9C5A3C",
+        "accent": "#3F7CA8",
+        "window": "#A6C9DD",
+        "ground": "#8C857A",
+        "street": "#54514C",
+        "landscape": "#9CA86A"
+      },
+      "styleProfile": {
+        "materials": [
+          "EIFS / stucco fascia band with split-face concrete-block base",
+          "brick or composite-panel pilasters between tenant bays",
+          "aluminium-framed storefront glazing and entry doors",
+          "steel-framed continuous sidewalk canopy"
+        ],
+        "facadeRhythm": "A long repeating rhythm of glazed tenant bays divided by pilasters under a continuous signage fascia",
+        "roofForm": "Flat roof concealed behind a stepped signage parapet, taller at the anchor end",
+        "frontageType": "Continuous covered sidewalk along glazed storefronts facing the parking apron",
+        "windowStyle": "Full-height aluminium storefront glazing per bay, solid signage band above",
+        "massing": "Long low horizontal bar, occasionally stepping up at an anchor or to two storeys",
+        "heightTendency": "Single storey, occasionally two at the anchor",
+        "streetRelationship": "Set well back behind a large front parking apron with a shared pylon sign at the road",
+        "renderingMood": "Bright flat prairie daylight, big sky over a long low roofline",
+        "articulation": "Varied tenant signage and awnings, pilaster rhythm, raised anchor parapet",
+        "publicRealm": "Covered sidewalk, bollards, a few planter islands, large fronting parking lot"
+      },
+      "prompt": {
+        "subject": "Front-facing canonical archetype of a low-rise suburban strip mall with a continuous covered sidewalk and tenant bays",
+        "details": [
+          "Long single-storey retail bar with glazed tenant bays under a signage parapet",
+          "Continuous covered sidewalk facing a large parking apron",
+          "Grocery/pharmacy anchor at one end, shared pylon sign, prairie horizon"
+        ],
+        "negative": [
+          "No high-rise tower",
+          "No dense downtown street wall",
+          "No text inside the image other than implied signage"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored building block with a photorealistic low-rise strip mall: a long single- to two-storey retail bar with a continuous steel-framed sidewalk canopy over glazed tenant storefronts, a flat roof behind a stepped signage parapet (raised at an anchor end), backlit tenant signs, and a large fronting parking apron with a shared pylon sign at the road. Keep the same footprint. Open prairie surroundings, big sky. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored block viewed from above with a long rectangular flat membrane roof carrying many rooftop HVAC units in a row, a slightly taller anchor box at one end, a thin canopy line along the storefront edge, and a large parking apron in front. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, high-rise tower, dense urban street wall, pitched ornate roof"
+      },
+      "facadeDetail": {
+        "primaryMaterial": "EIFS / stucco fascia band in warm beige over a split-face concrete-block base",
+        "secondaryMaterial": "brick or composite-panel pilasters dividing the tenant bays",
+        "accentMaterial": "aluminium storefront framing, fabric or metal awnings per tenant",
+        "groundFloor": "continuous glazed tenant storefronts with individual recessed entries under a covered sidewalk",
+        "upperFloors": "usually none; where two storeys, a second band of punched office windows above the anchor",
+        "cornice": "stepped signage parapet, raised and widened over the anchor tenant",
+        "colorScheme": "warm beige fascia, brick/grey pilasters, varied tenant sign colours"
+      },
+      "roofDetail": {
+        "form": "flat roof behind a stepped signage parapet",
+        "material": "white or grey membrane roof with aluminium coping",
+        "features": "rows of rooftop HVAC units, exhaust fans over the restaurant bay, parapet-mounted signs",
+        "aerialAppearance": "a long flat membrane roof studded with mechanical units, a taller anchor box at one end, parking apron in front"
+      },
+      "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+      "variants": [
+        {
+          "id": "strip_single_storey_classic",
+          "label": "Single-Storey Classic",
+          "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_0.png",
+          "description": "The classic linear strip mall: a single-storey bar of glazed tenant bays under a continuous flat canopy, beige EIFS signage fascia, a modest anchor (grocery or liquor store) at one end and small units (pizza, nails, dollar store) along the run. The bread-and-butter Canadian suburban strip.",
+          "facadeDetail": {
+            "primaryMaterial": "beige EIFS fascia over split-face block base",
+            "secondaryMaterial": "brick pilasters between bays, metal canopy",
+            "groundFloor": "continuous glazed tenant storefronts with recessed entries",
+            "colorScheme": "beige and brown with varied backlit tenant signs"
+          },
+          "roofDetail": {
+            "form": "flat roof behind a continuous signage parapet",
+            "material": "grey membrane roof"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#B98E63"
+          },
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1700
+        },
+        {
+          "id": "strip_anchored_l_plaza",
+          "label": "Anchored L-Plaza",
+          "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_1.png",
+          "description": "A larger L-shaped neighbourhood plaza wrapping two sides of the parking lot, anchored by a full grocery or pharmacy with a tall branded parapet, plus a long inline run of smaller shops and a drive-thru end-cap. The biggest format — a true community plaza.",
+          "facadeDetail": {
+            "primaryMaterial": "EIFS and brick with a tall raised anchor parapet and tower element",
+            "secondaryMaterial": "composite metal panel accents at the anchor entrance",
+            "groundFloor": "large anchor storefront plus a long inline row of glazed tenant bays around the L",
+            "colorScheme": "beige and brick with a bold anchor brand colour"
+          },
+          "roofDetail": {
+            "form": "flat roof, stepped tall over the anchor, around an L-plan",
+            "material": "membrane roof with many rooftop units"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#A65B3A"
+          },
+          "minFloors": 1,
+          "maxFloors": 2,
+          "suggestedAreaSqm": 3400
+        },
+        {
+          "id": "strip_contemporary_retail",
+          "label": "Contemporary Retail",
+          "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_2.png",
+          "description": "An updated contemporary strip: warm brick and dark corrugated metal with a wood-look soffit under a clean canopy, full-height glazing, crisp channel-letter signage, and a restaurant end-cap with an outdoor patio. The current, design-forward look of new suburban retail.",
+          "facadeDetail": {
+            "primaryMaterial": "warm brick veneer with dark corrugated metal panel zones",
+            "secondaryMaterial": "wood-look HPL soffit under a clean steel canopy",
+            "groundFloor": "full-height glazed storefronts, restaurant end-cap with patio railing",
+            "colorScheme": "warm brick, charcoal metal, warm wood soffit, black-frame glazing"
+          },
+          "roofDetail": {
+            "form": "flat roof with a clean parapet and projecting canopy",
+            "material": "membrane roof, charcoal metal fascia"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#8C5A44"
+          },
+          "minFloors": 1,
+          "maxFloors": 2,
+          "suggestedAreaSqm": 2200
+        },
+        {
+          "id": "strip_weathered_1980s",
+          "label": "Weathered 1980s Strip",
+          "thumbnailUrl": "/archetypes/buildings/commercial-strip-mall/variant_3.png",
+          "description": "An older, dated strip mall: a brown mansard shingle fascia running the length, faded backlit box signs, ribbed-metal or T1-11 side walls, cracked asphalt and a tired pylon sign. The aging roadside strip ready for redevelopment.",
+          "facadeDetail": {
+            "primaryMaterial": "brown asphalt-shingle mansard fascia over stucco walls",
+            "secondaryMaterial": "ribbed metal siding at the ends, dated aluminium storefronts",
+            "groundFloor": "older aluminium storefronts with faded awnings and box signs",
+            "colorScheme": "brown mansard, tan stucco, faded sign colours"
+          },
+          "roofDetail": {
+            "form": "flat roof hidden behind a continuous mansard shingle fascia",
+            "material": "ballasted membrane roof, asphalt-shingle mansard"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#7A6048"
+          },
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1700
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 2,
+      "suggestedAreaSqm": 2000,
+      "developmentType": "commercial_retail"
+    },
+    {
+      "id": "highway_motor_hotel",
+      "suggestedWidth_m": 45,
+      "suggestedDepth_m": 18,
+      "suggestedFloorHeight": 3.2,
+      "minWidth_m": 25,
+      "maxWidth_m": 80,
+      "minDepth_m": 14,
+      "maxDepth_m": 30,
+      "aspectRatio": "2.5:1",
+      "shadeId": "#d95a28",
+      "title": "Highway Motor Hotel",
+      "aestheticCategory": "roadside_commercial",
+      "description": "A roadside hotel/motel serving a Canadian highway or prairie town, spanning the classic single-storey motor court through the modern limited-service hotel. Guest-room wings (one to four storeys) wrap a parking lot, with exterior or interior corridors, a small office/lobby and breakfast room, a porte-cochère at the larger formats, and a tall illuminated roadside sign. Practical, durable construction set against an open prairie horizon.",
+      "buildingSubcategory": "Hospitality — Roadside Hotel & Motel",
+      "districtKit": null,
+      "generationTags": [
+        "hotel",
+        "motel",
+        "motor_inn",
+        "roadside",
+        "rural",
+        "prairie",
+        "hospitality",
+        "limited_service"
+      ],
+      "palette": {
+        "skyTop": "#5C8AC4",
+        "skyBottom": "#BBD6EC",
+        "facadePrimary": "#C9B79C",
+        "facadeSecondary": "#7C4A36",
+        "accent": "#C0392B",
+        "window": "#A6C9DD",
+        "ground": "#8C857A",
+        "street": "#54514C",
+        "landscape": "#9CA86A"
+      },
+      "styleProfile": {
+        "materials": [
+          "EIFS / stucco wall fields with a stone or brick base",
+          "vinyl or aluminium-framed punched guest-room windows",
+          "asphalt-shingle pitched or low-slope flat roofs",
+          "painted steel exterior-corridor walkways and stairs"
+        ],
+        "facadeRhythm": "A long regular rhythm of identical paired guest-room windows and doors along each wing",
+        "roofForm": "Pitched asphalt-shingle gable/hip on smaller formats, flat parapet roof on the modern hotel",
+        "frontageType": "Guest-room wings facing the parking court, a lobby/office and porte-cochère at the entrance",
+        "windowStyle": "Punched paired guest-room windows, larger glazing at the lobby",
+        "massing": "Long low wings (single storey) up to a compact three-to-four-storey block",
+        "heightTendency": "One to four storeys depending on format",
+        "streetRelationship": "Set back behind a parking court with a tall illuminated roadside sign at the highway",
+        "renderingMood": "Bright clear prairie daylight, big open sky, long low horizon",
+        "articulation": "Repeating room bays, a distinct lobby/entry element, roadside sign, exterior stairs",
+        "publicRealm": "Parking court at the room doors, lobby canopy, a small lawn and roadside sign"
+      },
+      "prompt": {
+        "subject": "Front-facing canonical archetype of a roadside Canadian motel / motor hotel with guest-room wings and a parking court",
+        "details": [
+          "Long guest-room wing with repeating paired windows and doors facing parking",
+          "Lobby/office with an entrance canopy or porte-cochère, tall roadside sign",
+          "One-to-four storeys, prairie horizon and big sky"
+        ],
+        "negative": [
+          "No high-rise resort tower",
+          "No dense downtown context",
+          "No text inside the image other than implied signage"
+        ]
+      },
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored building block with a photorealistic roadside motel / motor hotel: long guest-room wings (one to four storeys) with a regular rhythm of paired windows and doors facing a parking court, exterior-corridor walkways and stairs on the lower formats, a lobby/office with an entrance canopy or porte-cochère, and a tall illuminated roadside sign. Keep the same footprint. Open prairie surroundings, big sky. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k.",
+        "roofView": "Replace the colored block viewed from above with long rectangular wings — pitched asphalt-shingle gable roofs on the smaller formats or a flat membrane roof with rooftop units on the modern block — arranged in an L or U around a parking court, with a small lobby element and a roadside sign. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, high-rise resort tower, dense urban backdrop, glass curtain wall"
+      },
+      "facadeDetail": {
+        "primaryMaterial": "EIFS / stucco wall fields in warm beige with a stone or brick base course",
+        "secondaryMaterial": "vinyl or aluminium-framed punched guest-room windows, painted steel walkway rails",
+        "accentMaterial": "a brand colour band at the parapet or gable, illuminated roadside sign",
+        "groundFloor": "guest-room doors opening to the parking court, glazed lobby/office with entry canopy",
+        "upperFloors": "repeating paired guest-room windows along each wing, exterior or interior corridor access",
+        "cornice": "shingled gable verge on smaller formats, flat coped parapet on the modern hotel",
+        "colorScheme": "warm beige with brown/stone base and a brand-colour accent band"
+      },
+      "roofDetail": {
+        "form": "pitched asphalt-shingle on smaller formats, flat parapet roof on the modern hotel",
+        "material": "asphalt shingles or membrane roof, with rooftop HVAC units",
+        "features": "ridge vents and dormers on lodge formats, rooftop units and a pool enclosure on the modern hotel",
+        "aerialAppearance": "long wings with grey shingle gables or a flat membrane roof, arranged around a parking court"
+      },
+      "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
+      "variants": [
+        {
+          "id": "hotel_roadside_motel",
+          "label": "Roadside Motel",
+          "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_0.png",
+          "description": "The classic single-storey motor court: one long wing of guest rooms with doors and paired windows opening directly onto the parking, a low-slope or shallow gable roof, a small office at one end, and a tall vintage-style illuminated 'MOTEL' pylon or neon sign at the road. Pure mid-century roadside Canada.",
+          "facadeDetail": {
+            "primaryMaterial": "painted stucco or board walls in cream with a colour stripe",
+            "secondaryMaterial": "aluminium-sash paired windows, painted doors per room",
+            "groundFloor": "room doors opening to the parking apron, small glazed office",
+            "colorScheme": "cream and red/teal mid-century stripe, neon-style roadside sign"
+          },
+          "roofDetail": {
+            "form": "single-storey shallow gable or low-slope roof",
+            "material": "asphalt shingles or low-slope membrane"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#B07A4A"
+          },
+          "minFloors": 1,
+          "maxFloors": 1,
+          "suggestedAreaSqm": 1300
+        },
+        {
+          "id": "hotel_two_storey_motor_inn",
+          "label": "Two-Storey Motor Inn",
+          "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_1.png",
+          "description": "A two-storey L-shaped motor inn with an exterior walkway and balcony along the upper rooms, external stair towers, a central lobby with a breakfast room, and a modest entrance canopy. The workhorse 1980s-2000s highway inn format.",
+          "facadeDetail": {
+            "primaryMaterial": "beige EIFS/stucco wall fields with a brick or stone base",
+            "secondaryMaterial": "painted steel exterior walkway, railings and stair towers",
+            "groundFloor": "ground-floor room doors and a glazed lobby with a small canopy",
+            "colorScheme": "beige and brown with a brand-colour accent band"
+          },
+          "roofDetail": {
+            "form": "two-storey wings, shallow gable or flat roof",
+            "material": "asphalt-shingle or membrane roof"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#9C6242"
+          },
+          "minFloors": 2,
+          "maxFloors": 2,
+          "suggestedAreaSqm": 1800
+        },
+        {
+          "id": "hotel_limited_service",
+          "label": "Limited-Service Hotel",
+          "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_2.png",
+          "description": "A modern three-to-four-storey limited-service hotel with interior corridors, EIFS-and-stone facade, punched windows, a flat parapet roof, a prominent porte-cochère at the lobby, and an indoor pool wing. The current Super 8 / Comfort Inn / Holiday Inn Express vernacular.",
+          "facadeDetail": {
+            "primaryMaterial": "EIFS wall fields in two tones over a cultured-stone base",
+            "secondaryMaterial": "aluminium punched windows, metal-and-glass porte-cochère",
+            "groundFloor": "glazed double-height lobby under a porte-cochère, pool-wing glazing",
+            "colorScheme": "two-tone beige/charcoal EIFS, stone base, brand-colour parapet band"
+          },
+          "roofDetail": {
+            "form": "flat parapet roof over a compact 3-4 storey block",
+            "material": "membrane roof with rooftop units"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#8A5038"
+          },
+          "minFloors": 3,
+          "maxFloors": 4,
+          "suggestedAreaSqm": 2200
+        },
+        {
+          "id": "hotel_timber_lodge",
+          "label": "Timber Lodge",
+          "thumbnailUrl": "/archetypes/buildings/highway-motor-hotel/variant_3.png",
+          "description": "A rustic lodge-style hotel: heavy timber and fieldstone, steep asphalt-shingle gable roofs with dormers, a deep covered timber entry, and gable-end great-room glazing. Prairie-foothills resort character for a more upscale roadside stay.",
+          "facadeDetail": {
+            "primaryMaterial": "stained timber siding and heavy-timber posts with fieldstone piers",
+            "secondaryMaterial": "fieldstone base and chimney, timber-framed windows",
+            "groundFloor": "deep covered timber entry porch, gable-end great-room glazing",
+            "colorScheme": "warm stained timber, grey fieldstone, green-grey shingle roof"
+          },
+          "roofDetail": {
+            "form": "steep gable roofs with dormers",
+            "material": "dimensional asphalt shingles, timber soffits"
+          },
+          "shadeId": null,
+          "palette": {
+            "primary": "#6E4A30"
+          },
+          "minFloors": 2,
+          "maxFloors": 3,
+          "suggestedAreaSqm": 2000
+        }
+      ],
+      "minFloors": 1,
+      "maxFloors": 4,
+      "suggestedAreaSqm": 1500,
+      "developmentType": "hotel"
     }
   ]
 }
