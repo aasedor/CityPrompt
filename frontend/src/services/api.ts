@@ -57,6 +57,13 @@ export function resolveApiFileUrl(url: string): string {
   return url;
 }
 
+function normalizeSavedRender(render: SavedRender): SavedRender {
+  return {
+    ...render,
+    image_url: resolveApiFileUrl(render.image_url),
+  };
+}
+
 function formatApiDetail(detail: unknown): string | null {
   if (typeof detail === 'string') {
     const trimmed = detail.trim();
@@ -1243,12 +1250,12 @@ export const rendersApi = {
     image_quality?: 'auto' | 'low' | 'medium' | 'high';
   }): Promise<SavedRender> => {
     const { data } = await api.post(`/api/v1/render/projects/${projectId}/save`, render, { timeout: 30000 });
-    return data;
+    return normalizeSavedRender(data);
   },
 
   list: async (projectId: string): Promise<SavedRender[]> => {
     const { data } = await api.get(`/api/v1/render/projects/${projectId}/renders`);
-    return data;
+    return data.map(normalizeSavedRender);
   },
 
   delete: async (projectId: string, renderId: string): Promise<void> => {

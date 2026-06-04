@@ -57,6 +57,20 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
     setCanUndo(undoStackRef.current.length > 0);
   }, []);
 
+  useEffect(() => {
+    undoStackRef.current = [];
+    isDrawingRef.current = false;
+    lastPointRef.current = null;
+    setPrompt('');
+    setBrushSize(DEFAULT_BRUSH_SIZE);
+    setZoom(1);
+    setImageSize(null);
+    setDisplaySize(null);
+    setHasMask(false);
+    setCanUndo(false);
+    setPreviewUrl(null);
+  }, [imageUrl, render.id]);
+
   const pushUndoSnapshot = useCallback(() => {
     const overlay = overlayCanvasRef.current;
     const mask = maskCanvasRef.current;

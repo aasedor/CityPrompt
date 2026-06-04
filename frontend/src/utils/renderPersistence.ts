@@ -1,4 +1,4 @@
-import { rendersApi } from '@/services/api';
+import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import type { SavedRender } from '@/types';
 
 export interface RenderImageInput {
@@ -24,7 +24,26 @@ export async function imageUrlToBase64(imageUrl: string): Promise<string> {
     return imageUrl.split(',')[1] || '';
   }
 
-  const response = await fetch(imageUrl);
+  const token = localStorage.getItem('access_token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+  const sourceUrl = resolveApiFileUrl(imageUrl);
+  let response: Response | null = null;
+  let fetchError: unknown = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      response = await fetch(sourceUrl, { headers, credentials: 'same-origin' });
+      if (response.ok) break;
+    } catch (error) {
+      fetchError = error;
+    }
+    if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+
+  if (!response?.ok) {
+    if (fetchError instanceof Error) throw new Error(`Failed to load render image: ${fetchError.message}`);
+    throw new Error(response ? `Failed to load render image (${response.status})` : 'Failed to load render image');
+  }
+
   const blob = await response.blob();
 
   return new Promise<string>((resolve, reject) => {
