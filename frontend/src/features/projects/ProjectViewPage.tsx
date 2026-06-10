@@ -474,35 +474,37 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
           style={{
             top: 'clamp(5rem, 22dvh, 17rem)',
           }}
         >
-          <SitePlannerToolbar
-            layout="sidebar"
-            isGlobeMode
-            onToggleHistory={handleToggleHistory}
-            historyOpen={showHistory}
-            measureActive={measureActive}
-            onMeasureModeChange={handleMeasureModeChange}
-            bottomSlot={
-              !showGlobeRender ? (
-                <button
-                  onClick={handleOpenGlobeRender}
-                  className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
-                >
-                  <Camera size={16} />
-                  Render
-                </button>
-              ) : null
-            }
-          />
+          <div className="pointer-events-auto">
+            <SitePlannerToolbar
+              layout="sidebar"
+              isGlobeMode
+              onToggleHistory={handleToggleHistory}
+              historyOpen={showHistory}
+              measureActive={measureActive}
+              onMeasureModeChange={handleMeasureModeChange}
+              bottomSlot={
+                !showGlobeRender ? (
+                  <button
+                    onClick={handleOpenGlobeRender}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                  >
+                    <Camera size={16} />
+                    Render
+                  </button>
+                ) : null
+              }
+            />
+          </div>
         </div>
 
         {/* Zone properties panel */}
         {selectedZone && !showHistory && !measureActive && (
-          <div className="absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
+          <div className="pointer-events-none absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
