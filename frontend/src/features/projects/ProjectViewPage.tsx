@@ -1,9 +1,9 @@
-import { useState, useCallback, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, X } from 'lucide-react';
-import { projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
+import { projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
@@ -21,6 +21,8 @@ import { RenderResultModal } from '@/components/viewer/RenderResultModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
+import { ShapefileImportButton } from './ShapefileImportButton';
+import { LayersPanel } from './LayersPanel';
 import { OnboardingTour } from '@/components/viewer/OnboardingTour';
 import type { AIRenderResult } from '@/components/viewer/useAIRender';
 import { useViewerStore } from '@/store';
@@ -95,6 +97,54 @@ export function ProjectViewPage() {
   } = useSiteZones(id);
 
   const selectedZone = siteZones.find((z) => z.id === selectedZoneId) || null;
+
+  // --- Imported shapefile "layers" (zones grouped by properties._imported_from) ---
+  const [hiddenLayers, setHiddenLayers] = useState<Set<string>>(new Set());
+  const [deletingLayer, setDeletingLayer] = useState<string | null>(null);
+
+  const toggleLayer = useCallback((name: string) => {
+    setHiddenLayers((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }, []);
+
+  const visibleZones = useMemo(() => {
+    if (hiddenLayers.size === 0) return siteZones;
+    return siteZones.filter((z) => {
+      const src = z.properties?._imported_from;
+      return !(typeof src === 'string' && hiddenLayers.has(src));
+    });
+  }, [siteZones, hiddenLayers]);
+
+  const deleteLayer = useCallback(async (name: string) => {
+    const zones = siteZones.filter((z) => {
+      const src = z.properties?._imported_from;
+      return typeof src === 'string' && src === name;
+    });
+    if (zones.length === 0) return;
+    setDeletingLayer(name);
+    const toastId = toast.loading(`Deleting layer "${name}"…`);
+    try {
+      for (const z of zones) await siteZonesApi.delete(z.id);
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+      setHiddenLayers((prev) => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+      toast.success(
+        `Deleted "${name}" (${zones.length} feature${zones.length === 1 ? '' : 's'})`,
+        { id: toastId },
+      );
+    } catch (e) {
+      toast.error(`Failed to delete layer: ${(e as Error).message}`, { id: toastId });
+    } finally {
+      setDeletingLayer(null);
+    }
+  }, [siteZones, queryClient, id]);
 
   const hasEditableZones = siteZones.some((z) =>
     z.zone_type !== 'site_boundary' && z.coordinates && z.coordinates.length >= 3
@@ -454,7 +504,7 @@ export function ProjectViewPage() {
         <GlobeSitePlannerMap
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}
-          siteZones={siteZones}
+          siteZones={visibleZones}
           onZoneCreated={handleZoneCreated}
           onZoneUpdated={handleZoneUpdated}
           onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
@@ -479,6 +529,13 @@ export function ProjectViewPage() {
             historyOpen={showHistory}
             measureActive={measureActive}
             onMeasureModeChange={handleMeasureModeChange}
+            uploadSlot={
+              <ShapefileImportButton
+                projectId={project.id}
+                iconSize={14}
+                className="site-planner-tool-button flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515] disabled:opacity-60"
+              />
+            }
             bottomSlot={
               !showGlobeRender ? (
                 <button
@@ -492,6 +549,19 @@ export function ProjectViewPage() {
             }
           />
         </div>
+
+        {/* Imported layers panel (top-right; yields to the zone properties panel) */}
+        {!selectedZone && !showHistory && !measureActive && (
+          <div className="absolute right-4 top-16 z-40 max-w-[calc(100vw-2rem)]">
+            <LayersPanel
+              siteZones={siteZones}
+              hiddenLayers={hiddenLayers}
+              onToggleLayer={toggleLayer}
+              onDeleteLayer={deleteLayer}
+              deletingLayer={deletingLayer}
+            />
+          </div>
+        )}
 
         {/* Zone properties panel */}
         {selectedZone && !showHistory && !measureActive && (
@@ -542,7 +612,7 @@ export function ProjectViewPage() {
               <GlobeAIRenderPanel
                 canvas={globeRefs?.canvas ?? null}
                 camera={globeRefs?.camera ?? null}
-                siteZones={siteZones}
+                siteZones={visibleZones}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
                 onBeforeRender={prepareForAIRenderCapture}
