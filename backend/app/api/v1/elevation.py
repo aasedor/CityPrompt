@@ -20,6 +20,14 @@ class ElevationResponse(BaseModel):
     resolution: float  # data resolution in meters
 
 
+class BatchElevationRequest(BaseModel):
+    points: list[list[float]]  # [[lng, lat], ...]
+
+
+class BatchElevationResponse(BaseModel):
+    elevations: list[float]  # WGS84 ellipsoidal heights, aligned with input points
+
+
 # Approximate geoid undulations for quick lookup
 # In production, use a geoid model (EGM96/EGM2008)
 # These are rough values for major regions
@@ -118,3 +126,51 @@ async def get_elevation(
             ellipsoidal_height=geoid,
             resolution=1000,
         )
+
+
+@router.post("/batch", response_model=BatchElevationResponse)
+async def get_elevation_batch(body: BatchElevationRequest):
+    """Bare-earth ellipsoidal heights for many [lng, lat] points in one call.
+
+    Used to drape imported vector layers onto smooth ground (no canopy / no
+    photogrammetry noise). Chunks into Google Elevation API requests (<=512
+    locations each) and returns one height per input point, in order.
+    """
+    points = body.points
+    if not points:
+        return BatchElevationResponse(elevations=[])
+    if len(points) > 4000:
+        raise HTTPException(status_code=400, detail="Too many points (max 4000).")
+
+    s = get_settings()
+    api_key = s.google_maps_api_key or s.gemini_api_key
+    if not api_key:
+        # No key: best-effort flat geoid so callers degrade rather than fail.
+        return BatchElevationResponse(
+            elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in points]
+        )
+
+    chunk_size = 250  # keep the GET URL well under length limits
+    elevations: list[float] = []
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        for start in range(0, len(points), chunk_size):
+            chunk = points[start:start + chunk_size]
+            locations = "|".join(f"{lat},{lng}" for lng, lat in chunk)
+            try:
+                resp = await client.get(
+                    "https://maps.googleapis.com/maps/api/elevation/json",
+                    params={"locations": locations, "key": api_key},
+                )
+                data = resp.json() if resp.status_code == 200 else {}
+            except httpx.TimeoutException:
+                data = {}
+
+            results = data.get("results") if data.get("status") == "OK" else None
+            if not results or len(results) != len(chunk):
+                # Degrade this chunk to geoid estimates rather than abort the import.
+                elevations.extend(estimate_geoid_undulation(lat, lng) for lng, lat in chunk)
+                continue
+            for (lng, lat), result in zip(chunk, results):
+                elevations.append(result["elevation"] + estimate_geoid_undulation(lat, lng))
+
+    return BatchElevationResponse(elevations=elevations)

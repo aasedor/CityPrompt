@@ -680,6 +680,37 @@ export const siteZonesApi = {
   },
 };
 
+// =============================================================================
+// Shapefile Import
+// =============================================================================
+
+export interface ShapefileFeature {
+  coordinates: number[][];            // [[lng, lat], ...] reprojected to EPSG:4326
+  zone_type: string;                  // backend default; validated against ZONE_TYPE_CONFIG client-side
+  properties: Record<string, unknown>; // attributes carried over from the .dbf
+}
+
+export interface ParseShapefileResponse {
+  feature_count: number;
+  skipped_count: number;
+  detected_crs: string;
+  warnings: string[];
+  features: ShapefileFeature[];
+}
+
+export const shapefilesApi = {
+  /** Upload a zipped shapefile; backend parses + reprojects to lon/lat. Stateless. */
+  parse: async (file: File): Promise<ParseShapefileResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const { data } = await api.post('/api/v1/shapefiles/parse', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120000,
+    });
+    return data;
+  },
+};
+
 
 // =============================================================================
 // Zone History / Version Control
@@ -1272,6 +1303,12 @@ export const elevationApi = {
       params: { lat, lng },
     });
     return data;
+  },
+
+  /** Bare-earth ellipsoidal heights for many [lng, lat] points, in order. */
+  getBatch: async (points: number[][]): Promise<number[]> => {
+    const { data } = await api.post('/api/v1/elevation/batch', { points }, { timeout: 30000 });
+    return data.elevations;
   },
 };
 

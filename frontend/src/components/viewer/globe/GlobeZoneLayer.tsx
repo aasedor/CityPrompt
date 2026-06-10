@@ -33,6 +33,7 @@ import {
   resolveZoneTerrainHeight,
   shouldFilterObjectTerrainHeight,
 } from './globeTerrainUtils';
+import { elevationApi } from '@/services/api';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -43,6 +44,12 @@ const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
 const FLAT_ZONE_DEPTH_OFFSET_FACTOR = -4;
 const FLAT_ZONE_DEPTH_OFFSET_UNITS = -8;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
+
+// Above this many zones on screen, each zone switches to a cheaper render path:
+// no per-vertex terrain raycasting and no tile-stencil volume. Big imported
+// layers then sit at a single sampled elevation instead of hugging every bump —
+// the trade that keeps the frame rate up. Tune if needed.
+const LIGHTWEIGHT_ZONE_THRESHOLD = 50;
 
 interface GlobeZoneLayerProps {
   zones: SiteZone[];
@@ -336,12 +343,13 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
   onZoneClick?: (zoneId: string) => void;
   selectionEnabled?: boolean;
+  lightweight?: boolean;
 }) {
   const color = resolveZoneColor(zone);
   const label = resolveZoneLabel(zone);
@@ -363,14 +371,21 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const shouldRespectTileDepth = isBuilding || zone.zone_type === 'green_space';
   const shouldMaskTileGeometry = shouldCreateTileStencilMask(zone.zone_type);
+  const isImported = typeof zoneProps?._imported_from === 'string';
+  // Imported reference layers (and big layers) drape ONCE then freeze — stable,
+  // no per-frame re-draping that makes long corridors shimmer/jitter while orbiting.
+  const freezeDrape = lightweight || isImported;
   const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
   const extrudeHeight = isBuilding ? Math.max(buildingHeight, 10) : 0;
   const useTerrainGridFlat = zone.zone_type === 'green_space';
+  // Densify imported flat zones too (not just green_space): a long corridor needs
+  // vertices along its length so the draped surface follows the terrain instead of
+  // flat triangles spanning dips/humps — which is what reads as parallax drift.
   const renderCoordinates = useMemo(
-    () => (useTerrainGridFlat && zone.coordinates.length >= 3
+    () => ((useTerrainGridFlat || isImported) && !isBuilding && zone.coordinates.length >= 3
       ? densifyFlatZoneCoordinates(zone.coordinates)
       : zone.coordinates),
-    [useTerrainGridFlat, zone.coordinates],
+    [useTerrainGridFlat, isImported, isBuilding, zone.coordinates],
   );
 
   const geoData = useMemo(() => {
@@ -388,6 +403,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const raycasterRef = useRef(new THREE.Raycaster());
   const drapedRef = useRef(false);
   const drapeAttemptRef = useRef(0);
+  // Set once a lightweight zone has draped successfully — then it never re-drapes
+  // (no per-frame raycasting, no re-storm on navigation). The drape-and-freeze.
+  const frozenRef = useRef(false);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const zoneTerrainHeight = resolveZoneTerrainHeight(
     sampledTerrainHeight,
@@ -484,7 +502,8 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   });
 
   const drapeToTerrain = useCallback(() => {
-    if (!tiles?.group || !geoData || isBuilding || drapedRef.current) return;
+    if (!tiles?.group || !geoData || isBuilding || frozenRef.current) return;
+    if (drapedRef.current && !freezeDrape) return; // freeze mode keeps refining until frozen
     if (!flatMeshRef.current) return;
     drapeAttemptRef.current++;
 
@@ -535,11 +554,20 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         }
       }
 
-      if (hitCount >= geoData.fillCoords.length * 0.5) {
+      const coverage = hitCount / geoData.fillCoords.length;
+      if (freezeDrape) {
+        // Conform thoroughly before locking: freeze only once nearly every vertex
+        // has draped (steep, slow-loading tiles need several passes) or the budget
+        // is spent. Freezing at 50% left the steep section flat -> parallax drift.
+        if (coverage >= 0.92 || drapeAttemptRef.current >= 30) {
+          drapedRef.current = true;
+          frozenRef.current = true;
+        }
+      } else if (coverage >= 0.5) {
         drapedRef.current = true;
       }
     }
-  }, [tiles, geoData, isBuilding, filterObjectHeights, renderCoordinates, zoneTerrainHeight]);
+  }, [tiles, geoData, isBuilding, filterObjectHeights, renderCoordinates, zoneTerrainHeight, freezeDrape]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
@@ -554,32 +582,45 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     return () => timers.forEach(clearTimeout);
   }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
 
-  // Progressive drape: try at 2s, 5s, 10s after mount (tiles need time to load)
+  // Progressive drape: raycast each vertex onto the tiles at 2s/5s/10s as they
+  // stream in. Lightweight zones drape ONCE then freeze (frozenRef) instead of
+  // re-draping forever — terrain-accurate without the per-frame storm.
   useEffect(() => {
-    if (isBuilding || !tiles) return;
-    drapedRef.current = false;
-    drapeAttemptRef.current = 0;
+    if (isBuilding || !tiles || isImported || frozenRef.current) return;
+    if (!freezeDrape) {
+      // Live mode (hand-drawn zones): re-drape from scratch on tile changes.
+      drapedRef.current = false;
+      drapeAttemptRef.current = 0;
+    }
     const timers = [
       setTimeout(drapeToTerrain, 2000),
       setTimeout(drapeToTerrain, 5000),
       setTimeout(drapeToTerrain, 10000),
     ];
     return () => timers.forEach(clearTimeout);
-  }, [tiles, drapeToTerrain, isBuilding, zoneTerrainHeight]);
+  }, [tiles, drapeToTerrain, isBuilding, zoneTerrainHeight, freezeDrape]);
 
-  // Periodic re-drape for LOD updates (low frequency)
+  // Drape convergence. Heavy mode re-drapes continuously for live accuracy;
+  // lightweight mode keeps trying only until the zone freezes, then stops dead.
   useFrame(() => {
     if (sampledTerrainHeight === null && tiles?.group && Math.random() < 0.003) {
       sampleZoneTerrainHeight();
     }
-    if (isBuilding || drapedRef.current || drapeAttemptRef.current >= 15) return;
-    if (!tiles?.group) return;
+    if (isImported) return; // imported zones use baked bare-earth elevations, not raycast draping
+    if (isBuilding || !tiles?.group) return;
+    if (freezeDrape) {
+      if (frozenRef.current) return; // drapeToTerrain self-limits via coverage / attempt budget
+      if (Math.random() < 0.02) drapeToTerrain();
+      return;
+    }
+    if (drapedRef.current || drapeAttemptRef.current >= 15) return;
     if (Math.random() < 0.005) drapeToTerrain(); // ~0.5% chance per frame
   });
 
   // Stencil volume for zones that should clear existing Google tile geometry.
+  // Skipped in lightweight mode (big layers) — stencil volumes are costly at scale.
   const stencilMesh = useMemo(() => {
-    if (!shouldMaskTileGeometry || zone.coordinates.length < 3) return null;
+    if (!shouldMaskTileGeometry || zone.coordinates.length < 3 || lightweight) return null;
     const mPerDegLon = metersPerDegLon(centroid[1]);
     const pts = zone.coordinates.map(c => ({
       x: (c[0] - centroid[0]) * mPerDegLon,
@@ -589,7 +630,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       pts,
       getTileStencilVolumeHeight(zone.zone_type, extrudeHeight),
     );
-  }, [zone.coordinates, centroid, shouldMaskTileGeometry, zone.zone_type, extrudeHeight]);
+  }, [zone.coordinates, centroid, shouldMaskTileGeometry, zone.zone_type, extrudeHeight, lightweight]);
 
   const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
     // When the zone is already selected, let the edit surface behind it
@@ -598,6 +639,64 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     e.stopPropagation();
     onZoneClick?.(zone.id);
   }, [isSelected, onZoneClick, selectionEnabled, zone.id]);
+
+  // --- Imported zones: drape onto a bare-earth elevation model ---------------
+  // Fetch smooth ground heights once (no canopy, no photogrammetry noise) and
+  // bake them into a static geometry — no per-frame raycasting, so it's accurate
+  // on steep slopes AND cheap. Absolute height is anchored to the sampled tile
+  // surface (zoneTerrainHeight); the bare-earth data only supplies relative
+  // shape, so the rough geoid estimate cancels out.
+  const [bakedElevations, setBakedElevations] = useState<number[] | null>(null);
+
+  useEffect(() => {
+    if (!isImported || renderCoordinates.length < 3) return;
+    let cancelled = false;
+    elevationApi
+      .getBatch(renderCoordinates)
+      .then((elevs) => {
+        if (!cancelled && Array.isArray(elevs) && elevs.length >= renderCoordinates.length) {
+          setBakedElevations(elevs);
+        }
+      })
+      .catch(() => { /* fall back to flat; non-fatal */ });
+    return () => { cancelled = true; };
+  }, [isImported, renderCoordinates]);
+
+  const bakedReference = useMemo(() => {
+    if (!bakedElevations || bakedElevations.length === 0) return null;
+    const sorted = bakedElevations.filter(Number.isFinite).slice().sort((a, b) => a - b);
+    return sorted.length ? sorted[Math.floor(sorted.length / 2)] : null;
+  }, [bakedElevations]);
+
+  const importedFillGeo = useMemo(() => {
+    if (!isImported || !geoData?.flatTopGeo || !bakedElevations || bakedReference == null) return null;
+    const geo = geoData.flatTopGeo.clone();
+    const pos = geo.attributes.position;
+    const n = Math.min(geoData.fillCoords.length, pos.count, bakedElevations.length);
+    for (let i = 0; i < n; i += 1) {
+      const e = bakedElevations[i];
+      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + FLAT_ZONE_SURFACE_LIFT_METERS);
+    }
+    pos.needsUpdate = true;
+    geo.computeBoundingSphere();
+    return geo;
+  }, [isImported, geoData, bakedElevations, bakedReference]);
+
+  const importedOutlineGeo = useMemo(() => {
+    if (!isImported || !geoData?.outlineGeo || !bakedElevations || bakedReference == null) return null;
+    const geo = geoData.outlineGeo.clone();
+    const pos = geo.attributes.position;
+    const n = Math.min(renderCoordinates.length, pos.count, bakedElevations.length);
+    for (let i = 0; i < n; i += 1) {
+      const e = bakedElevations[i];
+      if (Number.isFinite(e)) pos.setZ(i, e - bakedReference + FLAT_ZONE_OUTLINE_LIFT_METERS);
+    }
+    if (pos.count > renderCoordinates.length && Number.isFinite(bakedElevations[0])) {
+      pos.setZ(renderCoordinates.length, bakedElevations[0] - bakedReference + FLAT_ZONE_OUTLINE_LIFT_METERS);
+    }
+    pos.needsUpdate = true;
+    return geo;
+  }, [isImported, geoData, bakedElevations, bakedReference, renderCoordinates]);
 
   if (!geoData) return null;
 
@@ -618,7 +717,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isBuilding && geoData.flatTopGeo && (
         <mesh
           ref={flatMeshRef}
-          geometry={geoData.flatTopGeo.clone()}
+          geometry={isImported && importedFillGeo ? importedFillGeo : geoData.flatTopGeo.clone()}
           renderOrder={isSiteBoundary ? 100 : zone.zone_type === 'green_space' ? 110 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
@@ -663,7 +762,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
       <line
         ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
-        {...({ geometry: !isBuilding ? geoData.outlineGeo.clone() : geoData.outlineGeo } as any)}
+        {...({ geometry: !isBuilding ? (isImported && importedOutlineGeo ? importedOutlineGeo : geoData.outlineGeo.clone()) : geoData.outlineGeo } as any)}
         renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
         frustumCulled={false}
         onPointerDown={handleZonePointerDown}
@@ -699,6 +798,8 @@ export function GlobeZoneLayer({
   onZoneClick,
   selectionEnabled = true,
 }: GlobeZoneLayerProps) {
+  // Big layers (e.g. an imported shapefile) switch every zone to a cheaper path.
+  const lightweight = zones.length > LIGHTWEIGHT_ZONE_THRESHOLD;
   return (
     <>
       {zones.map(zone => (
@@ -709,6 +810,7 @@ export function GlobeZoneLayer({
           terrainHeight={terrainHeight}
           onZoneClick={onZoneClick}
           selectionEnabled={selectionEnabled}
+          lightweight={lightweight}
         />
       ))}
     </>

@@ -54,6 +54,8 @@ interface SitePlannerToolbarProps {
   layout?: 'default' | 'sidebar';
   /** Optional content rendered at the bottom of the toolbar card (e.g. AI Render action). */
   bottomSlot?: ReactNode;
+  /** Optional tool rendered inside the tool box, alongside Measure / History / More Tools. */
+  uploadSlot?: ReactNode;
 }
 
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -80,6 +82,7 @@ export function SitePlannerToolbar({
   isGlobeMode = false,
   layout = 'default',
   bottomSlot,
+  uploadSlot,
 }: SitePlannerToolbarProps) {
   const {
     activeSitePlannerTool,
@@ -262,6 +265,8 @@ export function SitePlannerToolbar({
               History
             </button>
           )}
+
+          {uploadSlot}
 
           <button
             data-tour="more-tools-btn"
