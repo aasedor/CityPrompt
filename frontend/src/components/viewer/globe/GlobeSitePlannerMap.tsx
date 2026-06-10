@@ -75,7 +75,18 @@ const MAX_VIEWPORT_CAMERA_HEIGHT_ABOVE_GROUND = 40000;
 const INITIAL_CAMERA_REVEAL_FALLBACK_MS = 2500;
 
 function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined): boolean {
-  return zoneType === 'building' || zoneType === 'residential';
+  return zoneType === 'building' || zoneType === 'residential' || zoneType === 'development_area';
+}
+
+function rotateCoordsAroundCentroid(coords: number[][], centroid: [number, number], deltaRad: number): number[][] {
+  const cos = Math.cos(deltaRad);
+  const sin = Math.sin(deltaRad);
+  const [cx, cy] = centroid;
+  return coords.map((c) => {
+    const rx = c[0] - cx;
+    const ry = c[1] - cy;
+    return [cx + rx * cos - ry * sin, cy + rx * sin + ry * cos];
+  });
 }
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
@@ -2157,8 +2168,27 @@ export function GlobeSitePlannerMap({
         return;
       }
 
+      // Q/E rotate selected buildable zones around their centroid.
+      const key = e.key.toLowerCase();
+      if ((key === 'q' || key === 'e') && selectedZoneId) {
+        const zone = siteZones.find(z => z.id === selectedZoneId);
+        const coords = zone?.coordinates;
+        if (zone && coords && coords.length >= 3 && isBuildingZoneType(zone.zone_type)) {
+          e.preventDefault();
+          markUserInteracted();
+          const rotationDeg = key === 'e' ? 5 : -5;
+          const newCoords = rotateCoordsAroundCentroid(
+            coords,
+            computeCentroid(coords),
+            rotationDeg * DEG_TO_RAD,
+          );
+          onZoneUpdated(selectedZoneId, newCoords);
+          return;
+        }
+      }
+
       // WASD / Arrow keys â€” nudge selected zone relative to the current view heading.
-      const movement = getGlobeNavigationMovement(new Set([e.key.toLowerCase()]));
+      const movement = getGlobeNavigationMovement(new Set([key]));
       if ((movement.forward !== 0 || movement.strafe !== 0) && selectedZoneId) {
         e.preventDefault();
         markUserInteracted();
@@ -2871,7 +2901,7 @@ export function GlobeSitePlannerMap({
       {!hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute left-1/2 top-4 z-30 hidden -translate-x-1/2 rounded-full border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-center text-[11px] font-black text-[#151515]/70 shadow-[4px_4px_0_0_#151515] backdrop-blur-xl select-none sm:block">
           {selectedZoneId
-            ? 'Drag body to move | Drag vertices to reshape | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
+            ? 'Drag body to move | Drag vertices to reshape | Drag amber handle or Q/E to rotate buildings | WASD/Arrows to nudge relative to view | Ctrl+C/Ctrl+V or toolbar Copy/Paste | Delete to remove'
             : 'Click zone to select | Drag to orbit | Scroll to zoom | WASD/Arrows to move | Shift/Ctrl to rise/lower'}
         </div>
       )}

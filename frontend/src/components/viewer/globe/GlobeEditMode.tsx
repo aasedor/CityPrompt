@@ -28,6 +28,11 @@ const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
+const ROTATION_HANDLE_LIFT_METERS = 4;
+
+function isBuildableZoneType(zoneType: string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential' || zoneType === 'development_area';
+}
 
 interface GlobeEditModeProps {
   zone: SiteZone;
@@ -43,6 +48,37 @@ function coordsMatch(a: number[][], b: number[][], epsilon = 1e-7): boolean {
     Math.abs(coord[0] - b[index][0]) <= epsilon
     && Math.abs(coord[1] - b[index][1]) <= epsilon
   ));
+}
+
+function localMetersFromLngLat(
+  lngLat: [number, number],
+  centroid: [number, number],
+  metersPerLon: number,
+): [number, number] {
+  return [
+    (lngLat[0] - centroid[0]) * metersPerLon,
+    (lngLat[1] - centroid[1]) * METERS_PER_DEG_LAT,
+  ];
+}
+
+function rotateCoordsAroundCentroid(
+  coords: number[][],
+  centroid: [number, number],
+  metersPerLon: number,
+  deltaRad: number,
+): number[][] {
+  const cos = Math.cos(deltaRad);
+  const sin = Math.sin(deltaRad);
+
+  return coords.map((coord) => {
+    const [east, north] = localMetersFromLngLat([coord[0], coord[1]], centroid, metersPerLon);
+    const nextEast = east * cos - north * sin;
+    const nextNorth = east * sin + north * cos;
+    return [
+      centroid[0] + nextEast / metersPerLon,
+      centroid[1] + nextNorth / METERS_PER_DEG_LAT,
+    ];
+  });
 }
 
 function pointToLngLat(
@@ -147,6 +183,7 @@ export function GlobeEditMode({
   const [liveCoords, setLiveCoords] = useState<number[][] | null>(null);
   const [pendingCommitCoords, setPendingCommitCoords] = useState<number[][] | null>(null);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
+  const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
   const renderedCoords = liveCoords ?? zone.coordinates;
   const zoneCentroid = useMemo(() => computeCentroid(zone.coordinates), [zone.coordinates]);
@@ -160,6 +197,12 @@ export function GlobeEditMode({
     }
   }, [globeControlsRef]);
   const originalCoordsRef = useRef<number[][] | null>(null);
+  const rotationDragRef = useRef<{
+    centroid: [number, number];
+    coords: number[][];
+    metersPerLon: number;
+    startAngle: number;
+  } | null>(null);
   const zoneProps = zone.properties as Record<string, unknown> | undefined;
   const storedTerrain = Number(
     zoneProps?.terrain_elevation_m
@@ -227,7 +270,7 @@ export function GlobeEditMode({
   }, [sampleZoneTerrainHeight, zone.id, zone.updated_at]);
 
   // Raycast to get lat/lng from pointer event
-  const pointerToLatLng = useCallback((e: PointerEvent): [number, number] | null => {
+  const pointerToLatLng = useCallback((e: PointerEvent | MouseEvent): [number, number] | null => {
     const rect = gl.domElement.getBoundingClientRect();
     const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -250,18 +293,47 @@ export function GlobeEditMode({
     return pointToLngLat(hit, terrainEllipsoid.current);
   }, [camera, gl, tiles]);
 
+  const pointerToRotationPlaneLocal = useCallback((
+    e: PointerEvent | MouseEvent,
+    centroid: [number, number],
+  ): [number, number] | null => {
+    const rect = gl.domElement.getBoundingClientRect();
+    const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+
+    const latRad = centroid[1] * DEG_TO_RAD;
+    const lonRad = centroid[0] * DEG_TO_RAD;
+    const origin = new THREE.Vector3();
+    const east = new THREE.Vector3();
+    const north = new THREE.Vector3();
+    const up = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(latRad, lonRad, zoneTerrainHeight, origin);
+    WGS84_ELLIPSOID.getCartographicToNormal(latRad, lonRad, up);
+    WGS84_ELLIPSOID.getEastNorthUpAxes(latRad, lonRad, east, north, new THREE.Vector3());
+
+    const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(up, origin);
+    const hit = new THREE.Vector3();
+    if (!raycaster.ray.intersectPlane(plane, hit)) return null;
+
+    const offset = hit.sub(origin);
+    return [offset.dot(east), offset.dot(north)];
+  }, [camera, gl, zoneTerrainHeight]);
+
   // --- Body drag state ---
   const [isDraggingBody, setIsDraggingBody] = useState(false);
   const bodyDragStartRef = useRef<[number, number] | null>(null);
   const bodyDragCoordsRef = useRef<number[][] | null>(null);
 
   useEffect(() => {
-    if (isDraggingBody || dragIndex !== null || !pendingCommitCoords) return;
+    if (isDraggingBody || isRotating || dragIndex !== null || !pendingCommitCoords) return;
     if (coordsMatch(zone.coordinates, pendingCommitCoords)) {
       setLiveCoords(null);
       setPendingCommitCoords(null);
     }
-  }, [dragIndex, isDraggingBody, pendingCommitCoords, zone.coordinates]);
+  }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates]);
 
   // Start dragging the zone body
   const handleBodyPointerDown = useCallback((e: any) => {
@@ -355,6 +427,194 @@ export function GlobeEditMode({
     return { geo, centroid };
   }, [renderedCoords]);
 
+  const rotationHandle = useMemo(() => {
+    if (!isBuildableZoneType(zone.zone_type) || renderedCoords.length < 3) return null;
+
+    const centroid = computeCentroid(renderedCoords);
+    const metersPerLon = Math.max(1, Math.abs(metersPerDegLon(centroid[1])));
+    const localPts = renderedCoords.map((coord) => localMetersFromLngLat([coord[0], coord[1]], centroid, metersPerLon));
+    const first = localPts[0];
+    const second = localPts[1 % localPts.length];
+    if (!first || !second) return null;
+
+    const faceMid: [number, number] = [
+      (first[0] + second[0]) / 2,
+      (first[1] + second[1]) / 2,
+    ];
+    const faceDistance = Math.hypot(faceMid[0], faceMid[1]);
+    if (faceDistance < 0.001) return null;
+
+    const direction: [number, number] = [
+      faceMid[0] / faceDistance,
+      faceMid[1] / faceDistance,
+    ];
+    const maxDistance = Math.max(
+      ...localPts.map(([east, north]) => Math.hypot(east, north)),
+      faceDistance,
+    );
+    const handleDistance = Math.max(maxDistance * 1.45, faceDistance + 8, 10);
+    const northDistance = Math.max(maxDistance * 2.4, handleDistance + 34, 34);
+    const handleLocal: [number, number] = [
+      direction[0] * handleDistance,
+      direction[1] * handleDistance,
+    ];
+    const northLocal: [number, number] = [0, northDistance];
+
+    const makeLine = (
+      points: Array<[number, number, number]>,
+      color: string,
+      opacity: number,
+    ) => {
+      const geometry = new THREE.BufferGeometry().setFromPoints(
+        points.map(([x, y, z]) => new THREE.Vector3(x, y, z)),
+      );
+      const material = new THREE.LineBasicMaterial({
+        color,
+        transparent: opacity < 1,
+        opacity,
+        depthTest: false,
+        depthWrite: false,
+      });
+      const line = new THREE.Line(geometry, material);
+      line.renderOrder = 950;
+      return line;
+    };
+
+    return {
+      centroid,
+      metersPerLon,
+      handleLocal,
+      northLocal,
+      stemLine: makeLine(
+        [
+          [faceMid[0], faceMid[1], ROTATION_HANDLE_LIFT_METERS],
+          [handleLocal[0], handleLocal[1], ROTATION_HANDLE_LIFT_METERS],
+        ],
+        '#f59e0b',
+        0.95,
+      ),
+      northLine: makeLine(
+        [
+          [0, 0, ROTATION_HANDLE_LIFT_METERS + 0.25],
+          [northLocal[0], northLocal[1], ROTATION_HANDLE_LIFT_METERS + 0.25],
+        ],
+        '#ef4444',
+        0.9,
+      ),
+    };
+  }, [renderedCoords, zone.zone_type]);
+
+  const handleRotationPointerDown = useCallback((e: any) => {
+    if (!rotationHandle) return;
+    e.stopPropagation?.();
+    e.preventDefault?.();
+    if (rotationDragRef.current) return;
+
+    const pe = e.nativeEvent ?? e;
+    const pointerLocal = pointerToRotationPlaneLocal(pe as PointerEvent, rotationHandle.centroid);
+    const startAngle = pointerLocal
+      ? Math.atan2(pointerLocal[1], pointerLocal[0])
+      : Math.atan2(rotationHandle.handleLocal[1], rotationHandle.handleLocal[0]);
+    const ownerWindow = gl.domElement.ownerDocument?.defaultView ?? window;
+
+    onInteractionStart?.();
+    setPendingCommitCoords(null);
+    rotationDragRef.current = {
+      centroid: rotationHandle.centroid,
+      coords: renderedCoords.map(coord => [...coord]),
+      metersPerLon: rotationHandle.metersPerLon,
+      startAngle,
+    };
+    setIsRotating(true);
+    setControlsEnabled(false);
+    gl.domElement.style.cursor = 'grabbing';
+
+    const target = pe.target as Element | null | undefined;
+    if (typeof pe.pointerId === 'number' && target && 'setPointerCapture' in target) {
+      try {
+        (target as Element & { setPointerCapture: (pointerId: number) => void }).setPointerCapture(pe.pointerId);
+      } catch {
+        // Pointer capture is best-effort; window listeners still carry the drag.
+      }
+    }
+
+    const handlePointerMove = (moveEv: PointerEvent | MouseEvent) => {
+      const drag = rotationDragRef.current;
+      const currentLocal = drag ? pointerToRotationPlaneLocal(moveEv, drag.centroid) : null;
+      if (!drag || !currentLocal) return;
+
+      const currentAngle = Math.atan2(currentLocal[1], currentLocal[0]);
+      const deltaAngle = currentAngle - drag.startAngle;
+      const newCoords = rotateCoordsAroundCentroid(
+        drag.coords,
+        drag.centroid,
+        drag.metersPerLon,
+        deltaAngle,
+      );
+
+      dragRef.current.zoneId = zone.id;
+      dragRef.current.type = 'body';
+      dragRef.current.coords = newCoords as [number, number][];
+      dragRef.current.version++;
+      setLiveCoords(newCoords);
+    };
+
+    const handlePointerUp = () => {
+      if (typeof pe.pointerId === 'number' && target && 'releasePointerCapture' in target) {
+        try {
+          (target as Element & { releasePointerCapture: (pointerId: number) => void }).releasePointerCapture(pe.pointerId);
+        } catch {
+          // Ignore capture cleanup failures from cancelled or already-ended drags.
+        }
+      }
+      const finalCoords = dragRef.current.zoneId === zone.id && dragRef.current.coords.length > 0
+        ? dragRef.current.coords.map((coord) => [...coord])
+        : null;
+
+      if (finalCoords) {
+        setPendingCommitCoords(finalCoords);
+        onZoneUpdated(zone.id, finalCoords);
+      } else {
+        setPendingCommitCoords(null);
+        setLiveCoords(null);
+      }
+
+      dragRef.current.zoneId = null;
+      dragRef.current.type = null;
+      dragRef.current.vertexIndex = -1;
+      dragRef.current.coords = [];
+      dragRef.current.version++;
+
+      rotationDragRef.current = null;
+      setIsRotating(false);
+      setControlsEnabled(true);
+      gl.domElement.style.cursor = '';
+      ownerWindow.removeEventListener('pointermove', handlePointerMove);
+      ownerWindow.removeEventListener('mousemove', handlePointerMove);
+      ownerWindow.removeEventListener('pointerup', handlePointerUp);
+      ownerWindow.removeEventListener('mouseup', handlePointerUp);
+      ownerWindow.removeEventListener('pointercancel', handlePointerUp);
+      ownerWindow.removeEventListener('blur', handlePointerUp);
+    };
+
+    ownerWindow.addEventListener('pointermove', handlePointerMove);
+    ownerWindow.addEventListener('mousemove', handlePointerMove);
+    ownerWindow.addEventListener('pointerup', handlePointerUp);
+    ownerWindow.addEventListener('mouseup', handlePointerUp);
+    ownerWindow.addEventListener('pointercancel', handlePointerUp);
+    ownerWindow.addEventListener('blur', handlePointerUp);
+  }, [
+    dragRef,
+    gl,
+    onInteractionStart,
+    onZoneUpdated,
+    pointerToRotationPlaneLocal,
+    renderedCoords,
+    rotationHandle,
+    setControlsEnabled,
+    zone.id,
+  ]);
+
   // Start dragging a vertex
   const handleVertexPointerDown = useCallback((index: number, e: any) => {
     e.stopPropagation();
@@ -442,6 +702,70 @@ export function GlobeEditMode({
       )}
 
       {/* Vertex handles — HTML-based for reliable click/drag */}
+      {rotationHandle && (
+        <EastNorthUpFrame
+          lat={rotationHandle.centroid[1] * DEG_TO_RAD}
+          lon={rotationHandle.centroid[0] * DEG_TO_RAD}
+          height={zoneTerrainHeight}
+        >
+          <primitive object={rotationHandle.stemLine} />
+          {isRotating && <primitive object={rotationHandle.northLine} />}
+
+          <mesh
+            position={[rotationHandle.handleLocal[0], rotationHandle.handleLocal[1], ROTATION_HANDLE_LIFT_METERS]}
+            renderOrder={960}
+            onPointerDown={handleRotationPointerDown}
+            onPointerEnter={() => { if (!isRotating) gl.domElement.style.cursor = 'grab'; }}
+            onPointerLeave={() => { if (!isRotating && dragIndex === null) gl.domElement.style.cursor = ''; }}
+          >
+            <sphereGeometry args={[2.8, 16, 16]} />
+            <meshBasicMaterial
+              color="#f59e0b"
+              transparent
+              opacity={0.18}
+              depthTest={false}
+              depthWrite={false}
+            />
+          </mesh>
+
+          <Html
+            center
+            position={[rotationHandle.handleLocal[0], rotationHandle.handleLocal[1], ROTATION_HANDLE_LIFT_METERS + 0.8]}
+            zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+          >
+            <div
+              className={`h-6 w-6 rounded-full border-2 border-white bg-amber-500 shadow-lg ring-2 ring-amber-300/40 transition-transform ${
+                isRotating ? 'scale-125 cursor-grabbing' : 'cursor-grab hover:scale-110'
+              }`}
+              title="Drag to rotate building"
+              onPointerDown={(event) => {
+                event.stopPropagation();
+                handleRotationPointerDown(event as any);
+              }}
+              onMouseDown={(event) => {
+                event.stopPropagation();
+                handleRotationPointerDown(event as any);
+              }}
+              onPointerEnter={() => { if (!isRotating) gl.domElement.style.cursor = 'grab'; }}
+              onPointerLeave={() => { if (!isRotating && dragIndex === null) gl.domElement.style.cursor = ''; }}
+            />
+          </Html>
+
+          {isRotating && (
+            <Html
+              center
+              position={[rotationHandle.northLocal[0], rotationHandle.northLocal[1], ROTATION_HANDLE_LIFT_METERS + 1.3]}
+              zIndexRange={GLOBE_SCENE_HTML_Z_INDEX_RANGE}
+              style={{ pointerEvents: 'none' }}
+            >
+              <div className="pointer-events-none rounded-full border-2 border-white bg-red-500 px-2 py-0.5 text-[11px] font-black uppercase text-white shadow-lg">
+                N
+              </div>
+            </Html>
+          )}
+        </EastNorthUpFrame>
+      )}
+
       {renderedCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
