@@ -57,6 +57,13 @@ export function resolveApiFileUrl(url: string): string {
   return url;
 }
 
+function normalizeSavedRender(render: SavedRender): SavedRender {
+  return {
+    ...render,
+    image_url: resolveApiFileUrl(render.image_url),
+  };
+}
+
 function formatApiDetail(detail: unknown): string | null {
   if (typeof detail === 'string') {
     const trimmed = detail.trim();
@@ -1251,6 +1258,20 @@ export const modelLibraryApi = {
 };
 
 export const rendersApi = {
+  generateEdit: async (request: {
+    image_base64: string;
+    mask_base64: string;
+    prompt: string;
+    previous_render_base64?: string;
+    project_id?: string;
+    seed?: number;
+    model?: string;
+    image_quality?: 'auto' | 'low' | 'medium' | 'high';
+  }): Promise<{ image_base64: string; seed?: number }> => {
+    const { data } = await api.post('/api/v1/render/generate', request, { timeout: 300000 });
+    return data;
+  },
+
   save: async (projectId: string, render: {
     image_base64: string;
     prompt: string;
@@ -1260,12 +1281,12 @@ export const rendersApi = {
     image_quality?: 'auto' | 'low' | 'medium' | 'high';
   }): Promise<SavedRender> => {
     const { data } = await api.post(`/api/v1/render/projects/${projectId}/save`, render, { timeout: 30000 });
-    return data;
+    return normalizeSavedRender(data);
   },
 
   list: async (projectId: string): Promise<SavedRender[]> => {
     const { data } = await api.get(`/api/v1/render/projects/${projectId}/renders`);
-    return data;
+    return data.map(normalizeSavedRender);
   },
 
   delete: async (projectId: string, renderId: string): Promise<void> => {

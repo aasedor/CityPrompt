@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -18,6 +18,7 @@ import { useGlobeCamera } from '@/components/viewer/globe/useGlobeCamera';
 import { ZonePropertiesPanel } from '@/components/viewer/ZonePropertiesPanel';
 import { AIRenderPanel } from '@/components/viewer/AIRenderPanel';
 import { RenderResultModal } from '@/components/viewer/RenderResultModal';
+import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { WorkflowStepper } from '@/components/viewer/WorkflowStepper';
@@ -41,6 +42,7 @@ export function ProjectViewPage() {
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
+  const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
   const [showProjectRenders, setShowProjectRenders] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [showGlobeRender, setShowGlobeRender] = useState(false);
@@ -287,6 +289,11 @@ export function ProjectViewPage() {
     setShowProjectRenders(true);
   }, []);
 
+  const handleEditRender = useCallback((render: SavedRender) => {
+    setRenderEditTarget(render);
+    setRenderLightbox(null);
+  }, []);
+
   const refreshSavedRenders = useCallback(() => {
     if (!id) return;
     rendersApi.list(id).then(setSavedRenders).catch(() => {});
@@ -412,7 +419,7 @@ export function ProjectViewPage() {
     }
   }, [handleAIRenderComplete, showRenderModal]);
 
-  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!lightboxImageUrl || aiPanelLightboxOpen;
+  const renderViewerActive = showRenderModal || showGlobeRender || !!renderLightbox || !!renderEditTarget || !!lightboxImageUrl || aiPanelLightboxOpen;
 
   const stepRenderLightbox = useCallback((direction: -1 | 1) => {
     setRenderLightbox((current) => {
@@ -517,37 +524,39 @@ export function ProjectViewPage() {
 
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
-          className={`absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
+          className={`pointer-events-none absolute inset-x-3 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-64 sm:max-h-none sm:overflow-visible sm:pr-2 ${activeSitePlannerTool ? 'hidden sm:block' : 'bottom-3 max-h-[38vh]'}`}
           style={{
             top: 'clamp(5rem, 22dvh, 17rem)',
           }}
         >
-          <SitePlannerToolbar
-            layout="sidebar"
-            isGlobeMode
-            onToggleHistory={handleToggleHistory}
-            historyOpen={showHistory}
-            measureActive={measureActive}
-            onMeasureModeChange={handleMeasureModeChange}
-            uploadSlot={
-              <ShapefileImportButton
-                projectId={project.id}
-                iconSize={14}
-                className="site-planner-tool-button flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515] disabled:opacity-60"
-              />
-            }
-            bottomSlot={
-              !showGlobeRender ? (
-                <button
-                  onClick={handleOpenGlobeRender}
-                  className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
-                >
-                  <Camera size={16} />
-                  Render
-                </button>
-              ) : null
-            }
-          />
+          <div className="pointer-events-auto">
+            <SitePlannerToolbar
+              layout="sidebar"
+              isGlobeMode
+              onToggleHistory={handleToggleHistory}
+              historyOpen={showHistory}
+              measureActive={measureActive}
+              onMeasureModeChange={handleMeasureModeChange}
+              uploadSlot={
+                <ShapefileImportButton
+                  projectId={project.id}
+                  iconSize={14}
+                  className="site-planner-tool-button flex items-center gap-1.5 rounded-full border-2 border-[#151515] bg-white px-2.5 py-1.5 text-[11px] font-black uppercase text-[#151515] transition-all hover:bg-[#fff9ec] hover:shadow-[2px_2px_0_0_#151515] disabled:opacity-60"
+                />
+              }
+              bottomSlot={
+                !showGlobeRender ? (
+                  <button
+                    onClick={handleOpenGlobeRender}
+                    className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                  >
+                    <Camera size={16} />
+                    Render
+                  </button>
+                ) : null
+              }
+            />
+          </div>
         </div>
 
         {/* Imported layers panel (top-right; yields to the zone properties panel) */}
@@ -565,7 +574,7 @@ export function ProjectViewPage() {
 
         {/* Zone properties panel */}
         {selectedZone && !showHistory && !measureActive && (
-          <div className="absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
+          <div className="pointer-events-none absolute top-16 right-4 bottom-20 z-40 w-96 overflow-y-auto rounded-xl">
             <ZonePropertiesPanel
               key={selectedZone.id}
               zone={selectedZone}
@@ -698,6 +707,16 @@ export function ProjectViewPage() {
                 </p>
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleEditRender(renderLightbox)}
+                  className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
                 <a
                   href={resolveApiFileUrl(renderLightbox.image_url)}
                   download={`render-${renderLightbox.id}.png`}
@@ -720,6 +739,15 @@ export function ProjectViewPage() {
 
         {/* Double-click a variant to open large preview */}
         <ImageLightbox />
+        {id && renderEditTarget && (
+          <RenderEditModal
+            projectId={id}
+            render={renderEditTarget}
+            imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+            onSaved={rememberSavedRender}
+            onClose={() => setRenderEditTarget(null)}
+          />
+        )}
       </div>
     );
   }
@@ -1048,6 +1076,16 @@ export function ProjectViewPage() {
               </p>
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleEditRender(renderLightbox)}
+                className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                title="Edit masked area"
+                aria-label="Edit render"
+              >
+                <Wand2 size={16} />
+                Edit Render
+              </button>
               <a
                 href={resolveApiFileUrl(renderLightbox.image_url)}
                 download={`render-${renderLightbox.id}.png`}
@@ -1098,6 +1136,15 @@ export function ProjectViewPage() {
           onSaved={() => {
             refreshSavedRenders();
           }}
+        />
+      )}
+      {id && renderEditTarget && (
+        <RenderEditModal
+          projectId={id}
+          render={renderEditTarget}
+          imageUrl={resolveApiFileUrl(renderEditTarget.image_url)}
+          onSaved={rememberSavedRender}
+          onClose={() => setRenderEditTarget(null)}
         />
       )}
     </div>

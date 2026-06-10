@@ -52,6 +52,9 @@ export const SHADE_MAP: Record<string, string> = {
   coastal_breezeway_mixed_use:        '#a5320d',
   custom_prompt_ready_archetype:      '#bd3a0f',
   custom_contextual_experiment:       '#d44211',
+  rural_gas_station:                   '#d24f2a',
+  commercial_strip_mall:              '#c84d2b',
+  highway_motor_hotel:                '#d95a28',
 
   // ── Yellow family: Residential ──────────────────────────────────────
   rndsqr_missing_middle_townhomes:    '#c5a52c',
@@ -123,6 +126,7 @@ export const SHADE_MAP: Record<string, string> = {
   structured_parking_garage:          '#527292',
   underground_parking_entry:          '#3f5f7f',
   green_parking_lot:                  '#5a7a9a',
+  suburban_retail_parking_lot:        '#6486a4',
   pond_lake:                          '#2d5b8a',
   fountain_water_feature:             '#356392',
   stormwater_retention_pond:          '#3d6b9a',

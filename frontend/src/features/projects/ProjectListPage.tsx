@@ -3,11 +3,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil } from 'lucide-react';
+import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil, Wand2 } from 'lucide-react';
 import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
 import { ProjectEditModal } from './ProjectEditModal';
+import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
@@ -37,6 +38,7 @@ export function ProjectListPage() {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [error, setError] = useState('');
   const [expandedRender, setExpandedRender] = useState<{ project: Project; render: SavedRender } | null>(null);
+  const [renderEditTarget, setRenderEditTarget] = useState<{ project: Project; render: SavedRender } | null>(null);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const geocodeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -216,6 +218,24 @@ export function ProjectListPage() {
     const nextIndex = (startIndex + direction + projectRenders.length) % projectRenders.length;
     setExpandedRender({ project: expandedRender.project, render: projectRenders[nextIndex] });
   }, [expandedRender, rendersByProject]);
+
+  const handleEditRenderSaved = useCallback((saved: SavedRender) => {
+    const project = renderEditTarget?.project;
+    if (!project) return;
+
+    queryClient.setQueryData<Record<string, SavedRender[]>>(
+      ['projects', currentUser?.id, 'saved-renders', projects?.map((item) => item.id) ?? []],
+      (current) => {
+        const existing = current ?? {};
+        const projectRenders = existing[project.id] ?? [];
+        return {
+          ...existing,
+          [project.id]: [saved, ...projectRenders.filter((render) => render.id !== saved.id)],
+        };
+      },
+    );
+    setExpandedRender({ project, render: saved });
+  }, [currentUser?.id, projects, queryClient, renderEditTarget]);
 
   useEffect(() => {
     if (!expandedRender) return;
@@ -494,6 +514,19 @@ export function ProjectListPage() {
               </p>
             </div>
             <div className="absolute right-3 top-3 flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setRenderEditTarget(expandedRender);
+                  setExpandedRender(null);
+                }}
+                className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                title="Edit masked area"
+                aria-label="Edit render"
+              >
+                <Wand2 size={16} />
+                Edit Render
+              </button>
               <a
                 href={resolveApiFileUrl(expandedRender.render.image_url)}
                 download={`render-${expandedRender.render.id}.png`}
@@ -512,6 +545,16 @@ export function ProjectListPage() {
             </div>
           </div>
         </div>,
+        document.body,
+      )}
+      {renderEditTarget && createPortal(
+        <RenderEditModal
+          projectId={renderEditTarget.project.id}
+          render={renderEditTarget.render}
+          imageUrl={resolveApiFileUrl(renderEditTarget.render.image_url)}
+          onSaved={handleEditRenderSaved}
+          onClose={() => setRenderEditTarget(null)}
+        />,
         document.body,
       )}
     </div>

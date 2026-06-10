@@ -1055,10 +1055,10 @@ const resolveOptionCategory = (
     <>
       {/* Backdrop overlay ? mobile only */}
       <div
-        className="fixed inset-0 z-20 bg-black/30 sm:hidden"
+        className="pointer-events-auto fixed inset-0 z-20 bg-black/30 sm:hidden"
         onClick={onClose}
       />
-      <div ref={panelRef} className="fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-lg">
+      <div ref={panelRef} className="pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70vh] w-full overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:top-16 sm:bottom-auto sm:left-auto sm:z-20 sm:w-80 sm:max-h-[calc(100%-5rem)] sm:rounded-lg">
         {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-[#151515]" />

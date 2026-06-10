@@ -7,11 +7,13 @@
  */
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Wand2 } from 'lucide-react';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import type { SiteZone, SavedRender } from '@/types';
 import { useAIRender, AI_RENDER_STYLES } from './useAIRender';
 import type { AIRenderResult } from './useAIRender';
 import { collectArchetypeRenderInputs, mergeArchetypePrompts } from './collectArchetypeRenderInputs';
+import { RenderEditModal } from './RenderEditModal';
 import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { saveRenderedImage } from '@/utils/renderPersistence';
@@ -99,10 +101,11 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryLightbox, setGalleryLightbox] = useState<SavedRender | null>(null);
+  const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
   const [renderLightbox, setRenderLightbox] = useState(false);
   const [renderSaveStatus, setRenderSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-  const lightboxOpen = renderLightbox || !!galleryLightbox;
+  const lightboxOpen = renderLightbox || !!galleryLightbox || !!editTarget;
 
   useEffect(() => {
     onLightboxOpenChange?.(lightboxOpen);
@@ -264,6 +267,17 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
       setRenderSaveStatus('error');
     }
   }, [onRenderSaved, projectId, renderSaveStatus, result, selectedStyle]);
+
+  const handleEditSavedRender = useCallback((saved: SavedRender) => {
+    setEditTarget(saved);
+    setGalleryLightbox(null);
+  }, []);
+
+  const handleEditedRenderSaved = useCallback((saved: SavedRender) => {
+    setSavedRenders((prev) => [saved, ...prev.filter((r) => r.id !== saved.id)]);
+    onRenderSaved?.(saved);
+    setShowGallery(true);
+  }, [onRenderSaved]);
 
   // Build summary text for generate button
   const summaryText = useMemo(() => {
@@ -755,26 +769,52 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
                 {galleryLightbox.style && ` · ${galleryLightbox.style}`}
               </p>
             </div>
-            <button
-              onClick={() => setGalleryLightbox(null)}
-              className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <a
-              href={resolveApiFileUrl(galleryLightbox.image_url)}
-              download={`render-${galleryLightbox.id}.png`}
-              className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
-              title="Download"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-              </svg>
-            </a>
+            <div className="absolute top-3 right-3 flex gap-2">
+              {projectId && (
+                <button
+                  type="button"
+                  onClick={() => handleEditSavedRender(galleryLightbox)}
+                  className="flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
+              )}
+              <a
+                href={resolveApiFileUrl(galleryLightbox.image_url)}
+                download={`render-${galleryLightbox.id}.png`}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                title="Download"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+              </a>
+              <button
+                type="button"
+                onClick={() => setGalleryLightbox(null)}
+                className="rounded-full bg-black/60 p-2 text-white/80 transition hover:bg-black/80 hover:text-white"
+                aria-label="Close saved render"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>,
+        document.body,
+      )}
+      {projectId && editTarget && createPortal(
+        <RenderEditModal
+          projectId={projectId}
+          render={editTarget}
+          imageUrl={resolveApiFileUrl(editTarget.image_url)}
+          onSaved={handleEditedRenderSaved}
+          onClose={() => setEditTarget(null)}
+        />,
         document.body,
       )}
     </div>
