@@ -4,12 +4,14 @@
  * generate button. Displays the rendered street view in a modal.
  */
 import { useState, useCallback } from 'react';
-import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save } from 'lucide-react';
+import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save, Wand2 } from 'lucide-react';
 import { useViewerStore } from '@/store';
 import { useStreetViewRender, type StreetViewResult } from './useStreetViewRender';
 import type { SavedRender, SiteZone } from '@/types';
 import toast from 'react-hot-toast';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { resolveApiFileUrl } from '@/services/api';
+import { RenderEditModal } from './RenderEditModal';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
@@ -142,6 +144,17 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
+
+  const toEditableStreetViewRender = useCallback((render: StreetViewResult): SavedRender => ({
+    id: `street-view-${getRenderImageKey(render)}`,
+    image_url: render.imageUrl,
+    prompt: render.prompt || 'Street view render',
+    style: render.providerLabel ? `street-view / ${render.providerLabel}` : 'street-view',
+    model: render.model,
+    image_quality: render.imageQuality,
+    created_at: new Date().toISOString(),
+  }), []);
 
   const saveStreetViewRender = useCallback(async (render: StreetViewResult, showToast = false) => {
     if (!projectId || render.error || !render.imageUrl) return null;
@@ -293,12 +306,38 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
     }
   }, [result, projectId, saveStreetViewRender]);
 
+  const handleEditRender = useCallback(() => {
+    if (!projectId || !result?.imageUrl || result.error) return;
+    setLightboxOpen(false);
+    setEditTarget(toEditableStreetViewRender(result));
+  }, [projectId, result, toEditableStreetViewRender]);
+
+  const handleEditedRenderSaved = useCallback((saved: SavedRender) => {
+    const editedResult: StreetViewResult = {
+      imageUrl: resolveApiFileUrl(saved.image_url),
+      prompt: saved.prompt,
+      model: saved.model,
+      imageQuality: saved.image_quality,
+      providerLabel: 'Edited Street View',
+    };
+    setResult(editedResult);
+    setPreviews((current) => {
+      if (selectedPreviewIndex === null) return current;
+      return current.map((preview, index) => (
+        index === selectedPreviewIndex ? editedResult : preview
+      ));
+    });
+    setSavedImageKeys((prev) => new Set(prev).add(getRenderImageKey(editedResult)));
+    onRenderSaved?.(saved);
+  }, [onRenderSaved, selectedPreviewIndex]);
+
   const handleClose = useCallback(() => {
     setStreetViewPosition(null);
     setStreetViewActive(false);
     setResult(null);
     setPreviews([]);
     setSelectedPreviewIndex(null);
+    setEditTarget(null);
   }, [setStreetViewPosition, setStreetViewActive]);
 
   // Don't render until Street View mode is active
@@ -341,6 +380,18 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
               </span>
             </div>
             <div className="flex items-center gap-2">
+              {projectId && (
+                <button
+                  onClick={handleEditRender}
+                  disabled={!!result.error}
+                  className="flex items-center gap-1.5 rounded-lg bg-amber-400 px-3 py-1.5 text-sm font-bold text-black hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={14} />
+                  Edit Render
+                </button>
+              )}
               <button
                 onClick={handleDownload}
                 disabled={!!result.error}
@@ -488,8 +539,29 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
               >
                 <Download size={20} />
               </a>
+              {projectId && !result.error && (
+                <button
+                  type="button"
+                  onClick={handleEditRender}
+                  className="absolute right-28 top-3 flex items-center gap-2 rounded-full bg-amber-400 px-3 py-2 text-xs font-bold text-black shadow-lg shadow-black/30 ring-1 ring-white/20 transition hover:bg-amber-300"
+                  title="Edit masked area"
+                  aria-label="Edit render"
+                >
+                  <Wand2 size={16} />
+                  Edit Render
+                </button>
+              )}
             </div>
           </div>
+        )}
+        {projectId && editTarget && (
+          <RenderEditModal
+            projectId={projectId}
+            render={editTarget}
+            imageUrl={editTarget.image_url}
+            onSaved={handleEditedRenderSaved}
+            onClose={() => setEditTarget(null)}
+          />
         )}
       </div>
     );
