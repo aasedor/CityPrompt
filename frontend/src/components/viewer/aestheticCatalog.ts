@@ -428,12 +428,10 @@ export const BUILDING_AESTHETIC_OPTIONS_V2: AestheticOption[] = BUILDING_LIBRARY
   toAestheticOption('building', 'buildings', BUILDING_VISUAL_SYSTEM, BUILDING_LIBRARY.categories, seed),
 );
 
-export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = [
-  { id: 'pedestrian_oriented', label: 'Pedestrian Oriented', description: 'Streets designed primarily for walking and pedestrian comfort' },
-  { id: 'cycling_oriented', label: 'Cycling Oriented', description: 'Streets designed primarily for cycling movement and infrastructure' },
-  { id: 'transit_oriented', label: 'Transit Oriented', description: 'Streets designed primarily for public transit operations and access' },
-  { id: 'auto_oriented', label: 'Auto Oriented', description: 'Streets designed primarily for automobile movement and access' },
-];
+// Derived from the catalog (like buildings/openspaces) so new street categories
+// — e.g. "Calgary Street Manual" — appear in the picker automatically instead of
+// being silently dropped by a hardcoded list.
+export const ROADWAY_AESTHETIC_CATEGORIES_V2: AestheticCategory[] = ROAD_LIBRARY.categories;
 export const ROADWAY_AESTHETIC_OPTIONS_V2: AestheticOption[] = ROAD_LIBRARY.archetypes.map((seed) =>
   toAestheticOption('street_pathway', 'streets', VISUAL_SYSTEM, ROAD_LIBRARY.categories, seed),
 );
