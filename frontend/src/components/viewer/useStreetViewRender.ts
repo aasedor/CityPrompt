@@ -22,6 +22,9 @@ const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 const DEG_TO_RAD = Math.PI / 180;
 const EARTH_RADIUS_M = 6_371_000;
 const STREET_VIEW_RENDER_MODEL = 'gpt-image-2';
+// Last pegman [lng, lat] from the view-cone analysis — the camera ground point,
+// used to anchor the real-world site-context pack on street-view renders.
+let lastPegmanLngLat: [number, number] | null = null;
 type OpenAIImageQuality = 'auto' | 'low' | 'medium' | 'high';
 
 /** Meters per degree of latitude (roughly constant). */
@@ -593,14 +596,6 @@ export function sortZonesByDistance(
 // Occlusion culling — remove zones hidden behind closer buildings
 // ---------------------------------------------------------------------------
 
-/** Normalize a bearing difference to [-180, 180] range. */
-function angleDiff(a: number, b: number): number {
-  let d = b - a;
-  while (d > 180) d -= 360;
-  while (d < -180) d += 360;
-  return d;
-}
-
 /**
  * Cull zones that are fully occluded by closer building zones.
  *
@@ -824,7 +819,7 @@ export function detectPegmanContext(
     const coords = z.zone.coordinates as [number, number][] | undefined;
     if (!coords || coords.length < 3) continue;
     if (pointInPolygon(pegmanPos, coords)) {
-      const zt = z.zone.zone_type;
+      const zt = z.zone.zone_type as string;
       if (zt === 'green_space' || zt === 'park') return { context: 'park', zone: z.zone };
       if (zt === 'water') return { context: 'water', zone: z.zone };
       if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return { context: 'street', zone: z.zone };
@@ -836,7 +831,7 @@ export function detectPegmanContext(
       const coords = zone.coordinates as [number, number][] | undefined;
       if (!coords || coords.length < 3) continue;
       if (pointInPolygon(pegmanPos, coords)) {
-        const zt = zone.zone_type;
+        const zt = zone.zone_type as string;
         if (zt === 'green_space' || zt === 'park') return { context: 'park', zone };
         if (zt === 'water') return { context: 'water', zone };
         if (zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian') return { context: 'street', zone };
@@ -881,6 +876,8 @@ export function buildStreetViewPrompt(
   visibleZones: ZoneWithDistance[],
   styleModifier?: string,
   standingZoneInfo?: ArchetypeInfo,
+  includePeople: boolean = false,
+  includeVehicles: boolean = false,
 ): string {
   const direction = compassDirection(angleDeg);
   const lines: string[] = [];
@@ -1215,7 +1212,7 @@ export function buildStreetViewPrompt(
       'walking on sidewalks, sitting at outdoor cafe tables, a cyclist, someone walking a dog. '
     );
   }
-  lines.push(
+  if (includePeople) lines.push(
     `═══ ENTOURAGE ═══\n` +
     entourageDesc +
     `The ARCHITECTURE AND SPACE are the primary subject — people are secondary, providing ` +
@@ -1227,6 +1224,21 @@ export function buildStreetViewPrompt(
     `These are fictional characters — not real individuals. ` +
     `Shot on 35mm SLR, Kodak Portra 400 film stock color science.`,
   );
+
+  if (!includePeople) {
+    lines.push(
+      `CRITICAL — NO PEOPLE: Render the scene completely unpopulated. Do NOT include any people, ` +
+      `pedestrians, cyclists or human figures anywhere in the frame, even if they appear in the ` +
+      `reference photos. Ignore any earlier mention of figures, entourage or pedestrian activity.`,
+    );
+  }
+  if (!includeVehicles) {
+    lines.push(
+      `CRITICAL — NO VEHICLES: The roadway, parking lanes and driveways are empty. Do NOT render any ` +
+      `cars, trucks, buses, vans or vehicles — parked or moving — anywhere, even if they appear in the ` +
+      `reference photos.`,
+    );
+  }
 
   return lines.join('\n\n');
 }
@@ -1908,20 +1920,27 @@ async function collectArchetypeImages(
       || entry.zone.properties?.archetype_id
       || entry.zone.properties?.subcategory;
     if (archetypeId) {
-      // Look up the catalog entry for its thumbnail
-      const catalogEntry = catalog.find(
-        (c: any) => c.id === archetypeId,
-      );
-      if (catalogEntry?.variants) {
-        // Use the SELECTED variant if available, otherwise variant 0
-        const selectedVariantIdx = Number(entry.zone.properties?.selected_variant) || 0;
-        const variant = catalogEntry.variants[selectedVariantIdx] || catalogEntry.variants[0];
-        if (variant?.thumbnailUrl) {
-          thumbnailUrl = variant.thumbnailUrl;
+      // archetypeId may be a BARE archetype id (e.g. "contemporary_transit_hub")
+      // OR a VARIANT-qualified id (e.g. "contemporary_transit_hub_variant_0").
+      // Building zones store the variant id in development_archetype_id, so an
+      // exact id match misses the catalog (which is keyed by archetype id with
+      // variants nested) — fall back to the parent archetype that owns the variant.
+      let catalogEntry = catalog.find((c: any) => c.id === archetypeId);
+      let variant: any = catalogEntry?.variants
+        ? (catalogEntry.variants[Number(entry.zone.properties?.selected_variant) || 0] || catalogEntry.variants[0])
+        : null;
+      if (!catalogEntry) {
+        // Try the archetype that owns this exact variant id, else strip a trailing
+        // _variant_N / _vN suffix to the base archetype id (building zones store
+        // development_archetype_id as e.g. "contemporary_transit_hub_variant_0").
+        catalogEntry = catalog.find((c: any) => c.variants?.some((v: any) => v.id === archetypeId));
+        if (!catalogEntry) {
+          const baseId = String(archetypeId).replace(/_(?:variant_|v)\d+$/, '');
+          catalogEntry = catalog.find((c: any) => c.id === baseId);
         }
-      } else if (catalogEntry?.thumbnailUrl) {
-        thumbnailUrl = catalogEntry.thumbnailUrl;
+        variant = catalogEntry?.variants?.find((v: any) => v.id === archetypeId) || catalogEntry?.variants?.[0] || null;
       }
+      thumbnailUrl = variant?.thumbnailUrl || catalogEntry?.thumbnailUrl || null;
     }
 
     if (!thumbnailUrl) return null;
@@ -1957,6 +1976,9 @@ export async function generateStreetView(
     projectId?: string;
     previousRenderBase64?: string; // For dual anchoring on re-render
     overrideGuideImage?: string; // Base64 image to use instead of clay render (e.g. 3D tiles capture)
+    useRealContext?: boolean; // Attach real Street View/Places/satellite context, anchored at the pegman
+    includePeople?: boolean; // Populate with pedestrians/cyclists (entourage); off = clean/unpopulated
+    includeVehicles?: boolean; // Include parked + moving vehicles; off = empty road
   },
 ): Promise<StreetViewResult | null> {
   const fov = options?.fovDeg ?? 70;
@@ -1979,6 +2001,7 @@ export async function generateStreetView(
   const visible = cullOccludedZones(pegmanPos, sorted);
 
   // Debug: log what was found
+  lastPegmanLngLat = [pegmanPos[0], pegmanPos[1]];
   console.log('[StreetView] Pegman at', pegmanPos, 'facing', angleDeg, '°');
   console.log('[StreetView] FOV:', fov, '° Distance:', distance, 'm');
   console.log('[StreetView] Total site zones:', siteZones.length, '| In view cone:', intersecting.length, '| After occlusion:', visible.length);
@@ -1996,7 +2019,7 @@ export async function generateStreetView(
   const { context: pegmanCtx, zone: standingZone } = detectPegmanContext(pegmanPos, visible, processedZones);
   const standingZoneInfo = standingZone ? getZoneArchetypeInfo(standingZone) : undefined;
   console.log(`[StreetView] Pegman context: ${pegmanCtx} — standing on: ${standingZoneInfo?.archetypeTitle || standingZone?.name || 'unknown'}`);
-  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo);
+  const prompt = buildStreetViewPrompt(pegmanPos, angleDeg, visible, options?.styleModifier, standingZoneInfo, options?.includePeople ?? false, options?.includeVehicles ?? false);
   console.log('[StreetView] Prompt length:', prompt.length, 'chars');
 
   // 5. Generate guide image — use override (e.g. 3D tiles capture) or clay render
@@ -2072,6 +2095,15 @@ export async function generateStreetView(
     }
     if (options?.projectId) {
       body.project_id = options.projectId;
+    }
+
+    // Real-world context: anchor at the pegman's own position — the exact
+    // camera ground point. The backend fetches real Street View photos +
+    // tenant data + satellite (satellite auto-excluded on the GPT path).
+    // Opt-in via the panel's "Real site context" toggle so it can be A/B'd.
+    if (options?.useRealContext && lastPegmanLngLat) {
+      body.site_context = { lng: lastPegmanLngLat[0], lat: lastPegmanLngLat[1], heading: angleDeg };
+      console.log('[StreetView] Real site context anchor (pegman):', lastPegmanLngLat);
     }
 
     // Multi-image archetype routing
@@ -2180,6 +2212,9 @@ export function useStreetViewRender() {
         projectId?: string;
         previousRenderBase64?: string;
         overrideGuideImage?: string;
+        useRealContext?: boolean;
+        includePeople?: boolean;
+        includeVehicles?: boolean;
       },
     ) => generateStreetView(pegmanPos, angleDeg, siteZones, options),
     [],

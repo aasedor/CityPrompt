@@ -61,6 +61,19 @@ class ArchetypeImage(BaseModel):
     zone_color: Optional[str] = Field(default=None, description="Color identifier in the layout (e.g., 'red').")
 
 
+class SiteContextAnchor(BaseModel):
+    """Geodetic anchor for fetching real-world context (Street View / Places / satellite)."""
+
+    lat: float = Field(..., ge=-90, le=90)
+    lng: float = Field(..., ge=-180, le=180)
+    heading: Optional[float] = Field(
+        default=None,
+        description="Camera compass heading in degrees (0=N, clockwise; any value, normalised "
+                    "server-side). When set, a forward-facing Street View plate at this heading "
+                    "is added as the distant-background reference.",
+    )
+
+
 class RenderRequest(BaseModel):
     """Payload sent by the frontend useAIRender hook."""
 
@@ -132,6 +145,15 @@ class RenderRequest(BaseModel):
     project_id: Optional[_uuid.UUID] = Field(
         default=None,
         description="Project associated with this render for admin audit log linking.",
+    )
+    site_context: Optional[SiteContextAnchor] = Field(
+        default=None,
+        description=(
+            "When set, real Street View photos, a satellite tile, and the current Places "
+            "tenant list for this location are fetched server-side and appended to the "
+            "reference images + prompt (Gemini path), grounding the render in the real "
+            "surroundings. Validated 2026-06-10, artifacts/sv-context-pilot/."
+        ),
     )
 
 
@@ -423,6 +445,7 @@ def _openai_mask_png_bytes(mask_b64: str) -> bytes:
 def _build_openai_files(
     req: RenderRequest,
     include_mask: bool,
+    site_pack: dict | None = None,
 ) -> list[tuple[str, tuple[str, bytes, str]]]:
     """Build multipart image files for OpenAI image editing."""
     if not req.image_base64:
@@ -447,8 +470,10 @@ def _build_openai_files(
         ))
 
     # GPT image edit models support up to 16 input images. Keep slots for the
-    # site screenshot and optional previous render, then use the rest for refs.
-    max_refs = 14 if req.previous_render_base64 else 15
+    # site screenshot, optional previous render, and any real-context photos,
+    # then use the rest for archetype refs.
+    context_images = (site_pack or {}).get("images", [])
+    max_refs = 16 - 1 - (1 if req.previous_render_base64 else 0) - len(context_images)
     for idx, arch_img in enumerate((req.archetype_images or [])[:max_refs], start=1):
         mime = _guess_image_mime(arch_img.image_base64)
         ext = _extension_for_mime(mime)
@@ -456,6 +481,17 @@ def _build_openai_files(
         files.append((
             "image[]",
             (f"archetype-reference-{safe_idx}.{ext}", _decode_base64_payload(arch_img.image_base64), mime),
+        ))
+
+    # Real-context photos (Street View + satellite) go last so the prompt can
+    # reference them positionally as "the final N attached images".
+    import base64 as _b64
+
+    for idx, (_label, mime, b64) in enumerate(context_images, start=1):
+        ext = _extension_for_mime(mime)
+        files.append((
+            "image[]",
+            (f"real-context-{str(idx).zfill(2)}.{ext}", _b64.b64decode(b64), mime),
         ))
 
     if include_mask and req.mask_base64:
@@ -470,6 +506,7 @@ async def _call_openai_image_edit(
     render_model: str,
     *,
     include_mask: bool,
+    site_pack: dict | None = None,
 ) -> httpx.Response:
     prompt_text = _prompt_with_negative(req)
     prompt_text = (
@@ -482,6 +519,16 @@ async def _call_openai_image_edit(
         "instructions authoritative.\n\n"
         + prompt_text
     )
+    if site_pack:
+        n_ctx = len(site_pack.get("images", []))
+        prompt_text += (
+            f"\n\nThe final {n_ctx} attached images are REAL Street View photographs of "
+            "this exact site's surroundings, in compass order (north, east, south, west). "
+            "Use them ONLY for the appearance of the surroundings - buildings, materials, "
+            "signage, vegetation. The camera position, angle and framing must come from "
+            "Image 1 EXACTLY; do not adopt the viewpoint of any context photograph.\n"
+            + site_pack["prompt_block"]
+        )
     if len(prompt_text) > 32_000:
         prompt_text = prompt_text[:31_900] + "\n\n[Prompt truncated to fit the OpenAI image prompt limit.]"
 
@@ -500,7 +547,7 @@ async def _call_openai_image_edit(
         return await client.post(
             "https://api.openai.com/v1/images/edits",
             data=data,
-            files=_build_openai_files(req, include_mask=include_mask),
+            files=_build_openai_files(req, include_mask=include_mask, site_pack=site_pack),
             headers=headers,
         )
 
@@ -522,10 +569,35 @@ async def _generate_openai_render(req: RenderRequest, settings, render_model: st
         len(req.archetype_images or []),
     )
 
-    resp = await _call_openai_image_edit(req, settings, render_model, include_mask=bool(req.mask_base64))
+    # Real-world site context (same cached pack the Gemini path uses, so
+    # compare-mode dual renders only fetch once).
+    site_pack = None
+    if req.site_context:
+        from app.services.site_context import build_site_context_pack
+
+        site_pack = await build_site_context_pack(req.site_context.lat, req.site_context.lng, req.site_context.heading)
+        if site_pack:
+            # GPT's edit endpoint weights every input image as a quasi-source —
+            # a top-down satellite in the stack drags the output camera skyward
+            # (observed 2026-06-10). Street View photos only for OpenAI; the
+            # satellite stays on the Gemini path where role labels contain it.
+            site_pack = {
+                **site_pack,
+                "images": [im for im in site_pack["images"] if "AERIAL" not in im[0]],
+            }
+            logger.info(
+                "Site context attached to OpenAI edit: %d images for %.5f,%.5f",
+                len(site_pack["images"]), req.site_context.lat, req.site_context.lng,
+            )
+
+    resp = await _call_openai_image_edit(
+        req, settings, render_model, include_mask=bool(req.mask_base64), site_pack=site_pack,
+    )
     if resp.status_code == 400 and req.mask_base64 and "mask" in resp.text.lower():
         logger.warning("OpenAI rejected the edit mask; retrying without mask for comparison render.")
-        resp = await _call_openai_image_edit(req, settings, render_model, include_mask=False)
+        resp = await _call_openai_image_edit(
+            req, settings, render_model, include_mask=False, site_pack=site_pack,
+        )
 
     if resp.status_code != 200:
         error_body = resp.text[:500]
@@ -725,6 +797,36 @@ async def generate_render(
                 }
             })
 
+    # Real-world site context: Street View photos + satellite + tenant list.
+    # Fetched server-side (keys stay in backend/.env); failure degrades silently.
+    site_pack = None
+    if req.site_context:
+        from app.services.site_context import build_site_context_pack
+
+        site_pack = await build_site_context_pack(req.site_context.lat, req.site_context.lng, req.site_context.heading)
+        if site_pack:
+            logger.info(
+                "Site context attached: %d images for %.5f,%.5f",
+                len(site_pack["images"]), req.site_context.lat, req.site_context.lng,
+            )
+            # A top-down satellite ("AERIAL") in the reference stack drags the output
+            # camera skyward and washes out eye-level street-view renders. This was
+            # observed + fixed for the OpenAI path on 2026-06-10; the satellite was
+            # left on the Gemini path on the assumption role labels would contain it,
+            # but it degrades Gemini the same way (confirmed 2026-06-15). Feed Gemini
+            # the Street View photos only — keep the satellite out of the stack.
+            for label, mime, b64 in site_pack["images"]:
+                # Also drop the FORWARD STREET VIEW plate on the GEMINI path only: GPT
+                # integrates it cleanly (kept on the OpenAI path), but Gemini over-leans on
+                # the flat, offset plate — it degrades quality AND pulls the output camera off
+                # the user's requested angle. Gemini grounds on the cardinal MATERIALS plates
+                # only; prompt_block's forward clause is conditional ("if attached") so it goes
+                # inert here. GPT untouched. (2026-06-16)
+                if "AERIAL" in label or "FORWARD STREET VIEW" in label:
+                    continue
+                parts.append({"text": label})
+                parts.append({"inlineData": {"mimeType": mime, "data": b64}})
+
     # If a mask is provided, send it as an additional image with explanation
     if req.image_base64 and req.mask_base64:
         parts.append({
@@ -740,6 +842,11 @@ async def generate_render(
 
     # Build the final prompt text
     prompt_text = _prompt_with_negative(req)
+
+    # Site-context constraints go LAST — Gemini weights later instructions
+    # more heavily (CLAUDE.md render rule; proven in the lane-count pilots).
+    if site_pack:
+        prompt_text = prompt_text + "\n\n" + site_pack["prompt_block"]
 
     parts.append({"text": prompt_text})
 

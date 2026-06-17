@@ -33,7 +33,7 @@ const STREET_VIEW_STYLES = [
   {
     id: 'atmospheric',
     label: 'Atmospheric',
-    prompt: 'Cinematic street-level architectural photograph emphasizing dramatic atmospheric conditions and emotional lighting. Camera at human eye height, 50mm lens, f/2.8 with shallow depth of field -- foreground architectural details tack-sharp while the distant streetscape dissolves into soft atmospheric bokeh. The scene is captured during blue hour, approximately 20 minutes after sunset. The sky transitions from deep indigo overhead through bands of magenta and burnt orange at the horizon. All ambient exterior light is cool blue-violet while interior lights glow intensely warm amber and gold through floor-to-ceiling glazing, creating strong warm-cool colour temperature contrast that defines every window bay and entrance. Recent rainfall has left the entire street surface wet -- pavement, sidewalks, and plaza surfaces act as dark mirrors reflecting the glowing building facades, the coloured sky gradient, and the amber pools of light spilling from ground-floor retail. Shallow puddles collected in slight pavement depressions create concentrated reflections. Subtle volumetric moisture visible in the air around exterior light sources, creating soft haloes and gentle god rays where interior light spills outward through entrance lobbies. Building materials respond to the wet conditions -- concrete darkened two shades, brushed stainless steel panels showing streaky water rivulets, timber cladding saturated to a richer tone. Atmospheric perspective compresses the background -- distant buildings reduced to cool blue-grey silhouettes with pinpoints of warm window light. Thin wisps of low cloud or mist drifting at rooftop level. The mood is contemplative, cinematic, and deeply atmospheric -- this is an award-winning architectural photograph, not a technical documentation image.',
+    prompt: 'Premium real-time path-traced street-level architectural render (D5/Lumion/Unreal Engine 5 quality). Camera at human eye height (1.6m), 35mm prime lens at f/5.6 with deep but natural focus — foreground architectural detail tack-sharp, a gentle depth-of-field falloff softening the distant streetscape. Warm late-afternoon golden-hour sun, soft directional key light casting long clean shadows across the sidewalk. Soft path-traced global illumination with realistic ambient occlusion in reveals, recesses, and under canopies, plus clean contact shadows where elements meet the ground. Physically-based materials respond accurately to the light: low-iron glass with true reflections and subtle refraction, brushed stainless steel, board-formed and precast concrete, natural stone, warm timber cladding. Lush naturally-scattered street trees and planting. Subtle atmospheric perspective and a faint volumetric haze give depth — distant buildings read slightly cooler and softer. Balanced high dynamic range with clean controlled exposure, gentle bloom on the brightest highlights only, a refined filmic colour grade, and crisp edge-to-edge clarity. Award-winning architectural-magazine quality — premium, polished, and photoreal, not theatrical. For all existing surrounding context, treat the captured scene as ground truth to be sharpened, not reimagined: resolve the existing buildings, street, and landscape into their true real-world appearance while preserving their actual massing, proportions, and materials. Do not beautify, restyle, idealize, or replace existing structures. Reserve the premium polish for the proposed building only.',
   },
   {
     id: 'winter',
@@ -144,6 +144,11 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  // Real Street View / Places / satellite grounding, anchored at the pegman.
+  // On by default (it helps); toggle off to A/B against a context-free render.
+  const [useRealContext, setUseRealContext] = useState(true);
+  const [includePeople, setIncludePeople] = useState(false);
+  const [includeVehicles, setIncludeVehicles] = useState(false);
   const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
 
   const toEditableStreetViewRender = useCallback((render: StreetViewResult): SavedRender => ({
@@ -234,6 +239,9 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
               styleModifier,
               overrideGuideImage,
               projectId,
+              useRealContext,
+              includePeople,
+              includeVehicles,
             },
           );
           return providerResult
@@ -284,7 +292,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, result, globeCapture, projectId, saveStreetViewRender]);
+  }, [streetViewPegman, siteZones, generateStreetView, selectedStyle, useRealContext, includePeople, includeVehicles, result, globeCapture, projectId, saveStreetViewRender]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -638,6 +646,39 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Real-world context toggle */}
+        <label className="flex max-w-[150px] cursor-pointer items-center gap-2 text-[10px] font-black uppercase leading-tight text-[#151515]">
+          <input
+            type="checkbox"
+            checked={useRealContext}
+            onChange={(e) => setUseRealContext(e.target.checked)}
+            className="h-3.5 w-3.5 shrink-0 accent-[#c9ff3d]"
+          />
+          Real site context (Street View + businesses)
+        </label>
+
+        {/* Add people / vehicles toggles — default off for clean hero renders */}
+        <div className="flex flex-col gap-1.5">
+          <button
+            type="button"
+            onClick={() => setIncludePeople((v) => !v)}
+            className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
+              includePeople ? 'bg-[#c9ff3d] text-[#151515]' : 'bg-black/5 text-[#151515]/55 hover:bg-black/10'
+            }`}
+          >
+            {includePeople ? '✓ People' : 'Add People'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setIncludeVehicles((v) => !v)}
+            className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
+              includeVehicles ? 'bg-[#c9ff3d] text-[#151515]' : 'bg-black/5 text-[#151515]/55 hover:bg-black/10'
+            }`}
+          >
+            {includeVehicles ? '✓ Vehicles' : 'Add Vehicles'}
+          </button>
         </div>
 
         {/* Divider */}
