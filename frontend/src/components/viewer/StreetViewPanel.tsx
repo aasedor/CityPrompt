@@ -670,7 +670,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
             type="button"
             onClick={() => setIncludePeople((v) => !v)}
             className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
-              includePeople ? 'bg-[#c9ff3d] text-[#151515]' : 'bg-black/5 text-[#151515]/55 hover:bg-black/10'
+              includePeople ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
             }`}
           >
             {includePeople ? '✓ People' : 'Add People'}
@@ -679,7 +679,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
             type="button"
             onClick={() => setIncludeVehicles((v) => !v)}
             className={`rounded-full px-3 py-1.5 text-[10px] font-black uppercase leading-tight transition ${
-              includeVehicles ? 'bg-[#c9ff3d] text-[#151515]' : 'bg-black/5 text-[#151515]/55 hover:bg-black/10'
+              includeVehicles ? 'bg-[#c9ff3d] text-black' : 'bg-black/5 text-black/55 hover:bg-black/10'
             }`}
           >
             {includeVehicles ? '✓ Vehicles' : 'Add Vehicles'}
