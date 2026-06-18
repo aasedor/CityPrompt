@@ -1240,6 +1240,30 @@ export function buildStreetViewPrompt(
     );
   }
 
+  // Surface placement — keep each mode on its correct paved zone. Without this, vehicles
+  // drift onto sidewalks and bike lanes. Affirmative phrasing, pushed last for weight.
+  if (includePeople || includeVehicles) {
+    const placement: string[] = [];
+    if (includePeople) {
+      placement.push(
+        `Pedestrians walk only on the sidewalk or multi-use pathway. ` +
+        `Cyclists ride only in the bike lane, the multi-use pathway, or the roadway travel lane.`,
+      );
+    }
+    if (includeVehicles) {
+      placement.push(
+        `Vehicles stay entirely within the roadway travel and parking lanes, ` +
+        `never on the sidewalk, bike lane, or pathway.`,
+      );
+    }
+    lines.push(
+      `═══ SURFACE PLACEMENT (critical) ═══\n` +
+      placement.join(' ') +
+      ` Every figure, bicycle and vehicle rests squarely on the surface that belongs to it — ` +
+      `feet and wheels on the correct paved zone, not straddling curbs or lane edges.`,
+    );
+  }
+
   return lines.join('\n\n');
 }
 
