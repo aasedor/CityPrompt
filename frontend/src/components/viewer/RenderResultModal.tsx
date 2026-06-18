@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { AIRenderResult } from './useAIRender';
 import { rendersApi } from '@/services/api';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 interface RenderResultModalProps {
   /** The 3 preview renders to choose from */
@@ -50,6 +51,7 @@ export function RenderResultModal({
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      if (isTextEntryTarget(e.target)) return;
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();

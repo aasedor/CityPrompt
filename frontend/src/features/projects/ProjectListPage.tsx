@@ -9,17 +9,13 @@ import { useAuthStore } from '@/store';
 import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
 import { ProjectEditModal } from './ProjectEditModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
 
 interface GeocodeSuggestion {
   place_name: string;
   center: [number, number]; // [lng, lat]
-}
-
-function isTextEntryTarget(target: EventTarget | null): boolean {
-  const element = target as HTMLElement | null;
-  return Boolean(element?.closest('input, textarea, select, [contenteditable="true"]'));
 }
 
 export function ProjectListPage() {

@@ -13,6 +13,7 @@ import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 const COMPARE_RENDER_MODELS = [
   { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
@@ -48,11 +49,6 @@ function getLightboxMetaParts(render: LightboxRender): string[] {
     render.style,
     render.createdAt ? new Date(render.createdAt).toLocaleDateString() : null,
   ].filter(Boolean) as string[];
-}
-
-function isTextEntryTarget(target: EventTarget | null): boolean {
-  const element = target as HTMLElement | null;
-  return Boolean(element?.closest('input, textarea, select, [contenteditable="true"]'));
 }
 
 interface GlobeAIRenderPanelProps {
@@ -349,6 +345,7 @@ export function GlobeAIRenderPanel({
   useEffect(() => {
     if (!lightboxRender) return;
     const onKey = (e: KeyboardEvent) => {
+      if (isTextEntryTarget(e.target)) return;
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();

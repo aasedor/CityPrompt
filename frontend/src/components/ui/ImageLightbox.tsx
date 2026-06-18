@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X, ArrowDownToLine, Sparkles, Loader2 } from 'lucide-react';
 import { useViewerStore } from '@/store';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 export function ImageLightbox() {
   const lightboxImageUrl = useViewerStore((s) => s.lightboxImageUrl);
@@ -11,6 +12,7 @@ export function ImageLightbox() {
   useEffect(() => {
     if (!lightboxImageUrl) return;
     const handleKey = (e: KeyboardEvent) => {
+      if (isTextEntryTarget(e.target)) return;
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();

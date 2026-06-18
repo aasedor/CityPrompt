@@ -32,6 +32,7 @@ import { useUndoRedoKeyboard } from '@/hooks/useUndoRedoKeyboard';
 import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 
@@ -436,6 +437,9 @@ export function ProjectViewPage() {
     if (!renderLightbox) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't hijack keys while typing in a field (e.g. the Edit Render box).
+      if (isTextEntryTarget(e.target)) return;
+
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();

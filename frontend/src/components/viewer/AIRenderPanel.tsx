@@ -17,6 +17,7 @@ import { RenderEditModal } from './RenderEditModal';
 import { rendersApi, resolveApiFileUrl, authApi } from '@/services/api';
 import { useAuthStore } from '@/store';
 import { saveRenderedImage } from '@/utils/renderPersistence';
+import { isTextEntryTarget } from '@/utils/domEvents';
 
 // ---------------------------------------------------------------------------
 // UI grouping for the style picker
@@ -116,6 +117,7 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
     if (!lightboxOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (isTextEntryTarget(e.target)) return;
       if (e.key === 'Escape') {
         e.preventDefault();
         e.stopPropagation();
