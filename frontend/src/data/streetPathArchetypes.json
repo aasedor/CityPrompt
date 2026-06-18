@@ -31,6 +31,16 @@
       "id": "traffic_safety_vision_zero",
       "label": "Traffic Safety & Vision Zero",
       "description": "Evidence-based safe street and intersection retrofits drawn from FHWA Proven Safety Countermeasures, NACTO design guides and Dutch Sustainable Safety — geometry that makes errors survivable, rendered beautiful."
+    },
+    {
+      "id": "alberta_bike_design_guide",
+      "label": "Alberta Bike Design Guide",
+      "description": "Bicycle facility types from the Alberta Bicycle Facilities Design Guide (ABFDG) and Calgary Street Manual ch. 5 — the on-street bikeway and off-street pathway family, reproduced to scale with real separation and width standards."
+    },
+    {
+      "id": "intersections",
+      "label": "Intersections",
+      "description": "Intersection and junction-control treatments — protected intersections, roundabouts and neighbourhood traffic circles, raised and daylighted junctions, pedestrian scrambles, and turn-calming geometry — grouped as a single junction toolkit drawn from the Calgary Street Manual ch. 9 and Vision Zero practice."
     }
   ],
   "archetypes": [
@@ -569,7 +579,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Roundabout",
-      "aestheticCategory": "auto_oriented",
+      "aestheticCategory": "intersections",
       "description": "A single-lane or multi-lane roundabout with a central landscaped island, splitter islands, and crosswalks",
       "transportModes": [
         "walking",
@@ -878,7 +888,7 @@
       "hasBikeLane": true,
       "shape": "linear",
       "title": "Separated Bike Lane",
-      "aestheticCategory": "cycling_oriented",
+      "aestheticCategory": "alberta_bike_design_guide",
       "description": "A physically separated two-way cycle track with bollard or curb protection, colored surface markings, and its own",
       "transportModes": [
         "bicycle"
@@ -980,7 +990,7 @@
       "hasBikeLane": true,
       "shape": "linear",
       "title": "Multi-Use Trail",
-      "aestheticCategory": "cycling_oriented",
+      "aestheticCategory": "alberta_bike_design_guide",
       "description": "A wide paved multi-use trail through a park or greenway corridor for walking, jogging, and cycling",
       "transportModes": [
         "walking",
@@ -9334,7 +9344,7 @@
           "thumbnailUrl": "/archetypes/streets/protected-intersection/variant_3.png"
         }
       ],
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "Dutch-style protected intersection per NACTO's 'Don't Give Up at the Intersection': four raised corner refuge islands carry the cycle track around the junction, pedestrian and cycle crossings sit set back about one car length (5 m) from the parallel travel lanes, and 3–4.5 m corner radii hold turning cars near 15 km/h. 43% of urban cyclist fatalities occur at intersections — this geometry is the fix: every road user arrives at the conflict point slowly, visibly, and with a protected place to wait.",
       "transportModes": [
         "walking",
@@ -10772,7 +10782,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Compact Safety Roundabout",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "FHWA Proven Safety Countermeasure (Roundabouts): a compact single-lane modern roundabout — roughly 30 m inscribed diameter, a 5.0 m circulating lane around a mountable truck apron, entry deflection that physically caps speeds near 25–30 km/h, and four splitter islands each carrying a 2.4 m pedestrian refuge with crosswalks set one car length back from the yield line. Conflict points drop from 32 to 8 and the survivable-speed geometry does the rest; the planted centre island is a civic gardening canvas.",
       "transportModes": [
         "walking",
@@ -10881,7 +10891,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Pedestrian Scramble Intersection",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "All-way pedestrian scramble (Barnes Dance): during the all-walk signal phase every vehicle movement is held and pedestrians cross in any direction — including diagonally through the middle of the box. Eliminates every turning-vehicle conflict during the walk phase. The treatment for downtown junctions where pedestrian volumes rival or exceed vehicle volumes; corner curb extensions provide the queuing space the all-walk surge needs.",
       "transportModes": [
         "walking",
@@ -11038,7 +11048,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Daylighted Intersection",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "Intersection daylighting (NACTO / NYC Vision Zero practice): parking is removed for the last 6–8 m before every crosswalk so drivers and pedestrians can actually see each other, and the cleared curb is hardened with bike corrals, planters and mini curb extensions so it cannot be re-parked. One of the cheapest sightline treatments in the toolkit — Hoboken NJ paired citywide daylighting with years of zero traffic deaths.",
       "transportModes": [
         "walking",
@@ -11205,7 +11215,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Left Turn Calming Intersection",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "NYC Vision Zero signature treatment: HARDENED CENTRELINES — low rubber curbing with flexible posts along the centreline through the junction box — plus slow-turn wedges force left-turning drivers into a square, slow turn instead of cutting the corner at speed across the crosswalk. Left turns are among the most dangerous pedestrian conflicts at signalized intersections; this geometry takes the fast diagonal path away.",
       "transportModes": [
         "walking",
@@ -11801,7 +11811,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Neighborhood Traffic Circle",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "Neighbourhood traffic circle (NACTO; TAC Canadian Guide to Traffic Calming): a small planted island dropped into the middle of a residential four-way intersection, replacing stop signs with a slow yield-around movement. Drivers must steer around it, which cuts entry speeds and the right-angle and left-turn crashes that plague uncontrolled local intersections — Seattle's thousand-plus circles are the classic precedent. Smaller and simpler than a roundabout: no splitter islands, often a mountable apron, and a garden at its heart. Per Calgary Street Manual sec. 10.4.4.4, neighbourhood traffic circles are used only at Local-street intersections and typically fit within the existing intersection footprint without moving the curb lines.",
       "transportModes": [
         "walking",
@@ -11910,7 +11920,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "Raised Intersection",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "Raised intersection (NACTO Urban Street Design Guide): the entire junction is lifted to sidewalk level on a single flat-topped plateau, with ramps on every approach, so pedestrians cross level in all directions and vehicles slow to climb and traverse the whole crossing. Surfaced in contrasting unit pavers, it reads as a continuous pedestrian zone the cars are guests on — ideal for neighbourhood-commercial corners and residential collectors with heavy walking.",
       "transportModes": [
         "walking",
@@ -12012,7 +12022,7 @@
       "hasBikeLane": true,
       "shape": "linear",
       "title": "Advisory Bike Lane Street",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "alberta_bike_design_guide",
       "description": "Advisory bike lane / edge lane road (TAC; FHWA advisory shoulders): a residential street too narrow for full bike lanes plus two travel lanes is striped with DASHED bike lanes on both edges and a single central two-way motor lane. Cars drive in the centre and, when meeting oncoming traffic, briefly merge into the dashed bike lane after yielding to any cyclist. Gives people on bikes a marked place on streets that otherwise could not fit them, at low cost — common in the Netherlands and growing in Canadian cities.",
       "transportModes": [
         "walking",
@@ -12496,7 +12506,7 @@
       "hasBikeLane": false,
       "shape": "circle",
       "title": "High-Entry-Angle Right Turn",
-      "aestheticCategory": "traffic_safety_vision_zero",
+      "aestheticCategory": "intersections",
       "description": "High-entry-angle right turn (Calgary Street Manual sec. 10.4.4.5 / 9.7.3.1): a channelized right-turn geometry used on Arterial and Collector-Industrial intersection approaches where a free-flowing slip lane would carry drivers around the corner too fast. A raised triangular channelizing island steers the right-turning driver to meet the cross street at a high, near-perpendicular angle, so they slow to a yield condition and turn their head to see people walking and wheeling crossing the short island leg. It replaces the wide, fast, sweeping slip lane with a tight, deliberate, low-speed right turn.",
       "transportModes": [
         "walking",
@@ -12825,6 +12835,1622 @@
       "renderPrompt": {
         "mapOverlay": "Replace the colored intersection zone with a photorealistic residential Local-street junction reshaped with a CLOSURE to stop cut-through traffic. A landscaped raised barrier — a directional island forcing turns, or a full closure capping the street end with a turnaround — blocks the motor-vehicle through-movement, while a clear paved gap with bollards keeps people walking and cycling moving straight through and a mountable strip allows a fire truck. Grass, low planting and a small tree soften the barrier; modest detached homes, mature canopy trees and concrete sidewalks surround the corner. CRITICAL: cars cannot drive through; the walking/cycling gap stays open. Drive on the right. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: the closure barrier is a kerbed, landscaped raised island (a full closure caps the leg with a turnaround); a clear paved cut-through about 1.5–2.0 m with bollards (~1 m tall, ~1.5 m clear gap) keeps people walking and cycling moving while blocking cars, and a mountable or removable section preserves emergency access; volume-management closures are spaced about 200–400 m apart (Calgary Street Manual sec. 10.4.5.3; UK LTN 1/20; NACTO).",
         "roofView": "Replace the colored zone viewed from directly above with a Local-street closure plan: a landscaped raised barrier across the junction (a directional island, or a full closure capping the leg with a turnaround) blocking car through-movement, a clear bollarded paved gap for people walking and cycling, a green planted barrier with a small tree, round canopy street trees and sidewalks around. The junction fills the centre of the frame, buildings cropped at the borders. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: kerbed landscaped barrier; ~1.5–2.0 m bollarded walking/cycling cut-through, mountable emergency section; closures spaced ~200–400 m (Calgary Street Manual sec. 10.4.5.3)."
+      }
+    },
+    {
+      "id": "protected_bike_lane_bidirectional",
+      "typicalWidth_m": 20,
+      "minWidth_m": 16,
+      "maxWidth_m": 24,
+      "suggestedAreaSqm": 2000,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": true,
+      "shape": "linear",
+      "title": "Protected Bike Lane (Bi-Directional)",
+      "aestheticCategory": "alberta_bike_design_guide",
+      "description": "Bi-directional protected bicycle lane (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.1.2 two-way cycle track): a two-way cycle track carried on ONE side of the street, physically separated from motor traffic by a raised curb, planted buffer or parking lane, with people cycling in BOTH directions side by side across a painted centre line. Concentrating the facility on one side is efficient where destinations, a river pathway, or intersection geometry favour that side, and it is delineated from the sidewalk so people walking and wheeling stay separate. Target running width about 3.6 m (3.0 m minimum when constrained) plus a buffer to the travel lane; used on Collectors and Arterials as part of the primary cycling network.",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "alberta-bike-design-guide",
+        "abfdg",
+        "protected-bike-lane",
+        "two-way-cycle-track",
+        "cycle-track",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "section": {
+        "row_m": 20.0,
+        "carriageway_m": 6.5,
+        "targetSpeed_kmh": 40,
+        "confidence": "representative",
+        "symmetric": false,
+        "zones": [
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.8,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.5,
+            "label": "Boulevard",
+            "planting": "canopy street tree",
+            "furniture": [
+              "street light"
+            ]
+          },
+          {
+            "type": "bike_lane",
+            "width_m": 3.6,
+            "label": "Two-Way Cycle Track",
+            "surface": "asphalt",
+            "note": "bi-directional protected cycle track, raised/curb-separated, two directions side by side with a yellow centre line"
+          },
+          {
+            "type": "buffer",
+            "width_m": 0.5,
+            "label": "Buffer",
+            "note": "raised curb or delineated buffer separating the cycle track from the travel lane"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.25,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.25,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "parking",
+            "width_m": 2.2,
+            "label": "Parking",
+            "note": "on-street parking lane on the far side"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.5,
+            "label": "Boulevard",
+            "planting": "canopy street tree"
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.8,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          }
+        ]
+      },
+      "styleProfile": {
+        "corridorCharacter": "An urban Collector seen from drone altitude with a BI-DIRECTIONAL PROTECTED BIKE LANE running along one side. A wide asphalt two-way cycle track, painted with a yellow centre line and small directional bike symbols, is held off the travel lanes by a raised curb / planted buffer; people cycle in both directions within it. A concrete sidewalk and canopy boulevard trees sit outside it, clearly separated. The other side has on-street parking, a boulevard and sidewalk. Two travel lanes with a dashed yellow centre line carry calm traffic. The corridor reads as a comfortable, all-ages Calgary bike route, prairie context, no mountains.",
+        "movementHierarchy": "Primary cycling network: a protected two-way cycle track prioritized alongside calm two-lane traffic and walking",
+        "surfaceType": "Asphalt two-way cycle track (centre line + bike symbols) curb-separated from an asphalt carriageway",
+        "plantingCharacter": "Canopy boulevard trees and pedestrian-scale lights both sides; planted buffer beside the cycle track",
+        "edgeConditions": "Concrete sidewalks both sides, on-street parking on the far side, mid-rise mixed-use frontage cropped at the frame edge",
+        "publicRealm": "A continuous, comfortable all-ages cycling spine separated from both traffic and pedestrians"
+      },
+      "prompt": {
+        "subject": "Aerial view of an urban collector with a bi-directional protected bike lane on one side — a wide two-way cycle track with a yellow centre line, curb-separated from traffic, people cycling both ways",
+        "details": [
+          "20 m right-of-way: a 3.6 m two-way cycle track on one side with a yellow centre line and bike symbols",
+          "A raised curb / planted buffer separating the cycle track from two 3.25 m travel lanes",
+          "On-street parking on the far side; concrete sidewalks and canopy boulevard trees both sides",
+          "People cycling in both directions within the protected track; a dashed yellow centre line on the carriageway",
+          "Calgary prairie urban context with a faint downtown skyline, no mountains"
+        ],
+        "negative": [
+          "No painted-only bike lane flush with traffic (this is physically protected)",
+          "No one-way single-file bike lane",
+          "No cyclists mixed into the travel lane",
+          "No mountains",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "cycling_first",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 20,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/protected-bike-lane-bi-directional/variant_0.png",
+      "variants": [
+        {
+          "id": "protected_bike_lane_bidirectional_v0",
+          "label": "Two-Way Cycle Track",
+          "color": "#2f7fb0",
+          "description": "A two-way protected cycle track on one side of the street, curb- or buffer-separated from traffic and delineated from the sidewalk — ~3.6 m running width carrying people cycling in both directions (ABFDG; Calgary Street Manual 5.2.1.2).",
+          "thumbnailUrl": "/archetypes/streets/protected-bike-lane-bi-directional/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic urban Collector carrying a BI-DIRECTIONAL PROTECTED BIKE LANE (two-way cycle track) along one side. A wide asphalt cycle track with a yellow centre line and white directional bike symbols runs behind a raised curb / planted buffer, with people cycling both ways; a concrete sidewalk and canopy boulevard trees sit outside it. Two asphalt travel lanes carry calm traffic, with on-street parking, a boulevard and a sidewalk on the far side. ZONE COMPOSITION, exact from one edge of the right-of-way to the other: setback, sidewalk, boulevard, two-way cycle track, buffer, travel lane, travel lane, parking, boulevard, sidewalk, setback — exactly these zones, in this order. A dashed yellow centre line on the carriageway; the cycle track has its own yellow centre line. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: the two-way cycle track is about 3.6 m wide (3.0 m minimum constrained) with a buffer / raised curb of about 0.5 m to the travel lane; it is physically protected (not a painted lane) and carries both directions of cycling; travel lanes are 3.25 m (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.1.2).",
+        "roofView": "Replace the colored zone viewed from directly above with a collector showing a two-way protected bike lane on one side: a wide asphalt cycle track with a yellow centre line and bike symbols set behind a planted buffer / raised curb, bicycle shapes travelling both ways, two travel lanes, an on-street parking lane on the far side, round canopy boulevard trees and concrete sidewalks both sides. ZONE COMPOSITION, exact edge to edge: setback, sidewalk, boulevard, two-way cycle track, buffer, travel lane, travel lane, parking, boulevard, sidewalk, setback. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: two-way cycle track ~3.6 m, buffer ~0.5 m, physically protected, both directions; travel lanes 3.25 m (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.1.2)."
+      }
+    },
+    {
+      "id": "bicycle_shared_space",
+      "typicalWidth_m": 12,
+      "minWidth_m": 9,
+      "maxWidth_m": 14,
+      "suggestedAreaSqm": 1200,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Bicycle Shared Space",
+      "aestheticCategory": "alberta_bike_design_guide",
+      "description": "Bicycle shared space (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.3 local street bikeway): the lowest-separation on-street bikeway, where people cycling share the travel lane with motor traffic on a low-volume, low-speed Local street. There is no dedicated bike lane; instead shared-lane markings (sharrows) and wayfinding signs position riders and signal drivers to expect bikes. Used only where motor volumes and speeds are low enough (about 30 km/h) that mixing is comfortable for all ages.",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "alberta-bike-design-guide",
+        "abfdg",
+        "shared-space",
+        "sharrow",
+        "local-street-bikeway",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "section": {
+        "row_m": 12.0,
+        "carriageway_m": 6.0,
+        "targetSpeed_kmh": 30,
+        "confidence": "representative",
+        "symmetric": true,
+        "zones": [
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.5,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.2,
+            "label": "Boulevard",
+            "planting": "canopy street tree"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.0,
+            "label": "Shared Lane",
+            "note": "shared travel lane with white sharrow (shared-lane) markings"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.0,
+            "label": "Shared Lane",
+            "note": "shared travel lane with white sharrow (shared-lane) markings"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.2,
+            "label": "Boulevard",
+            "planting": "canopy street tree"
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.5,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          }
+        ]
+      },
+      "styleProfile": {
+        "corridorCharacter": "A calm leafy residential Local street seen from drone altitude, signed as a BICYCLE SHARED SPACE. People cycle in the centre of each travel lane, where large white sharrow (bike-and-double-chevron) markings are painted; a few cars share the road slowly behind them. Mature canopy boulevard trees, grass boulevards and concrete sidewalks line both sides; modest detached homes front the street. Calgary prairie residential context, no mountains.",
+        "movementHierarchy": "Low-speed Local street where bikes share the lane with light, slow motor traffic",
+        "surfaceType": "Asphalt travel lanes with white sharrow markings, no dedicated bike lane",
+        "plantingCharacter": "Mature canopy boulevard trees both sides",
+        "edgeConditions": "Grass boulevards and concrete sidewalks, modest detached homes with front gardens",
+        "publicRealm": "An all-ages neighbourhood bike route created with markings, not separation"
+      },
+      "prompt": {
+        "subject": "Aerial view of a calm residential Local street as a bicycle shared space — riders in the centre of the lane over large white sharrow markings, slow cars sharing the road",
+        "details": [
+          "12 m right-of-way with two 3.0 m shared travel lanes and a single dashed yellow centre line",
+          "Large white sharrow (bicycle + double-chevron) markings centred in each lane",
+          "People cycling in the lane with a few slow cars behind, no dedicated bike lane",
+          "Mature canopy boulevard trees, grass boulevards and concrete sidewalks both sides",
+          "Modest detached homes; Calgary prairie residential context, no mountains"
+        ],
+        "negative": [
+          "No painted or separated bike lane (this is a shared lane)",
+          "No arterial scale",
+          "No mountains",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "cycling_first",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 12,
+        "lane_count": 2,
+        "volume": "low",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/bicycle-shared-space/variant_0.png",
+      "variants": [
+        {
+          "id": "bicycle_shared_space_v0",
+          "label": "Sharrow Shared Lane",
+          "color": "#3f93c0",
+          "description": "A low-volume Local street where bikes share the travel lane with cars, marked with sharrows and signs — the lowest-separation ABFDG on-street bikeway, for ~30 km/h streets.",
+          "thumbnailUrl": "/archetypes/streets/bicycle-shared-space/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic calm residential Local street signed as a BICYCLE SHARED SPACE. Two asphalt travel lanes with a single dashed yellow centre line and large white sharrow (bicycle + double-chevron) markings centred in each lane; people cycle in the lane with a few slow cars sharing the road. Mature canopy boulevard trees, grass boulevards and concrete sidewalks both sides; modest detached homes front the street. ZONE COMPOSITION, exact edge to edge: setback, sidewalk, boulevard, travel lane, travel lane, boulevard, sidewalk, setback. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: shared travel lanes 3.0 m with sharrow markings; no dedicated bike lane; used on ~30 km/h low-volume Local streets (Alberta Bicycle Facilities Design Guide; Calgary Street Manual 5.2.3).",
+        "roofView": "Replace the colored zone viewed from directly above with a residential Local street as a shared bikeway: two travel lanes with white sharrow markings centred in each, bicycle shapes in the lane, a dashed yellow centre line, round canopy boulevard trees and sidewalks both sides. ZONE COMPOSITION edge to edge: setback, sidewalk, boulevard, travel lane, travel lane, boulevard, sidewalk, setback. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: 3.0 m shared lanes with sharrows, no dedicated bike lane (ABFDG; Calgary Street Manual 5.2.3)."
+      }
+    },
+    {
+      "id": "bicycle_lane_painted",
+      "typicalWidth_m": 18,
+      "minWidth_m": 15,
+      "maxWidth_m": 21,
+      "suggestedAreaSqm": 1800,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": true,
+      "shape": "linear",
+      "title": "Bicycle Lane (Painted)",
+      "aestheticCategory": "alberta_bike_design_guide",
+      "description": "Painted bicycle lane (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.4): an on-street bike lane delineated from the travel lane by paint only — a solid white line, bike symbols and (where space allows) a striped buffer — with no physical separation. One lane runs each way beside the travel lanes. The unbuffered lane is the minimum treatment (~1.5–1.8 m); the buffered lane adds a painted buffer (~0.6 m) for extra comfort beside faster or busier traffic. Suited to Collectors and lower-speed Arterials where a protected lane is not yet feasible.",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "alberta-bike-design-guide",
+        "abfdg",
+        "painted-bike-lane",
+        "buffered-bike-lane",
+        "on-street",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "section": {
+        "row_m": 18.0,
+        "carriageway_m": 6.6,
+        "targetSpeed_kmh": 50,
+        "confidence": "representative",
+        "symmetric": true,
+        "zones": [
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.8,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.8,
+            "label": "Boulevard",
+            "planting": "canopy street tree",
+            "furniture": [
+              "street light"
+            ]
+          },
+          {
+            "type": "bike_lane",
+            "width_m": 1.8,
+            "label": "Bike Lane",
+            "surface": "asphalt",
+            "note": "painted on-street bike lane, white line + bike symbol, optional striped buffer"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.3,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.3,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "bike_lane",
+            "width_m": 1.8,
+            "label": "Bike Lane",
+            "surface": "asphalt",
+            "note": "painted on-street bike lane, white line + bike symbol, optional striped buffer"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.8,
+            "label": "Boulevard",
+            "planting": "canopy street tree",
+            "furniture": [
+              "street light"
+            ]
+          },
+          {
+            "type": "sidewalk",
+            "width_m": 1.8,
+            "label": "Sidewalk",
+            "surface": "concrete"
+          },
+          {
+            "type": "setback",
+            "width_m": 0.3,
+            "label": "Setback"
+          }
+        ]
+      },
+      "styleProfile": {
+        "corridorCharacter": "An urban Collector seen from drone altitude with PAINTED BICYCLE LANES on both sides. A solid white line and bike symbols set each bike lane off from the travel lane; where space allows a diagonal-striped buffer widens the gap to traffic. People cycle in the lanes beside calm two-way traffic. Canopy boulevard trees, street lights and concrete sidewalks line both sides; mid-rise mixed-use frontage. Calgary prairie urban context, no mountains.",
+        "movementHierarchy": "On-street cycling delineated by paint beside two-lane traffic; comfortable but not physically protected",
+        "surfaceType": "Asphalt travel lanes with painted (line + symbol, optional striped buffer) bike lanes both sides",
+        "plantingCharacter": "Canopy boulevard trees and pedestrian-scale lights both sides",
+        "edgeConditions": "Concrete sidewalks both sides, mid-rise mixed-use frontage cropped at the frame edge",
+        "publicRealm": "A simple, paint-delivered cycling connection on a Collector"
+      },
+      "prompt": {
+        "subject": "Aerial view of an urban collector with painted bike lanes both sides — a white line and bike symbols, an optional striped buffer, people cycling beside calm traffic",
+        "details": [
+          "18 m right-of-way: a 1.5–1.8 m painted bike lane each side with a white line and bike symbols",
+          "An optional diagonal-striped painted buffer between the bike lane and travel lane",
+          "Two 3.3 m travel lanes with a dashed yellow centre line; people cycling in the painted lanes",
+          "Canopy boulevard trees, street lights and concrete sidewalks both sides",
+          "Mid-rise mixed-use frontage; Calgary prairie urban context, no mountains"
+        ],
+        "negative": [
+          "No raised curb or planter (this is painted, not protected)",
+          "No cyclists in the travel lane",
+          "No mountains",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "cycling_first",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 18,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 2,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 3
+      },
+      "thumbnailUrl": "/archetypes/streets/bicycle-lane-painted/variant_0.png",
+      "variants": [
+        {
+          "id": "bicycle_lane_painted_v0",
+          "label": "Unbuffered",
+          "color": "#4a9bc7",
+          "description": "A painted on-street bike lane delineated by a single white line and bike symbols, ~1.5–1.8 m wide with no buffer — the minimum on-street treatment (ABFDG; Calgary 5.2.4).",
+          "thumbnailUrl": "/archetypes/streets/bicycle-lane-painted/variant_0.png"
+        },
+        {
+          "id": "bicycle_lane_painted_v1",
+          "label": "Buffered",
+          "color": "#4a9bc7",
+          "description": "A painted bike lane with an added diagonal-striped buffer (~0.6 m) widening the gap to traffic for extra comfort beside faster or busier roads (ABFDG; Calgary 5.2.4).",
+          "thumbnailUrl": "/archetypes/streets/bicycle-lane-painted/variant_1.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic urban Collector with PAINTED BICYCLE LANES on both sides. A solid white line and white bike symbols set each bike lane off from the travel lane, with an optional diagonal-striped painted buffer; people cycle in the lanes beside two calm travel lanes with a dashed yellow centre line. Canopy boulevard trees, street lights and concrete sidewalks both sides; mid-rise mixed-use frontage. ZONE COMPOSITION, exact edge to edge: setback, sidewalk, boulevard, bike lane, travel lane, travel lane, bike lane, boulevard, sidewalk, setback. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: painted bike lanes 1.5–1.8 m with a white line + bike symbol and an optional ~0.6 m striped buffer; no physical separation; travel lanes 3.3 m (Alberta Bicycle Facilities Design Guide; Calgary 5.2.4).",
+        "roofView": "Replace the colored zone viewed from directly above with a collector showing painted bike lanes both sides: white-lined lanes with bike symbols (optional striped buffer) flanking two travel lanes, bicycle shapes in the painted lanes, round canopy boulevard trees and sidewalks both sides. ZONE COMPOSITION edge to edge: setback, sidewalk, boulevard, bike lane, travel lane, travel lane, bike lane, boulevard, sidewalk, setback. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: painted bike lanes 1.5–1.8 m, optional 0.6 m striped buffer, no separation (ABFDG; Calgary 5.2.4)."
+      }
+    },
+    {
+      "id": "bicycle_accessible_shoulder",
+      "typicalWidth_m": 12,
+      "minWidth_m": 10,
+      "maxWidth_m": 15,
+      "suggestedAreaSqm": 1400,
+      "laneCount": 2,
+      "hasSidewalk": false,
+      "hasMedian": false,
+      "hasBikeLane": true,
+      "shape": "linear",
+      "title": "Bicycle Accessible Shoulder",
+      "aestheticCategory": "alberta_bike_design_guide",
+      "description": "Bicycle accessible shoulder (Alberta Bicycle Facilities Design Guide): a paved shoulder on a rural or semi-rural road wide enough to be ridden comfortably, the standard cycling provision outside curbed urban areas. There is no curb or sidewalk; a sealed paved shoulder (about 1.5 m, wider on higher-speed roads) runs each side between the travel lane edge line and the gravel verge / drainage ditch, giving people cycling a usable surface separated from traffic by an edge line and rumble strip rather than a barrier.",
+      "transportModes": [
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "alberta-bike-design-guide",
+        "abfdg",
+        "paved-shoulder",
+        "rural-bikeway",
+        "shoulder",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "section": {
+        "row_m": 12.0,
+        "carriageway_m": 7.0,
+        "targetSpeed_kmh": 80,
+        "confidence": "representative",
+        "symmetric": true,
+        "zones": [
+          {
+            "type": "boulevard",
+            "width_m": 1.0,
+            "label": "Verge / Ditch",
+            "planting": "grass verge and drainage ditch"
+          },
+          {
+            "type": "shoulder",
+            "width_m": 1.5,
+            "label": "Paved Shoulder",
+            "surface": "asphalt",
+            "note": "sealed paved shoulder for cycling, edge line + rumble strip to the travel lane"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.5,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "travel_lane",
+            "width_m": 3.5,
+            "label": "Travel Lane"
+          },
+          {
+            "type": "shoulder",
+            "width_m": 1.5,
+            "label": "Paved Shoulder",
+            "surface": "asphalt",
+            "note": "sealed paved shoulder for cycling, edge line + rumble strip to the travel lane"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.0,
+            "label": "Verge / Ditch",
+            "planting": "grass verge and drainage ditch"
+          }
+        ]
+      },
+      "styleProfile": {
+        "corridorCharacter": "A rural two-lane road on the prairie edge of Calgary seen from drone altitude, with wide sealed PAVED SHOULDERS used for cycling. A continuous white edge line (with a rumble strip) separates each paved shoulder from the travel lane; a road cyclist rides the shoulder. Grass verges and shallow drainage ditches run outside the shoulders, with farm fields, fence lines and scattered trees beyond. Big prairie sky, no curbs, no sidewalks, no mountains.",
+        "movementHierarchy": "Higher-speed rural road where cycling is carried on a wide sealed paved shoulder beside the travel lanes",
+        "surfaceType": "Asphalt travel lanes with sealed paved shoulders, edge line and rumble strip, gravel verges",
+        "plantingCharacter": "Open grass verges, fence lines and scattered prairie trees",
+        "edgeConditions": "No curb or sidewalk; gravel verge and drainage ditch each side, farm fields beyond",
+        "publicRealm": "Rural cycling provision delivered by widening and sealing the shoulder"
+      },
+      "prompt": {
+        "subject": "Aerial view of a rural two-lane road with wide sealed paved shoulders for cycling, a road cyclist on the shoulder, edge lines and rumble strips, grass verges and farm fields beyond",
+        "details": [
+          "12 m cross-section: two 3.5 m travel lanes with a sealed 1.5 m paved shoulder each side",
+          "A continuous white edge line and rumble strip between each paved shoulder and the travel lane",
+          "A road cyclist riding the paved shoulder; a dashed yellow centre line on the carriageway",
+          "Grass verges and shallow drainage ditches outside the shoulders, no curb or sidewalk",
+          "Farm fields, fence lines and scattered trees; big prairie sky, no mountains"
+        ],
+        "negative": [
+          "No curb, sidewalk or urban boulevard",
+          "No physically separated cycle track",
+          "No mountains",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "bicycle",
+          "automobile"
+        ],
+        "width": 12,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 4,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/bicycle-accessible-shoulder/variant_0.png",
+      "variants": [
+        {
+          "id": "bicycle_accessible_shoulder_v0",
+          "label": "Sealed Paved Shoulder",
+          "color": "#5aa6cd",
+          "description": "A sealed paved shoulder (~1.5 m, wider on faster roads) on a rural road, separated from traffic by an edge line and rumble strip — the standard ABFDG cycling provision outside curbed urban areas.",
+          "thumbnailUrl": "/archetypes/streets/bicycle-accessible-shoulder/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic rural two-lane prairie road with wide sealed PAVED SHOULDERS used for cycling. Two asphalt travel lanes with a dashed yellow centre line; a continuous white edge line and rumble strip separate a 1.5 m sealed paved shoulder on each side, where a road cyclist rides. Grass verges and shallow drainage ditches run outside the shoulders, with farm fields, fence lines and scattered trees beyond — no curb, no sidewalk. ZONE COMPOSITION, exact edge to edge: verge/ditch, paved shoulder, travel lane, travel lane, paved shoulder, verge/ditch. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: sealed paved shoulders ~1.5 m (wider on higher-speed roads), separated from 3.5 m travel lanes by an edge line and rumble strip; no curb or sidewalk (Alberta Bicycle Facilities Design Guide).",
+        "roofView": "Replace the colored zone viewed from directly above with a rural road showing wide paved shoulders for cycling: two travel lanes edged by sealed shoulders with edge lines, a bicycle shape on a shoulder, grass verges and ditches outside, farm fields beyond, no curb or sidewalk. ZONE COMPOSITION edge to edge: verge/ditch, paved shoulder, travel lane, travel lane, paved shoulder, verge/ditch. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: sealed paved shoulders ~1.5 m, edge line + rumble strip, 3.5 m travel lanes (ABFDG)."
+      }
+    },
+    {
+      "id": "bicycle_pathway",
+      "typicalWidth_m": 5,
+      "minWidth_m": 4,
+      "maxWidth_m": 7,
+      "suggestedAreaSqm": 800,
+      "laneCount": 2,
+      "hasSidewalk": false,
+      "hasMedian": false,
+      "hasBikeLane": true,
+      "shape": "linear",
+      "title": "Bicycle Pathway",
+      "aestheticCategory": "alberta_bike_design_guide",
+      "description": "Bicycle pathway (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.2): a paved off-street path reserved for cycling, away from motor traffic, typically through a park, utility corridor or along a greenway. Unlike a multi-use pathway it is bike-priority — about 3.0–4.0 m wide with a painted centre line for two-way riding and (where pedestrian volumes warrant) a separate adjacent walking path. Grass or naturalized verges run each side. It forms the comfortable, uninterrupted spine of the cycling network between on-street connections.",
+      "transportModes": [
+        "bicycle",
+        "walking"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "alberta-bike-design-guide",
+        "abfdg",
+        "bike-path",
+        "off-street",
+        "pathway",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "section": {
+        "row_m": 5.0,
+        "carriageway_m": 3.0,
+        "targetSpeed_kmh": 20,
+        "confidence": "representative",
+        "symmetric": true,
+        "zones": [
+          {
+            "type": "boulevard",
+            "width_m": 1.0,
+            "label": "Verge",
+            "planting": "mown grass / naturalized edge"
+          },
+          {
+            "type": "bike_lane",
+            "width_m": 3.0,
+            "label": "Bicycle Path",
+            "surface": "asphalt",
+            "note": "bike-only two-way paved path with a yellow centre line"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 1.0,
+            "label": "Verge",
+            "planting": "mown grass / naturalized edge"
+          }
+        ]
+      },
+      "styleProfile": {
+        "corridorCharacter": "A paved off-street BICYCLE PATHWAY seen from drone altitude, winding through a green park / utility corridor away from any road. A smooth asphalt path about 3–4 m wide carries two-way cycling with a painted yellow centre line; people ride in both directions. Mown grass and naturalized planting border the path, with mature trees and open green space around. Calgary prairie park context, no mountains, no motor vehicles.",
+        "movementHierarchy": "Off-street, bike-priority two-way path forming the comfortable spine of the cycling network",
+        "surfaceType": "Smooth asphalt bike path with a painted centre line, grass verges",
+        "plantingCharacter": "Mown grass and naturalized edges with mature trees and open green space",
+        "edgeConditions": "No road, curb or buildings adjacent; green park / corridor both sides",
+        "publicRealm": "A continuous, uninterrupted green cycling spine separated from traffic"
+      },
+      "prompt": {
+        "subject": "Aerial view of a paved off-street bicycle pathway winding through a green park corridor, two-way riding with a painted centre line, grass verges and trees, no motor traffic",
+        "details": [
+          "A smooth asphalt path about 3–4 m wide with a painted yellow centre line for two-way cycling",
+          "People cycling in both directions; no motor vehicles and no adjacent road",
+          "Mown grass and naturalized planting bordering the path",
+          "Mature trees and open green space around; a gentle curve through the corridor",
+          "Calgary prairie park context, no mountains"
+        ],
+        "negative": [
+          "No road, traffic lanes or parked cars",
+          "No curb or urban street frontage",
+          "No mountains",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "cycling_first",
+        "transport_modes": [
+          "bicycle",
+          "walking"
+        ],
+        "width": 5,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 3,
+        "priority_cycling": 1,
+        "priority_transit": 4,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/bicycle-pathway/variant_0.png",
+      "variants": [
+        {
+          "id": "bicycle_pathway_v0",
+          "label": "Off-Street Bike Path",
+          "color": "#6bb2d6",
+          "description": "A paved bike-priority two-way path (~3–4 m, centre line) through a park or corridor away from traffic — the uninterrupted green spine of the cycling network (ABFDG; Calgary Street Manual 5.2.2).",
+          "thumbnailUrl": "/archetypes/streets/bicycle-pathway/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored zone with a photorealistic paved off-street BICYCLE PATHWAY winding through a green park / corridor away from any road. A smooth asphalt path about 3–4 m wide with a painted yellow centre line carries people cycling in both directions; mown grass and naturalized planting border it, with mature trees and open green space around — no road, curb or buildings. ZONE COMPOSITION, exact edge to edge: verge, bicycle path, verge. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic. BUILD TO SPEC — industry-standard dimensions: the bike path is 3.0–4.0 m wide with a painted centre line for two-way cycling, bike-priority (separate adjacent walking path only where pedestrian volumes warrant); grass verges each side (Alberta Bicycle Facilities Design Guide; Calgary Street Manual sec. 5.2.2).",
+        "roofView": "Replace the colored zone viewed from directly above with a paved off-street bike path: a smooth asphalt ribbon with a yellow centre line curving through green space, bicycle shapes riding both ways, mown grass verges and scattered trees, no road or buildings. ZONE COMPOSITION edge to edge: verge, bicycle path, verge. Keep surrounding context exactly as-is. BUILD TO SPEC — industry-standard dimensions: bike-only two-way path 3.0–4.0 m with a centre line, grass verges (ABFDG; Calgary 5.2.2)."
+      }
+    },
+    {
+      "id": "protected_intersection_diagram",
+      "typicalWidth_m": 34,
+      "minWidth_m": 26,
+      "maxWidth_m": 46,
+      "suggestedAreaSqm": 1200,
+      "laneCount": 4,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": true,
+      "shape": "circle",
+      "title": "Protected Intersection (Diagram)",
+      "aestheticCategory": "intersections",
+      "description": "Protected intersection authored from the engineered PLAN DIAGRAM (Calgary Street Manual Fig 9.14; derived from the City of Ottawa Protected Intersection Design Guide) rather than a photo. Corner refuge islands set the bike and pedestrian crossings back from the corner, one-way protected bike tracks wrap each corner behind the islands, and the set-back crossings give drivers a near-square, slow turn with clear sightlines to people walking and wheeling. Its reference image is a buildings-free technical diagram, so the render reproduces only the junction geometry — no invented streetwall or phantom buildings.",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile",
+        "transit"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "protected-intersection",
+        "technical-diagram",
+        "intersection",
+        "cycling",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "An oblique aerial of a PROTECTED INTERSECTION reproduced exactly from its engineered plan diagram: raised corner refuge islands hold the crossings back from the corner, one-way protected bike tracks (coloured) wrap behind each island, and set-back zebra crosswalks and elephant's-feet bike crossings span each leg. Cars take a tight, slow, near-square turn; people cycle the protected corner. The junction fills the frame surrounded by open ground, grass verges and a few scattered trees — no buildings. Calgary prairie context.",
+        "movementHierarchy": "Low-speed protected junction prioritising people walking and wheeling; tight slow car turns",
+        "surfaceType": "Asphalt junction with coloured protected bike tracks, raised corner islands and set-back crossings",
+        "plantingCharacter": "Grass verges and scattered trees around the junction; planted corner islands",
+        "edgeConditions": "Open ground / grass around the junction — NO buildings or streetwall",
+        "publicRealm": "A junction redesigned to make cycling and walking safe through tight, visible geometry"
+      },
+      "prompt": {
+        "subject": "Oblique aerial of a protected intersection rebuilt to plan — corner refuge islands, wrapped protected bike tracks, set-back crossings, slow car turns, no buildings",
+        "details": [
+          "Raised corner refuge islands setting the crossings back from the corner",
+          "Coloured one-way protected bike tracks wrapping each corner behind the islands",
+          "Set-back zebra crosswalks and elephant's-feet bike crossings on each leg",
+          "Cars taking tight, slow, near-square turns; people cycling the protected corner",
+          "Junction surrounded by open ground, grass verges and scattered trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No free-flow slip lanes",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile",
+          "transit"
+        ],
+        "width": 34,
+        "lane_count": 4,
+        "volume": "high",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 2,
+        "priority_transit": 3,
+        "priority_auto": 4
+      },
+      "thumbnailUrl": "/archetypes/streets/protected-intersection-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "protected_intersection_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#2f8068",
+          "description": "Protected intersection rendered from its engineered plan diagram — corner refuge islands, wrapped protected bike tracks and set-back crossings, with no invented buildings because the reference is a buildings-free technical diagram.",
+          "thumbnailUrl": "/archetypes/streets/protected-intersection-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored intersection zone with a photorealistic PROTECTED INTERSECTION reproduced exactly from its engineered plan: raised corner refuge islands set the crossings back from the corner, coloured one-way protected bike tracks wrap behind each island, and set-back zebra crosswalks and elephant's-feet bike crossings span each leg; cars take tight slow near-square turns. CRITICAL: render ONLY the junction, its asphalt, markings, raised islands, bike tracks and crossings, surrounded by open ground, grass verges and a few scattered trees — do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Replace the colored zone viewed from directly above with a protected-intersection plan: raised corner refuge islands, coloured protected bike tracks wrapping each corner, set-back crosswalks and bike crossings, car rectangles taking tight turns, grass verges and scattered trees around the junction — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "compact_safety_roundabout_diagram",
+      "typicalWidth_m": 30,
+      "minWidth_m": 24,
+      "maxWidth_m": 40,
+      "suggestedAreaSqm": 1000,
+      "laneCount": 1,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "circle",
+      "title": "Compact Safety Roundabout (Diagram)",
+      "aestheticCategory": "intersections",
+      "description": "Compact single-lane roundabout authored from a clean engineered PLAN diagram rather than a photo: a planted central island and tight circulating roadway slow every movement to a low speed, raised splitter islands on each approach deflect entry and double as pedestrian refuges, and set-back zebra crossings span each leg. Its reference image is a buildings-free technical diagram, so the render reproduces only the junction geometry — no invented streetwall or phantom buildings.",
+      "transportModes": [
+        "walking",
+        "bicycle",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "roundabout",
+        "compact-roundabout",
+        "technical-diagram",
+        "intersection",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "An aerial of a COMPACT SAFETY ROUNDABOUT reproduced exactly from its engineered plan diagram: a planted central island ringed by a single circulating asphalt lane, raised splitter islands on each of the four approaches, and set-back zebra crosswalks that cross each approach through the splitter refuge. The junction fills the frame surrounded by open ground, grass and a few scattered trees — no buildings. Calgary prairie context.",
+        "movementHierarchy": "Low-speed yield-controlled circulating junction; deflected slow entries; pedestrian refuges in the splitters",
+        "surfaceType": "Asphalt circulating roadway around a planted central island, with a mountable apron and raised splitter islands",
+        "plantingCharacter": "Planted central island and splitter islands; grass and scattered trees around the junction",
+        "edgeConditions": "Open ground / grass around the junction — NO buildings or streetwall",
+        "publicRealm": "A junction redesigned to slow traffic and shorten pedestrian crossings through tight circular geometry"
+      },
+      "prompt": {
+        "subject": "Aerial of a compact single-lane roundabout rebuilt to plan — planted central island, circulating lane, splitter-island approaches, set-back crossings, no buildings",
+        "details": [
+          "A planted central island ringed by a single circulating asphalt lane and a mountable apron",
+          "Raised splitter islands on each of the four approaches deflecting entry",
+          "Set-back zebra crosswalks crossing each approach through the splitter refuge",
+          "Low circulating speeds; yield-controlled entries",
+          "Junction surrounded by open ground, grass and scattered trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No traffic signals",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "bicycle",
+          "automobile"
+        ],
+        "width": 30,
+        "lane_count": 1,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/compact-safety-roundabout-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "compact_safety_roundabout_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#33856f",
+          "description": "Compact single-lane roundabout rendered from its engineered plan diagram — planted central island, circulating lane, splitter-island approaches and set-back crossings, with no invented buildings because the reference is a buildings-free technical diagram.",
+          "thumbnailUrl": "/archetypes/streets/compact-safety-roundabout-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored junction zone with a photorealistic COMPACT SINGLE-LANE ROUNDABOUT reproduced exactly from its engineered plan: a planted central island ringed by one circulating asphalt lane and a mountable apron, raised splitter islands on each of the four approaches, and set-back zebra crosswalks crossing each approach through the splitter refuge. CRITICAL: render ONLY the roundabout, its asphalt, markings, planted central island and splitter islands, surrounded by open ground, grass and a few scattered trees — do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Replace the colored zone viewed from directly above with a compact roundabout plan: a planted central island ringed by a single circulating lane, raised splitter islands on each approach, and set-back crosswalks through the splitter refuges, with grass and scattered trees around the junction — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "curb_extension_crossing_diagram",
+      "typicalWidth_m": 16,
+      "minWidth_m": 12,
+      "maxWidth_m": 22,
+      "suggestedAreaSqm": 600,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Curb Extension Crossing (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "Mid-block pedestrian crossing with curb extensions (bulb-outs) authored from a clean engineered PLAN diagram: the sidewalk is extended into the parking lane on both sides to shorten the crossing distance, tighten the effective roadway and improve sightlines between people walking and drivers, with a continental (ladder) crosswalk between the bulb-outs. Its reference image is a buildings-free technical diagram, so the render reproduces only the street and crossing geometry — no invented streetwall or phantom buildings.",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "curb-extension",
+        "bulb-out",
+        "crossing",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "An aerial of a MID-BLOCK CURB-EXTENSION CROSSING reproduced exactly from its engineered plan diagram: a two-lane street where the sidewalk bulges out into the parking lane on both sides at the crossing point, narrowing the roadway, with a continental ladder crosswalk between the bulb-outs and a street tree on each extension. Open grass verges and scattered trees beyond the sidewalks — no buildings. Calgary prairie context.",
+        "movementHierarchy": "Calmed two-lane street prioritising a short, visible pedestrian crossing at the bulb-outs",
+        "surfaceType": "Asphalt roadway with concrete curb extensions and a continental ladder crosswalk",
+        "plantingCharacter": "Street trees on the curb extensions; grass verges and scattered trees beyond the sidewalks",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A crossing redesigned to shorten the walk across and bring people in view before they step out"
+      },
+      "prompt": {
+        "subject": "Aerial of a mid-block curb-extension crossing rebuilt to plan — bulb-outs narrowing the road, continental crosswalk between them, no buildings",
+        "details": [
+          "Concrete curb extensions (bulb-outs) bulging into the parking lane on both sides",
+          "A continental ladder crosswalk between the bulb-outs across the narrowed roadway",
+          "Parking-lane lines interrupted by the bulb-outs; a dashed centre line",
+          "A street tree planted on each curb extension",
+          "Sidewalks, grass verges and scattered trees either side — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No traffic signals or intersection",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "width": 16,
+        "lane_count": 2,
+        "volume": "medium",
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/curb-extension-crossing-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "curb_extension_crossing_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#3a9079",
+          "description": "Mid-block curb-extension crossing rendered from its engineered plan diagram — bulb-outs narrowing the road and a continental crosswalk between them, with no invented buildings because the reference is a buildings-free technical diagram.",
+          "thumbnailUrl": "/archetypes/streets/curb-extension-crossing-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic MID-BLOCK CURB-EXTENSION CROSSING reproduced exactly from its engineered plan: a two-lane street where concrete sidewalk bulb-outs extend into the parking lane on both sides to narrow the roadway, with a continental ladder crosswalk between the bulb-outs and a street tree on each extension. CRITICAL: render ONLY the street, its asphalt, markings, curb extensions, crosswalk and sidewalks, with grass verges and a few scattered trees — do NOT add any buildings, houses or streetwall, and do not invent an intersection or extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Replace the colored zone viewed from directly above with a curb-extension crossing plan: concrete bulb-outs narrowing a two-lane street, a continental ladder crosswalk between them, a street tree on each extension, sidewalks and grass verges either side — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "speed_hump_diagram",
+      "typicalWidth_m": 8.5,
+      "minWidth_m": 7,
+      "maxWidth_m": 11,
+      "suggestedAreaSqm": 101,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Speed Hump (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "Local-street SPEED HUMP authored from a clean engineered to-scale plan: a raised asphalt hump (~3.7 m long, ~90 mm high) spanning the carriageway with white chevron ramp markings, slowing drivers through an abrupt vertical change (Calgary Street Manual §10.4.3.2).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "speed-hump",
+        "traffic-calming",
+        "vertical-deflection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a calm local street with a raised speed hump spanning the carriageway, chevron ramp markings, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a calm local street with a raised speed hump spanning the carriageway, chevron ramp markings, no buildings",
+        "details": [
+          "A raised asphalt speed hump (~3.7 m long, ~90 mm high) across the carriageway",
+          "White chevron ramp markings on the hump",
+          "Sidewalks, grass verges and a few boulevard trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 2,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/speed-hump-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "speed_hump_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#3c8a6a",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/speed-hump-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic calm LOCAL STREET with a SPEED HUMP — a raised asphalt hump about 3.7 m long and 90 mm high spanning the carriageway, with white chevron ramp markings. Render ONLY the street, its asphalt, markings, the raised hump, sidewalks, grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a local street with a raised speed hump across it (chevron markings), sidewalks and grass verges either side — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "speed_table_diagram",
+      "typicalWidth_m": 8.5,
+      "minWidth_m": 7,
+      "maxWidth_m": 11,
+      "suggestedAreaSqm": 101,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Speed Table (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "SPEED TABLE authored from a clean engineered to-scale plan: a flat-topped raised platform (flat top typically 6–9 m long, ~90 mm high) with bevelled ramps and chevron markings, calming a Collector or Local Street with a gentler rate of change than a hump (Calgary Street Manual §10.4.3.2).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "speed-table",
+        "traffic-calming",
+        "vertical-deflection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a calm street with a flat-topped speed table spanning the carriageway, chevron ramps, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a calm street with a flat-topped speed table spanning the carriageway, chevron ramps, no buildings",
+        "details": [
+          "A flat-topped raised speed table (flat top ~6–9 m, ~90 mm high) with bevelled ramps",
+          "White chevron ramp markings",
+          "Sidewalks, grass verges and a few boulevard trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 2,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/speed-table-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "speed_table_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#46977a",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/speed-table-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic calm street with a SPEED TABLE — a flat-topped raised asphalt platform (flat top about 6–9 m long, ~90 mm high) with bevelled ramps and white chevron ramp markings. Render ONLY the street, its asphalt, markings, the raised table, sidewalks, grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a street with a flat-topped speed table across it (chevron ramps), sidewalks and grass verges either side — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "speed_cushion_diagram",
+      "typicalWidth_m": 9.0,
+      "minWidth_m": 7,
+      "maxWidth_m": 12,
+      "suggestedAreaSqm": 113,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Speed Cushion (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "SPEED CUSHION authored from a clean engineered to-scale plan: raised asphalt cushions (~3 m long, ~85 mm high) with wheel cut-out gaps so wide-track emergency vehicles and buses straddle them while cars are slowed (Calgary Street Manual §10.4.3.3).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "speed-cushion",
+        "traffic-calming",
+        "vertical-deflection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a calm street with raised speed cushions and wheel-gap openings across the carriageway, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a calm street with raised speed cushions and wheel-gap openings across the carriageway, no buildings",
+        "details": [
+          "Raised asphalt cushions (~3 m long, ~85 mm) with wheel cut-out gaps between them",
+          "One cushion per wheel track with gaps at the centre and kerbs",
+          "Sidewalks, grass verges, a few trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 2,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/speed-cushion-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "speed_cushion_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#2e7e64",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/speed-cushion-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic calm street with SPEED CUSHIONS — raised asphalt cushions about 3 m long and 85 mm high with wheel cut-out gaps between them (so wide-track vehicles straddle them). Render ONLY the street, its asphalt, markings, the raised cushions, sidewalks, grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a street with raised speed cushions and wheel-gap openings across it, sidewalks and grass verges either side — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "raised_crossing_diagram",
+      "typicalWidth_m": 8.5,
+      "minWidth_m": 7,
+      "maxWidth_m": 11,
+      "suggestedAreaSqm": 101,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Raised Crossing (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "RAISED CROSSING authored from a clean engineered to-scale plan: a pedestrian/wheeling crossing raised to about kerb level (~125 mm) on a flat-topped platform with bevelled ramps, so people cross at grade and drivers slow (Calgary Street Manual §10.4.3.1).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "raised-crossing",
+        "traffic-calming",
+        "vertical-deflection",
+        "crossing",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a street with a raised crossing — a crosswalk on a raised platform with chevron ramps, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a street with a raised crossing — a crosswalk on a raised platform with chevron ramps, no buildings",
+        "details": [
+          "A continental crosswalk on a raised platform at ~kerb level (125 mm) with bevelled ramps",
+          "White chevron ramp markings on the approaches",
+          "Sidewalks, grass verges and a few trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 2,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/raised-crossing-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "raised_crossing_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#52a088",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/raised-crossing-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic street with a RAISED CROSSING — a continental crosswalk on a flat-topped raised platform at about kerb level (125 mm) with bevelled ramps and white chevron ramp markings. Render ONLY the street, its asphalt, markings, the raised platform and crosswalk, sidewalks, grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a street with a crosswalk on a raised platform (chevron ramps), sidewalks and grass verges either side — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "raised_intersection_diagram",
+      "typicalWidth_m": 22,
+      "minWidth_m": 18,
+      "maxWidth_m": 29,
+      "suggestedAreaSqm": 678,
+      "laneCount": 4,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "circle",
+      "title": "Raised Intersection (Diagram)",
+      "aestheticCategory": "intersections",
+      "description": "RAISED INTERSECTION authored from a clean engineered to-scale plan: the whole junction raised to a plateau at about kerb level (~125 mm) with bevelled ramps on each approach and crosswalks at the plateau edges, slowing all turning movements (Calgary Street Manual §10.4.3).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "raised-intersection",
+        "traffic-calming",
+        "intersection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a four-way junction raised to a plateau with ramps and crosswalks on each leg, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a four-way junction raised to a plateau with ramps and crosswalks on each leg, no buildings",
+        "details": [
+          "The whole junction raised to a plateau at ~kerb level (125 mm)",
+          "Bevelled ramps and chevron markings on each approach; crosswalks at the plateau edges",
+          "Grass verges and a few scattered trees around the junction — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 4,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/raised-intersection-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "raised_intersection_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#379070",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/raised-intersection-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored junction zone with a photorealistic RAISED INTERSECTION — the whole four-way junction raised to a flat plateau at about kerb level (125 mm) with bevelled ramps and white chevron markings on each approach and crosswalks at the plateau edges. Render ONLY the junction, its asphalt, markings, the raised plateau and crossings, with grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a four-way junction raised to a plateau with ramps and crosswalks on each leg, grass verges around it — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "two_stage_crossing_median_diagram",
+      "typicalWidth_m": 16,
+      "minWidth_m": 13,
+      "maxWidth_m": 21,
+      "suggestedAreaSqm": 358,
+      "laneCount": 4,
+      "hasSidewalk": true,
+      "hasMedian": true,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Two-Stage Crossing Median (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "TWO-STAGE CROSSING MEDIAN authored from a clean engineered to-scale plan: a raised centre refuge median (≥2 m wide) lets people cross one direction of traffic at a time via a staggered crosswalk on a wider street (Calgary Street Manual §10.4.4.2).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "two-stage-crossing",
+        "pedestrian-refuge",
+        "median",
+        "crossing",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of an arterial street with a centre refuge median and a staggered two-stage crosswalk, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of an arterial street with a centre refuge median and a staggered two-stage crosswalk, no buildings",
+        "details": [
+          "A raised, planted centre refuge median (≥2 m wide) at the crossing",
+          "A staggered crosswalk — cross to the refuge, then cross the second half",
+          "Sidewalks, grass verges, a few trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 4,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/two-stage-crossing-median-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "two_stage_crossing_median_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#5fa890",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/two-stage-crossing-median-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic wider arterial street with a TWO-STAGE CROSSING MEDIAN — a raised, planted centre refuge median about 2.5 m wide with a staggered crosswalk (people cross to the refuge, then cross the second half). Render ONLY the street, its asphalt, markings, the centre median and crosswalk, sidewalks, grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a wider street with a planted centre refuge median and a staggered crosswalk, sidewalks and grass verges either side — NO buildings. Keep surrounding context as-is."
+      }
+    },
+    {
+      "id": "mini_roundabout_diagram",
+      "typicalWidth_m": 22,
+      "minWidth_m": 18,
+      "maxWidth_m": 29,
+      "suggestedAreaSqm": 678,
+      "laneCount": 1,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "circle",
+      "title": "Mini-Roundabout (Diagram)",
+      "aestheticCategory": "intersections",
+      "description": "MINI-ROUNDABOUT authored from a clean engineered to-scale plan: a small roundabout (inscribed circle ~18 m) with a fully MOUNTABLE (painted/domed) central island and splitter islands, calming a minor junction where a raised island would be too tight (Calgary Street Manual Fig 10.10).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "medium",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "mini-roundabout",
+        "roundabout",
+        "traffic-calming",
+        "intersection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a small mini-roundabout with a flat mountable central island and splitter approaches, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a small mini-roundabout with a flat mountable central island and splitter approaches, no buildings",
+        "details": [
+          "A small circulating roadway (~18 m inscribed circle) around a flat MOUNTABLE central island",
+          "Raised splitter islands on each approach",
+          "Grass verges and a few scattered trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "balanced",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 1,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/mini-roundabout-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "mini_roundabout_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#2b7358",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/mini-roundabout-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored junction zone with a photorealistic MINI-ROUNDABOUT — a small circulating roadway (about 18 m inscribed circle) around a flat MOUNTABLE (painted/domed, not planted) central island, with raised splitter islands on each approach. Render ONLY the roundabout, its asphalt, markings, the mountable island and splitters, with grass verges and a few trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a small mini-roundabout with a flat mountable central island and splitter approaches, grass verges around it — NO buildings. Keep surrounding context exactly as-is."
+      }
+    },
+    {
+      "id": "chicane_diagram",
+      "typicalWidth_m": 8.5,
+      "minWidth_m": 7,
+      "maxWidth_m": 11,
+      "suggestedAreaSqm": 101,
+      "laneCount": 2,
+      "hasSidewalk": true,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "Chicane (Diagram)",
+      "aestheticCategory": "traffic_safety_vision_zero",
+      "description": "CHICANE authored from a clean engineered to-scale plan: alternating planted curb extensions deflect the travel path side-to-side (a lateral shift of ~1.6 m), slowing drivers on a Local Street through horizontal deflection (Calgary Street Manual §10.4.4.3).",
+      "transportModes": [
+        "walking",
+        "automobile"
+      ],
+      "volume": "low",
+      "generationTags": [
+        "traffic-safety",
+        "vision-zero",
+        "chicane",
+        "traffic-calming",
+        "horizontal-deflection",
+        "technical-diagram",
+        "calgary",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "Aerial of a calm local street with alternating planted curb extensions deflecting the travel path, no buildings",
+        "movementHierarchy": "Calmed street prioritising slow, safe movement",
+        "surfaceType": "Asphalt with the traffic-calming geometry and markings",
+        "plantingCharacter": "Grass verges, boulevard street trees, planted islands where present",
+        "edgeConditions": "Sidewalks and grass verges either side — NO buildings or streetwall",
+        "publicRealm": "A street segment redesigned to slow drivers and protect people walking and wheeling"
+      },
+      "prompt": {
+        "subject": "Aerial of a calm local street with alternating planted curb extensions deflecting the travel path, no buildings",
+        "details": [
+          "Alternating planted curb extensions (build-outs) on opposite sides",
+          "The travel path weaves laterally (~1.6 m shift) around them",
+          "Sidewalks, grass verges and street trees — NO buildings"
+        ],
+        "negative": [
+          "No buildings, houses or streetwall",
+          "No invented extra roads",
+          "No text or numbered callouts"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "pedestrian_first",
+        "transport_modes": [
+          "walking",
+          "automobile"
+        ],
+        "lane_count": 2,
+        "road_surface": "asphalt",
+        "sidewalks": "both",
+        "has_sidewalks": true,
+        "priority_pedestrian": 1,
+        "priority_cycling": 3,
+        "priority_transit": 4,
+        "priority_auto": 2
+      },
+      "thumbnailUrl": "/archetypes/streets/chicane-diagram/variant_0.png",
+      "variants": [
+        {
+          "id": "chicane_diagram_v0",
+          "label": "Plan-Diagram Render",
+          "color": "#66b09a",
+          "description": "Rendered from its clean engineered to-scale plan diagram, so no buildings are invented — the reference is a buildings-free technical drawing.",
+          "thumbnailUrl": "/archetypes/streets/chicane-diagram/variant_0.png"
+        }
+      ],
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic calm LOCAL STREET with a CHICANE — alternating planted curb extensions (build-outs) on opposite sides that deflect the travel path side-to-side (a lateral shift of about 1.6 m), with street trees on the extensions. Render ONLY the street, its asphalt, markings, the curb extensions, sidewalks, grass verges and trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
+        "roofView": "Directly-above view of a local street with alternating planted curb extensions deflecting the travel path, sidewalks and grass verges either side — NO buildings. Keep surrounding context as-is."
       }
     }
   ]

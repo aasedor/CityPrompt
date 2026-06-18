@@ -132,6 +132,25 @@ export const SHADE_MAP: Record<string, string> = {
   high_entry_angle_right_turn:        '#2b6b54',
   right_in_right_out_median:          '#266048',
   directional_full_closure:           '#56977f',
+  protected_intersection_diagram:     '#2f8068',
+  compact_safety_roundabout_diagram:  '#33856f',
+  curb_extension_crossing_diagram:    '#3a9079',
+  // Calgary Street Manual Ch10 traffic-calming technical-drawing diagram siblings
+  speed_hump_diagram:                 '#3c8a6a',
+  speed_table_diagram:                '#46977a',
+  speed_cushion_diagram:              '#2e7e64',
+  raised_crossing_diagram:            '#52a088',
+  raised_intersection_diagram:        '#379070',
+  two_stage_crossing_median_diagram:  '#5fa890',
+  mini_roundabout_diagram:            '#2b7358',
+  chicane_diagram:                    '#66b09a',
+
+  // ── Blue family: Alberta Bike Design Guide ──────────────────────────
+  protected_bike_lane_bidirectional:  '#2f7fb0',
+  bicycle_shared_space:               '#3f93c0',
+  bicycle_lane_painted:               '#4a9bc7',
+  bicycle_accessible_shoulder:        '#5aa6cd',
+  bicycle_pathway:                    '#6bb2d6',
 
   // ── Green family: Parks & Green Space ───────────────────────────────
   urban_pocket_park:                  '#2d6b30',
