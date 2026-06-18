@@ -648,8 +648,9 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
           ))}
         </div>
 
-        {/* Real-world context toggle */}
-        <label className="flex max-w-[150px] cursor-pointer items-center gap-2 text-[10px] font-black uppercase leading-tight text-[#151515]">
+        {/* Real-world context toggle — colour inherits the always-cream card; an explicit
+            text-[#151515] would get flipped to near-white by dark mode and vanish on the card. */}
+        <label className="flex max-w-[150px] cursor-pointer items-center gap-2 text-[10px] font-black uppercase leading-tight">
           <input
             type="checkbox"
             checked={useRealContext}
