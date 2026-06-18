@@ -656,7 +656,11 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, onRenderSa
             onChange={(e) => setUseRealContext(e.target.checked)}
             className="h-3.5 w-3.5 shrink-0 accent-[#c9ff3d]"
           />
-          Real site context (Street View + businesses)
+          <span>
+            Real site context
+            <br />
+            (Google Street View API)
+          </span>
         </label>
 
         {/* Add people / vehicles toggles — default off for clean hero renders */}
