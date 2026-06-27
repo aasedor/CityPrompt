@@ -78,6 +78,9 @@ const STYLES = [
   { id: 'charcoal', label: 'Charcoal' },
   { id: 'marker-render', label: 'Marker' },
   { id: 'pen-and-ink', label: 'Pen & Ink' },
+  // ── Accurate — geometry-faithful architectural photography ──
+  { id: 'survey', label: 'Survey' },
+  { id: 'documentary', label: 'Documentary' },
   // ── Plan — top-down orthographic / drafted planning views ──
   { id: 'site-plan', label: 'Site Plan' },
   { id: 'site-plan-photo', label: 'Site Plan Photo' },
@@ -96,6 +99,7 @@ const STYLES = [
 // Update this when adding a style so it lands in the right group in the UI.
 const STYLE_GROUPS = [
   { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter', 'night'] },
+  { label: 'Accurate', ids: ['survey', 'documentary'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock', 'collage', 'risograph', 'pixel-art'] },

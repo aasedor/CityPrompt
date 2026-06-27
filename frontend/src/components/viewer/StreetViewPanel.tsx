@@ -78,12 +78,29 @@ const STREET_VIEW_STYLES = [
     label: 'Pixel Art',
     prompt: '16-bit pixel art architectural streetscape, strictly grid-aligned with every element constructed from uniform square pixels on a rigid pixel grid. Nearest-neighbour scaling with absolutely zero anti-aliasing, zero smoothing, zero sub-pixel rendering -- only hard stepped pixel edges throughout. Strict limited palette of exactly 16 carefully chosen colours. All shading and tonal transitions achieved exclusively through deliberate checkerboard dithering patterns and ordered Bayer-matrix dithering -- zero smooth gradients anywhere. Each window is an exact small pixel rectangle, each brick course a precise alternating pixel row, each roofline a clean 2:1 stepped pixel diagonal. Dark selective outlines on architectural edges transitioning to lighter colour outlines on sunlit sides. Warm amber pixel-glow from windows contrasting against cool blue-purple evening sky. Atmospheric pixel haze in the background with reduced palette depth for distance. Trees as stylized rounded pixel clusters with dithered foliage. SNES Final Fantasy VI town background, Chrono Trigger overworld, classic 16-bit JRPG city scene, demoscene pixel art, waneella atmospheric pixel cityscape.',
   },
+  // ── Accurate — geometry-faithful architectural photography ──
+  {
+    id: 'survey',
+    label: 'Survey',
+    prompt: 'A precise large-format architectural survey photograph of the streetscape. Rigorously frontal with a level camera and corrected verticals, edge-to-edge tack-sharp clarity, and even flat democratic daylight that reveals every material and detail with no drama and no deep shadow. Neutral true-to-life colour, clinical encyclopedic precision, deadpan and objective — closer to a technical record than a marketing image. Treat the captured massing as exact ground truth: preserve the true proportions, footprint, floor heights, window openings, and materials precisely, resolving them into a real photograph. Never restyle, embellish, beautify, or reinterpret the geometry.',
+  },
+  {
+    id: 'documentary',
+    label: 'Documentary',
+    prompt: 'A deadpan documentary colour photograph of the streetscape in the New Topographics tradition. Flat even overcast-bright daylight, a calm neutral eye-level composition, restrained true-to-life colour, and an honest banal-beautiful ordinariness with no dramatization or idealization. Natural medium-format clarity and fine grain. Treat the captured scene as ground truth: keep the real massing, proportions, and materials exactly as modelled, resolving them faithfully into a plain, believable photograph rather than a styled render.',
+  },
+  {
+    id: 'human-scale',
+    label: 'Human scale',
+    prompt: 'An honest contemporary architectural photograph at human eye level in natural available light, showing the building genuinely in use — ordinary people walking, sitting, talking, and cycling through the real space, with authentic surroundings and candid everyday life. Warm, lived-in, and true to how the place will actually feel to a person on the sidewalk. Preserve the true massing, proportions, floor heights, and materials exactly as modelled; add only people, life, and natural light, and never restyle or alter the architecture itself.',
+  },
 ] as const;
 
 // UI grouping for the style picker — Plan group omitted because street view
 // excludes orthographic styles by design.
 const STREET_VIEW_STYLE_GROUPS = [
   { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Accurate', ids: ['survey', 'documentary', 'human-scale'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Stylized', ids: ['clay-model', 'collage', 'pixel-art'] },
 ] as const;
