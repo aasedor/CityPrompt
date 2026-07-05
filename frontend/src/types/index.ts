@@ -987,22 +987,129 @@ export interface BoundaryAnalysisResponse {
   };
 }
 
+// =============================================================================
+// Urban Intelligence DNA (backend/app/services/urban_dna)
+// =============================================================================
 
+/** Mirrors the backend ValidationNote — source_phase extends the layout-pipeline union. */
+export interface UrbanDnaValidationNote {
+  code: string;
+  severity: 'info' | 'warning' | 'error';
+  message: string;
+  source_phase:
+    | 'street_graph' | 'row_geometry' | 'parceling' | 'civic_distribution'
+    | 'zoning' | 'building_placement' | 'collision_validation'
+    | 'city_connector' | 'spatial_engine' | 'policy_intelligence'
+    | 'agent_deliberation' | 'coordinator';
+}
 
+export interface UrbanDnaField {
+  value: unknown;
+  unit?: string | null;
+  confidence: number;
+  source_datasets: string[];
+  notes: string[];
+}
 
+export interface UrbanDnaSectionMeta {
+  confidence: number;
+  missing_datasets: string[];
+  warnings: UrbanDnaValidationNote[];
+}
 
+export interface UrbanDnaSection {
+  meta: UrbanDnaSectionMeta;
+  fields: Record<string, UrbanDnaField>;
+}
 
+export const URBAN_DNA_SECTION_NAMES = [
+  'site', 'land_use', 'mobility', 'public_realm',
+  'environment', 'built_form', 'market', 'policy',
+] as const;
+export type UrbanDnaSectionName = (typeof URBAN_DNA_SECTION_NAMES)[number];
 
+export interface UrbanDnaDocument {
+  dna_schema_version: string;
+  city_id: string;
+  project_id: string;
+  zone_id: string;
+  generated_at: string;
+  site: UrbanDnaSection;
+  land_use: UrbanDnaSection;
+  mobility: UrbanDnaSection;
+  public_realm: UrbanDnaSection;
+  environment: UrbanDnaSection;
+  built_form: UrbanDnaSection;
+  market: UrbanDnaSection;
+  policy: UrbanDnaSection;
+  overall_confidence: number;
+  missing_datasets: string[];
+  warnings: UrbanDnaValidationNote[];
+}
 
+export interface UrbanDnaSnapshotResponse {
+  snapshot_id: string;
+  zone_id: string;
+  project_id: string;
+  city_id: string;
+  status: 'pending' | 'partial' | 'complete' | 'failed';
+  dna_schema_version: string;
+  dna?: UrbanDnaDocument | null;
+  overall_confidence?: number | null;
+  error?: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
+export interface UrbanDnaGenerateResponse {
+  snapshot_id: string;
+  zone_id: string;
+  status: string;
+  city_id: string;
+}
 
+export interface UrbanDnaScenarioRow {
+  id: string;
+  snapshot_id: string;
+  scenario_id: string;
+  label: string;
+  status: 'pending' | 'running' | 'complete' | 'failed';
+  payload?: {
+    plan_parameters?: Record<string, {
+      parameter_path: string;
+      value: unknown;
+      rationale: string;
+      contributors: string[];
+      contested: boolean;
+    }>;
+    trade_offs?: UrbanDnaValidationNote[];
+    expert_summaries?: Record<string, string>;
+    explanation?: {
+      baseline: string;
+      changed_parameters: Array<{
+        parameter_path: string;
+        baseline_value: unknown;
+        value: unknown;
+        driven_by: string;
+      }>;
+      narrative: string;
+    };
+    usage?: { input_tokens?: number; output_tokens?: number; estimated_cost_usd?: number };
+    warnings?: UrbanDnaValidationNote[];
+  } | null;
+  error?: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
+export interface UrbanDnaScenarioListResponse {
+  snapshot_id?: string | null;
+  scenarios: UrbanDnaScenarioRow[];
+  available_presets: Array<{ scenario_id: string; label: string; description: string }>;
+}
 
-
-
-
-
-
-
-
-
+export interface UrbanDnaApplyScenarioResponse {
+  zone_id: string;
+  scenario_id: string;
+  applied_parameters: Record<string, unknown>;
+}

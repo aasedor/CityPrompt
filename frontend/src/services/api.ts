@@ -33,6 +33,10 @@ import type {
   ZoneHistoryListResponse,
   ZoneHistoryEntry,
   ZoneSnapshotRestoreResponse,
+  UrbanDnaGenerateResponse,
+  UrbanDnaSnapshotResponse,
+  UrbanDnaScenarioListResponse,
+  UrbanDnaApplyScenarioResponse,
 } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -1369,3 +1373,56 @@ export const feedbackApi = {
 };
 
 export default api;
+
+// =============================================================================
+// Urban Intelligence DNA
+// =============================================================================
+
+export const urbanDnaApi = {
+  /** Queue DNA generation for a zone (site boundaries give the fullest picture). */
+  generate: async (zoneId: string): Promise<UrbanDnaGenerateResponse> => {
+    const { data } = await api.post(`/api/v1/urban-dna/zones/${zoneId}/generate`);
+    return data;
+  },
+
+  /** Latest DNA snapshot for a zone, any status (404 if never generated). */
+  getLatest: async (zoneId: string): Promise<UrbanDnaSnapshotResponse> => {
+    const { data } = await api.get(`/api/v1/urban-dna/zones/${zoneId}`);
+    return data;
+  },
+
+  /** Which datasets/DNA fields the detected city can produce for this zone. */
+  capabilities: async (zoneId: string): Promise<{
+    city_id: string;
+    display_name: string;
+    datasets: Array<Record<string, unknown>>;
+    dna_fields: string[];
+  }> => {
+    const { data } = await api.get(`/api/v1/urban-dna/capabilities/${zoneId}`);
+    return data;
+  },
+
+  /** Queue planning-agent scenario runs against the latest snapshot. */
+  createScenarios: async (
+    zoneId: string,
+    scenarioIds?: string[],
+  ): Promise<UrbanDnaScenarioListResponse> => {
+    const { data } = await api.post(
+      `/api/v1/urban-dna/zones/${zoneId}/scenarios`,
+      scenarioIds ? { scenario_ids: scenarioIds } : {},
+    );
+    return data;
+  },
+
+  /** Scenario runs for the zone's latest snapshot. */
+  listScenarios: async (zoneId: string): Promise<UrbanDnaScenarioListResponse> => {
+    const { data } = await api.get(`/api/v1/urban-dna/zones/${zoneId}/scenarios`);
+    return data;
+  },
+
+  /** Apply a completed scenario's parameters onto the boundary zone as planning directives. */
+  applyScenario: async (scenarioRowId: string): Promise<UrbanDnaApplyScenarioResponse> => {
+    const { data } = await api.post(`/api/v1/urban-dna/scenarios/${scenarioRowId}/apply`);
+    return data;
+  },
+};

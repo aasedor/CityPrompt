@@ -11,6 +11,7 @@ import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolv
 import { useViewerStore } from '@/store';
 import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
+import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
@@ -1127,7 +1128,10 @@ const resolveOptionCategory = (
         {/* SITE BOUNDARY ? analysis + generate                           */}
         {/* ============================================================= */}
         {zone.zone_type === 'site_boundary' && (
-          <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
+          <>
+            <SiteIntelligencePanel zone={zone} />
+            <SiteBoundarySection zone={zone} allZones={allZones} onOpenBlockEditor={onOpenBlockEditor} />
+          </>
         )}
 
         {/* ============================================================= */}
