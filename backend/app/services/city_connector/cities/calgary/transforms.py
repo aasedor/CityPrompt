@@ -261,6 +261,160 @@ def roads(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[
     return facts, warnings
 
 
+# --- 6. Calgary Bikeways (jjqk-9b73) ------------------------------------------
+# Columns: status, type, bicycle_class, length, comfort_level, multilinestring
+
+def bikeways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    frame = se.SiteFrame.from_wgs84(site)
+    warnings: list[dict[str, Any]] = []
+
+    active = [f for f in features if (_props(f).get("status") or "").upper() not in ("REMOVED", "INACTIVE")]
+    if not active:
+        warnings.append(note("BIKEWAYS_EMPTY", "No bikeways within 800m of the site.", severity="info"))
+        return {"mobility.bike_network_m_800m": {}, "mobility.bike_frontage": []}, warnings
+
+    network = se.length_within_by(
+        frame, active, lambda f: _props(f).get("bicycle_class") or _props(f).get("type") or "Unclassified",
+        radius_m=800.0,
+    )
+    fronting = se.frontage(frame, active, tolerance_m=25.0)
+    bike_frontage = []
+    seen: set[str] = set()
+    for feature, shared_m in fronting:
+        props = _props(feature)
+        key = f"{props.get('bicycle_class')}|{props.get('type')}"
+        if key in seen:
+            continue
+        seen.add(key)
+        bike_frontage.append({
+            "bicycle_class": props.get("bicycle_class"),
+            "type": props.get("type"),
+            "comfort_level": props.get("comfort_level"),
+            "frontage_m": shared_m,
+        })
+
+    facts = {
+        "mobility.bike_network_m_800m": network,
+        "mobility.bike_frontage": bike_frontage[:8],
+    }
+    return facts, warnings
+
+
+# --- 7. Parks Pathways (qndb-27qm) ---------------------------------------------
+# Columns: asset_class, asset_type, the_geom (multiline), life_cycle_status, ...
+
+def pathways(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    frame = se.SiteFrame.from_wgs84(site)
+    warnings: list[dict[str, Any]] = []
+
+    if not features:
+        warnings.append(note("PATHWAYS_EMPTY", "No park pathways within 800m of the site.", severity="info"))
+        return {"mobility.pathway_m_800m": 0.0, "public_realm.nearest_pathway": None}, warnings
+
+    totals = se.length_within_by(frame, features, lambda f: "pathway", radius_m=800.0)
+    nearest = se.nearest(frame, features, k=1)
+    nearest_fact = None
+    if nearest:
+        distance_m, feature = nearest[0]
+        nearest_fact = {
+            "asset_type": _props(feature).get("asset_type"),
+            "distance_m": round(distance_m, 1),
+            "network_estimate_m": se.network_distance_estimate_m(distance_m),
+            "method": se.DISTANCE_METHOD,
+        }
+
+    facts = {
+        "mobility.pathway_m_800m": totals.get("pathway", 0.0),
+        "public_realm.nearest_pathway": nearest_fact,
+    }
+    return facts, warnings
+
+
+# --- 8. Parks Sites (kami-qbfh) --------------------------------------------------
+# Columns: site_name, the_geom (multipolygon), planning_category, type_description, ...
+
+def parks(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    frame = se.SiteFrame.from_wgs84(site)
+    warnings: list[dict[str, Any]] = []
+
+    if not features:
+        warnings.append(note("PARKS_EMPTY", "No parks within 800m of the site.", severity="info"))
+        return {}, warnings
+
+    walkshed_area = se.coverage_by(
+        frame, features, lambda f: "parks", zone_m=frame.site_m.buffer(800.0)
+    )
+    park_area_ha = round(walkshed_area.get("parks", {}).get("area_m2", 0.0) / 10_000.0, 2)
+
+    nearest = se.nearest(frame, features, k=1)
+    nearest_fact = None
+    if nearest:
+        distance_m, feature = nearest[0]
+        nearest_fact = {
+            "name": _props(feature).get("site_name"),
+            "category": _props(feature).get("planning_category") or _props(feature).get("type_description"),
+            "distance_m": round(distance_m, 1),
+            "network_estimate_m": se.network_distance_estimate_m(distance_m),
+            "method": se.DISTANCE_METHOD,
+        }
+
+    facts = {
+        "public_realm.parks_within_800m": se.count_within(frame, features, 800.0),
+        "public_realm.park_area_800m_ha": park_area_ha,
+        "public_realm.nearest_park": nearest_fact,
+    }
+    return facts, warnings
+
+
+# --- 9. 3D Buildings - Citywide (cchr-krqg) --------------------------------------
+# Columns: grd_elev_min_z, grd_elev_max_z, rooftop_elev_z, stage, struct_id, polygon
+# Heights are LiDAR-derived: rooftop_elev_z - grd_elev_min_z.
+
+def buildings_3d(features: list[Feature], site: Polygon) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    frame = se.SiteFrame.from_wgs84(site)
+    warnings: list[dict[str, Any]] = []
+
+    if not features:
+        warnings.append(note("BUILDINGS_EMPTY", "No building models within the fetch envelope.", severity="info"))
+        return {}, warnings
+
+    heights: list[float] = []
+    ground_elevations: list[float] = []
+    for feature in features:
+        props = _props(feature)
+        roof = _num(props.get("rooftop_elev_z"))
+        ground_min = _num(props.get("grd_elev_min_z"))
+        ground_max = _num(props.get("grd_elev_max_z"))
+        if roof is not None and ground_min is not None and roof > ground_min:
+            heights.append(roof - ground_min)
+        for elevation in (ground_min, ground_max):
+            if elevation is not None and elevation > 0:
+                ground_elevations.append(elevation)
+
+    on_site = se.intersecting(frame, features, min_overlap_m2=5.0)
+    site_coverage_pct = round(
+        100.0 * sum(overlap for _, overlap in on_site) / frame.area_m2, 1
+    ) if frame.area_m2 else None
+
+    ground_range = None
+    if ground_elevations:
+        ground_range = {
+            "min_m": round(min(ground_elevations), 1),
+            "max_m": round(max(ground_elevations), 1),
+            "range_m": round(max(ground_elevations) - min(ground_elevations), 1),
+            "method": "lidar_building_ground_elevations",
+        }
+
+    facts = {
+        "built_form.context_building_count": se.count_within(frame, features, 200.0),
+        "built_form.context_avg_height_m": round(sum(heights) / len(heights), 1) if heights else None,
+        "built_form.context_max_height_m": round(max(heights), 1) if heights else None,
+        "built_form.site_coverage_pct": site_coverage_pct,
+        "environment.ground_elevation": ground_range,
+    }
+    return facts, warnings
+
+
 # --- 5. Calgary Transit Stops (muzh-c9qc) ------------------------------------
 # Columns: teleride_number, stop_name, status, point
 

@@ -55,6 +55,12 @@ class DatasetCacheProtocol(Protocol):
     async def set(self, spec: DatasetSpec, bbox_hash: str, result: DatasetFetchResult) -> None: ...
 
 
+class PolicySynthesizer(Protocol):
+    """Async policy phase: DNA-so-far -> (policy fields, warning dicts, confidence)."""
+
+    async def __call__(self, dna: "UrbanDNA") -> tuple[dict[str, Any], list[dict[str, Any]], float]: ...
+
+
 def bbox_hash_for(spec: DatasetSpec, site_polygon: Polygon) -> str:
     """Cache key component: dataset id + version + rounded fetch-envelope bbox."""
     envelope = _buffer_polygon(site_polygon, spec.buffer_m)
@@ -129,6 +135,7 @@ async def build_dna(
     zone_id: str,
     philosophy: PlanningPhilosophy | None = None,
     cache: DatasetCacheProtocol | None = None,
+    policy_synthesizer: "PolicySynthesizer | None" = None,
     max_concurrency: int = 6,
 ) -> UrbanDNA:
     """Assemble the full UrbanDNA for a site boundary. Never raises for data reasons."""
@@ -172,6 +179,30 @@ async def build_dna(
 
         confidence = _dataset_confidence(result, spec, age_frac)
         _distribute(dna, spec, result, confidence, section_weights)
+
+    # Policy phase (M2): runs AFTER dataset facts exist so retrieval can key off
+    # district codes / plan names. Failure degrades the policy section only.
+    if policy_synthesizer is not None:
+        try:
+            policy_fields, policy_warnings, policy_confidence = await policy_synthesizer(dna)
+        except Exception as exc:  # noqa: BLE001 — never-fail guard
+            logger.warning("Policy synthesizer failed: %s", exc)
+            policy_fields, policy_confidence = {}, 0.0
+            policy_warnings = [{
+                "code": "POLICY_SYNTHESIS_UNAVAILABLE",
+                "severity": "warning",
+                "message": f"Policy intelligence unavailable: {exc}",
+                "source_phase": "policy_intelligence",
+            }]
+        for field_name, value in policy_fields.items():
+            dna.policy.fields[field_name] = DnaField(
+                value=value,
+                confidence=round(policy_confidence, 2),
+                source_datasets=["policy_corpus"],
+            )
+        for raw in policy_warnings:
+            dna.policy.meta.warnings.append(coerce_note(raw))
+        section_weights["policy"].append((policy_confidence, 1.0))
 
     _finalize_confidence(dna, section_weights)
     return dna

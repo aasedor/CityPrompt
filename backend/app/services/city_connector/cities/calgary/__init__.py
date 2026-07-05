@@ -1,12 +1,13 @@
-"""Calgary city connector — V1 datasets 1-5 of the 18-dataset integration order.
+"""Calgary city connector — datasets 1-9 of the 18-dataset integration order.
 
 Resource ids and geometry column names below were VERIFIED against live
 data.calgary.ca metadata by scripts/verify_calgary_datasets.py on 2026-07-05.
-Never edit these from memory — re-run the script. Notable correction: the Land
+Never edit these from memory — re-run the script. Notable corrections: the Land
 Use Districts spatial dataset is qe6k-p9nh (the previously-researched
-mw9j-jik5 has no geometry columns).
+mw9j-jik5 has no geometry columns), and Calgary publishes NO sidewalk dataset
+(sidewalk continuity stays an honest missing field).
 
-Adding dataset #6+: append one DatasetSpec literal here + one transform in
+Adding dataset #10+: append one DatasetSpec literal here + one transform in
 transforms.py. Nothing else changes.
 """
 
@@ -113,6 +114,94 @@ CalgaryConnector.register(
         transform=transforms.roads,
         buffer_m=220.0,
         confidence_weight=1.0,
+    )
+)
+
+CalgaryConnector.register(
+    DatasetSpec(
+        id="calgary.bikeways",
+        name="Calgary Bikeways",
+        priority=6,
+        geometry_type="line",
+        refresh_days=30,
+        source_url="https://data.calgary.ca/Transportation-Transit/Calgary-Bikeways/jjqk-9b73",
+        api_endpoint="jjqk-9b73",
+        adapter="socrata",
+        adapter_params={"domain": SOCRATA_DOMAIN, "geo_field": "multilinestring"},
+        dna_fields=(
+            "mobility.bike_network_m_800m",
+            "mobility.bike_frontage",
+        ),
+        transform=transforms.bikeways,
+        buffer_m=850.0,
+        confidence_weight=0.9,
+    )
+)
+
+CalgaryConnector.register(
+    DatasetSpec(
+        id="calgary.pathways",
+        name="Parks Pathways",
+        priority=7,
+        geometry_type="line",
+        refresh_days=60,
+        source_url="https://data.calgary.ca/Recreation-and-Culture/Parks-Pathways/qndb-27qm",
+        api_endpoint="qndb-27qm",
+        adapter="socrata",
+        adapter_params={"domain": SOCRATA_DOMAIN, "geo_field": "the_geom"},
+        dna_fields=(
+            "mobility.pathway_m_800m",
+            "public_realm.nearest_pathway",
+        ),
+        transform=transforms.pathways,
+        buffer_m=850.0,
+        confidence_weight=0.7,
+    )
+)
+
+CalgaryConnector.register(
+    DatasetSpec(
+        id="calgary.parks",
+        name="Parks Sites",
+        priority=8,
+        geometry_type="polygon",
+        refresh_days=60,
+        source_url="https://data.calgary.ca/Recreation-and-Culture/Parks-Sites/kami-qbfh",
+        api_endpoint="kami-qbfh",
+        adapter="socrata",
+        adapter_params={"domain": SOCRATA_DOMAIN, "geo_field": "the_geom"},
+        dna_fields=(
+            "public_realm.parks_within_800m",
+            "public_realm.park_area_800m_ha",
+            "public_realm.nearest_park",
+        ),
+        transform=transforms.parks,
+        buffer_m=850.0,
+        confidence_weight=1.0,
+    )
+)
+
+CalgaryConnector.register(
+    DatasetSpec(
+        id="calgary.buildings_3d",
+        name="3D Buildings - Citywide (LiDAR)",
+        priority=9,
+        geometry_type="polygon",
+        refresh_days=180,
+        source_url="https://data.calgary.ca/Base-Maps/3D-Buildings-Citywide/cchr-krqg",
+        api_endpoint="cchr-krqg",
+        adapter="socrata",
+        adapter_params={"domain": SOCRATA_DOMAIN, "geo_field": "polygon"},
+        dna_fields=(
+            "built_form.context_building_count",
+            "built_form.context_avg_height_m",
+            "built_form.context_max_height_m",
+            "built_form.site_coverage_pct",
+            "environment.ground_elevation",
+        ),
+        transform=transforms.buildings_3d,
+        buffer_m=220.0,
+        confidence_weight=0.8,
     )
 )
 

@@ -376,6 +376,47 @@ class DatasetCache(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
+class PolicyDocument(Base):
+    """A municipal policy/plan document in the Urban DNA policy corpus (city-scoped)."""
+
+    __tablename__ = "policy_documents"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    city: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    slug: Mapped[str] = mapped_column(String(120), nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    instrument_type: Mapped[str] = mapped_column(String(30), nullable=False, default="policy")  # statutory|policy|strategy|guide
+    source_url: Mapped[str] = mapped_column(String(600), nullable=False)
+    storage_url: Mapped[str | None] = mapped_column(String(600), nullable=True)
+    effective_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    repealed_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    version: Mapped[str] = mapped_column(String(40), nullable=False, default="v1")
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="active")  # active|draft|superseded|failed
+    page_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    chunks: Mapped[list["PolicyChunk"]] = relationship(back_populates="document", cascade="all, delete-orphan")
+
+
+class PolicyChunk(Base):
+    """Page-anchored text chunk of a policy document — citations are mechanical."""
+
+    __tablename__ = "policy_chunks"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    policy_document_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("policy_documents.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    section_label: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    page_start: Mapped[int] = mapped_column(Integer, nullable=False)
+    page_end: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    token_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    document: Mapped["PolicyDocument"] = relationship(back_populates="chunks")
+
+
 class UrbanDnaSnapshot(Base):
     """A generated Urban Intelligence DNA document for one site-boundary zone."""
 

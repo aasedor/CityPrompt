@@ -30,7 +30,7 @@ def test_registries_are_isolated_per_city():
     assert not calgary_ids & osm_ids, "per-subclass registries must not share entries"
 
 
-def test_calgary_registers_the_five_m1_datasets_in_order():
+def test_calgary_registers_datasets_in_integration_order():
     specs = sorted(CalgaryConnector().datasets.values(), key=lambda s: s.priority)
     assert [s.id for s in specs] == [
         "calgary.land_use_districts",
@@ -38,6 +38,10 @@ def test_calgary_registers_the_five_m1_datasets_in_order():
         "calgary.policy_plan_boundaries",
         "calgary.roads",
         "calgary.transit_stops",
+        "calgary.bikeways",
+        "calgary.pathways",
+        "calgary.parks",
+        "calgary.buildings_3d",
     ]
 
 

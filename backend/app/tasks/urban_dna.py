@@ -22,8 +22,15 @@ from app.services.city_connector import get_connector_for_site
 from app.services.city_connector.base import DatasetFetchResult, DatasetSpec
 from app.services.urban_dna.builder import build_dna
 from app.services.urban_dna.schema import DNA_SCHEMA_VERSION
-from app.tasks.processing import _get_sync_session
 from app.tasks.worker import celery_app
+
+
+def _get_sync_session():
+    # Lazy import: app.tasks.processing itself imports app.tasks.worker, which
+    # imports this module — a top-level import here is a circular-import trap.
+    from app.tasks.processing import _get_sync_session as factory
+
+    return factory()
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +76,100 @@ class PostgresDatasetCache:
         self._session.commit()
 
 
+def _field_value(section, name: str):
+    field = section.fields.get(name)
+    return field.value if field is not None else None
+
+
+def _make_policy_synthesizer(session, snapshot, city_id: str):
+    """Policy phase closure: checkpoints the dataset-phase DNA, then retrieval + synthesis."""
+
+    async def synthesize(dna):
+        # Checkpoint before the LLM call — a soft-time-limit mid-synthesis
+        # leaves a usable 'partial' snapshot rather than nothing.
+        snapshot.dna = dna.model_dump(mode="json")
+        snapshot.status = "partial"
+        session.commit()
+
+        from app.models.models import PolicyDocument
+        from app.services.policy_intelligence.retrieval import (
+            ChunkRecord,
+            build_query_terms,
+            rank_chunks,
+        )
+        from app.services.policy_intelligence.synthesis import synthesize_policy_insight
+
+        now = datetime.now(timezone.utc)
+        documents = (
+            session.query(PolicyDocument)
+            .filter(PolicyDocument.city == city_id, PolicyDocument.status == "active")
+            .all()
+        )
+        effective = [
+            d for d in documents
+            if (d.effective_date is None or d.effective_date <= now)
+            and (d.repealed_date is None or d.repealed_date > now)
+        ]
+
+        warnings: list[dict] = []
+        for document in effective:
+            if document.repealed_date is not None and (document.repealed_date - now).days < 365:
+                warnings.append({
+                    "code": "POLICY_INSTRUMENT_SUNSETTING",
+                    "severity": "warning",
+                    "message": f"{document.title} is repealed effective "
+                               f"{document.repealed_date.date().isoformat()} — cite with care.",
+                    "source_phase": "policy_intelligence",
+                })
+
+        site_facts = {
+            "districts": _field_value(dna.land_use, "districts"),
+            "dominant_district": _field_value(dna.land_use, "dominant_district"),
+            "lap_name": _field_value(dna.land_use, "lap_name"),
+            "community_name": _field_value(dna.site, "community_name"),
+            "applicable_plans": _field_value(dna.policy, "applicable_plans"),
+            "adjacent_uses": _field_value(dna.land_use, "adjacent_uses"),
+            "frontage_streets": _field_value(dna.mobility, "frontage_streets"),
+        }
+
+        if not effective:
+            insight, synth_warnings = await synthesize_policy_insight(
+                site_facts=site_facts, chunks=[], corpus_status="absent", documents_consulted=[],
+            )
+            return {"insight": insight.model_dump()}, warnings + synth_warnings, insight.confidence
+
+        records = [
+            ChunkRecord(
+                chunk_id=str(chunk.id),
+                document_slug=document.slug,
+                document_title=document.title,
+                section_label=chunk.section_label,
+                page_start=chunk.page_start,
+                page_end=chunk.page_end,
+                text=chunk.text,
+            )
+            for document in effective
+            for chunk in document.chunks
+        ]
+        query_terms = build_query_terms(site_facts, topics=[
+            "density", "height", "setback", "parking", "transit", "pedestrian",
+            "cycling", "tree canopy", "flood", "housing", "affordable", "heritage",
+            "climate", "complete streets", "emergency access",
+        ])
+        chunks = rank_chunks(records, query_terms)
+        corpus_status = "complete" if len(effective) >= 4 else "partial"
+
+        insight, synth_warnings = await synthesize_policy_insight(
+            site_facts=site_facts,
+            chunks=chunks,
+            corpus_status=corpus_status,
+            documents_consulted=[d.slug for d in effective],
+        )
+        return {"insight": insight.model_dump()}, warnings + synth_warnings, insight.confidence
+
+    return synthesize
+
+
 @celery_app.task(bind=True, name="generate_urban_dna")
 def generate_urban_dna(self, snapshot_id: str) -> dict:
     """Fill a pending UrbanDnaSnapshot. Data problems degrade; only infra fails."""
@@ -104,6 +205,7 @@ def generate_urban_dna(self, snapshot_id: str) -> dict:
                 project_id=str(snapshot.project_id),
                 zone_id=str(snapshot.zone_id),
                 cache=PostgresDatasetCache(session),
+                policy_synthesizer=_make_policy_synthesizer(session, snapshot, connector.city_id),
             )
         )
 
