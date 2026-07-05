@@ -57,6 +57,7 @@ async def register(
         hashed_password=hash_password(user_in.password),
         full_name=user_in.full_name,
         role="editor",
+        render_credits=1000,  # matches the column default; set explicitly so it exists pre-flush
     )
     db.add(user)
     await db.flush()
