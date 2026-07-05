@@ -190,6 +190,16 @@ class Settings(BaseSettings):
     max_upload_size_mb: int = 100
     processing_workers: int = 2
 
+    # --- Urban Intelligence DNA ---
+    # Socrata app token for data.calgary.ca — optional but strongly recommended
+    # (unauthenticated requests are throttled aggressively).
+    calgary_socrata_app_token: str = ""
+    urban_dna_agent_model: str = "claude-sonnet-5"
+    urban_dna_cache_ttl_hours: int = 168  # default TTL when a DatasetSpec has no refresh_days
+    # Hard USD ceiling per master-plan generation across all planning-agent calls. 0 disables.
+    planning_agents_max_usd: float = 5.0
+    policy_corpus_bucket_prefix: str = "policy"
+
     @property
     def max_upload_size_bytes(self) -> int:
         return self.max_upload_size_mb * 1024 * 1024

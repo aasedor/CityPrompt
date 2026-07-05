@@ -358,3 +358,46 @@ class ApiUsageLog(Base):
     status: Mapped[str] = mapped_column(String(20), default="success")
     metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class DatasetCache(Base):
+    """Cached raw open-data fetches, keyed by dataset id + version + bbox hash."""
+
+    __tablename__ = "dataset_cache"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    dataset_id: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    dataset_version: Mapped[str] = mapped_column(String(40), nullable=False, default="v1")
+    bbox_hash: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
+    features: Mapped[list | None] = mapped_column(JSONB, nullable=True)
+    feature_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    source_status: Mapped[str] = mapped_column(String(20), nullable=False, default="ok")
+    fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class UrbanDnaSnapshot(Base):
+    """A generated Urban Intelligence DNA document for one site-boundary zone."""
+
+    __tablename__ = "urban_dna_snapshots"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    project_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    zone_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("site_zones.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    city_id: Mapped[str] = mapped_column(String(40), nullable=False, default="osm")
+    dna_schema_version: Mapped[str] = mapped_column(String(20), nullable=False)
+    dna: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    overall_confidence: Mapped[float | None] = mapped_column(Numeric(4, 2), nullable=True)
+    status: Mapped[str] = mapped_column(String(12), nullable=False, default="pending")  # pending|partial|complete|failed
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+    # Relationships
+    project: Mapped["Project"] = relationship()
