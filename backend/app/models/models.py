@@ -442,3 +442,28 @@ class UrbanDnaSnapshot(Base):
 
     # Relationships
     project: Mapped["Project"] = relationship()
+    scenarios: Mapped[list["UrbanDnaScenario"]] = relationship(
+        back_populates="snapshot", cascade="all, delete-orphan"
+    )
+
+
+class UrbanDnaScenario(Base):
+    """One planning-agent scenario run against a DNA snapshot."""
+
+    __tablename__ = "urban_dna_scenarios"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    snapshot_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("urban_dna_snapshots.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    scenario_id: Mapped[str] = mapped_column(String(60), nullable=False)
+    label: Mapped[str] = mapped_column(String(120), nullable=False)
+    status: Mapped[str] = mapped_column(String(12), nullable=False, default="pending")  # pending|running|complete|failed
+    payload: Mapped[dict | None] = mapped_column(JSONB, nullable=True)  # ScenarioResult dump
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+    snapshot: Mapped["UrbanDnaSnapshot"] = relationship(back_populates="scenarios")

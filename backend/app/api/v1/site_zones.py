@@ -1800,6 +1800,26 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         if ctx_parts:
             parts.append("SITE CONTEXT: " + ". ".join(ctx_parts))
 
+        # Urban DNA planning directives (applied scenario) — advisory guidance
+        # the planning-agent panel produced; the layout engine still draws.
+        directives = site_context.get("planning_directives")
+        if isinstance(directives, dict) and directives.get("parameters"):
+            directive_bits = [
+                f"{key.replace('_', ' ')}: {value}"
+                for key, value in directives["parameters"].items()
+                if value is not None and key != "description_text"
+            ]
+            brief = directives["parameters"].get("description_text")
+            directive_text = (
+                f"PLANNING DIRECTIVES (applied scenario '{directives.get('label', '')}'): "
+                + "; ".join(directive_bits)
+            )
+            if brief:
+                directive_text += f". Design brief: {brief}"
+            if directives.get("narrative"):
+                directive_text += f". Scenario intent: {directives['narrative']}"
+            parts.append(directive_text)
+
     return ". ".join(parts)
 
 
@@ -1858,11 +1878,19 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
             "by_type": by_road_type,
         }
 
-    return {
+    context = {
         "sibling_zones": sibling_zones,
         "osm_buildings": osm_buildings_summary,
         "osm_roads": osm_roads_summary,
     }
+
+    # Urban DNA planning directives (written by POST /urban-dna/scenarios/{id}/apply).
+    # Absent for zones that never applied a scenario — output is unchanged then.
+    directives = boundary_props.get("_urban_dna_directives")
+    if isinstance(directives, dict) and directives.get("parameters"):
+        context["planning_directives"] = directives
+
+    return context
 
 
 def _compute_zone_area(zone: SiteZone) -> float:

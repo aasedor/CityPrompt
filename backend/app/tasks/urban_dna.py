@@ -247,3 +247,131 @@ def generate_urban_dna(self, snapshot_id: str) -> dict:
 
     finally:
         session.close()
+
+
+@celery_app.task(bind=True, name="run_urban_dna_scenario")
+def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
+    """Run one planning-agent scenario against its snapshot's DNA.
+
+    One task per scenario keeps each run well inside the 300s soft limit; the
+    API queues them as a Celery chain so the as_of_right baseline lands first.
+    """
+    from app.models.models import UrbanDnaScenario
+    from app.services.planning_agents.coordinator import (
+        diff_scenarios,
+        merge_recommendations,
+        write_explanation,
+    )
+    from app.services.planning_agents.runner import estimate_cost_usd, run_expert_panel
+    from app.services.planning_agents.scenarios import BASELINE_SCENARIO_ID, SCENARIO_PRESETS
+    from app.services.planning_agents.schemas import MergedParameter, ScenarioResult
+    from app.services.urban_dna.schema import ValidationNote
+
+    session = _get_sync_session()
+    row = None
+    try:
+        row = session.query(UrbanDnaScenario).filter_by(id=uuid.UUID(scenario_row_id)).first()
+        if row is None:
+            return {"status": "failed", "error": "scenario row not found"}
+
+        definition = SCENARIO_PRESETS.get(row.scenario_id)
+        if definition is None:
+            row.status = "failed"
+            row.error = f"unknown scenario preset {row.scenario_id}"
+            session.commit()
+            return {"status": "failed", "error": row.error}
+
+        snapshot = row.snapshot
+        if snapshot is None or not snapshot.dna:
+            row.status = "failed"
+            row.error = "snapshot has no DNA"
+            session.commit()
+            return {"status": "failed", "error": row.error}
+
+        row.status = "running"
+        session.commit()
+
+        async def _run() -> ScenarioResult:
+            expert_sets, usage_records, warnings = await run_expert_panel(snapshot.dna, definition)
+            plan_parameters, trade_offs = merge_recommendations(expert_sets, definition.philosophy)
+
+            baseline_params = None
+            if row.scenario_id != BASELINE_SCENARIO_ID:
+                baseline_row = (
+                    session.query(UrbanDnaScenario)
+                    .filter_by(snapshot_id=row.snapshot_id, scenario_id=BASELINE_SCENARIO_ID, status="complete")
+                    .order_by(UrbanDnaScenario.created_at.desc())
+                    .first()
+                )
+                if baseline_row is not None and baseline_row.payload:
+                    baseline_params = {
+                        path: MergedParameter(**merged)
+                        for path, merged in (baseline_row.payload.get("plan_parameters") or {}).items()
+                    }
+                else:
+                    warnings.append(ValidationNote(
+                        code="BASELINE_UNAVAILABLE", severity="info",
+                        message="as_of_right baseline not complete yet; diff shows all parameters.",
+                        source_phase="coordinator",
+                    ))
+
+            changed = diff_scenarios(baseline_params, plan_parameters)
+            explanation = await write_explanation(definition, changed, trade_offs)
+
+            total_in = sum(u["input_tokens"] for u in usage_records)
+            total_out = sum(u["output_tokens"] for u in usage_records)
+            cost = sum(
+                estimate_cost_usd(u["model"], u["input_tokens"], u["output_tokens"])
+                for u in usage_records
+            )
+            return ScenarioResult(
+                scenario_id=definition.scenario_id,
+                label=definition.label,
+                philosophy=definition.philosophy,
+                plan_parameters=plan_parameters,
+                trade_offs=trade_offs,
+                expert_summaries={s.agent_id: s.summary for s in expert_sets if not s.failed},
+                explanation=explanation,
+                usage={"input_tokens": total_in, "output_tokens": total_out,
+                       "estimated_cost_usd": round(cost, 3)},
+                warnings=warnings,
+            )
+
+        result = asyncio.run(_run())
+        row.payload = result.model_dump(mode="json")
+        row.status = "complete"
+        row.error = None
+        session.commit()
+        logger.info(
+            "Scenario %s (%s) complete: %d parameters, %d trade-offs, ~$%.2f",
+            row.scenario_id, scenario_row_id, len(result.plan_parameters),
+            len(result.trade_offs), result.usage.get("estimated_cost_usd", 0.0),
+        )
+        return {"status": "complete", "parameters": len(result.plan_parameters)}
+
+    except SoftTimeLimitExceeded:
+        logger.warning("Scenario %s hit the soft time limit", scenario_row_id)
+        try:
+            session.rollback()
+            if row is not None:
+                row.status = "failed"
+                row.error = "scenario run exceeded the worker time budget"
+                session.commit()
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to mark scenario %s after soft time limit", scenario_row_id)
+        return {"status": "failed"}
+
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Scenario run failed for %s", scenario_row_id)
+        try:
+            session.rollback()
+            if row is not None:
+                row.status = "failed"
+                row.error = str(exc)[:2000]
+                session.commit()
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to mark scenario %s failed", scenario_row_id)
+        return {"status": "failed", "error": str(exc)}
+
+    finally:
+        session.close()
