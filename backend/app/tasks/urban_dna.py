@@ -445,8 +445,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
 
     from app.models.models import SiteZone, UrbanDnaScenario
     from app.services.city_connector import get_connector_for_site
-    from app.services.plan_geometry.generator import generate_plan_geometry
-    from app.services.plan_metrics import compute_metrics
     from app.services.urban_dna.builder import _fetch_with_cache
 
     locks = locks or []
@@ -506,14 +504,19 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             if street_polys:
                 locked_street_area = unary_union(street_polys)
 
-        result = generate_plan_geometry(
+        # --- generate → evaluate → refine loop (max 3 iterations) -----------------
+        from app.services.plan_geometry.refinement import run_refinement_loop
+
+        result, metrics_report, iterations = run_refinement_loop(
             site_polygon_wgs84=site_polygon,
             scenario_id=row.scenario_id,
             scenario_label=row.label,
-            parameters=(row.payload.get("plan_parameters") or {}),
+            parameters=row.payload.get("plan_parameters") or {},
+            dna=snapshot.dna or {},
             road_features=road_features,
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area,
+            locks=locks,
         )
 
         # Replace previous plan zones (keep locked streets).
@@ -543,14 +546,6 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             ))
             inserted += 1
 
-        # Geometry-mode metrics supersede the parameter estimates.
-        metrics_report = compute_metrics(
-            scenario_id=row.scenario_id,
-            dna=snapshot.dna or {},
-            parameters=(row.payload.get("plan_parameters") or {}),
-            geometry_inputs=result.geometry_inputs,
-        )
-
         payload = dict(row.payload or {})
         payload["metrics"] = metrics_report.model_dump(mode="json")
         payload["plan"] = {
@@ -565,6 +560,8 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             "rules": result.rules,
             "geometry_inputs": {k: round(v, 1) for k, v in result.geometry_inputs.items()},
             "notes": result.notes,
+            "iterations": iterations,
+            "final_score": iterations[-1]["overall_score"] if iterations else None,
         }
         row.payload = payload
         session.commit()

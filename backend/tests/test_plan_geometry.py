@@ -60,7 +60,12 @@ def test_full_generation_meets_p2_gates():
     assert result.parcel_count >= result.block_count  # every block subdivided
     assert all(len(z["coordinates"]) >= 3 for z in result.zones)
     assert all(z["properties"]["_plan_scenario"] == "lap_compliant" for z in result.zones)
-    assert all(z["properties"]["_imported_from"] == "Plan — LAP Aligned" for z in result.zones)
+    # Plan zones share one layer; height-framework zones form their OWN layer.
+    for zone in result.zones:
+        expected = ("Height framework — LAP Aligned"
+                    if zone["properties"].get("_plan_role") == "framework_height"
+                    else "Plan — LAP Aligned")
+        assert zone["properties"]["_imported_from"] == expected
 
     codes = {n["code"] for n in result.notes}
     assert "FIRE_CLEAR_WIDTH_OK" in codes
@@ -152,6 +157,55 @@ def test_locked_streets_are_reused_not_regenerated():
         Polygon(z["coordinates"]).area for z in second.zones if z["zone_type"] == "road"
     )
     assert abs(second_street_area - locked_area) / locked_area < 0.02  # same network
+
+
+def test_height_framework_zones_are_emitted_per_block():
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="lap_compliant", scenario_label="LAP",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    framework = [z for z in result.zones if z["properties"].get("_plan_role") == "framework_height"]
+    assert len(framework) == result.block_count           # one banded sub-area per block
+    assert all(z["zone_type"] == "development_area" for z in framework)
+    assert all(z["properties"]["max_floors"] > 0 for z in framework)
+    assert all(z["properties"]["_imported_from"] == "Height framework — LAP" for z in framework)
+    assert all("storeys" in z["name"] for z in framework)
+
+
+def test_plan_sheet_builds_measurable_html():
+    from app.services.plan_geometry.plan_sheet import build_plan_sheet
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="lap_compliant", scenario_label="LAP",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    plan_zones = [
+        {"role": z["properties"]["_plan_role"], "coordinates": z["coordinates"],
+         "floors": z["properties"].get("floors")}
+        for z in result.zones
+        if z["properties"].get("_plan_role") in ("street", "open_space", "building")
+    ]
+    sheet = build_plan_sheet(
+        scenario_label="LAP Aligned", scenario_id="lap_compliant",
+        payload={
+            "plan": {"status": "complete", "generated_at": "t", "final_score": 0.95,
+                     "iterations": [{"iteration": 1, "overall_score": 0.95, "scores": {}, "revisions": []}],
+                     "geometry_inputs": result.geometry_inputs, "rules": result.rules,
+                     "block_count": result.block_count, "parcel_count": result.parcel_count,
+                     "intersection_density_per_km2": 40.0, "notes": result.notes},
+            "metrics": {"metrics": {"gfa_m2": {"label": "Gross floor area", "value": 100000,
+                                               "unit": "m2", "derivation": "footprint × storeys"}},
+                        "ceiling_reconciliation": [], "assumptions_used": {}},
+            "trade_offs": [{"message": "narrow vs fire access"}],
+        },
+        boundary_wgs84=_site(), plan_zones=plan_zones, dna=None,
+        snapshot_meta={"snapshot_id": "snap", "city_id": "calgary", "overall_confidence": 1.0},
+    )
+    assert "ILLUSTRATIVE — NOT AN APPROVED DESIGN" in sheet
+    assert "<svg viewBox=" in sheet and "100 m" in sheet     # measurable drawing + scale bar
+    assert "footprint × storeys" in sheet                     # derivations on the sheet
+    assert "narrow vs fire access" in sheet
+    assert sheet.count("<polygon") >= len(plan_zones)
 
 
 def test_floors_clamped_by_district_ceiling():

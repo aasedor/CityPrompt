@@ -46,6 +46,16 @@ logger = logging.getLogger(__name__)
 
 PLAN_COLORS = {"road": "#8a8f98", "green_space": "#5fae5f", "building": "#8b5cf6"}
 
+# Height framework bands (amber -> deep red), aligned to LAP building-scale steps.
+HEIGHT_BANDS = [(3, "#fde68a"), (6, "#fbbf24"), (12, "#f97316"), (26, "#dc2626"), (999, "#7c2d12")]
+
+
+def _height_band(floors: float) -> tuple[int, str]:
+    for ceiling, color in HEIGHT_BANDS:
+        if floors <= ceiling:
+            return ceiling, color
+    return 999, HEIGHT_BANDS[-1][1]
+
 
 @dataclass
 class PlanGeometryResult:
@@ -57,6 +67,11 @@ class PlanGeometryResult:
     building_count: int = 0
     notes: list[dict[str, Any]] = field(default_factory=list)
     rules: dict[str, Any] = field(default_factory=dict)
+    # Metric internals for the evaluator (in-memory only, never serialized).
+    blocks_m: list[BaseGeometry] = field(default_factory=list)
+    masses_m: list[BaseGeometry] = field(default_factory=list)
+    green_m: list[BaseGeometry] = field(default_factory=list)
+    mass_floors: list[float] = field(default_factory=list)
 
 
 def _ring(poly_wgs84: Polygon) -> list[list[float]]:
@@ -106,6 +121,7 @@ def generate_plan_geometry(
     road_features: list[dict[str, Any]] | None = None,
     district_features: list[dict[str, Any]] | None = None,
     locked_street_area_wgs84: Polygon | None = None,
+    rule_overrides: dict[str, float] | None = None,
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
@@ -118,6 +134,13 @@ def generate_plan_geometry(
     gross = float(boundary_m.area)
 
     rules, rule_notes = resolve_rules(scenario_id, parameters)
+    if rule_overrides:
+        # The refinement loop revises rule inputs; each override is recorded by
+        # the loop itself as {parameter, from, to, reason}.
+        from dataclasses import replace as dc_replace
+        valid_overrides = {k: v for k, v in rule_overrides.items()
+                           if hasattr(rules, k) and isinstance(v, (int, float))}
+        rules = dc_replace(rules, **valid_overrides)
     result.notes.extend(rule_notes)
     result.rules = {
         "block_target_m": rules.block_target_m, "row_width_m": rules.row_width_m,
@@ -184,6 +207,7 @@ def generate_plan_geometry(
     zone_sort = 500  # after user zones
     for index, block in enumerate(blocks):
         if index in green_indices:
+            result.green_m.append(block)
             for poly in iter_polygons(project_geometry(block, to_wgs84)):
                 result.zones.append({
                     "zone_type": "green_space",
@@ -206,11 +230,30 @@ def generate_plan_geometry(
         floors, clamp = clamp_floors_to_ceiling(rules.floors, block, district_lookup)
         if clamp:
             clamp_notes += 1
+
+        # Height framework: the block's storey envelope as a MAPPED sub-area
+        # (replaces "6-16 storeys" prose with geometry, banded like LAP maps).
+        band_ceiling, band_color = _height_band(floors)
+        for wpoly in iter_polygons(project_geometry(block, to_wgs84)):
+            result.zones.append({
+                "zone_type": "development_area",
+                "name": f"≤{band_ceiling if band_ceiling != 999 else '27+'} storeys",
+                "coordinates": _ring(wpoly),
+                "color": band_color,
+                "sort_order": 480,
+                "properties": {
+                    "_plan_scenario": scenario_id,
+                    "_imported_from": f"Height framework — {scenario_label}",
+                    "_plan_role": "framework_height",
+                    "max_floors": round(floors, 1),
+                },
+            })
         mass, info = building_mass_for_block(block, rules)
         if mass is None:
             continue
         for poly in iter_polygons(mass):
             masses.append(poly)
+            result.mass_floors.append(floors)
             footprint += float(poly.area)
             gfa += float(poly.area) * floors
             wgs = project_geometry(poly, to_wgs84)
@@ -276,4 +319,6 @@ def generate_plan_geometry(
     result.block_count = len(developable_blocks)
     result.parcel_count = sum(len(p) for p in parcels_by_block)
     result.building_count = sum(1 for z in result.zones if z["zone_type"] == "building")
+    result.blocks_m = developable_blocks
+    result.masses_m = masses
     return result

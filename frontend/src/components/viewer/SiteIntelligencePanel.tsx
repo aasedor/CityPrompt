@@ -231,6 +231,26 @@ function ScenarioCard({
               >
                 {planBusy ? <Loader2 className="inline h-3 w-3 animate-spin" /> : plan?.status === 'complete' ? 'Redraw' : 'Draw Plan'}
               </button>
+              {plan?.status === 'complete' && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const { data } = await (await import('@/services/api')).api.get(
+                        `/api/v1/urban-dna/scenarios/${scenario.id}/plan-sheet`,
+                        { responseType: 'blob' },
+                      );
+                      window.open(URL.createObjectURL(data as Blob), '_blank');
+                    } catch {
+                      toast.error('Plan sheet unavailable');
+                    }
+                  }}
+                  title="Open the printable plan sheet: drawing, derived statistics, evaluation history, citations"
+                  className="rounded border-2 border-[#151515] bg-white px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
+                >
+                  Sheet
+                </button>
+              )}
               <button
                 type="button"
                 disabled={applying}

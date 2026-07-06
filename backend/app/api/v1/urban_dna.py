@@ -431,6 +431,75 @@ async def generate_plan(
     return GeneratePlanResponse(scenario_row_id=str(row.id), status="queued", locks=req.locks)
 
 
+@router.get("/scenarios/{scenario_row_id}/plan-sheet")
+async def plan_sheet(
+    scenario_row_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """The council-ready plan sheet: measurable SVG drawing, derived statistics,
+    evaluation/refinement history, trade-offs, citations, assumptions and
+    provenance — self-contained printable HTML."""
+    from fastapi.responses import HTMLResponse
+    from geoalchemy2.shape import to_shape
+
+    from app.services.plan_geometry.plan_sheet import build_plan_sheet
+
+    result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.id == scenario_row_id))
+    row = result.scalar_one_or_none()
+    if row is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    snapshot_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
+    )
+    snapshot = snapshot_result.scalar_one_or_none()
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    try:
+        boundary_zone = await _load_zone_checked(snapshot.zone_id, user, db, required="viewer")
+    except HTTPException as exc:
+        if exc.status_code in (403, 404):
+            raise HTTPException(status_code=404, detail="Scenario not found")
+        raise
+    if not row.payload or (row.payload.get("plan") or {}).get("status") != "complete":
+        raise HTTPException(status_code=409, detail="Draw the plan before exporting its sheet")
+
+    zones_result = await db.execute(
+        select(SiteZone).where(SiteZone.project_id == snapshot.project_id)
+    )
+    plan_zones = []
+    for zone in zones_result.scalars().all():
+        props = zone.properties or {}
+        if props.get("_plan_scenario") != row.scenario_id:
+            continue
+        role = props.get("_plan_role")
+        if role not in ("street", "open_space", "building"):
+            continue
+        shape = to_shape(zone.geometry)
+        plan_zones.append({
+            "role": role,
+            "coordinates": [[float(x), float(y)] for x, y in shape.exterior.coords[:-1]],
+            "floors": props.get("floors"),
+        })
+
+    boundary_shape = to_shape(boundary_zone.geometry)
+    sheet = build_plan_sheet(
+        scenario_label=row.label,
+        scenario_id=row.scenario_id,
+        payload=row.payload,
+        boundary_wgs84=boundary_shape,
+        plan_zones=plan_zones,
+        dna=snapshot.dna,
+        snapshot_meta={
+            "snapshot_id": str(snapshot.id),
+            "city_id": snapshot.city_id,
+            "overall_confidence": float(snapshot.overall_confidence)
+            if snapshot.overall_confidence is not None else None,
+        },
+    )
+    return HTMLResponse(content=sheet)
+
+
 @router.get("/capabilities/{zone_id}", response_model=CapabilitiesResponse)
 async def get_capabilities(
     zone_id: uuid.UUID,
