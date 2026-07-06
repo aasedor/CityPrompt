@@ -231,11 +231,15 @@ async def create_scenarios(
         rows.append(row)
     await db.commit()
 
-    from celery import chain
-
     from app.tasks.urban_dna import run_urban_dna_scenario
 
-    chain(*(run_urban_dna_scenario.si(str(row.id)) for row in rows)).apply_async()
+    # Independent dispatch (NOT a celery chain): a killed baseline task must not
+    # strand the other scenarios in 'pending' forever. Non-baseline runs start
+    # after a delay so the as_of_right diff baseline usually lands first; if it
+    # hasn't, the run proceeds with a BASELINE_UNAVAILABLE info warning.
+    for index, row in enumerate(rows):
+        countdown = 0 if row.scenario_id == BASELINE_SCENARIO_ID else 75 + index * 10
+        run_urban_dna_scenario.apply_async(args=[str(row.id)], countdown=countdown)
     logger.info("Queued %d scenario runs for zone %s (snapshot %s)", len(rows), zone_id, snapshot.id)
 
     return ScenarioListResponse(
@@ -298,17 +302,25 @@ async def apply_scenario(
     """
     result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.id == scenario_row_id))
     row = result.scalar_one_or_none()
-    if row is None or row.status != "complete" or not row.payload:
-        raise HTTPException(status_code=404, detail="Completed scenario not found")
+    # Authorization comes BEFORE any status detail (existence-oracle hygiene):
+    # the same 404 for missing, unauthorized-project, and not-yet-complete rows.
+    if row is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
 
     snapshot_result = await db.execute(
         select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
     )
     snapshot = snapshot_result.scalar_one_or_none()
     if snapshot is None:
-        raise HTTPException(status_code=404, detail="Snapshot for scenario not found")
+        raise HTTPException(status_code=404, detail="Scenario not found")
 
     zone = await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+
+    if row.status != "complete" or not row.payload:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+    latest = await _latest_snapshot(zone, db)
+    snapshot_superseded = latest is not None and latest.id != snapshot.id
 
     parameters: dict[str, Any] = {}
     rationales: dict[str, str] = {}
@@ -316,7 +328,10 @@ async def apply_scenario(
         vocab = PARAMETER_VOCABULARY.get(path)
         if vocab is None:
             continue
-        parameters[vocab["maps_to"]] = merged.get("value")
+        value = merged.get("value")
+        if isinstance(value, str):
+            value = value[:400]  # LLM-derived text is replayed into render prompts — cap it
+        parameters[vocab["maps_to"]] = value
         rationales[vocab["maps_to"]] = str(merged.get("rationale", ""))[:200]
 
     explanation = row.payload.get("explanation") or {}
@@ -324,11 +339,13 @@ async def apply_scenario(
     properties["_urban_dna_directives"] = {
         "scenario_row_id": str(row.id),
         "scenario_id": row.scenario_id,
+        "snapshot_id": str(row.snapshot_id),
+        "snapshot_superseded": snapshot_superseded,
         "label": row.label,
-        "applied_at": datetime.utcnow().isoformat() + "Z",
+        "applied_at": datetime.now().astimezone().isoformat(),
         "parameters": parameters,
         "rationales": rationales,
-        "narrative": explanation.get("narrative", ""),
+        "narrative": str(explanation.get("narrative", ""))[:600],
     }
     zone.properties = properties
     await db.commit()

@@ -180,6 +180,22 @@ def test_bbox_hash_varies_by_version_and_envelope():
 
 
 @pytest.mark.anyio
+async def test_soft_time_limit_propagates_through_build_dna():
+    """The builder's gather(return_exceptions=True) must re-raise the soft limit
+    so the Celery task handler can mark the snapshot partial/failed."""
+    from celery.exceptions import SoftTimeLimitExceeded
+
+    async def _limited_adapter(spec, boundary):
+        raise SoftTimeLimitExceeded()
+
+    FakeConnector = _make_connector({"socrata": _limited_adapter})
+    _spec(FakeConnector, "faketown.limited", ("site.parcel_count",), lambda f, s: ({}, []))
+
+    with pytest.raises(SoftTimeLimitExceeded):
+        await build_dna(site_polygon=SITE, connector=FakeConnector(), project_id="p", zone_id="z")
+
+
+@pytest.mark.anyio
 async def test_stale_regime_dataset_warns_and_degrades():
     from datetime import date
 

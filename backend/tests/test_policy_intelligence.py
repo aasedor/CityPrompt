@@ -54,6 +54,18 @@ def test_chunker_handles_empty_and_blank_pages():
     chunks = chunk_pages(["", "Only page two has text.", ""])
     assert len(chunks) == 1
     assert chunks[0].page_start == 2
+    # Regression (review finding): page_end must be the last CONTENT page,
+    # not a trailing blank page — citations point at real text.
+    assert chunks[0].page_end == 2
+
+
+def test_summaries_are_scrubbed_for_verdict_language():
+    """Regression (review finding): the liability filter skipped summaries."""
+    insight = PolicyInsight(summaries=["The proposal violates the height limit and is non-compliant."])
+    result, warnings = apply_guardrails(insight, [_scored_chunk()])
+    text = result.summaries[0].lower()
+    assert "violates" not in text and "non-compliant" not in text
+    assert any(w["code"] == "LIABILITY_LANGUAGE_FILTERED" for w in warnings)
 
 
 # ---------------------------------------------------------------------------

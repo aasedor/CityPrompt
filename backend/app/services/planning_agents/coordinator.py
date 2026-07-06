@@ -17,6 +17,7 @@ import logging
 from typing import Any
 
 import anthropic
+from celery.exceptions import SoftTimeLimitExceeded
 
 from app.core.config import get_settings
 from app.core.usage_logger import log_api_usage_sync
@@ -90,9 +91,9 @@ def merge_recommendations(
                 numeric = [(a, r, w) for a, r, w in candidates if isinstance(r.value, (int, float))]
                 values = [float(r.value) for _, r, _ in numeric]
                 spread_ok = max(values) <= min(values) * (1 + NUMERIC_TOLERANCE) if min(values) > 0 else False
-                if spread_ok and numeric:
+                total_weight = sum(w for _, _, w in numeric)
+                if spread_ok and numeric and total_weight > 0:
                     # agreement: weighted mean, all contributors join
-                    total_weight = sum(w for _, _, w in numeric)
                     blended = sum(float(r.value) * w for _, r, w in numeric) / total_weight
                     vocab_unit = PARAMETER_VOCABULARY.get(path, {}).get("unit")
                     value = round(blended) if vocab_unit in ("storeys", "dwellings") else round(blended, 1)
@@ -236,6 +237,8 @@ async def write_explanation(
         )
         narrative = (payload or {}).get("narrative", "").strip()
         explanation.narrative = narrative or _fallback_narrative(scenario, changed)
+    except SoftTimeLimitExceeded:
+        raise
     except Exception as exc:  # noqa: BLE001
         logger.warning("Narrative generation failed: %s", exc)
         explanation.narrative = _fallback_narrative(scenario, changed)

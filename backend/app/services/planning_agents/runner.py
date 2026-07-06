@@ -22,6 +22,7 @@ import logging
 from typing import Any
 
 import anthropic
+from celery.exceptions import SoftTimeLimitExceeded
 from pydantic import ValidationError
 
 from app.core.config import get_settings
@@ -268,6 +269,8 @@ async def _run_expert(
             usage_record,
         )
 
+    except SoftTimeLimitExceeded:
+        raise  # must reach the Celery task handler, or the scenario row hangs 'running'
     except Exception as exc:  # noqa: BLE001 — the panel must survive any expert
         logger.warning("Expert %s failed: %s", spec.agent_id, exc)
         usage_record["status"] = "error"

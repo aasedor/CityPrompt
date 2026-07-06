@@ -21,10 +21,11 @@ import logging
 from datetime import datetime, timezone
 from typing import Any, Protocol
 
+from celery.exceptions import SoftTimeLimitExceeded
 from shapely.geometry import Polygon, mapping
 
 from app.services.city_connector.base import CityConnector, DatasetFetchResult, DatasetSpec
-from app.services.osm_context import _buffer_polygon
+from app.services.spatial_engine import buffer_wgs84
 from app.services.urban_dna.schema import (
     CONF_AGING_CACHE,
     CONF_DEGRADED,
@@ -62,10 +63,14 @@ class PolicySynthesizer(Protocol):
 
 
 def bbox_hash_for(spec: DatasetSpec, site_polygon: Polygon) -> str:
-    """Cache key component: dataset id + version + rounded fetch-envelope bbox."""
-    envelope = _buffer_polygon(site_polygon, spec.buffer_m)
-    bbox = ",".join(f"{v:.4f}" for v in envelope.bounds)
-    raw = f"{spec.id}|{spec.dataset_version}|{bbox}"
+    """Cache key: dataset id + version + rounded fetch-envelope GEOMETRY.
+
+    Hashing only the bbox would false-hit for different-shaped sites sharing an
+    envelope (the fetch itself filters by exact polygon WKT).
+    """
+    envelope = buffer_wgs84(site_polygon, spec.buffer_m)
+    ring = ";".join(f"{x:.5f},{y:.5f}" for x, y in envelope.exterior.coords)
+    raw = f"{spec.id}|{spec.dataset_version}|{ring}"
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()
 
 
@@ -97,6 +102,8 @@ async def _fetch_with_cache(
     if cache is not None and spec.cache_policy == "bbox_ttl":
         try:
             cached = await cache.get(spec, bbox_hash)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception as exc:  # noqa: BLE001 — cache trouble must not fail the build
             logger.warning("Dataset cache read failed for %s: %s", spec.id, exc)
             cached = None
@@ -121,6 +128,8 @@ async def _fetch_with_cache(
     if cache is not None and spec.cache_policy == "bbox_ttl" and result.ok:
         try:
             await cache.set(spec, bbox_hash, result)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception as exc:  # noqa: BLE001
             logger.warning("Dataset cache write failed for %s: %s", spec.id, exc)
 
@@ -160,6 +169,8 @@ async def build_dna(
     section_weights: dict[str, list[tuple[float, float]]] = {name: [] for name in SECTION_NAMES}
 
     for spec, outcome in zip(specs, outcomes):
+        if isinstance(outcome, SoftTimeLimitExceeded):
+            raise outcome  # the task-level handler must mark the snapshot partial/failed
         if isinstance(outcome, BaseException):
             # Belt-and-suspenders: fetch_dataset shouldn't raise, but nothing may escape.
             logger.error("Unexpected builder error for %s: %s", spec.id, outcome)
@@ -185,6 +196,8 @@ async def build_dna(
     if policy_synthesizer is not None:
         try:
             policy_fields, policy_warnings, policy_confidence = await policy_synthesizer(dna)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception as exc:  # noqa: BLE001 — never-fail guard
             logger.warning("Policy synthesizer failed: %s", exc)
             policy_fields, policy_confidence = {}, 0.0

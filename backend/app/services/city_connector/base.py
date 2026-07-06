@@ -22,6 +22,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from typing import Any, ClassVar, Literal
 
+from celery.exceptions import SoftTimeLimitExceeded
 from shapely.geometry import Polygon
 
 logger = logging.getLogger(__name__)
@@ -143,6 +144,11 @@ class CityConnector:
                 warnings=[note("DATASET_TIMEOUT", f"{spec.name} did not respond within {spec.timeout_s:.0f}s")],
                 elapsed_s=time.monotonic() - started,
             )
+        except SoftTimeLimitExceeded:
+            # Celery's soft limit fires ONCE, wherever the frame happens to be.
+            # Swallowing it here would let the task run to the 600s SIGKILL and
+            # strand the snapshot in 'pending' — always propagate to the task.
+            raise
         except Exception as exc:  # noqa: BLE001 — structural never-fail guard
             logger.warning("Dataset %s fetch failed: %s", dataset_id, exc)
             return DatasetFetchResult(
@@ -175,6 +181,8 @@ class CityConnector:
                 logger.warning("Dataset %s transform produced undeclared fields: %s", spec.id, unexpected)
             result.facts = facts
             result.warnings.extend(transform_warnings)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception as exc:  # noqa: BLE001
             logger.warning("Dataset %s transform failed: %s", spec.id, exc)
             result.status = "error"

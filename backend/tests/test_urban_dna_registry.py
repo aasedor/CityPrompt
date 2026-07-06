@@ -122,6 +122,50 @@ async def test_raising_adapter_never_escapes():
     assert any(w["code"] == "DATASET_ERROR" for w in result.warnings)
 
 
+def test_overpass_lock_survives_sequential_event_loops():
+    """Regression (review finding): a module-level asyncio.Lock binds to the first
+    loop it *waits* on; Celery runs a fresh loop per task in a warm worker child,
+    so every build after the first would RuntimeError. The lock must be per-loop."""
+    import asyncio
+
+    from app.services.city_connector.adapters.osm import _get_overpass_lock
+
+    async def contend():
+        async def hold():
+            async with _get_overpass_lock():
+                await asyncio.sleep(0.01)
+        await asyncio.gather(hold(), hold(), hold())  # forces the waiter path -> loop binding
+
+    asyncio.run(contend())
+    asyncio.run(contend())  # second fresh loop in the same process must NOT raise
+
+
+@pytest.mark.anyio
+async def test_soft_time_limit_propagates_through_fetch_guard():
+    """Regression (review finding): SoftTimeLimitExceeded subclasses Exception; the
+    never-fail guard must NOT swallow it or the task runs to SIGKILL and strands
+    the snapshot in 'pending'."""
+    from celery.exceptions import SoftTimeLimitExceeded
+
+    class SoftLimitConnector(CityConnector):
+        city_id = "softlimit"
+
+        def _adapters(self):
+            async def limited(spec, boundary):
+                raise SoftTimeLimitExceeded()
+            return {"socrata": limited}
+
+    SoftLimitConnector.register(DatasetSpec(
+        id="softlimit.data", name="SoftLimit", priority=1, geometry_type="point",
+        refresh_days=1, source_url="", api_endpoint="x", adapter="socrata",
+        adapter_params={"geo_field": "point"}, dna_fields=("site.parcel_count",),
+        transform=_noop_transform,
+    ))
+
+    with pytest.raises(SoftTimeLimitExceeded):
+        await SoftLimitConnector().fetch_dataset("softlimit.data", DOWNTOWN_CALGARY)
+
+
 @pytest.mark.anyio
 async def test_raising_transform_degrades_not_fails():
     class BadTransformConnector(CityConnector):

@@ -36,7 +36,12 @@ logger = logging.getLogger(__name__)
 
 
 class PostgresDatasetCache:
-    """DB-backed DatasetCacheProtocol using the task's sync session."""
+    """DB-backed DatasetCacheProtocol using the task's sync session.
+
+    A failed statement poisons the shared sync session (every later statement
+    raises PendingRollbackError, which would mark a fully-built DNA 'failed'),
+    so both methods roll back before re-raising to the builder's guard.
+    """
 
     def __init__(self, session):
         self._session = session
@@ -44,36 +49,43 @@ class PostgresDatasetCache:
     async def get(self, spec: DatasetSpec, bbox_hash: str):
         from app.models.models import DatasetCache
 
-        row = (
-            self._session.query(DatasetCache)
-            .filter(
-                DatasetCache.dataset_id == spec.id,
-                DatasetCache.dataset_version == spec.dataset_version,
-                DatasetCache.bbox_hash == bbox_hash,
-                DatasetCache.expires_at > datetime.now(timezone.utc),
+        try:
+            return (
+                self._session.query(DatasetCache)
+                .filter(
+                    DatasetCache.dataset_id == spec.id,
+                    DatasetCache.dataset_version == spec.dataset_version,
+                    DatasetCache.bbox_hash == bbox_hash,
+                    DatasetCache.expires_at > datetime.now(timezone.utc),
+                )
+                .order_by(DatasetCache.fetched_at.desc())
+                .first()
             )
-            .order_by(DatasetCache.fetched_at.desc())
-            .first()
-        )
-        return row
+        except Exception:
+            self._session.rollback()
+            raise
 
     async def set(self, spec: DatasetSpec, bbox_hash: str, result: DatasetFetchResult) -> None:
         from app.models.models import DatasetCache
 
         now = datetime.now(timezone.utc)
-        self._session.add(
-            DatasetCache(
-                dataset_id=spec.id,
-                dataset_version=spec.dataset_version,
-                bbox_hash=bbox_hash,
-                features=result.features,
-                feature_count=len(result.features),
-                source_status=result.status,
-                fetched_at=now,
-                expires_at=now + timedelta(days=spec.refresh_days),
+        try:
+            self._session.add(
+                DatasetCache(
+                    dataset_id=spec.id,
+                    dataset_version=spec.dataset_version,
+                    bbox_hash=bbox_hash,
+                    features=result.features,
+                    feature_count=len(result.features),
+                    source_status=result.status,
+                    fetched_at=now,
+                    expires_at=now + timedelta(days=spec.refresh_days),
+                )
             )
-        )
-        self._session.commit()
+            self._session.commit()
+        except Exception:
+            self._session.rollback()
+            raise
 
 
 def _field_value(section, name: str):
@@ -239,11 +251,13 @@ def generate_urban_dna(self, snapshot_id: str) -> dict:
             session.rollback()
             if snapshot is not None:
                 snapshot.status = "failed"
-                snapshot.error = str(exc)[:2000]
+                # Detail stays in the worker logs — raw exception text can leak
+                # infrastructure internals to any project viewer via the API.
+                snapshot.error = f"generation failed ({type(exc).__name__}) — see worker logs"
                 session.commit()
         except Exception:  # noqa: BLE001
             logger.exception("Failed to mark snapshot %s failed", snapshot_id)
-        return {"status": "failed", "error": str(exc)}
+        return {"status": "failed", "error": type(exc).__name__}
 
     finally:
         session.close()
@@ -367,11 +381,11 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             session.rollback()
             if row is not None:
                 row.status = "failed"
-                row.error = str(exc)[:2000]
+                row.error = f"scenario run failed ({type(exc).__name__}) — see worker logs"
                 session.commit()
         except Exception:  # noqa: BLE001
             logger.exception("Failed to mark scenario %s failed", scenario_row_id)
-        return {"status": "failed", "error": str(exc)}
+        return {"status": "failed", "error": type(exc).__name__}
 
     finally:
         session.close()

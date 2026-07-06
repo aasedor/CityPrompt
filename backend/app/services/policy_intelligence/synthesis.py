@@ -19,6 +19,7 @@ import re
 from typing import Any, Literal, Optional
 
 import anthropic
+from celery.exceptions import SoftTimeLimitExceeded
 from pydantic import BaseModel, Field, ValidationError
 
 from app.core.config import get_settings
@@ -223,6 +224,19 @@ def apply_guardrails(
     for chunk in chunks:
         chunks_by_doc.setdefault(chunk.document_slug, []).append(chunk)
 
+    scrubbed_summaries: list[str] = []
+    for summary in insight.summaries:
+        rewritten, hit = _rewrite_banned_language(summary)
+        if hit:
+            warnings.append({
+                "code": "LIABILITY_LANGUAGE_FILTERED",
+                "severity": "info",
+                "message": "Verdict language rewritten in a policy summary.",
+                "source_phase": "policy_intelligence",
+            })
+        scrubbed_summaries.append(rewritten)
+    insight.summaries = scrubbed_summaries
+
     def scrub(items: list[Consideration], kind: str) -> list[Consideration]:
         kept: list[Consideration] = []
         for item in items:
@@ -318,6 +332,8 @@ async def synthesize_policy_insight(
             tools=[INSIGHT_TOOL],
             tool_choice={"type": "tool", "name": "record_policy_insight"},
         )
+    except SoftTimeLimitExceeded:
+        raise  # must reach the Celery task handler, or the snapshot hangs until SIGKILL
     except Exception as exc:  # noqa: BLE001 — degrade, never fail the DNA build
         logger.warning("Policy synthesis call failed: %s", exc)
         return (

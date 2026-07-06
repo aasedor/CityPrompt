@@ -44,27 +44,33 @@ def _detect_heading(paragraph: str) -> str | None:
 
 
 def chunk_pages(page_texts: list[str]) -> list[Chunk]:
-    """Merge/split per-page text into 300-700 token chunks with page anchors."""
+    """Merge/split per-page text into 300-700 token chunks with page anchors.
+
+    ``page_end`` is the last page that actually CONTRIBUTED text to the chunk —
+    never a trailing blank page — so citations always point at real content.
+    """
     chunks: list[Chunk] = []
     buffer = ""
     buffer_start_page: int | None = None
+    buffer_last_page: int | None = None
     current_section: str | None = None
 
-    def flush(end_page: int) -> None:
-        nonlocal buffer, buffer_start_page
+    def flush() -> None:
+        nonlocal buffer, buffer_start_page, buffer_last_page
         text = buffer.strip()
         if text and buffer_start_page is not None:
             chunks.append(
                 Chunk(
                     text=text,
                     page_start=buffer_start_page,
-                    page_end=end_page,
+                    page_end=buffer_last_page or buffer_start_page,
                     section_label=current_section,
                     token_count=max(1, len(text) // 4),
                 )
             )
         buffer = ""
         buffer_start_page = None
+        buffer_last_page = None
 
     for page_num, raw in enumerate(page_texts, start=1):
         page_text = (raw or "").strip()
@@ -75,12 +81,13 @@ def chunk_pages(page_texts: list[str]) -> list[Chunk]:
         for paragraph in paragraphs:
             heading = _detect_heading(paragraph)
             if heading and len(buffer) >= MIN_CHUNK_CHARS:
-                flush(page_num)
+                flush()
             if heading:
                 current_section = heading
 
             if buffer_start_page is None:
                 buffer_start_page = page_num
+            buffer_last_page = page_num
             buffer += ("\n\n" if buffer else "") + paragraph.strip()
 
             while len(buffer) > MAX_CHUNK_CHARS:
@@ -100,6 +107,7 @@ def chunk_pages(page_texts: list[str]) -> list[Chunk]:
                 )
                 buffer = buffer_rest
                 buffer_start_page = page_num
+                buffer_last_page = page_num
 
-    flush(len(page_texts))
+    flush()
     return chunks

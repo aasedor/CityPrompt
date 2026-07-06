@@ -125,6 +125,19 @@ def test_philosophy_intensity_flips_a_rigged_tie():
     ) or low["layout.strategy"].value == "green network first"
 
 
+def test_merge_zero_confidence_numeric_agreement_no_crash():
+    """Regression (review finding): all-zero confidences made the weighted mean
+    divide by zero."""
+    sets = [
+        _expert_set("land_use_zoning", Recommendation(
+            parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0)),
+        _expert_set("built_form_urban_design", Recommendation(
+            parameter_path="buildings.floors", value=6, rationale="r", confidence=0.0)),
+    ]
+    merged, _ = merge_recommendations(sets, PhilosophyWeights(primary="balanced", intensity=0.0))
+    assert merged["buildings.floors"].value == 6  # falls through to winner, no crash
+
+
 def test_failed_experts_are_excluded_but_merge_completes():
     sets = [
         ExpertRecommendationSet(agent_id="mobility", failed=True),

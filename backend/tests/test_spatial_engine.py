@@ -101,3 +101,28 @@ def test_frontage_detects_boundary_streets_only():
 def test_network_distance_estimate_flags_and_scales():
     assert se.network_distance_estimate_m(100) == 135.0
     assert se.DISTANCE_METHOD == "euclidean_estimate"
+
+
+def test_buffer_wgs84_is_metric_accurate_east_west():
+    """Regression (review finding): degree-averaged buffering is ~18% short
+    east-west at Calgary latitudes, silently shrinking every walkshed."""
+    buffered = se.buffer_wgs84(_square(100), 800.0)
+    frame = se.SiteFrame.from_wgs84(buffered)
+    bounds = frame.site_m.bounds
+    width_m = bounds[2] - bounds[0]    # expected: 100m site + 2 x 800m buffer
+    height_m = bounds[3] - bounds[1]
+    assert abs(width_m - 1700) / 1700 < 0.03, f"E-W extent {width_m:.0f}m, want ~1700m"
+    assert abs(height_m - 1700) / 1700 < 0.03
+
+
+def test_coverage_by_unions_overlapping_same_key_features():
+    """Regression (review finding): overlapping same-key municipal features must
+    not double-count — pct can never exceed 100."""
+    frame = se.SiteFrame.from_wgs84(_square(100))
+    covering = Polygon([_offset(-10, -10), _offset(110, -10), _offset(110, 110), _offset(-10, 110)])
+    coverage = se.coverage_by(
+        frame,
+        [_feature(covering, code="R-CG"), _feature(covering, code="R-CG")],  # identical overlap twice
+        lambda f: f["properties"]["code"],
+    )
+    assert 99 <= coverage["R-CG"]["pct"] <= 100.5

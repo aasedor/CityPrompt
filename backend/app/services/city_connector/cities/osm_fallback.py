@@ -104,6 +104,7 @@ OSMFallbackConnector.register(
         dna_fields=("mobility.road_hierarchy", "mobility.frontage_streets", "site.corner_site"),
         transform=_roads,
         buffer_m=220.0,
+        timeout_s=90.0,  # covers queueing behind sibling Overpass queries + one 429 retry
     )
 )
 
@@ -122,6 +123,7 @@ OSMFallbackConnector.register(
         transform=_buildings,
         buffer_m=220.0,
         confidence_weight=0.6,
+        timeout_s=90.0,
     )
 )
 
@@ -140,5 +142,6 @@ OSMFallbackConnector.register(
         transform=_parks,
         buffer_m=850.0,
         confidence_weight=0.6,
+        timeout_s=90.0,
     )
 )

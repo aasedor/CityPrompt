@@ -22,20 +22,30 @@ from shapely.geometry import Polygon
 
 from app.core.config import get_settings
 from app.services.city_connector.base import DatasetSpec, Feature, FetchStatus, note
-from app.services.osm_context import _buffer_polygon
+from app.services.spatial_engine import buffer_wgs84
 
 logger = logging.getLogger(__name__)
 
 PAGE_SIZE = 2000
 MAX_PAGES = 10  # 20k features is far beyond any buffered site envelope
+MAX_WKT_VERTICES = 120
 
 
 def _boundary_wkt(boundary_wgs84: Polygon, buffer_m: float) -> str:
-    """Buffered site boundary as SODA-compatible WKT (lon lat order, exterior ring only)."""
-    buffered = _buffer_polygon(boundary_wgs84, buffer_m)
-    # Simplify very detailed boundaries so the URL stays well under length limits.
-    if len(buffered.exterior.coords) > 80:
-        buffered = buffered.simplify(0.0001, preserve_topology=True)
+    """Buffered site boundary as SODA-compatible WKT (lon lat order, exterior ring only).
+
+    The buffer is metric-accurate (UTM) — degree-averaged buffering undercounts
+    east-west by ~18% at Calgary latitudes, silently shrinking walksheds.
+    """
+    buffered = buffer_wgs84(boundary_wgs84, buffer_m)
+    # Simplify very detailed boundaries so the URL stays well under length
+    # limits — keep doubling tolerance until the ring is genuinely bounded.
+    tolerance = 0.0001
+    for _ in range(6):
+        if len(buffered.exterior.coords) <= MAX_WKT_VERTICES:
+            break
+        buffered = buffered.simplify(tolerance, preserve_topology=True)
+        tolerance *= 2
     coords = ", ".join(f"{lon:.6f} {lat:.6f}" for lon, lat in buffered.exterior.coords)
     return f"POLYGON(({coords}))"
 
@@ -62,6 +72,7 @@ async def fetch(
         for page in range(MAX_PAGES):
             params = {
                 "$where": f"intersects({geo_field}, '{wkt}')",
+                "$order": ":id",  # stable order — $offset paging without it can skip/duplicate rows
                 "$limit": str(PAGE_SIZE),
                 "$offset": str(page * PAGE_SIZE),
             }

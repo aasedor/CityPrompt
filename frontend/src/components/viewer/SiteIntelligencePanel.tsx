@@ -270,14 +270,16 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     try {
       const latest = await urbanDnaApi.getLatest(zone.id);
       setSnapshot(latest);
-    } catch {
-      setSnapshot(null);
+    } catch (err: any) {
+      // Only a real 404 means "never generated" — a transient network/5xx error
+      // must not blank the panel and re-offer paid generation mid-build.
+      if (err?.response?.status === 404) setSnapshot(null);
     }
     try {
       const list = await urbanDnaApi.listScenarios(zone.id);
       setScenarios(list.scenarios);
-    } catch {
-      setScenarios([]);
+    } catch (err: any) {
+      if (err?.response?.status === 404) setScenarios([]);
     }
   }, [zone.id]);
 

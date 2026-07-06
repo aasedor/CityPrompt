@@ -21,6 +21,7 @@ from typing import Any, Callable
 
 from shapely.geometry import Point, Polygon, shape
 from shapely.geometry.base import BaseGeometry
+from shapely.ops import unary_union
 from shapely.strtree import STRtree
 from shapely.validation import make_valid
 
@@ -36,6 +37,22 @@ DETOUR_FACTOR = 1.35  # straight-line -> street-network proxy; replace when real
 DISTANCE_METHOD = "euclidean_estimate"
 
 Feature = dict[str, Any]
+
+
+def buffer_wgs84(polygon: Polygon, distance_m: float) -> Polygon:
+    """Metric-accurate buffer of a WGS84 polygon (buffers in local UTM).
+
+    Degree-averaged buffering (osm_context._buffer_polygon) is ~18% short
+    east-west at Calgary latitudes — never use it for analysis envelopes.
+    """
+    if distance_m <= 0:
+        return polygon
+    if not polygon.is_valid:
+        polygon = make_valid(polygon)
+    crs = local_metric_crs_for_polygon(polygon)
+    forward = build_transformer("EPSG:4326", crs)
+    inverse = build_transformer(crs, "EPSG:4326")
+    return project_geometry(project_geometry(polygon, forward).buffer(distance_m), inverse)
 
 
 def shape_of(feature: Feature) -> BaseGeometry | None:
@@ -114,19 +131,24 @@ def coverage_by(
     if zone_area <= 0:
         return {}
 
-    coverage: dict[str, dict[str, float]] = {}
+    # Union same-key geometries BEFORE measuring — municipal layers routinely
+    # contain overlapping features and double-counting can push pct past 100.
+    groups: dict[str, list[BaseGeometry]] = {}
     for geom_m, feature in _metric_geoms(frame, features):
         key = key_fn(feature)
         if key is None:
             continue
-        overlap = geom_m.intersection(zone)
-        if overlap.is_empty:
+        groups.setdefault(key, []).append(geom_m)
+
+    coverage: dict[str, dict[str, float]] = {}
+    for key, geoms in groups.items():
+        overlap = unary_union(geoms).intersection(zone)
+        if overlap.is_empty or overlap.area <= 0:
             continue
-        entry = coverage.setdefault(key, {"area_m2": 0.0, "pct": 0.0})
-        entry["area_m2"] += float(overlap.area)
-    for entry in coverage.values():
-        entry["pct"] = round(100.0 * entry["area_m2"] / zone_area, 2)
-        entry["area_m2"] = round(entry["area_m2"], 1)
+        coverage[key] = {
+            "area_m2": round(float(overlap.area), 1),
+            "pct": round(100.0 * float(overlap.area) / zone_area, 2),
+        }
     return coverage
 
 

@@ -113,7 +113,9 @@ out body;
 out skel qt;
 """
 
-        async with httpx.AsyncClient(timeout=self.timeout) as client:
+        # overpass-api.de rejects default library User-Agents with 406.
+        headers = {"User-Agent": "CityPrompt/1.0 (urban planning site context)"}
+        async with httpx.AsyncClient(timeout=self.timeout, headers=headers) as client:
             resp = await client.post(OVERPASS_URL, data={"data": query})
             resp.raise_for_status()
             data = resp.json()
