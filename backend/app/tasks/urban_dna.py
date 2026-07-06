@@ -267,8 +267,9 @@ def generate_urban_dna(self, snapshot_id: str) -> dict:
 def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
     """Run one planning-agent scenario against its snapshot's DNA.
 
-    One task per scenario keeps each run well inside the 300s soft limit; the
-    API queues them as a Celery chain so the as_of_right baseline lands first.
+    One task per scenario keeps each run well inside the 300s soft limit. The
+    API dispatches runs independently (baseline first, others delayed) — a
+    failed or killed run never strands its siblings.
     """
     from app.models.models import UrbanDnaScenario
     from app.services.planning_agents.coordinator import (

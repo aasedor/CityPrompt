@@ -294,9 +294,13 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     };
   }, [refresh]);
 
-  // Poll while anything is in flight
+  // Poll while anything is in flight. 'partial' is included because the build
+  // checkpoints a partial snapshot before the policy phase — it usually flips
+  // to 'complete' moments later (a truly-terminal partial just keeps a cheap
+  // poll alive while the panel is open).
   const busy =
     snapshot?.status === 'pending' ||
+    snapshot?.status === 'partial' ||
     scenarios.some((s) => s.status === 'pending' || s.status === 'running');
   useEffect(() => {
     if (!busy) {

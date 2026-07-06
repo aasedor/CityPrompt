@@ -52,7 +52,12 @@ async def fetch(
     from app.services.spatial_engine import buffer_wgs84
 
     category = spec.adapter_params["category"]
-    fetcher = OSMContextFetcher(timeout=min(spec.timeout_s, _QUERY_TIMEOUT_S))
+    # Analysis caps: the default 50/20 render-context caps would silently
+    # undercount walkshed metrics on dense or park-rich sites.
+    fetcher = OSMContextFetcher(
+        timeout=min(spec.timeout_s, _QUERY_TIMEOUT_S),
+        feature_caps={"buildings": 500, "roads": 500, "water": 100, "parks": 200},
+    )
     # Metric-accurate envelope (the fetcher's own degree-averaged buffer is
     # ~18% short east-west at Calgary latitudes), so pass buffer_m=0 below.
     envelope = buffer_wgs84(boundary_wgs84, spec.buffer_m)

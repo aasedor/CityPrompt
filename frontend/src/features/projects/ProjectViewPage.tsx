@@ -259,6 +259,27 @@ export function ProjectViewPage() {
     setShowHistory((open) => !open);
   }, []);
 
+  // Master Plan tool: open Site Intelligence on the site boundary (or start drawing one).
+  // Must clear every state that hides ZonePropertiesPanel (history, measure, step 2),
+  // or the click is invisible and the button reads as dead.
+  const handleMasterPlan = useCallback(() => {
+    setMeasureActive(false);
+    setShowHistory(false);
+    setWorkflowStep(1);
+    const boundary = siteZones.find((z) => z.zone_type === 'site_boundary');
+    if (boundary) {
+      setActiveSitePlannerTool(null);
+      selectZone(boundary.id);
+    } else {
+      selectZone(null);
+      setActiveSitePlannerTool('site_boundary');
+      toast('Draw your site boundary first — the Master Plan tool analyzes everything inside it.', { icon: '🧠' });
+    }
+  }, [siteZones, selectZone, setActiveSitePlannerTool, setWorkflowStep]);
+
+  const masterPlanActive =
+    workflowStep === 1 && !showHistory && selectedZone?.zone_type === 'site_boundary';
+
   const handleOpenGlobeRender = useCallback(() => {
     setShowHistory(false);
     setMeasureActive(false);
@@ -541,6 +562,8 @@ export function ProjectViewPage() {
               historyOpen={showHistory}
               measureActive={measureActive}
               onMeasureModeChange={handleMeasureModeChange}
+              onMasterPlan={handleMasterPlan}
+              masterPlanActive={masterPlanActive}
               uploadSlot={
                 <ShapefileImportButton
                   projectId={project.id}
@@ -905,6 +928,8 @@ export function ProjectViewPage() {
               onShowGuide={() => setShowTour(true)}
               onToggleHistory={handleToggleHistory}
               historyOpen={showHistory}
+              onMasterPlan={handleMasterPlan}
+              masterPlanActive={masterPlanActive}
             />
           </div>
 

@@ -203,8 +203,9 @@ async def create_scenarios(
 ):
     """Queue planning-agent scenario runs against the zone's latest DNA snapshot.
 
-    Runs are chained so the as_of_right baseline completes before the scenarios
-    that diff against it.
+    Runs dispatch independently (no chain): the as_of_right baseline starts
+    immediately and the others start after a delay so the diff baseline usually
+    lands first; a slow baseline degrades to a BASELINE_UNAVAILABLE info note.
     """
     zone = await _load_zone_checked(zone_id, user, db, required="editor")
     snapshot = await _latest_snapshot(zone, db)
@@ -314,7 +315,14 @@ async def apply_scenario(
     if snapshot is None:
         raise HTTPException(status_code=404, detail="Scenario not found")
 
-    zone = await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+    try:
+        zone = await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+    except HTTPException as exc:
+        if exc.status_code in (403, 404):
+            # Existence-oracle hygiene: a non-member must get the same 404 a
+            # nonexistent scenario id gets, not a distinguishable 403.
+            raise HTTPException(status_code=404, detail="Scenario not found")
+        raise
 
     if row.status != "complete" or not row.payload:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -329,8 +337,12 @@ async def apply_scenario(
         if vocab is None:
             continue
         value = merged.get("value")
+        # LLM-derived values are replayed into render prompts — cap every shape.
+        # The runner's quirk-decode path can emit lists/dicts past the tool schema.
         if isinstance(value, str):
-            value = value[:400]  # LLM-derived text is replayed into render prompts — cap it
+            value = value[:400]
+        elif value is not None and not isinstance(value, (int, float, bool)):
+            value = str(value)[:400]
         parameters[vocab["maps_to"]] = value
         rationales[vocab["maps_to"]] = str(merged.get("rationale", ""))[:200]
 

@@ -159,6 +159,43 @@ def _extract_json_object(text: str) -> str:
     return text[start:]
 
 
+def _coerce_stringified_payload(payload: Any) -> dict[str, Any]:
+    """Repair the known claude-sonnet-5 tool quirk: nested fields (or whole
+    field payloads) arrive as JSON-encoded STRINGS instead of objects/arrays."""
+
+    def decode(value: Any) -> Any:
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return value
+        return value
+
+    payload = decode(payload)
+    if not isinstance(payload, dict):
+        raise TypeError(f"payload is {type(payload).__name__}, not an object")
+
+    # A stringified field can wrap the whole payload object.
+    for key in ("summaries", "conformance_considerations", "opportunities"):
+        decoded = decode(payload.get(key))
+        if isinstance(decoded, dict) and "conformance_considerations" in decoded:
+            payload = {**decoded, **{k: v for k, v in payload.items() if k != key and v}}
+            decoded = payload.get(key)
+        payload[key] = decoded
+
+    summaries = payload.get("summaries") or []
+    payload["summaries"] = [str(s) for s in summaries if isinstance(s, (str, int, float))] \
+        if isinstance(summaries, list) else [str(summaries)]
+
+    for key in ("conformance_considerations", "opportunities"):
+        items = payload.get(key) or []
+        if not isinstance(items, list):
+            items = [items]
+        payload[key] = [item for item in (decode(i) for i in items) if isinstance(item, dict)]
+
+    return payload
+
+
 def _compact_site_facts(site_facts: dict[str, Any]) -> dict[str, Any]:
     """Prune site facts to prompt-safe size — NEVER blind-truncate JSON mid-string."""
     compact: dict[str, Any] = {}
@@ -319,74 +356,83 @@ async def synthesize_policy_insight(
         + "\n\n---\n\n".join(excerpts)
     )
 
-    try:
-        client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
-        # Forced tool use = schema-validated JSON. claude-sonnet-5 rejects
-        # assistant prefill, and its adaptive thinking can otherwise leak
-        # reasoning prose into the text channel (observed in smoke runs).
-        message = await client.messages.create(
-            model=model,
-            max_tokens=8000,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_message}],
-            tools=[INSIGHT_TOOL],
-            tool_choice={"type": "tool", "name": "record_policy_insight"},
-        )
-    except SoftTimeLimitExceeded:
-        raise  # must reach the Celery task handler, or the snapshot hangs until SIGKILL
-    except Exception as exc:  # noqa: BLE001 — degrade, never fail the DNA build
-        logger.warning("Policy synthesis call failed: %s", exc)
-        return (
-            PolicyInsight(corpus_status="partial", documents_consulted=documents_consulted, confidence=0.0),
-            [{
-                "code": "POLICY_SYNTHESIS_UNAVAILABLE",
-                "severity": "warning",
-                "message": f"Policy synthesis unavailable: {exc}",
-                "source_phase": "policy_intelligence",
-            }],
+    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+    insight = None
+    last_error = "?"
+    # Up to 2 samples: the model nondeterministically JSON-encodes nested tool
+    # fields as strings (same quirk as the expert runner); a fresh sample
+    # usually conforms, and _coerce_stringified_payload repairs most cases.
+    for attempt in range(2):
+        try:
+            # Forced tool use = schema-validated JSON. claude-sonnet-5 rejects
+            # assistant prefill, and its adaptive thinking can otherwise leak
+            # reasoning prose into the text channel (observed in smoke runs).
+            message = await client.messages.create(
+                model=model,
+                max_tokens=8000,
+                system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": user_message}],
+                tools=[INSIGHT_TOOL],
+                tool_choice={"type": "tool", "name": "record_policy_insight"},
+            )
+        except SoftTimeLimitExceeded:
+            raise  # must reach the Celery task handler, or the snapshot hangs until SIGKILL
+        except Exception as exc:  # noqa: BLE001 — degrade, never fail the DNA build
+            logger.warning("Policy synthesis call failed: %s", exc)
+            return (
+                PolicyInsight(corpus_status="partial", documents_consulted=documents_consulted, confidence=0.0),
+                [{
+                    "code": "POLICY_SYNTHESIS_UNAVAILABLE",
+                    "severity": "warning",
+                    "message": f"Policy synthesis unavailable: {exc}",
+                    "source_phase": "policy_intelligence",
+                }],
+            )
+
+        try:
+            log_api_usage_sync(
+                provider="anthropic",
+                operation="urban_dna_policy_synthesis",
+                input_tokens=message.usage.input_tokens,
+                output_tokens=message.usage.output_tokens,
+            )
+        except SoftTimeLimitExceeded:
+            raise  # sync DB frame — must reach the task handler, or the snapshot strands
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Failed to log policy synthesis usage: %s", exc)
+
+        raw_text = "".join(
+            block.text for block in message.content if getattr(block, "type", None) == "text"
         )
 
-    try:
-        log_api_usage_sync(
-            provider="anthropic",
-            operation="urban_dna_policy_synthesis",
-            input_tokens=message.usage.input_tokens,
-            output_tokens=message.usage.output_tokens,
-        )
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("Failed to log policy synthesis usage: %s", exc)
+        try:
+            payload = next(
+                (block.input for block in message.content if getattr(block, "type", None) == "tool_use"),
+                None,
+            )
+            if payload is None:  # fallback: parse the text channel
+                payload = json.loads(_extract_json_object(_strip_json_fences(raw_text)))
+            payload = _coerce_stringified_payload(payload)
+            insight = PolicyInsight(
+                summaries=payload.get("summaries", []),
+                conformance_considerations=payload.get("conformance_considerations", []),
+                opportunities=payload.get("opportunities", []),
+                corpus_status=corpus_status,
+                documents_consulted=documents_consulted,
+            )
+            break
+        except (json.JSONDecodeError, ValidationError, AttributeError, TypeError) as exc:
+            last_error = f"stop_reason={getattr(message, 'stop_reason', '?')}: {exc}"
+            logger.warning("Policy synthesis attempt %d unparseable: %s", attempt, last_error)
 
-    raw_text = "".join(
-        block.text for block in message.content if getattr(block, "type", None) == "text"
-    )
-
-    try:
-        payload = next(
-            (block.input for block in message.content if getattr(block, "type", None) == "tool_use"),
-            None,
-        )
-        if payload is None:  # fallback: parse the text channel
-            payload = json.loads(_extract_json_object(_strip_json_fences(raw_text)))
-        insight = PolicyInsight(
-            summaries=payload.get("summaries", []),
-            conformance_considerations=payload.get("conformance_considerations", []),
-            opportunities=payload.get("opportunities", []),
-            corpus_status=corpus_status,
-            documents_consulted=documents_consulted,
-        )
-    except (json.JSONDecodeError, ValidationError) as exc:
-        stop_reason = getattr(message, "stop_reason", "?")
-        logger.warning(
-            "Policy synthesis returned unparseable output (stop_reason=%s, %d chars): %s",
-            stop_reason, len(raw_text), exc,
-        )
+    if insight is None:
         return (
             PolicyInsight(corpus_status="partial", documents_consulted=documents_consulted, confidence=0.0),
             [{
                 "code": "POLICY_SYNTHESIS_UNPARSEABLE",
                 "severity": "warning",
-                "message": f"Policy synthesis output could not be parsed "
-                           f"(stop_reason={stop_reason}, starts: {raw_text[:120]!r}); policy section degraded.",
+                "message": f"Policy synthesis output could not be parsed after retry ({last_error[:160]}); "
+                           "policy section degraded.",
                 "source_phase": "policy_intelligence",
             }],
         )

@@ -266,6 +266,38 @@ async def test_synthesis_unparseable_output_degrades(monkeypatch):
     assert any(w["code"] == "POLICY_SYNTHESIS_UNPARSEABLE" for w in warnings)
 
 
+def test_coerce_stringified_payload_repairs_model_quirks():
+    """Regression: claude-sonnet-5 sometimes JSON-encodes nested tool fields as
+    strings (observed live: a snapshot degraded with POLICY_SYNTHESIS_UNPARSEABLE)."""
+    import json as json_module
+
+    from app.services.policy_intelligence.synthesis import _coerce_stringified_payload
+
+    consideration = {"topic": "density", "detail": "d", "citations": []}
+
+    # nested array stringified
+    repaired = _coerce_stringified_payload({
+        "summaries": ["ok"],
+        "conformance_considerations": json_module.dumps([consideration]),
+        "opportunities": [],
+    })
+    assert repaired["conformance_considerations"] == [consideration]
+
+    # whole payload nested under one stringified field
+    inner = {"summaries": ["s"], "conformance_considerations": [consideration], "opportunities": []}
+    repaired = _coerce_stringified_payload({"conformance_considerations": json_module.dumps(inner)})
+    assert repaired["summaries"] == ["s"]
+    assert repaired["conformance_considerations"] == [consideration]
+
+    # string ITEMS inside the array + garbage items dropped
+    repaired = _coerce_stringified_payload({
+        "summaries": [],
+        "conformance_considerations": [json_module.dumps(consideration), "not json {", 42],
+        "opportunities": [],
+    })
+    assert repaired["conformance_considerations"] == [consideration]
+
+
 # ---------------------------------------------------------------------------
 # Builder integration: the policy phase merges into the policy section
 # ---------------------------------------------------------------------------

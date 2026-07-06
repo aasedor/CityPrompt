@@ -330,6 +330,8 @@ async def run_expert_panel(
                 status=usage["status"],
                 metadata={"scenario": scenario.scenario_id, "model": usage["model"]},
             )
+        except SoftTimeLimitExceeded:
+            raise  # sync DB frame — a swallowed soft limit here strands the scenario row
         except Exception as exc:  # noqa: BLE001
             logger.warning("Failed to log usage for %s: %s", usage["agent_id"], exc)
 

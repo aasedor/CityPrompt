@@ -104,7 +104,9 @@ def merge_recommendations(
                         candidates=candidate_dump,
                     )
                     continue
-                contested = True
+                # Zero-weight agreement (all confidences 0) is NOT a conflict —
+                # only a genuine numeric spread earns a trade-off note.
+                contested = not spread_ok
             else:
                 distinct = {str(r.value).strip().lower() for _, r, _ in candidates}
                 contested = len(distinct) > 1
@@ -229,6 +231,8 @@ async def write_explanation(
                 output_tokens=message.usage.output_tokens,
                 metadata={"scenario": scenario.scenario_id},
             )
+        except SoftTimeLimitExceeded:
+            raise  # sync DB frame — must reach the task handler, not the fallback narrative
         except Exception:  # noqa: BLE001
             pass
         payload = next(

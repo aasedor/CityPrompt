@@ -80,11 +80,18 @@ def _road_width(tags: dict[str, str]) -> float:
     return widths.get(highway, 6.0)
 
 
+# Default caps keep the zone-properties payload small for the render-context
+# flow. Analysis consumers (the Urban DNA connector) pass higher caps — 50
+# buildings / 20 parks silently undercounts any dense-urban walkshed.
+DEFAULT_FEATURE_CAPS = {"buildings": 50, "roads": 50, "water": 20, "parks": 20}
+
+
 class OSMContextFetcher:
     """Fetches OSM features within a buffered polygon."""
 
-    def __init__(self, timeout: float = 30.0):
+    def __init__(self, timeout: float = 30.0, feature_caps: dict[str, int] | None = None):
         self.timeout = timeout
+        self.feature_caps = {**DEFAULT_FEATURE_CAPS, **(feature_caps or {})}
 
     async def fetch(
         self, polygon: Polygon, buffer_m: float = 50
@@ -193,10 +200,10 @@ out skel qt;
         )
 
         return {
-            "buildings": buildings[:50],
-            "roads": roads[:50],
-            "water": water[:20],
-            "parks": parks[:20],
+            "buildings": buildings[: self.feature_caps["buildings"]],
+            "roads": roads[: self.feature_caps["roads"]],
+            "water": water[: self.feature_caps["water"]],
+            "parks": parks[: self.feature_caps["parks"]],
             "fetched_at": datetime.now(timezone.utc).isoformat(),
             "buffer_m": 50,
         }
