@@ -271,7 +271,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
     API dispatches runs independently (baseline first, others delayed) — a
     failed or killed run never strands its siblings.
     """
-    from app.models.models import UrbanDnaScenario
+    from app.models.models import SiteZone, UrbanDnaScenario
     from app.services.planning_agents.coordinator import (
         diff_scenarios,
         merge_recommendations,
@@ -333,6 +333,33 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             changed = diff_scenarios(baseline_params, plan_parameters)
             explanation = await write_explanation(definition, changed, trade_offs)
 
+            # Derived statistics (P1: parameter mode). Site area from the real
+            # boundary geometry — UrbanDNA v1 doesn't persist it.
+            from app.services import spatial_engine as se
+            from app.services.plan_metrics import compute_metrics
+
+            metrics_report = None
+            try:
+                zone = session.query(SiteZone).filter_by(id=snapshot.zone_id).first()
+                if zone is not None:
+                    site_shape = to_shape(zone.geometry)
+                    site_poly = site_shape if isinstance(site_shape, Polygon) else site_shape.convex_hull
+                    frame = se.SiteFrame.from_wgs84(site_poly)
+                    metrics_report = compute_metrics(
+                        scenario_id=definition.scenario_id,
+                        dna=snapshot.dna,
+                        parameters={p: m.model_dump() for p, m in plan_parameters.items()},
+                        geometry_inputs={"site_area_m2": frame.area_m2},
+                    )
+            except SoftTimeLimitExceeded:
+                raise
+            except Exception as exc:  # noqa: BLE001 — metrics degrade, run continues
+                logger.warning("Metrics derivation failed for %s: %s", definition.scenario_id, exc)
+                warnings.append(ValidationNote(
+                    code="METRICS_UNAVAILABLE", severity="warning",
+                    message=f"Derived statistics unavailable: {exc}", source_phase="coordinator",
+                ))
+
             total_in = sum(u["input_tokens"] for u in usage_records)
             total_out = sum(u["output_tokens"] for u in usage_records)
             cost = sum(
@@ -350,6 +377,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                 usage={"input_tokens": total_in, "output_tokens": total_out,
                        "estimated_cost_usd": round(cost, 3)},
                 warnings=warnings,
+                metrics=metrics_report.model_dump(mode="json") if metrics_report else None,
             )
 
         result = asyncio.run(_run())

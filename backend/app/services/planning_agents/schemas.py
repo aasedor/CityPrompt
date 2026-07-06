@@ -131,6 +131,9 @@ class ScenarioResult(BaseModel):
     explanation: Optional[ScenarioExplanation] = None
     usage: dict[str, Any] = Field(default_factory=dict)      # tokens + estimated cost
     warnings: list[ValidationNote] = Field(default_factory=list)
+    # Derived statistics (plan_metrics.MetricsReport dump). Parameter mode until
+    # a plan is drawn; geometry mode supersedes it after plan generation.
+    metrics: Optional[dict[str, Any]] = None
 
     def zone_property_updates(self) -> dict[str, Any]:
         """PlanParameters -> the zone-properties dict the geometry engine reads."""

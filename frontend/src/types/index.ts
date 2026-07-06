@@ -1096,6 +1096,28 @@ export interface UrbanDnaScenarioRow {
     };
     usage?: { input_tokens?: number; output_tokens?: number; estimated_cost_usd?: number };
     warnings?: UrbanDnaValidationNote[];
+    metrics?: {
+      mode: 'parameter' | 'geometry';
+      metrics: Record<string, {
+        key: string;
+        label: string;
+        value: number | null;
+        unit: string;
+        derivation: string;
+        assumptions: string[];
+        confidence: number;
+      }>;
+      ceiling_reconciliation: Array<{
+        district: string;
+        area_pct_of_site?: number | null;
+        ceiling_floors?: number | null;
+        proposed_floors?: number | null;
+        status: 'within' | 'exceeds' | 'unknown';
+        source: string;
+      }>;
+      warnings: string[];
+      assumptions_used: Record<string, { value: unknown; unit: string; note: string }>;
+    } | null;
   } | null;
   error?: string | null;
   created_at: string;

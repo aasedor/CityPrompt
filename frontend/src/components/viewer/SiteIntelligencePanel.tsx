@@ -228,6 +228,52 @@ function ScenarioCard({
           {payload.explanation?.narrative && (
             <p className="text-[10px] leading-snug text-[#151515]">{payload.explanation.narrative}</p>
           )}
+          {payload.metrics?.metrics && (
+            <div className="mt-1.5 rounded border border-[#151515]/25 bg-[#fbfbf7] px-1.5 py-1">
+              <p className="text-[9px] font-black uppercase text-[#151515]/60">
+                Derived statistics
+                <span className="ml-1 font-semibold normal-case text-[#151515]/45">
+                  ({payload.metrics.mode === 'geometry' ? 'from drawn plan' : 'from parameters'})
+                </span>
+              </p>
+              {['gfa_m2', 'far_achieved', 'units', 'population', 'parking_stalls', 'open_space_m2'].map((key) => {
+                const metric = payload.metrics!.metrics[key];
+                if (!metric || metric.value === null) return null;
+                return (
+                  <div key={key} className="flex items-start justify-between gap-2 py-px">
+                    <span className="text-[10px] font-bold text-[#151515]/70" title={metric.derivation}>
+                      {metric.label}
+                      {metric.assumptions.length > 0 && (
+                        <span className="ml-0.5 text-[#151515]/40" title={`Assumptions: ${metric.assumptions.join(', ')}`}>*</span>
+                      )}
+                    </span>
+                    <span className="text-[10px] font-semibold text-[#151515]" title={metric.derivation}>
+                      {metric.value.toLocaleString()} {metric.unit !== 'FAR' ? metric.unit : ''}
+                    </span>
+                  </div>
+                );
+              })}
+              {payload.metrics.ceiling_reconciliation.some((r) => r.status === 'exceeds') && (
+                <p className="mt-0.5 text-[9px] leading-snug text-amber-700">
+                  Exceeds a district/LAP ceiling in:{' '}
+                  {payload.metrics.ceiling_reconciliation
+                    .filter((r) => r.status === 'exceeds')
+                    .map((r) => r.district)
+                    .join(', ')}{' '}
+                  — would need relaxation or amendment.
+                </p>
+              )}
+              {payload.metrics.ceiling_reconciliation.some((r) => r.status === 'unknown') && (
+                <p className="mt-0.5 text-[9px] leading-snug text-[#151515]/50">
+                  Ceiling not assessable from data in:{' '}
+                  {payload.metrics.ceiling_reconciliation
+                    .filter((r) => r.status === 'unknown')
+                    .map((r) => r.district)
+                    .join(', ')}
+                </p>
+              )}
+            </div>
+          )}
           <div className="mt-1 space-y-0.5">
             {Object.values(payload.plan_parameters || {}).map((parameter) => (
               <div key={parameter.parameter_path} className="flex items-start justify-between gap-2">
