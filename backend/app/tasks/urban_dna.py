@@ -418,3 +418,185 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
 
     finally:
         session.close()
+
+
+def _set_plan_state(session, row, **fields) -> None:
+    payload = dict(row.payload or {})
+    plan = dict(payload.get("plan") or {})
+    plan.update(fields)
+    payload["plan"] = plan
+    row.payload = payload
+    session.commit()
+
+
+@celery_app.task(bind=True, name="generate_scenario_plan")
+def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None = None) -> dict:
+    """Draw the scenario's plan: streets/blocks/open space/building masses as
+    real zones, geometry-mode metrics superseding the parameter estimates.
+
+    locks=["streets"] keeps the existing street zones of this scenario and
+    regenerates everything else around them.
+    """
+    from datetime import datetime, timezone as tz
+
+    from geoalchemy2.shape import from_shape
+    from shapely.geometry import Polygon as ShapelyPolygon
+    from shapely.ops import unary_union
+
+    from app.models.models import SiteZone, UrbanDnaScenario
+    from app.services.city_connector import get_connector_for_site
+    from app.services.plan_geometry.generator import generate_plan_geometry
+    from app.services.plan_metrics import compute_metrics
+    from app.services.urban_dna.builder import _fetch_with_cache
+
+    locks = locks or []
+    session = _get_sync_session()
+    row = None
+    try:
+        row = session.query(UrbanDnaScenario).filter_by(id=uuid.UUID(scenario_row_id)).first()
+        if row is None or row.snapshot is None or not row.payload:
+            return {"status": "failed", "error": "scenario/payload not found"}
+        snapshot = row.snapshot
+
+        zone = session.query(SiteZone).filter_by(id=snapshot.zone_id).first()
+        if zone is None:
+            _set_plan_state(session, row, status="failed", error="boundary zone not found")
+            return {"status": "failed"}
+        site_shape = to_shape(zone.geometry)
+        site_polygon = site_shape if isinstance(site_shape, ShapelyPolygon) else site_shape.convex_hull
+
+        _set_plan_state(session, row, status="drawing", locks=locks)
+
+        # Raw features for entry points + district ceilings (cache-backed, fast).
+        connector = get_connector_for_site(site_polygon)
+        cache = PostgresDatasetCache(session)
+
+        async def _features():
+            roads_spec = next(
+                (s for s in connector.datasets.values()
+                 if s.geometry_type == "line" and "road" in s.id),
+                None,
+            )
+            district_spec = next(
+                (s for s in connector.datasets.values() if s.id.endswith("land_use_districts")),
+                None,
+            )
+            roads, districts = [], []
+            if roads_spec is not None:
+                fetched, _ = await _fetch_with_cache(connector, roads_spec, site_polygon, cache)
+                roads = fetched.features if fetched.ok else []
+            if district_spec is not None:
+                fetched, _ = await _fetch_with_cache(connector, district_spec, site_polygon, cache)
+                districts = fetched.features if fetched.ok else []
+            return roads, districts
+
+        road_features, district_features = asyncio.run(_features())
+
+        # Existing plan zones for this scenario on this project.
+        existing = [
+            z for z in session.query(SiteZone).filter_by(project_id=snapshot.project_id).all()
+            if (z.properties or {}).get("_plan_scenario") == row.scenario_id
+        ]
+        locked_street_area = None
+        if "streets" in locks:
+            street_polys = [
+                to_shape(z.geometry) for z in existing
+                if (z.properties or {}).get("_plan_role") == "street"
+            ]
+            if street_polys:
+                locked_street_area = unary_union(street_polys)
+
+        result = generate_plan_geometry(
+            site_polygon_wgs84=site_polygon,
+            scenario_id=row.scenario_id,
+            scenario_label=row.label,
+            parameters=(row.payload.get("plan_parameters") or {}),
+            road_features=road_features,
+            district_features=district_features,
+            locked_street_area_wgs84=locked_street_area,
+        )
+
+        # Replace previous plan zones (keep locked streets).
+        for old in existing:
+            role = (old.properties or {}).get("_plan_role")
+            if "streets" in locks and role == "street":
+                continue
+            session.delete(old)
+        session.flush()
+
+        inserted = 0
+        for zone_dict in result.zones:
+            if "streets" in locks and zone_dict["properties"].get("_plan_role") == "street":
+                continue  # locked network kept as-is
+            ring = zone_dict["coordinates"]
+            if len(ring) < 3:
+                continue
+            session.add(SiteZone(
+                id=uuid.uuid4(),
+                project_id=snapshot.project_id,
+                name=zone_dict["name"],
+                zone_type=zone_dict["zone_type"],
+                geometry=from_shape(ShapelyPolygon(ring), srid=4326),
+                color=zone_dict["color"],
+                properties=zone_dict["properties"],
+                sort_order=zone_dict.get("sort_order", 500),
+            ))
+            inserted += 1
+
+        # Geometry-mode metrics supersede the parameter estimates.
+        metrics_report = compute_metrics(
+            scenario_id=row.scenario_id,
+            dna=snapshot.dna or {},
+            parameters=(row.payload.get("plan_parameters") or {}),
+            geometry_inputs=result.geometry_inputs,
+        )
+
+        payload = dict(row.payload or {})
+        payload["metrics"] = metrics_report.model_dump(mode="json")
+        payload["plan"] = {
+            "status": "complete",
+            "generated_at": datetime.now(tz.utc).isoformat(),
+            "locks": locks,
+            "zone_count": inserted,
+            "block_count": result.block_count,
+            "parcel_count": result.parcel_count,
+            "building_count": result.building_count,
+            "intersection_density_per_km2": round(result.intersection_density_per_km2, 1),
+            "rules": result.rules,
+            "geometry_inputs": {k: round(v, 1) for k, v in result.geometry_inputs.items()},
+            "notes": result.notes,
+        }
+        row.payload = payload
+        session.commit()
+        logger.info(
+            "Plan drawn for %s: %d zones, %d blocks, %d parcels",
+            row.scenario_id, inserted, result.block_count, result.parcel_count,
+        )
+        return {"status": "complete", "zones": inserted}
+
+    except SoftTimeLimitExceeded:
+        logger.warning("Plan generation %s hit the soft time limit", scenario_row_id)
+        try:
+            session.rollback()
+            if row is not None:
+                _set_plan_state(session, row, status="failed", error="plan generation exceeded the worker time budget")
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to mark plan %s after soft time limit", scenario_row_id)
+        return {"status": "failed"}
+
+    except Exception as exc:  # noqa: BLE001
+        # A failed DRAWING must not fail the scenario row — the analysis stays valid.
+        logger.exception("Plan generation failed for %s", scenario_row_id)
+        try:
+            session.rollback()
+            if row is not None:
+                _set_plan_state(
+                    session, row, status="failed",
+                    error=f"plan generation failed ({type(exc).__name__}) — see worker logs",
+                )
+        except Exception:  # noqa: BLE001
+            logger.exception("Failed to mark plan %s failed", scenario_row_id)
+        return {"status": "failed", "error": type(exc).__name__}
+
+    finally:
+        session.close()

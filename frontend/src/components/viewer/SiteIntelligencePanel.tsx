@@ -183,14 +183,23 @@ function ScenarioCard({
   scenario,
   onApply,
   applying,
+  onDrawPlan,
+  drawing,
 }: {
   scenario: UrbanDnaScenarioRow;
   onApply: (row: UrbanDnaScenarioRow) => void;
   applying: boolean;
+  onDrawPlan: (row: UrbanDnaScenarioRow) => void;
+  drawing: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const payload = scenario.payload;
   const parameterCount = Object.keys(payload?.plan_parameters || {}).length;
+  const plan = (payload as any)?.plan as
+    | { status?: string; block_count?: number; parcel_count?: number; zone_count?: number;
+        intersection_density_per_km2?: number; error?: string | null }
+    | undefined;
+  const planBusy = plan?.status === 'queued' || plan?.status === 'drawing';
 
   return (
     <div className="rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_rgba(21,21,21,0.2)]">
@@ -212,14 +221,25 @@ function ScenarioCard({
             </span>
           )}
           {scenario.status === 'complete' && (
-            <button
-              type="button"
-              disabled={applying}
-              onClick={() => onApply(scenario)}
-              className="rounded border-2 border-[#151515] bg-[#c9ff3d] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#d8ff70] disabled:opacity-50"
-            >
-              Apply
-            </button>
+            <>
+              <button
+                type="button"
+                disabled={drawing || planBusy}
+                onClick={() => onDrawPlan(scenario)}
+                title="Draw this scenario as a plan layer: streets, blocks, park and building masses"
+                className="rounded border-2 border-[#151515] bg-[#b78aff] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#c9a2ff] disabled:opacity-50"
+              >
+                {planBusy ? <Loader2 className="inline h-3 w-3 animate-spin" /> : plan?.status === 'complete' ? 'Redraw' : 'Draw Plan'}
+              </button>
+              <button
+                type="button"
+                disabled={applying}
+                onClick={() => onApply(scenario)}
+                className="rounded border-2 border-[#151515] bg-[#c9ff3d] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#d8ff70] disabled:opacity-50"
+              >
+                Apply
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -227,6 +247,15 @@ function ScenarioCard({
         <div className="border-t-2 border-[#151515]/20 px-2.5 py-1.5">
           {payload.explanation?.narrative && (
             <p className="text-[10px] leading-snug text-[#151515]">{payload.explanation.narrative}</p>
+          )}
+          {plan?.status === 'complete' && (
+            <p className="mt-1 text-[10px] font-bold text-[#7c3aed]">
+              Plan drawn: {plan.block_count} blocks · {plan.parcel_count} parcels ·{' '}
+              {plan.intersection_density_per_km2}/km² intersections — toggle it in Imported Layers.
+            </p>
+          )}
+          {plan?.status === 'failed' && (
+            <p className="mt-1 text-[10px] text-red-700">Plan drawing failed: {plan.error}</p>
           )}
           {payload.metrics?.metrics && (
             <div className="mt-1.5 rounded border border-[#151515]/25 bg-[#fbfbf7] px-1.5 py-1">
@@ -344,10 +373,24 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   // checkpoints a partial snapshot before the policy phase — it usually flips
   // to 'complete' moments later (a truly-terminal partial just keeps a cheap
   // poll alive while the panel is open).
+  const planStatuses = scenarios.map((s) => (s.payload as any)?.plan?.status).join(',');
   const busy =
     snapshot?.status === 'pending' ||
     snapshot?.status === 'partial' ||
-    scenarios.some((s) => s.status === 'pending' || s.status === 'running');
+    scenarios.some((s) => s.status === 'pending' || s.status === 'running') ||
+    scenarios.some((s) => {
+      const plan = (s.payload as any)?.plan;
+      return plan?.status === 'queued' || plan?.status === 'drawing';
+    });
+
+  // When a plan drawing completes, the new zone layer must appear on the globe.
+  const prevPlanStatusesRef = useRef<string>('');
+  useEffect(() => {
+    if (prevPlanStatusesRef.current.includes('drawing') && planStatuses.includes('complete')) {
+      queryClient.invalidateQueries({ queryKey: ['site-zones'] });
+    }
+    prevPlanStatusesRef.current = planStatuses;
+  }, [planStatuses, queryClient]);
   useEffect(() => {
     if (!busy) {
       if (pollRef.current) window.clearInterval(pollRef.current);
@@ -384,6 +427,20 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
       toast.error(getApiErrorMessage(err, 'Failed to queue scenarios'));
     } finally {
       setRunningScenarios(false);
+    }
+  };
+
+  const [drawingId, setDrawingId] = useState<string | null>(null);
+  const handleDrawPlan = async (row: UrbanDnaScenarioRow) => {
+    setDrawingId(row.id);
+    try {
+      await urbanDnaApi.generatePlan(row.id);
+      toast.success(`Drawing the ${row.label} plan — streets, blocks and massing`);
+      await refresh();
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Failed to queue plan drawing'));
+    } finally {
+      setDrawingId(null);
     }
   };
 
@@ -502,6 +559,8 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                   scenario={scenario}
                   onApply={handleApply}
                   applying={applyingId === scenario.id}
+                  onDrawPlan={handleDrawPlan}
+                  drawing={drawingId === scenario.id}
                 />
               ))}
             </div>

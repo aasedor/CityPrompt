@@ -1425,4 +1425,16 @@ export const urbanDnaApi = {
     const { data } = await api.post(`/api/v1/urban-dna/scenarios/${scenarioRowId}/apply`);
     return data;
   },
+
+  /** Draw the scenario's plan (streets/blocks/park/building masses) as a zone layer. */
+  generatePlan: async (
+    scenarioRowId: string,
+    locks: string[] = [],
+  ): Promise<{ scenario_row_id: string; status: string; locks: string[] }> => {
+    const { data } = await api.post(
+      `/api/v1/urban-dna/scenarios/${scenarioRowId}/generate-plan`,
+      { locks },
+    );
+    return data;
+  },
 };

@@ -1,0 +1,100 @@
+"""Deterministic checks on the drawn plan. Findings are ValidationNote dicts."""
+
+from __future__ import annotations
+
+import math
+from typing import Any
+
+from shapely.geometry import Polygon
+from shapely.ops import unary_union
+
+from app.services.plan_geometry.community_rules import FIRE_CLEAR_WIDTH_M, RuleProfile
+from app.services.plan_geometry.street_graph import StreetNetwork
+
+BLOCK_EDGE_MIN_M = 60.0
+BLOCK_EDGE_MAX_M = 220.0
+
+
+def _block_edge_lengths(block_m: Polygon) -> tuple[float, float]:
+    rect = block_m.minimum_rotated_rectangle
+    coords = list(rect.exterior.coords)
+    lengths = sorted(
+        math.hypot(x2 - x1, y2 - y1)
+        for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:])
+    )
+    return lengths[0], lengths[-1]
+
+
+def validate_plan(
+    *,
+    rules: RuleProfile,
+    network: StreetNetwork,
+    blocks_m: list[Polygon],
+    parcels_by_block: list[list[Polygon]],
+    masses_m: list[Polygon],
+) -> list[dict[str, Any]]:
+    notes: list[dict[str, Any]] = []
+
+    # Fire access — the hard rule, checked on the resolved profile.
+    if rules.clear_width_m + 1e-6 < FIRE_CLEAR_WIDTH_M:
+        notes.append({
+            "code": "FIRE_CLEAR_WIDTH_FAIL", "severity": "error",
+            "message": f"Internal ROW {rules.row_width_m:g} m leaves {rules.clear_width_m:g} m clear "
+                       f"< CSPS033 {FIRE_CLEAR_WIDTH_M:g} m.",
+            "source_phase": "row_geometry",
+        })
+    else:
+        notes.append({
+            "code": "FIRE_CLEAR_WIDTH_OK", "severity": "info",
+            "message": f"All internal streets keep {rules.clear_width_m:g} m clear "
+                       f"(ROW {rules.row_width_m:g} m) ≥ CSPS033 {FIRE_CLEAR_WIDTH_M:g} m.",
+            "source_phase": "row_geometry",
+        })
+
+    # Block scale.
+    oversize = undersize = 0
+    for block in blocks_m:
+        short_edge, long_edge = _block_edge_lengths(block)
+        if long_edge > BLOCK_EDGE_MAX_M:
+            oversize += 1
+        if short_edge < BLOCK_EDGE_MIN_M:
+            undersize += 1
+    if oversize:
+        notes.append({
+            "code": "BLOCKS_OVERSIZE", "severity": "warning",
+            "message": f"{oversize} of {len(blocks_m)} blocks exceed {BLOCK_EDGE_MAX_M:.0f} m — "
+                       "walkability suffers; consider a mid-block connection.",
+            "source_phase": "parceling",
+        })
+    if undersize:
+        notes.append({
+            "code": "BLOCKS_UNDERSIZE", "severity": "info",
+            "message": f"{undersize} blocks have a sub-{BLOCK_EDGE_MIN_M:.0f} m edge (boundary remnants).",
+            "source_phase": "parceling",
+        })
+
+    # Parcel frontage: every parcel must touch its block's street edge.
+    landlocked = 0
+    for block, parcels in zip(blocks_m, parcels_by_block):
+        edge = block.exterior
+        for parcel in parcels:
+            if parcel.distance(edge) > 0.5:
+                landlocked += 1
+    if landlocked:
+        notes.append({
+            "code": "PARCELS_LANDLOCKED", "severity": "error",
+            "message": f"{landlocked} parcels have no street frontage.",
+            "source_phase": "parceling",
+        })
+
+    # Building masses must not overlap streets or each other.
+    if masses_m and network.street_area is not None and not network.street_area.is_empty:
+        overlap = unary_union(masses_m).intersection(network.street_area)
+        if overlap.area > 1.0:
+            notes.append({
+                "code": "MASS_STREET_COLLISION", "severity": "error",
+                "message": f"Building mass overlaps street ROW by {overlap.area:,.0f} m².",
+                "source_phase": "collision_validation",
+            })
+
+    return notes

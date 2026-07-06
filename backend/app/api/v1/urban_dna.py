@@ -370,6 +370,67 @@ async def apply_scenario(
     )
 
 
+class GeneratePlanRequest(BaseModel):
+    locks: list[str] = Field(default_factory=list)  # ["streets"] keeps the drawn network
+
+
+class GeneratePlanResponse(BaseModel):
+    scenario_row_id: str
+    status: str
+    locks: list[str]
+
+
+@router.post("/scenarios/{scenario_row_id}/generate-plan", response_model=GeneratePlanResponse)
+async def generate_plan(
+    scenario_row_id: uuid.UUID,
+    req: GeneratePlanRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Draw the scenario's plan: streets, blocks, open space and building masses
+    as real zones (a toggleable layer), with geometry-derived statistics
+    superseding the parameter estimates. locks=["streets"] regenerates around
+    the existing street network."""
+    result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.id == scenario_row_id))
+    row = result.scalar_one_or_none()
+    if row is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+    snapshot_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
+    )
+    snapshot = snapshot_result.scalar_one_or_none()
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+    try:
+        await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+    except HTTPException as exc:
+        if exc.status_code in (403, 404):
+            raise HTTPException(status_code=404, detail="Scenario not found")
+        raise
+
+    if row.status != "complete" or not row.payload:
+        raise HTTPException(status_code=409, detail="Run the scenario before drawing its plan")
+
+    unknown_locks = [lock for lock in req.locks if lock not in ("streets",)]
+    if unknown_locks:
+        raise HTTPException(status_code=422, detail=f"Unknown locks: {unknown_locks}")
+
+    payload = dict(row.payload)
+    plan = dict(payload.get("plan") or {})
+    plan.update({"status": "queued", "locks": req.locks})
+    payload["plan"] = plan
+    row.payload = payload
+    await db.commit()
+
+    from app.tasks.urban_dna import generate_scenario_plan
+
+    generate_scenario_plan.delay(str(row.id), req.locks)
+    logger.info("Queued plan drawing for scenario %s (locks=%s)", row.id, req.locks)
+    return GeneratePlanResponse(scenario_row_id=str(row.id), status="queued", locks=req.locks)
+
+
 @router.get("/capabilities/{zone_id}", response_model=CapabilitiesResponse)
 async def get_capabilities(
     zone_id: uuid.UUID,
