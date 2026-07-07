@@ -101,6 +101,25 @@ describe('withPlanArchetypeDefaults', () => {
     );
   });
 
+  it('aesthetic outranks the floor fit: "european" holds at the 4-floor default', () => {
+    // The generator defaults floors to 4 when the panel emits none; the
+    // parisian family lives at 5-8. The style ask must survive via the
+    // nearest-floor fallback WITHIN the family, not silently drop.
+    const [zone] = withPlanArchetypeDefaults([
+      planZone('building', 'building', {
+        development_type: 'mixed_use',
+        development_aesthetic: 'european',
+        floors: 4,
+      }),
+    ]);
+    const id = zone.properties?.development_archetype_id as string;
+    expect(id).toBeTruthy();
+    const entry = BUILDINGS.find((e) => e.id === id);
+    expect(String(entry.aestheticCategory)).toMatch(
+      /parisian|haussmann|amsterdam|mediterranean|neoclassical|classical/,
+    );
+  });
+
   it('family tier never empties the pool for unknown aesthetics', () => {
     const [zone] = withPlanArchetypeDefaults([
       planZone('building', 'building', {

@@ -173,7 +173,13 @@ async def expand_brief_to_definition(
         return _fallback("empty brief")
 
     status = "success"
-    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+    # Bounded timeout + no retries: this call sits in the API request path and
+    # the never-fail fallback makes a fast failure safe — the SDK's default
+    # 600 s x 3 attempts could pin the request (and its DB connection) for
+    # ~30 minutes during an Anthropic latency incident.
+    client = anthropic.AsyncAnthropic(
+        api_key=settings.anthropic_api_key, timeout=45.0, max_retries=0,
+    )
     try:
         message = await client.messages.create(
             model=model,
@@ -246,7 +252,11 @@ async def expand_brief_to_definition(
 
     except Exception as exc:  # noqa: BLE001 — never-fail contract
         status = "error"
-        return _fallback(f"{type(exc).__name__}: {exc}")
+        # Full detail to the server log only — payload.expansion.reason is
+        # served to every project viewer, and API-error strings can embed
+        # response bodies (keys, account details).
+        logger.warning("Custom-scenario expansion error for %s: %s", scenario_id, exc)
+        return _fallback(type(exc).__name__)
 
     finally:
         try:

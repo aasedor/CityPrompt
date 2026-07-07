@@ -415,6 +415,29 @@ async def test_create_scenarios_rejects_empty_request(
     assert response.status_code == 422
 
 
+@pytest.mark.anyio
+async def test_create_scenarios_rejects_whitespace_brief(
+    client, mock_db, test_user, auth_headers
+):
+    """A whitespace-only brief must 422, not silently queue all three presets."""
+    zone = FakeZone()
+    project = FakeProject(owner_id=test_user.id, id=zone.project_id)
+    snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id)
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone),
+        _scalar_result(project),
+        _scalar_result(snapshot),
+    ])
+    response = await client.post(
+        f"/api/v1/urban-dna/zones/{zone.id}/scenarios",
+        headers=auth_headers,
+        json={"custom_brief": "   "},
+    )
+    assert response.status_code == 422
+    mock_db.add.assert_not_called()
+
+
 class _FakeScenarioRow:
     def __init__(self, **kwargs):
         self.id = kwargs.get("id", uuid.uuid4())
@@ -471,6 +494,32 @@ async def test_delete_scenario_removes_row_and_plan_zones(
     deleted = [call.args[0] for call in mock_db.delete.call_args_list]
     assert plan_zone_a in deleted and plan_zone_b in deleted and row in deleted
     mock_db.commit.assert_awaited()
+
+
+@pytest.mark.anyio
+async def test_delete_scenario_409_while_plan_is_drawing(
+    client, mock_db, test_user, auth_headers
+):
+    from datetime import datetime, timezone as tz
+
+    zone = FakeZone()
+    project = FakeProject(owner_id=test_user.id, id=zone.project_id)
+    row = _FakeScenarioRow(payload={
+        "plan": {"status": "drawing", "queued_at": datetime.now(tz.utc).isoformat()},
+    })
+    snapshot = FakeSnapshot(zone_id=zone.id, project_id=zone.project_id, id=row.snapshot_id)
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(row),
+        _scalar_result(snapshot),
+        _scalar_result(zone),
+        _scalar_result(project),
+    ])
+    response = await client.delete(
+        f"/api/v1/urban-dna/scenarios/{row.id}", headers=auth_headers
+    )
+    assert response.status_code == 409
+    mock_db.delete.assert_not_called()
 
 
 @pytest.mark.anyio

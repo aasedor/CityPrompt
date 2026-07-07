@@ -486,9 +486,13 @@ function ScenarioCard({
           {scenario.scenario_id.startsWith('custom_') && (
             <button
               type="button"
-              disabled={deleting}
+              // Disabled mid-run/mid-draw: deleting under an in-flight task
+              // wastes the paid run and can orphan freshly drawn plan zones.
+              disabled={deleting || scenario.status === 'pending' || scenario.status === 'running' || planBusy}
               onClick={() => onDelete(scenario)}
-              title="Delete this custom scenario and its drawn plan layer (the brief stays prefilled for a re-run)"
+              title={scenario.status === 'pending' || scenario.status === 'running' || planBusy
+                ? 'Wait for the run to finish before deleting'
+                : 'Delete this custom scenario and its drawn plan layer (the brief stays prefilled for a re-run)'}
               className="rounded border-2 border-[#151515] bg-white p-0.5 text-[#151515] hover:bg-red-100 disabled:opacity-50"
             >
               {deleting ? <Loader2 className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
@@ -496,7 +500,9 @@ function ScenarioCard({
           )}
         </div>
       </div>
-      {open && payload && (
+      {/* complete/failed only: a pending CUSTOM row carries its creation
+          payload (brief/definition) and would render an empty strip. */}
+      {open && payload && (scenario.status === 'complete' || scenario.status === 'failed') && (
         <div className="border-t-2 border-[#151515]/20 px-2.5 py-1.5">
           {payload.explanation?.narrative && (
             <p className="text-[10px] leading-snug text-[#151515]">{payload.explanation.narrative}</p>
@@ -652,19 +658,25 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   // V1 limit: a DNA refresh orphans custom cards (the list prefers the latest
   // snapshot) while their plan layers stay. Prefill the textarea from the
   // newest visible custom row's stored brief so it's re-runnable in one click.
+  // NEVER fight the user: once they've typed in the textarea (touched), or
+  // once the loaded list has been considered, no further prefill fires —
+  // clearing the field must not snap the old brief back.
   const briefPrefilledRef = useRef(false);
+  const briefTouchedRef = useRef(false);
   useEffect(() => {
     briefPrefilledRef.current = false;
+    briefTouchedRef.current = false;
   }, [zone.id]);
   useEffect(() => {
-    if (briefPrefilledRef.current || customBrief) return;
+    if (briefPrefilledRef.current || briefTouchedRef.current || customBrief) return;
+    if (!scenarios.length) return; // wait for the first loaded list
     const customRows = scenarios.filter((s) => s.scenario_id.startsWith('custom_'));
     const newest = customRows[customRows.length - 1];
     const storedBrief = (newest?.payload as Record<string, unknown> | undefined)?.brief;
     if (typeof storedBrief === 'string' && storedBrief.trim()) {
       setCustomBrief(storedBrief);
-      briefPrefilledRef.current = true;
     }
+    briefPrefilledRef.current = true; // one shot per zone, prefilled or not
   }, [scenarios, customBrief]);
 
   // Poll while anything is in flight. 'partial' is included because the build
@@ -913,7 +925,10 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                   <div className="mt-1.5 space-y-1.5">
                     <textarea
                       value={customBrief}
-                      onChange={(e) => setCustomBrief(e.target.value)}
+                      onChange={(e) => {
+                        briefTouchedRef.current = true;
+                        setCustomBrief(e.target.value);
+                      }}
                       maxLength={2000}
                       rows={3}
                       placeholder='Describe the concept — e.g. "a European style development with a large central park"'

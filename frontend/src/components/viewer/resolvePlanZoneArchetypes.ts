@@ -93,21 +93,12 @@ function resolveBuilding(props: Record<string, unknown>): CatalogEntry | undefin
   if (!pool.length) pool = BUILDINGS.filter((e) => usable(e) && norm(e.developmentType) === 'mixed_use');
   if (!pool.length) return undefined;
 
-  // Floor fit: hard filter when possible, else nearest floor range.
-  const inRange = pool.filter(
-    (e) => (e.minFloors ?? 1) <= floors && floors <= (e.maxFloors ?? 999),
-  );
-  if (inRange.length) {
-    pool = inRange;
-  } else {
-    const distance = (e: CatalogEntry) =>
-      Math.min(Math.abs((e.minFloors ?? 1) - floors), Math.abs((e.maxFloors ?? 999) - floors));
-    const best = Math.min(...pool.map(distance));
-    pool = pool.filter((e) => distance(e) === best);
-  }
-
-  // Aesthetic affinity narrows but never empties the pool: direct
-  // includes-match first, family alias tier second.
+  // Aesthetic affinity narrows BEFORE the floor fit and never empties the
+  // pool: direct includes-match first, family alias tier second. Running it
+  // after the floor filter silently discarded the user's explicit style ask
+  // whenever the family's floor range missed the drawn storeys (e.g.
+  // "european" at the generator's default 4 floors vs parisian's 5-8) — the
+  // nearest-floor fallback below now resolves within the style family.
   if (aesthetic) {
     const direct = pool.filter((e) => {
       const cat = norm(e.aestheticCategory);
@@ -128,6 +119,20 @@ function resolveBuilding(props: Record<string, unknown>): CatalogEntry | undefin
       }
     }
   }
+
+  // Floor fit: hard filter when possible, else nearest floor range.
+  const inRange = pool.filter(
+    (e) => (e.minFloors ?? 1) <= floors && floors <= (e.maxFloors ?? 999),
+  );
+  if (inRange.length) {
+    pool = inRange;
+  } else {
+    const distance = (e: CatalogEntry) =>
+      Math.min(Math.abs((e.minFloors ?? 1) - floors), Math.abs((e.maxFloors ?? 999) - floors));
+    const best = Math.min(...pool.map(distance));
+    pool = pool.filter((e) => distance(e) === best);
+  }
+
   return stablePick(pool);
 }
 

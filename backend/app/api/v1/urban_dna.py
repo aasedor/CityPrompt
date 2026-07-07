@@ -220,7 +220,12 @@ async def create_scenarios(
     if snapshot is None or snapshot.status not in ("complete", "partial") or not snapshot.dna:
         raise HTTPException(status_code=409, detail="Generate the Urban DNA for this zone first")
 
+    brief_provided = "custom_brief" in req.model_fields_set and req.custom_brief is not None
     custom_brief = (req.custom_brief or "").strip()
+    if brief_provided and not custom_brief:
+        # A whitespace-only brief must not silently fall through to the
+        # all-presets default (3 paid runs the caller never asked for).
+        raise HTTPException(status_code=422, detail="custom_brief is empty")
     scenario_ids = list(req.scenario_ids)
     if custom_brief and "scenario_ids" not in req.model_fields_set:
         # A brief without an explicit scenario_ids must not fall through to the
@@ -268,6 +273,13 @@ async def create_scenarios(
 
     if custom_brief:
         from app.services.planning_agents.custom_scenario import expand_brief_to_definition
+
+        # Release the session's connection before the LLM call — the request
+        # transaction would otherwise pin an asyncpg connection (pool of 5+3)
+        # for the whole expansion, and a slow Anthropic endpoint could starve
+        # every other API request. The preset rows commit here; the custom row
+        # lands in a second transaction below.
+        await db.commit()
 
         # Unique id is load-bearing: _plan_scenario zone delete/select keys on it.
         custom_id = f"custom_{uuid.uuid4().hex[:8]}"
@@ -499,6 +511,25 @@ async def delete_scenario(
 
     if not row.scenario_id.startswith("custom_"):
         raise HTTPException(status_code=422, detail="Only custom scenario runs can be deleted")
+
+    # A plan-drawing task delete-and-inserts the same zones in one commit —
+    # deleting mid-draw can orphan freshly inserted zones with no cleanup
+    # path. Mirror generate_plan's busy guard (same stale-escape rules).
+    plan_state = (row.payload or {}).get("plan") or {}
+    if plan_state.get("status") in ("queued", "drawing"):
+        queued_at = plan_state.get("queued_at")
+        stale = True
+        if queued_at:
+            try:
+                age = datetime.now(timezone.utc) - datetime.fromisoformat(queued_at)
+                stale = age > timedelta(minutes=15)
+            except ValueError:
+                pass
+        if not stale:
+            raise HTTPException(
+                status_code=409,
+                detail="This scenario's plan is being drawn — wait for it to finish before deleting",
+            )
 
     zones_result = await db.execute(
         select(SiteZone).where(
