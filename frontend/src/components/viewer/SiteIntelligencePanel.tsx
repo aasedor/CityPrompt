@@ -179,18 +179,98 @@ function PolicyInsightBlock({ section }: { section: UrbanDnaSection }) {
   );
 }
 
+const COMPARE_METRIC_KEYS = ['units', 'gfa_m2', 'far_achieved', 'population', 'open_space_m2'] as const;
+
+/** Side-by-side scenario numbers with deltas vs the As-of-Right baseline. */
+function ScenarioCompareTable({ scenarios }: { scenarios: UrbanDnaScenarioRow[] }) {
+  const withMetrics = scenarios.filter((s) => s.payload?.metrics?.metrics);
+  if (withMetrics.length < 2) return null;
+  const baseline = withMetrics.find((s) => s.scenario_id === 'as_of_right');
+
+  const value = (row: UrbanDnaScenarioRow, key: string): number | null => {
+    const metric = row.payload?.metrics?.metrics?.[key];
+    return metric && metric.value !== null ? Number(metric.value) : null;
+  };
+  const label = (key: string): string => {
+    for (const row of withMetrics) {
+      const metric = row.payload?.metrics?.metrics?.[key];
+      if (metric?.label) return metric.label;
+    }
+    return key;
+  };
+
+  return (
+    <div className="rounded-lg border-2 border-[#151515] bg-white p-2 shadow-[2px_2px_0_0_rgba(21,21,21,0.2)]">
+      <p className="mb-1 text-[9px] font-black uppercase text-[#151515]/60">Scenario comparison</p>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="pb-0.5 text-left text-[9px] font-black uppercase text-[#151515]/50">Measure</th>
+            {withMetrics.map((s) => (
+              <th key={s.id} className="pb-0.5 text-right text-[9px] font-black text-[#151515]">
+                {s.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {COMPARE_METRIC_KEYS.map((key) => {
+            if (!withMetrics.some((s) => value(s, key) !== null)) return null;
+            const base = baseline ? value(baseline, key) : null;
+            return (
+              <tr key={key} className="border-t border-[#151515]/10">
+                <td className="py-0.5 pr-1 text-[10px] font-bold text-[#151515]/70">{label(key)}</td>
+                {withMetrics.map((s) => {
+                  const v = value(s, key);
+                  const delta = v !== null && base !== null && s.scenario_id !== 'as_of_right' && base !== 0
+                    ? (v - base) / base : null;
+                  return (
+                    <td key={s.id} className="py-0.5 text-right text-[10px] font-semibold text-[#151515]">
+                      {v === null ? '—' : v.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                      {delta !== null && Math.abs(delta) >= 0.005 && (
+                        <span className={delta > 0 ? 'ml-0.5 text-[9px] text-emerald-700' : 'ml-0.5 text-[9px] text-red-700'}>
+                          {delta > 0 ? '+' : ''}{Math.round(delta * 100)}%
+                        </span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          <tr className="border-t border-[#151515]/10">
+            <td className="py-0.5 pr-1 text-[10px] font-bold text-[#151515]/70">Plan score</td>
+            {withMetrics.map((s) => {
+              const score = (s.payload as any)?.plan?.final_score;
+              return (
+                <td key={s.id} className="py-0.5 text-right text-[10px] font-semibold text-[#151515]">
+                  {typeof score === 'number' ? score.toFixed(3) : '—'}
+                </td>
+              );
+            })}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function ScenarioCard({
   scenario,
   onApply,
   applying,
   onDrawPlan,
   drawing,
+  soloed,
+  onSolo,
 }: {
   scenario: UrbanDnaScenarioRow;
   onApply: (row: UrbanDnaScenarioRow) => void;
   applying: boolean;
   onDrawPlan: (row: UrbanDnaScenarioRow) => void;
   drawing: boolean;
+  soloed: boolean;
+  onSolo: (row: UrbanDnaScenarioRow | null) => void;
 }) {
   const [open, setOpen] = useState(false);
   const payload = scenario.payload;
@@ -262,6 +342,16 @@ function ScenarioCard({
               </button>
               {plan?.status === 'complete' && (
                 <>
+                  <button
+                    type="button"
+                    onClick={() => onSolo(soloed ? null : scenario)}
+                    title={soloed
+                      ? 'Show all plan layers again'
+                      : "Show only this scenario's plan on the globe (hides other plans and framework layers)"}
+                    className={`rounded border-2 border-[#151515] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] ${soloed ? 'bg-[#151515] text-white hover:bg-[#333]' : 'bg-white hover:bg-[#fff9ec]'}`}
+                  >
+                    {soloed ? 'All' : 'Solo'}
+                  </button>
                   <button
                     type="button"
                     onClick={() => openSheet(false)}
@@ -388,7 +478,18 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   const [generating, setGenerating] = useState(false);
   const [runningScenarios, setRunningScenarios] = useState(false);
   const [applyingId, setApplyingId] = useState<string | null>(null);
+  const [soloId, setSoloId] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
+
+  // Solo a scenario's plan on the globe. Layer visibility lives in
+  // ProjectViewPage (hiddenLayers) two components up — a window event keeps
+  // this demo control out of the ZonePropertiesPanel prop chain.
+  const handleSolo = useCallback((row: UrbanDnaScenarioRow | null) => {
+    setSoloId(row ? row.id : null);
+    window.dispatchEvent(new CustomEvent('cityprompt:solo-plan-layer', {
+      detail: { label: row ? row.label : null },
+    }));
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
@@ -615,8 +716,11 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                   applying={applyingId === scenario.id}
                   onDrawPlan={handleDrawPlan}
                   drawing={drawingId === scenario.id}
+                  soloed={soloId === scenario.id}
+                  onSolo={handleSolo}
                 />
               ))}
+              <ScenarioCompareTable scenarios={scenarios} />
             </div>
           )}
         </>

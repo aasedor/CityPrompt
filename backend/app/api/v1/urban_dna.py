@@ -451,19 +451,14 @@ async def generate_plan(
     return GeneratePlanResponse(scenario_row_id=str(row.id), status="queued", locks=req.locks)
 
 
-@router.get("/scenarios/{scenario_row_id}/plan-sheet")
-async def plan_sheet(
+async def _load_plan_context(
     scenario_row_id: uuid.UUID,
-    user: User = Depends(require_auth),
-    db: AsyncSession = Depends(get_db),
-):
-    """The council-ready plan sheet: measurable SVG drawing, derived statistics,
-    evaluation/refinement history, trade-offs, citations, assumptions and
-    provenance — self-contained printable HTML."""
-    from fastapi.responses import HTMLResponse
+    user: User,
+    db: AsyncSession,
+) -> tuple[UrbanDnaScenario, UrbanDnaSnapshot, Any, list[dict[str, Any]]]:
+    """Shared loader for plan exports (sheet, diagram): scenario row +
+    snapshot + authz-checked boundary + the drawn plan zones."""
     from geoalchemy2.shape import to_shape
-
-    from app.services.plan_geometry.plan_sheet import build_plan_sheet
 
     result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.id == scenario_row_id))
     row = result.scalar_one_or_none()
@@ -482,7 +477,7 @@ async def plan_sheet(
             raise HTTPException(status_code=404, detail="Scenario not found")
         raise
     if not row.payload or (row.payload.get("plan") or {}).get("status") != "complete":
-        raise HTTPException(status_code=409, detail="Draw the plan before exporting its sheet")
+        raise HTTPException(status_code=409, detail="Draw the plan before exporting it")
 
     zones_result = await db.execute(
         select(SiteZone).where(SiteZone.project_id == snapshot.project_id)
@@ -501,8 +496,23 @@ async def plan_sheet(
             "coordinates": [[float(x), float(y)] for x, y in shape.exterior.coords[:-1]],
             "floors": props.get("floors"),
         })
+    return row, snapshot, to_shape(boundary_zone.geometry), plan_zones
 
-    boundary_shape = to_shape(boundary_zone.geometry)
+
+@router.get("/scenarios/{scenario_row_id}/plan-sheet")
+async def plan_sheet(
+    scenario_row_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """The council-ready plan sheet: measurable SVG drawing, derived statistics,
+    evaluation/refinement history, trade-offs, citations, assumptions and
+    provenance — self-contained printable HTML."""
+    from fastapi.responses import HTMLResponse
+
+    from app.services.plan_geometry.plan_sheet import build_plan_sheet
+
+    row, snapshot, boundary_shape, plan_zones = await _load_plan_context(scenario_row_id, user, db)
     sheet = build_plan_sheet(
         scenario_label=row.label,
         scenario_id=row.scenario_id,
@@ -518,6 +528,28 @@ async def plan_sheet(
         },
     )
     return HTMLResponse(content=sheet)
+
+
+@router.get("/scenarios/{scenario_row_id}/plan-diagram")
+async def plan_diagram(
+    scenario_row_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """The drawn plan as an annotation-free flat-color nadir PNG — the
+    authoritative-geometry conditioning input for renders, and the layout
+    figure in the hearing pack."""
+    from fastapi.responses import Response
+
+    from app.services.plan_geometry.plan_diagram import render_plan_diagram_png
+
+    row, _snapshot, boundary_shape, plan_zones = await _load_plan_context(scenario_row_id, user, db)
+    png = render_plan_diagram_png(boundary_shape, plan_zones)
+    return Response(
+        content=png,
+        media_type="image/png",
+        headers={"Content-Disposition": f'inline; filename="plan-diagram-{row.scenario_id}.png"'},
+    )
 
 
 @router.get("/capabilities/{zone_id}", response_model=CapabilitiesResponse)

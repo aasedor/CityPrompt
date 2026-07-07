@@ -122,6 +122,30 @@ export function ProjectViewPage() {
     });
   }, [siteZones, hiddenLayers]);
 
+  // Solo one scenario's plan on the globe (dispatched by SiteIntelligencePanel,
+  // which sits two components down inside ZonePropertiesPanel). Only plan and
+  // height-framework layers are touched; shapefile-layer hiding is preserved.
+  useEffect(() => {
+    const isPlanish = (name: string) =>
+      name.startsWith('Plan — ') || name.startsWith('Height framework — ');
+    const onSolo = (event: Event) => {
+      const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
+      setHiddenLayers((prev) => {
+        const next = new Set([...prev].filter((n) => !isPlanish(n)));
+        if (!label) return next; // show all plan layers again
+        for (const zone of siteZones) {
+          const src = zone.properties?._imported_from;
+          if (typeof src === 'string' && isPlanish(src) && src !== `Plan — ${label}`) {
+            next.add(src);
+          }
+        }
+        return next;
+      });
+    };
+    window.addEventListener('cityprompt:solo-plan-layer', onSolo);
+    return () => window.removeEventListener('cityprompt:solo-plan-layer', onSolo);
+  }, [siteZones]);
+
   const deleteLayer = useCallback(async (name: string) => {
     const zones = siteZones.filter((z) => {
       const src = z.properties?._imported_from;

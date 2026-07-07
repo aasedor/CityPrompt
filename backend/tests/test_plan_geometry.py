@@ -259,6 +259,34 @@ def test_building_zone_exteriors_match_reported_footprint():
     assert abs(drawn - gi["building_footprint_m2"]) / gi["building_footprint_m2"] < 0.05
 
 
+def test_plan_diagram_is_flat_palette_nadir_png():
+    # Conditioning input rules (diagram research): flat colors only, no text,
+    # no anti-aliasing artifacts — every pixel must belong to the palette.
+    from io import BytesIO
+
+    from PIL import Image
+
+    from app.services.plan_geometry.plan_diagram import DIAGRAM_COLORS, render_plan_diagram_png
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="climate_first", scenario_label="Climate First",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    plan_zones = [
+        {"role": z["properties"]["_plan_role"], "coordinates": z["coordinates"]}
+        for z in result.zones
+        if z["properties"].get("_plan_role") in ("street", "open_space", "building")
+    ]
+    png = render_plan_diagram_png(_site(), plan_zones, size_px=512)
+    img = Image.open(BytesIO(png))
+    assert img.size == (512, 512)
+    colors = {color for _count, color in img.getcolors(maxcolors=1_000_000)}
+    assert colors <= set(DIAGRAM_COLORS.values())
+    assert DIAGRAM_COLORS["street"] in colors
+    assert DIAGRAM_COLORS["building"] in colors
+    assert DIAGRAM_COLORS["open_space"] in colors
+
+
 def test_floors_clamped_by_district_ceiling():
     district = {
         "geometry": mapping(_site(1000, 1000)),  # covers everything

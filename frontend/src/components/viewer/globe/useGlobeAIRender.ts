@@ -535,6 +535,68 @@ const AERIAL_ANGLE_SUFFIXES: Array<{ suffix: number; label: string }> = [
  * generated yet — pilot covers only 4 building + 3 open-space archetypes)
  * are silently skipped; the zone falls back to just its street-level ref.
  */
+/**
+ * Rasterize the AI-planner plan zones into an annotation-free flat-color
+ * nadir diagram (mirrors backend plan_diagram.py): the authoritative-geometry
+ * conditioning input. Returns base64 PNG, or null when the visible zone set
+ * isn't a drawn plan. Diagram-research rules: one flat color per role, no
+ * text, no gradients.
+ */
+function buildPlanConditioningDiagram(zones: SiteZone[], sizePx = 1024): string | null {
+  const ROLE_COLORS: Record<string, string> = {
+    street: '#808080',
+    open_space: '#7cb342',
+    building: '#b03a2e',
+  };
+  const planZones = zones.filter((z) => {
+    const role = (z.properties as Record<string, unknown> | undefined)?._plan_role as string;
+    return ROLE_COLORS[role] && (z.coordinates?.length ?? 0) >= 3;
+  });
+  if (planZones.length < 4) return null;
+
+  let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
+  for (const zone of planZones) {
+    for (const [lng, lat] of zone.coordinates) {
+      if (lng < minLng) minLng = lng;
+      if (lng > maxLng) maxLng = lng;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    }
+  }
+  const midLat = (minLat + maxLat) / 2;
+  const mPerLng = 111_320 * Math.cos((midLat * Math.PI) / 180);
+  const mPerLat = 111_320;
+  const spanM = Math.max((maxLng - minLng) * mPerLng, (maxLat - minLat) * mPerLat) || 1;
+  const padM = spanM * 0.04;
+  const originX = minLng * mPerLng - padM;
+  const originY = minLat * mPerLat - padM;
+  const scale = sizePx / (spanM + 2 * padM);
+
+  const diagramCanvas = document.createElement('canvas');
+  diagramCanvas.width = sizePx;
+  diagramCanvas.height = sizePx;
+  const ctx = diagramCanvas.getContext('2d')!;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, sizePx, sizePx);
+
+  for (const role of ['street', 'open_space', 'building']) {
+    ctx.fillStyle = ROLE_COLORS[role];
+    for (const zone of planZones) {
+      if ((zone.properties as Record<string, unknown>)._plan_role !== role) continue;
+      ctx.beginPath();
+      zone.coordinates.forEach(([lng, lat], i) => {
+        const x = (lng * mPerLng - originX) * scale;
+        const y = sizePx - (lat * mPerLat - originY) * scale;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+  return diagramCanvas.toDataURL('image/png').split(',')[1];
+}
+
 async function collectArchetypeImages(
   zones: SiteZone[],
 ): Promise<Array<{ image_base64: string; label: string; zone_color: string; angle: string }>> {
@@ -1729,6 +1791,30 @@ export function useGlobeAIRender() {
       //    Each image is compressed to 512px JPEG @ 0.7 (~30-50KB). Cap 48.
       console.log('[GlobeAIRender] Collecting archetype reference images...');
       const archetypeImages = await collectArchetypeImages(visibleZones);
+
+      // 4a. Plan-diagram conditioning: attach the drawn plan as an
+      // authoritative nadir layout reference in the first slot (slot priority
+      // matters for GPT Image 2's 16-image input cap). Default ON — the
+      // 2026-07-07 A/B (docs/PLAN_DIAGRAM_CONDITIONING_PILOT_2026_07_07.md)
+      // showed clearly better street/block/park adherence on BOTH engines.
+      // Only activates when the view contains a drawn plan (≥4 plan zones);
+      // set localStorage cc_plan_diagram_conditioning = '0' to disable.
+      if (localStorage.getItem('cc_plan_diagram_conditioning') !== '0') {
+        const planDiagram = buildPlanConditioningDiagram(visibleZones);
+        if (planDiagram) {
+          archetypeImages.unshift({
+            image_base64: planDiagram,
+            label: 'PLAN DIAGRAM — authoritative nadir layout of the proposal: '
+              + 'gray = streets, green = parks, dark red = building footprints. '
+              + 'Preserve the street network topology, block arrangement, park '
+              + 'locations and building footprints exactly as drawn.',
+            zone_color: 'plan layout',
+            angle: '90° nadir plan diagram',
+          });
+          console.log('[GlobeAIRender] Plan-diagram conditioning attached (slot 1)');
+        }
+      }
+
       if (archetypeImages.length > 0) {
         prompt += (
           `\n\nARCHETYPE REFERENCE IMAGES (Images 2+): ${archetypeImages.length} ` +
