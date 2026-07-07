@@ -134,6 +134,7 @@ def generate_plan_geometry(
     district_features: list[dict[str, Any]] | None = None,
     locked_street_area_wgs84: Polygon | None = None,
     rule_overrides: dict[str, float] | None = None,
+    rule_hints: dict[str, float] | None = None,
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
@@ -156,7 +157,7 @@ def generate_plan_geometry(
     boundary_m = make_valid(project_geometry(site, to_metric))
     gross = float(boundary_m.area)
 
-    rules, rule_notes = resolve_rules(scenario_id, parameters)
+    rules, rule_notes = resolve_rules(scenario_id, parameters, rule_hints=rule_hints)
     if rule_overrides:
         # The refinement loop revises rule inputs; each override is recorded by
         # the loop itself as {parameter, from, to, reason}.

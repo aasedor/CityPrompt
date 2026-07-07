@@ -106,6 +106,12 @@ class ScenarioDefinition(BaseModel):
     philosophy: PhilosophyWeights
     emphasis: str = ""                      # scenario-specific instruction injected into expert prompts
     description: str = ""
+    # Deterministic geometry overrides extracted from a custom brief
+    # (open_space_share / block_target_m / coverage_ratio). Experts have no
+    # vocabulary path for these — "a large park" must move the drawn plan, so
+    # they merge over _SCENARIO_DEFAULTS in resolve_rules (clamped there).
+    # Presets leave this empty.
+    rule_hints: dict[str, float] = Field(default_factory=dict)
 
 
 class ChangedParameter(BaseModel):

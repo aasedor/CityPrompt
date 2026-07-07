@@ -1432,15 +1432,22 @@ export const urbanDnaApi = {
     return data;
   },
 
-  /** Queue planning-agent scenario runs against the latest snapshot. */
+  /** Queue planning-agent scenario runs against the latest snapshot.
+   * With a custom brief, scenario_ids is sent as [] EXPLICITLY — the server
+   * would otherwise default a brief-only request to all three presets. */
   createScenarios: async (
     zoneId: string,
     scenarioIds?: string[],
+    customBrief?: string,
   ): Promise<UrbanDnaScenarioListResponse> => {
-    const { data } = await api.post(
-      `/api/v1/urban-dna/zones/${zoneId}/scenarios`,
-      scenarioIds ? { scenario_ids: scenarioIds } : {},
-    );
+    const body: Record<string, unknown> = {};
+    if (customBrief?.trim()) {
+      body.scenario_ids = scenarioIds ?? [];
+      body.custom_brief = customBrief.trim();
+    } else if (scenarioIds) {
+      body.scenario_ids = scenarioIds;
+    }
+    const { data } = await api.post(`/api/v1/urban-dna/zones/${zoneId}/scenarios`, body);
     return data;
   },
 
@@ -1448,6 +1455,11 @@ export const urbanDnaApi = {
   listScenarios: async (zoneId: string): Promise<UrbanDnaScenarioListResponse> => {
     const { data } = await api.get(`/api/v1/urban-dna/zones/${zoneId}/scenarios`);
     return data;
+  },
+
+  /** Delete a CUSTOM scenario run and its drawn plan zones (presets are permanent). */
+  deleteScenario: async (scenarioRowId: string): Promise<void> => {
+    await api.delete(`/api/v1/urban-dna/scenarios/${scenarioRowId}`);
   },
 
   /** Apply a completed scenario's parameters onto the boundary zone as planning directives. */

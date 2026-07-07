@@ -45,6 +45,16 @@ _SCENARIO_DEFAULTS: dict[str, dict[str, float]] = {
 }
 _DEFAULTS = {"block": 180.0, "open": 0.10, "coverage": 0.50}
 
+# Custom-brief rule hints: hint key -> (defaults key, min, max). The open-space
+# ceiling is 0.30 ON PURPOSE — it matches the evaluator's own revision ceiling
+# (plan_evaluator.py); a higher hint would immediately be revised DOWNWARD and
+# the drawn plan would contradict the brief anyway.
+_RULE_HINT_CLAMPS: dict[str, tuple[str, float, float]] = {
+    "open_space_share": ("open", 0.05, 0.30),
+    "coverage_ratio": ("coverage", 0.30, 0.60),
+    "block_target_m": ("block", 100.0, 260.0),
+}
+
 
 def _param_value(parameters: dict[str, Any], path: str) -> Any:
     merged = parameters.get(path)
@@ -56,10 +66,29 @@ def _param_value(parameters: dict[str, Any], path: str) -> Any:
 def resolve_rules(
     scenario_id: str,
     parameters: dict[str, Any],
+    *,
+    rule_hints: dict[str, float] | None = None,
 ) -> tuple[RuleProfile, list[dict[str, Any]]]:
-    """PlanParameters + scenario -> RuleProfile (+ notes about coercions)."""
+    """PlanParameters + scenario -> RuleProfile (+ notes about coercions).
+
+    rule_hints are deterministic overrides extracted from a custom brief —
+    merged over the scenario defaults, clamped, and noted. Presets pass None.
+    """
     notes: list[dict[str, Any]] = []
-    defaults = _SCENARIO_DEFAULTS.get(scenario_id, _DEFAULTS)
+    defaults = dict(_SCENARIO_DEFAULTS.get(scenario_id, _DEFAULTS))
+
+    for hint_key, (defaults_key, lo, hi) in _RULE_HINT_CLAMPS.items():
+        raw = (rule_hints or {}).get(hint_key)
+        if not isinstance(raw, (int, float)) or isinstance(raw, bool):
+            continue
+        clamped = min(hi, max(lo, float(raw)))
+        defaults[defaults_key] = clamped
+        clamp_suffix = f" (clamped from {float(raw):g})" if clamped != float(raw) else ""
+        notes.append({
+            "code": "RULE_HINT_APPLIED", "severity": "info",
+            "message": f"Custom brief hint: {hint_key} = {clamped:g}{clamp_suffix}.",
+            "source_phase": "community_rules",
+        })
 
     row_param = _param_value(parameters, "streets.row_width_m")
     row_width, _ = coerce_floors(row_param, 1.0)  # numeric-or-range coercion reused

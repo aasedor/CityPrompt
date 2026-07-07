@@ -58,6 +58,24 @@ function stablePick(candidates: CatalogEntry[]): CatalogEntry | undefined {
   })[0];
 }
 
+// Family aliases: generic brief terms -> concrete catalog aestheticCategory
+// keywords. The direct includes-match runs first; families are the second tier
+// so "european" still narrows the pool even though no catalog entry is
+// literally categorized "european". Keywords match with the same
+// bidirectional includes as the direct tier, and the pool is never emptied.
+const AESTHETIC_FAMILIES: Record<string, string[]> = {
+  european: ['parisian', 'haussmann', 'amsterdam', 'mediterranean', 'neoclassical', 'classical'],
+  heritage: ['historical', 'brownstone', 'industrial_brick', 'traditional_vernacular', 'neoclassical', 'romanesque'],
+  historic: ['historical', 'brownstone', 'traditional_vernacular', 'neoclassical', 'romanesque'],
+  modern: ['contemporary_urban', 'contemporary_midrise', 'modernist', 'minimalist', 'glass_tower_modern'],
+  contemporary: ['contemporary_urban', 'contemporary_midrise', 'japanese_contemporary', 'modernist'],
+  nordic: ['scandinavian_nordic'],
+  scandinavian: ['scandinavian_nordic'],
+  green: ['eco_urban_green_architecture', 'biophilic'],
+  sustainable: ['eco_urban_green_architecture', 'biophilic'],
+  industrial: ['industrial_brick', 'daylight_factory', 'machine_aesthetic'],
+};
+
 function resolveBuilding(props: Record<string, unknown>): CatalogEntry | undefined {
   const devType = norm(props.development_type) || 'mixed_use';
   const aesthetic = norm(props.development_aesthetic);
@@ -88,13 +106,27 @@ function resolveBuilding(props: Record<string, unknown>): CatalogEntry | undefin
     pool = pool.filter((e) => distance(e) === best);
   }
 
-  // Aesthetic affinity narrows but never empties the pool.
+  // Aesthetic affinity narrows but never empties the pool: direct
+  // includes-match first, family alias tier second.
   if (aesthetic) {
-    const matched = pool.filter((e) => {
+    const direct = pool.filter((e) => {
       const cat = norm(e.aestheticCategory);
       return cat && (cat.includes(aesthetic) || aesthetic.includes(cat));
     });
-    if (matched.length) pool = matched;
+    if (direct.length) {
+      pool = direct;
+    } else {
+      const familyTerms = Object.entries(AESTHETIC_FAMILIES)
+        .filter(([family]) => aesthetic.includes(family) || family.includes(aesthetic))
+        .flatMap(([, terms]) => terms);
+      if (familyTerms.length) {
+        const familial = pool.filter((e) => {
+          const cat = norm(e.aestheticCategory);
+          return cat && familyTerms.some((term) => cat.includes(term) || term.includes(cat));
+        });
+        if (familial.length) pool = familial;
+      }
+    }
   }
   return stablePick(pool);
 }

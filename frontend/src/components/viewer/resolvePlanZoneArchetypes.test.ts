@@ -83,6 +83,36 @@ describe('withPlanArchetypeDefaults', () => {
     expect(String(entry.developmentType)).toMatch(/^residential/);
   });
 
+  it('matches aesthetic families: "european" narrows to the parisian family', () => {
+    // No catalog entry is literally categorized "european" — the family alias
+    // tier must map it to concrete categories instead of ignoring it.
+    const [zone] = withPlanArchetypeDefaults([
+      planZone('building', 'building', {
+        development_type: 'mixed_use',
+        development_aesthetic: 'european',
+        floors: 5,
+      }),
+    ]);
+    const id = zone.properties?.development_archetype_id as string;
+    expect(id).toBeTruthy();
+    const entry = BUILDINGS.find((e) => e.id === id);
+    expect(String(entry.aestheticCategory)).toMatch(
+      /parisian|haussmann|amsterdam|mediterranean|neoclassical|classical/,
+    );
+  });
+
+  it('family tier never empties the pool for unknown aesthetics', () => {
+    const [zone] = withPlanArchetypeDefaults([
+      planZone('building', 'building', {
+        development_type: 'mixed_use',
+        development_aesthetic: 'totally_unknown_style',
+        floors: 5,
+      }),
+    ]);
+    // Falls back to the un-narrowed pool rather than resolving nothing.
+    expect(zone.properties?.development_archetype_id).toBeTruthy();
+  });
+
   it('maps parks by size: block park vs pocket park', () => {
     const [big] = withPlanArchetypeDefaults([planZone('green_space', 'open_space')]);
     const [tiny] = withPlanArchetypeDefaults([

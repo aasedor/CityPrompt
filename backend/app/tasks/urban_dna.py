@@ -280,7 +280,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
     )
     from app.services.planning_agents.runner import estimate_cost_usd, run_expert_panel
     from app.services.planning_agents.scenarios import BASELINE_SCENARIO_ID, SCENARIO_PRESETS
-    from app.services.planning_agents.schemas import MergedParameter, ScenarioResult
+    from app.services.planning_agents.schemas import MergedParameter, ScenarioDefinition, ScenarioResult
     from app.services.urban_dna.schema import ValidationNote
 
     session = _get_sync_session()
@@ -291,6 +291,15 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             return {"status": "failed", "error": "scenario row not found"}
 
         definition = SCENARIO_PRESETS.get(row.scenario_id)
+        if definition is None and row.scenario_id.startswith("custom_"):
+            # Custom scenario: the definition was expanded from the user's
+            # brief at creation time and stored on the row.
+            custom_def = (row.payload or {}).get("custom_definition")
+            if isinstance(custom_def, dict):
+                try:
+                    definition = ScenarioDefinition(**custom_def)
+                except Exception:  # noqa: BLE001 — fall through to the failure path
+                    logger.exception("Invalid custom_definition on scenario %s", row.scenario_id)
         if definition is None:
             row.status = "failed"
             row.error = f"unknown scenario preset {row.scenario_id}"
@@ -382,7 +391,16 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
             )
 
         result = asyncio.run(_run())
-        row.payload = result.model_dump(mode="json")
+        # Carry creation-time custom keys forward — a bare model_dump() would
+        # erase custom_definition and the completed run could never redraw
+        # (rule hints) or be re-run/prefilled (brief) again.
+        payload = {
+            key: value
+            for key, value in (row.payload or {}).items()
+            if key in ("custom_definition", "brief", "expansion")
+        }
+        payload.update(result.model_dump(mode="json"))
+        row.payload = payload
         row.status = "complete"
         row.error = None
         session.commit()
@@ -518,6 +536,20 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         # --- generate → evaluate → refine loop (max 3 iterations) -----------------
         from app.services.plan_geometry.refinement import run_refinement_loop
 
+        # Custom scenarios carry deterministic geometry hints from the brief
+        # ("a large park" must move the drawn plan; experts have no vocabulary
+        # path for open_space_share). Clamped inside resolve_rules.
+        rule_hints: dict[str, float] | None = None
+        custom_def = (row.payload or {}).get("custom_definition")
+        if isinstance(custom_def, dict):
+            raw_hints = custom_def.get("rule_hints")
+            if isinstance(raw_hints, dict):
+                rule_hints = {
+                    key: float(value)
+                    for key, value in raw_hints.items()
+                    if isinstance(value, (int, float)) and not isinstance(value, bool)
+                } or None
+
         result, metrics_report, iterations = run_refinement_loop(
             site_polygon_wgs84=site_polygon,
             scenario_id=row.scenario_id,
@@ -527,6 +559,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             road_features=road_features,
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area,
+            rule_hints=rule_hints,
             locks=locks,
         )
 

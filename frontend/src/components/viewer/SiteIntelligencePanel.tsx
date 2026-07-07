@@ -10,7 +10,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Brain, ChevronDown, ChevronRight, Loader2, Play, RefreshCw, Sparkles } from 'lucide-react';
+import { Brain, ChevronDown, ChevronRight, Loader2, Play, RefreshCw, Sparkles, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type {
   SiteZone,
@@ -354,6 +354,8 @@ function ScenarioCard({
   drawing,
   soloed,
   onSolo,
+  onDelete,
+  deleting,
 }: {
   scenario: UrbanDnaScenarioRow;
   onApply: (row: UrbanDnaScenarioRow) => void;
@@ -362,6 +364,8 @@ function ScenarioCard({
   drawing: boolean;
   soloed: boolean;
   onSolo: (row: UrbanDnaScenarioRow | null) => void;
+  onDelete: (row: UrbanDnaScenarioRow) => void;
+  deleting: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const payload = scenario.payload;
@@ -479,6 +483,17 @@ function ScenarioCard({
               </button>
             </>
           )}
+          {scenario.scenario_id.startsWith('custom_') && (
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={() => onDelete(scenario)}
+              title="Delete this custom scenario and its drawn plan layer (the brief stays prefilled for a re-run)"
+              className="rounded border-2 border-[#151515] bg-white p-0.5 text-[#151515] hover:bg-red-100 disabled:opacity-50"
+            >
+              {deleting ? <Loader2 className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
+            </button>
+          )}
         </div>
       </div>
       {open && payload && (
@@ -579,6 +594,10 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [soloId, setSoloId] = useState<string | null>(null);
   const [scenariosStale, setScenariosStale] = useState(false);
+  const [customOpen, setCustomOpen] = useState(false);
+  const [customBrief, setCustomBrief] = useState('');
+  const [runningCustom, setRunningCustom] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
   const zonePersisted = isPersistedZoneId(zone.id);
 
@@ -629,6 +648,24 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
       cancelled = true;
     };
   }, [refresh]);
+
+  // V1 limit: a DNA refresh orphans custom cards (the list prefers the latest
+  // snapshot) while their plan layers stay. Prefill the textarea from the
+  // newest visible custom row's stored brief so it's re-runnable in one click.
+  const briefPrefilledRef = useRef(false);
+  useEffect(() => {
+    briefPrefilledRef.current = false;
+  }, [zone.id]);
+  useEffect(() => {
+    if (briefPrefilledRef.current || customBrief) return;
+    const customRows = scenarios.filter((s) => s.scenario_id.startsWith('custom_'));
+    const newest = customRows[customRows.length - 1];
+    const storedBrief = (newest?.payload as Record<string, unknown> | undefined)?.brief;
+    if (typeof storedBrief === 'string' && storedBrief.trim()) {
+      setCustomBrief(storedBrief);
+      briefPrefilledRef.current = true;
+    }
+  }, [scenarios, customBrief]);
 
   // Poll while anything is in flight. 'partial' is included because the build
   // checkpoints a partial snapshot before the policy phase — it usually flips
@@ -687,12 +724,46 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     setRunningScenarios(true);
     try {
       const response = await urbanDnaApi.createScenarios(zone.id);
-      setScenarios(response.scenarios);
+      // refresh(), NOT setScenarios(response.scenarios) — the response only
+      // holds the rows just created and would clobber the displayed cards
+      // (existing custom runs and their drawn plans would vanish).
+      await refresh();
       toast.success(`Queued ${response.scenarios.length} planning scenarios`);
     } catch (err) {
       toast.error(getApiErrorMessage(err, 'Failed to queue scenarios'));
     } finally {
       setRunningScenarios(false);
+    }
+  };
+
+  const handleRunCustom = async () => {
+    const brief = customBrief.trim();
+    if (!brief) return;
+    setRunningCustom(true);
+    try {
+      await urbanDnaApi.createScenarios(zone.id, [], brief);
+      await refresh();
+      toast.success('Custom scenario queued — the expert panel is running your brief');
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Failed to queue the custom scenario'));
+    } finally {
+      setRunningCustom(false);
+    }
+  };
+
+  const handleDeleteScenario = async (row: UrbanDnaScenarioRow) => {
+    setDeletingId(row.id);
+    try {
+      await urbanDnaApi.deleteScenario(row.id);
+      if (soloId === row.id) handleSolo(null);
+      // Its plan zones were deleted server-side — drop them from the globe.
+      queryClient.invalidateQueries({ queryKey: ['site-zones'] });
+      await refresh();
+      toast.success(`Deleted '${row.label}'`);
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, 'Failed to delete the scenario'));
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -829,6 +900,41 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                   the current data.
                 </p>
               )}
+              <div className="rounded-lg border-2 border-dashed border-[#151515]/40 px-2 py-1.5">
+                <button
+                  type="button"
+                  onClick={() => setCustomOpen((v) => !v)}
+                  className="flex w-full items-center gap-1.5 text-[10px] font-black uppercase text-[#151515]/70"
+                >
+                  {customOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                  Custom scenario
+                </button>
+                {customOpen && (
+                  <div className="mt-1.5 space-y-1.5">
+                    <textarea
+                      value={customBrief}
+                      onChange={(e) => setCustomBrief(e.target.value)}
+                      maxLength={2000}
+                      rows={3}
+                      placeholder='Describe the concept — e.g. "a European style development with a large central park"'
+                      className="w-full rounded border-2 border-[#151515] bg-white px-2 py-1.5 text-[11px] font-semibold text-[#151515] focus:bg-[#fff9ec] focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRunCustom}
+                      disabled={runningCustom || !customBrief.trim()}
+                      className="flex w-full items-center justify-center gap-1 rounded border-2 border-[#151515] bg-[#b78aff] px-2 py-1 text-[10px] font-black uppercase text-[#151515] hover:bg-[#c9a2ff] disabled:opacity-50"
+                    >
+                      {runningCustom ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+                      Run custom scenario
+                    </button>
+                    <p className="text-[9px] leading-snug text-[#151515]/50">
+                      Runs the full expert panel on your brief and adds a fourth card. A DNA refresh
+                      hides older custom cards — the brief stays prefilled here to re-run in one click.
+                    </p>
+                  </div>
+                )}
+              </div>
               {scenarios.map((scenario) => (
                 <ScenarioCard
                   key={scenario.id}
@@ -839,6 +945,8 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                   drawing={drawingId === scenario.id}
                   soloed={soloId === scenario.id}
                   onSolo={handleSolo}
+                  onDelete={handleDeleteScenario}
+                  deleting={deletingId === scenario.id}
                 />
               ))}
               <ScenarioCompareTable scenarios={scenarios} />

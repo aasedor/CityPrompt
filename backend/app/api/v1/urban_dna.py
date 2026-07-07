@@ -15,10 +15,10 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from geoalchemy2.shape import to_shape
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -150,6 +150,11 @@ async def get_latest_dna(
 
 class CreateScenariosRequest(BaseModel):
     scenario_ids: list[str] = Field(default_factory=lambda: list(DEFAULT_SCENARIO_IDS))
+    # Free-text brief -> a fourth "custom" scenario card running the full
+    # pipeline. When set WITHOUT an explicit scenario_ids, presets are NOT
+    # implicitly re-run (the default_factory above would otherwise queue all
+    # three — a 4x spend surprise).
+    custom_brief: str | None = Field(default=None, max_length=2000)
 
 
 class ScenarioRowResponse(BaseModel):
@@ -215,12 +220,39 @@ async def create_scenarios(
     if snapshot is None or snapshot.status not in ("complete", "partial") or not snapshot.dna:
         raise HTTPException(status_code=409, detail="Generate the Urban DNA for this zone first")
 
-    unknown = [s for s in req.scenario_ids if s not in SCENARIO_PRESETS]
+    custom_brief = (req.custom_brief or "").strip()
+    scenario_ids = list(req.scenario_ids)
+    if custom_brief and "scenario_ids" not in req.model_fields_set:
+        # A brief without an explicit scenario_ids must not fall through to the
+        # all-presets default — that would silently queue 4 paid runs.
+        scenario_ids = []
+
+    unknown = [s for s in scenario_ids if s not in SCENARIO_PRESETS]
     if unknown:
         raise HTTPException(status_code=422, detail=f"Unknown scenario presets: {unknown}")
+    if not scenario_ids and not custom_brief:
+        raise HTTPException(status_code=422, detail="Nothing to run: no scenario ids and no custom brief")
+
+    if custom_brief:
+        # Spend guard: every custom row is a fresh paid pipeline run — cap what
+        # can pile up per snapshot before earlier runs resolve.
+        pending_result = await db.execute(
+            select(func.count())
+            .select_from(UrbanDnaScenario)
+            .where(
+                UrbanDnaScenario.snapshot_id == snapshot.id,
+                UrbanDnaScenario.scenario_id.startswith("custom_", autoescape=True),
+                UrbanDnaScenario.status.in_(("pending", "running")),
+            )
+        )
+        if (pending_result.scalar() or 0) > 3:
+            raise HTTPException(
+                status_code=429,
+                detail="Too many custom scenarios already running — wait for them to finish first",
+            )
 
     # Baseline first so diffs have something to diff against.
-    ordered = sorted(set(req.scenario_ids), key=lambda s: (s != BASELINE_SCENARIO_ID, s))
+    ordered = sorted(set(scenario_ids), key=lambda s: (s != BASELINE_SCENARIO_ID, s))
     rows: list[UrbanDnaScenario] = []
     for scenario_id in ordered:
         preset = SCENARIO_PRESETS[scenario_id]
@@ -233,6 +265,29 @@ async def create_scenarios(
         )
         db.add(row)
         rows.append(row)
+
+    if custom_brief:
+        from app.services.planning_agents.custom_scenario import expand_brief_to_definition
+
+        # Unique id is load-bearing: _plan_scenario zone delete/select keys on it.
+        custom_id = f"custom_{uuid.uuid4().hex[:8]}"
+        definition, expansion = await expand_brief_to_definition(custom_brief, custom_id)
+        row = UrbanDnaScenario(
+            id=uuid.uuid4(),
+            snapshot_id=snapshot.id,
+            scenario_id=custom_id,
+            label=definition.label,
+            status="pending",
+            # The run task and plan drawer reconstruct the definition from
+            # here (task completion must carry these keys forward).
+            payload={
+                "custom_definition": definition.model_dump(mode="json"),
+                "brief": custom_brief,
+                "expansion": expansion,
+            },
+        )
+        db.add(row)
+        rows.append(row)
     await db.commit()
 
     from app.tasks.urban_dna import run_urban_dna_scenario
@@ -241,8 +296,28 @@ async def create_scenarios(
     # strand the other scenarios in 'pending' forever. Non-baseline runs start
     # after a delay so the as_of_right diff baseline usually lands first; if it
     # hasn't, the run proceeds with a BASELINE_UNAVAILABLE info warning.
+    # The baseline wait only applies when an as_of_right run is actually
+    # pending/running — a lone custom run against a settled baseline (or none)
+    # must not idle for a blind 75 s.
+    baseline_in_flight = any(r.scenario_id == BASELINE_SCENARIO_ID for r in rows)
+    if not baseline_in_flight:
+        baseline_result = await db.execute(
+            select(func.count())
+            .select_from(UrbanDnaScenario)
+            .where(
+                UrbanDnaScenario.snapshot_id == snapshot.id,
+                UrbanDnaScenario.scenario_id == BASELINE_SCENARIO_ID,
+                UrbanDnaScenario.status.in_(("pending", "running")),
+            )
+        )
+        baseline_in_flight = bool(baseline_result.scalar())
     for index, row in enumerate(rows):
-        countdown = 0 if row.scenario_id == BASELINE_SCENARIO_ID else 75 + index * 10
+        if row.scenario_id == BASELINE_SCENARIO_ID:
+            countdown = 0
+        elif baseline_in_flight:
+            countdown = 75 + index * 10
+        else:
+            countdown = index * 10
         run_urban_dna_scenario.apply_async(args=[str(row.id)], countdown=countdown)
     logger.info("Queued %d scenario runs for zone %s (snapshot %s)", len(rows), zone_id, snapshot.id)
 
@@ -389,6 +464,58 @@ async def apply_scenario(
         scenario_id=row.scenario_id,
         applied_parameters=parameters,
     )
+
+
+@router.delete("/scenarios/{scenario_row_id}", status_code=204)
+async def delete_scenario(
+    scenario_row_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a CUSTOM scenario run plus its drawn plan zones.
+
+    Custom rows accumulate unboundedly (every brief mints a fresh custom_* id)
+    with no other delete path; presets are re-run in place and stay.
+    """
+    result = await db.execute(select(UrbanDnaScenario).where(UrbanDnaScenario.id == scenario_row_id))
+    row = result.scalar_one_or_none()
+    if row is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+    snapshot_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.id == row.snapshot_id)
+    )
+    snapshot = snapshot_result.scalar_one_or_none()
+    if snapshot is None:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+    try:
+        await _load_zone_checked(snapshot.zone_id, user, db, required="editor")
+    except HTTPException as exc:
+        if exc.status_code in (403, 404):
+            # Existence-oracle hygiene — same 404 as a nonexistent scenario id.
+            raise HTTPException(status_code=404, detail="Scenario not found")
+        raise
+
+    if not row.scenario_id.startswith("custom_"):
+        raise HTTPException(status_code=422, detail="Only custom scenario runs can be deleted")
+
+    zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == snapshot.project_id,
+            SiteZone.properties["_plan_scenario"].astext == row.scenario_id,
+        )
+    )
+    plan_zones = zones_result.scalars().all()
+    for plan_zone in plan_zones:
+        await db.delete(plan_zone)
+    await db.delete(row)
+    await db.commit()
+    logger.info(
+        "Deleted custom scenario %s (%s) and %d plan zones",
+        row.scenario_id, scenario_row_id, len(plan_zones),
+    )
+    return Response(status_code=204)
 
 
 class GeneratePlanRequest(BaseModel):

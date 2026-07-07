@@ -36,6 +36,7 @@ def run_refinement_loop(
     road_features: list[dict[str, Any]] | None = None,
     district_features: list[dict[str, Any]] | None = None,
     locked_street_area_wgs84: Polygon | None = None,
+    rule_hints: dict[str, float] | None = None,
     locks: list[str] | None = None,
 ) -> tuple[PlanGeometryResult, MetricsReport, list[dict[str, Any]]]:
     locks = locks or []
@@ -54,6 +55,7 @@ def run_refinement_loop(
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area_wgs84,
             rule_overrides=overrides or None,
+            rule_hints=rule_hints,
         )
         metrics_report = compute_metrics(
             scenario_id=scenario_id,
