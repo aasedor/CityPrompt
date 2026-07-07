@@ -117,6 +117,13 @@ def _district_lookup_m(features: list[dict[str, Any]], to_metric) -> list[tuple[
     return lookup
 
 
+def _param_value(parameters: dict[str, Any], path: str) -> Any:
+    merged = parameters.get(path)
+    if isinstance(merged, dict) and "value" in merged:
+        return merged["value"]
+    return merged
+
+
 def generate_plan_geometry(
     *,
     site_polygon_wgs84: Polygon,
@@ -130,6 +137,17 @@ def generate_plan_geometry(
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
+
+    # Semantic hints for the render pipeline: the frontend resolves archetype
+    # references from these (development_type/aesthetic -> building archetype,
+    # tree_density/ground_texture -> park character). Strings only, clipped.
+    development_type = str(_param_value(parameters, "buildings.development_type") or "mixed_use")[:60]
+    development_aesthetic = _param_value(parameters, "buildings.development_aesthetic")
+    development_aesthetic = str(development_aesthetic)[:60] if development_aesthetic else None
+    tree_density_param = _param_value(parameters, "landscape.tree_density")
+    tree_density = float(tree_density_param) if isinstance(tree_density_param, (int, float)) else 0.8
+    ground_texture = _param_value(parameters, "landscape.ground_texture")
+    ground_texture = str(ground_texture)[:60] if ground_texture else None
 
     site = make_valid(site_polygon_wgs84)
     crs = local_metric_crs_for_polygon(site)
@@ -222,7 +240,8 @@ def generate_plan_geometry(
                     "sort_order": zone_sort,
                     "properties": {
                         "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                        "_plan_role": "open_space", "tree_density": 0.8,
+                        "_plan_role": "open_space", "tree_density": tree_density,
+                        **({"ground_texture": ground_texture} if ground_texture else {}),
                     },
                 })
                 zone_sort += 1
@@ -273,6 +292,9 @@ def generate_plan_geometry(
                         "_plan_scenario": scenario_id, "_imported_from": layer_name,
                         "_plan_role": "building", "floors": round(floors, 1),
                         "height": round(floors * FLOOR_HEIGHT_M, 1),
+                        "development_type": development_type,
+                        **({"development_aesthetic": development_aesthetic}
+                           if development_aesthetic else {}),
                         **(info or {}),
                         **({"floors_clamped_by": clamp} if clamp else {}),
                     },

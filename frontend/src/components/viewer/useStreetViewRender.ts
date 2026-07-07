@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
+import { withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
@@ -419,7 +420,8 @@ export function bufferLineToPolygon(
  * Returns a new array with lines converted to polygons.
  */
 export function preprocessZonesForStreetView(siteZones: SiteZone[]): SiteZone[] {
-  return siteZones.map(zone => {
+  // AI-planner plan zones resolve archetype refs from their semantic hints.
+  return withPlanArchetypeDefaults(siteZones).map(zone => {
     const zt = zone.zone_type as string;
     const isLine = zt === 'road' || zt === 'street' || zt === 'path' || zt === 'pedestrian';
 

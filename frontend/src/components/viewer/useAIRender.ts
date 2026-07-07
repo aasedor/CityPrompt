@@ -17,9 +17,9 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalogData from '@/data/openSpaceArchetypes.json';
 import streetPathCatalogData from '@/data/streetPathArchetypes.json';
-import { getArchetypeForShade } from '@/data/archetypeShadeMap';
 import { resolveApiFileUrl } from '@/services/api';
 import { getCustomZoneStyle } from './customZoneStyle';
+import { withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -1041,27 +1041,6 @@ function hexToHsl(hex: string): [number, number, number] {
   return [h * 360, s * 100, l * 100];
 }
 
-function hslToHex(h: number, s: number, l: number): string {
-  h = ((h % 360) + 360) % 360;
-  s = Math.max(0, Math.min(100, s)) / 100;
-  l = Math.max(0, Math.min(100, l)) / 100;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color).toString(16).padStart(2, '0');
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-}
-
-function shiftColorForVariant(baseHex: string, variantIndex: number): string {
-  const lightnessShifts = [-8, -3, 3, 8];
-  const hueShifts = [-5, 5, -10, 10];
-  const idx = Math.max(0, Math.min(3, variantIndex));
-  const [h, s, l] = hexToHsl(baseHex);
-  return hslToHex(h + hueShifts[idx], s, l + lightnessShifts[idx]);
-}
-
 function colorName(hex: string): string {
   const genericMap: Record<string, string> = {
     '#E03C31': 'red', '#e03c31': 'red',
@@ -1221,6 +1200,7 @@ function buildArchetypeDescription(
 
   return defaultZoneDescription(zoneType);
 }
+void buildArchetypeDescription; // suppress unused warning — kept for fallback use
 
 /** Extract N keywords from verbose description text, joining with '+' */
 function condenseToKeywords(text: string | undefined, maxTokens = 4): string {
@@ -2471,6 +2451,11 @@ export function useAIRender(): UseAIRenderReturn {
       const controller = new AbortController();
       abortRef.current = controller;
 
+      // Plan zones carry semantic hints, not archetype IDs — resolve once here.
+      if (options.siteZones?.length) {
+        options = { ...options, siteZones: withPlanArchetypeDefaults(options.siteZones) };
+      }
+
       setIsRendering(true);
       setProgress(-1); // indeterminate
       setError(null);
@@ -2586,6 +2571,10 @@ export function useAIRender(): UseAIRenderReturn {
       const controller = new AbortController();
       abortRef.current = controller;
 
+      if (options.siteZones?.length) {
+        options = { ...options, siteZones: withPlanArchetypeDefaults(options.siteZones) };
+      }
+
       setIsRendering(true);
       setProgress(-1);
       setError(null);
@@ -2647,6 +2636,10 @@ export function useAIRender(): UseAIRenderReturn {
 
   const renderPreviews = useCallback(
     async (map: MapboxMap, options: AIRenderOptions = {}): Promise<AIRenderResult[]> => {
+      if (options.siteZones?.length) {
+        options = { ...options, siteZones: withPlanArchetypeDefaults(options.siteZones) };
+      }
+
       setIsRendering(true);
       setProgress(-1);
       setError(null);
@@ -2716,6 +2709,10 @@ export function useAIRender(): UseAIRenderReturn {
       seed: number,
       singleView = true,
     ): Promise<AIRenderResult | null> => {
+      if (options.siteZones?.length) {
+        options = { ...options, siteZones: withPlanArchetypeDefaults(options.siteZones) };
+      }
+
       setIsRendering(true);
       setProgress(-1);
       setError(null);
@@ -2831,6 +2828,10 @@ export function useAIRender(): UseAIRenderReturn {
       if (abortRef.current) abortRef.current.abort();
       const controller = new AbortController();
       abortRef.current = controller;
+
+      if (options.siteZones?.length) {
+        options = { ...options, siteZones: withPlanArchetypeDefaults(options.siteZones) };
+      }
 
       setIsRendering(true);
       setProgress(0);

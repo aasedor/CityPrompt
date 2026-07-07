@@ -11,6 +11,7 @@
  */
 import type { SiteZone } from '@/types';
 import archetypeCatalog from '@/data/buildingArchetypes.json';
+import { withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
 
 // ---------------------------------------------------------------------------
 // Domain prefix config (mirrors masterPlan2DReferences.ts)
@@ -91,6 +92,8 @@ function asString(value: unknown): string | undefined {
  * reference image URLs ready to merge into AIRenderOptions.
  */
 export function collectArchetypeRenderInputs(siteZones: SiteZone[]): ArchetypeRenderInputs {
+  // AI-planner plan zones resolve their archetypes from semantic hints.
+  siteZones = withPlanArchetypeDefaults(siteZones);
   const positiveSet = new Set<string>();
   const negativeSet = new Set<string>();
   const imageUrlSet = new Set<string>();

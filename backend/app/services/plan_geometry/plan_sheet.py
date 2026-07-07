@@ -204,7 +204,14 @@ def build_plan_sheet(
  ul {{ font-size: 12.5px; padding-left: 18px; }}
  li.warning {{ color: #92400e; }} li.error {{ color: #b91c1c; }}
  .meta {{ font-size: 11.5px; color: #555; }}
- @media print {{ body {{ margin: 10mm; }} }}
+ .sheet-footer {{ margin-top: 30px; padding-top: 8px; border-top: 1px solid #999;
+   font-size: 10.5px; color: #555; display: flex; justify-content: space-between; gap: 12px; }}
+ @page {{ size: A4 portrait; margin: 12mm; }}
+ @media print {{
+   body {{ margin: 0; max-width: none; }}
+   h2 {{ break-after: avoid; }}
+   table, svg, .banner {{ break-inside: avoid; }}
+ }}
 </style></head><body>
 <h1>{_esc(scenario_label)} — Concept Plan</h1>
 <p class="meta">Scenario <code>{_esc(scenario_id)}</code> · generated {_esc(plan.get('generated_at'))} ·
@@ -248,4 +255,8 @@ internal ROW {_esc((plan.get('rules') or {}).get('row_width_m'))} m
 <p class="meta">Produced by City Prompt Urban Intelligence. Data: City of Calgary Open Data
 (datasets per the Site Intelligence capabilities list) and the seeded policy corpus. Missing datasets
 and low-confidence fields are disclosed in the Site Intelligence panel; this sheet inherits those limits.</p>
+<div class="sheet-footer">
+  <span>ILLUSTRATIVE — NOT AN APPROVED DESIGN · City Prompt</span>
+  <span>Scenario {_esc(scenario_id)} · generated {_esc(plan.get('generated_at'))}</span>
+</div>
 </body></html>"""

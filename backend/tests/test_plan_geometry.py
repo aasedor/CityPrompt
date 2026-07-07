@@ -34,6 +34,8 @@ PARAMS = {
     "streets.row_width_m": {"value": 16.0},
     "buildings.floors": {"value": 6},
     "buildings.development_type": {"value": "mixed_use"},
+    "buildings.development_aesthetic": {"value": "contemporary"},
+    "landscape.tree_density": {"value": 0.6},
 }
 
 
@@ -82,6 +84,12 @@ def test_full_generation_meets_p2_gates():
     buildings = [z for z in result.zones if z["zone_type"] == "building"]
     assert all(z["properties"]["floors"] > 0 and z["properties"]["height"] > 0 for z in buildings)
     assert result.intersection_density_per_km2 > 0
+
+    # Semantic hints for the render pipeline's archetype resolver.
+    assert all(z["properties"]["development_type"] == "mixed_use" for z in buildings)
+    assert all(z["properties"]["development_aesthetic"] == "contemporary" for z in buildings)
+    parks = [z for z in result.zones if z["zone_type"] == "green_space"]
+    assert parks and all(z["properties"]["tree_density"] == 0.6 for z in parks)
 
 
 def test_block_scale_via_street_network():

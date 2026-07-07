@@ -25,6 +25,7 @@ import {
 import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
+import { withPlanArchetypeDefaults } from '@/components/viewer/resolvePlanZoneArchetypes';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
@@ -538,6 +539,12 @@ async function collectArchetypeImages(
   zones: SiteZone[],
 ): Promise<Array<{ image_base64: string; label: string; zone_color: string; angle: string }>> {
   const images: Array<{ image_base64: string; label: string; zone_color: string; angle: string }> = [];
+  // Zone colors are assigned per archetype, so one ref set per unique
+  // (archetype, variant, color) covers every zone sharing it. Without this an
+  // AI-planner plan (16 bars × 1 archetype) floods the budget with 48
+  // duplicates — and the repeated hero card starts steering the whole
+  // composition instead of the drawn zones.
+  const seenRefSets = new Set<string>();
 
   for (const zone of zones) {
     if (images.length >= MAX_ARCHETYPE_IMAGES) break;
@@ -630,6 +637,9 @@ async function collectArchetypeImages(
     }
 
     const zoneColor = colorName(resolveZoneColor(zone));
+    const refSetKey = `${entry.id}|${variant?.id || ''}|${zoneColor}`;
+    if (seenRefSets.has(refSetKey)) continue;
+    seenRefSets.add(refSetKey);
     const title = entry.title || archetypeId;
 
     // Build the list of thumbnail stems we'll probe for aerials.
@@ -1028,6 +1038,13 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     // User description override
     const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
     if (userDesc.length > 10) features.push(userDesc);
+
+    // AI-planner park zones: state the program explicitly and first (survives
+    // the feature budget) — models otherwise invent ponds/amphitheatres in
+    // large green polygons.
+    if (props._plan_role === 'open_space') {
+      features.unshift('flat neighbourhood park: lawn, tree clusters, walking paths — no water features, no amphitheatre');
+    }
 
     // Custom-style zones carry the user's full description — give it more room
     // than the compressed archetype keyword budget (expansions run ~600-900 chars).
@@ -1582,6 +1599,10 @@ export function useGlobeAIRender() {
     if (!options._skipLock && isRenderingRef.current) return null;
     if (!options._skipLock) isRenderingRef.current = true;
 
+    // AI-planner plan zones carry semantic hints, not archetype IDs — resolve
+    // them here so refs/prompts light up through the whole pipeline.
+    zones = withPlanArchetypeDefaults(zones);
+
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt } = options;
 
@@ -1937,6 +1958,8 @@ export function useGlobeAIRender() {
   ): Promise<GlobeRenderResult | null> => {
     if (isRenderingRef.current) return null;
     isRenderingRef.current = true;
+
+    zones = withPlanArchetypeDefaults(zones);
 
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt, onProgress } = options;
