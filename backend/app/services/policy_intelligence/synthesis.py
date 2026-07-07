@@ -46,6 +46,7 @@ class Citation(BaseModel):
     page: int
     quote: str = Field(..., min_length=10, max_length=400)
     verified: bool = False
+    url: Optional[str] = None     # official document URL (enriched server-side, never model-provided)
 
 
 class Consideration(BaseModel):
@@ -290,6 +291,12 @@ def apply_guardrails(
             for citation in item.citations:
                 if _verify_quote(citation.quote, chunks_by_doc, citation.doc):
                     citation.verified = True
+                    # Enrich with the official document URL from the corpus —
+                    # the model never provides URLs, so links can't hallucinate.
+                    doc_chunks = chunks_by_doc.get(citation.doc) or []
+                    if doc_chunks:
+                        citation.url = citation.url or doc_chunks[0].source_url
+                        citation.title = citation.title or doc_chunks[0].document_title
                     verified_citations.append(citation)
                 else:
                     item.confidence = round(item.confidence * 0.5, 2)
@@ -357,6 +364,28 @@ async def synthesize_policy_insight(
     )
 
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+    try:
+        return await _synthesize_with_client(
+            client, model, user_message, corpus_status, documents_consulted, chunks,
+        )
+    finally:
+        # Close inside the running loop: the Celery task wraps this in
+        # asyncio.run(), and a GC-time aclose() after the loop is gone emits
+        # "Event loop is closed" noise (observed in trial logs 2026-07-07).
+        try:
+            await client.close()
+        except Exception:  # noqa: BLE001 — cleanup must never mask the result
+            pass
+
+
+async def _synthesize_with_client(
+    client: "anthropic.AsyncAnthropic",
+    model: str,
+    user_message: str,
+    corpus_status: str,
+    documents_consulted: list[str],
+    chunks: list[ScoredChunk],
+) -> tuple[PolicyInsight, list[dict[str, Any]]]:
     insight = None
     last_error = "?"
     # Up to 2 samples: the model nondeterministically JSON-encodes nested tool

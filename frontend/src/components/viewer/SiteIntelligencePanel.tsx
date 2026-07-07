@@ -22,6 +22,7 @@ import type {
 } from '@/types';
 import { URBAN_DNA_SECTION_NAMES } from '@/types';
 import { getApiErrorMessage, urbanDnaApi } from '@/services/api';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 
 const SECTION_LABELS: Record<UrbanDnaSectionName, string> = {
   site: 'Site',
@@ -53,6 +54,42 @@ function ConfidenceBadge({ value }: { value: number }) {
   );
 }
 
+const METHOD_LABELS: Record<string, string> = {
+  euclidean_estimate: 'straight-line est.',
+};
+
+/** Humanize the common DNA object shapes instead of leaking raw JSON:
+ * nearest-X = {name?, distance_m, network_estimate_m?, method}, elevation =
+ * {min_m, max_m, method}. Generic objects fall back to key: value pairs. */
+function humanizeObject(value: Record<string, unknown>): string {
+  const method = typeof value.method === 'string'
+    ? (METHOD_LABELS[value.method] ?? value.method.replace(/_/g, ' '))
+    : undefined;
+
+  if (typeof value.min_m === 'number' && typeof value.max_m === 'number') {
+    return `${value.min_m.toLocaleString()}–${value.max_m.toLocaleString()} m`;
+  }
+
+  const parts: string[] = [];
+  if (typeof value.name === 'string' && value.name) parts.push(value.name);
+  if (typeof value.distance_m === 'number') parts.push(`${Math.round(value.distance_m).toLocaleString()} m`);
+  if (parts.length) return method ? `${parts.join(' · ')} (${method})` : parts.join(' · ');
+
+  const pairs = Object.entries(value)
+    .filter(([key, v]) => v !== null && v !== undefined && key !== 'method' && typeof v !== 'object')
+    .slice(0, 4)
+    .map(([key, v]) => {
+      const shown = typeof v === 'number'
+        ? (Number.isInteger(v) ? v.toLocaleString() : (v as number).toFixed(1))
+        : String(v).slice(0, 40);
+      return `${key.replace(/_/g, ' ')}: ${shown}`;
+    });
+  const text = pairs.join(' · ');
+  if (text) return method ? `${text} (${method})` : text;
+  const json = JSON.stringify(value);
+  return json.length > 90 ? `${json.slice(0, 90)}…` : json;
+}
+
 function shortValue(value: unknown): string {
   if (value === null || value === undefined) return '—';
   if (typeof value === 'number') return Number.isInteger(value) ? String(value) : value.toFixed(2);
@@ -60,8 +97,8 @@ function shortValue(value: unknown): string {
   if (typeof value === 'boolean') return value ? 'yes' : 'no';
   if (Array.isArray(value)) return `${value.length} item${value.length === 1 ? '' : 's'}`;
   if (typeof value === 'object') {
-    const json = JSON.stringify(value);
-    return json.length > 90 ? `${json.slice(0, 90)}…` : json;
+    const text = humanizeObject(value as Record<string, unknown>);
+    return text.length > 120 ? `${text.slice(0, 120)}…` : text;
   }
   return String(value);
 }
@@ -82,10 +119,23 @@ function WarningList({ warnings }: { warnings: UrbanDnaValidationNote[] }) {
   );
 }
 
-function DnaSectionRow({ name, section }: { name: UrbanDnaSectionName; section: UrbanDnaSection }) {
+// Official references per city + section — curated, verified URLs (2026-07-07).
+const OFFICIAL_SECTION_LINKS: Record<string, Partial<Record<UrbanDnaSectionName, Array<{ label: string; url: string }>>>> = {
+  calgary: {
+    land_use: [
+      { label: 'Land use maps', url: 'https://www.calgary.ca/maps/land-use-bylaw.html' },
+      { label: 'Bylaw 1P2007', url: 'https://www.calgary.ca/planning/land-use/online-land-use-bylaw.html' },
+    ],
+  },
+};
+
+function DnaSectionRow({ name, section, cityId }: {
+  name: UrbanDnaSectionName; section: UrbanDnaSection; cityId?: string;
+}) {
   const [open, setOpen] = useState(false);
   const fieldEntries = Object.entries(section.fields || {});
   const filled = fieldEntries.filter(([, field]) => field.value !== null && field.value !== undefined);
+  const officialLinks = (cityId && OFFICIAL_SECTION_LINKS[cityId]?.[name]) || [];
 
   return (
     <div className="rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_rgba(21,21,21,0.2)]">
@@ -109,13 +159,33 @@ function DnaSectionRow({ name, section }: { name: UrbanDnaSectionName; section: 
             <p className="text-[10px] text-[#151515]/50">No datasets registered for this section yet.</p>
           )}
           {fieldEntries.map(([fieldName, field]) => (
-            <div key={fieldName} className="flex items-start justify-between gap-2 py-0.5">
-              <span className="text-[10px] font-bold text-[#151515]/70">{fieldName.replace(/_/g, ' ')}</span>
-              <span className="max-w-[60%] text-right text-[10px] font-semibold text-[#151515]" title={JSON.stringify(field.value)}>
+            <div key={fieldName} className="flex min-w-0 items-start justify-between gap-2 py-0.5">
+              <span className="shrink-0 text-[10px] font-bold text-[#151515]/70">{fieldName.replace(/_/g, ' ')}</span>
+              <span
+                className="min-w-0 max-w-[60%] break-words text-right text-[10px] font-semibold text-[#151515]"
+                title={JSON.stringify(field.value)}
+              >
                 {shortValue(field.value)}
               </span>
             </div>
           ))}
+          {officialLinks.length > 0 && (
+            <p className="mt-1 text-[9px] font-bold">
+              {officialLinks.map((link, i) => (
+                <span key={link.url}>
+                  {i > 0 && ' · '}
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#151515]/60 underline decoration-dotted hover:text-[#151515]"
+                  >
+                    {link.label} ↗
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
           {section.meta?.missing_datasets?.length > 0 && (
             <p className="mt-1 text-[10px] text-red-700">
               Missing: {section.meta.missing_datasets.join(', ')}
@@ -128,27 +198,48 @@ function DnaSectionRow({ name, section }: { name: UrbanDnaSectionName; section: 
   );
 }
 
+type InsightCitation = { doc: string; page: number; verified?: boolean; url?: string | null; title?: string };
+
 function PolicyInsightBlock({ section }: { section: UrbanDnaSection }) {
   const insight = section.fields?.insight?.value as
     | {
         summaries?: string[];
         conformance_considerations?: Array<{
           topic: string; framing: string; risk: string; detail: string;
-          citations?: Array<{ doc: string; page: number; verified?: boolean }>;
+          citations?: InsightCitation[];
         }>;
         opportunities?: Array<{
           topic: string; detail: string;
-          citations?: Array<{ doc: string; page: number; verified?: boolean }>;
+          citations?: InsightCitation[];
         }>;
         disclaimer?: string;
       }
     | undefined;
   if (!insight) return null;
 
-  const renderCitations = (citations?: Array<{ doc: string; page: number }>) =>
+  // Citations link straight to the official document (URL comes from the
+  // seeded corpus, never from the model). #page=N deep-links into PDFs.
+  const renderCitations = (citations?: InsightCitation[]) =>
     citations && citations.length > 0 ? (
       <span className="ml-1 text-[9px] font-bold text-[#151515]/50">
-        [{citations.map((c) => `${c.doc} p${c.page}`).join('; ')}]
+        [{citations.map((c, i) => (
+          <span key={`${c.doc}-${c.page}-${i}`}>
+            {i > 0 && '; '}
+            {c.url ? (
+              <a
+                href={`${c.url}${c.url.toLowerCase().endsWith('.pdf') ? `#page=${c.page}` : ''}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={c.title || c.doc}
+                className="underline decoration-dotted hover:text-[#151515]"
+              >
+                {c.doc} p{c.page}
+              </a>
+            ) : (
+              `${c.doc} p${c.page}`
+            )}
+          </span>
+        ))}]
       </span>
     ) : null;
 
@@ -487,7 +578,9 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   const [runningScenarios, setRunningScenarios] = useState(false);
   const [applyingId, setApplyingId] = useState<string | null>(null);
   const [soloId, setSoloId] = useState<string | null>(null);
+  const [scenariosStale, setScenariosStale] = useState(false);
   const pollRef = useRef<number | null>(null);
+  const zonePersisted = isPersistedZoneId(zone.id);
 
   // Solo a scenario's plan on the globe. Layer visibility lives in
   // ProjectViewPage (hiddenLayers) two components up — a window event keeps
@@ -500,6 +593,12 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
   }, []);
 
   const refresh = useCallback(async () => {
+    // An unsaved zone has a temp- id; every urban-dna endpoint 422s on it.
+    if (!isPersistedZoneId(zone.id)) {
+      setSnapshot(null);
+      setScenarios([]);
+      return;
+    }
     try {
       const latest = await urbanDnaApi.getLatest(zone.id);
       setSnapshot(latest);
@@ -511,6 +610,7 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     try {
       const list = await urbanDnaApi.listScenarios(zone.id);
       setScenarios(list.scenarios);
+      setScenariosStale(Boolean(list.stale));
     } catch (err: any) {
       if (err?.response?.status === 404) setScenarios([]);
     }
@@ -640,6 +740,10 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
         <div className="flex items-center gap-2 text-xs text-[#151515]/60">
           <Loader2 className="h-3.5 w-3.5 animate-spin" /> Loading site intelligence…
         </div>
+      ) : !zonePersisted ? (
+        <p className="rounded-lg border-2 border-dashed border-[#151515]/40 px-2.5 py-1.5 text-[11px] text-[#151515]/70">
+          Save the boundary first (<b>Save Changes</b> above) — then generate Site DNA.
+        </p>
       ) : !snapshot ? (
         <button
           type="button"
@@ -687,7 +791,7 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
               )}
               {URBAN_DNA_SECTION_NAMES.map((name) =>
                 name === 'market' && Object.keys(dna[name]?.fields || {}).length === 0 ? null : (
-                  <DnaSectionRow key={name} name={name} section={dna[name]} />
+                  <DnaSectionRow key={name} name={name} section={dna[name]} cityId={snapshot.city_id} />
                 ),
               )}
               <PolicyInsightBlock section={dna.policy} />
@@ -714,6 +818,12 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
                 <p className="text-[10px] text-[#151515]/50">
                   Run the expert panel to get As-of-Right, Plan-Aligned and Climate-First concepts
                   with their trade-offs.
+                </p>
+              )}
+              {scenariosStale && scenarios.length > 0 && (
+                <p className="rounded border border-amber-500/50 bg-amber-50 px-1.5 py-1 text-[9px] font-bold text-amber-800">
+                  These scenarios pre-date the latest DNA refresh — re-run scenarios to base them on
+                  the current data.
                 </p>
               )}
               {scenarios.map((scenario) => (

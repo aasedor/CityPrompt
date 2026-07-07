@@ -13,6 +13,7 @@ import { useViewerStore } from '@/store';
 import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import { SiteIntelligencePanel } from './SiteIntelligencePanel';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import {
   BUILDING_AESTHETIC_CATEGORIES_V2,
@@ -2149,6 +2150,12 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
   } = useViewerStore();
 
   useEffect(() => {
+    // Unsaved zones carry a temp- id; the endpoint 422s on non-UUID ids.
+    if (!isPersistedZoneId(zone.id)) {
+      setAnalysis(null);
+      setLoading(false);
+      return;
+    }
     let cancelled = false;
     setLoading(true);
     siteZonesApi.getBoundaryAnalysis(zone.id)

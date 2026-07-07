@@ -296,7 +296,6 @@ async def run_expert_panel(
 ) -> tuple[list[ExpertRecommendationSet], list[dict[str, Any]], list[ValidationNote]]:
     """Run all experts concurrently. Returns (sets, usage records, panel warnings)."""
     settings = get_settings()
-    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
     semaphore = asyncio.Semaphore(MAX_CONCURRENT_EXPERTS)
     warnings: list[ValidationNote] = []
 
@@ -312,9 +311,20 @@ async def run_expert_panel(
         ))
         return [], [], warnings
 
-    results = await asyncio.gather(
-        *(_run_expert(client, spec, dna_json, scenario.philosophy, scenario, semaphore) for spec in experts)
-    )
+    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+
+    try:
+        results = await asyncio.gather(
+            *(_run_expert(client, spec, dna_json, scenario.philosophy, scenario, semaphore) for spec in experts)
+        )
+    finally:
+        # Close inside the running loop — the Celery task wraps this in
+        # asyncio.run(); a GC-time close after the loop is gone emits
+        # "Event loop is closed" noise.
+        try:
+            await client.close()
+        except Exception:  # noqa: BLE001 — cleanup must never mask the result
+            pass
     sets = [result_set for result_set, _ in results]
     usage_records = [usage for _, usage in results]
 

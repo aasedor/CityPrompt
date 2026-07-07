@@ -108,6 +108,17 @@ def _drawing_svg(
     )
 
 
+def _citation_ref(citation: dict[str, Any]) -> str:
+    """Citation label, linked to the official document when the corpus knows
+    its URL (#page=N deep-links into PDFs)."""
+    label = f"{_esc(citation.get('doc'))} p.{_esc(citation.get('page'))}"
+    url = citation.get("url")
+    if not url or not str(url).startswith(("http://", "https://")):
+        return label
+    href = _esc(str(url) + (f"#page={citation.get('page')}" if str(url).lower().endswith(".pdf") else ""))
+    return f"<a href='{href}' target='_blank' rel='noopener'>{label}</a>"
+
+
 def _esc(value: Any) -> str:
     return html.escape(str(value if value is not None else "—"))
 
@@ -168,10 +179,10 @@ def build_plan_sheet(
     insight = ((((dna or {}).get("policy") or {}).get("fields") or {}).get("insight") or {}).get("value") or {}
     for group, prefix in (("conformance_considerations", ""), ("opportunities", "Opportunity — ")):
         for item in insight.get(group) or []:
-            cites = "; ".join(f"{c.get('doc')} p.{c.get('page')}" for c in item.get("citations") or [])
+            cites = "; ".join(_citation_ref(c) for c in item.get("citations") or [])
             policy_items += (
                 f"<li><b>{prefix}{_esc(item.get('topic'))}:</b> {_esc(item.get('detail'))}"
-                + (f" <span class='cite'>[{_esc(cites)}]</span>" if cites else "")
+                + (f" <span class='cite'>[{cites}]</span>" if cites else "")
                 + "</li>"
             )
     policy_items = policy_items or "<li>No policy corpus findings for this site.</li>"

@@ -634,22 +634,25 @@ def generate_3d_model_ai(
 
     except Exception as exc:
         logger.error(f"AI 3D generation failed for building {building_id}: {exc}")
+        # Usage rows have a FK to buildings — logging against a deleted
+        # building just adds an IntegrityError on top of the real failure.
         log_api_usage_sync(
             provider=provider.engine_id if provider else engine,
             operation=f"{mode}_to_3d",
             status="failed",
-            building_id=building_id,
+            building_id=building_id if building is not None else None,
         )
         try:
-            if building is None:
-                from app.models.models import Building
-                building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
-            if building:
+            if building is not None:
                 building.generation_status = "failed"
                 session.commit()
         except Exception as inner_exc:
             session.rollback()
             logger.warning("Failed to mark building %s as failed: %s", building_id, inner_exc)
+        # A missing building is terminal (it was deleted) — retrying can never
+        # succeed and previously burned all retries 30s apart.
+        if building is None:
+            raise
         raise self.retry(exc=exc, countdown=30)
     finally:
         session.close()

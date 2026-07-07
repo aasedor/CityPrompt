@@ -15,9 +15,12 @@ import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 
+// Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
+// renders consistently weaker; GPT holds the drawn structure best). Two
+// samples of one engine give a real A/B choice; labels keep them apart.
 const COMPARE_RENDER_MODELS = [
-  { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
-  { model: 'gpt-image-2', label: 'GPT Image 2' },
+  { model: 'gpt-image-2', label: 'GPT Image 2 · A' },
+  { model: 'gpt-image-2', label: 'GPT Image 2 · B' },
 ];
 
 const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';

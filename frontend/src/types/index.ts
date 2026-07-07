@@ -1179,6 +1179,8 @@ export interface UrbanDnaScenarioListResponse {
   snapshot_id?: string | null;
   scenarios: UrbanDnaScenarioRow[];
   available_presets: Array<{ scenario_id: string; label: string; description: string }>;
+  /** True when the scenarios pre-date the zone's latest DNA snapshot. */
+  stale?: boolean;
 }
 
 export interface UrbanDnaApplyScenarioResponse {

@@ -36,6 +36,7 @@ class ScoredChunk:
     page_end: int
     text: str
     score: float
+    source_url: str | None = None  # official document URL, for citation links
 
 
 @dataclass
@@ -49,6 +50,7 @@ class ChunkRecord:
     page_start: int
     page_end: int
     text: str
+    source_url: str | None = None
 
 
 def build_query_terms(site_facts: dict, topics: Iterable[str]) -> list[str]:
@@ -118,6 +120,7 @@ def rank_chunks(
                     page_end=record.page_end,
                     text=record.text,
                     score=round(score, 3),
+                    source_url=record.source_url,
                 )
             )
 

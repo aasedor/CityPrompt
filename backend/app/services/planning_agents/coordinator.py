@@ -200,6 +200,7 @@ async def write_explanation(
         return explanation
 
     settings = get_settings()
+    client = None
     try:
         client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
         message = await client.messages.create(
@@ -246,4 +247,12 @@ async def write_explanation(
     except Exception as exc:  # noqa: BLE001
         logger.warning("Narrative generation failed: %s", exc)
         explanation.narrative = _fallback_narrative(scenario, changed)
+    finally:
+        # Close inside the running loop (asyncio.run in the Celery task) —
+        # a GC-time close after the loop ends emits "Event loop is closed".
+        if client is not None:
+            try:
+                await client.close()
+            except Exception:  # noqa: BLE001
+                pass
     return explanation

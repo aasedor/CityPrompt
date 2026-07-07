@@ -129,6 +129,7 @@ def _scored_chunk() -> ScoredChunk:
         chunk_id="c1", document_slug="mdp-lup009", document_title="MDP",
         section_label="2.2 Transit Areas", page_start=41, page_end=41,
         text=CHUNK_TEXT, score=3.0,
+        source_url="https://www.calgary.ca/content/dam/mdp.pdf",
     )
 
 
@@ -143,6 +144,10 @@ def test_guardrails_keep_verified_quote():
     result, warnings = apply_guardrails(insight, [_scored_chunk()])
     consideration = result.conformance_considerations[0]
     assert consideration.citations and consideration.citations[0].verified
+    # Verified citations are enriched with the corpus document URL — the model
+    # never provides URLs, so links can't hallucinate.
+    assert consideration.citations[0].url == "https://www.calgary.ca/content/dam/mdp.pdf"
+    assert consideration.citations[0].title == "MDP"
     assert not any(w["code"] == "CITATION_UNVERIFIED" for w in warnings)
 
 

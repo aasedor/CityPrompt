@@ -168,6 +168,9 @@ class ScenarioListResponse(BaseModel):
     snapshot_id: Optional[str] = None
     scenarios: list[ScenarioRowResponse] = Field(default_factory=list)
     available_presets: list[dict[str, str]] = Field(default_factory=list)
+    # True when the scenarios pre-date the zone's latest DNA snapshot
+    # (i.e. DNA was regenerated after these runs).
+    stale: bool = False
 
 
 def _scenario_row_response(row: UrbanDnaScenario) -> ScenarioRowResponse:
@@ -259,7 +262,10 @@ async def list_scenarios(
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
-    """Scenario runs for the zone's latest snapshot (any status)."""
+    """Scenario runs for the zone. Prefers the latest snapshot's scenarios,
+    but a DNA refresh creates a NEW (scenario-less) snapshot — falling back to
+    the newest snapshot that HAS scenarios keeps existing runs and drawn plans
+    visible instead of silently vanishing. Fallback rows are marked stale."""
     zone = await _load_zone_checked(zone_id, user, db, required="viewer")
     snapshot = await _latest_snapshot(zone, db)
     presets = [
@@ -275,10 +281,25 @@ async def list_scenarios(
         .order_by(UrbanDnaScenario.created_at.asc())
     )
     rows = result.scalars().all()
+    effective_snapshot_id = snapshot.id
+    stale = False
+    if not rows:
+        fallback_result = await db.execute(
+            select(UrbanDnaScenario)
+            .join(UrbanDnaSnapshot, UrbanDnaScenario.snapshot_id == UrbanDnaSnapshot.id)
+            .where(UrbanDnaSnapshot.zone_id == zone.id)
+            .order_by(UrbanDnaSnapshot.created_at.desc(), UrbanDnaScenario.created_at.asc())
+        )
+        fallback_rows = fallback_result.scalars().all()
+        if fallback_rows:
+            effective_snapshot_id = fallback_rows[0].snapshot_id
+            rows = [r for r in fallback_rows if r.snapshot_id == effective_snapshot_id]
+            stale = True
     return ScenarioListResponse(
-        snapshot_id=str(snapshot.id),
+        snapshot_id=str(effective_snapshot_id),
         scenarios=[_scenario_row_response(row) for row in rows],
         available_presets=presets,
+        stale=stale,
     )
 
 

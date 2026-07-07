@@ -159,6 +159,7 @@ def _make_policy_synthesizer(session, snapshot, city_id: str):
                 page_start=chunk.page_start,
                 page_end=chunk.page_end,
                 text=chunk.text,
+                source_url=document.source_url,
             )
             for document in effective
             for chunk in document.chunks
