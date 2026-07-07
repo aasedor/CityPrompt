@@ -4,6 +4,7 @@ import type {
   Building,
   Document,
   ProcessingStatus,
+  CustomStyleExpandResponse,
   CreateProjectRequest,
   UpdateProjectRequest,
   CreateBuildingRequest,
@@ -259,14 +260,24 @@ export const projectsApi = {
 // =============================================================================
 
 export const documentsApi = {
-  upload: async (projectId: string, file: File): Promise<Document> => {
+  /**
+   * processMode 'reference' = style-reference upload for custom render zones:
+   * images skip processing entirely; PDFs get text extraction only (no AI
+   * interpretation, no Building creation, no 3D generation).
+   */
+  upload: async (projectId: string, file: File, processMode: 'full' | 'reference' = 'full'): Promise<Document> => {
     const formData = new FormData();
     formData.append('file', file);
     const { data } = await api.post(
-      `/api/v1/documents/projects/${projectId}/upload`,
+      `/api/v1/documents/projects/${projectId}/upload?process_mode=${processMode}`,
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     );
+    return data;
+  },
+
+  get: async (documentId: string): Promise<Document> => {
+    const { data } = await api.get(`/api/v1/documents/${documentId}`);
     return data;
   },
 
@@ -282,6 +293,25 @@ export const documentsApi = {
 
   delete: async (documentId: string): Promise<void> => {
     await api.delete(`/api/v1/documents/${documentId}`);
+  },
+};
+
+// =============================================================================
+// Custom Style (user-defined zone prompt expansion)
+// =============================================================================
+
+export const customStyleApi = {
+  expand: async (params: {
+    project_id: string;
+    zone_id?: string;
+    user_prompt: string;
+    document_ids?: string[];
+    zone_context?: Record<string, unknown>;
+    domain?: string;
+  }): Promise<CustomStyleExpandResponse> => {
+    // LLM expansion can take longer than the default 15s API timeout
+    const { data } = await api.post('/api/v1/custom-style/expand', params, { timeout: 90000 });
+    return data;
   },
 };
 

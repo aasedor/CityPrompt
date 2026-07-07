@@ -532,6 +532,50 @@ export function getArchetypeForShade(
 }
 
 // ---------------------------------------------------------------------------
+// Custom-style zones (user-defined prompt instead of a catalog archetype)
+// ---------------------------------------------------------------------------
+
+/**
+ * Mini-palette per domain for custom-style zones. Each zone picks a shade
+ * deterministically from its zone id so two custom zones in the same render
+ * rarely share a mask color. Shades stay in the domain's hue family and are
+ * spaced well apart from each other and from existing SHADE_MAP entries.
+ */
+const CUSTOM_ZONE_PALETTES: Record<'building' | 'street' | 'open_space', string[]> = {
+  building:   ['#bd3a0f', '#a83210', '#d24b1a', '#9e4a1f', '#c85a2e', '#e0653a'],
+  street:     ['#a09b9b', '#8f8a8a', '#b1adad', '#7e7a7a', '#c2bebe', '#6d6969'],
+  open_space: ['#629062', '#527f52', '#73a173', '#446e44', '#84b284', '#365d36'],
+};
+
+/**
+ * Return a deterministic mask shade for a custom-style zone.
+ *
+ * `takenColors` (colors already used by OTHER zones in the project) enables
+ * collision avoidance: starting from the zone's hashed palette index, the
+ * first untaken shade is chosen. With 6 shades per domain, up to 6 custom
+ * zones of the same domain stay collision-free; beyond that the hashed shade
+ * is used as-is (documented limitation).
+ */
+export function getCustomZoneShade(
+  domain: 'building' | 'street' | 'open_space',
+  zoneId: string,
+  takenColors?: Iterable<string>,
+): string {
+  const palette = CUSTOM_ZONE_PALETTES[domain] || CUSTOM_ZONE_PALETTES.building;
+  let hash = 0;
+  for (let i = 0; i < zoneId.length; i++) {
+    hash = (hash * 31 + zoneId.charCodeAt(i)) >>> 0;
+  }
+  const start = hash % palette.length;
+  const taken = new Set(Array.from(takenColors || [], (c) => c.toLowerCase()));
+  for (let offset = 0; offset < palette.length; offset++) {
+    const candidate = palette[(start + offset) % palette.length];
+    if (!taken.has(candidate.toLowerCase())) return candidate;
+  }
+  return palette[start];
+}
+
+// ---------------------------------------------------------------------------
 // Internal
 // ---------------------------------------------------------------------------
 

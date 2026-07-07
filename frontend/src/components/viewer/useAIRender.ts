@@ -18,6 +18,8 @@ import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalogData from '@/data/openSpaceArchetypes.json';
 import streetPathCatalogData from '@/data/streetPathArchetypes.json';
 import { getArchetypeForShade } from '@/data/archetypeShadeMap';
+import { resolveApiFileUrl } from '@/services/api';
+import { getCustomZoneStyle } from './customZoneStyle';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -1114,6 +1116,7 @@ function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOption
       zoneType: z.zone_type,
       zoneName: z.name || z.zone_type,
       descriptionText: (z.properties?.description_text as string) || undefined,
+      customPromptText: getCustomZoneStyle(z)?.promptText,
       floors: undefined,
       heightM: undefined,
       archetypeTitle: info.archetypeTitle,
@@ -1146,6 +1149,7 @@ function buildBuildingPrompt(zone: SiteZone, options: AIRenderOptions): string {
     zoneType: zone.zone_type,
     zoneName: zone.name || zone.zone_type,
     descriptionText: (zone.properties?.description_text as string) || undefined,
+    customPromptText: getCustomZoneStyle(zone)?.promptText,
     floors: typeof floors === 'number' ? floors : undefined,
     heightM: typeof heightM === 'number' ? heightM : undefined,
     archetypeTitle: archetypeInfo.archetypeTitle,
@@ -1255,8 +1259,10 @@ function isPriorityZone(entry: ZonePromptEntry): boolean {
 }
 
 /** Build a compressed SCHEMA zone label from a ZonePromptEntry.
- *  Standard zones: ~80 chars. Priority zones: ~150 chars for richer detail. */
-function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number): string {
+ *  Standard zones: ~80 chars. Priority zones: ~150 chars for richer detail.
+ *  Custom-style zones: the user's prompt passes through intact (never condensed),
+ *  truncated to customCharBudget. */
+function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number, customCharBudget = 250): string {
   const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
   const isBuilding = BUILDING_TYPES.includes(entry.zoneType);
   const isRoad = ['road', 'street', 'path'].includes(entry.zoneType);
@@ -1272,6 +1278,17 @@ function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number): 
     else if (entry.floors) scale = `${entry.floors}F`;
     else if (entry.heightM) scale = `${entry.heightM}m`;
     else scale = 'multi-story';
+  }
+
+  // Custom-style zone: the user's own description IS the spec — keep it intact.
+  // Prefer the zone's own name; a retained (but overridden) archetype title
+  // would contradict the custom description.
+  if (entry.customPromptText) {
+    const customName = entry.zoneName || name;
+    let text = entry.customPromptText.replace(/\s+/g, ' ').trim();
+    if (text.length > customCharBudget) text = text.slice(0, customCharBudget - 3) + '...';
+    const imgRef = imageIndex != null ? ` | match style of Image ${imageIndex}` : '';
+    return `[${entry.color}] ${customName} | ${scale} | CUSTOM: ${text}${imgRef}`;
   }
 
   // If we have an archetype image reference, use that instead of materials
@@ -1385,10 +1402,15 @@ function buildSCHEMAPrompt(
 
   // ── ZONES ──
   if (zoneEntries.length > 0) {
+    // Custom-style prompts get more room when the prompt covers a single zone
+    // (Pass 2 per-building) than in a crowded multi-zone prompt. LLM-expanded
+    // descriptions run 80-140 words (~600-900 chars) — budgets sized to carry
+    // most of that through rather than truncating what the user paid to generate.
+    const customCharBudget = mode === 'building' || zoneEntries.length === 1 ? 900 : 600;
     lines.push('ZONES:');
     zoneEntries.forEach((entry, i) => {
       const imgIdx = imageIndices?.get(entry.color);
-      lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry, imgIdx)}`);
+      lines.push(`${i + 1}. ${buildCompressedZoneLabel(entry, imgIdx, customCharBudget)}`);
     });
   }
 
@@ -1811,6 +1833,7 @@ interface ZonePromptEntry {
   zoneType: string;
   zoneName: string;
   descriptionText?: string; // User-editable description from the text box
+  customPromptText?: string; // Custom-style zone: expanded (or raw) user prompt — passed intact, never condensed
   floors?: number;          // Number of stories
   heightM?: number;         // Building height in meters
   archetypeTitle?: string;
@@ -1980,6 +2003,7 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
         zoneType: zone.zone_type,
         zoneName: zone.name || config?.label || zone.zone_type,
         descriptionText: (zone.properties?.description_text as string) || undefined,
+        customPromptText: getCustomZoneStyle(zone)?.promptText,
         floors: floors != null ? Number(floors) : undefined,
         heightM: heightM != null ? Number(heightM) : undefined,
         ...archetypeInfo,
@@ -2252,6 +2276,34 @@ async function getZoneArchetypeCard(zone: SiteZone): Promise<{ image_base64: str
 
   const label = info.archetypeTitle || zone.name || zone.zone_type;
   return { image_base64: b64, label };
+}
+
+/**
+ * Fetch user-uploaded reference photos for a custom-style zone as multi-image
+ * routing cards. Returns [] when the zone isn't custom or has no photos.
+ * Fetch failures (e.g. deleted documents) are skipped silently.
+ */
+async function getCustomZonePhotoCards(
+  zone: SiteZone,
+): Promise<Array<{ image_base64: string; label: string; zone_color: string }>> {
+  const custom = getCustomZoneStyle(zone);
+  if (!custom || custom.photoUrls.length === 0) return [];
+
+  const zoneName = zone.name || zone.zone_type;
+  const zoneColor = colorName(getZoneRenderColor(zone.id, zone.color || '#E03C31'));
+  const cards: Array<{ image_base64: string; label: string; zone_color: string }> = [];
+
+  for (const url of custom.photoUrls) {
+    const b64 = await fetchArchetypeImageBase64(resolveApiFileUrl(url));
+    if (b64) {
+      cards.push({
+        image_base64: b64,
+        label: `User reference photo for ${zoneName} — match the architectural style, materials, and colors shown`,
+        zone_color: zoneColor,
+      });
+    }
+  }
+  return cards;
 }
 
 async function callVertexAI(
@@ -2944,9 +2996,22 @@ export function useAIRender(): UseAIRenderReturn {
             console.log(`[AIRender] Pass 1 prompt (${groundPrompt.length} chars):\n${groundPrompt}`);
 
             // For site-plan: include top-down reference as additional image
-            const groundArchetypeImages = topDownBase64
+            const groundArchetypeImages: Array<{ image_base64: string; label: string; zone_color?: string }> = topDownBase64
               ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view of the site — use this as the spatial layout reference for the site plan. Maintain exact zone positions and proportions as shown in this nadir view.' }]
-              : undefined;
+              : [];
+
+            // Custom-style zones: attach user-uploaded reference photos
+            for (const gz of groundZones) {
+              try {
+                const customCards = await getCustomZonePhotoCards(gz);
+                if (customCards.length > 0) {
+                  groundArchetypeImages.push(...customCards);
+                  console.log(`[AIRender] Pass 1: attached ${customCards.length} user reference photo(s) for custom zone "${gz.name || gz.zone_type}"`);
+                }
+              } catch (customErr) {
+                console.warn('[AIRender] Failed to fetch custom zone photos:', customErr);
+              }
+            }
 
             // Compute thinking budget from total zone count
             const totalZones = options.siteZones?.length ?? 0;
@@ -3079,6 +3144,17 @@ export function useAIRender(): UseAIRenderReturn {
               }
             } catch (cardErr) {
               console.warn('[AIRender] Failed to fetch archetype card:', cardErr);
+            }
+
+            // Custom-style zone: attach user-uploaded reference photos
+            try {
+              const customCards = await getCustomZonePhotoCards(zone);
+              if (customCards.length > 0) {
+                buildingArchetypeImages = [...(buildingArchetypeImages || []), ...customCards];
+                console.log(`[AIRender] Pass 2: attached ${customCards.length} user reference photo(s) for custom zone "${zoneName}"`);
+              }
+            } catch (customErr) {
+              console.warn('[AIRender] Failed to fetch custom zone photos:', customErr);
             }
 
             // For site-plan: add top-down reference to archetype images

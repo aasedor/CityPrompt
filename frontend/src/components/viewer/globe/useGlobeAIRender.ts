@@ -14,7 +14,8 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { api } from '@/services/api';
+import { api, resolveApiFileUrl } from '@/services/api';
+import { getCustomZoneStyle } from '../customZoneStyle';
 import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
 import {
   describeCameraAngleForPrompt,
@@ -560,6 +561,35 @@ async function collectArchetypeImages(
       || (props.plaza_selected_variant_id as string)
       || '';
 
+    // Custom-style zone: user-uploaded photos replace archetype card images
+    const customStyle = getCustomZoneStyle(zone);
+    if (customStyle) {
+      const zoneColor = colorName(resolveZoneColor(zone));
+      const zoneName = zone.name || zone.zone_type;
+      for (const url of customStyle.photoUrls) {
+        if (images.length >= MAX_ARCHETYPE_IMAGES) break;
+        try {
+          const resp = await fetch(resolveApiFileUrl(url));
+          if (!resp.ok) {
+            console.warn(`[GlobeAIRender] custom photo fetch ${resp.status}: ${url}`);
+            continue;
+          }
+          const blob = await resp.blob();
+          const base64 = await compressImage(blob, 512, 0.7);
+          images.push({
+            image_base64: base64,
+            label: `User reference photo for ${zoneName} — match the architectural style, materials, and colors shown`,
+            zone_color: zoneColor,
+            angle: 'user reference',
+          });
+          console.log(`[GlobeAIRender] Custom zone "${zoneName}": attached user reference photo`);
+        } catch (e) {
+          console.warn(`[GlobeAIRender] custom photo fetch error: ${url}`, e);
+        }
+      }
+      continue;
+    }
+
     if (!archetypeId) {
       console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — no archetype ID`);
       continue;
@@ -775,6 +805,11 @@ function colorName(hex: string): string {
  * Get the map overlay render prompt for a zone's archetype.
  */
 function getMapOverlayPrompt(zone: SiteZone): string | undefined {
+  // Custom-style zone: the user's own (LLM-expanded) description IS the
+  // rendering instruction — it replaces any archetype overlay prompt.
+  const customStyle = getCustomZoneStyle(zone);
+  if (customStyle) return customStyle.promptText;
+
   const props = zone.properties || {};
   const archetypeId = (props.development_archetype_id as string)
     || (props.green_space_archetype_id as string)
@@ -949,7 +984,10 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
 
     const floors = readFiniteNumber(props.floors) ?? 0;
     const heightM = getZoneBuildingHeight(zone);
-    const name = info.archetypeTitle || zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
+    // Custom-style zones: the retained archetype title is overridden by the
+    // user's description — label the zone by its own name instead.
+    const name = (getCustomZoneStyle(zone) ? zone.name : undefined)
+      || info.archetypeTitle || zone.name || ZONE_TYPE_CONFIG[zone.zone_type]?.label || zone.zone_type;
     const footprint = formatFootprintMetrics(zone);
 
     // Scale descriptor
@@ -991,7 +1029,10 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     const userDesc = (props.description as string) || (props.descriptive_text as string) || '';
     if (userDesc.length > 10) features.push(userDesc);
 
-    const featureStr = features.join(', ').substring(0, 200);
+    // Custom-style zones carry the user's full description — give it more room
+    // than the compressed archetype keyword budget (expansions run ~600-900 chars).
+    const featureBudget = getCustomZoneStyle(zone) ? 900 : 200;
+    const featureStr = features.join(', ').substring(0, featureBudget);
     zoneLines.push(`${i + 1}. [${color}] @ ${position} of frame | ${name} | ${scale} | ${featureStr || 'render as described'}`);
   }
 
@@ -1358,7 +1399,8 @@ function buildSingleZonePromptForPerZone(
   const props = zone.properties || {};
   const floors = readFiniteNumber(props.floors) ?? 0;
   const heightM = getZoneBuildingHeight(zone);
-  const name = info.archetypeTitle || zone.name || zone.zone_type;
+  const name = (getCustomZoneStyle(zone) ? zone.name : undefined)
+    || info.archetypeTitle || zone.name || zone.zone_type;
   const footprint = formatFootprintMetrics(zone);
 
   let scale = '';
@@ -1396,7 +1438,7 @@ function buildSingleZonePromptForPerZone(
     `TASK: Render ONE building in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
     `BUILDING: ${name}${scale ? ` | ${scale}` : ''}`,
     footprint ? `DRAWN FOOTPRINT: ${footprint}. This measured longitude/latitude footprint is authoritative; adapt the archetype to fit it exactly.` : '',
-    features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, 300)}` : '',
+    features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, getCustomZoneStyle(zone) ? 900 : 300)}` : '',
     `CONTEXT: Preserve ALL existing photographic context outside the mask. Match lighting, color temperature, and atmosphere of surrounding real buildings.`,
     `MANDATORY: Replace the colored polygon with a photorealistic building. Render ONLY within the masked area. Match surrounding real 3D buildings, but do not enlarge the building beyond the drawn footprint.`,
     customPrompt ? `ADDITIONAL: ${customPrompt}` : '',

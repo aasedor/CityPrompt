@@ -259,8 +259,12 @@ def _normalize_extraction_data(extraction_result, interpretation_result) -> list
     return buildings
 
 
+class _SkipInterpretationError(Exception):
+    """Internal sentinel: extract_only uploads skip the AI-interpretation step."""
+
+
 @celery_app.task(bind=True, name="process_document", max_retries=3)
-def process_document(self, document_id: str):
+def process_document(self, document_id: str, extract_only: bool = False):
     """
     Main document processing task.
 
@@ -272,6 +276,10 @@ def process_document(self, document_id: str):
     5. Normalize extracted data to standard schema
     6. Create building records and trigger 3D generation
     7. Update document record with results
+
+    With extract_only=True (style-reference uploads for custom render zones),
+    steps 4-6 are skipped: no AI interpretation, no Building records, no 3D
+    generation — only text/image extraction into Document.extracted_data.
     """
     logger.info(f"Processing document: {document_id}")
     session = _get_sync_session()
@@ -307,8 +315,11 @@ def process_document(self, document_id: str):
         self.update_state(state="PROCESSING", meta={"progress": 0.5, "step": "interpreting"})
 
         # Step 4: AI interpretation using Claude - prioritize floor plans & elevations
+        # Skipped entirely for extract_only (style-reference) uploads.
         interpretation_result = {}
         try:
+            if extract_only:
+                raise _SkipInterpretationError()
             from app.processing.analyzers.claude_interpreter import ClaudeInterpreter
             interpreter = ClaudeInterpreter()
 
@@ -378,13 +389,17 @@ def process_document(self, document_id: str):
                 interpretation_result = asyncio.run(
                     interpreter.extract_dimensions_from_text(extraction_result.text_content)
                 )
+        except _SkipInterpretationError:
+            logger.info(f"extract_only upload — skipping AI interpretation for {document_id}")
         except Exception as e:
             logger.warning(f"AI interpretation failed (non-fatal): {e}")
 
         self.update_state(state="PROCESSING", meta={"progress": 0.7, "step": "normalizing"})
 
-        # Step 5: Normalize extracted data
-        normalized_buildings = _normalize_extraction_data(extraction_result, interpretation_result)
+        # Step 5: Normalize extracted data.
+        # extract_only uploads are style references — never create Building
+        # records or 3D generation jobs from them.
+        normalized_buildings = [] if extract_only else _normalize_extraction_data(extraction_result, interpretation_result)
 
         self.update_state(state="PROCESSING", meta={"progress": 0.8, "step": "generating_3d"})
 

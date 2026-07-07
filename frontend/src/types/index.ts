@@ -93,6 +93,20 @@ export interface ProcessingStatus {
   result?: Record<string, unknown>;
 }
 
+export interface CustomStyleUsedDocument {
+  id: string;
+  filename: string;
+  status: string;
+  chars_used: number;
+}
+
+export interface CustomStyleExpandResponse {
+  expanded_prompt: string;
+  model: string;
+  used_documents: CustomStyleUsedDocument[];
+  truncated: boolean;
+}
+
 // =============================================================================
 // Site Zone Types
 // =============================================================================
@@ -114,6 +128,16 @@ export interface LayoutGreenSpaceData {
   description?: string;
 }
 
+export type CustomStyleDomain = 'building' | 'open_space' | 'street';
+
+export interface CustomStyleAttachment {
+  document_id: string;
+  filename: string;
+  file_type: string;
+  kind: 'photo' | 'pdf';
+  url: string;
+}
+
 export interface SiteZoneProperties {
   height?: number;
   floors?: number;
@@ -121,6 +145,14 @@ export interface SiteZoneProperties {
   tree_density?: number;
   width?: number;
   unit_count?: number;
+  custom_style_enabled?: boolean;
+  custom_style_domain?: CustomStyleDomain;
+  custom_style_prompt?: string;
+  custom_style_expanded_prompt?: string;
+  custom_style_expanded_at?: string;
+  custom_style_expansion_hash?: string;
+  custom_style_expanded_edited?: boolean;
+  custom_style_attachments?: CustomStyleAttachment[];
   _layout_strategy?: string;
   _layout_reasoning?: string;
   _layout_roads?: LayoutRoadData[];
@@ -986,6 +1018,25 @@ export interface BoundaryAnalysisResponse {
     };
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // =============================================================================
 // Urban Intelligence DNA (backend/app/services/urban_dna)

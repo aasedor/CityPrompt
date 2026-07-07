@@ -4,9 +4,10 @@ import type { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry } from '@/types';
+import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
-import { getShadeForArchetype } from '@/data/archetypeShadeMap';
+import { getShadeForArchetype, getCustomZoneShade } from '@/data/archetypeShadeMap';
+import { CustomStyleEditor } from './CustomStyleEditor';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo';
@@ -55,6 +56,16 @@ type DevelopmentAestheticCategory = {
   label: string;
   description: string;
 };
+
+/** Snapshot of the custom-style fields used to detect edits worth auto-saving. */
+const customStyleKeyOf = (p: SiteZoneProperties): string => JSON.stringify([
+  p.custom_style_enabled,
+  p.custom_style_prompt,
+  p.custom_style_expanded_prompt,
+  p.custom_style_expanded_edited,
+  p.custom_style_expansion_hash,
+  p.custom_style_attachments,
+]);
 
 type TransportModeKey = CatalogTransportModeKey;
 
@@ -389,6 +400,12 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
   const panelRef = useRef<HTMLDivElement>(null);
   const lastSyncedUndoRedoVersionRef = useRef(0);
+  // Custom-style auto-save machinery. handleSaveRef always points at the
+  // latest render's handleSave so a debounce timer never persists stale props.
+  const handleSaveRef = useRef<(closeAfterSave?: boolean) => void>(() => {});
+  const customStyleSaveTimerRef = useRef<number | null>(null);
+  const customStyleSavePendingRef = useRef(false);
+  const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
   const navigate = useNavigate();
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
   const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
@@ -421,9 +438,35 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     if (!undoableActionMatchesZoneId(lastAppliedUndoRedoAction, zone.id)) return;
     setName(zone.name || '');
     setProps(zone.properties || {});
+    // Undo/redo restored these props — don't let the custom-style auto-save
+    // treat the restore as a user edit (it would re-commit the undone state
+    // and wipe the redo stack).
+    prevCustomStyleKeyRef.current = customStyleKeyOf(zone.properties || {});
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
+    // Custom-style zone: color comes from the per-zone custom palette, not an archetype
+    if (props.custom_style_enabled) {
+      const customDomain = (props.custom_style_domain as CustomStyleDomain)
+        || (zone.zone_type === 'road' ? 'street'
+          : zone.zone_type === 'green_space' || zone.zone_type === 'parking' ? 'open_space'
+            : 'building');
+      // Colors already used by other zones — avoids two custom zones sharing
+      // a mask color (which would mis-route their prompts/photos in renders)
+      const takenColors = (allZones || [])
+        .filter((z) => z.id !== zone.id && z.color)
+        .map((z) => z.color);
+      const customShade = getCustomZoneShade(customDomain, zone.id, takenColors);
+      console.log(`[ZoneProps] Save (custom style) — domain="${customDomain}", shade="${customShade}"`);
+      onUpdate(zone.id, {
+        name: name || undefined,
+        color: customShade,
+        properties: props,
+      });
+      if (closeAfterSave) onClose();
+      return;
+    }
+
     // Resolve shade color from assigned archetype.
     // Check variant-specific shadeId first, then try subcategory ID (option-level,
     // e.g. "parisian_midrise_block") which directly matches shade map keys, then
@@ -462,6 +505,9 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     }
   };
 
+  // Keep the ref pointing at the latest handleSave (fresh props/name closure)
+  handleSaveRef.current = handleSave;
+
   // Auto-save when the user picks a new archetype card (any zone type)
   const prevArchetypeRef = useRef<string | undefined>(undefined);
   useEffect(() => {
@@ -480,6 +526,36 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     }
     prevArchetypeRef.current = currentArchetype;
   }, [props.development_subcategory, props.road_subcategory, props.green_space_subcategory, props.plaza_subcategory, props.development_archetype_id, props.road_archetype_id, props.green_space_archetype_id, props.plaza_archetype_id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-save custom-style edits (debounced — the prompt textarea fires on every keystroke)
+  useEffect(() => {
+    const key = customStyleKeyOf(props);
+    // Skip initial mount (panel remounts per zone via key={zone.id})
+    if (prevCustomStyleKeyRef.current === undefined) {
+      prevCustomStyleKeyRef.current = key;
+      return;
+    }
+    if (key === prevCustomStyleKeyRef.current) return;
+    prevCustomStyleKeyRef.current = key;
+
+    if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    customStyleSavePendingRef.current = true;
+    customStyleSaveTimerRef.current = window.setTimeout(() => {
+      customStyleSavePendingRef.current = false;
+      handleSaveRef.current();
+    }, 800);
+  }, [props.custom_style_enabled, props.custom_style_prompt, props.custom_style_expanded_prompt, props.custom_style_expanded_edited, props.custom_style_expansion_hash, props.custom_style_attachments]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // FLUSH (never discard) a pending custom-style save on unmount — the panel
+  // unmounts on zone switch/close, and dropping the timer would silently lose
+  // everything typed in the last 800ms (or the whole setup if never idle).
+  useEffect(() => () => {
+    if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+    if (customStyleSavePendingRef.current) {
+      customStyleSavePendingRef.current = false;
+      handleSaveRef.current();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isRemoteReferenceImage = (value: string): boolean => /^https?:\/\//i.test(value);
 
@@ -557,6 +633,10 @@ const buildAestheticSelectionProps = (
   }
 
   if (selectedOption) {
+    // Picking a catalog archetype turns off custom-style mode (data is retained
+    // so toggling back to Custom restores the user's prompt and uploads)
+    nextProps.custom_style_enabled = false;
+
     const stylePrefix = DOMAIN_STYLE_FIELD_PREFIX[key];
     const inputMapKey = DOMAIN_STYLE_INPUT_KEY[key];
     const generationDomain = DOMAIN_GENERATION_DOMAIN[key];
@@ -867,6 +947,42 @@ const resolveOptionCategory = (
       return nextProps;
     });
   };
+
+  // Toggle custom-style mode for a domain. Nothing is cleared in either
+  // direction — the render pipelines give the custom prompt/photos precedence
+  // over any archetype fields whenever custom_style_enabled is true, so the
+  // user's archetype pick, description text, and custom setup all survive
+  // toggling back and forth.
+  const setCustomStyleEnabled = (enabled: boolean, customDomain: CustomStyleDomain) => {
+    setProps((p) => ({
+      ...p,
+      custom_style_enabled: enabled || undefined,
+      custom_style_domain: customDomain,
+    }));
+  };
+
+  // Segmented "Catalog / Custom" toggle shown above each archetype picker
+  const renderCustomStyleToggle = (customDomain: CustomStyleDomain) => (
+    <div className="mb-1.5 grid grid-cols-2 gap-1 rounded-lg border-2 border-[#151515]/15 bg-[#151515]/[0.03] p-0.5">
+      {([['catalog', 'Catalog'], ['custom', 'Custom']] as const).map(([mode, label]) => {
+        const active = props.custom_style_enabled ? mode === 'custom' : mode === 'catalog';
+        return (
+          <button
+            key={mode}
+            type="button"
+            onClick={() => setCustomStyleEnabled(mode === 'custom', customDomain)}
+            className={`rounded-md px-2 py-1 text-[10px] font-black uppercase transition-colors ${
+              active
+                ? 'bg-[#151515] text-[#c9ff3d]'
+                : 'text-[#151515]/50 hover:text-[#151515]'
+            }`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
 
   const applyRoadAestheticCategory = (nextCategory: string | undefined) => {
     setProps((p) => {
@@ -1209,20 +1325,33 @@ const resolveOptionCategory = (
             {activeBuildingStep === 2 && props.development_type && (
             <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
-              <label className={panelLabelClass}>Building Sub-Category</label>
-              <div className="mt-1">
-                <DevelopmentAestheticPicker
-                  value={(props.development_aesthetic as string) || undefined}
-                  selectedReferenceId={(props.development_archetype_id as string) || undefined}
-                  selectedVariantId={(props.development_selected_variant_id as string) || undefined}
-                  zoneType={zone.zone_type}
-                  developmentType={(props.development_type as string) || undefined}
+              {renderCustomStyleToggle('building')}
+              {props.custom_style_enabled ? (
+                <CustomStyleEditor
+                  domain="building"
+                  zone={zone}
+                  props={props}
+                  setProps={setProps}
                   areaSqm={area}
-                  onChange={(next, archetypeImageId, variantId) => {
-                    applyBuildingAesthetic(next, archetypeImageId, variantId);
-                  }}
                 />
-              </div>
+              ) : (
+                <>
+                  <label className={panelLabelClass}>Building Sub-Category</label>
+                  <div className="mt-1">
+                    <DevelopmentAestheticPicker
+                      value={(props.development_aesthetic as string) || undefined}
+                      selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                      selectedVariantId={(props.development_selected_variant_id as string) || undefined}
+                      zoneType={zone.zone_type}
+                      developmentType={(props.development_type as string) || undefined}
+                      areaSqm={area}
+                      onChange={(next, archetypeImageId, variantId) => {
+                        applyBuildingAesthetic(next, archetypeImageId, variantId);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
@@ -1378,6 +1507,17 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {(zone.zone_type === 'green_space' || zone.zone_type === 'parking') && (
           <>
+            {renderCustomStyleToggle('open_space')}
+            {props.custom_style_enabled ? (
+              <CustomStyleEditor
+                domain="open_space"
+                zone={zone}
+                props={props}
+                setProps={setProps}
+                areaSqm={area}
+              />
+            ) : (
+            <>
             <div>
               <label className={panelLabelClass}>Park / Plaza Category</label>
               <select
@@ -1461,6 +1601,8 @@ const resolveOptionCategory = (
                 </div>
               );
             })()}
+            </>
+            )}
           </>
         )}
 
@@ -1469,6 +1611,17 @@ const resolveOptionCategory = (
         {/* ============================================================= */}
         {zone.zone_type === 'road' && (
           <>
+            {renderCustomStyleToggle('street')}
+            {props.custom_style_enabled ? (
+              <CustomStyleEditor
+                domain="street"
+                zone={zone}
+                props={props}
+                setProps={setProps}
+                areaSqm={area}
+              />
+            ) : (
+            <>
             {/* Transportation Aesthetic Category */}
             <div>
               <label className={panelLabelClass}>Streets and Paths Category</label>
@@ -1504,6 +1657,8 @@ const resolveOptionCategory = (
                 />
               </div>
             </div>
+            </>
+            )}
 
             {/* Volume */}
             <div>
@@ -1604,20 +1759,33 @@ const resolveOptionCategory = (
             {activeBuildingStep === 2 && props.development_type && (
             <PanelStep step="2" title="Pick an archetype and check fit">
             <div>
-              <label className={panelLabelClass}>Building Sub-Category</label>
-              <div className="mt-1">
-                <DevelopmentAestheticPicker
-                  value={(props.development_aesthetic as string) || undefined}
-                  selectedReferenceId={(props.development_archetype_id as string) || undefined}
-                  selectedVariantId={(props.development_selected_variant_id as string) || undefined}
-                  zoneType={zone.zone_type}
-                  developmentType={(props.development_type as string) || undefined}
+              {renderCustomStyleToggle('building')}
+              {props.custom_style_enabled ? (
+                <CustomStyleEditor
+                  domain="building"
+                  zone={zone}
+                  props={props}
+                  setProps={setProps}
                   areaSqm={area}
-                  onChange={(next, archetypeImageId, variantId) => {
-                    applyBuildingAesthetic(next, archetypeImageId, variantId);
-                  }}
                 />
-              </div>
+              ) : (
+                <>
+                  <label className={panelLabelClass}>Building Sub-Category</label>
+                  <div className="mt-1">
+                    <DevelopmentAestheticPicker
+                      value={(props.development_aesthetic as string) || undefined}
+                      selectedReferenceId={(props.development_archetype_id as string) || undefined}
+                      selectedVariantId={(props.development_selected_variant_id as string) || undefined}
+                      zoneType={zone.zone_type}
+                      developmentType={(props.development_type as string) || undefined}
+                      areaSqm={area}
+                      onChange={(next, archetypeImageId, variantId) => {
+                        applyBuildingAesthetic(next, archetypeImageId, variantId);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
             </div>
             <BuildingWorkflowPager
               activeStep={activeBuildingStep}
