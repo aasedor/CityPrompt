@@ -114,3 +114,10 @@ vertex-key.json
 /scripts/generate_festival_archetypes.py
 /scripts/generate_mythic_archetypes.py
 /scripts/generate_scifi_archetypes.py
+
+# Secrets/backups and local session artifacts (never commit)
+*.env.bak*
+chat_history.*
+_bak-*/
+**/_bak-*/
+*.bak-keyrotation

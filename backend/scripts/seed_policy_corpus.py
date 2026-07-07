@@ -1,9 +1,14 @@
 """Seed the Calgary policy corpus from live calgary.ca URLs.
 
-Run INSIDE the Docker backend (PDFs are never committed to the repo):
-    docker exec devplatform-backend python /app/../scripts/seed_policy_corpus.py
-    # or, with the repo root mounted at the container workdir's parent:
+Run INSIDE the backend container/image (PDFs are never committed to the repo).
+Lives under backend/scripts/ so it ships in the production image
+(render.yaml builds with dockerContext ./backend, and the production DB is
+internal-only — a Render shell on the API service is the ONLY place this can
+run in production):
+    # local Docker:
     docker exec -w /app devplatform-backend python scripts/seed_policy_corpus.py
+    # production (Render shell on 3d-platform-api):
+    python scripts/seed_policy_corpus.py
 
 Each manifest URL is verified at runtime (content-type + size); a failed
 download is REPORTED and skipped — corpus_status="partial" is a designed state.
