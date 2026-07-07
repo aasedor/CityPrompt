@@ -275,16 +275,22 @@ def generate_plan_geometry(
         mass, info = building_mass_for_block(block, rules)
         if mass is None:
             continue
-        for poly in iter_polygons(mass):
+        mass_polys = list(iter_polygons(mass))
+        bar_index = 0
+        for poly in mass_polys:
             masses.append(poly)
             result.mass_floors.append(floors)
             footprint += float(poly.area)
             gfa += float(poly.area) * floors
             wgs = project_geometry(poly, to_wgs84)
             for wpoly in iter_polygons(wgs):
+                # Courtyard decomposition yields several bars per block —
+                # unique names, or every label on the globe reads "Block 1".
+                bar_index += 1
+                suffix = f" · Building {chr(64 + bar_index)}" if len(mass_polys) > 1 else ""
                 result.zones.append({
                     "zone_type": "building",
-                    "name": f"{scenario_label} · Block {index + 1}",
+                    "name": f"{scenario_label} · Block {index + 1}{suffix}",
                     "coordinates": _ring(wpoly),
                     "color": PLAN_COLORS["building"],
                     "sort_order": zone_sort,
@@ -300,6 +306,31 @@ def generate_plan_geometry(
                     },
                 })
                 zone_sort += 1
+
+        # The perimeter bars enclose a courtyard the mass ring left unbuilt —
+        # draw it, or a single-block plan reads as one solid slab with no
+        # visible open space. Visual zone only: NOT counted in open-space
+        # metrics and NOT part of the frozen evaluator loop.
+        if len(mass_polys) > 1:
+            courtyard = make_valid(
+                block.buffer(-rules.front_setback_m).difference(unary_union(mass_polys))
+            )
+            for cpoly in iter_polygons(courtyard):
+                if cpoly.area < 150.0:
+                    continue
+                for wpoly in iter_polygons(project_geometry(cpoly, to_wgs84)):
+                    result.zones.append({
+                        "zone_type": "green_space",
+                        "name": f"{scenario_label} · Block {index + 1} courtyard",
+                        "coordinates": _ring(wpoly),
+                        "color": PLAN_COLORS["green_space"],
+                        "sort_order": zone_sort,
+                        "properties": {
+                            "_plan_scenario": scenario_id, "_imported_from": layer_name,
+                            "_plan_role": "courtyard", "tree_density": tree_density,
+                        },
+                    })
+                    zone_sort += 1
 
     if clamp_notes:
         result.notes.append({

@@ -132,6 +132,29 @@ def test_building_mass_respects_coverage_cap():
     assert info["coverage_of_block"] <= rules.coverage_ratio + 0.05
 
 
+def test_single_block_plan_draws_courtyard_and_unique_bar_names():
+    # A ~1 ha site takes no internal streets — the plan degrades to one block
+    # of perimeter bars. Regression (user trial 2026-07-07): all bars were
+    # named "Block 1" and the enclosed courtyard was invisible, so the plan
+    # read as one giant slab.
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(110, 100), scenario_id="climate_first",
+        scenario_label="Climate First", parameters=PARAMS,
+        road_features=[], district_features=[],
+    )
+    assert result.block_count == 1
+    buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
+    assert len(buildings) > 1
+    names = [z["name"] for z in buildings]
+    assert len(set(names)) == len(names)              # unique per bar
+    assert all("Building" in n for n in names)
+
+    courtyards = [z for z in result.zones if z["properties"].get("_plan_role") == "courtyard"]
+    assert courtyards and all(z["zone_type"] == "green_space" for z in courtyards)
+    # Visual zone only: the frozen metrics/evaluator loop must not see it.
+    assert result.geometry_inputs["open_space_area_m2"] == 0.0
+
+
 def test_tiny_site_degrades_to_single_block_plan():
     result = generate_plan_geometry(
         site_polygon_wgs84=_site(60, 45), scenario_id="as_of_right", scenario_label="AoR",

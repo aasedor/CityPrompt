@@ -122,6 +122,25 @@ export function ProjectViewPage() {
     });
   }, [siteZones, hiddenLayers]);
 
+  // Height-framework layers are reference overlays (LAP-style storey bands
+  // covering whole blocks) — visible by default they bury the actual plan
+  // under one giant polygon. Hide each ONCE on first sight; a user re-show
+  // from the Layers panel sticks because we never auto-hide the same layer twice.
+  const autoHiddenFrameworksRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const frameworks = siteZones
+      .map((z) => z.properties?._imported_from)
+      .filter((src): src is string => typeof src === 'string' && src.startsWith('Height framework — '));
+    const fresh = frameworks.filter((name) => !autoHiddenFrameworksRef.current.has(name));
+    if (fresh.length === 0) return;
+    fresh.forEach((name) => autoHiddenFrameworksRef.current.add(name));
+    setHiddenLayers((prev) => {
+      const next = new Set(prev);
+      fresh.forEach((name) => next.add(name));
+      return next;
+    });
+  }, [siteZones]);
+
   // Solo one scenario's plan on the globe (dispatched by SiteIntelligencePanel,
   // which sits two components down inside ZonePropertiesPanel). Only plan and
   // height-framework layers are touched; shapefile-layer hiding is preserved.

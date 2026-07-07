@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import buildingCatalog from '@/data/buildingArchetypes.json';
 import type { SiteZone } from '@/types';
 
-import { withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
+import { prepareZonesForRender, withPlanArchetypeDefaults } from './resolvePlanZoneArchetypes';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const BUILDINGS = ((buildingCatalog as any).archetypes ?? buildingCatalog) as any[];
@@ -139,5 +139,18 @@ describe('withPlanArchetypeDefaults', () => {
     delete (zone.properties as Record<string, unknown>)._plan_role;
     const [result] = withPlanArchetypeDefaults([zone]);
     expect(result).toBe(zone);
+  });
+
+  it('prepareZonesForRender drops height-framework overlays entirely', () => {
+    // Regression (user trial 2026-07-07): the full-site framework band was the
+    // biggest "zone" in the render prompt and buried the actual plan.
+    const zones = [
+      planZone('development_area', 'framework_height', { max_floors: 28 }),
+      planZone('building', 'building', { development_type: 'mixed_use', floors: 6 }),
+    ];
+    const prepared = prepareZonesForRender(zones);
+    expect(prepared).toHaveLength(1);
+    expect(prepared[0].zone_type).toBe('building');
+    expect(prepared[0].properties?.development_archetype_id).toBeTruthy();
   });
 });

@@ -157,6 +157,18 @@ function inject(
 }
 
 /**
+ * Full render normalization: resolve plan-zone archetypes AND drop height-
+ * framework overlays. Framework zones are LAP-style reference bands covering
+ * whole blocks — in a render they'd dominate the prompt and mask as the
+ * biggest "zone" while carrying no buildable content.
+ */
+export function prepareZonesForRender(zones: SiteZone[]): SiteZone[] {
+  return withPlanArchetypeDefaults(zones).filter(
+    (zone) => (zone.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height',
+  );
+}
+
+/**
  * Normalize a zone list so plan zones carry archetype references.
  * Non-plan zones, framework layers, custom-style zones and zones with an
  * explicit archetype ID pass through untouched.

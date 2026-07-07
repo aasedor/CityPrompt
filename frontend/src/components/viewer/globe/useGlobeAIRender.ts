@@ -25,7 +25,7 @@ import {
 import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
-import { withPlanArchetypeDefaults } from '@/components/viewer/resolvePlanZoneArchetypes';
+import { prepareZonesForRender } from '@/components/viewer/resolvePlanZoneArchetypes';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
@@ -1662,8 +1662,8 @@ export function useGlobeAIRender() {
     if (!options._skipLock) isRenderingRef.current = true;
 
     // AI-planner plan zones carry semantic hints, not archetype IDs — resolve
-    // them here so refs/prompts light up through the whole pipeline.
-    zones = withPlanArchetypeDefaults(zones);
+    // them and drop height-framework overlays (reference bands, not content).
+    zones = prepareZonesForRender(zones);
 
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt } = options;
@@ -2045,7 +2045,7 @@ export function useGlobeAIRender() {
     if (isRenderingRef.current) return null;
     isRenderingRef.current = true;
 
-    zones = withPlanArchetypeDefaults(zones);
+    zones = prepareZonesForRender(zones);
 
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt, onProgress } = options;
