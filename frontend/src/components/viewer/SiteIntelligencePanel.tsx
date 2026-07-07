@@ -605,6 +605,9 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     } catch (err: any) {
       // Only a real 404 means "never generated" — a transient network/5xx error
       // must not blank the panel and re-offer paid generation mid-build.
+      // NOTE: the 404 itself is a NORMAL "no snapshot yet" response for any
+      // boundary that never ran Site DNA — the red line devtools prints for it
+      // is browser noise, not an application error.
       if (err?.response?.status === 404) setSnapshot(null);
     }
     try {

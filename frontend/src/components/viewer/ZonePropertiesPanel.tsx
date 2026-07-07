@@ -446,6 +446,21 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   }, [lastAppliedUndoRedoAction, undoRedoHistoryVersion, zone.id, zone.name, zone.properties]);
 
   const handleSave = (closeAfterSave = false) => {
+    // Unsaved zones carry an optimistic temp- id while the create round-trip
+    // is in flight; every zone endpoint UUID-validates its path and 422s on
+    // them. Edits stay in local state — the panel remounts with the real id
+    // once the create lands (key={zone.id}).
+    if (!isPersistedZoneId(zone.id)) {
+      if (closeAfterSave) {
+        // Explicit "Save Changes" click — tell the user instead of silently
+        // dropping the save; keep the panel open so edits stay visible.
+        toast.error('Zone is still saving — try again in a moment');
+      } else {
+        console.debug(`[ZoneProps] Save skipped — zone ${zone.id} not persisted yet`);
+      }
+      return;
+    }
+
     // Custom-style zone: color comes from the per-zone custom palette, not an archetype
     if (props.custom_style_enabled) {
       const customDomain = (props.custom_style_domain as CustomStyleDomain)
@@ -493,7 +508,7 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
     const shadeColor = variantPalettePrimary
       || (variantShadeId ? getShadeForArchetype(variantShadeId) : undefined)
       || (archetypeId ? getShadeForArchetype(archetypeId) : undefined);
-    console.log(`[ZoneProps] Save — variantPalette="${variantPalettePrimary}", variantShade="${variantShadeId}", archetypeId="${archetypeId}", shade="${shadeColor}"`);
+    console.debug(`[ZoneProps] Save — variantPalette="${variantPalettePrimary}", variantShade="${variantShadeId}", archetypeId="${archetypeId}", shade="${shadeColor}"`);
 
     onUpdate(zone.id, {
       name: name || undefined,
@@ -2289,6 +2304,12 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
   };
 
   const handleGenerate = async () => {
+    // Belt-and-braces: the button is disabled for unsaved zones, but guard the
+    // handler too — generateForBoundary UUID-validates and 422s on temp- ids.
+    if (!isPersistedZoneId(zone.id)) {
+      toast.error('Save the boundary first (Save Changes above) — then generate.');
+      return;
+    }
     setGenerating(true);
     try {
       // Auto-apply any active site preview selections before generating
@@ -2695,9 +2716,14 @@ function SiteBoundarySection({ zone, allZones, onOpenBlockEditor }: { zone: Site
           <label className="block text-xs font-medium text-primary-950/60">
             {isSitePreviewActive ? 'Step 2: ' : ''}Generate Community
           </label>
+          {!isPersistedZoneId(zone.id) && (
+            <p className="rounded-lg border-2 border-dashed border-[#151515]/40 px-2.5 py-1.5 text-[11px] text-[#151515]/70">
+              Save the boundary first (<b>Save Changes</b> above) — then generate the community.
+            </p>
+          )}
           <button
             onClick={handleGenerate}
-            disabled={generating}
+            disabled={generating || !isPersistedZoneId(zone.id)}
             className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 py-1.5 text-xs font-medium text-primary-950 hover:bg-purple-700 disabled:opacity-50"
             title="Generate a coordinated community and 3D models for this boundary"
           >

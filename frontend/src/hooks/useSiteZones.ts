@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { siteZonesApi } from '@/services/api';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
@@ -102,7 +103,13 @@ export function useSiteZones(projectId: string | undefined) {
   });
 
   const deleteZone = useMutation({
-    mutationFn: (zoneId: string) => siteZonesApi.delete(zoneId),
+    // Unsaved optimistic zones (temp- id, create still in flight) don't exist
+    // server-side — the endpoint 422s on non-UUID ids. Resolve locally; the
+    // onSuccess invalidate drops the optimistic entry from the cache. (If the
+    // in-flight create lands afterwards the zone reappears persisted — rare
+    // sub-second race, and it can then be deleted normally.)
+    mutationFn: (zoneId: string) =>
+      isPersistedZoneId(zoneId) ? siteZonesApi.delete(zoneId) : Promise.resolve(),
     onMutate: (zoneId) => {
       // Capture zone snapshot before deletion for undo
       const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
@@ -131,6 +138,16 @@ export function useSiteZones(projectId: string | undefined) {
   }, [createZone]);
 
   const handleZoneUpdated = useCallback((zoneId: string, coordinates: number[][]) => {
+    // Unsaved optimistic zones (temp- id, create still in flight) can't be
+    // updated server-side — the endpoint 422s on non-UUID ids, and this used
+    // to surface as an uncaught promise rejection. Update the cache only so
+    // the drag doesn't visually snap back; the next refetch reconciles.
+    if (!isPersistedZoneId(zoneId)) {
+      queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], (old) =>
+        (old ?? []).map((z) => (z.id === zoneId ? { ...z, coordinates } : z)));
+      return;
+    }
+
     // Capture previous coordinates from cache before updating
     const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
     const prevZone = zones?.find((z) => z.id === zoneId);
@@ -144,6 +161,8 @@ export function useSiteZones(projectId: string | undefined) {
           createZoneCoordinatesAction(projectId, zoneId, prevCoords, coordinates, queryClient),
         );
       }
+    }).catch((err: Error) => {
+      toast.error(`Failed to update zone geometry: ${err.message}`);
     });
   }, [queryClient, projectId]);
 
