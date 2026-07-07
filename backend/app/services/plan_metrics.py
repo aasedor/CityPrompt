@@ -130,11 +130,12 @@ _FLOORS_RE = re.compile(r"(\d+)\s*(?:-\s*(\d+))?")
 def coerce_floors(value: Any, floor_height_m: float) -> tuple[Optional[float], str]:
     """PlanParameters floors/height can be numeric or expert prose ('6-16 storeys,
     stepped'). Derive a single working number honestly: the MIDPOINT of a range.
+    Comma group separators are stripped first ('2,500' must not read as 2).
     Returns (floors, how)."""
     if isinstance(value, (int, float)):
         return float(value), f"floors parameter = {value}"
     if isinstance(value, str):
-        match = _FLOORS_RE.search(value)
+        match = _FLOORS_RE.search(value.replace(",", ""))
         if match:
             low = float(match.group(1))
             high = float(match.group(2)) if match.group(2) else low
@@ -158,9 +159,11 @@ def reconcile_ceilings(
     lap_building_scale: Any,
     proposed_floors: Optional[float],
     floor_height_m: float,
+    far_achieved: Optional[float] = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
-    """Per-district ceiling check. Where the district has numeric far/height use
-    it; else fall back to the LAP building-scale category and SAY SO."""
+    """Per-district ceiling check. Numeric height AND numeric FAR ceilings are
+    both applied when present (the stricter verdict wins); else fall back to
+    the LAP building-scale category and SAY SO."""
     reconciliation: list[dict[str, Any]] = []
     warnings: list[str] = []
     lap_map = ASSUMPTIONS["lap_storeys_by_category"]["value"]
@@ -176,20 +179,33 @@ def reconcile_ceilings(
         far = district.get("far")
 
         ceiling_floors = None
-        source = None
+        sources: list[str] = []
+        verdicts: list[str] = []
+
         if height_m:
             ceiling_floors = float(height_m) / floor_height_m
-            source = f"district height ceiling {height_m}m / {floor_height_m}m per storey"
+            sources.append(f"district height ceiling {height_m}m / {floor_height_m}m per storey")
+            if proposed_floors is not None:
+                verdicts.append("within" if proposed_floors <= ceiling_floors + 0.01 else "exceeds")
         elif lap_storeys:
             ceiling_floors = float(lap_storeys)
-            source = f"no numeric ceiling in district {code}; LAP building-scale '{lap_building_scale}' allows ~{lap_storeys} storeys"
-        else:
-            source = f"no numeric FAR/height in district {code} and no LAP building-scale available"
+            sources.append(
+                f"no numeric height in district {code}; LAP building-scale "
+                f"'{lap_building_scale}' allows ~{lap_storeys} storeys"
+            )
+            if proposed_floors is not None:
+                verdicts.append("within" if proposed_floors <= ceiling_floors + 0.01 else "exceeds")
+
+        if far and far_achieved is not None:
+            sources.append(f"district FAR ceiling {far:g} vs site FAR achieved {far_achieved:.2f}")
+            verdicts.append("within" if far_achieved <= float(far) + 0.01 else "exceeds")
+
+        if not sources:
+            sources.append(f"no numeric FAR/height in district {code} and no LAP building-scale available")
             warnings.append(f"{code}: ceiling unknown — conformance not assessable from data")
 
-        status = "unknown"
-        if ceiling_floors is not None and proposed_floors is not None:
-            status = "within" if proposed_floors <= ceiling_floors + 0.01 else "exceeds"
+        status = "exceeds" if "exceeds" in verdicts else ("within" if verdicts else "unknown")
+        source = "; ".join(sources)
 
         reconciliation.append({
             "district": code,
@@ -204,8 +220,8 @@ def reconcile_ceilings(
 
         if status == "exceeds":
             warnings.append(
-                f"{code} ({pct}% of site): proposed ~{proposed_floors:g} storeys exceeds "
-                f"~{ceiling_floors:g}-storey ceiling ({source}) — would require relaxation/amendment"
+                f"{code} ({pct}% of site): proposal exceeds a ceiling ({source}) — "
+                "would require relaxation/amendment"
             )
     return reconciliation, warnings
 
@@ -218,6 +234,7 @@ def compute_metrics(
     dna: dict[str, Any],
     parameters: dict[str, Any],
     geometry_inputs: dict[str, float] | None = None,
+    effective_floors: Optional[float] = None,
 ) -> MetricsReport:
     """Derive the scenario's statistics table.
 
@@ -259,8 +276,14 @@ def compute_metrics(
     districts, districts_conf = _dna_field(dna, "land_use", "districts")
     lap_scale, _ = _dna_field(dna, "land_use", "lap_building_scale")
 
-    floors_param = _scenario_param(parameters, "buildings.floors")
-    floors, floors_how = coerce_floors(floors_param, floor_height)
+    if effective_floors is not None:
+        # The refinement loop may have bumped storeys past the raw parameter —
+        # the sheet must reconcile what was actually DRAWN, not the first ask.
+        floors, floors_how = float(effective_floors), f"effective storeys from the drawn plan = {effective_floors:g}"
+        floors_param = None
+    else:
+        floors_param = _scenario_param(parameters, "buildings.floors")
+        floors, floors_how = coerce_floors(floors_param, floor_height)
     if floors is None:
         height_param = _scenario_param(parameters, "buildings.height_m")
         height_value, height_how = coerce_floors(height_param, floor_height)
@@ -381,6 +404,7 @@ def compute_metrics(
     reconciliation, ceiling_warnings = reconcile_ceilings(
         districts if isinstance(districts, list) else [],
         lap_scale, floors, floor_height,
+        far_achieved=far,
     )
     report.ceiling_reconciliation = reconciliation
     report.warnings.extend(ceiling_warnings)

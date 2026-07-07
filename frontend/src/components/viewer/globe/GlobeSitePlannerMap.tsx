@@ -2638,8 +2638,11 @@ export function GlobeSitePlannerMap({
         {/* Atmospheric fog — grounds the horizon and hides the infinite void */}
         <fog attach="fog" args={['#b8c8d8', 8000, 80000]} />
         <TilesRenderer>
+          {/* autoRefreshToken: Google 3D Tiles sessions expire after a few hours;
+              without it every tile fetch 400s (pale background polygons through
+              the holes) until a full reload. Refreshes the session on 4xx. */}
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true } as any} />
+          <TilesPlugin plugin={GoogleCloudAuthPlugin} args={{ apiToken: API_KEY, useRecommendedSettings: true, autoRefreshToken: true } as any} />
           <TilesPlugin plugin={TileCompressionPlugin} />
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <TilesPlugin plugin={GLTFExtensionsPlugin} args={{ dracoLoader: new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') } as any} />

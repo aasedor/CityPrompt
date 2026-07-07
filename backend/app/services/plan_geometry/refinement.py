@@ -60,6 +60,9 @@ def run_refinement_loop(
             dna=dna,
             parameters=parameters,
             geometry_inputs=result.geometry_inputs,
+            # Reconcile what was actually drawn (incl. refinement floor bumps),
+            # not the raw parameter the experts first asked for.
+            effective_floors=float(result.rules.get("floors") or 0) or None,
         )
         units_metric = metrics_report.metrics.get("units")
         evaluation = evaluate_plan(

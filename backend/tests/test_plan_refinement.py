@@ -49,11 +49,18 @@ def test_low_yield_bumps_floors_with_reason():
 
 
 def test_floor_bump_is_bounded():
-    base = {"floors": 4.0, "open_space_share": 0.1, "block_target_m": 180.0}
-    overrides = {"floors": 7.0}  # already +3 over base
-    new_overrides, revisions = revise_rules(_report(yield_vs_target=0.5), overrides, base, [])
-    assert new_overrides["floors"] == 7.0          # no further bump
-    assert not any(r["parameter"] == "floors" for r in revisions)
+    # base_rules follows the overrides between iterations (the generator applies
+    # them), so the cap must hold via the explicit bump counter — feed the loop
+    # its own output 4 times and require exactly 3 bumps.
+    overrides: dict[str, float] = {}
+    bumps = 0
+    for iteration in range(4):
+        base = {"floors": overrides.get("floors", 4.0), "open_space_share": 0.1,
+                "block_target_m": 180.0}
+        overrides, revisions = revise_rules(_report(yield_vs_target=0.5), overrides, base, [])
+        bumps += sum(1 for r in revisions if r["parameter"] == "floors")
+    assert bumps == 3
+    assert overrides["floors"] == 7.0  # 4.0 + 3 bounded storeys
 
 
 def test_streets_lock_blocks_grid_revisions():

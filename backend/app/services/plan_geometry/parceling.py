@@ -6,6 +6,7 @@ import logging
 import math
 from typing import Any
 
+from celery.exceptions import SoftTimeLimitExceeded
 from shapely import affinity
 from shapely.geometry import Polygon, box
 from shapely.geometry.base import BaseGeometry
@@ -59,11 +60,45 @@ def subdivide_block(block_m: Polygon, parcel_width_m: float) -> list[Polygon]:
     return [affinity.rotate(p, angle, origin=origin) for p in merged]
 
 
+def _decompose_ring_mass(mass: BaseGeometry, block_m: Polygon) -> BaseGeometry:
+    """Split a courtyard-ring mass into hole-free bars.
+
+    Zone coordinates are single-ring across the app (shapefile import drops
+    holes too), so a holed polygon serialized by its exterior draws as a SOLID
+    slab — visually contradicting the ring-based statistics by ~2x and
+    rendering as a courtyard-less megablock. Cutting a thin cross through the
+    courtyard centroid (aligned to the block's axes) yields 4 simple bars.
+    """
+    holed = [p for p in iter_polygons(mass) if p.interiors]
+    if not holed:
+        return mass
+
+    rect = block_m.minimum_rotated_rectangle
+    coords = list(rect.exterior.coords)
+    best_len, angle = 0.0, 0.0
+    for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:]):
+        length = math.hypot(x2 - x1, y2 - y1)
+        if length > best_len:
+            best_len, angle = length, math.degrees(math.atan2(y2 - y1, x2 - x1))
+
+    centroid = block_m.centroid
+    diag = math.hypot(*(hi - lo for lo, hi in zip(block_m.bounds[:2], block_m.bounds[2:])))
+    cutter = affinity.rotate(
+        box(centroid.x - diag, centroid.y - 0.1, centroid.x + diag, centroid.y + 0.1).union(
+            box(centroid.x - 0.1, centroid.y - diag, centroid.x + 0.1, centroid.y + diag)
+        ),
+        angle, origin=centroid,
+    )
+    cut = make_valid(mass.difference(cutter))
+    return cut if not cut.is_empty else mass
+
+
 def building_mass_for_block(
     block_m: Polygon, rules: RuleProfile
 ) -> tuple[BaseGeometry | None, dict[str, Any] | None]:
-    """Perimeter-block massing: a bar of building_depth around a courtyard,
-    coverage-capped. Small blocks get a simple inset pad."""
+    """Perimeter-block massing: bars of building_depth around a courtyard,
+    coverage-capped, decomposed into hole-free polygons (zone-format safe).
+    Small blocks get a simple inset pad."""
     block_m = make_valid(block_m)
     if block_m.area < MIN_BLOCK_M2:
         return None, None
@@ -77,13 +112,16 @@ def building_mass_for_block(
     mass: BaseGeometry = outer.difference(inner) if not inner.is_empty else outer
 
     max_footprint = rules.coverage_ratio * block_m.area
-    if mass.area > max_footprint and mass.area > 0:
-        # Shrink the bar depth proportionally once — deterministic, no loops.
+    # Iterative shrink: one proportional step under-corrects on small blocks
+    # (ring area is not linear in depth) — up to ~27% over the cap observed.
+    for _ in range(3):
+        if mass.area <= max_footprint or mass.area <= 0 or depth <= 6.0:
+            break
         depth = max(6.0, depth * max_footprint / mass.area)
         inner = outer.buffer(-depth)
         mass = outer.difference(inner) if not inner.is_empty else outer
 
-    mass = make_valid(mass)
+    mass = make_valid(_decompose_ring_mass(mass, block_m))
     if mass.is_empty:
         return None, None
 
@@ -116,6 +154,8 @@ def clamp_floors_to_ceiling(
                             "requested_floors": floors,
                         }
                 return floors, None
+        except SoftTimeLimitExceeded:
+            raise
         except Exception:  # noqa: BLE001
             continue
     return floors, None

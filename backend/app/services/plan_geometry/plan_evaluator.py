@@ -199,12 +199,16 @@ def revise_rules(
 
     yield_score = scores.get("yield_vs_target")
     if yield_score and yield_score.score < 0.9:
-        base_floors = float(overrides.get("floors", base_rules.get("floors", 4.0)))
-        already = base_floors - float(base_rules.get("floors", base_floors))
-        if already < MAX_FLOORS_BUMP:
+        # base_rules reflects the CURRENT iteration (overrides already applied),
+        # so "how far have we bumped" must be tracked explicitly — comparing
+        # against base_rules always reads zero and the cap never binds.
+        bumps = int(overrides.get("_floors_bumps", 0))
+        if bumps < MAX_FLOORS_BUMP:
+            base_floors = float(overrides.get("floors", base_rules.get("floors", 4.0)))
             record("floors", base_floors, base_floors + REVISION_FLOOR_STEP,
                    f"yield_vs_target {yield_score.score:.2f}: add a storey toward the unit target "
                    "(district ceilings still clamp per block)")
+            overrides["_floors_bumps"] = bumps + 1
 
     open_score = scores.get("open_space")
     if open_score and open_score.score < 0.85:

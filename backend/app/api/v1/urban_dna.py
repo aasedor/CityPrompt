@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -417,9 +417,29 @@ async def generate_plan(
     if unknown_locks:
         raise HTTPException(status_code=422, detail=f"Unknown locks: {unknown_locks}")
 
+    existing_plan = row.payload.get("plan") or {}
+    if existing_plan.get("status") in ("queued", "drawing"):
+        # Concurrent plan tasks delete-and-insert the same zones — corruption.
+        # Escape hatch: past the 600s Celery hard limit the worker is dead, not
+        # busy — an untimestamped or >15-min-old busy state may be re-queued.
+        queued_at = existing_plan.get("queued_at")
+        stale = True
+        if queued_at:
+            try:
+                age = datetime.now(timezone.utc) - datetime.fromisoformat(queued_at)
+                stale = age > timedelta(minutes=15)
+            except ValueError:
+                pass
+        if not stale:
+            raise HTTPException(status_code=409, detail="A plan is already being drawn for this scenario")
+
     payload = dict(row.payload)
     plan = dict(payload.get("plan") or {})
-    plan.update({"status": "queued", "locks": req.locks})
+    plan.update({
+        "status": "queued",
+        "locks": req.locks,
+        "queued_at": datetime.now(timezone.utc).isoformat(),
+    })
     payload["plan"] = plan
     row.payload = payload
     await db.commit()

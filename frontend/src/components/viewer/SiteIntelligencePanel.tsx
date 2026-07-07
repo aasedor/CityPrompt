@@ -235,13 +235,22 @@ function ScenarioCard({
                 <button
                   type="button"
                   onClick={async () => {
+                    // Open synchronously — popup blockers kill window.open after an await.
+                    const sheetWindow = window.open('', '_blank');
                     try {
                       const { data } = await (await import('@/services/api')).api.get(
                         `/api/v1/urban-dna/scenarios/${scenario.id}/plan-sheet`,
                         { responseType: 'blob' },
                       );
-                      window.open(URL.createObjectURL(data as Blob), '_blank');
+                      const url = URL.createObjectURL(data as Blob);
+                      if (sheetWindow) {
+                        sheetWindow.location.href = url;
+                      } else {
+                        window.open(url, '_blank');
+                      }
+                      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
                     } catch {
+                      sheetWindow?.close();
                       toast.error('Plan sheet unavailable');
                     }
                   }}
@@ -404,9 +413,14 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     });
 
   // When a plan drawing completes, the new zone layer must appear on the globe.
+  // Fire on any per-scenario transition INTO 'complete' — a fast draw can jump
+  // queued→complete between polls and 'drawing' is never observed.
   const prevPlanStatusesRef = useRef<string>('');
   useEffect(() => {
-    if (prevPlanStatusesRef.current.includes('drawing') && planStatuses.includes('complete')) {
+    const prev = prevPlanStatusesRef.current.split(',');
+    const next = planStatuses.split(',');
+    const completedNow = next.some((s, i) => s === 'complete' && prev[i] !== 'complete');
+    if (prevPlanStatusesRef.current !== '' && completedNow) {
       queryClient.invalidateQueries({ queryKey: ['site-zones'] });
     }
     prevPlanStatusesRef.current = planStatuses;

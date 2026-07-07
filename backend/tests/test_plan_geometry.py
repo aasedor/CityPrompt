@@ -208,6 +208,49 @@ def test_plan_sheet_builds_measurable_html():
     assert sheet.count("<polygon") >= len(plan_zones)
 
 
+def test_courtyard_masses_decompose_into_hole_free_bars():
+    # Zone coordinates are single-ring app-wide: a holed perimeter-ring mass
+    # serialized by its exterior would draw as a SOLID slab (~2x the reported
+    # footprint). The decomposition must yield simple bars whose summed area
+    # still matches the reported footprint.
+    from app.services.site_engine import iter_polygons
+
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+    block = Polygon([(0, 0), (200, 0), (200, 160), (0, 160)])  # big enough to ring
+    mass, info = building_mass_for_block(block, rules)
+    assert mass is not None
+    polys = list(iter_polygons(mass))
+    assert all(not p.interiors for p in polys)          # hole-free
+    assert len(polys) >= 2                              # actually decomposed
+    total = sum(p.area for p in polys)
+    assert abs(total - info["footprint_m2"]) / info["footprint_m2"] < 0.02
+    assert total < 0.85 * block.area                    # not a courtyard-less slab
+
+
+def test_building_zone_exteriors_match_reported_footprint():
+    # End-to-end version of the courtyard guarantee: the area a user SEES
+    # (drawn zone exteriors) must equal the footprint the statistics report.
+    from app.services.site_engine import (
+        build_transformer, local_metric_crs_for_polygon, project_geometry,
+    )
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="lap_compliant", scenario_label="LAP Aligned",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    tf = build_transformer("EPSG:4326", local_metric_crs_for_polygon(_site()))
+    drawn = 0.0
+    for zone in result.zones:
+        if zone["zone_type"] != "building":
+            continue
+        poly = Polygon(zone["coordinates"])
+        assert poly.is_valid and len(poly.interiors) == 0
+        drawn += project_geometry(poly, tf).area
+    gi = result.geometry_inputs
+    assert gi["building_footprint_m2"] > 0
+    assert abs(drawn - gi["building_footprint_m2"]) / gi["building_footprint_m2"] < 0.05
+
+
 def test_floors_clamped_by_district_ceiling():
     district = {
         "geometry": mapping(_site(1000, 1000)),  # covers everything

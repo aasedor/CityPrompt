@@ -73,12 +73,17 @@ def _drawing_svg(
             f'<polygon points="{points}" fill="{color}" fill-opacity="{opacity}" '
             f'stroke="#151515" stroke-width="0.8"/>'
         )
-        if zone["role"] == "building" and zone.get("floors"):
+        floors_value = zone.get("floors")
+        try:
+            floors_value = float(floors_value) if floors_value is not None else None
+        except (TypeError, ValueError):
+            floors_value = None  # user-edited zone property — never 500 the sheet
+        if zone["role"] == "building" and floors_value:
             centroid = project_geometry(poly, to_metric).centroid
             parts.append(
                 f'<text x="{centroid.x - ox:.1f}" y="{oy - centroid.y:.1f}" font-size="9" '
                 f'text-anchor="middle" fill="#ffffff" font-family="sans-serif">'
-                f'{zone["floors"]:g}F</text>'
+                f'{floors_value:g}F</text>'
             )
 
     boundary_points = " ".join(

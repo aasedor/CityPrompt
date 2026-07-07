@@ -490,11 +490,16 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
 
         road_features, district_features = asyncio.run(_features())
 
-        # Existing plan zones for this scenario on this project.
-        existing = [
-            z for z in session.query(SiteZone).filter_by(project_id=snapshot.project_id).all()
-            if (z.properties or {}).get("_plan_scenario") == row.scenario_id
-        ]
+        # Existing plan zones for this scenario (filtered in SQL — a big project
+        # shouldn't page every zone's geometry through Python).
+        existing = (
+            session.query(SiteZone)
+            .filter(
+                SiteZone.project_id == snapshot.project_id,
+                SiteZone.properties["_plan_scenario"].astext == row.scenario_id,
+            )
+            .all()
+        )
         locked_street_area = None
         if "streets" in locks:
             street_polys = [
@@ -503,6 +508,11 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             ]
             if street_polys:
                 locked_street_area = unary_union(street_polys)
+            else:
+                # Locking a network that doesn't exist would silently drop the
+                # generated streets (the insert skips street zones under lock).
+                locks = [lock for lock in locks if lock != "streets"]
+                logger.info("Streets lock requested but no street zones exist — generating fresh network")
 
         # --- generate → evaluate → refine loop (max 3 iterations) -----------------
         from app.services.plan_geometry.refinement import run_refinement_loop

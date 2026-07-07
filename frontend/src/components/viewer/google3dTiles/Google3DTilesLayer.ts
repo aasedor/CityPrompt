@@ -78,6 +78,9 @@ export class Google3DTilesLayer {
       new GoogleCloudAuthPlugin({
         apiToken: this.apiKey,
         useRecommendedSettings: true,
+        // Sessions expire after a few hours; refresh on 4xx instead of
+        // leaving tile holes until a full page reload.
+        autoRefreshToken: true,
       }),
     );
     console.log('[Google3DTiles] GoogleCloudAuthPlugin registered');

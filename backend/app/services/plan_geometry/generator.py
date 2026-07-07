@@ -13,6 +13,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
+from celery.exceptions import SoftTimeLimitExceeded
 from shapely.geometry import LineString, Polygon, shape
 from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
@@ -86,6 +87,8 @@ def _feature_lines_m(features: list[dict[str, Any]], to_metric) -> list[LineStri
             continue
         try:
             geom = make_valid(shape(geometry))
+        except SoftTimeLimitExceeded:
+            raise
         except Exception:  # noqa: BLE001
             continue
         metric = project_geometry(geom, to_metric)
@@ -105,6 +108,8 @@ def _district_lookup_m(features: list[dict[str, Any]], to_metric) -> list[tuple[
             continue
         try:
             geom = project_geometry(make_valid(shape(geometry)), to_metric)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception:  # noqa: BLE001
             continue
         height = props.get("height")
