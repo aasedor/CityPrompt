@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Optional
 
 import httpx
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont, PngImagePlugin
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
@@ -1040,6 +1040,55 @@ class SavedRenderResponse(BaseModel):
     created_at: str
 
 
+def _watermark_and_provenance(image_bytes: bytes, req: "SaveRenderRequest") -> bytes:
+    """Burn the ILLUSTRATIVE banner onto a saved render and embed provenance
+    as a PNG tEXt chunk. Saved renders are the shareable artifact — the
+    watermark/provenance pair is the designed safeguard for AI-generated
+    planning imagery (visible label + machine-readable audit trail).
+    Never fails the save: on any error the original bytes are kept."""
+    import json
+
+    try:
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        draw = ImageDraw.Draw(img, "RGBA")
+        text = (
+            "ILLUSTRATIVE — NOT AN APPROVED DESIGN · City Prompt · "
+            + datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        )
+        font_size = max(12, img.width // 90)
+        try:
+            font = ImageFont.load_default(size=font_size)
+        except TypeError:  # very old Pillow
+            font = ImageFont.load_default()
+        bbox = draw.textbbox((0, 0), text, font=font)
+        text_w, text_h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+        pad = max(6, font_size // 2)
+        x, y = pad, img.height - text_h - 2 * pad
+        draw.rectangle(
+            [x - pad // 2, y - pad // 2, x + text_w + pad // 2, y + text_h + pad],
+            fill=(21, 21, 21, 150),
+        )
+        draw.text((x, y), text, font=font, fill=(255, 255, 255, 235))
+
+        provenance = {
+            "generator": "City Prompt AI render — illustrative concept, not an approved design",
+            "model": req.model,
+            "style": req.style,
+            "seed": req.seed,
+            "prompt_sha256": hashlib.sha256((req.prompt or "").encode("utf-8")).hexdigest(),
+            "saved_at": datetime.now(timezone.utc).isoformat(),
+        }
+        png_info = PngImagePlugin.PngInfo()
+        png_info.add_text("cityprompt:provenance", json.dumps(provenance))
+
+        out = io.BytesIO()
+        img.save(out, format="PNG", pnginfo=png_info)
+        return out.getvalue()
+    except Exception as exc:  # noqa: BLE001 — watermark must never block a save
+        logger.warning("Watermark/provenance failed, saving original image: %s", exc)
+        return image_bytes
+
+
 @router.post("/projects/{project_id}/save", response_model=SavedRenderResponse, status_code=status.HTTP_201_CREATED)
 async def save_render(
     project_id: _uuid.UUID,
@@ -1064,7 +1113,10 @@ async def save_render(
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid base64 image data")
 
+    # Dedupe on the ORIGINAL bytes: the watermark embeds a save timestamp, so
+    # hashing afterwards would defeat same-image dedupe.
     image_hash = hashlib.sha256(image_bytes).hexdigest()
+    image_bytes = _watermark_and_provenance(image_bytes, req)
     meta = dict(project.metadata_) if project.metadata_ else {}
     renders = list(meta.get("saved_renders", []))
     for existing in renders:

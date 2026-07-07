@@ -216,6 +216,74 @@ def test_plan_sheet_builds_measurable_html():
     assert sheet.count("<polygon") >= len(plan_zones)
 
 
+def test_hearing_pack_pairs_renders_with_drawing_and_numbers():
+    from app.services.plan_geometry.hearing_pack import build_hearing_pack
+    from app.services.plan_geometry.plan_diagram import render_plan_diagram_png
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="climate_first", scenario_label="Climate First",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    plan_zones = [
+        {"role": z["properties"]["_plan_role"], "coordinates": z["coordinates"],
+         "floors": z["properties"].get("floors")}
+        for z in result.zones
+        if z["properties"].get("_plan_role") in ("street", "open_space", "building")
+    ]
+    payload = {
+        "plan": {"status": "complete", "final_score": 0.99,
+                 "geometry_inputs": result.geometry_inputs, "rules": result.rules,
+                 "block_count": result.block_count, "parcel_count": result.parcel_count},
+        "metrics": {"metrics": {"units": {"label": "Units", "value": 2100, "unit": "units"}},
+                    "assumptions_used": {}},
+        "trade_offs": [{"message": "canopy vs parking supply"}],
+    }
+    tiny_png = render_plan_diagram_png(_site(), plan_zones, size_px=64)
+    pack = build_hearing_pack(
+        scenario_label="Climate First", scenario_id="climate_first",
+        payload=payload, boundary_wgs84=_site(), plan_zones=plan_zones,
+        dna=None,
+        snapshot_meta={"snapshot_id": "snap", "city_id": "calgary", "overall_confidence": 1.0},
+        diagram_png=tiny_png,
+        renders=[{"png": tiny_png, "style": "Gemini / photorealistic", "created_at": "2026-07-07T00:00:00"}],
+        sibling_scenarios=[
+            {"label": "As-of-Right", "scenario_id": "as_of_right", "payload": payload},
+            {"label": "Climate First", "scenario_id": "climate_first", "payload": payload},
+        ],
+    )
+    assert "ILLUSTRATIVE — NOT AN APPROVED DESIGN" in pack
+    assert "<svg viewBox=" in pack                        # to-scale drawing
+    assert pack.count("data:image/png;base64,") >= 2      # diagram + render embedded
+    assert "Scenario comparison" in pack and "Plan score" in pack
+    assert "canopy vs parking supply" in pack
+    assert "watermarked and provenance-tagged" in pack
+
+
+def test_saved_render_watermark_and_provenance():
+    from io import BytesIO
+
+    from PIL import Image
+
+    from app.api.v1.render import SaveRenderRequest, _watermark_and_provenance
+
+    source = Image.new("RGB", (640, 360), (200, 200, 200))
+    buffer = BytesIO()
+    source.save(buffer, format="PNG")
+    req = SaveRenderRequest(image_base64="ignored", prompt="test prompt",
+                            style="photorealistic", seed=42, model="gemini")
+    out_bytes = _watermark_and_provenance(buffer.getvalue(), req)
+
+    out = Image.open(BytesIO(out_bytes))
+    assert out.size == (640, 360)
+    provenance = out.text.get("cityprompt:provenance")   # PNG tEXt chunk
+    assert provenance and "NOT an approved design" not in provenance  # sanity: JSON not prose
+    assert '"model": "gemini"' in provenance and '"seed": 42' in provenance
+    # The banner darkens the bottom-left corner region.
+    corner = out.convert("RGB").crop((0, 320, 200, 360))
+    avg = sum(sum(px) / 3 for px in corner.getdata()) / (200 * 40)
+    assert avg < 195  # plain source was uniform 200-grey
+
+
 def test_courtyard_masses_decompose_into_hole_free_bars():
     # Zone coordinates are single-ring app-wide: a holed perimeter-ring mass
     # serialized by its exterior would draw as a SOLID slab (~2x the reported

@@ -281,12 +281,12 @@ function ScenarioCard({
     | undefined;
   const planBusy = plan?.status === 'queued' || plan?.status === 'drawing';
 
-  const openSheet = async (autoPrint: boolean) => {
+  const openExport = async (path: 'plan-sheet' | 'hearing-pack', autoPrint: boolean) => {
     // Open synchronously — popup blockers kill window.open after an await.
     const sheetWindow = window.open('', '_blank');
     try {
       const { data } = await (await import('@/services/api')).api.get(
-        `/api/v1/urban-dna/scenarios/${scenario.id}/plan-sheet`,
+        `/api/v1/urban-dna/scenarios/${scenario.id}/${path}`,
         { responseType: 'text', transformResponse: [(value: string) => value] },
       );
       let html = data as string;
@@ -306,7 +306,7 @@ function ScenarioCard({
       window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
     } catch {
       sheetWindow?.close();
-      toast.error('Plan sheet unavailable');
+      toast.error(path === 'hearing-pack' ? 'Hearing pack unavailable' : 'Plan sheet unavailable');
     }
   };
 
@@ -354,7 +354,7 @@ function ScenarioCard({
                   </button>
                   <button
                     type="button"
-                    onClick={() => openSheet(false)}
+                    onClick={() => openExport('plan-sheet', false)}
                     title="Open the printable plan sheet: drawing, derived statistics, evaluation history, citations"
                     className="rounded border-2 border-[#151515] bg-white px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
                   >
@@ -362,11 +362,19 @@ function ScenarioCard({
                   </button>
                   <button
                     type="button"
-                    onClick={() => openSheet(true)}
+                    onClick={() => openExport('plan-sheet', true)}
                     title="Open the plan sheet with the print dialog — choose 'Save as PDF'"
                     className="rounded border-2 border-[#151515] bg-white px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#fff9ec]"
                   >
                     PDF
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openExport('hearing-pack', false)}
+                    title="Assemble the hearing pack: banner + provenance, plan drawing paired with its conditioning diagram, watermarked renders, scenario comparison, trade-offs, cited policy notes"
+                    className="rounded border-2 border-[#151515] bg-[#ffd66e] px-1.5 py-0.5 text-[9px] font-black uppercase text-[#151515] hover:bg-[#ffe092]"
+                  >
+                    Pack
                   </button>
                 </>
               )}

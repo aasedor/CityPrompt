@@ -530,6 +530,88 @@ async def plan_sheet(
     return HTMLResponse(content=sheet)
 
 
+@router.get("/scenarios/{scenario_row_id}/hearing-pack")
+async def hearing_pack(
+    scenario_row_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """The one-document municipal deliverable: banner + provenance, to-scale
+    drawing paired with the conditioning diagram, watermarked renders,
+    scenario comparison, trade-offs, cited policy notes, assumptions."""
+    from fastapi.responses import HTMLResponse
+
+    from app.models.models import Project
+    from app.services.plan_geometry.hearing_pack import build_hearing_pack
+    from app.services.plan_geometry.plan_diagram import render_plan_diagram_png
+
+    row, snapshot, boundary_shape, plan_zones = await _load_plan_context(scenario_row_id, user, db)
+    diagram_png = render_plan_diagram_png(boundary_shape, plan_zones)
+
+    # Sibling scenarios of the same snapshot for the comparison table.
+    siblings_result = await db.execute(
+        select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id == row.snapshot_id)
+    )
+    sibling_scenarios = [
+        {"label": s.label, "scenario_id": s.scenario_id, "payload": s.payload or {}}
+        for s in siblings_result.scalars().all()
+        if s.status == "complete" and s.payload
+    ]
+
+    # Up to 4 most recent saved renders (already watermarked at save time).
+    renders: list[dict[str, Any]] = []
+    project_result = await db.execute(select(Project).where(Project.id == snapshot.project_id))
+    project = project_result.scalar_one_or_none()
+    saved = list((project.metadata_ or {}).get("saved_renders", [])) if project else []
+    if saved:
+        import boto3
+        from botocore.config import Config
+
+        from app.core.config import get_settings
+
+        settings = get_settings()
+        s3_client = boto3.client(
+            "s3",
+            endpoint_url=settings.s3_endpoint_url,
+            aws_access_key_id=settings.s3_access_key,
+            aws_secret_access_key=settings.s3_secret_key,
+            region_name=settings.s3_region,
+            config=Config(signature_version="s3v4"),
+        )
+        for entry in saved[:4]:
+            file_key = (entry.get("image_url") or "").removeprefix("/api/v1/files/")
+            if not file_key:
+                continue
+            try:
+                obj = s3_client.get_object(Bucket=settings.s3_bucket_name, Key=file_key)
+                renders.append({
+                    "png": obj["Body"].read(),
+                    "style": entry.get("style"),
+                    "created_at": entry.get("created_at"),
+                })
+            except Exception as exc:  # noqa: BLE001 — a missing file must not sink the pack
+                logger.warning("Hearing pack: could not fetch render %s: %s", file_key, exc)
+
+    pack = build_hearing_pack(
+        scenario_label=row.label,
+        scenario_id=row.scenario_id,
+        payload=row.payload,
+        boundary_wgs84=boundary_shape,
+        plan_zones=plan_zones,
+        dna=snapshot.dna,
+        snapshot_meta={
+            "snapshot_id": str(snapshot.id),
+            "city_id": snapshot.city_id,
+            "overall_confidence": float(snapshot.overall_confidence)
+            if snapshot.overall_confidence is not None else None,
+        },
+        diagram_png=diagram_png,
+        renders=renders,
+        sibling_scenarios=sibling_scenarios,
+    )
+    return HTMLResponse(content=pack)
+
+
 @router.get("/scenarios/{scenario_row_id}/plan-diagram")
 async def plan_diagram(
     scenario_row_id: uuid.UUID,
