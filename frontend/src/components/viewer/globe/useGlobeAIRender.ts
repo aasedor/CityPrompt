@@ -61,6 +61,41 @@ const GLOBE_STYLE_PROMPTS: Record<string, string> = {
   survey: 'A precise large-format aerial survey photograph of the city block. Rigorously level with edge-to-edge tack-sharp clarity, even flat daylight revealing every roof, street, and material with no drama or deep shadow, and neutral true-to-life colour with clinical encyclopedic precision. Treat the captured massing as exact ground truth: preserve the real footprints, heights, layout, and materials precisely, resolving them into a real photograph. Never restyle, embellish, or reinterpret the geometry.',
   documentary: 'A deadpan documentary aerial colour photograph of the city block in the New Topographics tradition. Flat even daylight, neutral restrained true-to-life colour, and a calm honest ordinariness with no dramatization. Keep the real massing, proportions, and layout exactly as modelled, resolving them faithfully into a plain, believable photograph rather than a styled render.',
 };
+// Artistic styles drop the photoreal-specific prompt clauses and the
+// photoreal negative prompt ('cartoon, illustration, sketch' would directly
+// contradict a watercolour/isometric STYLE instruction).
+const ARTISTIC_STYLES = new Set([
+  'site-plan',
+  'site-plan-watercolor',
+  'blueprint',
+  'watercolour',
+  'charcoal',
+  'pen-and-ink',
+  'isometric',
+  'marker-render',
+  'clay-maquette',
+  'woodblock',
+  'collage',
+  'risograph',
+  'pixel-art',
+]);
+
+// Styles whose prompts dictate a CAMERA re-projection (axonometric, strict
+// orthographic plan, near-nadir drone). Output pixels no longer align with
+// the input screenshot, so screen-space polygon clipping is geometrically
+// incoherent for them — these styles skip clipRenderToZones and return the
+// model's full-frame reinterpretation; boundary fidelity comes from the plan
+// diagram reference instead. site-plan-photo dictates a 15-20°-from-nadir
+// camera too, so it is deliberately included even though it isn't artistic.
+const REPROJECTING_STYLES = new Set([
+  'isometric',
+  'site-plan',
+  'site-plan-watercolor',
+  'blueprint',
+  'clay-maquette',
+  'site-plan-photo',
+]);
+
 const catalog = [
   ...((archetypeCatalog as any)?.archetypes || []),
   ...((openSpaceCatalog as any)?.archetypes || (openSpaceCatalog as any) || []),
@@ -1120,21 +1155,6 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
   // atmospheric perspective, "match adjacent real buildings") that otherwise
   // contradict the STYLE instruction and cause Gemini to drift back toward
   // photorealism on some seeds — the ~1-of-3-respects-style failure mode.
-  const ARTISTIC_STYLES = new Set([
-    'site-plan',
-    'site-plan-watercolor',
-    'blueprint',
-    'watercolour',
-    'charcoal',
-    'pen-and-ink',
-    'isometric',
-    'marker-render',
-    'clay-maquette',
-    'woodblock',
-    'collage',
-    'risograph',
-    'pixel-art',
-  ]);
   const isArtistic = ARTISTIC_STYLES.has(style);
 
   const styleClause = `STYLE: ${GLOBE_STYLE_PROMPTS[style] || GLOBE_STYLE_PROMPTS.photorealistic}`;
@@ -1173,8 +1193,10 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
     prohibitionsClause,
     siteBoundaryClause,
     `OCCLUSION: Some zones may be partially or fully hidden behind taller buildings from this camera angle. This is CORRECT — do NOT distort the perspective to make hidden zones visible. If a zone is occluded by a building in front of it, leave it hidden. Render only what would naturally be visible from this specific camera position and angle.`,
-    `FOOTPRINT CONSTRAINT: Rendered building footprints must match the drawn footprint. Do not make roofs, podiums, walls, or landscaping spill beyond the polygon or mask.`,
-    `FINAL CONSTRAINT: Stay strictly within each colored zone polygon. Do not alter pixels outside the mask. Accuracy to the polygon boundary is more important than architectural flair. Each zone renders ONLY within its own colored boundary — never overlapping into adjacent zones.`,
+    // Merged FOOTPRINT + FINAL constraint (they were redundant); the freed
+    // constraint-budget slot pays for the STREETS clause appended after the
+    // plan diagram is attached (≤8 constraint budget — do-not-retry ledger).
+    `FINAL CONSTRAINT: Stay strictly within each colored zone polygon. Rendered footprints, roofs, podiums, walls, and landscaping must match the drawn footprint — never spilling beyond the polygon or mask, never overlapping into adjacent zones. Do not alter pixels outside the mask. Accuracy to the polygon boundary is more important than architectural flair.`,
     // Artistic styles re-anchor the STYLE instruction at the end, since Gemini
     // weights later instructions more heavily. This fights the drift back to
     // photoreal that happens when surrounding instructions assume photoreal.
@@ -1288,6 +1310,15 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 }
 
 /**
+ * Wrap a bare base64 payload in a data URI with the correct MIME type.
+ * Raw canvas captures are JPEG ('/9j/'…); backend renders are PNG ('iVBOR'…).
+ */
+function base64ToDataUri(b64: string): string {
+  const mime = b64.startsWith('/9j/') ? 'image/jpeg' : 'image/png';
+  return `data:${mime};base64,${b64}`;
+}
+
+/**
  * Post-process: clip the AI render to zone polygons with feathered edges.
  * For each zone, only keep the AI render within that zone's polygon
  * (with a soft 6px blur feather). Everything outside zone polygons
@@ -1307,8 +1338,8 @@ async function clipRenderToZones(
   style: string,
 ): Promise<string> {
   const [origImg, rendImg] = await Promise.all([
-    loadImage(`data:image/png;base64,${originalBase64}`),
-    loadImage(`data:image/png;base64,${renderedBase64}`),
+    loadImage(base64ToDataUri(originalBase64)),
+    loadImage(base64ToDataUri(renderedBase64)),
   ]);
 
   const w = origImg.naturalWidth;
@@ -1330,6 +1361,25 @@ async function clipRenderToZones(
   maskCtx.fillRect(0, 0, w, h);
   maskCtx.fillStyle = '#ffffff';
 
+  // Site-boundary parity WITHOUT amputation: ground-zone fills are clipped to
+  // the site boundary, but building hulls are NOT — a tall tower's painted top
+  // legitimately projects past the site edge, and raw boundary clipping would
+  // amputate it. Net mask = (ground zones ∩ site boundary) ∪ building hulls.
+  const siteBoundary = zones.find(z => z.zone_type === 'site_boundary' && z.coordinates?.length >= 3);
+  let boundaryPath: Path2D | null = null;
+  if (siteBoundary) {
+    const boundaryTerrainHeight = getZoneTerrainHeight(siteBoundary, terrainHeight);
+    const boundaryPixels = siteBoundary.coordinates
+      .map(c => projectToPixels(c[0], c[1], boundaryTerrainHeight, camera, canvasWidth, canvasHeight))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (boundaryPixels.length >= 3) {
+      boundaryPath = new Path2D();
+      boundaryPath.moveTo(boundaryPixels[0].x, boundaryPixels[0].y);
+      for (let i = 1; i < boundaryPixels.length; i++) boundaryPath.lineTo(boundaryPixels[i].x, boundaryPixels[i].y);
+      boundaryPath.closePath();
+    }
+  }
+
   for (const zone of zones) {
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     if (zone.zone_type === 'site_boundary') continue;
@@ -1342,12 +1392,35 @@ async function clipRenderToZones(
 
     // Silhouette = convex hull of base + roof for buildings, base polygon otherwise.
     const silhouette = zoneSilhouette(zone, pixels, camera, canvasWidth, canvasHeight, zoneTerrainHeight);
+    const isProjectedBuilding = isBuildingZone(zone) && getZoneBuildingHeight(zone) > 0;
+    const clipToBoundary = boundaryPath !== null && !isProjectedBuilding;
+    if (clipToBoundary) {
+      maskCtx.save();
+      maskCtx.clip(boundaryPath!);
+    }
     maskCtx.beginPath();
     maskCtx.moveTo(silhouette[0].x, silhouette[0].y);
     for (let i = 1; i < silhouette.length; i++) maskCtx.lineTo(silhouette[i].x, silhouette[i].y);
     maskCtx.closePath();
     maskCtx.fill();
+    if (clipToBoundary) maskCtx.restore();
   }
+
+  // Instrumentation: clip-mask coverage %. On a multi-tower plan the union of
+  // hull sweeps can approach the whole frame — anything the model painted
+  // inside that swath survives the clip, which is the silhouette-sweep bleed
+  // hypothesis. Confirms/refutes it on the exact scene at zero render cost.
+  try {
+    const md = maskCtx.getImageData(0, 0, w, h).data;
+    let lit = 0;
+    let sampled = 0;
+    for (let i = 0; i < md.length; i += 64) { // every 16th pixel
+      sampled++;
+      if (md[i] > 127) lit++;
+    }
+    const zoneCount = zones.filter(z => z.zone_type !== 'site_boundary').length;
+    console.log(`[GlobeAIRender] Clip-mask coverage: ${((100 * lit) / sampled).toFixed(1)}% of frame editable (${zoneCount} zones)`);
+  } catch { /* instrumentation only */ }
 
   // Blur + Clamp: soft feathered edges that never exceed polygon bounds
   // Blur creates gradient in both directions; clamping with the hard mask
@@ -1373,7 +1446,20 @@ async function clipRenderToZones(
   aiCanvas.width = w;
   aiCanvas.height = h;
   const aiCtx = aiCanvas.getContext('2d')!;
-  aiCtx.drawImage(rendImg, 0, 0, w, h);
+  // GPT sometimes reframes output at a different aspect ratio (ledger §4-B) —
+  // a blind stretch to canvas dims produces ghosting. When the ratio is off,
+  // composite aspect-preserving (cover, center-crop) instead of stretching.
+  const rendAspect = rendImg.naturalWidth / rendImg.naturalHeight;
+  const canvasAspect = w / h;
+  if (Math.abs(rendAspect - canvasAspect) / canvasAspect > 0.02) {
+    console.warn(`[GlobeAIRender] Render dims ${rendImg.naturalWidth}x${rendImg.naturalHeight} don't match canvas ${w}x${h} aspect — compositing aspect-preserving cover instead of stretch`);
+    const coverScale = Math.max(w / rendImg.naturalWidth, h / rendImg.naturalHeight);
+    const dw = rendImg.naturalWidth * coverScale;
+    const dh = rendImg.naturalHeight * coverScale;
+    aiCtx.drawImage(rendImg, (w - dw) / 2, (h - dh) / 2, dw, dh);
+  } else {
+    aiCtx.drawImage(rendImg, 0, 0, w, h);
+  }
   aiCtx.globalCompositeOperation = 'destination-in';
   aiCtx.drawImage(featherCanvas, 0, 0);
 
@@ -1653,6 +1739,10 @@ export function useGlobeAIRender() {
       imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
+      // The site_boundary zone (callers filter it out of the render zones).
+      // Used ONLY by the post-render clip for boundary parity — ground-zone
+      // clip regions are intersected with it; building hulls are exempt.
+      siteBoundaryZone?: SiteZone;
       // Internal: skip the isRenderingRef lock so renderPreviews can fan out
       // N parallel calls. renderPreviews sets the ref itself around the batch.
       _skipLock?: boolean;
@@ -1799,6 +1889,7 @@ export function useGlobeAIRender() {
       // showed clearly better street/block/park adherence on BOTH engines.
       // Only activates when the view contains a drawn plan (≥4 plan zones);
       // set localStorage cc_plan_diagram_conditioning = '0' to disable.
+      let planDiagramAttached = false;
       if (localStorage.getItem('cc_plan_diagram_conditioning') !== '0') {
         const planDiagram = buildPlanConditioningDiagram(visibleZones);
         if (planDiagram) {
@@ -1807,12 +1898,29 @@ export function useGlobeAIRender() {
             label: 'PLAN DIAGRAM — authoritative nadir layout of the proposal: '
               + 'gray = streets, green = parks, dark red = building footprints. '
               + 'Preserve the street network topology, block arrangement, park '
-              + 'locations and building footprints exactly as drawn.',
+              + 'locations and building footprints exactly as drawn. Streets '
+              + 'remain open to the sky.',
             zone_color: 'plan layout',
             angle: '90° nadir plan diagram',
           });
+          planDiagramAttached = true;
           console.log('[GlobeAIRender] Plan-diagram conditioning attached (slot 1)');
         }
+      }
+
+      // GPT Image 2 accepts at most 16 input images — we used to attach up to
+      // 48, so "Image N" prompt labels could reference images GPT never saw
+      // (silently breaking the slot-1 plan-diagram contract). Clamp BEFORE the
+      // label loop below so numbering matches what the model receives; the
+      // plan diagram stays in slot 1. Gemini keeps the full set.
+      // 15, not 16: the backend counts the source screenshot against the cap
+      // (render.py: max_refs = 16 - 1 - previous - context = 15 on this path)
+      // and silently slices archetype_images[:15].
+      const GPT_MAX_REFS = 15;
+      if (model.startsWith('gpt-image-2') && archetypeImages.length > GPT_MAX_REFS) {
+        const dropped = archetypeImages.length - GPT_MAX_REFS;
+        archetypeImages.splice(GPT_MAX_REFS);
+        console.warn(`[GlobeAIRender] GPT ref cap: kept first ${GPT_MAX_REFS} reference images (plan diagram in slot 1), dropped ${dropped}`);
       }
 
       if (archetypeImages.length > 0) {
@@ -1841,6 +1949,18 @@ export function useGlobeAIRender() {
         }
       }
 
+      // Affirmative streets clause — placed last because Gemini weights later
+      // instructions more heavily. Budget-neutral: paid for by merging the
+      // redundant FOOTPRINT + FINAL constraints in buildPrompt (ledger: ≤8
+      // constraints; adding a clause must displace one).
+      if (planDiagramAttached) {
+        prompt += (
+          `\n\nSTREETS: the gray corridors in the PLAN DIAGRAM reference (Image 2) are streets — ` +
+          `render them as open paved right-of-way, continuous and unobstructed curb to curb; ` +
+          `buildings and landscaping meet the curb line and stop.`
+        );
+      }
+
       console.log(`[GlobeAIRender] Prompt (${prompt.length} chars, ${zones.filter(z => z.zone_type !== 'site_boundary').length} zones, ${archetypeImages.length} ref images):`, prompt.substring(0, 200) + '...');
 
       // 5. Send to backend render API with archetype images
@@ -1851,7 +1971,12 @@ export function useGlobeAIRender() {
           image_base64: imageBase64,
           mask_base64: maskBase64,
           prompt,
-          negative_prompt: 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
+          // Artistic styles must not be told to avoid 'cartoon, illustration,
+          // sketch, unrealistic colors' — that directly contradicts their
+          // STYLE instruction and pushes seeds back toward photorealism.
+          negative_prompt: ARTISTIC_STYLES.has(style)
+            ? 'low quality, blurry, text, watermark'
+            : 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
           model,
           image_quality: imageQuality,
           project_id: options.projectId,
@@ -1865,13 +1990,50 @@ export function useGlobeAIRender() {
       );
 
       if (resp.data?.image_base64) {
+        // Style contract split: re-projecting styles (isometric, orthographic
+        // plan, near-nadir drone) command a camera change, so output pixels no
+        // longer align with the input screenshot — screen-space clipping is
+        // geometrically incoherent for them. Return the full-frame
+        // reinterpretation; boundary fidelity comes from the plan diagram.
+        if (REPROJECTING_STYLES.has(style)) {
+          console.log(`[GlobeAIRender] Style "${style}" re-projects the camera — full-frame output, polygon clip skipped`);
+          // The style grade normally runs inside clipRenderToZones — apply it
+          // to the full frame here so graded styles (site-plan-photo) don't
+          // silently lose it. Ungraded artistic styles pass through as-is.
+          let imageUrl = base64ToDataUri(resp.data.image_base64);
+          if (STYLE_GRADES[style]) {
+            const fullImg = await loadImage(imageUrl);
+            const gradeCanvas = document.createElement('canvas');
+            gradeCanvas.width = fullImg.naturalWidth;
+            gradeCanvas.height = fullImg.naturalHeight;
+            gradeCanvas.getContext('2d')!.drawImage(fullImg, 0, 0);
+            applyStyleGrade(gradeCanvas, style);
+            imageUrl = gradeCanvas.toDataURL('image/png');
+          }
+          return {
+            imageUrl,
+            prompt,
+            seed: resp.data.seed,
+            model,
+            imageQuality,
+          };
+        }
+
         console.log('[GlobeAIRender] Render complete! Applying polygon clip...');
 
-        // Post-process: clip the AI render to zone polygons with feathered edges
-        // This ensures no zone bleeds into adjacent zones or outside boundaries
+        // Post-process: clip the AI render to zone polygons with feathered
+        // edges so no zone bleeds into adjacent zones or outside boundaries.
+        // The clip base is the RAW capture — clipping against the labeled
+        // screenshot burned the dashed borders + text labels into every final
+        // composite (the label-leak bug). Callers filter site_boundary out of
+        // the render zones, so it is threaded back in via options for the
+        // boundary-parity clip.
+        const clipZones = options.siteBoundaryZone
+          ? [...visibleZones, options.siteBoundaryZone]
+          : visibleZones;
         const clippedBase64 = await clipRenderToZones(
-          imageBase64, resp.data.image_base64,
-          visibleZones, camera, canvas.width, canvas.height, terrainHeight,
+          rawBase64, resp.data.image_base64,
+          clipZones, camera, canvas.width, canvas.height, terrainHeight,
           style,
         );
 
@@ -1918,6 +2080,7 @@ export function useGlobeAIRender() {
       imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
+      siteBoundaryZone?: SiteZone;
       count?: number;
       variants?: GlobeRenderVariant[];
     } = {},
@@ -1934,6 +2097,7 @@ export function useGlobeAIRender() {
       style: options.style,
       projectId: options.projectId,
       customPrompt: options.customPrompt,
+      siteBoundaryZone: options.siteBoundaryZone,
     };
     try {
       console.log(`[GlobeAIRender] Generating ${previewVariants.length} previews in parallel...`);

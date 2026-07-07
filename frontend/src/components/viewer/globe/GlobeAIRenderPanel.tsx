@@ -237,6 +237,11 @@ export function GlobeAIRenderPanel({
     const editableZones = siteZones.filter(z =>
       z.zone_type !== 'site_boundary' && z.coordinates.length >= 3
     );
+    // Threaded separately so the post-render clip can intersect ground zones
+    // with the site boundary (building hulls exempt) — see clipRenderToZones.
+    const siteBoundaryZone = siteZones.find(z =>
+      z.zone_type === 'site_boundary' && z.coordinates.length >= 3
+    );
 
     if (editableZones.length === 0) {
       setError('Draw some zones first before rendering');
@@ -315,6 +320,7 @@ export function GlobeAIRenderPanel({
           style: selectedStyle,
           projectId,
           customPrompt: customPrompt.trim() || undefined,
+          siteBoundaryZone,
           variants: compareRenderVariants,
         });
         if (results.length > 0) {
