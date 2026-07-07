@@ -13,6 +13,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
+from celery.exceptions import SoftTimeLimitExceeded
 from shapely import affinity
 from shapely.geometry import LineString, Point, Polygon
 from shapely.geometry.base import BaseGeometry
@@ -59,6 +60,8 @@ def entry_points_from_roads(
     for line in road_lines_m:
         try:
             crossing = line.intersection(exterior)
+        except SoftTimeLimitExceeded:
+            raise
         except Exception:  # noqa: BLE001 — municipal geometry
             continue
         if crossing.is_empty:
