@@ -15,6 +15,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { api, resolveApiFileUrl } from '@/services/api';
+import { useViewerStore } from '@/store';
 import { getCustomZoneStyle } from '../customZoneStyle';
 import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
 import {
@@ -95,6 +96,17 @@ const REPROJECTING_STYLES = new Set([
   'clay-maquette',
   'site-plan-photo',
 ]);
+
+// P1.8 verification-gate scope: only styles that must keep real streets
+// street-like. Artistic styles legitimately repaint streets in their medium.
+const VERIFICATION_GATE_STYLES = new Set(['photorealistic', 'photomontage']);
+
+// P1.10 two-pass eligibility: camera-preserving artistic styles. Reprojecting
+// styles return full-frame output anyway; photoreal gains nothing from a
+// restyle pass. Exported for the panel's "High fidelity" toggle.
+export const HIGH_FIDELITY_STYLES: Set<string> = new Set(
+  [...ARTISTIC_STYLES].filter((s) => !REPROJECTING_STYLES.has(s)),
+);
 
 const catalog = [
   ...((archetypeCatalog as any)?.archetypes || []),
@@ -428,6 +440,90 @@ function zoneSilhouette(
 }
 
 /**
+ * P1.9 — OSM road carve stamp (defense-in-depth). Buffered real-road
+ * corridors, minus every building hull, as an alpha stamp. Callers erase it
+ * from editable-region masks so a real road crossing a ground-zone mask is
+ * never repainted. Deliberately does NOT touch in-hull pixels — a tower may
+ * legitimately occlude the road behind it from this camera; only
+ * per-building compositing fixes in-hull bleed (P2).
+ * Returns null when no OSM roads are loaded or none project on screen.
+ * Kill switch: localStorage cc_osm_road_carve = '0'.
+ */
+function buildOsmRoadCarveStamp(
+  zones: SiteZone[],
+  camera: THREE.Camera,
+  width: number,
+  height: number,
+  terrainHeight: number,
+): HTMLCanvasElement | null {
+  if (localStorage.getItem('cc_osm_road_carve') === '0') return null;
+  const roads = useViewerStore.getState().osmContext?.roads;
+  if (!roads || roads.length === 0) return null;
+
+  // Pixels-per-meter at the site: project a 1 m east offset at the first
+  // projectable road vertex.
+  let pxPerMeter = 0;
+  outer: for (const road of roads) {
+    for (const coord of road.coordinates || []) {
+      const [lon, lat] = coord;
+      const p0 = projectToPixels(lon, lat, terrainHeight, camera, width, height);
+      const dLon = 1 / (111_320 * Math.cos((lat * Math.PI) / 180));
+      const p1 = projectToPixels(lon + dLon, lat, terrainHeight, camera, width, height);
+      if (p0 && p1) {
+        pxPerMeter = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+        if (pxPerMeter > 0.01) break outer;
+      }
+    }
+  }
+  if (pxPerMeter <= 0.01) return null;
+
+  const stamp = document.createElement('canvas');
+  stamp.width = width;
+  stamp.height = height;
+  const stampCtx = stamp.getContext('2d')!;
+  stampCtx.lineCap = 'round';
+  stampCtx.lineJoin = 'round';
+  stampCtx.strokeStyle = '#ffffff';
+  let drawn = 0;
+  for (const road of roads) {
+    const pts = (road.coordinates || [])
+      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (pts.length < 2) continue;
+    const widthM = Number(road.width_m) || 8;
+    stampCtx.lineWidth = Math.max(2, widthM * pxPerMeter + 4); // ~2 px buffer per side
+    stampCtx.beginPath();
+    stampCtx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) stampCtx.lineTo(pts[i].x, pts[i].y);
+    stampCtx.stroke();
+    drawn++;
+  }
+  if (!drawn) return null;
+
+  // Building hulls stay editable — erase them from the stamp.
+  stampCtx.globalCompositeOperation = 'destination-out';
+  stampCtx.fillStyle = '#ffffff';
+  for (const zone of zones) {
+    if (!isBuildingZone(zone) || getZoneBuildingHeight(zone) <= 0) continue;
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
+    const pixels = zone.coordinates
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (pixels.length < 3) continue;
+    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight);
+    stampCtx.beginPath();
+    stampCtx.moveTo(silhouette[0].x, silhouette[0].y);
+    for (let i = 1; i < silhouette.length; i++) stampCtx.lineTo(silhouette[i].x, silhouette[i].y);
+    stampCtx.closePath();
+    stampCtx.fill();
+  }
+  stampCtx.globalCompositeOperation = 'source-over';
+  console.log(`[GlobeAIRender] OSM road carve: ${drawn} road corridors stamped (building hulls exempt)`);
+  return stamp;
+}
+
+/**
  * Generate a COLOR-CODED mask from zone polygons.
  * Each zone drawn in its actual map color so Gemini can match the COLOR-TO-ZONE legend.
  * Black = keep as-is, colored = render this zone.
@@ -500,6 +596,17 @@ function generateMask(
 
   // Restore context (remove clip)
   if (siteBoundary) ctx.restore();
+
+  // P1.9: real roads crossing the editable region (outside building hulls)
+  // are painted back to BLACK (keep-as-is) in the payload mask.
+  const carveStamp = buildOsmRoadCarveStamp(zones, camera, width, height, terrainHeight);
+  if (carveStamp) {
+    const stampCtx = carveStamp.getContext('2d')!;
+    stampCtx.globalCompositeOperation = 'source-in';
+    stampCtx.fillStyle = '#000000';
+    stampCtx.fillRect(0, 0, width, height);
+    ctx.drawImage(carveStamp, 0, 0);
+  }
 
   return canvas.toDataURL('image/png').split(',')[1];
 }
@@ -1319,6 +1426,109 @@ function base64ToDataUri(b64: string): string {
 }
 
 /**
+ * P1.8 — verification gate. Fraction of plan-street pixels (outside every
+ * building hull) that still read as the same street surface as the raw
+ * capture. Scored RELATIVE to the original with luminance normalization so
+ * tower shadows / golden-hour lighting don't false-fail (absolute color
+ * thresholds do); computed on the raw model output BEFORE clip and grade.
+ * Returns null when the scene has no plan streets or too few visible street
+ * pixels — the gate simply doesn't apply.
+ */
+async function scorePlanStreetSimilarity(
+  rawBase64: string,
+  renderedBase64: string,
+  zones: SiteZone[],
+  camera: THREE.Camera,
+  width: number,
+  height: number,
+  terrainHeight: number,
+): Promise<number | null> {
+  const streetZones = zones.filter(z =>
+    (z.properties as Record<string, unknown> | undefined)?._plan_role === 'street'
+    && z.coordinates?.length >= 3);
+  if (!streetZones.length) return null;
+
+  // Street mask (alpha): street polygons minus building hulls.
+  const mask = document.createElement('canvas');
+  mask.width = width;
+  mask.height = height;
+  const maskCtx = mask.getContext('2d')!;
+  maskCtx.fillStyle = '#ffffff';
+  for (const zone of streetZones) {
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
+    const pixels = zone.coordinates
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (pixels.length < 3) continue;
+    maskCtx.beginPath();
+    maskCtx.moveTo(pixels[0].x, pixels[0].y);
+    for (let i = 1; i < pixels.length; i++) maskCtx.lineTo(pixels[i].x, pixels[i].y);
+    maskCtx.closePath();
+    maskCtx.fill();
+  }
+  maskCtx.globalCompositeOperation = 'destination-out';
+  for (const zone of zones) {
+    if (!isBuildingZone(zone) || getZoneBuildingHeight(zone) <= 0) continue;
+    if (!zone.coordinates || zone.coordinates.length < 3) continue;
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
+    const pixels = zone.coordinates
+      .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
+      .filter(Boolean) as { x: number; y: number }[];
+    if (pixels.length < 3) continue;
+    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight);
+    maskCtx.beginPath();
+    maskCtx.moveTo(silhouette[0].x, silhouette[0].y);
+    for (let i = 1; i < silhouette.length; i++) maskCtx.lineTo(silhouette[i].x, silhouette[i].y);
+    maskCtx.closePath();
+    maskCtx.fill();
+  }
+
+  const [origImg, rendImg] = await Promise.all([
+    loadImage(base64ToDataUri(rawBase64)),
+    loadImage(base64ToDataUri(renderedBase64)),
+  ]);
+  const rasterize = (img: HTMLImageElement): Uint8ClampedArray => {
+    const c = document.createElement('canvas');
+    c.width = width;
+    c.height = height;
+    const cx = c.getContext('2d')!;
+    // Aspect-preserving cover, matching the composite path.
+    const aspect = img.naturalWidth / img.naturalHeight;
+    const canvasAspect = width / height;
+    if (Math.abs(aspect - canvasAspect) / canvasAspect > 0.02) {
+      const scale = Math.max(width / img.naturalWidth, height / img.naturalHeight);
+      const dw = img.naturalWidth * scale;
+      const dh = img.naturalHeight * scale;
+      cx.drawImage(img, (width - dw) / 2, (height - dh) / 2, dw, dh);
+    } else {
+      cx.drawImage(img, 0, 0, width, height);
+    }
+    return cx.getImageData(0, 0, width, height).data;
+  };
+  const orig = rasterize(origImg);
+  const rend = rasterize(rendImg);
+  const maskData = maskCtx.getImageData(0, 0, width, height).data;
+
+  let total = 0;
+  let similar = 0;
+  for (let i = 0; i < maskData.length; i += 16) { // every 4th pixel
+    if (maskData[i + 3] < 128) continue;
+    const lumOrig = 0.299 * orig[i] + 0.587 * orig[i + 1] + 0.114 * orig[i + 2];
+    const lumRend = 0.299 * rend[i] + 0.587 * rend[i + 1] + 0.114 * rend[i + 2];
+    // Tolerate uniform lighting/shadow shifts (luminance scale), flag
+    // material changes (chroma) — grass or a podium over asphalt fails.
+    const scale = Math.min(3, Math.max(0.2, lumRend / Math.max(8, lumOrig)));
+    const d = Math.abs(rend[i] - orig[i] * scale)
+      + Math.abs(rend[i + 1] - orig[i + 1] * scale)
+      + Math.abs(rend[i + 2] - orig[i + 2] * scale);
+    total++;
+    if (d < 90) similar++;
+  }
+  if (total < 50) return null; // too few visible street pixels to judge
+  return similar / total;
+}
+
+/**
  * Post-process: clip the AI render to zone polygons with feathered edges.
  * For each zone, only keep the AI render within that zone's polygon
  * (with a soft 6px blur feather). Everything outside zone polygons
@@ -1352,13 +1562,16 @@ async function clipRenderToZones(
   const resultCtx = resultCanvas.getContext('2d')!;
   resultCtx.drawImage(origImg, 0, 0, w, h);
 
-  // Build a combined feathered mask for ALL non-boundary zones
+  // Build a combined feathered mask for ALL non-boundary zones.
+  // TRANSPARENT background, NOT black: every downstream masking step
+  // (feather clamp, render masking) uses 'destination-in', which keys on
+  // SOURCE ALPHA. An opaque black fill gives alpha=1 everywhere and turns
+  // each destination-in into a no-op — the post-render clip silently never
+  // clipped anything (pre-existing bug found during P1).
   const maskCanvas = document.createElement('canvas');
   maskCanvas.width = w;
   maskCanvas.height = h;
   const maskCtx = maskCanvas.getContext('2d')!;
-  maskCtx.fillStyle = '#000000';
-  maskCtx.fillRect(0, 0, w, h);
   maskCtx.fillStyle = '#ffffff';
 
   // Site-boundary parity WITHOUT amputation: ground-zone fills are clipped to
@@ -1404,6 +1617,16 @@ async function clipRenderToZones(
     maskCtx.closePath();
     maskCtx.fill();
     if (clipToBoundary) maskCtx.restore();
+  }
+
+  // P1.9: erase real-road corridors (outside every building hull) from the
+  // clip mask — bleed painted on a real road reverts to the original capture.
+  const clipCarveStamp = buildOsmRoadCarveStamp(zones, camera, canvasWidth, canvasHeight, terrainHeight);
+  if (clipCarveStamp) {
+    maskCtx.save();
+    maskCtx.globalCompositeOperation = 'destination-out';
+    maskCtx.drawImage(clipCarveStamp, 0, 0);
+    maskCtx.restore();
   }
 
   // Instrumentation: clip-mask coverage %. On a multi-tower plan the union of
@@ -1743,6 +1966,10 @@ export function useGlobeAIRender() {
       // Used ONLY by the post-render clip for boundary parity — ground-zone
       // clip regions are intersected with it; building hulls are exempt.
       siteBoundaryZone?: SiteZone;
+      // P1.10: two-pass artistic (full-frame restyle, then zone inpaint onto
+      // the stylized base). 2x cost — opt-in via the panel toggle; only takes
+      // effect for HIGH_FIDELITY_STYLES.
+      highFidelity?: boolean;
       // Internal: skip the isRenderingRef lock so renderPreviews can fan out
       // N parallel calls. renderPreviews sets the ref itself around the batch.
       _skipLock?: boolean;
@@ -1763,9 +1990,50 @@ export function useGlobeAIRender() {
       const rawBase64 = await captureCanvasBase64(canvas);
       if (!rawBase64) throw new Error('Failed to capture canvas');
 
+      // 1x. P1.10 — high-fidelity two-pass (opt-in, 2x cost): full-frame
+      // restyle of the UNLABELED capture first; the normal zone inpaint then
+      // runs against the stylized base, so the hard clip composites with no
+      // style seam. Restyle always runs on Gemini (ledger #34: never coerce
+      // GPT to stylize). Any failure falls back to single-pass.
+      let baseBase64 = rawBase64;
+      const twoPass = Boolean(options.highFidelity) && HIGH_FIDELITY_STYLES.has(style);
+      if (twoPass) {
+        console.log('[GlobeAIRender] High-fidelity two-pass: full-frame restyle first');
+        try {
+          const restyleResp = await api.post(
+            '/api/v1/render/generate',
+            {
+              image_base64: rawBase64,
+              prompt:
+                `STYLE: ${GLOBE_STYLE_PROMPTS[style]}\n` +
+                `TASK: Re-render this exact scene entirely in the declared STYLE. ` +
+                `Preserve the scene's geometry, layout and composition exactly — every ` +
+                `building, road, and landscape element stays where it is; only the ` +
+                `artistic medium changes.`,
+              negative_prompt: 'low quality, blurry, text, watermark',
+              model: 'gemini-3.1-flash-image-preview',
+              image_quality: imageQuality,
+              project_id: options.projectId,
+              temperature: 0.0,
+              guidance_scale: 15,
+              image_size: '2K',
+              thinking_budget: 0,
+            },
+            { timeout: 300000 },
+          );
+          if (restyleResp.data?.image_base64) {
+            baseBase64 = restyleResp.data.image_base64;
+          } else {
+            console.warn('[GlobeAIRender] Two-pass restyle returned no image — continuing single-pass');
+          }
+        } catch (restyleErr) {
+          console.warn('[GlobeAIRender] Two-pass restyle failed — continuing single-pass:', restyleErr);
+        }
+      }
+
       // 1a. Add text labels to screenshot so Gemini can read zone names
       const imageBase64 = await (async () => {
-        const img = await loadImage(`data:image/jpeg;base64,${rawBase64}`);
+        const img = await loadImage(base64ToDataUri(baseBase64));
         const labelCanvas = document.createElement('canvas');
         labelCanvas.width = img.naturalWidth;
         labelCanvas.height = img.naturalHeight;
@@ -1875,6 +2143,9 @@ export function useGlobeAIRender() {
       // 3. Build SCHEMA prompt from VISIBLE zone archetypes only
       let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
+      if (twoPass && baseBase64 !== rawBase64) {
+        prompt += `\nTWO-PASS NOTE: the input image is ALREADY rendered in the declared STYLE — match its medium seamlessly and edit ONLY the masked zones.`;
+      }
 
       // 4. Collect archetype reference card images (multi-view: 0° street-level +
       //    up to 2 aerial angles per zone — 45°/90° where available).
@@ -1965,29 +2236,60 @@ export function useGlobeAIRender() {
 
       // 5. Send to backend render API with archetype images
       console.log('[GlobeAIRender] Sending to render backend...');
-      const resp = await api.post(
-        '/api/v1/render/generate',
-        {
-          image_base64: imageBase64,
-          mask_base64: maskBase64,
-          prompt,
-          // Artistic styles must not be told to avoid 'cartoon, illustration,
-          // sketch, unrealistic colors' — that directly contradicts their
-          // STYLE instruction and pushes seeds back toward photorealism.
-          negative_prompt: ARTISTIC_STYLES.has(style)
-            ? 'low quality, blurry, text, watermark'
-            : 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
-          model,
-          image_quality: imageQuality,
-          project_id: options.projectId,
-          temperature: 0.0,
-          guidance_scale: 15,
-          image_size: '2K', // 2K output for architectural detail accuracy
-          thinking_budget: 0, // Disable thinking — no benefit for image generation, saves ~30-50% latency
-          archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
-        },
-        { timeout: 300000 },
-      );
+      const requestBody = {
+        image_base64: imageBase64,
+        mask_base64: maskBase64,
+        prompt,
+        // Artistic styles must not be told to avoid 'cartoon, illustration,
+        // sketch, unrealistic colors' — that directly contradicts their
+        // STYLE instruction and pushes seeds back toward photorealism.
+        negative_prompt: ARTISTIC_STYLES.has(style)
+          ? 'low quality, blurry, text, watermark'
+          : 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
+        model,
+        image_quality: imageQuality,
+        project_id: options.projectId,
+        temperature: 0.0,
+        guidance_scale: 15,
+        image_size: '2K', // 2K output for architectural detail accuracy
+        thinking_budget: 0, // Disable thinking — no benefit for image generation, saves ~30-50% latency
+        archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
+      };
+      let resp = await api.post('/api/v1/render/generate', requestBody, { timeout: 300000 });
+
+      // P1.8 — verification gate + ONE auto re-roll (standing permission),
+      // photoreal/photomontage only: when plan streets no longer read as the
+      // original street surface, re-roll once and keep the better score.
+      // Kill switch: localStorage cc_render_verification_gate = '0'.
+      if (
+        VERIFICATION_GATE_STYLES.has(style)
+        && localStorage.getItem('cc_render_verification_gate') !== '0'
+        && resp.data?.image_base64
+      ) {
+        const score = await scorePlanStreetSimilarity(
+          rawBase64, resp.data.image_base64,
+          visibleZones, camera, canvas.width, canvas.height, terrainHeight,
+        );
+        if (score !== null) {
+          console.log(`[GlobeAIRender] Street-similarity gate: ${(score * 100).toFixed(0)}% (threshold 70%)`);
+          if (score < 0.7) {
+            console.warn('[GlobeAIRender] Below threshold — re-rolling once, keeping the better score');
+            try {
+              const retry = await api.post('/api/v1/render/generate', requestBody, { timeout: 300000 });
+              if (retry.data?.image_base64) {
+                const retryScore = await scorePlanStreetSimilarity(
+                  rawBase64, retry.data.image_base64,
+                  visibleZones, camera, canvas.width, canvas.height, terrainHeight,
+                );
+                console.log(`[GlobeAIRender] Re-roll street-similarity: ${retryScore === null ? 'n/a' : `${(retryScore * 100).toFixed(0)}%`}`);
+                if (retryScore !== null && retryScore > score) resp = retry;
+              }
+            } catch (retryErr) {
+              console.warn('[GlobeAIRender] Re-roll failed — keeping the first render:', retryErr);
+            }
+          }
+        }
+      }
 
       if (resp.data?.image_base64) {
         // Style contract split: re-projecting styles (isometric, orthographic
@@ -2031,8 +2333,10 @@ export function useGlobeAIRender() {
         const clipZones = options.siteBoundaryZone
           ? [...visibleZones, options.siteBoundaryZone]
           : visibleZones;
+        // Two-pass: composite onto the STYLIZED base so there is no style
+        // seam at the clip boundary; single-pass: the raw capture.
         const clippedBase64 = await clipRenderToZones(
-          rawBase64, resp.data.image_base64,
+          baseBase64, resp.data.image_base64,
           clipZones, camera, canvas.width, canvas.height, terrainHeight,
           style,
         );
@@ -2081,6 +2385,7 @@ export function useGlobeAIRender() {
       projectId?: string;
       customPrompt?: string;
       siteBoundaryZone?: SiteZone;
+      highFidelity?: boolean;
       count?: number;
       variants?: GlobeRenderVariant[];
     } = {},
@@ -2098,6 +2403,7 @@ export function useGlobeAIRender() {
       projectId: options.projectId,
       customPrompt: options.customPrompt,
       siteBoundaryZone: options.siteBoundaryZone,
+      highFidelity: options.highFidelity,
     };
     try {
       console.log(`[GlobeAIRender] Generating ${previewVariants.length} previews in parallel...`);

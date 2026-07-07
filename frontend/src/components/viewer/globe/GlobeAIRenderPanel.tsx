@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
-import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD } from './useGlobeAIRender';
+import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
@@ -143,6 +143,7 @@ export function GlobeAIRenderPanel({
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [customPrompt, setCustomPrompt] = useState('');
+  const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
@@ -321,6 +322,7 @@ export function GlobeAIRenderPanel({
           projectId,
           customPrompt: customPrompt.trim() || undefined,
           siteBoundaryZone,
+          highFidelity,
           variants: compareRenderVariants,
         });
         if (results.length > 0) {
@@ -352,7 +354,7 @@ export function GlobeAIRenderPanel({
       setRenderProgress(null);
       setIsRendering(false);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, autoSaveGlobeRenders, onClose]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -645,6 +647,20 @@ export function GlobeAIRenderPanel({
             ))}
           </div>
         </div>
+
+        {/* High-fidelity two-pass toggle — camera-preserving artistic styles only */}
+        {HIGH_FIDELITY_STYLES.has(selectedStyle) && (
+          <label className="flex cursor-pointer items-center gap-2 text-[11px] font-bold text-white/70">
+            <input
+              type="checkbox"
+              checked={highFidelity}
+              onChange={(e) => setHighFidelity(e.target.checked)}
+              className="h-3.5 w-3.5 accent-[#c9ff3d]"
+            />
+            High fidelity (two-pass, 2× cost) — restyles the whole frame first, then paints the
+            zones onto it so there is no style seam
+          </label>
+        )}
 
         {/* Custom prompt */}
         <div>
