@@ -460,23 +460,6 @@ function buildOsmRoadCarveStamp(
   const roads = useViewerStore.getState().osmContext?.roads;
   if (!roads || roads.length === 0) return null;
 
-  // Pixels-per-meter at the site: project a 1 m east offset at the first
-  // projectable road vertex.
-  let pxPerMeter = 0;
-  outer: for (const road of roads) {
-    for (const coord of road.coordinates || []) {
-      const [lon, lat] = coord;
-      const p0 = projectToPixels(lon, lat, terrainHeight, camera, width, height);
-      const dLon = 1 / (111_320 * Math.cos((lat * Math.PI) / 180));
-      const p1 = projectToPixels(lon + dLon, lat, terrainHeight, camera, width, height);
-      if (p0 && p1) {
-        pxPerMeter = Math.hypot(p1.x - p0.x, p1.y - p0.y);
-        if (pxPerMeter > 0.01) break outer;
-      }
-    }
-  }
-  if (pxPerMeter <= 0.01) return null;
-
   const stamp = document.createElement('canvas');
   stamp.width = width;
   stamp.height = height;
@@ -486,40 +469,63 @@ function buildOsmRoadCarveStamp(
   stampCtx.strokeStyle = '#ffffff';
   let drawn = 0;
   for (const road of roads) {
-    const pts = (road.coordinates || [])
-      .map(c => projectToPixels(c[0], c[1], terrainHeight, camera, width, height))
-      .filter(Boolean) as { x: number; y: number }[];
-    if (pts.length < 2) continue;
+    const coords = road.coordinates || [];
     const widthM = Number(road.width_m) || 8;
-    stampCtx.lineWidth = Math.max(2, widthM * pxPerMeter + 4); // ~2 px buffer per side
-    stampCtx.beginPath();
-    stampCtx.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < pts.length; i++) stampCtx.lineTo(pts[i].x, pts[i].y);
-    stampCtx.stroke();
-    drawn++;
+    let segments = 0;
+    for (let i = 0; i + 1 < coords.length; i++) {
+      const a = projectToPixels(coords[i][0], coords[i][1], terrainHeight, camera, width, height);
+      const b = projectToPixels(coords[i + 1][0], coords[i + 1][1], terrainHeight, camera, width, height);
+      // BOTH endpoints must project: dropping a behind-camera vertex and
+      // bridging its neighbours would slash a phantom corridor across the frame.
+      if (!a || !b) continue;
+      // Per-segment pixels-per-meter (1 m east probe at the segment start) —
+      // one global scale is off by several x between foreground and horizon
+      // in oblique views.
+      const dLon = 1 / (111_320 * Math.cos((coords[i][1] * Math.PI) / 180));
+      const probe = projectToPixels(coords[i][0] + dLon, coords[i][1], terrainHeight, camera, width, height);
+      const ppm = probe ? Math.hypot(probe.x - a.x, probe.y - a.y) : 0;
+      if (ppm <= 0.01) continue;
+      stampCtx.lineWidth = Math.max(2, widthM * ppm + 4); // ~2 px buffer per side
+      stampCtx.beginPath();
+      stampCtx.moveTo(a.x, a.y);
+      stampCtx.lineTo(b.x, b.y);
+      stampCtx.stroke();
+      segments++;
+    }
+    if (segments) drawn++;
   }
   if (!drawn) return null;
 
-  // Building hulls stay editable — erase them from the stamp.
+  // Building hulls AND drawn street zones stay editable — erase both from the
+  // stamp. Plan/user streets are routinely drawn directly OVER real roads;
+  // the carve protects roads crossing OTHER ground zones (parks, development
+  // areas), never the streets the plan itself claims.
+  const streetishTypes = new Set(['road', 'street', 'path']);
+  const isStreetZone = (zone: SiteZone): boolean =>
+    streetishTypes.has(zone.zone_type as string)
+    || (zone.properties as Record<string, unknown> | undefined)?._plan_role === 'street';
   stampCtx.globalCompositeOperation = 'destination-out';
   stampCtx.fillStyle = '#ffffff';
   for (const zone of zones) {
-    if (!isBuildingZone(zone) || getZoneBuildingHeight(zone) <= 0) continue;
+    const isHullBuilding = isBuildingZone(zone) && getZoneBuildingHeight(zone) > 0;
+    if (!isHullBuilding && !isStreetZone(zone)) continue;
     if (!zone.coordinates || zone.coordinates.length < 3) continue;
     const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
     const pixels = zone.coordinates
       .map(c => projectToPixels(c[0], c[1], zoneTerrainHeight, camera, width, height))
       .filter(Boolean) as { x: number; y: number }[];
     if (pixels.length < 3) continue;
-    const silhouette = zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight);
+    const outline = isHullBuilding
+      ? zoneSilhouette(zone, pixels, camera, width, height, zoneTerrainHeight)
+      : pixels;
     stampCtx.beginPath();
-    stampCtx.moveTo(silhouette[0].x, silhouette[0].y);
-    for (let i = 1; i < silhouette.length; i++) stampCtx.lineTo(silhouette[i].x, silhouette[i].y);
+    stampCtx.moveTo(outline[0].x, outline[0].y);
+    for (let i = 1; i < outline.length; i++) stampCtx.lineTo(outline[i].x, outline[i].y);
     stampCtx.closePath();
     stampCtx.fill();
   }
   stampCtx.globalCompositeOperation = 'source-over';
-  console.log(`[GlobeAIRender] OSM road carve: ${drawn} road corridors stamped (building hulls exempt)`);
+  console.log(`[GlobeAIRender] OSM road carve: ${drawn} road corridors stamped (building hulls + drawn streets exempt)`);
   return stamp;
 }
 
@@ -1430,7 +1436,11 @@ function base64ToDataUri(b64: string): string {
  * building hull) that still read as the same street surface as the raw
  * capture. Scored RELATIVE to the original with luminance normalization so
  * tower shadows / golden-hour lighting don't false-fail (absolute color
- * thresholds do); computed on the raw model output BEFORE clip and grade.
+ * thresholds do); computed on the raw model output pre-grade. The spec says
+ * "after clip" — scoring pre-clip is equivalent here because the sampled
+ * pixels (plan streets minus building hulls, which the carve exempts) are
+ * exactly the pixels the clip passes through unchanged, and it avoids
+ * running the full composite once per candidate.
  * Returns null when the scene has no plan streets or too few visible street
  * pixels — the gate simply doesn't apply.
  */
@@ -1516,8 +1526,13 @@ async function scorePlanStreetSimilarity(
     const lumOrig = 0.299 * orig[i] + 0.587 * orig[i + 1] + 0.114 * orig[i + 2];
     const lumRend = 0.299 * rend[i] + 0.587 * rend[i + 1] + 0.114 * rend[i + 2];
     // Tolerate uniform lighting/shadow shifts (luminance scale), flag
-    // material changes (chroma) — grass or a podium over asphalt fails.
-    const scale = Math.min(3, Math.max(0.2, lumRend / Math.max(8, lumOrig)));
+    // material changes (chroma) — grass over asphalt fails. Known limit: an
+    // achromatic repaint (gray podium on gray asphalt) collapses under any
+    // luminance normalization and false-passes; the ≤8-call pilot (R3-R4)
+    // validates the metric empirically. The clamp is deliberately tight —
+    // [0.5, 2] covers tower shadows and golden hour without letting the
+    // normalization neutralize arbitrary repaints.
+    const scale = Math.min(2, Math.max(0.5, lumRend / Math.max(8, lumOrig)));
     const d = Math.abs(rend[i] - orig[i] * scale)
       + Math.abs(rend[i + 1] - orig[i + 1] * scale)
       + Math.abs(rend[i + 2] - orig[i + 2] * scale);
@@ -1970,6 +1985,10 @@ export function useGlobeAIRender() {
       // the stylized base). 2x cost — opt-in via the panel toggle; only takes
       // effect for HIGH_FIDELITY_STYLES.
       highFidelity?: boolean;
+      // Internal: renderPreviews shares one pass-1 restyle across its whole
+      // compare batch — the scene is static, so N variants must not pay for
+      // (and composite against) N different stylized bases.
+      _twoPassRestyleCache?: { promise?: Promise<string | null> };
       // Internal: skip the isRenderingRef lock so renderPreviews can fan out
       // N parallel calls. renderPreviews sets the ref itself around the batch.
       _skipLock?: boolean;
@@ -1998,8 +2017,8 @@ export function useGlobeAIRender() {
       let baseBase64 = rawBase64;
       const twoPass = Boolean(options.highFidelity) && HIGH_FIDELITY_STYLES.has(style);
       if (twoPass) {
-        console.log('[GlobeAIRender] High-fidelity two-pass: full-frame restyle first');
-        try {
+        const runRestyle = async (): Promise<string | null> => {
+          console.log('[GlobeAIRender] High-fidelity two-pass: full-frame restyle first');
           const restyleResp = await api.post(
             '/api/v1/render/generate',
             {
@@ -2021,8 +2040,43 @@ export function useGlobeAIRender() {
             },
             { timeout: 300000 },
           );
-          if (restyleResp.data?.image_base64) {
-            baseBase64 = restyleResp.data.image_base64;
+          if (!restyleResp.data?.image_base64) return null;
+          // Normalize the restyle back to the CAPTURE's dimensions — every
+          // downstream consumer (labels, payload mask, clip geometry, carve
+          // stamp) projects in canvas-buffer coordinates; a 2K restyle at
+          // different dims would silently misalign all of them.
+          const rawImg = await loadImage(base64ToDataUri(rawBase64));
+          const styImg = await loadImage(base64ToDataUri(restyleResp.data.image_base64));
+          const norm = document.createElement('canvas');
+          norm.width = rawImg.naturalWidth;
+          norm.height = rawImg.naturalHeight;
+          const normCtx = norm.getContext('2d')!;
+          const styAspect = styImg.naturalWidth / styImg.naturalHeight;
+          const targetAspect = norm.width / norm.height;
+          if (Math.abs(styAspect - targetAspect) / targetAspect > 0.02) {
+            const coverScale = Math.max(norm.width / styImg.naturalWidth, norm.height / styImg.naturalHeight);
+            const dw = styImg.naturalWidth * coverScale;
+            const dh = styImg.naturalHeight * coverScale;
+            normCtx.drawImage(styImg, (norm.width - dw) / 2, (norm.height - dh) / 2, dw, dh);
+          } else {
+            normCtx.drawImage(styImg, 0, 0, norm.width, norm.height);
+          }
+          return norm.toDataURL('image/jpeg', 0.9).split(',')[1];
+        };
+        try {
+          // renderPreviews shares one restyle across its compare batch — the
+          // captures are of the same static scene, so the first caller's
+          // stylized base serves every variant.
+          const cache = options._twoPassRestyleCache;
+          let restyled: string | null;
+          if (cache) {
+            cache.promise ??= runRestyle();
+            restyled = await cache.promise;
+          } else {
+            restyled = await runRestyle();
+          }
+          if (restyled) {
+            baseBase64 = restyled;
           } else {
             console.warn('[GlobeAIRender] Two-pass restyle returned no image — continuing single-pass');
           }
@@ -2030,6 +2084,13 @@ export function useGlobeAIRender() {
           console.warn('[GlobeAIRender] Two-pass restyle failed — continuing single-pass:', restyleErr);
         }
       }
+
+      // Two-pass forces Gemini end-to-end: pass 2 is still a stylization onto
+      // an artistic base, and GPT won't stylize (ledger #34) — a GPT pass 2
+      // would reintroduce the exact seam the toggle exists to remove.
+      const effectiveModel = twoPass && baseBase64 !== rawBase64
+        ? 'gemini-3.1-flash-image-preview'
+        : model;
 
       // 1a. Add text labels to screenshot so Gemini can read zone names
       const imageBase64 = await (async () => {
@@ -2144,7 +2205,15 @@ export function useGlobeAIRender() {
       let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
       if (twoPass && baseBase64 !== rawBase64) {
-        prompt += `\nTWO-PASS NOTE: the input image is ALREADY rendered in the declared STYLE — match its medium seamlessly and edit ONLY the masked zones.`;
+        // Pass 1 restyles the zone FILL colors away (monochrome media destroy
+        // them entirely) — identification must key on what survives: the
+        // dashed borders + text labels are drawn AFTER the restyle.
+        prompt += (
+          `\nTWO-PASS NOTE: the input image is ALREADY rendered in the declared STYLE — ` +
+          `match its medium seamlessly and edit ONLY the masked zones. The original zone ` +
+          `FILL colors may have been restyled away: identify each zone by its DASHED ` +
+          `BORDER color and TEXT LABEL (drawn after the restyle) and by the mask.`
+        );
       }
 
       // 4. Collect archetype reference card images (multi-view: 0° street-level +
@@ -2188,7 +2257,7 @@ export function useGlobeAIRender() {
       // (render.py: max_refs = 16 - 1 - previous - context = 15 on this path)
       // and silently slices archetype_images[:15].
       const GPT_MAX_REFS = 15;
-      if (model.startsWith('gpt-image-2') && archetypeImages.length > GPT_MAX_REFS) {
+      if (effectiveModel.startsWith('gpt-image-2') && archetypeImages.length > GPT_MAX_REFS) {
         const dropped = archetypeImages.length - GPT_MAX_REFS;
         archetypeImages.splice(GPT_MAX_REFS);
         console.warn(`[GlobeAIRender] GPT ref cap: kept first ${GPT_MAX_REFS} reference images (plan diagram in slot 1), dropped ${dropped}`);
@@ -2246,7 +2315,7 @@ export function useGlobeAIRender() {
         negative_prompt: ARTISTIC_STYLES.has(style)
           ? 'low quality, blurry, text, watermark'
           : 'cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors',
-        model,
+        model: effectiveModel,
         image_quality: imageQuality,
         project_id: options.projectId,
         temperature: 0.0,
@@ -2316,7 +2385,7 @@ export function useGlobeAIRender() {
             imageUrl,
             prompt,
             seed: resp.data.seed,
-            model,
+            model: effectiveModel,
             imageQuality,
           };
         }
@@ -2345,7 +2414,7 @@ export function useGlobeAIRender() {
           imageUrl: `data:image/png;base64,${clippedBase64}`,
           prompt,
           seed: resp.data.seed,
-          model,
+          model: effectiveModel,
           imageQuality,
         };
       }
@@ -2404,6 +2473,8 @@ export function useGlobeAIRender() {
       customPrompt: options.customPrompt,
       siteBoundaryZone: options.siteBoundaryZone,
       highFidelity: options.highFidelity,
+      // One pass-1 restyle for the whole compare batch (see render()).
+      _twoPassRestyleCache: {},
     };
     try {
       console.log(`[GlobeAIRender] Generating ${previewVariants.length} previews in parallel...`);
@@ -2415,7 +2486,9 @@ export function useGlobeAIRender() {
           _skipLock: true,
         })
           .then((renderResult) => renderResult
-            ? { ...renderResult, model: variant.model, imageQuality: variant.imageQuality, providerLabel: variant.label }
+            // render() reports the ENGINE THAT ACTUALLY RAN (two-pass forces
+            // Gemini) — keep it over the variant's requested model.
+            ? { ...renderResult, model: renderResult.model || variant.model, imageQuality: variant.imageQuality, providerLabel: variant.label }
             : null)
           .catch((err) => {
             const message = getRenderErrorMessage(err);
