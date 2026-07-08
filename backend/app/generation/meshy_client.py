@@ -12,6 +12,25 @@ from app.core.config import get_settings
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
+# Meshy's text-to-3D API rejects prompts over 800 chars with a 400. Our
+# compose_zone_prompt output runs ~2,300 chars (rich site context, good for
+# the render pipeline), so it must be trimmed before it reaches Meshy.
+MESHY_PROMPT_MAX = 800
+
+
+def _cap_prompt(text: str, limit: int = MESHY_PROMPT_MAX) -> str:
+    """Trim to Meshy's char limit, preferring a word boundary."""
+    if not text or len(text) <= limit:
+        return text or ""
+    cut = text[:limit]
+    space = cut.rfind(" ")
+    return cut[:space] if space > limit * 0.6 else cut
+
+
+class MeshyClientError(RuntimeError):
+    """A PERMANENT Meshy client error (4xx other than 429) — retrying it just
+    burns the same request again (e.g. prompt too long, bad params)."""
+
 
 class MeshyClient:
     """Async client for Meshy.ai v2 API."""
@@ -41,7 +60,12 @@ class MeshyClient:
         """
         if resp.status_code >= 400:
             body = resp.text[:300]
-            raise RuntimeError(f"Meshy {operation} failed: HTTP {resp.status_code} — {body}")
+            msg = f"Meshy {operation} failed: HTTP {resp.status_code} — {body}"
+            # 4xx (except 429 rate-limit) is a permanent client error — flag it
+            # so the task doesn't retry a request that can only fail again.
+            if 400 <= resp.status_code < 500 and resp.status_code != 429:
+                raise MeshyClientError(msg)
+            raise RuntimeError(msg)
 
     async def text_to_3d_preview(
         self,
@@ -53,11 +77,11 @@ class MeshyClient:
         async with self._client() as client:
             payload = {
                 "mode": "preview",
-                "prompt": prompt,
+                "prompt": _cap_prompt(prompt),
                 "art_style": art_style,
             }
             if negative_prompt:
-                payload["negative_prompt"] = negative_prompt
+                payload["negative_prompt"] = _cap_prompt(negative_prompt)
 
             resp = await client.post("/openapi/v2/text-to-3d", json=payload)
             self._check(resp, "text_to_3d_preview")

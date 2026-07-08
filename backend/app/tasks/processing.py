@@ -672,9 +672,12 @@ def generate_3d_model_ai(
         # succeed and previously burned all retries 30s apart.
         if building is None:
             raise
-        # Exponential backoff: a Meshy concurrent-task-limit rejection lasts as
-        # long as the tasks ahead of it (~4-5 min each) — flat 30s retries all
-        # landed inside the same busy window and exhausted immediately.
+        # Permanent client errors (bad prompt/params) can only fail again —
+        # don't retry, just leave the building failed with its captured reason.
+        from app.generation.meshy_client import MeshyClientError
+        if isinstance(exc, MeshyClientError):
+            return {"status": "failed", "error": str(exc)[:200]}
+        # Exponential backoff for TRANSIENT failures (rate limit, 5xx, timeout).
         raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
     finally:
         session.close()

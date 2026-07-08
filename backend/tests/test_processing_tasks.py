@@ -175,10 +175,13 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
         engine='meshy',
     )
 
+    # model_url is the browser-reachable /api/v1/files proxy path (NOT the raw
+    # storage endpoint _upload_to_storage returns) so the client GLB viewer can
+    # actually fetch it.
     assert result == {
         'status': 'completed',
         'building_id': str(building.id),
-        'model_url': f'https://storage.test/projects/{building.project_id}/models/{building.id}_ai.glb',
+        'model_url': f'/api/v1/files/projects/{building.project_id}/models/{building.id}_ai.glb',
     }
     assert storage_writes == [
         (
@@ -196,7 +199,7 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
     assert building.generation_prompt == 'Tower prompt'
     assert building.generation_engine == 'meshy'
     assert building.meshy_task_id == 'final-task'
-    assert building.model_url == f'https://storage.test/projects/{building.project_id}/models/{building.id}_ai.glb'
+    assert building.model_url == f'/api/v1/files/projects/{building.project_id}/models/{building.id}_ai.glb'
     assert building.lod_urls == {'0': building.model_url}
     assert any(update['meta']['step'] == 'preview_ready' for update in progress_updates)
     assert propagated
