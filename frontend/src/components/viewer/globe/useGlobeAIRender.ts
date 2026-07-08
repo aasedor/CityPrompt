@@ -540,6 +540,7 @@ function generateMask(
   width: number,
   height: number,
   terrainHeight: number,
+  carveRoads = true,
 ): string {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -605,7 +606,12 @@ function generateMask(
 
   // P1.9: real roads crossing the editable region (outside building hulls)
   // are painted back to BLACK (keep-as-is) in the payload mask.
-  const carveStamp = buildOsmRoadCarveStamp(zones, camera, width, height, terrainHeight);
+  // GPT gets carveRoads=false — this is a P1 session addition, and the GPT
+  // path is pinned to its pre-session mask (it renders "great before" per the
+  // user; the carve stays on for Gemini, which keeps the working clip).
+  const carveStamp = carveRoads
+    ? buildOsmRoadCarveStamp(zones, camera, width, height, terrainHeight)
+    : null;
   if (carveStamp) {
     const stampCtx = carveStamp.getContext('2d')!;
     stampCtx.globalCompositeOperation = 'source-in';
@@ -2199,7 +2205,12 @@ export function useGlobeAIRender() {
 
       // 2. Generate binary mask from VISIBLE zone polygons only
       console.log('[GlobeAIRender] Generating mask...');
-      const maskBase64 = generateMask(visibleZones, camera, canvas.width, canvas.height, terrainHeight);
+      // GPT is pinned to its pre-session payload mask (no OSM road carve) —
+      // Gemini keeps the P1 carve.
+      const maskBase64 = generateMask(
+        visibleZones, camera, canvas.width, canvas.height, terrainHeight,
+        !effectiveModel.startsWith('gpt-image-2'),
+      );
 
       // 3. Build SCHEMA prompt from VISIBLE zone archetypes only
       let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
@@ -2293,7 +2304,9 @@ export function useGlobeAIRender() {
       // instructions more heavily. Budget-neutral: paid for by merging the
       // redundant FOOTPRINT + FINAL constraints in buildPrompt (ledger: ≤8
       // constraints; adding a clause must displace one).
-      if (planDiagramAttached) {
+      // GPT-exempt: this is a P1 session prompt addition, and the GPT path is
+      // pinned to its pre-session prompt ("great before" per the user).
+      if (planDiagramAttached && !effectiveModel.startsWith('gpt-image-2')) {
         prompt += (
           `\n\nSTREETS: the gray corridors in the PLAN DIAGRAM reference (Image 2) are streets — ` +
           `render them as open paved right-of-way, continuous and unobstructed curb to curb; ` +
