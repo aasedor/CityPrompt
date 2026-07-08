@@ -145,16 +145,21 @@ export function ProjectViewPage() {
   // which sits two components down inside ZonePropertiesPanel). Only plan and
   // height-framework layers are touched; shapefile-layer hiding is preserved.
   useEffect(() => {
-    const isPlanish = (name: string) =>
-      name.startsWith('Plan — ') || name.startsWith('Height framework — ');
+    // Solo manages ONLY drawn plan layers. Height-framework overlays are owned
+    // by the auto-hide effect above and must stay hidden — including through
+    // "All" (a null label). Treating frameworks as "planish" here previously
+    // stripped them out of hiddenLayers on every solo/All, and the auto-hide
+    // effect (one-shot per name) never re-hid them, flooding the plan with
+    // giant storey-band polygons.
+    const isPlanLayer = (name: string) => name.startsWith('Plan — ');
     const onSolo = (event: Event) => {
       const label = (event as CustomEvent<{ label?: string | null }>).detail?.label;
       setHiddenLayers((prev) => {
-        const next = new Set([...prev].filter((n) => !isPlanish(n)));
-        if (!label) return next; // show all plan layers again
+        const next = new Set([...prev].filter((n) => !isPlanLayer(n)));
+        if (!label) return next; // "All" — show every plan (frameworks untouched)
         for (const zone of siteZones) {
           const src = zone.properties?._imported_from;
-          if (typeof src === 'string' && isPlanish(src) && src !== `Plan — ${label}`) {
+          if (typeof src === 'string' && isPlanLayer(src) && src !== `Plan — ${label}`) {
             next.add(src);
           }
         }

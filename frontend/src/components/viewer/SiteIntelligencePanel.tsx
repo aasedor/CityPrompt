@@ -679,6 +679,27 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     briefPrefilledRef.current = true; // one shot per zone, prefilled or not
   }, [scenarios, customBrief]);
 
+  // Only one plan should be visible on the globe at a time. When a zone loads
+  // already carrying multiple drawn plans (stacked from earlier draws), solo
+  // the most-recently-drawn one so they don't overlay. Fires once per zone and
+  // only when nothing is explicitly soloed yet — a later manual Solo/All wins.
+  const autoSoloedRef = useRef(false);
+  useEffect(() => {
+    autoSoloedRef.current = false;
+  }, [zone.id]);
+  useEffect(() => {
+    if (autoSoloedRef.current || soloId) return;
+    const drawn = scenarios.filter((s) => (s.payload as any)?.plan?.status === 'complete');
+    if (drawn.length < 2) return; // 0 or 1 plan can't stack — leave it shown
+    const newest = drawn.reduce((a, b) => {
+      const ta = String((a.payload as any)?.plan?.generated_at ?? '');
+      const tb = String((b.payload as any)?.plan?.generated_at ?? '');
+      return tb > ta ? b : a;
+    });
+    autoSoloedRef.current = true;
+    handleSolo(newest);
+  }, [scenarios, soloId, handleSolo]);
+
   // Poll while anything is in flight. 'partial' is included because the build
   // checkpoints a partial snapshot before the policy phase — it usually flips
   // to 'complete' moments later (a truly-terminal partial just keeps a cheap
@@ -784,6 +805,12 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
     setDrawingId(row.id);
     try {
       await urbanDnaApi.generatePlan(row.id);
+      // One plan on the globe at a time: soloing the scenario we just queued
+      // hides every other drawn plan, and this plan's zones appear as they're
+      // drawn — so a new plan REPLACES the previous one instead of stacking on
+      // top of it. Fired only after a successful queue so a failed draw never
+      // blanks the user's current view. Use "All" on a card to compare plans.
+      handleSolo(row);
       toast.success(`Drawing the ${row.label} plan — streets, blocks and massing`);
       await refresh();
     } catch (err) {
