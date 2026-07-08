@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library } from 'lucide-react';
+import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, LayoutOption, PreviewHistoryEntry, ModelLibraryEntry, CustomStyleDomain } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -13,6 +13,7 @@ import { useViewerStore } from '@/store';
 import { undoableActionMatchesZoneId, useUndoRedoStore } from '@/store/undoRedo';
 import { LayoutPreviewPanel } from './LayoutPreviewPanel';
 import { SiteIntelligencePanel } from './SiteIntelligencePanel';
+import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import {
@@ -3882,6 +3883,7 @@ function QuickRegenerateSection({ building }: { building: Building }) {
   const [prompt, setPrompt] = useState(building.generation_prompt || '');
   const [regenerating, setRegenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showModel, setShowModel] = useState(false);
 
   useEffect(() => {
     setPrompt(building.generation_prompt || '');
@@ -3921,6 +3923,24 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 
   return (
     <div className="rounded-lg border border-purple-200 bg-purple-50/50 p-2.5">
+      {building.model_url && (
+        <>
+          <button
+            onClick={() => setShowModel(true)}
+            className="mb-1.5 flex w-full items-center justify-center gap-1.5 rounded-lg border-2 border-[#151515] bg-[#28c7e8] px-3 py-1.5 text-xs font-black uppercase text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#4dd4ef]"
+          >
+            <Box size={13} />
+            View 3D Model
+          </button>
+          {showModel && (
+            <BuildingModelViewer
+              modelUrl={building.model_url}
+              name={building.name || 'Building'}
+              onClose={() => setShowModel(false)}
+            />
+          )}
+        </>
+      )}
       <label className="mb-1 block text-[11px] font-medium text-purple-700">Regenerate with modified prompt</label>
       <textarea
         value={prompt}
