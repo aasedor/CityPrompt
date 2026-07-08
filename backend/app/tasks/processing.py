@@ -518,7 +518,7 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
         break  # A building belongs to at most one zone
 
 
-@celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=2, soft_time_limit=900, time_limit=960)
+@celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=3, soft_time_limit=900, time_limit=960)
 def generate_3d_model_ai(
     self, building_id: str, prompt: str, mode: str = "text",
     image_url: str = None, refine: bool = True,
@@ -645,6 +645,11 @@ def generate_3d_model_ai(
         try:
             if building is not None:
                 building.generation_status = "failed"
+                # Persist WHY — the UI and post-mortems read this; failures
+                # with an empty error field are invisible to the user.
+                specs = dict(building.specifications or {})
+                specs["generation_error"] = str(exc)[:400]
+                building.specifications = specs
                 session.commit()
         except Exception as inner_exc:
             session.rollback()
@@ -653,7 +658,10 @@ def generate_3d_model_ai(
         # succeed and previously burned all retries 30s apart.
         if building is None:
             raise
-        raise self.retry(exc=exc, countdown=30)
+        # Exponential backoff: a Meshy concurrent-task-limit rejection lasts as
+        # long as the tasks ahead of it (~4-5 min each) — flat 30s retries all
+        # landed inside the same busy window and exhausted immediately.
+        raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
     finally:
         session.close()
 

@@ -26,8 +26,13 @@ async def queue_ai_generation_task(
     engine: str = "meshy",
     style_id: str | None = None,
     negative_prompt: str | None = None,
+    countdown: int = 0,
 ) -> str | None:
-    """Commit the current DB state before queueing AI generation work."""
+    """Commit the current DB state before queueing AI generation work.
+
+    countdown staggers batch submissions — Meshy rejects bursts over its
+    concurrent-task limit with 400s, so generate-all spaces its tasks out.
+    """
     from app.tasks.processing import generate_3d_model_ai
 
     building.generation_engine = engine
@@ -35,15 +40,18 @@ async def queue_ai_generation_task(
 
     try:
         task = await asyncio.to_thread(
-            generate_3d_model_ai.delay,
-            str(building.id),
-            prompt,
-            mode,
-            image_url,
-            refine,
-            engine,
-            style_id,
-            negative_prompt,
+            generate_3d_model_ai.apply_async,
+            args=[
+                str(building.id),
+                prompt,
+                mode,
+                image_url,
+                refine,
+                engine,
+                style_id,
+                negative_prompt,
+            ],
+            countdown=countdown,
         )
     except Exception as exc:
         building.generation_status = "failed"

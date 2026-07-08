@@ -31,6 +31,18 @@ class MeshyClient:
             timeout=60.0,
         )
 
+    @staticmethod
+    def _check(resp: httpx.Response, operation: str) -> None:
+        """raise_for_status, but KEEP Meshy's response body in the message.
+
+        Meshy 4xxs carry the actual reason ("concurrent task limit", "prompt
+        too long", ...) in the body — a bare status line made failures
+        undiagnosable (12 buildings failed with empty errors on 2026-07-07).
+        """
+        if resp.status_code >= 400:
+            body = resp.text[:300]
+            raise RuntimeError(f"Meshy {operation} failed: HTTP {resp.status_code} — {body}")
+
     async def text_to_3d_preview(
         self,
         prompt: str,
@@ -48,7 +60,7 @@ class MeshyClient:
                 payload["negative_prompt"] = negative_prompt
 
             resp = await client.post("/openapi/v2/text-to-3d", json=payload)
-            resp.raise_for_status()
+            self._check(resp, "text_to_3d_preview")
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
             logger.info(f"Meshy text-to-3D preview started: {task_id}")
@@ -66,7 +78,7 @@ class MeshyClient:
             if texture_prompt:
                 payload["texture_prompt"] = texture_prompt
             resp = await client.post("/openapi/v2/text-to-3d", json=payload)
-            resp.raise_for_status()
+            self._check(resp, "text_to_3d_refine")
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
             logger.info(f"Meshy text-to-3D refine started: {task_id} (pbr=True)")
@@ -77,7 +89,7 @@ class MeshyClient:
         async with self._client() as client:
             payload = {"image_url": image_url}
             resp = await client.post("/openapi/v2/image-to-3d", json=payload)
-            resp.raise_for_status()
+            self._check(resp, "image_to_3d")
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
             logger.info(f"Meshy image-to-3D started: {task_id}")

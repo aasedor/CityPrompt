@@ -2064,6 +2064,12 @@ async def generate_all(
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
             continue
+        # AI-planner framework bands ("≤6 storeys", "≤27+ storeys") share
+        # zone_type development_area but are height-reference OVERLAYS, not
+        # buildable content — generating slabs for them wastes Meshy credits
+        # and litters the scene (the render pipeline drops them the same way).
+        if (zone.properties or {}).get("_plan_role") == "framework_height":
+            continue
 
         try:
             zone_props = zone.properties or {}
@@ -2100,9 +2106,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
+                                countdown=generations_queued * 45,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt)
+                            await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2186,9 +2193,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
+                                countdown=generations_queued * 45,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt)
+                            await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2260,9 +2268,10 @@ async def generate_all(
                         prompt,
                         mode="image",
                         image_url=ref_images[0],
+                        countdown=generations_queued * 45,
                     )
                 else:
-                    await queue_ai_generation_task(db, building, prompt)
+                    await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
                 generations_queued += 1
                 queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
             except Exception as e:
