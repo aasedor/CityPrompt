@@ -142,6 +142,17 @@ def _upload_to_storage(key: str, data: bytes, content_type: str) -> str:
     return f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{key}"
 
 
+def _file_proxy_url(key: str) -> str:
+    """Browser-reachable URL for a stored object.
+
+    _upload_to_storage returns the internal S3 endpoint (e.g.
+    http://minio:9000/...), which a browser can't resolve. Model/LOD GLBs are
+    fetched client-side by the 3D viewer, so they must be served through the
+    /api/v1/files proxy — the same pattern thumbnails and saved renders use.
+    """
+    return f"/api/v1/files/{key}"
+
+
 # Minimum AI confidence score to accept a building interpretation.
 # Results below this threshold are logged and skipped.
 CONFIDENCE_THRESHOLD = 0.3
@@ -568,11 +579,12 @@ def generate_3d_model_ai(
 
         def _preview_callback(preview_data: bytes) -> None:
             preview_key = f"projects/{building.project_id}/models/{building_id}_preview.glb"
-            preview_s3_url = _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
-            building.model_url = preview_s3_url
-            building.lod_urls = {"0": preview_s3_url}
+            _upload_to_storage(preview_key, preview_data, "model/gltf-binary")
+            preview_url = _file_proxy_url(preview_key)
+            building.model_url = preview_url
+            building.lod_urls = {"0": preview_url}
             session.commit()
-            logger.info(f"Preview model saved for building {building_id}: {preview_s3_url}")
+            logger.info(f"Preview model saved for building {building_id}: {preview_url}")
             _progress_callback(0.5, "preview_ready")
 
         result = asyncio.run(provider.run_generation(
@@ -592,12 +604,14 @@ def generate_3d_model_ai(
         project_id = building.project_id
         model_suffix = "tripo" if provider.engine_id == "tripo" else "ai"
         model_key = f"projects/{project_id}/models/{building_id}_{model_suffix}.glb"
-        model_url = _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
+        _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
+        model_url = _file_proxy_url(model_key)
 
         lod_urls = {"0": model_url}
         for level, lod_glb_data in (result.lod_glb_data or {}).items():
             lod_key = f"projects/{project_id}/models/{building_id}_{provider.engine_id}_lod{level}.glb"
-            lod_urls[str(level)] = _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
+            _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
+            lod_urls[str(level)] = _file_proxy_url(lod_key)
 
         _progress_callback(0.95, "updating")
 
@@ -760,13 +774,15 @@ def generate_3d_model(self, building_id: str, building_data: dict):
 
         # Upload full-detail model (LOD 0)
         model_key = f"projects/{project_id}/models/{building_id}.glb"
-        model_url = _upload_to_storage(model_key, glb_data, "model/gltf-binary")
+        _upload_to_storage(model_key, glb_data, "model/gltf-binary")
+        model_url = _file_proxy_url(model_key)
 
         # Upload LOD variants
         lod_urls = {"0": model_url}
         for level, lod_data in lod_glbs.items():
             lod_key = f"projects/{project_id}/models/{building_id}_lod{level}.glb"
-            lod_url = _upload_to_storage(lod_key, lod_data, "model/gltf-binary")
+            _upload_to_storage(lod_key, lod_data, "model/gltf-binary")
+            lod_url = _file_proxy_url(lod_key)
             lod_urls[str(level)] = lod_url
             logger.info(f"LOD {level} uploaded: {lod_url}")
 
