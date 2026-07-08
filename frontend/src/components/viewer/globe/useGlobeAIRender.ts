@@ -2330,8 +2330,12 @@ export function useGlobeAIRender() {
       // photoreal/photomontage only: when plan streets no longer read as the
       // original street surface, re-roll once and keep the better score.
       // Kill switch: localStorage cc_render_verification_gate = '0'.
+      // GPT is exempt: its output is reframed (ledger §4-B), so a pixel-wise
+      // comparison against the raw capture false-fails and burns a paid
+      // re-roll that would be just as misaligned.
       if (
         VERIFICATION_GATE_STYLES.has(style)
+        && !effectiveModel.startsWith('gpt-image-2')
         && localStorage.getItem('cc_render_verification_gate') !== '0'
         && resp.data?.image_base64
       ) {
@@ -2366,8 +2370,14 @@ export function useGlobeAIRender() {
         // longer align with the input screenshot — screen-space clipping is
         // geometrically incoherent for them. Return the full-frame
         // reinterpretation; boundary fidelity comes from the plan diagram.
-        if (REPROJECTING_STYLES.has(style)) {
-          console.log(`[GlobeAIRender] Style "${style}" re-projects the camera — full-frame output, polygon clip skipped`);
+        // GPT Image 2 gets the same treatment for EVERY style: it reframes
+        // its output (ledger §4-B), so clipping its pixels into the zone
+        // polygons composites a misaligned patch over the raw capture —
+        // full-frame is how GPT renders always shipped before the clip
+        // started engaging.
+        const fullFrame = REPROJECTING_STYLES.has(style) || effectiveModel.startsWith('gpt-image-2');
+        if (fullFrame) {
+          console.log(`[GlobeAIRender] Full-frame output (${REPROJECTING_STYLES.has(style) ? `style "${style}" re-projects the camera` : 'GPT reframes — screen-space clip incoherent'}) — polygon clip skipped`);
           // The style grade normally runs inside clipRenderToZones — apply it
           // to the full frame here so graded styles (site-plan-photo) don't
           // silently lose it. Ungraded artistic styles pass through as-is.
