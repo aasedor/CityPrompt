@@ -22,6 +22,24 @@ ProgressCallback = Callable[[float, str], None]
 TaskCallback = Callable[[str], None]
 PreviewCallback = Callable[[bytes], None]
 
+# ── Meshy runtime ceilings ───────────────────────────────────────────────
+# Meshy's latency has grown (Meshy-6 meshes + PBR texturing). The old poll
+# ceilings (300s preview + 600s refine) summed to EXACTLY the Celery soft
+# limit of 900s, so any slow refine guaranteed a soft-kill part-way through
+# the upload — the task died after Meshy had already been paid, and the retry
+# re-ran the whole generation from scratch.
+#
+# INVARIANT: MESHY_MAX_RUNTIME_S must stay strictly greater than
+# PREVIEW + REFINE, leaving headroom to download/upload a ~30 MB GLB. The
+# Celery soft_time_limit is derived from it (see tasks/processing.py) so the
+# two can never drift back out of sync.
+MESHY_PREVIEW_TIMEOUT_S = 600   # 10 min
+MESHY_REFINE_TIMEOUT_S = 900    # 15 min; on timeout we keep the preview mesh
+MESHY_IO_HEADROOM_S = 300       # GLB download + S3 upload + thumbnail
+MESHY_MAX_RUNTIME_S = (
+    MESHY_PREVIEW_TIMEOUT_S + MESHY_REFINE_TIMEOUT_S + MESHY_IO_HEADROOM_S
+)
+
 
 class GenerationEngine(str, enum.Enum):
     """Available AI 3D generation engine identifiers."""
@@ -141,7 +159,7 @@ class MeshyEngine(BaseGenerationEngine):
         self._emit_task_id(task_callback, task_id)
         self._emit_progress(progress_callback, 0.3, "polling")
 
-        result = await client.poll_until_done(task_id, timeout=300, task_type=task_type)
+        result = await client.poll_until_done(task_id, timeout=MESHY_PREVIEW_TIMEOUT_S, task_type=task_type)
         preview_glb_url = (result.get("model_urls") or {}).get("glb")
         if preview_callback and preview_glb_url:
             try:
@@ -160,7 +178,7 @@ class MeshyEngine(BaseGenerationEngine):
                 logger.info("Refine task started: %s (from preview %s)", refine_task_id, task_id)
                 self._emit_task_id(task_callback, refine_task_id)
                 final_task_id = refine_task_id
-                result = await client.poll_until_done(refine_task_id, timeout=600, task_type="text")
+                result = await client.poll_until_done(refine_task_id, timeout=MESHY_REFINE_TIMEOUT_S, task_type="text")
                 logger.info(
                     "Meshy refine result keys: %s, model_urls: %s",
                     list(result.keys()),

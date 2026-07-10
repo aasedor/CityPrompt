@@ -206,3 +206,123 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
     assert session.commit_calls >= 4
     assert session.rollback_calls == 0
     assert session.closed is True
+
+
+# ---------------------------------------------------------------------------
+# Meshy runtime ceilings (2026-07-10)
+#
+# A slow refine used to soft-kill the Celery task mid-upload: the old poll
+# ceilings (300s + 600s) summed to EXACTLY soft_time_limit=900s. The model was
+# paid for and uploaded, then the row was flipped to "failed" and the whole
+# generation retried from scratch (~20 credits per retry).
+# ---------------------------------------------------------------------------
+
+
+def test_soft_time_limit_exceeds_the_sum_of_meshy_poll_timeouts():
+    """The bug that killed paid generations: limits stacked flush against each
+    other. soft_time_limit must leave headroom above preview + refine."""
+    from app.generation.engine import (
+        MESHY_MAX_RUNTIME_S,
+        MESHY_PREVIEW_TIMEOUT_S,
+        MESHY_REFINE_TIMEOUT_S,
+    )
+
+    poll_sum = MESHY_PREVIEW_TIMEOUT_S + MESHY_REFINE_TIMEOUT_S
+    task = processing.generate_3d_model_ai
+    assert task.soft_time_limit == MESHY_MAX_RUNTIME_S
+    assert task.soft_time_limit > poll_sum, "soft limit must exceed preview+refine"
+    assert task.time_limit > task.soft_time_limit
+
+
+def _ai_task_fixture(monkeypatch, run_generation):
+    """Wire generate_3d_model_ai against a fake provider/session."""
+    building = SimpleNamespace(
+        id=uuid.uuid4(), project_id=uuid.uuid4(), generation_status='idle',
+        generation_prompt=None, generation_engine=None, architectural_style=None,
+        meshy_task_id=None, model_url=None, lod_urls=None,
+        preview_url=None, preview_status='idle', specifications={},
+    )
+    session = _DummyAISession(building)
+
+    class FakeProvider:
+        engine_id = 'meshy'
+
+        def is_available(self):
+            return True
+
+        async def run_generation(self, **kwargs):
+            return await run_generation(**kwargs)
+
+    monkeypatch.setattr(processing, '_get_sync_session', lambda: session)
+    monkeypatch.setattr(processing, 'get_engine', lambda engine_id: FakeProvider())
+    monkeypatch.setattr(processing, '_upload_to_storage', lambda k, d, c: f'https://storage.test/{k}')
+    monkeypatch.setattr(processing, '_propagate_model_to_siblings', lambda *a: None)
+    monkeypatch.setattr(processing, 'log_api_usage_sync', lambda **kw: None)
+    monkeypatch.setattr(processing.generate_3d_model_ai, 'update_state', lambda **kw: None)
+    monkeypatch.setattr(
+        processing.generate_3d_model_ai, 'retry',
+        lambda *a, **kw: (_ for _ in ()).throw(AssertionError('retry must not be called')),
+    )
+    return building, session
+
+
+def test_meshy_timeout_is_terminal_and_does_not_retry(monkeypatch):
+    """A retry re-runs the whole paid generation; timeouts must not retry."""
+    async def times_out(**kwargs):
+        raise TimeoutError('Meshy task abc timed out after 900s')
+
+    building, _ = _ai_task_fixture(monkeypatch, times_out)
+
+    result = processing.generate_3d_model_ai.run(str(building.id), 'p', mode='text', engine='meshy')
+
+    assert result['status'] == 'failed'
+    assert 'timed out' in result['error']
+    assert building.generation_status == 'failed'
+    assert 'timed out' in building.specifications['generation_error']
+
+
+def test_soft_time_limit_kill_is_terminal_and_does_not_retry(monkeypatch):
+    from celery.exceptions import SoftTimeLimitExceeded
+
+    async def killed(**kwargs):
+        raise SoftTimeLimitExceeded()
+
+    building, _ = _ai_task_fixture(monkeypatch, killed)
+
+    result = processing.generate_3d_model_ai.run(str(building.id), 'p', mode='text', engine='meshy')
+
+    assert result['status'] == 'failed'
+    assert building.generation_status == 'failed'
+
+
+def test_post_success_error_never_buries_a_committed_model(monkeypatch):
+    """The exact pilot symptom: GLB uploaded and paid for, row said 'failed'.
+
+    A soft-kill can land at any bytecode boundary — including after the success
+    commit, in the trailing log line, which sits outside every inner
+    try/except. The task must report the completed model, not bury it.
+    """
+    from celery.exceptions import SoftTimeLimitExceeded
+
+    from app.generation.engine import GenerationResult
+
+    async def ok(**kwargs):
+        return GenerationResult(glb_data=b'glb', engine='meshy', task_id='t1', thumbnail_url=None)
+
+    building, _ = _ai_task_fixture(monkeypatch, ok)
+
+    real_info = processing.logger.info
+
+    def late_kill(msg, *args, **kwargs):
+        if isinstance(msg, str) and msg.startswith('AI 3D model generated'):
+            raise SoftTimeLimitExceeded()
+        return real_info(msg, *args, **kwargs)
+
+    monkeypatch.setattr(processing.logger, 'info', late_kill)
+
+    result = processing.generate_3d_model_ai.run(str(building.id), 'p', mode='text', engine='meshy')
+
+    assert result['status'] == 'completed'
+    assert result['model_url'].endswith('_ai.glb')
+    assert building.generation_status == 'completed'
+    assert building.model_url.endswith('_ai.glb')

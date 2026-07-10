@@ -10,12 +10,13 @@ from datetime import datetime, timezone
 
 import boto3
 from botocore.config import Config
+from celery.exceptions import SoftTimeLimitExceeded
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import get_settings
 from app.core.usage_logger import log_api_usage_sync
-from app.generation.engine import get_engine
+from app.generation.engine import MESHY_MAX_RUNTIME_S, get_engine
 from app.tasks.worker import celery_app
 
 logger = logging.getLogger(__name__)
@@ -529,7 +530,15 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
         break  # A building belongs to at most one zone
 
 
-@celery_app.task(bind=True, name="generate_3d_model_ai", max_retries=3, soft_time_limit=900, time_limit=960)
+# soft/hard limits are DERIVED from the engine's poll ceilings so they can't
+# drift back under them (which silently soft-killed paid generations).
+@celery_app.task(
+    bind=True,
+    name="generate_3d_model_ai",
+    max_retries=3,
+    soft_time_limit=MESHY_MAX_RUNTIME_S,
+    time_limit=MESHY_MAX_RUNTIME_S + 120,
+)
 def generate_3d_model_ai(
     self, building_id: str, prompt: str, mode: str = "text",
     image_url: str = None, refine: bool = True,
@@ -546,6 +555,9 @@ def generate_3d_model_ai(
     session = _get_sync_session()
     building = None
     provider = None
+    # Set only once the completed model is durably committed. Read in the error
+    # handler WITHOUT touching the DB (the session may be broken there).
+    completed_model_url: str | None = None
 
     try:
         from app.models.models import Building
@@ -619,6 +631,11 @@ def generate_3d_model_ai(
         building.lod_urls = lod_urls
         building.generation_status = "completed"
         building.meshy_task_id = result.task_id
+        # Commit the paid result IMMEDIATELY. Everything below is optional
+        # polish; a crash or soft-kill during it must not lose a model that
+        # Meshy already charged for and that is already uploaded to storage.
+        session.commit()
+        completed_model_url = model_url
 
         if result.thumbnail_url:
             try:
@@ -628,11 +645,11 @@ def generate_3d_model_ai(
                 _upload_to_storage(thumb_key, thumb_data, "image/png")
                 building.preview_url = f"/api/v1/files/{thumb_key}"
                 building.preview_status = "completed"
+                session.commit()
                 logger.info(f"Thumbnail saved for building {building_id}")
             except Exception as thumb_err:
+                session.rollback()
                 logger.warning(f"Failed to save thumbnail (non-fatal): {thumb_err}")
-
-        session.commit()
 
         try:
             _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
@@ -656,6 +673,15 @@ def generate_3d_model_ai(
             status="failed",
             building_id=building_id if building is not None else None,
         )
+        # Never bury a generation that already succeeded and was committed —
+        # an exception in the optional tail (thumbnail, sibling propagation)
+        # used to flip a completed, uploaded model to "failed".
+        if completed_model_url is not None:
+            logger.warning(
+                "Building %s already completed; ignoring post-success error: %s", building_id, exc
+            )
+            return {"status": "completed", "building_id": building_id, "model_url": completed_model_url}
+
         try:
             if building is not None:
                 building.generation_status = "failed"
@@ -677,7 +703,13 @@ def generate_3d_model_ai(
         from app.generation.meshy_client import MeshyClientError
         if isinstance(exc, MeshyClientError):
             return {"status": "failed", "error": str(exc)[:200]}
-        # Exponential backoff for TRANSIENT failures (rate limit, 5xx, timeout).
+        # Running past the ceiling is terminal too. A retry re-runs the ENTIRE
+        # paid generation (a fresh preview + refine ≈ 20 Meshy credits) and, at
+        # these limits, would almost certainly hit the same wall — the old
+        # behaviour silently burned 4x credits per stuck building.
+        if isinstance(exc, (TimeoutError, SoftTimeLimitExceeded)):
+            return {"status": "failed", "error": str(exc)[:200]}
+        # Exponential backoff for genuinely TRANSIENT failures (network, 5xx).
         raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
     finally:
         session.close()
