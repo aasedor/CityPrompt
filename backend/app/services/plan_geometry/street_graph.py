@@ -29,10 +29,20 @@ ENTRY_SNAP_MAX_M = 60.0  # an entry further than this from any gridline is "unse
 
 
 @dataclass
+class StreetSegment:
+    """One full-span grid line with its own ROW width (spine vs local)."""
+    line: LineString              # metric, full-span (unclipped, like full_span_kept)
+    row_width_m: float
+    role: str                     # "spine" | "local"
+
+
+@dataclass
 class StreetNetwork:
     centerlines: list[LineString] = field(default_factory=list)
     street_area: BaseGeometry | None = None       # unioned ROW polygons (metric)
     intersections: list[Point] = field(default_factory=list)
+    segments: list[StreetSegment] = field(default_factory=list)
+    roundabouts: list[tuple[Point, float]] = field(default_factory=list)  # (center, radius)
     entries_served: int = 0
     entries_total: int = 0
     notes: list[dict[str, Any]] = field(default_factory=list)
@@ -102,7 +112,7 @@ def generate_street_network(
     # Work in a rotated frame where the grid is axis-aligned.
     work = affinity.rotate(inset, -angle, origin=origin)
     minx, miny, maxx, maxy = work.bounds
-    spacing = rules.block_target_m + rules.row_width_m
+    spacing = rules.block_target_m + rules.local_row_width_m
 
     # Distribute lines EVENLY across each span (n = floor(span/spacing)):
     # edge-anchored spacing leaves an oversized orphan block whenever the span
@@ -118,11 +128,22 @@ def generate_street_network(
         xs = _snap_nearest(xs, first.x, spacing / 3)
         ys = _snap_nearest(ys, first.y, spacing / 3)
 
-    lines_work: list[LineString] = []
+    # Exactly one spine: the long-axis line nearest the site centroid (the
+    # rotation origin maps to itself in the work frame). Long-axis lines are
+    # the horizontals (grid angle follows the longest MRR edge = x axis), so
+    # prefer a y-position; skinny sites with no interior y fall back to x.
+    spine_y = min(ys, key=lambda y: (abs(y - origin.y), y)) if ys else None
+    spine_x = None
+    if spine_y is None and xs:
+        spine_x = min(xs, key=lambda x: (abs(x - origin.x), x))
+
+    lines_work: list[tuple[LineString, str]] = []
     for x in xs:
-        lines_work.append(LineString([(x, miny - spacing), (x, maxy + spacing)]))
+        role = "spine" if spine_x is not None and x == spine_x else "local"
+        lines_work.append((LineString([(x, miny - spacing), (x, maxy + spacing)]), role))
     for y in ys:
-        lines_work.append(LineString([(minx - spacing, y), (maxx + spacing, y)]))
+        role = "spine" if spine_y is not None and y == spine_y else "local"
+        lines_work.append((LineString([(minx - spacing, y), (maxx + spacing, y)]), role))
 
     served = 0
     for entry in entries_work:
@@ -143,8 +164,8 @@ def generate_street_network(
     # lines: a street clipped short of the boundary leaves a land strip at its
     # end and the blocks never sever (observed: one connected block with slits).
     boundary_work = affinity.rotate(boundary_m, -angle, origin=origin)
-    full_span_kept: list[LineString] = []
-    for line in lines_work:
+    full_span_kept: list[StreetSegment] = []
+    for line, role in lines_work:
         clipped = line.intersection(boundary_work)
         pieces = [clipped] if isinstance(clipped, LineString) else list(getattr(clipped, "geoms", []))
         kept_any = False
@@ -153,7 +174,12 @@ def generate_street_network(
                 network.centerlines.append(affinity.rotate(piece, angle, origin=origin))
                 kept_any = True
         if kept_any:
-            full_span_kept.append(affinity.rotate(line, angle, origin=origin))
+            width = rules.spine_row_width_m if role == "spine" else rules.local_row_width_m
+            full_span_kept.append(StreetSegment(
+                line=affinity.rotate(line, angle, origin=origin),
+                row_width_m=width, role=role,
+            ))
+    network.segments = full_span_kept
 
     if not network.centerlines:
         network.notes.append({
@@ -169,10 +195,9 @@ def generate_street_network(
     # topologically CONNECTED after the difference — observed as "one block
     # with slits". Per-line bands unioned sever cleanly.
     bands = [
-        line.buffer(rules.row_width_m / 2, cap_style=2, join_style=2)
-        for line in full_span_kept
+        seg.line.buffer(seg.row_width_m / 2, cap_style=2, join_style=2)
+        for seg in full_span_kept
     ]
-    network.street_area = make_valid(unary_union(bands)).intersection(boundary_m)
 
     # Intersections: pairwise centerline crossings (grid nodes).
     seen: list[Point] = []
@@ -182,6 +207,24 @@ def generate_street_network(
             if isinstance(crossing, Point) and all(crossing.distance(s) > 1.0 for s in seen):
                 seen.append(crossing)
     network.intersections = seen
+
+    # Roundabouts at 1-2 major spine intersections. Unioned into street_area
+    # BEFORE the generator differences the blocks, so block corners are trimmed
+    # cleanly (an overlay after the fact would double-count land).
+    spine_segs = [s for s in full_span_kept if s.role == "spine"]
+    circles: list[BaseGeometry] = []
+    if spine_segs and seen:
+        spine_line = spine_segs[0].line
+        candidates = sorted(
+            (p for p in seen if p.distance(spine_line) < 0.5),
+            key=lambda p: (p.distance(origin), p.x, p.y),
+        )
+        radius = (rules.spine_row_width_m + 6.0) / 2
+        for point in candidates[: 2 if len(candidates) >= 6 else 1]:
+            circles.append(point.buffer(radius, quad_segs=8))
+            network.roundabouts.append((point, radius))
+
+    network.street_area = make_valid(unary_union(bands + circles)).intersection(boundary_m)
     return network
 
 

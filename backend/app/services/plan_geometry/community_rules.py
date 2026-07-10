@@ -16,6 +16,10 @@ FIRE_CLEAR_WIDTH_M = 6.0          # CSPS033 — hard rule
 WALK_ZONE_EACH_SIDE_M = 1.8       # sidewalk/boulevard per side inside the ROW
 MIN_ROW_M = FIRE_CLEAR_WIDTH_M + 2 * WALK_ZONE_EACH_SIDE_M  # 9.6
 FLOOR_HEIGHT_M = 3.2
+# Rear laneways are secondary access — blocks they serve still front a full
+# street, so CSPS033's clear-width floor applies to the fronting streets, not
+# the lane itself (Calgary lanes are typically 6-9 m).
+LANE_ROW_M = 7.0
 
 
 @dataclass(frozen=True)
@@ -31,10 +35,19 @@ class RuleProfile:
     floors: float                  # working storey count (ceilings clamp per block)
     floors_note: str
     perimeter_inset_m: float       # boundary inset before the internal grid starts
+    # Street hierarchy: one wide main spine + narrower locals. The widths are
+    # chosen so the frontend width-band resolver lands on distinct street
+    # archetypes (locals 10-15 m -> narrow_residential_street, spine >=22 m ->
+    # main_street_complete / a direct arterial id).
+    spine_row_width_m: float = 22.0
+    local_row_width_m: float = 14.0
 
     @property
     def clear_width_m(self) -> float:
-        return self.row_width_m - 2 * WALK_ZONE_EACH_SIDE_M
+        # The narrowest full street governs fire access (lanes are exempt —
+        # see LANE_ROW_M). Locals never drop below MIN_ROW_M, so this stays
+        # >= FIRE_CLEAR_WIDTH_M by construction.
+        return min(self.row_width_m, self.local_row_width_m) - 2 * WALK_ZONE_EACH_SIDE_M
 
 
 _SCENARIO_DEFAULTS: dict[str, dict[str, float]] = {
@@ -136,5 +149,7 @@ def resolve_rules(
         floors=float(floors),
         floors_note=floors_note,
         perimeter_inset_m=float(row_width) / 2,
+        spine_row_width_m=max(22.0, float(row_width)),
+        local_row_width_m=min(max(float(row_width), MIN_ROW_M), 14.0),
     )
     return profile, notes

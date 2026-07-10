@@ -56,6 +56,7 @@ def run_refinement_loop(
             locked_street_area_wgs84=locked_street_area_wgs84,
             rule_overrides=overrides or None,
             rule_hints=rule_hints,
+            dna=dna,
         )
         metrics_report = compute_metrics(
             scenario_id=scenario_id,

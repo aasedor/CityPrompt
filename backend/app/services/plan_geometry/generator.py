@@ -21,6 +21,7 @@ from shapely.validation import make_valid
 
 from app.services.plan_geometry.community_rules import (
     FLOOR_HEIGHT_M,
+    LANE_ROW_M,
     RuleProfile,
     resolve_rules,
 )
@@ -29,6 +30,16 @@ from app.services.plan_geometry.parceling import (
     building_mass_for_block,
     clamp_floors_to_ceiling,
     subdivide_block,
+)
+from app.services.plan_geometry.placement import (
+    TYPOLOGY_DIMS,
+    carve_lane,
+    compute_block_contexts,
+    effective_palette,
+    plan_blocks,
+    resolve_layout_strategy,
+    select_open_space,
+    site_hash,
 )
 from app.services.plan_geometry.street_graph import (
     StreetNetwork,
@@ -45,7 +56,10 @@ from app.services.site_engine import (
 
 logger = logging.getLogger(__name__)
 
-PLAN_COLORS = {"road": "#8a8f98", "green_space": "#5fae5f", "building": "#8b5cf6"}
+PLAN_COLORS = {
+    "road": "#8a8f98", "green_space": "#5fae5f", "building": "#8b5cf6",
+    "water": "#4a90c2",
+}
 
 # Height framework bands (amber -> deep red), aligned to LAP building-scale steps.
 HEIGHT_BANDS = [(3, "#fde68a"), (6, "#fbbf24"), (12, "#f97316"), (26, "#dc2626"), (999, "#7c2d12")]
@@ -135,6 +149,7 @@ def generate_plan_geometry(
     locked_street_area_wgs84: Polygon | None = None,
     rule_overrides: dict[str, float] | None = None,
     rule_hints: dict[str, float] | None = None,
+    dna: dict[str, Any] | None = None,
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
@@ -142,9 +157,13 @@ def generate_plan_geometry(
     # Semantic hints for the render pipeline: the frontend resolves archetype
     # references from these (development_type/aesthetic -> building archetype,
     # tree_density/ground_texture -> park character). Strings only, clipped.
-    development_type = str(_param_value(parameters, "buildings.development_type") or "mixed_use")[:60]
+    # Expert-emitted values override the placement palette's MID band only;
+    # the transect bands (edge/core/frontage/anchor) keep their strategic
+    # roles — see placement.plan_blocks.
+    raw_type = _param_value(parameters, "buildings.development_type")
+    base_development_type = str(raw_type)[:60] if raw_type else None
     development_aesthetic = _param_value(parameters, "buildings.development_aesthetic")
-    development_aesthetic = str(development_aesthetic)[:60] if development_aesthetic else None
+    base_aesthetic = str(development_aesthetic)[:60] if development_aesthetic else None
     tree_density_param = _param_value(parameters, "landscape.tree_density")
     tree_density = float(tree_density_param) if isinstance(tree_density_param, (int, float)) else 0.8
     ground_texture = _param_value(parameters, "landscape.ground_texture")
@@ -171,6 +190,8 @@ def generate_plan_geometry(
         "clear_width_m": rules.clear_width_m, "open_space_share": rules.open_space_share,
         "coverage_ratio": rules.coverage_ratio, "floors": rules.floors,
         "floors_note": rules.floors_note,
+        "spine_row_width_m": rules.spine_row_width_m,
+        "local_row_width_m": rules.local_row_width_m,
     }
 
     # --- streets (or the locked network) --------------------------------------
@@ -199,18 +220,18 @@ def generate_plan_geometry(
     if not blocks:
         blocks = [boundary_m]
 
-    # --- open space: whole blocks nearest the site centroid until the share is met
+    # --- open space + placement policy ------------------------------------------
+    # The layout.strategy parameter (experts' organizing idea) selects the
+    # placement mode; the scenario palette supplies the character families.
+    district_lookup = _district_lookup_m(district_features or [], to_metric)
+    strategy = resolve_layout_strategy(_param_value(parameters, "layout.strategy"))
+    palette = effective_palette(scenario_id, strategy)
     open_target = rules.open_space_share * gross
-    centroid = boundary_m.centroid
-    by_proximity = sorted(range(len(blocks)), key=lambda i: blocks[i].centroid.distance(centroid))
-    green_indices: set[int] = set()
-    open_area = 0.0
-    for index in by_proximity:
-        if open_area >= open_target or len(green_indices) >= max(1, len(blocks) - 1):
-            break
-        if open_area + blocks[index].area <= open_target * 1.6:
-            green_indices.add(index)
-            open_area += blocks[index].area
+    open_plan = select_open_space(
+        blocks=blocks, boundary_m=boundary_m, rules=rules, palette=palette,
+        network=network, seed=site_hash(boundary_m),
+    )
+    open_area = open_plan.open_area_m2
     if open_area < open_target * 0.5 and len(blocks) > 1:
         result.notes.append({
             "code": "OPEN_SPACE_SHORTFALL", "severity": "warning",
@@ -219,40 +240,58 @@ def generate_plan_geometry(
             "source_phase": "civic_distribution",
         })
 
+    zone_sort = 500  # after user zones
+    for spec in open_plan.specs:
+        result.green_m.append(spec.geom_m)
+        color = PLAN_COLORS["water"] if spec.kind == "pond" else PLAN_COLORS["green_space"]
+        for poly in iter_polygons(project_geometry(spec.geom_m, to_wgs84)):
+            result.zones.append({
+                "zone_type": "green_space",
+                "name": f"{scenario_label} · {spec.name_suffix}",
+                "coordinates": _ring(poly),
+                "color": color,
+                "sort_order": zone_sort,
+                "properties": {
+                    "_plan_scenario": scenario_id, "_imported_from": layer_name,
+                    "_plan_role": "open_space", "tree_density": tree_density,
+                    "green_kind": spec.kind,
+                    **({"green_space_archetype_id": spec.archetype_id}
+                       if spec.archetype_id else {}),
+                    **({"ground_texture": ground_texture} if ground_texture else {}),
+                },
+            })
+            zone_sort += 1
+
     # --- parcels + masses on the developable blocks ------------------------------
-    district_lookup = _district_lookup_m(district_features or [], to_metric)
+    loop_blocks = [
+        (index, open_plan.carved_blocks.get(index, block))
+        for index, block in enumerate(blocks)
+        if index not in open_plan.consumed_indices
+    ]
+    contexts = compute_block_contexts(
+        blocks=loop_blocks, boundary_m=boundary_m, network=network,
+        district_lookup=district_lookup, signature_green_m=open_plan.central_geom_m,
+    )
+    block_plans = plan_blocks(
+        contexts=contexts, palette=palette, rules=rules,
+        base_type=base_development_type, base_aesthetic=base_aesthetic, dna=dna,
+    )
+
     parcels_by_block: list[list[Polygon]] = []
     masses: list[Polygon] = []
     developable_blocks: list[Polygon] = []
     gfa = 0.0
     footprint = 0.0
+    lane_area_total = 0.0
     clamp_notes = 0
 
-    zone_sort = 500  # after user zones
-    for index, block in enumerate(blocks):
-        if index in green_indices:
-            result.green_m.append(block)
-            for poly in iter_polygons(project_geometry(block, to_wgs84)):
-                result.zones.append({
-                    "zone_type": "green_space",
-                    "name": f"{scenario_label} · Park",
-                    "coordinates": _ring(poly),
-                    "color": PLAN_COLORS["green_space"],
-                    "sort_order": zone_sort,
-                    "properties": {
-                        "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                        "_plan_role": "open_space", "tree_density": tree_density,
-                        **({"ground_texture": ground_texture} if ground_texture else {}),
-                    },
-                })
-                zone_sort += 1
-            continue
-
+    for index, block in loop_blocks:
+        plan = block_plans[index]
         developable_blocks.append(block)
         parcels = subdivide_block(block, rules.parcel_width_m)
         parcels_by_block.append(parcels)
 
-        floors, clamp = clamp_floors_to_ceiling(rules.floors, block, district_lookup)
+        floors, clamp = clamp_floors_to_ceiling(plan.floors_target, block, district_lookup)
         if clamp:
             clamp_notes += 1
 
@@ -273,9 +312,41 @@ def generate_plan_geometry(
                     "max_floors": round(floors, 1),
                 },
             })
-        mass, info = building_mass_for_block(block, rules)
+        # Rear laneway: split large row-bar blocks with a mid-block lane so
+        # townhouse rows front the street and back onto a lane (masses are
+        # built on block − lane; the ORIGINAL block stays in blocks_m so the
+        # evaluator's block_scale and the height framework are unchanged).
+        # Only when this run generated the streets — a locked network means
+        # the user froze circulation, lanes included.
+        lane = None
+        if palette.laneways and plan.typology == "row_bars" and network.segments:
+            lane = carve_lane(block, LANE_ROW_M)
+        mass_block = make_valid(block.difference(lane)) if lane is not None else block
+
+        mass, info = building_mass_for_block(
+            mass_block, rules,
+            typology=plan.typology, dims=TYPOLOGY_DIMS.get(plan.typology),
+        )
         if mass is None:
             continue
+        typology_used = (info or {}).get("typology", "perimeter_block")
+
+        if lane is not None:
+            lane_area_total += float(lane.area)
+            for wpoly in iter_polygons(project_geometry(lane, to_wgs84)):
+                result.zones.append({
+                    "zone_type": "road",
+                    "name": f"{scenario_label} · Block {index + 1} Lane",
+                    "coordinates": _ring(wpoly),
+                    "color": PLAN_COLORS["road"],
+                    "sort_order": 490,
+                    "properties": {
+                        "_plan_scenario": scenario_id, "_imported_from": layer_name,
+                        "_plan_role": "street", "width": LANE_ROW_M,
+                        "street_role": "lane", "road_archetype_id": "toronto_laneway",
+                    },
+                })
+
         mass_polys = list(iter_polygons(mass))
         bar_index = 0
         for poly in mass_polys:
@@ -285,7 +356,7 @@ def generate_plan_geometry(
             gfa += float(poly.area) * floors
             wgs = project_geometry(poly, to_wgs84)
             for wpoly in iter_polygons(wgs):
-                # Courtyard decomposition yields several bars per block —
+                # Mass decomposition yields several pieces per block —
                 # unique names, or every label on the globe reads "Block 1".
                 bar_index += 1
                 suffix = f" · Building {chr(64 + bar_index)}" if len(mass_polys) > 1 else ""
@@ -299,9 +370,9 @@ def generate_plan_geometry(
                         "_plan_scenario": scenario_id, "_imported_from": layer_name,
                         "_plan_role": "building", "floors": round(floors, 1),
                         "height": round(floors * FLOOR_HEIGHT_M, 1),
-                        "development_type": development_type,
-                        **({"development_aesthetic": development_aesthetic}
-                           if development_aesthetic else {}),
+                        "development_type": plan.development_type,
+                        "development_aesthetic": plan.aesthetic,
+                        "_plan_band": plan.band,
                         **(info or {}),
                         **({"floors_clamped_by": clamp} if clamp else {}),
                     },
@@ -311,8 +382,9 @@ def generate_plan_geometry(
         # The perimeter bars enclose a courtyard the mass ring left unbuilt —
         # draw it, or a single-block plan reads as one solid slab with no
         # visible open space. Visual zone only: NOT counted in open-space
-        # metrics and NOT part of the frozen evaluator loop.
-        if len(mass_polys) > 1:
+        # metrics and NOT part of the frozen evaluator loop. Perimeter blocks
+        # only: tower pads and row bars leave open ground, not a courtyard.
+        if typology_used == "perimeter_block" and len(mass_polys) > 1:
             courtyard = make_valid(
                 block.buffer(-rules.front_setback_m).difference(unary_union(mass_polys))
             )
@@ -341,21 +413,11 @@ def generate_plan_geometry(
         })
 
     # --- street zones -------------------------------------------------------------
-    for poly in iter_polygons(street_area):
-        wgs = project_geometry(poly, to_wgs84)
-        for wpoly in iter_polygons(wgs):
-            result.zones.append({
-                "zone_type": "road",
-                "name": f"{scenario_label} · Street",
-                "coordinates": _ring(wpoly),
-                "color": PLAN_COLORS["road"],
-                "sort_order": 490,
-                "properties": {
-                    "_plan_scenario": scenario_id, "_imported_from": layer_name,
-                    "_plan_role": "street", "width": rules.row_width_m,
-                    "clear_width_m": rules.clear_width_m,
-                },
-            })
+    _emit_street_zones(
+        result=result, network=network, street_area=street_area, rules=rules,
+        palette=palette, scenario_id=scenario_id, scenario_label=scenario_label,
+        layer_name=layer_name, to_wgs84=to_wgs84,
+    )
 
     # --- validation + metrics inputs -----------------------------------------------
     result.notes.extend(validate_plan(
@@ -363,10 +425,13 @@ def generate_plan_geometry(
         parcels_by_block=parcels_by_block, masses_m=masses,
     ))
 
-    net_block_area = sum(b.area for b in developable_blocks)
+    # Lanes count as ROW: +lane on the street side, −lane on the block side is
+    # an exact identity, so the land budget still closes.
+    net_block_area = sum(b.area for b in developable_blocks) - lane_area_total
     result.geometry_inputs = {
         "site_area_m2": gross,
-        "row_area_m2": float(street_area.area) if not street_area.is_empty else 0.0,
+        "row_area_m2": (float(street_area.area) if not street_area.is_empty else 0.0)
+                       + lane_area_total,
         "open_space_area_m2": open_area,
         "net_block_area_m2": float(net_block_area),
         "building_footprint_m2": footprint,
@@ -381,3 +446,109 @@ def generate_plan_geometry(
     result.blocks_m = developable_blocks
     result.masses_m = masses
     return result
+
+
+def _street_zone(
+    poly_m, *, name: str, width: float, role: str, rules: RuleProfile,
+    scenario_id: str, layer_name: str, to_wgs84,
+    archetype_id: str | None = None,
+) -> list[dict[str, Any]]:
+    zones = []
+    for wpoly in iter_polygons(project_geometry(poly_m, to_wgs84)):
+        zones.append({
+            "zone_type": "road",
+            "name": name,
+            "coordinates": _ring(wpoly),
+            "color": PLAN_COLORS["road"],
+            "sort_order": 490,
+            "properties": {
+                "_plan_scenario": scenario_id, "_imported_from": layer_name,
+                "_plan_role": "street", "width": width,
+                "clear_width_m": rules.clear_width_m,
+                "street_role": role,
+                **({"road_archetype_id": archetype_id} if archetype_id else {}),
+            },
+        })
+    return zones
+
+
+def _emit_street_zones(
+    *,
+    result: PlanGeometryResult,
+    network: StreetNetwork,
+    street_area,
+    rules: RuleProfile,
+    palette,
+    scenario_id: str,
+    scenario_label: str,
+    layer_name: str,
+    to_wgs84,
+) -> None:
+    """Partition the merged street area into per-role zones (roundabouts, then
+    the spine, then locals) via ordered subtraction — the pieces sum exactly
+    to street_area, so the land budget is unchanged. A network without
+    segments (locked streets / degenerate sites) emits the legacy single-width
+    zones."""
+    if street_area.is_empty:
+        return
+    if not network.segments:
+        for poly in iter_polygons(street_area):
+            result.zones.extend(_street_zone(
+                poly, name=f"{scenario_label} · Street", width=rules.row_width_m,
+                role="local", rules=rules, scenario_id=scenario_id,
+                layer_name=layer_name, to_wgs84=to_wgs84,
+            ))
+        return
+
+    remaining = street_area
+    for n, (point, radius) in enumerate(network.roundabouts, start=1):
+        piece = make_valid(point.buffer(radius, quad_segs=8).intersection(remaining))
+        if piece.is_empty:
+            continue
+        remaining = make_valid(remaining.difference(piece))
+        result.zones.extend(_street_zone(
+            piece, name=f"{scenario_label} · Roundabout {n}",
+            width=rules.spine_row_width_m, role="roundabout", rules=rules,
+            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+            archetype_id="roundabout",
+        ))
+
+    spine_segments = [s for s in network.segments if s.role == "spine"]
+    for segment in spine_segments:
+        band = segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2)
+        piece = make_valid(band.intersection(remaining))
+        if piece.is_empty:
+            continue
+        remaining = make_valid(remaining.difference(piece))
+        result.zones.extend(_street_zone(
+            piece, name=f"{scenario_label} · Main Street",
+            width=segment.row_width_m, role="spine", rules=rules,
+            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+            archetype_id=getattr(palette, "spine_archetype_id", None),
+        ))
+
+    counter = 0
+    for segment in (s for s in network.segments if s.role != "spine"):
+        band = segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2)
+        piece = make_valid(band.intersection(remaining))
+        if piece.is_empty:
+            continue
+        remaining = make_valid(remaining.difference(piece))
+        counter += 1
+        result.zones.extend(_street_zone(
+            piece, name=f"{scenario_label} · Street {counter}",
+            width=segment.row_width_m, role="local", rules=rules,
+            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+        ))
+
+    # Numerical crumbs from the subtractions (shouldn't happen, but never
+    # silently drop street land — the budget is measured against street_area).
+    for poly in iter_polygons(make_valid(remaining)):
+        if poly.area < 1.0:
+            continue
+        counter += 1
+        result.zones.extend(_street_zone(
+            poly, name=f"{scenario_label} · Street {counter}",
+            width=rules.local_row_width_m, role="local", rules=rules,
+            scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+        ))

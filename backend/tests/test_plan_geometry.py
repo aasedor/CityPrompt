@@ -85,11 +85,28 @@ def test_full_generation_meets_p2_gates():
     assert all(z["properties"]["floors"] > 0 and z["properties"]["height"] > 0 for z in buildings)
     assert result.intersection_density_per_km2 > 0
 
-    # Semantic hints for the render pipeline's archetype resolver.
-    assert all(z["properties"]["development_type"] == "mixed_use" for z in buildings)
-    assert all(z["properties"]["development_aesthetic"] == "contemporary" for z in buildings)
-    parks = [z for z in result.zones if z["zone_type"] == "green_space"]
+    # Semantic hints for the render pipeline's archetype resolver: per-zone
+    # strategic tagging — every value a real catalog developmentType, and the
+    # placement policy produces genuine variety, not one uniform type.
+    from app.services.plan_geometry.placement import CATALOG_DEV_TYPES
+
+    dev_types = {z["properties"]["development_type"] for z in buildings}
+    assert dev_types <= CATALOG_DEV_TYPES
+    assert len(dev_types) >= 2
+    assert all(z["properties"].get("development_aesthetic") for z in buildings)
+    parks = [z for z in result.zones if z["zone_type"] == "green_space"
+             and z["properties"].get("_plan_role") == "open_space"]
     assert parks and all(z["properties"]["tree_density"] == 0.6 for z in parks)
+
+    # Street hierarchy: a wide main spine plus narrower locals, every full
+    # street at or above the CSPS033-derived minimum ROW.
+    roads = [z for z in result.zones if z["zone_type"] == "road"]
+    widths = {z["properties"]["width"] for z in roads}
+    assert len(widths) >= 2
+    assert max(widths) >= 22.0
+    non_lane = [z["properties"]["width"] for z in roads
+                if z["properties"].get("street_role") != "lane"]
+    assert non_lane and all(w >= MIN_ROW_M for w in non_lane)
 
 
 def test_block_scale_via_street_network():
