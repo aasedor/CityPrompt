@@ -200,3 +200,85 @@ def test_locked_streets_degrade_gracefully():
     assert buildings and all(
         z["properties"]["development_type"] in CATALOG_DEV_TYPES for z in buildings
     )
+
+
+# ---------------------------------------------------------------------------
+# Master-plan scenario palettes (economic / city_policy / city_beautiful /
+# environmental) — each philosophy must draw a recognizably different plan.
+# ---------------------------------------------------------------------------
+
+NEW_SCENARIOS = ("economic", "city_policy", "city_beautiful", "environmental")
+
+
+def test_new_scenarios_draw_distinct_archetype_palettes():
+    site = _site()
+    fingerprints = {}
+    for scenario_id in NEW_SCENARIOS:
+        result = _generate(scenario_id=scenario_id, label=scenario_id, site=site,
+                           params={"streets.row_width_m": {"value": 16.0},
+                                   "buildings.floors": {"value": 6},
+                                   "landscape.tree_density": {"value": 0.6}})
+        buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
+        assert buildings, scenario_id
+        assert all(z["properties"]["development_type"] in CATALOG_DEV_TYPES for z in buildings)
+        fingerprints[scenario_id] = frozenset(
+            (z["properties"]["development_type"], z["properties"]["development_aesthetic"])
+            for z in buildings
+        )
+    # Every scenario pair must differ in its (type, aesthetic) mix.
+    ids = list(fingerprints)
+    distinct_pairs = sum(
+        1 for i in range(len(ids)) for j in range(i + 1, len(ids))
+        if fingerprints[ids[i]] != fingerprints[ids[j]]
+    )
+    assert distinct_pairs >= 5, fingerprints  # at least 5 of 6 pairs differ
+
+
+def test_city_beautiful_formal_ensemble():
+    result = _generate(scenario_id="city_beautiful", label="City Beautiful")
+    roads = [z for z in result.zones if z["zone_type"] == "road"]
+    spine = [z for z in roads if z["properties"].get("street_role") == "spine"]
+    assert spine and all(
+        z["properties"].get("road_archetype_id") == "haussmann_boulevard" for z in spine
+    )
+    greens = [z for z in result.zones if z["zone_type"] == "green_space"]
+    basins = [z for z in greens if z["properties"].get("green_kind") == "pond"]
+    assert basins and all(
+        z["properties"].get("green_space_archetype_id") == "fountain_water_feature" for z in basins
+    )
+    assert any(z["properties"].get("green_kind") == "plaza" for z in greens)
+
+
+def test_environmental_locals_are_shared_streets():
+    result = _generate(scenario_id="environmental", label="Environmental")
+    locals_ = [z for z in result.zones if z["zone_type"] == "road"
+               and z["properties"].get("street_role") == "local"]
+    assert locals_ and all(
+        z["properties"].get("road_archetype_id") == "woonerf_shared_street" for z in locals_
+    )
+    greens = [z for z in result.zones if z["zone_type"] == "green_space"]
+    assert any(z["properties"].get("green_kind") == "pond" for z in greens)
+
+
+def test_economic_context_match_caps_all_bands():
+    dna = {"built_form": {"fields": {"context_avg_height_m": {"value": 6.4}}}}  # 2 storeys
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="economic", scenario_label="Economic",
+        parameters={"streets.row_width_m": {"value": 16.0}, "buildings.floors": {"value": 8}},
+        road_features=[], district_features=[], dna=dna,
+    )
+    buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
+    assert buildings
+    # context avg 2F + 2 = 4F ceiling everywhere, despite the 8F parameter.
+    assert all(z["properties"]["floors"] <= 4.01 for z in buildings), \
+        sorted({z["properties"]["floors"] for z in buildings})
+
+
+def test_custom_palette_hint_maps_philosophy_to_palette():
+    from app.services.plan_geometry.placement import PALETTES, palette_for
+
+    assert palette_for("custom_abc", "city_beautiful") is PALETTES["city_beautiful"]
+    assert palette_for("custom_abc", "developer_feasibility") is PALETTES["economic"]
+    assert palette_for("custom_abc", "climate_resilience") is PALETTES["environmental"]
+    assert palette_for("custom_abc", None) is PALETTES["city_policy"]      # default
+    assert palette_for("economic", "city_beautiful") is PALETTES["economic"]  # preset wins

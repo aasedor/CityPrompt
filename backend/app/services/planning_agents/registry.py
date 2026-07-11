@@ -38,7 +38,10 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "buildings.development_type", "buildings.floors", "buildings.height_m",
             "buildings.unit_count", "buildings.development_aesthetic", "site.design_brief",
         ),
-        philosophy_affinity={"missing_middle": 1.3, "developer_feasibility": 1.2, "new_urbanism": 1.1},
+        philosophy_affinity={
+            "missing_middle": 1.3, "developer_feasibility": 1.2, "new_urbanism": 1.1,
+            "neighbourhood_context": 1.3,
+        },
     ),
     ExpertSpec(
         agent_id="mobility",
@@ -70,7 +73,10 @@ EXPERTS: tuple[ExpertSpec, ...] = (
             "buildings.floors", "buildings.height_m", "buildings.development_aesthetic",
             "layout.strategy", "site.design_brief",
         ),
-        philosophy_affinity={"new_urbanism": 1.3, "garden_city": 1.1, "landscape_urbanism": 1.1},
+        philosophy_affinity={
+            "new_urbanism": 1.3, "garden_city": 1.1, "landscape_urbanism": 1.1,
+            "city_beautiful": 1.5,
+        },
     ),
     ExpertSpec(
         agent_id="climate_public_realm",

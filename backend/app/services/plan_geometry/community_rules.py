@@ -52,6 +52,11 @@ class RuleProfile:
 
 _SCENARIO_DEFAULTS: dict[str, dict[str, float]] = {
     # block spacing / open share / coverage tuned per philosophy
+    "economic": {"block": 200.0, "open": 0.10, "coverage": 0.50},
+    "city_policy": {"block": 150.0, "open": 0.12, "coverage": 0.50},
+    "city_beautiful": {"block": 170.0, "open": 0.18, "coverage": 0.45},
+    "environmental": {"block": 160.0, "open": 0.20, "coverage": 0.42},
+    # Retired V1 preset ids — kept so existing scenario rows redraw identically.
     "as_of_right": {"block": 200.0, "open": 0.10, "coverage": 0.50},
     "lap_compliant": {"block": 150.0, "open": 0.12, "coverage": 0.50},
     "climate_first": {"block": 160.0, "open": 0.16, "coverage": 0.45},

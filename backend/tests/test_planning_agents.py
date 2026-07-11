@@ -1,4 +1,4 @@
-"""Planning Agents — deterministic merge, conflict surfacing, panel resilience.
+﻿"""Planning Agents â€” deterministic merge, conflict surfacing, panel resilience.
 
 All offline: canned tool_use messages, patched Anthropic client. Structural
 assertions only (never on LLM prose).
@@ -16,7 +16,13 @@ from app.services.planning_agents.coordinator import (
 )
 from app.services.planning_agents.registry import EXPERTS
 from app.services.planning_agents.runner import estimate_cost_usd, run_expert_panel
-from app.services.planning_agents.scenarios import DEFAULT_SCENARIO_IDS, SCENARIO_PRESETS
+from app.services.planning_agents.scenarios import (
+    BASELINE_SCENARIO_ID,
+    DEFAULT_SCENARIO_IDS,
+    LEGACY_SCENARIO_PRESETS,
+    SCENARIO_PRESETS,
+    resolve_scenario_preset,
+)
 from app.services.planning_agents.schemas import (
     PARAMETER_VOCABULARY,
     ExpertRecommendationSet,
@@ -38,10 +44,26 @@ def test_expert_scopes_are_within_vocabulary():
 
 
 def test_scenario_presets_are_consistent():
+    from app.services.planning_agents.philosophy import PHILOSOPHY_FRAGMENTS
+
     assert set(DEFAULT_SCENARIO_IDS) <= set(SCENARIO_PRESETS)
-    assert "as_of_right" in SCENARIO_PRESETS
-    for preset in SCENARIO_PRESETS.values():
+    assert BASELINE_SCENARIO_ID in SCENARIO_PRESETS
+    assert set(SCENARIO_PRESETS) == {"economic", "city_policy", "city_beautiful", "environmental"}
+    for preset in {**SCENARIO_PRESETS, **LEGACY_SCENARIO_PRESETS}.values():
         assert 0.0 <= preset.philosophy.intensity <= 1.0
+        assert preset.philosophy.primary in PHILOSOPHY_FRAGMENTS
+        if preset.philosophy.secondary:
+            assert preset.philosophy.secondary in PHILOSOPHY_FRAGMENTS
+
+
+def test_legacy_presets_still_resolve():
+    # Existing DB rows carry retired ids; the task resolver must keep finding
+    # them, while they stay OUT of the creatable preset set.
+    for legacy_id in ("as_of_right", "lap_compliant", "climate_first"):
+        assert resolve_scenario_preset(legacy_id) is not None
+        assert legacy_id not in SCENARIO_PRESETS
+    assert resolve_scenario_preset("economic") is SCENARIO_PRESETS["economic"]
+    assert resolve_scenario_preset("nonsense") is None
 
 
 def test_zone_property_updates_maps_vocabulary():
@@ -177,7 +199,7 @@ async def test_write_explanation_degrades_to_deterministic_narrative(monkeypatch
     failing_client.messages.create = AsyncMock(side_effect=RuntimeError("api down"))
     monkeypatch.setattr(coordinator_module.anthropic, "AsyncAnthropic", MagicMock(return_value=failing_client))
 
-    scenario = SCENARIO_PRESETS["climate_first"]
+    scenario = SCENARIO_PRESETS["environmental"]
     changed = diff_scenarios({"buildings.floors": _merged("buildings.floors", 4)},
                              {"buildings.floors": _merged("buildings.floors", 8)})
     explanation = await write_explanation(scenario, changed, [])
@@ -230,7 +252,7 @@ async def test_panel_drops_out_of_scope_and_demotes_uncited_policy(monkeypatch):
     _patch_client(monkeypatch, payload_by_call=payload)
     climate = next(e for e in EXPERTS if e.agent_id == "climate_public_realm")
     sets, usage, warnings = await run_expert_panel(
-        {"city_id": "calgary"}, SCENARIO_PRESETS["climate_first"], experts=(climate,)
+        {"city_id": "calgary"}, SCENARIO_PRESETS["environmental"], experts=(climate,)
     )
     assert len(sets) == 1 and not sets[0].failed
     recs = sets[0].recommendations
@@ -244,7 +266,7 @@ async def test_panel_drops_out_of_scope_and_demotes_uncited_policy(monkeypatch):
 @pytest.mark.anyio
 async def test_panel_recovers_stringified_nested_payload(monkeypatch):
     """claude-sonnet-5 quirk observed live: the tool input arrives as
-    {"recommendations": "<JSON string of the WHOLE payload>"} — must parse."""
+    {"recommendations": "<JSON string of the WHOLE payload>"} â€” must parse."""
     import json as json_module
 
     inner = {
@@ -257,7 +279,7 @@ async def test_panel_recovers_stringified_nested_payload(monkeypatch):
     _patch_client(monkeypatch, payload_by_call=payload)
     climate = next(e for e in EXPERTS if e.agent_id == "climate_public_realm")
     sets, usage, warnings = await run_expert_panel(
-        {"city_id": "calgary"}, SCENARIO_PRESETS["climate_first"], experts=(climate,)
+        {"city_id": "calgary"}, SCENARIO_PRESETS["environmental"], experts=(climate,)
     )
     assert not sets[0].failed
     assert sets[0].summary == "stringified position"
@@ -270,7 +292,7 @@ async def test_panel_survives_expert_failure(monkeypatch):
     _patch_client(monkeypatch, error=RuntimeError("api down"))
     mobility = next(e for e in EXPERTS if e.agent_id == "mobility")
     sets, usage, warnings = await run_expert_panel(
-        {"city_id": "calgary"}, SCENARIO_PRESETS["as_of_right"], experts=(mobility,)
+        {"city_id": "calgary"}, SCENARIO_PRESETS["economic"], experts=(mobility,)
     )
     assert sets[0].failed
     assert any(w.code.startswith("EXPERT_UNAVAILABLE") for w in warnings)
@@ -286,7 +308,7 @@ async def test_budget_guard_skips_panel(monkeypatch):
         planning_agents_max_usd = 0.0001
 
     monkeypatch.setattr(runner_module, "get_settings", lambda: TinyBudgetSettings())
-    sets, usage, warnings = await run_expert_panel({"city_id": "calgary"}, SCENARIO_PRESETS["as_of_right"])
+    sets, usage, warnings = await run_expert_panel({"city_id": "calgary"}, SCENARIO_PRESETS["economic"])
     assert sets == [] and usage == []
     assert any(w.code == "EXPERT_BUDGET_EXCEEDED" for w in warnings)
     client.messages.create.assert_not_called()

@@ -46,6 +46,16 @@ PHILOSOPHY_FRAGMENTS: dict[str, str] = {
         "Prefer incremental, low-capex, reversible moves; pilot-scale interventions over permanent "
         "heavy infrastructure."
     ),
+    "city_beautiful": (
+        "Composition and civic beauty are the ordering system: formal axes and terminated vistas, "
+        "tree-lined boulevards, monumental civic buildings anchoring plazas and fountains, consistent "
+        "classical proportion and materials; the beauty of the ensemble outranks yield and convenience."
+    ),
+    "neighbourhood_context": (
+        "Match the prevailing scale, setbacks, materials and character of the surrounding development; "
+        "step down at sensitive edges, transitions before contrasts; prefer formats the local market "
+        "has already proven and neighbours recognize."
+    ),
 }
 
 

@@ -122,7 +122,7 @@ class ChangedParameter(BaseModel):
 
 
 class ScenarioExplanation(BaseModel):
-    baseline: str = "as_of_right"
+    baseline: str = "economic"
     changed_parameters: list[ChangedParameter] = Field(default_factory=list)
     narrative: str = ""
 

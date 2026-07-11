@@ -272,11 +272,15 @@ function PolicyInsightBlock({ section }: { section: UrbanDnaSection }) {
 
 const COMPARE_METRIC_KEYS = ['units', 'gfa_m2', 'far_achieved', 'population', 'open_space_m2'] as const;
 
-/** Side-by-side scenario numbers with deltas vs the As-of-Right baseline. */
+// Comparison deltas are measured against the conservative market case; older
+// projects may still carry the retired 'as_of_right' baseline.
+const BASELINE_SCENARIO_IDS = ['economic', 'as_of_right'];
+
+/** Side-by-side scenario numbers with deltas vs the Economic baseline. */
 function ScenarioCompareTable({ scenarios }: { scenarios: UrbanDnaScenarioRow[] }) {
   const withMetrics = scenarios.filter((s) => s.payload?.metrics?.metrics);
   if (withMetrics.length < 2) return null;
-  const baseline = withMetrics.find((s) => s.scenario_id === 'as_of_right');
+  const baseline = withMetrics.find((s) => BASELINE_SCENARIO_IDS.includes(s.scenario_id));
 
   const value = (row: UrbanDnaScenarioRow, key: string): number | null => {
     const metric = row.payload?.metrics?.metrics?.[key];
@@ -313,7 +317,8 @@ function ScenarioCompareTable({ scenarios }: { scenarios: UrbanDnaScenarioRow[] 
                 <td className="py-0.5 pr-1 text-[10px] font-bold text-[#151515]/70">{label(key)}</td>
                 {withMetrics.map((s) => {
                   const v = value(s, key);
-                  const delta = v !== null && base !== null && s.scenario_id !== 'as_of_right' && base !== 0
+                  const delta = v !== null && base !== null
+                    && !BASELINE_SCENARIO_IDS.includes(s.scenario_id) && base !== 0
                     ? (v - base) / base : null;
                   return (
                     <td key={s.id} className="py-0.5 text-right text-[10px] font-semibold text-[#151515]">
@@ -929,8 +934,8 @@ export function SiteIntelligencePanel({ zone }: { zone: SiteZone }) {
               </div>
               {scenarios.length === 0 && (
                 <p className="text-[10px] text-[#151515]/50">
-                  Run the expert panel to get As-of-Right, Plan-Aligned and Climate-First concepts
-                  with their trade-offs.
+                  Run the expert panel to get Economic, City Policy, City Beautiful and
+                  Environmental concepts with their trade-offs — or write your own brief below.
                 </p>
               )}
               {scenariosStale && scenarios.length > 0 && (

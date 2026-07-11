@@ -94,9 +94,20 @@ class BandSpec:
 class Palette:
     bands: dict[str, BandSpec]     # keys: core | frontage | mid | edge | anchor
     spine_archetype_id: str | None = None  # direct road_archetype_id for the spine
-    water_feature: bool = False    # organic pond + greenway on the central green
+    water_feature: bool = False    # water basin + greenway on the central green
     plaza: bool = False            # carve a civic plaza off the anchor block
     laneways: bool = False         # mid-block rear lanes on row_bars blocks
+    # Cap EVERY band's floors at the DNA context average + 2 (not just core) —
+    # the Economic scenario's "similar to surrounding development" mechanism.
+    context_match: bool = False
+    # Direct road_archetype_id stamped on LOCAL streets (e.g. woonerf/cycling
+    # streets for the Environmental scenario). None = width-band resolution.
+    local_archetype_id: str | None = None
+    # Central water feature: which archetype the basin resolves to, and whether
+    # it reads formal (pure ellipse — City Beautiful) or naturalized (organic
+    # wobble — stormwater pond).
+    water_archetype_id: str = "stormwater_retention_pond"
+    formal_water: bool = False
 
 
 @dataclass(frozen=True)
@@ -112,6 +123,37 @@ class BlockPlan:
 # catalog minFloors/maxFloors of each family (e.g. highrise entries start at
 # 4+, institutional_health at 2+).
 PALETTES: dict[str, Palette] = {
+    # ── Current master-plan philosophies ─────────────────────────────────────
+    "economic": Palette(bands={
+        "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
+        "frontage": BandSpec("mixed_use", "contemporary_urban", 0.0, None, "perimeter_block"),
+        "mid": BandSpec("residential_multifamily", "contemporary", 0.0, None, "perimeter_block"),
+        "edge": BandSpec("residential_single_family", "contemporary", None, 2.0, "row_bars"),
+        "anchor": BandSpec("commercial_retail", "contemporary", None, 2.0, "anchor_mass"),
+    }, context_match=True),
+    "city_policy": Palette(bands={
+        "core": BandSpec("residential_multifamily", "contemporary_midrise", 1.0, None, "perimeter_block"),
+        "frontage": BandSpec("mixed_use", "contemporary_midrise", 1.0, None, "perimeter_block"),
+        "mid": BandSpec("residential_multifamily", "brownstone", 0.0, None, "row_bars"),
+        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+        "anchor": BandSpec("institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"),
+    }, plaza=True, laneways=True),
+    "city_beautiful": Palette(bands={
+        "core": BandSpec("mixed_use", "parisian", 2.0, None, "perimeter_block"),
+        "frontage": BandSpec("mixed_use", "haussmann", 1.0, None, "perimeter_block"),
+        "mid": BandSpec("residential_multifamily", "neoclassical", 0.0, None, "perimeter_block"),
+        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+        "anchor": BandSpec("institutional_education", "classical", None, 4.0, "anchor_mass"),
+    }, spine_archetype_id="haussmann_boulevard", water_feature=True, plaza=True,
+       water_archetype_id="fountain_water_feature", formal_water=True),
+    "environmental": Palette(bands={
+        "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
+        "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
+        "mid": BandSpec("residential_multifamily", "scandinavian_nordic", 0.0, None, "row_bars"),
+        "edge": BandSpec("residential_duplex", "brownstone_rowhouse", None, 3.0, "row_bars"),
+        "anchor": BandSpec("institutional_education", "biophilic", None, 3.0, "anchor_mass"),
+    }, water_feature=True, laneways=True, local_archetype_id="woonerf_shared_street"),
+    # ── Retired V1 preset ids (existing scenario rows redraw identically) ────
     "climate_first": Palette(bands={
         "core": BandSpec("residential_multifamily", "eco_urban_green_architecture", 2.0, None, "perimeter_block"),
         "frontage": BandSpec("mixed_use", "scandinavian_nordic", 1.0, None, "perimeter_block"),
@@ -134,14 +176,34 @@ PALETTES: dict[str, Palette] = {
         "anchor": BandSpec("institutional_health", "biophilic_contemporary_institutional", None, 4.0, "anchor_mass"),
     }, spine_archetype_id=None, water_feature=False, plaza=True, laneways=True),
 }
-_DEFAULT_PALETTE = PALETTES["lap_compliant"]
+_DEFAULT_PALETTE = PALETTES["city_policy"]
+
+# Custom scenarios carry an extracted philosophy primary — map it to the
+# nearest preset palette so a "make it beautiful" brief draws beaux-arts
+# fabric, not the default midrise mix.
+_PHILOSOPHY_TO_PALETTE: dict[str, str] = {
+    "developer_feasibility": "economic",
+    "neighbourhood_context": "economic",
+    "climate_resilience": "environmental",
+    "landscape_urbanism": "environmental",
+    "transit_oriented": "environmental",
+    "city_beautiful": "city_beautiful",
+    "garden_city": "city_beautiful",
+}
 
 _LOW_RISE_LU_PREFIXES = ("R-C", "R-1", "R-2", "R-G")
 _LOW_RISE_CEILING_M = 12.0
 
 
-def palette_for(scenario_id: str) -> Palette:
-    return PALETTES.get(scenario_id, _DEFAULT_PALETTE)
+def palette_for(scenario_id: str, palette_hint: str | None = None) -> Palette:
+    direct = PALETTES.get(scenario_id)
+    if direct is not None:
+        return direct
+    if palette_hint:
+        mapped = _PHILOSOPHY_TO_PALETTE.get(palette_hint)
+        if mapped:
+            return PALETTES[mapped]
+    return _DEFAULT_PALETTE
 
 
 def resolve_layout_strategy(raw: Any) -> str:
@@ -160,9 +222,9 @@ def resolve_layout_strategy(raw: Any) -> str:
     return "transect_green"
 
 
-def effective_palette(scenario_id: str, strategy: str) -> Palette:
+def effective_palette(scenario_id: str, strategy: str, palette_hint: str | None = None) -> Palette:
     """Apply the layout strategy on top of the scenario palette."""
-    palette = palette_for(scenario_id)
+    palette = palette_for(scenario_id, palette_hint)
     if strategy == "transect_green":
         return palette
     # Both alternate strategies read as consistent perimeter fabric.
@@ -310,10 +372,14 @@ def plan_blocks(
             floors = spec.floors_abs
         else:
             floors = max(1.0, rules.floors + (spec.floors_delta or 0.0))
-        if band == "core" and isinstance(context_avg_h, (int, float)) and context_avg_h > 0:
-            # Soft compatibility with the surrounding built form; the district
-            # ceiling clamp still applies afterwards in the generator.
-            floors = max(3.0, min(floors, context_avg_h / FLOOR_HEIGHT_M + 2.0))
+        # Soft compatibility with the surrounding built form; the district
+        # ceiling clamp still applies afterwards in the generator. Normally
+        # only the core band is capped; a context_match palette (Economic —
+        # "development similar to its surroundings") caps every band.
+        cap_to_context = band == "core" or palette.context_match
+        if cap_to_context and isinstance(context_avg_h, (int, float)) and context_avg_h > 0:
+            floor_min = 1.0 if palette.context_match else 3.0
+            floors = max(floor_min, min(floors, context_avg_h / FLOOR_HEIGHT_M + 2.0))
         if band == "core" and floors >= 8.0 and development_type == "residential_multifamily":
             development_type = "residential_highrise"
 
@@ -349,24 +415,30 @@ class OpenSpacePlan:
 
 
 def organic_basin(
-    center: Point, rx: float, ry: float, angle_deg: float, seed: int, vertices: int = 64
+    center: Point, rx: float, ry: float, angle_deg: float, seed: int,
+    vertices: int = 64, formal: bool = False,
 ) -> Polygon:
-    """Organic-edged basin: an ellipse modulated by two sinusoidal harmonics
-    whose phases derive from the site hash — pure function of geometry."""
+    """Basin outline: an ellipse modulated by two sinusoidal harmonics whose
+    phases derive from the site hash — pure function of geometry. `formal`
+    zeroes the harmonics (a pure ellipse — City Beautiful reflecting basin
+    instead of a naturalized pond edge)."""
     phi1 = 2 * math.pi * (seed % 360) / 360.0
     phi2 = 2 * math.pi * ((seed >> 8) % 360) / 360.0
+    amp1, amp2 = (0.0, 0.0) if formal else (0.14, 0.06)
     points = []
     for k in range(vertices):
         t = 2 * math.pi * k / vertices
-        wobble = 1.0 + 0.14 * math.sin(3 * t + phi1) + 0.06 * math.sin(7 * t + phi2)
+        wobble = 1.0 + amp1 * math.sin(3 * t + phi1) + amp2 * math.sin(7 * t + phi2)
         points.append((rx * math.cos(t) * wobble, ry * math.sin(t) * wobble))
     basin = Polygon(points)
     basin = affinity.rotate(basin, angle_deg, origin=(0, 0))
     return affinity.translate(basin, xoff=center.x, yoff=center.y)
 
 
-def _pond_and_greenway(block: BaseGeometry, seed: int) -> tuple[Polygon | None, BaseGeometry | None]:
-    """Carve an organic pond into the central block; the remainder becomes the
+def _pond_and_greenway(
+    block: BaseGeometry, seed: int, formal: bool = False
+) -> tuple[Polygon | None, BaseGeometry | None]:
+    """Carve a water basin into the central block; the remainder becomes the
     greenway ring (decomposed hole-free by the caller)."""
     rect = block.minimum_rotated_rectangle
     coords = list(rect.exterior.coords)
@@ -376,7 +448,7 @@ def _pond_and_greenway(block: BaseGeometry, seed: int) -> tuple[Polygon | None, 
     if rx < 8.0 or ry < 8.0:
         return None, None
 
-    pond = organic_basin(block.centroid, rx, ry, _long_axis_angle(block), seed)
+    pond = organic_basin(block.centroid, rx, ry, _long_axis_angle(block), seed, formal=formal)
     pond = make_valid(pond.intersection(block.buffer(-2.0)))
     ponds = [p for p in iter_polygons(pond) if p.area >= 1.0]
     if not ponds:
@@ -460,9 +532,10 @@ def select_open_space(
 
         pond = greenway = None
         if palette.water_feature and central.area >= 2400.0:
-            pond, greenway = _pond_and_greenway(central, seed)
+            pond, greenway = _pond_and_greenway(central, seed, formal=palette.formal_water)
         if pond is not None and greenway is not None:
-            specs.append(GreenSpec(pond, "pond", "Pond", "stormwater_retention_pond"))
+            pond_name = "Reflecting Basin" if palette.formal_water else "Pond"
+            specs.append(GreenSpec(pond, "pond", pond_name, palette.water_archetype_id))
             lobes = [
                 p for p in iter_polygons(decompose_holed(greenway, central))
                 if p.area >= 50.0

@@ -279,7 +279,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
         write_explanation,
     )
     from app.services.planning_agents.runner import estimate_cost_usd, run_expert_panel
-    from app.services.planning_agents.scenarios import BASELINE_SCENARIO_ID, SCENARIO_PRESETS
+    from app.services.planning_agents.scenarios import BASELINE_SCENARIO_ID, resolve_scenario_preset
     from app.services.planning_agents.schemas import MergedParameter, ScenarioDefinition, ScenarioResult
     from app.services.urban_dna.schema import ValidationNote
 
@@ -290,7 +290,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
         if row is None:
             return {"status": "failed", "error": "scenario row not found"}
 
-        definition = SCENARIO_PRESETS.get(row.scenario_id)
+        definition = resolve_scenario_preset(row.scenario_id)
         if definition is None and row.scenario_id.startswith("custom_"):
             # Custom scenario: the definition was expanded from the user's
             # brief at creation time and stored on the row.
@@ -336,7 +336,7 @@ def run_urban_dna_scenario(self, scenario_row_id: str) -> dict:
                 else:
                     warnings.append(ValidationNote(
                         code="BASELINE_UNAVAILABLE", severity="info",
-                        message="as_of_right baseline not complete yet; diff shows all parameters.",
+                        message=f"{BASELINE_SCENARIO_ID} baseline not complete yet; diff shows all parameters.",
                         source_phase="coordinator",
                     ))
 
@@ -540,6 +540,8 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
         # ("a large park" must move the drawn plan; experts have no vocabulary
         # path for open_space_share). Clamped inside resolve_rules.
         rule_hints: dict[str, float] | None = None
+        palette_hint: str | None = None
+        plan_parameters = dict(row.payload.get("plan_parameters") or {})
         custom_def = (row.payload or {}).get("custom_definition")
         if isinstance(custom_def, dict):
             raw_hints = custom_def.get("rule_hints")
@@ -549,18 +551,30 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                     for key, value in raw_hints.items()
                     if isinstance(value, (int, float)) and not isinstance(value, bool)
                 } or None
+            # The extracted philosophy primary selects the nearest preset
+            # palette ("make it beautiful" draws beaux-arts fabric, not the
+            # default midrise mix).
+            philosophy = custom_def.get("philosophy")
+            if isinstance(philosophy, dict) and isinstance(philosophy.get("primary"), str):
+                palette_hint = philosophy["primary"]
+            # Brief-extracted character, only when no expert emitted one.
+            aesthetic_hint = (row.payload or {}).get("expansion", {}).get("aesthetic_hint") \
+                if isinstance((row.payload or {}).get("expansion"), dict) else None
+            if aesthetic_hint and "buildings.development_aesthetic" not in plan_parameters:
+                plan_parameters["buildings.development_aesthetic"] = {"value": str(aesthetic_hint)}
 
         result, metrics_report, iterations = run_refinement_loop(
             site_polygon_wgs84=site_polygon,
             scenario_id=row.scenario_id,
             scenario_label=row.label,
-            parameters=row.payload.get("plan_parameters") or {},
+            parameters=plan_parameters,
             dna=snapshot.dna or {},
             road_features=road_features,
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area,
             rule_hints=rule_hints,
             locks=locks,
+            palette_hint=palette_hint,
         )
 
         # Replace previous plan zones (keep locked streets).

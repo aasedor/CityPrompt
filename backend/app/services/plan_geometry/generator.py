@@ -150,6 +150,7 @@ def generate_plan_geometry(
     rule_overrides: dict[str, float] | None = None,
     rule_hints: dict[str, float] | None = None,
     dna: dict[str, Any] | None = None,
+    palette_hint: str | None = None,
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
@@ -225,7 +226,7 @@ def generate_plan_geometry(
     # placement mode; the scenario palette supplies the character families.
     district_lookup = _district_lookup_m(district_features or [], to_metric)
     strategy = resolve_layout_strategy(_param_value(parameters, "layout.strategy"))
-    palette = effective_palette(scenario_id, strategy)
+    palette = effective_palette(scenario_id, strategy, palette_hint)
     open_target = rules.open_space_share * gross
     open_plan = select_open_space(
         blocks=blocks, boundary_m=boundary_m, rules=rules, palette=palette,
@@ -527,6 +528,7 @@ def _emit_street_zones(
             archetype_id=getattr(palette, "spine_archetype_id", None),
         ))
 
+    local_archetype = getattr(palette, "local_archetype_id", None)
     counter = 0
     for segment in (s for s in network.segments if s.role != "spine"):
         band = segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2)
@@ -539,6 +541,7 @@ def _emit_street_zones(
             piece, name=f"{scenario_label} · Street {counter}",
             width=segment.row_width_m, role="local", rules=rules,
             scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+            archetype_id=local_archetype,
         ))
 
     # Numerical crumbs from the subtractions (shouldn't happen, but never
