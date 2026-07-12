@@ -143,6 +143,9 @@ class Settings(BaseSettings):
     # a shorter wait makes duplicate paid generations systematic, defeating
     # the cache on exactly the generate-all batches it exists for.
     archetype_cache_wait_s: int = 2820
+    # Model library first: a user-saved library model of the same archetype
+    # substitutes for a paid text-mode generation (Meshy only fills gaps).
+    model_library_first_enabled: bool = True
     gemini_api_key: str = ""
     google_maps_api_key: str = ""
     fal_key: str = ""
@@ -212,6 +215,10 @@ class Settings(BaseSettings):
     urban_dna_cache_ttl_hours: int = 168  # default TTL when a DatasetSpec has no refresh_days
     # Hard USD ceiling per master-plan generation across all planning-agent calls. 0 disables.
     planning_agents_max_usd: float = 5.0
+    # Master Planner: one LLM composes the whole-plan design spec (bands with
+    # variety, typologies, landscape structure) at draw time; the spec is
+    # cached on the scenario row so redraws are free and deterministic.
+    master_planner_enabled: bool = True
     policy_corpus_bucket_prefix: str = "policy"
 
     @property

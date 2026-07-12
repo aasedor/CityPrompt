@@ -563,6 +563,128 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             if aesthetic_hint and "buildings.development_aesthetic" not in plan_parameters:
                 plan_parameters["buildings.development_aesthetic"] = {"value": str(aesthetic_hint)}
 
+        # Measured 3D-model dims (one bulk query; the geometry engine stays a
+        # pure function of its inputs). Parcels get carved to these footprints
+        # so cached GLBs land at uniform, correct scale on the globe.
+        from app.models.models import ArchetypeModelCache
+        from app.services.plan_geometry.archetypes import build_measured_dims
+
+        cache_rows = (
+            session.query(ArchetypeModelCache)
+            .filter_by(status="completed", engine="meshy")
+            .all()
+        )
+        measured_model_dims = build_measured_dims(cache_rows)
+
+        # --- Master Planner: the design intelligence ahead of the engine ----------
+        # One LLM composes the whole-plan spec (band characters WITH variety,
+        # massing typologies, open-space program, landscape structure). The
+        # validated spec is cached on the row: redraws are free, deterministic,
+        # and the narrative stays presentable. Any failure falls back to the
+        # scenario's preset palette — the draw itself never depends on the LLM.
+        from app.core.config import get_settings
+        from app.services.master_planner import (
+            MasterPlanSpec,
+            compose_master_plan,
+            palette_from_spec,
+        )
+        from app.services.planning_agents.scenarios import resolve_scenario_preset
+        from app.services.planning_agents.schemas import ScenarioDefinition
+
+        settings = get_settings()
+        master_notes: list[dict] = []
+        master_spec = None
+        cached_spec = (row.payload.get("master_plan") or {}).get("spec")
+        if isinstance(cached_spec, dict):
+            try:
+                master_spec = MasterPlanSpec(**cached_spec)
+            except Exception:  # noqa: BLE001 — stale spec schema: recompose below
+                master_spec = None
+
+        if master_spec is None and settings.master_planner_enabled and settings.anthropic_api_key:
+            definition = resolve_scenario_preset(row.scenario_id)
+            if definition is None and isinstance(custom_def, dict):
+                try:
+                    definition = ScenarioDefinition(**custom_def)
+                except Exception:  # noqa: BLE001 — invalid custom def: preset palette path
+                    definition = None
+            if definition is not None and snapshot.dna:
+                from app.core.usage_logger import log_api_usage_sync
+                from app.services import spatial_engine as se
+                from app.services.plan_geometry.community_rules import (
+                    _DEFAULTS,
+                    _SCENARIO_DEFAULTS,
+                )
+
+                frame = se.SiteFrame.from_wgs84(site_polygon)
+                block_m = _SCENARIO_DEFAULTS.get(row.scenario_id, _DEFAULTS)["block"]
+                site_summary = {
+                    "area_m2": frame.area_m2,
+                    "est_blocks": max(1, round(frame.area_m2 / (block_m * block_m))),
+                }
+                # compose_master_plan never raises, but the event-loop plumbing
+                # around it can — and the draw must never depend on the LLM.
+                master_usage = None
+                try:
+                    master_spec, master_usage, master_notes = asyncio.run(compose_master_plan(
+                        dna_json=snapshot.dna,
+                        definition=definition,
+                        site_summary=site_summary,
+                        parameters=plan_parameters,
+                        brief=(row.payload or {}).get("brief"),
+                        api_key=settings.anthropic_api_key,
+                        model=settings.urban_dna_agent_model,
+                        palette_hint=palette_hint,
+                    ))
+                except SoftTimeLimitExceeded:
+                    raise
+                except Exception as exc:  # noqa: BLE001 — preset palette path
+                    logger.warning("Master planner composition errored: %s", exc)
+                    master_spec = None
+                    master_notes = [{
+                        "code": "MASTER_PLANNER_UNAVAILABLE", "severity": "warning",
+                        "message": f"Master Planner unavailable ({type(exc).__name__}) — "
+                                   "the scenario's preset palette drew this plan.",
+                        "source_phase": "master_planner",
+                    }]
+                if master_usage is not None:
+                    try:
+                        log_api_usage_sync(
+                            provider="anthropic",
+                            operation="planning_agent.master_planner",
+                            input_tokens=master_usage["input_tokens"],
+                            output_tokens=master_usage["output_tokens"],
+                            status=master_usage["status"],
+                            metadata={"scenario": row.scenario_id, "model": master_usage["model"]},
+                        )
+                    except SoftTimeLimitExceeded:
+                        raise
+                    except Exception as exc:  # noqa: BLE001
+                        logger.warning("Failed to log master planner usage: %s", exc)
+                if master_spec is not None:
+                    payload = dict(row.payload or {})
+                    payload["master_plan"] = {
+                        "spec": master_spec.model_dump(mode="json"),
+                        "narrative": master_spec.design_narrative,
+                        "generated_at": datetime.now(tz.utc).isoformat(),
+                        "usage": master_usage,
+                    }
+                    row.payload = payload
+                    session.commit()
+
+        palette_override = (
+            palette_from_spec(master_spec, row.scenario_id, palette_hint)
+            if master_spec is not None else None
+        )
+
+        # The planner's urban grain becomes a rule hint (block spacing + the
+        # hard edge cap that forces subdivision), so it sizes blocks to the
+        # local context instead of the scenario default.
+        if master_spec is not None and master_spec.block_target_m:
+            rule_hints = dict(rule_hints or {})
+            rule_hints["block_target_m"] = float(master_spec.block_target_m)
+            rule_hints.setdefault("max_block_edge_m", round(float(master_spec.block_target_m) * 1.15, 1))
+
         result, metrics_report, iterations = run_refinement_loop(
             site_polygon_wgs84=site_polygon,
             scenario_id=row.scenario_id,
@@ -575,7 +697,11 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             rule_hints=rule_hints,
             locks=locks,
             palette_hint=palette_hint,
+            measured_model_dims=measured_model_dims,
+            palette_override=palette_override,
         )
+        # The planner's own notes (composition + repairs) lead the plan notes.
+        result.notes[:0] = master_notes
 
         # Replace previous plan zones (keep locked streets).
         for old in existing:
