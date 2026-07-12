@@ -383,7 +383,7 @@ class ArchetypeModelCache(Base):
     thumbnail_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
     source_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     source_building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
-    generation_mode: Mapped[str | None] = mapped_column(String(10), nullable=True, default="text")
+    generation_mode: Mapped[str | None] = mapped_column(String(20), nullable=True, default="text")
     generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
     size_bytes: Mapped[int | None] = mapped_column(Integer, nullable=True)
     use_count: Mapped[int] = mapped_column(Integer, default=0)

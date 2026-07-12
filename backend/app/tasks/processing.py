@@ -155,6 +155,28 @@ def _file_proxy_url(key: str) -> str:
     return f"/api/v1/files/{key}"
 
 
+def _storage_key_from_url(url: str) -> str | None:
+    """Extract the storage key from a stored-object URL. Modern URLs are API
+    paths (/api/v1/files/<key>); legacy URLs embed the bucket directly
+    (http://minio:9000/<bucket>/<key>)."""
+    files_prefix = "/api/v1/files/"
+    if files_prefix in url:
+        return url.split(files_prefix, 1)[1]
+    parts = url.split(f"/{settings.s3_bucket_name}/", 1)
+    return parts[1] if len(parts) == 2 else None
+
+
+def _copy_storage_object(source_key: str, dest_key: str, content_type: str = "model/gltf-binary") -> None:
+    """Server-side S3 copy within the app bucket (no download round-trip)."""
+    s3 = _get_s3_client()
+    s3.copy_object(
+        Bucket=settings.s3_bucket_name,
+        CopySource={"Bucket": settings.s3_bucket_name, "Key": source_key},
+        Key=dest_key,
+        ContentType=content_type,
+    )
+
+
 # Minimum AI confidence score to accept a building interpretation.
 # Results below this threshold are logged and skipped.
 CONFIDENCE_THRESHOLD = 0.3
@@ -605,6 +627,142 @@ def _apply_cached_model(session: Session, building_id: str, building, entry, eng
     }
 
 
+def _find_library_model(session: Session, building, archetype_id: str):
+    """Best saved model-library entry whose SOURCE building carries the same
+    archetype identity as this building.
+
+    Only entries the project owner could apply manually qualify: their own or
+    public ones. Raw archetype ids carry legacy suffixes ("_front_day", baked
+    "_variant_N"), so the SQL LIKE is just a prefilter — equality is decided
+    by the same normalizer the archetype cache keys with.
+    """
+    from sqlalchemy import or_, select
+
+    from app.models.models import Building, ModelLibraryEntry, Project
+    from app.services.archetype_model_cache import normalize_cache_key
+
+    owner_id = session.execute(
+        select(Project.owner_id).where(Project.id == building.project_id)
+    ).scalar_one_or_none()
+    access = [ModelLibraryEntry.is_public.is_(True)]
+    if owner_id is not None:
+        access.append(ModelLibraryEntry.owner_id == owner_id)
+
+    # Anchor the suffix boundary ("park" must not sweep in "parking_garage"
+    # sources and crowd the LIMIT window into a false miss).
+    raw_id = Building.specifications["development_archetype_id"].astext
+    rows = session.execute(
+        select(ModelLibraryEntry, Building.specifications)
+        .join(Building, ModelLibraryEntry.source_building_id == Building.id)
+        .where(
+            or_(raw_id == archetype_id, raw_id.like(f"{archetype_id}\\_%", escape="\\")),
+            or_(*access),
+        )
+        .order_by(
+            ModelLibraryEntry.use_count.desc().nulls_last(),
+            ModelLibraryEntry.created_at.desc(),
+        )
+        .limit(25)
+    ).all()
+    for entry, source_specs in rows:
+        key = normalize_cache_key(source_specs)
+        if key is not None and key[0] == archetype_id:
+            return entry
+    return None
+
+
+def _apply_library_model(session: Session, building_id: str, building, entry, archetype_id: str, engine_id: str) -> dict | None:
+    """Point a building at a saved model-library entry (zero credits).
+
+    Objects are COPIED into the building's project (mirroring the manual
+    /model-library/items/{id}/apply endpoint) — deleting a library entry
+    deletes its library/ objects, which must not strand buildings that
+    reused it. Returns None on failure so the caller falls back to a paid
+    generation.
+    """
+    from sqlalchemy import func as sa_func
+    from sqlalchemy import update as sa_update
+
+    from app.models.models import ModelLibraryEntry
+
+    source_key = _storage_key_from_url(entry.model_url)
+    if source_key is None:
+        logger.warning("Library entry %s has an unparseable model_url; skipping", entry.id)
+        return None
+    dest_key = f"projects/{building.project_id}/models/{building_id}_ai.glb"
+    try:
+        _copy_storage_object(source_key, dest_key)
+    except Exception as copy_err:
+        logger.warning("Library model copy failed for entry %s (non-fatal): %s", entry.id, copy_err)
+        return None
+
+    model_url = _file_proxy_url(dest_key)
+    lod_urls: dict[str, str] = {}
+    for level, lod_source_url in (entry.lod_urls or {}).items():
+        lod_source_key = _storage_key_from_url(lod_source_url)
+        if lod_source_key is None:
+            continue
+        lod_dest_key = f"projects/{building.project_id}/models/{building_id}_lod{level}.glb"
+        try:
+            _copy_storage_object(lod_source_key, lod_dest_key)
+        except Exception:
+            continue  # a missing LOD only costs detail, never the model
+        lod_urls[str(level)] = _file_proxy_url(lod_dest_key)
+    lod_urls.setdefault("0", model_url)
+
+    try:
+        building.model_url = model_url
+        building.lod_urls = lod_urls
+        building.generation_status = "completed"
+        if entry.generation_engine:
+            building.generation_engine = entry.generation_engine
+        if entry.thumbnail_url:
+            building.preview_url = entry.thumbnail_url
+            building.preview_status = "completed"
+        session.commit()
+    except Exception as db_err:
+        session.rollback()
+        logger.warning("Library model apply failed for entry %s (non-fatal): %s", entry.id, db_err)
+        return None
+
+    # Bookkeeping below is optional polish — the reused model is committed.
+    try:
+        session.execute(
+            sa_update(ModelLibraryEntry)
+            .where(ModelLibraryEntry.id == entry.id)
+            .values(use_count=sa_func.coalesce(ModelLibraryEntry.use_count, 0) + 1)
+        )
+        session.commit()
+    except Exception as bump_err:
+        session.rollback()
+        logger.warning("Library use_count bump failed (non-fatal): %s", bump_err)
+    log_api_usage_sync(
+        provider=engine_id,
+        operation="model_library_hit",
+        credits_used=0,
+        building_id=building_id,
+        metadata={
+            "library_entry_id": str(entry.id),
+            "archetype_id": archetype_id,
+        },
+    )
+    try:
+        _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
+    except Exception as prop_err:
+        logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
+
+    logger.info(
+        "Model library hit for building %s: %s -> %s (entry %s)",
+        building_id, archetype_id, model_url, entry.id,
+    )
+    return {
+        "status": "completed",
+        "building_id": building_id,
+        "model_url": model_url,
+        "library_hit": True,
+    }
+
+
 @celery_app.task(
     bind=True,
     name="generate_3d_model_ai",
@@ -710,6 +868,46 @@ def generate_3d_model_ai(
                         building_id, archetype_id, variant_id,
                     )
 
+        # --- Model library: library-first, Meshy-fallback -----------------
+        # A user-saved model of the same archetype substitutes for a paid
+        # generation. Consulted only once the cache declined to resolve the
+        # model (completed hits returned above); explicit image uploads and
+        # buildings without an archetype key always generate.
+        if settings.model_library_first_enabled and mode == "text":
+            from app.services.archetype_model_cache import normalize_cache_key
+
+            library_key = normalize_cache_key(building.specifications)
+            if library_key is not None:
+                library_result = None
+                try:
+                    library_entry = _find_library_model(session, building, library_key[0])
+                    if library_entry is not None:
+                        library_result = _apply_library_model(
+                            session, building_id, building, library_entry,
+                            library_key[0], provider.engine_id,
+                        )
+                except Exception as lib_err:
+                    # Fail-open: the library is an optimization — a lookup
+                    # failure must never block the paid fallback.
+                    session.rollback()
+                    logger.warning("Model library lookup failed (non-fatal): %s", lib_err)
+                if library_result is not None:
+                    if cache_claim is not None:
+                        # This task will never complete the claim it just
+                        # took — release it or same-key waiters block until
+                        # the stale takeover (~47 min).
+                        try:
+                            from app.services.archetype_model_cache import fail_entry
+
+                            fail_entry(session, cache_claim.id, "released: model library hit")
+                        except Exception:
+                            logger.warning(
+                                "Could not release cache claim after library hit", exc_info=True
+                            )
+                        finally:
+                            cache_claim = None
+                    return library_result
+
         result = asyncio.run(provider.run_generation(
             prompt=prompt,
             mode=mode,
@@ -777,8 +975,10 @@ def generate_3d_model_ai(
             # Publish to the cache right after the paid commit — waiters are
             # polling this row. Thumbnail attaches later (non-blocking).
             try:
+                from app.processing.glb_measure import measure_glb
                 from app.services.archetype_model_cache import complete_entry
 
+                dims = measure_glb(result.glb_data)
                 complete_entry(
                     session,
                     cache_claim.id,
@@ -787,6 +987,7 @@ def generate_3d_model_ai(
                     source_task_id=result.task_id,
                     source_building_id=building.id,
                     lod_keys=lod_keys_for_cache or None,
+                    metadata={"dimensions": dims} if dims else None,
                 )
                 completed_cache = cache_claim
                 cache_claim = None  # completed — error handler must not fail it
@@ -932,9 +1133,20 @@ def prewarm_archetype_model(
     mode: str = "text",
     prompt: str | None = None,
     image_data_uri: str | None = None,
+    image_data_uris: list[str] | None = None,
+    isolate_images: bool | None = None,
+    target_polycount: int | None = None,
+    clean_images: str | None = None,
 ):
     """Warm the archetype model cache without a Building — claim the key,
-    generate, optimize, upload to archetype-cache/, complete the row."""
+    generate, optimize, upload to archetype-cache/, complete the row.
+
+    mode="multi_image" sends image_data_uris (street card first, then the
+    45°/90° aerials) to Meshy multi-image-to-3D; prompt becomes the Meshy
+    texture_prompt. isolate_images: None = per-mode default (image -> True,
+    multi_image -> False — rembg mangles context-rich aerials).
+    clean_images: "entourage" or "building_only" runs a Gemini removal edit
+    on every input first (people/vehicles fuse into mutant geometry)."""
     logger.info(
         "Pre-warming archetype model %s/%s (engine=%s, mode=%s)",
         archetype_id, variant_id, engine, mode,
@@ -964,7 +1176,30 @@ def prewarm_archetype_model(
         if not provider.is_available():
             raise RuntimeError(f"AI generation engine '{engine}' is not configured")
 
-        if mode == "image" and image_data_uri and image_data_uri.startswith("data:"):
+        if clean_images:
+            # Gemini removal edit BEFORE isolation/submission: entourage in
+            # the refs becomes fused mesh geometry otherwise. Fail-open.
+            import base64 as b64
+
+            from app.processing.image_cleanup import clean_reference_image
+
+            def _clean_uri(uri: str) -> str:
+                if not uri or not uri.startswith("data:"):
+                    return uri
+                header, _, payload = uri.partition(",")
+                cleaned = clean_reference_image(b64.b64decode(payload), level=clean_images)
+                cleaned_mime = (
+                    "image/png" if cleaned[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
+                )
+                return f"data:{cleaned_mime};base64," + b64.b64encode(cleaned).decode()
+
+            if image_data_uri:
+                image_data_uri = _clean_uri(image_data_uri)
+            if image_data_uris:
+                image_data_uris = [_clean_uri(u) for u in image_data_uris]
+
+        do_isolate = isolate_images if isolate_images is not None else (mode == "image")
+        if do_isolate and mode == "image" and image_data_uri and image_data_uri.startswith("data:"):
             # Matte out neighbours before Meshy models them into the mesh
             # (pilot failure mode 2026-07-10). Fail-open without rembg.
             import base64 as b64
@@ -974,6 +1209,21 @@ def prewarm_archetype_model(
             header, _, payload = image_data_uri.partition(",")
             isolated = isolate_building(b64.b64decode(payload))
             image_data_uri = "data:image/png;base64," + b64.b64encode(isolated).decode()
+        elif do_isolate and mode == "multi_image" and image_data_uris:
+            # Opt-in only, and only the street card (index 0) — the aerials
+            # need their context intact for Meshy's view fusion.
+            import base64 as b64
+
+            from app.processing.image_isolation import isolate_building
+
+            first = image_data_uris[0]
+            if first.startswith("data:"):
+                header, _, payload = first.partition(",")
+                isolated = isolate_building(b64.b64decode(payload))
+                image_data_uris = [
+                    "data:image/png;base64," + b64.b64encode(isolated).decode(),
+                    *image_data_uris[1:],
+                ]
 
         def _progress_callback(progress: float, step: str) -> None:
             self.update_state(state="GENERATING", meta={"progress": progress, "step": step})
@@ -982,6 +1232,8 @@ def prewarm_archetype_model(
             prompt=prompt or archetype_id.replace("_", " "),
             mode=mode,
             image_url=image_data_uri,
+            image_urls=image_data_uris,
+            target_polycount=target_polycount,
             refine=True,
             negative_prompt=(
                 "blurry, low quality, deformed, floating objects, ground plane, "
@@ -1007,6 +1259,9 @@ def prewarm_archetype_model(
             )
             _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
             lod_keys_for_cache[str(level)] = lod_key
+        from app.processing.glb_measure import measure_glb
+
+        dims = measure_glb(result.glb_data)
         complete_entry(
             session,
             entry.id,
@@ -1014,6 +1269,7 @@ def prewarm_archetype_model(
             size_bytes=len(result.glb_data),
             source_task_id=result.task_id,
             lod_keys=lod_keys_for_cache or None,
+            metadata={"dimensions": dims} if dims else None,
         )
 
         if result.thumbnail_url:
@@ -1031,6 +1287,44 @@ def prewarm_archetype_model(
             except Exception as thumb_err:
                 session.rollback()
                 logger.warning("Pre-warm thumbnail failed (non-fatal): %s", thumb_err)
+
+        # When a cleanup edit ran, persist what Meshy actually saw — the
+        # only way to distinguish "bad edit" from "bad fusion" in QA.
+        if clean_images and image_data_uris:
+            import base64 as b64
+
+            for i, uri in enumerate(image_data_uris):
+                try:
+                    header, _, payload = uri.partition(",")
+                    ext = "png" if "png" in header else "jpg"
+                    _upload_to_storage(
+                        f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_input_{i}.{ext}",
+                        b64.b64decode(payload),
+                        "image/png" if ext == "png" else "image/jpeg",
+                    )
+                except Exception as input_err:
+                    logger.warning("Cleaned-input upload %d failed (non-fatal): %s", i, input_err)
+
+        # Multi-image tasks return 4 cardinal-view thumbnails — persist them
+        # now (Meshy asset URLs expire) under deterministic keys the QA
+        # tooling can derive from the entry id.
+        cardinal_thumbs = (result.metadata or {}).get("thumbnail_urls") or {}
+        if isinstance(cardinal_thumbs, dict):
+            import httpx as httpx_thumb
+
+            for view, url in cardinal_thumbs.items():
+                if not url or view not in ("front", "right", "back", "left"):
+                    continue
+                try:
+                    view_resp = httpx_thumb.get(url, timeout=30.0, follow_redirects=True)
+                    view_resp.raise_for_status()
+                    _upload_to_storage(
+                        f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_thumb_{view}.png",
+                        view_resp.content,
+                        "image/png",
+                    )
+                except Exception as view_err:
+                    logger.warning("Multi-view thumb %s failed (non-fatal): %s", view, view_err)
 
         logger.info(
             "Pre-warmed %s/%s -> %s (%.1fMB)",

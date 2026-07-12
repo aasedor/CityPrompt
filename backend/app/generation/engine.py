@@ -37,6 +37,9 @@ MESHY_PREVIEW_TIMEOUT_S = 600   # 10 min
 MESHY_REFINE_TIMEOUT_S = 900    # 15 min; on timeout we keep the preview mesh
 MESHY_REFINE_ATTEMPTS = 2       # refine failures are intermittent — retry once
 MESHY_IO_HEADROOM_S = 300       # GLB download + S3 upload + thumbnail
+# multi_image fuses up to 4 views + remesh + PBR in a single task (no refine
+# leg), so it gets one longer poll: 1800 + IO headroom = 2100 < MAX_RUNTIME.
+MESHY_MULTI_IMAGE_TIMEOUT_S = 1800
 MESHY_MAX_RUNTIME_S = (
     MESHY_PREVIEW_TIMEOUT_S
     + MESHY_REFINE_ATTEMPTS * MESHY_REFINE_TIMEOUT_S
@@ -92,6 +95,8 @@ class BaseGenerationEngine(ABC):
         prompt: str,
         mode: str = "text",
         image_url: str | None = None,
+        image_urls: list[str] | None = None,
+        target_polycount: int | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
@@ -122,6 +127,8 @@ class MeshyEngine(BaseGenerationEngine):
         prompt: str,
         mode: str = "text",
         image_url: str | None = None,
+        image_urls: list[str] | None = None,
+        target_polycount: int | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
@@ -148,6 +155,24 @@ class MeshyEngine(BaseGenerationEngine):
                 task_id=task_id,
                 building_id=building_id,
             )
+        elif mode == "multi_image":
+            if not image_urls:
+                raise ValueError("image_urls is required for Meshy multi_image mode")
+            # prompt doubles as the texture_prompt here — geometry comes from
+            # the views, so callers send materials/colors language, not massing.
+            task_id = await client.multi_image_to_3d(
+                image_urls,
+                texture_prompt=prompt or "",
+                target_polycount=target_polycount or 30000,
+            )
+            task_type = "multi_image"
+            log_api_usage_sync(
+                provider=self.engine_id,
+                operation="multi_image_to_3d",
+                credits_used=30,
+                task_id=task_id,
+                building_id=building_id,
+            )
         else:
             task_id = await client.text_to_3d_preview(prompt, negative_prompt=negative)
             task_type = "text"
@@ -162,7 +187,10 @@ class MeshyEngine(BaseGenerationEngine):
         self._emit_task_id(task_callback, task_id)
         self._emit_progress(progress_callback, 0.3, "polling")
 
-        result = await client.poll_until_done(task_id, timeout=MESHY_PREVIEW_TIMEOUT_S, task_type=task_type)
+        poll_timeout = (
+            MESHY_MULTI_IMAGE_TIMEOUT_S if mode == "multi_image" else MESHY_PREVIEW_TIMEOUT_S
+        )
+        result = await client.poll_until_done(task_id, timeout=poll_timeout, task_type=task_type)
         preview_glb_url = (result.get("model_urls") or {}).get("glb")
         if preview_callback and preview_glb_url:
             try:
@@ -243,6 +271,8 @@ class TripoEngine(BaseGenerationEngine):
         prompt: str,
         mode: str = "text",
         image_url: str | None = None,
+        image_urls: list[str] | None = None,
+        target_polycount: int | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
@@ -251,6 +281,9 @@ class TripoEngine(BaseGenerationEngine):
         preview_callback: PreviewCallback | None = None,
     ) -> GenerationResult:
         # Tripo doesn't support refine or preview_callback (single-step generation)
+        if mode == "multi_image":
+            raise ValueError("Tripo does not support multi_image mode")
+
         from app.generation.tripo_client import TripoClient
 
         client = TripoClient()
