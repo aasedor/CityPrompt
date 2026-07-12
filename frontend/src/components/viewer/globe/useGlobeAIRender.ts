@@ -187,6 +187,29 @@ function captureCanvasBase64(canvas: HTMLCanvasElement): Promise<string> {
 }
 
 /**
+ * Nearest Gemini-supported aspect ratio for a capture canvas. Sent explicitly
+ * on render requests: left unset, the LAST image in the payload governs the
+ * output frame (an archetype ref, not the map) — a silent geometry distorter
+ * for zone polygons.
+ */
+const SUPPORTED_ASPECT_RATIOS: Array<[string, number]> = [
+  ['21:9', 21 / 9], ['16:9', 16 / 9], ['3:2', 1.5], ['4:3', 4 / 3],
+  ['5:4', 1.25], ['1:1', 1], ['4:5', 0.8], ['3:4', 0.75],
+  ['2:3', 2 / 3], ['9:16', 9 / 16],
+];
+function nearestAspectRatio(width: number, height: number): string {
+  if (!width || !height) return '4:3';
+  const target = width / height;
+  let best = '4:3';
+  let bestDiff = Infinity;
+  for (const [label, ratio] of SUPPORTED_ASPECT_RATIOS) {
+    const diff = Math.abs(Math.log(ratio / target));
+    if (diff < bestDiff) { bestDiff = diff; best = label; }
+  }
+  return best;
+}
+
+/**
  * Project a [lng, lat] coordinate to screen pixels using Three.js camera.
  */
 function projectToPixels(
@@ -2058,7 +2081,7 @@ export function useGlobeAIRender() {
     zones = prepareZonesForRender(zones);
 
     try {
-      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt } = options;
+      const { style = 'photorealistic', model = 'gemini-3.1-flash-image', imageQuality = 'auto', customPrompt } = options;
 
       // 1. Capture the globe canvas
       console.log('[GlobeAIRender] Capturing canvas...');
@@ -2086,11 +2109,9 @@ export function useGlobeAIRender() {
                 `building, road, and landscape element stays where it is; only the ` +
                 `artistic medium changes.`,
               negative_prompt: 'low quality, blurry, text, watermark',
-              model: 'gemini-3.1-flash-image-preview',
+              model: 'gemini-3.1-flash-image',
               image_quality: imageQuality,
               project_id: options.projectId,
-              temperature: 0.0,
-              guidance_scale: 15,
               image_size: '2K',
               thinking_budget: 0,
             },
@@ -2145,7 +2166,7 @@ export function useGlobeAIRender() {
       // an artistic base, and GPT won't stylize (ledger #34) — a GPT pass 2
       // would reintroduce the exact seam the toggle exists to remove.
       const effectiveModel = twoPass && baseBase64 !== rawBase64
-        ? 'gemini-3.1-flash-image-preview'
+        ? 'gemini-3.1-flash-image'
         : model;
 
       // 1a. Add text labels to screenshot so Gemini can read zone names
@@ -2384,8 +2405,7 @@ export function useGlobeAIRender() {
         model: effectiveModel,
         image_quality: imageQuality,
         project_id: options.projectId,
-        temperature: 0.0,
-        guidance_scale: 15,
+        aspect_ratio: nearestAspectRatio(canvas.width, canvas.height),
         image_size: '2K', // 2K output for architectural detail accuracy
         thinking_budget: 0, // Disable thinking — no benefit for image generation, saves ~30-50% latency
         archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
@@ -2540,7 +2560,7 @@ export function useGlobeAIRender() {
     isRenderingRef.current = true;
     const count = options.count ?? 3;
     const previewVariants = options.variants ?? Array.from({ length: count }, (_, index) => ({
-      model: options.model ?? 'gemini-3.1-flash-image-preview',
+      model: options.model ?? 'gemini-3.1-flash-image',
       label: `Preview ${index + 1}`,
       imageQuality: options.imageQuality,
     }));
@@ -2670,7 +2690,7 @@ export function useGlobeAIRender() {
     zones = prepareZonesForRender(zones);
 
     try {
-      const { style = 'photorealistic', model = 'gemini-3.1-flash-image-preview', imageQuality = 'auto', customPrompt, onProgress } = options;
+      const { style = 'photorealistic', model = 'gemini-3.1-flash-image', imageQuality = 'auto', customPrompt, onProgress } = options;
 
       // 1. Capture base screenshot
       console.log('[GlobeAIRender:PerZone] Capturing canvas...');
@@ -2818,8 +2838,6 @@ export function useGlobeAIRender() {
               model,
               image_quality: imageQuality,
               project_id: options.projectId,
-              temperature: 0.0,
-              guidance_scale: 15,
               image_size: '2K',
               thinking_budget: 0,
               archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,

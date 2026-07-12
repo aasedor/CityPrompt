@@ -18,7 +18,7 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 const CANVAS = 1024;
 /** Park occupies this fraction of the canvas' limiting dimension. */
 const FIT = 0.86;
-const PARK_GROUND_MODEL = 'gemini-3.1-flash-image-preview';
+const PARK_GROUND_MODEL = 'gemini-3.1-flash-image';
 
 export interface ParkGroundBBox {
   west: number;

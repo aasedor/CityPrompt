@@ -106,7 +106,7 @@ const STREET_VIEW_STYLE_GROUPS = [
 ] as const;
 
 const STREET_VIEW_RENDER_MODELS = [
-  { model: 'gemini-3.1-flash-image-preview', label: 'Gemini 3.1 Flash' },
+  { model: 'gemini-3.1-flash-image', label: 'Gemini 3.1 Flash' },
   { model: 'gpt-image-2', label: 'GPT Image 2', imageQuality: 'auto' as const },
 ];
 const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image 2';

@@ -71,7 +71,7 @@ def _load_api_key() -> str:
 
 
 API_KEY = _load_api_key()
-MODEL = "gemini-3.1-flash-image-preview"
+MODEL = "gemini-3.1-flash-image"
 API_URL = (
     f"https://generativelanguage.googleapis.com/v1beta/"
     f"models/{MODEL}:generateContent?key={API_KEY}"

@@ -151,7 +151,7 @@ class Settings(BaseSettings):
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"
     gemini_2d_image_model: str = "gemini-3-pro-image-preview"
-    master_plan_2d_style_model: str = "gemini-3.1-flash-image-preview"
+    master_plan_2d_style_model: str = "gemini-3.1-flash-image"
     master_plan_2d_image_provider: str = "vertex"
     master_plan_3d_image_provider: str = "vertex"
     layout_ai_provider: str = "claude"

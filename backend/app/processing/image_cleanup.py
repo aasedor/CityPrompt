@@ -26,7 +26,7 @@ from app.core.config import get_settings
 
 logger = logging.getLogger(__name__)
 
-_CLEANUP_MODEL = "gemini-3.1-flash-image-preview"
+_CLEANUP_MODEL = "gemini-3.1-flash-image"
 _TIMEOUT_S = 120.0
 
 _REMOVE_BY_LEVEL = {

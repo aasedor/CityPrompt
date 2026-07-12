@@ -35,7 +35,10 @@ Always verify on localhost:5174 before committing. Check that cards load, render
 Check both with `git log origin/master --oneline -5` and `git log beeman/master --oneline -5` before pushing. Never force push without checking what's on both remotes.
 
 ### Render prompt guidelines
-- Temperature 0.0 for aerial renders (precision)
+- Do NOT send temperature on Gemini 3 image calls (official guidance: keep the
+  default; the old temp-0.0 rule and the guidance_scale knob are retired —
+  guidance_scale was silently overriding temp to 0.75). Send aspect_ratio +
+  image_size explicitly instead.
 - Simple natural prompts beat complex structured ones for Gemini
 - SCHEMA compressed prompts work for aerial, verbose depth-plane descriptions for street view
 - Critical constraints go at the END of the prompt (Gemini weights later instructions more heavily)
@@ -63,7 +66,7 @@ Default operating style for non-trivial work in this repo. Preserved from the 20
 2. Each archetype gets unique polygon color (archetypeShadeMap.ts)
 3. Screenshot + mask generated from zone colors
 4. Prompt built from archetype metadata + style + constraints
-5. POST /api/v1/render → Gemini API (gemini-3.1-flash-image-preview)
+5. POST /api/v1/render → Gemini API (gemini-3.1-flash-image — GA id; the -preview alias is deprecated)
 6. Post-processing (sharpen, contrast, color) → composite onto map
 
 ### Aerial Render

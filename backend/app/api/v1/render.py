@@ -45,7 +45,9 @@ router = APIRouter()
 
 # Gemini model for render pipeline — must support image generation
 # (responseModalities: ["TEXT", "IMAGE"])
-_GEMINI_RENDER_MODEL = "gemini-3.1-flash-image-preview"
+# GA id since 2026-05-28; the -preview alias is deprecated (shutdown announced
+# ~2026-06-25, still on a grace alias as of 2026-07-12).
+_GEMINI_RENDER_MODEL = "gemini-3.1-flash-image"
 _OPENAI_RENDER_MODEL = "gpt-image-2"
 
 
@@ -104,7 +106,7 @@ class RenderRequest(BaseModel):
         default=None,
         ge=1.0,
         le=30.0,
-        description="Mapped to Gemini temperature (higher guidance = lower temp).",
+        description="DEPRECATED — accepted for back-compat, ignored (was mapped to temperature).",
     )
     seed: Optional[int] = Field(
         default=None,
@@ -291,6 +293,7 @@ async def _save_render_audit(
 _ALLOWED_MODELS = {
     "gemini-2.5-flash-image",
     "gemini-3-pro-image-preview",
+    "gemini-3.1-flash-image",
     "gemini-3.1-flash-image-preview",
     "gpt-image-2",
     "gpt-image-2-2026-04-21",
@@ -300,7 +303,8 @@ _OPENAI_MODELS = {"gpt-image-2", "gpt-image-2-2026-04-21"}
 # Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
 _MODEL_TOKEN_COST: dict[str, int] = {
     "gemini-2.5-flash-image": 8,        # ~$0.039
-    "gemini-3.1-flash-image-preview": 13, # ~$0.067
+    "gemini-3.1-flash-image": 13,         # ~$0.067 (GA id)
+    "gemini-3.1-flash-image-preview": 13, # ~$0.067 (deprecated alias)
     "gemini-3-pro-image-preview": 27,     # ~$0.134
     "gpt-image-2": 13,
     "gpt-image-2-2026-04-21": 13,
@@ -850,27 +854,40 @@ async def generate_render(
 
     parts.append({"text": prompt_text})
 
-    # Map guidance_scale to temperature: high guidance = low temperature (strict)
-    # For architectural editing, low temperature preserves unedited areas faithfully
-    temperature = 0.0  # Default to 0 for maximum consistency in editing
-    if req.guidance_scale is not None:
-        temperature = max(0.0, min(1.5, 1.5 - (req.guidance_scale / 30) * 1.5))
-
+    # No temperature: Gemini 3 image docs list no temperature parameter, and the
+    # old guidance_scale->temperature mapping silently overrode the intended 0.0
+    # to 0.75 on every render (guidance_scale is an undocumented Imagen-era
+    # field). req.guidance_scale is accepted for back-compat but ignored.
     gen_config = {
         "responseModalities": ["TEXT", "IMAGE"],
-        "temperature": temperature,
     }
 
     # Add image size for models that support higher resolution
-    _HIRES_MODELS = {"gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview"}
+    _HIRES_MODELS = {
+        "gemini-3.1-flash-image",
+        "gemini-3.1-flash-image-preview",
+        "gemini-3-pro-image-preview",
+    }
     image_size = req.image_size
     if image_size is None and render_model in _HIRES_MODELS:
         image_size = "2K"  # Default to 2K for supported models
     if image_size and render_model in _HIRES_MODELS:
         gen_config["imageConfig"] = {"imageSize": image_size}
 
+    # Thread the requested aspect ratio through to Gemini. Unset, the LAST
+    # image in the payload governs the output frame — a silent geometry
+    # distorter for zone polygons.
+    _SUPPORTED_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4",
+                         "9:16", "16:9", "21:9"}
+    if req.aspect_ratio in _SUPPORTED_RATIOS and render_model in _HIRES_MODELS:
+        gen_config.setdefault("imageConfig", {})["aspectRatio"] = req.aspect_ratio
+
     # Add thinking budget for complex scenes (only models that support it)
-    _THINKING_MODELS = {"gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview"}
+    _THINKING_MODELS = {
+        "gemini-3.1-flash-image",
+        "gemini-3.1-flash-image-preview",
+        "gemini-3-pro-image-preview",
+    }
     if render_model in _THINKING_MODELS:
         thinking = req.thinking_budget
         if thinking is None and len(req.prompt) > 1000:
@@ -892,13 +909,13 @@ async def generate_render(
     auth_mode = "API key" if settings.gemini_api_key else "Vertex AI"
     logger.info(
         "Render request — model=%s, auth=%s, prompt_length=%d, has_mask=%s, "
-        "temperature=%.2f, imageSize=%s",
+        "imageSize=%s, aspectRatio=%s",
         req.model or _GEMINI_RENDER_MODEL,
         auth_mode,
         len(req.prompt),
         bool(req.mask_base64),
-        temperature,
         gen_config.get("imageConfig", {}).get("imageSize", "default"),
+        gen_config.get("imageConfig", {}).get("aspectRatio", "unset"),
     )
     logger.debug("Final prompt:\n%s", prompt_text)
 
