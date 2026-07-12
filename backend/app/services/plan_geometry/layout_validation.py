@@ -12,7 +12,11 @@ from app.services.plan_geometry.community_rules import FIRE_CLEAR_WIDTH_M, RuleP
 from app.services.plan_geometry.street_graph import StreetNetwork
 
 BLOCK_EDGE_MIN_M = 60.0
-BLOCK_EDGE_MAX_M = 220.0
+# Jacobs long-axis max / Calgary Complete Streets 150 m intersection spacing —
+# the "consider a mid-block connection" advisory fires on genuinely long
+# blocks (2026-07-12 morphology research). Distinct from street_graph's 220 m
+# curve-headroom bound.
+BLOCK_EDGE_MAX_M = 150.0
 
 
 def _block_edge_lengths(block_m: Polygon) -> tuple[float, float]:

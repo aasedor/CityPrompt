@@ -49,6 +49,128 @@ def _metric_area(zone, site) -> float:
     return project_geometry(Polygon(zone["coordinates"]), tf).area
 
 
+def test_block_plans_resolve_archetypes_before_massing():
+    from app.services.plan_geometry.archetypes import load_dims_table
+    from app.services.plan_geometry.community_rules import resolve_rules
+    from app.services.plan_geometry.placement import plan_blocks
+
+    known_ids = {e["id"] for e in load_dims_table()}
+    result = _generate()
+    buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
+    assert buildings
+    # Every emitted building zone resolved to a real catalog archetype.
+    for z in buildings:
+        arch = z["properties"].get("development_archetype_id")
+        assert arch in known_ids, f"unresolved archetype for {z['name']}: {arch!r}"
+
+
+def test_measured_dims_change_target_not_archetype():
+    from app.services.plan_geometry.archetypes import MeasuredEntry
+
+    base = _generate()
+    base_buildings = {
+        z["name"]: z["properties"].get("development_archetype_id")
+        for z in base.zones
+        if z["properties"].get("_plan_role") == "building"
+    }
+    arch_ids = {a for a in base_buildings.values() if a}
+    fake_measured = {
+        arch: MeasuredEntry(
+            variant_id="default",
+            dimensions={"long_per_height": 2.0, "short_per_height": 1.0, "aspect": 2.0},
+        )
+        for arch in arch_ids
+    }
+    measured_run = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="climate_first", scenario_label="Climate First",
+        parameters=PARAMS, road_features=[], district_features=[],
+        measured_model_dims=fake_measured,
+    )
+    measured_buildings = {
+        z["name"]: z["properties"].get("development_archetype_id")
+        for z in measured_run.zones
+        if z["properties"].get("_plan_role") == "building"
+    }
+    # Same archetype choices; only parcel geometry may differ.
+    assert set(base_buildings.values()) == set(measured_buildings.values())
+
+
+def _rect_stats(zone, site):
+    """(aspect, rect_fill) of the zone's minimum rotated rectangle, metric."""
+    tf = build_transformer("EPSG:4326", local_metric_crs_for_polygon(site))
+    poly = project_geometry(Polygon(zone["coordinates"]), tf)
+    rect = poly.minimum_rotated_rectangle
+    coords = list(rect.exterior.coords)
+    e1 = math.hypot(coords[1][0] - coords[0][0], coords[1][1] - coords[0][1])
+    e2 = math.hypot(coords[2][0] - coords[1][0], coords[2][1] - coords[1][1])
+    long_e, short_e = max(e1, e2), min(e1, e2)
+    return (long_e / max(short_e, 0.01), poly.area / max(rect.area, 0.01))
+
+
+def test_targeted_buildings_are_rectangular_modules():
+    site = _site()
+    result = _generate(site=site)
+    targeted = [
+        z for z in result.zones
+        if z["properties"].get("_plan_role") == "building" and z["properties"].get("target_w_m")
+    ]
+    assert targeted, "expected model-targeted building zones"
+    for z in targeted:
+        aspect, rect_fill = _rect_stats(z, site)
+        props = z["properties"]
+        # Compare long/short both sides; the carved module may be batched up
+        # to the effective module width (module_w_m) on small-unit archetypes
+        # and stretched when a bar hits MAX_MODULES_PER_BAR.
+        mod_w = props.get("module_w_m") or props["target_w_m"]
+        mod_d = props.get("module_d_m") or props["target_d_m"]
+        target_aspect = max(mod_w, mod_d) / max(min(mod_w, mod_d), 0.01)
+        # No L-shapes: each module must essentially fill its bounding rect...
+        assert rect_fill >= 0.65, f"{z['name']}: rect_fill {rect_fill:.2f}"
+        # ...and stay within stretch tolerance of the carved module, with an
+        # absolute rail for capped bars on oversized test blocks.
+        assert aspect <= max(target_aspect * 1.6 + 0.35, 4.5), (
+            f"{z['name']}: aspect {aspect:.2f} vs module {target_aspect:.2f}"
+        )
+
+
+def test_module_widths_track_archetype_target():
+    site = _site()
+    result = _generate(site=site)
+    tf = build_transformer("EPSG:4326", local_metric_crs_for_polygon(site))
+    checked = 0
+    for z in result.zones:
+        props = z["properties"]
+        if props.get("_plan_role") != "building" or not props.get("module_w_m"):
+            continue
+        poly = project_geometry(Polygon(z["coordinates"]), tf)
+        rect = poly.minimum_rotated_rectangle
+        coords = list(rect.exterior.coords)
+        e1 = math.hypot(coords[1][0] - coords[0][0], coords[1][1] - coords[0][1])
+        e2 = math.hypot(coords[2][0] - coords[1][0], coords[2][1] - coords[1][1])
+        long_e = max(e1, e2)
+        # Modules within stretch tolerance of the EFFECTIVE width, with the
+        # MAX_MODULES_PER_BAR stretch rail for oversized test blocks.
+        assert long_e <= max(props["module_w_m"] * 1.6, props["module_d_m"] * 4.5), (
+            f"{z['name']}: {long_e:.1f}m module vs module_w {props['module_w_m']}m"
+        )
+        checked += 1
+    assert checked > 0
+
+
+def test_zone_count_stays_bounded():
+    # The 700x520m test site is an adversarial superblock district; real
+    # sites are far smaller. MAX_MODULES_PER_BAR and MAX_BLOCKS_PER_AXIS guard
+    # the ceiling — this asserts no runaway, not a target density. The finer
+    # inner-city grain (subdivision guarantee + courtyard cap) legitimately
+    # raises the count here (~27 blocks x ~12 ring bars); a true runaway would
+    # be in the thousands.
+    # Faithful footprints + 12 m fine-grain modules land ~15-16 buildings per
+    # block here (~27 blocks); a true runaway would be thousands.
+    result = _generate()
+    buildings = [z for z in result.zones if z["properties"].get("_plan_role") == "building"]
+    assert len(buildings) < 600, f"module segmentation exploded: {len(buildings)} building zones"
+
+
 def test_generation_is_deterministic():
     a = _generate()
     b = _generate()
@@ -129,7 +251,9 @@ def test_typology_masses_are_hole_free_and_courtyards_only_on_perimeter():
         for zone in buildings:
             poly = Polygon(zone["coordinates"])
             assert poly.is_valid and len(poly.interiors) == 0
-            assert zone["properties"]["coverage_of_block"] <= 0.66  # cap + tolerance
+            # Faithful footprints: depth comes from archetype metadata under a
+            # loose SEAL cap (0.92) — solid blocks legitimately reach ~0.85.
+            assert zone["properties"]["coverage_of_block"] <= 0.92 + 0.02
         # Courtyards may only come from perimeter-typology blocks.
         perimeter_blocks = {z["name"].split(" · Building")[0] for z in buildings
                             if z["properties"].get("typology") == "perimeter_block"}

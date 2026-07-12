@@ -25,7 +25,7 @@ LANE_ROW_M = 7.0
 @dataclass(frozen=True)
 class RuleProfile:
     scenario_id: str
-    block_target_m: float          # street-grid spacing (centreline to centreline)
+    block_target_m: float          # preferred block edge (street-grid spacing = this + local ROW)
     row_width_m: float             # internal street right-of-way
     open_space_share: float        # of gross site area
     coverage_ratio: float          # building footprint / net block area (cap)
@@ -35,6 +35,12 @@ class RuleProfile:
     floors: float                  # working storey count (ceilings clamp per block)
     floors_note: str
     perimeter_inset_m: float       # boundary inset before the internal grid starts
+    # Hard walkability cap on the LONGEST block edge. The street grid adds
+    # internal streets until no block edge exceeds this — so a site smaller
+    # than one target block still subdivides instead of becoming a single
+    # megablock ringed by a giant courtyard. Design target (~90-130 m for
+    # inner-city grain), well under the evaluator's 220 m outer bound.
+    max_block_edge_m: float = 120.0
     # Street hierarchy: one wide main spine + narrower locals. The widths are
     # chosen so the frontend width-band resolver lands on distinct street
     # archetypes (locals 10-15 m -> narrow_residential_street, spine >=22 m ->
@@ -50,18 +56,25 @@ class RuleProfile:
         return min(self.row_width_m, self.local_row_width_m) - 2 * WALK_ZONE_EACH_SIDE_M
 
 
+# block = preferred block edge; edge = hard max block edge (forces subdivision).
+# Calibrated to inner-city / Calgary grain (2026-07-12 morphology research):
+# walkable block 80-110 m/side, short axis 60-90 m, long axis <=150 m; Calgary
+# inner-city block faces ~80-120 m, ~79 m deep between lanes; Complete Streets
+# 150 m min intersection spacing. The edge cap = min(block+20, 120) with a
+# 105 m floor so it always binds BELOW medium-site scale (converts the old
+# single-megablock bug into real subdivision). City Beautiful keeps the
+# grandest grain; Environmental the finest/most permeable.
 _SCENARIO_DEFAULTS: dict[str, dict[str, float]] = {
-    # block spacing / open share / coverage tuned per philosophy
-    "economic": {"block": 200.0, "open": 0.10, "coverage": 0.50},
-    "city_policy": {"block": 150.0, "open": 0.12, "coverage": 0.50},
-    "city_beautiful": {"block": 170.0, "open": 0.18, "coverage": 0.45},
-    "environmental": {"block": 160.0, "open": 0.20, "coverage": 0.42},
-    # Retired V1 preset ids — kept so existing scenario rows redraw identically.
-    "as_of_right": {"block": 200.0, "open": 0.10, "coverage": 0.50},
-    "lap_compliant": {"block": 150.0, "open": 0.12, "coverage": 0.50},
-    "climate_first": {"block": 160.0, "open": 0.16, "coverage": 0.45},
+    "economic": {"block": 100.0, "edge": 120.0, "open": 0.10, "coverage": 0.50},
+    "city_policy": {"block": 95.0, "edge": 115.0, "open": 0.12, "coverage": 0.50},
+    "city_beautiful": {"block": 115.0, "edge": 120.0, "open": 0.18, "coverage": 0.45},
+    "environmental": {"block": 85.0, "edge": 105.0, "open": 0.20, "coverage": 0.42},
+    # Retired V1 preset ids — kept so existing scenario rows redraw sensibly.
+    "as_of_right": {"block": 115.0, "edge": 120.0, "open": 0.10, "coverage": 0.50},
+    "lap_compliant": {"block": 95.0, "edge": 115.0, "open": 0.12, "coverage": 0.50},
+    "climate_first": {"block": 85.0, "edge": 105.0, "open": 0.16, "coverage": 0.45},
 }
-_DEFAULTS = {"block": 180.0, "open": 0.10, "coverage": 0.50}
+_DEFAULTS = {"block": 100.0, "edge": 120.0, "open": 0.10, "coverage": 0.50}
 
 # Custom-brief rule hints: hint key -> (defaults key, min, max). The open-space
 # ceiling is 0.30 ON PURPOSE — it matches the evaluator's own revision ceiling
@@ -70,7 +83,10 @@ _DEFAULTS = {"block": 180.0, "open": 0.10, "coverage": 0.50}
 _RULE_HINT_CLAMPS: dict[str, tuple[str, float, float]] = {
     "open_space_share": ("open", 0.05, 0.30),
     "coverage_ratio": ("coverage", 0.30, 0.60),
-    "block_target_m": ("block", 100.0, 260.0),
+    # Block edge floor lowered to 60 m so the Master Planner can call for a
+    # genuinely fine inner-city grain; the edge cap tracks the target.
+    "block_target_m": ("block", 60.0, 220.0),
+    "max_block_edge_m": ("edge", 70.0, 230.0),
 }
 
 
@@ -142,15 +158,22 @@ def resolve_rules(
             "message": floors_note, "source_phase": "building_placement",
         })
 
+    # Edge cap tracks the (possibly hinted) block target: a bespoke fine grain
+    # must not be undone by a stale default edge, and vice-versa.
+    edge_cap = max(defaults.get("edge", defaults["block"] + 10.0), defaults["block"])
+
     profile = RuleProfile(
         scenario_id=scenario_id,
         block_target_m=defaults["block"],
+        max_block_edge_m=edge_cap,
         row_width_m=float(row_width),
         open_space_share=defaults["open"],
         coverage_ratio=defaults["coverage"],
         parcel_width_m=22.0,
         front_setback_m=3.0,
-        building_depth_m=16.0,
+        # Shallow ring (Copenhagen 8-13 m dual-aspect) keeps the interior a real
+        # daylit courtyard, not an Eixample lightwell — the primary void lever.
+        building_depth_m=13.0,
         floors=float(floors),
         floors_note=floors_note,
         perimeter_inset_m=float(row_width) / 2,

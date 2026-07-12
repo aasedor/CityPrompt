@@ -19,6 +19,10 @@ from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 from shapely.validation import make_valid
 
+from app.services.plan_geometry.archetypes import (
+    resolve_building_archetype,
+    target_footprint,
+)
 from app.services.plan_geometry.community_rules import (
     FLOOR_HEIGHT_M,
     LANE_ROW_M,
@@ -29,10 +33,12 @@ from app.services.plan_geometry.layout_validation import validate_plan
 from app.services.plan_geometry.parceling import (
     building_mass_for_block,
     clamp_floors_to_ceiling,
+    decompose_holed,
     subdivide_block,
 )
 from app.services.plan_geometry.placement import (
     TYPOLOGY_DIMS,
+    Palette,
     carve_lane,
     compute_block_contexts,
     effective_palette,
@@ -42,6 +48,7 @@ from app.services.plan_geometry.placement import (
     site_hash,
 )
 from app.services.plan_geometry.street_graph import (
+    CRESCENT_SAGITTA_MIN_M,
     StreetNetwork,
     entry_points_from_roads,
     generate_street_network,
@@ -93,6 +100,15 @@ def _ring(poly_wgs84: Polygon) -> list[list[float]]:
     return [[float(x), float(y)] for x, y in poly_wgs84.exterior.coords[:-1]]
 
 
+def _letter(index: int) -> str:
+    """1 -> A, 26 -> Z, 27 -> AA … (module segmentation exceeds 26 pieces)."""
+    label = ""
+    while index > 0:
+        index, rem = divmod(index - 1, 26)
+        label = chr(65 + rem) + label
+    return label
+
+
 def _feature_lines_m(features: list[dict[str, Any]], to_metric) -> list[LineString]:
     lines: list[LineString] = []
     for feature in features or []:
@@ -138,6 +154,56 @@ def _param_value(parameters: dict[str, Any], path: str) -> Any:
     return merged
 
 
+def _derive_blocks(
+    boundary_m: BaseGeometry, street_area: BaseGeometry | None
+) -> tuple[list[Polygon], float]:
+    """Streets -> developable blocks, plus the sliver share of gross.
+
+    Morphological opening (erode 5 cm, dilate back): the difference can leave
+    hairline bridges at street crossings that keep blocks topologically
+    connected — the part count then depends on floating-point noise. Opening
+    severs the bridges deterministically at negligible geometric cost.
+    Sliver share is measured against the PRE-opening developable area so both
+    the opening loss and the sub-threshold discards count."""
+    if street_area is not None and not street_area.is_empty:
+        developable = boundary_m.difference(street_area)
+    else:
+        developable = boundary_m
+    opened = make_valid(developable.buffer(-0.05).buffer(0.05))
+    blocks = cleanup_developable_blocks(opened, sliver_area_threshold=400.0)
+    if not blocks:
+        return [boundary_m], 0.0
+    discarded = max(0.0, float(developable.area) - sum(b.area for b in blocks))
+    return blocks, discarded / max(float(boundary_m.area), 1.0)
+
+
+def _curvilinear_fallback_reason(
+    *,
+    n_curved: int,
+    n_straight: int,
+    n_curved_large: int,
+    n_straight_large: int,
+    sliver_curved: float,
+    sliver_straight: float,
+) -> str | None:
+    """Why a curved candidate must be rejected in favor of the straight grid.
+
+    Pure and unit-testable. Ordering matters: the relative sliver clause runs
+    BEFORE the absolute backstop so it is actually reachable (a curved run 2pp
+    of gross worse than its straight twin is a curve problem even under 4%)."""
+    if n_curved < 2:
+        return "BLOCKS_COLLAPSED"
+    if n_curved < n_straight:
+        return "BLOCKS_MERGED"
+    if n_curved_large < min(n_straight_large, 2):
+        return "BLOCKS_FRAGMENTED"       # curve shattered buildable blocks into pocket-park chum
+    if sliver_curved > sliver_straight + 0.02:
+        return "SLIVER_EXCESS_REL"
+    if sliver_curved > 0.04:
+        return "SLIVER_EXCESS_ABS"
+    return None
+
+
 def generate_plan_geometry(
     *,
     site_polygon_wgs84: Polygon,
@@ -151,6 +217,8 @@ def generate_plan_geometry(
     rule_hints: dict[str, float] | None = None,
     dna: dict[str, Any] | None = None,
     palette_hint: str | None = None,
+    measured_model_dims: dict | None = None,
+    palette_override: "Palette | None" = None,
 ) -> PlanGeometryResult:
     result = PlanGeometryResult()
     layer_name = f"Plan — {scenario_label}"
@@ -195,6 +263,21 @@ def generate_plan_geometry(
         "local_row_width_m": rules.local_row_width_m,
     }
 
+    # Placement policy resolves BEFORE streets: the palette now gates street
+    # geometry (curvilinear grids) as well as archetype character. A master-
+    # plan palette arrives fully authored — the layout-strategy collapse and
+    # the experts' mid-band override would both undo its deliberate variety,
+    # so it bypasses them (the planner already read the expert parameters).
+    district_lookup = _district_lookup_m(district_features or [], to_metric)
+    if palette_override is not None:
+        palette = palette_override
+        base_development_type = None
+        base_aesthetic = None
+    else:
+        strategy = resolve_layout_strategy(_param_value(parameters, "layout.strategy"))
+        palette = effective_palette(scenario_id, strategy, palette_hint)
+    seed = site_hash(boundary_m)
+
     # --- streets (or the locked network) --------------------------------------
     if locked_street_area_wgs84 is not None and not locked_street_area_wgs84.is_empty:
         network = StreetNetwork()
@@ -204,33 +287,79 @@ def generate_plan_geometry(
             "message": "Street network locked by the user — regenerated blocks/massing only.",
             "source_phase": "street_graph",
         })
+        blocks, _ = _derive_blocks(boundary_m, network.street_area)
     else:
         entries = entry_points_from_roads(_feature_lines_m(road_features or [], to_metric), boundary_m)
+        # Straight baseline always generated — it is the fallback AND the
+        # yardstick the curved candidates are judged against.
         network = generate_street_network(boundary_m, rules, entries)
+        blocks, sliver_straight = _derive_blocks(boundary_m, network.street_area)
+        if palette.curvilinear and network.segments:
+            straight_network, straight_blocks = network, blocks
+            n_straight_large = sum(1 for b in straight_blocks if b.area >= 2000.0)
+            rejections: list[tuple[str, str]] = []
+            applied = False
+            for mode in ("all", "spine"):     # graduated: full vision, then bow, then straight
+                candidate = generate_street_network(
+                    boundary_m, rules, entries, curve_mode=mode, seed=seed,
+                )
+                if candidate.curve_mode == "none":
+                    rejections.append((mode, candidate.curve_skip_reason or "AMPLITUDE_BELOW_MIN"))
+                    continue
+                c_blocks, sliver_curved = _derive_blocks(boundary_m, candidate.street_area)
+                reason = _curvilinear_fallback_reason(
+                    n_curved=len(c_blocks),
+                    n_straight=len(straight_blocks),
+                    n_curved_large=sum(1 for b in c_blocks if b.area >= 2000.0),
+                    n_straight_large=n_straight_large,
+                    sliver_curved=sliver_curved,
+                    sliver_straight=sliver_straight,
+                )
+                if reason is None:
+                    network, blocks = candidate, c_blocks
+                    rejected_suffix = (
+                        "; rejected " + ", ".join(f"{m}:{r}" for m, r in rejections)
+                        if rejections else ""
+                    )
+                    network.notes.append({
+                        "code": "CURVILINEAR_APPLIED", "severity": "info",
+                        "message": f"Streets follow a gentle curve toward the site's heart "
+                                   f"(mode={mode}{rejected_suffix}).",
+                        "source_phase": "street_graph",
+                    })
+                    applied = True
+                    break
+                rejections.append((mode, reason))
+            if not applied:
+                # The guard is the SOLE curvature-note authority: exactly one
+                # outcome note for a curvilinear palette on a viable site.
+                guard_rejected = [r for r in rejections
+                                  if r[1] not in ("AMPLITUDE_BELOW_MIN", "NO_LONG_AXIS_ROWS")]
+                network, blocks = straight_network, straight_blocks
+                if guard_rejected:
+                    network.notes.append({
+                        "code": "CURVILINEAR_FALLBACK", "severity": "info",
+                        "message": "Curved grid rejected ("
+                                   + "; ".join(f"{m}:{r}" for m, r in rejections)
+                                   + "); straight grid kept.",
+                        "source_phase": "street_graph",
+                    })
+                elif rejections:
+                    network.notes.append({
+                        "code": "CURVILINEAR_SKIPPED", "severity": "info",
+                        "message": "Site too tight to curve the grid ("
+                                   + "; ".join(f"{m}:{r}" for m, r in rejections)
+                                   + ") — straight grid kept.",
+                        "source_phase": "street_graph",
+                    })
     result.notes.extend(network.notes)
     street_area = network.street_area if network.street_area is not None else Polygon()
 
-    # --- blocks -----------------------------------------------------------------
-    developable = boundary_m.difference(street_area) if not street_area.is_empty else boundary_m
-    # Morphological opening (erode 5 cm, dilate back): the difference can leave
-    # hairline bridges at street crossings that keep blocks topologically
-    # connected — the part count then depends on floating-point noise. Opening
-    # severs the bridges deterministically at negligible geometric cost.
-    developable = make_valid(developable.buffer(-0.05).buffer(0.05))
-    blocks = cleanup_developable_blocks(developable, sliver_area_threshold=400.0)
-    if not blocks:
-        blocks = [boundary_m]
-
     # --- open space + placement policy ------------------------------------------
-    # The layout.strategy parameter (experts' organizing idea) selects the
-    # placement mode; the scenario palette supplies the character families.
-    district_lookup = _district_lookup_m(district_features or [], to_metric)
-    strategy = resolve_layout_strategy(_param_value(parameters, "layout.strategy"))
-    palette = effective_palette(scenario_id, strategy, palette_hint)
     open_target = rules.open_space_share * gross
     open_plan = select_open_space(
         blocks=blocks, boundary_m=boundary_m, rules=rules, palette=palette,
-        network=network, seed=site_hash(boundary_m),
+        network=network, seed=seed,
     )
     open_area = open_plan.open_area_m2
     if open_area < open_target * 0.5 and len(blocks) > 1:
@@ -241,10 +370,16 @@ def generate_plan_geometry(
             "source_phase": "civic_distribution",
         })
 
+    # Landscape structure per green kind (mirrored by the globe's parkScatter):
+    # ponds are water, everything else plants to the palette's design intent.
+    _LANDSCAPE_KEY = {"central": "park", "pocket": "pocket",
+                      "greenway": "greenway", "plaza": "plaza"}
+
     zone_sort = 500  # after user zones
     for spec in open_plan.specs:
         result.green_m.append(spec.geom_m)
         color = PLAN_COLORS["water"] if spec.kind == "pond" else PLAN_COLORS["green_space"]
+        planting = palette.landscape.get(_LANDSCAPE_KEY.get(spec.kind, ""))
         for poly in iter_polygons(project_geometry(spec.geom_m, to_wgs84)):
             result.zones.append({
                 "zone_type": "green_space",
@@ -259,6 +394,7 @@ def generate_plan_geometry(
                     **({"green_space_archetype_id": spec.archetype_id}
                        if spec.archetype_id else {}),
                     **({"ground_texture": ground_texture} if ground_texture else {}),
+                    **({"planting_structure": planting} if planting else {}),
                 },
             })
             zone_sort += 1
@@ -276,6 +412,7 @@ def generate_plan_geometry(
     block_plans = plan_blocks(
         contexts=contexts, palette=palette, rules=rules,
         base_type=base_development_type, base_aesthetic=base_aesthetic, dna=dna,
+        measured_dims=measured_model_dims,
     )
 
     parcels_by_block: list[list[Polygon]] = []
@@ -295,6 +432,25 @@ def generate_plan_geometry(
         floors, clamp = clamp_floors_to_ceiling(plan.floors_target, block, district_lookup)
         if clamp:
             clamp_notes += 1
+
+        # The district clamp can move floors outside the resolved archetype's
+        # range — re-resolve so the emitted archetype always matches the
+        # emitted storeys (and the target scales with the real height).
+        plan_archetype_id = plan.archetype_id
+        plan_variant_id = plan.variant_id
+        target = plan.target
+        if clamp and round(floors, 1) != plan.floors_target:
+            entry = resolve_building_archetype(
+                plan.development_type, plan.aesthetic, max(1, int(round(floors)))
+            )
+            plan_archetype_id = entry["id"] if entry else None
+            measured_entry = (measured_model_dims or {}).get(plan_archetype_id) if entry else None
+            plan_variant_id = measured_entry.variant_id if measured_entry else None
+            target = (
+                target_footprint(entry, max(1, int(round(floors))), measured_model_dims)
+                if entry
+                else None
+            )
 
         # Height framework: the block's storey envelope as a MAPPED sub-area
         # (replaces "6-16 storeys" prose with geometry, banded like LAP maps).
@@ -327,6 +483,7 @@ def generate_plan_geometry(
         mass, info = building_mass_for_block(
             mass_block, rules,
             typology=plan.typology, dims=TYPOLOGY_DIMS.get(plan.typology),
+            target=target,
         )
         if mass is None:
             continue
@@ -348,6 +505,25 @@ def generate_plan_geometry(
                     },
                 })
 
+        # Model-aware identity: emitting the resolved archetype id makes the
+        # frontend resolver keep it (user-override precedence), threads it
+        # into Building.specifications -> model-cache hits, and lets the
+        # globe place the exact GLB these parcels were carved for. The
+        # variant id is emitted ONLY when it names the measured cache row
+        # (a synthesized variant would normalize to a different cache key).
+        # Bars rotate through the band's width-compatible characters so a
+        # perimeter ring reads as several buildings, not one model stamped N
+        # times — suppressed when a district clamp moved the floors (the
+        # options were resolved at the unclamped height).
+        bar_identities: list[tuple[str, str, str | None, str | None]] = [
+            (plan.development_type, plan.aesthetic, plan_archetype_id, plan_variant_id)
+        ]
+        if not clamp:
+            bar_identities.extend(
+                (o.development_type, o.aesthetic, o.archetype_id, o.variant_id)
+                for o in plan.bar_options
+            )
+
         mass_polys = list(iter_polygons(mass))
         bar_index = 0
         for poly in mass_polys:
@@ -360,7 +536,21 @@ def generate_plan_geometry(
                 # Mass decomposition yields several pieces per block —
                 # unique names, or every label on the globe reads "Block 1".
                 bar_index += 1
-                suffix = f" · Building {chr(64 + bar_index)}" if len(mass_polys) > 1 else ""
+                suffix = f" · Building {_letter(bar_index)}" if len(mass_polys) > 1 else ""
+                dev_out, aes_out, arch_out, variant_out = (
+                    bar_identities[(bar_index - 1) % len(bar_identities)]
+                )
+                archetype_props: dict[str, Any] = {}
+                if arch_out:
+                    archetype_props["development_archetype_id"] = arch_out
+                    if variant_out and variant_out != "default":
+                        archetype_props["development_selected_variant_id"] = variant_out
+                    if target is not None:
+                        # Carve dims stay the primary's: they describe the
+                        # parcel grid, not the bar's model.
+                        archetype_props["target_w_m"] = round(target.width_m, 1)
+                        archetype_props["target_d_m"] = round(target.depth_m, 1)
+                        archetype_props["archetype_source"] = target.source
                 result.zones.append({
                     "zone_type": "building",
                     "name": f"{scenario_label} · Block {index + 1}{suffix}",
@@ -371,9 +561,10 @@ def generate_plan_geometry(
                         "_plan_scenario": scenario_id, "_imported_from": layer_name,
                         "_plan_role": "building", "floors": round(floors, 1),
                         "height": round(floors * FLOOR_HEIGHT_M, 1),
-                        "development_type": plan.development_type,
-                        "development_aesthetic": plan.aesthetic,
+                        "development_type": dev_out,
+                        "development_aesthetic": aes_out,
                         "_plan_band": plan.band,
+                        **archetype_props,
                         **(info or {}),
                         **({"floors_clamped_by": clamp} if clamp else {}),
                     },
@@ -389,6 +580,10 @@ def generate_plan_geometry(
             courtyard = make_valid(
                 block.buffer(-rules.front_setback_m).difference(unary_union(mass_polys))
             )
+            # Hole-free before drawing: a courtyard that wraps an interior bar
+            # is a donut, and zone rings are exterior-only app-wide — drawn raw
+            # it would fill the hole and paint green UNDER the buildings.
+            courtyard = decompose_holed(courtyard, block)
             for cpoly in iter_polygons(courtyard):
                 if cpoly.area < 150.0:
                     continue
@@ -402,6 +597,8 @@ def generate_plan_geometry(
                         "properties": {
                             "_plan_scenario": scenario_id, "_imported_from": layer_name,
                             "_plan_role": "courtyard", "tree_density": tree_density,
+                            **({"planting_structure": palette.landscape["courtyard"]}
+                               if palette.landscape.get("courtyard") else {}),
                         },
                     })
                     zone_sort += 1
@@ -489,21 +686,40 @@ def _emit_street_zones(
     the spine, then locals) via ordered subtraction — the pieces sum exactly
     to street_area, so the land budget is unchanged. A network without
     segments (locked streets / degenerate sites) emits the legacy single-width
-    zones."""
+    zones.
+
+    Two robustness rules for curved geometry:
+    - every subtraction operand is precision-snapped to a 1 mm grid (bowed
+      bands crossing straights at near-tangents otherwise trip GEOS
+      "non-noded intersection" — observed at refinement iteration 2 when
+      block_target shrinks and the bow regenerates);
+    - a HOLED street polygon (a locked curved network unions into one
+      connected ring whose holes are the blocks) is decomposed before
+      emission — zone rings are exterior-only app-wide, so emitting it raw
+      would draw the whole site as asphalt."""
+    from shapely import set_precision
+
+    from app.services.plan_geometry.parceling import decompose_holed
+
+    def _snap(geom):
+        return make_valid(set_precision(geom, 1e-3))
+
     if street_area.is_empty:
         return
     if not network.segments:
         for poly in iter_polygons(street_area):
-            result.zones.extend(_street_zone(
-                poly, name=f"{scenario_label} · Street", width=rules.row_width_m,
-                role="local", rules=rules, scenario_id=scenario_id,
-                layer_name=layer_name, to_wgs84=to_wgs84,
-            ))
+            pieces = iter_polygons(decompose_holed(poly, poly)) if poly.interiors else [poly]
+            for piece in pieces:
+                result.zones.extend(_street_zone(
+                    piece, name=f"{scenario_label} · Street", width=rules.row_width_m,
+                    role="local", rules=rules, scenario_id=scenario_id,
+                    layer_name=layer_name, to_wgs84=to_wgs84,
+                ))
         return
 
-    remaining = street_area
+    remaining = _snap(street_area)
     for n, (point, radius) in enumerate(network.roundabouts, start=1):
-        piece = make_valid(point.buffer(radius, quad_segs=8).intersection(remaining))
+        piece = make_valid(_snap(point.buffer(radius, quad_segs=8)).intersection(remaining))
         if piece.is_empty:
             continue
         remaining = make_valid(remaining.difference(piece))
@@ -516,7 +732,7 @@ def _emit_street_zones(
 
     spine_segments = [s for s in network.segments if s.role == "spine"]
     for segment in spine_segments:
-        band = segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2)
+        band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
         piece = make_valid(band.intersection(remaining))
         if piece.is_empty:
             continue
@@ -529,23 +745,32 @@ def _emit_street_zones(
         ))
 
     local_archetype = getattr(palette, "local_archetype_id", None)
+    crescent_archetype = getattr(palette, "crescent_archetype_id", None)
     counter = 0
     for segment in (s for s in network.segments if s.role != "spine"):
-        band = segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2)
+        band = _snap(segment.line.buffer(segment.row_width_m / 2, cap_style=2, join_style=2))
         piece = make_valid(band.intersection(remaining))
         if piece.is_empty:
             continue
         remaining = make_valid(remaining.difference(piece))
         counter += 1
+        # Crescent precedence: a genuinely bowed local resolves to the crescent
+        # street archetype when the palette provides one. Environmental keeps
+        # crescent_archetype_id=None so woonerf wins on every local, bowed or not.
+        archetype = local_archetype
+        if crescent_archetype and segment.sagitta_m >= CRESCENT_SAGITTA_MIN_M:
+            archetype = crescent_archetype
         result.zones.extend(_street_zone(
             piece, name=f"{scenario_label} · Street {counter}",
             width=segment.row_width_m, role="local", rules=rules,
             scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
-            archetype_id=local_archetype,
+            archetype_id=archetype,
         ))
 
     # Numerical crumbs from the subtractions (shouldn't happen, but never
     # silently drop street land — the budget is measured against street_area).
+    # Residue inherits the palette's local archetype so scenario street
+    # invariants (e.g. environmental all-woonerf) hold on every road zone.
     for poly in iter_polygons(make_valid(remaining)):
         if poly.area < 1.0:
             continue
@@ -554,4 +779,5 @@ def _emit_street_zones(
             poly, name=f"{scenario_label} · Street {counter}",
             width=rules.local_row_width_m, role="local", rules=rules,
             scenario_id=scenario_id, layer_name=layer_name, to_wgs84=to_wgs84,
+            archetype_id=local_archetype,
         ))

@@ -24,7 +24,10 @@ logger = logging.getLogger(__name__)
 
 PARK_ACCESS_RADIUS_M = 400.0
 INTERSECTION_TARGET_PER_KM2 = 40.0   # walkable-grid benchmark
-BLOCK_EDGE_MAX_M = 220.0
+# Jacobs long-axis max / Calgary Complete Streets 150 m min intersection
+# spacing — the block_scale score rewards real walkable blocks, not a 200 m
+# megablock passing as "walkable" (2026-07-12 morphology research).
+BLOCK_EDGE_MAX_M = 150.0
 CANOPY_TARGET = 0.16                 # Calgary Urban Forest: 16% canopy by 2060
 GOOD_ENOUGH_OVERALL = 0.85
 
@@ -227,10 +230,12 @@ def revise_rules(
         block_score = scores.get("block_scale")
         needs_finer_grid = (density_score and density_score.score < 0.5) or (block_score and block_score.score < 0.7)
         if needs_finer_grid:
-            base_block = float(overrides.get("block_target_m", base_rules.get("block_target_m", 180.0)))
-            if base_block > 120.0:
+            base_block = float(overrides.get("block_target_m", base_rules.get("block_target_m", 100.0)))
+            # Floor at 70 m: below inner-city block grain the added ROW/lane
+            # land costs more than the finer blocks return (non-linear optimum).
+            if base_block > 70.0:
                 reason_key = "intersection_density" if (density_score and density_score.score < 0.5) else "block_scale"
-                record("block_target_m", base_block, max(base_block - 30.0, 120.0),
+                record("block_target_m", base_block, max(base_block - 25.0, 70.0),
                        f"{reason_key} {scores[reason_key].score:.2f}: tighten the grid for walkability")
 
     # Drop revisions that didn't change anything (already at bounds).
