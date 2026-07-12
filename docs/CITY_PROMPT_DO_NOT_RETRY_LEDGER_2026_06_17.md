@@ -143,3 +143,19 @@ Deduped across memory, docs, git, and scripts. "Revisit only if" = the one narro
 - **Git undercounts recent failures** — the June FLUX-depth revert and GPT-Image-2 street-view 502s left NO surviving commit. Don't infer "never tried" from git silence.
 
 **Net:** A & B are SAFE-NEW (A already in-app validated; B deterministic defense-in-depth). C & D are SAFE-TO-A/B experiments that settle open conflicts — use the isolate-and-measure methodology. **E is the landmine** — it overlaps the twice-reverted FLUX work; pursue only after fixing the 3D depth-map *source*, never standalone, and weigh it against the cheaper AUTOMATE-THE-ZOOM win first. Across all five: do NOT chase the fabricated `input_fidelity` knob or "contract vs suggestion" lock — the fidelity lever is the reference image.
+
+---
+
+## 7. Settled 2026-07-12 (execution run — see docs/EXECUTION_REPORT_2026_07_12.md)
+
+**Closed questions (evidence-verified, stop re-litigating):**
+- **No frontier hard conditioning is coming.** Google discontinued Imagen Controlled Customization (~June 30, 2026, its only hard structural conditioner); BFL dropped FLUX.1 Depth/Canny from its API; FLUX.2 shipped without structural conditioning; Gemini 3.x image docs list zero mask/depth/segmentation params. Reopen-signals: a Gemini changelog adding mask/depth params; Maps Imagery Grounding reaching Canada with conditioning.
+- **guidance_scale was a phantom** — undocumented Imagen-era SDK field; our mapping silently set temp 0.75 on every render. DELETED. No temperature is sent on Gemini image calls at all now. Every pre-2026-07-12 A/B was confounded by this + unset aspect_ratio.
+- **The js-genai #1461 "preview always returns 1K" bug does NOT affect our REST generateContent path** — 2×2 pilot returned 2K on both ids. Migrated to GA `gemini-3.1-flash-image` anyway (deprecation is real).
+- **Both vendors are seedless** (official docs); ref-anchoring + generate-N-and-pick is the substitute. There was never a seed/temp UI in StreetViewPanel (stale note).
+- **AUTOMATE-THE-ZOOM: BUILT** (`cc_auto_frame`, 4f19fb4) — in-app verified framing 99 zones at ~55% in 856 ms. Paid-quality A/B pending user.
+- **Pre-tiled reference grid: TESTED** — mechanism CONFIRMED (tiled ref → more/smaller courts; the ref image sets rendered scale), but naive 3×3 tiling costs photorealism + echoes the grid literally. Next form: tiled ref ALONGSIDE the photoreal card, not instead of it. Do NOT retry naive tiling alone.
+- **Clean composite base: BUILT** (`cc_clean_composite`, 4f19fb4) — July-7 work already used the raw capture as clip base (labels never leak); the remaining polluter was in-scene grey zone fills at the feather ring; now captured overlay-free via event round-trip (in-app verified).
+- **Vertex Canada: CLOSED — no image model in northamerica-northeast1** (predict-probe: gemini-2.5-flash-image exists in us-central1, 404 in Montreal; Imagen 3/4 404 everywhere post-shutdown). No Canada-resident image gen on Google/Azure/Bedrock as of 2026-07-12. Lead with no-PII, not residency.
+- **momepy 1.0 works on our plans** incl. curvilinear locked networks and discriminates scenarios (COINS strokes: eco 138/89 m, env 201/82 m, beaux 97/114 m). Not yet in requirements (geopandas layer ~200 MB — user decision).
+- **Meshy spend guard now exists** (`meshy_min_balance_floor`, default 100). There was previously none.
