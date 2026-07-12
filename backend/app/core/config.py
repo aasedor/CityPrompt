@@ -128,6 +128,10 @@ class Settings(BaseSettings):
     mapbox_access_token: str = ""
     meshy_api_key: str = ""
     meshy_api_base: str = "https://api.meshy.ai"
+    # Hard floor on the Meshy account balance: any generation that would start
+    # while balance is at/below this floor is refused. 0 disables the guard.
+    # Protects against runaway batch spend (there was previously NO cap).
+    meshy_min_balance_floor: int = 100
     stability_api_key: str = ""
     stability_api_base: str = "https://api.stability.ai"
     tripo_api_key: str = ""

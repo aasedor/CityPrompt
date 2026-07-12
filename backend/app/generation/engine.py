@@ -4,6 +4,7 @@ Processing tasks own workflow, persistence, and storage. Engine adapters encapsu
 provider-specific API calls, polling, refinement, and remote asset download.
 """
 
+import asyncio
 import enum
 import logging
 from abc import ABC, abstractmethod
@@ -40,10 +41,27 @@ MESHY_IO_HEADROOM_S = 300       # GLB download + S3 upload + thumbnail
 # multi_image fuses up to 4 views + remesh + PBR in a single task (no refine
 # leg), so it gets one longer poll: 1800 + IO headroom = 2100 < MAX_RUNTIME.
 MESHY_MULTI_IMAGE_TIMEOUT_S = 1800
+# Two-stage chain: an Image-to-Image multi-view synth (stage 1) feeds
+# multi_image_to_3d (stage 2). Stage 1 is transient-failure-prone, so it gets
+# a shared retry deadline; the whole stage stays within this ceiling.
+MESHY_IMAGE_TO_IMAGE_TIMEOUT_S = 600
+MESHY_MULTIVIEW_ATTEMPTS = 3
+# poll_until_done checks its wall-clock deadline only at each loop top, so a
+# poll leg can overrun its timeout by one status GET (60s) + one poll_interval
+# (10s). Both provider paths run two poll legs (preview+refine, or chain
+# stage1+stage2), so budget ~140s of intrinsic slack — otherwise the zero-sum
+# sub-timeouts equal the soft_time_limit exactly and a degraded API trips it.
+MESHY_POLL_OVERRUN_S = 2 * (60 + 10)
+# The Celery soft_time_limit derives from this. It must cover the LONGEST
+# provider path: text (preview + 2 refines) OR the chain (stage 1 + stage 2).
+# Both come to 2400s of Meshy work; +IO headroom +poll overrun.
 MESHY_MAX_RUNTIME_S = (
-    MESHY_PREVIEW_TIMEOUT_S
-    + MESHY_REFINE_ATTEMPTS * MESHY_REFINE_TIMEOUT_S
+    max(
+        MESHY_PREVIEW_TIMEOUT_S + MESHY_REFINE_ATTEMPTS * MESHY_REFINE_TIMEOUT_S,
+        MESHY_IMAGE_TO_IMAGE_TIMEOUT_S + MESHY_MULTI_IMAGE_TIMEOUT_S,
+    )
     + MESHY_IO_HEADROOM_S
+    + MESHY_POLL_OVERRUN_S
 )
 
 
@@ -97,6 +115,7 @@ class BaseGenerationEngine(ABC):
         image_url: str | None = None,
         image_urls: list[str] | None = None,
         target_polycount: int | None = None,
+        multiview_prompt: str | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
@@ -129,6 +148,7 @@ class MeshyEngine(BaseGenerationEngine):
         image_url: str | None = None,
         image_urls: list[str] | None = None,
         target_polycount: int | None = None,
+        multiview_prompt: str | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
@@ -140,6 +160,22 @@ class MeshyEngine(BaseGenerationEngine):
 
         client = MeshyClient()
         negative = negative_prompt or ""
+
+        # Balance-floor guard: refuse to START a paid generation when the
+        # account balance is at/below the configured floor. Balance check
+        # failures don't block (the guard is best-effort, not a gate on
+        # Meshy API availability).
+        if settings.meshy_min_balance_floor > 0:
+            try:
+                balance = (await client.get_balance()).get("balance")
+            except Exception:
+                balance = None
+            if balance is not None and balance <= settings.meshy_min_balance_floor:
+                raise RuntimeError(
+                    f"Meshy balance {balance} at/below floor "
+                    f"{settings.meshy_min_balance_floor} — generation refused "
+                    "(meshy_min_balance_floor in config)."
+                )
 
         self._emit_progress(progress_callback, 0.1, "calling_meshy")
 
@@ -160,11 +196,60 @@ class MeshyEngine(BaseGenerationEngine):
                 raise ValueError("image_urls is required for Meshy multi_image mode")
             # prompt doubles as the texture_prompt here — geometry comes from
             # the views, so callers send materials/colors language, not massing.
-            task_id = await client.multi_image_to_3d(
-                image_urls,
-                texture_prompt=prompt or "",
-                target_polycount=target_polycount or 30000,
-            )
+            if multiview_prompt:
+                # Two-stage chain: synthesize mutually-consistent, auto-isolated
+                # views (Image-to-Image multi-view), then reconstruct from them.
+                # Fixes cross-view inconsistency (warped windows) and strips
+                # entourage without a separate cleanup pass. Stage 1 fast-fails
+                # intermittently, so retry within a shared deadline that keeps
+                # the whole stage inside MESHY_IMAGE_TO_IMAGE_TIMEOUT_S.
+                self._emit_progress(progress_callback, 0.2, "synthesizing_views")
+                loop = asyncio.get_event_loop()
+                stage1_deadline = loop.time() + MESHY_IMAGE_TO_IMAGE_TIMEOUT_S
+                iresult = None
+                last_exc: Exception | None = None
+                for attempt in range(1, MESHY_MULTIVIEW_ATTEMPTS + 1):
+                    if stage1_deadline - loop.time() < 30:
+                        break
+                    try:
+                        i2i_id = await client.image_to_image_multiview(image_urls, multiview_prompt)
+                        # Re-sample AFTER the create POST so its time is charged
+                        # against the shared deadline — keeps stage 1 <= ceiling.
+                        poll_budget = int(stage1_deadline - loop.time())
+                        if poll_budget < 30:
+                            break
+                        iresult = await client.poll_until_done(
+                            i2i_id, timeout=poll_budget, task_type="image_to_image"
+                        )
+                        break
+                    except Exception as exc:
+                        last_exc = exc
+                        logger.warning(
+                            "Multi-view synthesis attempt %d/%d failed: %s",
+                            attempt, MESHY_MULTIVIEW_ATTEMPTS, exc,
+                        )
+                if iresult is None:
+                    raise RuntimeError(
+                        f"Multi-view synthesis failed after {MESHY_MULTIVIEW_ATTEMPTS} attempts: {last_exc}"
+                    )
+                log_api_usage_sync(
+                    provider=self.engine_id,
+                    operation="image_to_image_multiview",
+                    credits_used=9,
+                    task_id=iresult.get("id"),
+                    building_id=building_id,
+                )
+                task_id = await client.multi_image_to_3d(
+                    input_task_id=iresult["id"],
+                    texture_prompt=prompt or "",
+                    target_polycount=target_polycount or 30000,
+                )
+            else:
+                task_id = await client.multi_image_to_3d(
+                    image_urls,
+                    texture_prompt=prompt or "",
+                    target_polycount=target_polycount or 30000,
+                )
             task_type = "multi_image"
             log_api_usage_sync(
                 provider=self.engine_id,
@@ -273,6 +358,7 @@ class TripoEngine(BaseGenerationEngine):
         image_url: str | None = None,
         image_urls: list[str] | None = None,
         target_polycount: int | None = None,
+        multiview_prompt: str | None = None,
         refine: bool = True,
         negative_prompt: str | None = None,
         building_id: str | None = None,
