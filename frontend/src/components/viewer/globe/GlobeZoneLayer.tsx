@@ -828,6 +828,18 @@ export function GlobeZoneLayer({
   selectionEnabled = true,
   suppressedBuildingIds,
 }: GlobeZoneLayerProps) {
+  // Render-time clean capture (cc_clean_composite): useGlobeAIRender hides the
+  // zone overlays for one frame so the composite-back base holds real tiles,
+  // not grey zone fill, at the feathered seam ring.
+  const [overlaysHidden, setOverlaysHidden] = useState(false);
+  useEffect(() => {
+    const onToggle = (e: Event) => {
+      setOverlaysHidden(Boolean((e as CustomEvent).detail?.hidden));
+    };
+    window.addEventListener('cityprompt:hide-zone-overlays', onToggle);
+    return () => window.removeEventListener('cityprompt:hide-zone-overlays', onToggle);
+  }, []);
+  if (overlaysHidden) return null;
   // Big layers (e.g. an imported shapefile) switch every zone to a cheaper path.
   const lightweight = zones.length > LIGHTWEIGHT_ZONE_THRESHOLD;
   return (

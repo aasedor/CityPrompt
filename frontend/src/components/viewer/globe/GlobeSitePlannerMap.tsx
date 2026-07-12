@@ -1633,6 +1633,60 @@ export function GlobeSitePlannerMap({
     );
   }, [applyCameraPose, terrainElevation]);
 
+  // Auto-frame pilot (cc_auto_frame): fly the camera so the given zones fill
+  // ~55% of the frame at the default oblique pitch — the empirically reliable
+  // manual-zoom containment fix, automated. Iterates apply-pose -> project ->
+  // adjust height, so it needs no closed-form frustum math. Pilot limitation:
+  // does not restore the previous camera pose.
+  const frameZonesForRender = useCallback(async (
+    renderZones: Array<{ coordinates?: [number, number][] }>,
+  ): Promise<boolean> => {
+    const canvas = canvasRef.current;
+    const camera = cameraRef.current;
+    if (!canvas || !camera) return false;
+    const coords = renderZones.flatMap(z => z.coordinates ?? []);
+    if (coords.length < 3) return false;
+    let minLng = Infinity; let maxLng = -Infinity;
+    let minLat = Infinity; let maxLat = -Infinity;
+    for (const [lng, lat] of coords) {
+      minLng = Math.min(minLng, lng); maxLng = Math.max(maxLng, lng);
+      minLat = Math.min(minLat, lat); maxLat = Math.max(maxLat, lat);
+    }
+    const centerLng = (minLng + maxLng) / 2;
+    const centerLat = (minLat + maxLat) / 2;
+    const spanNorthM = (maxLat - minLat) * 111320;
+    const spanEastM = (maxLng - minLng) * 111320 * Math.cos(centerLat * DEG_TO_RAD);
+    const spanM = Math.max(spanNorthM, spanEastM, 30);
+    let heightM = spanM * 1.6;
+    const TARGET = 0.55;
+    for (let i = 0; i < 3; i++) {
+      applyCameraView(centerLat, centerLng, heightM);
+      (camera as THREE.PerspectiveCamera).updateMatrixWorld?.(true);
+      const { width, height: viewportH } = getCanvasViewportSize(canvas);
+      let minX = Infinity; let maxX = -Infinity;
+      let minY = Infinity; let maxY = -Infinity;
+      for (const c of coords) {
+        const p = projectLngLatToViewport(c as [number, number]);
+        minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+        minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+      }
+      const frac = Math.max((maxX - minX) / width, (maxY - minY) / viewportH);
+      if (!Number.isFinite(frac) || frac <= 0) return false;
+      if (Math.abs(frac - TARGET) < 0.06) break;
+      heightM = Math.min(Math.max(heightM * (frac / TARGET), 60), 20000);
+    }
+    // Two settled frames so tiles/props re-render at the new pose before the
+    // caller captures the canvas.
+    await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+    return true;
+  }, [applyCameraView, projectLngLatToViewport, getCanvasViewportSize]);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {}) as Record<string, unknown>;
+    dbg.frameZonesForRender = frameZonesForRender;
+  }, [frameZonesForRender]);
+
   const hideCanvasUntilPose = useCallback(() => {
     cameraRevealGenerationRef.current += 1;
     const canvas = canvasRef.current;

@@ -2083,10 +2083,52 @@ export function useGlobeAIRender() {
     try {
       const { style = 'photorealistic', model = 'gemini-3.1-flash-image', imageQuality = 'auto', customPrompt } = options;
 
+      // 0. Auto-frame pilot (localStorage cc_auto_frame='1', DEV builds): fly
+      // the camera so the zones fill ~55% of frame at the default oblique
+      // pitch — the empirically reliable manual-zoom containment fix,
+      // automated. Wired via the DEV __globeDebug handle (pilot scaffolding;
+      // promote to an option prop if adopted).
+      if (localStorage.getItem('cc_auto_frame') === '1') {
+        const frame = (window as unknown as {
+          __globeDebug?: { frameZonesForRender?: (z: SiteZone[]) => Promise<boolean> };
+        }).__globeDebug?.frameZonesForRender;
+        if (typeof frame === 'function') {
+          try {
+            const framed = await frame(zones.filter(z => z.zone_type !== 'site_boundary'));
+            console.log(`[GlobeAIRender] cc_auto_frame: ${framed ? 'framed zones at ~55% of canvas' : 'skipped (no camera/coords)'}`);
+          } catch (frameErr) {
+            console.warn('[GlobeAIRender] cc_auto_frame failed — rendering from the current camera:', frameErr);
+          }
+        }
+      }
+
       // 1. Capture the globe canvas
       console.log('[GlobeAIRender] Capturing canvas...');
       const rawBase64 = await captureCanvasBase64(canvas);
       if (!rawBase64) throw new Error('Failed to capture canvas');
+
+      // 1y. Clean-composite pilot (localStorage cc_clean_composite='1', default
+      // OFF): capture a second frame with zone overlays hidden. Used ONLY as
+      // the composite-back base in clipRenderToZones, so the feathered seam
+      // ring blends against real tiles instead of the in-scene grey zone fill.
+      // The model still receives the overlaid + labeled screenshot.
+      let cleanBase64: string | null = null;
+      if (localStorage.getItem('cc_clean_composite') === '1') {
+        try {
+          window.dispatchEvent(new CustomEvent('cityprompt:hide-zone-overlays', { detail: { hidden: true } }));
+          await new Promise<void>(r => requestAnimationFrame(() => requestAnimationFrame(() => r())));
+          cleanBase64 = await captureCanvasBase64(canvas);
+          (window as any).__renderDebug = {
+            ...(window as any).__renderDebug,
+            cleanCapture: cleanBase64 ? base64ToDataUri(cleanBase64) : null,
+            rawCapture: base64ToDataUri(rawBase64),
+          };
+          console.log('[GlobeAIRender] cc_clean_composite: captured overlay-free base');
+        } finally {
+          window.dispatchEvent(new CustomEvent('cityprompt:hide-zone-overlays', { detail: { hidden: false } }));
+          await new Promise<void>(r => requestAnimationFrame(() => r()));
+        }
+      }
 
       // 1x. P1.10 — high-fidelity two-pass (opt-in, 2x cost): full-frame
       // restyle of the UNLABELED capture first; the normal zone inpaint then
@@ -2499,9 +2541,14 @@ export function useGlobeAIRender() {
           ? [...visibleZones, options.siteBoundaryZone]
           : visibleZones;
         // Two-pass: composite onto the STYLIZED base so there is no style
-        // seam at the clip boundary; single-pass: the raw capture.
+        // seam at the clip boundary; single-pass: the clean overlay-free
+        // capture when the cc_clean_composite pilot is on, else the raw
+        // capture.
+        const compositeBase = baseBase64 === rawBase64
+          ? (cleanBase64 ?? rawBase64)
+          : baseBase64;
         const clippedBase64 = await clipRenderToZones(
-          baseBase64, resp.data.image_base64,
+          compositeBase, resp.data.image_base64,
           clipZones, camera, canvas.width, canvas.height, terrainHeight,
           style,
         );
