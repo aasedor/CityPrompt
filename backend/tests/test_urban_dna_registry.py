@@ -13,6 +13,7 @@ from app.services.city_connector.base import CityConnector, DatasetSpec
 from app.services.city_connector.cities.calgary import CalgaryConnector
 from app.services.city_connector.cities.edmonton import EdmontonConnector
 from app.services.city_connector.cities.osm_fallback import OSMFallbackConnector
+from app.services.city_connector.cities.vancouver import VancouverConnector
 from app.services.urban_dna.schema import SECTION_NAMES
 
 DOWNTOWN_CALGARY = Polygon([
@@ -28,6 +29,7 @@ def test_registries_are_isolated_per_city():
     registries = {
         "calgary": set(CalgaryConnector().datasets),
         "edmonton": set(EdmontonConnector().datasets),
+        "vancouver": set(VancouverConnector().datasets),
         "osm": set(OSMFallbackConnector().datasets),
     }
     for city, ids in registries.items():
@@ -69,7 +71,26 @@ def test_edmonton_registers_datasets_in_integration_order():
     ]
 
 
-@pytest.mark.parametrize("connector_cls", [CalgaryConnector, EdmontonConnector, OSMFallbackConnector])
+def test_vancouver_registers_datasets_in_integration_order():
+    specs = sorted(VancouverConnector().datasets.values(), key=lambda s: s.priority)
+    assert [s.id for s in specs] == [
+        "vancouver.zoning",
+        "vancouver.parcels",
+        "vancouver.local_areas",
+        "vancouver.roads",
+        "vancouver.rapid_transit",
+        "vancouver.parks",
+        "vancouver.buildings",
+        "vancouver.floodplain",
+        "vancouver.trees",
+        "vancouver.view_cones",
+    ]
+
+
+@pytest.mark.parametrize(
+    "connector_cls",
+    [CalgaryConnector, EdmontonConnector, VancouverConnector, OSMFallbackConnector],
+)
 def test_descriptor_sanity(connector_cls):
     for spec in connector_cls().datasets.values():
         assert spec.dna_fields, f"{spec.id} declares no DNA fields"
@@ -82,6 +103,9 @@ def test_descriptor_sanity(connector_cls):
         assert spec.refresh_days > 0
         if spec.adapter == "socrata":
             assert spec.adapter_params.get("geo_field"), f"{spec.id}: socrata needs a verified geo_field"
+        if spec.adapter == "opendatasoft":
+            assert spec.adapter_params.get("domain"), f"{spec.id}: opendatasoft needs a domain"
+            assert spec.adapter_params.get("geo_field"), f"{spec.id}: opendatasoft needs a verified geo_field"
 
 
 def test_fetch_envelopes_cover_analysis_radii():
@@ -96,6 +120,11 @@ def test_fetch_envelopes_cover_analysis_radii():
     assert edmonton["edmonton.roads"].buffer_m >= 200
     assert edmonton["edmonton.transit_stops"].buffer_m >= 800
     assert edmonton["edmonton.parks"].buffer_m >= 800
+
+    vancouver = VancouverConnector().datasets
+    assert vancouver["vancouver.zoning"].buffer_m >= 200
+    assert vancouver["vancouver.rapid_transit"].buffer_m >= 800
+    assert vancouver["vancouver.parks"].buffer_m >= 800
 
 
 def test_duplicate_registration_raises():
@@ -124,8 +153,14 @@ def test_detect_city_and_fallback():
     assert detect_city(-113.49, 53.54) == "edmonton"
     assert detect_city(-113.63, 53.63) == "osm"  # St. Albert
     assert detect_city(-113.28, 53.52) == "osm"  # Sherwood Park
+    # Vancouver: downtown resolves; UBC/UEL and North Vancouver (inside the
+    # bbox, outside the municipality) fall back to OSM.
+    assert detect_city(-123.12, 49.28) == "vancouver"
+    assert detect_city(-123.24, 49.26) == "osm"  # UBC / University Endowment Lands
+    assert detect_city(-123.07, 49.31) == "osm"  # North Vancouver
     assert isinstance(get_connector("calgary"), CalgaryConnector)
     assert isinstance(get_connector("edmonton"), EdmontonConnector)
+    assert isinstance(get_connector("vancouver"), VancouverConnector)
     assert isinstance(get_connector("not-a-city"), OSMFallbackConnector)
     for lon_min, lat_min, lon_max, lat_max in CITY_BOUNDS.values():
         assert lon_min < lon_max and lat_min < lat_max

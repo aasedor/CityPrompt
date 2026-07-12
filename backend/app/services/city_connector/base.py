@@ -115,9 +115,9 @@ class CityConnector:
 
     def _adapters(self) -> dict[str, AdapterFn]:
         # Imported lazily to keep base import-light and avoid cycles.
-        from app.services.city_connector.adapters import osm, socrata
+        from app.services.city_connector.adapters import opendatasoft, osm, socrata
 
-        return {"socrata": socrata.fetch, "osm": osm.fetch}
+        return {"socrata": socrata.fetch, "osm": osm.fetch, "opendatasoft": opendatasoft.fetch}
 
     async def fetch_dataset(self, dataset_id: str, boundary_wgs84: Polygon) -> DatasetFetchResult:
         """Fetch + normalize one dataset. Never raises."""

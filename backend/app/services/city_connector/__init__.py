@@ -15,6 +15,7 @@ from app.services.city_connector.base import CityConnector
 from app.services.city_connector.cities.calgary import CalgaryConnector
 from app.services.city_connector.cities.edmonton import EdmontonConnector
 from app.services.city_connector.cities.osm_fallback import OSMFallbackConnector
+from app.services.city_connector.cities.vancouver import VancouverConnector
 
 # (lon_min, lat_min, lon_max, lat_max) — coarse municipal bounds, a cheap
 # PREFILTER only. A bbox hit is confirmed against the committed boundary
@@ -25,11 +26,13 @@ from app.services.city_connector.cities.osm_fallback import OSMFallbackConnector
 CITY_BOUNDS: dict[str, tuple[float, float, float, float]] = {
     "calgary": (-114.35, 50.80, -113.80, 51.25),
     "edmonton": (-113.75, 53.35, -113.25, 53.75),
+    "vancouver": (-123.28, 49.19, -123.02, 49.32),
 }
 
 _CONNECTORS: dict[str, type[CityConnector]] = {
     "calgary": CalgaryConnector,
     "edmonton": EdmontonConnector,
+    "vancouver": VancouverConnector,
     "osm": OSMFallbackConnector,
 }
 

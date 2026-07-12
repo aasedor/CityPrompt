@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
 import httpx
 
@@ -105,7 +106,50 @@ MANIFESTS: dict[str, list[dict]] = {
             "url": "https://www.edmonton.ca/sites/default/files/public-files/assets/Climate_Resilient_Edmonton.pdf",
         },
     ],
-    # vancouver / toronto manifests land with their connector phases.
+    # NOTE (verified 2026-07-12): vancouver.ca / bylaws.vancouver.ca /
+    # guidelines.vancouver.ca serve PDFs to real browsers but 403 every
+    # non-browser client (WAF fingerprinting — browser UA + host TLS both
+    # blocked). Seed Vancouver via --from-dir: download the manifest URLs in a
+    # browser into a folder named <slug>.pdf and pass that folder.
+    "vancouver": [
+        {
+            # Citywide ODP in effect ~2026-03 (Vancouver Charter amendment);
+            # zoning/development decisions must be consistent with it.
+            "slug": "official-development-plan",
+            "title": "Vancouver Official Development Plan (2026)",
+            "instrument_type": "statutory",
+            "url": "https://vancouver.ca/files/cov/vancouver-official-development-plan.pdf",
+        },
+        {
+            "slug": "zoning-bylaw-general-regulations",
+            "title": "Zoning & Development By-law — Section 2 General Regulations",
+            "instrument_type": "statutory",
+            "url": "https://bylaws.vancouver.ca/zoning/zoning-by-law-section-2-general-regulations.pdf",
+        },
+        {
+            # The post-2023 consolidated low-density residential district
+            # (multiplex up to 6 units, 8 if rental).
+            "slug": "r1-1-district-schedule",
+            "title": "Zoning & Development By-law — R1-1 District Schedule",
+            "instrument_type": "statutory",
+            "url": "https://bylaws.vancouver.ca/zoning/zoning-by-law-district-schedule-r1-1.pdf",
+        },
+        {
+            # 29 TOAs designated 2024-06-26; 20/12/8 storeys at 200/400/800m of
+            # SkyTrain — pairs with the TOA_DENSITY_TIER note in the DNA.
+            "slug": "toa-rezoning-policy",
+            "title": "Rezoning Policy for Transit-Oriented Areas",
+            "instrument_type": "policy",
+            "url": "https://guidelines.vancouver.ca/policy-rezoning-transit-oriented-areas.pdf",
+        },
+        {
+            "slug": "broadway-plan",
+            "title": "Broadway Plan",
+            "instrument_type": "policy",
+            "url": "https://vancouver.ca/files/cov/broadway-plan.pdf",
+        },
+    ],
+    # toronto manifest lands with its connector phase.
 }
 
 
@@ -128,11 +172,26 @@ def _download(url: str) -> bytes | None:
     return body
 
 
-def seed_city(session, city: str) -> tuple[list[str], list[str]]:
+def _read_local(from_dir: Path, slug: str) -> bytes | None:
+    path = from_dir / f"{slug}.pdf"
+    if not path.exists():
+        print(f"    NOT IN --from-dir ({path.name} missing)")
+        return None
+    body = path.read_bytes()
+    if not body[:5].startswith(b"%PDF"):
+        print(f"    NOT A PDF ({path.name}, {len(body)} bytes)")
+        return None
+    return body
+
+
+def seed_city(session, city: str, from_dir: Path | None = None) -> tuple[list[str], list[str]]:
     seeded, skipped = [], []
     for entry in MANIFESTS[city]:
         print(f"\n=== {city}/{entry['slug']} ===\n    {entry['url']}")
-        pdf_bytes = _download(entry["url"])
+        if from_dir is not None:
+            pdf_bytes = _read_local(from_dir, entry["slug"])
+        else:
+            pdf_bytes = _download(entry["url"])
         if pdf_bytes is None:
             skipped.append(entry["slug"])
             continue
@@ -158,14 +217,20 @@ def seed_city(session, city: str) -> tuple[list[str], list[str]]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Seed per-city policy corpora")
     parser.add_argument("--city", choices=[*MANIFESTS, "all"], default="all")
+    parser.add_argument(
+        "--from-dir",
+        help="ingest <slug>.pdf files from this directory instead of downloading "
+             "(for WAF-blocked portals like vancouver.ca)",
+    )
     args = parser.parse_args()
     cities = list(MANIFESTS) if args.city == "all" else [args.city]
+    from_dir = Path(args.from_dir) if args.from_dir else None
 
     session = _get_sync_session()
     seeded, skipped = [], []
     try:
         for city in cities:
-            city_seeded, city_skipped = seed_city(session, city)
+            city_seeded, city_skipped = seed_city(session, city, from_dir=from_dir)
             seeded += [f"{city}/{slug}" for slug in city_seeded]
             skipped += [f"{city}/{slug}" for slug in city_skipped]
     finally:
