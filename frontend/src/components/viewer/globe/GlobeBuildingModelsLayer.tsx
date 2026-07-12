@@ -30,7 +30,7 @@ import type { Building, SiteZone } from '@/types';
 import { resolveApiFileUrl } from '@/services/api';
 import { computeFootprintFrame, computeModelPlacement } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { getObjectFilteredTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
 
 const DEG_TO_RAD = Math.PI / 180;
 const MAX_PLACED_MODELS = 20;
@@ -190,7 +190,11 @@ function BuildingModelInstance({
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, null);
-    if (filtered !== null) {
+    // Gate against the unrefined-root-tile trap: the first finite sample can
+    // land ~29km below the true surface and would sink the model with it
+    // (see isPlausibleTerrainAnchor). Implausible samples burn an attempt
+    // and retry next interval.
+    if (filtered !== null && isPlausibleTerrainAnchor(filtered, fallbackTerrainHeight)) {
       setSampledTerrain(filtered);
       frozenRef.current = true;
     }

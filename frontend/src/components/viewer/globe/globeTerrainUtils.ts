@@ -1,5 +1,26 @@
 const OBJECT_HEIGHT_FILTER_THRESHOLD_METERS = 2;
 
+/**
+ * Raycast terrain anchors sampled during the first frames often hit the
+ * planet's UNREFINED root tiles, which sit tens of kilometres off the true
+ * surface (measured ≈ -28km at Calgary). Freezing such a sample as a zone's
+ * anchor bakes a ±29km offset into everything seated relative to it — the
+ * per-instance offsets cancel it visually, but the numbers are fragile
+ * (float precision, and any code change on one side of the cancellation
+ * strands content in the sky). Anchors are only trusted within this band of
+ * a reference height (stored zone terrain or the elevation-API fallback).
+ */
+export const MAX_ANCHOR_DEVIATION_METERS = 500;
+
+export function isPlausibleTerrainAnchor(
+  sampled: number | null | undefined,
+  reference: number | null | undefined,
+): boolean {
+  if (!Number.isFinite(sampled)) return false;
+  if (!Number.isFinite(reference)) return true;
+  return Math.abs((sampled as number) - (reference as number)) <= MAX_ANCHOR_DEVIATION_METERS;
+}
+
 export function shouldFilterObjectTerrainHeight(zoneType: string | null | undefined): boolean {
   return zoneType === 'green_space';
 }

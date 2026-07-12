@@ -14,6 +14,7 @@ import { Html } from '@react-three/drei';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import { applyParkGroundUVs, useParkGroundTexture } from './parkGroundTexture';
 import {
   resolveZoneColor,
   resolveZoneLabel,
@@ -399,6 +400,17 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     );
   }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
 
+  // AI park ground texture on the green_space fill mesh (per-zone meta in
+  // zone.properties.park_ground_texture; see parkGroundTexture.ts).
+  const { meta: groundMeta, texture: groundTexture } = useParkGroundTexture(zone);
+  const orthoGeo = useMemo(() => {
+    if (!groundMeta || !geoData?.flatTopGeo) return null;
+    const geo = geoData.flatTopGeo.clone();
+    applyParkGroundUVs(geo, geoData.fillCoords, groundMeta);
+    return geo;
+  }, [groundMeta, geoData]);
+  const drapeActive = Boolean(orthoGeo && groundTexture);
+
   // --- Terrain draping for flat zones ---
   // Raycast each vertex onto the tile mesh to get precise ground elevation offsets
   const flatMeshRef = useRef<THREE.Mesh>(null);
@@ -718,17 +730,26 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
 
       {/* Fill — flat zones with terrain draping */}
       {/* Fill — flat zones: layered by type */}
-      {/* Render order: site_boundary(100) < green_space(110) < road(120) < buildings(200) */}
+      {/* Render order: site_boundary(100) < road(120) < green_space(120.5) <
+          street detail strips(122+) < park props(145) < buildings(200).
+          Parks sit ABOVE road-zone fills: plan generators emit the street
+          network as one solid ground polygon that contains park parcels
+          (no carve-out), so a lower park order leaves parks hidden under a
+          gray slab. Real roadway strips (street detail) still draw above. */}
       {!isBuilding && geoData.flatTopGeo && (
         <mesh
           ref={flatMeshRef}
-          geometry={isImported && importedFillGeo ? importedFillGeo : geoData.flatTopGeo.clone()}
-          renderOrder={isSiteBoundary ? 100 : zone.zone_type === 'green_space' ? 110 : 120}
+          geometry={orthoGeo ?? (isImported && importedFillGeo ? importedFillGeo : geoData.flatTopGeo.clone())}
+          renderOrder={isSiteBoundary ? 100 : zone.zone_type === 'green_space' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
         >
+          {/* key remounts the material when the ground drape toggles so the
+              map define recompiles (toggling `map` in place leaves it white) */}
           <meshBasicMaterial
-            color={isSiteBoundary ? '#ffffff' : color}
+            key={drapeActive ? groundMeta?.document_id ?? 'drape' : 'plain'}
+            color={drapeActive ? '#ffffff' : isSiteBoundary ? '#ffffff' : color}
+            map={drapeActive ? groundTexture : undefined}
             transparent
             opacity={isSiteBoundary ? 0.15 : 1.0}
             side={THREE.DoubleSide}
@@ -770,7 +791,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         <line
           ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
           {...({ geometry: !isBuilding ? (isImported && importedOutlineGeo ? importedOutlineGeo : geoData.outlineGeo.clone()) : geoData.outlineGeo } as any)}
-          renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
+          renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 120.6 : 121}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
         >

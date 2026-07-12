@@ -183,6 +183,26 @@ describe('withPlanArchetypeDefaults', () => {
     expect(custom.properties?.development_archetype_id).toBeUndefined();
   });
 
+  it('passes backend-emitted archetype identity through byte-identical', () => {
+    // The model-aware plan generator resolves archetypes server-side and
+    // emits them on the zone; this pins the precedence contract the whole
+    // design leans on (backend id wins, no variant injected, no flag).
+    const backendZone = planZone('building', 'building', {
+      development_type: 'residential_multifamily',
+      development_aesthetic: 'contemporary_urban',
+      floors: 6,
+      development_archetype_id: 'contemporary_midrise_residential',
+      target_w_m: 22.7,
+      target_d_m: 18.6,
+      archetype_source: 'measured',
+    });
+    const [resolved] = withPlanArchetypeDefaults([backendZone]);
+    expect(resolved).toBe(backendZone); // same object — untouched
+    expect(resolved.properties?.development_archetype_id).toBe('contemporary_midrise_residential');
+    expect(resolved.properties?.development_selected_variant_id).toBeUndefined();
+    expect(resolved.properties?._plan_archetype_resolved).toBeUndefined();
+  });
+
   it('leaves hand-drawn (non-plan) zones untouched', () => {
     const zone = planZone('building', 'building');
     delete (zone.properties as Record<string, unknown>)._plan_role;

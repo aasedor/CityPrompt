@@ -31,16 +31,22 @@ import type { SiteZone } from '@/types';
 import { resolveApiFileUrl } from '@/services/api';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { getObjectFilteredTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
 import { resolveParkRecipe } from '@/data/parkKitRecipes';
 import { PARK_KIT_MANIFEST } from '@/data/parkKitManifest';
 import { computeParkPlacements, type ParkPropId, type PropPlacement } from './parkScatter';
+import { getEzTreeKit, splitBySpecies } from './ezTreeKit';
 
 const DEG_TO_RAD = Math.PI / 180;
-const LIGHTWEIGHT_ZONE_THRESHOLD = 50;
+// TEMP: raised 50 -> 120 for the park ortho pilot (Water Centre has 100
+// zones across scenarios). Revisit with per-park instancing budgets before
+// shipping; scatter cost scales with green_space count, not total zones.
+const LIGHTWEIGHT_ZONE_THRESHOLD = 120;
 const RENDER_ORDER_PROPS = 145;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
+// Fold anchor bias above this into the frame height at freeze (see below).
+const ANCHOR_RECENTER_THRESHOLD_METERS = 20;
 const INSTANCES_PER_BATCH = 25;
 const MAX_SAMPLE_PASSES = 3;
 
@@ -62,7 +68,9 @@ const COLOR_PAVILION = '#9c8f7d';
 
 interface KitPart {
   geometry: THREE.BufferGeometry;
-  color: string;
+  color?: string;
+  /** Full material (e.g. EZ-Tree bark/leaves); takes precedence over color. */
+  material?: THREE.Material;
 }
 
 /** Placeholder prop parts, base-at-origin, Z-up. Built once per module. */
@@ -255,11 +263,13 @@ function InstancedProp({
   return (
     <instancedMesh
       ref={meshRef}
-      args={[part.geometry, undefined, Math.max(1, placements.length)]}
+      args={[part.geometry, part.material, Math.max(1, placements.length)]}
       renderOrder={RENDER_ORDER_PROPS}
       frustumCulled={false}
     >
-      <meshLambertMaterial color={part.color} />
+      {/* transparent + depthWrite: composite above the floating flat zone
+          ground washes (see ezTreeKit material note). */}
+      {!part.material && <meshLambertMaterial color={part.color} transparent depthWrite />}
     </instancedMesh>
   );
 }
@@ -286,9 +296,17 @@ function ParkKitInstance({
     () => resolveParkRecipe(String(props?.green_space_archetype_id ?? '')),
     [props?.green_space_archetype_id],
   );
+  // Landscape pattern stamped by the backend plan generator (green zones and
+  // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
+  const plantingStructure =
+    typeof props?.planting_structure === 'string' ? props.planting_structure : undefined;
 
   const { placements, centroid } = useMemo(() => {
-    const list = computeParkPlacements({ id: zone.id, coordinates: zone.coordinates }, recipe);
+    const list = computeParkPlacements(
+      { id: zone.id, coordinates: zone.coordinates },
+      recipe,
+      plantingStructure,
+    );
     let lng = 0;
     let lat = 0;
     for (const c of zone.coordinates) {
@@ -301,7 +319,7 @@ function ParkKitInstance({
     };
     // updated_at covers geometry edits committed by the edit mode
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [zone.id, zone.coordinates, zone.updated_at, recipe]);
+  }, [zone.id, zone.coordinates, zone.updated_at, recipe, plantingStructure]);
 
   const byProp = useMemo(() => {
     const groups = new Map<ParkPropId, PropPlacement[]>();
@@ -358,7 +376,13 @@ function ParkKitInstance({
         raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current),
       );
       const filtered = getObjectFilteredTerrainHeight(samples, null);
-      if (filtered !== null) setSampledTerrain(filtered);
+      // Gate against the unrefined-root-tile trap: the first finite sample
+      // can be ~29km below the true surface (see isPlausibleTerrainAnchor).
+      // An implausible sample burns an attempt and retries next interval —
+      // by then the tiles near the zone have usually refined.
+      if (filtered !== null && isPlausibleTerrainAnchor(filtered, storedTerrain ?? fallbackTerrainHeight)) {
+        setSampledTerrain(filtered);
+      }
       return;
     }
 
@@ -394,6 +418,22 @@ function ParkKitInstance({
         nextInstanceRef.current = 0;
         return;
       }
+      // Self-recentering: if the anchor is biased despite the plausibility
+      // gate (e.g. sampled against partially refined tiles), every seated
+      // instance shares that bias. Fold the median offset back into the
+      // anchor so per-instance Z stays near zero and z=0 means "on the
+      // ground" for unseated instances too. World altitude is unchanged:
+      // (anchor + median) + (z - median) === anchor + z.
+      const hitZs = zs.filter((_, idx) => hits[idx]).sort((a, b) => a - b);
+      if (hitZs.length > 0) {
+        const median = hitZs[Math.floor(hitZs.length / 2)];
+        if (Math.abs(median) > ANCHOR_RECENTER_THRESHOLD_METERS) {
+          for (let k = 0; k < n; k += 1) {
+            zs[k] = hits[k] ? zs[k] - median : 0;
+          }
+          setSampledTerrain(anchor + median);
+        }
+      }
       frozenRef.current = true;
       setInstanceZ(zs.slice());
     }
@@ -412,6 +452,29 @@ function ParkKitInstance({
         const groupZ = instanceZ
           ? group.map((g) => instanceZ[placements.indexOf(g)] ?? 0)
           : null;
+        // Trees render as a mixed stand of runtime-generated EZ-Tree species
+        // (pilot 2026-07-11); placeholder cones only if generation failed.
+        const ezKit = propId === 'tree' ? getEzTreeKit() : null;
+        if (ezKit) {
+          const buckets = splitBySpecies(group, ezKit.length);
+          return (
+            <group key={propId}>
+              {buckets.flatMap((idxs, s) =>
+                idxs.length === 0
+                  ? []
+                  : ezKit[s].map((part, partIndex) => (
+                      <InstancedProp
+                        key={`ez-${s}-${partIndex}`}
+                        part={part}
+                        placements={idxs.map((i) => group[i])}
+                        centroid={centroid}
+                        instanceZ={groupZ ? idxs.map((i) => groupZ[i]) : null}
+                      />
+                    )),
+              )}
+            </group>
+          );
+        }
         const placeholder = PLACEHOLDER_KIT[propId].map((part, partIndex) => (
           <InstancedProp
             key={`ph-${propId}-${partIndex}`}

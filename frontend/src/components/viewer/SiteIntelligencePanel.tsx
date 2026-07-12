@@ -297,12 +297,13 @@ function ScenarioCompareTable({ scenarios }: { scenarios: UrbanDnaScenarioRow[] 
   return (
     <div className="rounded-lg border-2 border-[#151515] bg-white p-2 shadow-[2px_2px_0_0_rgba(21,21,21,0.2)]">
       <p className="mb-1 text-[9px] font-black uppercase text-[#151515]/60">Scenario comparison</p>
+      <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th className="pb-0.5 text-left text-[9px] font-black uppercase text-[#151515]/50">Measure</th>
+            <th className="whitespace-nowrap pb-0.5 text-left text-[9px] font-black uppercase text-[#151515]/50">Measure</th>
             {withMetrics.map((s) => (
-              <th key={s.id} className="pb-0.5 text-right text-[9px] font-black text-[#151515]">
+              <th key={s.id} className="whitespace-nowrap pb-0.5 text-right text-[9px] font-black text-[#151515]">
                 {s.label}
               </th>
             ))}
@@ -347,6 +348,7 @@ function ScenarioCompareTable({ scenarios }: { scenarios: UrbanDnaScenarioRow[] 
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
@@ -412,12 +414,12 @@ function ScenarioCard({
 
   return (
     <div className="rounded-lg border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_rgba(21,21,21,0.2)]">
-      <div className="flex items-center justify-between px-2.5 py-1.5">
-        <button type="button" onClick={() => setOpen((v) => !v)} className="flex items-center gap-1.5">
-          {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-          <span className="text-xs font-black text-[#151515]">{scenario.label}</span>
+      <div className="flex flex-wrap items-center justify-between gap-y-1 px-2.5 py-1.5">
+        <button type="button" onClick={() => setOpen((v) => !v)} className="flex min-w-0 items-center gap-1.5">
+          {open ? <ChevronDown className="h-3 w-3 shrink-0" /> : <ChevronRight className="h-3 w-3 shrink-0" />}
+          <span className="truncate text-xs font-black text-[#151515]">{scenario.label}</span>
         </button>
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center justify-end gap-1.5">
           {scenario.status === 'complete' ? (
             <span className="rounded bg-[#c9ff3d] px-1.5 py-0.5 text-[9px] font-black text-[#151515]">
               {parameterCount} params

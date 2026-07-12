@@ -860,8 +860,15 @@ function buildCameraPoseFromPreferredView(
 
 /** Expose R3F camera to parent via ref */
 function CameraExposer({ cameraRef }: { cameraRef: React.MutableRefObject<THREE.Camera | null> }) {
-  const { camera } = useThree();
-  useEffect(() => { cameraRef.current = camera; }, [camera, cameraRef]);
+  const { camera, scene } = useThree();
+  useEffect(() => {
+    cameraRef.current = camera;
+    // Dev-only handle for e2e/console scene access (see __globeDebug).
+    if (import.meta.env.DEV) {
+      const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {});
+      Object.assign(dbg as object, { camera, scene });
+    }
+  }, [camera, scene, cameraRef]);
   return null;
 }
 
@@ -1965,6 +1972,12 @@ export function GlobeSitePlannerMap({
       isSettled: sceneReady,
       setBuildingModelsVisible,
     });
+    // Dev-only handle for e2e/console camera control (hidden browser pane
+    // can't reach React state; see memory: e2e browser pane tricks).
+    if (import.meta.env.DEV) {
+      const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {});
+      Object.assign(dbg as object, { canvas, camera, terrainHeight: terrainElevation });
+    }
   }, [globeAIRenderViewport, onGlobeReady, terrainElevation, sceneReady]);
 
   // Prevent page scroll

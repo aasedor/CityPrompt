@@ -9,13 +9,14 @@ import { useState, useCallback, useEffect, useRef, type HTMLAttributes, type Poi
 import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { useQueryClient } from '@tanstack/react-query';
-import { Boxes, Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
+import { Boxes, Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit, Trees } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
 import { rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
+import { generateParkGroundTexture, getParkGroundMeta } from './parkGroundTexture';
 
 // Zones the backend's generate-all endpoint turns into Buildings + Meshy jobs.
 const BUILDABLE_ZONE_TYPES = new Set(['building', 'residential', 'development_area']);
@@ -189,6 +190,42 @@ export function GlobeAIRenderPanel({
   const canGenerate3D = Boolean(
     projectId && boundaryPersisted && buildableZones.length > 0 && unsavedBuildableCount === 0,
   );
+
+  // ── Park ground textures (AI ortho drape; one Gemini render per park) ──
+  const [isGeneratingParks, setIsGeneratingParks] = useState(false);
+  const [parkGroundStatus, setParkGroundStatus] = useState<string | null>(null);
+  const parkZones = siteZones.filter(
+    (z) => z.zone_type === 'green_space' && z.coordinates.length >= 3 && isPersistedZoneId(z.id),
+  );
+  const parksNeedingGround = parkZones.filter((z) => !getParkGroundMeta(z));
+
+  const handleGenerateParkGrounds = useCallback(async () => {
+    if (isGeneratingParks || parksNeedingGround.length === 0) return;
+    setIsGeneratingParks(true);
+    setParkGroundStatus(`Generating park grounds… 0/${parksNeedingGround.length}`);
+    setError(null);
+    let done = 0;
+    let failed = 0;
+    // Sequential on purpose: each call is a full Gemini render; parallel
+    // fan-out would trip the proxy's daily token cap alarms for no benefit.
+    for (const zone of parksNeedingGround) {
+      try {
+        await generateParkGroundTexture(zone);
+        done += 1;
+      } catch (err) {
+        failed += 1;
+        console.warn('[parkGrounds] generation failed for zone', zone.id, err);
+      }
+      setParkGroundStatus(`Generating park grounds… ${done + failed}/${parksNeedingGround.length}`);
+      // Refresh zones as textures land so the globe drapes them immediately.
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+    }
+    setParkGroundStatus(
+      `${done} park ground${done === 1 ? '' : 's'} generated${failed ? `, ${failed} failed` : ''}.`,
+    );
+    setIsGeneratingParks(false);
+  }, [isGeneratingParks, parksNeedingGround, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (!projectId || !boundaryZone3D || isQueuing3D) return;
@@ -932,6 +969,28 @@ export function GlobeAIRenderPanel({
 
           {generate3DStatus && (
             <p className="mt-2 text-[11px] text-emerald-300/90">{generate3DStatus}</p>
+          )}
+
+          {parkZones.length > 0 && (
+            <button
+              type="button"
+              onClick={handleGenerateParkGrounds}
+              disabled={isGeneratingParks || parksNeedingGround.length === 0}
+              title={
+                parksNeedingGround.length === 0
+                  ? 'All park zones already have ground textures'
+                  : `Generate AI ground textures (lawn, paths, plaza — one Gemini render each) for ${parksNeedingGround.length} park zone${parksNeedingGround.length === 1 ? '' : 's'}; 3D trees scatter on top`
+              }
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
+            >
+              {isGeneratingParks ? <Loader2 size={13} className="animate-spin" /> : <Trees size={13} />}
+              {isGeneratingParks
+                ? 'Generating Park Grounds…'
+                : `Generate Park Grounds (${parksNeedingGround.length})`}
+            </button>
+          )}
+          {parkGroundStatus && (
+            <p className="mt-2 text-[11px] text-emerald-300/90">{parkGroundStatus}</p>
           )}
         </div>
       )}
