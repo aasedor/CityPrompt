@@ -11,12 +11,15 @@
     <title>City Prompt</title>
   </head>
   <body>
-    <!-- TEMP (park ortho pilot 2026-07-11): background-pane shims for in-app
-         browser e2e. rAF + ResizeObserver are frame-aligned and frozen in a
-         hidden pane, so r3f canvases never size/render. Gated on ?paneShim=1;
-         remove after pilot. -->
+    <!-- Background-pane shims for in-app browser e2e (park ortho pilot,
+         2026-07-11). rAF + ResizeObserver are frame-aligned and frozen in a
+         hidden pane, so r3f canvases never size/render. Gated on ?paneShim=1
+         AND localhost so production builds stay inert. -->
     <script>
-      if (new URLSearchParams(location.search).has('paneShim')) {
+      if (
+        new URLSearchParams(location.search).has('paneShim')
+        && ['localhost', '127.0.0.1'].includes(location.hostname)
+      ) {
         // MessageChannel pump: hidden tabs floor timers to 1 Hz, but
         // MessageChannel tasks are NOT throttled (~40fps achievable).
         const rafQueue = new Map();
