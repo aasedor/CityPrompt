@@ -16,7 +16,7 @@ import { rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
-import { generateParkGroundTexture, getParkGroundMeta } from './parkGroundTexture';
+import { buildParkDiagram, generateParkGroundTexture, getParkGroundMeta } from './parkGroundTexture';
 
 // Zones the backend's generate-all endpoint turns into Buildings + Meshy jobs.
 const BUILDABLE_ZONE_TYPES = new Set(['building', 'residential', 'development_area']);
@@ -226,6 +226,25 @@ export function GlobeAIRenderPanel({
     );
     setIsGeneratingParks(false);
   }, [isGeneratingParks, parksNeedingGround, queryClient, projectId]);
+
+  // DEV pilot hook: regenerate the ground texture for ONE park by zone id
+  // (the panel button only fills MISSING textures, so per-zone pilots can't
+  // use it). Returns the conditioning diagram + marker counts + stored meta.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return undefined;
+    const dbg = ((window as unknown as Record<string, unknown>).__globeDebug ??= {}) as Record<string, unknown>;
+    dbg.generateParkGround = async (zoneId: string) => {
+      const zone = siteZones.find((z) => z.id === zoneId);
+      if (!zone) throw new Error(`zone ${zoneId} not loaded`);
+      const diagram = buildParkDiagram(zone);
+      const meta = await generateParkGroundTexture(zone);
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      return { diagram: diagram?.dataUrl, markers: diagram?.markers, meta };
+    };
+    return () => {
+      delete dbg.generateParkGround;
+    };
+  }, [siteZones, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
     if (!projectId || !boundaryZone3D || isQueuing3D) return;
