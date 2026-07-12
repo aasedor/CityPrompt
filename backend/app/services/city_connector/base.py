@@ -52,7 +52,7 @@ class DatasetSpec:
     refresh_days: int                   # -> cache TTL
     source_url: str                     # human-facing docs page
     api_endpoint: str                   # adapter-specific resource locator (Socrata 4x4 id, etc.)
-    adapter: Literal["socrata", "osm"]  # more adapters (arcgis, gtfs) land in later milestones
+    adapter: Literal["socrata", "osm", "opendatasoft", "arcgis"]
     dna_fields: tuple[str, ...]         # dotted DNA paths this dataset produces, e.g. "land_use.districts"
     transform: TransformFn              # normalize raw features into DNA facts
     adapter_params: dict[str, Any] = field(default_factory=dict)  # e.g. {"geo_field": "multipolygon"}

@@ -201,9 +201,13 @@ class Settings(BaseSettings):
     processing_workers: int = 2
 
     # --- Urban Intelligence DNA ---
-    # Socrata app token for data.calgary.ca — optional but strongly recommended
-    # (unauthenticated requests are throttled aggressively).
+    # Socrata app tokens — optional but strongly recommended (unauthenticated
+    # requests are throttled aggressively). One token per portal domain.
     calgary_socrata_app_token: str = ""
+    edmonton_socrata_app_token: str = ""
+    # Opendatasoft Explore API key for opendata.vancouver.ca — optional, raises
+    # the anonymous daily rate quota. Toronto's ArcGIS server has no key at all.
+    vancouver_ods_api_key: str = ""
     urban_dna_agent_model: str = "claude-sonnet-5"
     urban_dna_cache_ttl_hours: int = 168  # default TTL when a DatasetSpec has no refresh_days
     # Hard USD ceiling per master-plan generation across all planning-agent calls. 0 disables.
