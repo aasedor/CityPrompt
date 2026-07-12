@@ -1,0 +1,41 @@
+{
+  "_comment": "Single source of truth for parametric street geometry, all values in METRES. Consumed by scripts/_render_diagrams_toscale.py (2D to-scale diagrams) and frontend streetMesh3D.ts (globe 3D geometry). Standards: TAC Canadian Roundabout Design Guide / FHWA (roundabout), NACTO Don't Give Up at the Intersection / Calgary Street Manual Fig 9.14 / CROW (protected intersection), NACTO Urban Street Design Guide (curb extension).",
+  "protectedIntersection": {
+    "scene": 38.0,
+    "RHW": 4.5,
+    "ISLD": 2.5,
+    "BT": 2.0,
+    "CW": 3.0,
+    "CR": 4.0
+  },
+  "roundabout": {
+    "scene": 46.0,
+    "ICD": 28.0,
+    "CIRC": 5.5,
+    "APRON": 1.5,
+    "APP": 9.0,
+    "REFUGE": 2.0,
+    "SLEN": 15.0,
+    "CW": 3.0,
+    "SETBK": 5.0
+  },
+  "curbExtension": {
+    "scene": 24.0,
+    "LANE": 3.3,
+    "PARK": 2.4,
+    "SW": 2.0,
+    "CW": 3.0,
+    "BULBLEN": 6.0
+  },
+  "streetDetail3D": {
+    "curbHeight_m": 0.15,
+    "curbWidth_m": 0.5,
+    "dashLength_m": 3.0,
+    "dashGap_m": 3.0,
+    "dashWidth_m": 0.15,
+    "dashLift_m": 0.05,
+    "apronLift_m": 0.03,
+    "islandHeight_m": 0.3,
+    "stationStep_m": 4.0
+  }
+}
