@@ -8,12 +8,17 @@
 import { useState, useCallback, useEffect, useRef, type HTMLAttributes, type PointerEvent as ReactPointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import * as THREE from 'three';
-import { Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Boxes, Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
 import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
-import { rendersApi, resolveApiFileUrl } from '@/services/api';
+import { rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
+
+// Zones the backend's generate-all endpoint turns into Buildings + Meshy jobs.
+const BUILDABLE_ZONE_TYPES = new Set(['building', 'residential', 'development_area']);
 
 // Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
@@ -60,6 +65,10 @@ interface GlobeAIRenderPanelProps {
   siteZones: SiteZone[];
   terrainHeight: number;
   projectId?: string;
+  /** Buildings whose GLB is currently placed on the globe. */
+  modeledBuildingIds?: Set<string>;
+  /** Hide/show placed models — used for polygon-only captures. */
+  setBuildingModelsVisible?: (visible: boolean) => void;
   onRenderComplete?: (result: GlobeRenderResult) => void;
   onBeforeRender?: () => void | Promise<void>;
   dragHandleProps?: HTMLAttributes<HTMLDivElement>;
@@ -128,6 +137,8 @@ export function GlobeAIRenderPanel({
   siteZones,
   terrainHeight,
   projectId,
+  modeledBuildingIds,
+  setBuildingModelsVisible,
   onRenderComplete,
   onBeforeRender,
   dragHandleProps,
@@ -137,6 +148,7 @@ export function GlobeAIRenderPanel({
   onClose,
 }: GlobeAIRenderPanelProps) {
   const { renderPreviews, renderPerZone } = useGlobeAIRender();
+  const queryClient = useQueryClient();
   const [isRendering, setIsRendering] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
@@ -155,6 +167,53 @@ export function GlobeAIRenderPanel({
   const [lightboxRender, setLightboxRender] = useState<LightboxRender | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const savedImageKeysRef = useRef<Set<string>>(new Set());
+
+  // ── 3D building models ──
+  // When ON (default) placed models stay in the capture and their zones get
+  // preserve-the-massing prompts — geometry-conditioned accuracy. OFF hides
+  // the models for the capture (classic polygon-only behavior).
+  const [renderWithModels, setRenderWithModels] = useState(true);
+  const [confirm3DOpen, setConfirm3DOpen] = useState(false);
+  const [isQueuing3D, setIsQueuing3D] = useState(false);
+  const [generate3DStatus, setGenerate3DStatus] = useState<string | null>(null);
+
+  const boundaryZone3D = siteZones.find(
+    (z) => z.zone_type === 'site_boundary' && z.coordinates.length >= 3,
+  );
+  const buildableZones = siteZones.filter(
+    (z) => BUILDABLE_ZONE_TYPES.has(z.zone_type)
+      && (z.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height',
+  );
+  const unsavedBuildableCount = buildableZones.filter((z) => !isPersistedZoneId(z.id)).length;
+  const boundaryPersisted = Boolean(boundaryZone3D && isPersistedZoneId(boundaryZone3D.id));
+  const canGenerate3D = Boolean(
+    projectId && boundaryPersisted && buildableZones.length > 0 && unsavedBuildableCount === 0,
+  );
+
+  const handleGenerate3D = useCallback(async () => {
+    if (!projectId || !boundaryZone3D || isQueuing3D) return;
+    setIsQueuing3D(true);
+    setGenerate3DStatus(null);
+    setError(null);
+    try {
+      const result3d = await siteZonesApi.generateForBoundary(projectId, boundaryZone3D.id);
+      const queued = result3d?.queued_buildings?.length ?? result3d?.generations_queued ?? 0;
+      setGenerate3DStatus(
+        `${queued} model${queued === 1 ? '' : 's'} queued — they appear on the globe as they finish (a few minutes each).`,
+      );
+      // The project query's refetchInterval polls every 3s while any building
+      // is `generating`; models place themselves on completion.
+      // TODO(progress-UI): batch progress bar is owned by the spawned
+      // 3D-generation-progress session — don't wire generationStore here.
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to queue 3D model generation');
+    } finally {
+      setIsQueuing3D(false);
+      setConfirm3DOpen(false);
+    }
+  }, [projectId, boundaryZone3D, isQueuing3D, queryClient]);
 
   useEffect(() => {
     onLightboxOpenChange?.(!!lightboxRender);
@@ -260,6 +319,19 @@ export function GlobeAIRenderPanel({
     const startTime = Date.now();
     const timer = setInterval(() => setRenderTime(Math.round((Date.now() - startTime) / 1000)), 1000);
 
+    // 3D models in the capture: when the toggle is OFF, hide the placed GLBs
+    // for the screenshot (classic polygon-only conditioning) and restore
+    // after. When ON, pass the modeled ids so those zones get
+    // preserve-the-massing prompts instead of replace-the-polygon.
+    const includeModels = renderWithModels && (modeledBuildingIds?.size ?? 0) > 0;
+    const hidModels = !includeModels && (modeledBuildingIds?.size ?? 0) > 0 && !!setBuildingModelsVisible;
+    if (hidModels) {
+      setBuildingModelsVisible!(false);
+      // Let R3F unmount the layer and repaint (prisms return) before capture.
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    const renderModeledIds = includeModels ? modeledBuildingIds : undefined;
+
     try {
       // Use per-zone when: 5+ zones, OR mixing roads/streets with buildings
       // (roads and buildings have such different archetypes that single-shot confuses Gemini)
@@ -284,6 +356,7 @@ export function GlobeAIRenderPanel({
             imageQuality: provider.imageQuality,
             projectId,
             customPrompt: customPrompt.trim() || undefined,
+            modeledBuildingIds: renderModeledIds,
             onProgress: (progress) => setRenderProgress({
               ...progress,
               zoneName: `${provider.label}: ${progress.zoneName}`,
@@ -323,6 +396,7 @@ export function GlobeAIRenderPanel({
           customPrompt: customPrompt.trim() || undefined,
           siteBoundaryZone,
           highFidelity,
+          modeledBuildingIds: renderModeledIds,
           variants: compareRenderVariants,
         });
         if (results.length > 0) {
@@ -353,8 +427,9 @@ export function GlobeAIRenderPanel({
       setRenderTime(0);
       setRenderProgress(null);
       setIsRendering(false);
+      if (hidModels) setBuildingModelsVisible!(true);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -784,6 +859,80 @@ export function GlobeAIRenderPanel({
           >
             Clear result
           </button>
+        </div>
+      )}
+
+      {/* 3D building models — generate from archetype-assigned zones + render mode */}
+      {projectId && buildableZones.length > 0 && (
+        <div className="border-t-2 border-white/10 px-4 py-3">
+          <div className="flex items-center gap-1.5 text-xs font-black uppercase text-white/55">
+            <Boxes size={13} />
+            3D Buildings
+          </div>
+
+          {(modeledBuildingIds?.size ?? 0) > 0 && (
+            <label className="mt-2 flex cursor-pointer items-center justify-between text-[11px] text-white/70">
+              <span>Render with 3D models (geometry-accurate)</span>
+              <input
+                type="checkbox"
+                checked={renderWithModels}
+                onChange={(e) => setRenderWithModels(e.target.checked)}
+                className="h-3.5 w-3.5 accent-[#c9ff3d]"
+              />
+            </label>
+          )}
+
+          {!confirm3DOpen ? (
+            <button
+              type="button"
+              onClick={() => setConfirm3DOpen(true)}
+              disabled={!canGenerate3D || isQueuing3D}
+              title={
+                !boundaryPersisted
+                  ? 'Draw and save a site boundary first'
+                  : unsavedBuildableCount > 0
+                    ? 'Save your zones first — unsaved zones lose their archetype styling'
+                    : 'Generate Meshy 3D models for every building zone in the site'
+              }
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
+            >
+              <Boxes size={13} />
+              Generate 3D Models ({buildableZones.length} zone{buildableZones.length === 1 ? '' : 's'})
+            </button>
+          ) : (
+            <div className="mt-2 rounded border border-amber-400/40 bg-amber-400/10 p-2.5 text-[11px] text-amber-100">
+              <p className="font-bold">
+                Queue 3D generation for {buildableZones.length} building zone{buildableZones.length === 1 ? '' : 's'}?
+              </p>
+              <p className="mt-1 text-amber-100/70">
+                ~20 Meshy credits per building; jobs start 45s apart
+                (~{Math.ceil((buildableZones.length * 45) / 60)} min to queue all, a few minutes each to finish).
+                {buildableZones.length > 20 ? ' Note: the globe shows the first 20 models.' : ''}
+              </p>
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleGenerate3D}
+                  disabled={isQueuing3D}
+                  className="flex-1 rounded border border-[#151515] bg-[#c9ff3d] px-2 py-1.5 font-black uppercase text-[#151515] transition hover:bg-[#d8ff70] disabled:opacity-50"
+                >
+                  {isQueuing3D ? 'Queueing…' : 'Confirm'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirm3DOpen(false)}
+                  disabled={isQueuing3D}
+                  className="flex-1 rounded border border-white/20 bg-white/5 px-2 py-1.5 font-black uppercase text-white/70 transition hover:bg-white/10"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {generate3DStatus && (
+            <p className="mt-2 text-[11px] text-emerald-300/90">{generate3DStatus}</p>
+          )}
         </div>
       )}
 

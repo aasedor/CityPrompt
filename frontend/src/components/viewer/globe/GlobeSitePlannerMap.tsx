@@ -26,11 +26,14 @@ import {
 } from '3d-tiles-renderer/plugins';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
-import { Html } from '@react-three/drei';
-import type { SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
+import { Environment, Html } from '@react-three/drei';
+import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
+import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
+import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
+import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobeEditMode } from './GlobeEditMode';
 import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
@@ -1265,6 +1268,8 @@ interface GlobeSitePlannerMapProps {
   longitude?: number;
   preferredView?: GlobePreferredView;
   siteZones: SiteZone[];
+  /** Project buildings — those with generated GLBs get placed on the globe. */
+  buildings?: Building[];
   massingFeatures?: unknown[];
   onZoneCreated: (coordinates: number[][], zoneType: SiteZoneType, properties?: SiteZoneProperties) => void;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => void;
@@ -1283,7 +1288,18 @@ interface GlobeSitePlannerMapProps {
    * viewport). The Mapbox-shim `GlobeAIRenderViewport` is preserved below as
    * dead code for any future code that wants to adapt the globe to that API.
    */
-  onGlobeReady?: (refs: { canvas: HTMLCanvasElement; camera: THREE.Camera; terrainHeight: number; isSettled?: boolean }) => void;
+  onGlobeReady?: (refs: {
+    canvas: HTMLCanvasElement;
+    camera: THREE.Camera;
+    terrainHeight: number;
+    isSettled?: boolean;
+    /** Show/hide placed GLB building models — the render pipeline uses this
+     *  for polygon-only captures when "Render with 3D models" is off. */
+    setBuildingModelsVisible?: (visible: boolean) => void;
+  }) => void;
+  /** Fired with the ids of buildings whose GLB is currently mounted on the
+   *  globe — the render panel keys preserve-the-massing prompts off it. */
+  onModeledBuildingsChange?: (ids: Set<string>) => void;
 }
 
 export interface GlobeAIRenderViewport {
@@ -1315,6 +1331,7 @@ export function GlobeSitePlannerMap({
   longitude: _longitude = -114.07,
   preferredView,
   siteZones,
+  buildings,
   onZoneCreated,
   onZoneUpdated,
   onZoneSelected,
@@ -1326,6 +1343,7 @@ export function GlobeSitePlannerMap({
   interactionPaused = false,
   onMeasureModeChange,
   onGlobeReady,
+  onModeledBuildingsChange,
 }: GlobeSitePlannerMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cameraRef = useRef<THREE.Camera | null>(null);
@@ -1356,6 +1374,18 @@ export function GlobeSitePlannerMap({
   // without colored polygon fills baked into it. Default true so users
   // normally see their drawn zones.
   const [zoneOverlaysVisible, setZoneOverlaysVisible] = useState(true);
+
+  // Placed 3D building models (generated GLBs). Deliberately OUTSIDE the
+  // zone-overlay toggle: models are real massing and belong in AI-render
+  // captures. modeledBuildingIds suppresses the matching zone prisms only
+  // while a model is actually mounted.
+  const [buildingModelsVisible, setBuildingModelsVisible] = useState(true);
+  const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
+  const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url));
+  const handleModeledIdsChange = useCallback((ids: Set<string>) => {
+    setModeledBuildingIds(ids);
+    onModeledBuildingsChange?.(ids);
+  }, [onModeledBuildingsChange]);
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
@@ -1933,6 +1963,7 @@ export function GlobeSitePlannerMap({
       camera,
       terrainHeight: terrainElevation,
       isSettled: sceneReady,
+      setBuildingModelsVisible,
     });
   }, [globeAIRenderViewport, onGlobeReady, terrainElevation, sceneReady]);
 
@@ -2637,6 +2668,9 @@ export function GlobeSitePlannerMap({
         />
         {/* Atmospheric fog — grounds the horizon and hides the infinite void */}
         <fog attach="fog" args={['#b8c8d8', 8000, 80000]} />
+        {/* IBL for placed GLB models (PBR materials only) — tiles and zone
+            overlays are unlit basic materials, so they're unaffected. */}
+        {hasPlaceableModels && <Environment preset="city" background={false} />}
         <TilesRenderer>
           {/* autoRefreshToken: Google 3D Tiles sessions expire after a few hours;
               without it every tile fetch 400s (pale background polygons through
@@ -2670,8 +2704,30 @@ export function GlobeSitePlannerMap({
               terrainHeight={terrainElevation}
               onZoneClick={handleZoneMeshClick}
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
+              suppressedBuildingIds={modeledBuildingIds}
             />
+            {/* Procedural street 3D: curbs, centerline dashes, parametric
+                roundabouts — vector-driven detail on top of the road fills. */}
+            <GlobeStreetDetailLayer zones={siteZones} terrainHeight={terrainElevation} />
           </group>
+
+          {/* Park kit props (trees/benches/playground) — sibling of the
+              zone-overlay group like the building models: real 3D content
+              that stays visible in AI-render captures. */}
+          <GlobeParkKitLayer zones={siteZones} terrainHeight={terrainElevation} />
+
+          {/* Generated 3D building models — sibling of the zone-overlay group
+              on purpose: they're real massing and stay visible in AI-render
+              captures. Conditional render (not `visible`) so toggling off
+              unmounts the models and the prisms return automatically. */}
+          {buildingModelsVisible && buildings && buildings.length > 0 && (
+            <GlobeBuildingModelsLayer
+              buildings={buildings}
+              zones={siteZones}
+              terrainHeight={terrainElevation}
+              onLoadedIdsChange={handleModeledIdsChange}
+            />
+          )}
 
           {/* Drawing preview dots */}
           <DrawingDots
@@ -2921,6 +2977,20 @@ export function GlobeSitePlannerMap({
             <div className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>
           </div>
+        )}
+        {hasPlaceableModels && (
+          <button
+            type="button"
+            onClick={() => setBuildingModelsVisible((v) => !v)}
+            className={`rounded-full border-2 border-[#151515] px-3 py-1.5 text-[11px] font-black uppercase shadow-[3px_3px_0_0_#151515] backdrop-blur-xl transition ${
+              buildingModelsVisible
+                ? 'bg-[#c9ff3d] text-[#151515]'
+                : 'bg-[#fff9ec]/95 text-[#151515]/50'
+            }`}
+            title={buildingModelsVisible ? 'Hide generated 3D models' : 'Show generated 3D models'}
+          >
+            3D Models
+          </button>
         )}
       </div>
     </div>

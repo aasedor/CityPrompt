@@ -57,6 +57,9 @@ interface GlobeZoneLayerProps {
   terrainHeight?: number;
   onZoneClick?: (zoneId: string) => void;
   selectionEnabled?: boolean;
+  /** Buildings whose GLB model is mounted on the globe — their extruded prism
+   *  is skipped (the model replaces it). Stencil volume + label stay. */
+  suppressedBuildingIds?: Set<string>;
 }
 
 function coordinatesNearlyEqual(a: number[], b: number[]): boolean {
@@ -261,8 +264,9 @@ function createLocalGeometry(
 /**
  * Raycast from high altitude straight down onto the tile mesh at a given lat/lng.
  * Returns the hit point in ECEF, or null if no hit.
+ * Exported for GlobeBuildingModelsLayer (same seating logic for placed GLBs).
  */
-function raycastTerrainAtLatLng(
+export function raycastTerrainAtLatLng(
   lng: number,
   lat: number,
   tilesGroup: THREE.Object3D,
@@ -279,7 +283,7 @@ function raycastTerrainAtLatLng(
   return hits.length > 0 ? hits[0].point.clone() : null;
 }
 
-function raycastTerrainHeightAtLatLng(
+export function raycastTerrainHeightAtLatLng(
   lng: number,
   lat: number,
   tilesGroup: THREE.Object3D,
@@ -343,13 +347,14 @@ function getTerrainProbePoints(
   return probes;
 }
 
-function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false }: {
+function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabled, lightweight = false, suppressed = false }: {
   zone: SiteZone;
   isSelected: boolean;
   terrainHeight: number;
   onZoneClick?: (zoneId: string) => void;
   selectionEnabled?: boolean;
   lightweight?: boolean;
+  suppressed?: boolean;
 }) {
   const color = resolveZoneColor(zone);
   const label = resolveZoneLabel(zone);
@@ -736,8 +741,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         </mesh>
       )}
 
-      {/* Fill — buildings on top of everything */}
-      {isBuilding && (
+      {/* Fill — buildings on top of everything (skipped when a placed GLB
+          model replaces this prism; see GlobeBuildingModelsLayer) */}
+      {isBuilding && !suppressed && (
         <mesh
           ref={buildingMeshRef}
           geometry={geoData.fillGeo}
@@ -760,20 +766,22 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       )}
 
       {/* Outline geometry is spread because JSX line resolves to SVG typings here. */}
-      <line
-        ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
-        {...({ geometry: !isBuilding ? (isImported && importedOutlineGeo ? importedOutlineGeo : geoData.outlineGeo.clone()) : geoData.outlineGeo } as any)}
-        renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
-        frustumCulled={false}
-        onPointerDown={handleZonePointerDown}
-      >
-        <lineBasicMaterial
-          color={isSelected ? '#ffffff' : color}
-          linewidth={isSelected ? 3 : 1.5}
-          depthTest={shouldRespectTileDepth}
-          depthWrite={false}
-        />
-      </line>
+      {!(isBuilding && suppressed) && (
+        <line
+          ref={isBuilding ? buildingOutlineRef : flatOutlineRef as any}
+          {...({ geometry: !isBuilding ? (isImported && importedOutlineGeo ? importedOutlineGeo : geoData.outlineGeo.clone()) : geoData.outlineGeo } as any)}
+          renderOrder={isBuilding ? 201 : isSiteBoundary ? 101 : zone.zone_type === 'green_space' ? 111 : 121}
+          frustumCulled={false}
+          onPointerDown={handleZonePointerDown}
+        >
+          <lineBasicMaterial
+            color={isSelected ? '#ffffff' : color}
+            linewidth={isSelected ? 3 : 1.5}
+            depthTest={shouldRespectTileDepth}
+            depthWrite={false}
+          />
+        </line>
+      )}
 
       {/* Label — positioned above the zone */}
       <group position={[0, 0, extrudeHeight + 8]}>
@@ -797,6 +805,7 @@ export function GlobeZoneLayer({
   terrainHeight = 1045,
   onZoneClick,
   selectionEnabled = true,
+  suppressedBuildingIds,
 }: GlobeZoneLayerProps) {
   // Big layers (e.g. an imported shapefile) switch every zone to a cheaper path.
   const lightweight = zones.length > LIGHTWEIGHT_ZONE_THRESHOLD;
@@ -811,6 +820,7 @@ export function GlobeZoneLayer({
           onZoneClick={onZoneClick}
           selectionEnabled={selectionEnabled}
           lightweight={lightweight}
+          suppressed={Boolean(zone.building_id && suppressedBuildingIds?.has(zone.building_id))}
         />
       ))}
     </>

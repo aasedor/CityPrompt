@@ -52,7 +52,15 @@ export function ProjectViewPage() {
   const [aiPanelLightboxOpen, setAiPanelLightboxOpen] = useState(false);
   const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
-  const [globeRefs, setGlobeRefs] = useState<{ canvas: HTMLCanvasElement; camera: any; terrainHeight: number } | null>(null);
+  const [globeRefs, setGlobeRefs] = useState<{
+    canvas: HTMLCanvasElement;
+    camera: any;
+    terrainHeight: number;
+    setBuildingModelsVisible?: (visible: boolean) => void;
+  } | null>(null);
+  // Buildings whose generated GLB is currently placed on the globe — the
+  // render panel keys "render with 3D models" behavior off this set.
+  const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
   const queryClient = useQueryClient();
   const prevStatusMap = useRef<Record<string, string>>({});
   const globeRenderDragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
@@ -585,11 +593,13 @@ export function ProjectViewPage() {
           latitude={project.location?.latitude}
           longitude={project.location?.longitude}
           siteZones={visibleZones}
+          buildings={project.buildings}
           onZoneCreated={handleZoneCreated}
           onZoneUpdated={handleZoneUpdated}
           onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
           onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
           onGlobeReady={setGlobeRefs}
+          onModeledBuildingsChange={setModeledBuildingIds}
           measureModeActive={measureActive}
           interactionPaused={renderViewerActive}
           onMeasureModeChange={handleMeasureModeChange}
@@ -699,6 +709,8 @@ export function ProjectViewPage() {
                 siteZones={visibleZones}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
+                modeledBuildingIds={modeledBuildingIds}
+                setBuildingModelsVisible={globeRefs?.setBuildingModelsVisible}
                 onBeforeRender={prepareForAIRenderCapture}
                 isDragging={isDraggingGlobeRender}
                 onLightboxOpenChange={setAiPanelLightboxOpen}

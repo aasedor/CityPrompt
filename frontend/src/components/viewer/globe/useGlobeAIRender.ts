@@ -694,12 +694,17 @@ const AERIAL_ANGLE_SUFFIXES: Array<{ suffix: number; label: string }> = [
  * nadir diagram (mirrors backend plan_diagram.py): the authoritative-geometry
  * conditioning input. Returns base64 PNG, or null when the visible zone set
  * isn't a drawn plan. Diagram-research rules: one flat color per role, no
- * text, no gradients.
+ * text, no gradients. Buildings additionally get a thin white outline —
+ * abutting same-color bars of a perimeter block otherwise merge into one
+ * unreadable mass — and courtyards draw green like parks (their role is
+ * 'courtyard', not 'open_space'; without it the block centre reads as
+ * unplanned white ground).
  */
 function buildPlanConditioningDiagram(zones: SiteZone[], sizePx = 1024): string | null {
   const ROLE_COLORS: Record<string, string> = {
     street: '#808080',
     open_space: '#7cb342',
+    courtyard: '#7cb342',
     building: '#b03a2e',
   };
   const planZones = zones.filter((z) => {
@@ -733,7 +738,9 @@ function buildPlanConditioningDiagram(zones: SiteZone[], sizePx = 1024): string 
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, sizePx, sizePx);
 
-  for (const role of ['street', 'open_space', 'building']) {
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3;
+  for (const role of ['street', 'open_space', 'courtyard', 'building']) {
     ctx.fillStyle = ROLE_COLORS[role];
     for (const zone of planZones) {
       if ((zone.properties as Record<string, unknown>)._plan_role !== role) continue;
@@ -746,6 +753,7 @@ function buildPlanConditioningDiagram(zones: SiteZone[], sizePx = 1024): string 
       });
       ctx.closePath();
       ctx.fill();
+      if (role === 'building') ctx.stroke();
     }
   }
   return diagramCanvas.toDataURL('image/png').split(',')[1];
@@ -1127,7 +1135,13 @@ function getZoneArchetypeInfo(zone: SiteZone): {
  * Build SCHEMA-style structured prompt for aerial renders.
  * Based on the proven Mapbox aerial prompt structure.
  */
-function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, terrainHeight?: number): string {
+function buildPrompt(
+  zones: SiteZone[],
+  style: string,
+  camera?: THREE.Camera,
+  terrainHeight?: number,
+  modeledBuildingIds?: Set<string>,
+): string {
   // --- CAMERA ANGLE ---
   let pitchDesc = 'oblique aerial (~40deg camera elevation above ground; ~50deg from nadir)';
   if (camera && terrainHeight != null) {
@@ -1262,6 +1276,25 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
       features.unshift('flat neighbourhood park: lawn, tree clusters, walking paths — no water features, no amphitheatre');
     }
 
+    // Perimeter blocks under-specify themselves as polygons alone: same-shade
+    // bars read as one mass and come back as freestanding slabs in a row
+    // (2026-07-10 As-of-Right render). State the block form in words, first,
+    // for the courtyard and for every bar of the block.
+    if (props._plan_role === 'courtyard') {
+      features.unshift('enclosed courtyard at the centre of a perimeter block, ringed by the adjacent buildings on all sides, open to the sky — lawn and trees, not a street or front yard');
+    }
+    if (props._plan_role === 'building' && props.typology === 'perimeter_block') {
+      features.unshift('one bar of a perimeter block — continuous street wall with the adjoining buildings, enclosing the central courtyard; build the drawn footprint, not a freestanding slab');
+    }
+
+    // Buildings whose generated 3D model is placed on the globe: the capture
+    // already contains the true massing — the strongest geometry conditioning
+    // available. Instruct preservation, not replacement. First in the feature
+    // list so it survives the budget.
+    if (zone.building_id && modeledBuildingIds?.has(zone.building_id)) {
+      features.unshift('shown as a 3D massing model in the screenshot — PRESERVE its exact footprint, height, roofline and silhouette; render realistic facades, materials and context onto that geometry in the declared style; do NOT replace it with a different building');
+    }
+
     // Custom-style zones carry the user's full description — give it more room
     // than the compressed archetype keyword budget (expansions run ~600-900 chars).
     const featureBudget = getCustomZoneStyle(zone) ? 900 : 200;
@@ -1284,12 +1317,20 @@ function buildPrompt(zones: SiteZone[], style: string, camera?: THREE.Camera, te
   const contextClause = isArtistic
     ? `CONTEXT: The input screenshot is a layout reference from a 3D city model. Use it to understand WHERE each zone sits and WHAT surrounds it — but render the ENTIRE output in the declared STYLE. Tile photographs outside the mask are still inputs, not targets to match; the final output should read consistently as the declared artistic medium across the full frame.`
     : `CONTEXT: This image is captured from a 3D photorealistic city model with real Google Earth buildings. Preserve ALL unmasked photographic context exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent real buildings.`;
-  const mandatoryClause = isArtistic
+  // Zones backed by placed 3D models: the massing in the screenshot is truth.
+  const hasModeledZones = Boolean(modeledBuildingIds?.size)
+    && renderZones.some(z => z.building_id && modeledBuildingIds!.has(z.building_id));
+  const modeledMandatory = hasModeledZones
+    ? ` EXCEPTION — 3D MASSING MODELS: some building zones already contain a detailed 3D building model in the screenshot (not a flat colored polygon). For those, KEEP the model's exact geometry — footprint, height, roofline, silhouette — and render facades/materials/entourage onto it in the declared style.`
+    : '';
+  const mandatoryClause = (isArtistic
     ? `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays with zone content rendered in the declared STYLE. Read the text label on each polygon to identify what to render there. Zone content must be rendered in the same style as the rest of the composition — no photorealistic material breakthrough inside the mask.`
-    : `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. Read the text label on each polygon to identify what to render there. Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`;
-  const prohibitionsClause = isArtistic
+    : `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. Read the text label on each polygon to identify what to render there. Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`
+  ) + modeledMandatory;
+  const prohibitionsClause = (isArtistic
     ? `PROHIBITIONS: colored polygon fills visible on ANY rendered surface, dashed boundary lines or outlines visible, text labels visible, watermarks, mixing photorealistic passages with the declared artistic style (entire output must be in one style), any photoreal material rendering inside the mask.`
-    : `PROHIBITIONS: colored polygon fills visible on ANY rendered surface (rooftops, facades, ground), dashed boundary lines or outlines visible, text labels visible, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`;
+    : `PROHIBITIONS: colored polygon fills visible on ANY rendered surface (rooftops, facades, ground), dashed boundary lines or outlines visible, text labels visible, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`
+  ) + (hasModeledZones ? ' Also prohibited: altering the silhouette, massing, footprint or height of any 3D building model visible in the screenshot.' : '');
   const siteBoundaryClause = isArtistic
     ? `SITE BOUNDARY: Do NOT add any NEW buildings, structures, roads, people, vehicles, or landscaping outside the colored zone polygons. The output across the entire frame should read as a coherent composition in the declared STYLE.`
     : `SITE BOUNDARY: Do NOT add any NEW buildings, structures, roads, people, vehicles, or landscaping outside the colored zone polygons. However, rendered zones MUST blend seamlessly into the surrounding landscape at their edges — match lighting, ground plane, and context so there is no visible seam between rendered and existing areas.`;
@@ -1801,6 +1842,7 @@ function buildSingleZonePromptForPerZone(
   _camera: THREE.Camera,
   _terrainHeight: number,
   customPrompt?: string,
+  isModeled?: boolean,
 ): string {
   const color = colorName(resolveZoneColor(zone));
   const info = getZoneArchetypeInfo(zone);
@@ -1844,12 +1886,16 @@ function buildSingleZonePromptForPerZone(
 
   const sections = [
     `STYLE: ${GLOBE_STYLE_PROMPTS[style] || GLOBE_STYLE_PROMPTS.photorealistic}`,
-    `TASK: Render ONE building in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
+    isModeled
+      ? `TASK: Refine ONE building in the white masked area. The masked area already contains a 3D massing model of the proposed building — its geometry is authoritative.`
+      : `TASK: Render ONE building in the white masked area. The colored polygon [${color}] marks the exact map footprint.`,
     `BUILDING: ${name}${scale ? ` | ${scale}` : ''}`,
     footprint ? `DRAWN FOOTPRINT: ${footprint}. This measured longitude/latitude footprint is authoritative; adapt the archetype to fit it exactly.` : '',
     features.length > 0 ? `DETAILS: ${features.join(', ').substring(0, getCustomZoneStyle(zone) ? 900 : 300)}` : '',
     `CONTEXT: Preserve ALL existing photographic context outside the mask. Match lighting, color temperature, and atmosphere of surrounding real buildings.`,
-    `MANDATORY: Replace the colored polygon with a photorealistic building. Render ONLY within the masked area. Match surrounding real 3D buildings, but do not enlarge the building beyond the drawn footprint.`,
+    isModeled
+      ? `MANDATORY: PRESERVE the 3D model's exact footprint, height, roofline and silhouette. Render realistic facades, materials, glazing and ground-level detail onto that geometry. Do NOT replace it with a different building or alter its massing.`
+      : `MANDATORY: Replace the colored polygon with a photorealistic building. Render ONLY within the masked area. Match surrounding real 3D buildings, but do not enlarge the building beyond the drawn footprint.`,
     customPrompt ? `ADDITIONAL: ${customPrompt}` : '',
   ].filter(Boolean);
 
@@ -1991,6 +2037,10 @@ export function useGlobeAIRender() {
       // the stylized base). 2x cost — opt-in via the panel toggle; only takes
       // effect for HIGH_FIDELITY_STYLES.
       highFidelity?: boolean;
+      // Buildings whose generated GLB is placed on the globe (and therefore
+      // already in the capture): their zones get preserve-the-massing prompt
+      // treatment instead of replace-the-polygon.
+      modeledBuildingIds?: Set<string>;
       // Internal: renderPreviews shares one pass-1 restyle across its whole
       // compare batch — the scene is static, so N variants must not pay for
       // (and composite against) N different stylized bases.
@@ -2213,7 +2263,7 @@ export function useGlobeAIRender() {
       );
 
       // 3. Build SCHEMA prompt from VISIBLE zone archetypes only
-      let prompt = buildPrompt(visibleZones, style, camera, terrainHeight);
+      let prompt = buildPrompt(visibleZones, style, camera, terrainHeight, options.modeledBuildingIds);
       if (customPrompt) prompt += `\nADDITIONAL: ${customPrompt}`;
       if (twoPass && baseBase64 !== rawBase64) {
         // Pass 1 restyles the zone FILL colors away (monochrome media destroy
@@ -2247,7 +2297,10 @@ export function useGlobeAIRender() {
           archetypeImages.unshift({
             image_base64: planDiagram,
             label: 'PLAN DIAGRAM — authoritative nadir layout of the proposal: '
-              + 'gray = streets, green = parks, dark red = building footprints. '
+              + 'gray = streets, green = parks and courtyards, dark red = building '
+              + 'footprints. Each building footprint is outlined in white — '
+              + 'adjoining outlined shapes are SEPARATE buildings forming a '
+              + 'continuous block edge, not one mass and not freestanding slabs. '
               + 'Preserve the street network topology, block arrangement, park '
               + 'locations and building footprints exactly as drawn. Streets '
               + 'remain open to the sky.',
@@ -2478,6 +2531,7 @@ export function useGlobeAIRender() {
       customPrompt?: string;
       siteBoundaryZone?: SiteZone;
       highFidelity?: boolean;
+      modeledBuildingIds?: Set<string>;
       count?: number;
       variants?: GlobeRenderVariant[];
     } = {},
@@ -2496,6 +2550,7 @@ export function useGlobeAIRender() {
       customPrompt: options.customPrompt,
       siteBoundaryZone: options.siteBoundaryZone,
       highFidelity: options.highFidelity,
+      modeledBuildingIds: options.modeledBuildingIds,
       // One pass-1 restyle for the whole compare batch (see render()).
       _twoPassRestyleCache: {},
     };
@@ -2605,6 +2660,7 @@ export function useGlobeAIRender() {
       imageQuality?: OpenAIImageQuality;
       projectId?: string;
       customPrompt?: string;
+      modeledBuildingIds?: Set<string>;
       onProgress?: (progress: GlobeRenderProgress) => void;
     } = {},
   ): Promise<GlobeRenderResult | null> => {
@@ -2705,7 +2761,12 @@ export function useGlobeAIRender() {
         // Build focused prompt for this single zone
         let singlePrompt: string;
         if (isBuilding) {
-          singlePrompt = buildSingleZonePromptForPerZone(zone, style, camera, terrainHeight, customPrompt);
+          const isModeled = Boolean(
+            zone.building_id && options.modeledBuildingIds?.has(zone.building_id),
+          );
+          singlePrompt = buildSingleZonePromptForPerZone(
+            zone, style, camera, terrainHeight, customPrompt, isModeled,
+          );
         } else {
           // Ground zone prompt — focused on this single zone
           const info = getZoneArchetypeInfo(zone);

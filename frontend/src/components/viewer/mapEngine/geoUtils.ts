@@ -67,7 +67,39 @@ export function shiftHex(hex: string, hueShift: number, lightnessShift: number):
 
 const VARIANT_SHIFTS: [number, number][] = [[0, 0], [8, -0.06], [-8, 0.06], [16, -0.03]];
 
+// AI-planner blocks decompose into several bars of the SAME archetype, so the
+// archetype-keyed shade paints abutting bars as one continuous mass — in the
+// render screenshot and the conditioning diagram the model can't see where one
+// building ends and the next begins, and redraws the block as freestanding
+// slabs. Spread sibling bars across distinct hue/lightness offsets (bar A
+// keeps the canonical shade). Fill and prompt color name both come through
+// resolveZoneColor, so they stay in agreement.
+const PLAN_BUILDING_SHIFTS: [number, number][] = [
+  [0, 0], [14, -0.05], [-14, 0.05], [26, -0.02], [-26, 0.04], [38, -0.04],
+];
+
+function planBuildingShift(zone: SiteZone, color: string): string {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  if (props?._plan_role !== 'building') return color;
+  // The plan generator names bars "… · Block N · Building A/B/…" — the letter
+  // is the stable per-block ordinal. Bars without one hash their id instead.
+  const letter = /Building\s+([A-Z])\b/.exec(zone.name || '')?.[1];
+  let index = letter ? letter.charCodeAt(0) - 65 : NaN;
+  if (!Number.isFinite(index)) {
+    const key = String(zone.id || zone.name || '');
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) hash = (hash * 31 + key.charCodeAt(i)) | 0;
+    index = Math.abs(hash);
+  }
+  const [hueShift, lightnessShift] = PLAN_BUILDING_SHIFTS[index % PLAN_BUILDING_SHIFTS.length];
+  return hueShift === 0 && lightnessShift === 0 ? color : shiftHex(color, hueShift, lightnessShift);
+}
+
 export function resolveZoneColor(zone: SiteZone): string {
+  return planBuildingShift(zone, resolveZoneBaseColor(zone));
+}
+
+function resolveZoneBaseColor(zone: SiteZone): string {
   const props = zone.properties;
   if (props) {
     const archetypeId =

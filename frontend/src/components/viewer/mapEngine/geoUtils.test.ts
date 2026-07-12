@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import type { SiteZone } from '@/types';
 import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
   polygonAreaM2,
   polygonDimensionsMeters,
+  resolveZoneColor,
 } from './geoUtils';
 
 const CENTER_LNG = -114.0719;
@@ -53,5 +55,56 @@ describe('geoUtils map-meter footprint helpers', () => {
     expect(dimensions.area).toBeCloseTo(800, 0);
     expect(dimensions.width).toBeCloseTo(40, 0);
     expect(dimensions.depth).toBeCloseTo(20, 0);
+  });
+});
+
+function buildingZone(
+  name: string,
+  properties: Record<string, unknown>,
+  id = name,
+): SiteZone {
+  return {
+    id,
+    project_id: 'p1',
+    zone_type: 'building',
+    name,
+    coordinates: rectangle(20, 20),
+    color: '#ff0000',
+    sort_order: 0,
+    created_at: '',
+    updated_at: '',
+    properties: {
+      development_archetype_id: 'contemporary_townhouse_courtyard',
+      ...properties,
+    },
+  } as unknown as SiteZone;
+}
+
+describe('resolveZoneColor plan-building differentiation', () => {
+  it('keeps the canonical archetype shade for non-plan zones and bar A', () => {
+    const plain = resolveZoneColor(buildingZone('Hand-drawn zone', {}));
+    const barA = resolveZoneColor(
+      buildingZone('As-of-Right · Block 1 · Building A', { _plan_role: 'building' }),
+    );
+    expect(barA).toBe(plain);
+  });
+
+  it('gives sibling bars of one block distinct fills', () => {
+    const bars = ['A', 'B', 'C', 'D'].map((letter) =>
+      resolveZoneColor(
+        buildingZone(`As-of-Right · Block 1 · Building ${letter}`, { _plan_role: 'building' }),
+      ),
+    );
+    expect(new Set(bars).size).toBe(4);
+    for (const color of bars) expect(color).toMatch(/^#[0-9a-f]{6}$/i);
+  });
+
+  it('is deterministic for plan bars without a Building letter', () => {
+    const make = () =>
+      resolveZoneColor(
+        buildingZone('As-of-Right · Block 2', { _plan_role: 'building' }, 'zone-uuid-42'),
+      );
+    expect(make()).toBe(make());
+    expect(make()).toMatch(/^#[0-9a-f]{6}$/i);
   });
 });
