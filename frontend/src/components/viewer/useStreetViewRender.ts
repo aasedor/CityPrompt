@@ -1953,8 +1953,22 @@ async function collectArchetypeImages(
       // exact id match misses the catalog (which is keyed by archetype id with
       // variants nested) — fall back to the parent archetype that owns the variant.
       let catalogEntry = catalog.find((c: any) => c.id === archetypeId);
+      // Canonical variant resolution (ported from useGlobeAIRender): prefer the
+      // *_selected_variant_id string; the legacy selected_variant integer is a
+      // fallback only (it silently resolves to variant 0 when absent).
+      const svProps: any = entry.zone.properties || {};
+      const selectedVariantId = svProps.development_selected_variant_id
+        || svProps.green_space_selected_variant_id
+        || svProps.road_selected_variant_id
+        || svProps.plaza_selected_variant_id
+        || svProps.selected_variant_id;
       let variant: any = catalogEntry?.variants
-        ? (catalogEntry.variants[Number(entry.zone.properties?.selected_variant) || 0] || catalogEntry.variants[0])
+        ? (
+          (selectedVariantId
+            && catalogEntry.variants.find((v: any) => v.id === selectedVariantId))
+          || catalogEntry.variants[Number(svProps.selected_variant) || 0]
+          || catalogEntry.variants[0]
+        )
         : null;
       if (!catalogEntry) {
         // Try the archetype that owns this exact variant id, else strip a trailing

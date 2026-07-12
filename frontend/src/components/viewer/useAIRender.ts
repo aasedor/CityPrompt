@@ -2244,8 +2244,23 @@ async function getZoneArchetypeCard(zone: SiteZone): Promise<{ image_base64: str
 
   let thumbnailUrl: string | null = null;
   if (catalogEntry.variants) {
-    const selectedIdx = Number(zone.properties?.selected_variant) || 0;
-    const variant = catalogEntry.variants[selectedIdx] || catalogEntry.variants[0];
+    // Canonical variant resolution (ported from useGlobeAIRender
+    // collectArchetypeImages): the selection lives in *_selected_variant_id
+    // (a variant id string), NOT the legacy selected_variant integer — reading
+    // only the integer silently falls back to variant 0 / hero for every zone.
+    const props: any = zone.properties || {};
+    const selectedVariantId = props.development_selected_variant_id
+      || props.green_space_selected_variant_id
+      || props.road_selected_variant_id
+      || props.plaza_selected_variant_id
+      || props.selected_variant_id;
+    let variant = selectedVariantId
+      ? catalogEntry.variants.find((v: any) => v.id === selectedVariantId)
+      : undefined;
+    if (!variant) {
+      const selectedIdx = Number(props.selected_variant) || 0;
+      variant = catalogEntry.variants[selectedIdx] || catalogEntry.variants[0];
+    }
     thumbnailUrl = variant?.thumbnailUrl || null;
   }
   if (!thumbnailUrl) thumbnailUrl = catalogEntry.thumbnailUrl || null;
