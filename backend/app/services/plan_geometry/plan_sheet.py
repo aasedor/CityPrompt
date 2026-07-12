@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 SHEET_COLORS = {
     "street": "#9aa0a8",
     "open_space": "#79c079",
+    "courtyard": "#79c079",
     "building": "#8b5cf6",
     "boundary": "#151515",
 }
@@ -58,7 +59,7 @@ def _drawing_svg(
     ox, oy = minx - pad, maxy + pad  # origin: top-left, y flipped
 
     parts: list[str] = []
-    order = {"street": 0, "open_space": 1, "building": 2}
+    order = {"street": 0, "open_space": 1, "courtyard": 2, "building": 3}
     drawable = [z for z in plan_zones if z.get("role") in order]
     drawable.sort(key=lambda z: order[z["role"]])
     for zone in drawable:

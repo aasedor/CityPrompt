@@ -667,7 +667,7 @@ async def _load_plan_context(
         if props.get("_plan_scenario") != row.scenario_id:
             continue
         role = props.get("_plan_role")
-        if role not in ("street", "open_space", "building"):
+        if role not in ("street", "open_space", "courtyard", "building"):
             continue
         shape = to_shape(zone.geometry)
         plan_zones.append({

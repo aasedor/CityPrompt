@@ -23,15 +23,21 @@ from app.services.site_engine import (
     project_geometry,
 )
 
-# Flat Streetmix-style palette — one color per role, white ground.
+# Flat Streetmix-style palette — one color per role, white ground. Buildings
+# additionally get a thin white outline: abutting same-color bars of a
+# perimeter block otherwise merge into one unreadable mass. Courtyards draw
+# green like parks (their role is 'courtyard', not 'open_space'; without
+# them the block centre reads as unplanned white ground).
 DIAGRAM_COLORS = {
     "background": (255, 255, 255),
     "site": (243, 240, 235),        # faint site tint so the boundary reads
     "street": (128, 128, 128),
     "open_space": (124, 179, 66),
+    "courtyard": (124, 179, 66),
     "building": (176, 58, 46),
 }
-ROLE_DRAW_ORDER = ("street", "open_space", "building")
+ROLE_DRAW_ORDER = ("street", "open_space", "courtyard", "building")
+BUILDING_OUTLINE = {"outline": (255, 255, 255), "width": 3}
 
 
 def render_plan_diagram_png(
@@ -70,7 +76,12 @@ def render_plan_diagram_png(
             if len(coords) < 3:
                 continue
             ring = project_geometry(Polygon(coords), to_metric).exterior.coords
-            draw.polygon([to_px(x, y) for x, y in ring], fill=DIAGRAM_COLORS[role])
+            outline = BUILDING_OUTLINE if role == "building" else {}
+            draw.polygon(
+                [to_px(x, y) for x, y in ring],
+                fill=DIAGRAM_COLORS[role],
+                **outline,
+            )
 
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
