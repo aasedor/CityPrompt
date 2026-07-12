@@ -166,6 +166,116 @@ def build_texture_prompt(arch: dict, variant: dict | None) -> str:
     return ", ".join(parts)
 
 
+# --- two-stage chain (Image-to-Image multi-view -> multi-image-to-3d) --------
+# Reflective glass curtain-wall breaks Meshy's 3D reconstruction (deep reveals +
+# spandrel bands -> carved holes). For glass-dominant buildings we push both
+# chain stages toward a flat, flush, band-less facade so Meshy meshes a clean
+# solid volume while the texture still reads as glazing (validated 2026-07-12).
+_GLASS_TERMS = ("glass", "curtain wall", "curtain-wall", "curtainwall", "glazed curtain", "glazing")
+_MASONRY_TERMS = (
+    "brick", "stone", "limestone", "sandstone", "granite", "masonry",
+    "terracotta", "terra cotta", "terra-cotta", "concrete", "cement",
+    "render", "stucco", "timber", "wood", "steel panel", "metal panel",
+)
+_TOWER_TERMS = ("tower", "high-rise", "highrise", "high rise")
+
+_GLASS_MV_PROMPT = (
+    "Multiple consistent views of the exact same building as a single smooth "
+    "monolithic tower volume. The ENTIRE facade is ONE continuous flush glass skin "
+    "from base to top: uniform light-tinted glazing, thin flush mullions, NO "
+    "horizontal spandrel bands, no floor separation lines, no reveals, no ledges, "
+    "no setbacks, no recesses anywhere. Even matte non-reflective glass under flat "
+    "overcast light. Preserve the overall tower shape and proportions as one clean "
+    "smooth solid mass."
+)
+_GLASS_TEX_PROMPT = (
+    "Glass tower facade, one continuous flush curtain wall, uniform light-tinted "
+    "glazing in a fine even grid, thin flush mullions, minimal tonal variation "
+    "between floors, no dark spandrel bands, smooth flat non-reflective surface, "
+    "photorealistic architectural glass, crisp even grid, no text or signage artifacts"
+)
+
+
+_CURTAIN_TERMS = ("curtain wall", "curtain-wall", "curtainwall")
+
+
+def _classify_material(hay: str) -> str | None:
+    """'glass' | 'masonry' | None from a material/name haystack. Masonry is
+    checked BEFORE bare glass so a brick building described with 'stained glass'
+    windows (or a concrete/timber tower variant) is NOT read as glass-dominant."""
+    if any(t in hay for t in _CURTAIN_TERMS):
+        return "glass"
+    if any(t in hay for t in _MASONRY_TERMS):
+        return "masonry"
+    if any(t in hay for t in _GLASS_TERMS):
+        return "glass"
+    return None
+
+
+def is_glass_dominant(arch: dict, variant: dict | None, force_ids: set[str] | None = None) -> bool:
+    """True when a building needs the flush-glass prompt route (reflective
+    curtain-wall Meshy can't otherwise mesh). Precedence:
+      1. --glass-ids operator override
+      2. the VARIANT's own material/label/id — wins over archetype-level
+         signals so a concrete or mass-timber variant of a curtain-wall tower
+         is NOT flush-glass routed
+      3. archetype-level curtain-wall, then a thin-metadata tall-tower default
+    Validated cases: student_residence_tower default -> glass; its brutalist-
+    concrete / mass-timber variants -> not glass; art_deco_setback_tower
+    (limestone/granite/terracotta/cement variants) -> not glass; collegiate
+    gothic (limestone, 'stained glass' keyword) -> not glass; calgary_plus_15
+    (glass curtain wall) -> glass."""
+    if force_ids and arch.get("id") in force_ids:
+        return True
+    facade = (variant or {}).get("facadeDetail") or arch.get("facadeDetail") or {}
+    primary = str(facade.get("primaryMaterial", "")).lower()
+    material_hay = " ".join([
+        primary, str((variant or {}).get("label", "")), str((variant or {}).get("id", "")),
+    ]).lower()
+    verdict = _classify_material(material_hay)
+    if verdict == "glass":
+        return True
+    if verdict == "masonry":
+        return False
+    # The variant stated no material — fall back to archetype-level signals.
+    sp = arch.get("styleProfile") or {}
+    arch_hay = " ".join([
+        str(arch.get("aestheticCategory", "")), str(arch.get("title", "")), str(arch.get("id", "")),
+        " ".join(sp.get("materials", []) or []),
+    ]).lower()
+    if any(t in arch_hay for t in _CURTAIN_TERMS):
+        return True
+    is_tower = any(t in arch_hay for t in _TOWER_TERMS)
+    tall = (arch.get("maxFloors") or 0) >= 12
+    return is_tower and tall
+
+
+def chain_prompts(arch: dict, variant: dict | None, force_ids: set[str] | None = None) -> tuple[str, str, bool]:
+    """(multiview_prompt, texture_prompt, is_glass) for the two-stage chain."""
+    if is_glass_dominant(arch, variant, force_ids):
+        return _GLASS_MV_PROMPT, _GLASS_TEX_PROMPT, True
+    materials = build_texture_prompt(arch, variant)
+    mv = (
+        "Multiple consistent views of the exact same building, preserving its "
+        "architecture, facade materials, window layout, and proportions. " + materials
+    )
+    return mv, materials, False
+
+
+def street_card_data(arch: dict, variant: dict | None) -> tuple[str, Path] | None:
+    """The single street card as a data URI — the chain's seed. Resolves
+    variants[0].thumbnailUrl (not hero.png); aerials are NOT required."""
+    variants = arch.get("variants") or []
+    url = (variant or (variants[0] if variants else {})).get("thumbnailUrl") or arch.get("thumbnailUrl")
+    if not url:
+        return None
+    p = PUBLIC / url.lstrip("/")
+    if not p.exists():
+        return None
+    uri = f"data:{_MIME[p.suffix.lower()]};base64," + base64.b64encode(p.read_bytes()).decode()
+    return uri, p
+
+
 def collect_jobs(args) -> list[dict]:
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     archetypes = catalog["archetypes"]
@@ -179,6 +289,7 @@ def collect_jobs(args) -> list[dict]:
         archetypes = archetypes[: args.limit]
 
     mode = args.mode.replace("-", "_")  # CLI "multi-image" -> API "multi_image"
+    glass_ids = {i.strip() for i in (args.glass_ids or "").split(",") if i.strip()}
     jobs = []
     for arch in archetypes:
         targets: list[dict | None] = [None]  # "default" key = archetype-level prompt
@@ -195,7 +306,28 @@ def collect_jobs(args) -> list[dict]:
                 "engine": args.engine,
                 "mode": mode,
             }
-            if mode == "multi_image":
+            if mode == "multi_image" and args.chain:
+                # Two-stage chain: seed from the single street card; Meshy
+                # synthesizes consistent isolated views, then reconstructs.
+                card = street_card_data(arch, variant)
+                if card is None:
+                    print(f"  SKIP {job['archetype_id']}/{job['variant_id']}: no street card")
+                    continue
+                if str(card[1]) in seen_image_sets:
+                    print(f"  SKIP {job['archetype_id']}/{job['variant_id']}: same card as default target")
+                    continue
+                seen_image_sets.add(str(card[1]))
+                mv_prompt, tex_prompt, glass = chain_prompts(arch, variant, glass_ids)
+                job["prompt"] = tex_prompt
+                job["multiview_prompt"] = mv_prompt
+                job["image_base64s"] = [card[0]]
+                job["_image_paths"] = [str(card[1])]
+                job["_glass"] = glass
+                if args.target_polycount:
+                    job["target_polycount"] = args.target_polycount
+                if args.force:
+                    job["force"] = True
+            elif mode == "multi_image":
                 imgs = multi_image_data(arch, variant)
                 if imgs is None:
                     print(f"  SKIP {job['archetype_id']}/{job['variant_id']}: incomplete 3-angle ref set")
@@ -249,6 +381,12 @@ def main() -> None:
     parser.add_argument("--isolate", action="store_true", help="rembg-isolate the street card (multi-image)")
     parser.add_argument("--clean", choices=["entourage", "building_only"],
                         help="Gemini removal edit on refs before Meshy (people/vehicles -> mutant geometry)")
+    parser.add_argument("--chain", action="store_true",
+                        help="two-stage chain: Meshy Image-to-Image multi-view synth (auto-isolates + "
+                             "harmonizes views, glass-tower prompt routing) -> multi-image-to-3d. "
+                             "Seeds from the street card only; supersedes --clean/--isolate.")
+    parser.add_argument("--glass-ids", help="comma-separated archetype ids to FORCE onto the "
+                                            "flush-glass prompt route (overrides auto-detection)")
     parser.add_argument("--force", action="store_true", help="re-generate over completed cache rows")
     parser.add_argument("--variant-key", help="cache variant_id override, e.g. polytest for A/B runs")
     parser.add_argument("--download-artifacts", metavar="DIR", help="download GLB + thumbnails per completed entry")
@@ -256,15 +394,23 @@ def main() -> None:
 
     if not args.ids and not args.all:
         raise SystemExit("Pick --ids a,b,c (pilot) or --all [--limit N]")
+    if args.chain and args.mode != "multi-image":
+        raise SystemExit("--chain requires --mode multi-image")
 
     jobs = collect_jobs(args)
-    print(f"{len(jobs)} job(s) planned ({args.mode} mode, engine={args.engine}):")
+    mode_label = f"{args.mode}+chain" if args.chain else args.mode
+    glass_n = sum(1 for j in jobs if j.get("_glass"))
+    print(f"{len(jobs)} job(s) planned ({mode_label} mode, engine={args.engine}"
+          + (f", {glass_n} glass-routed" if args.chain else "") + "):")
     for j in jobs:
         extra = f"  [{j.get('_image_path', '')}]" if args.mode == "image" else ""
-        print(f"  {j['archetype_id']:45s} {j['variant_id']:30s}{extra}")
+        tag = "  [GLASS]" if j.get("_glass") else ""
+        print(f"  {j['archetype_id']:45s} {j['variant_id']:30s}{extra}{tag}")
         for p in j.get("_image_paths", []):
-            print(f"    ref: {p}")
-        print(f"    prompt ({len(j['prompt'])} chars): {j['prompt'][:110]}")
+            print(f"    seed: {p}")
+        if j.get("multiview_prompt"):
+            print(f"    multiview ({len(j['multiview_prompt'])} chars): {j['multiview_prompt'][:90]}")
+        print(f"    texture ({len(j['prompt'])} chars): {j['prompt'][:90]}")
     if args.dry_run:
         print("\nDry run — nothing submitted.")
         return
@@ -297,7 +443,13 @@ def main() -> None:
     deadline = time.time() + poll_minutes * 60
     while pending and time.time() < deadline:
         time.sleep(20)
-        entries = api(args.api_url, "GET", "/api/v1/model-cache/entries", token=token)["entries"]
+        try:
+            entries = api(args.api_url, "GET", "/api/v1/model-cache/entries", token=token)["entries"]
+        except SystemExit as exc:
+            # A transient /entries error must NOT kill a long batch poll — the
+            # Celery tasks keep running regardless. Log and retry next tick.
+            print(f"  (transient poll error, retrying: {str(exc)[:90]})")
+            continue
         by_key = {(e["archetype_id"], e["variant_id"]): e for e in entries if e["engine"] == args.engine}
         for key in sorted(pending):
             e = by_key.get(key)
@@ -315,7 +467,11 @@ def main() -> None:
 
     print("\n=== SUMMARY ===")
     watched = set(submitted) | set(already_completed)
-    entries = api(args.api_url, "GET", "/api/v1/model-cache/entries", token=token)["entries"]
+    try:
+        entries = api(args.api_url, "GET", "/api/v1/model-cache/entries", token=token)["entries"]
+    except SystemExit as exc:
+        print(f"  (could not fetch summary: {str(exc)[:90]})")
+        entries = []
     completed_entries = []
     for e in entries:
         if (e["archetype_id"], e["variant_id"]) in watched:

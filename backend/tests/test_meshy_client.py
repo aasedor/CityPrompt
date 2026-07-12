@@ -236,3 +236,73 @@ async def test_poll_until_done_rejects_unknown_task_type():
     client = MeshyClient(api_key="test-key")
     with pytest.raises(ValueError):
         await client.poll_until_done("task-x", timeout=5, task_type="video")
+
+
+# --- two-stage chain: Image-to-Image multi-view -> multi-image-to-3d ---------
+# Stage 1 synthesizes mutually-consistent, auto-isolated views; stage 2 feeds
+# them in via input_task_id. Root-cause fix for warped windows (2026-07-12).
+
+
+async def test_image_to_image_multiview_posts_v1_with_multi_view_flag(monkeypatch):
+    recorded: list[httpx.Request] = []
+    client = MeshyClient(api_key="test-key")
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"result": "i2i-1"}))
+
+    task_id = await client.image_to_image_multiview(
+        ["data:image/png;base64,card"], "flush facade tower"
+    )
+
+    assert task_id == "i2i-1"
+    assert recorded[0].url.path == "/openapi/v1/image-to-image"
+    import json
+
+    payload = json.loads(recorded[0].content)
+    assert payload["generate_multi_view"] is True
+    assert payload["reference_image_urls"] == ["data:image/png;base64,card"]
+    assert payload["ai_model"] == "nano-banana-pro"
+    assert payload["prompt"] == "flush facade tower"
+
+
+async def test_image_to_image_multiview_rejects_bad_ref_count(monkeypatch):
+    recorded: list[httpx.Request] = []
+    client = MeshyClient(api_key="test-key")
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"result": "x"}))
+
+    with pytest.raises(MeshyClientError):
+        await client.image_to_image_multiview([], "p")
+    with pytest.raises(MeshyClientError):
+        await client.image_to_image_multiview(["a", "b", "c", "d", "e", "f"], "p")
+    assert recorded == []
+
+
+async def test_multi_image_to_3d_chains_input_task_id(monkeypatch):
+    recorded: list[httpx.Request] = []
+    client = MeshyClient(api_key="test-key")
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"result": "mi3d-1"}))
+
+    task_id = await client.multi_image_to_3d(
+        input_task_id="i2i-1", texture_prompt="brick", target_polycount=30000
+    )
+
+    assert task_id == "mi3d-1"
+    import json
+
+    payload = json.loads(recorded[0].content)
+    # input_task_id chains the synthesized views; image_urls must be absent.
+    assert payload["input_task_id"] == "i2i-1"
+    assert "image_urls" not in payload
+    assert payload["should_remesh"] is True
+    assert payload["target_polycount"] == 30000
+
+
+async def test_get_image_to_image_task_and_poll_dispatch(monkeypatch):
+    recorded: list[httpx.Request] = []
+    client = MeshyClient(api_key="test-key")
+    monkeypatch.setattr(client, "_client", lambda: _mock_client(recorded, {"status": "SUCCEEDED"}))
+
+    result = await client.get_image_to_image_task("i2i-9")
+    assert result["status"] == "SUCCEEDED"
+    assert recorded[0].url.path == "/openapi/v1/image-to-image/i2i-9"
+
+    await client.poll_until_done("i2i-9", timeout=5, task_type="image_to_image")
+    assert recorded[1].url.path == "/openapi/v1/image-to-image/i2i-9"

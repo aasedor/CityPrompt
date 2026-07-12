@@ -40,6 +40,10 @@ class PrewarmRequest(BaseModel):
     # Gemini removal edit on inputs before submission (people/vehicles fuse
     # into mutant mesh geometry otherwise).
     clean_images: str | None = Field(default=None, pattern="^(entourage|building_only)$")
+    # multi_image only: when set, run the two-stage CHAIN — Meshy Image-to-Image
+    # multi-view synth (this prompt) -> multi_image_to_3d. Auto-isolates and
+    # harmonizes views; image_base64s is the seed (usually just the street card).
+    multiview_prompt: str | None = Field(default=None, max_length=1000)
     target_polycount: int | None = Field(default=None, ge=100, le=300_000)
     # Re-generate over a COMPLETED cache row (flips it to failed so the
     # worker's claim takeover wins; the storage key is overwritten in place).
@@ -119,6 +123,7 @@ async def prewarm(
             "isolate_images": req.isolate_images,
             "clean_images": req.clean_images,
             "target_polycount": req.target_polycount,
+            "multiview_prompt": req.multiview_prompt,
         },
     )
     return {

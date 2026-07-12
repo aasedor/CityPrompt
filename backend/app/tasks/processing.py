@@ -1137,6 +1137,7 @@ def prewarm_archetype_model(
     isolate_images: bool | None = None,
     target_polycount: int | None = None,
     clean_images: str | None = None,
+    multiview_prompt: str | None = None,
 ):
     """Warm the archetype model cache without a Building — claim the key,
     generate, optimize, upload to archetype-cache/, complete the row.
@@ -1145,6 +1146,9 @@ def prewarm_archetype_model(
     45°/90° aerials) to Meshy multi-image-to-3D; prompt becomes the Meshy
     texture_prompt. isolate_images: None = per-mode default (image -> True,
     multi_image -> False — rembg mangles context-rich aerials).
+    multiview_prompt (multi_image only) switches to the two-stage CHAIN:
+    Meshy Image-to-Image multi-view synth (this prompt) -> multi_image_to_3d.
+    It auto-isolates + harmonizes views, so clean_images/isolate are redundant.
     clean_images: "entourage" or "building_only" runs a Gemini removal edit
     on every input first (people/vehicles fuse into mutant geometry)."""
     logger.info(
@@ -1234,6 +1238,7 @@ def prewarm_archetype_model(
             image_url=image_data_uri,
             image_urls=image_data_uris,
             target_polycount=target_polycount,
+            multiview_prompt=multiview_prompt,
             refine=True,
             negative_prompt=(
                 "blurry, low quality, deformed, floating objects, ground plane, "
