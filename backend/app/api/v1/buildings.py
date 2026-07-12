@@ -334,11 +334,17 @@ async def get_building_model_file(
         config=Config(signature_version="s3v4"),
     )
 
-    # Extract the key from the model URL
-    url_parts = model_url.split(f"/{settings.s3_bucket_name}/", 1)
-    if len(url_parts) != 2:
-        raise HTTPException(status_code=500, detail="Invalid model URL")
-    file_key = url_parts[1]
+    # Extract the S3 key from the model URL. Modern URLs are API paths
+    # (/api/v1/files/<key>, same key convention as files.get_file); legacy
+    # URLs embed the bucket directly (http://minio:9000/<bucket>/<key>).
+    files_prefix = "/api/v1/files/"
+    if files_prefix in model_url:
+        file_key = model_url.split(files_prefix, 1)[1]
+    else:
+        url_parts = model_url.split(f"/{settings.s3_bucket_name}/", 1)
+        if len(url_parts) != 2:
+            raise HTTPException(status_code=500, detail="Invalid model URL")
+        file_key = url_parts[1]
 
     try:
         obj = s3_client.get_object(Bucket=settings.s3_bucket_name, Key=file_key)

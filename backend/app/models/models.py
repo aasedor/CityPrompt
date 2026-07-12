@@ -16,6 +16,7 @@ from sqlalchemy import (
     Numeric,
     String,
     Text,
+    UniqueConstraint,
     func,
 )
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -358,6 +359,39 @@ class ApiUsageLog(Base):
     status: Mapped[str] = mapped_column(String(20), default="success")
     metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class ArchetypeModelCache(Base):
+    """Generate-once GLB cache: one row per (archetype, variant, engine).
+
+    The unique constraint is also the claim mechanism — workers INSERT ...
+    ON CONFLICT DO NOTHING a status='generating' row before paying for a
+    Meshy/Tripo generation; losers wait on the row instead of double-spending.
+    Completed rows point at an immutable MinIO key under archetype-cache/.
+    """
+
+    __tablename__ = "archetype_model_cache"
+    __table_args__ = (UniqueConstraint("archetype_id", "variant_id", "engine"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    archetype_id: Mapped[str] = mapped_column(String(120), nullable=False)
+    variant_id: Mapped[str] = mapped_column(String(120), nullable=False, default="default")
+    engine: Mapped[str] = mapped_column(String(20), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="generating")  # generating, completed, failed
+    model_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    lod_keys: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    thumbnail_key: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    source_building_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("buildings.id", ondelete="SET NULL"), nullable=True)
+    generation_mode: Mapped[str | None] = mapped_column(String(10), nullable=True, default="text")
+    generation_prompt: Mapped[str | None] = mapped_column(Text, nullable=True)
+    size_bytes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    use_count: Mapped[int] = mapped_column(Integer, default=0)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    metadata_: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True)
+    claimed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class DatasetCache(Base):

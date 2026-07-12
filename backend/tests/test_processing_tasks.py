@@ -134,6 +134,9 @@ def test_generate_3d_model_ai_uses_provider_adapter(monkeypatch):
         lod_urls=None,
         preview_url=None,
         preview_status='idle',
+        # No archetype identity -> the archetype cache is bypassed and this
+        # test keeps exercising the plain provider path.
+        specifications=None,
     )
     session = _DummyAISession(building)
     storage_writes = []
@@ -227,10 +230,16 @@ def test_soft_time_limit_exceeds_the_sum_of_meshy_poll_timeouts():
         MESHY_REFINE_TIMEOUT_S,
     )
 
+    from app.core.config import get_settings
+
     poll_sum = MESHY_PREVIEW_TIMEOUT_S + MESHY_REFINE_TIMEOUT_S
     task = processing.generate_3d_model_ai
-    assert task.soft_time_limit == MESHY_MAX_RUNTIME_S
-    assert task.soft_time_limit > poll_sum, "soft limit must exceed preview+refine"
+    # Budget covers a full cache wait (claim-losing waiter) PLUS a complete
+    # fallback generation — the wait alone must never eat the paid run's time.
+    assert task.soft_time_limit == MESHY_MAX_RUNTIME_S + get_settings().archetype_cache_wait_s
+    assert task.soft_time_limit - get_settings().archetype_cache_wait_s > poll_sum, (
+        "generation budget (after a worst-case cache wait) must exceed preview+refine"
+    )
     assert task.time_limit > task.soft_time_limit
 
 

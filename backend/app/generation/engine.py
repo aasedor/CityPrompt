@@ -30,14 +30,17 @@ PreviewCallback = Callable[[bytes], None]
 # re-ran the whole generation from scratch.
 #
 # INVARIANT: MESHY_MAX_RUNTIME_S must stay strictly greater than
-# PREVIEW + REFINE, leaving headroom to download/upload a ~30 MB GLB. The
-# Celery soft_time_limit is derived from it (see tasks/processing.py) so the
-# two can never drift back out of sync.
+# PREVIEW + (attempts × REFINE), leaving headroom to download/upload a ~30 MB
+# GLB. The Celery soft_time_limit is derived from it (see tasks/processing.py)
+# so the two can never drift back out of sync.
 MESHY_PREVIEW_TIMEOUT_S = 600   # 10 min
 MESHY_REFINE_TIMEOUT_S = 900    # 15 min; on timeout we keep the preview mesh
+MESHY_REFINE_ATTEMPTS = 2       # refine failures are intermittent — retry once
 MESHY_IO_HEADROOM_S = 300       # GLB download + S3 upload + thumbnail
 MESHY_MAX_RUNTIME_S = (
-    MESHY_PREVIEW_TIMEOUT_S + MESHY_REFINE_TIMEOUT_S + MESHY_IO_HEADROOM_S
+    MESHY_PREVIEW_TIMEOUT_S
+    + MESHY_REFINE_ATTEMPTS * MESHY_REFINE_TIMEOUT_S
+    + MESHY_IO_HEADROOM_S
 )
 
 
@@ -170,30 +173,42 @@ class MeshyEngine(BaseGenerationEngine):
         final_task_id = task_id
         if mode == "text" and refine:
             self._emit_progress(progress_callback, 0.55, "refining")
-            try:
-                refine_task_id = await client.text_to_3d_refine(
-                    task_id,
-                    texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}",
-                )
-                logger.info("Refine task started: %s (from preview %s)", refine_task_id, task_id)
-                self._emit_task_id(task_callback, refine_task_id)
-                final_task_id = refine_task_id
-                result = await client.poll_until_done(refine_task_id, timeout=MESHY_REFINE_TIMEOUT_S, task_type="text")
-                logger.info(
-                    "Meshy refine result keys: %s, model_urls: %s",
-                    list(result.keys()),
-                    (result.get("model_urls") or {}).keys() if result.get("model_urls") else "NONE",
-                )
-                log_api_usage_sync(
-                    provider=self.engine_id,
-                    operation="text_to_3d_refine",
-                    credits_used=10,
-                    task_id=refine_task_id,
-                    building_id=building_id,
-                )
-            except Exception as exc:
-                logger.error("Refine step FAILED for building %s: %s", building_id, exc, exc_info=True)
-                logger.warning("Falling back to preview model (will lack textures)")
+            # Refine failures are intermittent on Meshy's side (observed live:
+            # 2 of 4 failed, immediate siblings succeeded) — one retry converts
+            # most would-be clay fallbacks into textured models.
+            for attempt in range(1, MESHY_REFINE_ATTEMPTS + 1):
+                try:
+                    refine_task_id = await client.text_to_3d_refine(
+                        task_id,
+                        texture_prompt=f"realistic architectural materials and textures for: {prompt[:200]}",
+                    )
+                    logger.info(
+                        "Refine task started: %s (from preview %s, attempt %d)",
+                        refine_task_id, task_id, attempt,
+                    )
+                    self._emit_task_id(task_callback, refine_task_id)
+                    result = await client.poll_until_done(refine_task_id, timeout=MESHY_REFINE_TIMEOUT_S, task_type="text")
+                    final_task_id = refine_task_id
+                    logger.info(
+                        "Meshy refine result keys: %s, model_urls: %s",
+                        list(result.keys()),
+                        (result.get("model_urls") or {}).keys() if result.get("model_urls") else "NONE",
+                    )
+                    log_api_usage_sync(
+                        provider=self.engine_id,
+                        operation="text_to_3d_refine",
+                        credits_used=10,
+                        task_id=refine_task_id,
+                        building_id=building_id,
+                    )
+                    break
+                except Exception as exc:
+                    logger.error(
+                        "Refine attempt %d FAILED for building %s: %s",
+                        attempt, building_id, exc, exc_info=True,
+                    )
+                    if attempt == MESHY_REFINE_ATTEMPTS:
+                        logger.warning("Falling back to preview model (will lack textures)")
         elif mode == "text":
             logger.info("Refine disabled for building %s - using preview model", building_id)
 

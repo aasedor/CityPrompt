@@ -1,5 +1,8 @@
 """
-Async client for Meshy.ai v2 API — text-to-3D and image-to-3D generation.
+Async client for Meshy.ai API — text-to-3D (v2) and image-to-3D (v1) generation.
+
+Meshy's image-to-3D endpoint exists only under /openapi/v1/ — posting to
+/openapi/v2/image-to-3d returns 404 (verified live 2026-07-10).
 """
 
 import asyncio
@@ -72,14 +75,23 @@ class MeshyClient:
         prompt: str,
         art_style: str = "realistic",
         negative_prompt: str = "",
+        target_polycount: int | None = 30000,
     ) -> str:
-        """Start a text-to-3D preview task. Returns task_id."""
+        """Start a text-to-3D preview task. Returns task_id.
+
+        Without an explicit target_polycount the raw mesh arrives at 1M+
+        triangles (a salvaged refine came back 41MB, ~90% geometry,
+        2026-07-11) — same trap as image-to-3D's should_remesh default.
+        """
         async with self._client() as client:
             payload = {
                 "mode": "preview",
                 "prompt": _cap_prompt(prompt),
                 "art_style": art_style,
+                "topology": "triangle",
             }
+            if target_polycount is not None:
+                payload["target_polycount"] = target_polycount
             if negative_prompt:
                 payload["negative_prompt"] = _cap_prompt(negative_prompt)
 
@@ -108,11 +120,31 @@ class MeshyClient:
             logger.info(f"Meshy text-to-3D refine started: {task_id} (pbr=True)")
             return task_id
 
-    async def image_to_3d(self, image_url: str) -> str:
-        """Start an image-to-3D task. Returns task_id."""
+    async def image_to_3d(
+        self,
+        image_url: str,
+        *,
+        enable_pbr: bool = True,
+        target_polycount: int | None = 30000,
+        should_remesh: bool = True,
+    ) -> str:
+        """Start an image-to-3D task. Returns task_id.
+
+        image_url may be a public http(s) URL or a base64 data URI.
+
+        should_remesh defaults to False on meshy-6 and target_polycount is
+        ignored without it — the raw mesh comes back at ~1.6M triangles
+        (70MB+ GLB, verified 2026-07-10), so remesh stays on here.
+        """
         async with self._client() as client:
-            payload = {"image_url": image_url}
-            resp = await client.post("/openapi/v2/image-to-3d", json=payload)
+            payload: dict = {
+                "image_url": image_url,
+                "enable_pbr": enable_pbr,
+                "should_remesh": should_remesh,
+            }
+            if target_polycount is not None and should_remesh:
+                payload["target_polycount"] = target_polycount
+            resp = await client.post("/openapi/v1/image-to-3d", json=payload)
             self._check(resp, "image_to_3d")
             data = resp.json()
             task_id = data.get("result") or data.get("task_id") or data.get("id")
@@ -129,7 +161,7 @@ class MeshyClient:
     async def get_image_task(self, task_id: str) -> dict:
         """Get the status and result of an image-to-3D task."""
         async with self._client() as client:
-            resp = await client.get(f"/openapi/v2/image-to-3d/{task_id}")
+            resp = await client.get(f"/openapi/v1/image-to-3d/{task_id}")
             resp.raise_for_status()
             return resp.json()
 
@@ -156,9 +188,13 @@ class MeshyClient:
             RuntimeError: If the task fails.
         """
         get_fn = self.get_task if task_type == "text" else self.get_image_task
-        elapsed = 0
+        # Wall-clock deadline, not sleep-accounting: slow status GETs (each up
+        # to 60s under a degraded API) would otherwise stretch a "600s" poll
+        # to multiples of that and blow the MESHY_MAX_RUNTIME_S invariant the
+        # Celery limits are derived from.
+        deadline = asyncio.get_event_loop().time() + timeout
 
-        while elapsed < timeout:
+        while asyncio.get_event_loop().time() < deadline:
             result = await get_fn(task_id)
             status = result.get("status", "").upper()
 
@@ -166,12 +202,19 @@ class MeshyClient:
                 logger.info(f"Meshy task {task_id} succeeded")
                 return result
             elif status in ("FAILED", "EXPIRED"):
-                error_msg = result.get("message") or result.get("error") or "Unknown error"
+                # Meshy v2 reports failure detail in task_error.message; the
+                # top-level message/error keys are usually absent (which is why
+                # failures used to surface as "Unknown error").
+                task_error = result.get("task_error") or {}
+                error_msg = (
+                    (task_error.get("message") if isinstance(task_error, dict) else str(task_error))
+                    or result.get("message") or result.get("error") or "Unknown error"
+                )
+                logger.error("Meshy task %s %s — full payload: %s", task_id, status, result)
                 raise RuntimeError(f"Meshy task {task_id} failed: {error_msg}")
 
             logger.debug(f"Meshy task {task_id} status: {status} (progress: {result.get('progress', 0)}%)")
             await asyncio.sleep(poll_interval)
-            elapsed += poll_interval
 
         raise TimeoutError(f"Meshy task {task_id} timed out after {timeout}s")
 

@@ -128,6 +128,7 @@ STYLE_METADATA_KEYS = (
     "development_aesthetic_category",
     "development_selected_reference",
     "development_archetype_id",
+    "development_selected_variant_id",
     "development_archetype_label",
     "development_archetype_image",
     "development_archetype_images",
@@ -2061,6 +2062,30 @@ async def generate_all(
     total_zones = len(all_zones)
     failed_zones = []
 
+    # The 45s stagger exists to dodge Meshy's concurrent-task 400s — but a
+    # probable cache hit makes no Meshy call, so it neither waits nor
+    # advances the stagger. Advisory only; the worker re-checks the cache
+    # authoritatively.
+    stagger_index = 0
+
+    async def _generation_countdown(bld, cacheable: bool) -> int:
+        nonlocal stagger_index
+        if cacheable:
+            from app.core.config import get_settings as _get_settings
+            from app.services.archetype_model_cache import (
+                has_completed_entry,
+                normalize_cache_key,
+            )
+
+            if _get_settings().archetype_cache_enabled:
+                key = normalize_cache_key(bld.specifications)
+                # generate-all enqueues with the queue helper's default engine.
+                if key is not None and await has_completed_entry(db, key[0], key[1], "meshy"):
+                    return 0
+        delay = stagger_index * 45
+        stagger_index += 1
+        return delay
+
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
             continue
@@ -2099,6 +2124,7 @@ async def generate_all(
                     await db.flush()
 
                     try:
+                        countdown = await _generation_countdown(building, cacheable=not ref_images)
                         if ref_images:
                             await queue_ai_generation_task(
                                 db,
@@ -2106,10 +2132,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
-                                countdown=generations_queued * 45,
+                                countdown=countdown,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
+                            await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2186,6 +2212,7 @@ async def generate_all(
                     await db.flush()
 
                     try:
+                        countdown = await _generation_countdown(building, cacheable=not ref_images)
                         if ref_images:
                             await queue_ai_generation_task(
                                 db,
@@ -2193,10 +2220,10 @@ async def generate_all(
                                 prompt,
                                 mode="image",
                                 image_url=ref_images[0],
-                                countdown=generations_queued * 45,
+                                countdown=countdown,
                             )
                         else:
-                            await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
+                            await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                         generations_queued += 1
                         queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
                     except Exception as e:
@@ -2261,6 +2288,7 @@ async def generate_all(
             building.generation_prompt = prompt
             await db.flush()
             try:
+                countdown = await _generation_countdown(building, cacheable=not ref_images)
                 if ref_images:
                     await queue_ai_generation_task(
                         db,
@@ -2268,10 +2296,10 @@ async def generate_all(
                         prompt,
                         mode="image",
                         image_url=ref_images[0],
-                        countdown=generations_queued * 45,
+                        countdown=countdown,
                     )
                 else:
-                    await queue_ai_generation_task(db, building, prompt, countdown=generations_queued * 45)
+                    await queue_ai_generation_task(db, building, prompt, countdown=countdown)
                 generations_queued += 1
                 queued_buildings.append({"id": str(building.id), "name": building.name or "Building"})
             except Exception as e:

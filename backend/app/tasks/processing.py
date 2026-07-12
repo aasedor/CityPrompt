@@ -5,6 +5,7 @@ Async tasks for document processing pipeline.
 import asyncio
 import logging
 import tempfile
+import time
 import uuid
 from datetime import datetime, timezone
 
@@ -532,12 +533,87 @@ def _propagate_model_to_siblings(session: Session, building_id: str, model_url: 
 
 # soft/hard limits are DERIVED from the engine's poll ceilings so they can't
 # drift back under them (which silently soft-killed paid generations).
+def _wait_for_cache_entry(session: Session, entry_id, progress_callback=None):
+    """Poll another worker's in-flight cache claim until it resolves.
+
+    Returns the entry (completed or failed) or None on timeout. The caller
+    falls back to an uncached generation on failure/timeout — waiting must
+    never be the reason a building has no model.
+    """
+    from app.models.models import ArchetypeModelCache
+
+    deadline = time.monotonic() + settings.archetype_cache_wait_s
+    while time.monotonic() < deadline:
+        entry = session.get(ArchetypeModelCache, entry_id)
+        if entry is None or entry.status in ("completed", "failed"):
+            return entry
+        session.expire(entry)
+        # Close the read transaction between polls — sleeping 15s inside an
+        # open transaction pins the connection "idle in transaction".
+        session.rollback()
+        if progress_callback:
+            progress_callback(0.3, "waiting_for_cache")
+        time.sleep(15)
+    logger.warning("Timed out waiting for cache entry %s; generating uncached", entry_id)
+    return None
+
+
+def _apply_cached_model(session: Session, building_id: str, building, entry, engine_id: str) -> dict:
+    """Point a building at an already-generated cache entry (zero credits)."""
+    from app.services.archetype_model_cache import bump_use_count
+
+    model_url = _file_proxy_url(entry.model_key)
+    lod_urls = {str(k): _file_proxy_url(v) for k, v in (entry.lod_keys or {}).items()}
+    lod_urls.setdefault("0", model_url)
+
+    building.model_url = model_url
+    building.lod_urls = lod_urls
+    building.generation_status = "completed"
+    building.meshy_task_id = entry.source_task_id
+    if entry.thumbnail_key:
+        building.preview_url = _file_proxy_url(entry.thumbnail_key)
+        building.preview_status = "completed"
+    session.commit()
+
+    bump_use_count(session, entry.id)
+    log_api_usage_sync(
+        provider=engine_id,
+        operation="cache_hit",
+        credits_used=0,
+        task_id=entry.source_task_id,
+        building_id=building_id,
+        metadata={
+            "archetype_id": entry.archetype_id,
+            "variant_id": entry.variant_id,
+            "cache_id": str(entry.id),
+        },
+    )
+    try:
+        _propagate_model_to_siblings(session, building_id, model_url, lod_urls, building.preview_url)
+    except Exception as prop_err:
+        logger.warning(f"Model propagation to siblings failed (non-fatal): {prop_err}")
+
+    logger.info(
+        "Cache hit for building %s: %s/%s -> %s",
+        building_id, entry.archetype_id, entry.variant_id, model_url,
+    )
+    return {
+        "status": "completed",
+        "building_id": building_id,
+        "model_url": model_url,
+        "cache_hit": True,
+    }
+
+
 @celery_app.task(
     bind=True,
     name="generate_3d_model_ai",
     max_retries=3,
-    soft_time_limit=MESHY_MAX_RUNTIME_S,
-    time_limit=MESHY_MAX_RUNTIME_S + 120,
+    # Budget = full generation ceiling PLUS the cache wait: a claim-losing
+    # waiter may block archetype_cache_wait_s before falling back to its own
+    # full paid generation — the old limit soft-killed exactly those paid runs.
+    soft_time_limit=MESHY_MAX_RUNTIME_S + settings.archetype_cache_wait_s,
+    time_limit=MESHY_MAX_RUNTIME_S + settings.archetype_cache_wait_s + 120,
 )
 def generate_3d_model_ai(
     self, building_id: str, prompt: str, mode: str = "text",
@@ -558,6 +634,9 @@ def generate_3d_model_ai(
     # Set only once the completed model is durably committed. Read in the error
     # handler WITHOUT touching the DB (the session may be broken there).
     completed_model_url: str | None = None
+    # Archetype cache row THIS task claimed and must complete/fail. Read in
+    # the error handler to release the claim.
+    cache_claim = None
 
     try:
         from app.models.models import Building
@@ -599,6 +678,38 @@ def generate_3d_model_ai(
             logger.info(f"Preview model saved for building {building_id}: {preview_url}")
             _progress_callback(0.5, "preview_ready")
 
+        # --- Archetype model cache: never pay twice for the same key ------
+        # Hit → apply instantly (0 credits). Miss → claim the key and
+        # generate. Claim lost → wait for the claimant, then hit-apply or
+        # fall back to an uncached generation.
+        if settings.archetype_cache_enabled and mode == "text":
+            from app.services.archetype_model_cache import claim_entry, normalize_cache_key
+
+            cache_key = normalize_cache_key(building.specifications)
+            if cache_key is not None:
+                archetype_id, variant_id = cache_key
+                entry, claimed = claim_entry(
+                    session,
+                    archetype_id,
+                    variant_id,
+                    provider.engine_id,
+                    generation_mode=mode,
+                    generation_prompt=prompt,
+                )
+                if claimed:
+                    cache_claim = entry
+                elif entry is not None:
+                    if entry.status != "completed":
+                        entry = _wait_for_cache_entry(session, entry.id, _progress_callback)
+                    if entry is not None and entry.status == "completed":
+                        return _apply_cached_model(
+                            session, building_id, building, entry, provider.engine_id
+                        )
+                    logger.info(
+                        "Cache unusable for building %s (%s/%s); generating uncached",
+                        building_id, archetype_id, variant_id,
+                    )
+
         result = asyncio.run(provider.run_generation(
             prompt=prompt,
             mode=mode,
@@ -613,17 +724,42 @@ def generate_3d_model_ai(
 
         _progress_callback(0.85, "uploading")
 
+        # Shrink before storage: raw Meshy GLBs ship 4K PBR textures and the
+        # globe loads up to 20 models at once. Fail-open — optimize_glb
+        # returns the original bytes on any error.
+        if settings.glb_optimization_enabled:
+            from app.processing.glb_optimizer import optimize_glb
+
+            result.glb_data = optimize_glb(
+                result.glb_data, max_texture_dim=settings.glb_max_texture_dim
+            )
+
         project_id = building.project_id
-        model_suffix = "tripo" if provider.engine_id == "tripo" else "ai"
-        model_key = f"projects/{project_id}/models/{building_id}_{model_suffix}.glb"
+        if cache_claim is not None:
+            # Shared, immutable, project-independent — every future placement
+            # of this archetype+variant points here.
+            from app.services.archetype_model_cache import cache_storage_key
+
+            model_key = cache_storage_key(cache_claim)
+        else:
+            model_suffix = "tripo" if provider.engine_id == "tripo" else "ai"
+            model_key = f"projects/{project_id}/models/{building_id}_{model_suffix}.glb"
         _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
         model_url = _file_proxy_url(model_key)
 
         lod_urls = {"0": model_url}
+        lod_keys_for_cache: dict[str, str] = {}
         for level, lod_glb_data in (result.lod_glb_data or {}).items():
-            lod_key = f"projects/{project_id}/models/{building_id}_{provider.engine_id}_lod{level}.glb"
+            if cache_claim is not None:
+                lod_key = (
+                    f"archetype-cache/{cache_claim.archetype_id}/{cache_claim.variant_id}/"
+                    f"{provider.engine_id}/{cache_claim.id}_lod{level}.glb"
+                )
+            else:
+                lod_key = f"projects/{project_id}/models/{building_id}_{provider.engine_id}_lod{level}.glb"
             _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
             lod_urls[str(level)] = _file_proxy_url(lod_key)
+            lod_keys_for_cache[str(level)] = lod_key
 
         _progress_callback(0.95, "updating")
 
@@ -637,16 +773,67 @@ def generate_3d_model_ai(
         session.commit()
         completed_model_url = model_url
 
+        if cache_claim is not None:
+            # Publish to the cache right after the paid commit — waiters are
+            # polling this row. Thumbnail attaches later (non-blocking).
+            try:
+                from app.services.archetype_model_cache import complete_entry
+
+                complete_entry(
+                    session,
+                    cache_claim.id,
+                    model_key=model_key,
+                    size_bytes=len(result.glb_data),
+                    source_task_id=result.task_id,
+                    source_building_id=building.id,
+                    lod_keys=lod_keys_for_cache or None,
+                )
+                completed_cache = cache_claim
+                cache_claim = None  # completed — error handler must not fail it
+            except Exception as cache_err:
+                completed_cache = None
+                logger.warning("Failed to complete cache entry (non-fatal): %s", cache_err)
+                # Release the claim NOW — the task returns success from here,
+                # so the error handler will never run and waiters would
+                # otherwise block until stale takeover (~47 min).
+                try:
+                    session.rollback()
+                    from app.services.archetype_model_cache import fail_entry
+
+                    fail_entry(session, cache_claim.id, f"complete_entry failed: {cache_err}")
+                except Exception:
+                    logger.warning("Could not release cache claim after complete failure", exc_info=True)
+                finally:
+                    cache_claim = None
+        else:
+            completed_cache = None
+
         if result.thumbnail_url:
             try:
                 import httpx as httpx_thumb
-                thumb_data = httpx_thumb.get(result.thumbnail_url, timeout=30.0).content
+                thumb_resp = httpx_thumb.get(result.thumbnail_url, timeout=30.0, follow_redirects=True)
+                # A 403 from an expired signed URL must not be stored as a
+                # "PNG" — the cache copy would hand the garbage to every hit.
+                thumb_resp.raise_for_status()
+                thumb_data = thumb_resp.content
                 thumb_key = f"projects/{building.project_id}/thumbnails/{building_id}.png"
                 _upload_to_storage(thumb_key, thumb_data, "image/png")
                 building.preview_url = f"/api/v1/files/{thumb_key}"
                 building.preview_status = "completed"
                 session.commit()
                 logger.info(f"Thumbnail saved for building {building_id}")
+                if completed_cache is not None:
+                    # Own copy under archetype-cache/ so the cache never
+                    # dangles on a project-scoped object.
+                    from app.services.archetype_model_cache import set_entry_thumbnail
+
+                    cache_thumb_key = (
+                        f"archetype-cache/{completed_cache.archetype_id}/"
+                        f"{completed_cache.variant_id}/{completed_cache.engine}/"
+                        f"{completed_cache.id}_thumb.png"
+                    )
+                    _upload_to_storage(cache_thumb_key, thumb_data, "image/png")
+                    set_entry_thumbnail(session, completed_cache.id, cache_thumb_key)
             except Exception as thumb_err:
                 session.rollback()
                 logger.warning(f"Failed to save thumbnail (non-fatal): {thumb_err}")
@@ -665,6 +852,22 @@ def generate_3d_model_ai(
 
     except Exception as exc:
         logger.error(f"AI 3D generation failed for building {building_id}: {exc}")
+        # Release an unfinished cache claim FIRST — other workers are waiting
+        # on this row and must be able to take over the key.
+        if cache_claim is not None:
+            try:
+                session.rollback()  # clear any broken transaction state
+                from app.services.archetype_model_cache import fail_entry
+
+                fail_entry(session, cache_claim.id, str(exc))
+            except Exception as cache_err:
+                logger.warning("Failed to release cache claim (non-fatal): %s", cache_err)
+                # A dead connection makes even rollback raise — never let it
+                # mask the real error or skip the failure bookkeeping below.
+                try:
+                    session.rollback()
+                except Exception:
+                    pass
         # Usage rows have a FK to buildings — logging against a deleted
         # building just adds an IntegrityError on top of the real failure.
         log_api_usage_sync(
@@ -713,6 +916,155 @@ def generate_3d_model_ai(
         raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
     finally:
         session.close()
+
+@celery_app.task(
+    bind=True,
+    name="prewarm_archetype_model",
+    max_retries=0,
+    soft_time_limit=MESHY_MAX_RUNTIME_S,
+    time_limit=MESHY_MAX_RUNTIME_S + 120,
+)
+def prewarm_archetype_model(
+    self,
+    archetype_id: str,
+    variant_id: str = "default",
+    engine: str = "meshy",
+    mode: str = "text",
+    prompt: str | None = None,
+    image_data_uri: str | None = None,
+):
+    """Warm the archetype model cache without a Building — claim the key,
+    generate, optimize, upload to archetype-cache/, complete the row."""
+    logger.info(
+        "Pre-warming archetype model %s/%s (engine=%s, mode=%s)",
+        archetype_id, variant_id, engine, mode,
+    )
+    session = _get_sync_session()
+    entry = None
+    claimed = False
+    try:
+        from app.services.archetype_model_cache import (
+            cache_storage_key,
+            claim_entry,
+            complete_entry,
+            fail_entry,
+            set_entry_thumbnail,
+        )
+
+        entry, claimed = claim_entry(
+            session, archetype_id, variant_id, engine,
+            generation_mode=mode, generation_prompt=prompt,
+        )
+        if not claimed:
+            status = entry.status if entry is not None else "missing"
+            logger.info("Pre-warm skipped for %s/%s: entry is %s", archetype_id, variant_id, status)
+            return {"status": f"skipped_{status}", "archetype_id": archetype_id, "variant_id": variant_id}
+
+        provider = get_engine(engine)
+        if not provider.is_available():
+            raise RuntimeError(f"AI generation engine '{engine}' is not configured")
+
+        if mode == "image" and image_data_uri and image_data_uri.startswith("data:"):
+            # Matte out neighbours before Meshy models them into the mesh
+            # (pilot failure mode 2026-07-10). Fail-open without rembg.
+            import base64 as b64
+
+            from app.processing.image_isolation import isolate_building
+
+            header, _, payload = image_data_uri.partition(",")
+            isolated = isolate_building(b64.b64decode(payload))
+            image_data_uri = "data:image/png;base64," + b64.b64encode(isolated).decode()
+
+        def _progress_callback(progress: float, step: str) -> None:
+            self.update_state(state="GENERATING", meta={"progress": progress, "step": step})
+
+        result = asyncio.run(provider.run_generation(
+            prompt=prompt or archetype_id.replace("_", " "),
+            mode=mode,
+            image_url=image_data_uri,
+            refine=True,
+            negative_prompt=(
+                "blurry, low quality, deformed, floating objects, ground plane, "
+                "background, people, vehicles, cartoon, anime, stylized, miniature"
+            ),
+            building_id=None,
+            progress_callback=_progress_callback,
+        ))
+
+        if settings.glb_optimization_enabled:
+            from app.processing.glb_optimizer import optimize_glb
+
+            result.glb_data = optimize_glb(
+                result.glb_data, max_texture_dim=settings.glb_max_texture_dim
+            )
+
+        model_key = cache_storage_key(entry)
+        _upload_to_storage(model_key, result.glb_data, "model/gltf-binary")
+        lod_keys_for_cache: dict[str, str] = {}
+        for level, lod_glb_data in (result.lod_glb_data or {}).items():
+            lod_key = (
+                f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_lod{level}.glb"
+            )
+            _upload_to_storage(lod_key, lod_glb_data, "model/gltf-binary")
+            lod_keys_for_cache[str(level)] = lod_key
+        complete_entry(
+            session,
+            entry.id,
+            model_key=model_key,
+            size_bytes=len(result.glb_data),
+            source_task_id=result.task_id,
+            lod_keys=lod_keys_for_cache or None,
+        )
+
+        if result.thumbnail_url:
+            try:
+                import httpx as httpx_thumb
+
+                thumb_resp = httpx_thumb.get(result.thumbnail_url, timeout=30.0, follow_redirects=True)
+                thumb_resp.raise_for_status()
+                thumb_data = thumb_resp.content
+                thumb_key = (
+                    f"archetype-cache/{archetype_id}/{variant_id}/{engine}/{entry.id}_thumb.png"
+                )
+                _upload_to_storage(thumb_key, thumb_data, "image/png")
+                set_entry_thumbnail(session, entry.id, thumb_key)
+            except Exception as thumb_err:
+                session.rollback()
+                logger.warning("Pre-warm thumbnail failed (non-fatal): %s", thumb_err)
+
+        logger.info(
+            "Pre-warmed %s/%s -> %s (%.1fMB)",
+            archetype_id, variant_id, model_key, len(result.glb_data) / 1e6,
+        )
+        return {
+            "status": "completed",
+            "archetype_id": archetype_id,
+            "variant_id": variant_id,
+            "cache_id": str(entry.id),
+            "model_key": model_key,
+            "size_bytes": len(result.glb_data),
+        }
+    except Exception as exc:
+        logger.error("Pre-warm failed for %s/%s: %s", archetype_id, variant_id, exc)
+        if claimed and entry is not None:
+            try:
+                session.rollback()
+                from app.services.archetype_model_cache import fail_entry
+
+                fail_entry(session, entry.id, str(exc))
+            except Exception as cache_err:
+                session.rollback()
+                logger.warning("Failed to release pre-warm claim: %s", cache_err)
+        log_api_usage_sync(
+            provider=engine,
+            operation="prewarm",
+            status="failed",
+            metadata={"archetype_id": archetype_id, "variant_id": variant_id},
+        )
+        return {"status": "failed", "error": str(exc)[:300]}
+    finally:
+        session.close()
+
 
 @celery_app.task(bind=True, name="generate_3d_model")
 def generate_3d_model(self, building_id: str, building_data: dict):

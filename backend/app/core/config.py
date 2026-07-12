@@ -133,6 +133,16 @@ class Settings(BaseSettings):
     tripo_api_key: str = ""
     tripo_api_base: str = "https://api.tripo3d.ai"
     default_generation_engine: str = "meshy"
+    # GLB post-processing (texture downscale + JPEG re-encode before storage)
+    glb_optimization_enabled: bool = True
+    glb_max_texture_dim: int = 1024
+    # Archetype model cache: generate once per (archetype, variant, engine)
+    archetype_cache_enabled: bool = True
+    # How long a losing claimer waits for the winner. Must cover the winner's
+    # WORST-case runtime (MESHY_MAX_RUNTIME_S = 2700s incl. refine retry) —
+    # a shorter wait makes duplicate paid generations systematic, defeating
+    # the cache on exactly the generate-all batches it exists for.
+    archetype_cache_wait_s: int = 2820
     gemini_api_key: str = ""
     google_maps_api_key: str = ""
     fal_key: str = ""
