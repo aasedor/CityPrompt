@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import { computeParkPlacements, PLANTING_STRUCTURES, type PropPlacement } from './parkScatter';
-import { resolveParkRecipe } from '@/data/parkKitRecipes';
+import {
+  computeParkPlacements,
+  resolveParkRecipeForZone,
+  PLANTING_STRUCTURES,
+  type PropPlacement,
+} from './parkScatter';
+import {
+  NEIGHBORHOOD_PARK,
+  URBAN_POCKET_PARK,
+  resolveParkRecipe,
+} from '@/data/parkKitRecipes';
 import { pointInPolygon } from '@/utils/coordTransform';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 
@@ -358,5 +367,93 @@ describe('planting structures', () => {
     expect(belt.length).toBeGreaterThanOrEqual(50);
     expect(interior.length).toBeLessThanOrEqual(6);
     expect(belt.length).toBeGreaterThan(interior.length * 5);
+  });
+});
+
+describe('resolveParkRecipeForZone', () => {
+  const bigRing = squareRing(65); // ~4,225 m2 — above playground gate (3,000)
+  const smallRing = squareRing(35); // ~1,225 m2 — below pocket band (1,500)
+
+  it('plan open_space park without an id falls back by area to the neighborhood recipe', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { _plan_role: 'open_space' },
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(NEIGHBORHOOD_PARK);
+    // LEGACY furniture (no planting_structure): big park gets a playground
+    const placements = computeParkPlacements({ id: 'z-plan-park', coordinates: bigRing }, recipe);
+    expect(placements.some((p) => p.propId === 'playground')).toBe(true);
+    expect(placements.some((p) => p.propId === 'bench')).toBe(true);
+  });
+
+  it('small plan open_space park bands to the pocket recipe (benches only)', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { _plan_role: 'open_space' },
+      coordinates: smallRing,
+    });
+    expect(recipe).toBe(URBAN_POCKET_PARK);
+    const placements = computeParkPlacements({ id: 'z-plan-pocket', coordinates: smallRing }, recipe);
+    expect(placements.some((p) => p.propId === 'playground')).toBe(false);
+    expect(placements.some((p) => p.propId === 'bench')).toBe(true);
+  });
+
+  it('formal planting structure still suppresses the playground on a big plan park', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { _plan_role: 'open_space', planting_structure: 'formal_allee' },
+      coordinates: bigRing,
+    });
+    const placements = computeParkPlacements(
+      { id: 'z-plan-formal', coordinates: bigRing },
+      recipe,
+      'formal_allee',
+    );
+    expect(placements.some((p) => p.propId === 'playground')).toBe(false);
+    expect(placements.some((p) => p.propId === 'bench')).toBe(true);
+  });
+
+  it('courtyards get the pocket recipe regardless of size', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { _plan_role: 'courtyard' },
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(URBAN_POCKET_PARK);
+  });
+
+  it('an explicit archetype id beats the plan-role fallback', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { _plan_role: 'open_space', green_space_archetype_id: 'urban_pocket_park' },
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(URBAN_POCKET_PARK);
+  });
+
+  it('hand-drawn zones without a recognized id keep the trees-only default', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { green_space_archetype_id: 'japanese_garden' },
+      coordinates: bigRing,
+    });
+    const placements = computeParkPlacements({ id: 'z-hand', coordinates: bigRing }, recipe);
+    expect(placements.every((p) => p.propId === 'tree')).toBe(true);
+  });
+});
+
+describe('broadened recipe aliases', () => {
+  it('playground archetypes resolve to the equipment-first recipe', () => {
+    const recipe = resolveParkRecipe('playground_adventure');
+    expect(recipe.playground?.minArea_m2).toBe(800);
+    // a modest 1,000 m2 playground lot gets equipment
+    const ring = squareRing(32);
+    const placements = computeParkPlacements({ id: 'z-playground', coordinates: ring }, recipe);
+    expect(placements.some((p) => p.propId === 'playground')).toBe(true);
+  });
+
+  it('inclusive_playground and regional/olmsted parks stop falling through to trees-only', () => {
+    expect(resolveParkRecipe('inclusive_playground').playground).toBeDefined();
+    expect(resolveParkRecipe('regional_park').playground).toBeDefined();
+    expect(resolveParkRecipe('picturesque_olmsted_park').playground).toBeDefined();
+  });
+
+  it('newyork_pocket_park matches the pocket recipe via the pocket_park alias', () => {
+    expect(resolveParkRecipe('newyork_pocket_park')).toBe(URBAN_POCKET_PARK);
   });
 });

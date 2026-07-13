@@ -51,8 +51,6 @@ def _metric_area(zone, site) -> float:
 
 def test_block_plans_resolve_archetypes_before_massing():
     from app.services.plan_geometry.archetypes import load_dims_table
-    from app.services.plan_geometry.community_rules import resolve_rules
-    from app.services.plan_geometry.placement import plan_blocks
 
     known_ids = {e["id"] for e in load_dims_table()}
     result = _generate()
@@ -219,17 +217,33 @@ def test_street_hierarchy_spine_and_locals():
     )
 
 
-def test_park_mix_and_resolver_gap():
+def test_park_mix_and_archetype_fallback_stamps():
     site = _site()
     result = _generate(site=site)
     greens = [z for z in result.zones if z["properties"].get("_plan_role") == "open_space"]
-    areas_banded = [_metric_area(z, site) for z in greens
-                    if not z["properties"].get("green_space_archetype_id")]
-    assert any(a >= 2000.0 for a in areas_banded)          # neighborhood park
-    assert any(200.0 <= a <= 900.0 for a in areas_banded)  # pocket park
-    # 900-2000 m² falls between the pocket and neighborhood catalog ranges —
-    # band-resolved greens must never land there (direct-id zones are exempt).
-    assert not any(900.0 < a < 2000.0 for a in areas_banded)
+    assert greens
+    # The old "resolver gap" is closed: every plan green now carries a catalog
+    # id (central/pocket get generator fallbacks so the globe park kit
+    # resolves a real furniture recipe instead of the trees-only default).
+    assert all(z["properties"].get("green_space_archetype_id") for z in greens)
+    by_kind: dict[str, set[str]] = {}
+    for z in greens:
+        by_kind.setdefault(str(z["properties"].get("green_kind")), set()).add(
+            z["properties"]["green_space_archetype_id"])
+    if "central" in by_kind:
+        assert by_kind["central"] == {"neighborhood_park"}
+    if "pocket" in by_kind:
+        assert by_kind["pocket"] == {"urban_pocket_park"}
+    # Water/linear/plaza ids are untouched by the fallback.
+    assert by_kind.get("pond", set()) <= {"stormwater_retention_pond",
+                                          "fountain_water_feature"}
+    assert by_kind.get("greenway", set()) <= {"linear_park_greenway"}
+    assert by_kind.get("plaza", set()) <= {"formal_civic_plaza"}
+    # Park mix still spans the neighborhood and pocket size bands.
+    park_areas = [_metric_area(z, site) for z in greens
+                  if z["properties"].get("green_kind") in ("central", "pocket")]
+    assert any(a >= 2000.0 for a in park_areas)
+    assert any(a <= 900.0 for a in park_areas)
 
 
 def test_palette_stays_under_render_caps():

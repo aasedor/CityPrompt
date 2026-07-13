@@ -14,8 +14,11 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { api, documentsApi, rendersApi, siteZonesApi } from '@/services/api';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
-import { resolveParkRecipe } from '@/data/parkKitRecipes';
-import { computeParkPlacements, type PropPlacement } from './parkScatter';
+import {
+  computeParkPlacements,
+  resolveParkRecipeForZone,
+  type PropPlacement,
+} from './parkScatter';
 
 const CANVAS = 1024;
 /** Park occupies this fraction of the canvas' limiting dimension. */
@@ -139,7 +142,8 @@ export function buildParkDiagram(zone: SiteZone): ParkDiagram | null {
   // furniture stands ON them, so the texture must not paint the furniture
   // itself.
   const props = zone.properties as Record<string, unknown> | undefined;
-  const recipe = resolveParkRecipe(String(props?.green_space_archetype_id ?? ''));
+  // Shared zone-level resolution — same call as GlobeParkKitLayer.
+  const recipe = resolveParkRecipeForZone({ properties: zone.properties, coordinates: ring });
   const plantingStructure =
     typeof props?.planting_structure === 'string' ? props.planting_structure : undefined;
   const placements = computeParkPlacements(

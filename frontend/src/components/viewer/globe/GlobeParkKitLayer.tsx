@@ -32,9 +32,13 @@ import { resolveApiFileUrl } from '@/services/api';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
-import { resolveParkRecipe } from '@/data/parkKitRecipes';
 import { PARK_KIT_MANIFEST } from '@/data/parkKitManifest';
-import { computeParkPlacements, type ParkPropId, type PropPlacement } from './parkScatter';
+import {
+  computeParkPlacements,
+  resolveParkRecipeForZone,
+  type ParkPropId,
+  type PropPlacement,
+} from './parkScatter';
 import { getEzTreeKit, splitBySpecies } from './ezTreeKit';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -292,9 +296,12 @@ function ParkKitInstance({
   const [instanceZ, setInstanceZ] = useState<number[] | null>(null);
 
   const props = zone.properties as Record<string, unknown> | undefined;
+  // Shared zone-level resolution (archetype id, else plan-role/area fallback).
+  // MUST stay the same call parkGroundTexture.buildParkDiagram makes, or the
+  // painted pads and the standing props disagree.
   const recipe = useMemo(
-    () => resolveParkRecipe(String(props?.green_space_archetype_id ?? '')),
-    [props?.green_space_archetype_id],
+    () => resolveParkRecipeForZone({ properties: zone.properties, coordinates: zone.coordinates }),
+    [zone.properties, zone.coordinates],
   );
   // Landscape pattern stamped by the backend plan generator (green zones and
   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.

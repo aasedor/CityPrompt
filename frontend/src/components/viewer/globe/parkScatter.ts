@@ -20,7 +20,13 @@
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { pointInPolygon } from '@/utils/coordTransform';
 import { seededRandom } from '@/utils/seededRandom';
-import type { ParkKitRecipe } from '@/data/parkKitRecipes';
+import {
+  NEIGHBORHOOD_PARK,
+  URBAN_POCKET_PARK,
+  isDefaultParkRecipe,
+  resolveParkRecipe,
+  type ParkKitRecipe,
+} from '@/data/parkKitRecipes';
 
 export type ParkPropId = 'tree' | 'bench' | 'playground' | 'pavilion';
 
@@ -571,6 +577,56 @@ function placeBufferEdge(ctx: TreeCtx): void {
       tr.scaleJitter[0] + rng() * (tr.scaleJitter[1] - tr.scaleJitter[0]),
     );
   }
+}
+
+/** Geodesic ring area in m² (local-ENU shoelace about the vertex centroid). */
+function ringAreaM2(ring: number[][]): number {
+  if (!ring || ring.length < 3) return 0;
+  let lng0 = 0;
+  let lat0 = 0;
+  for (const c of ring) {
+    lng0 += c[0];
+    lat0 += c[1];
+  }
+  lng0 /= ring.length;
+  lat0 /= ring.length;
+  const mPerLon = metersPerDegLon(lat0);
+  return polygonAreaM2(
+    ring.map((c) => [(c[0] - lng0) * mPerLon, (c[1] - lat0) * METERS_PER_DEG_LAT]),
+  );
+}
+
+/** Same pocket-vs-neighborhood banding as resolvePlanZoneArchetypes'
+ *  resolveOpenSpace — keep the two thresholds in sync. */
+const POCKET_PARK_MAX_M2 = 1500;
+
+/**
+ * Zone-level recipe resolution — THE shared entry point for the 3D kit layer
+ * (GlobeParkKitLayer) and the AI ground-texture diagram (parkGroundTexture).
+ * Both MUST use this so painted pads and standing props can never disagree.
+ *
+ * Order: an archetype id that matches a real recipe wins; otherwise
+ * plan-generated greens fall back by role — courtyards get the pocket recipe
+ * (benches only), open_space parks band by area exactly like the render-time
+ * resolver (resolvePlanZoneArchetypes.resolveOpenSpace). Hand-drawn zones
+ * without a recognized id keep the trees-only default.
+ */
+export function resolveParkRecipeForZone(zone: {
+  properties?: unknown;
+  coordinates: number[][];
+}): ParkKitRecipe {
+  const props = (zone.properties ?? {}) as Record<string, unknown>;
+  const id = props.green_space_archetype_id;
+  const byId = resolveParkRecipe(typeof id === 'string' ? id : undefined);
+  if (!isDefaultParkRecipe(byId)) return byId;
+  const role = props._plan_role;
+  if (role === 'courtyard') return URBAN_POCKET_PARK;
+  if (role === 'open_space') {
+    return ringAreaM2(zone.coordinates) < POCKET_PARK_MAX_M2
+      ? URBAN_POCKET_PARK
+      : NEIGHBORHOOD_PARK;
+  }
+  return byId;
 }
 
 export function computeParkPlacements(

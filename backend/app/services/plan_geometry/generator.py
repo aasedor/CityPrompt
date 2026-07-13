@@ -374,12 +374,19 @@ def generate_plan_geometry(
     # ponds are water, everything else plants to the palette's design intent.
     _LANDSCAPE_KEY = {"central": "park", "pocket": "pocket",
                       "greenway": "greenway", "plaza": "plaza"}
+    # Parks without a palette/LLM archetype get a catalog fallback so the
+    # globe park kit resolves a real furniture recipe (playgrounds/pavilions
+    # gate on planting_structure + area downstream, not here). Ponds keep
+    # their water ids; courtyards stay unstamped by design.
+    _PARK_ARCHETYPE_FALLBACK = {"central": "neighborhood_park",
+                                "pocket": "urban_pocket_park"}
 
     zone_sort = 500  # after user zones
     for spec in open_plan.specs:
         result.green_m.append(spec.geom_m)
         color = PLAN_COLORS["water"] if spec.kind == "pond" else PLAN_COLORS["green_space"]
         planting = palette.landscape.get(_LANDSCAPE_KEY.get(spec.kind, ""))
+        archetype_id = spec.archetype_id or _PARK_ARCHETYPE_FALLBACK.get(spec.kind)
         for poly in iter_polygons(project_geometry(spec.geom_m, to_wgs84)):
             result.zones.append({
                 "zone_type": "green_space",
@@ -391,8 +398,8 @@ def generate_plan_geometry(
                     "_plan_scenario": scenario_id, "_imported_from": layer_name,
                     "_plan_role": "open_space", "tree_density": tree_density,
                     "green_kind": spec.kind,
-                    **({"green_space_archetype_id": spec.archetype_id}
-                       if spec.archetype_id else {}),
+                    **({"green_space_archetype_id": archetype_id}
+                       if archetype_id else {}),
                     **({"ground_texture": ground_texture} if ground_texture else {}),
                     **({"planting_structure": planting} if planting else {}),
                 },
