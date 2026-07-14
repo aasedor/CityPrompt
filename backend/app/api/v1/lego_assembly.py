@@ -2,24 +2,38 @@
 
 from __future__ import annotations
 
+import json
+import uuid
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import require_auth
-from app.models.models import ModelLibraryEntry, User
+from app.models.models import Building, ModelLibraryEntry, Project, ProjectShare, User
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
     descriptor_from_library_entry,
+    find_family_module_entry,
+    lego_metadata_from_manifest,
+    manifest_validation_errors,
     plan_vertical_assembly,
 )
 
 router = APIRouter()
+
+# Namespaced key inside Building.specifications so recipes coexist with the
+# existing model_url workflow fields without a schema migration.
+RECIPE_SPEC_KEY = "legoAssembly"
+
+_LEGO_CATEGORY = "lego_module"
+_LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
+_TAG_REUSE_KEY_LIMIT = 3
 
 
 class LegoAssemblyPlanRequest(BaseModel):
@@ -29,6 +43,27 @@ class LegoAssemblyPlanRequest(BaseModel):
     archetype_id: str | None = None
     reuse_keys: list[str] = Field(default_factory=list)
     preferred_family: str | None = None
+    allow_setback: bool = True
+
+
+class LegoRecipeTarget(BaseModel):
+    width_m: float = Field(gt=0)
+    depth_m: float = Field(gt=0)
+    floors: int = Field(ge=1)
+
+
+class LegoRecipeRequest(BaseModel):
+    """A saved assembly recipe — the persisted twin of ``POST /plan`` output."""
+
+    schema_version: int = 1
+    module_family: str = Field(min_length=1)
+    archetype_id: str | None = None
+    reuse_keys: list[str] = Field(default_factory=list)
+    target: LegoRecipeTarget
+    instances: list[dict[str, Any]]
+    assembled_height_m: float | None = None
+    fit: dict[str, Any] | None = None
+    assembled_preview_url: str | None = None
 
 
 class LegoModuleMetadataRequest(BaseModel):
@@ -182,7 +217,309 @@ async def create_lego_assembly_plan(
                 archetype_id=body.archetype_id,
                 reuse_keys=tuple(body.reuse_keys),
                 preferred_family=body.preferred_family,
+                allow_setback=body.allow_setback,
             ),
         )
     except AssemblyPlanningError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+# ---------------------------------------------------------------------------
+# Compiler-manifest import
+# ---------------------------------------------------------------------------
+
+
+def _basename(filename: str) -> str:
+    """Normalize an uploaded filename to its final path component."""
+    return filename.replace("\\", "/").rsplit("/", 1)[-1]
+
+
+def _module_storage_key(user_id: Any, family: str, role: str) -> str:
+    """Deterministic storage key so re-imports overwrite the same object."""
+    return f"library/lego/{user_id}/{family}/{role}.glb"
+
+
+async def _parse_json_upload(upload: UploadFile, label: str) -> Any:
+    raw = await upload.read()
+    try:
+        return json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=400, detail=f"{label} is not valid JSON: {exc}") from exc
+
+
+@router.post("/import-manifest")
+async def import_compiler_manifest(
+    manifest: UploadFile = File(..., description="The *_manifest.json written by blender_generate.py"),
+    files: list[UploadFile] = File(..., description="Module GLBs (and optionally the assembled GLB)"),
+    thumbnail: UploadFile | None = File(default=None, description="Preview PNG for the family"),
+    validation_report: UploadFile | None = File(default=None, description="validation_report.json"),
+    force: bool = Query(default=False, description="Import even if the validation report did not pass"),
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Import a compiled archetype family into the model library as LEGO modules.
+
+    One request ingests the whole output folder of ``generate_family.py``:
+    every manifest module whose GLB was uploaded becomes (or refreshes) a
+    ``ModelLibraryEntry`` with planner-ready ``metadata_["lego"]``. The
+    pre-assembled preview GLB is stored too, but with ``enabled: false``.
+    """
+    manifest_data = await _parse_json_upload(manifest, "manifest")
+    errors = manifest_validation_errors(manifest_data)
+    if errors:
+        raise HTTPException(status_code=400, detail="Invalid manifest: " + "; ".join(errors))
+
+    validation_status = "unknown"
+    if validation_report is not None:
+        report_data = await _parse_json_upload(validation_report, "validation_report")
+        validation_status = str((report_data or {}).get("status") or "unknown") if isinstance(report_data, dict) else "unknown"
+        if validation_status != "pass" and not force:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"validation_report status is '{validation_status}' (expected 'pass'). "
+                    "Re-run validate_outputs.py, or retry with ?force=true to import anyway."
+                ),
+            )
+
+    family = str(manifest_data["family"]).strip()
+    archetype_id = str(manifest_data["archetype_id"]).strip()
+    label = str(manifest_data.get("archetype_label") or "").strip() or family
+    generator = manifest_data.get("generator") or {}
+    generation_prompt = (
+        f"Procedural module generated by {generator.get('name') or 'archetype_compiler'} "
+        f"v{generator.get('version') or 'unknown'} from archetype {archetype_id}"
+    )
+    aesthetic_category_id = manifest_data.get("aesthetic_category_id")
+    architectural_style = str(aesthetic_category_id)[:50] if aesthetic_category_id else None
+    reuse_keys = [str(k) for k in (manifest_data.get("reuse_keys") or []) if str(k or "").strip()]
+
+    uploads: dict[str, bytes] = {}
+    for upload in files:
+        if upload.filename:
+            uploads[_basename(upload.filename)] = await upload.read()
+
+    # Storage helpers live in the Celery module; deferred import matches the
+    # codebase convention (see admin.py, model_cache.py) and keeps tests free
+    # to monkeypatch app.tasks.processing._upload_to_storage.
+    from app.tasks.processing import _file_proxy_url, _upload_to_storage
+
+    existing_result = await db.execute(
+        select(ModelLibraryEntry).where(ModelLibraryEntry.owner_id == user.id)
+    )
+    existing_entries = list(existing_result.scalars().all())
+
+    thumbnail_url: str | None = None
+    if thumbnail is not None:
+        thumb_key = f"library/lego/{user.id}/{family}/preview.png"
+        _upload_to_storage(thumb_key, await thumbnail.read(), "image/png")
+        thumbnail_url = _file_proxy_url(thumb_key)
+
+    # Importable units: manifest modules plus the pre-assembled preview GLB
+    # (synthesized as a pseudo-module so it lands in the library disabled).
+    units: list[tuple[str, dict[str, Any]]] = [
+        (str(module.get("role") or "").strip().lower(), dict(module))
+        for module in manifest_data["modules"]
+    ]
+    assembled = manifest_data.get("assembled") or {}
+    if assembled.get("filename"):
+        dimensions = manifest_data.get("dimensions") or {}
+        units.append(
+            (
+                "assembled",
+                {
+                    "role": "assembled",
+                    "filename": assembled["filename"],
+                    "width_m": dimensions.get("width_m"),
+                    "depth_m": dimensions.get("depth_m"),
+                    "height_m": assembled.get("height_m"),
+                    "floor_height_m": dimensions.get("floor_height_m"),
+                    "repeatable_z": False,
+                    "triangle_count": assembled.get("triangle_count"),
+                    "material_count": None,
+                },
+            )
+        )
+
+    imported: list[dict[str, Any]] = []
+    matched_filenames: set[str] = set()
+
+    for role, module in units:
+        filename = _basename(str(module.get("filename") or ""))
+        if filename not in uploads:
+            continue
+        matched_filenames.add(filename)
+
+        key = _module_storage_key(user.id, family, role)
+        _upload_to_storage(key, uploads[filename], "model/gltf-binary")
+        model_url = _file_proxy_url(key)
+
+        lego_metadata = lego_metadata_from_manifest(
+            manifest_data, module, role=role, validation_status=validation_status
+        )
+        name = f"{label} — {role}"[:255]
+        tags = [family, role, *reuse_keys[:_TAG_REUSE_KEY_LIMIT]]
+
+        entry = find_family_module_entry(existing_entries, family, role)
+        if entry is not None:
+            entry.name = name
+            entry.category = _LEGO_CATEGORY
+            entry.tags = tags
+            entry.model_url = model_url
+            entry.generation_prompt = generation_prompt
+            entry.generation_engine = _LEGO_ENGINE
+            entry.architectural_style = architectural_style
+            if thumbnail_url:
+                entry.thumbnail_url = thumbnail_url
+            metadata = dict(entry.metadata_ or {})
+            metadata["lego"] = lego_metadata
+            entry.metadata_ = metadata
+            action = "updated"
+        else:
+            entry = ModelLibraryEntry(
+                id=uuid.uuid4(),
+                owner_id=user.id,
+                name=name,
+                category=_LEGO_CATEGORY,
+                tags=tags,
+                model_url=model_url,
+                thumbnail_url=thumbnail_url,
+                generation_prompt=generation_prompt,
+                generation_engine=_LEGO_ENGINE,
+                architectural_style=architectural_style,
+                is_public=False,
+                metadata_={"lego": lego_metadata},
+            )
+            db.add(entry)
+            existing_entries.append(entry)
+            action = "created"
+
+        imported.append(
+            {"id": str(entry.id), "role": role, "action": action, "model_url": model_url}
+        )
+
+    if not imported:
+        expected = sorted(_basename(str(m.get("filename") or "")) for _, m in units)
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "No uploaded files matched the manifest module filenames. "
+                f"Expected any of: {', '.join(expected)}"
+            ),
+        )
+
+    # A new preview refreshes every entry of the family, including modules not
+    # re-uploaded in this request.
+    if thumbnail_url:
+        for entry in existing_entries:
+            lego = (getattr(entry, "metadata_", None) or {}).get("lego") or {}
+            if lego.get("family") == family:
+                entry.thumbnail_url = thumbnail_url
+
+    await db.flush()
+
+    return {
+        "family": family,
+        "archetype_id": archetype_id,
+        "imported": imported,
+        "skipped": sorted(set(uploads) - matched_filenames),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Recipe persistence (Building.specifications["legoAssembly"])
+# ---------------------------------------------------------------------------
+
+
+async def _get_building_with_access(
+    db: AsyncSession,
+    building_id: uuid.UUID,
+    user: User,
+    *,
+    require_editor: bool,
+) -> Building:
+    """Fetch a building and authorize project access.
+
+    Mirrors the ownership/share checks in ``buildings.py::update_building`` so
+    project editors can save recipes. Read access accepts any share.
+    """
+    result = await db.execute(select(Building).where(Building.id == building_id))
+    building = result.scalar_one_or_none()
+    if not building:
+        raise HTTPException(status_code=404, detail="Building not found")
+
+    proj_result = await db.execute(select(Project).where(Project.id == building.project_id))
+    project = proj_result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id != user.id:
+        conditions = [
+            ProjectShare.project_id == building.project_id,
+            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+        ]
+        if require_editor:
+            conditions.append(ProjectShare.permission == "editor")
+        share_result = await db.execute(select(ProjectShare).where(*conditions))
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to edit buildings in this project"
+                if require_editor
+                else "Not authorized to view buildings in this project",
+            )
+    return building
+
+
+@router.post("/recipes/{building_id}")
+async def save_lego_recipe(
+    building_id: uuid.UUID,
+    body: LegoRecipeRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Persist an assembly recipe on the building, namespaced so the existing
+    model_url workflow fields in ``specifications`` stay untouched."""
+    building = await _get_building_with_access(db, building_id, user, require_editor=True)
+
+    specifications = dict(building.specifications or {})
+    specifications[RECIPE_SPEC_KEY] = body.model_dump()
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    await db.flush()
+
+    return {
+        "status": "saved",
+        "building_id": str(building.id),
+        RECIPE_SPEC_KEY: specifications[RECIPE_SPEC_KEY],
+    }
+
+
+@router.get("/recipes/{building_id}")
+async def get_lego_recipe(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Return the saved recipe for a building (or None if none saved)."""
+    building = await _get_building_with_access(db, building_id, user, require_editor=False)
+    specifications = building.specifications or {}
+    return {RECIPE_SPEC_KEY: specifications.get(RECIPE_SPEC_KEY)}
+
+
+@router.delete("/recipes/{building_id}")
+async def delete_lego_recipe(
+    building_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Remove only the recipe key; the rest of specifications stays intact."""
+    building = await _get_building_with_access(db, building_id, user, require_editor=True)
+
+    specifications = dict(building.specifications or {})
+    removed = specifications.pop(RECIPE_SPEC_KEY, None) is not None
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    await db.flush()
+
+    return {"status": "removed" if removed else "absent", "building_id": str(building.id)}

@@ -1,3 +1,5 @@
 # Validation-only dependencies for tools/archetype_compiler (Blender brings its own Python).
 trimesh==4.5.3
 numpy>=1.26
+# import_manifest.py (upload compiled families to the backend)
+requests>=2.31

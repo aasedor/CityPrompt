@@ -32,6 +32,14 @@ from typing import Any, Iterable
 
 VALID_ROLES = {"podium", "floor", "setback", "roof", "attachment"}
 
+# Roles the vertical planner is allowed to stack. Anything else (e.g. the
+# pre-assembled preview GLB) is stored in the library with enabled=False so it
+# is browsable but never picked by ``plan_vertical_assembly``.
+STACKABLE_ROLES = ("podium", "floor", "setback", "roof")
+
+# Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
+SUPPORTED_MANIFEST_SCHEMA = 2
+
 
 @dataclass(frozen=True)
 class ModuleDescriptor:
@@ -58,6 +66,7 @@ class AssemblyRequest:
     archetype_id: str | None = None
     reuse_keys: tuple[str, ...] = ()
     preferred_family: str | None = None
+    allow_setback: bool = True
 
 
 class AssemblyPlanningError(ValueError):
@@ -191,7 +200,7 @@ def plan_vertical_assembly(
         if request.target_floors > 1 and not standard_floor:
             continue
 
-        use_setback = bool(setback and request.target_floors >= 5)
+        use_setback = bool(setback and request.target_floors >= 5 and request.allow_setback)
         standard_count = request.target_floors - 1 - (1 if use_setback else 0)
         if standard_count < 0:
             continue
@@ -266,3 +275,109 @@ def plan_vertical_assembly(
             "whose native footprint is within 20% of the target."
         )
     return best_plan
+
+
+# ---------------------------------------------------------------------------
+# Compiler-manifest helpers (import pipeline)
+#
+# tools/archetype_compiler/blender_generate.py writes a *_manifest.json next
+# to the module GLBs. These pure helpers validate that manifest and translate
+# it into the ``metadata_["lego"]`` shape documented at the top of this file,
+# so the API layer only has to do I/O (storage upload + DB rows).
+# ---------------------------------------------------------------------------
+
+
+def manifest_validation_errors(manifest: Any) -> list[str]:
+    """Return a list of human-actionable problems with a compiler manifest.
+
+    An empty list means the manifest is importable. Kept intentionally
+    shallow — the Blender generator is the source of truth; this only guards
+    against importing the wrong file or a stale schema.
+    """
+    if not isinstance(manifest, dict):
+        return ["manifest must be a JSON object (got a non-object payload)"]
+
+    errors: list[str] = []
+    if manifest.get("manifest_schema") != SUPPORTED_MANIFEST_SCHEMA:
+        errors.append(
+            f"manifest_schema must be {SUPPORTED_MANIFEST_SCHEMA} "
+            f"(got {manifest.get('manifest_schema')!r}); regenerate with the current blender_generate.py"
+        )
+    if not str(manifest.get("family") or "").strip():
+        errors.append("family is required")
+    if not str(manifest.get("archetype_id") or "").strip():
+        errors.append("archetype_id is required")
+
+    reuse_keys = manifest.get("reuse_keys")
+    if not isinstance(reuse_keys, list) or not [k for k in reuse_keys if str(k or "").strip()]:
+        errors.append("reuse_keys must be a non-empty list of strings")
+
+    modules = manifest.get("modules")
+    if not isinstance(modules, list) or not modules:
+        errors.append("modules must be a non-empty list")
+    else:
+        for index, module in enumerate(modules):
+            if not isinstance(module, dict) or not module.get("role") or not module.get("filename"):
+                errors.append(f"modules[{index}] must be an object with 'role' and 'filename'")
+    return errors
+
+
+def lego_metadata_from_manifest(
+    manifest: dict[str, Any],
+    module: dict[str, Any],
+    *,
+    role: str | None = None,
+    validation_status: str = "unknown",
+) -> dict[str, Any]:
+    """Build the ``metadata_["lego"]`` payload for one manifest module.
+
+    ``module`` is either an entry of ``manifest["modules"]`` or a synthesized
+    dict for the pre-assembled preview GLB (role ``"assembled"``), which gets
+    ``enabled: false`` so the planner never stacks it.
+    """
+    resolved_role = str(role or module.get("role") or "").strip().lower()
+    archetype_ids = [str(manifest.get("archetype_id"))]
+    generation_archetype_id = manifest.get("generation_archetype_id")
+    if generation_archetype_id:
+        archetype_ids.append(str(generation_archetype_id))
+
+    dimensions = manifest.get("dimensions") or {}
+    generator = manifest.get("generator") or {}
+    return {
+        "enabled": resolved_role in STACKABLE_ROLES,
+        "role": resolved_role,
+        "family": str(manifest.get("family") or ""),
+        "width_m": module.get("width_m"),
+        "depth_m": module.get("depth_m"),
+        "height_m": module.get("height_m"),
+        "floor_height_m": module.get("floor_height_m"),
+        "repeatable_z": bool(module.get("repeatable_z", False)),
+        "archetype_ids": archetype_ids,
+        "reuse_keys": [str(k) for k in (manifest.get("reuse_keys") or []) if str(k or "").strip()],
+        "min_floors": manifest.get("min_floors", dimensions.get("min_floors")),
+        "max_floors": manifest.get("max_floors", dimensions.get("max_floors")),
+        "schema_version": manifest.get("grammar_schema_version") or 1,
+        "generator_version": generator.get("version"),
+        "validation_status": validation_status,
+        "triangle_count": module.get("triangle_count"),
+        "material_count": module.get("material_count"),
+        "coordinate_contract": manifest.get("coordinate_contract") or {},
+        "source_variant_id": manifest.get("variant_id"),
+        "asset_kind": "lego_module",
+    }
+
+
+def find_family_module_entry(entries: Iterable[Any], family: str, role: str) -> Any | None:
+    """Dedupe helper: find an existing library entry for ``family``/``role``.
+
+    ``model_library`` has no unique constraints, so re-importing a family must
+    update rows in place instead of stacking duplicates.
+    """
+    for entry in entries:
+        metadata = getattr(entry, "metadata_", None) or {}
+        lego = metadata.get("lego") if isinstance(metadata, dict) else None
+        if not isinstance(lego, dict):
+            continue
+        if str(lego.get("family") or "") == family and str(lego.get("role") or "") == role:
+            return entry
+    return None
