@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Generate a modular LEGO building family from a real SiteForge archetype — one command.
+  Generate a modular LEGO building family from a real SiteForge archetype - one command.
 
 .EXAMPLE
   .\scripts\generate-archetype-family.ps1 -ArchetypeId "nordic_timber_midrise"
@@ -104,8 +104,8 @@ $code = $LASTEXITCODE
 
 Write-Host ""
 if ($code -eq 0) {
-    Write-Host "=== SUCCESS — open the *_preview.png / *_assembled.glb in the folder above ===" -ForegroundColor Green
+    Write-Host "=== SUCCESS - open the *_preview.png / *_assembled.glb in the folder above ===" -ForegroundColor Green
 } else {
-    Write-Host "=== FAILED (exit $code) — read the error above; logs are in <output>\logs\ ===" -ForegroundColor Red
+    Write-Host "=== FAILED (exit $code) - read the error above; logs are in <output>\logs\ ===" -ForegroundColor Red
 }
 exit $code

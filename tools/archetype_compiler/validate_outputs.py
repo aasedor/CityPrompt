@@ -38,6 +38,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 BOTTOM_TOLERANCE_M = 0.02
 FOOTPRINT_TOLERANCE_M = 0.6          # frames sit slightly proud of walls
+ROOF_OVERHANG_ALLOWANCE_M = 1.2      # gabled/mono-pitch eaves overhang every side
 FRONT_PROTRUSION_ALLOWANCE_M = 3.0   # balconies + canopies overhang the front facade
 HEIGHT_TOLERANCE_M = 1.2             # parapets/mech screens rise above nominal module height
 MAX_EXTENT_M = 500.0
@@ -96,15 +97,17 @@ def _check_module(path: Path, expected: dict[str, Any], errors: list[str], warni
     width = expected.get("width_m")
     depth = expected.get("depth_m")
     height = expected.get("height_m")
-    if width and abs(extent_x - width) > FOOTPRINT_TOLERANCE_M:
-        errors.append(f"{label}: X extent {extent_x:.2f} m vs grammar width {width} m (tol {FOOTPRINT_TOLERANCE_M} m)")
+    # Roof modules (and assembled stacks containing them) may carry eave overhangs
+    role = expected.get("role") or ""
+    width_tol = FOOTPRINT_TOLERANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0)
+    if width and abs(extent_x - width) > width_tol:
+        errors.append(f"{label}: X extent {extent_x:.2f} m vs grammar width {width} m (tol {width_tol} m)")
     if depth:
         if extent_z < depth - FOOTPRINT_TOLERANCE_M:
             errors.append(f"{label}: Z extent {extent_z:.2f} m smaller than grammar depth {depth} m")
-        elif extent_z > depth + FRONT_PROTRUSION_ALLOWANCE_M:
+        elif extent_z > depth + FRONT_PROTRUSION_ALLOWANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0):
             errors.append(
-                f"{label}: Z extent {extent_z:.2f} m exceeds grammar depth {depth} m + "
-                f"front allowance {FRONT_PROTRUSION_ALLOWANCE_M} m"
+                f"{label}: Z extent {extent_z:.2f} m exceeds grammar depth {depth} m + allowances"
             )
     if height and abs(extent_y - height) > HEIGHT_TOLERANCE_M:
         errors.append(f"{label}: Y extent {extent_y:.2f} m vs nominal module height {height} m (tol {HEIGHT_TOLERANCE_M} m)")
@@ -127,6 +130,12 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
     if not manifests:
         return {"status": "fail", "errors": [f"no *_manifest.json found in {output_dir}"], "warnings": [], "modules": []}
     manifest_path = manifests[0]
+    if grammar_path and grammar_path.exists() and len(manifests) > 1:
+        # Multiple families in one folder: validate the one this grammar produced
+        family = json.loads(grammar_path.read_text(encoding="utf-8")).get("family_id")
+        matching = [m for m in manifests if m.name.startswith(f"{family}_")]
+        if matching:
+            manifest_path = matching[0]
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except Exception as exc:
@@ -165,7 +174,8 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
         path = output_dir / assembled["filename"]
         report = _check_module(
             path,
-            {"width_m": manifest["dimensions"]["width_m"], "depth_m": manifest["dimensions"]["depth_m"],
+            {"role": "assembled",
+             "width_m": manifest["dimensions"]["width_m"], "depth_m": manifest["dimensions"]["depth_m"],
              "height_m": assembled["height_m"]},
             errors, warnings,
         )

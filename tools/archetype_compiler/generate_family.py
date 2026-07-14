@@ -109,7 +109,8 @@ def main() -> None:
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
-    output = (args.output or REPO_ROOT / "build" / "archetypes" / args.archetype_id).resolve()
+    default_dirname = f"{args.archetype_id}--{args.variant_id}" if args.variant_id else args.archetype_id
+    output = (args.output or REPO_ROOT / "build" / "archetypes" / default_dirname).resolve()
     output.mkdir(parents=True, exist_ok=True)
     logs_dir = output / "logs"
 

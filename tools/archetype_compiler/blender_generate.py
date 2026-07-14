@@ -253,7 +253,7 @@ def build_floor(grammar: dict, mats: dict, setback: bool = False) -> bpy.types.O
     bay_count, bay = _bays(w, facade["bay_width_m"])
     side_count, _ = _bays(d, facade["bay_width_m"])
     window_h = h * facade["window_height_ratio"]
-    window_w = bay * facade["window_width_ratio"] / 0.55  # ratio tuned for default 0.55
+    window_w = min(bay * facade["window_width_ratio"], bay - 0.7)  # keep visible wall piers between bays
     sill = min(facade["sill_height_m"], h - window_h - 0.3)
     front_wall_y = -(center_y - d / 2)  # distance from origin to front wall plane (positive)
 
