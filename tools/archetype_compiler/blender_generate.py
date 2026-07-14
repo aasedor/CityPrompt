@@ -1,178 +1,616 @@
 """Blender headless generator for archetype-compiled modular GLBs.
 
-Run:
-  blender --background --python blender_generate.py -- grammar.json output_dir
+Run (Blender 4.x / 5.x):
+
+  blender --background --factory-startup --python blender_generate.py -- \
+      --grammar build/nordic-grammar.json --output build/nordic [--floors 6] \
+      [--keep-blend] [--no-thumbnail] [--no-assembled]
+
+Coordinate decisions (Blender side of the contract):
+- Blender is Z-up; every module is built with its base at z=0 and centred on
+  the XY origin, so "origin at bottom centre" holds by construction.
+- The front facade faces NEGATIVE Y. The glTF exporter is run with
+  ``export_yup=True``; Blender -Y (front) becomes glTF +Z, which three.js
+  treats as "toward the default camera" — the assembled preview therefore
+  faces the viewer without extra rotation.
+- All transforms are applied before export; module parts are joined into a
+  single mesh named MOD_<Role> so the GLB has one node per module.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import bpy
+from mathutils import Vector
+
+GENERATOR_VERSION = "0.2.0"
+SUPPORTED_SCHEMA_VERSION = 1
 
 
-def hex_rgba(value: str, alpha: float = 1.0):
-    value = value.lstrip("#")
+# ---------------------------------------------------------------------------
+# Scene plumbing
+# ---------------------------------------------------------------------------
+
+def reset_scene() -> None:
+    bpy.ops.object.select_all(action="SELECT")
+    bpy.ops.object.delete(use_global=False)
+    # Purge orphan meshes/materials so repeated module builds don't accumulate
+    for block_list in (bpy.data.meshes, bpy.data.lights, bpy.data.cameras):
+        for block in list(block_list):
+            if block.users == 0:
+                block_list.remove(block)
+
+
+def configure_units() -> None:
+    scene = bpy.context.scene
+    scene.unit_settings.system = "METRIC"
+    scene.unit_settings.scale_length = 1.0
+    scene.unit_settings.length_unit = "METERS"
+
+
+def hex_rgba(value: str, alpha: float = 1.0) -> tuple[float, float, float, float]:
+    value = (value or "#808080").lstrip("#")
     if len(value) != 6:
         value = "808080"
-    return tuple(int(value[i:i+2], 16) / 255 for i in (0, 2, 4)) + (alpha,)
+    # sRGB hex -> linear, otherwise exported colours look washed out
+    def lin(channel: float) -> float:
+        return channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4
+
+    r, g, b = (int(value[i : i + 2], 16) / 255 for i in (0, 2, 4))
+    return (lin(r), lin(g), lin(b), alpha)
 
 
-def material(name: str, color: str, metallic=0.0, roughness=0.55):
+def make_material(name: str, spec: dict) -> bpy.types.Material:
     mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
-    mat.diffuse_color = hex_rgba(color)
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes.get("Principled BSDF")
-    bsdf.inputs["Base Color"].default_value = hex_rgba(color)
-    bsdf.inputs["Metallic"].default_value = metallic
-    bsdf.inputs["Roughness"].default_value = roughness
+    color = hex_rgba(spec.get("base_color", "#808080"))
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Metallic"].default_value = float(spec.get("metallic", 0.0))
+    bsdf.inputs["Roughness"].default_value = float(spec.get("roughness", 0.6))
+    mat.diffuse_color = color  # viewport/solid fallback
     return mat
 
 
-def cube(name, size, location, mat, bevel=0.0):
+def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
+    materials = grammar["materials"]
+    return {
+        "primary": make_material("MAT_Facade_Primary", materials["primary"]),
+        "secondary": make_material("MAT_Facade_Secondary", materials["secondary"]),
+        "accent": make_material("MAT_Accent", materials["accent"]),
+        "glass": make_material("MAT_Glass", materials["glass"]),
+        "concrete": make_material("MAT_Concrete", materials["concrete"]),
+        "roof": make_material("MAT_Roof", materials["roof"]),
+        "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Geometry helpers
+# ---------------------------------------------------------------------------
+
+def add_box(name: str, size: tuple[float, float, float], location: tuple[float, float, float], mat) -> bpy.types.Object:
     bpy.ops.mesh.primitive_cube_add(size=1, location=location)
     obj = bpy.context.object
     obj.name = name
     obj.dimensions = size
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    if bevel:
-        mod = obj.modifiers.new("EdgeSoftening", "BEVEL")
-        mod.width = bevel
-        mod.segments = 2
     obj.data.materials.append(mat)
     return obj
 
 
-def clear_scene():
-    bpy.ops.object.select_all(action="SELECT")
-    bpy.ops.object.delete(use_global=False)
+def add_prism(name: str, verts: list[tuple[float, float, float]], faces: list[tuple[int, ...]], mat) -> bpy.types.Object:
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.scene.collection.objects.link(obj)
+    obj.data.materials.append(mat)
+    return obj
 
 
-def add_front_windows(width, depth, height, z0, grammar, mats, storefront=False):
-    facade = grammar["facade"]
-    bay = max(1.8, float(facade["bay_width_m"]))
-    count = max(1, int(width // bay))
-    actual_bay = width / count
-    window_w = min(float(facade["window_width_m"]), actual_bay * 0.72)
-    window_h = height * (0.62 if storefront else 0.5)
-    sill = 0.35 if storefront else float(facade.get("sill_height_m", 0.9))
-    y = -depth / 2 - 0.035
-    for i in range(count):
-        x = -width / 2 + actual_bay * (i + 0.5)
-        cube(
-            f"Window_{i:02d}",
-            (window_w, 0.08, window_h),
-            (x, y, z0 + sill + window_h / 2),
-            mats["glass"],
-            0.025,
-        )
-        cube(
-            f"Frame_{i:02d}",
-            (window_w + 0.14, 0.07, window_h + 0.14),
-            (x, y + 0.045, z0 + sill + window_h / 2),
-            mats["accent"],
-            0.02,
-        )
+def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
+    """Join module parts into a single mesh so the GLB gets one node per module."""
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in objects:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = objects[0]
+    if len(objects) > 1:
+        bpy.ops.object.join()
+    joined = bpy.context.view_layer.objects.active
+    joined.name = name
+    joined.data.name = name
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    return joined
 
 
-def create_podium(grammar, mats):
-    w, d, h = grammar["width_m"], grammar["depth_m"], grammar["podium_height_m"]
-    cube("PodiumMass", (w, d, h), (0, 0, h / 2), mats["primary"], 0.08)
-    add_front_windows(w, d, h, 0, grammar, mats, storefront=True)
-    cube("Canopy", (w * 0.72, 1.25, 0.18), (0, -d / 2 - 0.58, h * 0.72), mats["accent"], 0.04)
+def _bays(length: float, bay_width: float) -> tuple[int, float]:
+    count = max(1, int(round(length / bay_width)))
+    return count, length / count
 
 
-def create_floor(grammar, mats, setback=False):
-    h = grammar["setback_height_m"] if setback else grammar["floor_height_m"]
-    inset = 1.4 if setback else 0.0
-    w, d = grammar["width_m"] - inset * 2, grammar["depth_m"] - inset * 2
-    cube("FloorMass", (w, d, h), (0, 0, h / 2), mats["secondary" if setback else "primary"], 0.06)
-    add_front_windows(w, d, h, 0, grammar, mats)
-    if grammar["facade"].get("balcony_probability", 0) > 0:
-        cube("BalconyBand", (w * 0.72, 1.25, 0.16), (0, -d / 2 - 0.58, h * 0.42), mats["accent"], 0.03)
+def add_window_row(
+    parts: list,
+    prefix: str,
+    wall_length: float,
+    axis: str,  # 'front' (-Y), 'rear' (+Y), 'left' (-X), 'right' (+X)
+    wall_offset: float,  # distance from origin to the wall plane
+    z0: float,
+    window_w: float,
+    window_h: float,
+    sill: float,
+    bay_count: int,
+    mats: dict,
+    frame_depth: float = 0.07,
+) -> None:
+    """A row of glazing+frame pairs flush on one wall. Windows sit slightly proud
+    of the wall plane so they read at a distance without boolean cuts."""
+    bay = wall_length / bay_count
+    window_w = min(window_w, bay * 0.78)
+    for i in range(bay_count):
+        along = -wall_length / 2 + bay * (i + 0.5)
+        z_center = z0 + sill + window_h / 2
+        if axis in ("front", "rear"):
+            sign = -1.0 if axis == "front" else 1.0
+            glass_loc = (along, sign * (wall_offset + 0.03), z_center)
+            frame_loc = (along, sign * (wall_offset + 0.015), z_center)
+            glass_size = (window_w, 0.06, window_h)
+            frame_size = (window_w + frame_depth * 2, 0.05, window_h + frame_depth * 2)
+        else:
+            sign = -1.0 if axis == "left" else 1.0
+            glass_loc = (sign * (wall_offset + 0.03), along, z_center)
+            frame_loc = (sign * (wall_offset + 0.015), along, z_center)
+            glass_size = (0.06, window_w, window_h)
+            frame_size = (0.05, window_w + frame_depth * 2, window_h + frame_depth * 2)
+        parts.append(add_box(f"{prefix}_Frame_{axis}_{i:02d}", frame_size, frame_loc, mats["accent"]))
+        parts.append(add_box(f"{prefix}_Glass_{axis}_{i:02d}", glass_size, glass_loc, mats["glass"]))
 
 
-def create_roof(grammar, mats):
-    w, d, h = grammar["width_m"], grammar["depth_m"], grammar["roof_height_m"]
-    if grammar.get("roof_type") == "gabled":
-        cube("RoofBase", (w, d, 0.25), (0, 0, 0.125), mats["roof"])
-        bpy.ops.mesh.primitive_cone_add(vertices=4, radius1=max(w, d) * 0.7, radius2=0, depth=h, location=(0, 0, h / 2))
-        roof = bpy.context.object
-        roof.name = "GabledRoof"
-        roof.scale.y = d / w
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        roof.data.materials.append(mats["roof"])
+# ---------------------------------------------------------------------------
+# Module builders — each returns ONE joined object with base at z=0
+# ---------------------------------------------------------------------------
+
+def build_podium(grammar: dict, mats: dict) -> bpy.types.Object:
+    dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    w, d, h = dims["width_m"], dims["depth_m"], dims["podium_height_m"]
+    retail = bool(massing.get("has_podium_retail"))
+    parts: list = []
+
+    parts.append(add_box("Podium_Shell", (w, d, h), (0, 0, h / 2), mats["primary"]))
+    # Stone/concrete plinth grounds the building visually
+    plinth_h = 0.45
+    parts.append(add_box("Podium_Plinth", (w + 0.1, d + 0.1, plinth_h), (0, 0, plinth_h / 2), mats["concrete"]))
+
+    bay_count, bay = _bays(w, facade["bay_width_m"])
+    front_y = d / 2
+
+    if retail:
+        # Storefront: tall glazing between accent mullions, centred double door, canopy
+        sf_h = h * facade["storefront_height_ratio"] - plinth_h
+        sf_z0 = plinth_h
+        for i in range(bay_count):
+            x = -w / 2 + bay * (i + 0.5)
+            parts.append(add_box(
+                f"Podium_Storefront_{i:02d}", (bay * 0.82, 0.08, sf_h),
+                (x, -(front_y + 0.03), sf_z0 + sf_h / 2), mats["glass"],
+            ))
+            parts.append(add_box(
+                f"Podium_Mullion_{i:02d}", (0.14, 0.12, sf_h),
+                (-w / 2 + bay * i + bay, -(front_y + 0.02), sf_z0 + sf_h / 2), mats["accent"],
+            )) if i < bay_count - 1 else None
+        parts = [p for p in parts if p is not None]
+        # Transom band above the storefront
+        parts.append(add_box("Podium_Transom", (w * 0.98, 0.1, 0.3),
+                             (0, -(front_y + 0.02), sf_z0 + sf_h + 0.15), mats["accent"]))
+        # Entry door (double, centred)
+        parts.append(add_box("Podium_Door", (2.0, 0.12, 2.3), (0, -(front_y + 0.05), plinth_h + 1.15), mats["accent"]))
+        # Canopy over the retail frontage
+        parts.append(add_box("Podium_Canopy", (w * 0.86, 1.35, 0.12),
+                             (0, -(front_y + 0.68), h * facade["storefront_height_ratio"] + 0.35), mats["accent"]))
     else:
-        cube("RoofSlab", (w, d, 0.3), (0, 0, 0.15), mats["roof"])
-        parapet = 0.65
-        t = 0.22
-        cube("ParapetFront", (w, t, parapet), (0, -d / 2 + t / 2, parapet / 2), mats["roof"])
-        cube("ParapetBack", (w, t, parapet), (0, d / 2 - t / 2, parapet / 2), mats["roof"])
-        cube("ParapetLeft", (t, d, parapet), (-w / 2 + t / 2, 0, parapet / 2), mats["roof"])
-        cube("ParapetRight", (t, d, parapet), (w / 2 - t / 2, 0, parapet / 2), mats["roof"])
-        cube("MechanicalScreen", (w * 0.22, d * 0.25, h), (0, d * 0.1, h / 2), mats["accent"], 0.04)
+        # Residential/lobby podium: generous glazing, centred entrance + porch canopy
+        window_h = (h - plinth_h) * 0.62
+        add_window_row(parts, "Podium", w, "front", front_y, plinth_h, bay * 0.6, window_h, 0.35, bay_count, mats)
+        parts.append(add_box("Podium_Door", (1.9, 0.12, 2.25), (0, -(front_y + 0.06), plinth_h + 1.125), mats["accent"]))
+        parts.append(add_box("Podium_EntryCanopy", (3.2, 1.2, 0.12), (0, -(front_y + 0.6), plinth_h + 2.5), mats["accent"]))
+
+    # Rear: smaller secondary windows; sides: modest bays
+    side_count, _ = _bays(d, facade["bay_width_m"])
+    rear_h = (h - plinth_h) * 0.4
+    add_window_row(parts, "Podium", w, "rear", d / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, bay_count, mats)
+    add_window_row(parts, "Podium", d, "left", w / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, side_count, mats)
+    add_window_row(parts, "Podium", d, "right", w / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, side_count, mats)
+
+    return join_as("MOD_Podium", parts)
 
 
-def export_selected(path: Path):
+def build_floor(grammar: dict, mats: dict, setback: bool = False) -> bpy.types.Object:
+    dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    h = dims["setback_height_m"] if setback else dims["floor_height_m"]
+    full_w, full_d = dims["width_m"], dims["depth_m"]
+
+    if setback:
+        inset_front = massing["setback_front_m"]
+        inset_side = massing["setback_side_m"]
+        w = full_w - inset_side * 2
+        # Setback recedes from the FRONT only (street side); rear wall stays put
+        d = full_d - inset_front
+        center_y = inset_front / 2
+    else:
+        w, d, center_y = full_w, full_d, 0.0
+
+    parts: list = []
+    shell_mat = mats["secondary"] if setback else mats["primary"]
+    parts.append(add_box("Floor_Shell", (w, d, h), (0, center_y, h / 2), shell_mat))
+    # Expressed slab edge at the base of every floor
+    parts.append(add_box("Floor_SlabEdge", (w + 0.08, d + 0.08, 0.2), (0, center_y, 0.1), mats["concrete"]))
+
+    bay_count, bay = _bays(w, facade["bay_width_m"])
+    side_count, _ = _bays(d, facade["bay_width_m"])
+    window_h = h * facade["window_height_ratio"]
+    window_w = bay * facade["window_width_ratio"] / 0.55  # ratio tuned for default 0.55
+    sill = min(facade["sill_height_m"], h - window_h - 0.3)
+    front_wall_y = -(center_y - d / 2)  # distance from origin to front wall plane (positive)
+
+    balcony_mode = facade.get("balcony_mode", "none")
+    balcony_every = max(1, int(facade.get("balcony_frequency", 2)))
+    balcony_depth = facade.get("balcony_depth_m", 1.5)
+
+    for i in range(bay_count):
+        x = -w / 2 + bay * (i + 0.5)
+        has_balcony = (not setback) and balcony_mode == "projecting" and (i % balcony_every == 0)
+        z_center = sill + window_h / 2
+        # Window (door-height glazing behind balconies)
+        glass_h = h * 0.72 if has_balcony else window_h
+        glass_z = 0.25 + glass_h / 2 if has_balcony else z_center
+        parts.append(add_box(f"Floor_Frame_{i:02d}", (window_w + 0.14, 0.05, glass_h + 0.14),
+                             (x, -(front_wall_y + 0.015), glass_z), mats["accent"]))
+        parts.append(add_box(f"Floor_Glass_{i:02d}", (window_w, 0.06, glass_h),
+                             (x, -(front_wall_y + 0.03), glass_z), mats["glass"]))
+        if has_balcony:
+            bw = bay * 0.85
+            by = -(front_wall_y + balcony_depth / 2)
+            parts.append(add_box(f"Floor_BalconySlab_{i:02d}", (bw, balcony_depth, 0.14), (x, by, 0.2), mats["concrete"]))
+            # Solid balustrade (reads as timber/wood panel via secondary material)
+            parts.append(add_box(f"Floor_Balustrade_{i:02d}", (bw, 0.06, 1.02),
+                                 (x, -(front_wall_y + balcony_depth - 0.03), 0.27 + 0.51), mats["secondary"]))
+            parts.append(add_box(f"Floor_BalustradeL_{i:02d}", (0.06, balcony_depth - 0.06, 1.02),
+                                 (x - bw / 2 + 0.03, by, 0.27 + 0.51), mats["secondary"]))
+            parts.append(add_box(f"Floor_BalustradeR_{i:02d}", (0.06, balcony_depth - 0.06, 1.02),
+                                 (x + bw / 2 - 0.03, by, 0.27 + 0.51), mats["secondary"]))
+
+    # Rear + side windows
+    add_window_row(parts, "Floor", w, "rear", (center_y + d / 2), 0.0, window_w, window_h, sill, bay_count, mats)
+    add_window_row(parts, "Floor", d * 0.9, "left", w / 2, 0.0, window_w, window_h, sill, side_count, mats)
+    add_window_row(parts, "Floor", d * 0.9, "right", w / 2, 0.0, window_w, window_h, sill, side_count, mats)
+
+    if setback:
+        # Terrace deck over the full original footprint + parapet on the exposed front edge
+        parts.append(add_box("Setback_TerraceDeck", (full_w, full_d, 0.08), (0, 0, 0.04), mats["concrete"]))
+        parapet_h = 1.0
+        parts.append(add_box("Setback_ParapetFront", (full_w, 0.14, parapet_h),
+                             (0, -full_d / 2 + 0.07, parapet_h / 2), shell_mat))
+        parts.append(add_box("Setback_ParapetLeft", (0.14, inset_front, parapet_h),
+                             (-full_w / 2 + 0.07, -full_d / 2 + inset_front / 2, parapet_h / 2), shell_mat))
+        parts.append(add_box("Setback_ParapetRight", (0.14, inset_front, parapet_h),
+                             (full_w / 2 - 0.07, -full_d / 2 + inset_front / 2, parapet_h / 2), shell_mat))
+
+    return join_as("MOD_Setback" if setback else "MOD_Floor", parts)
+
+
+def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
+    dims, roof = grammar["dimensions"], grammar["roof"]
+    w, d, h = dims["width_m"], dims["depth_m"], dims["roof_height_m"]
+    parts: list = []
+
+    if roof["type"] == "gabled":
+        # Triangular prism, ridge running along X (parallel to the front facade)
+        slab_h = 0.2
+        parts.append(add_box("Roof_Base", (w + 0.4, d + 0.4, slab_h), (0, 0, slab_h / 2), mats["roof"]))
+        ridge = h
+        ov = 0.35  # eave overhang
+        verts = [
+            (-w / 2 - ov, -d / 2 - ov, slab_h), (w / 2 + ov, -d / 2 - ov, slab_h),
+            (w / 2 + ov, d / 2 + ov, slab_h), (-w / 2 - ov, d / 2 + ov, slab_h),
+            (-w / 2 - ov, 0.0, ridge), (w / 2 + ov, 0.0, ridge),
+        ]
+        faces = [(0, 1, 5, 4), (2, 3, 4, 5), (0, 4, 3), (1, 2, 5), (0, 3, 2, 1)]
+        parts.append(add_prism("Roof_Gable", verts, faces, mats["roof"]))
+    elif roof["type"] == "mono_pitch":
+        slab_h = 0.2
+        parts.append(add_box("Roof_Base", (w + 0.3, d + 0.3, slab_h), (0, 0, slab_h / 2), mats["roof"]))
+        low, high = slab_h + 0.15, h
+        verts = [
+            (-w / 2, -d / 2, slab_h), (w / 2, -d / 2, slab_h), (w / 2, d / 2, slab_h), (-w / 2, d / 2, slab_h),
+            (-w / 2, -d / 2, low), (w / 2, -d / 2, low), (w / 2, d / 2, high), (-w / 2, d / 2, high),
+        ]
+        faces = [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7), (4, 5, 6, 7), (3, 2, 1, 0)]
+        parts.append(add_prism("Roof_Mono", verts, faces, mats["roof"]))
+    else:  # flat
+        slab_h = 0.25
+        parts.append(add_box("Roof_Slab", (w, d, slab_h), (0, 0, slab_h / 2), mats["roof"]))
+        if roof.get("parapet", True):
+            ph, t = 0.65, 0.2
+            parts.append(add_box("Roof_ParapetFront", (w, t, ph), (0, -d / 2 + t / 2, ph / 2), mats["primary"]))
+            parts.append(add_box("Roof_ParapetBack", (w, t, ph), (0, d / 2 - t / 2, ph / 2), mats["primary"]))
+            parts.append(add_box("Roof_ParapetLeft", (t, d - t * 2, ph), (-w / 2 + t / 2, 0, ph / 2), mats["primary"]))
+            parts.append(add_box("Roof_ParapetRight", (t, d - t * 2, ph), (w / 2 - t / 2, 0, ph / 2), mats["primary"]))
+        if roof.get("green_roof"):
+            parts.append(add_box("Roof_GreenSurface", (w - 0.8, d - 0.8, 0.09), (0, 0, slab_h + 0.045), mats["green_roof"]))
+        if roof.get("mechanical_screen"):
+            mw, md, mh = w * 0.24, d * 0.28, max(0.8, h * 0.75)
+            parts.append(add_box("Roof_MechScreen", (mw, md, mh), (w * 0.18, d * 0.12, slab_h + mh / 2), mats["accent"]))
+
+    return join_as("MOD_Roof", parts)
+
+
+# ---------------------------------------------------------------------------
+# Export / render
+# ---------------------------------------------------------------------------
+
+def export_objects(path: Path, objects: list[bpy.types.Object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    bpy.ops.object.select_all(action="SELECT")
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in objects:
+        obj.select_set(True)
+    bpy.context.view_layer.objects.active = objects[0]
     bpy.ops.export_scene.gltf(
         filepath=str(path),
         export_format="GLB",
         use_selection=True,
         export_apply=True,
-        export_yup=True,
+        export_yup=True,   # Blender Z-up -> glTF Y-up; front (-Y) becomes glTF +Z
+        export_cameras=False,
+        export_lights=False,
         export_extras=True,
     )
 
 
-def generate(grammar, output: Path):
-    palette = grammar["palette"]
-    mats = {
-        "primary": material("MAT_Facade_Primary", palette["primary"]),
-        "secondary": material("MAT_Facade_Secondary", palette["secondary"]),
-        "accent": material("MAT_Accent", palette["accent"], metallic=0.25),
-        "glass": material("MAT_Glass", palette["glazing"], roughness=0.18),
-        "roof": material("MAT_Roof", palette["roof"]),
+def triangle_count(obj: bpy.types.Object) -> int:
+    obj.data.calc_loop_triangles()
+    return len(obj.data.loop_triangles)
+
+
+def pick_render_engine() -> str:
+    scene = bpy.context.scene
+    for engine in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE", "BLENDER_WORKBENCH"):
+        try:
+            scene.render.engine = engine
+            return engine
+        except TypeError:
+            continue
+    return scene.render.engine
+
+
+def render_thumbnail(path: Path, focus_height: float, footprint: float) -> str:
+    """Neutral three-quarter presentation: daylight sun, ground plane, soft sky."""
+    scene = bpy.context.scene
+    engine = pick_render_engine()
+
+    ground_mat = make_material("MAT_PreviewGround", {"base_color": "#c9c7c2", "roughness": 0.95, "metallic": 0.0})
+    ground = add_box("PreviewGround", (footprint * 14, footprint * 14, 0.05), (0, 0, -0.05), ground_mat)
+
+    sun_data = bpy.data.lights.new("PreviewSun", type="SUN")
+    sun_data.energy = 3.5
+    sun_data.angle = math.radians(3)
+    sun = bpy.data.objects.new("PreviewSun", sun_data)
+    sun.rotation_euler = (math.radians(50), math.radians(-12), math.radians(-35))
+    scene.collection.objects.link(sun)
+
+    cam_data = bpy.data.cameras.new("PreviewCamera")
+    cam_data.lens = 42
+    cam = bpy.data.objects.new("PreviewCamera", cam_data)
+    scene.collection.objects.link(cam)
+    dist = max(footprint * 1.9, focus_height * 1.7)
+    cam.location = (-dist * 0.78, -dist * 0.95, focus_height * 0.66 + dist * 0.22)
+    target = Vector((0.0, 0.0, focus_height * 0.45))
+    # Blender cameras look down local -Z with +Y up; track-quat aims it at the building
+    direction = target - cam.location
+    cam.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+    scene.camera = cam
+
+    world = bpy.data.worlds.get("World") or bpy.data.worlds.new("World")
+    scene.world = world
+    world.use_nodes = True
+    bg = world.node_tree.nodes.get("Background")
+    if bg:
+        bg.inputs[0].default_value = (0.88, 0.9, 0.93, 1.0)
+        bg.inputs[1].default_value = 1.0
+
+    scene.render.resolution_x = 1280
+    scene.render.resolution_y = 960
+    scene.render.filepath = str(path)
+    scene.render.image_settings.file_format = "PNG"
+    bpy.ops.render.render(write_still=True)
+
+    # Clean up presentation rig so it never leaks into GLB exports
+    for obj in (ground, sun, cam):
+        bpy.data.objects.remove(obj, do_unlink=True)
+    return engine
+
+
+# ---------------------------------------------------------------------------
+# Orchestration
+# ---------------------------------------------------------------------------
+
+def build_module(role: str, grammar: dict, mats: dict) -> bpy.types.Object:
+    if role == "podium":
+        return build_podium(grammar, mats)
+    if role == "floor":
+        return build_floor(grammar, mats, setback=False)
+    if role == "setback":
+        return build_floor(grammar, mats, setback=True)
+    if role == "roof":
+        return build_roof(grammar, mats)
+    raise ValueError(f"unknown module role {role}")
+
+
+def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_blend: bool,
+             thumbnail: bool, assembled: bool) -> None:
+    if grammar.get("schema_version") != SUPPORTED_SCHEMA_VERSION:
+        raise SystemExit(
+            f"grammar schema_version={grammar.get('schema_version')!r} unsupported "
+            f"(generator expects {SUPPORTED_SCHEMA_VERSION}); re-run compiler.py"
+        )
+
+    configure_units()
+    family = grammar["family_id"]
+    dims = grammar["dimensions"]
+    source = grammar["source"]
+    output.mkdir(parents=True, exist_ok=True)
+
+    roles = ["podium", "floor", "setback", "roof"]
+    height_key = {
+        "podium": "podium_height_m", "floor": "floor_height_m",
+        "setback": "setback_height_m", "roof": "roof_height_m",
     }
-    family = grammar["family"]
-    jobs = [
-        ("podium", create_podium),
-        ("floor", lambda g, m: create_floor(g, m, False)),
-        ("roof", create_roof),
-    ]
-    if grammar.get("has_setback"):
-        jobs.insert(2, ("setback", lambda g, m: create_floor(g, m, True)))
 
-    manifest = {"family": family, "archetype_id": grammar["archetype_id"], "modules": []}
-    for role, builder in jobs:
-        clear_scene()
-        builder(grammar, mats)
-        glb = output / f"{family}_{role}.glb"
-        export_selected(glb)
-        height_key = {"podium": "podium_height_m", "floor": "floor_height_m", "setback": "setback_height_m", "roof": "roof_height_m"}[role]
-        manifest["modules"].append({
+    manifest_modules = []
+    for role in roles:
+        reset_scene()
+        mats = build_materials(grammar)
+        module = build_module(role, grammar, mats)
+        glb_path = output / f"{family}_{role}.glb"
+        export_objects(glb_path, [module])
+        manifest_modules.append({
             "role": role,
-            "path": glb.name,
+            "filename": glb_path.name,
             "module_family": family,
-            "archetype_ids": [grammar["archetype_id"]],
-            "reuse_keys": grammar["reuse_keys"],
-            "width_m": grammar["width_m"],
-            "depth_m": grammar["depth_m"],
-            "height_m": grammar[height_key],
+            "width_m": dims["width_m"],
+            "depth_m": dims["depth_m"],
+            "height_m": dims[height_key[role]],
+            "floor_height_m": dims["floor_height_m"],
             "repeatable_z": role == "floor",
+            "triangle_count": triangle_count(module),
+            "material_count": len(module.data.materials),
         })
-    (output / f"{family}_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        print(f"[blender_generate] exported {glb_path.name} ({manifest_modules[-1]['triangle_count']} tris)")
+
+    # ---- assembled preview -------------------------------------------------
+    floors = floors_override or dims["default_floors"]
+    use_setback = bool(grammar["massing"].get("has_setback")) and floors >= 3
+    standard_floors = max(0, floors - 1 - (1 if use_setback else 0))
+
+    assembled_meta = None
+    engine_used = None
+    if assembled:
+        reset_scene()
+        mats = build_materials(grammar)
+        stack: list[bpy.types.Object] = []
+        z = 0.0
+
+        def place(role: str, level: int) -> None:
+            nonlocal z
+            module = build_module(role, grammar, mats)
+            module.name = f"ASM_{role}_{level:02d}"
+            module.location.z = z
+            bpy.ops.object.select_all(action="DESELECT")
+            module.select_set(True)
+            bpy.context.view_layer.objects.active = module
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            stack.append(module)
+            z += dims[height_key[role]]
+
+        place("podium", 0)
+        for level in range(1, standard_floors + 1):
+            place("floor", level)
+        if use_setback:
+            place("setback", floors - 1)
+        place("roof", floors)
+
+        assembled_path = output / f"{family}_assembled.glb"
+        export_objects(assembled_path, stack)
+        assembled_meta = {
+            "filename": assembled_path.name,
+            "floors": floors,
+            "uses_setback": use_setback,
+            "height_m": round(z, 3),
+            "triangle_count": sum(triangle_count(obj) for obj in stack),
+        }
+        print(f"[blender_generate] exported {assembled_path.name} (height {z:.2f} m, {floors} floors)")
+
+        if thumbnail:
+            try:
+                engine_used = render_thumbnail(output / f"{family}_preview.png", z, max(dims["width_m"], dims["depth_m"]))
+                print(f"[blender_generate] rendered {family}_preview.png via {engine_used}")
+            except Exception as exc:  # pragma: no cover - render backends vary by machine
+                print(f"[blender_generate] WARNING: thumbnail render failed: {exc}")
+
+        if keep_blend:
+            blend_path = output / f"{family}.blend"
+            bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
+            print(f"[blender_generate] saved {blend_path.name}")
+
+    manifest = {
+        "manifest_schema": 2,
+        "grammar_schema_version": grammar["schema_version"],
+        "generator": {
+            "name": "archetype_compiler/blender_generate.py",
+            "version": GENERATOR_VERSION,
+            "blender_version": bpy.app.version_string,
+            "render_engine": engine_used,
+        },
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "family": family,
+        "archetype_id": source["archetype_id"],
+        "archetype_label": source.get("archetype_label"),
+        "variant_id": source.get("variant_id"),
+        "generation_archetype_id": source.get("generation_archetype_id"),
+        "aesthetic_category_id": source.get("aesthetic_category_id"),
+        "development_type": source.get("development_type"),
+        "reuse_keys": source.get("reuse_keys", []),
+        "generation_tags": source.get("generation_tags", []),
+        "coordinate_contract": {
+            "units": "metres",
+            "blender_up": "+Z",
+            "gltf_up": "+Y (export_yup)",
+            "origin": "bottom centre",
+            "front_facade": "-Y in Blender, +Z in glTF",
+            "transforms": "applied",
+        },
+        "dimensions": dims,
+        "min_floors": dims["min_floors"],
+        "max_floors": dims["max_floors"],
+        "default_floors": dims["default_floors"],
+        "modules": manifest_modules,
+        "assembled": assembled_meta,
+        "thumbnail": f"{family}_preview.png" if (assembled and thumbnail) else None,
+    }
+    manifest_path = output / f"{family}_manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    print(f"[blender_generate] wrote {manifest_path.name}")
 
 
-def main():
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(prog="blender_generate.py")
+    parser.add_argument("--grammar", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--floors", type=int, default=None, help="assembled preview floor count override")
+    parser.add_argument("--keep-blend", action="store_true")
+    parser.add_argument("--no-thumbnail", action="store_true")
+    parser.add_argument("--no-assembled", action="store_true")
+    return parser.parse_args(argv)
+
+
+def main() -> None:
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
-    if len(argv) != 2:
-        raise SystemExit("Usage: blender --background --python blender_generate.py -- grammar.json output_dir")
-    grammar = json.loads(Path(argv[0]).read_text(encoding="utf-8"))
-    generate(grammar, Path(argv[1]))
+    args = parse_args(argv)
+    grammar = json.loads(args.grammar.resolve().read_text(encoding="utf-8"))
+    generate(
+        grammar,
+        # Blender resolves relative paths against its own notion of cwd/blend dir,
+        # so everything downstream must see absolute paths.
+        args.output.resolve(),
+        floors_override=args.floors,
+        keep_blend=args.keep_blend,
+        thumbnail=not args.no_thumbnail,
+        assembled=not args.no_assembled,
+    )
 
 
 if __name__ == "__main__":
