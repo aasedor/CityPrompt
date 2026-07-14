@@ -1,48 +1,139 @@
 # Archetype Compiler
 
-This experiment converts the existing Urban Intelligence DNA / `generation_style_input` payload into a deterministic building grammar, then runs Blender headlessly to create reusable GLB modules.
-
-## Pipeline
+Turns a **real** building archetype from the SiteForge catalogue into a family of
+reusable GLB modules (podium / repeatable floor / setback / roof), an assembled
+preview building, and a preview render — deterministically, with Blender running
+headless. The generated family is what the LEGO assembly planner
+(`/api/v1/lego-assembly/plan`) stacks into buildings.
 
 ```text
-Urban Intelligence DNA JSON
-  -> compiler.py
-  -> BuildingGrammar JSON
-  -> blender_generate.py
-  -> podium / floor / setback / roof GLBs + manifest
-  -> LEGO assembly model-library metadata
+buildingArchetypes.json + aestheticCatalog.ts   (existing source of truth)
+        │  export_catalog.ts (vite-node — runs the app's own derivation code)
+        ▼
+archetype-source.json                            (full Urban Intelligence payload)
+        │  compiler.py (deterministic derivation, every decision logged)
+        ▼
+grammar.json                                     (Building Grammar, schema v1)
+        │  blender_generate.py (Blender 4.x/5.x headless)
+        ▼
+<family>_podium/floor/setback/roof.glb + <family>_assembled.glb + preview.png + manifest
+        │  validate_outputs.py (trimesh)
+        ▼
+validation_report.json                           (pass/fail gates the pipeline)
+        │  import_manifest.py → POST /api/v1/lego-assembly/import-manifest
+        ▼
+ModelLibraryEntry rows with metadata.lego        (planner-ready modules)
 ```
 
-The compiler preserves the existing archetype ID and `downstreamHints.reuseKeys`; these are the matching keys used by the LEGO assembly API. It also reads existing footprint ranges, floor ranges, style profile, palette and facade detail when available.
+## One command
 
-## Run locally
+Windows (friendly wrapper — checks Python/Node, installs frontend deps, finds Blender):
+
+```powershell
+.\scripts\generate-archetype-family.ps1 -ArchetypeId "nordic_timber_midrise"
+```
+
+Direct (any OS):
 
 ```bash
-cd tools/archetype_compiler
-python compiler.py examples/nordic_mixed_use.json build/nordic_mixed_use_grammar.json
-blender --background --python blender_generate.py -- build/nordic_mixed_use_grammar.json build/nordic_mixed_use
+python tools/archetype_compiler/generate_family.py --archetype-id nordic_timber_midrise
 ```
 
-Outputs:
+Useful flags: `--variant-id nordic_timber_charred_wood`, `--floors 6`, `--width 24
+--depth 18` (clamped to catalogue bounds), `--output <dir>`, `--blender-path <exe>`,
+`--skip-thumbnail`, `--keep-blend`, `--verbose` (prints every derivation note).
 
-```text
-build/nordic_mixed_use/
-  nordic-mixed-use_podium.glb
-  nordic-mixed-use_floor.glb
-  nordic-mixed-use_setback.glb
-  nordic-mixed-use_roof.glb
-  nordic-mixed-use_manifest.json
+List every archetype id (223 buildings):
+
+```powershell
+.\scripts\generate-archetype-family.ps1 -List
+# or: cd frontend && npx vite-node ../tools/archetype_compiler/export_catalog.ts -- --list
 ```
 
-## Important status
+Register the generated family in the model library (backend must be running):
 
-This is a first-pass procedural generator intended to prove scale, origins, stacking, archetype matching and browser export. The generated architecture is intentionally clean and simple. Production families will need richer facade grammar, texture atlases, horizontal bay composition, LOD generation, mesh optimization and visual review in the Google Tiles scene.
+```bash
+python tools/archetype_compiler/import_manifest.py build/archetypes/nordic_timber_midrise \
+  --email you@example.com --password ...   # or --token / SITEFORGE_TOKEN
+```
+
+## How catalogue data maps to grammar
+
+| Catalogue field | Grammar effect |
+|---|---|
+| `suggestedWidth_m` / `suggestedDepth_m` (+min/max) | module footprint; CLI overrides are clamped to the catalogue bounds |
+| `minFloors` / `maxFloors` | floor range; default = midpoint |
+| `suggestedFloorHeight` | floor height; podium = 4.5 m (retail) or ~1.25× floor height |
+| `developmentType` / `generationTags` / `facadeDetail.groundFloor` | retail storefront podium vs residential lobby podium |
+| `facadeDetail.primaryMaterial` etc. (prose) | keyword → PBR colour table (shou sugi ban → charcoal, CLT → warm timber, white plaster → off-white, …) |
+| `palette.window` | glass colour |
+| `roofDetail.form` / `styleProfile.roofForm` | flat / gabled / mono-pitch (+ parapet) |
+| `roofDetail.material`/`features` | green roof, mechanical screen |
+| `styleProfile.massing` + floors | setback floor on/off |
+| residential type or balcony prose | balcony mode (projecting/recessed) + frequency |
+| `generationStyleInput.downstreamHints.reuseKeys` | preserved verbatim into grammar, manifest, and library metadata |
+
+Every decision is written to `grammar.json` → `notes[]` so you can trace a wall
+colour back to the catalogue sentence that produced it.
 
 ## Coordinate contract
 
-- metres
-- Z up in Blender source
-- origin at bottom centre of every module
-- front facade at negative Y in Blender
-- identical footprint for podium, standard floor and roof unless the setback role is used
-- transforms applied during GLB export
+- metres; Blender source is **Z-up**; GLB export uses `export_yup=True`
+- origin at **bottom centre** of every module (geometry spans ±w/2 × ±d/2 × [0,h])
+- front facade faces **−Y in Blender** → **+Z in glTF** (toward the default three.js camera)
+- transforms applied; one mesh node per module (`MOD_Podium`, `MOD_Floor`,
+  `MOD_Setback`, `MOD_Roof`); materials named `MAT_*`
+- bottom must sit within ±0.02 m of 0 (validated)
+- footprint tolerance ±0.6 m; balconies may protrude the front up to 3 m; roof
+  eaves may overhang up to 1.2 m (validated)
+
+## Blender discovery
+
+Order: `--blender-path` → `BLENDER_PATH` env var → `C:\Program Files\Blender
+Foundation\Blender *\blender.exe` (highest version wins) → `/Applications/Blender.app`
+→ `blender` on PATH. Tested on Blender 5.1; anything ≥4.2 should work.
+
+## Expected output files
+
+```
+build/archetypes/<archetype-id>[--<variant-id>]/
+  archetype-source.json      exported catalogue payload
+  grammar.json               compiled Building Grammar (with notes[])
+  <family>_podium.glb        \
+  <family>_floor.glb          |  one mesh node each, bottom-centre origin
+  <family>_setback.glb        |
+  <family>_roof.glb          /
+  <family>_assembled.glb     podium + floors (+setback) + roof stack
+  <family>_preview.png       three-quarter daylight render (EEVEE)
+  <family>_manifest.json     module metadata + provenance + coordinate contract
+  validation_report.json     pass/fail + measured extents
+  logs/blender.log           full Blender output
+```
+
+## Tests
+
+```bash
+backend/.venv/Scripts/python -m pytest tools/archetype_compiler/tests/ -v
+```
+
+Unit tests always run; the export+compile smoke needs `frontend/node_modules`;
+the full-pipeline smoke additionally needs Blender (skipped otherwise).
+
+## Troubleshooting
+
+- **"frontend dependencies are not installed"** → `cd frontend && npm install`
+  (the .ps1 wrapper does this automatically).
+- **"Blender was not found"** → install from blender.org or `set BLENDER_PATH=...`.
+- **Validation FAIL** → read `validation_report.json`; each error names the file
+  and the measured vs expected number. `logs/blender.log` has the full trace.
+- **Garbled characters in the console** → cosmetic; the tools force UTF-8 where
+  possible, but some archetype labels contain unicode dashes.
+
+## Known visual limitations (first pass, by design)
+
+Flat-colour PBR materials (no textures/atlases yet); balconies are solid-panel
+only; recessed balcony mode renders as plain windows; no horizontal bay
+composition (left/corner/right modules); no LODs; window glass uses the
+catalogue palette colour which can read pale; gabled roofs are simple prisms.
+The goal of this phase is scale/origin/stacking/style-routing proof, not final
+architecture.

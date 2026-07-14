@@ -111,14 +111,52 @@ The experimental planner rejects a family when fitting the podium would require
 more than 20% scaling in either footprint dimension. This avoids the stretched
 windows and doors that make generated assets look clunky.
 
+## The Archetype Compiler (local module generation)
+
+Modules no longer need to be authored by hand. One command generates a full
+family from a real catalogue archetype, headlessly, in Blender:
+
+```powershell
+.\scripts\generate-archetype-family.ps1 -ArchetypeId "nordic_timber_midrise"
+```
+
+and one command registers it in the model library with all `metadata.lego`
+fields filled in:
+
+```powershell
+python tools\archetype_compiler\import_manifest.py build\archetypes\nordic_timber_midrise --email ... --password ...
+```
+
+See `tools/archetype_compiler/README.md` (pipeline internals, coordinate
+contract, catalogue→grammar mapping) and
+`docs/GENERATE_YOUR_FIRST_ARCHETYPE_FAMILY.md` (step-by-step user guide).
+
+## Persisted assembly recipes
+
+Accepted assemblies are stored on the building without touching the
+Meshy/Tripo `model_url` workflow, namespaced inside `Building.specifications`:
+
+```json
+{ "legoAssembly": { "schemaVersion": 1, "moduleFamily": "...", "instances": [], "target": {} } }
+```
+
+Endpoints: `POST/GET/DELETE /api/v1/lego-assembly/recipes/{building_id}`.
+Clearing a recipe leaves every other specification field intact.
+
+## Status (2026-07-13)
+
+Done: compiler pipeline (export → grammar → Blender → validation), one-command
+scripts, manifest import into the model library, composer reachable from the
+zone panel, recipe persistence, tests (compiler unit + smoke, backend API,
+frontend build/typecheck).
+
 ## Next steps
 
-1. Wire `LegoAssemblyPreview` to `ZonePropertiesPanel.onOpenBlockEditor`.
-2. Add a small admin editor for module metadata and GLB dimensions.
-3. Add geospatial placement in the main Google Tiles scene.
-4. Persist selected recipes against a building.
-5. Add horizontal left/centre/right façade modules.
-6. Add a worker that bakes accepted recipes into one optimized GLB and creates LODs.
+1. Geospatial placement of assembled recipes in the main Google Tiles scene.
+2. Horizontal left/centre/right façade modules (corner conditions).
+3. A worker that bakes accepted recipes into one optimized GLB and creates LODs.
+4. Texture atlases / richer materials for the generated modules.
+5. A small admin editor for module metadata and GLB dimensions.
 
 ## Asset authoring conventions
 
