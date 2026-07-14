@@ -1988,6 +1988,19 @@ const resolveOptionCategory = (
           );
         })()}
 
+        {/* Build with LEGO modules ? modular assembly composer */}
+        {onOpenBlockEditor
+          && ((['building', 'residential', 'development_area', 'development'] as string[]).includes(zone.zone_type)
+            || !!props.development_archetype_id) && (
+          <button
+            onClick={onOpenBlockEditor}
+            className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase text-[#151515] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#d9ff70]"
+          >
+            <Box size={12} />
+            Build with LEGO modules
+          </button>
+        )}
+
         {/* Preview History ? buildable zones */}
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
           <PreviewHistorySection zone={zone} />

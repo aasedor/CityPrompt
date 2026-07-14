@@ -58,6 +58,28 @@ export interface LegoPlanRequest {
   archetype_id?: string;
   reuse_keys?: string[];
   preferred_family?: string;
+  /** Allow the planner to use setback modules (default true on the backend). */
+  allow_setback?: boolean;
+}
+
+/**
+ * Persisted assembly recipe attached to a generated building. Mirrors the
+ * backend contract for /api/v1/lego-assembly/recipes/{building_id}.
+ */
+export interface LegoAssemblyRecipe {
+  schema_version: 1;
+  module_family: string;
+  archetype_id?: string | null;
+  reuse_keys: string[];
+  target: {
+    width_m: number;
+    depth_m: number;
+    floors: number;
+  };
+  instances: LegoAssemblyInstance[];
+  assembled_height_m?: number | null;
+  fit?: LegoAssemblyPlan['fit'] | null;
+  assembled_preview_url?: string | null;
 }
 
 /**
@@ -104,6 +126,25 @@ export const legoAssemblyApi = {
   async plan(request: LegoPlanRequest): Promise<LegoAssemblyPlan> {
     const response = await api.post<LegoAssemblyPlan>('/api/v1/lego-assembly/plan', request);
     return response.data;
+  },
+
+  async saveRecipe(buildingId: string, recipe: LegoAssemblyRecipe): Promise<LegoAssemblyRecipe> {
+    const response = await api.post<{ status: string; building_id: string; legoAssembly: LegoAssemblyRecipe }>(
+      `/api/v1/lego-assembly/recipes/${buildingId}`,
+      recipe,
+    );
+    return response.data.legoAssembly;
+  },
+
+  async getRecipe(buildingId: string): Promise<LegoAssemblyRecipe | null> {
+    const response = await api.get<{ legoAssembly: LegoAssemblyRecipe | null }>(
+      `/api/v1/lego-assembly/recipes/${buildingId}`,
+    );
+    return response.data.legoAssembly;
+  },
+
+  async clearRecipe(buildingId: string): Promise<void> {
+    await api.delete(`/api/v1/lego-assembly/recipes/${buildingId}`);
   },
 
   async configureModule(

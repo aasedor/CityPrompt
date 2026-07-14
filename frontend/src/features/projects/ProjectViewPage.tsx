@@ -4,8 +4,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
-import type { SavedRender } from '@/types';
+import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
+import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
@@ -41,6 +42,7 @@ export function ProjectViewPage() {
   const [showAddBuilding, setShowAddBuilding] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
+  const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
   const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
@@ -677,6 +679,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onOpenBlockEditor={() => setLegoZone(selectedZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />
@@ -835,6 +838,15 @@ export function ProjectViewPage() {
             onClose={() => setRenderEditTarget(null)}
           />
         )}
+
+        {/* LEGO assembly composer — modular building preview + saved recipes */}
+        {legoZone && (
+          <LegoAssemblyPreview
+            zone={legoZone}
+            buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
+            onClose={() => setLegoZone(null)}
+          />
+        )}
       </div>
     );
   }
@@ -934,6 +946,7 @@ export function ProjectViewPage() {
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
               onClose={() => selectZone(null)}
               onAIGenerate={(buildingId) => setAiGenerateBuildingId(buildingId)}
+              onOpenBlockEditor={() => setLegoZone(selectedZone)}
               buildings={project.buildings}
               allZones={siteZones}
             />
@@ -1086,6 +1099,14 @@ export function ProjectViewPage() {
                 queryClient.invalidateQueries({ queryKey: ['project', id] });
                 setAiGenerateBuildingId(null);
               }}
+            />
+          )}
+          {/* LEGO assembly composer — modular building preview + saved recipes */}
+          {legoZone && (
+            <LegoAssemblyPreview
+              zone={legoZone}
+              buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
+              onClose={() => setLegoZone(null)}
             />
           )}
         </div>
