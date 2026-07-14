@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, ImageDown, Camera, Tag } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, ExternalLink, LayoutGrid, List, Sparkles, BookmarkPlus, Camera, Tag } from 'lucide-react';
 import toast from 'react-hot-toast';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';

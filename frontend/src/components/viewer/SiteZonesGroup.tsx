@@ -412,6 +412,7 @@ function SiteBoundaryZone({
   }, [geometry]);
 
   return (
+    // @ts-expect-error R3F line type conflict — JSX <line> resolves to SVG typings here
     <line ref={lineRef as React.RefObject<THREE.Line>} geometry={geometry}>
       <lineDashedMaterial
         color={zone.color || '#f59e0b'}
@@ -791,7 +792,6 @@ function PolygonDoor({ wall, doorColor, frameColor }: { wall: WallSegment; doorC
 
 function PolygonFloorDividers({
   walls,
-  height,
   floors,
   floorHeight,
   color,
@@ -1940,6 +1940,7 @@ function RoadZone({
 
       {/* Center line stripe — fallback for odd lane counts with lane markings */}
       {showCenterLine && !centerDividerGeo && centerLineGeometry && (
+        // @ts-expect-error R3F line type conflict — JSX <line> resolves to SVG typings here
         <line geometry={centerLineGeometry}>
           <lineBasicMaterial color={surfaceMat.lineColor || '#e0e0e0'} transparent opacity={0.7} />
         </line>
@@ -2746,7 +2747,6 @@ function PerimeterLightPoles({ points2D }: { points2D: THREE.Vector2[] }) {
 // =============================================================================
 
 function ParkingZone({
-  zone,
   points2D,
 }: {
   zone: SiteZone;
@@ -2880,7 +2880,6 @@ function ParkingZone({
 // =============================================================================
 
 function WaterZone({
-  zone,
   points2D,
 }: {
   zone: SiteZone;

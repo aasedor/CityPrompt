@@ -55,8 +55,9 @@ export function SceneSettledMonitor({ onSettledChange, debounceMs = 500 }: Scene
     tiles.addEventListener('tiles-load-end', handleLoadEnd);
     tiles.addEventListener('tiles-load-start', handleLoadStart);
 
-    // Check initial state
-    if (!tiles.isLoading) {
+    // Check initial state. isLoading exists at runtime (TilesRendererBase.js)
+    // but is missing from the package's type declarations.
+    if (!(tiles as unknown as { isLoading?: boolean }).isLoading) {
       handleLoadEnd();
     }
 

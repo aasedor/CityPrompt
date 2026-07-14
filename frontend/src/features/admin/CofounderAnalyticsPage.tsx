@@ -56,7 +56,7 @@ export function CofounderAnalyticsPage() {
   const [apiBalancesLoading, setApiBalancesLoading] = useState(true);
 
   const [apiUsage, setApiUsage] = useState<ApiUsageResponse | null>(null);
-  const [apiUsageLoading, setApiUsageLoading] = useState(true);
+  const [, setApiUsageLoading] = useState(true);
   const [apiUsageRange, setApiUsageRange] = useState('30d');
 
   const [platformSettings, setPlatformSettings] = useState<PlatformSettings | null>(null);

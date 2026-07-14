@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Project, Building, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, SiteMassingOption } from '@/types';
+import type { Project, ViewerSettings, CameraMode, CameraPreset, CameraPresetConfig, MeasurementMode, MeasurementUnit, SiteZoneType, SiteZoneProperties, LayoutOption, OSMContext, LockedLayers, MasterPlan3DGenerateResponse, MasterPlan3DLightingVariant, MasterPlan3DScope, MasterPlan3DScenePerspective, SiteMassingOption } from '@/types';
 import type { AuthUser } from '@/services/api';
 
 // Re-export undo/redo store
@@ -395,7 +395,7 @@ export const useViewerStore = create<ViewerState>((set) => ({
   walkthroughReturnPos: null,
   walkthroughReturnTarget: null,
   startWalkthrough: (streetPos, lookAt) =>
-    set((state) => ({
+    set(() => ({
       isWalkthroughActive: true,
       walkthroughReturnPos: streetPos,
       walkthroughReturnTarget: lookAt,

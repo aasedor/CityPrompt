@@ -30,7 +30,9 @@ export function SitePlanDiagram({
   const coords = zone.coordinates;
 
   const transform = useMemo(
-    () => coords && coords.length >= 3 ? computeTransform(coords, width, height) : { ox: 0, oy: 0, scale: 1, mlon: 1, mlat: 1 },
+    () => coords && coords.length >= 3
+      ? computeTransform(coords, width, height)
+      : { cx: 0, cy: 0, mlon: 1, mlat: 1, scale: 1, offsetX: 0, offsetY: 0, svgW: width, svgH: height },
     [coords, width, height],
   );
 

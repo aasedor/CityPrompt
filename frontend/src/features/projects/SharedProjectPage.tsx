@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Eye, Loader2 } from 'lucide-react';
+import { Eye, Loader2 } from 'lucide-react';
 import { sharesApi } from '@/services/api';
 
 export function SharedProjectPage() {

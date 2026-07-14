@@ -859,6 +859,8 @@ export interface AdminUser {
   last_login_at?: string;
   project_count: number;
   render_credits: number;
+  /** Set by the backend when a promotion succeeded but the welcome email failed to send. */
+  _email_failed?: boolean;
 }
 
 export interface AdminUserUpdate {
@@ -947,6 +949,11 @@ export const adminApi = {
 
   updateUser: async (userId: string, update: AdminUserUpdate): Promise<AdminUser> => {
     const { data } = await api.put(`/api/v1/admin/users/${userId}`, update);
+    return data;
+  },
+
+  confirmRoleChange: async (token: string): Promise<AdminUser> => {
+    const { data } = await api.post('/api/v1/admin/confirm-role-change', { token });
     return data;
   },
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { useAuthStore } from './index';
 
 // Mock localStorage
@@ -32,7 +32,7 @@ describe('AuthStore', () => {
   });
 
   it('sets user and marks as authenticated', () => {
-    const user = { id: '1', email: 'a@b.com', full_name: 'Test', role: 'editor', is_active: true };
+    const user = { id: '1', email: 'a@b.com', full_name: 'Test', role: 'editor', is_active: true, render_credits: 100, created_at: new Date().toISOString() };
     useAuthStore.getState().setUser(user);
     const state = useAuthStore.getState();
     expect(state.user).toEqual(user);
@@ -41,7 +41,7 @@ describe('AuthStore', () => {
   });
 
   it('sets null user to unauthenticated', () => {
-    const user = { id: '1', email: 'a@b.com', full_name: null, role: 'editor', is_active: true };
+    const user = { id: '1', email: 'a@b.com', full_name: undefined, role: 'editor', is_active: true, render_credits: 100, created_at: new Date().toISOString() };
     useAuthStore.getState().setUser(user);
     useAuthStore.getState().setUser(null);
     const state = useAuthStore.getState();
@@ -52,7 +52,7 @@ describe('AuthStore', () => {
   it('logout clears tokens from localStorage', () => {
     localStorageMock.setItem('access_token', 'tok1');
     localStorageMock.setItem('refresh_token', 'tok2');
-    const user = { id: '1', email: 'a@b.com', full_name: null, role: 'editor', is_active: true };
+    const user = { id: '1', email: 'a@b.com', full_name: undefined, role: 'editor', is_active: true, render_credits: 100, created_at: new Date().toISOString() };
     useAuthStore.getState().setUser(user);
 
     useAuthStore.getState().logout();

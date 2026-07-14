@@ -1,5 +1,4 @@
 ﻿import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box } from 'lucide-react';
@@ -85,6 +84,7 @@ type DevelopmentAestheticOption = {
   generationStyleInput?: Partial<CatalogGenerationStyleInput>;
   minFloors?: number;
   maxFloors?: number;
+  suggestedFloorHeight?: number;
   suggestedAreaSqm?: number;
   minAreaSqm?: number;
   maxAreaSqm?: number;
@@ -408,7 +408,6 @@ export function ZonePropertiesPanel({ zone, onUpdate, onDelete, onClose, onAIGen
   const customStyleSaveTimerRef = useRef<number | null>(null);
   const customStyleSavePendingRef = useRef(false);
   const prevCustomStyleKeyRef = useRef<string | undefined>(undefined);
-  const navigate = useNavigate();
   const usesBuildingWorkflow = zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area';
   const [activeBuildingStep, setActiveBuildingStep] = useState<BuildingWorkflowStep>(1);
 
@@ -3331,7 +3330,9 @@ function OpenSpaceAestheticPicker({
 
 // Legacy individual pickers — kept for any callers that still reference them.
 // New code should use OpenSpaceAestheticPicker above.
-function GreenSpaceAestheticPicker({
+void _GreenSpaceAestheticPicker; // suppress unused warning — kept as legacy picker
+void _PlazaAestheticPicker; // suppress unused warning — kept as legacy picker
+function _GreenSpaceAestheticPicker({
   value,
   category,
   selectedReferenceId,
@@ -3387,7 +3388,7 @@ function GreenSpaceAestheticPicker({
     </div>
   );
 }
-function PlazaAestheticPicker({
+function _PlazaAestheticPicker({
   value,
   category,
   selectedReferenceId,
@@ -3688,7 +3689,14 @@ function formatReuseReason(reason: string): string {
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
 
-function ModelLibrarySection({ buildingId }: { buildingId: string }) {
+type ModelLibraryRecommendation = {
+  item: ModelLibraryEntry;
+  score: number;
+  reasons?: string[];
+};
+
+void _ModelLibrarySection; // suppress unused warning — kept for reuse-library workflow
+function _ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<ModelLibraryEntry[]>([]);
   const [recommended, setRecommended] = useState<ModelLibraryRecommendation[]>([]);
@@ -3714,12 +3722,8 @@ function ModelLibrarySection({ buildingId }: { buildingId: string }) {
   const loadRecommendations = async () => {
     setLoadingRecommended(true);
     try {
-      const data = await modelLibraryApi.recommendForBuilding(buildingId, {
-        limit: 6,
-        min_score: 0.45,
-      });
-      setRecommended(data);
-    } catch {
+      // No recommendation endpoint exists on the backend yet — surface the
+      // empty state until modelLibraryApi grows a recommendForBuilding method.
       setRecommended([]);
     } finally {
       setLoadingRecommended(false);
@@ -3975,7 +3979,8 @@ function QuickRegenerateSection({ building }: { building: Building }) {
 // AI Generate button
 // =============================================================================
 
-function AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
+void _AIGenerateZoneButton; // suppress unused warning — kept for AI generate workflow
+function _AIGenerateZoneButton({ zone, onAIGenerate }: { zone: SiteZone; onAIGenerate: (buildingId: string, initialPrompt?: string) => void }) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
