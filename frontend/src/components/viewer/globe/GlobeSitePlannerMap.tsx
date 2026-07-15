@@ -32,6 +32,8 @@ import { ZONE_TYPE_CONFIG } from '@/types';
 import { useViewerStore } from '@/store';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeBuildingModelsLayer } from './GlobeBuildingModelsLayer';
+import { GlobeLegoAssemblyLayer } from './GlobeLegoAssemblyLayer';
+import { excludeLegoStackBuildings, hasLegoRecipe } from './legoGlobePlacement';
 import { GlobeStreetDetailLayer } from './GlobeStreetDetailLayer';
 import { GlobeParkKitLayer } from './GlobeParkKitLayer';
 import { GlobeEditMode } from './GlobeEditMode';
@@ -1388,11 +1390,33 @@ export function GlobeSitePlannerMap({
   // while a model is actually mounted.
   const [buildingModelsVisible, setBuildingModelsVisible] = useState(true);
   const [modeledBuildingIds, setModeledBuildingIds] = useState<Set<string>>(() => new Set());
-  const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url));
-  const handleModeledIdsChange = useCallback((ids: Set<string>) => {
-    setModeledBuildingIds(ids);
-    onModeledBuildingsChange?.(ids);
-  }, [onModeledBuildingsChange]);
+  const [legoBuildingIds, setLegoBuildingIds] = useState<Set<string>>(() => new Set());
+  // Coexistence: a building with a renderable LEGO recipe renders as a module
+  // stack — it is excluded from the Meshy model layer (the stack wins).
+  // Buildings with any saved recipe (footprint or not) mount the LEGO layer,
+  // which itself skips + debug-counts the footprint-less ones.
+  const meshyBuildings = useMemo(
+    () => excludeLegoStackBuildings(buildings ?? []),
+    [buildings],
+  );
+  const legoRecipeBuildings = useMemo(
+    () => (buildings ?? []).filter(hasLegoRecipe),
+    [buildings],
+  );
+  const hasPlaceableModels = Boolean(buildings?.some((b) => b.lod_urls?.['0'] ?? b.model_url))
+    || legoRecipeBuildings.length > 0;
+  // Prism suppression + outward "has real 3D massing" set = Meshy ∪ LEGO.
+  const suppressedBuildingIds = useMemo(() => {
+    if (legoBuildingIds.size === 0) return modeledBuildingIds;
+    const merged = new Set(modeledBuildingIds);
+    legoBuildingIds.forEach((id) => merged.add(id));
+    return merged;
+  }, [modeledBuildingIds, legoBuildingIds]);
+  useEffect(() => {
+    onModeledBuildingsChange?.(suppressedBuildingIds);
+  }, [suppressedBuildingIds, onModeledBuildingsChange]);
+  const handleModeledIdsChange = useCallback((ids: Set<string>) => setModeledBuildingIds(ids), []);
+  const handleLegoIdsChange = useCallback((ids: Set<string>) => setLegoBuildingIds(ids), []);
 
   // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
@@ -2771,7 +2795,7 @@ export function GlobeSitePlannerMap({
               terrainHeight={terrainElevation}
               onZoneClick={handleZoneMeshClick}
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
-              suppressedBuildingIds={modeledBuildingIds}
+              suppressedBuildingIds={suppressedBuildingIds}
             />
             {/* Procedural street 3D: curbs, centerline dashes, parametric
                 roundabouts — vector-driven detail on top of the road fills. */}
@@ -2787,12 +2811,25 @@ export function GlobeSitePlannerMap({
               on purpose: they're real massing and stay visible in AI-render
               captures. Conditional render (not `visible`) so toggling off
               unmounts the models and the prisms return automatically. */}
-          {buildingModelsVisible && buildings && buildings.length > 0 && (
+          {buildingModelsVisible && meshyBuildings.length > 0 && (
             <GlobeBuildingModelsLayer
-              buildings={buildings}
+              buildings={meshyBuildings}
               zones={siteZones}
               terrainHeight={terrainElevation}
               onLoadedIdsChange={handleModeledIdsChange}
+            />
+          )}
+
+          {/* Saved LEGO assembly recipes — module stacks at the building's
+              real footprint. Shares the 3D Models toggle with the Meshy
+              layer; a building with both a model and a recipe renders the
+              stack only (excluded from meshyBuildings above). */}
+          {buildingModelsVisible && legoRecipeBuildings.length > 0 && (
+            <GlobeLegoAssemblyLayer
+              buildings={legoRecipeBuildings}
+              zones={siteZones}
+              terrainHeight={terrainElevation}
+              onLoadedIdsChange={handleLegoIdsChange}
             />
           )}
 
