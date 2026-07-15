@@ -63,7 +63,9 @@ JPEG_QUALITY = 92
 TEXTURE_PROSE: dict[str, str] = {
     "charred_timber": "charred black shou-sugi-ban timber cladding, vertical board-on-board planks, subtle alligator-skin char",
     "black_metal": "matte charcoal-black architectural metal panels, fine vertical brushed grain, thin recessed panel joints",
-    "corrugated_steel": "galvanized corrugated steel cladding, regular vertical ribs, mid grey",
+    # distinctive wording on purpose: plain "galvanized corrugated steel" hits
+    # IMAGE_RECITATION every time (too close to ubiquitous stock textures)
+    "corrugated_steel": "industrial ribbed steel siding on a Canadian prairie workshop, vertical corrugations, cool grey zinc coating with faint weathering streaks",
     "corten_steel": "weathered corten steel plates, rust-orange patina with subtle vertical streaking, thin panel seams",
     "zinc": "blue-grey zinc facade cladding, flat-lock rectangular panels with staggered joints",
     "copper": "aged copper facade panels, warm russet brown with soft patina variation",
@@ -94,10 +96,19 @@ TEXTURE_PROSE: dict[str, str] = {
     "sedum_roof": "extensive sedum green roof carpet, mixed green and russet succulents, seen from directly above",
 }
 
-PROMPT_TEMPLATE = (
+# Attempt-indexed variants: recitation blocks (FinishReason.IMAGE_RECITATION)
+# happen when the output would match stock texture photos too closely, so each
+# retry rewords the request instead of repeating it verbatim.
+PROMPT_TEMPLATES = (
     "Seamless tileable texture of {prose}, photographed straight-on, even diffuse "
     "lighting, no shadows, no perspective, covering a 2 by 2 metre area of the "
-    "surface. The texture must tile seamlessly in both directions."
+    "surface. The texture must tile seamlessly in both directions.",
+    "Flat frontal close-up photograph of {prose} on a building, slightly weathered "
+    "with natural variation, overcast even light, no shadows or perspective, about "
+    "2 by 2 metres of the surface. The pattern must repeat seamlessly in both directions.",
+    "Architectural material swatch: {prose}, orthographic straight-on view filling "
+    "the whole frame, soft uniform illumination, subtle real-world imperfections, "
+    "roughly 2 metres of coverage. Edges must wrap so the image tiles perfectly.",
 )
 REFERENCE_SUFFIX = (
     " Match the colour and character of this material as it appears in the "
@@ -125,11 +136,11 @@ def load_api_key(cli_key: str | None) -> str:
     raise SystemExit("GEMINI_API_KEY not found (env, --api-key, or backend/.env)")
 
 
-def gemini_generate(client, prose: str, reference: Image.Image | None):
+def gemini_generate(client, prose: str, reference: Image.Image | None, variant: int = 0):
     """One generation call; returns (PIL image, prompt used)."""
     from google.genai import types
 
-    prompt = PROMPT_TEMPLATE.format(prose=prose)
+    prompt = PROMPT_TEMPLATES[variant % len(PROMPT_TEMPLATES)].format(prose=prose)
     contents: list = []
     if reference is not None:
         prompt += REFERENCE_SUFFIX
@@ -144,12 +155,19 @@ def gemini_generate(client, prose: str, reference: Image.Image | None):
             image_config=types.ImageConfig(aspect_ratio="1:1", image_size="1K"),
         ),
     )
+    texts: list[str] = []
     for candidate in response.candidates or []:
         for part in (candidate.content.parts if candidate.content else []) or []:
             inline = getattr(part, "inline_data", None)
             if inline and inline.data:
                 return Image.open(io.BytesIO(inline.data)).convert("RGB"), prompt
-    raise RuntimeError("Gemini returned no image part")
+            if getattr(part, "text", None):
+                texts.append(part.text.strip())
+    finish = ", ".join(str(c.finish_reason) for c in (response.candidates or []))
+    detail = f" finish_reason={finish}" if finish else ""
+    if texts:
+        detail += f" text={' | '.join(texts)[:200]!r}"
+    raise RuntimeError(f"Gemini returned no image part.{detail}")
 
 
 # ---------------------------------------------------------------------------
@@ -322,7 +340,15 @@ def generate_one(client, key: str, anchor: tuple[str, float], out_dir: Path,
     best_img, best_ratio, prompt_used = None, float("inf"), ""
 
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        image, prompt_used = gemini_generate(client, prose, reference)
+        try:
+            image, prompt_used = gemini_generate(client, prose, reference, variant=attempt - 1)
+        except RuntimeError as exc:
+            # Recitation blocks and empty responses burn the attempt; the next
+            # attempt uses a reworded prompt variant.
+            attempts.append({"attempt": attempt, "error": str(exc)[:160]})
+            print(f"  [{key}] attempt {attempt}: {exc}")
+            time.sleep(0.5)
+            continue
         if image.size != (TEXTURE_SIZE, TEXTURE_SIZE):
             image = image.resize((TEXTURE_SIZE, TEXTURE_SIZE), Image.LANCZOS)
         ratio = seam_ratio(flatten_lighting(image))
@@ -333,6 +359,9 @@ def generate_one(client, key: str, anchor: tuple[str, float], out_dir: Path,
         if ratio <= SEAM_REGEN:
             break
         time.sleep(0.5)
+
+    if best_img is None:
+        raise RuntimeError(f"all {MAX_ATTEMPTS} generation attempts failed (see manifest attempts)")
 
     return {
         "prompt": prompt_used,
