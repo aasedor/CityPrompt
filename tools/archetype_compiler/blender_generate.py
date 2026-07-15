@@ -28,8 +28,13 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.2.0"
+GENERATOR_VERSION = "0.3.0"
 SUPPORTED_SCHEMA_VERSION = 1
+
+# Set from CLI in main(); make_material reads them so build_materials stays a
+# pure function of the grammar.
+TEXTURES_DIR: Path | None = None
+UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
 
 
 # ---------------------------------------------------------------------------
@@ -65,15 +70,87 @@ def hex_rgba(value: str, alpha: float = 1.0) -> tuple[float, float, float, float
     return (lin(r), lin(g), lin(b), alpha)
 
 
+def _texture_set(texture_key: str | None) -> dict[str, Path] | None:
+    """Resolve a texture_key to its on-disk set; None when absent so the
+    pipeline keeps working with zero textures (flat-colour fallback)."""
+    if not texture_key or TEXTURES_DIR is None:
+        return None
+    tex_dir = TEXTURES_DIR / texture_key
+    albedo = tex_dir / "albedo.jpg"
+    if not albedo.exists():
+        return None
+    found = {"albedo": albedo}
+    for slot, filename in (("normal", "normal.png"), ("roughness", "roughness.jpg")):
+        path = tex_dir / filename
+        if path.exists():
+            found[slot] = path
+    return found
+
+
+def _load_image(path: Path, colorspace: str) -> bpy.types.Image:
+    image = bpy.data.images.load(str(path), check_existing=True)
+    image.colorspace_settings.name = colorspace
+    return image
+
+
 def make_material(name: str, spec: dict) -> bpy.types.Material:
+    """Principled material from a grammar spec. When the spec carries a
+    texture_key with generated files, wire albedo/normal/roughness image nodes
+    (UV layer "UVMap", box-projected at UV_TILE_METRES); else flat colour."""
     mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
     mat.use_nodes = True
-    bsdf = mat.node_tree.nodes.get("Principled BSDF")
+    nodes, links = mat.node_tree.nodes, mat.node_tree.links
+    # Rebuild from scratch: materials persist across module builds in one run,
+    # so leftover texture nodes from a previous grammar must not survive.
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    output.location = (420, 0)
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.location = (60, 0)
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+
     color = hex_rgba(spec.get("base_color", "#808080"))
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = float(spec.get("metallic", 0.0))
     bsdf.inputs["Roughness"].default_value = float(spec.get("roughness", 0.6))
     mat.diffuse_color = color  # viewport/solid fallback
+
+    if "texture_key" in mat:
+        del mat["texture_key"]  # material datablocks persist across builds
+    textures = _texture_set(spec.get("texture_key"))
+    if textures:
+        uv_node = nodes.new("ShaderNodeUVMap")
+        uv_node.uv_map = "UVMap"
+        uv_node.location = (-760, 0)
+
+        albedo_node = nodes.new("ShaderNodeTexImage")
+        albedo_node.name = albedo_node.label = "TEX_Albedo"
+        albedo_node.image = _load_image(textures["albedo"], "sRGB")
+        albedo_node.location = (-480, 260)
+        links.new(uv_node.outputs["UV"], albedo_node.inputs["Vector"])
+        links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
+
+        if "roughness" in textures:
+            rough_node = nodes.new("ShaderNodeTexImage")
+            rough_node.name = rough_node.label = "TEX_Roughness"
+            rough_node.image = _load_image(textures["roughness"], "Non-Color")
+            rough_node.location = (-480, -40)
+            links.new(uv_node.outputs["UV"], rough_node.inputs["Vector"])
+            links.new(rough_node.outputs["Color"], bsdf.inputs["Roughness"])
+
+        if "normal" in textures:
+            normal_tex = nodes.new("ShaderNodeTexImage")
+            normal_tex.name = normal_tex.label = "TEX_Normal"
+            normal_tex.image = _load_image(textures["normal"], "Non-Color")
+            normal_tex.location = (-480, -340)
+            links.new(uv_node.outputs["UV"], normal_tex.inputs["Vector"])
+            normal_map = nodes.new("ShaderNodeNormalMap")
+            normal_map.uv_map = "UVMap"
+            normal_map.location = (-180, -340)
+            links.new(normal_tex.outputs["Color"], normal_map.inputs["Color"])
+            links.new(normal_map.outputs["Normal"], bsdf.inputs["Normal"])
+
+        mat["texture_key"] = spec.get("texture_key")
     return mat
 
 
@@ -126,7 +203,108 @@ def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
     joined.name = name
     joined.data.name = name
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    apply_box_uv(joined)
     return joined
+
+
+def apply_box_uv(obj: bpy.types.Object, tile: float = UV_TILE_METRES) -> None:
+    """Deterministic box projection on UV layer "UVMap" (TEXCOORD_0): each face
+    maps by its dominant normal axis at real-world density (1 tile = ``tile`` m).
+    Runs after join_as, when transforms are applied, so coordinates are metric."""
+    mesh = obj.data
+    uv_layer = mesh.uv_layers.get("UVMap") or mesh.uv_layers.new(name="UVMap")
+    mesh.uv_layers.active = uv_layer
+    for poly in mesh.polygons:
+        n = poly.normal
+        ax, ay, az = abs(n.x), abs(n.y), abs(n.z)
+        for loop_index in poly.loop_indices:
+            co = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            if az >= ax and az >= ay:
+                u, v = co.x, co.y
+            elif ax >= ay:
+                u, v = co.y, co.z
+            else:
+                u, v = co.x, co.z
+            uv_layer.data[loop_index].uv = (u / tile, v / tile)
+
+
+def _gltf_output_group() -> bpy.types.NodeTree:
+    """The glTF exporter reads occlusion from a node group named
+    "glTF Material Output" with an input socket called "Occlusion"."""
+    tree = bpy.data.node_groups.get("glTF Material Output")
+    if tree is None:
+        tree = bpy.data.node_groups.new("glTF Material Output", "ShaderNodeTree")
+        tree.interface.new_socket("Occlusion", in_out="INPUT", socket_type="NodeSocketFloat")
+    return tree
+
+
+def bake_ao(obj: bpy.types.Object, resolution: int = 512, samples: int = 16) -> bool:
+    """Bake ambient occlusion for one joined module into a per-module map on a
+    second, non-overlapping UV layer (TEXCOORD_1) and wire it to the glTF
+    occlusion output so viewers apply it independently of the tiled albedo."""
+    mesh = obj.data
+    if not mesh.materials:
+        return False
+
+    # Non-overlapping unwrap on a dedicated layer; box UVs overlap by design.
+    ao_layer = mesh.uv_layers.get("AOMap") or mesh.uv_layers.new(name="AOMap")
+    mesh.uv_layers.active = ao_layer
+    bpy.ops.object.select_all(action="DESELECT")
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.smart_project(angle_limit=math.radians(66.0), island_margin=0.02, correct_aspect=True)
+    bpy.ops.object.mode_set(mode="OBJECT")
+
+    image = bpy.data.images.new(f"AO_{obj.name}", resolution, resolution, alpha=False)
+    image.colorspace_settings.name = "Non-Color"
+
+    for mat in mesh.materials:
+        nodes, links = mat.node_tree.nodes, mat.node_tree.links
+        for stale in [n for n in nodes if n.name.startswith("AO_BAKE")]:
+            nodes.remove(stale)
+        uv_node = nodes.new("ShaderNodeUVMap")
+        uv_node.name = "AO_BAKE_UV"
+        uv_node.uv_map = "AOMap"
+        uv_node.location = (-760, -640)
+        tex_node = nodes.new("ShaderNodeTexImage")
+        tex_node.name = "AO_BAKE_TEX"
+        tex_node.image = image
+        tex_node.location = (-480, -640)
+        links.new(uv_node.outputs["UV"], tex_node.inputs["Vector"])
+        group = nodes.new("ShaderNodeGroup")
+        group.name = "AO_BAKE_OUT"
+        group.node_tree = _gltf_output_group()
+        group.location = (-180, -640)
+        links.new(tex_node.outputs["Color"], group.inputs["Occlusion"])
+        # bake writes into each material's ACTIVE image texture node
+        for node in nodes:
+            node.select = node is tex_node
+        nodes.active = tex_node
+
+    scene = bpy.context.scene
+    previous_engine = scene.render.engine
+    try:
+        scene.render.engine = "CYCLES"
+        scene.cycles.samples = samples
+        scene.cycles.device = "CPU"
+        try:  # AO ray distance: architectural scale, not world-sized
+            scene.world.light_settings.distance = 10.0
+        except AttributeError:
+            pass
+        bpy.ops.object.bake(type="AO", margin=8, use_clear=True)
+        image.pack()
+        return True
+    except Exception as exc:  # pragma: no cover - depends on Cycles availability
+        print(f"[blender_generate] WARNING: AO bake failed for {obj.name}: {exc}")
+        for mat in mesh.materials:
+            nodes = mat.node_tree.nodes
+            for stale in [n for n in nodes if n.name.startswith("AO_BAKE")]:
+                nodes.remove(stale)
+        return False
+    finally:
+        scene.render.engine = previous_engine
 
 
 def _bays(length: float, bay_width: float) -> tuple[int, float]:
@@ -359,7 +537,7 @@ def export_objects(path: Path, objects: list[bpy.types.Object]) -> None:
     for obj in objects:
         obj.select_set(True)
     bpy.context.view_layer.objects.active = objects[0]
-    bpy.ops.export_scene.gltf(
+    kwargs = dict(
         filepath=str(path),
         export_format="GLB",
         use_selection=True,
@@ -368,7 +546,16 @@ def export_objects(path: Path, objects: list[bpy.types.Object]) -> None:
         export_cameras=False,
         export_lights=False,
         export_extras=True,
+        # JPEG keeps textured module GLBs well under the 8 MB budget; PNG
+        # albedo sets would triple it. AO/normal accept the mild loss.
+        export_image_format="JPEG",
+        export_jpeg_quality=85,
     )
+    try:
+        bpy.ops.export_scene.gltf(**kwargs)
+    except TypeError:  # older exporter without export_jpeg_quality
+        kwargs.pop("export_jpeg_quality", None)
+        bpy.ops.export_scene.gltf(**kwargs)
 
 
 def triangle_count(obj: bpy.types.Object) -> int:
@@ -451,7 +638,8 @@ def build_module(role: str, grammar: dict, mats: dict) -> bpy.types.Object:
 
 
 def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_blend: bool,
-             thumbnail: bool, assembled: bool) -> None:
+             thumbnail: bool, assembled: bool, ao: bool = True, ao_resolution: int = 512,
+             ao_samples: int = 16) -> None:
     if grammar.get("schema_version") != SUPPORTED_SCHEMA_VERSION:
         raise SystemExit(
             f"grammar schema_version={grammar.get('schema_version')!r} unsupported "
@@ -464,6 +652,13 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
     source = grammar["source"]
     output.mkdir(parents=True, exist_ok=True)
 
+    texture_keys_used = sorted({
+        spec.get("texture_key") for spec in grammar["materials"].values()
+        if _texture_set(spec.get("texture_key"))
+    })
+    print(f"[blender_generate] textures: {texture_keys_used or 'none (flat colours)'}"
+          f" from {TEXTURES_DIR}")
+
     roles = ["podium", "floor", "setback", "roof"]
     height_key = {
         "podium": "podium_height_m", "floor": "floor_height_m",
@@ -475,6 +670,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         reset_scene()
         mats = build_materials(grammar)
         module = build_module(role, grammar, mats)
+        ao_baked = bake_ao(module, ao_resolution, ao_samples) if ao else False
         glb_path = output / f"{family}_{role}.glb"
         export_objects(glb_path, [module])
         manifest_modules.append({
@@ -488,8 +684,12 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "repeatable_z": role == "floor",
             "triangle_count": triangle_count(module),
             "material_count": len(module.data.materials),
+            "texture_keys": texture_keys_used,
+            "ao_baked": ao_baked,
+            "size_bytes": glb_path.stat().st_size,
         })
-        print(f"[blender_generate] exported {glb_path.name} ({manifest_modules[-1]['triangle_count']} tris)")
+        print(f"[blender_generate] exported {glb_path.name} ({manifest_modules[-1]['triangle_count']} tris, "
+              f"{glb_path.stat().st_size // 1024} KB, ao={ao_baked})")
 
     # ---- assembled preview -------------------------------------------------
     floors = floors_override or dims["default_floors"]
@@ -573,6 +773,12 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "front_facade": "-Y in Blender, +Z in glTF",
             "transforms": "applied",
         },
+        "textures": {
+            "keys_used": texture_keys_used,
+            "uv_tile_metres": UV_TILE_METRES,
+            "ao_requested": ao,
+            "uv_layers": {"UVMap": "box projection, tiled materials", "AOMap": "smart project, baked AO"},
+        },
         "dimensions": dims,
         "min_floors": dims["min_floors"],
         "max_floors": dims["max_floors"],
@@ -594,12 +800,19 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--keep-blend", action="store_true")
     parser.add_argument("--no-thumbnail", action="store_true")
     parser.add_argument("--no-assembled", action="store_true")
+    parser.add_argument("--textures", type=Path, default=Path(__file__).resolve().parent / "textures",
+                        help="texture library root (generate_textures.py output)")
+    parser.add_argument("--no-ao", action="store_true", help="skip the Cycles AO bake (fast runs)")
+    parser.add_argument("--ao-resolution", type=int, default=512)
+    parser.add_argument("--ao-samples", type=int, default=16)
     return parser.parse_args(argv)
 
 
 def main() -> None:
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     args = parse_args(argv)
+    global TEXTURES_DIR
+    TEXTURES_DIR = args.textures.resolve() if args.textures else None
     grammar = json.loads(args.grammar.resolve().read_text(encoding="utf-8"))
     generate(
         grammar,
@@ -610,6 +823,9 @@ def main() -> None:
         keep_blend=args.keep_blend,
         thumbnail=not args.no_thumbnail,
         assembled=not args.no_assembled,
+        ao=not args.no_ao,
+        ao_resolution=args.ao_resolution,
+        ao_samples=args.ao_samples,
     )
 
 

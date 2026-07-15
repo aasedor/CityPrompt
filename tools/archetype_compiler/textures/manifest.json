@@ -1,0 +1,92 @@
+{
+  "charred_timber": {
+    "prompt": "Seamless tileable texture of charred black shou-sugi-ban timber cladding, vertical board-on-board planks, subtle alligator-skin char, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:22:36.766470+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.544
+      }
+    ],
+    "target_base_color": "#2e2a26",
+    "target_roughness": 0.62,
+    "seam_ratio_flattened": 1.544,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.11,
+    "mean_rgb": [
+      34,
+      35,
+      35
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 643
+  },
+  "buff_brick": {
+    "prompt": "Seamless tileable texture of buff cream-yellow brick wall in running bond, subtle tonal variation, light grey mortar joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:22:49.014688+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 1.284
+      }
+    ],
+    "target_base_color": "#c8a878",
+    "target_roughness": 0.85,
+    "seam_ratio_flattened": 1.284,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 1.292,
+    "mean_rgb": [
+      208,
+      181,
+      144
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 631
+  },
+  "zinc": {
+    "prompt": "Seamless tileable texture of blue-grey zinc facade cladding, flat-lock rectangular panels with staggered joints, photographed straight-on, even diffuse lighting, no shadows, no perspective, covering a 2 by 2 metre area of the surface. The texture must tile seamlessly in both directions.",
+    "model": "gemini-3.1-flash-image",
+    "created_at": "2026-07-15T02:23:00.113477+00:00",
+    "reference_image": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "seam_ratio_flattened": 2.484
+      }
+    ],
+    "target_base_color": "#8d939a",
+    "target_roughness": 0.45,
+    "seam_ratio_flattened": 2.484,
+    "seam_method": "cross_blend",
+    "seam_feather": 0.09,
+    "seam_ratio_final": 2.868,
+    "mean_rgb": [
+      111,
+      131,
+      146
+    ],
+    "files": {
+      "albedo": "albedo.jpg",
+      "normal": "normal.png",
+      "roughness": "roughness.jpg",
+      "raw": "raw.jpg"
+    },
+    "size_kb": 370
+  }
+}

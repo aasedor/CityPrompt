@@ -105,6 +105,9 @@ def main() -> None:
     parser.add_argument("--blender-path", default=None)
     parser.add_argument("--skip-thumbnail", action="store_true")
     parser.add_argument("--keep-blend", action="store_true")
+    parser.add_argument("--no-ao", action="store_true", help="skip the Cycles AO bake (fast runs)")
+    parser.add_argument("--textures", type=Path, default=None,
+                        help="texture library root (default: tools/archetype_compiler/textures)")
     parser.add_argument("--skip-validation", action="store_true")
     parser.add_argument("--no-auto-install", action="store_true", help="don't pip-install validation deps automatically")
     parser.add_argument("--verbose", action="store_true")
@@ -158,6 +161,10 @@ def main() -> None:
         blender_cmd += ["--keep-blend"]
     if args.skip_thumbnail:
         blender_cmd += ["--no-thumbnail"]
+    if args.no_ao:
+        blender_cmd += ["--no-ao"]
+    if args.textures:
+        blender_cmd += ["--textures", str(args.textures.resolve())]
     result = run(blender_cmd, cwd=REPO_ROOT, step="blender", log_file=logs_dir / "blender.log")
     for line in (result.stdout or "").splitlines():
         if "[blender_generate]" in line:

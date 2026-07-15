@@ -44,6 +44,7 @@ HEIGHT_TOLERANCE_M = 1.2             # parapets/mech screens rise above nominal 
 MAX_EXTENT_M = 500.0
 TRIANGLE_WARN_THRESHOLD = 80_000
 MATERIAL_WARN_THRESHOLD = 14
+SIZE_WARN_BYTES = 8 * 1024 * 1024  # textured modules should stay under 8 MB
 
 
 def _load_scene(path: Path):
@@ -116,6 +117,13 @@ def _check_module(path: Path, expected: dict[str, Any], errors: list[str], warni
         warnings.append(f"{label}: {tri_count} triangles (heavy; consider simplification)")
     if len(material_names) > MATERIAL_WARN_THRESHOLD:
         warnings.append(f"{label}: {len(material_names)} materials (many; consider consolidation)")
+    size_bytes = path.stat().st_size
+    report["size_bytes"] = size_bytes
+    if size_bytes > SIZE_WARN_BYTES:
+        warnings.append(
+            f"{label}: {size_bytes / 1_048_576:.1f} MB exceeds the {SIZE_WARN_BYTES // 1_048_576} MB "
+            f"texture budget (shrink texture resolution or drop maps)"
+        )
 
     if errors and any(e.startswith(label) for e in errors):
         report["status"] = "failed"

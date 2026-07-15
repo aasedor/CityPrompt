@@ -19,8 +19,8 @@ import re
 from dataclasses import dataclass, field, asdict
 from typing import Any
 
-SCHEMA_VERSION = 1
-GENERATOR_VERSION = "0.2.0"
+SCHEMA_VERSION = 1  # texture_key is additive+optional, so still schema 1
+GENERATOR_VERSION = "0.3.0"
 
 VALID_ROOF_TYPES = ("flat", "gabled", "mono_pitch")
 VALID_BALCONY_MODES = ("none", "recessed", "projecting")
@@ -164,11 +164,15 @@ class Material:
     roughness: float = 0.6
     metallic: float = 0.0
     source_text: str = ""  # the catalogue prose this colour was derived from
+    # canonical key into tools/archetype_compiler/textures/<key>/; None = flat colour
+    texture_key: str | None = None
 
     def validate(self, slot: str) -> None:
         _require_hex(f"materials.{slot}.base_color", self.base_color)
         _require_range(f"materials.{slot}.roughness", self.roughness, 0.0, 1.0)
         _require_range(f"materials.{slot}.metallic", self.metallic, 0.0, 1.0)
+        if self.texture_key is not None and not re.match(r"^[a-z0-9_]+$", self.texture_key):
+            raise GrammarError(f"materials.{slot}.texture_key={self.texture_key!r} must be a snake_case slug")
 
 
 def _default_material(name: str, color: str, roughness: float = 0.6, metallic: float = 0.0) -> Material:
@@ -181,9 +185,11 @@ class Materials:
     secondary: Material = field(default_factory=lambda: _default_material("MAT_Facade_Secondary", "#8a8176"))
     accent: Material = field(default_factory=lambda: _default_material("MAT_Accent", "#2b2e33", 0.45, 0.6))
     glass: Material = field(default_factory=lambda: _default_material("MAT_Glass", "#5f7f95", 0.08, 0.0))
-    concrete: Material = field(default_factory=lambda: _default_material("MAT_Concrete", "#b5b1a8", 0.8, 0.0))
+    concrete: Material = field(default_factory=lambda: Material(
+        name="MAT_Concrete", base_color="#b5b1a8", roughness=0.8, metallic=0.0, texture_key="concrete"))
     roof: Material = field(default_factory=lambda: _default_material("MAT_Roof", "#4a4d4f", 0.85, 0.0))
-    green_roof: Material = field(default_factory=lambda: _default_material("MAT_GreenRoof", "#5f7a48", 0.9, 0.0))
+    green_roof: Material = field(default_factory=lambda: Material(
+        name="MAT_GreenRoof", base_color="#5f7a48", roughness=0.9, metallic=0.0, texture_key="sedum_roof"))
 
     def validate(self) -> None:
         for slot in ("primary", "secondary", "accent", "glass", "concrete", "roof", "green_roof"):
@@ -243,6 +249,7 @@ class BuildingGrammar:
                 roughness=raw.get("roughness", defaults.roughness),
                 metallic=raw.get("metallic", defaults.metallic),
                 source_text=raw.get("source_text", ""),
+                texture_key=raw.get("texture_key", defaults.texture_key),
             )
 
         grammar = cls(
