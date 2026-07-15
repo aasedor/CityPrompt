@@ -5,7 +5,7 @@
  * generates a mask from zone polygons, and sends to Gemini.
  */
 
-import { useState, useCallback, useEffect, useRef, type HTMLAttributes, type PointerEvent as ReactPointerEvent } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef, type HTMLAttributes, type PointerEvent as ReactPointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import * as THREE from 'three';
 import { useQueryClient } from '@tanstack/react-query';
@@ -83,6 +83,7 @@ const STYLES = [
   // ── Realistic — photo-style final-stage visualization ──
   { id: 'photorealistic', label: 'Photo Realistic' },
   { id: 'photomontage', label: 'Photomontage' },
+  { id: 'development', label: 'Development' },
   { id: 'atmospheric', label: 'Atmospheric' },
   { id: 'winter', label: 'Winter' },
   { id: 'night', label: 'Night' },
@@ -111,7 +112,7 @@ const STYLES = [
 // UI grouping for the style picker — keeps the new-user taxonomy visible.
 // Update this when adding a style so it lands in the right group in the UI.
 const STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter', 'night'] },
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
   { label: 'Accurate', ids: ['survey', 'documentary'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
@@ -158,6 +159,16 @@ export function GlobeAIRenderPanel({
   const [customPrompt, setCustomPrompt] = useState('');
   const [highFidelity, setHighFidelity] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Development mode gate: at least one zone in the scene is backed by real
+  // massing (placed LEGO stack or mounted 3D model) that the capture shows.
+  const hasPlacedMassing = useMemo(
+    () => Boolean(modeledBuildingIds?.size)
+      && siteZones.some((z) => z.building_id && modeledBuildingIds?.has(z.building_id)),
+    [siteZones, modeledBuildingIds],
+  );
+  useEffect(() => {
+    if (selectedStyle === 'development' && !hasPlacedMassing) setSelectedStyle('photorealistic');
+  }, [selectedStyle, hasPlacedMassing]);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
@@ -759,14 +770,27 @@ export function GlobeAIRenderPanel({
                   {group.ids.map(id => {
                     const s = STYLES.find(x => x.id === id);
                     if (!s) return null;
+                    // Development mode conditions on real massing in the
+                    // capture — meaningless until a LEGO stack or 3D model is
+                    // placed on some zone in the scene.
+                    const needsPlacedMassing = s.id === 'development';
+                    const disabled = needsPlacedMassing && !hasPlacedMassing;
                     return (
                       <button
                         key={s.id}
                         onClick={() => setSelectedStyle(s.id)}
+                        disabled={disabled}
+                        title={disabled
+                          ? 'Development mode needs placed 3D massing — use the LEGO Builder’s Place button (or place a generated model) first.'
+                          : s.id === 'development'
+                            ? 'High-fidelity render of the placed development: the textured stacks in view act as geometry conditioning.'
+                            : undefined}
                         className={`rounded-full border px-2 py-1 text-[11px] font-black transition ${
                           selectedStyle === s.id
                             ? 'border-[#151515] bg-[#c9ff3d] text-[#151515] shadow-[2px_2px_0_0_#151515]'
-                            : 'border-white/15 bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
+                            : disabled
+                              ? 'cursor-not-allowed border-white/10 bg-white/5 text-white/30'
+                              : 'border-white/15 bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
                         }`}
                       >
                         {s.label}

@@ -60,6 +60,10 @@ const GLOBE_STYLE_PROMPTS: Record<string, string> = {
   risograph: 'Risograph-printed architectural visualization. Halftone dot patterns, limited 2-3 spot color palette (fluorescent pink, teal, yellow), slight misregistration between color layers, grain texture, overprint where colors overlap.',
   'pixel-art': '16-bit pixel art architectural scene, grid-aligned with uniform square pixels. Nearest-neighbour scaling, zero anti-aliasing. Strict limited palette of 16 colors. Shading via checkerboard dithering patterns. Dark selective outlines. SNES-era JRPG city aesthetic.',
   survey: 'A precise large-format aerial survey photograph of the city block. Rigorously level with edge-to-edge tack-sharp clarity, even flat daylight revealing every roof, street, and material with no drama or deep shadow, and neutral true-to-life colour with clinical encyclopedic precision. Treat the captured massing as exact ground truth: preserve the real footprints, heights, layout, and materials precisely, resolving them into a real photograph. Never restyle, embellish, or reinterpret the geometry.',
+  // Development mode: the capture already contains textured 3D massing
+  // (placed LEGO stacks / Meshy models) — resolve that geometry into a
+  // finished photograph instead of imagining buildings from polygons.
+  development: 'A photorealistic visualization of a completed development, photographed from a drone. The detailed 3D buildings standing in the scene are the proposal, already built at the right size with their real facade materials. Resolve each one into a finished building: crisp facade detail, window reflections, entrance doors and canopies, balcony rails, subtle material weathering, rooftop equipment. Ground them with sidewalks, street trees, planting, parked cars and a few pedestrians. The finished buildings sit naturally in the surrounding photograph, in the same light and atmosphere.',
   documentary: 'A deadpan documentary aerial colour photograph of the city block in the New Topographics tradition. Flat even daylight, neutral restrained true-to-life colour, and a calm honest ordinariness with no dramatization. Keep the real massing, proportions, and layout exactly as modelled, resolving them faithfully into a plain, believable photograph rather than a styled render.',
 };
 // Artistic styles drop the photoreal-specific prompt clauses and the
@@ -1193,6 +1197,9 @@ function buildPrompt(
     winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
     atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
     night: 'Moonlight and city glow, artificial lighting, warm window light.',
+    // Development renders composite onto the live capture — invented lighting
+    // drama would split the frame from its photographic context.
+    development: 'Match the exact sun direction, colour temperature and atmosphere already visible in the surrounding photograph; the development and its context share one consistent daylight.',
   };
 
   // --- ZONES (SCHEMA format) — skip site_boundary, sort by polygon area descending ---
@@ -1408,6 +1415,8 @@ const STYLE_GRADES: Record<string, StyleGrade> = {
   // Warm sun on highlights, cool-blue ambient in shadows (matches Google Earth tile look), stronger saturation + vignette
   photorealistic:      { shadowLift: 8,  highlightWarmth: 12, saturation: 1.15, vignette: 0.22, shadowCool: 6 },
   photomontage:        { shadowLift: 4,  highlightWarmth: 5,  saturation: 1.06, vignette: 0.12 },
+  // Clean premium, atmosphere comes from the capture (taste memo: grade yes, drama no)
+  development:         { shadowLift: 5,  highlightWarmth: 6,  saturation: 1.08, vignette: 0.12 },
   // Dramatic: deep rich shadows, heavily warmed highlights, big vignette
   atmospheric:         { shadowLift: 10, highlightWarmth: 18, saturation: 1.18, vignette: 0.30, shadowCool: 8 },
   'site-plan-photo':   { shadowLift: 5,  highlightWarmth: 6,  saturation: 1.08, vignette: 0.10 },
@@ -1859,6 +1868,38 @@ function generateSingleZoneMask(
 /**
  * Build a focused prompt for a single building zone.
  */
+/**
+ * Development-mode tail: one plain sentence of archetype identity per building
+ * that stands as real massing in the capture, then the preservation constraint.
+ * Appended LAST in renderPreviews (after the reference-image listing) because
+ * Gemini weights the tail of the prompt most heavily.
+ */
+function buildDevelopmentTail(zones: SiteZone[], modeledBuildingIds?: Set<string>): string {
+  const placed = zones.filter(
+    (z) => isBuildingZone(z) && z.building_id && modeledBuildingIds?.has(z.building_id),
+  );
+  if (placed.length === 0) return '';
+
+  const lines = placed.slice(0, 12).map((zone) => {
+    const info = getZoneArchetypeInfo(zone);
+    const props = zone.properties || {};
+    const name = info.archetypeTitle || zone.name || 'building';
+    const floors = readFiniteNumber(props.floors);
+    const parts = [
+      `${name}${floors ? ` (${floors} floors)` : ''}`,
+      info.materials || info.facadeDescription || '',
+      info.roofDescription ? `roof: ${info.roofDescription}` : '',
+    ].filter(Boolean);
+    return `- ${parts.join(' — ').substring(0, 260)}`;
+  });
+
+  return (
+    `\n\nDEVELOPMENT BUILDINGS — the textured 3D buildings standing in the screenshot, one per line:\n` +
+    lines.join('\n') +
+    `\n\nKeep every building exactly where it stands in the reference image; preserve massing, floor counts and roof forms.`
+  );
+}
+
 function buildSingleZonePromptForPerZone(
   zone: SiteZone,
   style: string,
@@ -2344,7 +2385,14 @@ export function useGlobeAIRender() {
       //    up to 2 aerial angles per zone — 45°/90° where available).
       //    Each image is compressed to 512px JPEG @ 0.7 (~30-50KB). Cap 48.
       console.log('[GlobeAIRender] Collecting archetype reference images...');
-      const archetypeImages = await collectArchetypeImages(visibleZones);
+      let archetypeImages = await collectArchetypeImages(visibleZones);
+      // Development A/B lever: cc_development_refs='0' drops the archetype
+      // card refs so the textured massing in the capture is the only identity
+      // signal. Plan-diagram conditioning (attached below) stays in both arms.
+      if (style === 'development' && localStorage.getItem('cc_development_refs') === '0') {
+        console.log(`[GlobeAIRender] development refs OFF (A/B): dropped ${archetypeImages.length} archetype refs`);
+        archetypeImages = [];
+      }
 
       // 4a. Plan-diagram conditioning: attach the drawn plan as an
       // authoritative nadir layout reference in the first slot (slot priority
@@ -2428,6 +2476,12 @@ export function useGlobeAIRender() {
           `render them as open paved right-of-way, continuous and unobstructed curb to curb; ` +
           `buildings and landscaping meet the curb line and stop.`
         );
+      }
+
+      // Development mode: per-building identity + the preservation constraint
+      // land at the very end of the prompt, where Gemini weighs hardest.
+      if (style === 'development') {
+        prompt += buildDevelopmentTail(visibleZones, options.modeledBuildingIds);
       }
 
       console.log(`[GlobeAIRender] Prompt (${prompt.length} chars, ${zones.filter(z => z.zone_type !== 'site_boundary').length} zones, ${archetypeImages.length} ref images):`, prompt.substring(0, 200) + '...');
