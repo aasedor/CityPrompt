@@ -429,7 +429,7 @@ def main() -> None:
         print(f"skipping {len(skipped)} existing (use --force to regenerate): {', '.join(skipped)}")
     if args.dry_run:
         for key in todo:
-            print(f"would generate {key}: {PROMPT_TEMPLATE.format(prose=TEXTURE_PROSE[key])[:110]}...")
+            print(f"would generate {key}: {PROMPT_TEMPLATES[0].format(prose=TEXTURE_PROSE[key])[:110]}...")
         print(f"dry-run: {len(todo)} generation(s), 0 API calls made")
         return
     if not todo:
