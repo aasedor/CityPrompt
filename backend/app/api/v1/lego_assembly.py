@@ -14,7 +14,7 @@ from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import require_auth
-from app.models.models import Building, ModelLibraryEntry, Project, ProjectShare, User
+from app.models.models import Building, ModelLibraryEntry, Project, ProjectShare, SiteZone, User
 from app.services.lego_assembly import (
     AssemblyPlanningError,
     AssemblyRequest,
@@ -66,6 +66,13 @@ class LegoRecipeRequest(BaseModel):
     assembled_height_m: float | None = None
     fit: dict[str, Any] | None = None
     assembled_preview_url: str | None = None
+
+
+class LegoPlaceRequest(LegoRecipeRequest):
+    """Recipe payload for "Place": saved like /recipes, but zone-addressed so a
+    zone without a generated building gets one created and linked first."""
+
+    building_name: str | None = Field(default=None, max_length=255)
 
 
 class LegoModuleMetadataRequest(BaseModel):
@@ -483,6 +490,107 @@ async def _get_building_with_access(
     return building
 
 
+async def _get_zone_with_access(
+    db: AsyncSession,
+    zone_id: uuid.UUID,
+    user: User,
+    *,
+    require_editor: bool,
+) -> SiteZone:
+    """Fetch a zone and authorize project access (same policy as buildings)."""
+    result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
+    zone = result.scalar_one_or_none()
+    if not zone:
+        raise HTTPException(status_code=404, detail="Zone not found")
+
+    proj_result = await db.execute(select(Project).where(Project.id == zone.project_id))
+    project = proj_result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id != user.id:
+        conditions = [
+            ProjectShare.project_id == zone.project_id,
+            (ProjectShare.user_id == user.id) | (ProjectShare.email == user.email),
+        ]
+        if require_editor:
+            conditions.append(ProjectShare.permission == "editor")
+        share_result = await db.execute(select(ProjectShare).where(*conditions))
+        if not share_result.scalar_one_or_none():
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized to edit zones in this project"
+                if require_editor
+                else "Not authorized to view zones in this project",
+            )
+    return zone
+
+
+@router.post("/place/{zone_id}")
+async def place_lego_assembly(
+    zone_id: uuid.UUID,
+    body: LegoPlaceRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Place an assembled LEGO recipe on a zone.
+
+    Ensures the zone has a linked ``Building`` (created from the zone's own
+    geometry when generate-all never ran), then saves the recipe into
+    ``Building.specifications["legoAssembly"]`` exactly like ``POST /recipes``.
+    The globe layer picks the recipe up from the refetched project and swaps
+    the zone's coloured polygon for the module stack.
+
+    Multi-unit zones (``building_ids`` with several entries) place onto the
+    primary ``building_id`` — one stack per zone is the v1 contract.
+    """
+    zone = await _get_zone_with_access(db, zone_id, user, require_editor=True)
+
+    building: Building | None = None
+    if zone.building_id is not None:
+        result = await db.execute(select(Building).where(Building.id == zone.building_id))
+        building = result.scalar_one_or_none()
+
+    created = False
+    if building is None:
+        building = Building(
+            id=uuid.uuid4(),  # assigned here, not at flush: the response needs it
+            project_id=zone.project_id,
+            name=(body.building_name or zone.name or body.archetype_id or "LEGO Building")[:255],
+            footprint=zone.geometry,
+            floor_count=body.target.floors,
+            height_meters=body.assembled_height_m,
+            specifications={},
+        )
+        db.add(building)
+        zone.building_id = building.id
+        zone.building_ids = [str(building.id)]
+        created = True
+    else:
+        # The globe stack cannot mount without a footprint ring; a building
+        # made by older flows may not have one — the zone polygon is the
+        # honest footprint in that case.
+        if building.footprint is None:
+            building.footprint = zone.geometry
+        if building.floor_count is None:
+            building.floor_count = body.target.floors
+
+    specifications = dict(building.specifications or {})
+    specifications[RECIPE_SPEC_KEY] = body.model_dump(exclude={"building_name"})
+    specifications["lego_placed"] = True
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    await db.flush()
+
+    return {
+        "status": "placed",
+        "zone_id": str(zone.id),
+        "building_id": str(building.id),
+        "building_created": created,
+        RECIPE_SPEC_KEY: specifications[RECIPE_SPEC_KEY],
+    }
+
+
 @router.post("/recipes/{building_id}")
 async def save_lego_recipe(
     building_id: uuid.UUID,
@@ -530,6 +638,7 @@ async def delete_lego_recipe(
 
     specifications = dict(building.specifications or {})
     removed = specifications.pop(RECIPE_SPEC_KEY, None) is not None
+    specifications.pop("lego_placed", None)  # stamp follows the recipe's lifecycle
     building.specifications = specifications
     flag_modified(building, "specifications")
     await db.flush()

@@ -1,6 +1,13 @@
 import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render as rtlRender, screen, waitFor, fireEvent } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// The panel calls useQueryClient (Place invalidates the project/zone queries).
+const render = (ui: ReactElement) => rtlRender(
+  <QueryClientProvider client={new QueryClient()}>{ui}</QueryClientProvider>,
+);
 import { LegoBuilderPanel } from './LegoBuilderPanel';
 import type { LegoAssemblyPlan } from './legoAssemblyApi';
 import type { SiteZone } from '@/types';
@@ -253,5 +260,69 @@ describe('LegoBuilderPanel', () => {
     expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
     expect(screen.getByText(/Skipped 1/)).toBeInTheDocument();
     expect(screen.getByText(/not placed in the scene/i)).toBeInTheDocument();
+  });
+
+  it('Place all posts every assembled zone to the place endpoint and badges the rows', async () => {
+    apiPost.mockImplementation((url: string) =>
+      url.includes('/place/')
+        ? Promise.resolve({ data: { status: 'placed', zone_id: 'z', building_id: 'b', building_created: true } })
+        : Promise.resolve({ data: planFixture }),
+    );
+
+    const zones = [
+      makeZone({ id: 'z-a' }),
+      makeZone({ id: 'z-b', building_id: 'bldg-existing' }),
+    ];
+    render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /place all/i }));
+
+    await waitFor(() => expect(screen.getByText('Placed 2 of 2 zones on the map')).toBeInTheDocument());
+    expect(screen.getAllByText('placed')).toHaveLength(2);
+
+    const placeCalls = apiPost.mock.calls.filter(([url]) => String(url).includes('/place/'));
+    expect(placeCalls.map(([url]) => url)).toEqual(
+      expect.arrayContaining([
+        '/api/v1/lego-assembly/place/z-a',
+        '/api/v1/lego-assembly/place/z-b',
+      ]),
+    );
+    // Recipe payload + the created building's display name.
+    expect(placeCalls[0][1]).toEqual(
+      expect.objectContaining({
+        schema_version: 1,
+        module_family: 'nordic_timber_midrise_family',
+        instances: planFixture.instances,
+        building_name: expect.any(String),
+      }),
+    );
+  });
+
+  it('per-row Place places one zone even without a building id and marks failures retryable', async () => {
+    apiPost.mockImplementation((url: string) =>
+      url.includes('/place/z-fail')
+        ? Promise.reject(make422('planner said no'))
+        : url.includes('/place/')
+          ? Promise.resolve({ data: { status: 'placed', zone_id: 'z-ok', building_id: 'b', building_created: true } })
+          : Promise.resolve({ data: planFixture }),
+    );
+
+    render(
+      <LegoBuilderPanel
+        zones={[makeZone({ id: 'z-ok' }), makeZone({ id: 'z-fail' })]}
+        onClose={vi.fn()}
+      />,
+    );
+    expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
+
+    const placeButtons = screen.getAllByRole('button', { name: /^place$/i });
+    expect(placeButtons).toHaveLength(2);
+    fireEvent.click(placeButtons[0]);
+    await waitFor(() => expect(screen.getByText('placed')).toBeInTheDocument());
+
+    fireEvent.click(screen.getAllByRole('button', { name: /^place$/i })[0]);
+    await waitFor(() => expect(screen.getByRole('button', { name: /retry place/i })).toBeInTheDocument());
+    expect(screen.getByText('planner said no')).toBeInTheDocument();
   });
 });

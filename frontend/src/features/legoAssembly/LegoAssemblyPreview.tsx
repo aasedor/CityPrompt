@@ -1,8 +1,9 @@
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
+import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import {
@@ -94,8 +95,13 @@ export function LegoAssemblyPreview({
   const [familyMissing, setFamilyMissing] = useState(false);
   const [savedRecipe, setSavedRecipe] = useState<LegoAssemblyRecipe | null>(null);
   const [saving, setSaving] = useState(false);
+  const [placing, setPlacing] = useState(false);
+  // Building the recipe landed on via Place — the zone prop is a snapshot, so
+  // a building created by Place is only known through the endpoint's response.
+  const [placedBuildingId, setPlacedBuildingId] = useState<string | null>(null);
   const [clearing, setClearing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const queryClient = useQueryClient();
 
   // Restore any saved recipe for this building when the composer opens.
   useEffect(() => {
@@ -175,13 +181,58 @@ export function LegoAssemblyPreview({
     }
   };
 
+  const recipeFromCurrentPlan = (): LegoAssemblyRecipe | null => {
+    if (!plan) return null;
+    return {
+      schema_version: 1,
+      module_family: plan.family,
+      archetype_id: plan.archetype_id ?? archetypeContext.archetype_id ?? null,
+      reuse_keys: plan.reuse_keys,
+      target: plan.target,
+      instances: plan.instances,
+      assembled_height_m: plan.assembled_height_m,
+      fit: plan.fit,
+      assembled_preview_url: null,
+    };
+  };
+
+  // Place = save the recipe zone-addressed; the backend creates/links the
+  // building when the zone has none, then the globe swaps polygon -> stack.
+  const handlePlace = async () => {
+    const recipe = recipeFromCurrentPlan();
+    if (!recipe || !zone) return;
+    setPlacing(true);
+    setError(null);
+    try {
+      const result = await legoAssemblyApi.place(zone.id, { ...recipe, building_name: archetypeLabel });
+      setSavedRecipe(recipe);
+      setPlacedBuildingId(result.building_id);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+        queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+      ]);
+    } catch (cause) {
+      setError(getApiErrorMessage(cause, 'Could not place the assembly on the map.'));
+    } finally {
+      setPlacing(false);
+    }
+  };
+
   const handleClearRecipe = async () => {
-    if (!buildingId || !savedRecipe) return;
+    const clearTarget = buildingId ?? placedBuildingId;
+    if (!clearTarget || !savedRecipe) return;
     setClearing(true);
     setError(null);
     try {
-      await legoAssemblyApi.clearRecipe(buildingId);
+      await legoAssemblyApi.clearRecipe(clearTarget);
       setSavedRecipe(null);
+      setPlacedBuildingId(null);
+      if (zone) {
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ['project', zone.project_id] }),
+          queryClient.invalidateQueries({ queryKey: ['site-zones', zone.project_id] }),
+        ]);
+      }
     } catch (cause) {
       setError(getApiErrorMessage(cause, 'Could not clear the saved recipe.'));
     } finally {
@@ -347,20 +398,35 @@ export function LegoAssemblyPreview({
 
           <button
             type="button"
+            onClick={handlePlace}
+            disabled={!plan || !zone || placing}
+            title={!zone
+              ? 'Open the composer from a zone to place its assembly on the map.'
+              : !plan
+                ? 'Assemble the building first.'
+                : 'Save the recipe on this zone (a building is created if needed) and show the stack on the globe.'}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+          >
+            {placing ? <Loader2 className="h-4 w-4 animate-spin" /> : placedBuildingId ? <Check className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
+            {placedBuildingId ? 'Placed — place again' : 'Place on map'}
+          </button>
+
+          <button
+            type="button"
             onClick={handleSaveRecipe}
             disabled={!plan || !buildingId || saving}
             title={!buildingId
-              ? 'This zone has no generated building yet — generate one first, then save its assembly recipe.'
+              ? 'This zone has no generated building yet — Place on map creates one, or generate buildings first.'
               : !plan
                 ? 'Assemble the building first.'
                 : 'Save this assembly so it can be restored later.'}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-white px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save assembly recipe
           </button>
 
-          {savedRecipe && buildingId && (
+          {savedRecipe && (buildingId || placedBuildingId) && (
             <button
               type="button"
               onClick={handleClearRecipe}

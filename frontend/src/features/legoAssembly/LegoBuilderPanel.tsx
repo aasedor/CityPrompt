@@ -1,14 +1,16 @@
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
 import { Bounds, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Blocks, Check, Copy, Loader2, RefreshCw, Save, X } from 'lucide-react';
+import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Save, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone } from '@/types';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
   type LegoAssemblyPlan,
+  type LegoAssemblyRecipe,
 } from './legoAssemblyApi';
 import {
   ModuleInstance,
@@ -62,6 +64,25 @@ interface ZoneBuildItem {
   plan?: LegoAssemblyPlan;
   error?: string;
   familyMissing?: boolean;
+  /** 'placing' while the place call is in flight; 'placed' once the recipe is on the building. */
+  placeState?: 'placing' | 'placed' | 'failed';
+}
+
+/** The persisted twin of a plan — shared by Place (per zone) and Place all. */
+function recipeFromPlan(item: ZoneBuildItem & { plan: LegoAssemblyPlan }): LegoAssemblyRecipe & { building_name: string } {
+  const context = legoArchetypeContextFromZone(item.zone.properties);
+  return {
+    schema_version: 1,
+    module_family: item.plan.family,
+    archetype_id: item.plan.archetype_id ?? context.archetype_id ?? null,
+    reuse_keys: item.plan.reuse_keys,
+    target: item.plan.target,
+    instances: item.plan.instances,
+    assembled_height_m: item.plan.assembled_height_m,
+    fit: item.plan.fit,
+    assembled_preview_url: null,
+    building_name: item.label,
+  };
 }
 
 /** Buildable zones with catalogue-derived targets and centroid placement offsets. */
@@ -146,8 +167,60 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
   const [items, setItems] = useState<ZoneBuildItem[]>(() => deriveItems(zones));
   const [planning, setPlanning] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [placingAll, setPlacingAll] = useState(false);
   const [saveResult, setSaveResult] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const queryClient = useQueryClient();
+  const projectId = zones[0]?.project_id;
+
+  // The globe reads buildings from the project query and links from the zone
+  // query — both must refetch for the placed stack to appear.
+  const refetchPlacedData = useCallback(async () => {
+    if (!projectId) return;
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
+      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] }),
+    ]);
+  }, [queryClient, projectId]);
+
+  const setPlaceState = useCallback((zoneId: string, placeState: ZoneBuildItem['placeState']) => {
+    setItems((prev) => prev.map((item) => (item.zone.id === zoneId ? { ...item, placeState } : item)));
+  }, []);
+
+  const handlePlaceOne = useCallback(async (target: ZoneBuildItem) => {
+    if (!target.plan || target.placeState === 'placing') return;
+    setPlaceState(target.zone.id, 'placing');
+    try {
+      await legoAssemblyApi.place(target.zone.id, recipeFromPlan(target as ZoneBuildItem & { plan: LegoAssemblyPlan }));
+      setPlaceState(target.zone.id, 'placed');
+      await refetchPlacedData();
+    } catch (error) {
+      setPlaceState(target.zone.id, 'failed');
+      setSaveResult(getApiErrorMessage(error, 'Could not place this zone.'));
+    }
+  }, [refetchPlacedData, setPlaceState]);
+
+  const handlePlaceAll = useCallback(async () => {
+    const placeable = items.filter(
+      (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => Boolean(item.plan),
+    );
+    if (placeable.length === 0 || placingAll) return;
+    setPlacingAll(true);
+    setSaveResult(null);
+    setItems((prev) => prev.map((item) => (item.plan ? { ...item, placeState: 'placing' } : item)));
+    const results = await Promise.allSettled(
+      placeable.map((item) => legoAssemblyApi.place(item.zone.id, recipeFromPlan(item))),
+    );
+    setItems((prev) => prev.map((item) => {
+      const index = placeable.findIndex((p) => p.zone.id === item.zone.id);
+      if (index === -1) return item;
+      return { ...item, placeState: results[index].status === 'fulfilled' ? 'placed' : 'failed' };
+    }));
+    const placedCount = results.filter((result) => result.status === 'fulfilled').length;
+    setSaveResult(`Placed ${placedCount} of ${placeable.length} zone${placeable.length === 1 ? '' : 's'} on the map`);
+    await refetchPlacedData();
+    setPlacingAll(false);
+  }, [items, placingAll, refetchPlacedData]);
 
   const runBatch = useCallback(async () => {
     const base = deriveItems(zones);
@@ -288,9 +361,30 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
                   )}
                 </div>
                 {item.plan && (
-                  <p className="mt-0.5 truncate text-black/60" title={item.plan.family}>
-                    {item.plan.family} · fit {item.plan.fit.score.toFixed(2)}
-                  </p>
+                  <div className="mt-0.5 flex items-center justify-between gap-2">
+                    <p className="min-w-0 truncate text-black/60" title={item.plan.family}>
+                      {item.plan.family} · fit {item.plan.fit.score.toFixed(2)}
+                    </p>
+                    {item.placeState === 'placed' ? (
+                      <span className="flex shrink-0 items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                        <Check className="h-3 w-3" />
+                        placed
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => void handlePlaceOne(item)}
+                        disabled={item.placeState === 'placing' || placingAll}
+                        title="Save this recipe on the zone's building (created if needed) and show the stack on the globe."
+                        className="flex shrink-0 items-center gap-1 rounded border border-[#151515] bg-white px-1.5 py-0.5 text-[10px] font-black uppercase hover:bg-[#c9ff3d] disabled:opacity-50"
+                      >
+                        {item.placeState === 'placing'
+                          ? <Loader2 className="h-3 w-3 animate-spin" />
+                          : <MapPin className="h-3 w-3" />}
+                        {item.placeState === 'failed' ? 'Retry place' : 'Place'}
+                      </button>
+                    )}
+                  </div>
                 )}
                 {item.error && (
                   <p className="mt-0.5 text-red-800">
@@ -347,12 +441,25 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
 
             <button
               type="button"
+              onClick={() => void handlePlaceAll()}
+              disabled={assembledCount === 0 || placingAll || planning || saving}
+              title={assembledCount === 0
+                ? 'Nothing assembled yet — rebuild first.'
+                : 'Place every assembled zone: buildings are created/linked as needed and the stacks replace the zone polygons on the globe.'}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+            >
+              {placingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+              Place all
+            </button>
+
+            <button
+              type="button"
               onClick={() => void handleSaveAll()}
-              disabled={savable.length === 0 || saving || planning}
+              disabled={savable.length === 0 || saving || planning || placingAll}
               title={savable.length === 0
                 ? 'No assembled zone has a generated building yet — generate buildings first, then save their recipes.'
-                : 'Save every assembled zone as its building’s recipe.'}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
+                : 'Save every assembled zone as its building’s recipe (without creating buildings).'}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-white px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               Save all recipes

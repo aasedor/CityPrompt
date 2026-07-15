@@ -2796,6 +2796,7 @@ export function GlobeSitePlannerMap({
               onZoneClick={handleZoneMeshClick}
               selectionEnabled={!interactionPaused && !hasDrawingTool && !measureModeActive}
               suppressedBuildingIds={suppressedBuildingIds}
+              legoPlacedBuildingIds={legoBuildingIds}
             />
             {/* Procedural street 3D: curbs, centerline dashes, parametric
                 roundabouts — vector-driven detail on top of the road fills. */}

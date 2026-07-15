@@ -1,6 +1,13 @@
 import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render as rtlRender, screen, waitFor, fireEvent } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// The panel calls useQueryClient (Place invalidates the project/zone queries).
+const render = (ui: ReactElement) => rtlRender(
+  <QueryClientProvider client={new QueryClient()}>{ui}</QueryClientProvider>,
+);
 import { LegoAssemblyPreview } from './LegoAssemblyPreview';
 import type { LegoAssemblyPlan, LegoAssemblyRecipe } from './legoAssemblyApi';
 import type { SiteZone } from '@/types';
@@ -280,6 +287,44 @@ describe('LegoAssemblyPreview', () => {
     // The saved-recipe badge appears once the save resolves.
     expect(await screen.findByText('Saved recipe')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Load' })).toBeInTheDocument();
+  });
+
+  it('Place on map posts the recipe zone-addressed and enables Clear via the returned building', async () => {
+    apiPost.mockImplementation((url: string) =>
+      url.includes('/place/')
+        ? Promise.resolve({ data: { status: 'placed', zone_id: 'zone-1', building_id: 'bldg-new', building_created: true } })
+        : Promise.resolve({ data: planFixture }),
+    );
+    apiDelete.mockResolvedValue({ data: { status: 'removed' } });
+
+    // No buildingId: the zone has never been through generate-all.
+    render(<LegoAssemblyPreview zone={makeZone()} onClose={vi.fn()} />);
+
+    const placeButton = screen.getByRole('button', { name: /place on map/i });
+    expect(placeButton).toBeDisabled();
+
+    fireEvent.click(screen.getByRole('button', { name: /auto assemble/i }));
+    await waitFor(() => expect(placeButton).toBeEnabled());
+
+    fireEvent.click(placeButton);
+    await waitFor(() =>
+      expect(apiPost).toHaveBeenCalledWith(
+        '/api/v1/lego-assembly/place/zone-1',
+        expect.objectContaining({
+          schema_version: 1,
+          module_family: 'nordic_timber_midrise_family',
+          instances: planFixture.instances,
+          building_name: 'Nordic Timber Midrise',
+        }),
+      ),
+    );
+    expect(await screen.findByRole('button', { name: /placed — place again/i })).toBeInTheDocument();
+
+    // Clear targets the building the endpoint just created/linked.
+    fireEvent.click(screen.getByRole('button', { name: /clear saved recipe/i }));
+    await waitFor(() =>
+      expect(apiDelete).toHaveBeenCalledWith('/api/v1/lego-assembly/recipes/bldg-new'),
+    );
   });
 
   it('shows an existing saved recipe on open and Load re-plans with its targets', async () => {

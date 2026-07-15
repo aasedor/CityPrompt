@@ -620,3 +620,197 @@ async def test_recipe_404_when_building_missing(client, mock_db, test_user, auth
         f"/api/v1/lego-assembly/recipes/{uuid.uuid4()}", headers=auth_headers
     )
     assert response.status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# API: place (zone-addressed recipe save + building ensure)
+# ---------------------------------------------------------------------------
+
+
+def _make_zone(project, *, building_id=None, building_ids=None):
+    from app.models.models import SiteZone
+
+    return SiteZone(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        name="Hotel Site",
+        zone_type="building",
+        geometry="SRID=4326;POLYGON((0 0,1 0,1 1,0 1,0 0))",
+        building_id=building_id,
+        building_ids=building_ids,
+    )
+
+
+@pytest.mark.anyio
+async def test_place_creates_and_links_building_when_zone_has_none(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    zone = _make_zone(project)
+    added: list = []
+    mock_db.add.side_effect = added.append
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),  # require_auth
+            _scalar_result(zone),       # zone lookup
+            _scalar_result(project),    # project lookup (owner -> no share query)
+        ]
+    )
+
+    body = {**_recipe_body(), "building_name": "Hotel Particulier"}
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=body
+    )
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["status"] == "placed"
+    assert payload["building_created"] is True
+    assert payload["zone_id"] == str(zone.id)
+
+    assert len(added) == 1
+    building = added[0]
+    assert str(building.id) == payload["building_id"]
+    assert building.project_id == project.id
+    assert building.name == "Hotel Particulier"
+    # footprint comes from the zone polygon so the globe stack has a ring
+    assert building.footprint == zone.geometry
+    assert building.floor_count == body["target"]["floors"]
+    assert zone.building_id == building.id
+    assert zone.building_ids == [str(building.id)]
+
+    saved = building.specifications["legoAssembly"]
+    assert saved["module_family"] == body["module_family"]
+    assert saved["instances"] == body["instances"]
+    assert "building_name" not in saved
+    assert building.specifications["lego_placed"] is True
+
+
+@pytest.mark.anyio
+async def test_place_reuses_existing_building_and_preserves_specifications(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        floor_count=4,
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        specifications={"modelUrlWorkflow": {"model_url": "/api/v1/files/original.glb"}},
+    )
+    zone = _make_zone(project, building_id=building.id, building_ids=[str(building.id)])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),  # require_auth
+            _scalar_result(zone),       # zone lookup
+            _scalar_result(project),    # project lookup
+            _scalar_result(building),   # existing building lookup
+        ]
+    )
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
+    )
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["building_created"] is False
+    assert payload["building_id"] == str(building.id)
+
+    mock_db.add.assert_not_called()
+    # existing footprint and floor count are authoritative — not overwritten
+    assert building.footprint == "SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))"
+    assert building.floor_count == 4
+    # copy-update-reassign: the untouched workflow fields survive
+    assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"
+    assert building.specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
+    assert building.specifications["lego_placed"] is True
+
+
+@pytest.mark.anyio
+async def test_place_backfills_missing_footprint_from_zone(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(), project_id=project.id, footprint=None, floor_count=None,
+        specifications=None,
+    )
+    zone = _make_zone(project, building_id=building.id, building_ids=[str(building.id)])
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(building),
+        ]
+    )
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
+    )
+    assert response.status_code == 200, response.text
+    assert building.footprint == zone.geometry
+    assert building.floor_count == _recipe_body()["target"]["floors"]
+
+
+@pytest.mark.anyio
+async def test_place_denied_for_non_member(client, mock_db, test_user, auth_headers):
+    project = FakeProject(owner_id=uuid.uuid4())  # someone else's project
+    zone = _make_zone(project)
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(zone),
+            _scalar_result(project),
+            _scalar_result(None),  # no editor share
+        ]
+    )
+
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{zone.id}", headers=auth_headers, json=_recipe_body()
+    )
+    assert response.status_code == 403
+    assert zone.building_id is None
+    mock_db.add.assert_not_called()
+
+
+@pytest.mark.anyio
+async def test_place_404_when_zone_missing(client, mock_db, test_user, auth_headers):
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(None),  # zone lookup misses
+        ]
+    )
+    response = await client.post(
+        f"/api/v1/lego-assembly/place/{uuid.uuid4()}", headers=auth_headers, json=_recipe_body()
+    )
+    assert response.status_code == 404
+
+
+@pytest.mark.anyio
+async def test_recipe_delete_also_clears_placed_stamp(client, mock_db, test_user, auth_headers):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        specifications={
+            "legoAssembly": {"module_family": "x", "instances": []},
+            "lego_placed": True,
+            "modelUrlWorkflow": {"model_url": "/api/v1/files/original.glb"},
+        },
+    )
+    mock_db.execute = AsyncMock(
+        side_effect=[
+            _scalar_result(test_user),
+            _scalar_result(building),
+            _scalar_result(project),
+        ]
+    )
+
+    response = await client.delete(
+        f"/api/v1/lego-assembly/recipes/{building.id}", headers=auth_headers
+    )
+    assert response.status_code == 200
+    assert "legoAssembly" not in building.specifications
+    assert "lego_placed" not in building.specifications
+    assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"

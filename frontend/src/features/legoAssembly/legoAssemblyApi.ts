@@ -136,6 +136,26 @@ export const legoAssemblyApi = {
     return response.data.legoAssembly;
   },
 
+  /**
+   * Place a recipe on a zone: the backend ensures the zone has a linked
+   * Building (creating one from the zone polygon when generate-all never ran),
+   * saves the recipe on it, and the globe swaps the polygon for the stack once
+   * the project query refetches.
+   */
+  async place(
+    zoneId: string,
+    recipe: LegoAssemblyRecipe & { building_name?: string | null },
+  ): Promise<{ building_id: string; building_created: boolean }> {
+    const response = await api.post<{
+      status: string;
+      zone_id: string;
+      building_id: string;
+      building_created: boolean;
+      legoAssembly: LegoAssemblyRecipe;
+    }>(`/api/v1/lego-assembly/place/${zoneId}`, recipe);
+    return response.data;
+  },
+
   async getRecipe(buildingId: string): Promise<LegoAssemblyRecipe | null> {
     const response = await api.get<{ legoAssembly: LegoAssemblyRecipe | null }>(
       `/api/v1/lego-assembly/recipes/${buildingId}`,
