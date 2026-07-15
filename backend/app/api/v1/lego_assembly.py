@@ -34,6 +34,8 @@ RECIPE_SPEC_KEY = "legoAssembly"
 _LEGO_CATEGORY = "lego_module"
 _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
 _TAG_REUSE_KEY_LIMIT = 3
+# Compiler modules are ~50-150 KB; anything near this cap is the wrong file.
+_MAX_UPLOAD_BYTES = 75 * 1024 * 1024
 
 
 class LegoAssemblyPlanRequest(BaseModel):
@@ -296,8 +298,18 @@ async def import_compiler_manifest(
 
     uploads: dict[str, bytes] = {}
     for upload in files:
-        if upload.filename:
-            uploads[_basename(upload.filename)] = await upload.read()
+        if not upload.filename:
+            continue
+        data = await upload.read()
+        if len(data) > _MAX_UPLOAD_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=(
+                    f"{_basename(upload.filename)} is {len(data) / 1_048_576:.0f} MB; "
+                    f"module GLBs are capped at {_MAX_UPLOAD_BYTES // 1_048_576} MB per file"
+                ),
+            )
+        uploads[_basename(upload.filename)] = data
 
     # Storage helpers live in the Celery module; deferred import matches the
     # codebase convention (see admin.py, model_cache.py) and keeps tests free

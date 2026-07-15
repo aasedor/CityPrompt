@@ -26,11 +26,17 @@ Expected metadata shape::
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any, Iterable
 
 
 VALID_ROLES = {"podium", "floor", "setback", "roof", "attachment"}
+
+# family/role become storage-key path segments (library/lego/{user}/{family}/{role}.glb)
+# so they must be plain slugs — no slashes, dots, or other path syntax.
+_FAMILY_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,99}$")
+_ROLE_SLUG_RE = re.compile(r"^[a-z][a-z_]{0,29}$")
 
 # Roles the vertical planner is allowed to stack. Anything else (e.g. the
 # pre-assembled preview GLB) is stored in the library with enabled=False so it
@@ -303,8 +309,16 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
             f"manifest_schema must be {SUPPORTED_MANIFEST_SCHEMA} "
             f"(got {manifest.get('manifest_schema')!r}); regenerate with the current blender_generate.py"
         )
-    if not str(manifest.get("family") or "").strip():
+    family = str(manifest.get("family") or "").strip()
+    if not family:
         errors.append("family is required")
+    elif not _FAMILY_SLUG_RE.match(family):
+        # family and role become storage-key path segments; reject anything
+        # that isn't the kebab-case slug the compiler emits (no '/', '..', etc.)
+        errors.append(
+            f"family {family!r} must be a kebab-case slug (letters/digits/hyphens); "
+            "it is used as a storage path segment"
+        )
     if not str(manifest.get("archetype_id") or "").strip():
         errors.append("archetype_id is required")
 
@@ -319,6 +333,11 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
         for index, module in enumerate(modules):
             if not isinstance(module, dict) or not module.get("role") or not module.get("filename"):
                 errors.append(f"modules[{index}] must be an object with 'role' and 'filename'")
+            elif not _ROLE_SLUG_RE.match(str(module["role"]).strip().lower()):
+                errors.append(
+                    f"modules[{index}].role {module['role']!r} must be a short lowercase word; "
+                    "it is used as a storage path segment"
+                )
     return errors
 
 

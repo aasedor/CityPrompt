@@ -81,7 +81,8 @@ def ensure_validation_deps(auto_install: bool) -> bool:
         return True
     if not auto_install:
         return False
-    log("installing validation dependencies (trimesh, numpy)...")
+    log(f"installing validation dependencies (trimesh, numpy) into {sys.executable}")
+    log("(pass --no-auto-install to manage packages yourself)")
     result = subprocess.run(
         [sys.executable, "-m", "pip", "install", "-r", str(TOOL_DIR / "requirements.txt")],
         capture_output=True, text=True,

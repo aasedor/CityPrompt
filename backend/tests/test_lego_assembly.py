@@ -202,6 +202,18 @@ def test_manifest_validation_reports_actionable_errors():
     assert "modules" in joined
 
 
+def test_manifest_validation_rejects_path_syntax_in_family_and_role():
+    """family/role become storage-key segments — path syntax must never pass."""
+    for bad_family in ("../evil", "a/b", "a\\b", "UPPER", "dots.dots"):
+        errors = manifest_validation_errors(_manifest(family=bad_family))
+        assert any("family" in e and "slug" in e for e in errors), bad_family
+
+    manifest = _manifest()
+    manifest["modules"][0]["role"] = "podium/../../x"
+    errors = manifest_validation_errors(manifest)
+    assert any("role" in e for e in errors)
+
+
 def test_lego_metadata_from_manifest_builds_planner_shape():
     manifest = _manifest()
     metadata = lego_metadata_from_manifest(
@@ -365,6 +377,24 @@ async def test_import_manifest_creates_entries_with_deterministic_keys(
     assembled = next(e for e in created if e.metadata_["lego"]["role"] == "assembled")
     assert assembled.metadata_["lego"]["enabled"] is False
     assert assembled.metadata_["lego"]["height_m"] == pytest.approx(18.0)
+
+
+@pytest.mark.anyio
+async def test_import_manifest_rejects_oversized_files(
+    client, mock_db, test_user, auth_headers, fake_storage, monkeypatch
+):
+    monkeypatch.setattr("app.api.v1.lego_assembly._MAX_UPLOAD_BYTES", 8)
+    mock_db.execute = AsyncMock(side_effect=[_scalar_result(test_user)])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/import-manifest",
+        headers=auth_headers,
+        files=_multipart(_manifest(), ["fam_podium.glb"]),  # body exceeds 8 bytes
+    )
+
+    assert response.status_code == 413
+    assert "capped" in response.json()["detail"]
+    assert fake_storage == {}  # nothing was uploaded before the rejection
 
 
 @pytest.mark.anyio
