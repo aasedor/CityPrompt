@@ -1,79 +1,31 @@
-import { Component, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Canvas } from '@react-three/fiber';
-import { Bounds, Grid, Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei';
+import { Bounds, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
-import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
+import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
-import { BUILDING_AESTHETIC_OPTIONS_V2 } from '@/components/viewer/aestheticCatalog';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
-  type LegoAssemblyInstance,
   type LegoAssemblyPlan,
   type LegoAssemblyRecipe,
 } from './legoAssemblyApi';
-
-const MIN_DIMENSION_M = 4;
-const MAX_DIMENSION_M = 300;
-const MIN_FLOORS = 1;
-const MAX_FLOORS = 100;
-const SCALE_WARNING_THRESHOLD = 0.05;
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-/** Strip variant suffixes (`_front_day`, `_variant_3`) so catalogue lookups hit the base archetype id. */
-function normalizeArchetypeId(id: string | undefined): string | undefined {
-  if (!id) return undefined;
-  return id.replace(/_front_day$/, '').replace(/_variant_\d+$/, '');
-}
-
-function Progress() {
-  const { progress } = useProgress();
-  return (
-    <Html center>
-      <div className="flex items-center gap-2 whitespace-nowrap rounded bg-black/70 px-3 py-2 text-xs font-semibold text-white">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        {progress > 0 ? `${progress.toFixed(0)}%` : 'Loading modules…'}
-      </div>
-    </Html>
-  );
-}
-
-class PreviewErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  render() {
-    return this.state.failed ? (
-      <Html center>
-        <div className="rounded bg-red-950/90 px-3 py-2 text-xs font-semibold text-red-200">
-          A module could not be loaded.
-        </div>
-      </Html>
-    ) : this.props.children;
-  }
-}
-
-function ModuleInstance({ instance }: { instance: LegoAssemblyInstance }) {
-  const url = resolveApiFileUrl(instance.model_url);
-  const { scene } = useGLTF(url);
-  const model = useMemo(() => scene.clone(true), [scene]);
-  const [sx, sy, sz] = instance.scale;
-  const [x, y, z] = instance.position;
-
-  return (
-    <primitive
-      object={model}
-      position={[x, z, y]}
-      scale={[sx, sz, sy]}
-      rotation={[0, -instance.rotation_degrees * Math.PI / 180, 0]}
-    />
-  );
-}
+import {
+  MAX_DIMENSION_M,
+  MAX_FLOORS,
+  MIN_DIMENSION_M,
+  MIN_FLOORS,
+  ModuleInstance,
+  PreviewErrorBoundary,
+  Progress,
+  clamp,
+  deriveZoneTargets,
+  familyGenerationCommands,
+  findCatalogOption,
+  fitIsStretched,
+  normalizeArchetypeId,
+} from './legoShared';
 
 function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
   return (
@@ -116,34 +68,24 @@ export function LegoAssemblyPreview({
   const zoneProperties = zone?.properties ?? properties;
   const archetypeContext = useMemo(() => legoArchetypeContextFromZone(zoneProperties), [zoneProperties]);
 
-  const catalogOption = useMemo(() => {
-    const rawId = archetypeContext.archetype_id;
-    if (!rawId) return undefined;
-    const normalizedId = normalizeArchetypeId(rawId);
-    return (
-      BUILDING_AESTHETIC_OPTIONS_V2.find((option) => option.id === rawId)
-      || BUILDING_AESTHETIC_OPTIONS_V2.find((option) => option.id === normalizedId)
-    );
-  }, [archetypeContext.archetype_id]);
+  const catalogOption = useMemo(
+    () => findCatalogOption(archetypeContext.archetype_id),
+    [archetypeContext.archetype_id],
+  );
 
   const archetypeLabel = catalogOption?.label
     || (zoneProperties?.development_archetype_label as string | undefined)
     || normalizeArchetypeId(archetypeContext.archetype_id)
     || 'No archetype selected';
 
+  // Catalogue-derived defaults, computed once on open; explicit props win.
+  const [defaultTargets] = useState(() => deriveZoneTargets(catalogOption, zoneProperties));
   const [targetWidth, setTargetWidth] = useState(() =>
-    clamp(widthM ?? catalogOption?.suggestedWidth_m ?? 24, MIN_DIMENSION_M, MAX_DIMENSION_M));
+    clamp(widthM ?? defaultTargets.width_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
   const [targetDepth, setTargetDepth] = useState(() =>
-    clamp(depthM ?? catalogOption?.suggestedDepth_m ?? 18, MIN_DIMENSION_M, MAX_DIMENSION_M));
-  const [targetFloors, setTargetFloors] = useState(() => {
-    const zoneFloors = zoneProperties?.floors;
-    const fallback = typeof zoneFloors === 'number' && zoneFloors > 0
-      ? Math.round(zoneFloors)
-      : catalogOption?.minFloors != null && catalogOption?.maxFloors != null
-        ? Math.round((catalogOption.minFloors + catalogOption.maxFloors) / 2)
-        : catalogOption?.minFloors ?? catalogOption?.maxFloors ?? 4;
-    return clamp(floors ?? fallback, MIN_FLOORS, MAX_FLOORS);
-  });
+    clamp(depthM ?? defaultTargets.depth_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
+  const [targetFloors, setTargetFloors] = useState(() =>
+    clamp(floors ?? defaultTargets.floors, MIN_FLOORS, MAX_FLOORS));
   const [allowSetback, setAllowSetback] = useState(true);
 
   const [plan, setPlan] = useState<LegoAssemblyPlan | null>(null);
@@ -248,7 +190,7 @@ export function LegoAssemblyPreview({
   };
 
   const hintArchetypeId = normalizeArchetypeId(archetypeContext.archetype_id) ?? '<archetype-id>';
-  const generateFamilyCommand = `python tools/archetype_compiler/generate_family.py --archetype-id ${hintArchetypeId}\npython tools/archetype_compiler/import_manifest.py build/archetypes/${hintArchetypeId}`;
+  const generateFamilyCommand = familyGenerationCommands(hintArchetypeId);
 
   const copyGenerateCommand = async () => {
     try {
@@ -260,9 +202,7 @@ export function LegoAssemblyPreview({
     }
   };
 
-  const scaleWarning = plan?.fit
-    && (Math.abs(plan.fit.scale_x - 1) > SCALE_WARNING_THRESHOLD
-      || Math.abs(plan.fit.scale_y - 1) > SCALE_WARNING_THRESHOLD);
+  const scaleWarning = fitIsStretched(plan?.fit);
 
   const stepperButtonClass = 'flex h-7 w-7 items-center justify-center rounded border-2 border-[#151515] bg-white shadow-[2px_2px_0_0_rgba(21,21,21,0.25)] transition hover:bg-[#fff9ec] disabled:opacity-40';
   const numberFieldClass = 'mt-0.5 w-full rounded border-2 border-[#151515] bg-white px-2 py-1 text-xs font-bold text-[#151515] focus:bg-[#fff9ec] focus:outline-none';

@@ -2,11 +2,12 @@ import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
+import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
 import { projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
+import { LegoBuilderPanel } from '@/features/legoAssembly/LegoBuilderPanel';
 import { AddBuildingModal } from '@/components/buildings/AddBuildingModal';
 import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerMap } from '@/components/viewer/SitePlannerMap';
@@ -43,6 +44,7 @@ export function ProjectViewPage() {
   const [showShare, setShowShare] = useState(false);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [legoZone, setLegoZone] = useState<SiteZone | null>(null);
+  const [showLegoBuilder, setShowLegoBuilder] = useState(false);
   const [savedRenders, setSavedRenders] = useState<SavedRender[]>([]);
   const [renderLightbox, setRenderLightbox] = useState<SavedRender | null>(null);
   const [renderEditTarget, setRenderEditTarget] = useState<SavedRender | null>(null);
@@ -633,13 +635,22 @@ export function ProjectViewPage() {
               }
               bottomSlot={
                 !showGlobeRender ? (
-                  <button
-                    onClick={handleOpenGlobeRender}
-                    className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
-                  >
-                    <Camera size={16} />
-                    Render
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={handleOpenGlobeRender}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                    >
+                      <Camera size={16} />
+                      Render
+                    </button>
+                    <button
+                      onClick={() => setShowLegoBuilder(true)}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-sm font-black uppercase text-[#151515] shadow-[4px_4px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#151515]"
+                    >
+                      <Blocks size={16} />
+                      LEGO Builder
+                    </button>
+                  </div>
                 ) : null
               }
             />
@@ -847,6 +858,11 @@ export function ProjectViewPage() {
             onClose={() => setLegoZone(null)}
           />
         )}
+
+        {/* LEGO builder — the whole plan assembled from archetype modules */}
+        {showLegoBuilder && (
+          <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
+        )}
       </div>
     );
   }
@@ -1006,18 +1022,29 @@ export function ProjectViewPage() {
             />
           </div>
 
-          {/* Step 1: Render button to advance to step 2 */}
+          {/* Step 1: LEGO builder + Render button to advance to step 2 */}
           {workflowStep === 1 && (
-            <button
-              data-tour="ai-render-btn"
-              onClick={() => setWorkflowStep(2)}
-              disabled={!hasEditableZones}
-              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              title={hasEditableZones ? 'Generate AI render from current view' : 'Draw zones first (buildings, parks, or streets)'}
-            >
-              <Sparkles size={16} />
-              AI Render
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowLegoBuilder(true)}
+                disabled={!hasEditableZones}
+                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                title={hasEditableZones ? 'Assemble the whole plan from LEGO archetype modules' : 'Draw zones first (buildings, parks, or streets)'}
+              >
+                <Blocks size={16} />
+                LEGO BUILDER
+              </button>
+              <button
+                data-tour="ai-render-btn"
+                onClick={() => setWorkflowStep(2)}
+                disabled={!hasEditableZones}
+                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                title={hasEditableZones ? 'Generate AI render from current view' : 'Draw zones first (buildings, parks, or streets)'}
+              >
+                <Sparkles size={16} />
+                AI Render
+              </button>
+            </div>
           )}
 
           {/* Step 2: Back to drawing */}
@@ -1108,6 +1135,10 @@ export function ProjectViewPage() {
               buildingId={legoZone.building_id ?? legoZone.building_ids?.[0] ?? null}
               onClose={() => setLegoZone(null)}
             />
+          )}
+          {/* LEGO builder — the whole plan assembled from archetype modules */}
+          {showLegoBuilder && (
+            <LegoBuilderPanel zones={siteZones} onClose={() => setShowLegoBuilder(false)} />
           )}
         </div>
 
