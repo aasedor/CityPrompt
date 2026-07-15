@@ -158,12 +158,13 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
     material_text = str(roof_detail.get("material") or "").lower()
     features_text = str(roof_detail.get("features") or "").lower()
 
-    if re.search(r"\bgable|pitched|asymmetric pitch", form_text) and "flat" not in form_text.split(" or ")[0]:
+    # mansard/hipped are pitched silhouettes — gabled is the closest available form
+    if re.search(r"\bgable|pitched|asymmetric pitch|mansard|hipped", form_text) and "flat" not in form_text.split(" or ")[0]:
         roof_type = "gabled"
     elif "mono-pitch" in form_text or "monopitch" in form_text or "shed roof" in form_text:
         # "flat or shallow mono-pitch" reads as flat-first; only pick mono when flat is absent
         roof_type = "mono_pitch" if "flat" not in form_text else "flat"
-    elif re.search(r"\bgable|pitched", form_text):
+    elif re.search(r"\bgable|pitched|mansard|hipped", form_text):
         roof_type = "gabled"
     else:
         roof_type = "flat"
