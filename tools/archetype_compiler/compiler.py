@@ -78,6 +78,8 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("corrugated steel", ("#7d8286", 0.5, 0.8), "corrugated_steel"),
     ("corten", ("#8a4a2e", 0.7, 0.35), "corten_steel"),
     ("weathering steel", ("#8a4a2e", 0.7, 0.35), "corten_steel"),
+    ("bronze anodized", ("#83563f", 0.42, 0.72), "copper"),
+    ("bronze-anodized", ("#83563f", 0.42, 0.72), "copper"),
     ("zinc", ("#8d939a", 0.45, 0.8), "zinc"),
     ("copper", ("#9a5b3c", 0.4, 0.85), "copper"),
     ("standing seam", ("#4c5257", 0.45, 0.75), "standing_seam"),
@@ -101,6 +103,7 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("buff brick", ("#c8a878", 0.85, 0.0), "buff_brick"),
     ("blonde brick", ("#cfb289", 0.85, 0.0), "buff_brick"),
     ("brick", ("#96503e", 0.85, 0.0), "red_brick"),
+    ("white mineral render", ("#eeeae3", 0.82, 0.0), "white_plaster"),
     ("white plaster", ("#e8e6e0", 0.8, 0.0), "white_plaster"),
     ("white render", ("#e8e6e0", 0.8, 0.0), "white_plaster"),
     ("render", ("#ddd9d0", 0.8, 0.0), "stucco"),
@@ -234,6 +237,63 @@ def _derive_retail(development_type: str, combined: str, ground_text: str, notes
     return retail
 
 
+def _derive_facade_system(
+    combined: str,
+    primary_text: str,
+    secondary_text: str,
+    ground_text: str,
+    notes: list[str],
+) -> dict[str, Any]:
+    """Translate catalogue prose into a buildable facade kit.
+
+    This is deliberately semantic rather than tied to four variant ids, so the
+    same rules can be reused by future archetypes with equivalent materials.
+    """
+    text = " ".join((combined, primary_text, secondary_text, ground_text)).lower()
+    if ("cross-laminated" in text or "mass timber" in text) and any(
+        token in text for token in ("curtain wall", "floor-to-ceiling", "glazing")
+    ):
+        result = {
+            "system": "timber_grid", "entrance_type": "portal", "balcony_guard": "planter",
+            "window_recess_m": 0.12, "panel_projection_m": 0.16,
+            "material_bay_frequency": 1, "feature_bay_frequency": 2, "planter_frequency": 2,
+            "window_width_ratio": 0.76, "window_height_ratio": 0.76,
+        }
+    elif any(token in text for token in ("white mineral render", "smooth white", "white render")):
+        result = {
+            "system": "punched_render", "entrance_type": "recessed", "balcony_guard": "metal",
+            "window_recess_m": 0.28, "panel_projection_m": 0.05,
+            "material_bay_frequency": 3, "feature_bay_frequency": 3, "planter_frequency": 0,
+            "window_width_ratio": 0.48, "window_height_ratio": 0.68,
+        }
+    elif "brick" in text:
+        result = {
+            "system": "brick_bays", "entrance_type": "arched", "balcony_guard": "solid",
+            "window_recess_m": 0.24, "panel_projection_m": 0.22,
+            "material_bay_frequency": 2, "feature_bay_frequency": 3, "planter_frequency": 0,
+            "window_width_ratio": 0.46, "window_height_ratio": 0.64,
+        }
+    elif any(token in text for token in ("limestone", "precast", "terracotta", "corten")):
+        result = {
+            "system": "stone_frame", "entrance_type": "colonnade", "balcony_guard": "metal",
+            "window_recess_m": 0.26, "panel_projection_m": 0.18,
+            "material_bay_frequency": 2, "feature_bay_frequency": 2, "planter_frequency": 0,
+            "window_width_ratio": 0.5, "window_height_ratio": 0.66,
+        }
+    else:
+        result = {
+            "system": "regular", "entrance_type": "canopy", "balcony_guard": "metal",
+            "window_recess_m": 0.18, "panel_projection_m": 0.08,
+            "material_bay_frequency": 3, "feature_bay_frequency": 3, "planter_frequency": 0,
+            "window_width_ratio": 0.55, "window_height_ratio": 0.52,
+        }
+    notes.append(
+        "facade system: "
+        f"{result['system']} / entrance={result['entrance_type']} / guard={result['balcony_guard']}"
+    )
+    return result
+
+
 def compile_archetype(
     payload: dict[str, Any],
     *,
@@ -339,6 +399,13 @@ def compile_archetype(
     side_bays = max(1, round(depth / bay))
 
     window_height_ratio = 0.62 if any(k in combined for k in ("tall window", "floor-to-ceiling", "nordic", "scandinavian")) else 0.52
+    facade_system = _derive_facade_system(
+        combined,
+        str(facade_detail.get("primaryMaterial") or ""),
+        str(facade_detail.get("secondaryMaterial") or ""),
+        ground_text,
+        notes,
+    )
 
     grammar = BuildingGrammar(
         family_id=_slug((variant or {}).get("id") or archetype_id),
@@ -373,10 +440,19 @@ def compile_archetype(
             bay_width_m=bay,
             front_bay_count=front_bays,
             side_bay_count=side_bays,
-            window_height_ratio=window_height_ratio,
+            window_width_ratio=facade_system["window_width_ratio"],
+            window_height_ratio=max(window_height_ratio, facade_system["window_height_ratio"]),
             balcony_mode=balcony_mode,
             balcony_frequency=balcony_frequency,
             storefront_height_ratio=0.78 if retail else 0.6,
+            system=facade_system["system"],
+            window_recess_m=facade_system["window_recess_m"],
+            panel_projection_m=facade_system["panel_projection_m"],
+            material_bay_frequency=facade_system["material_bay_frequency"],
+            feature_bay_frequency=facade_system["feature_bay_frequency"],
+            planter_frequency=facade_system["planter_frequency"],
+            balcony_guard=facade_system["balcony_guard"],
+            entrance_type=facade_system["entrance_type"],
         ),
         massing=Massing(
             has_setback=has_setback,

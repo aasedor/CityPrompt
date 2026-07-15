@@ -208,3 +208,39 @@ def test_grammar_round_trips_through_dict():
     data = grammar.to_dict()
     rebuilt = BuildingGrammar.from_dict(data)
     assert rebuilt.to_dict() == data
+
+
+@pytest.mark.parametrize(
+    ("primary", "secondary", "ground", "expected"),
+    [
+        ("cross-laminated timber panels", "floor-to-ceiling curtain wall glazing", "timber portal", "timber_grid"),
+        ("smooth white mineral render", "dark metal panels", "recessed lobby", "punched_render"),
+        ("dark red-brown running bond brick", "bronze anodized frames", "arched masonry portal", "brick_bays"),
+        ("textured limestone panels", "corten upper band", "formal colonnade", "stone_frame"),
+    ],
+)
+def test_facade_system_is_derived_from_catalogue_prose(primary, secondary, ground, expected):
+    payload = payload_mixed_use_midrise()
+    payload["facadeDetail"] = {
+        "primaryMaterial": primary,
+        "secondaryMaterial": secondary,
+        "accentMaterial": secondary,
+        "groundFloor": ground,
+        "upperFloors": "residential balconies",
+    }
+    grammar = compile_archetype(payload)
+    assert grammar.facade.system == expected
+    assert grammar.facade.window_recess_m > 0
+
+
+def test_schema_v1_grammar_is_upgraded_with_v2_facade_defaults():
+    data = compile_archetype(payload_mixed_use_midrise()).to_dict()
+    data["schema_version"] = 1
+    for key in (
+        "system", "window_recess_m", "panel_projection_m", "material_bay_frequency",
+        "feature_bay_frequency", "planter_frequency", "balcony_guard", "entrance_type", "top_band",
+    ):
+        data["facade"].pop(key, None)
+    rebuilt = BuildingGrammar.from_dict(data)
+    assert rebuilt.schema_version == SCHEMA_VERSION
+    assert rebuilt.facade.system == "regular"

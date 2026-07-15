@@ -149,6 +149,16 @@ def _semantic_score(module: ModuleDescriptor, request: AssemblyRequest) -> float
     return score
 
 
+def _semantic_id(value: str) -> str:
+    """Normalize catalogue/runtime id punctuation without collapsing variants."""
+    return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+
+
+def _matches_requested_archetype(module: ModuleDescriptor, archetype_id: str) -> bool:
+    requested = _semantic_id(archetype_id)
+    return any(_semantic_id(candidate) == requested for candidate in module.archetype_ids)
+
+
 def _module_score(module: ModuleDescriptor, request: AssemblyRequest) -> float:
     return _dimension_score(module, request) * 2.0 + _semantic_score(module, request)
 
@@ -187,6 +197,21 @@ def plan_vertical_assembly(
     families = sorted({m.family for m in descriptors})
     if request.preferred_family:
         families = [f for f in families if f == request.preferred_family]
+    if request.archetype_id:
+        families = [
+            family
+            for family in families
+            if any(
+                _matches_requested_archetype(module, request.archetype_id)
+                for module in descriptors
+                if module.family == family
+            )
+        ]
+        if not families:
+            raise AssemblyPlanningError(
+                f"No module family explicitly matches archetype '{request.archetype_id}'. "
+                "Import that archetype/variant instead of substituting an unrelated family."
+            )
 
     best_plan: dict[str, Any] | None = None
     best_score = float("-inf")
@@ -356,6 +381,9 @@ def lego_metadata_from_manifest(
     """
     resolved_role = str(role or module.get("role") or "").strip().lower()
     archetype_ids = [str(manifest.get("archetype_id"))]
+    variant_id = manifest.get("variant_id")
+    if variant_id:
+        archetype_ids.append(str(variant_id))
     generation_archetype_id = manifest.get("generation_archetype_id")
     if generation_archetype_id:
         archetype_ids.append(str(generation_archetype_id))
@@ -381,7 +409,7 @@ def lego_metadata_from_manifest(
         "triangle_count": module.get("triangle_count"),
         "material_count": module.get("material_count"),
         "coordinate_contract": manifest.get("coordinate_contract") or {},
-        "source_variant_id": manifest.get("variant_id"),
+        "source_variant_id": variant_id,
         "asset_kind": "lego_module",
     }
 

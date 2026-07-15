@@ -13,7 +13,7 @@ buildingArchetypes.json + aestheticCatalog.ts   (existing source of truth)
 archetype-source.json                            (full Urban Intelligence payload)
         │  compiler.py (deterministic derivation, every decision logged)
         ▼
-grammar.json                                     (Building Grammar, schema v1)
+grammar.json                                     (Building Grammar, schema v2)
         │  blender_generate.py (Blender 4.x/5.x headless)
         ▼
 <family>_podium/floor/setback/roof.glb + <family>_assembled.glb + preview.png + manifest
@@ -71,6 +71,7 @@ python tools/archetype_compiler/import_manifest.py build/archetypes/nordic_timbe
 | `roofDetail.material`/`features` | green roof, mechanical screen |
 | `styleProfile.massing` + floors | setback floor on/off |
 | residential type or balcony prose | balcony mode (projecting/recessed) + frequency |
+| primary/secondary/ground-floor facade prose | facade system, reveal depth, feature bays, entrance type, balcony guard and planting rules |
 | `generationStyleInput.downstreamHints.reuseKeys` | preserved verbatim into grammar, manifest, and library metadata |
 
 Every decision is written to `grammar.json` → `notes[]` so you can trace a wall
@@ -105,6 +106,8 @@ build/archetypes/<archetype-id>[--<variant-id>]/
   <family>_roof.glb          /
   <family>_assembled.glb     podium + floors (+setback) + roof stack
   <family>_preview.png       three-quarter daylight render (EEVEE)
+  <family>_street.png        street-level facade review render
+  <family>_aerial.png        roof/massing review render
   <family>_manifest.json     module metadata + provenance + coordinate contract
   validation_report.json     pass/fail + measured extents
   logs/blender.log           full Blender output
@@ -129,11 +132,11 @@ the full-pipeline smoke additionally needs Blender (skipped otherwise).
 - **Garbled characters in the console** → cosmetic; the tools force UTF-8 where
   possible, but some archetype labels contain unicode dashes.
 
-## Known visual limitations (first pass, by design)
+## Current visual limits
 
-Flat-colour PBR materials (no textures/atlases yet); balconies are solid-panel
-only; recessed balcony mode renders as plain windows; no horizontal bay
-composition (left/corner/right modules); no LODs; window glass uses the
-catalogue palette colour which can read pale; gabled roofs are simple prisms.
-The goal of this phase is scale/origin/stacking/style-routing proof, not final
-architecture.
+Schema v2 adds deterministic facade systems, layered window reveals, material
+bays, multiple guard/entry types, planting, PBR textures, bevel highlights and
+three review cameras. It still uses one repeatable floor module per family, so
+true multi-floor oriels, alternating floor plates, curved/arched openings,
+interiors, perforated guards and LODs need dedicated module types. The pilot
+comparison boards in `docs/lego_pilot/` track that remaining gap explicitly.

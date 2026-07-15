@@ -28,8 +28,8 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.3.0"
-SUPPORTED_SCHEMA_VERSION = 1
+GENERATOR_VERSION = "0.4.0"
+SUPPORTED_SCHEMA_VERSION = 2
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
 # pure function of the grammar.
@@ -110,9 +110,22 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
     links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
 
     color = hex_rgba(spec.get("base_color", "#808080"))
+    if name == "MAT_Glass":
+        color = tuple(min(1.0, channel * 1.25 + 0.02) for channel in color[:3]) + (1.0,)
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = float(spec.get("metallic", 0.0))
     bsdf.inputs["Roughness"].default_value = float(spec.get("roughness", 0.6))
+    if name == "MAT_Glass":
+        # Keep glazing opaque enough for map-scale readability while giving it
+        # a coated, reflective architectural-glass response in presentation renders.
+        if "Coat Weight" in bsdf.inputs:
+            bsdf.inputs["Coat Weight"].default_value = 0.45
+        if "Coat Roughness" in bsdf.inputs:
+            bsdf.inputs["Coat Roughness"].default_value = 0.08
+        if "IOR" in bsdf.inputs:
+            bsdf.inputs["IOR"].default_value = 1.48
+        bsdf.inputs["Metallic"].default_value = 0.12
+        bsdf.inputs["Roughness"].default_value = 0.16
     mat.diffuse_color = color  # viewport/solid fallback
 
     if "texture_key" in mat:
@@ -128,7 +141,19 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         albedo_node.image = _load_image(textures["albedo"], "sRGB")
         albedo_node.location = (-480, 260)
         links.new(uv_node.outputs["UV"], albedo_node.inputs["Vector"])
-        links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
+        grade_node = nodes.new("ShaderNodeHueSaturation")
+        grade_node.name = grade_node.label = "TEX_ArchitecturalGrade"
+        texture_key = spec.get("texture_key")
+        grade_node.inputs["Saturation"].default_value = 1.04 if texture_key == "red_brick" else 1.08
+        grade_node.inputs["Value"].default_value = {
+            "red_brick": 0.64,
+            "clt": 0.8,
+            "white_plaster": 0.98,
+            "limestone": 0.94,
+        }.get(texture_key, 0.84)
+        grade_node.location = (-190, 260)
+        links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
+        links.new(grade_node.outputs["Color"], bsdf.inputs["Base Color"])
 
         if "roughness" in textures:
             rough_node = nodes.new("ShaderNodeTexImage")
@@ -146,6 +171,7 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             links.new(uv_node.outputs["UV"], normal_tex.inputs["Vector"])
             normal_map = nodes.new("ShaderNodeNormalMap")
             normal_map.uv_map = "UVMap"
+            normal_map.inputs["Strength"].default_value = 0.45
             normal_map.location = (-180, -340)
             links.new(normal_tex.outputs["Color"], normal_map.inputs["Color"])
             links.new(normal_map.outputs["Normal"], bsdf.inputs["Normal"])
@@ -164,6 +190,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "concrete": make_material("MAT_Concrete", materials["concrete"]),
         "roof": make_material("MAT_Roof", materials["roof"]),
         "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
+        "plant": make_material("MAT_Plants", {"base_color": "#416f38", "roughness": 0.86, "metallic": 0.0}),
     }
 
 
@@ -178,6 +205,35 @@ def add_box(name: str, size: tuple[float, float, float], location: tuple[float, 
     obj.dimensions = size
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     obj.data.materials.append(mat)
+    return obj
+
+
+def add_cylinder(
+    name: str,
+    radius: float,
+    depth: float,
+    location: tuple[float, float, float],
+    mat,
+    vertices: int = 12,
+) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_cylinder_add(vertices=vertices, radius=radius, depth=depth, location=location)
+    obj = bpy.context.object
+    obj.name = name
+    obj.data.materials.append(mat)
+    for poly in obj.data.polygons:
+        poly.use_smooth = True
+    return obj
+
+
+def add_foliage(name: str, location: tuple[float, float, float], scale: tuple[float, float, float], mat) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1.0, location=location)
+    obj = bpy.context.object
+    obj.name = name
+    obj.scale = scale
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    obj.data.materials.append(mat)
+    for poly in obj.data.polygons:
+        poly.use_smooth = True
     return obj
 
 
@@ -203,6 +259,21 @@ def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
     joined.name = name
     joined.data.name = name
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    # Small real-world edge radii create highlight lines and eliminate the
+    # unmistakable razor-edged procedural-box look.
+    bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
+    bevel.width = 0.025
+    bevel.segments = 1
+    bevel.limit_method = "ANGLE"
+    try:
+        bevel.harden_normals = True
+    except AttributeError:
+        pass
+    bpy.context.view_layer.objects.active = joined
+    try:
+        bpy.ops.object.modifier_apply(modifier=bevel.name)
+    except RuntimeError:
+        joined.modifiers.remove(bevel)
     apply_box_uv(joined)
     return joined
 
@@ -326,8 +397,7 @@ def add_window_row(
     mats: dict,
     frame_depth: float = 0.07,
 ) -> None:
-    """A row of glazing+frame pairs flush on one wall. Windows sit slightly proud
-    of the wall plane so they read at a distance without boolean cuts."""
+    """A row of glazing units with a shadow reveal, projecting surround and mullion."""
     bay = wall_length / bay_count
     window_w = min(window_w, bay * 0.78)
     for i in range(bay_count):
@@ -335,18 +405,56 @@ def add_window_row(
         z_center = z0 + sill + window_h / 2
         if axis in ("front", "rear"):
             sign = -1.0 if axis == "front" else 1.0
-            glass_loc = (along, sign * (wall_offset + 0.03), z_center)
-            frame_loc = (along, sign * (wall_offset + 0.015), z_center)
+            reveal_loc = (along, sign * (wall_offset + 0.018), z_center)
+            glass_loc = (along, sign * (wall_offset + 0.13), z_center)
+            frame_loc = (along, sign * (wall_offset + 0.075), z_center)
             glass_size = (window_w, 0.06, window_h)
-            frame_size = (window_w + frame_depth * 2, 0.05, window_h + frame_depth * 2)
+            reveal_size = (window_w + frame_depth * 3.6, 0.04, window_h + frame_depth * 3.6)
+            frame_size = (window_w + frame_depth * 2, 0.08, window_h + frame_depth * 2)
+            mullion_size = (0.045, 0.09, window_h)
+            mullion_loc = (along, sign * (wall_offset + 0.155), z_center)
         else:
             sign = -1.0 if axis == "left" else 1.0
-            glass_loc = (sign * (wall_offset + 0.03), along, z_center)
-            frame_loc = (sign * (wall_offset + 0.015), along, z_center)
+            reveal_loc = (sign * (wall_offset + 0.018), along, z_center)
+            glass_loc = (sign * (wall_offset + 0.13), along, z_center)
+            frame_loc = (sign * (wall_offset + 0.075), along, z_center)
             glass_size = (0.06, window_w, window_h)
-            frame_size = (0.05, window_w + frame_depth * 2, window_h + frame_depth * 2)
+            reveal_size = (0.04, window_w + frame_depth * 3.6, window_h + frame_depth * 3.6)
+            frame_size = (0.08, window_w + frame_depth * 2, window_h + frame_depth * 2)
+            mullion_size = (0.09, 0.045, window_h)
+            mullion_loc = (sign * (wall_offset + 0.155), along, z_center)
+        parts.append(add_box(f"{prefix}_Reveal_{axis}_{i:02d}", reveal_size, reveal_loc, mats["accent"]))
         parts.append(add_box(f"{prefix}_Frame_{axis}_{i:02d}", frame_size, frame_loc, mats["accent"]))
         parts.append(add_box(f"{prefix}_Glass_{axis}_{i:02d}", glass_size, glass_loc, mats["glass"]))
+        if window_w > 1.25:
+            parts.append(add_box(f"{prefix}_Mullion_{axis}_{i:02d}", mullion_size, mullion_loc, mats["accent"]))
+
+
+def add_entry_expression(parts: list, entrance_type: str, w: float, d: float, h: float, mats: dict) -> None:
+    """Add an archetype-specific, legible address at the centre front facade."""
+    front = d / 2
+    door_w, door_h = min(2.3, w * 0.14), min(3.2, h * 0.74)
+    y = -(front + 0.18)
+    if entrance_type == "portal":
+        portal_w = door_w + 1.2
+        parts.append(add_box("EntryPortalL", (0.42, 0.5, door_h + 0.65), (-portal_w / 2, y, (door_h + 0.65) / 2), mats["primary"]))
+        parts.append(add_box("EntryPortalR", (0.42, 0.5, door_h + 0.65), (portal_w / 2, y, (door_h + 0.65) / 2), mats["primary"]))
+        parts.append(add_box("EntryPortalTop", (portal_w + 0.42, 0.5, 0.42), (0, y, door_h + 0.44), mats["primary"]))
+    elif entrance_type == "recessed":
+        parts.append(add_box("EntryShadow", (door_w + 1.1, 0.18, door_h + 0.65), (0, -(front + 0.04), (door_h + 0.65) / 2), mats["accent"]))
+        parts.append(add_box("EntryThinCanopy", (door_w + 1.8, 1.05, 0.1), (0, -(front + 0.52), door_h + 0.45), mats["accent"]))
+    elif entrance_type == "arched":
+        # A stepped masonry arch reads correctly at map distance without a costly boolean opening.
+        portal_w = door_w + 1.0
+        parts.append(add_box("EntryArchPierL", (0.48, 0.36, door_h), (-portal_w / 2, y, door_h / 2), mats["secondary"]))
+        parts.append(add_box("EntryArchPierR", (0.48, 0.36, door_h), (portal_w / 2, y, door_h / 2), mats["secondary"]))
+        for i, (span, z) in enumerate(((portal_w + 0.45, door_h), (portal_w - 0.05, door_h + 0.28), (portal_w - 0.6, door_h + 0.5))):
+            parts.append(add_box(f"EntryArchVoussoir{i}", (span, 0.36, 0.28), (0, y, z), mats["secondary"]))
+    elif entrance_type == "colonnade":
+        for i, x in enumerate((-3.0, -1.55, 1.55, 3.0)):
+            if abs(x) < w * 0.42:
+                parts.append(add_cylinder(f"EntryColumn{i}", 0.22, door_h + 0.55, (x, y, (door_h + 0.55) / 2), mats["concrete"], 16))
+        parts.append(add_box("EntryEntablature", (min(7.2, w * 0.5), 0.5, 0.42), (0, y, door_h + 0.45), mats["primary"]))
 
 
 # ---------------------------------------------------------------------------
@@ -404,6 +512,11 @@ def build_podium(grammar: dict, mats: dict) -> bpy.types.Object:
     add_window_row(parts, "Podium", d, "left", w / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, side_count, mats)
     add_window_row(parts, "Podium", d, "right", w / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, side_count, mats)
 
+    add_entry_expression(parts, facade.get("entrance_type", "canopy"), w, d, h, mats)
+    if facade.get("system") in ("timber_grid", "brick_bays", "stone_frame"):
+        band_mat = mats["primary"] if facade["system"] != "stone_frame" else mats["secondary"]
+        parts.append(add_box("Podium_CrownBand", (w + 0.16, 0.22, 0.34), (0, -(d / 2 + 0.08), h - 0.2), band_mat))
+
     return join_as("MOD_Podium", parts)
 
 
@@ -438,29 +551,82 @@ def build_floor(grammar: dict, mats: dict, setback: bool = False) -> bpy.types.O
     balcony_mode = facade.get("balcony_mode", "none")
     balcony_every = max(1, int(facade.get("balcony_frequency", 2)))
     balcony_depth = facade.get("balcony_depth_m", 1.5)
+    system = facade.get("system", "regular")
+    feature_every = max(1, int(facade.get("feature_bay_frequency", 3)))
+    material_every = max(1, int(facade.get("material_bay_frequency", 3)))
+    planter_every = int(facade.get("planter_frequency", 0))
+    projection = float(facade.get("panel_projection_m", 0.08))
+    guard = facade.get("balcony_guard", "metal")
 
     for i in range(bay_count):
         x = -w / 2 + bay * (i + 0.5)
         has_balcony = (not setback) and balcony_mode == "projecting" and (i % balcony_every == 0)
+        is_feature = i % feature_every == 0
         z_center = sill + window_h / 2
         # Window (door-height glazing behind balconies)
         glass_h = h * 0.72 if has_balcony else window_h
         glass_z = 0.25 + glass_h / 2 if has_balcony else z_center
-        parts.append(add_box(f"Floor_Frame_{i:02d}", (window_w + 0.14, 0.05, glass_h + 0.14),
-                             (x, -(front_wall_y + 0.015), glass_z), mats["accent"]))
+        feature_projection = projection if is_feature and system in ("brick_bays", "stone_frame") else 0.0
+        if feature_projection:
+            feature_mat = mats["primary"] if system == "brick_bays" else mats["secondary"]
+            parts.append(add_box(
+                f"Floor_FeatureBay_{i:02d}", (bay * 0.9, feature_projection + 0.12, h - 0.18),
+                (x, -(front_wall_y + feature_projection / 2), h / 2), feature_mat,
+            ))
+        elif system in ("punched_render", "stone_frame") and i % material_every == material_every - 1:
+            parts.append(add_box(
+                f"Floor_MaterialBay_{i:02d}", (bay * 0.9, 0.1, h - 0.2),
+                (x, -(front_wall_y + 0.04), h / 2), mats["secondary"],
+            ))
+
+        glass_y = -(front_wall_y + feature_projection + 0.15)
+        frame_y = -(front_wall_y + feature_projection + 0.085)
+        parts.append(add_box(f"Floor_Reveal_{i:02d}", (window_w + 0.38, 0.08, glass_h + 0.38),
+                             (x, -(front_wall_y + feature_projection + 0.025), glass_z), mats["accent"]))
+        parts.append(add_box(f"Floor_Frame_{i:02d}", (window_w + 0.18, 0.1, glass_h + 0.18),
+                             (x, frame_y, glass_z), mats["accent"]))
         parts.append(add_box(f"Floor_Glass_{i:02d}", (window_w, 0.06, glass_h),
-                             (x, -(front_wall_y + 0.03), glass_z), mats["glass"]))
+                             (x, glass_y, glass_z), mats["glass"]))
+        if facade.get("mullions", True) and window_w > 1.15:
+            parts.append(add_box(f"Floor_Mullion_{i:02d}", (0.05, 0.12, glass_h),
+                                 (x, glass_y - 0.04, glass_z), mats["accent"]))
         if has_balcony:
             bw = bay * 0.85
             by = -(front_wall_y + balcony_depth / 2)
             parts.append(add_box(f"Floor_BalconySlab_{i:02d}", (bw, balcony_depth, 0.14), (x, by, 0.2), mats["concrete"]))
-            # Solid balustrade (reads as timber/wood panel via secondary material)
-            parts.append(add_box(f"Floor_Balustrade_{i:02d}", (bw, 0.06, 1.02),
-                                 (x, -(front_wall_y + balcony_depth - 0.03), 0.27 + 0.51), mats["secondary"]))
+            rail_y = -(front_wall_y + balcony_depth - 0.03)
+            if guard in ("solid", "planter"):
+                guard_h = 0.44 if guard == "planter" else 1.02
+                guard_mat = mats["primary"] if guard == "planter" else mats["secondary"]
+                parts.append(add_box(f"Floor_Balustrade_{i:02d}", (bw, 0.12, guard_h),
+                                     (x, rail_y, 0.27 + guard_h / 2), guard_mat))
+                if guard == "planter":
+                    parts.append(add_box(f"Floor_PlanterRail_{i:02d}", (bw + 0.06, 0.055, 0.52),
+                                         (x, rail_y - 0.025, 0.98), mats["glass"]))
+                    parts.append(add_box(f"Floor_PlanterTopRail_{i:02d}", (bw + 0.1, 0.07, 0.07),
+                                         (x, rail_y - 0.04, 1.26), mats["accent"]))
+            else:
+                guard_mat = mats["glass"] if guard == "glass" else mats["accent"]
+                parts.append(add_box(f"Floor_Balustrade_{i:02d}", (bw, 0.045, 0.88),
+                                     (x, rail_y, 0.76), guard_mat))
+                parts.append(add_box(f"Floor_Handrail_{i:02d}", (bw + 0.08, 0.08, 0.08),
+                                     (x, rail_y, 1.23), mats["accent"]))
             parts.append(add_box(f"Floor_BalustradeL_{i:02d}", (0.06, balcony_depth - 0.06, 1.02),
-                                 (x - bw / 2 + 0.03, by, 0.27 + 0.51), mats["secondary"]))
+                                 (x - bw / 2 + 0.03, by, 0.78), mats["accent"]))
             parts.append(add_box(f"Floor_BalustradeR_{i:02d}", (0.06, balcony_depth - 0.06, 1.02),
-                                 (x + bw / 2 - 0.03, by, 0.27 + 0.51), mats["secondary"]))
+                                 (x + bw / 2 - 0.03, by, 0.78), mats["accent"]))
+            if guard == "planter" or (planter_every and i % planter_every == 0):
+                for plant_idx, dx in enumerate((-bw * 0.28, 0.0, bw * 0.28)):
+                    parts.append(add_foliage(
+                        f"Floor_Plant_{i:02d}_{plant_idx}",
+                        (x + dx, rail_y - 0.02, 0.88 + 0.08 * (plant_idx % 2)),
+                        (0.3, 0.22, 0.27 + 0.07 * (plant_idx % 2)), mats["plant"],
+                    ))
+
+    if system in ("timber_grid", "brick_bays"):
+        band_mat = mats["primary"] if system == "timber_grid" else mats["secondary"]
+        parts.append(add_box("Floor_FacadeDatum", (w + 0.12, 0.16, 0.18),
+                             (0, -(front_wall_y + 0.07), h - 0.12), band_mat))
 
     # Rear + side windows
     add_window_row(parts, "Floor", w, "rear", (center_y + d / 2), 0.0, window_w, window_h, sill, bay_count, mats)
@@ -546,10 +712,9 @@ def export_objects(path: Path, objects: list[bpy.types.Object]) -> None:
         export_cameras=False,
         export_lights=False,
         export_extras=True,
-        # JPEG keeps textured module GLBs well under the 8 MB budget; PNG
-        # albedo sets would triple it. AO/normal accept the mild loss.
-        export_image_format="JPEG",
-        export_jpeg_quality=85,
+        # AUTO preserves lossless normal/AO maps and keeps source JPEG albedo
+        # maps compressed instead of recompressing every texture indiscriminately.
+        export_image_format="AUTO",
     )
     try:
         bpy.ops.export_scene.gltf(**kwargs)
@@ -574,31 +739,60 @@ def pick_render_engine() -> str:
     return scene.render.engine
 
 
-def render_thumbnail(path: Path, focus_height: float, footprint: float) -> str:
-    """Neutral three-quarter presentation: daylight sun, ground plane, soft sky."""
+def render_presentation_views(output: Path, family: str, focus_height: float, width: float, depth: float) -> tuple[str, list[str]]:
+    """Render consistent studio, street and aerial views of the assembled kit.
+
+    Context is deterministic and exists only for these review images; it never
+    leaks into the modular or assembled GLBs.
+    """
     scene = bpy.context.scene
     engine = pick_render_engine()
+    footprint = max(width, depth)
 
-    ground_mat = make_material("MAT_PreviewGround", {"base_color": "#c9c7c2", "roughness": 0.95, "metallic": 0.0})
-    ground = add_box("PreviewGround", (footprint * 14, footprint * 14, 0.05), (0, 0, -0.05), ground_mat)
+    ground_mat = make_material("MAT_PreviewGround", {"base_color": "#b9b6ae", "roughness": 0.92, "metallic": 0.0})
+    road_mat = make_material("MAT_PreviewRoad", {"base_color": "#33373b", "roughness": 0.95, "metallic": 0.0})
+    curb_mat = make_material("MAT_PreviewCurb", {"base_color": "#d5d0c5", "roughness": 0.9, "metallic": 0.0})
+    bark_mat = make_material("MAT_PreviewBark", {"base_color": "#5d4431", "roughness": 0.95, "metallic": 0.0})
+    leaf_mat = make_material("MAT_PreviewLeaves", {"base_color": "#527543", "roughness": 0.88, "metallic": 0.0})
+
+    rig: list[bpy.types.Object] = []
+    rig.append(add_box("PreviewGround", (footprint * 14, footprint * 14, 0.06), (0, 0, -0.04), ground_mat))
+    street_y = -(depth / 2 + 7.0)
+    rig.append(add_box("PreviewSidewalk", (footprint * 4.0, 5.0, 0.13), (0, -(depth / 2 + 2.25), 0.045), curb_mat))
+    rig.append(add_box("PreviewRoad", (footprint * 5.0, 10.0, 0.08), (0, street_y, -0.005), road_mat))
+    rig.append(add_box("PreviewCurb", (footprint * 4.0, 0.26, 0.28), (0, -(depth / 2 + 4.85), 0.1), curb_mat))
+
+    # Sparse street trees supply scale without masking the facade comparison.
+    for idx, (x, y, scale) in enumerate(((-width * 0.72, -depth / 2 - 3.1, 0.9), (width * 0.74, -depth / 2 - 3.5, 1.0))):
+        trunk_h = 4.1 * scale
+        rig.append(add_cylinder(f"PreviewTreeTrunk{idx}", 0.18 * scale, trunk_h, (x, y, trunk_h / 2), bark_mat, 10))
+        rig.append(add_foliage(f"PreviewTreeCrown{idx}A", (x, y, trunk_h + 1.15 * scale), (1.65 * scale, 1.35 * scale, 1.75 * scale), leaf_mat))
+        rig.append(add_foliage(f"PreviewTreeCrown{idx}B", (x - 0.8 * scale, y, trunk_h + 0.65 * scale), (1.2 * scale, 1.0 * scale, 1.2 * scale), leaf_mat))
+        rig.append(add_foliage(f"PreviewTreeCrown{idx}C", (x + 0.75 * scale, y, trunk_h + 0.8 * scale), (1.15 * scale, 1.0 * scale, 1.25 * scale), leaf_mat))
 
     sun_data = bpy.data.lights.new("PreviewSun", type="SUN")
-    sun_data.energy = 3.5
-    sun_data.angle = math.radians(3)
+    sun_data.energy = 2.6
+    sun_data.angle = math.radians(2.2)
     sun = bpy.data.objects.new("PreviewSun", sun_data)
-    sun.rotation_euler = (math.radians(50), math.radians(-12), math.radians(-35))
+    sun.rotation_euler = (math.radians(42), math.radians(-18), math.radians(-38))
     scene.collection.objects.link(sun)
+    rig.append(sun)
+
+    area_data = bpy.data.lights.new("PreviewFill", type="AREA")
+    area_data.energy = 900.0
+    area_data.shape = "DISK"
+    area_data.size = footprint * 1.4
+    area = bpy.data.objects.new("PreviewFill", area_data)
+    area.location = (width * 0.8, -depth * 1.2, focus_height * 0.8)
+    area.rotation_euler = (math.radians(38), 0, math.radians(32))
+    scene.collection.objects.link(area)
+    rig.append(area)
 
     cam_data = bpy.data.cameras.new("PreviewCamera")
-    cam_data.lens = 42
+    cam_data.lens = 48
     cam = bpy.data.objects.new("PreviewCamera", cam_data)
     scene.collection.objects.link(cam)
-    dist = max(footprint * 1.9, focus_height * 1.7)
-    cam.location = (-dist * 0.78, -dist * 0.95, focus_height * 0.66 + dist * 0.22)
-    target = Vector((0.0, 0.0, focus_height * 0.45))
-    # Blender cameras look down local -Z with +Y up; track-quat aims it at the building
-    direction = target - cam.location
-    cam.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+    rig.append(cam)
     scene.camera = cam
 
     world = bpy.data.worlds.get("World") or bpy.data.worlds.new("World")
@@ -606,19 +800,41 @@ def render_thumbnail(path: Path, focus_height: float, footprint: float) -> str:
     world.use_nodes = True
     bg = world.node_tree.nodes.get("Background")
     if bg:
-        bg.inputs[0].default_value = (0.88, 0.9, 0.93, 1.0)
-        bg.inputs[1].default_value = 1.0
+        bg.inputs[0].default_value = (0.68, 0.78, 0.9, 1.0)
+        bg.inputs[1].default_value = 0.65
 
+    try:
+        scene.view_settings.look = "AgX - Medium High Contrast"
+    except TypeError:
+        pass
+    scene.render.image_settings.file_format = "PNG"
+    scene.render.image_settings.color_mode = "RGBA"
+    scene.render.film_transparent = False
+    scene.render.resolution_percentage = 100
     scene.render.resolution_x = 1280
     scene.render.resolution_y = 960
-    scene.render.filepath = str(path)
-    scene.render.image_settings.file_format = "PNG"
-    bpy.ops.render.render(write_still=True)
 
-    # Clean up presentation rig so it never leaks into GLB exports
-    for obj in (ground, sun, cam):
-        bpy.data.objects.remove(obj, do_unlink=True)
-    return engine
+    dist = max(footprint * 2.15, focus_height * 1.95)
+    views = (
+        ("preview", (-dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
+        ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
+    )
+    rendered: list[str] = []
+    for view_name, location, target_tuple, lens in views:
+        cam.location = location
+        cam.data.lens = lens
+        direction = Vector(target_tuple) - cam.location
+        cam.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+        filename = f"{family}_{view_name}.png"
+        scene.render.filepath = str(output / filename)
+        bpy.ops.render.render(write_still=True)
+        rendered.append(filename)
+
+    for obj in rig:
+        if obj.name in bpy.data.objects:
+            bpy.data.objects.remove(obj, do_unlink=True)
+    return engine, rendered
 
 
 # ---------------------------------------------------------------------------
@@ -698,6 +914,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
 
     assembled_meta = None
     engine_used = None
+    rendered_views: list[str] = []
     if assembled:
         reset_scene()
         mats = build_materials(grammar)
@@ -736,10 +953,12 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
 
         if thumbnail:
             try:
-                engine_used = render_thumbnail(output / f"{family}_preview.png", z, max(dims["width_m"], dims["depth_m"]))
-                print(f"[blender_generate] rendered {family}_preview.png via {engine_used}")
+                engine_used, rendered_views = render_presentation_views(
+                    output, family, z, dims["width_m"], dims["depth_m"]
+                )
+                print(f"[blender_generate] rendered {', '.join(rendered_views)} via {engine_used}")
             except Exception as exc:  # pragma: no cover - render backends vary by machine
-                print(f"[blender_generate] WARNING: thumbnail render failed: {exc}")
+                print(f"[blender_generate] WARNING: presentation renders failed: {exc}")
 
         if keep_blend:
             blend_path = output / f"{family}.blend"
@@ -786,6 +1005,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         "modules": manifest_modules,
         "assembled": assembled_meta,
         "thumbnail": f"{family}_preview.png" if (assembled and thumbnail) else None,
+        "renders": rendered_views,
     }
     manifest_path = output / f"{family}_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")

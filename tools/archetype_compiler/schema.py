@@ -19,12 +19,15 @@ import re
 from dataclasses import dataclass, field, asdict
 from typing import Any
 
-SCHEMA_VERSION = 1  # texture_key is additive+optional, so still schema 1
-GENERATOR_VERSION = "0.3.0"
+SCHEMA_VERSION = 2
+GENERATOR_VERSION = "0.4.0"
 
 VALID_ROOF_TYPES = ("flat", "gabled", "mono_pitch")
 VALID_BALCONY_MODES = ("none", "recessed", "projecting")
 VALID_CORNER_CONDITIONS = ("midblock", "corner")
+VALID_FACADE_SYSTEMS = ("regular", "timber_grid", "punched_render", "brick_bays", "stone_frame")
+VALID_BALCONY_GUARDS = ("solid", "metal", "glass", "planter")
+VALID_ENTRANCE_TYPES = ("canopy", "portal", "recessed", "arched", "colonnade")
 
 _HEX_RE = re.compile(r"^#[0-9a-fA-F]{6}$")
 
@@ -109,6 +112,15 @@ class Facade:
     balcony_depth_m: float = 1.5
     vertical_rhythm: str = "regular"
     mullions: bool = True
+    system: str = "regular"
+    window_recess_m: float = 0.18
+    panel_projection_m: float = 0.08
+    material_bay_frequency: int = 3
+    feature_bay_frequency: int = 3
+    planter_frequency: int = 0
+    balcony_guard: str = "metal"
+    entrance_type: str = "canopy"
+    top_band: bool = True
 
     def validate(self) -> None:
         _require_range("facade.bay_width_m", self.bay_width_m, 1.2, 12.0)
@@ -120,8 +132,19 @@ class Facade:
         _require_range("facade.storefront_height_ratio", self.storefront_height_ratio, 0.3, 0.95)
         _require_range("facade.balcony_frequency", self.balcony_frequency, 1, 8)
         _require_range("facade.balcony_depth_m", self.balcony_depth_m, 0.6, 3.0)
+        _require_range("facade.window_recess_m", self.window_recess_m, 0.02, 0.6)
+        _require_range("facade.panel_projection_m", self.panel_projection_m, 0.0, 0.5)
+        _require_range("facade.material_bay_frequency", self.material_bay_frequency, 1, 8)
+        _require_range("facade.feature_bay_frequency", self.feature_bay_frequency, 1, 8)
+        _require_range("facade.planter_frequency", self.planter_frequency, 0, 8)
         if self.balcony_mode not in VALID_BALCONY_MODES:
             raise GrammarError(f"facade.balcony_mode={self.balcony_mode!r} must be one of {VALID_BALCONY_MODES}")
+        if self.system not in VALID_FACADE_SYSTEMS:
+            raise GrammarError(f"facade.system={self.system!r} must be one of {VALID_FACADE_SYSTEMS}")
+        if self.balcony_guard not in VALID_BALCONY_GUARDS:
+            raise GrammarError(f"facade.balcony_guard={self.balcony_guard!r} must be one of {VALID_BALCONY_GUARDS}")
+        if self.entrance_type not in VALID_ENTRANCE_TYPES:
+            raise GrammarError(f"facade.entrance_type={self.entrance_type!r} must be one of {VALID_ENTRANCE_TYPES}")
 
 
 @dataclass(slots=True)
@@ -233,10 +256,10 @@ class BuildingGrammar:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "BuildingGrammar":
         version = data.get("schema_version")
-        if version != SCHEMA_VERSION:
+        if version not in (1, SCHEMA_VERSION):
             raise GrammarError(
                 f"grammar schema_version={version!r} not supported by this generator "
-                f"(expected {SCHEMA_VERSION}). Re-run the compiler."
+                f"(expected 1 or {SCHEMA_VERSION}). Re-run the compiler."
             )
         materials = data.get("materials", {})
 

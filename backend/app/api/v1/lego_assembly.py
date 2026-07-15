@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import uuid
 from typing import Any
@@ -331,8 +332,10 @@ async def import_compiler_manifest(
     thumbnail_url: str | None = None
     if thumbnail is not None:
         thumb_key = f"library/lego/{user.id}/{family}/preview.png"
-        _upload_to_storage(thumb_key, await thumbnail.read(), "image/png")
-        thumbnail_url = _file_proxy_url(thumb_key)
+        thumb_data = await thumbnail.read()
+        _upload_to_storage(thumb_key, thumb_data, "image/png")
+        thumb_version = hashlib.sha256(thumb_data).hexdigest()[:12]
+        thumbnail_url = f"{_file_proxy_url(thumb_key)}?v={thumb_version}"
 
     # Importable units: manifest modules plus the pre-assembled preview GLB
     # (synthesized as a pseudo-module so it lands in the library disabled).
@@ -370,12 +373,15 @@ async def import_compiler_manifest(
         matched_filenames.add(filename)
 
         key = _module_storage_key(user.id, family, role)
-        _upload_to_storage(key, uploads[filename], "model/gltf-binary")
-        model_url = _file_proxy_url(key)
+        module_bytes = uploads[filename]
+        _upload_to_storage(key, module_bytes, "model/gltf-binary")
+        content_hash = hashlib.sha256(module_bytes).hexdigest()
+        model_url = f"{_file_proxy_url(key)}?v={content_hash[:12]}"
 
         lego_metadata = lego_metadata_from_manifest(
             manifest_data, module, role=role, validation_status=validation_status
         )
+        lego_metadata["content_hash"] = content_hash
         name = f"{label} — {role}"[:255]
         tags = [family, role, *reuse_keys[:_TAG_REUSE_KEY_LIMIT]]
 

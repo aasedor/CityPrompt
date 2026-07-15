@@ -251,6 +251,24 @@ def test_find_family_module_entry_dedupes_on_family_and_role():
     assert find_family_module_entry(entries, "fam-a", "podium") is None
 
 
+def test_requested_archetype_never_substitutes_unrelated_family():
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0)),
+    ]
+    with pytest.raises(AssemblyPlanningError, match="explicitly matches archetype"):
+        plan_vertical_assembly(
+            [module for module in modules if module],
+            AssemblyRequest(
+                target_width_m=24,
+                target_depth_m=18,
+                target_floors=5,
+                archetype_id="contemporary_midrise",
+            ),
+        )
+
+
 # ---------------------------------------------------------------------------
 # API: shared mock-db helpers (same pattern as test_site_zones_generate_all_api)
 # ---------------------------------------------------------------------------
@@ -361,8 +379,8 @@ async def test_import_manifest_creates_entries_with_deterministic_keys(
     assert floor.is_public is False
     assert floor.tags[:2] == ["nordic-timber-midrise", "floor"]
     # model_url must be the browser-reachable proxy URL, not the raw MinIO URL
-    assert floor.model_url == f"/api/v1/files/{prefix}/floor.glb"
-    assert floor.thumbnail_url == f"/api/v1/files/{prefix}/preview.png"
+    assert floor.model_url.startswith(f"/api/v1/files/{prefix}/floor.glb?v=")
+    assert floor.thumbnail_url.startswith(f"/api/v1/files/{prefix}/preview.png?v=")
     assert "archetype_compiler/blender_generate.py v0.2.0" in floor.generation_prompt
 
     lego = floor.metadata_["lego"]
@@ -373,6 +391,7 @@ async def test_import_manifest_creates_entries_with_deterministic_keys(
     assert lego["archetype_ids"] == ["nordic_timber_midrise", "nordic_timber_midrise_variant_0"]
     assert lego["min_floors"] == 2 and lego["max_floors"] == 8
     assert lego["coordinate_contract"]["units"] == "metres"
+    assert len(lego["content_hash"]) == 64
 
     assembled = next(e for e in created if e.metadata_["lego"]["role"] == "assembled")
     assert assembled.metadata_["lego"]["enabled"] is False
@@ -424,17 +443,16 @@ async def test_reimport_updates_existing_entries_instead_of_duplicating(
 
     assert response.status_code == 200, response.text
     payload = response.json()
-    assert payload["imported"] == [
-        {
-            "id": str(existing.id),
-            "role": "floor",
-            "action": "updated",
-            "model_url": f"/api/v1/files/library/lego/{test_user.id}/nordic-timber-midrise/floor.glb",
-        }
-    ]
+    assert len(payload["imported"]) == 1
+    assert payload["imported"][0]["id"] == str(existing.id)
+    assert payload["imported"][0]["role"] == "floor"
+    assert payload["imported"][0]["action"] == "updated"
+    assert payload["imported"][0]["model_url"].startswith(
+        f"/api/v1/files/library/lego/{test_user.id}/nordic-timber-midrise/floor.glb?v="
+    )
     mock_db.add.assert_not_called()
     assert existing.name == "Nordic Timber Mid-Rise — floor"
-    assert existing.model_url.endswith("/nordic-timber-midrise/floor.glb")
+    assert "/nordic-timber-midrise/floor.glb?v=" in existing.model_url
     assert existing.metadata_["lego"]["height_m"] == pytest.approx(3.2)
     assert existing.metadata_["lego"]["validation_status"] == "unknown"
 
