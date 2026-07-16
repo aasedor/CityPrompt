@@ -233,9 +233,10 @@ def test_facade_system_is_derived_from_catalogue_prose(primary, secondary, groun
     assert grammar.facade.window_recess_m > 0
 
 
-def test_schema_v1_grammar_is_upgraded_with_v2_facade_defaults():
+def test_schema_v1_grammar_is_upgraded_with_v3_facade_graph_defaults():
     data = compile_archetype(payload_mixed_use_midrise()).to_dict()
     data["schema_version"] = 1
+    data.pop("facade_graph", None)
     for key in (
         "system", "window_recess_m", "panel_projection_m", "material_bay_frequency",
         "feature_bay_frequency", "planter_frequency", "balcony_guard", "entrance_type", "top_band",
@@ -244,3 +245,33 @@ def test_schema_v1_grammar_is_upgraded_with_v2_facade_defaults():
     rebuilt = BuildingGrammar.from_dict(data)
     assert rebuilt.schema_version == SCHEMA_VERSION
     assert rebuilt.facade.system == "regular"
+    assert {variant.key for variant in rebuilt.facade_graph.floor_variants} == {"typical_a"}
+
+
+def test_v3_facade_graph_has_alternating_floors_and_resolved_references():
+    payload = payload_mixed_use_midrise()
+    payload["facadeDetail"] = {
+        "primaryMaterial": "cross-laminated timber panels",
+        "secondaryMaterial": "floor-to-ceiling curtain wall glazing",
+        "groundFloor": "timber portal and retail glazing",
+        "upperFloors": "residential balconies",
+    }
+    grammar = compile_archetype(payload)
+    variants = {variant.key: variant for variant in grammar.facade_graph.floor_variants}
+    assert set(variants) == {"typical_a", "typical_b", "upper", "crown"}
+    assert variants["typical_a"].bay_sequence != variants["typical_b"].bay_sequence
+    assert {zone.kind for zone in grammar.facade_graph.zones} == {"base", "middle", "upper", "crown"}
+    grammar.facade_graph.validate()
+
+
+def test_brick_graph_compiles_true_oriel_and_arch_attachments():
+    payload = payload_mixed_use_midrise()
+    payload["facadeDetail"] = {
+        "primaryMaterial": "dark red-brown running bond brick",
+        "secondaryMaterial": "bronze anodized frames",
+        "groundFloor": "arched masonry portal",
+        "upperFloors": "stacked projecting bays",
+    }
+    grammar = compile_archetype(payload)
+    attachments = {attachment.kind for attachment in grammar.facade_graph.attachments}
+    assert {"oriel", "arch", "cornice"} <= attachments

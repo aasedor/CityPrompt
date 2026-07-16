@@ -28,8 +28,8 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.4.0"
-SUPPORTED_SCHEMA_VERSION = 2
+GENERATOR_VERSION = "0.5.0"
+SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
 # pure function of the grammar.
@@ -191,6 +191,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "roof": make_material("MAT_Roof", materials["roof"]),
         "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
         "plant": make_material("MAT_Plants", {"base_color": "#416f38", "roughness": 0.86, "metallic": 0.0}),
+        "interior": make_material("MAT_Interior_Shadow", {"base_color": "#171c21", "roughness": 0.72, "metallic": 0.0}),
     }
 
 
@@ -245,6 +246,89 @@ def add_prism(name: str, verts: list[tuple[float, float, float]], faces: list[tu
     bpy.context.scene.collection.objects.link(obj)
     obj.data.materials.append(mat)
     return obj
+
+
+def add_arch_ring(
+    name: str,
+    centre_x: float,
+    front_y: float,
+    spring_z: float,
+    inner_radius: float,
+    ring_width: float,
+    depth: float,
+    mat,
+    segments: int = 18,
+) -> bpy.types.Object:
+    """Extruded semicircular masonry ring; unlike the v2 stepped lintel this
+    preserves a genuine curved void through the entrance surround."""
+    outer_radius = inner_radius + ring_width
+    y_front, y_back = front_y - depth / 2, front_y + depth / 2
+    verts: list[tuple[float, float, float]] = []
+    for y in (y_front, y_back):
+        for radius in (inner_radius, outer_radius):
+            for index in range(segments + 1):
+                theta = math.pi * index / segments
+                verts.append((centre_x + radius * math.cos(theta), y, spring_z + radius * math.sin(theta)))
+
+    stride = segments + 1
+    inner_front, outer_front = 0, stride
+    inner_back, outer_back = stride * 2, stride * 3
+    faces: list[tuple[int, ...]] = []
+    for index in range(segments):
+        nxt = index + 1
+        faces.extend([
+            (outer_front + index, outer_front + nxt, inner_front + nxt, inner_front + index),
+            (inner_back + index, inner_back + nxt, outer_back + nxt, outer_back + index),
+            (outer_front + index, outer_back + index, outer_back + nxt, outer_front + nxt),
+            (inner_front + index, inner_front + nxt, inner_back + nxt, inner_back + index),
+        ])
+    faces.extend([
+        (inner_front, inner_back, outer_back, outer_front),
+        (inner_front + segments, outer_front + segments, outer_back + segments, inner_back + segments),
+    ])
+    return add_prism(name, verts, faces, mat)
+
+
+def add_frame_bars(
+    parts: list,
+    prefix: str,
+    axis: str,
+    centre: tuple[float, float, float],
+    opening_w: float,
+    opening_h: float,
+    depth: float,
+    mat,
+    profile: float = 0.075,
+    mullions: str = "single",
+) -> None:
+    """Build four thin jamb/head/sill members instead of a solid facade plate.
+
+    This is the visual hinge of v3: glass is no longer hidden behind a filled
+    'frame' cube, and the dark reveal remains visible around the real opening.
+    """
+    x, y, z = centre
+    if axis in ("front", "rear"):
+        parts.extend([
+            add_box(f"{prefix}_JambL", (profile, depth, opening_h + profile * 2), (x - opening_w / 2 - profile / 2, y, z), mat),
+            add_box(f"{prefix}_JambR", (profile, depth, opening_h + profile * 2), (x + opening_w / 2 + profile / 2, y, z), mat),
+            add_box(f"{prefix}_Head", (opening_w, depth, profile), (x, y, z + opening_h / 2 + profile / 2), mat),
+            add_box(f"{prefix}_Sill", (opening_w, depth, profile), (x, y, z - opening_h / 2 - profile / 2), mat),
+        ])
+        if mullions in ("single", "double"):
+            offsets = (0.0,) if mullions == "single" else (-opening_w * 0.18, opening_w * 0.18)
+            for index, offset in enumerate(offsets):
+                parts.append(add_box(f"{prefix}_Mullion{index}", (profile * 0.62, depth * 1.05, opening_h), (x + offset, y, z), mat))
+    else:
+        parts.extend([
+            add_box(f"{prefix}_JambL", (depth, profile, opening_h + profile * 2), (x, y - opening_w / 2 - profile / 2, z), mat),
+            add_box(f"{prefix}_JambR", (depth, profile, opening_h + profile * 2), (x, y + opening_w / 2 + profile / 2, z), mat),
+            add_box(f"{prefix}_Head", (depth, opening_w, profile), (x, y, z + opening_h / 2 + profile / 2), mat),
+            add_box(f"{prefix}_Sill", (depth, opening_w, profile), (x, y, z - opening_h / 2 - profile / 2), mat),
+        ])
+        if mullions in ("single", "double"):
+            offsets = (0.0,) if mullions == "single" else (-opening_w * 0.18, opening_w * 0.18)
+            for index, offset in enumerate(offsets):
+                parts.append(add_box(f"{prefix}_Mullion{index}", (depth * 1.05, profile * 0.62, opening_h), (x, y + offset, z), mat))
 
 
 def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
@@ -423,11 +507,14 @@ def add_window_row(
             frame_size = (0.08, window_w + frame_depth * 2, window_h + frame_depth * 2)
             mullion_size = (0.09, 0.045, window_h)
             mullion_loc = (sign * (wall_offset + 0.155), along, z_center)
-        parts.append(add_box(f"{prefix}_Reveal_{axis}_{i:02d}", reveal_size, reveal_loc, mats["accent"]))
-        parts.append(add_box(f"{prefix}_Frame_{axis}_{i:02d}", frame_size, frame_loc, mats["accent"]))
+        parts.append(add_box(f"{prefix}_Reveal_{axis}_{i:02d}", reveal_size, reveal_loc, mats["interior"]))
         parts.append(add_box(f"{prefix}_Glass_{axis}_{i:02d}", glass_size, glass_loc, mats["glass"]))
-        if window_w > 1.25:
-            parts.append(add_box(f"{prefix}_Mullion_{axis}_{i:02d}", mullion_size, mullion_loc, mats["accent"]))
+        add_frame_bars(
+            parts, f"{prefix}_Frame_{axis}_{i:02d}", axis, frame_loc,
+            window_w, window_h, 0.1, mats["accent"],
+            profile=max(0.055, frame_depth),
+            mullions="single" if window_w > 1.25 else "none",
+        )
 
 
 def add_entry_expression(parts: list, entrance_type: str, w: float, d: float, h: float, mats: dict) -> None:
@@ -444,12 +531,16 @@ def add_entry_expression(parts: list, entrance_type: str, w: float, d: float, h:
         parts.append(add_box("EntryShadow", (door_w + 1.1, 0.18, door_h + 0.65), (0, -(front + 0.04), (door_h + 0.65) / 2), mats["accent"]))
         parts.append(add_box("EntryThinCanopy", (door_w + 1.8, 1.05, 0.1), (0, -(front + 0.52), door_h + 0.45), mats["accent"]))
     elif entrance_type == "arched":
-        # A stepped masonry arch reads correctly at map distance without a costly boolean opening.
         portal_w = door_w + 1.0
-        parts.append(add_box("EntryArchPierL", (0.48, 0.36, door_h), (-portal_w / 2, y, door_h / 2), mats["secondary"]))
-        parts.append(add_box("EntryArchPierR", (0.48, 0.36, door_h), (portal_w / 2, y, door_h / 2), mats["secondary"]))
-        for i, (span, z) in enumerate(((portal_w + 0.45, door_h), (portal_w - 0.05, door_h + 0.28), (portal_w - 0.6, door_h + 0.5))):
-            parts.append(add_box(f"EntryArchVoussoir{i}", (span, 0.36, 0.28), (0, y, z), mats["secondary"]))
+        inner_radius = portal_w / 2
+        pier_width = 0.42
+        spring_z = min(door_h * 0.68, h - inner_radius - 0.35)
+        parts.append(add_box("EntryArchPierL", (pier_width, 0.4, spring_z), (-(inner_radius + pier_width / 2), y, spring_z / 2), mats["secondary"]))
+        parts.append(add_box("EntryArchPierR", (pier_width, 0.4, spring_z), ((inner_radius + pier_width / 2), y, spring_z / 2), mats["secondary"]))
+        parts.append(add_arch_ring("EntryTrueArch", 0.0, y, spring_z, inner_radius, pier_width, 0.4, mats["secondary"]))
+        # Dark, recessed lobby makes the void legible through the arch.
+        parts.append(add_box("EntryArchShadow", (portal_w * 0.86, 0.08, spring_z + inner_radius * 0.7),
+                             (0, y + 0.24, (spring_z + inner_radius * 0.7) / 2), mats["interior"]))
     elif entrance_type == "colonnade":
         for i, x in enumerate((-3.0, -1.55, 1.55, 3.0)):
             if abs(x) < w * 0.42:
@@ -647,6 +738,227 @@ def build_floor(grammar: dict, mats: dict, setback: bool = False) -> bpy.types.O
     return join_as("MOD_Setback" if setback else "MOD_Floor", parts)
 
 
+def _graph_lookup(grammar: dict) -> tuple[dict, dict, dict, dict]:
+    graph = grammar.get("facade_graph") or {}
+    openings = {item["id"]: item for item in graph.get("openings", [])}
+    attachments = {item["id"]: item for item in graph.get("attachments", [])}
+    bays = {item["id"]: item for item in graph.get("bays", [])}
+    variants = {item["key"]: item for item in graph.get("floor_variants", [])}
+    return openings, attachments, bays, variants
+
+
+def _add_balcony_v3(
+    parts: list,
+    prefix: str,
+    x: float,
+    facade_y: float,
+    bay_width: float,
+    depth: float,
+    guard: str,
+    mats: dict,
+    plants: bool = False,
+) -> None:
+    width = bay_width * 0.84
+    centre_y = facade_y - depth / 2
+    front_y = facade_y - depth + 0.035
+    parts.append(add_box(f"{prefix}_Slab", (width, depth, 0.14), (x, centre_y, 0.18), mats["concrete"]))
+    if guard == "solid":
+        parts.append(add_box(f"{prefix}_Guard", (width, 0.13, 0.82), (x, front_y, 0.66), mats["secondary"]))
+    elif guard == "planter":
+        parts.append(add_box(f"{prefix}_Planter", (width, 0.22, 0.48), (x, front_y, 0.52), mats["primary"]))
+        parts.append(add_box(f"{prefix}_GlassGuard", (width - 0.12, 0.045, 0.52), (x, front_y - 0.04, 1.02), mats["glass"]))
+    else:
+        guard_mat = mats["glass"] if guard == "glass" else mats["accent"]
+        parts.append(add_box(f"{prefix}_Guard", (width, 0.045, 0.84), (x, front_y, 0.73), guard_mat))
+    parts.append(add_box(f"{prefix}_Rail", (width + 0.08, 0.065, 0.065), (x, front_y - 0.035, 1.18), mats["accent"]))
+    parts.append(add_box(f"{prefix}_SideL", (0.055, depth - 0.12, 0.92), (x - width / 2 + 0.03, centre_y, 0.7), mats["accent"]))
+    parts.append(add_box(f"{prefix}_SideR", (0.055, depth - 0.12, 0.92), (x + width / 2 - 0.03, centre_y, 0.7), mats["accent"]))
+    if plants:
+        for plant_index, dx in enumerate((-width * 0.28, 0.0, width * 0.28)):
+            parts.append(add_foliage(
+                f"{prefix}_Plant{plant_index}", (x + dx, front_y - 0.02, 0.83 + 0.06 * (plant_index % 2)),
+                (0.25, 0.18, 0.24 + 0.06 * (plant_index % 2)), mats["plant"],
+            ))
+
+
+def _add_oriel_v3(
+    parts: list,
+    prefix: str,
+    x: float,
+    facade_y: float,
+    bay_width: float,
+    opening_h: float,
+    sill: float,
+    projection: float,
+    mats: dict,
+) -> None:
+    """Projecting, vertically stackable brick oriel with glazed front/sides."""
+    width = bay_width * 0.86
+    projection = max(0.72, projection + 0.5)
+    front_y = facade_y - projection
+    centre_z = sill + opening_h / 2
+    masonry = mats["secondary"]
+    parts.append(add_box(f"{prefix}_Base", (width, projection, 0.2), (x, facade_y - projection / 2, sill - 0.08), masonry))
+    parts.append(add_box(f"{prefix}_Head", (width, projection, 0.2), (x, facade_y - projection / 2, sill + opening_h + 0.08), masonry))
+    for side, sign in (("L", -1), ("R", 1)):
+        side_x = x + sign * (width / 2 - 0.09)
+        parts.append(add_box(f"{prefix}_Pier{side}", (0.18, projection, opening_h), (side_x, facade_y - projection / 2, centre_z), masonry))
+        parts.append(add_box(f"{prefix}_SideGlass{side}", (0.055, projection * 0.62, opening_h * 0.78),
+                             (x + sign * (width / 2 - 0.13), facade_y - projection * 0.52, centre_z), mats["glass"]))
+    glass_width = width - 0.48
+    parts.append(add_box(f"{prefix}_Shadow", (glass_width + 0.12, 0.06, opening_h + 0.12), (x, front_y + 0.06, centre_z), mats["interior"]))
+    parts.append(add_box(f"{prefix}_Glass", (glass_width, 0.055, opening_h), (x, front_y - 0.015, centre_z), mats["glass"]))
+    add_frame_bars(parts, f"{prefix}_Frame", "front", (x, front_y - 0.055, centre_z),
+                   glass_width, opening_h, 0.1, mats["accent"], profile=0.07, mullions="double")
+
+
+def _add_crown_v3(parts: list, system: str, w: float, d: float, h: float, facade_y: float, mats: dict) -> None:
+    """One silhouette-scale signature per family, kept separate from the
+    repeating middle so a building reads as base / body / crown."""
+    if system == "timber_grid":
+        parts.append(add_box("Crown_TimberCanopy", (w + 0.8, d + 0.7, 0.24), (0, 0, h - 0.12), mats["primary"]))
+        for index, x in enumerate((-w * 0.34, -w * 0.17, 0.0, w * 0.17, w * 0.34)):
+            parts.append(add_box(f"Crown_TimberFin{index}", (0.18, 0.55, h * 0.72), (x, facade_y - 0.22, h * 0.52), mats["primary"]))
+        for index, x in enumerate((-w * 0.31, 0.0, w * 0.31)):
+            parts.append(add_box(f"Crown_Planter{index}", (w * 0.2, 0.72, 0.38), (x, facade_y - 0.46, 0.3), mats["primary"]))
+            parts.append(add_foliage(f"Crown_Green{index}", (x, facade_y - 0.5, 0.72), (w * 0.08, 0.38, 0.36), mats["plant"]))
+    elif system == "punched_render":
+        parts.append(add_box("Crown_WhiteBlade", (w + 0.42, 0.32, h * 0.92), (0, facade_y - 0.12, h * 0.5), mats["primary"]))
+        # Deeply cut loggia across the centre prevents another flat white box.
+        loggia_w = w * 0.52
+        parts.append(add_box("Crown_LoggiaShadow", (loggia_w, 0.12, h * 0.58), (0, facade_y - 0.31, h * 0.52), mats["interior"]))
+        parts.append(add_box("Crown_LoggiaGlass", (loggia_w * 0.92, 0.055, h * 0.5), (0, facade_y - 0.38, h * 0.5), mats["glass"]))
+        for index, x in enumerate((-loggia_w / 2, 0.0, loggia_w / 2)):
+            parts.append(add_box(f"Crown_PergolaPost{index}", (0.12, 1.1, h * 0.78), (x, facade_y - 0.5, h * 0.54), mats["accent"]))
+        parts.append(add_box("Crown_PergolaBeam", (loggia_w + 0.5, 1.2, 0.14), (0, facade_y - 0.5, h - 0.2), mats["accent"]))
+    elif system == "brick_bays":
+        for index, (extra_w, z, band_h) in enumerate(((0.18, h - 0.7, 0.18), (0.42, h - 0.4, 0.22), (0.72, h - 0.12, 0.24))):
+            parts.append(add_box(f"Crown_Cornice{index}", (w + extra_w, 0.36 + index * 0.1, band_h),
+                                 (0, facade_y - 0.08 - index * 0.03, z), mats["secondary"]))
+        # Brick pilasters align with the body/oriel rhythm.
+        for index, x in enumerate((-w * 0.38, -w * 0.19, 0.0, w * 0.19, w * 0.38)):
+            parts.append(add_box(f"Crown_BrickPier{index}", (0.28, 0.34, h * 0.82), (x, facade_y - 0.1, h * 0.46), mats["secondary"]))
+    elif system == "stone_frame":
+        parts.append(add_box("Crown_CortenHeader", (w + 0.55, 0.5, 0.28), (0, facade_y - 0.12, h - 0.17), mats["secondary"]))
+        for index, x in enumerate((-w * 0.42, -w * 0.28, -w * 0.14, 0.0, w * 0.14, w * 0.28, w * 0.42)):
+            parts.append(add_box(f"Crown_CortenFin{index}", (0.13, 0.48, h * 0.82), (x, facade_y - 0.1, h * 0.47), mats["secondary"]))
+        parts.append(add_box("Crown_StoneDatum", (w + 0.2, 0.25, 0.24), (0, facade_y - 0.04, 0.18), mats["primary"]))
+
+
+def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") -> bpy.types.Object:
+    """Build one graph-selected floor with a true front facade opening system."""
+    dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    openings, attachment_specs, bay_specs, variants = _graph_lookup(grammar)
+    variant = variants.get(variant_key) or variants.get("typical_a") or {}
+    setback = variant_key == "upper"
+    crown = variant_key == "crown"
+    h = dims["setback_height_m"] if setback else dims["floor_height_m"]
+    full_w, full_d = dims["width_m"], dims["depth_m"]
+
+    if setback:
+        inset_front = max(float(massing.get("setback_front_m", 0.0)), 0.8)
+        inset_side = max(float(massing.get("setback_side_m", 0.0)), 0.45)
+    elif crown:
+        inset_front = 0.35
+        inset_side = 0.2
+    else:
+        inset_front = inset_side = 0.0
+    w = full_w - inset_side * 2
+    d = full_d - inset_front
+    centre_y = inset_front / 2
+    facade_y = centre_y - d / 2
+    system = facade.get("system", "regular")
+
+    parts: list = []
+    reveal_depth = max(0.18, float(facade.get("window_recess_m", 0.18)))
+    wall_depth = min(0.24, reveal_depth * 0.72)
+    core_depth = max(0.5, d - reveal_depth)
+    core_mat = mats["secondary"] if setback else mats["primary"]
+    # The core stops behind the front facade. The facade itself is reconstructed
+    # from sill/head/pier solids, leaving a true opening at every bay.
+    parts.append(add_box("Floor_Core", (w, core_depth, h), (0, centre_y + reveal_depth / 2, h / 2), core_mat))
+    parts.append(add_box("Floor_SlabEdge", (w + 0.1, d + 0.08, 0.2), (0, centre_y, 0.1), mats["concrete"]))
+
+    bay_sequence = list(variant.get("bay_sequence") or [])
+    bay_count = len(bay_sequence) or int(facade.get("front_bay_count", 1))
+    if not bay_sequence:
+        bay_sequence = ["standard"] * bay_count
+    bay_width = w / bay_count
+
+    for index, bay_key in enumerate(bay_sequence):
+        bay_spec = bay_specs.get(bay_key) or bay_specs.get("standard") or {}
+        opening = openings.get(bay_spec.get("opening_id")) or next(iter(openings.values()))
+        x = -w / 2 + bay_width * (index + 0.5)
+        opening_w = min(bay_width * float(opening.get("width_ratio", 0.55)), bay_width - 0.5)
+        opening_h = min(h * float(opening.get("height_ratio", 0.62)), h - 0.62)
+        sill = min(float(opening.get("sill_m", 0.75)), h - opening_h - 0.32)
+        opening_z = sill + opening_h / 2
+        panel_mat = mats.get(bay_spec.get("material_slot", "primary"), mats["primary"])
+        projection = float(bay_spec.get("projection_m", 0.0))
+
+        left_edge = x - bay_width / 2
+        pier_width = max(0.18, (bay_width - opening_w) / 2)
+        # Each bay is four wall pieces around an actual void.
+        parts.append(add_box(f"V3_{index:02d}_SillPanel", (bay_width + 0.01, wall_depth, max(0.12, sill)),
+                             (x, facade_y + wall_depth / 2, max(0.12, sill) / 2), panel_mat))
+        head_h = max(0.12, h - sill - opening_h)
+        parts.append(add_box(f"V3_{index:02d}_HeadPanel", (bay_width + 0.01, wall_depth, head_h),
+                             (x, facade_y + wall_depth / 2, sill + opening_h + head_h / 2), panel_mat))
+        parts.append(add_box(f"V3_{index:02d}_PierL", (pier_width + 0.01, wall_depth, opening_h),
+                             (left_edge + pier_width / 2, facade_y + wall_depth / 2, opening_z), panel_mat))
+        parts.append(add_box(f"V3_{index:02d}_PierR", (pier_width + 0.01, wall_depth, opening_h),
+                             (left_edge + bay_width - pier_width / 2, facade_y + wall_depth / 2, opening_z), panel_mat))
+
+        glass_y = facade_y + reveal_depth - 0.035
+        parts.append(add_box(f"V3_{index:02d}_Interior", (opening_w + 0.14, 0.055, opening_h + 0.14),
+                             (x, glass_y + 0.055, opening_z), mats["interior"]))
+        parts.append(add_box(f"V3_{index:02d}_Glass", (opening_w, 0.05, opening_h),
+                             (x, glass_y, opening_z), mats["glass"]))
+        add_frame_bars(
+            parts, f"V3_{index:02d}_Frame", "front", (x, facade_y - 0.035, opening_z),
+            opening_w, opening_h, 0.1, mats["accent"],
+            profile=0.065 if opening.get("frame_profile_id") == "slim" else 0.09,
+            mullions=opening.get("mullion_pattern", "single"),
+        )
+
+        attachment_ids = bay_spec.get("attachment_ids") or []
+        attachment_kinds = {attachment_specs[item]["kind"] for item in attachment_ids if item in attachment_specs}
+        if "oriel" in attachment_kinds and not crown:
+            _add_oriel_v3(parts, f"V3_Oriel_{index:02d}", x, facade_y, bay_width, opening_h, sill,
+                          max(projection, 0.2), mats)
+        elif "balcony" in attachment_kinds and not crown and not setback:
+            _add_balcony_v3(
+                parts, f"V3_Balcony_{index:02d}", x, facade_y, bay_width,
+                float(facade.get("balcony_depth_m", 1.5)), facade.get("balcony_guard", "metal"), mats,
+                plants=facade.get("balcony_guard") == "planter",
+            )
+
+    # Rear and sides remain economical overlay systems; the street-facing
+    # elevation receives the high-fidelity geometric treatment.
+    side_count, _ = _bays(d, facade["bay_width_m"])
+    rear_window_w = min(bay_width * float(facade.get("window_width_ratio", 0.55)), bay_width - 0.55)
+    rear_window_h = h * float(facade.get("window_height_ratio", 0.62))
+    rear_sill = min(float(facade.get("sill_height_m", 0.75)), h - rear_window_h - 0.3)
+    add_window_row(parts, "V3_Floor", w, "rear", centre_y + d / 2, 0.0, rear_window_w, rear_window_h, rear_sill, bay_count, mats)
+    add_window_row(parts, "V3_Floor", d * 0.9, "left", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
+    add_window_row(parts, "V3_Floor", d * 0.9, "right", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
+
+    if system in ("timber_grid", "brick_bays"):
+        parts.append(add_box("V3_FacadeDatum", (w + 0.16, 0.17, 0.18),
+                             (0, facade_y - 0.06, h - 0.11), mats["primary"] if system == "timber_grid" else mats["secondary"]))
+    if setback:
+        parts.append(add_box("V3_TerraceDeck", (full_w, full_d, 0.09), (0, 0, 0.045), mats["concrete"]))
+        terrace_y = -full_d / 2 + 0.07
+        parts.append(add_box("V3_TerraceRail", (full_w, 0.075, 0.075), (0, terrace_y, 0.98), mats["accent"]))
+        for post_index, x in enumerate((-full_w / 2 + 0.12, -full_w / 4, 0.0, full_w / 4, full_w / 2 - 0.12)):
+            parts.append(add_box(f"V3_TerracePost{post_index}", (0.075, 0.075, 0.92), (x, terrace_y, 0.5), mats["accent"]))
+    if crown:
+        _add_crown_v3(parts, system, w, d, h, facade_y, mats)
+
+    role_name = "Crown" if crown else "Setback" if setback else variant_key.title().replace("_", "")
+    return join_as(f"MOD_{role_name}", parts)
+
+
 def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
     dims, roof = grammar["dimensions"], grammar["roof"]
     w, d, h = dims["width_m"], dims["depth_m"], dims["roof_height_m"]
@@ -841,13 +1153,15 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
 # Orchestration
 # ---------------------------------------------------------------------------
 
-def build_module(role: str, grammar: dict, mats: dict) -> bpy.types.Object:
+def build_module(role: str, grammar: dict, mats: dict, variant_key: str = "default") -> bpy.types.Object:
     if role == "podium":
         return build_podium(grammar, mats)
     if role == "floor":
-        return build_floor(grammar, mats, setback=False)
+        return build_floor_v3(grammar, mats, variant_key if variant_key != "default" else "typical_a")
     if role == "setback":
-        return build_floor(grammar, mats, setback=True)
+        return build_floor_v3(grammar, mats, "upper")
+    if role == "crown":
+        return build_floor_v3(grammar, mats, "crown")
     if role == "roof":
         return build_roof(grammar, mats)
     raise ValueError(f"unknown module role {role}")
@@ -875,29 +1189,44 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
     print(f"[blender_generate] textures: {texture_keys_used or 'none (flat colours)'}"
           f" from {TEXTURES_DIR}")
 
-    roles = ["podium", "floor", "setback", "roof"]
+    module_specs = [
+        ("podium", "default"),
+        ("floor", "typical_a"),
+        ("floor", "typical_b"),
+        ("setback", "upper"),
+        ("crown", "crown"),
+        ("roof", "default"),
+    ]
     height_key = {
         "podium": "podium_height_m", "floor": "floor_height_m",
-        "setback": "setback_height_m", "roof": "roof_height_m",
+        "setback": "setback_height_m", "crown": "floor_height_m", "roof": "roof_height_m",
     }
 
     manifest_modules = []
-    for role in roles:
+    floor_variants = {
+        item["key"]: item for item in grammar.get("facade_graph", {}).get("floor_variants", [])
+    }
+    for role, variant_key in module_specs:
         reset_scene()
         mats = build_materials(grammar)
-        module = build_module(role, grammar, mats)
+        module = build_module(role, grammar, mats, variant_key)
         ao_baked = bake_ao(module, ao_resolution, ao_samples) if ao else False
-        glb_path = output / f"{family}_{role}.glb"
+        suffix = role if variant_key == "default" else f"{role}_{variant_key}"
+        glb_path = output / f"{family}_{suffix}.glb"
         export_objects(glb_path, [module])
+        variant_spec = floor_variants.get(variant_key, {})
         manifest_modules.append({
             "role": role,
+            "variant_key": variant_key,
+            "lod": 0,
+            "allowed_levels": variant_spec.get("allowed_levels") or [],
             "filename": glb_path.name,
             "module_family": family,
             "width_m": dims["width_m"],
             "depth_m": dims["depth_m"],
             "height_m": dims[height_key[role]],
             "floor_height_m": dims["floor_height_m"],
-            "repeatable_z": role == "floor",
+            "repeatable_z": role == "floor" and variant_key.startswith("typical_"),
             "triangle_count": triangle_count(module),
             "material_count": len(module.data.materials),
             "texture_keys": texture_keys_used,
@@ -909,8 +1238,9 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
 
     # ---- assembled preview -------------------------------------------------
     floors = floors_override or dims["default_floors"]
-    use_setback = bool(grammar["massing"].get("has_setback")) and floors >= 3
-    standard_floors = max(0, floors - 1 - (1 if use_setback else 0))
+    use_setback = bool(grammar["massing"].get("has_setback")) and floors >= 5
+    use_crown = floors >= 3
+    standard_floors = max(0, floors - 1 - (1 if use_setback else 0) - (1 if use_crown else 0))
 
     assembled_meta = None
     engine_used = None
@@ -921,23 +1251,29 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         stack: list[bpy.types.Object] = []
         z = 0.0
 
-        def place(role: str, level: int) -> None:
+        stack_meta: list[dict] = []
+
+        def place(role: str, level: int, variant_key: str = "default") -> None:
             nonlocal z
-            module = build_module(role, grammar, mats)
-            module.name = f"ASM_{role}_{level:02d}"
+            module = build_module(role, grammar, mats, variant_key)
+            module.name = f"ASM_{role}_{variant_key}_{level:02d}"
             module.location.z = z
             bpy.ops.object.select_all(action="DESELECT")
             module.select_set(True)
             bpy.context.view_layer.objects.active = module
             bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
             stack.append(module)
-            z += dims[height_key[role]]
+            module_height = dims[height_key[role]]
+            stack_meta.append({"role": role, "variant_key": variant_key, "level": level, "z_m": round(z, 3), "height_m": module_height})
+            z += module_height
 
         place("podium", 0)
         for level in range(1, standard_floors + 1):
-            place("floor", level)
+            place("floor", level, "typical_a" if level % 2 else "typical_b")
         if use_setback:
-            place("setback", floors - 1)
+            place("setback", floors - (2 if use_crown else 1), "upper")
+        if use_crown:
+            place("crown", floors - 1, "crown")
         place("roof", floors)
 
         assembled_path = output / f"{family}_assembled.glb"
@@ -946,8 +1282,10 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "filename": assembled_path.name,
             "floors": floors,
             "uses_setback": use_setback,
+            "uses_crown": use_crown,
             "height_m": round(z, 3),
             "triangle_count": sum(triangle_count(obj) for obj in stack),
+            "stack": stack_meta,
         }
         print(f"[blender_generate] exported {assembled_path.name} (height {z:.2f} m, {floors} floors)")
 
@@ -966,7 +1304,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             print(f"[blender_generate] saved {blend_path.name}")
 
     manifest = {
-        "manifest_schema": 2,
+        "manifest_schema": 3,
         "grammar_schema_version": grammar["schema_version"],
         "generator": {
             "name": "archetype_compiler/blender_generate.py",

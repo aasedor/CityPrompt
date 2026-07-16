@@ -127,11 +127,11 @@ def test_allow_setback_false_suppresses_setback_even_at_six_floors():
 def _manifest(**overrides):
     """A minimal but shape-faithful blender_generate.py manifest."""
     manifest = {
-        "manifest_schema": 2,
-        "grammar_schema_version": 1,
+        "manifest_schema": 3,
+        "grammar_schema_version": 3,
         "generator": {
             "name": "archetype_compiler/blender_generate.py",
-            "version": "0.2.0",
+            "version": "0.5.0",
             "blender_version": "5.1.2",
         },
         "family": "nordic-timber-midrise",
@@ -158,6 +158,8 @@ def _manifest(**overrides):
                 "height_m": 4.0,
                 "floor_height_m": 3.2,
                 "repeatable_z": False,
+                "variant_key": "default",
+                "lod": 0,
                 "triangle_count": 624,
                 "material_count": 4,
             },
@@ -170,6 +172,8 @@ def _manifest(**overrides):
                 "height_m": 3.2,
                 "floor_height_m": 3.2,
                 "repeatable_z": True,
+                "variant_key": "typical_a",
+                "lod": 0,
                 "triangle_count": 936,
                 "material_count": 5,
             },
@@ -223,6 +227,8 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     assert metadata["role"] == "floor"
     assert metadata["family"] == "nordic-timber-midrise"
     assert metadata["repeatable_z"] is True
+    assert metadata["variant_key"] == "typical_a"
+    assert metadata["lod"] == 0
     assert metadata["archetype_ids"] == [
         "nordic_timber_midrise",
         "nordic_timber_midrise_variant_0",
@@ -362,32 +368,33 @@ async def test_import_manifest_creates_entries_with_deterministic_keys(
     prefix = f"library/lego/{test_user.id}/nordic-timber-midrise"
     assert set(fake_storage) == {
         f"{prefix}/preview.png",
-        f"{prefix}/podium.glb",
-        f"{prefix}/floor.glb",
-        f"{prefix}/assembled.glb",
+        f"{prefix}/podium--default--lod0.glb",
+        f"{prefix}/floor--typical_a--lod0.glb",
+        f"{prefix}/assembled--default--lod0.glb",
     }
-    assert fake_storage[f"{prefix}/floor.glb"][1] == "model/gltf-binary"
+    assert fake_storage[f"{prefix}/floor--typical_a--lod0.glb"][1] == "model/gltf-binary"
     assert fake_storage[f"{prefix}/preview.png"][1] == "image/png"
 
     assert len(created) == 3
     floor = next(e for e in created if e.metadata_["lego"]["role"] == "floor")
     assert isinstance(floor, ModelLibraryEntry)
-    assert floor.name == "Nordic Timber Mid-Rise — floor"
+    assert floor.name == "Nordic Timber Mid-Rise — floor / typical_a"
     assert floor.category == "lego_module"
     assert floor.generation_engine == "compiler" and len(floor.generation_engine) <= 20
     assert floor.architectural_style == "scandinavian_nordic"
     assert floor.is_public is False
     assert floor.tags[:2] == ["nordic-timber-midrise", "floor"]
     # model_url must be the browser-reachable proxy URL, not the raw MinIO URL
-    assert floor.model_url.startswith(f"/api/v1/files/{prefix}/floor.glb?v=")
+    assert floor.model_url.startswith(f"/api/v1/files/{prefix}/floor--typical_a--lod0.glb?v=")
     assert floor.thumbnail_url.startswith(f"/api/v1/files/{prefix}/preview.png?v=")
-    assert "archetype_compiler/blender_generate.py v0.2.0" in floor.generation_prompt
+    assert "archetype_compiler/blender_generate.py v0.5.0" in floor.generation_prompt
 
     lego = floor.metadata_["lego"]
     assert lego["enabled"] is True
     assert lego["repeatable_z"] is True
     assert lego["validation_status"] == "pass"
-    assert lego["schema_version"] == 1
+    assert lego["schema_version"] == 3
+    assert lego["variant_key"] == "typical_a"
     assert lego["archetype_ids"] == ["nordic_timber_midrise", "nordic_timber_midrise_variant_0"]
     assert lego["min_floors"] == 2 and lego["max_floors"] == 8
     assert lego["coordinate_contract"]["units"] == "metres"
@@ -426,7 +433,10 @@ async def test_reimport_updates_existing_entries_instead_of_duplicating(
         name="Old name",
         category="lego_module",
         model_url="/api/v1/files/old/floor.glb",
-        metadata_={"lego": {"family": "nordic-timber-midrise", "role": "floor", "enabled": True}},
+        metadata_={"lego": {
+            "family": "nordic-timber-midrise", "role": "floor", "enabled": True,
+            "variant_key": "typical_a", "lod": 0,
+        }},
     )
     mock_db.execute = AsyncMock(
         side_effect=[
@@ -448,11 +458,11 @@ async def test_reimport_updates_existing_entries_instead_of_duplicating(
     assert payload["imported"][0]["role"] == "floor"
     assert payload["imported"][0]["action"] == "updated"
     assert payload["imported"][0]["model_url"].startswith(
-        f"/api/v1/files/library/lego/{test_user.id}/nordic-timber-midrise/floor.glb?v="
+        f"/api/v1/files/library/lego/{test_user.id}/nordic-timber-midrise/floor--typical_a--lod0.glb?v="
     )
     mock_db.add.assert_not_called()
-    assert existing.name == "Nordic Timber Mid-Rise — floor"
-    assert "/nordic-timber-midrise/floor.glb?v=" in existing.model_url
+    assert existing.name == "Nordic Timber Mid-Rise — floor / typical_a"
+    assert "/nordic-timber-midrise/floor--typical_a--lod0.glb?v=" in existing.model_url
     assert existing.metadata_["lego"]["height_m"] == pytest.approx(3.2)
     assert existing.metadata_["lego"]["validation_status"] == "unknown"
 

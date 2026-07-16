@@ -1,7 +1,7 @@
 # Archetype Compiler
 
 Turns a **real** building archetype from the SiteForge catalogue into a family of
-reusable GLB modules (podium / repeatable floor / setback / roof), an assembled
+reusable GLB modules (podium / alternating floors / setback / crown / roof), an assembled
 preview building, and a preview render — deterministically, with Blender running
 headless. The generated family is what the LEGO assembly planner
 (`/api/v1/lego-assembly/plan`) stacks into buildings.
@@ -13,10 +13,10 @@ buildingArchetypes.json + aestheticCatalog.ts   (existing source of truth)
 archetype-source.json                            (full Urban Intelligence payload)
         │  compiler.py (deterministic derivation, every decision logged)
         ▼
-grammar.json                                     (Building Grammar, schema v2)
+grammar.json                                     (Building Grammar, schema v3)
         │  blender_generate.py (Blender 4.x/5.x headless)
         ▼
-<family>_podium/floor/setback/roof.glb + <family>_assembled.glb + preview.png + manifest
+<family>_podium/floor variants/setback/crown/roof.glb + assembled.glb + preview.png + manifest
         │  validate_outputs.py (trimesh)
         ▼
 validation_report.json                           (pass/fail gates the pipeline)
@@ -101,9 +101,11 @@ build/archetypes/<archetype-id>[--<variant-id>]/
   archetype-source.json      exported catalogue payload
   grammar.json               compiled Building Grammar (with notes[])
   <family>_podium.glb        \
-  <family>_floor.glb          |  one mesh node each, bottom-centre origin
-  <family>_setback.glb        |
-  <family>_roof.glb          /
+  <family>_floor_typical_a.glb |
+  <family>_floor_typical_b.glb |  one mesh node each, bottom-centre origin
+  <family>_setback_upper.glb   |
+  <family>_crown_crown.glb     |
+  <family>_roof.glb           /
   <family>_assembled.glb     podium + floors (+setback) + roof stack
   <family>_preview.png       three-quarter daylight render (EEVEE)
   <family>_street.png        street-level facade review render
@@ -134,9 +136,8 @@ the full-pipeline smoke additionally needs Blender (skipped otherwise).
 
 ## Current visual limits
 
-Schema v2 adds deterministic facade systems, layered window reveals, material
-bays, multiple guard/entry types, planting, PBR textures, bevel highlights and
-three review cameras. It still uses one repeatable floor module per family, so
-true multi-floor oriels, alternating floor plates, curved/arched openings,
-interiors, perforated guards and LODs need dedicated module types. The pilot
-comparison boards in `docs/lego_pilot/` track that remaining gap explicitly.
+Schema v3 adds typed facade graphs, real street-facing opening geometry,
+alternating floors, aligned oriels, curved arches, upper/crown modules, PBR
+textures, bevel highlights and three review cameras. Vegetation, perforated
+guards, deep interiors, multi-bay massing composition and LODs remain simplified.
+The v3 reference comparisons in `docs/lego_fidelity_v3/` track those gaps.

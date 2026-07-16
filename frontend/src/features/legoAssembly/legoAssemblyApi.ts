@@ -1,7 +1,7 @@
 import { api } from '@/services/api';
 import type { SiteZoneProperties } from '@/types';
 
-export type LegoModuleRole = 'podium' | 'floor' | 'setback' | 'roof' | 'attachment';
+export type LegoModuleRole = 'podium' | 'floor' | 'setback' | 'crown' | 'roof' | 'attachment';
 
 export interface LegoModule {
   id: string;
@@ -17,6 +17,9 @@ export interface LegoModule {
   min_floors?: number | null;
   max_floors?: number | null;
   repeatable_z: boolean;
+  variant_key?: string;
+  lod?: number;
+  allowed_levels?: number[];
 }
 
 export interface LegoAssemblyInstance {
@@ -25,6 +28,8 @@ export interface LegoAssemblyInstance {
   model_url: string;
   family: string;
   role: LegoModuleRole;
+  variant_key?: string;
+  lod?: number;
   level: number;
   position: [number, number, number];
   rotation_degrees: number;
@@ -180,6 +185,9 @@ export const legoAssemblyApi = {
       reuse_keys?: string[];
       min_floors?: number;
       max_floors?: number;
+      variant_key?: string;
+      lod?: number;
+      allowed_levels?: number[];
     },
   ): Promise<void> {
     await api.put(`/api/v1/lego-assembly/modules/${itemId}`, metadata);

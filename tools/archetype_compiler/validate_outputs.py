@@ -166,7 +166,8 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
             errors.append("manifest: reuse_keys do not match grammar source")
 
     roles_present = {m["role"] for m in manifest.get("modules", [])}
-    for required in ("podium", "floor", "roof"):
+    required_roles = ("podium", "floor", "crown", "roof") if manifest.get("manifest_schema", 1) >= 3 else ("podium", "floor", "roof")
+    for required in required_roles:
         if required not in roles_present:
             errors.append(f"manifest: required module role '{required}' missing")
     if "setback" not in roles_present:
@@ -188,15 +189,19 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
             errors, warnings,
         )
         report["role"] = "assembled"
-        # stack height must equal podium + floors + (setback) + roof
+        # Schema v3 carries the exact graph-selected stack. Older manifests are
+        # reconstructed from the legacy single-repeatable-floor contract.
         dims = manifest["dimensions"]
         floors = assembled["floors"]
-        expected_height = (
-            dims["podium_height_m"]
-            + max(0, floors - 1 - (1 if assembled.get("uses_setback") else 0)) * dims["floor_height_m"]
-            + (dims["setback_height_m"] if assembled.get("uses_setback") else 0.0)
-            + dims["roof_height_m"]
-        )
+        if assembled.get("stack"):
+            expected_height = sum(float(item["height_m"]) for item in assembled["stack"])
+        else:
+            expected_height = (
+                dims["podium_height_m"]
+                + max(0, floors - 1 - (1 if assembled.get("uses_setback") else 0)) * dims["floor_height_m"]
+                + (dims["setback_height_m"] if assembled.get("uses_setback") else 0.0)
+                + dims["roof_height_m"]
+            )
         if not math.isclose(assembled["height_m"], expected_height, abs_tol=0.05):
             errors.append(
                 f"assembled: manifest height {assembled['height_m']} m != computed stack {expected_height:.2f} m"

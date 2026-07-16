@@ -77,7 +77,7 @@ class LegoPlaceRequest(LegoRecipeRequest):
 
 
 class LegoModuleMetadataRequest(BaseModel):
-    role: str = Field(pattern="^(podium|floor|setback|roof|attachment)$")
+    role: str = Field(pattern="^(podium|floor|setback|crown|roof|attachment)$")
     family: str = Field(min_length=1, max_length=100)
     width_m: float = Field(gt=0)
     depth_m: float = Field(gt=0)
@@ -87,6 +87,9 @@ class LegoModuleMetadataRequest(BaseModel):
     reuse_keys: list[str] = Field(default_factory=list)
     min_floors: int | None = Field(default=None, ge=1)
     max_floors: int | None = Field(default=None, ge=1)
+    variant_key: str = Field(default="default", pattern="^[a-z0-9][a-z0-9_]{0,49}$")
+    lod: int = Field(default=0, ge=0)
+    allowed_levels: list[int] = Field(default_factory=list)
 
 
 async def _accessible_entries(db: AsyncSession, user: User) -> list[ModelLibraryEntry]:
@@ -128,6 +131,9 @@ async def list_lego_modules(
                     "min_floors": descriptor.min_floors,
                     "max_floors": descriptor.max_floors,
                     "repeatable_z": descriptor.repeatable_z,
+                    "variant_key": descriptor.variant_key,
+                    "lod": descriptor.lod,
+                    "allowed_levels": list(descriptor.allowed_levels),
                 }
             )
     return {"modules": descriptors, "count": len(descriptors)}
@@ -166,6 +172,9 @@ async def configure_lego_module(
         "reuse_keys": body.reuse_keys,
         "min_floors": body.min_floors,
         "max_floors": body.max_floors,
+        "variant_key": body.variant_key,
+        "lod": body.lod,
+        "allowed_levels": body.allowed_levels,
     }
     entry.metadata_ = metadata
     await db.flush()
@@ -244,9 +253,15 @@ def _basename(filename: str) -> str:
     return filename.replace("\\", "/").rsplit("/", 1)[-1]
 
 
-def _module_storage_key(user_id: Any, family: str, role: str) -> str:
+def _module_storage_key(
+    user_id: Any,
+    family: str,
+    role: str,
+    variant_key: str = "default",
+    lod: int = 0,
+) -> str:
     """Deterministic storage key so re-imports overwrite the same object."""
-    return f"library/lego/{user_id}/{family}/{role}.glb"
+    return f"library/lego/{user_id}/{family}/{role}--{variant_key}--lod{lod}.glb"
 
 
 async def _parse_json_upload(upload: UploadFile, label: str) -> Any:
@@ -357,6 +372,8 @@ async def import_compiler_manifest(
                     "height_m": assembled.get("height_m"),
                     "floor_height_m": dimensions.get("floor_height_m"),
                     "repeatable_z": False,
+                    "variant_key": "default",
+                    "lod": 0,
                     "triangle_count": assembled.get("triangle_count"),
                     "material_count": None,
                 },
@@ -372,7 +389,9 @@ async def import_compiler_manifest(
             continue
         matched_filenames.add(filename)
 
-        key = _module_storage_key(user.id, family, role)
+        variant_key = str(module.get("variant_key") or "default")
+        lod = max(0, int(module.get("lod") or 0))
+        key = _module_storage_key(user.id, family, role, variant_key, lod)
         module_bytes = uploads[filename]
         _upload_to_storage(key, module_bytes, "model/gltf-binary")
         content_hash = hashlib.sha256(module_bytes).hexdigest()
@@ -382,10 +401,11 @@ async def import_compiler_manifest(
             manifest_data, module, role=role, validation_status=validation_status
         )
         lego_metadata["content_hash"] = content_hash
-        name = f"{label} — {role}"[:255]
-        tags = [family, role, *reuse_keys[:_TAG_REUSE_KEY_LIMIT]]
+        identity_label = role if variant_key == "default" else f"{role} / {variant_key}"
+        name = f"{label} — {identity_label}"[:255]
+        tags = [family, role, variant_key, *reuse_keys[:_TAG_REUSE_KEY_LIMIT]]
 
-        entry = find_family_module_entry(existing_entries, family, role)
+        entry = find_family_module_entry(existing_entries, family, role, variant_key, lod)
         if entry is not None:
             entry.name = name
             entry.category = _LEGO_CATEGORY
@@ -419,9 +439,10 @@ async def import_compiler_manifest(
             existing_entries.append(entry)
             action = "created"
 
-        imported.append(
-            {"id": str(entry.id), "role": role, "action": action, "model_url": model_url}
-        )
+        imported.append({
+            "id": str(entry.id), "role": role, "variant_key": variant_key,
+            "lod": lod, "action": action, "model_url": model_url,
+        })
 
     if not imported:
         expected = sorted(_basename(str(m.get("filename") or "")) for _, m in units)

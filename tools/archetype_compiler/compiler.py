@@ -14,26 +14,38 @@ from typing import Any
 
 try:  # package-style import (tests) and script-style import (blender/CLI) both work
     from .schema import (
+        AttachmentSpec,
+        BaySpec,
         BuildingGrammar,
         Dimensions,
         Facade,
+        FacadeGraph,
+        FacadeZone,
+        FloorVariant,
         GrammarError,
         GrammarSource,
         Massing,
         Material,
         Materials,
+        OpeningSpec,
         Roof,
     )
 except ImportError:  # pragma: no cover - script mode
     from schema import (
+        AttachmentSpec,
+        BaySpec,
         BuildingGrammar,
         Dimensions,
         Facade,
+        FacadeGraph,
+        FacadeZone,
+        FloorVariant,
         GrammarError,
         GrammarSource,
         Massing,
         Material,
         Materials,
+        OpeningSpec,
         Roof,
     )
 
@@ -294,6 +306,124 @@ def _derive_facade_system(
     return result
 
 
+def _build_facade_graph(facade: Facade, floors: int) -> FacadeGraph:
+    """Compile the v2 facade controls into a renderer-neutral v3 graph."""
+    standard = OpeningSpec(
+        id="standard_window",
+        kind="curtain_wall" if facade.system == "timber_grid" else "window",
+        width_ratio=facade.window_width_ratio,
+        height_ratio=facade.window_height_ratio,
+        sill_m=facade.sill_height_m,
+        reveal_depth_m=facade.window_recess_m,
+        frame_profile_id="slim" if facade.system in ("timber_grid", "punched_render") else "deep",
+        mullion_pattern="double" if facade.system == "timber_grid" else "single",
+    )
+    balcony_door = OpeningSpec(
+        id="balcony_door",
+        kind="juliet_door" if facade.system == "punched_render" else "door",
+        width_ratio=min(0.8, max(facade.window_width_ratio, 0.58)),
+        height_ratio=max(0.72, facade.window_height_ratio),
+        sill_m=0.18,
+        reveal_depth_m=facade.window_recess_m,
+        frame_profile_id="slim",
+        mullion_pattern="double",
+    )
+    shopfront = OpeningSpec(
+        id="shopfront",
+        kind="shopfront",
+        width_ratio=0.84,
+        height_ratio=facade.storefront_height_ratio,
+        sill_m=0.18,
+        reveal_depth_m=max(0.08, facade.window_recess_m * 0.6),
+        frame_profile_id="storefront",
+        mullion_pattern="double",
+    )
+
+    attachment_by_system = {
+        "timber_grid": [
+            AttachmentSpec("balcony", "balcony", "timber_planter_balcony", ["primary", "glass", "accent"], "bay"),
+            AttachmentSpec("entrance", "portal", "timber_portal", ["primary", "glass"], "base"),
+            AttachmentSpec("crown_feature", "planter", "green_roof_crown", ["primary", "green_roof"], "crown"),
+        ],
+        "punched_render": [
+            AttachmentSpec("balcony", "balcony", "slender_metal_balcony", ["concrete", "accent"], "bay"),
+            AttachmentSpec("juliet", "juliet", "slender_juliet", ["accent"], "bay"),
+            AttachmentSpec("entrance", "portal", "recessed_lobby", ["primary", "accent", "glass"], "base"),
+            AttachmentSpec("crown_feature", "planter", "terrace_crown", ["primary", "green_roof"], "crown"),
+        ],
+        "brick_bays": [
+            AttachmentSpec("oriel", "oriel", "brick_oriel", ["primary", "secondary", "glass"], "bay", 1, min(40, max(2, floors - 2))),
+            AttachmentSpec("entrance", "arch", "masonry_arch", ["primary", "secondary"], "base"),
+            AttachmentSpec("crown_feature", "cornice", "brick_cornice", ["primary", "secondary"], "crown"),
+        ],
+        "stone_frame": [
+            AttachmentSpec("balcony", "balcony", "timber_perforated_balcony", ["accent", "secondary"], "bay"),
+            AttachmentSpec("entrance", "colonnade", "tripartite_colonnade", ["primary", "concrete"], "base"),
+            AttachmentSpec("crown_feature", "screen", "corten_wrap", ["secondary"], "crown"),
+        ],
+        "regular": [
+            AttachmentSpec("balcony", "balcony", "standard_balcony", ["concrete", "accent"], "bay"),
+            AttachmentSpec("entrance", "canopy", "standard_canopy", ["accent"], "base"),
+            AttachmentSpec("crown_feature", "cornice", "standard_cornice", ["primary"], "crown"),
+        ],
+    }
+    attachments = attachment_by_system[facade.system]
+
+    feature_attachment = "oriel" if facade.system == "brick_bays" else "balcony"
+    bays = [
+        BaySpec("standard", "standard_window", "primary"),
+        BaySpec("feature", "balcony_door", "primary", facade.panel_projection_m, [feature_attachment]),
+        BaySpec("material", "standard_window", "secondary", facade.panel_projection_m * 0.35),
+        BaySpec("upper", "standard_window", "secondary" if facade.system in ("stone_frame", "timber_grid") else "primary"),
+        BaySpec("crown", "standard_window", "secondary" if facade.system == "stone_frame" else "primary", 0.0, ["crown_feature"]),
+    ]
+
+    def sequence(offset: int, *, include_features: bool = True) -> list[str]:
+        result: list[str] = []
+        feature_every = max(1, facade.feature_bay_frequency)
+        material_every = max(1, facade.material_bay_frequency)
+        for index in range(facade.front_bay_count):
+            if include_features and (index - offset) % feature_every == 0:
+                result.append("feature")
+            elif facade.system in ("punched_render", "stone_frame") and index % material_every == material_every - 1:
+                result.append("material")
+            else:
+                result.append("standard")
+        return result
+
+    typical_a = sequence(0)
+    typical_b = sequence(1 if facade.system != "brick_bays" else 0)
+    upper = ["upper"] * facade.front_bay_count
+    crown = ["crown"] * facade.front_bay_count
+    middle_end = max(1, floors - 3)
+    upper_level = max(1, floors - 2)
+    crown_level = max(1, floors - 1)
+    side_sequence = ["standard"] * max(1, facade.side_bay_count)
+    return FacadeGraph(
+        openings=[standard, balcony_door, shopfront],
+        attachments=attachments,
+        bays=bays,
+        floor_variants=[
+            FloorVariant("typical_a", typical_a, "middle", repeat_every=2),
+            FloorVariant("typical_b", typical_b, "middle", repeat_every=2),
+            FloorVariant("upper", upper, "upper", allowed_levels=[upper_level]),
+            FloorVariant("crown", crown, "crown", allowed_levels=[crown_level]),
+        ],
+        zones=[
+            FacadeZone("base", 0, 0, "primary", ["typical_a"]),
+            FacadeZone("middle", 1, middle_end, "primary", ["typical_a", "typical_b"]),
+            FacadeZone("upper", upper_level, upper_level, "primary", ["upper"], inset_m=0.8),
+            FacadeZone("crown", crown_level, crown_level, "secondary" if facade.system == "stone_frame" else "primary", ["crown"], inset_m=0.4),
+        ],
+        sides={
+            "front": typical_a,
+            "rear": ["standard"] * facade.front_bay_count,
+            "left": side_sequence,
+            "right": side_sequence,
+        },
+    )
+
+
 def compile_archetype(
     payload: dict[str, Any],
     *,
@@ -407,6 +537,25 @@ def compile_archetype(
         notes,
     )
 
+    facade = Facade(
+        bay_width_m=bay,
+        front_bay_count=front_bays,
+        side_bay_count=side_bays,
+        window_width_ratio=facade_system["window_width_ratio"],
+        window_height_ratio=max(window_height_ratio, facade_system["window_height_ratio"]),
+        balcony_mode=balcony_mode,
+        balcony_frequency=balcony_frequency,
+        storefront_height_ratio=0.78 if retail else 0.6,
+        system=facade_system["system"],
+        window_recess_m=facade_system["window_recess_m"],
+        panel_projection_m=facade_system["panel_projection_m"],
+        material_bay_frequency=facade_system["material_bay_frequency"],
+        feature_bay_frequency=facade_system["feature_bay_frequency"],
+        planter_frequency=facade_system["planter_frequency"],
+        balcony_guard=facade_system["balcony_guard"],
+        entrance_type=facade_system["entrance_type"],
+    )
+
     grammar = BuildingGrammar(
         family_id=_slug((variant or {}).get("id") or archetype_id),
         source=GrammarSource(
@@ -436,24 +585,8 @@ def compile_archetype(
             min_floors=min_floors,
             max_floors=max_floors,
         ),
-        facade=Facade(
-            bay_width_m=bay,
-            front_bay_count=front_bays,
-            side_bay_count=side_bays,
-            window_width_ratio=facade_system["window_width_ratio"],
-            window_height_ratio=max(window_height_ratio, facade_system["window_height_ratio"]),
-            balcony_mode=balcony_mode,
-            balcony_frequency=balcony_frequency,
-            storefront_height_ratio=0.78 if retail else 0.6,
-            system=facade_system["system"],
-            window_recess_m=facade_system["window_recess_m"],
-            panel_projection_m=facade_system["panel_projection_m"],
-            material_bay_frequency=facade_system["material_bay_frequency"],
-            feature_bay_frequency=facade_system["feature_bay_frequency"],
-            planter_frequency=facade_system["planter_frequency"],
-            balcony_guard=facade_system["balcony_guard"],
-            entrance_type=facade_system["entrance_type"],
-        ),
+        facade=facade,
+        facade_graph=_build_facade_graph(facade, default_floors),
         massing=Massing(
             has_setback=has_setback,
             has_podium_retail=retail,

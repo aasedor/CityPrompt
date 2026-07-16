@@ -10,7 +10,9 @@ Expected metadata shape::
     {
       "lego": {
         "enabled": true,
-        "role": "podium|floor|setback|roof|attachment",
+        "role": "podium|floor|setback|crown|roof|attachment",
+        "variant_key": "typical_a",
+        "lod": 0,
         "family": "nordic-midrise",
         "width_m": 24,
         "depth_m": 18,
@@ -31,20 +33,22 @@ from dataclasses import dataclass
 from typing import Any, Iterable
 
 
-VALID_ROLES = {"podium", "floor", "setback", "roof", "attachment"}
+VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment"}
 
-# family/role become storage-key path segments (library/lego/{user}/{family}/{role}.glb)
+# family/role/variant/LOD become storage-key path segments
 # so they must be plain slugs — no slashes, dots, or other path syntax.
 _FAMILY_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,99}$")
 _ROLE_SLUG_RE = re.compile(r"^[a-z][a-z_]{0,29}$")
+_VARIANT_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_]{0,49}$")
 
 # Roles the vertical planner is allowed to stack. Anything else (e.g. the
 # pre-assembled preview GLB) is stored in the library with enabled=False so it
 # is browsable but never picked by ``plan_vertical_assembly``.
-STACKABLE_ROLES = ("podium", "floor", "setback", "roof")
+STACKABLE_ROLES = ("podium", "floor", "setback", "crown", "roof")
 
 # Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
-SUPPORTED_MANIFEST_SCHEMA = 2
+SUPPORTED_MANIFEST_SCHEMA = 3
+SUPPORTED_MANIFEST_SCHEMAS = {2, SUPPORTED_MANIFEST_SCHEMA}
 
 
 @dataclass(frozen=True)
@@ -62,6 +66,9 @@ class ModuleDescriptor:
     min_floors: int | None = None
     max_floors: int | None = None
     repeatable_z: bool = False
+    variant_key: str = "default"
+    lod: int = 0
+    allowed_levels: tuple[int, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -125,6 +132,12 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         min_floors=_as_int_or_none(lego.get("min_floors")),
         max_floors=_as_int_or_none(lego.get("max_floors")),
         repeatable_z=bool(lego.get("repeatable_z", role == "floor")),
+        variant_key=str(lego.get("variant_key") or "default"),
+        lod=max(0, _as_int_or_none(lego.get("lod")) or 0),
+        allowed_levels=tuple(
+            int(value) for value in (lego.get("allowed_levels") or [])
+            if isinstance(value, (int, float)) and int(value) >= 0
+        ),
     )
 
 
@@ -219,28 +232,32 @@ def plan_vertical_assembly(
     for family in families:
         family_modules = [m for m in descriptors if m.family == family]
         podium = _best((m for m in family_modules if m.role == "podium"), request)
-        standard_floor = _best(
-            (m for m in family_modules if m.role == "floor" and m.repeatable_z),
-            request,
-        )
+        floor_candidates = [
+            m for m in family_modules
+            if m.role == "floor" and m.repeatable_z and _valid_for_floor_count(m, request.target_floors)
+        ]
+        # Pick one render LOD for each design variant. Cycling LOD0/LOD1 as if
+        # they were different facades would create visual and performance pops.
+        floor_variants = [
+            max(
+                (module for module in floor_candidates if module.variant_key == variant_key),
+                key=lambda module: (_module_score(module, request), -module.lod),
+            )
+            for variant_key in sorted({module.variant_key for module in floor_candidates})
+        ]
         roof = _best((m for m in family_modules if m.role == "roof"), request)
         setback = _best((m for m in family_modules if m.role == "setback"), request)
+        crown = _best((m for m in family_modules if m.role == "crown"), request)
 
         if not podium or not roof:
             continue
-        if request.target_floors > 1 and not standard_floor:
-            continue
-
         use_setback = bool(setback and request.target_floors >= 5 and request.allow_setback)
-        standard_count = request.target_floors - 1 - (1 if use_setback else 0)
+        use_crown = bool(crown and request.target_floors >= 3)
+        standard_count = request.target_floors - 1 - (1 if use_setback else 0) - (1 if use_crown else 0)
         if standard_count < 0:
             continue
-
-        selected = [podium, roof]
-        if standard_floor:
-            selected.append(standard_floor)
-        if use_setback and setback:
-            selected.append(setback)
+        if standard_count and not floor_variants:
+            continue
 
         # Reject families that require visually destructive non-uniform scaling.
         scale_x = request.target_width_m / podium.width_m
@@ -260,6 +277,8 @@ def plan_vertical_assembly(
                     "model_url": module.model_url,
                     "family": module.family,
                     "role": role,
+                    "variant_key": module.variant_key,
+                    "lod": module.lod,
                     "level": level,
                     "position": [0.0, 0.0, round(z, 4)],
                     "rotation_degrees": 0.0,
@@ -271,15 +290,22 @@ def plan_vertical_assembly(
 
         add_instance(podium, "podium", 0)
         for level in range(1, standard_count + 1):
-            assert standard_floor is not None
-            add_instance(standard_floor, "floor", level)
+            add_instance(floor_variants[(level - 1) % len(floor_variants)], "floor", level)
         if use_setback and setback:
-            add_instance(setback, "setback", request.target_floors - 1)
+            add_instance(setback, "setback", request.target_floors - (2 if use_crown else 1))
+        if use_crown and crown:
+            add_instance(crown, "crown", request.target_floors - 1)
         add_instance(roof, "roof", request.target_floors)
 
-        family_score = sum(_module_score(module, request) for module in selected)
+        family_score = _module_score(podium, request) + _module_score(roof, request)
+        if floor_variants:
+            family_score += sum(_module_score(module, request) for module in floor_variants) / len(floor_variants)
+        if use_setback and setback:
+            family_score += _module_score(setback, request)
+        if use_crown and crown:
+            family_score += _module_score(crown, request)
         plan = {
-            "version": 1,
+            "version": 2,
             "family": family,
             "archetype_id": request.archetype_id,
             "reuse_keys": list(request.reuse_keys),
@@ -329,9 +355,9 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
         return ["manifest must be a JSON object (got a non-object payload)"]
 
     errors: list[str] = []
-    if manifest.get("manifest_schema") != SUPPORTED_MANIFEST_SCHEMA:
+    if manifest.get("manifest_schema") not in SUPPORTED_MANIFEST_SCHEMAS:
         errors.append(
-            f"manifest_schema must be {SUPPORTED_MANIFEST_SCHEMA} "
+            f"manifest_schema must be one of {sorted(SUPPORTED_MANIFEST_SCHEMAS)} "
             f"(got {manifest.get('manifest_schema')!r}); regenerate with the current blender_generate.py"
         )
     family = str(manifest.get("family") or "").strip()
@@ -355,14 +381,27 @@ def manifest_validation_errors(manifest: Any) -> list[str]:
     if not isinstance(modules, list) or not modules:
         errors.append("modules must be a non-empty list")
     else:
+        identities: set[tuple[str, str, int]] = set()
         for index, module in enumerate(modules):
             if not isinstance(module, dict) or not module.get("role") or not module.get("filename"):
                 errors.append(f"modules[{index}] must be an object with 'role' and 'filename'")
-            elif not _ROLE_SLUG_RE.match(str(module["role"]).strip().lower()):
+                continue
+            role = str(module["role"]).strip().lower()
+            variant_key = str(module.get("variant_key") or "default").strip().lower()
+            lod = _as_int_or_none(module.get("lod")) or 0
+            if role not in VALID_ROLES or not _ROLE_SLUG_RE.match(role):
                 errors.append(
                     f"modules[{index}].role {module['role']!r} must be a short lowercase word; "
                     "it is used as a storage path segment"
                 )
+            if not _VARIANT_SLUG_RE.match(variant_key):
+                errors.append(f"modules[{index}].variant_key {variant_key!r} must be a snake_case slug")
+            if lod < 0:
+                errors.append(f"modules[{index}].lod must be zero or greater")
+            identity = (role, variant_key, lod)
+            if identity in identities:
+                errors.append(f"modules[{index}] duplicates module identity {identity}")
+            identities.add(identity)
     return errors
 
 
@@ -399,6 +438,9 @@ def lego_metadata_from_manifest(
         "height_m": module.get("height_m"),
         "floor_height_m": module.get("floor_height_m"),
         "repeatable_z": bool(module.get("repeatable_z", False)),
+        "variant_key": str(module.get("variant_key") or "default"),
+        "lod": max(0, int(module.get("lod") or 0)),
+        "allowed_levels": [int(value) for value in (module.get("allowed_levels") or [])],
         "archetype_ids": archetype_ids,
         "reuse_keys": [str(k) for k in (manifest.get("reuse_keys") or []) if str(k or "").strip()],
         "min_floors": manifest.get("min_floors", dimensions.get("min_floors")),
@@ -414,8 +456,14 @@ def lego_metadata_from_manifest(
     }
 
 
-def find_family_module_entry(entries: Iterable[Any], family: str, role: str) -> Any | None:
-    """Dedupe helper: find an existing library entry for ``family``/``role``.
+def find_family_module_entry(
+    entries: Iterable[Any],
+    family: str,
+    role: str,
+    variant_key: str = "default",
+    lod: int = 0,
+) -> Any | None:
+    """Dedupe on the complete module identity, preserving floor variants.
 
     ``model_library`` has no unique constraints, so re-importing a family must
     update rows in place instead of stacking duplicates.
@@ -425,6 +473,11 @@ def find_family_module_entry(entries: Iterable[Any], family: str, role: str) -> 
         lego = metadata.get("lego") if isinstance(metadata, dict) else None
         if not isinstance(lego, dict):
             continue
-        if str(lego.get("family") or "") == family and str(lego.get("role") or "") == role:
+        if (
+            str(lego.get("family") or "") == family
+            and str(lego.get("role") or "") == role
+            and str(lego.get("variant_key") or "default") == variant_key
+            and (_as_int_or_none(lego.get("lod")) or 0) == lod
+        ):
             return entry
     return None
