@@ -65,3 +65,6 @@ Treat 75–82/100 as a successful grammar/kit pilot, not final photorealism. The
 next production increment should add alternate floor roles and authored
 signature modules (oriel, true arch, perforated guard, crown), then validate in
 the actual globe renderer with shadows and environment lighting enabled.
+
+The implementation-ready roadmap is in
+`docs/CODEX_LEGO_FIDELITY_V3_IMPLEMENTATION_PLAN.md`.
