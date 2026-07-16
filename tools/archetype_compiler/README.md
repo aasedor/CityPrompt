@@ -110,6 +110,7 @@ build/archetypes/<archetype-id>[--<variant-id>]/
   <family>_preview.png       three-quarter daylight render (EEVEE)
   <family>_street.png        street-level facade review render
   <family>_aerial.png        roof/massing review render
+  <family>_context.png       high-oblique urban-block review render
   <family>_manifest.json     module metadata + provenance + coordinate contract
   validation_report.json     pass/fail + measured extents
   logs/blender.log           full Blender output
@@ -136,8 +137,16 @@ the full-pipeline smoke additionally needs Blender (skipped otherwise).
 
 ## Current visual limits
 
-Schema v3 adds typed facade graphs, real street-facing opening geometry,
-alternating floors, aligned oriels, curved arches, upper/crown modules, PBR
-textures, bevel highlights and three review cameras. Vegetation, perforated
-guards, deep interiors, multi-bay massing composition and LODs remain simplified.
-The v3 reference comparisons in `docs/lego_fidelity_v3/` track those gaps.
+Generator v0.6 adds shallow modeled interiors, wraparound elevation grids and
+sills, catalogue-tinted PBR materials, roof service plant, rooftop PV, sparse
+variant-specific feature rhythms, and four review cameras including an urban
+high-oblique view. The production globe combines those authored models with
+Google Photorealistic 3D Tiles and clips the scanned source building only after
+its replacement has mounted.
+
+The generated modules are architectural visualization assets, not survey-grade
+photogrammetry. Background-city realism comes from the tile layer; loose props,
+vegetation and review-rig buildings remain deliberately lightweight. The new
+detail can push assembled review GLBs above the 8 MB / 100k-triangle advisory
+budgets, so a future rollout should add distance LODs rather than removing the
+close-view geometry.

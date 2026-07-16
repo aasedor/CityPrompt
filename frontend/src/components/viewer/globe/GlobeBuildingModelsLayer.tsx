@@ -23,7 +23,7 @@ import {
   type ReactNode,
 } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -31,13 +31,13 @@ import { resolveApiFileUrl } from '@/services/api';
 import { computeFootprintFrame, computeModelPlacement } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import { disposeArchitecturalCloneMaterials, prepareArchitecturalClone } from './modelMaterialQuality';
 
 const DEG_TO_RAD = Math.PI / 180;
 const MAX_PLACED_MODELS = 20;
 const GROUND_EMBED_METERS = 0.3;
 // Above depthTest-false road overlays (120), below zone prisms (200).
 const MODEL_RENDER_ORDER = 150;
-const MODEL_ENV_INTENSITY = 0.6;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
 
@@ -95,6 +95,7 @@ function BuildingModelInstance({
   const url = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
   const { scene } = useGLTF(url);
   const tiles = useContext(TilesRendererContext);
+  const maxAnisotropy = useThree((state) => state.gl.capabilities.getMaxAnisotropy());
 
   const frame = useMemo(() => computeFootprintFrame(ring), [ring]);
 
@@ -104,35 +105,13 @@ function BuildingModelInstance({
   const center = useMemo(() => bbox.getCenter(new THREE.Vector3()), [bbox]);
 
   const cloned = useMemo(() => {
-    const clone = scene.clone(true);
-    clone.traverse((obj) => {
-      obj.renderOrder = MODEL_RENDER_ORDER;
-      obj.frustumCulled = false;
-      const mesh = obj as THREE.Mesh;
-      if (mesh.isMesh) {
-        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-        const restyled: THREE.Material[] = materials.map((material) => {
-          const standard = material as THREE.MeshStandardMaterial;
-          if (!standard.isMeshStandardMaterial) return material;
-          if (standard.map) {
-            standard.envMapIntensity = MODEL_ENV_INTENSITY;
-            return material;
-          }
-          // Untextured refine-fallback mesh: restyle as warm architectural
-          // clay so it reads as an intentional massing model, not raw grey.
-          // Cloned per-mesh — the drei cache's shared material stays pristine.
-          const clay = standard.clone();
-          clay.color = new THREE.Color('#d8cfc0');
-          clay.roughness = 0.9;
-          clay.metalness = 0;
-          clay.envMapIntensity = MODEL_ENV_INTENSITY;
-          return clay;
-        });
-        mesh.material = Array.isArray(mesh.material) ? restyled : restyled[0];
-      }
+    return prepareArchitecturalClone(scene, {
+      renderOrder: MODEL_RENDER_ORDER,
+      maxAnisotropy,
+      restyleUntextured: true,
     });
-    return clone;
-  }, [scene]);
+  }, [maxAnisotropy, scene]);
+  useEffect(() => () => disposeArchitecturalCloneMaterials(cloned), [cloned]);
 
   const placement = useMemo(
     () => (frame

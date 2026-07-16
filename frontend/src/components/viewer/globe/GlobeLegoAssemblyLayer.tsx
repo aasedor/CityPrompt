@@ -27,7 +27,7 @@ import {
   type ReactNode,
 } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -43,6 +43,7 @@ import {
   legoInstanceTransform,
   uniqueModuleUrls,
 } from './legoGlobePlacement';
+import { disposeArchitecturalCloneMaterials, prepareArchitecturalClone } from './modelMaterialQuality';
 
 const DEG_TO_RAD = Math.PI / 180;
 const MAX_LEGO_STACKS = 20;
@@ -50,7 +51,6 @@ const GROUND_EMBED_METERS = 0.3;
 // Same convention as GlobeBuildingModelsLayer: above depthTest-false road
 // overlays (120), below zone prisms (200).
 const LEGO_RENDER_ORDER = 150;
-const MODULE_ENV_INTENSITY = 0.6;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
 
@@ -103,6 +103,7 @@ function LegoStackInstance({
   );
   const gltfs = useGLTF(urls);
   const tiles = useContext(TilesRendererContext);
+  const maxAnisotropy = useThree((state) => state.gl.capabilities.getMaxAnisotropy());
 
   const frame = useMemo(() => computeFootprintFrame(ring), [ring]);
 
@@ -122,20 +123,9 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
-        const cloned = scene.clone(true);
-        cloned.traverse((obj) => {
-          obj.renderOrder = LEGO_RENDER_ORDER;
-          obj.frustumCulled = false;
-          const mesh = obj as THREE.Mesh;
-          if (mesh.isMesh) {
-            const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-            for (const material of materials) {
-              const standard = material as THREE.MeshStandardMaterial;
-              if (standard.isMeshStandardMaterial) {
-                standard.envMapIntensity = MODULE_ENV_INTENSITY;
-              }
-            }
-          }
+        const cloned = prepareArchitecturalClone(scene, {
+          renderOrder: LEGO_RENDER_ORDER,
+          maxAnisotropy,
         });
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
@@ -144,7 +134,10 @@ function LegoStackInstance({
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
-  ), [recipe, sceneByUrl]);
+  ), [maxAnisotropy, recipe, sceneByUrl]);
+  useEffect(() => () => {
+    modules.forEach(({ cloned }) => disposeArchitecturalCloneMaterials(cloned));
+  }, [modules]);
 
   // Prism suppression: only while this stack is actually mounted AND placeable.
   useEffect(() => {

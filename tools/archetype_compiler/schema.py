@@ -20,7 +20,7 @@ from dataclasses import dataclass, field, asdict
 from typing import Any
 
 SCHEMA_VERSION = 3
-GENERATOR_VERSION = "0.5.0"
+GENERATOR_VERSION = "0.6.0"
 
 VALID_ROOF_TYPES = ("flat", "gabled", "mono_pitch")
 VALID_BALCONY_MODES = ("none", "recessed", "projecting")

@@ -28,7 +28,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.5.0"
+GENERATOR_VERSION = "0.6.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
@@ -115,6 +115,14 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = float(spec.get("metallic", 0.0))
     bsdf.inputs["Roughness"].default_value = float(spec.get("roughness", 0.6))
+    emission_color = spec.get("emission_color")
+    if emission_color:
+        emission_input = bsdf.inputs.get("Emission Color") or bsdf.inputs.get("Emission")
+        if emission_input:
+            emission_input.default_value = hex_rgba(emission_color)
+        emission_strength = bsdf.inputs.get("Emission Strength")
+        if emission_strength:
+            emission_strength.default_value = float(spec.get("emission_strength", 0.0))
     if name == "MAT_Glass":
         # Keep glazing opaque enough for map-scale readability while giving it
         # a coated, reflective architectural-glass response in presentation renders.
@@ -153,7 +161,23 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         }.get(texture_key, 0.84)
         grade_node.location = (-190, 260)
         links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
-        links.new(grade_node.outputs["Color"], bsdf.inputs["Base Color"])
+        # The texture supplies real surface variation; the catalogue colour
+        # still needs to steer its architectural palette (notably honey-toned
+        # CLT versus pale raw pine). A partial multiply preserves photography
+        # while carrying the archetype-specific tint into renders and GLB.
+        tint_node = nodes.new("ShaderNodeMixRGB")
+        tint_node.name = tint_node.label = "TEX_CatalogueTint"
+        tint_node.blend_type = "MULTIPLY"
+        tint_node.inputs[0].default_value = {
+            "clt": 0.46,
+            "red_brick": 0.18,
+            "white_plaster": 0.08,
+            "limestone": 0.12,
+        }.get(texture_key, 0.14)
+        tint_node.inputs[2].default_value = color
+        tint_node.location = (20, 260)
+        links.new(grade_node.outputs["Color"], tint_node.inputs[1])
+        links.new(tint_node.outputs["Color"], bsdf.inputs["Base Color"])
 
         if "roughness" in textures:
             rough_node = nodes.new("ShaderNodeTexImage")
@@ -192,6 +216,10 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
         "plant": make_material("MAT_Plants", {"base_color": "#416f38", "roughness": 0.86, "metallic": 0.0}),
         "interior": make_material("MAT_Interior_Shadow", {"base_color": "#171c21", "roughness": 0.72, "metallic": 0.0}),
+        "interior_warm": make_material("MAT_Interior_Warm", {
+            "base_color": "#6e4e2e", "roughness": 0.82, "metallic": 0.0,
+            "emission_color": "#b77c3f", "emission_strength": 0.08,
+        }),
     }
 
 
@@ -515,6 +543,16 @@ def add_window_row(
             profile=max(0.055, frame_depth),
             mullions="single" if window_w > 1.25 else "none",
         )
+        # Projecting sill/flashing turns an overlay window into a layered
+        # facade element and remains legible on rear/side aerial elevations.
+        sill_z = z_center - window_h / 2 - 0.025
+        if axis in ("front", "rear"):
+            cap_size = (window_w + 0.14, 0.16, 0.055)
+            cap_loc = (along, sign * (wall_offset + 0.17), sill_z)
+        else:
+            cap_size = (0.16, window_w + 0.14, 0.055)
+            cap_loc = (sign * (wall_offset + 0.17), along, sill_z)
+        parts.append(add_box(f"{prefix}_SillCap_{axis}_{i:02d}", cap_size, cap_loc, mats["accent"]))
 
 
 def add_entry_expression(parts: list, entrance_type: str, w: float, d: float, h: float, mats: dict) -> None:
@@ -604,6 +642,16 @@ def build_podium(grammar: dict, mats: dict) -> bpy.types.Object:
     add_window_row(parts, "Podium", d, "right", w / 2, plinth_h + 0.4, bay * 0.5, rear_h, 0.5, side_count, mats)
 
     add_entry_expression(parts, facade.get("entrance_type", "canopy"), w, d, h, mats)
+    # Layered double-door glazing, transom and hardware keep the address
+    # readable after the broad entry-expression geometry is added.
+    door_y = -(front_y + 0.24)
+    door_z = plinth_h + 1.12
+    parts.append(add_box("Podium_DoorGlassL", (0.78, 0.045, 2.05), (-0.43, door_y, door_z), mats["glass"]))
+    parts.append(add_box("Podium_DoorGlassR", (0.78, 0.045, 2.05), (0.43, door_y, door_z), mats["glass"]))
+    parts.append(add_box("Podium_DoorTransom", (1.72, 0.05, 0.42), (0, door_y, door_z + 1.27), mats["glass"]))
+    for handle_index, x in enumerate((-0.16, 0.16)):
+        parts.append(add_cylinder(f"Podium_DoorHandle{handle_index}", 0.025, 0.62,
+                                  (x, door_y - 0.055, door_z), mats["accent"], 10))
     if facade.get("system") in ("timber_grid", "brick_bays", "stone_frame"):
         band_mat = mats["primary"] if facade["system"] != "stone_frame" else mats["secondary"]
         parts.append(add_box("Podium_CrownBand", (w + 0.16, 0.22, 0.34), (0, -(d / 2 + 0.08), h - 0.2), band_mat))
@@ -872,11 +920,18 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
     parts: list = []
     reveal_depth = max(0.18, float(facade.get("window_recess_m", 0.18)))
     wall_depth = min(0.24, reveal_depth * 0.72)
-    core_depth = max(0.5, d - reveal_depth)
+    # Reserve a shallow room behind the glazing instead of pressing the dark
+    # backing plane directly against it. The resulting jamb/ceiling shadows are
+    # visible in both close orbit views and aerial renders.
+    interior_depth = min(0.42, max(0.24, reveal_depth * 1.35))
+    core_depth = max(0.5, d - reveal_depth - interior_depth)
     core_mat = mats["secondary"] if setback else mats["primary"]
     # The core stops behind the front facade. The facade itself is reconstructed
     # from sill/head/pier solids, leaving a true opening at every bay.
-    parts.append(add_box("Floor_Core", (w, core_depth, h), (0, centre_y + reveal_depth / 2, h / 2), core_mat))
+    parts.append(add_box(
+        "Floor_Core", (w, core_depth, h),
+        (0, centre_y + (reveal_depth + interior_depth) / 2, h / 2), core_mat,
+    ))
     parts.append(add_box("Floor_SlabEdge", (w + 0.1, d + 0.08, 0.2), (0, centre_y, 0.1), mats["concrete"]))
 
     bay_sequence = list(variant.get("bay_sequence") or [])
@@ -910,8 +965,18 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
                              (left_edge + bay_width - pier_width / 2, facade_y + wall_depth / 2, opening_z), panel_mat))
 
         glass_y = facade_y + reveal_depth - 0.035
-        parts.append(add_box(f"V3_{index:02d}_Interior", (opening_w + 0.14, 0.055, opening_h + 0.14),
-                             (x, glass_y + 0.055, opening_z), mats["interior"]))
+        interior_mat = mats["interior_warm"] if (index + (1 if variant_key == "typical_b" else 0)) % 4 == 0 else mats["interior"]
+        interior_y = facade_y + reveal_depth + interior_depth - 0.035
+        parts.append(add_box(f"V4_{index:02d}_Interior", (opening_w + 0.14, 0.055, opening_h + 0.14),
+                             (x, interior_y, opening_z), interior_mat))
+        # Return surfaces give the opening genuine depth and catch ambient
+        # occlusion rather than reading as glass pasted onto a wall.
+        return_depth = max(0.12, interior_y - glass_y)
+        return_y = (glass_y + interior_y) / 2
+        parts.append(add_box(f"V4_{index:02d}_SillReturn", (opening_w, return_depth, 0.055),
+                             (x, return_y, sill + 0.035), mats["concrete"]))
+        parts.append(add_box(f"V4_{index:02d}_HeadReturn", (opening_w, return_depth, 0.045),
+                             (x, return_y, sill + opening_h - 0.025), mats["accent"]))
         parts.append(add_box(f"V3_{index:02d}_Glass", (opening_w, 0.05, opening_h),
                              (x, glass_y, opening_z), mats["glass"]))
         add_frame_bars(
@@ -920,6 +985,11 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
             profile=0.065 if opening.get("frame_profile_id") == "slim" else 0.09,
             mullions=opening.get("mullion_pattern", "single"),
         )
+        parts.append(add_box(f"V4_{index:02d}_SillCap", (opening_w + 0.12, 0.16, 0.055),
+                             (x, facade_y - 0.045, sill - 0.015), mats["accent"]))
+        if system == "brick_bays":
+            parts.append(add_box(f"V4_{index:02d}_SoldierCourse", (opening_w + 0.32, 0.15, 0.14),
+                                 (x, facade_y - 0.035, sill + opening_h + 0.10), mats["secondary"]))
 
         attachment_ids = bay_spec.get("attachment_ids") or []
         attachment_kinds = {attachment_specs[item]["kind"] for item in attachment_ids if item in attachment_specs}
@@ -933,6 +1003,22 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
                 plants=facade.get("balcony_guard") == "planter",
             )
 
+    # Material joint/post grids make each facade system legible from an aerial
+    # view and prevent a single smooth procedural slab from dominating.
+    grid_mat = mats["primary"] if system == "timber_grid" else mats["accent"]
+    grid_width = 0.14 if system == "timber_grid" else 0.035
+    grid_depth = 0.24 if system == "timber_grid" else 0.055
+    if system in ("timber_grid", "punched_render", "stone_frame"):
+        for joint_index in range(bay_count + 1):
+            joint_x = -w / 2 + bay_width * joint_index
+            parts.append(add_box(
+                f"V4_FacadeJoint_{joint_index:02d}", (grid_width, grid_depth, h - 0.16),
+                (joint_x, facade_y - grid_depth / 2 + 0.02, h / 2), grid_mat,
+            ))
+    if system == "stone_frame":
+        parts.append(add_box("V4_StonePanelDatum", (w, 0.055, 0.035),
+                             (0, facade_y - 0.02, h * 0.48), mats["accent"]))
+
     # Rear and sides remain economical overlay systems; the street-facing
     # elevation receives the high-fidelity geometric treatment.
     side_count, _ = _bays(d, facade["bay_width_m"])
@@ -942,6 +1028,32 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
     add_window_row(parts, "V3_Floor", w, "rear", centre_y + d / 2, 0.0, rear_window_w, rear_window_h, rear_sill, bay_count, mats)
     add_window_row(parts, "V3_Floor", d * 0.9, "left", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
     add_window_row(parts, "V3_Floor", d * 0.9, "right", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
+
+    if system in ("timber_grid", "punched_render", "stone_frame"):
+        wrap_mat = mats["primary"] if system == "timber_grid" else mats["accent"]
+        wrap_width = 0.13 if system == "timber_grid" else 0.032
+        wrap_depth = 0.2 if system == "timber_grid" else 0.05
+        side_span = d * 0.9
+        for side_joint in range(side_count + 1):
+            joint_y = centre_y - side_span / 2 + side_span * side_joint / side_count
+            for side_name, side_x in (("L", -w / 2 - wrap_depth / 2), ("R", w / 2 + wrap_depth / 2)):
+                parts.append(add_box(
+                    f"V4_SideJoint{side_name}_{side_joint:02d}",
+                    (wrap_depth, wrap_width, h - 0.16), (side_x, joint_y, h / 2), wrap_mat,
+                ))
+        for rear_joint in range(bay_count + 1):
+            joint_x = -w / 2 + w * rear_joint / bay_count
+            parts.append(add_box(
+                f"V4_RearJoint_{rear_joint:02d}",
+                (wrap_width, wrap_depth, h - 0.16),
+                (joint_x, centre_y + d / 2 + wrap_depth / 2, h / 2), wrap_mat,
+            ))
+        if system in ("punched_render", "stone_frame"):
+            parts.append(add_box("V4_RearPanelDatum", (w, 0.055, 0.035),
+                                 (0, centre_y + d / 2 + 0.025, h * 0.48), mats["accent"]))
+            for side_name, side_x in (("L", -w / 2 - 0.025), ("R", w / 2 + 0.025)):
+                parts.append(add_box(f"V4_SidePanelDatum{side_name}", (0.055, d * 0.9, 0.035),
+                                     (side_x, centre_y, h * 0.48), mats["accent"]))
 
     if system in ("timber_grid", "brick_bays"):
         parts.append(add_box("V3_FacadeDatum", (w + 0.16, 0.17, 0.18),
@@ -996,11 +1108,73 @@ def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
             parts.append(add_box("Roof_ParapetBack", (w, t, ph), (0, d / 2 - t / 2, ph / 2), mats["primary"]))
             parts.append(add_box("Roof_ParapetLeft", (t, d - t * 2, ph), (-w / 2 + t / 2, 0, ph / 2), mats["primary"]))
             parts.append(add_box("Roof_ParapetRight", (t, d - t * 2, ph), (w / 2 - t / 2, 0, ph / 2), mats["primary"]))
+            # Thin coping caps catch highlights and make the roof edge read as
+            # an assembled construction instead of an extruded wall.
+            cap_h, cap_w = 0.055, t + 0.08
+            parts.append(add_box("Roof_CopingFront", (w + 0.08, cap_w, cap_h), (0, -d / 2 + t / 2, ph + cap_h / 2), mats["accent"]))
+            parts.append(add_box("Roof_CopingBack", (w + 0.08, cap_w, cap_h), (0, d / 2 - t / 2, ph + cap_h / 2), mats["accent"]))
+            parts.append(add_box("Roof_CopingLeft", (cap_w, d - t * 2, cap_h), (-w / 2 + t / 2, 0, ph + cap_h / 2), mats["accent"]))
+            parts.append(add_box("Roof_CopingRight", (cap_w, d - t * 2, cap_h), (w / 2 - t / 2, 0, ph + cap_h / 2), mats["accent"]))
         if roof.get("green_roof"):
             parts.append(add_box("Roof_GreenSurface", (w - 0.8, d - 0.8, 0.09), (0, 0, slab_h + 0.045), mats["green_roof"]))
         if roof.get("mechanical_screen"):
             mw, md, mh = w * 0.24, d * 0.28, max(0.8, h * 0.75)
             parts.append(add_box("Roof_MechScreen", (mw, md, mh), (w * 0.18, d * 0.12, slab_h + mh / 2), mats["accent"]))
+
+        if h >= 0.75:
+            service_top = min(h - 0.045, 1.12)
+            unit_h = max(0.22, service_top - slab_h - 0.18)
+            # Two real-scale air handling units with fan cowls and service pads.
+            equipment = (
+                (-w * 0.18, d * 0.17, w * 0.15, d * 0.13),
+                (w * 0.03, -d * 0.18, w * 0.12, d * 0.11),
+            )
+            for unit_index, (x, y, unit_w, unit_d) in enumerate(equipment):
+                pad_z = slab_h + 0.055
+                parts.append(add_box(f"Roof_ServicePad{unit_index}", (unit_w + 0.34, unit_d + 0.34, 0.11),
+                                     (x, y, pad_z), mats["concrete"]))
+                parts.append(add_box(f"Roof_AHU{unit_index}", (unit_w, unit_d, unit_h),
+                                     (x, y, slab_h + 0.11 + unit_h / 2), mats["accent"]))
+                for fan_index, fan_x in enumerate((-unit_w * 0.24, unit_w * 0.24)):
+                    parts.append(add_cylinder(
+                        f"Roof_AHU{unit_index}_Fan{fan_index}",
+                        min(unit_w, unit_d) * 0.16, 0.055,
+                        (x + fan_x, y, slab_h + 0.11 + unit_h + 0.028), mats["roof"], 18,
+                    ))
+                # Horizontal louver bars give the equipment a believable scale.
+                for louver_index in range(3):
+                    parts.append(add_box(
+                        f"Roof_AHU{unit_index}_Louver{louver_index}",
+                        (unit_w * 0.72, 0.035, 0.035),
+                        (x, y - unit_d / 2 - 0.02, slab_h + 0.2 + louver_index * unit_h * 0.22),
+                        mats["roof"],
+                    ))
+
+            # Access penthouse, vents and drain leaders break the empty-roof silhouette.
+            access_h = max(0.3, service_top - slab_h - 0.08)
+            parts.append(add_box("Roof_AccessPenthouse", (w * 0.13, d * 0.15, access_h),
+                                 (-w * 0.04, d * 0.31, slab_h + access_h / 2), mats["primary"]))
+            parts.append(add_box("Roof_AccessDoor", (w * 0.045, 0.045, access_h * 0.72),
+                                 (-w * 0.04, d * 0.31 - d * 0.075 - 0.025, slab_h + access_h * 0.42), mats["accent"]))
+            for vent_index, (x, y) in enumerate(((-w * 0.33, -d * 0.28), (w * 0.34, d * 0.31), (w * 0.31, -d * 0.31))):
+                vent_h = min(0.5, service_top - slab_h)
+                parts.append(add_cylinder(f"Roof_Vent{vent_index}", 0.09, vent_h,
+                                          (x, y, slab_h + vent_h / 2), mats["accent"], 14))
+                parts.append(add_cylinder(f"Roof_VentCap{vent_index}", 0.15, 0.055,
+                                          (x, y, slab_h + vent_h + 0.027), mats["roof"], 14))
+
+            # A compact PV field adds high-frequency aerial detail without
+            # covering the planted portion of a green roof.
+            pv_y = -d * 0.30 if roof.get("green_roof") else d * 0.32
+            for row in range(2):
+                for column in range(4):
+                    panel_x = -w * 0.24 + column * w * 0.16
+                    panel = add_box(
+                        f"Roof_PV_{row}_{column}", (w * 0.13, d * 0.09, 0.045),
+                        (panel_x, pv_y + row * d * 0.11, slab_h + 0.18), mats["glass"],
+                    )
+                    panel.rotation_euler.x = math.radians(7)
+                    parts.append(panel)
 
     return join_as("MOD_Roof", parts)
 
@@ -1051,6 +1225,80 @@ def pick_render_engine() -> str:
     return scene.render.engine
 
 
+def add_preview_tree(
+    rig: list[bpy.types.Object],
+    index: int,
+    x: float,
+    y: float,
+    scale: float,
+    bark_mat,
+    leaf_mat,
+) -> None:
+    """Layered broadleaf tree tuned for oblique urban-scale renders."""
+    trunk_h = 4.3 * scale
+    rig.append(add_cylinder(f"ContextTreeTrunk{index}", 0.17 * scale, trunk_h,
+                            (x, y, trunk_h / 2), bark_mat, 10))
+    crowns = (
+        (0.0, 0.0, 1.1, (1.55, 1.35, 1.55)),
+        (-0.72, 0.08, 0.62, (1.12, 1.0, 1.12)),
+        (0.68, -0.05, 0.74, (1.08, 0.96, 1.2)),
+        (0.05, 0.55, 0.78, (1.02, 0.92, 1.06)),
+    )
+    for crown_index, (dx, dy, dz, crown_scale) in enumerate(crowns):
+        rig.append(add_foliage(
+            f"ContextTreeCrown{index}_{crown_index}",
+            (x + dx * scale, y + dy * scale, trunk_h + dz * scale),
+            tuple(value * scale for value in crown_scale), leaf_mat,
+        ))
+
+
+def add_context_building(
+    rig: list[bpy.types.Object],
+    index: int,
+    x: float,
+    y: float,
+    width: float,
+    depth: float,
+    height: float,
+    facade_mat,
+    context_mats: dict,
+) -> None:
+    """A lightweight but articulated background building for aerial review."""
+    rig.append(add_box(f"ContextBuilding{index}_Body", (width, depth, height),
+                       (x, y, height / 2), facade_mat))
+    rig.append(add_box(f"ContextBuilding{index}_Plinth", (width + 0.16, depth + 0.16, 0.55),
+                       (x, y, 0.275), context_mats["concrete"]))
+    parapet_h = 0.5
+    rig.append(add_box(f"ContextBuilding{index}_Roof", (width + 0.12, depth + 0.12, 0.22),
+                       (x, y, height + 0.11), context_mats["roof"]))
+    rig.append(add_box(f"ContextBuilding{index}_ParapetFront", (width, 0.18, parapet_h),
+                       (x, y - depth / 2 + 0.09, height + parapet_h / 2), facade_mat))
+    rig.append(add_box(f"ContextBuilding{index}_ParapetBack", (width, 0.18, parapet_h),
+                       (x, y + depth / 2 - 0.09, height + parapet_h / 2), facade_mat))
+
+    floors = max(2, round(height / 3.25))
+    floor_height = height / floors
+    for floor in range(floors):
+        window_z = floor_height * (floor + 0.56)
+        window_h = min(1.25, floor_height * 0.42)
+        rig.append(add_box(
+            f"ContextBuilding{index}_FrontGlass{floor}",
+            (width * 0.78, 0.045, window_h),
+            (x, y - depth / 2 - 0.028, window_z), context_mats["glass"],
+        ))
+        rig.append(add_box(
+            f"ContextBuilding{index}_SideGlass{floor}",
+            (0.045, depth * 0.7, window_h),
+            (x + width / 2 + 0.028, y, window_z), context_mats["glass"],
+        ))
+
+    unit_w, unit_d = width * 0.18, depth * 0.2
+    rig.append(add_box(f"ContextBuilding{index}_RoofUnit", (unit_w, unit_d, 0.72),
+                       (x + width * 0.18, y - depth * 0.08, height + 0.58), context_mats["metal"]))
+    rig.append(add_cylinder(f"ContextBuilding{index}_Vent", 0.13, 0.55,
+                            (x - width * 0.22, y + depth * 0.16, height + 0.48), context_mats["metal"], 12))
+
+
 def render_presentation_views(output: Path, family: str, focus_height: float, width: float, depth: float) -> tuple[str, list[str]]:
     """Render consistent studio, street and aerial views of the assembled kit.
 
@@ -1066,32 +1314,97 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
     curb_mat = make_material("MAT_PreviewCurb", {"base_color": "#d5d0c5", "roughness": 0.9, "metallic": 0.0})
     bark_mat = make_material("MAT_PreviewBark", {"base_color": "#5d4431", "roughness": 0.95, "metallic": 0.0})
     leaf_mat = make_material("MAT_PreviewLeaves", {"base_color": "#527543", "roughness": 0.88, "metallic": 0.0})
+    leaf_alt_mat = make_material("MAT_PreviewLeavesAlt", {"base_color": "#6d7541", "roughness": 0.9, "metallic": 0.0})
+    line_mat = make_material("MAT_PreviewLine", {"base_color": "#d9d1b5", "roughness": 0.82, "metallic": 0.0})
+    context_mats = {
+        "facade_light": make_material("MAT_ContextFacadeLight", {"base_color": "#c9c5ba", "roughness": 0.82, "metallic": 0.0}),
+        "facade_warm": make_material("MAT_ContextFacadeWarm", {"base_color": "#a89b87", "roughness": 0.86, "metallic": 0.0}),
+        "facade_white": make_material("MAT_ContextFacadeWhite", {"base_color": "#dedbd2", "roughness": 0.8, "metallic": 0.0}),
+        "facade_dark": make_material("MAT_ContextFacadeDark", {"base_color": "#666963", "roughness": 0.83, "metallic": 0.0}),
+        "glass": make_material("MAT_ContextGlass", {"base_color": "#50616d", "roughness": 0.2, "metallic": 0.1}),
+        "concrete": curb_mat,
+        "roof": make_material("MAT_ContextRoof", {"base_color": "#696d6b", "roughness": 0.92, "metallic": 0.0}),
+        "metal": make_material("MAT_ContextMetal", {"base_color": "#818682", "roughness": 0.48, "metallic": 0.45}),
+    }
 
     rig: list[bpy.types.Object] = []
-    rig.append(add_box("PreviewGround", (footprint * 14, footprint * 14, 0.06), (0, 0, -0.04), ground_mat))
+    rig.append(add_box("PreviewGround", (footprint * 18, footprint * 18, 0.06), (0, 0, -0.04), ground_mat))
     street_y = -(depth / 2 + 7.0)
-    rig.append(add_box("PreviewSidewalk", (footprint * 4.0, 5.0, 0.13), (0, -(depth / 2 + 2.25), 0.045), curb_mat))
-    rig.append(add_box("PreviewRoad", (footprint * 5.0, 10.0, 0.08), (0, street_y, -0.005), road_mat))
-    rig.append(add_box("PreviewCurb", (footprint * 4.0, 0.26, 0.28), (0, -(depth / 2 + 4.85), 0.1), curb_mat))
+    road_length = footprint * 9.0
+    rig.append(add_box("PreviewSidewalk", (road_length, 5.0, 0.13), (0, -(depth / 2 + 2.25), 0.045), curb_mat))
+    rig.append(add_box("PreviewRoad", (road_length, 10.0, 0.08), (0, street_y, -0.005), road_mat))
+    rig.append(add_box("PreviewCurb", (road_length, 0.26, 0.28), (0, -(depth / 2 + 4.85), 0.1), curb_mat))
+    rear_road_y = depth / 2 + 23.0
+    rig.append(add_box("PreviewRearRoad", (road_length, 11.0, 0.08), (0, rear_road_y, -0.005), road_mat))
+    for cross_index, cross_x in enumerate((-width / 2 - 27.0, width / 2 + 29.0)):
+        rig.append(add_box(f"PreviewCrossRoad{cross_index}", (10.5, road_length, 0.08),
+                           (cross_x, 12.0, -0.003), road_mat))
 
-    # Sparse street trees supply scale without masking the facade comparison.
-    for idx, (x, y, scale) in enumerate(((-width * 0.72, -depth / 2 - 3.1, 0.9), (width * 0.74, -depth / 2 - 3.5, 1.0))):
-        trunk_h = 4.1 * scale
-        rig.append(add_cylinder(f"PreviewTreeTrunk{idx}", 0.18 * scale, trunk_h, (x, y, trunk_h / 2), bark_mat, 10))
-        rig.append(add_foliage(f"PreviewTreeCrown{idx}A", (x, y, trunk_h + 1.15 * scale), (1.65 * scale, 1.35 * scale, 1.75 * scale), leaf_mat))
-        rig.append(add_foliage(f"PreviewTreeCrown{idx}B", (x - 0.8 * scale, y, trunk_h + 0.65 * scale), (1.2 * scale, 1.0 * scale, 1.2 * scale), leaf_mat))
-        rig.append(add_foliage(f"PreviewTreeCrown{idx}C", (x + 0.75 * scale, y, trunk_h + 0.8 * scale), (1.15 * scale, 1.0 * scale, 1.25 * scale), leaf_mat))
+    # Broken centre lines and parking bays add the small-scale evidence that
+    # makes the aerial view feel like a real urban block.
+    for line_index in range(-8, 9):
+        rig.append(add_box(f"PreviewLaneMark{line_index}", (5.2, 0.12, 0.025),
+                           (line_index * 11.0, street_y, 0.055), line_mat))
+    parking_x, parking_y = width / 2 + 13.0, depth / 2 + 6.0
+    rig.append(add_box("PreviewParkingLot", (20.0, 24.0, 0.045), (parking_x, parking_y, 0.01), road_mat))
+    for bay_index in range(6):
+        rig.append(add_box(f"PreviewParkingLine{bay_index}", (0.08, 8.0, 0.025),
+                           (parking_x - 8.5 + bay_index * 3.4, parking_y - 6.0, 0.055), line_mat))
+
+    facade_cycle = (
+        context_mats["facade_light"], context_mats["facade_warm"],
+        context_mats["facade_white"], context_mats["facade_dark"],
+    )
+    context_buildings = (
+        (-53.0, 7.0, 24.0, 27.0, 16.0), (-48.0, 48.0, 32.0, 19.0, 24.0),
+        (-12.0, 50.0, 24.0, 21.0, 31.0), (22.0, 53.0, 30.0, 20.0, 18.0),
+        (58.0, 46.0, 25.0, 22.0, 27.0), (57.0, 5.0, 23.0, 25.0, 14.0),
+        (-63.0, -34.0, 30.0, 20.0, 12.0), (-26.0, -43.0, 25.0, 19.0, 19.0),
+        (22.0, -44.0, 29.0, 18.0, 15.0), (61.0, -36.0, 27.0, 21.0, 22.0),
+        (-91.0, 42.0, 34.0, 24.0, 20.0), (94.0, 38.0, 38.0, 25.0, 17.0),
+    )
+    context_only: list[bpy.types.Object] = []
+    for context_index, spec in enumerate(context_buildings):
+        context_start = len(rig)
+        add_context_building(rig, context_index, *spec, facade_cycle[context_index % len(facade_cycle)], context_mats)
+        context_only.extend(rig[context_start:])
+
+    tree_positions = (
+        (-width * 0.72, -depth / 2 - 3.1, 0.9), (width * 0.74, -depth / 2 - 3.5, 1.0),
+        (-19.0, 17.0, 1.15), (18.0, 18.0, 0.95), (-36.0, 24.0, 1.2), (39.0, 28.0, 1.1),
+        (-67.0, 25.0, 1.05), (72.0, 24.0, 1.2), (-42.0, -21.0, 0.95), (43.0, -22.0, 1.0),
+        (-77.0, 61.0, 1.3), (-60.0, 68.0, 1.05), (-30.0, 68.0, 1.15),
+        (10.0, 72.0, 1.2), (45.0, 70.0, 1.0), (78.0, 62.0, 1.25),
+        (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (-8.0, -64.0, 1.2),
+    )
+    for tree_index, (x, y, scale) in enumerate(tree_positions):
+        add_preview_tree(rig, tree_index, x, y, scale, bark_mat, leaf_mat if tree_index % 3 else leaf_alt_mat)
+
+    car_colors = (context_mats["facade_white"], context_mats["facade_dark"], context_mats["facade_warm"])
+    for car_index, (x, y, yaw) in enumerate((
+        (-58.0, street_y - 2.2, 0.0), (-24.0, street_y + 2.1, 0.0),
+        (31.0, street_y - 2.0, 0.0), (66.0, street_y + 2.0, 0.0),
+        (parking_x - 6.8, parking_y - 5.7, math.pi / 2),
+        (parking_x + 0.1, parking_y - 5.7, math.pi / 2),
+        (parking_x + 6.8, parking_y - 5.7, math.pi / 2),
+    )):
+        car = add_box(f"PreviewCar{car_index}", (3.9, 1.75, 1.25), (x, y, 0.68), car_colors[car_index % 3])
+        car.rotation_euler.z = yaw
+        rig.append(car)
+        cabin = add_box(f"PreviewCarCabin{car_index}", (1.9, 1.55, 0.62), (x, y, 1.38), context_mats["glass"])
+        cabin.rotation_euler.z = yaw
+        rig.append(cabin)
 
     sun_data = bpy.data.lights.new("PreviewSun", type="SUN")
-    sun_data.energy = 2.6
-    sun_data.angle = math.radians(2.2)
+    sun_data.energy = 2.8
+    sun_data.angle = math.radians(4.0)
     sun = bpy.data.objects.new("PreviewSun", sun_data)
     sun.rotation_euler = (math.radians(42), math.radians(-18), math.radians(-38))
     scene.collection.objects.link(sun)
     rig.append(sun)
 
     area_data = bpy.data.lights.new("PreviewFill", type="AREA")
-    area_data.energy = 900.0
+    area_data.energy = 760.0
     area_data.shape = "DISK"
     area_data.size = footprint * 1.4
     area = bpy.data.objects.new("PreviewFill", area_data)
@@ -1102,6 +1415,7 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
 
     cam_data = bpy.data.cameras.new("PreviewCamera")
     cam_data.lens = 48
+    cam_data.clip_end = 1600.0
     cam = bpy.data.objects.new("PreviewCamera", cam_data)
     scene.collection.objects.link(cam)
     rig.append(cam)
@@ -1112,8 +1426,8 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
     world.use_nodes = True
     bg = world.node_tree.nodes.get("Background")
     if bg:
-        bg.inputs[0].default_value = (0.68, 0.78, 0.9, 1.0)
-        bg.inputs[1].default_value = 0.65
+        bg.inputs[0].default_value = (0.58, 0.67, 0.77, 1.0)
+        bg.inputs[1].default_value = 0.58
 
     try:
         scene.view_settings.look = "AgX - Medium High Contrast"
@@ -1121,19 +1435,31 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
         pass
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
+    scene.render.image_settings.compression = 18
     scene.render.film_transparent = False
     scene.render.resolution_percentage = 100
-    scene.render.resolution_x = 1280
-    scene.render.resolution_y = 960
+    scene.render.resolution_x = 1600
+    scene.render.resolution_y = 1000
+    if hasattr(scene, "eevee") and hasattr(scene.eevee, "taa_render_samples"):
+        scene.eevee.taa_render_samples = 64
 
     dist = max(footprint * 2.15, focus_height * 1.95)
+    context_dist = max(footprint * 4.2, focus_height * 3.5)
     views = (
         ("preview", (-dist * 0.72, -dist * 0.92, focus_height * 0.68), (0.0, 0.0, focus_height * 0.43), 43),
         ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
         ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
+        ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
+         (0.0, 10.0, focus_height * 0.22), 52),
     )
     rendered: list[str] = []
     for view_name, location, target_tuple, lens in views:
+        # Background masses make the drone views legible but can sit directly
+        # between a low camera and the hero building. Street/studio views keep
+        # roads, trees and cars while hiding only those distant massing blocks.
+        context_visible = view_name in ("aerial", "context")
+        for context_object in context_only:
+            context_object.hide_render = not context_visible
         cam.location = location
         cam.data.lens = lens
         direction = Vector(target_tuple) - cam.location

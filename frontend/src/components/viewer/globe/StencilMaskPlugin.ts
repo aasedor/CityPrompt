@@ -31,8 +31,8 @@ interface MaterialStencilState {
   stencilZPass: THREE.StencilOp;
 }
 
-export function shouldCreateTileStencilMask(_zoneType: string | null | undefined): boolean {
-  return false;
+export function shouldCreateTileStencilMask(zoneType: string | null | undefined): boolean {
+  return zoneType === 'building' || zoneType === 'residential';
 }
 
 export function getTileStencilVolumeHeight(

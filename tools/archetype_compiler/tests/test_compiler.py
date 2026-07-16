@@ -264,6 +264,32 @@ def test_v3_facade_graph_has_alternating_floors_and_resolved_references():
     grammar.facade_graph.validate()
 
 
+def test_selected_timber_variant_uses_sparse_planters_and_does_not_invent_setback():
+    payload = payload_mixed_use_midrise()
+    payload["selectedVariant"] = {
+        "id": "mass_timber_biophilic_tower",
+        "description": "Staggered planter boxes on every floor and a lush rooftop garden crown.",
+        "facadeDetail": {
+            "primaryMaterial": "cross-laminated timber panels",
+            "secondaryMaterial": "floor-to-ceiling curtain wall glazing",
+            "groundFloor": "glazed lobby with timber portal",
+            "upperFloors": "staggered planter balconies",
+        },
+        "minFloors": 7,
+        "maxFloors": 9,
+    }
+    grammar = compile_archetype(payload, floors=8)
+    variants = {variant.key: variant for variant in grammar.facade_graph.floor_variants}
+
+    assert grammar.facade.feature_bay_frequency == 4
+    feature_positions = [
+        index for index, bay in enumerate(variants["typical_a"].bay_sequence)
+        if bay == "feature"
+    ]
+    assert all(right - left >= 4 for left, right in zip(feature_positions, feature_positions[1:]))
+    assert grammar.massing.has_setback is False
+
+
 def test_brick_graph_compiles_true_oriel_and_arch_attachments():
     payload = payload_mixed_use_midrise()
     payload["facadeDetail"] = {

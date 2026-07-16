@@ -41,6 +41,7 @@ import { useCreateGlobeDragRef, GlobeDragProvider } from './useGlobeDragRef';
 import { GlobePegman } from './GlobePegman';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { TileStencilPatcher } from './TileStencilPatcher';
+import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
 import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
 import {
   getObjectFilteredTerrainHeight,
@@ -1412,6 +1413,12 @@ export function GlobeSitePlannerMap({
     legoBuildingIds.forEach((id) => merged.add(id));
     return merged;
   }, [modeledBuildingIds, legoBuildingIds]);
+  const tileMaskZones = useMemo(
+    () => siteZones.filter((zone) => (
+      Boolean(zone.building_id && suppressedBuildingIds.has(zone.building_id))
+    )),
+    [siteZones, suppressedBuildingIds],
+  );
   useEffect(() => {
     onModeledBuildingsChange?.(suppressedBuildingIds);
   }, [suppressedBuildingIds, onModeledBuildingsChange]);
@@ -2782,7 +2789,8 @@ export function GlobeSitePlannerMap({
           />
           <TilesAttributionOverlay />
           <SceneSettledMonitor onSettledChange={setIsSceneSettled} />
-          <TileStencilPatcher zones={siteZones} />
+          <TileStencilPatcher zones={tileMaskZones} />
+          <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
           {/* Camera starts at project location via Canvas camera prop */}
 
           {/* Zone visualization â€” wrapped in a group whose visibility is

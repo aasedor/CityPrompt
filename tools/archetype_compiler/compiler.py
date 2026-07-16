@@ -268,7 +268,9 @@ def _derive_facade_system(
         result = {
             "system": "timber_grid", "entrance_type": "portal", "balcony_guard": "planter",
             "window_recess_m": 0.12, "panel_projection_m": 0.16,
-            "material_bay_frequency": 1, "feature_bay_frequency": 2, "planter_frequency": 2,
+            # One or two staggered planted bays per floor matches the reference
+            # much more closely than a checkerboard balcony on every other bay.
+            "material_bay_frequency": 1, "feature_bay_frequency": 4, "planter_frequency": 4,
             "window_width_ratio": 0.76, "window_height_ratio": 0.76,
         }
     elif any(token in text for token in ("white mineral render", "smooth white", "white render")):
@@ -513,10 +515,18 @@ def compile_archetype(
     roof = _derive_roof(roof_detail, style_profile, notes)
 
     massing_text = f"{str(style_profile.get('massing') or '').lower()} {combined}"
-    has_setback = (
-        max_floors >= 6
-        and any(k in massing_text for k in ("setback", "step", "terrace", "stepped", "crown"))
-    ) or default_floors >= 6
+    explicit_variant_massing = f"{variant_desc} {upper_text}"
+    explicit_variant_setback = any(
+        phrase in explicit_variant_massing
+        for phrase in ("upper-floor setback", "upper floor setback", "set back", "stepped massing", "recessed penthouse")
+    )
+    # A selected image variant is more specific than the parent archetype's
+    # broad style profile. Do not invent a two-storey setback simply because a
+    # generic midrise description says some taller variants may have one.
+    has_setback = explicit_variant_setback if variant else (
+        (max_floors >= 6 and any(k in massing_text for k in ("setback", "step", "terrace", "stepped", "crown")))
+        or default_floors >= 6
+    )
     notes.append(f"setback: {has_setback} (default_floors={default_floors}, massing hints in text={any(k in massing_text for k in ('setback','step','terrace'))})")
 
     # bays: Nordic/tall-window styles read better slightly narrower

@@ -22,11 +22,6 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
-import {
-  createStencilVolume,
-  getTileStencilVolumeHeight,
-  shouldCreateTileStencilMask,
-} from './StencilMaskPlugin';
 import { useGlobeDragRef } from './useGlobeDragRef';
 import {
   getObjectFilteredTerrainHeight,
@@ -381,7 +376,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const isBuilding = zone.zone_type === 'building' || zone.zone_type === 'residential';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const shouldRespectTileDepth = isBuilding || zone.zone_type === 'green_space';
-  const shouldMaskTileGeometry = shouldCreateTileStencilMask(zone.zone_type);
   const isImported = typeof zoneProps?._imported_from === 'string';
   // Imported reference layers (and big layers) drape ONCE then freeze — stable,
   // no per-frame re-draping that makes long corridors shimmer/jitter while orbiting.
@@ -639,21 +633,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     if (Math.random() < 0.005) drapeToTerrain(); // ~0.5% chance per frame
   });
 
-  // Stencil volume for zones that should clear existing Google tile geometry.
-  // Skipped in lightweight mode (big layers) — stencil volumes are costly at scale.
-  const stencilMesh = useMemo(() => {
-    if (!shouldMaskTileGeometry || zone.coordinates.length < 3 || lightweight) return null;
-    const mPerDegLon = metersPerDegLon(centroid[1]);
-    const pts = zone.coordinates.map(c => ({
-      x: (c[0] - centroid[0]) * mPerDegLon,
-      y: (c[1] - centroid[1]) * METERS_PER_DEG_LAT,
-    }));
-    return createStencilVolume(
-      pts,
-      getTileStencilVolumeHeight(zone.zone_type, extrudeHeight),
-    );
-  }, [zone.coordinates, centroid, shouldMaskTileGeometry, zone.zone_type, extrudeHeight, lightweight]);
-
   const handleZonePointerDown = useCallback((e: { stopPropagation: () => void }) => {
     // When the zone is already selected, let the edit surface behind it
     // receive the pointer event so body dragging can start.
@@ -728,11 +707,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       lon={centroid[0] * DEG_TO_RAD}
       height={zoneTerrainHeight}
     >
-      {/* Stencil volume — invisible, writes to stencil buffer */}
-      {stencilMesh && (
-        <primitive object={stencilMesh} />
-      )}
-
       {/* Fill — flat zones with terrain draping */}
       {/* Fill — flat zones: layered by type */}
       {/* Render order: site_boundary(100) < road(120) < green_space(120.5) <
