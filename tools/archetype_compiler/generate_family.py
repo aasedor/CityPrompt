@@ -108,6 +108,9 @@ def main() -> None:
     parser.add_argument("--no-ao", action="store_true", help="skip the Cycles AO bake (fast runs)")
     parser.add_argument("--textures", type=Path, default=None,
                         help="texture library root (default: tools/archetype_compiler/textures)")
+    parser.add_argument("--presentation-engine", choices=("eevee", "cycles"), default="eevee",
+                        help="review-image renderer; use cycles for final archviz QA")
+    parser.add_argument("--presentation-samples", type=int, default=48)
     parser.add_argument("--skip-validation", action="store_true")
     parser.add_argument("--no-auto-install", action="store_true", help="don't pip-install validation deps automatically")
     parser.add_argument("--verbose", action="store_true")
@@ -165,6 +168,8 @@ def main() -> None:
         blender_cmd += ["--no-ao"]
     if args.textures:
         blender_cmd += ["--textures", str(args.textures.resolve())]
+    blender_cmd += ["--presentation-engine", args.presentation_engine,
+                    "--presentation-samples", str(args.presentation_samples)]
     result = run(blender_cmd, cwd=REPO_ROOT, step="blender", log_file=logs_dir / "blender.log")
     for line in (result.stdout or "").splitlines():
         if "[blender_generate]" in line:

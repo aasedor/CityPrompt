@@ -33,11 +33,19 @@ function tuneMaterial(
 
   const materialName = standard.name.toLowerCase();
   if (materialName.includes('glass')) {
-    // Opaque coated glazing reads cleanly at map scale without transparency
-    // sorting artifacts where it intersects the photogrammetry tile mesh.
+    // The v5 GLBs carry room backplates behind alpha-blended low-iron glass.
+    // Keep the dielectric response and coat; the footprint tile mask prevents
+    // the old photogrammetric building from showing through the glazing.
     standard.roughness = Math.min(standard.roughness, 0.18);
-    standard.metalness = Math.max(standard.metalness, 0.08);
+    standard.metalness = 0;
     standard.envMapIntensity = GLASS_ENV_INTENSITY;
+    standard.depthWrite = false;
+    const physical = standard as THREE.MeshPhysicalMaterial;
+    if (physical.isMeshPhysicalMaterial) {
+      physical.ior = 1.48;
+      physical.clearcoat = Math.max(physical.clearcoat, 0.3);
+      physical.clearcoatRoughness = Math.min(physical.clearcoatRoughness, 0.12);
+    }
   } else if (materialName.includes('interior_shadow')) {
     standard.roughness = 0.92;
     standard.envMapIntensity = 0.2;

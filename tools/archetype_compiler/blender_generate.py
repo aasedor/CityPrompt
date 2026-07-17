@@ -28,13 +28,17 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.6.0"
+GENERATOR_VERSION = "0.7.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
 # pure function of the grammar.
 TEXTURES_DIR: Path | None = None
+DEFAULT_TEXTURES_DIR = Path(__file__).resolve().parent / "textures"
 UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
+INTERIOR_ATLAS_FILENAME = "interior-atlas-gpt-v1.jpg"
+INTERIOR_ATLAS_COLUMNS = 4
+INTERIOR_ATLAS_ROWS = 2
 
 
 # ---------------------------------------------------------------------------
@@ -75,16 +79,30 @@ def _texture_set(texture_key: str | None) -> dict[str, Path] | None:
     pipeline keeps working with zero textures (flat-colour fallback)."""
     if not texture_key or TEXTURES_DIR is None:
         return None
-    tex_dir = TEXTURES_DIR / texture_key
-    albedo = tex_dir / "albedo.jpg"
-    if not albedo.exists():
+    roots = [TEXTURES_DIR]
+    if TEXTURES_DIR != DEFAULT_TEXTURES_DIR:
+        roots.append(DEFAULT_TEXTURES_DIR)
+    tex_dir = next((root / texture_key for root in roots if (root / texture_key / "albedo.jpg").exists()), None)
+    if tex_dir is None:
         return None
+    albedo = tex_dir / "albedo.jpg"
     found = {"albedo": albedo}
     for slot, filename in (("normal", "normal.png"), ("roughness", "roughness.jpg")):
         path = tex_dir / filename
         if path.exists():
             found[slot] = path
     return found
+
+
+def _shared_texture(filename: str) -> Path | None:
+    roots = [TEXTURES_DIR, DEFAULT_TEXTURES_DIR]
+    for root in roots:
+        if root is None:
+            continue
+        candidate = root / "_shared" / filename
+        if candidate.exists():
+            return candidate
+    return None
 
 
 def _load_image(path: Path, colorspace: str) -> bpy.types.Image:
@@ -132,8 +150,26 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             bsdf.inputs["Coat Roughness"].default_value = 0.08
         if "IOR" in bsdf.inputs:
             bsdf.inputs["IOR"].default_value = 1.48
-        bsdf.inputs["Metallic"].default_value = 0.12
-        bsdf.inputs["Roughness"].default_value = 0.16
+        # Coated low-iron glazing is a dielectric, not a blue metal. Alpha
+        # blending keeps the room atlas legible in EEVEE and glTF/Three.js;
+        # clearcoat preserves a restrained reflection layer.
+        bsdf.inputs["Metallic"].default_value = 0.0
+        bsdf.inputs["Roughness"].default_value = 0.13
+        alpha = bsdf.inputs.get("Alpha")
+        if alpha:
+            alpha.default_value = 0.56
+        transmission = bsdf.inputs.get("Transmission Weight") or bsdf.inputs.get("Transmission")
+        if transmission:
+            transmission.default_value = 0.0
+        try:
+            mat.surface_render_method = "BLENDED"
+        except (AttributeError, TypeError):
+            mat.blend_method = "BLEND"
+        try:
+            mat.use_transparency_overlap = False
+        except AttributeError:
+            pass
+        color = color[:3] + (0.56,)
     mat.diffuse_color = color  # viewport/solid fallback
 
     if "texture_key" in mat:
@@ -152,10 +188,15 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         grade_node = nodes.new("ShaderNodeHueSaturation")
         grade_node.name = grade_node.label = "TEX_ArchitecturalGrade"
         texture_key = spec.get("texture_key")
-        grade_node.inputs["Saturation"].default_value = 1.04 if texture_key == "red_brick" else 1.08
+        archviz_timber = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "clt")
+        archviz_sedum = bool(TEXTURES_DIR and TEXTURES_DIR.name == "textures_archviz_v5" and texture_key == "sedum_roof")
+        grade_node.inputs["Saturation"].default_value = (
+            0.9 if archviz_timber else (0.88 if archviz_sedum else (1.04 if texture_key == "red_brick" else 1.08))
+        )
         grade_node.inputs["Value"].default_value = {
             "red_brick": 0.64,
-            "clt": 0.8,
+            "clt": 0.82 if archviz_timber else 0.8,
+            "sedum_roof": 0.94 if archviz_sedum else 0.84,
             "white_plaster": 0.98,
             "limestone": 0.94,
         }.get(texture_key, 0.84)
@@ -169,7 +210,8 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         tint_node.name = tint_node.label = "TEX_CatalogueTint"
         tint_node.blend_type = "MULTIPLY"
         tint_node.inputs[0].default_value = {
-            "clt": 0.46,
+            "clt": 0.15 if archviz_timber else 0.46,
+            "sedum_roof": 0.04 if archviz_sedum else 0.14,
             "red_brick": 0.18,
             "white_plaster": 0.08,
             "limestone": 0.12,
@@ -204,9 +246,56 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
     return mat
 
 
+def make_interior_atlas_material(index: int) -> bpy.types.Material:
+    """One atlas-backed room material. Eight material slots share one image;
+    per-face UVs select the cell, avoiding eight duplicate image payloads."""
+    atlas_path = _shared_texture(INTERIOR_ATLAS_FILENAME)
+    if atlas_path is None:
+        return make_material(
+            f"MAT_Interior_Room_{index:02d}",
+            {"base_color": "#221b17", "roughness": 0.82, "metallic": 0.0,
+             "emission_color": "#8f5b32", "emission_strength": 0.08},
+        )
+
+    mat = bpy.data.materials.get(f"MAT_Interior_Room_{index:02d}") or bpy.data.materials.new(
+        f"MAT_Interior_Room_{index:02d}"
+    )
+    mat.use_nodes = True
+    nodes, links = mat.node_tree.nodes, mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    output.location = (360, 0)
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.location = (80, 0)
+    bsdf.inputs["Roughness"].default_value = 0.78
+    emission_strength = bsdf.inputs.get("Emission Strength")
+    if emission_strength:
+        emission_strength.default_value = 0.32 if index != 7 else 0.08
+    uv_node = nodes.new("ShaderNodeUVMap")
+    uv_node.uv_map = "UVMap"
+    uv_node.location = (-560, 0)
+    image_node = nodes.new("ShaderNodeTexImage")
+    image_node.name = image_node.label = "TEX_InteriorAtlas"
+    image_node.image = _load_image(atlas_path, "sRGB")
+    image_node.interpolation = "Linear"
+    image_node.extension = "CLIP"
+    image_node.location = (-300, 0)
+    links.new(uv_node.outputs["UV"], image_node.inputs["Vector"])
+    links.new(image_node.outputs["Color"], bsdf.inputs["Base Color"])
+    emission = bsdf.inputs.get("Emission Color") or bsdf.inputs.get("Emission")
+    if emission:
+        links.new(image_node.outputs["Color"], emission)
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+    mat.diffuse_color = (0.18, 0.11, 0.07, 1.0)
+    mat["interior_atlas_cell"] = index
+    mat["interior_atlas_columns"] = INTERIOR_ATLAS_COLUMNS
+    mat["interior_atlas_rows"] = INTERIOR_ATLAS_ROWS
+    return mat
+
+
 def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
     materials = grammar["materials"]
-    return {
+    result = {
         "primary": make_material("MAT_Facade_Primary", materials["primary"]),
         "secondary": make_material("MAT_Facade_Secondary", materials["secondary"]),
         "accent": make_material("MAT_Accent", materials["accent"]),
@@ -215,12 +304,15 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
         "roof": make_material("MAT_Roof", materials["roof"]),
         "green_roof": make_material("MAT_GreenRoof", materials["green_roof"]),
         "plant": make_material("MAT_Plants", {"base_color": "#416f38", "roughness": 0.86, "metallic": 0.0}),
+        "plant_alt": make_material("MAT_Plants_Alt", {"base_color": "#6b7b45", "roughness": 0.88, "metallic": 0.0}),
         "interior": make_material("MAT_Interior_Shadow", {"base_color": "#171c21", "roughness": 0.72, "metallic": 0.0}),
         "interior_warm": make_material("MAT_Interior_Warm", {
             "base_color": "#6e4e2e", "roughness": 0.82, "metallic": 0.0,
             "emission_color": "#b77c3f", "emission_strength": 0.08,
         }),
     }
+    result["interior_cells"] = [make_interior_atlas_material(index) for index in range(8)]
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -254,8 +346,14 @@ def add_cylinder(
     return obj
 
 
-def add_foliage(name: str, location: tuple[float, float, float], scale: tuple[float, float, float], mat) -> bpy.types.Object:
-    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1.0, location=location)
+def add_foliage(
+    name: str,
+    location: tuple[float, float, float],
+    scale: tuple[float, float, float],
+    mat,
+    subdivisions: int = 2,
+) -> bpy.types.Object:
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=subdivisions, radius=1.0, location=location)
     obj = bpy.context.object
     obj.name = name
     obj.scale = scale
@@ -264,6 +362,41 @@ def add_foliage(name: str, location: tuple[float, float, float], scale: tuple[fl
     for poly in obj.data.polygons:
         poly.use_smooth = True
     return obj
+
+
+def add_planter_vegetation(
+    parts: list,
+    prefix: str,
+    centre: tuple[float, float, float],
+    width: float,
+    mats: dict,
+) -> None:
+    """Small stems and leaf clusters replace the old row of green spheres.
+    The asymmetric silhouettes remain inexpensive but read as planting at the
+    aerial distances for which the builder is designed."""
+    cx, cy, cz = centre
+    count = max(3, min(7, round(width / 0.42)))
+    for index in range(count):
+        t = (index + 0.5) / count - 0.5
+        x = cx + t * width * 0.82
+        height = 0.28 + 0.09 * ((index * 3) % 4)
+        stem = add_cylinder(
+            f"{prefix}_Stem{index:02d}", 0.014, height,
+            (x, cy + 0.018 * ((index % 3) - 1), cz + height / 2), mats["plant_alt"], 7,
+        )
+        stem.rotation_euler.x = math.radians(-7 + 5 * (index % 3))
+        parts.append(stem)
+        for leaf_index, dz in enumerate((0.45, 0.72, 0.96)):
+            direction = -1 if (index + leaf_index) % 2 else 1
+            leaf = add_foliage(
+                f"{prefix}_Leaf{index:02d}_{leaf_index}",
+                (x + direction * (0.055 + leaf_index * 0.012), cy - 0.025 * leaf_index, cz + height * dz),
+                (0.11 + 0.015 * leaf_index, 0.045, 0.065 + 0.012 * leaf_index),
+                mats["plant"] if (index + leaf_index) % 3 else mats["plant_alt"],
+                subdivisions=1,
+            )
+            leaf.rotation_euler.y = math.radians(direction * (18 + leaf_index * 7))
+            parts.append(leaf)
 
 
 def add_prism(name: str, verts: list[tuple[float, float, float]], faces: list[tuple[int, ...]], mat) -> bpy.types.Object:
@@ -400,6 +533,9 @@ def apply_box_uv(obj: bpy.types.Object, tile: float = UV_TILE_METRES) -> None:
     for poly in mesh.polygons:
         n = poly.normal
         ax, ay, az = abs(n.x), abs(n.y), abs(n.z)
+        material = mesh.materials[poly.material_index] if poly.material_index < len(mesh.materials) else None
+        atlas_cell = material.get("interior_atlas_cell") if material else None
+        projected: list[tuple[float, float]] = []
         for loop_index in poly.loop_indices:
             co = mesh.vertices[mesh.loops[loop_index].vertex_index].co
             if az >= ax and az >= ay:
@@ -408,7 +544,32 @@ def apply_box_uv(obj: bpy.types.Object, tile: float = UV_TILE_METRES) -> None:
                 u, v = co.y, co.z
             else:
                 u, v = co.x, co.z
-            uv_layer.data[loop_index].uv = (u / tile, v / tile)
+            projected.append((u, v))
+
+        if atlas_cell is not None:
+            # Normalize each original box face, then select its atlas cell with
+            # a small gutter that excludes GPT Image's black separator lines.
+            columns = int(material.get("interior_atlas_columns", INTERIOR_ATLAS_COLUMNS))
+            rows = int(material.get("interior_atlas_rows", INTERIOR_ATLAS_ROWS))
+            col, row = int(atlas_cell) % columns, int(atlas_cell) // columns
+            min_u, max_u = min(v[0] for v in projected), max(v[0] for v in projected)
+            min_v, max_v = min(v[1] for v in projected), max(v[1] for v in projected)
+            span_u, span_v = max(max_u - min_u, 1e-6), max(max_v - min_v, 1e-6)
+            gutter_u, gutter_v = 0.006, 0.011
+            cell_u0 = col / columns + gutter_u
+            cell_u1 = (col + 1) / columns - gutter_u
+            # Image rows are top-down; Blender UV V=0 starts at the bottom.
+            cell_v0 = (rows - row - 1) / rows + gutter_v
+            cell_v1 = (rows - row) / rows - gutter_v
+            for loop_index, (u, v) in zip(poly.loop_indices, projected):
+                nu, nv = (u - min_u) / span_u, (v - min_v) / span_v
+                uv_layer.data[loop_index].uv = (
+                    cell_u0 + nu * (cell_u1 - cell_u0),
+                    cell_v0 + nv * (cell_v1 - cell_v0),
+                )
+        else:
+            for loop_index, (u, v) in zip(poly.loop_indices, projected):
+                uv_layer.data[loop_index].uv = (u / tile, v / tile)
 
 
 def _gltf_output_group() -> bpy.types.NodeTree:
@@ -443,28 +604,66 @@ def bake_ao(obj: bpy.types.Object, resolution: int = 512, samples: int = 16) -> 
     image = bpy.data.images.new(f"AO_{obj.name}", resolution, resolution, alpha=False)
     image.colorspace_settings.name = "Non-Color"
 
-    for mat in mesh.materials:
-        nodes, links = mat.node_tree.nodes, mat.node_tree.links
-        for stale in [n for n in nodes if n.name.startswith("AO_BAKE")]:
-            nodes.remove(stale)
-        uv_node = nodes.new("ShaderNodeUVMap")
-        uv_node.name = "AO_BAKE_UV"
-        uv_node.uv_map = "AOMap"
-        uv_node.location = (-760, -640)
-        tex_node = nodes.new("ShaderNodeTexImage")
-        tex_node.name = "AO_BAKE_TEX"
-        tex_node.image = image
-        tex_node.location = (-480, -640)
-        links.new(uv_node.outputs["UV"], tex_node.inputs["Vector"])
-        group = nodes.new("ShaderNodeGroup")
-        group.name = "AO_BAKE_OUT"
-        group.node_tree = _gltf_output_group()
-        group.location = (-180, -640)
-        links.new(tex_node.outputs["Color"], group.inputs["Occlusion"])
-        # bake writes into each material's ACTIVE image texture node
-        for node in nodes:
-            node.select = node is tex_node
-        nodes.active = tex_node
+    # Blender 5.1 can fail silently when one joined mesh has many materials:
+    # even with an active target node in every tree it may report that no
+    # target exists and leave a packed, solid-black AO texture. AO is geometry-
+    # only, so bake through one temporary material and restore the authored
+    # slots before wiring the result into glTF.
+    original_materials = list(mesh.materials)
+    original_indices = [poly.material_index for poly in mesh.polygons]
+    target_mat = bpy.data.materials.new(f"AO_TARGET_{obj.name}")
+    target_mat.use_nodes = True
+    target_nodes = target_mat.node_tree.nodes
+    target_nodes.clear()
+    target_output = target_nodes.new("ShaderNodeOutputMaterial")
+    target_bsdf = target_nodes.new("ShaderNodeBsdfPrincipled")
+    target_mat.node_tree.links.new(target_bsdf.outputs["BSDF"], target_output.inputs["Surface"])
+    target_tex = target_nodes.new("ShaderNodeTexImage")
+    target_tex.name = "AO_BAKE_TARGET"
+    target_tex.image = image
+    for node in target_nodes:
+        node.select = node is target_tex
+    target_nodes.active = target_tex
+    mesh.materials.clear()
+    mesh.materials.append(target_mat)
+    for poly in mesh.polygons:
+        poly.material_index = 0
+    obj.active_material_index = 0
+    bpy.context.view_layer.objects.active = obj
+    obj.select_set(True)
+    bpy.context.view_layer.update()
+    mesh.uv_layers.active_index = mesh.uv_layers.find("AOMap")
+    ao_layer.active_render = True
+    for node in target_nodes:
+        node.select = False
+    target_nodes.active = target_tex
+    target_tex.select = True
+    def restore_materials() -> None:
+        mesh.materials.clear()
+        for material in original_materials:
+            mesh.materials.append(material)
+        for poly, material_index in zip(mesh.polygons, original_indices):
+            poly.material_index = material_index
+
+    def wire_occlusion() -> None:
+        for mat in original_materials:
+            nodes, links = mat.node_tree.nodes, mat.node_tree.links
+            for stale in [n for n in nodes if n.name.startswith("AO_BAKE")]:
+                nodes.remove(stale)
+            uv_node = nodes.new("ShaderNodeUVMap")
+            uv_node.name = "AO_BAKE_UV"
+            uv_node.uv_map = "AOMap"
+            uv_node.location = (-760, -640)
+            tex_node = nodes.new("ShaderNodeTexImage")
+            tex_node.name = "AO_BAKE_TEX"
+            tex_node.image = image
+            tex_node.location = (-480, -640)
+            links.new(uv_node.outputs["UV"], tex_node.inputs["Vector"])
+            group = nodes.new("ShaderNodeGroup")
+            group.name = "AO_BAKE_OUT"
+            group.node_tree = _gltf_output_group()
+            group.location = (-180, -640)
+            links.new(tex_node.outputs["Color"], group.inputs["Occlusion"])
 
     scene = bpy.context.scene
     previous_engine = scene.render.engine
@@ -472,21 +671,35 @@ def bake_ao(obj: bpy.types.Object, resolution: int = 512, samples: int = 16) -> 
         scene.render.engine = "CYCLES"
         scene.cycles.samples = samples
         scene.cycles.device = "CPU"
+        scene.render.bake.target = "IMAGE_TEXTURES"
         try:  # AO ray distance: architectural scale, not world-sized
             scene.world.light_settings.distance = 10.0
         except AttributeError:
             pass
-        bpy.ops.object.bake(type="AO", margin=8, use_clear=True)
+        bpy.ops.object.bake(type="AO", margin=8, use_clear=True, uv_layer="AOMap")
+        # Sample every 257th red channel. A real AO bake must contain both lit
+        # and occluded values; flat black is a failed target, not valid AO.
+        pixels = image.pixels[:]
+        red_samples = pixels[0::4 * 257]
+        if not red_samples or max(red_samples) - min(red_samples) < 0.015:
+            raise RuntimeError("AO bake produced a flat image")
+        restore_materials()
+        wire_occlusion()
         image.pack()
         return True
     except Exception as exc:  # pragma: no cover - depends on Cycles availability
         print(f"[blender_generate] WARNING: AO bake failed for {obj.name}: {exc}")
-        for mat in mesh.materials:
+        restore_materials()
+        for mat in original_materials:
             nodes = mat.node_tree.nodes
             for stale in [n for n in nodes if n.name.startswith("AO_BAKE")]:
                 nodes.remove(stale)
         return False
     finally:
+        if list(mesh.materials) == [target_mat]:
+            restore_materials()
+        if target_mat.users == 0:
+            bpy.data.materials.remove(target_mat)
         scene.render.engine = previous_engine
 
 
@@ -508,6 +721,7 @@ def add_window_row(
     bay_count: int,
     mats: dict,
     frame_depth: float = 0.07,
+    interior_seed: int = 0,
 ) -> None:
     """A row of glazing units with a shadow reveal, projecting surround and mullion."""
     bay = wall_length / bay_count
@@ -535,7 +749,10 @@ def add_window_row(
             frame_size = (0.08, window_w + frame_depth * 2, window_h + frame_depth * 2)
             mullion_size = (0.09, 0.045, window_h)
             mullion_loc = (sign * (wall_offset + 0.155), along, z_center)
-        parts.append(add_box(f"{prefix}_Reveal_{axis}_{i:02d}", reveal_size, reveal_loc, mats["interior"]))
+        atlas_cells = mats.get("interior_cells") or []
+        axis_seed = {"front": 0, "rear": 2, "left": 4, "right": 6}.get(axis, 0)
+        reveal_mat = atlas_cells[(i * 3 + axis_seed + interior_seed) % len(atlas_cells)] if atlas_cells else mats["interior"]
+        parts.append(add_box(f"{prefix}_Reveal_{axis}_{i:02d}", reveal_size, reveal_loc, reveal_mat))
         parts.append(add_box(f"{prefix}_Glass_{axis}_{i:02d}", glass_size, glass_loc, mats["glass"]))
         add_frame_bars(
             parts, f"{prefix}_Frame_{axis}_{i:02d}", axis, frame_loc,
@@ -810,6 +1027,8 @@ def _add_balcony_v3(
     centre_y = facade_y - depth / 2
     front_y = facade_y - depth + 0.035
     parts.append(add_box(f"{prefix}_Slab", (width, depth, 0.14), (x, centre_y, 0.18), mats["concrete"]))
+    parts.append(add_box(f"{prefix}_SlabShadow", (width - 0.08, depth - 0.05, 0.035),
+                         (x, centre_y, 0.095), mats["accent"]))
     if guard == "solid":
         parts.append(add_box(f"{prefix}_Guard", (width, 0.13, 0.82), (x, front_y, 0.66), mats["secondary"]))
     elif guard == "planter":
@@ -822,11 +1041,7 @@ def _add_balcony_v3(
     parts.append(add_box(f"{prefix}_SideL", (0.055, depth - 0.12, 0.92), (x - width / 2 + 0.03, centre_y, 0.7), mats["accent"]))
     parts.append(add_box(f"{prefix}_SideR", (0.055, depth - 0.12, 0.92), (x + width / 2 - 0.03, centre_y, 0.7), mats["accent"]))
     if plants:
-        for plant_index, dx in enumerate((-width * 0.28, 0.0, width * 0.28)):
-            parts.append(add_foliage(
-                f"{prefix}_Plant{plant_index}", (x + dx, front_y - 0.02, 0.83 + 0.06 * (plant_index % 2)),
-                (0.25, 0.18, 0.24 + 0.06 * (plant_index % 2)), mats["plant"],
-            ))
+        add_planter_vegetation(parts, f"{prefix}_Vegetation", (x, front_y - 0.02, 0.72), width, mats)
 
 
 def _add_oriel_v3(
@@ -869,7 +1084,7 @@ def _add_crown_v3(parts: list, system: str, w: float, d: float, h: float, facade
             parts.append(add_box(f"Crown_TimberFin{index}", (0.18, 0.55, h * 0.72), (x, facade_y - 0.22, h * 0.52), mats["primary"]))
         for index, x in enumerate((-w * 0.31, 0.0, w * 0.31)):
             parts.append(add_box(f"Crown_Planter{index}", (w * 0.2, 0.72, 0.38), (x, facade_y - 0.46, 0.3), mats["primary"]))
-            parts.append(add_foliage(f"Crown_Green{index}", (x, facade_y - 0.5, 0.72), (w * 0.08, 0.38, 0.36), mats["plant"]))
+            add_planter_vegetation(parts, f"Crown_Green{index}", (x, facade_y - 0.5, 0.5), w * 0.2, mats)
     elif system == "punched_render":
         parts.append(add_box("Crown_WhiteBlade", (w + 0.42, 0.32, h * 0.92), (0, facade_y - 0.12, h * 0.5), mats["primary"]))
         # Deeply cut loggia across the centre prevents another flat white box.
@@ -893,7 +1108,12 @@ def _add_crown_v3(parts: list, system: str, w: float, d: float, h: float, facade
         parts.append(add_box("Crown_StoneDatum", (w + 0.2, 0.25, 0.24), (0, facade_y - 0.04, 0.18), mats["primary"]))
 
 
-def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") -> bpy.types.Object:
+def build_floor_v3(
+    grammar: dict,
+    mats: dict,
+    variant_key: str = "typical_a",
+    interior_seed: int = 0,
+) -> bpy.types.Object:
     """Build one graph-selected floor with a true front facade opening system."""
     dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
     openings, attachment_specs, bay_specs, variants = _graph_lookup(grammar)
@@ -965,7 +1185,11 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
                              (left_edge + bay_width - pier_width / 2, facade_y + wall_depth / 2, opening_z), panel_mat))
 
         glass_y = facade_y + reveal_depth - 0.035
-        interior_mat = mats["interior_warm"] if (index + (1 if variant_key == "typical_b" else 0)) % 4 == 0 else mats["interior"]
+        atlas_cells = mats.get("interior_cells") or []
+        variant_seed = {"typical_a": 0, "typical_b": 3, "upper": 5, "crown": 7}.get(variant_key, 0)
+        interior_mat = atlas_cells[(index * 3 + variant_seed + interior_seed) % len(atlas_cells)] if atlas_cells else (
+            mats["interior_warm"] if (index + (1 if variant_key == "typical_b" else 0)) % 4 == 0 else mats["interior"]
+        )
         interior_y = facade_y + reveal_depth + interior_depth - 0.035
         parts.append(add_box(f"V4_{index:02d}_Interior", (opening_w + 0.14, 0.055, opening_h + 0.14),
                              (x, interior_y, opening_z), interior_mat))
@@ -1025,9 +1249,12 @@ def build_floor_v3(grammar: dict, mats: dict, variant_key: str = "typical_a") ->
     rear_window_w = min(bay_width * float(facade.get("window_width_ratio", 0.55)), bay_width - 0.55)
     rear_window_h = h * float(facade.get("window_height_ratio", 0.62))
     rear_sill = min(float(facade.get("sill_height_m", 0.75)), h - rear_window_h - 0.3)
-    add_window_row(parts, "V3_Floor", w, "rear", centre_y + d / 2, 0.0, rear_window_w, rear_window_h, rear_sill, bay_count, mats)
-    add_window_row(parts, "V3_Floor", d * 0.9, "left", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
-    add_window_row(parts, "V3_Floor", d * 0.9, "right", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats)
+    add_window_row(parts, "V3_Floor", w, "rear", centre_y + d / 2, 0.0, rear_window_w, rear_window_h, rear_sill, bay_count, mats,
+                   interior_seed=interior_seed)
+    add_window_row(parts, "V3_Floor", d * 0.9, "left", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats,
+                   interior_seed=interior_seed)
+    add_window_row(parts, "V3_Floor", d * 0.9, "right", w / 2, 0.0, rear_window_w, rear_window_h, rear_sill, side_count, mats,
+                   interior_seed=interior_seed)
 
     if system in ("timber_grid", "punched_render", "stone_frame"):
         wrap_mat = mats["primary"] if system == "timber_grid" else mats["accent"]
@@ -1214,8 +1441,22 @@ def triangle_count(obj: bpy.types.Object) -> int:
     return len(obj.data.loop_triangles)
 
 
-def pick_render_engine() -> str:
+def pick_render_engine(preferred: str = "eevee", samples: int = 48) -> str:
     scene = bpy.context.scene
+    if preferred == "cycles":
+        try:
+            scene.render.engine = "CYCLES"
+            scene.cycles.samples = samples
+            scene.cycles.use_denoising = True
+            scene.cycles.use_adaptive_sampling = True
+            scene.cycles.adaptive_threshold = 0.035
+            scene.cycles.max_bounces = 6
+            scene.cycles.diffuse_bounces = 3
+            scene.cycles.glossy_bounces = 3
+            scene.cycles.transmission_bounces = 4
+            return "CYCLES"
+        except (TypeError, AttributeError):
+            pass
     for engine in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE", "BLENDER_WORKBENCH"):
         try:
             scene.render.engine = engine
@@ -1299,14 +1540,22 @@ def add_context_building(
                             (x - width * 0.22, y + depth * 0.16, height + 0.48), context_mats["metal"], 12))
 
 
-def render_presentation_views(output: Path, family: str, focus_height: float, width: float, depth: float) -> tuple[str, list[str]]:
+def render_presentation_views(
+    output: Path,
+    family: str,
+    focus_height: float,
+    width: float,
+    depth: float,
+    preferred_engine: str = "eevee",
+    samples: int = 48,
+) -> tuple[str, list[str]]:
     """Render consistent studio, street and aerial views of the assembled kit.
 
     Context is deterministic and exists only for these review images; it never
     leaks into the modular or assembled GLBs.
     """
     scene = bpy.context.scene
-    engine = pick_render_engine()
+    engine = pick_render_engine(preferred_engine, samples)
     footprint = max(width, depth)
 
     ground_mat = make_material("MAT_PreviewGround", {"base_color": "#b9b6ae", "roughness": 0.92, "metallic": 0.0})
@@ -1479,15 +1728,21 @@ def render_presentation_views(output: Path, family: str, focus_height: float, wi
 # Orchestration
 # ---------------------------------------------------------------------------
 
-def build_module(role: str, grammar: dict, mats: dict, variant_key: str = "default") -> bpy.types.Object:
+def build_module(
+    role: str,
+    grammar: dict,
+    mats: dict,
+    variant_key: str = "default",
+    interior_seed: int = 0,
+) -> bpy.types.Object:
     if role == "podium":
         return build_podium(grammar, mats)
     if role == "floor":
-        return build_floor_v3(grammar, mats, variant_key if variant_key != "default" else "typical_a")
+        return build_floor_v3(grammar, mats, variant_key if variant_key != "default" else "typical_a", interior_seed)
     if role == "setback":
-        return build_floor_v3(grammar, mats, "upper")
+        return build_floor_v3(grammar, mats, "upper", interior_seed)
     if role == "crown":
-        return build_floor_v3(grammar, mats, "crown")
+        return build_floor_v3(grammar, mats, "crown", interior_seed)
     if role == "roof":
         return build_roof(grammar, mats)
     raise ValueError(f"unknown module role {role}")
@@ -1495,7 +1750,8 @@ def build_module(role: str, grammar: dict, mats: dict, variant_key: str = "defau
 
 def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_blend: bool,
              thumbnail: bool, assembled: bool, ao: bool = True, ao_resolution: int = 512,
-             ao_samples: int = 16) -> None:
+             ao_samples: int = 16, presentation_engine: str = "eevee",
+             presentation_samples: int = 48) -> None:
     if grammar.get("schema_version") != SUPPORTED_SCHEMA_VERSION:
         raise SystemExit(
             f"grammar schema_version={grammar.get('schema_version')!r} unsupported "
@@ -1581,7 +1837,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
 
         def place(role: str, level: int, variant_key: str = "default") -> None:
             nonlocal z
-            module = build_module(role, grammar, mats, variant_key)
+            module = build_module(role, grammar, mats, variant_key, interior_seed=level)
             module.name = f"ASM_{role}_{variant_key}_{level:02d}"
             module.location.z = z
             bpy.ops.object.select_all(action="DESELECT")
@@ -1618,7 +1874,8 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         if thumbnail:
             try:
                 engine_used, rendered_views = render_presentation_views(
-                    output, family, z, dims["width_m"], dims["depth_m"]
+                    output, family, z, dims["width_m"], dims["depth_m"],
+                    preferred_engine=presentation_engine, samples=presentation_samples,
                 )
                 print(f"[blender_generate] rendered {', '.join(rendered_views)} via {engine_used}")
             except Exception as exc:  # pragma: no cover - render backends vary by machine
@@ -1689,6 +1946,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--no-ao", action="store_true", help="skip the Cycles AO bake (fast runs)")
     parser.add_argument("--ao-resolution", type=int, default=512)
     parser.add_argument("--ao-samples", type=int, default=16)
+    parser.add_argument("--presentation-engine", choices=("eevee", "cycles"), default="eevee",
+                        help="render engine for review images (GLB output is unchanged)")
+    parser.add_argument("--presentation-samples", type=int, default=48,
+                        help="Cycles samples for review images")
     return parser.parse_args(argv)
 
 
@@ -1710,6 +1971,8 @@ def main() -> None:
         ao=not args.no_ao,
         ao_resolution=args.ao_resolution,
         ao_samples=args.ao_samples,
+        presentation_engine=args.presentation_engine,
+        presentation_samples=args.presentation_samples,
     )
 
 
