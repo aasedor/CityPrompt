@@ -176,6 +176,37 @@ def test_flat_roof_with_green_roof_inference():
     assert grammar.roof.mechanical_screen is True
 
 
+def test_london_heritage_prose_selects_mansard_stone_kit_and_pbr_materials():
+    payload = payload_mixed_use_midrise(
+        archetypeId="london_heritage_mansion_block",
+        generationTags=["london", "heritage_mansion", "classical", "mansard", "sash_windows"],
+    )
+    payload["dimensions"] = {
+        "suggestedWidth_m": 24, "suggestedDepth_m": 18,
+        "minWidth_m": 18, "maxWidth_m": 32, "minDepth_m": 14, "maxDepth_m": 24,
+        "minFloors": 5, "maxFloors": 5, "suggestedFloorHeight": 3.8,
+    }
+    payload["facadeDetail"] = {
+        "primaryMaterial": "warm Portland stone ashlar",
+        "secondaryMaterial": "carved Portland stone rustication, quoins, and dentilled cornice",
+        "accentMaterial": "dark wrought-iron guards and painted timber sash frames",
+        "groundFloor": "grand arched portal in a rusticated base",
+        "upperFloors": "deep multi-pane sash windows with classical pediments",
+    }
+    payload["roofDetail"] = {
+        "form": "tall mansard with flat top and pedimented dormers",
+        "material": "natural Welsh slate with lead flashings",
+        "features": "dormers and chimney stacks",
+    }
+    grammar = compile_archetype(payload)
+    assert grammar.facade.system == "heritage_stone"
+    assert grammar.roof.type == "mansard"
+    assert grammar.materials.primary.texture_key == "heritage_portland_stone"
+    assert grammar.materials.accent.texture_key == "black_metal"
+    assert grammar.materials.roof.texture_key == "welsh_slate"
+    grammar.validate()
+
+
 def test_variant_override_changes_family_and_materials():
     payload = payload_mixed_use_midrise()
     payload["selectedVariant"] = {

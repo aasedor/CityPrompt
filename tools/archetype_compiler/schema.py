@@ -20,12 +20,14 @@ from dataclasses import dataclass, field, asdict
 from typing import Any
 
 SCHEMA_VERSION = 3
-GENERATOR_VERSION = "0.6.0"
+GENERATOR_VERSION = "0.8.0"
 
-VALID_ROOF_TYPES = ("flat", "gabled", "mono_pitch")
+VALID_ROOF_TYPES = ("flat", "gabled", "mono_pitch", "mansard")
 VALID_BALCONY_MODES = ("none", "recessed", "projecting")
 VALID_CORNER_CONDITIONS = ("midblock", "corner")
-VALID_FACADE_SYSTEMS = ("regular", "timber_grid", "punched_render", "brick_bays", "stone_frame")
+VALID_FACADE_SYSTEMS = (
+    "regular", "timber_grid", "punched_render", "brick_bays", "stone_frame", "heritage_stone",
+)
 VALID_BALCONY_GUARDS = ("solid", "metal", "glass", "planter")
 VALID_ENTRANCE_TYPES = ("canopy", "portal", "recessed", "arched", "colonnade")
 VALID_FACADE_ZONE_KINDS = ("base", "middle", "upper", "crown")

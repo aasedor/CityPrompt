@@ -39,6 +39,17 @@ Direct (any OS):
 python tools/archetype_compiler/generate_family.py --archetype-id nordic_timber_midrise
 ```
 
+Kinnaird-quality heritage pilot:
+
+```bash
+python tools/archetype_compiler/generate_family.py \
+  --archetype-id london_heritage_mansion_block \
+  --variant-id london-heritage-mansion-portland-stone \
+  --floors 5 \
+  --textures tools/archetype_compiler/textures_kinnaird_v6 \
+  --presentation-engine cycles --presentation-samples 64
+```
+
 Useful flags: `--variant-id nordic_timber_charred_wood`, `--floors 6`, `--width 24
 --depth 18` (clamped to catalogue bounds), `--output <dir>`, `--blender-path <exe>`,
 `--skip-thumbnail`, `--keep-blend`, `--verbose` (prints every derivation note).
@@ -67,7 +78,7 @@ python tools/archetype_compiler/import_manifest.py build/archetypes/nordic_timbe
 | `developmentType` / `generationTags` / `facadeDetail.groundFloor` | retail storefront podium vs residential lobby podium |
 | `facadeDetail.primaryMaterial` etc. (prose) | keyword → PBR colour table (shou sugi ban → charcoal, CLT → warm timber, white plaster → off-white, …) |
 | `palette.window` | glass colour |
-| `roofDetail.form` / `styleProfile.roofForm` | flat / gabled / mono-pitch (+ parapet) |
+| `roofDetail.form` / `styleProfile.roofForm` | flat / gabled / mono-pitch / mansard (+ parapet) |
 | `roofDetail.material`/`features` | green roof, mechanical screen |
 | `styleProfile.massing` + floors | setback floor on/off |
 | residential type or balcony prose | balcony mode (projecting/recessed) + frequency |
@@ -137,12 +148,12 @@ the full-pipeline smoke additionally needs Blender (skipped otherwise).
 
 ## Current visual limits
 
-Generator v0.6 adds shallow modeled interiors, wraparound elevation grids and
-sills, catalogue-tinted PBR materials, roof service plant, rooftop PV, sparse
-variant-specific feature rhythms, and four review cameras including an urban
-high-oblique view. The production globe combines those authored models with
-Google Photorealistic 3D Tiles and clips the scanned source building only after
-its replacement has mounted.
+Generator v0.8 adds an architecture-specific `heritage_stone` kit and a true
+mansard roof primitive. The kit includes deep occupied sash windows, rusticated
+podiums, classical surrounds and pediments, projecting pavilions, quoins,
+dentilled cornices, porticos, balustrades, dormers, chimneys, occupied corner
+roof pavilions and a lantern. It also supports versioned GPT Image material
+sources with deterministic PBR derivation and module AO bakes.
 
 The generated modules are architectural visualization assets, not survey-grade
 photogrammetry. Background-city realism comes from the tile layer; loose props,

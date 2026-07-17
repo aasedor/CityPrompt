@@ -19961,6 +19961,128 @@
           "developmentType": "residential_single_family"
     },
     {
+          "id": "london_heritage_mansion_block",
+          "suggestedWidth_m": 24,
+          "suggestedDepth_m": 18,
+          "suggestedFloorHeight": 3.8,
+          "minWidth_m": 18,
+          "maxWidth_m": 32,
+          "minDepth_m": 14,
+          "maxDepth_m": 24,
+          "aspectRatio": "4:3",
+          "shadeId": "#D7D0C0",
+          "title": "London Heritage Mansion Block",
+          "aestheticCategory": "historical",
+          "description": "Late-Victorian London mansion block or commercial house with a finely carved Portland-stone facade, deep sash windows, a rusticated base, projecting pavilions, and a dormered slate mansard roof. The family is designed as a premium hero-building kit with strong base-body-crown hierarchy and readable architectural detail at street and aerial scales.",
+          "buildingSubcategory": "Mixed Use — Heritage Mansion Block",
+          "districtKit": "london",
+          "generationTags": [
+                "london",
+                "heritage_mansion",
+                "portland_stone",
+                "victorian",
+                "classical",
+                "mansard",
+                "dormers",
+                "sash_windows"
+          ],
+          "palette": {
+                "skyTop": "#9AAEC1",
+                "skyBottom": "#D6D9D8",
+                "facadePrimary": "#D8D0C0",
+                "facadeSecondary": "#EEE9DE",
+                "accent": "#24282C",
+                "window": "#A8BBC5",
+                "ground": "#B0AA9E",
+                "street": "#55585B",
+                "landscape": "#5C7148"
+          },
+          "styleProfile": {
+                "materials": [
+                      "warm Portland stone ashlar with carved dressings",
+                      "natural Welsh slate mansard roofing",
+                      "painted timber sash windows and dark wrought iron",
+                      "lead flashings and bronze entrance doors"
+                ],
+                "facadeRhythm": "Symmetrical classical bays with projecting centre and corner pavilions",
+                "roofForm": "Tall natural-slate mansard with dormers, chimney stacks, and pavilion caps",
+                "frontageType": "Rusticated urban streetwall with a grand central arched portal",
+                "windowStyle": "Deep-set multi-pane sash windows with stone architraves and alternating pediments",
+                "massing": "Compact five-storey mansion block with a strongly articulated crown",
+                "heightTendency": "Mid rise (5 floors plus mansard)",
+                "streetRelationship": "Formal central address on a continuous London streetwall",
+                "renderingMood": "Premium heritage architectural visualization with restrained material variation",
+                "articulation": "Rustication, string courses, pilasters, quoins, cornice, dentils, dormers, and chimneys",
+                "publicRealm": "York-stone pavement, black iron railings, and restrained foundation planting"
+          },
+          "prompt": {
+                "subject": "Front-facing canonical architectural archetype of a London Portland-stone heritage mansion block",
+                "details": [
+                      "Centered subject with restrained perspective",
+                      "True base-body-crown hierarchy and deep facade relief",
+                      "Premium photoreal architectural rendering style"
+                ],
+                "negative": [
+                      "No flat box massing",
+                      "No pasted-on windows",
+                      "No fantasy ornament",
+                      "No text inside image"
+                ]
+          },
+          "renderPrompt": {
+                "mapOverlay": "Replace the colored building block with a photorealistic London heritage mansion block. Keep the exact footprint and height. Warm Portland-stone ashlar facade with rusticated base, deep multi-pane sash windows, carved architraves, central arched portal, projecting pavilions, full cornice, slate mansard roof, dormers, and chimney stacks. Maintain surrounding satellite context exactly as-is. Oblique aerial view, crisp daylight, physically based materials, premium architectural visualization.",
+                "roofView": "Replace the colored block viewed from above with a dark natural Welsh-slate mansard around a flat lead roof deck, regular dormer windows, lead flashings, and articulated chimney stacks. Keep surrounding context exactly as-is.",
+                "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, flat facade, generic box, modern curtain wall"
+          },
+          "facadeDetail": {
+                "primaryMaterial": "warm Portland stone ashlar, finely dressed with lightly weathered joints",
+                "secondaryMaterial": "carved Portland stone rustication, quoins, string courses, pilasters, window architraves, and dentilled cornice",
+                "accentMaterial": "dark wrought-iron guards, bronze entry doors, and painted timber sash frames",
+                "groundFloor": "rusticated ashlar base with a grand central arched portal, deep entrance reveal, stone steps, flanking round-headed windows, and expressed voussoirs",
+                "upperFloors": "deep-set multi-pane sash windows with projecting sills and architraves, alternating triangular and segmental pediments, centre and corner pavilions, and diminishing upper-storey proportions",
+                "cornice": "full projecting stone entablature with architrave, frieze, dentils, modillions, and a balustraded parapet",
+                "colorScheme": "warm off-white Portland stone, dark blue-grey slate, near-black iron, muted bronze, and warm occupied interiors"
+          },
+          "roofDetail": {
+                "form": "tall mansard roof with a shallow flat top deck and raised corner pavilions",
+                "material": "natural Welsh slate with lead flashings and dark metal ridges",
+                "features": "regular pedimented dormer windows, tall chimney stacks with clay pots, lead valleys, finials, and concealed drainage",
+                "aerialAppearance": "dark blue-grey slate perimeter skirt, lighter lead top deck, regular dormers, and a varied chimney silhouette"
+          },
+          "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/hero.png",
+          "variants": [
+                {
+                      "id": "london-heritage-mansion-portland-stone",
+                      "label": "Portland Stone Corner",
+                      "thumbnailUrl": "/archetypes/buildings/london-heritage-mansion-block/hero.png",
+                      "description": "A Kinnaird-quality study in pale Portland stone: rusticated base, tall sash windows, carved pediments, strongly projecting centre and corner pavilions, a deep modillion cornice, and a dark dormered mansard roof.",
+                      "facadeDetail": {
+                            "primaryMaterial": "warm Portland stone ashlar with subtle age variation",
+                            "secondaryMaterial": "carved Portland stone dressings, rusticated base, quoins, pediments, and dentilled cornice",
+                            "groundFloor": "grand arched stone entrance with voussoirs and a deep shadowed vestibule",
+                            "upperFloors": "multi-pane sash windows in deep reveals with alternating classical pediments"
+                      },
+                      "roofDetail": {
+                            "form": "tall natural-slate mansard with flat top, pedimented dormers, and corner pavilion caps",
+                            "material": "natural Welsh slate with lead flashings",
+                            "features": "dormer windows, tall chimney stacks, chimney pots, and metal finials"
+                      },
+                      "minFloors": 5,
+                      "maxFloors": 5,
+                      "suggestedFloorHeight": 3.8,
+                      "shadeId": null,
+                      "palette": {
+                            "primary": "#D8D0C0",
+                            "window": "#A8BBC5"
+                      }
+                }
+          ],
+          "minFloors": 5,
+          "maxFloors": 5,
+          "suggestedAreaSqm": 3500,
+          "developmentType": "mixed_use"
+    },
+    {
           "id": "london_townhouse",
     "suggestedWidth_m": 6,
     "suggestedDepth_m": 12,

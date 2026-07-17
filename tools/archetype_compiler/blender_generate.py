@@ -28,7 +28,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.7.0"
+GENERATOR_VERSION = "0.8.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
@@ -157,10 +157,10 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
         bsdf.inputs["Roughness"].default_value = 0.13
         alpha = bsdf.inputs.get("Alpha")
         if alpha:
-            alpha.default_value = 0.56
+            alpha.default_value = 0.42
         transmission = bsdf.inputs.get("Transmission Weight") or bsdf.inputs.get("Transmission")
         if transmission:
-            transmission.default_value = 0.0
+            transmission.default_value = 0.22
         try:
             mat.surface_render_method = "BLENDED"
         except (AttributeError, TypeError):
@@ -199,6 +199,8 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "sedum_roof": 0.94 if archviz_sedum else 0.84,
             "white_plaster": 0.98,
             "limestone": 0.94,
+            "heritage_portland_stone": 0.91,
+            "welsh_slate": 0.74,
         }.get(texture_key, 0.84)
         grade_node.location = (-190, 260)
         links.new(albedo_node.outputs["Color"], grade_node.inputs["Color"])
@@ -215,6 +217,8 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
             "red_brick": 0.18,
             "white_plaster": 0.08,
             "limestone": 0.12,
+            "heritage_portland_stone": 0.05,
+            "welsh_slate": 0.06,
         }.get(texture_key, 0.14)
         tint_node.inputs[2].default_value = color
         tint_node.location = (20, 260)
@@ -311,7 +315,8 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
             "emission_color": "#b77c3f", "emission_strength": 0.08,
         }),
     }
-    result["interior_cells"] = [make_interior_atlas_material(index) for index in range(8)]
+    room_count = 4 if grammar.get("facade", {}).get("system") == "heritage_stone" else 8
+    result["interior_cells"] = [make_interior_atlas_material(index) for index in range(room_count)]
     return result
 
 
@@ -803,12 +808,233 @@ def add_entry_expression(parts: list, entrance_type: str, w: float, d: float, h:
         parts.append(add_box("EntryEntablature", (min(7.2, w * 0.5), 0.5, 0.42), (0, y, door_h + 0.45), mats["primary"]))
 
 
+def add_heritage_sash_front(
+    parts: list,
+    prefix: str,
+    x: float,
+    face_y: float,
+    centre_z: float,
+    opening_w: float,
+    opening_h: float,
+    mats: dict,
+    *,
+    pediment: str = "lintel",
+    interior_seed: int = 0,
+    overlay: bool = False,
+) -> None:
+    """Deep multi-pane sash plus an independent carved-stone surround.
+
+    The glass, frame and architrave sit on separate depth planes, so grazing
+    light produces the same hierarchy that makes compact baked heritage assets
+    convincing without requiring sculpted ornament on every stone.
+    """
+    atlas_cells = mats.get("interior_cells") or []
+    room_mat = atlas_cells[interior_seed % len(atlas_cells)] if atlas_cells else mats["interior_warm"]
+    room_y = face_y - 0.015 if overlay else face_y + 0.28
+    glass_y = face_y - 0.070 if overlay else face_y + 0.20
+    frame_y = face_y - 0.115 if overlay else face_y + 0.14
+    parts.append(add_box(f"{prefix}_Room", (opening_w + 0.12, 0.055, opening_h + 0.12),
+                         (x, room_y, centre_z), room_mat))
+    parts.append(add_box(f"{prefix}_Glass", (opening_w, 0.045, opening_h),
+                         (x, glass_y, centre_z), mats["glass"]))
+    add_frame_bars(
+        parts, f"{prefix}_Sash", "front", (x, frame_y, centre_z),
+        opening_w, opening_h, 0.095, mats["accent"], profile=0.052, mullions="double",
+    )
+    # Sash meeting rail and small glazing bars establish human scale.
+    parts.append(add_box(f"{prefix}_MeetingRail", (opening_w, 0.105, 0.075),
+                         (x, frame_y - 0.01, centre_z), mats["accent"]))
+    for rail_index, offset in enumerate((-opening_h * 0.25, opening_h * 0.25)):
+        parts.append(add_box(f"{prefix}_GlazingRail{rail_index}", (opening_w, 0.085, 0.035),
+                             (x, frame_y - 0.015, centre_z + offset), mats["accent"]))
+
+    trim_depth = 0.22
+    trim_y = face_y - trim_depth / 2 + 0.025
+    jamb = 0.16
+    parts.extend([
+        add_box(f"{prefix}_ArchitraveL", (jamb, trim_depth, opening_h + 0.38),
+                (x - opening_w / 2 - jamb / 2 - 0.055, trim_y, centre_z + 0.03), mats["secondary"]),
+        add_box(f"{prefix}_ArchitraveR", (jamb, trim_depth, opening_h + 0.38),
+                (x + opening_w / 2 + jamb / 2 + 0.055, trim_y, centre_z + 0.03), mats["secondary"]),
+        add_box(f"{prefix}_Sill", (opening_w + 0.42, trim_depth + 0.08, 0.13),
+                (x, trim_y - 0.035, centre_z - opening_h / 2 - 0.10), mats["secondary"]),
+    ])
+    top_z = centre_z + opening_h / 2
+    if pediment == "triangle":
+        half_w = opening_w / 2 + 0.32
+        y0, y1 = face_y - trim_depth - 0.02, face_y + 0.025
+        verts = [
+            (x - half_w, y0, top_z + 0.08), (x + half_w, y0, top_z + 0.08), (x, y0, top_z + 0.48),
+            (x - half_w, y1, top_z + 0.08), (x + half_w, y1, top_z + 0.08), (x, y1, top_z + 0.48),
+        ]
+        faces = [(0, 1, 2), (3, 5, 4), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)]
+        parts.append(add_prism(f"{prefix}_TriangularPediment", verts, faces, mats["secondary"]))
+        parts.append(add_box(f"{prefix}_PedimentBed", (opening_w + 0.72, trim_depth + 0.10, 0.11),
+                             (x, trim_y - 0.04, top_z + 0.05), mats["secondary"]))
+    elif pediment == "segmental":
+        half_w, rise, band = opening_w / 2 + 0.24, 0.30, 0.11
+        y0, y1 = face_y - trim_depth - 0.02, face_y + 0.025
+        segments = 12
+        verts: list[tuple[float, float, float]] = []
+        for y in (y0, y1):
+            for radius_scale, z_offset in ((1.0, 0.08), (0.80, 0.05)):
+                for arc_index in range(segments + 1):
+                    theta = math.pi * arc_index / segments
+                    verts.append((
+                        x + half_w * radius_scale * math.cos(theta), y,
+                        top_z + z_offset + rise * radius_scale * math.sin(theta),
+                    ))
+        stride = segments + 1
+        outer_front, inner_front, outer_back, inner_back = 0, stride, stride * 2, stride * 3
+        faces: list[tuple[int, ...]] = []
+        for arc_index in range(segments):
+            nxt = arc_index + 1
+            faces.extend([
+                (outer_front + arc_index, outer_front + nxt, inner_front + nxt, inner_front + arc_index),
+                (inner_back + arc_index, inner_back + nxt, outer_back + nxt, outer_back + arc_index),
+                (outer_front + arc_index, outer_back + arc_index, outer_back + nxt, outer_front + nxt),
+                (inner_front + arc_index, inner_front + nxt, inner_back + nxt, inner_back + arc_index),
+            ])
+        parts.append(add_prism(f"{prefix}_SegmentalPediment", verts, faces, mats["secondary"]))
+    else:
+        parts.append(add_box(f"{prefix}_Lintel", (opening_w + 0.46, trim_depth + 0.06, 0.18),
+                             (x, trim_y - 0.025, top_z + 0.12), mats["secondary"]))
+
+
+def add_heritage_quoins(parts: list, prefix: str, w: float, face_y: float, h: float, mats: dict) -> None:
+    course_h = 0.46
+    count = max(3, int(h / course_h))
+    for row in range(count):
+        z = (row + 0.5) * h / count
+        block_w = 0.54 if row % 2 == 0 else 0.42
+        for side, sign in (("L", -1), ("R", 1)):
+            parts.append(add_box(
+                f"{prefix}_{side}_{row:02d}", (block_w, 0.28, h / count - 0.035),
+                (sign * (w / 2 - block_w / 2 + 0.025), face_y - 0.09, z), mats["secondary"],
+            ))
+
+
+def build_heritage_podium(grammar: dict, mats: dict) -> bpy.types.Object:
+    dims, facade = grammar["dimensions"], grammar["facade"]
+    w, d, h = dims["width_m"], dims["depth_m"], dims["podium_height_m"]
+    face_y = -d / 2
+    parts: list = [
+        add_box("HeritagePodium_Core", (w, d, h), (0, 0, h / 2), mats["primary"]),
+        add_box("HeritagePodium_Plinth", (w + 0.24, d + 0.20, 0.52), (0, 0, 0.26), mats["secondary"]),
+    ]
+    # Rusticated horizontal courses remain modeled at the base where parallax
+    # matters most; the AI-derived normal map carries the finer ashlar joints.
+    for course in range(1, 8):
+        z = 0.52 + course * (h - 0.58) / 8
+        parts.append(add_box(f"Podium_Rustication_{course:02d}", (w + 0.08, 0.075, 0.055),
+                             (0, face_y - 0.035, z), mats["secondary"]))
+
+    bay_count = max(5, int(facade.get("front_bay_count", 8)))
+    bay = w / bay_count
+    for index in range(bay_count):
+        x = -w / 2 + bay * (index + 0.5)
+        if abs(x) < bay * 0.82:
+            continue
+        add_heritage_sash_front(
+            parts, f"Podium_Window_{index:02d}", x, face_y - 0.03, 2.08,
+            min(1.42, bay * 0.46), min(2.45, h * 0.55), mats,
+            pediment="segmental" if index in (1, bay_count - 2) else "lintel",
+            interior_seed=index, overlay=True,
+        )
+
+    # A three-layer portal, broad steps and paired lamps establish a legible
+    # address instead of the generic full-width storefront used by modern kits.
+    portal_w = min(4.4, w * 0.22)
+    spring_z = min(2.85, h * 0.60)
+    pier_w = 0.44
+    parts.extend([
+        add_box("GrandPortal_Shadow", (portal_w - 0.42, 0.08, spring_z + portal_w * 0.32),
+                (0, face_y - 0.03, (spring_z + portal_w * 0.32) / 2), mats["interior"]),
+        add_box("GrandPortal_DoorL", (portal_w * 0.34, 0.10, 2.55),
+                (-portal_w * 0.19, face_y - 0.16, 1.60), mats["accent"]),
+        add_box("GrandPortal_DoorR", (portal_w * 0.34, 0.10, 2.55),
+                (portal_w * 0.19, face_y - 0.16, 1.60), mats["accent"]),
+        add_box("GrandPortal_PierL", (pier_w, 0.52, spring_z),
+                (-(portal_w / 2 + pier_w / 2), face_y - 0.16, spring_z / 2), mats["secondary"]),
+        add_box("GrandPortal_PierR", (pier_w, 0.52, spring_z),
+                ((portal_w / 2 + pier_w / 2), face_y - 0.16, spring_z / 2), mats["secondary"]),
+    ])
+    parts.append(add_arch_ring("GrandPortal_Arch", 0, face_y - 0.16, spring_z, portal_w / 2,
+                               pier_w, 0.52, mats["secondary"], segments=24))
+    portico_y = face_y - 0.52
+    column_h = min(3.35, h * 0.72)
+    for column_index, x in enumerate((-portal_w * 0.62, portal_w * 0.62)):
+        parts.append(add_cylinder(f"GrandPortico_Column{column_index}", 0.23, column_h,
+                                  (x, portico_y, column_h / 2 + 0.28), mats["secondary"], 20))
+        parts.append(add_cylinder(f"GrandPortico_Base{column_index}", 0.32, 0.16,
+                                  (x, portico_y, 0.36), mats["secondary"], 20))
+        parts.append(add_cylinder(f"GrandPortico_Capital{column_index}", 0.34, 0.18,
+                                  (x, portico_y, column_h + 0.25), mats["secondary"], 20))
+    entablature_z = min(h - 0.72, column_h + 0.42)
+    pediment_half_w = portal_w * 0.82
+    parts.append(add_box("GrandPortico_Entablature", (pediment_half_w * 2 + 0.30, 0.82, 0.26),
+                         (0, portico_y, entablature_z), mats["secondary"]))
+    y0, y1 = portico_y - 0.43, portico_y + 0.43
+    pediment_verts = [
+        (-pediment_half_w, y0, entablature_z + 0.14), (pediment_half_w, y0, entablature_z + 0.14),
+        (0, y0, min(h + 0.58, entablature_z + 1.22)),
+        (-pediment_half_w, y1, entablature_z + 0.14), (pediment_half_w, y1, entablature_z + 0.14),
+        (0, y1, min(h + 0.58, entablature_z + 1.22)),
+    ]
+    parts.append(add_prism("GrandPortico_Pediment", pediment_verts,
+                           [(0, 1, 2), (3, 5, 4), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)],
+                           mats["secondary"]))
+    for step in range(3):
+        parts.append(add_box(f"GrandPortal_Step{step}", (portal_w + 1.2 - step * 0.28, 0.48, 0.16),
+                             (0, face_y - 0.55 - step * 0.35, 0.08 + step * 0.16), mats["concrete"]))
+    for lamp_index, sign in enumerate((-1, 1)):
+        parts.append(add_box(f"PortalLampStem{lamp_index}", (0.055, 0.08, 0.52),
+                             (sign * (portal_w / 2 + 0.78), face_y - 0.22, 2.15), mats["accent"]))
+        parts.append(add_box(f"PortalLampBox{lamp_index}", (0.22, 0.18, 0.34),
+                             (sign * (portal_w / 2 + 0.78), face_y - 0.24, 2.55), mats["interior_warm"]))
+
+    # Low stone balustrade integrates the building with its footprint and gives
+    # the base the same fine-grained silhouette density as the roof.
+    rail_y, rail_h = face_y - 0.48, 0.92
+    opening_half = portal_w * 0.86
+    left_span = w / 2 - opening_half
+    for rail_index, sign in enumerate((-1, 1)):
+        rail_x = sign * (opening_half + left_span / 2)
+        parts.append(add_box(f"Podium_BalustradeTop{rail_index}", (left_span, 0.20, 0.13),
+                             (rail_x, rail_y, rail_h), mats["secondary"]))
+        parts.append(add_box(f"Podium_BalustradeBase{rail_index}", (left_span, 0.24, 0.15),
+                             (rail_x, rail_y, 0.28), mats["secondary"]))
+        post_count = max(4, round(left_span / 1.05))
+        for post_index in range(post_count + 1):
+            x = sign * opening_half + sign * left_span * post_index / post_count
+            parts.append(add_box(f"Podium_Baluster{rail_index}_{post_index:02d}", (0.13, 0.16, 0.52),
+                                 (x, rail_y, 0.59), mats["secondary"]))
+
+    add_heritage_quoins(parts, "Podium_Quoin", w, face_y, h, mats)
+    for layer, (extra_w, depth, band_h, z) in enumerate((
+        (0.16, 0.28, 0.18, h - 0.47), (0.34, 0.38, 0.22, h - 0.24), (0.56, 0.48, 0.20, h - 0.06),
+    )):
+        parts.append(add_box(f"Podium_Cornice_{layer}", (w + extra_w, depth, band_h),
+                             (0, face_y - depth / 2 + 0.04, z), mats["secondary"]))
+
+    side_count, side_bay = _bays(d, facade["bay_width_m"])
+    add_window_row(parts, "HeritagePodium", w, "rear", d / 2, 0.5, min(1.4, bay * 0.46), 2.1, 0.55,
+                   bay_count, mats)
+    add_window_row(parts, "HeritagePodium", d, "left", w / 2, 0.5, min(1.35, side_bay * 0.46), 2.1, 0.55,
+                   side_count, mats)
+    add_window_row(parts, "HeritagePodium", d, "right", w / 2, 0.5, min(1.35, side_bay * 0.46), 2.1, 0.55,
+                   side_count, mats)
+    return join_as("MOD_Podium", parts)
+
+
 # ---------------------------------------------------------------------------
 # Module builders — each returns ONE joined object with base at z=0
 # ---------------------------------------------------------------------------
 
 def build_podium(grammar: dict, mats: dict) -> bpy.types.Object:
     dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    if facade.get("system") == "heritage_stone":
+        return build_heritage_podium(grammar, mats)
     w, d, h = dims["width_m"], dims["depth_m"], dims["podium_height_m"]
     retail = bool(massing.get("has_podium_retail"))
     parts: list = []
@@ -1108,6 +1334,164 @@ def _add_crown_v3(parts: list, system: str, w: float, d: float, h: float, facade
         parts.append(add_box("Crown_StoneDatum", (w + 0.2, 0.25, 0.24), (0, facade_y - 0.04, 0.18), mats["primary"]))
 
 
+def build_heritage_floor(
+    grammar: dict,
+    mats: dict,
+    variant_key: str,
+    interior_seed: int,
+) -> bpy.types.Object:
+    """Architecturally specific London stone body/crown module.
+
+    It retains the Lego stack contract, but each repeatable floor carries real
+    openings, deep sash assemblies, projecting pavilions, quoins, and a wrapped
+    string course. The crown swaps window ornament for a complete entablature.
+    """
+    dims, facade = grammar["dimensions"], grammar["facade"]
+    w, d = dims["width_m"], dims["depth_m"]
+    h = dims["floor_height_m"]
+    crown = variant_key == "crown"
+    upper = variant_key == "upper"
+    face_y = -d / 2
+    reveal_depth = max(0.32, float(facade.get("window_recess_m", 0.38)))
+    room_depth = 0.38
+    core_depth = max(0.5, d - reveal_depth - room_depth)
+    parts: list = [
+        add_box("HeritageFloor_Core", (w, core_depth, h),
+                (0, (reveal_depth + room_depth) / 2, h / 2), mats["primary"]),
+        add_box("HeritageFloor_Slab", (w + 0.12, d + 0.08, 0.16), (0, 0, 0.08), mats["secondary"]),
+    ]
+
+    bay_count = max(5, int(facade.get("front_bay_count", 8)))
+    bay = w / bay_count
+    opening_w = min(bay * 0.47, bay - 0.78)
+    opening_h = min(h * (0.58 if crown else 0.66), h - 0.72)
+    sill = 0.74 if crown else (0.62 if not upper else 0.72)
+    centre_z = sill + opening_h / 2
+    centre_indices = {bay_count // 2 - 1, bay_count // 2}
+
+    for index in range(bay_count):
+        x = -w / 2 + bay * (index + 0.5)
+        corner_pavilion = index in (0, bay_count - 1)
+        centre_pavilion = index in centre_indices
+        projection = 0.26 if centre_pavilion else (0.16 if corner_pavilion else 0.0)
+        local_face = face_y - projection
+        wall_depth = 0.24
+        left_edge = x - bay / 2
+        pier = max(0.24, (bay - opening_w) / 2)
+        panel_mat = mats["secondary"] if crown and index % 2 else mats["primary"]
+        parts.extend([
+            add_box(f"Heritage_{index:02d}_SillPanel", (bay + 0.01, wall_depth, sill),
+                    (x, local_face + wall_depth / 2, sill / 2), panel_mat),
+            add_box(f"Heritage_{index:02d}_HeadPanel", (bay + 0.01, wall_depth, h - sill - opening_h),
+                    (x, local_face + wall_depth / 2, sill + opening_h + (h - sill - opening_h) / 2), panel_mat),
+            add_box(f"Heritage_{index:02d}_PierL", (pier + 0.01, wall_depth, opening_h),
+                    (left_edge + pier / 2, local_face + wall_depth / 2, centre_z), panel_mat),
+            add_box(f"Heritage_{index:02d}_PierR", (pier + 0.01, wall_depth, opening_h),
+                    (left_edge + bay - pier / 2, local_face + wall_depth / 2, centre_z), panel_mat),
+        ])
+        # Stone-lined returns make the reveal physically legible around the
+        # glazing instead of relying on a dark decal.
+        return_y = local_face + reveal_depth * 0.62
+        return_d = reveal_depth * 0.72
+        parts.extend([
+            add_box(f"Heritage_{index:02d}_RevealL", (0.07, return_d, opening_h),
+                    (x - opening_w / 2, return_y, centre_z), mats["secondary"]),
+            add_box(f"Heritage_{index:02d}_RevealR", (0.07, return_d, opening_h),
+                    (x + opening_w / 2, return_y, centre_z), mats["secondary"]),
+            add_box(f"Heritage_{index:02d}_RevealHead", (opening_w, return_d, 0.07),
+                    (x, return_y, centre_z + opening_h / 2), mats["secondary"]),
+        ])
+        if centre_pavilion:
+            pediment = "triangle"
+        elif (index + interior_seed) % 3 == 0 and not crown:
+            pediment = "segmental"
+        else:
+            pediment = "lintel"
+        add_heritage_sash_front(
+            parts, f"Heritage_{index:02d}", x, local_face, centre_z, opening_w, opening_h, mats,
+            pediment=pediment, interior_seed=index * 3 + interior_seed,
+        )
+
+        # Pavilion pilasters extend the projection to the full storey and keep
+        # vertically stacked feature bays aligned when modules repeat.
+        if centre_pavilion or corner_pavilion:
+            pilaster_x = x + (-1 if index < bay_count / 2 else 1) * (bay / 2 - 0.12)
+            parts.append(add_box(f"Heritage_{index:02d}_Pilaster", (0.24, 0.34 + projection, h - 0.18),
+                                 (pilaster_x, local_face - 0.07, h / 2), mats["secondary"]))
+
+    add_heritage_quoins(parts, "HeritageFloor_Quoin", w, face_y, h, mats)
+
+    # Wrapped string courses keep the four-sided aerial silhouette coherent.
+    for band_index, (z, band_h, extra) in enumerate(((0.13, 0.16, 0.12), (h - 0.11, 0.18, 0.20))):
+        parts.extend([
+            add_box(f"HeritageBand{band_index}_Front", (w + extra, 0.24, band_h),
+                    (0, face_y - 0.08, z), mats["secondary"]),
+            add_box(f"HeritageBand{band_index}_Rear", (w + extra, 0.24, band_h),
+                    (0, d / 2 + 0.08, z), mats["secondary"]),
+            add_box(f"HeritageBand{band_index}_Left", (0.24, d, band_h),
+                    (-w / 2 - 0.08, 0, z), mats["secondary"]),
+            add_box(f"HeritageBand{band_index}_Right", (0.24, d, band_h),
+                    (w / 2 + 0.08, 0, z), mats["secondary"]),
+        ])
+
+    side_count, side_bay = _bays(d, facade["bay_width_m"])
+    add_window_row(parts, "HeritageFloor", w, "rear", d / 2, 0.0, opening_w * 0.88, opening_h * 0.92,
+                   sill, bay_count, mats, interior_seed=interior_seed)
+    add_window_row(parts, "HeritageFloor", d * 0.92, "left", w / 2, 0.0,
+                   min(side_bay * 0.46, opening_w), opening_h * 0.92, sill, side_count, mats,
+                   interior_seed=interior_seed)
+    add_window_row(parts, "HeritageFloor", d * 0.92, "right", w / 2, 0.0,
+                   min(side_bay * 0.46, opening_w), opening_h * 0.92, sill, side_count, mats,
+                   interior_seed=interior_seed + 2)
+    side_span = d * 0.92
+    side_window_w = min(side_bay * 0.46, opening_w)
+    side_window_h = opening_h * 0.92
+    side_z = sill + side_window_h / 2
+    for side_name, sign in (("Left", -1), ("Right", 1)):
+        trim_x = sign * (w / 2 + 0.13)
+        for index in range(side_count):
+            y = -side_span / 2 + side_span * (index + 0.5) / side_count
+            parts.extend([
+                add_box(f"HeritageSide{side_name}_{index:02d}_JambA", (0.20, 0.15, side_window_h + 0.34),
+                        (trim_x, y - side_window_w / 2 - 0.09, side_z + 0.02), mats["secondary"]),
+                add_box(f"HeritageSide{side_name}_{index:02d}_JambB", (0.20, 0.15, side_window_h + 0.34),
+                        (trim_x, y + side_window_w / 2 + 0.09, side_z + 0.02), mats["secondary"]),
+                add_box(f"HeritageSide{side_name}_{index:02d}_Head", (0.20, side_window_w + 0.42, 0.17),
+                        (trim_x, y, side_z + side_window_h / 2 + 0.12), mats["secondary"]),
+                add_box(f"HeritageSide{side_name}_{index:02d}_Sill", (0.22, side_window_w + 0.42, 0.12),
+                        (sign * (w / 2 + 0.15), y, side_z - side_window_h / 2 - 0.09), mats["secondary"]),
+            ])
+
+    if crown:
+        # Full classical entablature: three stepped bands, a row of dentils,
+        # modillion blocks, and an open balustrade silhouetted against the roof.
+        for layer, (extra_w, depth, band_h, z) in enumerate((
+            (0.22, 0.34, 0.18, h - 0.72), (0.40, 0.46, 0.24, h - 0.44),
+            (0.56, 0.58, 0.24, h - 0.13),
+        )):
+            parts.append(add_box(f"Crown_Entablature_{layer}", (w + extra_w, depth, band_h),
+                                 (0, face_y - depth / 2 + 0.06, z), mats["secondary"]))
+        dentil_count = max(12, bay_count * 4)
+        for index in range(dentil_count):
+            x = -w / 2 + w * (index + 0.5) / dentil_count
+            parts.append(add_box(f"Crown_Dentil_{index:02d}", (w / dentil_count * 0.52, 0.42, 0.18),
+                                 (x, face_y - 0.22, h - 0.82), mats["secondary"]))
+        for index in range(bay_count + 1):
+            x = -w / 2 + w * index / bay_count
+            parts.append(add_box(f"Crown_Modillion_{index:02d}", (0.28, 0.62, 0.20),
+                                 (x, face_y - 0.31, h - 0.58), mats["secondary"]))
+        rail_z = h - 0.01
+        parts.append(add_box("Crown_BalustradeRail", (w + 0.36, 0.19, 0.13),
+                             (0, face_y - 0.08, rail_z), mats["secondary"]))
+        for index in range(bay_count * 2 + 1):
+            x = -w / 2 + w * index / (bay_count * 2)
+            parts.append(add_box(f"Crown_Baluster_{index:02d}", (0.12, 0.16, 0.46),
+                                 (x, face_y - 0.08, h - 0.27), mats["secondary"]))
+
+    role_name = "Crown" if crown else "Upper" if upper else variant_key.title().replace("_", "")
+    return join_as(f"MOD_{role_name}", parts)
+
+
 def build_floor_v3(
     grammar: dict,
     mats: dict,
@@ -1115,6 +1499,8 @@ def build_floor_v3(
     interior_seed: int = 0,
 ) -> bpy.types.Object:
     """Build one graph-selected floor with a true front facade opening system."""
+    if grammar["facade"].get("system") == "heritage_stone":
+        return build_heritage_floor(grammar, mats, variant_key, interior_seed)
     dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
     openings, attachment_specs, bay_specs, variants = _graph_lookup(grammar)
     variant = variants.get(variant_key) or variants.get("typical_a") or {}
@@ -1303,7 +1689,162 @@ def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
     w, d, h = dims["width_m"], dims["depth_m"], dims["roof_height_m"]
     parts: list = []
 
-    if roof["type"] == "gabled":
+    if roof["type"] == "mansard":
+        slab_h = 0.18
+        skirt_h = max(2.6, h * 0.72)
+        inset = min(2.25, min(w, d) * 0.18)
+        ov = 0.28
+        parts.append(add_box("Mansard_CorniceDeck", (w + 0.72, d + 0.64, slab_h),
+                             (0, 0, slab_h / 2), mats["secondary"]))
+        bottom = [
+            (-w / 2 - ov, -d / 2 - ov, slab_h), (w / 2 + ov, -d / 2 - ov, slab_h),
+            (w / 2 + ov, d / 2 + ov, slab_h), (-w / 2 - ov, d / 2 + ov, slab_h),
+        ]
+        top = [
+            (-w / 2 + inset, -d / 2 + inset, skirt_h), (w / 2 - inset, -d / 2 + inset, skirt_h),
+            (w / 2 - inset, d / 2 - inset, skirt_h), (-w / 2 + inset, d / 2 - inset, skirt_h),
+        ]
+        parts.append(add_prism(
+            "Mansard_SlateSkirt", bottom + top,
+            [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7), (4, 5, 6, 7), (3, 2, 1, 0)],
+            mats["roof"],
+        ))
+        parts.append(add_box("Mansard_LeadTop", (w - inset * 2 + 0.18, d - inset * 2 + 0.18, 0.16),
+                             (0, 0, skirt_h + 0.08), mats["accent"]))
+        # Flashing bands are intentionally modeled: they catch highlights in
+        # aerial views where a normal map alone would disappear.
+        parts.append(add_box("Mansard_FrontFlashing", (w + 0.28, 0.16, 0.16),
+                             (0, -d / 2 - 0.18, slab_h + 0.08), mats["accent"]))
+        parts.append(add_box("Mansard_RearFlashing", (w + 0.28, 0.16, 0.16),
+                             (0, d / 2 + 0.18, slab_h + 0.08), mats["accent"]))
+
+        dormer_count = max(4, min(6, round(w / 4.8)))
+        dormer_w = min(1.48, w / dormer_count * 0.48)
+        dormer_h = min(1.75, skirt_h * 0.46)
+        dormer_z = slab_h + skirt_h * 0.51
+        for index in range(dormer_count):
+            x = -w / 2 + w * (index + 0.5) / dormer_count
+            body_d = 0.86
+            body_y = -d / 2 + 0.30
+            parts.append(add_box(f"DormerFront_{index:02d}_Body", (dormer_w + 0.34, body_d, dormer_h + 0.38),
+                                 (x, body_y, dormer_z), mats["secondary"]))
+            add_heritage_sash_front(
+                parts, f"DormerFront_{index:02d}", x, body_y - body_d / 2 - 0.02, dormer_z,
+                dormer_w, dormer_h, mats,
+                pediment="triangle" if index in (0, dormer_count // 2, dormer_count - 1) else "segmental",
+                interior_seed=index + 3, overlay=True,
+            )
+            # Rear dormers keep the asset credible in orbit views without
+            # duplicating the full carved front surround.
+            rear_y = d / 2 - 0.30
+            parts.append(add_box(f"DormerRear_{index:02d}_Body", (dormer_w + 0.28, body_d, dormer_h + 0.30),
+                                 (x, rear_y, dormer_z), mats["secondary"]))
+            parts.append(add_box(f"DormerRear_{index:02d}_Glass", (dormer_w, 0.05, dormer_h),
+                                 (x, rear_y + body_d / 2 + 0.03, dormer_z), mats["glass"]))
+            add_frame_bars(parts, f"DormerRear_{index:02d}_Frame", "rear",
+                           (x, rear_y + body_d / 2 + 0.06, dormer_z), dormer_w, dormer_h,
+                           0.09, mats["secondary"], profile=0.052, mullions="double")
+
+        side_dormer_count = max(2, min(4, round(d / 5)))
+        for side_name, sign in (("Left", -1), ("Right", 1)):
+            for index in range(side_dormer_count):
+                y = -d / 2 + d * (index + 0.5) / side_dormer_count
+                body_x = sign * (w / 2 - 0.30)
+                parts.append(add_box(f"Dormer{side_name}_{index:02d}_Body", (0.86, dormer_w + 0.22, dormer_h + 0.28),
+                                     (body_x, y, dormer_z), mats["secondary"]))
+                parts.append(add_box(f"Dormer{side_name}_{index:02d}_Glass", (0.05, dormer_w, dormer_h),
+                                     (sign * (w / 2 + 0.15), y, dormer_z), mats["glass"]))
+                add_frame_bars(parts, f"Dormer{side_name}_{index:02d}_Frame", "left" if sign < 0 else "right",
+                               (sign * (w / 2 + 0.19), y, dormer_z), dormer_w, dormer_h,
+                               0.09, mats["secondary"], profile=0.052, mullions="double")
+
+        # Four inhabited corner pavilions turn the roof into a composed skyline
+        # rather than rooftop equipment. They are deliberately taller than the
+        # dormer field and carry their own window and string-course hierarchy.
+        pavilion_w = min(4.1, w * 0.18)
+        pavilion_d = min(3.8, d * 0.24)
+        pavilion_base_z = skirt_h - 1.02
+        drum_h = 1.48
+        pavilion_positions = [
+            (sx * (w / 2 - pavilion_w * 0.62), sy * (d / 2 - pavilion_d * 0.62), sx, sy)
+            for sy in (-1, 1) for sx in (-1, 1)
+        ]
+        for pavilion_index, (px, py, sx, sy) in enumerate(pavilion_positions):
+            parts.append(add_box(f"RoofPavilion_{pavilion_index}_Drum", (pavilion_w, pavilion_d, drum_h),
+                                 (px, py, pavilion_base_z + drum_h / 2), mats["secondary"]))
+            for band_index, z in enumerate((pavilion_base_z + 0.18, pavilion_base_z + drum_h - 0.18)):
+                parts.append(add_box(f"RoofPavilion_{pavilion_index}_Band{band_index}",
+                                     (pavilion_w + 0.22, pavilion_d + 0.22, 0.16),
+                                     (px, py, z), mats["secondary"]))
+            if sy < 0:
+                add_heritage_sash_front(
+                    parts, f"RoofPavilion_{pavilion_index}_Front", px, py - pavilion_d / 2 - 0.015,
+                    pavilion_base_z + drum_h * 0.55, min(1.08, pavilion_w * 0.30), 0.96, mats,
+                    pediment="segmental", interior_seed=pavilion_index + 1, overlay=True,
+                )
+            side_x = px + sx * (pavilion_w / 2 + 0.025)
+            parts.append(add_box(f"RoofPavilion_{pavilion_index}_SideGlass", (0.05, 0.92, 0.88),
+                                 (side_x, py, pavilion_base_z + drum_h * 0.55), mats["glass"]))
+            add_frame_bars(parts, f"RoofPavilion_{pavilion_index}_SideFrame", "left" if sx < 0 else "right",
+                           (side_x + sx * 0.04, py, pavilion_base_z + drum_h * 0.55), 0.92, 0.88,
+                           0.09, mats["accent"], profile=0.052, mullions="single")
+
+            cap_z = pavilion_base_z + drum_h
+            cap_half_w, cap_half_d = pavilion_w * 0.58, pavilion_d * 0.58
+            apex = (px, py, h - 0.48)
+            verts = [
+                (px - cap_half_w, py - cap_half_d, cap_z), (px + cap_half_w, py - cap_half_d, cap_z),
+                (px + cap_half_w, py + cap_half_d, cap_z), (px - cap_half_w, py + cap_half_d, cap_z), apex,
+            ]
+            parts.append(add_prism(f"RoofPavilion_{pavilion_index}_Cap", verts,
+                                   [(0, 1, 4), (1, 2, 4), (2, 3, 4), (3, 0, 4), (3, 2, 1, 0)], mats["roof"]))
+            parts.append(add_cylinder(f"RoofPavilion_{pavilion_index}_Finial", 0.055, 0.34,
+                                      (px, py, h - 0.23), mats["accent"], 10))
+            parts.append(add_cylinder(f"RoofPavilion_{pavilion_index}_FinialBall", 0.11, 0.12,
+                                      (px, py, h - 0.03), mats["accent"], 12))
+
+        # A lit roof lantern provides a single asymmetric landmark moment like
+        # the cupola on the Kinnaird reference while remaining kit-generated.
+        lantern_x, lantern_y = -w * 0.12, d * 0.05
+        lantern_base_z = skirt_h + 0.12
+        parts.append(add_box("RoofLantern_Base", (2.35, 2.35, 0.26),
+                             (lantern_x, lantern_y, lantern_base_z), mats["secondary"]))
+        parts.append(add_box("RoofLantern_Glow", (1.48, 1.48, 0.78),
+                             (lantern_x, lantern_y, lantern_base_z + 0.63), mats["interior_warm"]))
+        for column_index, (dx, dy) in enumerate(((-0.88, -0.88), (0.88, -0.88), (0.88, 0.88), (-0.88, 0.88))):
+            parts.append(add_cylinder(f"RoofLantern_Column{column_index}", 0.13, 1.12,
+                                      (lantern_x + dx, lantern_y + dy, lantern_base_z + 0.70),
+                                      mats["secondary"], 16))
+        lantern_cap_z = lantern_base_z + 1.30
+        parts.append(add_box("RoofLantern_Cornice", (2.45, 2.45, 0.22),
+                             (lantern_x, lantern_y, lantern_cap_z), mats["secondary"]))
+        lantern_apex = (lantern_x, lantern_y, min(h - 0.18, lantern_cap_z + 1.05))
+        lantern_half = 1.34
+        lantern_verts = [
+            (lantern_x - lantern_half, lantern_y - lantern_half, lantern_cap_z + 0.11),
+            (lantern_x + lantern_half, lantern_y - lantern_half, lantern_cap_z + 0.11),
+            (lantern_x + lantern_half, lantern_y + lantern_half, lantern_cap_z + 0.11),
+            (lantern_x - lantern_half, lantern_y + lantern_half, lantern_cap_z + 0.11), lantern_apex,
+        ]
+        parts.append(add_prism("RoofLantern_Cap", lantern_verts,
+                               [(0, 1, 4), (1, 2, 4), (2, 3, 4), (3, 0, 4), (3, 2, 1, 0)], mats["roof"]))
+
+        chimney_positions = (
+            (-w * 0.32, -d * 0.18), (w * 0.32, -d * 0.18),
+            (-w * 0.34, d * 0.20), (w * 0.34, d * 0.20),
+        )
+        for index, (x, y) in enumerate(chimney_positions):
+            stack_z = min(skirt_h + 0.82, h - 1.70)
+            parts.append(add_box(f"Chimney_{index:02d}_Stack", (0.92, 0.62, 1.64),
+                                 (x, y, stack_z), mats["secondary"]))
+            parts.append(add_box(f"Chimney_{index:02d}_Crown", (1.08, 0.78, 0.18),
+                                 (x, y, stack_z + 0.88), mats["secondary"]))
+            for pot_index, pot_x in enumerate((-0.24, 0.24)):
+                parts.append(add_cylinder(f"Chimney_{index:02d}_Pot{pot_index}", 0.12, 0.58,
+                                          (x + pot_x, y, stack_z + 1.26), mats["accent"], 12))
+                parts.append(add_cylinder(f"Chimney_{index:02d}_PotCap{pot_index}", 0.16, 0.10,
+                                          (x + pot_x, y, stack_z + 1.58), mats["accent"], 12))
+    elif roof["type"] == "gabled":
         # Triangular prism, ridge running along X (parallel to the front facade)
         slab_h = 0.2
         parts.append(add_box("Roof_Base", (w + 0.4, d + 0.4, slab_h), (0, 0, slab_h / 2), mats["roof"]))

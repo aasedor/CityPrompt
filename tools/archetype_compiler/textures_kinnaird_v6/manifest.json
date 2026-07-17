@@ -1,0 +1,39 @@
+{
+  "profile": "kinnaird-quality-v6",
+  "created": "2026-07-16",
+  "generator": "GPT Image via Codex imagegen (built-in mode)",
+  "intent": "De-lit AI source images with deterministic local albedo, normal, and roughness derivation for the London heritage mansion-block pilot.",
+  "materials": {
+    "heritage_portland_stone": {
+      "source": "heritage_portland_stone/gpt-image-source.png",
+      "prompt": "Create one seamless, tileable square architectural material source image for a real-time PBR workflow. Subject: finely dressed warm off-white London Portland limestone ashlar, lightly weathered but well maintained, subtle pores, faint mineral speckling, restrained horizontal and vertical mortar joints forming large rectangular blocks, gentle tonal variation between blocks. Orthographic flat-on material scan, completely de-lit, neutral diffuse illumination, no directional shadows, no highlights, no perspective, no building facade, no windows, no objects, no text, no border. Photorealistic 4K-quality material scan, physically plausible, low contrast, suitable as albedo source for a premium heritage architectural visualization model. The image must tile seamlessly on all four edges.",
+      "coverage_m": [2, 2],
+      "derived": [
+        "heritage_portland_stone/albedo.jpg",
+        "heritage_portland_stone/normal.png",
+        "heritage_portland_stone/roughness.jpg"
+      ],
+      "seam_method": "cross_blend",
+      "seam_ratio_final": 2.407,
+      "target_roughness": 0.76
+    },
+    "welsh_slate": {
+      "source": "welsh_slate/gpt-image-source.png",
+      "prompt": "Create one seamless, tileable square architectural material source image for a real-time PBR workflow. Subject: premium natural Welsh slate roof covering in dark blue-grey, small rectangular slate tiles laid in precise overlapping horizontal courses, subtle chipped edges, natural cleft texture, restrained tonal variation from graphite to cool charcoal, clean and well maintained with only very slight mineral weathering. Orthographic flat-on material scan, completely de-lit, neutral diffuse illumination, no directional shadows, no highlights, no perspective, no roof silhouette, no dormers, no objects, no text, no border. Photorealistic 4K-quality material scan, physically plausible, low contrast, suitable as albedo source for a high-end London heritage architectural visualization model. The image must tile seamlessly on all four edges.",
+      "coverage_m": [2, 2],
+      "derived": [
+        "welsh_slate/albedo.jpg",
+        "welsh_slate/normal.png",
+        "welsh_slate/roughness.jpg"
+      ],
+      "seam_method": "cross_blend",
+      "seam_ratio_final": 1.505,
+      "target_roughness": 0.78
+    },
+    "interior_atlas": {
+      "runtime": "_shared/interior-atlas-gpt-v1.jpg",
+      "layout": [4, 2],
+      "notes": "Reused from the v5 GPT Image interior source; the heritage kit uses four atlas-backed room materials per module."
+    }
+  }
+}

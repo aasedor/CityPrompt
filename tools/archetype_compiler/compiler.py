@@ -92,9 +92,15 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("weathering steel", ("#8a4a2e", 0.7, 0.35), "corten_steel"),
     ("bronze anodized", ("#83563f", 0.42, 0.72), "copper"),
     ("bronze-anodized", ("#83563f", 0.42, 0.72), "copper"),
+    ("wrought-iron", ("#24282c", 0.46, 0.78), "black_metal"),
+    ("wrought iron", ("#24282c", 0.46, 0.78), "black_metal"),
+    ("dark iron", ("#24282c", 0.46, 0.78), "black_metal"),
     ("zinc", ("#8d939a", 0.45, 0.8), "zinc"),
     ("copper", ("#9a5b3c", 0.4, 0.85), "copper"),
     ("standing seam", ("#4c5257", 0.45, 0.75), "standing_seam"),
+    ("welsh slate", ("#3e4651", 0.78, 0.0), "welsh_slate"),
+    ("natural slate", ("#3e4651", 0.78, 0.0), "welsh_slate"),
+    ("slate", ("#3e4651", 0.78, 0.0), "welsh_slate"),
     ("metal panel", ("#5a5e63", 0.45, 0.7), "metal_panel"),
     ("aluminium", ("#9aa0a6", 0.4, 0.8), "metal_panel"),
     ("aluminum", ("#9aa0a6", 0.4, 0.8), "metal_panel"),
@@ -121,6 +127,7 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("render", ("#ddd9d0", 0.8, 0.0), "stucco"),
     ("plaster", ("#e0dcd3", 0.8, 0.0), "stucco"),
     ("stucco", ("#ddd5c6", 0.8, 0.0), "stucco"),
+    ("portland stone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
     ("limestone", ("#d5cbb8", 0.75, 0.0), "limestone"),
     ("sandstone", ("#c9b090", 0.78, 0.0), "sandstone"),
     ("granite", ("#8c8c8c", 0.6, 0.0), "granite"),
@@ -200,13 +207,15 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
     material_text = str(roof_detail.get("material") or "").lower()
     features_text = str(roof_detail.get("features") or "").lower()
 
-    # mansard/hipped are pitched silhouettes — gabled is the closest available form
-    if re.search(r"\bgable|pitched|asymmetric pitch|mansard|hipped", form_text) and "flat" not in form_text.split(" or ")[0]:
+    # Hipped roofs still use the closest supported pitched silhouette.
+    if "mansard" in form_text:
+        roof_type = "mansard"
+    elif re.search(r"\bgable|pitched|asymmetric pitch|hipped", form_text) and "flat" not in form_text.split(" or ")[0]:
         roof_type = "gabled"
     elif "mono-pitch" in form_text or "monopitch" in form_text or "shed roof" in form_text:
         # "flat or shallow mono-pitch" reads as flat-first; only pick mono when flat is absent
         roof_type = "mono_pitch" if "flat" not in form_text else "flat"
-    elif re.search(r"\bgable|pitched|mansard|hipped", form_text):
+    elif re.search(r"\bgable|pitched|hipped", form_text):
         roof_type = "gabled"
     else:
         roof_type = "flat"
@@ -218,7 +227,13 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
         f"roof: type={roof_type} green_roof={green} mechanical_screen={mech} "
         f"from roofDetail.form=\"{str(roof_detail.get('form'))[:60]}\""
     )
-    return Roof(type=roof_type, parapet=parapet, green_roof=green, mechanical_screen=mech or roof_type == "flat")
+    return Roof(
+        type=roof_type,
+        parapet=parapet,
+        green_roof=green,
+        mechanical_screen=mech or roof_type == "flat",
+        pitch_height_m=6.2 if roof_type == "mansard" else 2.4,
+    )
 
 
 def _derive_balconies(combined: str, development_type: str, facade_text: str, notes: list[str]) -> tuple[str, int]:
@@ -262,7 +277,20 @@ def _derive_facade_system(
     same rules can be reused by future archetypes with equivalent materials.
     """
     text = " ".join((combined, primary_text, secondary_text, ground_text)).lower()
-    if ("cross-laminated" in text or "mass timber" in text) and any(
+    heritage_tokens = (
+        "mansard", "rusticated", "ashlar", "sash window", "sash_windows",
+        "dentil", "modillion", "classical window", "heritage mansion",
+    )
+    if any(token in text for token in heritage_tokens) and any(
+        token in text for token in ("portland stone", "limestone", "stucco", "stone", "classical", "heritage")
+    ):
+        result = {
+            "system": "heritage_stone", "entrance_type": "arched", "balcony_guard": "metal",
+            "window_recess_m": 0.38, "panel_projection_m": 0.32,
+            "material_bay_frequency": 2, "feature_bay_frequency": 4, "planter_frequency": 0,
+            "window_width_ratio": 0.46, "window_height_ratio": 0.66,
+        }
+    elif ("cross-laminated" in text or "mass timber" in text) and any(
         token in text for token in ("curtain wall", "floor-to-ceiling", "glazing")
     ):
         result = {
@@ -318,7 +346,7 @@ def _build_facade_graph(facade: Facade, floors: int) -> FacadeGraph:
         sill_m=facade.sill_height_m,
         reveal_depth_m=facade.window_recess_m,
         frame_profile_id="slim" if facade.system in ("timber_grid", "punched_render") else "deep",
-        mullion_pattern="double" if facade.system == "timber_grid" else "single",
+        mullion_pattern="double" if facade.system in ("timber_grid", "heritage_stone") else "single",
     )
     balcony_door = OpeningSpec(
         id="balcony_door",
@@ -363,6 +391,10 @@ def _build_facade_graph(facade: Facade, floors: int) -> FacadeGraph:
             AttachmentSpec("entrance", "colonnade", "tripartite_colonnade", ["primary", "concrete"], "base"),
             AttachmentSpec("crown_feature", "screen", "corten_wrap", ["secondary"], "crown"),
         ],
+        "heritage_stone": [
+            AttachmentSpec("entrance", "arch", "grand_stone_portal", ["primary", "secondary", "accent"], "base"),
+            AttachmentSpec("crown_feature", "cornice", "dentilled_stone_cornice", ["primary", "secondary"], "crown"),
+        ],
         "regular": [
             AttachmentSpec("balcony", "balcony", "standard_balcony", ["concrete", "accent"], "bay"),
             AttachmentSpec("entrance", "canopy", "standard_canopy", ["accent"], "base"),
@@ -374,7 +406,13 @@ def _build_facade_graph(facade: Facade, floors: int) -> FacadeGraph:
     feature_attachment = "oriel" if facade.system == "brick_bays" else "balcony"
     bays = [
         BaySpec("standard", "standard_window", "primary"),
-        BaySpec("feature", "balcony_door", "primary", facade.panel_projection_m, [feature_attachment]),
+        BaySpec(
+            "feature",
+            "standard_window" if facade.system == "heritage_stone" else "balcony_door",
+            "primary",
+            facade.panel_projection_m,
+            [] if facade.system == "heritage_stone" else [feature_attachment],
+        ),
         BaySpec("material", "standard_window", "secondary", facade.panel_projection_m * 0.35),
         BaySpec("upper", "standard_window", "secondary" if facade.system in ("stone_frame", "timber_grid") else "primary"),
         BaySpec("crown", "standard_window", "secondary" if facade.system == "stone_frame" else "primary", 0.0, ["crown_feature"]),
@@ -415,7 +453,11 @@ def _build_facade_graph(facade: Facade, floors: int) -> FacadeGraph:
             FacadeZone("base", 0, 0, "primary", ["typical_a"]),
             FacadeZone("middle", 1, middle_end, "primary", ["typical_a", "typical_b"]),
             FacadeZone("upper", upper_level, upper_level, "primary", ["upper"], inset_m=0.8),
-            FacadeZone("crown", crown_level, crown_level, "secondary" if facade.system == "stone_frame" else "primary", ["crown"], inset_m=0.4),
+            FacadeZone(
+                "crown", crown_level, crown_level,
+                "secondary" if facade.system in ("stone_frame", "heritage_stone") else "primary",
+                ["crown"], inset_m=0.4,
+            ),
         ],
         sides={
             "front": typical_a,
