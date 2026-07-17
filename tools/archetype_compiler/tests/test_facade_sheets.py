@@ -19,6 +19,44 @@ def test_worldclass_registry_has_twenty_unique_real_archetypes():
     assert registry["generation_profile"]["geometry_detail"] == "city"
 
 
+def test_v8_signature_registry_covers_every_worldclass_family():
+    tool_dir = Path(__file__).parents[1]
+    registry = json.loads((tool_dir / "worldclass_v8_library.json").read_text(encoding="utf-8"))
+    signatures = json.loads(
+        (tool_dir / "architectural_signature_profiles.json").read_text(encoding="utf-8")
+    )["profiles"]
+    ids = {entry["archetype_id"] for entry in registry["entries"]}
+    assert len(ids) == 20
+    assert set(signatures) == ids
+    assert all(len(profile["kits"]) >= 4 for profile in signatures.values())
+    assert all(len(profile["identity"]) >= 80 for profile in signatures.values())
+
+
+def test_v8_cached_facade_sheets_have_four_role_bands():
+    root = Path(__file__).parents[1] / "facade_sheets_v8"
+    manifests = sorted(root.glob("*/manifest.json"))
+    assert len(manifests) == 20
+    for path in manifests:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        assert payload["schema"] == "facade-sheet@3"
+        assert set(payload["bands"]) == {"podium", "floor", "floor_alt", "crown"}
+
+
+def test_signature_injection_is_renderer_agnostic_dict_extension():
+    from signature_profiles import inject_signature
+
+    grammar = {"source": {"archetype_id": "nordic_timber_midrise"}}
+    result = inject_signature(grammar)
+    assert result is grammar
+    assert "timber_picture_frames" in result["architectural_signature"]["kits"]
+    assert "silvered-charred larch" in result["architectural_signature"]["identity"]
+
+    chateau = {"source": {"archetype_id": "chateauesque_grand_railway_hotel"},
+               "materials": {"roof": {"base_color": "#c9c2b4"}, "accent": {}}}
+    inject_signature(chateau)
+    assert chateau["materials"]["roof"]["base_color"] == "#34494a"
+
+
 def test_corner_archetype_compiles_corner_condition():
     from compiler import compile_archetype
     from test_compiler import payload_mixed_use_midrise
@@ -41,6 +79,7 @@ def test_facade_prompts_pin_texture_map_and_forbid_scene_completion():
         assert "orthographic" in lowered or "zero perspective" in lowered
         assert "no sky" in lowered
         assert "no people" in lowered
+        assert "identity" in lowered
 
 
 def test_horizontal_blend_wraps_without_vertical_tiling():

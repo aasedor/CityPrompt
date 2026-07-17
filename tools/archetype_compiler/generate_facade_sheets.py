@@ -51,7 +51,9 @@ PROMPT_TEMPLATES = (
     "Create a strict rectified orthographic front elevation; the flat wall surface "
     "fills 100 percent of the image. Bottom to top: one {podium_m:.1f} metre {ground}; "
     "exactly {floors} identical {floor_m:.1f} metre upper storeys; then a thin parapet. "
-    "Exactly {bays} equal structural bays across. Architectural identity: {look}. "
+    "Exactly {bays} structural bays across, but preserve intentional asymmetry and signature bays. "
+    "Architectural identity: {look}. NON-NEGOTIABLE identity cues: {identity}. "
+    "Material zoning: {material_zones}. Do not genericize, regularize away, or substitute these cues. "
     "Physically believable construction, precise window frames, deep reveals, lintels, "
     "sills, material joints and subtle weathering. A few windows may show softly lit, "
     "unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: "
@@ -60,14 +62,16 @@ PROMPT_TEMPLATES = (
     "Rectified edge-to-edge facade atlas for texturing a rectangular game building. "
     "Shift-lens straight-on elevation, zero perspective. At the bottom edge place one "
     "{podium_m:.1f} metre {ground}; above it exactly {floors} repeating {floor_m:.1f} "
-    "metre floors; slim coping at the top. {bays} equal bays wide. Style and construction: "
-    "{look}. Photoreal architectural materials, accurate joinery, windows, shadowed reveals, "
+    "metre floors; slim coping at the top. {bays} structural bays wide. Style and construction: "
+    "{look}. Required building-specific identity: {identity}. Material zoning: {material_zones}. "
+    "Retain distinctive feature bays and deliberate asymmetry. Photoreal architectural materials, accurate joinery, windows, shadowed reveals, "
     "sills and restrained age variation. Uniform diffuse overcast light. Texture surface "
     "only: no sky, no ground plane, no perspective, no massing setback, no people, no writing or scenery.",
     "Seamless architectural elevation texture, wall surface edge to edge, for a modular GLB. "
-    "Exactly {bays} repeated bays across. Vertical arrangement: {podium_m:.1f} metre {ground} "
+    "Exactly {bays} structural bays across. Vertical arrangement: {podium_m:.1f} metre {ground} "
     "at the bottom, then {floors} matching {floor_m:.1f} metre typical floors, then a narrow "
-    "roofline band. Visual brief: {look}. Professional archviz realism, buildable details, "
+    "roofline band. Visual brief: {look}. Required unique composition: {identity}. "
+    "Material zones: {material_zones}. Professional archviz realism, buildable details, "
     "fine window assemblies and natural material variation. Orthographic, evenly de-lit, "
     "no sky, no street, no perspective, no objects, no people and no text.",
 )
@@ -96,6 +100,13 @@ def facade_look_prose(grammar: dict) -> str:
     if details:
         sentence += "; " + "; ".join(details)
     return sentence[:650]
+
+
+def signature_prose(grammar: dict) -> tuple[str, str]:
+    signature = grammar.get("architectural_signature") or {}
+    identity = str(signature.get("identity") or "preserve the reference's distinctive composition and proportions")
+    material_zones = str(signature.get("material_zones") or "faithful archetype-specific material hierarchy")
+    return identity[:700], material_zones[:420]
 
 
 def band_layout(grammar: dict) -> dict:
@@ -131,9 +142,10 @@ def generate_elevation(client, prompt: str, reference: Image.Image | None) -> Im
     if reference is not None:
         contents.append(reference)
         prompt += (
-            " Use the attached catalogue image only as a style reference: match its architectural "
-            "language, proportions, materials, opening rhythm and colour palette, but output the "
-            "rectified texture map specified above."
+            " The attached catalogue image is a HARD DESIGN REFERENCE, not loose inspiration. "
+            "Match its silhouette logic, architectural language, bay proportions, material zones, "
+            "opening rhythm, signature asymmetry and colour palette. Preserve the cues that make it "
+            "recognizable while converting it into the rectified texture map specified above."
         )
     contents.append(prompt)
     response = client.models.generate_content(
@@ -295,6 +307,7 @@ def main() -> None:
     raw_path = out_dir / "elevation_raw.jpg"
     layout = band_layout(grammar)
     look = facade_look_prose(grammar)
+    identity, material_zones = signature_prose(grammar)
     prompt_used = "(cached raw)"
     print(f"[facade_sheets] family={family} look={look[:110]!r}")
 
@@ -327,6 +340,8 @@ def main() -> None:
                 floor_m=layout["floor_m"],
                 bays=SHEET_BAYS,
                 look=look,
+                identity=identity,
+                material_zones=material_zones,
             )
             try:
                 elevation = generate_elevation(client, prompt_used, reference)
@@ -357,28 +372,47 @@ def main() -> None:
     print(f"[facade_sheets] podium={podium_top:.3f}:{podium_bottom:.3f} ({podium_method})")
 
     floor_band = slice_band(elevation, floor_top, floor_bottom)
+    alt_top = floor_top - period
+    if alt_top < layout["parapet_f"] * 0.72:
+        alt_top = floor_top + period
+    alt_bottom = min(podium_top, alt_top + period)
+    if alt_bottom - alt_top < period * 0.72:
+        alt_top, alt_bottom = floor_top, floor_bottom
+    floor_alt_band = slice_band(elevation, alt_top, alt_bottom)
+    crown_bottom = min(podium_top, max(floor_bottom, layout["parapet_f"] + layout["floor_f"] * 1.08))
+    crown_band = slice_band(elevation, 0.0, crown_bottom)
     podium_band = slice_band(elevation, podium_top, podium_bottom)
     bands = {
         "floor": process_band("floor", floor_band, out_dir, 0.52),
+        "floor_alt": process_band("floor_alt", floor_alt_band, out_dir, 0.52),
+        "crown": process_band("crown", crown_band, out_dir, 0.50),
         "podium": process_band("podium", podium_band, out_dir, 0.40),
     }
     span_m = layout["floor_m"] * floor_band.width / max(1, floor_band.height)
     manifest = {
-        "schema": "facade-sheet@2",
+        "schema": "facade-sheet@3",
         "family": family,
         "archetype_id": (grammar.get("source") or {}).get("archetype_id"),
         "created_at": datetime.now(timezone.utc).isoformat(),
         "model": MODEL_ID,
         "prompt": prompt_used,
         "style_reference": (grammar.get("source") or {}).get("thumbnail_url"),
+        "architectural_signature": grammar.get("architectural_signature"),
         "span_m": round(span_m, 2),
         "requested_span_m": round(layout["requested_span_m"], 2),
         "sheet_bays": SHEET_BAYS,
         "bands": {
             "floor": {**bands["floor"], "height_m": layout["floor_m"]},
+            "floor_alt": {**bands["floor_alt"], "height_m": layout["floor_m"]},
+            "crown": {**bands["crown"], "height_m": layout["floor_m"]},
             "podium": {**bands["podium"], "height_m": layout["podium_m"]},
         },
-        "detection": {"floor": floor_method, "podium": podium_method},
+        "detection": {
+            "floor": floor_method,
+            "floor_alt": [round(alt_top, 4), round(alt_bottom, 4)],
+            "crown": [0.0, round(crown_bottom, 4)],
+            "podium": podium_method,
+        },
     }
     manifest_path = out_dir / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")

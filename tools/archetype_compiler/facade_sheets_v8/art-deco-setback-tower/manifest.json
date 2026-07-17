@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "art-deco-setback-tower",
+  "archetype_id": "art_deco_setback_tower",
+  "created_at": "2026-07-17T06:42:51.597256+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/art_deco_setback_tower/hero.png",
+  "architectural_signature": {
+    "identity": "Vertical Art Deco tower with a richly modelled entrance, uninterrupted piers, stepped setbacks, fluted spandrels and an illuminated geometric crown.",
+    "material_zones": "warm buff masonry; dark bronze; emerald and gold crown accents; shadowed spandrels",
+    "kits": [
+      "deco_portal",
+      "vertical_fins",
+      "stepped_crown",
+      "deco_spire"
+    ]
+  },
+  "span_m": 9.68,
+  "requested_span_m": 9.6,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        423
+      ],
+      "height_m": 4.0
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        423
+      ],
+      "height_m": 4.0
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        1039
+      ],
+      "height_m": 4.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        328
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-651px-0.31",
+    "floor_alt": [
+      0.1068,
+      0.3434
+    ],
+    "crown": [
+      0.0,
+      0.5799
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

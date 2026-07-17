@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "modern-glass-office-institutional",
+  "archetype_id": "modern_glass_office_institutional",
+  "created_at": "2026-07-17T06:43:10.256640+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/modern_glass_office_institutional/hero.png",
+  "architectural_signature": {
+    "identity": "High-performance glass institution with a double-height lobby, expressed curtain-wall mullions, vertical solar fins, transparent corners and rooftop pergola.",
+    "material_zones": "low-iron glass; charcoal aluminum; pale stone base; warm lobby soffit",
+    "kits": [
+      "double_height_lobby",
+      "curtainwall_fins",
+      "transparent_corners",
+      "roof_pergola"
+    ]
+  },
+  "span_m": 12.64,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        324
+      ],
+      "height_m": 4.0
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        324
+      ],
+      "height_m": 4.0
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        1104
+      ],
+      "height_m": 4.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        362
+      ],
+      "height_m": 5.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-498px-0.62",
+    "floor_alt": [
+      0.2544,
+      0.4353
+    ],
+    "crown": [
+      0.0,
+      0.6163
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

@@ -20,10 +20,11 @@ sys.path.insert(0, str(TOOL_DIR))
 
 from compiler import compile_archetype  # noqa: E402
 from generate_family import export_archetype  # noqa: E402
+from signature_profiles import inject_signature  # noqa: E402
 
 
 def log(message: str) -> None:
-    print(f"[worldclass_v7] {message}", flush=True)
+    print(f"[worldclass_library] {message}", flush=True)
 
 
 def run(command: list[str], log_path: Path) -> None:
@@ -56,6 +57,7 @@ def prepare_grammar(entry: dict, family_dir: Path) -> dict:
         width_m=entry.get("width_m"),
         depth_m=entry.get("depth_m"),
     ).to_dict()
+    inject_signature(grammar, entry["archetype_id"])
     (family_dir / "grammar.json").write_text(json.dumps(grammar, indent=2), encoding="utf-8")
     return grammar
 
@@ -116,9 +118,14 @@ def main() -> int:
         family_dir = output_root / archetype_id.replace("_", "-")
         log(f"[{index}/{len(entries)}] {archetype_id}")
         try:
-            grammar = prepare_grammar(entry, family_dir)
+            grammar_path = family_dir / "grammar.json"
+            if args.skip_models and grammar_path.exists():
+                grammar = json.loads(grammar_path.read_text(encoding="utf-8"))
+            else:
+                grammar = prepare_grammar(entry, family_dir)
             family = grammar["family_id"]
-            sheet_dir = TOOL_DIR / "facade_sheets" / family
+            sheet_root = REPO_ROOT / profile.get("facade_sheet_root", "tools/archetype_compiler/facade_sheets")
+            sheet_dir = sheet_root / family
             sheet_manifest = sheet_dir / "manifest.json"
             if not args.skip_facades:
                 facade_command = [
@@ -130,7 +137,7 @@ def main() -> int:
                 if args.force_facades:
                     facade_command.append("--force")
                 run(facade_command, family_dir / "logs" / "facade-sheet.log")
-            elif not sheet_manifest.exists():
+            elif not args.skip_models and not sheet_manifest.exists():
                 raise RuntimeError(f"--skip-facades but {sheet_manifest} does not exist")
 
             if not args.skip_models:

@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "parisian-midrise-block",
+  "archetype_id": "parisian_midrise_block",
+  "created_at": "2026-07-17T06:43:17.849724+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/parisian_mid_rise/hero.png",
+  "architectural_signature": {
+    "identity": "Haussmann boulevard block with a tall shopfront base, ordered French windows, two continuous iron balconies, deep cornice and slate mansard dormers.",
+    "material_zones": "warm limestone; black iron balconies; dark slate roof; restrained awnings at street level",
+    "kits": [
+      "shopfront_canopies",
+      "haussmann_balconies",
+      "deep_cornice",
+      "mansard_dormers"
+    ]
+  },
+  "span_m": 8.93,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 3.4
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 3.4
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        884
+      ],
+      "height_m": 3.4
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        515
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.18",
+    "floor_alt": [
+      0.0577,
+      0.2756
+    ],
+    "crown": [
+      0.0,
+      0.4936
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

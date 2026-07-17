@@ -28,7 +28,7 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.9.0"
+GENERATOR_VERSION = "0.10.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
@@ -309,7 +309,10 @@ def make_facade_sheet_material(
         if emission:
             links.new(emissive_node.outputs["Color"], emission)
         if bsdf.inputs.get("Emission Strength"):
-            bsdf.inputs["Emission Strength"].default_value = 0.32
+            # The mask is intentionally only a dusk hint. Gemini elevations
+            # contain naturally warm timber/stone pixels that can otherwise
+            # be mistaken for lit glass and wash the whole facade pale.
+            bsdf.inputs["Emission Strength"].default_value = 0.035
 
     mat.diffuse_color = (0.46, 0.46, 0.46, 1.0)
     mat["facade_sheet"] = True
@@ -380,13 +383,25 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
             "base_color": "#6e4e2e", "roughness": 0.82, "metallic": 0.0,
             "emission_color": "#b77c3f", "emission_strength": 0.08,
         }),
+        "signature_warm": make_material("MAT_Signature_WarmTimber", {
+            "base_color": "#9b5f32", "roughness": 0.58, "metallic": 0.0,
+        }),
+        "signature_dark": make_material("MAT_Signature_CharredLarch", {
+            "base_color": "#252525", "roughness": 0.72, "metallic": 0.0,
+        }),
+        "signature_stone": make_material("MAT_Signature_CutStone", {
+            "base_color": "#8c8980", "roughness": 0.82, "metallic": 0.0,
+        }),
+        "signature_metal": make_material("MAT_Signature_BlackMetal", {
+            "base_color": "#17191b", "roughness": 0.34, "metallic": 0.72,
+        }),
     }
     room_count = 4 if grammar.get("facade", {}).get("system") == "heritage_stone" else 8
     result["interior_cells"] = [make_interior_atlas_material(index) for index in range(room_count)]
     if FACADE_SHEET:
         root = FACADE_SHEET["dir"]
         for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():
-            if role not in ("floor", "podium"):
+            if role not in ("floor", "floor_alt", "crown", "podium"):
                 continue
             result[f"sheet_{role}"] = make_facade_sheet_material(
                 f"MAT_Sheet_{role.capitalize()}",
@@ -1882,6 +1897,356 @@ def _add_economy_window_row(
         parts.append(add_box(f"{prefix}_{axis}_Glass_{index:02d}", glass_size, glass_location, mats["glass"]))
 
 
+def _signature_kits(grammar: dict) -> set[str]:
+    return set((grammar.get("architectural_signature") or {}).get("kits") or [])
+
+
+def _add_front_rail(parts: list, prefix: str, x: float, width: float, front_y: float,
+                    z0: float, height: float, mats: dict) -> None:
+    """Fine metal guard with real gaps; used by several regional kits."""
+    metal = mats["signature_metal"]
+    parts.append(add_box(f"{prefix}_Top", (width, 0.045, 0.045), (x, front_y, z0 + height), metal))
+    parts.append(add_box(f"{prefix}_Bottom", (width, 0.04, 0.035), (x, front_y, z0 + 0.12), metal))
+    count = max(3, int(width / 0.24))
+    for index in range(count + 1):
+        px = x - width / 2 + width * index / count
+        parts.append(add_box(f"{prefix}_Picket{index:02d}", (0.026, 0.04, height - 0.1),
+                             (px, front_y, z0 + height / 2 + 0.05), metal))
+
+
+def _add_signature_podium_details(grammar: dict, parts: list, width: float, depth: float,
+                                  height: float, mats: dict) -> None:
+    kits = _signature_kits(grammar)
+    if not kits:
+        return
+    front_y = -depth / 2
+    warm, stone, metal = mats["signature_warm"], mats["signature_stone"], mats["signature_metal"]
+
+    if kits & {"stone_base", "rusticated_base"}:
+        course_h = min(0.46, height / 7)
+        for row in range(max(3, int(height / course_h))):
+            z = min(height - 0.12, course_h * (row + 0.5))
+            parts.append(add_box(f"Signature_StoneCourse{row:02d}", (width + 0.08, 0.075, 0.045),
+                                 (0, front_y - 0.07, z), stone))
+
+    if kits & {"ceremonial_steps", "rowhouse_stoops", "layered_threshold"}:
+        groups = 3 if "rowhouse_stoops" in kits else 1
+        group_w = width / groups
+        for group in range(groups):
+            x = -width / 2 + group_w * (group + 0.5)
+            stair_w = group_w * (0.56 if groups > 1 else 0.48)
+            for step in range(3):
+                step_h = 0.14 * (step + 1)
+                step_d = 0.42 + (2 - step) * 0.28
+                parts.append(add_box(f"Signature_Step{group}_{step}", (stair_w + step * 0.12, step_d, step_h),
+                                     (x, front_y - step_d / 2, step_h / 2), stone))
+            if groups > 1:
+                for sx in (-1, 1):
+                    parts.append(add_box(f"Signature_StoopRail{group}_{sx}", (0.045, 0.74, 0.74),
+                                         (x + sx * stair_w * 0.48, front_y - 0.37, 0.62), metal))
+
+    if kits & {"giant_portico", "pilotis"}:
+        span = width * (0.48 if "giant_portico" in kits else 0.72)
+        count = max(4, min(8, round(span / 3.0)))
+        radius = min(0.36, width / 80 + 0.16)
+        column_h = height * 0.92
+        for index in range(count):
+            x = -span / 2 + span * index / max(1, count - 1)
+            y = front_y - (0.88 if "giant_portico" in kits else 0.38)
+            parts.append(add_cylinder(f"Signature_PorticoColumn{index:02d}", radius, column_h,
+                                      (x, y, column_h / 2), stone if "giant_portico" in kits else mats["concrete"], 20))
+            parts.append(add_box(f"Signature_PorticoCapital{index:02d}", (radius * 2.8, radius * 2.8, 0.16),
+                                 (x, y, column_h - 0.08), stone))
+        if "giant_portico" in kits:
+            parts.append(add_box("Signature_PorticoEntablature", (span + 1.25, 1.36, 0.34),
+                                 (0, front_y - 0.78, height - 0.28), stone))
+
+    if kits & {"ground_arcade", "romanesque_arcade"}:
+        count = max(3, min(8, round(width / 4.4)))
+        bay = width / count
+        radius = min(bay * 0.34, height * 0.28)
+        spring = height * (0.48 if "ground_arcade" in kits else 0.42)
+        for index in range(count):
+            x = -width / 2 + bay * (index + 0.5)
+            parts.append(add_arch_ring(f"Signature_Arcade{index:02d}", x, front_y - 0.10,
+                                       spring, radius, min(0.26, radius * 0.26), 0.18, stone, 18))
+            for sx in (-1, 1):
+                parts.append(add_box(f"Signature_ArcadePier{index:02d}_{sx}",
+                                     (0.22, 0.20, spring),
+                                     (x + sx * (radius + 0.11), front_y - 0.10, spring / 2), stone))
+
+    if kits & {"cast_iron_storefront", "machiya_shopfront", "double_height_lobby"}:
+        span = width * (0.82 if "double_height_lobby" in kits else 0.72)
+        z0, z1 = 0.35, height * 0.84
+        parts.append(add_box("Signature_StorefrontHeader", (span, 0.16, 0.16),
+                             (0, front_y - 0.12, z1), metal))
+        mullions = max(4, min(12, round(span / 1.45)))
+        for index in range(mullions + 1):
+            x = -span / 2 + span * index / mullions
+            mat = warm if "machiya_shopfront" in kits else metal
+            parts.append(add_box(f"Signature_StorefrontMullion{index:02d}", (0.07, 0.14, z1 - z0),
+                                 (x, front_y - 0.12, (z0 + z1) / 2), mat))
+
+    if kits & {"shopfront_canopies", "loading_canopy", "cantilever_canopy", "porte_cochere"}:
+        if "porte_cochere" in kits:
+            canopy_w, canopy_d = min(width * 0.34, 18.0), 2.35
+        elif "cantilever_canopy" in kits:
+            canopy_w, canopy_d = width * 0.66, 1.8
+        else:
+            canopy_w, canopy_d = width * 0.52, 1.25
+        canopy_z = min(height - 0.45, 3.15)
+        parts.append(add_box("Signature_Canopy", (canopy_w, canopy_d, 0.16),
+                             (0, front_y - canopy_d / 2, canopy_z), warm if "porte_cochere" in kits else metal))
+        if "porte_cochere" in kits:
+            for x in (-canopy_w * 0.44, canopy_w * 0.44):
+                parts.append(add_cylinder(f"Signature_PorteCochereColumn{x}", 0.22, canopy_z,
+                                          (x, front_y - canopy_d * 0.82, canopy_z / 2), stone, 16))
+
+    if kits & {"pointed_portal", "deco_portal", "carved_portal"}:
+        portal_w = min(4.2, width * 0.18)
+        portal_h = min(height * 0.86, 4.4)
+        parts.append(add_box("Signature_PortalLeft", (0.34, 0.30, portal_h),
+                             (-portal_w / 2, front_y - 0.16, portal_h / 2), stone))
+        parts.append(add_box("Signature_PortalRight", (0.34, 0.30, portal_h),
+                             (portal_w / 2, front_y - 0.16, portal_h / 2), stone))
+        if "pointed_portal" in kits:
+            apex = min(height - 0.08, portal_h + 0.92)
+            verts = [(-portal_w / 2 - 0.17, front_y - 0.31, portal_h - 0.2),
+                     (portal_w / 2 + 0.17, front_y - 0.31, portal_h - 0.2),
+                     (0, front_y - 0.31, apex),
+                     (-portal_w / 2 - 0.17, front_y - 0.01, portal_h - 0.2),
+                     (portal_w / 2 + 0.17, front_y - 0.01, portal_h - 0.2),
+                     (0, front_y - 0.01, apex)]
+            parts.append(add_prism("Signature_PointedPortal", verts,
+                                   [(0, 1, 2), (5, 4, 3), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)], stone))
+        else:
+            parts.append(add_box("Signature_PortalHead", (portal_w + 0.68, 0.30, 0.42),
+                                 (0, front_y - 0.16, portal_h - 0.2), stone))
+
+    if kits & {"brick_pilasters", "heavy_masonry_piers", "rowhouse_divisions"}:
+        count = max(3, min(12, round(width / 4.5)))
+        for index in range(count + 1):
+            x = -width / 2 + width * index / count
+            pier_w = 0.34 if "heavy_masonry_piers" not in kits else 0.56
+            parts.append(add_box(f"Signature_BasePier{index:02d}", (pier_w, 0.24, height * 0.96),
+                                 (x, front_y - 0.13, height * 0.48), stone if "heavy_masonry_piers" in kits else mats["secondary"]))
+
+    if kits & {"sign_frieze"}:
+        parts.append(add_box("Signature_SignFrieze", (width * 0.82, 0.18, 0.62),
+                             (0, front_y - 0.12, height * 0.77), mats["secondary"]))
+
+
+def _add_signature_floor_details(grammar: dict, parts: list, width: float, depth: float,
+                                 height: float, facade_y: float, variant_key: str,
+                                 mats: dict, sheet_material=None) -> None:
+    kits = _signature_kits(grammar)
+    if not kits:
+        return
+    warm, stone, metal = mats["signature_warm"], mats["signature_stone"], mats["signature_metal"]
+    typical_b = variant_key == "typical_b"
+    crown = variant_key == "crown"
+
+    if kits & {"centre_pavilion", "concrete_frame", "gothic_tower"}:
+        pavilion_w = width * (0.24 if "gothic_tower" in kits else 0.30 if "centre_pavilion" in kits else 0.74)
+        frame_mat = stone if kits & {"centre_pavilion", "gothic_tower"} else mats["concrete"]
+        pier_w = min(0.58, pavilion_w * 0.08)
+        projection = 0.42 if "gothic_tower" in kits else 0.30
+        if sheet_material is not None and kits & {"centre_pavilion", "gothic_tower"}:
+            parts.append(add_box("Signature_CentrePavilionField", (pavilion_w, projection + 0.12, height * 0.94),
+                                 (0, facade_y - (projection + 0.12) / 2, height * 0.50), sheet_material))
+        parts.append(add_box("Signature_CentrePavilionLeft", (pier_w, projection, height * 0.94),
+                             (-pavilion_w / 2, facade_y - projection / 2, height * 0.50), frame_mat))
+        parts.append(add_box("Signature_CentrePavilionRight", (pier_w, projection, height * 0.94),
+                             (pavilion_w / 2, facade_y - projection / 2, height * 0.50), frame_mat))
+        parts.append(add_box("Signature_CentrePavilionHead", (pavilion_w + pier_w, projection, 0.20),
+                             (0, facade_y - projection / 2, height - 0.14), frame_mat))
+        parts.append(add_box("Signature_CentrePavilionSill", (pavilion_w + pier_w, projection, 0.16),
+                             (0, facade_y - projection / 2, 0.12), frame_mat))
+
+    if kits & {"timber_picture_frames", "recessed_balcony_columns"}:
+        centres = (-width * 0.27, width * 0.27) if width > 13 else (width * 0.22,)
+        frame_w = min(3.25, width * 0.22)
+        projection = facade_y - 0.29
+        for index, x in enumerate(centres):
+            parts.append(add_box(f"Signature_TimberFrame{index}_L", (0.18, 0.34, height * 0.92),
+                                 (x - frame_w / 2, projection, height * 0.50), warm))
+            parts.append(add_box(f"Signature_TimberFrame{index}_R", (0.18, 0.34, height * 0.92),
+                                 (x + frame_w / 2, projection, height * 0.50), warm))
+            parts.append(add_box(f"Signature_TimberFrame{index}_Head", (frame_w + 0.18, 0.34, 0.18),
+                                 (x, projection, height - 0.16), warm))
+            parts.append(add_box(f"Signature_TimberFrame{index}_Sill", (frame_w + 0.18, 0.34, 0.16),
+                                 (x, projection, 0.14), warm))
+            if "recessed_balcony_columns" in kits and not crown:
+                slab_y = facade_y - 0.42
+                parts.append(add_box(f"Signature_LoggiaSlab{index}", (frame_w - 0.22, 0.82, 0.12),
+                                     (x, slab_y, 0.08), warm))
+                _add_front_rail(parts, f"Signature_LoggiaRail{index}", x, frame_w - 0.36,
+                                facade_y - 0.86, 0.12, min(1.02, height * 0.34), mats)
+
+    if kits & {"haussmann_balconies", "continuous_balcony", "eixample_balconies"}:
+        should_add = typical_b or "eixample_balconies" in kits or crown
+        if should_add:
+            balcony_w = width * (0.92 if "eixample_balconies" not in kits else 0.86)
+            slab_y = facade_y - 0.46
+            parts.append(add_box("Signature_ContinuousBalconySlab", (balcony_w, 0.78, 0.12),
+                                 (0, slab_y, 0.09), stone))
+            _add_front_rail(parts, "Signature_ContinuousBalconyRail", 0, balcony_w,
+                            facade_y - 0.88, 0.13, min(1.0, height * 0.34), mats)
+
+    if kits & {"oriel_bays"} and not crown:
+        for index, x in enumerate((-width * 0.27, width * 0.27)):
+            ow = min(2.7, width * 0.18)
+            parts.append(add_box(f"Signature_Oriel{index}", (ow, 0.52, height * 0.80),
+                                 (x, facade_y - 0.27, height * 0.52), mats["secondary"]))
+            parts.append(add_box(f"Signature_OrielGlass{index}", (ow * 0.72, 0.05, height * 0.56),
+                                 (x, facade_y - 0.55, height * 0.54), mats["glass"]))
+
+    if kits & {"brick_pilasters", "heavy_masonry_piers", "giant_pilasters", "buttresses", "vertical_fins"}:
+        if "vertical_fins" in kits:
+            count, pier_w, projection = max(6, min(18, round(width / 2.2))), 0.16, 0.52
+        else:
+            count = max(4, min(14, round(width / 4.2)))
+            pier_w = 0.56 if kits & {"heavy_masonry_piers", "buttresses"} else 0.30
+            projection = 0.32 if "buttresses" not in kits else 0.58
+        for index in range(count + 1):
+            x = -width / 2 + width * index / count
+            parts.append(add_box(f"Signature_VerticalPier{index:02d}", (pier_w, projection, height * 0.96),
+                                 (x, facade_y - projection / 2, height * 0.50),
+                                 metal if "vertical_fins" in kits else stone))
+
+    if kits & {"brise_soleil", "curtainwall_fins", "timber_lattice"}:
+        count = max(8, min(28, round(width / (0.72 if "timber_lattice" in kits else 1.25))))
+        fin_depth = 0.48 if "brise_soleil" in kits else 0.30
+        fin_mat = warm if "timber_lattice" in kits else metal
+        for index in range(count + 1):
+            x = -width / 2 + width * index / count
+            parts.append(add_box(f"Signature_ScreenFin{index:02d}", (0.07, fin_depth, height * 0.84),
+                                 (x, facade_y - fin_depth / 2 - 0.04, height * 0.52), fin_mat))
+        if "brise_soleil" in kits:
+            for z in (height * 0.28, height * 0.55, height * 0.82):
+                parts.append(add_box(f"Signature_BriseHorizontal{z}", (width * 0.94, fin_depth, 0.08),
+                                     (0, facade_y - fin_depth / 2, z), mats["concrete"]))
+
+    if kits & {"industrial_steel_bays", "upper_loggias"}:
+        count = max(3, min(10, round(width / 4.4)))
+        bay = width / count
+        for index in range(count):
+            x = -width / 2 + bay * (index + 0.5)
+            frame_w = bay * 0.76
+            add_frame_bars(parts, f"Signature_IndustrialBay{index:02d}", "front",
+                           (x, facade_y - 0.16, height * 0.52), frame_w, height * 0.68,
+                           0.18, metal if "industrial_steel_bays" in kits else stone,
+                           profile=0.10, mullions="double")
+
+    if kits & {"steel_bracing"} and typical_b:
+        span = width * 0.72
+        length = math.sqrt(span * span + (height * 0.72) ** 2)
+        angle = math.atan2(height * 0.72, span)
+        for sign in (-1, 1):
+            brace = add_box(f"Signature_SteelBrace{sign}", (length, 0.13, 0.10),
+                            (0, facade_y - 0.24, height * 0.51), metal)
+            brace.rotation_euler.y = sign * angle
+            parts.append(brace)
+
+    if kits & {"romanesque_arcade"} and not crown:
+        count = max(3, min(8, round(width / 4.8)))
+        bay = width / count
+        radius = min(bay * 0.29, height * 0.30)
+        for index in range(count):
+            x = -width / 2 + bay * (index + 0.5)
+            parts.append(add_arch_ring(f"Signature_FloorArch{index:02d}", x, facade_y - 0.15,
+                                       height * 0.52, radius, 0.20, 0.20, stone, 16))
+
+    if kits & {"corner_rotunda", "transparent_corners"}:
+        radius = min(0.58, width * 0.035)
+        x = -width / 2 + radius
+        parts.append(add_cylinder("Signature_CornerRotunda", radius, height * 0.92,
+                                  (x, facade_y - radius * 0.30, height * 0.50),
+                                  mats["glass"] if "transparent_corners" in kits else stone, 24))
+
+    if kits & {"asymmetric_bays"}:
+        x = width * 0.34
+        parts.append(add_box("Signature_AsymmetricBlade", (0.32, 0.52, height * 0.88),
+                             (x, facade_y - 0.27, height * 0.50), warm))
+
+
+def _add_signature_roof_details(grammar: dict, parts: list, width: float, depth: float,
+                                height: float, mats: dict) -> None:
+    kits = _signature_kits(grammar)
+    if not kits:
+        return
+    warm, stone, metal = mats["signature_warm"], mats["signature_stone"], mats["signature_metal"]
+    base_z = min(0.34, height * 0.28)
+
+    if kits & {"roof_guard"}:
+        rail_z = min(height - 0.08, 0.92)
+        _add_front_rail(parts, "Signature_RoofGuard", 0, width * 0.94,
+                        -depth / 2 - 0.04, base_z, max(0.18, rail_z - base_z), mats)
+
+    if kits & {"roof_monitor"}:
+        monitor_h = min(height * 0.72, 1.55)
+        parts.append(add_box("Signature_RoofMonitor", (width * 0.34, depth * 0.24, monitor_h),
+                             (0, 0, monitor_h / 2), metal))
+        parts.append(add_box("Signature_RoofMonitorGlass", (width * 0.28, 0.05, monitor_h * 0.52),
+                             (0, -depth * 0.12 - 0.03, monitor_h * 0.52), mats["glass"]))
+
+    if kits & {"roof_pergola"}:
+        top_z = min(height - 0.06, 1.12)
+        span = width * 0.48
+        for x in (-span / 2, span / 2):
+            parts.append(add_box(f"Signature_PergolaColumn{x}", (0.13, 0.13, top_z),
+                                 (x, 0, top_z / 2), metal))
+        for index in range(7):
+            x = -span / 2 + span * index / 6
+            parts.append(add_box(f"Signature_PergolaBeam{index}", (0.10, depth * 0.34, 0.10),
+                                 (x, 0, top_z), metal))
+
+    if kits & {"crenellated_crown"}:
+        block_h = min(0.52, height * 0.44)
+        count = max(5, min(18, round(width / 2.7)))
+        for index in range(count):
+            if index % 2:
+                continue
+            x = -width / 2 + width * (index + 0.5) / count
+            parts.append(add_box(f"Signature_Crenel{index:02d}", (width / count * 0.82, 0.42, block_h),
+                                 (x, -depth / 2 + 0.21, block_h / 2), stone))
+
+    if kits & {"stepped_crown", "deco_spire"}:
+        remaining = max(0.24, height - 0.18)
+        stages = ((0.40, 0.48), (0.25, 0.30), (0.12, 0.16))
+        z = 0.10
+        for index, (scale, frac) in enumerate(stages):
+            stage_h = remaining * frac
+            if z + stage_h > height:
+                stage_h = max(0.08, height - z)
+            parts.append(add_box(f"Signature_DecoCrown{index}", (width * scale, depth * scale, stage_h),
+                                 (0, 0, z + stage_h / 2), stone if index < 2 else warm))
+            z += stage_h
+        if "deco_spire" in kits and z < height - 0.06:
+            parts.append(add_cylinder("Signature_DecoSpire", 0.12, height - z,
+                                      (0, 0, (z + height) / 2), metal, 12))
+
+    if kits & {"deep_eaves", "tile_eaves", "slim_eaves", "deep_cornice", "civic_cornice", "pressed_metal_cornice", "bracketed_cornice", "corbelled_cornice"}:
+        mat = warm if kits & {"deep_eaves", "tile_eaves"} else stone
+        parts.append(add_box("Signature_RoofEdge", (width + 0.56, depth + 0.48, min(0.22, height * 0.18)),
+                             (0, 0, min(height - 0.11, 0.24)), mat))
+
+    if kits & {"corner_turret"}:
+        turret_h = min(height * 0.94, 3.8)
+        radius = min(2.4, width * 0.055)
+        for index, x in enumerate((-width / 2 + radius * 0.82, width / 2 - radius * 0.82)):
+            parts.append(add_cylinder(f"Signature_RoofTurret{index}", radius, turret_h * 0.46,
+                                      (x, -depth / 2 + radius * 0.82, turret_h * 0.23), stone, 20))
+            cap_z = turret_h * 0.46
+            verts = [(x - radius * 1.1, -depth / 2 - radius * 0.20, cap_z),
+                     (x + radius * 1.1, -depth / 2 - radius * 0.20, cap_z),
+                     (x + radius * 1.1, -depth / 2 + radius * 1.72, cap_z),
+                     (x - radius * 1.1, -depth / 2 + radius * 1.72, cap_z),
+                     (x, -depth / 2 + radius * 0.76, turret_h)]
+            parts.append(add_prism(f"Signature_RoofTurretCap{index}", verts,
+                                   [(0, 1, 4), (1, 2, 4), (2, 3, 4), (3, 0, 4), (3, 2, 1, 0)], mats["roof"]))
+
+
 def build_facade_sheet_podium(grammar: dict, mats: dict) -> bpy.types.Object:
     """Hybrid podium: photo elevation in front, conventional PBR construction elsewhere."""
     dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
@@ -1930,6 +2295,7 @@ def build_facade_sheet_podium(grammar: dict, mats: dict) -> bpy.types.Object:
         add_window_row(parts, "SheetPodium", depth * 0.9, "right", width / 2, 0.0,
                        bay_width * 0.52, window_height, sill, side_count, mats)
     # City-profile side/rear detail is carried by the wrapped atlas skins.
+    _add_signature_podium_details(grammar, parts, width, depth, height, mats)
     module = join_as("MOD_Podium", parts)
     apply_facade_sheet_uv(module, FACADE_SHEET["manifest"]["span_m"], height)
     return module
@@ -1962,25 +2328,31 @@ def build_facade_sheet_floor(
     facade_y = centre_y - depth / 2
     system = facade.get("system", "regular")
     shell_material = mats["secondary"] if setback else mats["primary"]
+    if crown and "sheet_crown" in mats:
+        sheet_material = mats["sheet_crown"]
+    elif variant_key == "typical_b" and "sheet_floor_alt" in mats:
+        sheet_material = mats["sheet_floor_alt"]
+    else:
+        sheet_material = mats["sheet_floor"]
     parts: list = [
         add_box("SheetFloor_Core", (width, depth, height), (0, centre_y, height / 2), shell_material),
         add_box("SheetFloor_FrontAtlas", (width, 0.045, height),
-                (0, facade_y - 0.0225, height / 2), mats["sheet_floor"]),
+                (0, facade_y - 0.0225, height / 2), sheet_material),
         add_box("SheetFloor_SlabEdge", (width + 0.10, depth + 0.08, 0.16),
                 (0, centre_y, 0.08), mats["concrete"]),
     ]
     if FACADE_SHEET_DETAIL == "city":
         parts.extend([
             add_box("SheetFloor_LeftAtlas", (0.045, depth, height),
-                    (-width / 2 - 0.0225, centre_y, height / 2), mats["sheet_floor"]),
+                    (-width / 2 - 0.0225, centre_y, height / 2), sheet_material),
             add_box("SheetFloor_RightAtlas", (0.045, depth, height),
-                    (width / 2 + 0.0225, centre_y, height / 2), mats["sheet_floor"]),
+                    (width / 2 + 0.0225, centre_y, height / 2), sheet_material),
             add_box("SheetFloor_RearAtlas", (width, 0.045, height),
-                    (0, centre_y + depth / 2 + 0.0225, height / 2), mats["sheet_floor"]),
+                    (0, centre_y + depth / 2 + 0.0225, height / 2), sheet_material),
         ])
     elif massing.get("corner_condition") == "corner":
         parts.append(add_box("SheetFloor_CornerAtlas", (0.045, depth, height),
-                             (-width / 2 - 0.0225, centre_y, height / 2), mats["sheet_floor"]))
+                             (-width / 2 - 0.0225, centre_y, height / 2), sheet_material))
 
     bay_sequence = list(variant.get("bay_sequence") or [])
     bay_count = len(bay_sequence) or int(facade.get("front_bay_count", 1))
@@ -1997,7 +2369,12 @@ def build_facade_sheet_floor(
             if item in attachment_specs
         }
         x = -width / 2 + bay_width * (index + 0.5)
-        if "balcony" in kinds and not crown and not setback:
+        signature_kits = _signature_kits(grammar)
+        signature_controls_balconies = bool(signature_kits & {
+            "recessed_balcony_columns", "haussmann_balconies", "continuous_balcony",
+            "eixample_balconies", "upper_loggias",
+        })
+        if "balcony" in kinds and not crown and not setback and not signature_controls_balconies:
             _add_balcony_v3(
                 parts, f"SheetBalcony_{index:02d}", x, facade_y, bay_width,
                 float(facade.get("balcony_depth_m", 1.5)),
@@ -2041,9 +2418,13 @@ def build_facade_sheet_floor(
                                  (x, terrace_y, 0.5), mats["accent"]))
     if crown:
         _add_crown_v3(parts, system, width, depth, height, facade_y, mats)
-    else:
+    elif "timber_picture_frames" not in _signature_kits(grammar):
         parts.append(add_box("SheetFloor_HeadDatum", (width + 0.14, 0.12, 0.10),
                              (0, facade_y - 0.04, height - 0.05), mats["secondary"]))
+
+    _add_signature_floor_details(
+        grammar, parts, width, depth, height, facade_y, variant_key, mats, sheet_material
+    )
 
     role_name = "Crown" if crown else "Setback" if setback else variant_key.title().replace("_", "")
     module = join_as(f"MOD_{role_name}", parts)
@@ -2311,6 +2692,7 @@ def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
                     panel.rotation_euler.x = math.radians(7)
                     parts.append(panel)
 
+    _add_signature_roof_details(grammar, parts, w, d, h, mats)
     return join_as("MOD_Roof", parts)
 
 
@@ -2554,7 +2936,9 @@ def render_presentation_views(
         rig.append(cabin)
 
     sun_data = bpy.data.lights.new("PreviewSun", type="SUN")
-    sun_data.energy = 2.8
+    # Calibrated as an overcast-bright archviz rig. The previous 2.8-strength
+    # sun clipped dark timber and masonry facade sheets into pale grey.
+    sun_data.energy = 1.35
     sun_data.angle = math.radians(4.0)
     sun = bpy.data.objects.new("PreviewSun", sun_data)
     sun.rotation_euler = (math.radians(42), math.radians(-18), math.radians(-38))
@@ -2562,7 +2946,7 @@ def render_presentation_views(
     rig.append(sun)
 
     area_data = bpy.data.lights.new("PreviewFill", type="AREA")
-    area_data.energy = 760.0
+    area_data.energy = 390.0
     area_data.shape = "DISK"
     area_data.size = footprint * 1.4
     area = bpy.data.objects.new("PreviewFill", area_data)
@@ -2585,7 +2969,7 @@ def render_presentation_views(
     bg = world.node_tree.nodes.get("Background")
     if bg:
         bg.inputs[0].default_value = (0.58, 0.67, 0.77, 1.0)
-        bg.inputs[1].default_value = 0.58
+        bg.inputs[1].default_value = 0.34
 
     try:
         scene.view_settings.look = "AgX - Medium High Contrast"

@@ -30,6 +30,7 @@ sys.path.insert(0, str(TOOL_DIR))
 
 from blender_locator import BlenderNotFoundError, find_blender  # noqa: E402
 from compiler import compile_archetype  # noqa: E402
+from signature_profiles import inject_signature  # noqa: E402
 
 
 class StepFailed(SystemExit):
@@ -139,7 +140,8 @@ def main() -> None:
     except Exception as exc:
         raise StepFailed("compile", str(exc))
     grammar_file = output / "grammar.json"
-    grammar_file.write_text(json.dumps(grammar.to_dict(), indent=2), encoding="utf-8")
+    grammar_payload = inject_signature(grammar.to_dict(), args.archetype_id)
+    grammar_file.write_text(json.dumps(grammar_payload, indent=2), encoding="utf-8")
     dims = grammar.dimensions
     log(f"grammar: {grammar.family_id} — {dims.width_m}x{dims.depth_m} m, "
         f"{dims.default_floors} floors, roof={grammar.roof.type}, retail={grammar.massing.has_podium_retail}")

@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "nordic-timber-midrise",
+  "archetype_id": "nordic_timber_midrise",
+  "created_at": "2026-07-17T06:43:14.655626+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/nordic_timber_mid_rise/hero.png",
+  "architectural_signature": {
+    "identity": "Nordic natural midrise with silvered-charred larch field, vertically continuous warm timber balcony bays, thick picture frames, stone base and a delicate roof rail.",
+    "material_zones": "charcoal silvered larch field; honey larch feature bays; grey coursed-stone base; black metal rails",
+    "kits": [
+      "stone_base",
+      "timber_picture_frames",
+      "recessed_balcony_columns",
+      "roof_guard"
+    ]
+  },
+  "span_m": 14.25,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        230
+      ],
+      "height_m": 3.2
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        230
+      ],
+      "height_m": 3.2
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        1029
+      ],
+      "height_m": 3.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        301
+      ],
+      "height_m": 4.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-353px-0.66",
+    "floor_alt": [
+      0.318,
+      0.4462
+    ],
+    "crown": [
+      0.0,
+      0.5745
+    ],
+    "podium": "pavement-cut-2750px"
+  }
+}

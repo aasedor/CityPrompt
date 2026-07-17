@@ -1,0 +1,115 @@
+{
+  "schema": "architectural-signatures@1",
+  "description": "Non-negotiable identity cues and reusable geometry kits for the twenty world-class LEGO pilot archetypes.",
+  "profiles": {
+    "london_heritage_mansion_block": {
+      "identity": "Portland-stone mansion block with a composed centre pavilion, giant bay windows, wrought-iron balcony datum and inhabited mansard skyline.",
+      "material_zones": "rusticated pale-stone base; dressed-stone middle; dark slate mansard; bronze-black metalwork",
+      "material_overrides": {"roof": {"base_color": "#343b46", "roughness": 0.58}, "accent": {"base_color": "#24282d", "metallic": 0.35}},
+      "kits": ["rusticated_base", "centre_pavilion", "continuous_balcony", "mansard_dormers", "chimney_skyline"]
+    },
+    "parisian_midrise_block": {
+      "identity": "Haussmann boulevard block with a tall shopfront base, ordered French windows, two continuous iron balconies, deep cornice and slate mansard dormers.",
+      "material_zones": "warm limestone; black iron balconies; dark slate roof; restrained awnings at street level",
+      "material_overrides": {"roof": {"base_color": "#4e5a66", "roughness": 0.54}, "accent": {"base_color": "#202326", "metallic": 0.42}},
+      "kits": ["shopfront_canopies", "haussmann_balconies", "deep_cornice", "mansard_dormers"]
+    },
+    "parisian_boulevard_corner": {
+      "identity": "Parisian corner landmark with a rounded corner pavilion, wraparound balconies, strong horizontal stone courses and a turreted mansard crown.",
+      "material_zones": "cream limestone; zinc-grey roof; black iron; darker rusticated base",
+      "material_overrides": {"roof": {"base_color": "#596773", "roughness": 0.48}, "accent": {"base_color": "#202326", "metallic": 0.42}},
+      "kits": ["corner_rotunda", "haussmann_balconies", "deep_cornice", "mansard_dormers", "corner_turret"]
+    },
+    "civic_classical_building": {
+      "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",
+      "material_zones": "monolithic pale limestone; shadowed entrance portal; bronze doors; lead-grey roof",
+      "kits": ["ceremonial_steps", "giant_portico", "pediment", "civic_cornice"]
+    },
+    "monumental_courthouse_axis": {
+      "identity": "Axial courthouse with a projecting temple front, tall fluted colonnade, deep entablature, judicial stair and severe symmetrical wings.",
+      "material_zones": "light granite and limestone; bronze entrance doors; dark recessed glazing",
+      "kits": ["ceremonial_steps", "giant_portico", "pediment", "giant_pilasters", "civic_cornice"]
+    },
+    "collegiate_gothic_education": {
+      "identity": "Collegiate Gothic hall with a crenellated central tower, buttressed bays, pointed entrance arch, tracery-like verticals and steep slate roofs.",
+      "material_zones": "weathered buff stone; dark tracery; slate roofs; oxidized metal accents",
+      "material_overrides": {"roof": {"base_color": "#293542", "roughness": 0.60}, "accent": {"base_color": "#4e5e58", "metallic": 0.28}},
+      "kits": ["gothic_tower", "buttresses", "pointed_portal", "crenellated_crown"]
+    },
+    "classic_brownstone_streetwall": {
+      "identity": "New York brownstone row with individual stoops, high parlor floors, projecting oriels, carved lintels and a heavy bracketed cornice.",
+      "material_zones": "warm brownstone; black iron stoops; dark timber doors; shadowed basement",
+      "kits": ["rowhouse_stoops", "oriel_bays", "rowhouse_divisions", "bracketed_cornice"]
+    },
+    "historical_brick_main_street": {
+      "identity": "Narrow historic main-street building with a transparent cast-iron storefront, brick pilasters, sign frieze, punched sash windows and pressed-metal cornice.",
+      "material_zones": "variegated red brick; painted cast iron; glazed shopfront; dark metal cornice",
+      "kits": ["cast_iron_storefront", "brick_pilasters", "sign_frieze", "pressed_metal_cornice"]
+    },
+    "industrial_brick_mixed_use": {
+      "identity": "Robust industrial brick loft with broad steel windows, expressed brick piers, loading-bay canopy, concrete lintels and roof monitor.",
+      "material_zones": "deep red brick; blackened steel; board-formed concrete; weathered metal",
+      "kits": ["loading_canopy", "brick_pilasters", "industrial_steel_bays", "roof_monitor"]
+    },
+    "adaptive_reuse_warehouse_lofts": {
+      "identity": "Converted warehouse retaining heavy masonry piers while inserting large steel-and-glass bays, roof monitor, terraces and selective industrial bracing.",
+      "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",
+      "kits": ["industrial_steel_bays", "steel_bracing", "roof_monitor", "reuse_terraces"]
+    },
+    "romanesque_revival_warehouse": {
+      "identity": "Richardsonian warehouse with a massive round-arched base, grouped arched openings, deep voussoirs, heavy masonry piers and corbelled cornice.",
+      "material_zones": "dark rock-faced stone and red brick; deep window shadows; copper accents",
+      "kits": ["romanesque_arcade", "heavy_masonry_piers", "corbelled_cornice", "gabled_pavilions"]
+    },
+    "art_deco_setback_tower": {
+      "identity": "Vertical Art Deco tower with a richly modelled entrance, uninterrupted piers, stepped setbacks, fluted spandrels and an illuminated geometric crown.",
+      "material_zones": "warm buff masonry; dark bronze; emerald and gold crown accents; shadowed spandrels",
+      "material_overrides": {"accent": {"base_color": "#70552f", "metallic": 0.62}, "roof": {"base_color": "#35413f", "roughness": 0.48}},
+      "kits": ["deco_portal", "vertical_fins", "stepped_crown", "deco_spire"]
+    },
+    "nordic_timber_midrise": {
+      "identity": "Nordic natural midrise with silvered-charred larch field, vertically continuous warm timber balcony bays, thick picture frames, stone base and a delicate roof rail.",
+      "material_zones": "charcoal silvered larch field; honey larch feature bays; grey coursed-stone base; black metal rails",
+      "material_overrides": {"roof": {"base_color": "#25292d", "roughness": 0.68}, "accent": {"base_color": "#17191b", "metallic": 0.54}},
+      "kits": ["stone_base", "timber_picture_frames", "recessed_balcony_columns", "roof_guard"]
+    },
+    "scandinavian_urban_residential": {
+      "identity": "Quiet Scandinavian apartment building with pale masonry field, deep timber-lined loggias, projecting window frames, subtle asymmetry and a crisp pitched roof edge.",
+      "material_zones": "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
+      "kits": ["timber_picture_frames", "recessed_balcony_columns", "asymmetric_bays", "slim_eaves"]
+    },
+    "mediterranean_arcade_mixed_use": {
+      "identity": "Mediterranean mixed-use palazzo with a deep ground arcade, shaded upper loggias, stucco wall field, stone trim and generous terracotta eaves.",
+      "material_zones": "sun-washed stucco; warm stone arches; dark timber shutters; terracotta roof",
+      "material_overrides": {"roof": {"base_color": "#874733", "roughness": 0.70}, "accent": {"base_color": "#49352a", "roughness": 0.62}},
+      "kits": ["ground_arcade", "upper_loggias", "stone_quoining", "tile_eaves"]
+    },
+    "japanese_machiya_mixed_use": {
+      "identity": "Contemporary machiya with a narrow timber structural rhythm, deep eaves, translucent lattice screens, recessed shopfront and layered threshold.",
+      "material_zones": "smoked timber; warm cedar lattice; charcoal plaster; translucent glass",
+      "material_overrides": {"roof": {"base_color": "#242526", "roughness": 0.72}, "accent": {"base_color": "#493326", "roughness": 0.66}},
+      "kits": ["machiya_shopfront", "timber_lattice", "deep_eaves", "layered_threshold"]
+    },
+    "modernist_civic_block": {
+      "identity": "Monumental modernist civic block with a floating upper volume, pilotis, deep brise-soleil, ceremonial cantilever canopy and exposed concrete frame.",
+      "material_zones": "board-marked concrete; dark bronze frames; clear glass; warm soffit",
+      "kits": ["pilotis", "cantilever_canopy", "brise_soleil", "concrete_frame"]
+    },
+    "modern_glass_office_institutional": {
+      "identity": "High-performance glass institution with a double-height lobby, expressed curtain-wall mullions, vertical solar fins, transparent corners and rooftop pergola.",
+      "material_zones": "low-iron glass; charcoal aluminum; pale stone base; warm lobby soffit",
+      "kits": ["double_height_lobby", "curtainwall_fins", "transparent_corners", "roof_pergola"]
+    },
+    "chateauesque_grand_railway_hotel": {
+      "identity": "Grand railway hotel with a powerful central pavilion, corner turrets, steep copper-and-slate roofscape, dense dormers, chimneys and porte-cochere arrival.",
+      "material_zones": "warm sandstone; greened copper and slate; dark iron; glowing grand windows",
+      "material_overrides": {"roof": {"base_color": "#34494a", "roughness": 0.50, "metallic": 0.18}, "accent": {"base_color": "#52716c", "roughness": 0.46, "metallic": 0.26}},
+      "kits": ["porte_cochere", "centre_pavilion", "corner_turret", "mansard_dormers", "chimney_skyline"]
+    },
+    "eixample_apartment_block": {
+      "identity": "Barcelona Eixample apartment block with chamfered-corner emphasis, repetitive wrought-iron balconies, carved stone portal, glazed galleries and a deep cornice.",
+      "material_zones": "warm carved stone and stucco; black iron; timber shutters; darker stone base",
+      "kits": ["corner_rotunda", "eixample_balconies", "carved_portal", "deep_cornice"]
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "civic-classical-building",
+  "archetype_id": "civic_classical_building",
+  "created_at": "2026-07-17T06:42:54.944315+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/civic_classical_building/hero.png",
+  "architectural_signature": {
+    "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",
+    "material_zones": "monolithic pale limestone; shadowed entrance portal; bronze doors; lead-grey roof",
+    "kits": [
+      "ceremonial_steps",
+      "giant_portico",
+      "pediment",
+      "civic_cornice"
+    ]
+  },
+  "span_m": 12.92,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        436
+      ],
+      "height_m": 5.5
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        435
+      ],
+      "height_m": 5.5
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        943
+      ],
+      "height_m": 5.5
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        411
+      ],
+      "height_m": 5.2
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.22",
+    "floor_alt": [
+      0.0398,
+      0.2832
+    ],
+    "crown": [
+      0.0,
+      0.5265
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

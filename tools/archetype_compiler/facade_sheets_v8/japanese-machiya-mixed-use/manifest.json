@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "japanese-machiya-mixed-use",
+  "archetype_id": "japanese_machiya_mixed_use",
+  "created_at": "2026-07-17T06:43:05.413858+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/japanese_machiya_mixed_use/hero.png",
+  "architectural_signature": {
+    "identity": "Contemporary machiya with a narrow timber structural rhythm, deep eaves, translucent lattice screens, recessed shopfront and layered threshold.",
+    "material_zones": "smoked timber; warm cedar lattice; charcoal plaster; translucent glass",
+    "kits": [
+      "machiya_shopfront",
+      "timber_lattice",
+      "deep_eaves",
+      "layered_threshold"
+    ]
+  },
+  "span_m": 6.9,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        445
+      ],
+      "height_m": 3.0
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        445
+      ],
+      "height_m": 3.0
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        1373
+      ],
+      "height_m": 3.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        416
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-684px-0.59",
+    "floor_alt": [
+      0.2696,
+      0.5182
+    ],
+    "crown": [
+      0.0,
+      0.7667
+    ],
+    "podium": "pavement-cut-2750px"
+  }
+}

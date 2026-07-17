@@ -1,0 +1,76 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "industrial-brick-mixed-use",
+  "archetype_id": "industrial_brick_mixed_use",
+  "created_at": "2026-07-17T06:43:03.516022+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/industrial_brick_mixed_use/hero.png",
+  "architectural_signature": {
+    "identity": "Robust industrial brick loft with broad steel windows, expressed brick piers, loading-bay canopy, concrete lintels and roof monitor.",
+    "material_zones": "deep red brick; blackened steel; board-formed concrete; weathered metal",
+    "kits": [
+      "loading_canopy",
+      "brick_pilasters",
+      "industrial_steel_bays",
+      "roof_monitor"
+    ]
+  },
+  "span_m": 16.11,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        381
+      ],
+      "height_m": 6.0
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        381
+      ],
+      "height_m": 6.0
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        912
+      ],
+      "height_m": 6.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        345
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-586px-0.55",
+    "floor_alt": [
+      0.0836,
+      0.2965
+    ],
+    "crown": [
+      0.0,
+      0.5094
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

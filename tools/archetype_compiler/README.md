@@ -39,6 +39,16 @@ Direct (any OS):
 python tools/archetype_compiler/generate_family.py --archetype-id nordic_timber_midrise
 ```
 
+Architect-Wow twenty-family v8 pilot (Gemini facade-sheet@3 plus archetype signature kits):
+
+```powershell
+python tools/archetype_compiler/generate_worldclass_library.py `
+  --registry tools/archetype_compiler/worldclass_v8_library.json `
+  --output build/worldclass-v8/families
+```
+
+See [`docs/ARCHITECT_WOW_LEGO_V8.md`](../../docs/ARCHITECT_WOW_LEGO_V8.md) for the quality contract, signature profiles, regeneration workflow, and comparison gallery.
+
 Kinnaird-quality heritage pilot:
 
 ```bash

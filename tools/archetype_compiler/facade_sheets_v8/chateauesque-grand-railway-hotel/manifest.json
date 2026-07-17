@@ -1,0 +1,77 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "chateauesque-grand-railway-hotel",
+  "archetype_id": "chateauesque_grand_railway_hotel",
+  "created_at": "2026-07-17T06:42:53.250014+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/chateauesque-grand-railway-hotel/hero.png",
+  "architectural_signature": {
+    "identity": "Grand railway hotel with a powerful central pavilion, corner turrets, steep copper-and-slate roofscape, dense dormers, chimneys and porte-cochere arrival.",
+    "material_zones": "warm sandstone; greened copper and slate; dark iron; glowing grand windows",
+    "kits": [
+      "porte_cochere",
+      "centre_pavilion",
+      "corner_turret",
+      "mansard_dormers",
+      "chimney_skyline"
+    ]
+  },
+  "span_m": 9.26,
+  "requested_span_m": 9.6,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        398
+      ],
+      "height_m": 3.6
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        398
+      ],
+      "height_m": 3.6
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        895
+      ],
+      "height_m": 3.6
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        497
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.17",
+    "floor_alt": [
+      0.0556,
+      0.2778
+    ],
+    "crown": [
+      0.0,
+      0.5
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

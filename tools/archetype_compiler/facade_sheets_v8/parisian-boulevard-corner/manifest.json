@@ -1,0 +1,77 @@
+{
+  "schema": "facade-sheet@3",
+  "family": "parisian-boulevard-corner",
+  "archetype_id": "parisian_boulevard_corner",
+  "created_at": "2026-07-17T06:43:16.225073+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "(reprocess)",
+  "style_reference": "/archetypes/buildings/parisian_boulevard_corner/hero.png",
+  "architectural_signature": {
+    "identity": "Parisian corner landmark with a rounded corner pavilion, wraparound balconies, strong horizontal stone courses and a turreted mansard crown.",
+    "material_zones": "cream limestone; zinc-grey roof; black iron; darker rusticated base",
+    "kits": [
+      "corner_rotunda",
+      "haussmann_balconies",
+      "deep_cornice",
+      "mansard_dormers",
+      "corner_turret"
+    ]
+  },
+  "span_m": 8.93,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 3.4
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "px": [
+        1024,
+        390
+      ],
+      "height_m": 3.4
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "px": [
+        1024,
+        884
+      ],
+      "height_m": 3.4
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        515
+      ],
+      "height_m": 4.5
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.22",
+    "floor_alt": [
+      0.0577,
+      0.2756
+    ],
+    "crown": [
+      0.0,
+      0.4936
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}
