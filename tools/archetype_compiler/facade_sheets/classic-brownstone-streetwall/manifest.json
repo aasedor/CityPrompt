@@ -1,0 +1,38 @@
+{
+  "schema": "facade-sheet@2",
+  "family": "classic-brownstone-streetwall",
+  "archetype_id": "classic_brownstone_streetwall",
+  "created_at": "2026-07-17T05:39:48.741955+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 4.0 metre taller ground floor with a clearly detailed main entrance and larger windows; exactly 3 identical 3.2 metre upper storeys; then a thin parapet. Exactly 4 equal structural bays across. Architectural identity: Classic Brownstone Streetwall; Brownstone / Rowhouse; heritage stone facade; flat roof; brown sandstone ashlar blocks, hand-dressed with subtle texture variation; carved brownstone ornamental details, egg-and-dart moldings; wrought-iron stoop railings, cast-iron window guards, brass door hardware. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/classic_brownstone_streetwall/hero.png",
+  "span_m": 8.37,
+  "requested_span_m": 21.6,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        391
+      ],
+      "height_m": 3.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        494
+      ],
+      "height_m": 4.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-601px-0.40",
+    "podium": "pavement-cut-2751px"
+  }
+}

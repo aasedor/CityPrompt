@@ -1,4 +1,5 @@
 import { Component, useMemo, type ReactNode } from 'react';
+import * as THREE from 'three';
 import { Html, useGLTF, useProgress } from '@react-three/drei';
 import { Loader2 } from 'lucide-react';
 import { resolveApiFileUrl } from '@/services/api';
@@ -59,7 +60,14 @@ export function deriveZoneTargets(
 
 /** Archetype-compiler commands that create + import a module family for an archetype. */
 export function familyGenerationCommands(archetypeId: string): string {
-  return `python tools/archetype_compiler/generate_family.py --archetype-id ${archetypeId}\npython tools/archetype_compiler/import_manifest.py build/archetypes/${archetypeId}`;
+  const family = archetypeId.replace(/_/g, '-');
+  const output = `build/archetypes/${archetypeId}`;
+  return [
+    `python tools/archetype_compiler/generate_family.py --archetype-id ${archetypeId} --output ${output} --skip-thumbnail`,
+    `python tools/archetype_compiler/generate_facade_sheets.py --family ${output}`,
+    `python tools/archetype_compiler/generate_family.py --archetype-id ${archetypeId} --output ${output} --facade-sheets tools/archetype_compiler/facade_sheets/${family} --facade-sheet-detail city --no-ao`,
+    `python tools/archetype_compiler/import_manifest.py ${output}`,
+  ].join('\n');
 }
 
 /** True when the planner had to stretch modules noticeably to hit the target footprint. */
@@ -99,6 +107,42 @@ export class PreviewErrorBoundary extends Component<{ children: ReactNode }, { f
   }
 }
 
+/** Calibrate a cloned module for the standalone LEGO composer preview. */
+export function normalizeLegoModuleMaterials(root: THREE.Object3D): void {
+  root.traverse((object) => {
+    const mesh = object as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const isMaterialArray = Array.isArray(mesh.material);
+    const sourceMaterials: THREE.Material[] = isMaterialArray
+      ? mesh.material as THREE.Material[]
+      : [mesh.material as THREE.Material];
+    const materials = sourceMaterials.map((source) => source.clone());
+    mesh.material = isMaterialArray ? materials : materials[0];
+    for (const material of materials) {
+      const standard = material as THREE.MeshStandardMaterial;
+      if (!standard?.isMeshStandardMaterial) continue;
+      if (standard.aoMap) {
+        standard.aoMap = null;
+        standard.aoMapIntensity = 0;
+      }
+      if (standard.name.startsWith('MAT_Sheet_')) {
+        // The elevation is already de-lit and contains its own fine facade
+        // shading; a second strong IBL/specular pass makes photographic albedo
+        // look pale and synthetic in City Prompt's intentionally bright scene.
+        standard.envMapIntensity = 0.18;
+        standard.color.setScalar(0.5);
+        standard.roughnessMap = null;
+        standard.roughness = 1;
+        standard.metalness = 0;
+      } else {
+        standard.envMapIntensity = 0.9;
+      }
+      if (standard.map) standard.map.colorSpace = THREE.SRGBColorSpace;
+      standard.needsUpdate = true;
+    }
+  });
+}
+
 /**
  * One planned module GLB. Backend plans are Z-up while three.js is Y-up —
  * hence the [x, z, y] position and [sx, sz, sy] scale swizzle.
@@ -106,7 +150,11 @@ export class PreviewErrorBoundary extends Component<{ children: ReactNode }, { f
 export function ModuleInstance({ instance }: { instance: LegoAssemblyInstance }) {
   const url = resolveApiFileUrl(instance.model_url);
   const { scene } = useGLTF(url);
-  const model = useMemo(() => scene.clone(true), [scene]);
+  const model = useMemo(() => {
+    const cloned = scene.clone(true);
+    normalizeLegoModuleMaterials(cloned);
+    return cloned;
+  }, [scene]);
   const [sx, sy, sz] = instance.scale;
   const [x, y, z] = instance.position;
 

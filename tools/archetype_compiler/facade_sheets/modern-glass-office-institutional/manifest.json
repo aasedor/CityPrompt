@@ -1,0 +1,38 @@
+{
+  "schema": "facade-sheet@2",
+  "family": "modern-glass-office-institutional",
+  "archetype_id": "modern_glass_office_institutional",
+  "created_at": "2026-07-17T05:46:30.528551+00:00",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 5.0 metre taller ground floor with a clearly detailed main entrance and larger windows; exactly 3 identical 4.0 metre upper storeys; then a thin parapet. Exactly 4 equal structural bays across. Architectural identity: Modern Glass Office / Institutional; Modernist; regular facade; flat roof; unitized curtain wall glazing with low-E coated glass, clear or tinted grey-blue; brushed stainless steel or anodized aluminium mullions and transoms; polished granite or limestone base cladding, stainless steel entrance canopy. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/modern_glass_office_institutional/hero.png",
+  "span_m": 12.64,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "px": [
+        1024,
+        324
+      ],
+      "height_m": 4.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "px": [
+        1024,
+        362
+      ],
+      "height_m": 5.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-498px-0.62",
+    "podium": "pavement-cut-2751px"
+  }
+}

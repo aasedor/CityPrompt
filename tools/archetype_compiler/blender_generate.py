@@ -28,13 +28,15 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-GENERATOR_VERSION = "0.8.0"
+GENERATOR_VERSION = "0.9.0"
 SUPPORTED_SCHEMA_VERSION = 3
 
 # Set from CLI in main(); make_material reads them so build_materials stays a
 # pure function of the grammar.
 TEXTURES_DIR: Path | None = None
 DEFAULT_TEXTURES_DIR = Path(__file__).resolve().parent / "textures"
+FACADE_SHEET: dict | None = None
+FACADE_SHEET_DETAIL = "hero"
 UV_TILE_METRES = 2.0  # one texture tile covers 2 m of facade (matches generate_textures.py prompts)
 INTERIOR_ATLAS_FILENAME = "interior-atlas-gpt-v1.jpg"
 INTERIOR_ATLAS_COLUMNS = 4
@@ -250,6 +252,70 @@ def make_material(name: str, spec: dict) -> bpy.types.Material:
     return mat
 
 
+def make_facade_sheet_material(
+    name: str,
+    albedo: Path,
+    roughness: Path | None,
+    emissive: Path | None,
+) -> bpy.types.Material:
+    """Photo-elevation material used only on the thin street-facing skin.
+
+    The source image contains fine windows, reveals and material joints.  A
+    restrained derived roughness and warm-window mask preserve material/readout
+    without analytically re-lighting every shadow already present in the photo.
+    """
+    mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes, links = mat.node_tree.nodes, mat.node_tree.links
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    output.location = (460, 0)
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.location = (120, 0)
+    bsdf.inputs["Metallic"].default_value = 0.0
+    bsdf.inputs["Roughness"].default_value = 0.72
+    if "Specular IOR Level" in bsdf.inputs:
+        bsdf.inputs["Specular IOR Level"].default_value = 0.26
+    links.new(bsdf.outputs["BSDF"], output.inputs["Surface"])
+
+    uv_node = nodes.new("ShaderNodeUVMap")
+    uv_node.uv_map = "UVMap"
+    uv_node.location = (-760, 0)
+    albedo_node = nodes.new("ShaderNodeTexImage")
+    albedo_node.name = albedo_node.label = "SHEET_Albedo"
+    albedo_node.image = _load_image(albedo, "sRGB")
+    albedo_node.extension = "REPEAT"
+    albedo_node.location = (-500, 220)
+    links.new(uv_node.outputs["UV"], albedo_node.inputs["Vector"])
+    links.new(albedo_node.outputs["Color"], bsdf.inputs["Base Color"])
+
+    if roughness and roughness.exists():
+        roughness_node = nodes.new("ShaderNodeTexImage")
+        roughness_node.name = roughness_node.label = "SHEET_Roughness"
+        roughness_node.image = _load_image(roughness, "Non-Color")
+        roughness_node.extension = "REPEAT"
+        roughness_node.location = (-500, -40)
+        links.new(uv_node.outputs["UV"], roughness_node.inputs["Vector"])
+        links.new(roughness_node.outputs["Color"], bsdf.inputs["Roughness"])
+
+    if emissive and emissive.exists():
+        emissive_node = nodes.new("ShaderNodeTexImage")
+        emissive_node.name = emissive_node.label = "SHEET_EmissiveMask"
+        emissive_node.image = _load_image(emissive, "Non-Color")
+        emissive_node.extension = "REPEAT"
+        emissive_node.location = (-500, -300)
+        links.new(uv_node.outputs["UV"], emissive_node.inputs["Vector"])
+        emission = bsdf.inputs.get("Emission Color") or bsdf.inputs.get("Emission")
+        if emission:
+            links.new(emissive_node.outputs["Color"], emission)
+        if bsdf.inputs.get("Emission Strength"):
+            bsdf.inputs["Emission Strength"].default_value = 0.32
+
+    mat.diffuse_color = (0.46, 0.46, 0.46, 1.0)
+    mat["facade_sheet"] = True
+    return mat
+
+
 def make_interior_atlas_material(index: int) -> bpy.types.Material:
     """One atlas-backed room material. Eight material slots share one image;
     per-face UVs select the cell, avoiding eight duplicate image payloads."""
@@ -317,6 +383,17 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
     }
     room_count = 4 if grammar.get("facade", {}).get("system") == "heritage_stone" else 8
     result["interior_cells"] = [make_interior_atlas_material(index) for index in range(room_count)]
+    if FACADE_SHEET:
+        root = FACADE_SHEET["dir"]
+        for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():
+            if role not in ("floor", "podium"):
+                continue
+            result[f"sheet_{role}"] = make_facade_sheet_material(
+                f"MAT_Sheet_{role.capitalize()}",
+                root / band["albedo"],
+                root / band["roughness"] if band.get("roughness") else None,
+                root / band["emissive"] if band.get("emissive") else None,
+            )
     return result
 
 
@@ -575,6 +652,38 @@ def apply_box_uv(obj: bpy.types.Object, tile: float = UV_TILE_METRES) -> None:
         else:
             for loop_index, (u, v) in zip(poly.loop_indices, projected):
                 uv_layer.data[loop_index].uv = (u / tile, v / tile)
+
+
+def apply_facade_sheet_uv(obj: bpy.types.Object, span_m: float, module_height_m: float) -> None:
+    """Map sheet-material faces in real units after all parts have been joined.
+
+    The hero profile uses the sheet on its principal elevation.  The lighter
+    city profile also wraps the repeatable band around side/rear skins, which
+    gives orbit views atlas-level detail without thousands of extra window
+    meshes. U repeats at the strip span detected from the image itself; V
+    covers the complete modular storey.
+    """
+    mesh = obj.data
+    sheet_indices = {
+        index for index, material in enumerate(mesh.materials)
+        if material and material.name.startswith("MAT_Sheet_")
+    }
+    if not sheet_indices:
+        return
+    uv_layer = mesh.uv_layers.get("UVMap") or mesh.uv_layers.new(name="UVMap")
+    mesh.uv_layers.active = uv_layer
+    span_m = max(float(span_m), 0.25)
+    module_height_m = max(float(module_height_m), 0.25)
+    for polygon in mesh.polygons:
+        if polygon.material_index not in sheet_indices:
+            continue
+        x_dominant = abs(polygon.normal.x) > abs(polygon.normal.y)
+        for loop_index in polygon.loop_indices:
+            coordinate = mesh.vertices[mesh.loops[loop_index].vertex_index].co
+            uv_layer.data[loop_index].uv = (
+                (coordinate.y if x_dominant else coordinate.x) / span_m + 0.5,
+                coordinate.z / module_height_m,
+            )
 
 
 def _gltf_output_group() -> bpy.types.NodeTree:
@@ -1295,7 +1404,7 @@ def _add_heritage_balcony(
     for index in range(corbel_count + 1):
         x = -width / 2 + width * index / corbel_count
         parts.append(add_box(f"{prefix}_Corbel_{index:02d}", (0.22, 0.48, 0.42),
-                             (x, facade_y - 0.20, 0.02), mats["secondary"]))
+                             (x, facade_y - 0.20, 0.21), mats["secondary"]))
 
     bottom_z, top_z = 0.43, 1.31
     parts.append(add_box(f"{prefix}_BottomRail", (width, 0.055, 0.055),
@@ -1740,6 +1849,208 @@ def build_floor_v3(
     return join_as(f"MOD_{role_name}", parts)
 
 
+def _add_economy_window_row(
+    parts: list,
+    prefix: str,
+    wall_length: float,
+    axis: str,
+    wall_offset: float,
+    window_height: float,
+    sill: float,
+    mats: dict,
+) -> None:
+    """Low-draw-call side/rear windows for the City Prompt sheet profile."""
+    count = max(2, int(round(wall_length / 4.5)))
+    bay = wall_length / count
+    window_width = bay * 0.58
+    z = sill + window_height / 2
+    for index in range(count):
+        along = -wall_length / 2 + bay * (index + 0.5)
+        if axis in ("front", "rear"):
+            sign = -1.0 if axis == "front" else 1.0
+            frame_location = (along, sign * (wall_offset + 0.018), z)
+            glass_location = (along, sign * (wall_offset + 0.042), z)
+            frame_size = (window_width + 0.16, 0.045, window_height + 0.16)
+            glass_size = (window_width, 0.052, window_height)
+        else:
+            sign = -1.0 if axis == "left" else 1.0
+            frame_location = (sign * (wall_offset + 0.018), along, z)
+            glass_location = (sign * (wall_offset + 0.042), along, z)
+            frame_size = (0.045, window_width + 0.16, window_height + 0.16)
+            glass_size = (0.052, window_width, window_height)
+        parts.append(add_box(f"{prefix}_{axis}_Frame_{index:02d}", frame_size, frame_location, mats["accent"]))
+        parts.append(add_box(f"{prefix}_{axis}_Glass_{index:02d}", glass_size, glass_location, mats["glass"]))
+
+
+def build_facade_sheet_podium(grammar: dict, mats: dict) -> bpy.types.Object:
+    """Hybrid podium: photo elevation in front, conventional PBR construction elsewhere."""
+    dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    width, depth, height = dims["width_m"], dims["depth_m"], dims["podium_height_m"]
+    front_y = -depth / 2
+    parts: list = [
+        add_box("SheetPodium_Core", (width, depth, height), (0, 0, height / 2), mats["primary"]),
+        add_box("SheetPodium_FrontAtlas", (width, 0.045, height),
+                (0, front_y - 0.0225, height / 2), mats["sheet_podium"]),
+        add_box("SheetPodium_Plinth", (width + 0.14, depth + 0.12, 0.24),
+                (0, 0, 0.12), mats["concrete"]),
+        add_box("SheetPodium_HeadCourse", (width + 0.24, depth + 0.18, 0.18),
+                (0, 0, height - 0.09), mats["secondary"]),
+    ]
+    if FACADE_SHEET_DETAIL == "city":
+        parts.extend([
+            add_box("SheetPodium_LeftAtlas", (0.045, depth, height),
+                    (-width / 2 - 0.0225, 0, height / 2), mats["sheet_podium"]),
+            add_box("SheetPodium_RightAtlas", (0.045, depth, height),
+                    (width / 2 + 0.0225, 0, height / 2), mats["sheet_podium"]),
+            add_box("SheetPodium_RearAtlas", (width, 0.045, height),
+                    (0, depth / 2 + 0.0225, height / 2), mats["sheet_podium"]),
+        ])
+    elif massing.get("corner_condition") == "corner":
+        parts.append(add_box("SheetPodium_CornerAtlas", (0.045, depth, height),
+                             (-width / 2 - 0.0225, 0, height / 2), mats["sheet_podium"]))
+    # A real canopy is worth retaining: it provides the street-level shadow and
+    # silhouette that a flat photograph cannot cast in City Prompt.
+    if massing.get("has_podium_retail"):
+        canopy_width = min(width * 0.46, 15.0)
+        parts.append(add_box("SheetPodium_EntranceCanopy", (canopy_width, 1.15, 0.13),
+                             (0, front_y - 0.57, min(height - 0.55, 3.15)), mats["accent"]))
+
+    # Keep economical windows on non-hero elevations so orbit/aerial views do
+    # not reveal an unarticulated box behind the photographic front.
+    bay_count, bay_width = _bays(width, facade["bay_width_m"])
+    side_count, _ = _bays(depth * 0.9, facade["bay_width_m"])
+    window_height = max(1.4, height * 0.48)
+    sill = max(0.55, (height - window_height) * 0.38)
+    if FACADE_SHEET_DETAIL == "hero":
+        add_window_row(parts, "SheetPodium", width, "rear", depth / 2, 0.0,
+                       bay_width * 0.56, window_height, sill, bay_count, mats)
+        if massing.get("corner_condition") != "corner":
+            add_window_row(parts, "SheetPodium", depth * 0.9, "left", width / 2, 0.0,
+                           bay_width * 0.52, window_height, sill, side_count, mats)
+        add_window_row(parts, "SheetPodium", depth * 0.9, "right", width / 2, 0.0,
+                       bay_width * 0.52, window_height, sill, side_count, mats)
+    # City-profile side/rear detail is carried by the wrapped atlas skins.
+    module = join_as("MOD_Podium", parts)
+    apply_facade_sheet_uv(module, FACADE_SHEET["manifest"]["span_m"], height)
+    return module
+
+
+def build_facade_sheet_floor(
+    grammar: dict,
+    mats: dict,
+    variant_key: str = "typical_a",
+    interior_seed: int = 0,
+) -> bpy.types.Object:
+    """Hybrid repeatable floor with a photographed hero facade and 3D silhouette detail."""
+    dims, facade, massing = grammar["dimensions"], grammar["facade"], grammar["massing"]
+    openings, attachment_specs, bay_specs, variants = _graph_lookup(grammar)
+    variant = variants.get(variant_key) or variants.get("typical_a") or {}
+    setback = variant_key == "upper"
+    crown = variant_key == "crown"
+    height = dims["setback_height_m"] if setback else dims["floor_height_m"]
+    full_width, full_depth = dims["width_m"], dims["depth_m"]
+    if setback:
+        inset_front = max(float(massing.get("setback_front_m", 0.0)), 0.8)
+        inset_side = max(float(massing.get("setback_side_m", 0.0)), 0.45)
+    elif crown:
+        inset_front, inset_side = 0.35, 0.2
+    else:
+        inset_front = inset_side = 0.0
+    width = full_width - inset_side * 2
+    depth = full_depth - inset_front
+    centre_y = inset_front / 2
+    facade_y = centre_y - depth / 2
+    system = facade.get("system", "regular")
+    shell_material = mats["secondary"] if setback else mats["primary"]
+    parts: list = [
+        add_box("SheetFloor_Core", (width, depth, height), (0, centre_y, height / 2), shell_material),
+        add_box("SheetFloor_FrontAtlas", (width, 0.045, height),
+                (0, facade_y - 0.0225, height / 2), mats["sheet_floor"]),
+        add_box("SheetFloor_SlabEdge", (width + 0.10, depth + 0.08, 0.16),
+                (0, centre_y, 0.08), mats["concrete"]),
+    ]
+    if FACADE_SHEET_DETAIL == "city":
+        parts.extend([
+            add_box("SheetFloor_LeftAtlas", (0.045, depth, height),
+                    (-width / 2 - 0.0225, centre_y, height / 2), mats["sheet_floor"]),
+            add_box("SheetFloor_RightAtlas", (0.045, depth, height),
+                    (width / 2 + 0.0225, centre_y, height / 2), mats["sheet_floor"]),
+            add_box("SheetFloor_RearAtlas", (width, 0.045, height),
+                    (0, centre_y + depth / 2 + 0.0225, height / 2), mats["sheet_floor"]),
+        ])
+    elif massing.get("corner_condition") == "corner":
+        parts.append(add_box("SheetFloor_CornerAtlas", (0.045, depth, height),
+                             (-width / 2 - 0.0225, centre_y, height / 2), mats["sheet_floor"]))
+
+    bay_sequence = list(variant.get("bay_sequence") or [])
+    bay_count = len(bay_sequence) or int(facade.get("front_bay_count", 1))
+    if not bay_sequence:
+        bay_sequence = ["standard"] * bay_count
+    bay_width = width / max(1, bay_count)
+
+    # Retain only elements that materially change the silhouette or cast useful
+    # shadows. Fine frames/panels remain exclusively in the sheet.
+    for index, bay_key in enumerate(bay_sequence):
+        bay_spec = bay_specs.get(bay_key) or bay_specs.get("standard") or {}
+        kinds = {
+            attachment_specs[item]["kind"] for item in (bay_spec.get("attachment_ids") or [])
+            if item in attachment_specs
+        }
+        x = -width / 2 + bay_width * (index + 0.5)
+        if "balcony" in kinds and not crown and not setback:
+            _add_balcony_v3(
+                parts, f"SheetBalcony_{index:02d}", x, facade_y, bay_width,
+                float(facade.get("balcony_depth_m", 1.5)),
+                facade.get("balcony_guard", "metal"), mats,
+                plants=facade.get("balcony_guard") == "planter",
+            )
+        # Oriel/window-bay detail stays in the sheet. A generic projecting box
+        # covers the photographed glazing and looks worse than the source; only
+        # balconies with a real walkable projection survive as 3D attachments.
+
+    if system == "heritage_stone" and variant_key == "typical_b":
+        _add_heritage_balcony(parts, "SheetHeritageBalcony", width, facade_y - 0.04, mats)
+
+    # Side/rear detail remains procedural. This keeps one generated image per
+    # family while retaining believable all-around models in orbit and aerial views.
+    side_count, _ = _bays(depth * 0.9, facade["bay_width_m"])
+    rear_window_width = min(bay_width * float(facade.get("window_width_ratio", 0.55)), bay_width - 0.48)
+    rear_window_height = height * float(facade.get("window_height_ratio", 0.62))
+    rear_sill = min(float(facade.get("sill_height_m", 0.75)), height - rear_window_height - 0.3)
+    if FACADE_SHEET_DETAIL == "hero":
+        add_window_row(parts, "SheetFloor", width, "rear", centre_y + depth / 2, 0.0,
+                       rear_window_width, rear_window_height, rear_sill, bay_count, mats,
+                       interior_seed=interior_seed)
+        if massing.get("corner_condition") != "corner":
+            add_window_row(parts, "SheetFloor", depth * 0.9, "left", width / 2, 0.0,
+                           rear_window_width, rear_window_height, rear_sill, side_count, mats,
+                           interior_seed=interior_seed)
+        add_window_row(parts, "SheetFloor", depth * 0.9, "right", width / 2, 0.0,
+                       rear_window_width, rear_window_height, rear_sill, side_count, mats,
+                       interior_seed=interior_seed)
+    # City-profile side/rear detail is carried by the wrapped atlas skins.
+
+    if setback:
+        parts.append(add_box("SheetTerrace_Deck", (full_width, full_depth, 0.09), (0, 0, 0.045), mats["concrete"]))
+        terrace_y = -full_depth / 2 + 0.07
+        parts.append(add_box("SheetTerrace_Rail", (full_width, 0.075, 0.075),
+                             (0, terrace_y, 0.98), mats["accent"]))
+        for post_index, x in enumerate((-full_width / 2 + 0.12, -full_width / 4, 0.0,
+                                        full_width / 4, full_width / 2 - 0.12)):
+            parts.append(add_box(f"SheetTerrace_Post{post_index}", (0.075, 0.075, 0.92),
+                                 (x, terrace_y, 0.5), mats["accent"]))
+    if crown:
+        _add_crown_v3(parts, system, width, depth, height, facade_y, mats)
+    else:
+        parts.append(add_box("SheetFloor_HeadDatum", (width + 0.14, 0.12, 0.10),
+                             (0, facade_y - 0.04, height - 0.05), mats["secondary"]))
+
+    role_name = "Crown" if crown else "Setback" if setback else variant_key.title().replace("_", "")
+    module = join_as(f"MOD_{role_name}", parts)
+    apply_facade_sheet_uv(module, FACADE_SHEET["manifest"]["span_m"], height)
+    return module
+
+
 def build_roof(grammar: dict, mats: dict) -> bpy.types.Object:
     dims, roof = grammar["dimensions"], grammar["roof"]
     w, d, h = dims["width_m"], dims["depth_m"], dims["roof_height_m"]
@@ -2145,6 +2456,7 @@ def render_presentation_views(
     depth: float,
     preferred_engine: str = "eevee",
     samples: int = 48,
+    view_set: str = "all",
 ) -> tuple[str, list[str]]:
     """Render consistent studio, street and aerial views of the assembled kit.
 
@@ -2298,6 +2610,8 @@ def render_presentation_views(
         ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
          (0.0, 10.0, focus_height * 0.22), 52),
     )
+    if view_set == "preview":
+        views = views[:1]
     rendered: list[str] = []
     for view_name, location, target_tuple, lens in views:
         # Background masses make the drone views legible but can sit directly
@@ -2333,12 +2647,22 @@ def build_module(
     interior_seed: int = 0,
 ) -> bpy.types.Object:
     if role == "podium":
+        if FACADE_SHEET and "sheet_podium" in mats:
+            return build_facade_sheet_podium(grammar, mats)
         return build_podium(grammar, mats)
     if role == "floor":
+        if FACADE_SHEET and "sheet_floor" in mats:
+            return build_facade_sheet_floor(
+                grammar, mats, variant_key if variant_key != "default" else "typical_a", interior_seed
+            )
         return build_floor_v3(grammar, mats, variant_key if variant_key != "default" else "typical_a", interior_seed)
     if role == "setback":
+        if FACADE_SHEET and "sheet_floor" in mats:
+            return build_facade_sheet_floor(grammar, mats, "upper", interior_seed)
         return build_floor_v3(grammar, mats, "upper", interior_seed)
     if role == "crown":
+        if FACADE_SHEET and "sheet_floor" in mats:
+            return build_facade_sheet_floor(grammar, mats, "crown", interior_seed)
         return build_floor_v3(grammar, mats, "crown", interior_seed)
     if role == "roof":
         return build_roof(grammar, mats)
@@ -2348,7 +2672,7 @@ def build_module(
 def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_blend: bool,
              thumbnail: bool, assembled: bool, ao: bool = True, ao_resolution: int = 512,
              ao_samples: int = 16, presentation_engine: str = "eevee",
-             presentation_samples: int = 48) -> None:
+             presentation_samples: int = 48, presentation_view_set: str = "all") -> None:
     if grammar.get("schema_version") != SUPPORTED_SCHEMA_VERSION:
         raise SystemExit(
             f"grammar schema_version={grammar.get('schema_version')!r} unsupported "
@@ -2389,7 +2713,10 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
         reset_scene()
         mats = build_materials(grammar)
         module = build_module(role, grammar, mats, variant_key)
-        ao_baked = bake_ao(module, ao_resolution, ao_samples) if ao else False
+        # Photo elevations already contain micro-occlusion. Baking another AO
+        # layout onto their glTF material causes double-darkening and, in some
+        # viewers, a mismatched UV-channel artifact.
+        ao_baked = bake_ao(module, ao_resolution, ao_samples) if ao and not FACADE_SHEET else False
         suffix = role if variant_key == "default" else f"{role}_{variant_key}"
         glb_path = output / f"{family}_{suffix}.glb"
         export_objects(glb_path, [module])
@@ -2473,6 +2800,7 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
                 engine_used, rendered_views = render_presentation_views(
                     output, family, z, dims["width_m"], dims["depth_m"],
                     preferred_engine=presentation_engine, samples=presentation_samples,
+                    view_set=presentation_view_set,
                 )
                 print(f"[blender_generate] rendered {', '.join(rendered_views)} via {engine_used}")
             except Exception as exc:  # pragma: no cover - render backends vary by machine
@@ -2516,6 +2844,15 @@ def generate(grammar: dict, output: Path, *, floors_override: int | None, keep_b
             "ao_requested": ao,
             "uv_layers": {"UVMap": "box projection, tiled materials", "AOMap": "smart project, baked AO"},
         },
+        "facade_sheet": ({
+            "schema": FACADE_SHEET["manifest"].get("schema", "facade-sheet@1"),
+            "source_directory": str(FACADE_SHEET["dir"]),
+            "model": FACADE_SHEET["manifest"].get("model"),
+            "span_m": FACADE_SHEET["manifest"].get("span_m"),
+            "style_reference": FACADE_SHEET["manifest"].get("style_reference"),
+            "runtime_material_profile": "photo_baked_v1",
+            "geometry_detail_profile": FACADE_SHEET_DETAIL,
+        } if FACADE_SHEET else None),
         "dimensions": dims,
         "min_floors": dims["min_floors"],
         "max_floors": dims["max_floors"],
@@ -2547,14 +2884,34 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                         help="render engine for review images (GLB output is unchanged)")
     parser.add_argument("--presentation-samples", type=int, default=48,
                         help="Cycles samples for review images")
+    parser.add_argument("--presentation-view-set", choices=("all", "preview"), default="all",
+                        help="render all review angles or only the hero preview")
+    parser.add_argument("--facade-sheets", type=Path, default=None,
+                        help="facade-sheet directory; enables the hybrid photo-elevation modules")
+    parser.add_argument("--facade-sheet-detail", choices=("hero", "city"), default="hero",
+                        help="hero keeps full side/rear openings; city uses a lighter orbit-safe treatment")
     return parser.parse_args(argv)
 
 
 def main() -> None:
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     args = parse_args(argv)
-    global TEXTURES_DIR
+    global TEXTURES_DIR, FACADE_SHEET, FACADE_SHEET_DETAIL
     TEXTURES_DIR = args.textures.resolve() if args.textures else None
+    FACADE_SHEET_DETAIL = args.facade_sheet_detail
+    if args.facade_sheets:
+        sheet_dir = args.facade_sheets.resolve()
+        sheet_manifest = sheet_dir / "manifest.json"
+        if not sheet_manifest.exists():
+            raise SystemExit(f"--facade-sheets: {sheet_manifest} not found")
+        FACADE_SHEET = {
+            "dir": sheet_dir,
+            "manifest": json.loads(sheet_manifest.read_text(encoding="utf-8")),
+        }
+        print(
+            f"[blender_generate] facade-sheet mode: {sheet_dir.name} "
+            f"(span={FACADE_SHEET['manifest'].get('span_m')}m)"
+        )
     grammar = json.loads(args.grammar.resolve().read_text(encoding="utf-8"))
     generate(
         grammar,
@@ -2570,6 +2927,7 @@ def main() -> None:
         ao_samples=args.ao_samples,
         presentation_engine=args.presentation_engine,
         presentation_samples=args.presentation_samples,
+        presentation_view_set=args.presentation_view_set,
     )
 
 

@@ -81,6 +81,10 @@ def _clamp(value: float, lo: float | None, hi: float | None) -> float:
 # ---------------------------------------------------------------------------
 _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("membrane", ("#4a4d4f", 0.85, 0.0), "roof_membrane"),
+    ("terracotta barrel roof", ("#b45f35", 0.72, 0.0), "mediterranean_roof_tile"),
+    ("terracotta roof tile", ("#b45f35", 0.72, 0.0), "mediterranean_roof_tile"),
+    ("clay roof tile", ("#b45f35", 0.72, 0.0), "mediterranean_roof_tile"),
+    ("barrel roof tile", ("#b45f35", 0.72, 0.0), "mediterranean_roof_tile"),
     ("shou sugi ban", ("#2e2a26", 0.62, 0.0), "charred_timber"),
     ("charred timber", ("#2e2a26", 0.62, 0.0), "charred_timber"),
     ("charred black", ("#26221f", 0.62, 0.0), "charred_timber"),
@@ -104,6 +108,8 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("metal panel", ("#5a5e63", 0.45, 0.7), "metal_panel"),
     ("aluminium", ("#9aa0a6", 0.4, 0.8), "metal_panel"),
     ("aluminum", ("#9aa0a6", 0.4, 0.8), "metal_panel"),
+    ("scandinavian larch", ("#b98248", 0.62, 0.0), "scandinavian_larch"),
+    ("exposed larch", ("#b98248", 0.62, 0.0), "scandinavian_larch"),
     ("glulam", ("#c9a878", 0.6, 0.0), "glulam"),
     ("cross-laminated", ("#cbb089", 0.6, 0.0), "clt"),
     ("clt", ("#cbb089", 0.6, 0.0), "clt"),
@@ -116,6 +122,9 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("warm natural wood", ("#a97f52", 0.65, 0.0), "natural_timber"),
     ("timber", ("#a97f52", 0.65, 0.0), "natural_timber"),
     ("wood", ("#a97f52", 0.65, 0.0), "natural_timber"),
+    ("victorian red brick", ("#7c3d30", 0.86, 0.0), "victorian_brick"),
+    ("pressed clay brick", ("#7c3d30", 0.86, 0.0), "victorian_brick"),
+    ("pressed brick", ("#7c3d30", 0.86, 0.0), "victorian_brick"),
     ("red brick", ("#8a4a3a", 0.85, 0.0), "red_brick"),
     ("redbrick", ("#8a4a3a", 0.85, 0.0), "red_brick"),
     ("buff brick", ("#c8a878", 0.85, 0.0), "buff_brick"),
@@ -130,6 +139,7 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("lutetian limestone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
     ("cream limestone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
     ("portland stone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
+    ("brownstone", ("#875a43", 0.8, 0.0), "brownstone"),
     ("limestone", ("#d5cbb8", 0.75, 0.0), "limestone"),
     ("sandstone", ("#c9b090", 0.78, 0.0), "sandstone"),
     ("granite", ("#8c8c8c", 0.6, 0.0), "granite"),
@@ -140,6 +150,8 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("curtain wall", ("#6e8ea4", 0.1, 0.1), "curtain_wall"),
     ("glass", ("#6e8ea4", 0.1, 0.1), "curtain_wall"),
     ("fiber cement", ("#a8a49c", 0.75, 0.0), "fiber_cement"),
+    ("glazed architectural terracotta", ("#d5c7a5", 0.43, 0.0), "art_deco_terracotta"),
+    ("glazed terracotta", ("#d5c7a5", 0.43, 0.0), "art_deco_terracotta"),
     ("terracotta", ("#b06a48", 0.75, 0.0), "terracotta"),
 ]
 
@@ -505,6 +517,11 @@ def compile_archetype(
     if not archetype_id:
         raise GrammarError("payload has no archetypeId — export it with export_catalog.ts first")
 
+    archetype_label = str(payload.get("archetypeLabel") or style_input.get("archetypeLabel") or archetype_id)
+    corner_condition = "corner" if "corner" in f"{archetype_id} {archetype_label}".lower() else "midblock"
+    if corner_condition == "corner":
+        notes.append("corner condition: corner archetype receives a wrapped hero elevation")
+
     reuse_keys = list(dict.fromkeys(
         _strings(hints.get("reuseKeys"))
         + [archetype_id, str(payload.get("aestheticCategoryId") or "")]
@@ -640,7 +657,7 @@ def compile_archetype(
         family_id=_slug((variant or {}).get("id") or archetype_id),
         source=GrammarSource(
             archetype_id=archetype_id,
-            archetype_label=str(payload.get("archetypeLabel") or style_input.get("archetypeLabel") or archetype_id),
+            archetype_label=archetype_label,
             variant_id=(variant or {}).get("id"),
             variant_label=(variant or {}).get("label"),
             generation_archetype_id=style_input.get("archetypeId"),
@@ -672,6 +689,7 @@ def compile_archetype(
             has_podium_retail=retail,
             setback_front_m=min(2.0, depth / 8),
             setback_side_m=min(1.2, width / 12),
+            corner_condition=corner_condition,
         ),
         roof=roof,
         materials=Materials(

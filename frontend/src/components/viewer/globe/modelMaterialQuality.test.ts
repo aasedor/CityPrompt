@@ -36,6 +36,31 @@ describe('prepareArchitecturalClone', () => {
     expect((clone.material as THREE.MeshStandardMaterial).envMapIntensity).toBe(0.9);
   });
 
+  it('uses the photo-baked calibration for facade-sheet materials', () => {
+    const albedo = new THREE.Texture();
+    const roughness = new THREE.Texture();
+    const ao = new THREE.Texture();
+    const sourceMaterial = new THREE.MeshStandardMaterial({
+      map: albedo,
+      roughnessMap: roughness,
+      aoMap: ao,
+      metalness: 0.4,
+    });
+    sourceMaterial.name = 'MAT_Sheet_Floor';
+    const source = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), sourceMaterial);
+
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150 }) as THREE.Mesh;
+    const material = clone.material as THREE.MeshStandardMaterial;
+
+    expect(material.envMapIntensity).toBe(0.18);
+    expect(material.aoMap).toBeNull();
+    expect(material.roughnessMap).toBeNull();
+    expect(material.roughness).toBe(1);
+    expect(material.metalness).toBe(0);
+    expect(material.color.r).toBeCloseTo(0.5);
+    expect(material.map?.colorSpace).toBe(THREE.SRGBColorSpace);
+  });
+
   it('disposes clone-owned materials without disposing cached geometry or textures', () => {
     const texture = new THREE.Texture();
     const geometry = new THREE.BoxGeometry(1, 1, 1);

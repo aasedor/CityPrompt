@@ -193,11 +193,13 @@ describe('LegoBuilderPanel', () => {
     // Both failed rows surface the backend detail.
     expect(screen.getAllByText(/No module family covers archetype parkside_terraces\./)).toHaveLength(2);
 
-    // One shared hint box listing the DISTINCT missing archetype ids.
+    // One shared hint box listing the distinct missing archetype ids. The
+    // facade-sheet workflow compiles the family before and after sheet creation.
+    expect(document.querySelectorAll('pre')).toHaveLength(1);
     const pre = document.querySelector('pre');
     expect(pre?.textContent).toContain('generate_family.py --archetype-id parkside_terraces');
     expect(pre?.textContent).toContain('import_manifest.py build/archetypes/parkside_terraces');
-    expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(1);
+    expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(2);
     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
   });
 

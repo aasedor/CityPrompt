@@ -32,7 +32,19 @@ function tuneMaterial(
   tuneTexture(standard.aoMap, maxAnisotropy);
 
   const materialName = standard.name.toLowerCase();
-  if (materialName.includes('glass')) {
+  if (materialName.startsWith('mat_sheet_')) {
+    // Generated facade sheets are de-lit photographic elevations. Keep City
+    // Prompt's bright globe lights from applying a second, plastic-looking
+    // illumination pass over their baked reveals and window reflections.
+    standard.aoMap = null;
+    standard.aoMapIntensity = 0;
+    standard.envMapIntensity = 0.18;
+    standard.color.setScalar(0.5);
+    standard.roughnessMap = null;
+    standard.roughness = 1;
+    standard.metalness = 0;
+    if (standard.map) standard.map.colorSpace = THREE.SRGBColorSpace;
+  } else if (materialName.includes('glass')) {
     // The v5 GLBs carry room backplates behind alpha-blended low-iron glass.
     // Keep the dielectric response and coat; the footprint tile mask prevents
     // the old photogrammetric building from showing through the glazing.
