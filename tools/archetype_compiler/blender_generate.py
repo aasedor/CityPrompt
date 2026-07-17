@@ -1270,6 +1270,51 @@ def _add_balcony_v3(
         add_planter_vegetation(parts, f"{prefix}_Vegetation", (x, front_y - 0.02, 0.72), width, mats)
 
 
+def _add_heritage_balcony(
+    parts: list,
+    prefix: str,
+    width: float,
+    facade_y: float,
+    mats: dict,
+) -> None:
+    """Continuous wrought-iron balcony for Parisian/European stone fronts.
+
+    The rail is modeled as individual pickets so it reads at street distance;
+    the stone slab and regularly spaced corbels provide the heavier shadow line
+    visible in the catalog references.
+    """
+    width = max(2.4, width - 0.64)
+    depth = 0.92
+    centre_y = facade_y - depth / 2
+    front_y = facade_y - depth
+    parts.append(add_box(f"{prefix}_Slab", (width, depth, 0.18), (0, centre_y, 0.20), mats["secondary"]))
+    parts.append(add_box(f"{prefix}_SlabShadow", (width - 0.12, depth - 0.08, 0.045),
+                         (0, centre_y, 0.095), mats["accent"]))
+
+    corbel_count = max(4, round(width / 2.2))
+    for index in range(corbel_count + 1):
+        x = -width / 2 + width * index / corbel_count
+        parts.append(add_box(f"{prefix}_Corbel_{index:02d}", (0.22, 0.48, 0.42),
+                             (x, facade_y - 0.20, 0.02), mats["secondary"]))
+
+    bottom_z, top_z = 0.43, 1.31
+    parts.append(add_box(f"{prefix}_BottomRail", (width, 0.055, 0.055),
+                         (0, front_y, bottom_z), mats["accent"]))
+    parts.append(add_box(f"{prefix}_TopRail", (width + 0.10, 0.075, 0.075),
+                         (0, front_y, top_z), mats["accent"]))
+    picket_count = max(12, round(width / 0.34))
+    for index in range(picket_count + 1):
+        x = -width / 2 + width * index / picket_count
+        parts.append(add_box(f"{prefix}_Picket_{index:03d}", (0.035, 0.045, top_z - bottom_z),
+                             (x, front_y, (top_z + bottom_z) / 2), mats["accent"]))
+    for side, sign in (("L", -1), ("R", 1)):
+        x = sign * width / 2
+        parts.append(add_box(f"{prefix}_SideTop{side}", (0.055, depth, 0.055),
+                             (x, centre_y, top_z), mats["accent"]))
+        parts.append(add_box(f"{prefix}_SidePost{side}", (0.055, 0.055, top_z - bottom_z),
+                             (x, facade_y - 0.04, (top_z + bottom_z) / 2), mats["accent"]))
+
+
 def _add_oriel_v3(
     parts: list,
     prefix: str,
@@ -1420,6 +1465,17 @@ def build_heritage_floor(
                                  (pilaster_x, local_face - 0.07, h / 2), mats["secondary"]))
 
     add_heritage_quoins(parts, "HeritageFloor_Quoin", w, face_y, h, mats)
+
+    # Mixed-use European mansion blocks commonly carry continuous iron
+    # balconies above the retail base. Keep the Kinnaird mansion variant clean,
+    # while honoring catalog archetypes that explicitly compile projecting
+    # balconies. Alternating/crown modules create a believable vertical rhythm.
+    if (
+        grammar.get("massing", {}).get("has_podium_retail")
+        and facade.get("balcony_mode") == "projecting"
+        and variant_key in ("typical_b", "upper", "crown")
+    ):
+        _add_heritage_balcony(parts, f"HeritageBalcony_{variant_key}", w, face_y - 0.10, mats)
 
     # Wrapped string courses keep the four-sided aerial silhouette coherent.
     for band_index, (z, band_h, extra) in enumerate(((0.13, 0.16, 0.12), (h - 0.11, 0.18, 0.20))):

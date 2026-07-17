@@ -207,6 +207,32 @@ def test_london_heritage_prose_selects_mansard_stone_kit_and_pbr_materials():
     grammar.validate()
 
 
+def test_parisian_lutetian_stone_keeps_carved_ornament_in_the_same_finish():
+    payload = payload_mixed_use_midrise(
+        archetypeId="parisian_midrise_block",
+        developmentType="mixed_use",
+        generationTags=["parisian", "mansard", "ashlar", "balconies"],
+    )
+    payload["facadeDetail"] = {
+        "primaryMaterial": "cream Lutetian limestone, smooth-dressed ashlar blocks",
+        "secondaryMaterial": "carved stone balcony supports, window surrounds, and cartouches",
+        "accentMaterial": "wrought-iron balcony railings with scrollwork",
+        "groundFloor": "tall retail ground floor with a stone-framed entry",
+        "upperFloors": "projecting wrought-iron balconies",
+    }
+    payload["roofDetail"] = {
+        "form": "zinc mansard with dormers",
+        "material": "standing-seam zinc panels",
+    }
+    grammar = compile_archetype(payload, floors=6)
+    assert grammar.facade.system == "heritage_stone"
+    assert grammar.facade.balcony_mode == "projecting"
+    assert grammar.materials.primary.texture_key == "heritage_portland_stone"
+    assert grammar.materials.secondary.texture_key == grammar.materials.primary.texture_key
+    assert grammar.materials.secondary.base_color == grammar.materials.primary.base_color
+    grammar.validate()
+
+
 def test_variant_override_changes_family_and_materials():
     payload = payload_mixed_use_midrise()
     payload["selectedVariant"] = {

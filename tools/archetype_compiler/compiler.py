@@ -127,6 +127,8 @@ _MATERIAL_KEYWORDS: list[tuple[str, tuple[str, float, float], str]] = [
     ("render", ("#ddd9d0", 0.8, 0.0), "stucco"),
     ("plaster", ("#e0dcd3", 0.8, 0.0), "stucco"),
     ("stucco", ("#ddd5c6", 0.8, 0.0), "stucco"),
+    ("lutetian limestone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
+    ("cream limestone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
     ("portland stone", ("#d8d0c0", 0.76, 0.0), "heritage_portland_stone"),
     ("limestone", ("#d5cbb8", 0.75, 0.0), "limestone"),
     ("sandstone", ("#c9b090", 0.78, 0.0), "sandstone"),
@@ -608,6 +610,32 @@ def compile_archetype(
         entrance_type=facade_system["entrance_type"],
     )
 
+    primary_material = _derive_material(
+        "primary", facade_detail.get("primaryMaterial"), "MAT_Facade_Primary", notes,
+    )
+    secondary_material = _derive_material(
+        "secondary", facade_detail.get("secondaryMaterial"), "MAT_Facade_Secondary", notes,
+    )
+    secondary_text = str(facade_detail.get("secondaryMaterial") or "").lower()
+    # Classical carving is normally cut from the same stone as the wall. A
+    # generic "carved stone" description should therefore inherit the named
+    # limestone/sandstone finish instead of becoming a contrasting rubble map.
+    if (
+        facade.system == "heritage_stone"
+        and secondary_material.texture_key == "natural_stone"
+        and primary_material.texture_key in {"heritage_portland_stone", "limestone", "sandstone"}
+        and "stone" in secondary_text
+    ):
+        secondary_material = Material(
+            name="MAT_Facade_Secondary",
+            base_color=primary_material.base_color,
+            roughness=primary_material.roughness,
+            metallic=primary_material.metallic,
+            source_text=str(facade_detail.get("secondaryMaterial") or ""),
+            texture_key=primary_material.texture_key,
+        )
+        notes.append("materials.secondary: inherited the primary heritage stone finish for carved ornament")
+
     grammar = BuildingGrammar(
         family_id=_slug((variant or {}).get("id") or archetype_id),
         source=GrammarSource(
@@ -647,8 +675,8 @@ def compile_archetype(
         ),
         roof=roof,
         materials=Materials(
-            primary=_derive_material("primary", facade_detail.get("primaryMaterial"), "MAT_Facade_Primary", notes),
-            secondary=_derive_material("secondary", facade_detail.get("secondaryMaterial"), "MAT_Facade_Secondary", notes),
+            primary=primary_material,
+            secondary=secondary_material,
             accent=_derive_material("accent", facade_detail.get("accentMaterial"), "MAT_Accent", notes),
             glass=_derive_glass(palette, notes),
             roof=_derive_material("roof", roof_detail.get("material"), "MAT_Roof", notes)
