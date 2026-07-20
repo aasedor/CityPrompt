@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-dark-frame-office-renderlock-v71`.
+Current executable memory: `2026-07-20-industrial-original-mill-v80`.
 
 ## The quality target
 
@@ -579,6 +579,23 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Fixed storefront identity includes entrance count as well as display rhythm.
   Keep both recessed entries, the cast-iron pilasters, spandrel/frieze hierarchy
   and six upper arches fixed; only ordinary display or sash bays may repeat.
+
+### Original textile mill + variant-graph inheritance lessons
+
+- A selected variant profile normally replaces its parent profile. When one
+  variant intentionally reuses a fixed parent massing graph, declare that with
+  an explicit `massing_graph_from` contract; never implicitly share the graph
+  with sibling brewery, power-station or modern-loft variants.
+- Selected-variant dimensions control the fixed graph. The original mill is a
+  30 by 20 metre, four-level building on an audited four-metre structural grid;
+  provisional parent heights must not stretch it into a generic tall block.
+- Automated validation cannot detect a plausible but contradictory fallback.
+  Reject a valid generic stack when the photoreal and catalogue references
+  prove a gable, roof monitor, chimney, four principal bays and no terraces.
+- A single rectified principal elevation can provide a conservative wrapped
+  envelope, but it is not independent secondary-elevation evidence. Inspect
+  rear-corner and aerial views, use different crops where supported, and record
+  remaining repetition in human QA.
 
 ## Updating this memory
 

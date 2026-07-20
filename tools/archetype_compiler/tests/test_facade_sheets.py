@@ -113,7 +113,6 @@ def test_modernist_civic_signature_injects_semantic_massing_graph():
     ("archetype_id", "required_skin_kind", "glass_profile_name"),
     [
         ("nordic_timber_midrise", "facade_skin", "residential_low_e"),
-        ("industrial_brick_mixed_use", "facade_skin", "industrial_sash"),
         ("modern_glass_office_institutional", "facade_skin", "reflective_curtain_wall"),
     ],
 )
@@ -134,6 +133,49 @@ def test_gemini_skin_pilots_inject_depth_backed_elevations(
     assert graph["height_m"] >= 26.0
     assert any(node["id"].endswith("shadow_core") for node in graph["nodes"])
     assert "massing_graph" not in grammar["architectural_signature"]
+
+
+def test_original_mill_variant_explicitly_inherits_parent_massing_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "industrial_brick_mixed_use",
+            "variant_id": "industrial_brick_original_mill",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "victorian_textile_mill_monitor_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 20.0,
+        "floors": 4,
+        "floor_height_m": 4.0,
+    }
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
+    assert "massing_graph_from" not in injected["architectural_signature"]
+    assert "massing_graph" not in injected["architectural_signature"]
+
+
+def test_original_mill_graph_is_not_implicitly_shared_with_sibling_variants():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "industrial_brick_mixed_use",
+            "variant_id": "industrial_brick_brewery",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+
+    assert "massing_graph" not in injected
+    assert "brewery warehouse" in injected["architectural_signature"]["identity"]
 
 
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():

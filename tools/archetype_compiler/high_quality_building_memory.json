@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-victorian-polychrome-main-street-v79",
+  "memory_version": "2026-07-20-industrial-original-mill-v80",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -700,6 +700,26 @@
       "symptom": "A concealed historic roof has the wrong ridge direction and its skylights disappear into the slope",
       "cause": "The front hero view was accepted before the roof-plan reference was used to orient the hip, and thin glass boxes were placed below the local roof plane.",
       "correction": "Use the aerial reference to set ridge axis and seam fan direction, seat skylights on explicit curbs above the local plane, and require the aerial review to prove ridge, seams, chimney and service openings together."
+    },
+    {
+      "symptom": "A selected original mill silently compiles as a generic stepped mixed-use block with a flat terrace",
+      "cause": "The selected variant's material profile correctly took precedence over the parent profile but therefore masked the parent's fixed original-mill massing graph.",
+      "correction": "Use an explicit opt-in massing_graph_from contract when one selected variant intentionally reuses a parent graph. Test that the target variant inherits it and that sibling variants remain isolated."
+    },
+    {
+      "symptom": "A four-level Victorian mill becomes implausibly tall and loses its catalogue proportions",
+      "cause": "A provisional parent floor height of six metres overrode the selected variant's four-metre structural grid.",
+      "correction": "Lock fixed graph height to the selected variant's audited floor count and floor height. Keep its reference dimensions synchronized with the cohort entry and canonical generation command."
+    },
+    {
+      "symptom": "A structurally valid generated building contains roof terraces and pavilion forms absent from every industrial reference",
+      "cause": "The fixed graph selector fell back to the generic LEGO stack, whose valid mixed-use defaults were mistaken for evidence-led mill construction.",
+      "correction": "Treat validation as necessary but not sufficient. Compare silhouette, roof topology, bay count and landmark service elements against the photoreal goalpost and reject any visually contradictory fallback."
+    },
+    {
+      "symptom": "A wrapped industrial elevation repeats the principal facade rhythm on less-documented side and rear walls",
+      "cause": "Only one rectified orthographic source was available, so one registered atlas supplied all four exposed elevations.",
+      "correction": "Use evidence-led UV crops or dedicated secondary schedules when side references support them. When evidence is incomplete, keep the wrap conservative, review both rear-corner and aerial views, and record the limitation in human QA."
     }
   ]
 }

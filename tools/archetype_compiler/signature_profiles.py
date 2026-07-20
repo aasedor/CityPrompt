@@ -37,12 +37,30 @@ def inject_signature(
     key = preferred_variant if preferred_variant in profiles else parent_key
     if key in profiles:
         profile = deepcopy(profiles[key])
+        massing_graph_from = profile.pop("massing_graph_from", None)
         # Massing graphs are a renderer-level building contract rather than a
         # facade-signature hint. Keep them at the grammar root so renderers can
         # opt in without sending a large geometry recipe to image generators.
         massing_graph = profile.pop("massing_graph", None)
         dimension_overrides = profile.pop("dimension_overrides", None)
         footprint_compatibility_override = profile.pop("footprint_compatibility_override", None)
+        if massing_graph_from:
+            try:
+                graph_source = profiles[str(massing_graph_from)]
+            except KeyError as exc:
+                raise KeyError(
+                    f"profile {key!r} inherits a missing massing graph from {massing_graph_from!r}"
+                ) from exc
+            if massing_graph is None:
+                massing_graph = deepcopy(graph_source.get("massing_graph"))
+            if footprint_compatibility_override is None:
+                footprint_compatibility_override = deepcopy(
+                    graph_source.get("footprint_compatibility_override")
+                )
+            if massing_graph is None:
+                raise ValueError(
+                    f"profile {key!r} inherits from {massing_graph_from!r}, which has no massing_graph"
+                )
         grammar["architectural_signature"] = profile
         if massing_graph:
             grammar["massing_graph"] = massing_graph
