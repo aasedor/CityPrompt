@@ -28,6 +28,7 @@ import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
   preferLowerGroundAnchor,
+  resolvePublicRealmGroundAnchor,
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import { computeFootprintFrame } from './buildingPlacement';
@@ -48,6 +49,10 @@ import {
   selectDetailedStreetZones,
   streetTerrainSampleOffset,
 } from './streetDetailLod';
+import {
+  PUBLIC_REALM_DECAL_DEPTH,
+  PUBLIC_REALM_DETAIL_DEPTH,
+} from './publicRealmDepthPolicy';
 
 const DEG_TO_RAD = Math.PI / 180;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
@@ -178,7 +183,12 @@ function StreetRibbonDetail({
       const samples = [centerLngLat.lngLat[0], mid, centerLngLat.lngLat[centerLngLat.lngLat.length - 1]]
         .map(([lng, lat]) => raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current));
       const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-      const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+      const groundCandidate = resolvePublicRealmGroundAnchor(
+        filtered,
+        storedTerrain,
+        fallbackTerrainHeight,
+        4,
+      );
       if (
         groundCandidate !== null
         && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
@@ -355,8 +365,8 @@ function StreetRibbonDetail({
         >
           <meshBasicMaterial
             color={band.color}
-            depthTest={false}
-            depthWrite={false}
+            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
             polygonOffset
             polygonOffsetFactor={-3}
             polygonOffsetUnits={-6}
@@ -373,8 +383,8 @@ function StreetRibbonDetail({
         >
           <meshBasicMaterial
             color={marking.color}
-            depthTest
-            depthWrite={false}
+            depthTest={PUBLIC_REALM_DECAL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DECAL_DEPTH.depthWrite}
             polygonOffset
             polygonOffsetFactor={-4}
             polygonOffsetUnits={-8}
@@ -391,8 +401,8 @@ function StreetRibbonDetail({
         <mesh geometry={geometries.dashes} renderOrder={RENDER_ORDER_DASHES} frustumCulled={false}>
           <meshBasicMaterial
             color={DASH_COLOR}
-            depthTest
-            depthWrite={false}
+            depthTest={PUBLIC_REALM_DECAL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DECAL_DEPTH.depthWrite}
             polygonOffset
             polygonOffsetFactor={-4}
             polygonOffsetUnits={-8}
@@ -529,7 +539,12 @@ function RoundaboutDetail({
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
     const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    const groundCandidate = resolvePublicRealmGroundAnchor(
+      filtered,
+      storedTerrain,
+      fallbackTerrainHeight,
+      4,
+    );
     if (
       groundCandidate !== null
       && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
@@ -550,10 +565,20 @@ function RoundaboutDetail({
     >
       <group position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], 0]}>
         <mesh geometry={geometry.ring} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshBasicMaterial color={ASPHALT_COLOR} depthTest={false} side={THREE.DoubleSide} />
+          <meshBasicMaterial
+            color={ASPHALT_COLOR}
+            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
+            side={THREE.DoubleSide}
+          />
         </mesh>
         <mesh geometry={geometry.apron} renderOrder={RENDER_ORDER_FLATWORK} frustumCulled={false}>
-          <meshBasicMaterial color={CONCRETE_COLOR} depthTest={false} side={THREE.DoubleSide} />
+          <meshBasicMaterial
+            color={CONCRETE_COLOR}
+            depthTest={PUBLIC_REALM_DETAIL_DEPTH.depthTest}
+            depthWrite={PUBLIC_REALM_DETAIL_DEPTH.depthWrite}
+            side={THREE.DoubleSide}
+          />
         </mesh>
         <mesh geometry={geometry.island} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
           <meshLambertMaterial color={ISLAND_COLOR} />

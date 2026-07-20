@@ -29,6 +29,7 @@ import {
   hasUsableElevationRelief,
   isPlausibleTerrainAnchor,
   rejectRaisedObjectTop,
+  resolvePublicRealmGroundAnchor,
   resolveReplacementGroundAnchor,
   resolveZoneTerrainHeight,
   shouldFilterObjectTerrainHeight,
@@ -48,15 +49,16 @@ import {
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { resolvePublicRealmGroundDepthPolicy } from './publicRealmDepthPolicy';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const REPLACEMENT_GROUND_SAMPLE_RADII_METERS = [8, 20, 36] as const;
-// Keep proposal ground just above the noisy photogrammetry skin. A curb-scale
-// clearance avoids flicker/disappearance without recreating the former
-// metre-scale floating parks that buried building and prop bases.
-const FLAT_ZONE_SURFACE_LIFT_METERS = 0.32;
-const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.4;
+// With the live tile surface as the authoritative anchor, only a decal-scale
+// clearance is needed. Normal depth testing prevents the ground from painting
+// across buildings while polygon offset avoids coplanar terrain flicker.
+const FLAT_ZONE_SURFACE_LIFT_METERS = 0.08;
+const FLAT_ZONE_OUTLINE_LIFT_METERS = 0.11;
 const FLAT_ZONE_MAX_EDGE_LENGTH_METERS = 12;
 const FLAT_ZONE_MAX_RENDER_VERTICES = 96;
 const FLAT_ZONE_DEPTH_OFFSET_FACTOR = -4;
@@ -441,15 +443,6 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   const compiledSurfaceColor = communityKind === 'park'
     ? (isPlazaGround ? '#b5b1a7' : '#66874f')
     : (isWoonerfGround ? '#9b674f' : '#656765');
-  // A prepared site boundary (or an explicit per-zone mask) already removes
-  // source photogrammetry. In that case public-realm surfaces must participate
-  // in the normal depth buffer so they cannot paint roads and lawns across the
-  // facades of generated buildings. Standalone drapes without a tile mask keep
-  // the historical overlay behavior so source roofs/cars cannot punch through.
-  const compiledGroundHasTileMask = isCompiledGround && (
-    sitePrepared || zoneProps?.community_3d_mask_existing_tiles === true
-  );
-  const shouldRespectTileDepth = isBuilding || isPreparedBoundary || compiledGroundHasTileMask;
   const isImported = typeof zoneProps?._imported_from === 'string';
   // Imported reference layers (and big layers) drape ONCE then freeze — stable,
   // no per-frame re-draping that makes long corridors shimmer/jitter while orbiting.
@@ -571,6 +564,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
   }, [groundMeta, geoData]);
   useDeferredDisposable(orthoGeo);
   const drapeActive = Boolean(orthoGeo && groundTexture);
+  const publicRealmDepthPolicy = resolvePublicRealmGroundDepthPolicy({
+    isCompiledGround,
+    hasAuthoredGroundTexture: drapeActive,
+    isPreparedBoundary,
+    isSiteBoundary,
+  });
 
   // --- Terrain draping for flat zones ---
   // Raycast each vertex onto the tile mesh to get precise ground elevation offsets
@@ -627,11 +626,18 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       terrainReferenceHeight,
     );
     const sampledHeight = filterObjectHeights
-      ? resolveReplacementGroundAnchor(
-          representativeHeight,
-          storedTerrainHeight,
-          terrainHeight,
-        )
+      ? (communityKind === 'park' || communityKind === 'street'
+        ? resolvePublicRealmGroundAnchor(
+            representativeHeight,
+            storedTerrainHeight,
+            terrainHeight,
+            4,
+          )
+        : resolveReplacementGroundAnchor(
+            representativeHeight,
+            storedTerrainHeight,
+            terrainHeight,
+          ))
       : representativeHeight;
     if (!isPlausibleTerrainAnchor(sampledHeight, terrainReferenceHeight)) {
       return false;
@@ -644,7 +650,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         : trustedSampledHeight
     ));
     return true;
-  }, [centroid, filterObjectHeights, isCompiledGround, isPreparedBoundary, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
+  }, [centroid, communityKind, filterObjectHeights, isCompiledGround, isPreparedBoundary, storedTerrainHeight, terrainHeight, terrainReferenceHeight, tiles, zone.coordinates]);
 
   useFrame(() => {
     const drag = dragRef.current;
@@ -988,12 +994,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
               key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : 'plain'}
               color={drapeActive || isWoonerfGround ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
               map={drapeActive ? groundTexture : woonerfGroundTexture ?? undefined}
-              transparent
+              transparent={publicRealmDepthPolicy.transparent}
               opacity={isSiteBoundary ? 0.15 : 1.0}
               side={THREE.DoubleSide}
-              depthTest={shouldRespectTileDepth}
-              depthWrite={compiledGroundHasTileMask}
-              polygonOffset={shouldRespectTileDepth}
+              depthTest={publicRealmDepthPolicy.depthTest}
+              depthWrite={publicRealmDepthPolicy.depthWrite}
+              polygonOffset
               polygonOffsetFactor={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_FACTOR}
               polygonOffsetUnits={isBuilding ? -1 : FLAT_ZONE_DEPTH_OFFSET_UNITS}
             />
@@ -1059,7 +1065,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
           <lineBasicMaterial
             color={isSelected ? '#ffffff' : color}
             linewidth={isSelected ? 3 : 1.5}
-            depthTest={shouldRespectTileDepth}
+            depthTest
             depthWrite={false}
           />
         </line>

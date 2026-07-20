@@ -35,6 +35,7 @@ import {
   getObjectFilteredTerrainHeight,
   isPlausibleTerrainAnchor,
   preferLowerGroundAnchor,
+  resolvePublicRealmGroundAnchor,
   resolveZoneTerrainHeight,
 } from './globeTerrainUtils';
 import { PARK_KIT_MANIFEST } from '@/data/parkKitManifest';
@@ -837,7 +838,12 @@ function ParkKitInstance({
         raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current),
       );
       const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
-      const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+      const groundCandidate = resolvePublicRealmGroundAnchor(
+        filtered,
+        storedTerrain,
+        fallbackTerrainHeight,
+        4,
+      );
       // Gate against the unrefined-root-tile trap: the first finite sample
       // can be ~29km below the true surface (see isPlausibleTerrainAnchor).
       // An implausible sample burns an attempt and retries next interval —
