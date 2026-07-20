@@ -8688,6 +8688,96 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
             ))
 
 
+def _graph_arcade_array(parts: list, spec: dict, mats: dict) -> None:
+    """Deep, axis-aware round-arch portico with shared masonry piers.
+
+    Unlike ``classical_window_array``, this assembly is an inhabitable ground
+    arcade rather than a row of punched openings.  It wraps the same curved
+    arch primitive onto front, rear, left or right elevations, adds one shared
+    pier at every bay boundary and places a recessed occupied/shopfront card
+    behind each opening.  The explicit bay count keeps portici and loggia
+    rhythms stable when the atlas is swapped or the camera moves around a
+    street corner.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"arcade array axis {axis!r} is unsupported")
+    centre = Vector(tuple(float(value) for value in spec["centre"]))
+    span = float(spec["span_m"])
+    count = max(1, int(spec.get("count", round(span / 4.8))))
+    base_z = float(spec.get("base_z", 0.18))
+    spring_z = float(spec.get("spring_z", 3.15))
+    bay = span / count
+    inner_radius = float(spec.get("inner_radius_m", bay * 0.37))
+    profile = float(spec.get("profile_m", min(0.34, bay * 0.075)))
+    depth = float(spec.get("depth_m", 0.72))
+    pier_width = float(spec.get("pier_width_m", max(0.42, bay - inner_radius * 2)))
+    pier_depth = float(spec.get("pier_depth_m", depth * 1.12))
+    cap_height = float(spec.get("capital_height_m", 0.22))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    back = _graph_material(mats, spec.get("back_material", "interior"))
+    prefix = str(spec.get("id", "GraphArcade"))
+    outward, along = _glazing_axis_vectors(axis)
+    rotation_z = {
+        "front": 0.0,
+        "rear": math.pi,
+        "left": -math.pi / 2,
+        "right": math.pi / 2,
+    }[axis]
+
+    def member_size(along_size: float, normal_size: float, height: float) -> tuple[float, float, float]:
+        return (
+            (along_size, normal_size, height)
+            if axis in {"front", "rear"}
+            else (normal_size, along_size, height)
+        )
+
+    opening_height = spring_z - base_z + inner_radius
+    for index in range(count):
+        offset = -span / 2 + bay * (index + 0.5)
+        datum = centre + along * offset
+        ring = add_arch_ring(
+            f"{prefix}_Arch{index:02d}", 0.0, 0.0, spring_z,
+            inner_radius, profile, depth, stone, 24,
+        )
+        ring.rotation_euler.z = rotation_z
+        ring.location = (datum.x, datum.y, 0.0)
+        parts.append(ring)
+        recess = datum - outward * (depth * 0.58)
+        recess.z = base_z + opening_height / 2
+        parts.append(add_box(
+            f"{prefix}_Recess{index:02d}",
+            member_size(inner_radius * 1.86, 0.055, opening_height * 0.96),
+            tuple(recess), back,
+        ))
+
+    pier_height = spring_z - base_z + profile * 0.45
+    for index in range(count + 1):
+        offset = -span / 2 + bay * index
+        datum = centre + along * offset
+        pier = datum + outward * (depth * 0.04)
+        pier.z = base_z + pier_height / 2
+        parts.append(add_beveled_box(
+            f"{prefix}_Pier{index:02d}",
+            member_size(pier_width, pier_depth, pier_height),
+            tuple(pier), stone, min(0.045, pier_width * 0.08),
+        ))
+        capital = datum + outward * (depth * 0.08)
+        capital.z = spring_z - cap_height / 2 + profile * 0.20
+        parts.append(add_beveled_box(
+            f"{prefix}_Capital{index:02d}",
+            member_size(pier_width * 1.38, pier_depth * 1.08, cap_height),
+            tuple(capital), stone, min(0.035, cap_height * 0.14),
+        ))
+
+    threshold = centre + outward * (depth * 0.42)
+    threshold.z = base_z / 2
+    parts.append(add_beveled_box(
+        f"{prefix}_Threshold", member_size(span + pier_width, depth * 1.16, base_z),
+        tuple(threshold), stone, min(0.035, base_z * 0.14),
+    ))
+
+
 def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
     """Small masonry blocks repeated along one or more true construction courses."""
     axis = str(spec.get("axis", "front"))
@@ -8922,6 +9012,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_classical_balustrade_perimeter(parts, assembly, mats)
         elif kind == "classical_window_array":
             _graph_classical_window_array(parts, assembly, mats)
+        elif kind == "arcade_array":
+            _graph_arcade_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
         else:

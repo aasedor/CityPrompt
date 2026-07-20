@@ -1606,8 +1606,93 @@
     "mediterranean_arcade_mixed_use": {
       "identity": "Mediterranean mixed-use palazzo with a deep ground arcade, shaded upper loggias, stucco wall field, stone trim and generous terracotta eaves.",
       "material_zones": "sun-washed stucco; warm stone arches; dark timber shutters; terracotta roof",
-      "material_overrides": {"roof": {"base_color": "#874733", "roughness": 0.70}, "accent": {"base_color": "#49352a", "roughness": 0.62}},
+      "material_overrides": {"roof": {"base_color": "#874733", "roughness": 0.70, "texture_key": "terracotta"}, "accent": {"base_color": "#49352a", "roughness": 0.62}},
       "kits": ["ground_arcade", "upper_loggias", "stone_quoining", "tile_eaves"]
+    },
+    "med_arcade_italian_portici": {
+      "identity": "Three-level northern Italian corner palazzo with exactly six pale-limestone arches on the principal portico, a four-arch return, two ochre shuttered residential levels, sparse iron balconies, deep bracketed timber eaves and a low terracotta hip roof.",
+      "material_zones": "ochre mineral stucco; pale warm limestone arcade; forest-green shutters; black wrought iron; dark timber eaves; weathered terracotta tile",
+      "glass_profile": "residential_low_e",
+      "material_overrides": {
+        "primary": {"base_color": "#c99242", "roughness": 0.82, "metallic": 0.0, "texture_key": "stucco"},
+        "secondary": {"base_color": "#d8c49f", "roughness": 0.82, "metallic": 0.0, "texture_key": "limestone"},
+        "accent": {"base_color": "#173a2c", "roughness": 0.54, "metallic": 0.05, "texture_key": null},
+        "roof": {"base_color": "#6f382c", "roughness": 0.82, "metallic": 0.0, "texture_key": "terracotta"}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#d8c49f", "roughness": 0.82, "metallic": 0.0, "texture_key": "limestone"},
+        "signature_warm": {"base_color": "#3f2b20", "roughness": 0.63, "metallic": 0.0, "texture_key": "dark_oak"},
+        "signature_metal": {"base_color": "#1a211d", "roughness": 0.38, "metallic": 0.62, "texture_key": "black_metal"}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [26, 38],
+        "recommendedDepth_m": [20, 30],
+        "recommendedFloors": [3, 3],
+        "wingDepth_m": [10, 16],
+        "preferredBayMultiple_m": 4.9,
+        "notes": [
+          "Use the render-locked graph only at the native 30 by 24 metre, three-level rectangular corner tier.",
+          "Derived parcel kits must retain the six-arch principal portico, curved corner return, two-level shutter order, bracketed eave datum and uninterrupted terracotta hip roof."
+        ]
+      },
+      "kits": ["six_bay_ground_portico", "four_bay_return_arcade", "shuttered_french_windows", "sparse_iron_balconies", "bracketed_timber_eaves", "terracotta_hip_roof"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "italian_six_arch_portici_palazzo_v1",
+        "description": "A fixed three-level northern Italian corner palazzo whose six-arch limestone portico and four-arch return support two ordered ochre residential levels below deep timber eaves and one continuous terracotta hip roof.",
+        "height_m": 17.0,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 30.0, "depth_m": 24.0, "floors": 3, "floor_height_m": 3.4},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0.png", "cues": ["exactly six principal round arches", "ochre stucco", "green shutters", "sparse iron balconies"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0_angle_60.jpg", "cues": ["rectangular corner palazzo", "short return arcade", "deep timber eaves", "three wall levels"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/mediterranean_arcade_mixed_use/variant_0_angle_90.jpg", "cues": ["single low terracotta hip roof", "ridge parallel to long face", "four modest chimneys", "no tower or terrace"]}
+        ],
+        "nodes": [
+          {"id": "portici_plinth", "kind": "box", "size": [30.8, 24.8, 0.34], "location": [0.0, 0.0, 0.17], "material": "signature_stone", "bevel_m": 0.045},
+          {"id": "portici_shadow_core", "kind": "box", "size": [29.4, 23.4, 11.8], "location": [0.0, 0.0, 5.9], "material": "primary", "bevel_m": 0.14},
+          {"id": "portici_front_eave_fascia", "kind": "box", "size": [31.4, 0.68, 0.48], "location": [0.0, -12.28, 11.84], "material": "signature_warm", "bevel_m": 0.045},
+          {"id": "portici_rear_eave_fascia", "kind": "box", "size": [31.4, 0.68, 0.48], "location": [0.0, 12.28, 11.84], "material": "signature_warm", "bevel_m": 0.045},
+          {"id": "portici_left_eave_fascia", "kind": "box", "size": [0.68, 24.6, 0.48], "location": [-15.38, 0.0, 11.84], "material": "signature_warm", "bevel_m": 0.045},
+          {"id": "portici_right_eave_fascia", "kind": "box", "size": [0.68, 24.6, 0.48], "location": [15.38, 0.0, 11.84], "material": "signature_warm", "bevel_m": 0.045},
+          {"id": "portici_terracotta_hip", "kind": "hipped_roof", "size": [31.4, 25.4, 4.35], "location": [0.0, 0.0, 12.0], "material": "roof", "bevel_m": 0.07, "ridge_axis": "x", "ridge_inset_m": 6.6},
+          {"id": "portici_chimney_1", "kind": "box", "size": [1.0, 0.9, 2.25], "location": [-8.5, -3.5, 15.25], "material": "primary", "bevel_m": 0.06},
+          {"id": "portici_chimney_2", "kind": "box", "size": [1.0, 0.9, 2.25], "location": [8.5, -3.5, 15.25], "material": "primary", "bevel_m": 0.06},
+          {"id": "portici_chimney_3", "kind": "box", "size": [1.0, 0.9, 2.0], "location": [-8.5, 3.5, 15.1], "material": "primary", "bevel_m": 0.06},
+          {"id": "portici_chimney_4", "kind": "box", "size": [1.0, 0.9, 2.0], "location": [8.5, 3.5, 15.1], "material": "primary", "bevel_m": 0.06},
+          {"id": "portici_chimney_cap_1", "kind": "hipped_roof", "size": [1.4, 1.3, 0.34], "location": [-8.5, -3.5, 16.36], "material": "roof", "bevel_m": 0.025, "ridge_axis": "x", "ridge_inset_m": 0.55},
+          {"id": "portici_chimney_cap_2", "kind": "hipped_roof", "size": [1.4, 1.3, 0.34], "location": [8.5, -3.5, 16.36], "material": "roof", "bevel_m": 0.025, "ridge_axis": "x", "ridge_inset_m": 0.55},
+          {"id": "portici_chimney_cap_3", "kind": "hipped_roof", "size": [1.4, 1.3, 0.34], "location": [-8.5, 3.5, 16.09], "material": "roof", "bevel_m": 0.025, "ridge_axis": "x", "ridge_inset_m": 0.55},
+          {"id": "portici_chimney_cap_4", "kind": "hipped_roof", "size": [1.4, 1.3, 0.34], "location": [8.5, 3.5, 16.09], "material": "roof", "bevel_m": 0.025, "ridge_axis": "x", "ridge_inset_m": 0.55}
+        ],
+        "voids": [
+          {"id": "principal_portico_depth", "size": [29.0, 2.0, 4.95], "location": [0.0, -11.7, 2.55], "purpose": "six deep shopfront thresholds behind the principal limestone arcade"},
+          {"id": "return_portico_depth", "size": [2.0, 23.0, 4.95], "location": [-14.7, 0.0, 2.55], "purpose": "four deep shopfront thresholds returning around the street corner"}
+        ],
+        "assemblies": [
+          {"id": "portici_front_podium_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -11.73, 2.5], "span_m": 29.5, "height_m": 5.0, "depth_m": 0.05, "band": "podium"},
+          {"id": "portici_front_floor_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -11.73, 6.7], "span_m": 29.5, "height_m": 3.4, "depth_m": 0.05, "band": "floor"},
+          {"id": "portici_front_crown_skin", "kind": "facade_skin", "axis": "front", "centre": [0.0, -11.73, 10.1], "span_m": 29.5, "height_m": 3.4, "depth_m": 0.05, "band": "crown"},
+          {"id": "portici_left_podium_skin", "kind": "facade_skin", "axis": "left", "centre": [-14.73, 0.0, 2.5], "span_m": 23.5, "height_m": 5.0, "depth_m": 0.05, "band": "podium", "uv_u_min": 0.0, "uv_u_max": 0.6667, "flip_u": true},
+          {"id": "portici_left_floor_skin", "kind": "facade_skin", "axis": "left", "centre": [-14.73, 0.0, 6.7], "span_m": 23.5, "height_m": 3.4, "depth_m": 0.05, "band": "floor", "uv_u_min": 0.0, "uv_u_max": 0.6667, "flip_u": true},
+          {"id": "portici_left_crown_skin", "kind": "facade_skin", "axis": "left", "centre": [-14.73, 0.0, 10.1], "span_m": 23.5, "height_m": 3.4, "depth_m": 0.05, "band": "crown", "uv_u_min": 0.0, "uv_u_max": 0.6667, "flip_u": true},
+          {"id": "portici_rear_floor_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 11.73, 6.7], "span_m": 29.5, "height_m": 3.4, "depth_m": 0.05, "band": "floor", "flip_u": true},
+          {"id": "portici_rear_crown_skin", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 11.73, 10.1], "span_m": 29.5, "height_m": 3.4, "depth_m": 0.05, "band": "crown", "flip_u": true},
+          {"id": "portici_right_floor_skin", "kind": "facade_skin", "axis": "right", "centre": [14.73, 0.0, 6.7], "span_m": 23.5, "height_m": 3.4, "depth_m": 0.05, "band": "floor", "uv_u_min": 0.0, "uv_u_max": 0.6667},
+          {"id": "portici_right_crown_skin", "kind": "facade_skin", "axis": "right", "centre": [14.73, 0.0, 10.1], "span_m": 23.5, "height_m": 3.4, "depth_m": 0.05, "band": "crown", "uv_u_min": 0.0, "uv_u_max": 0.6667},
+          {"id": "portici_six_arch_front", "kind": "arcade_array", "axis": "front", "centre": [0.0, -11.95, 0.0], "span_m": 29.0, "count": 6, "base_z": 0.26, "spring_z": 3.25, "inner_radius_m": 1.83, "profile_m": 0.34, "depth_m": 0.78, "pier_width_m": 0.48, "pier_depth_m": 0.86, "material": "signature_stone", "back_material": "interior"},
+          {"id": "portici_four_arch_return", "kind": "arcade_array", "axis": "left", "centre": [-14.95, 0.0, 0.0], "span_m": 23.0, "count": 4, "base_z": 0.26, "spring_z": 3.15, "inner_radius_m": 2.10, "profile_m": 0.36, "depth_m": 0.78, "pier_width_m": 0.52, "pier_depth_m": 0.86, "material": "signature_stone", "back_material": "interior"},
+          {"id": "portici_balcony_lower_left", "kind": "balcony_array", "axis": "front", "centre": [-7.25, -11.78, 0.0], "span_m": 2.65, "levels_z": [5.12], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.72, "rail_profile_m": 0.025, "pickets_per_segment": 8, "slab_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "portici_balcony_lower_right", "kind": "balcony_array", "axis": "front", "centre": [7.25, -11.78, 0.0], "span_m": 2.65, "levels_z": [5.12], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.72, "rail_profile_m": 0.025, "pickets_per_segment": 8, "slab_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "portici_balcony_upper_centre", "kind": "balcony_array", "axis": "front", "centre": [2.45, -11.78, 0.0], "span_m": 2.65, "levels_z": [8.52], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.72, "rail_profile_m": 0.025, "pickets_per_segment": 8, "slab_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "portici_front_eave_brackets", "kind": "corbel_array", "axis": "front", "centre": [0.0, -12.16, 0.0], "span_m": 30.4, "count": 24, "levels_z": [11.52], "depth_m": 0.72, "height_m": 0.42, "width_ratio": 0.34, "max_width_m": 0.34, "material": "signature_warm"},
+          {"id": "portici_left_eave_brackets", "kind": "corbel_array", "axis": "left", "centre": [-15.25, 0.0, 0.0], "span_m": 23.7, "count": 18, "levels_z": [11.52], "depth_m": 0.72, "height_m": 0.42, "width_ratio": 0.34, "max_width_m": 0.34, "material": "signature_warm"},
+          {"id": "portici_rear_eave_brackets", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 12.16, 0.0], "span_m": 30.4, "count": 24, "levels_z": [11.52], "depth_m": 0.72, "height_m": 0.42, "width_ratio": 0.34, "max_width_m": 0.34, "material": "signature_warm"},
+          {"id": "portici_right_eave_brackets", "kind": "corbel_array", "axis": "right", "centre": [15.25, 0.0, 0.0], "span_m": 23.7, "count": 18, "levels_z": [11.52], "depth_m": 0.72, "height_m": 0.42, "width_ratio": 0.34, "max_width_m": 0.34, "material": "signature_warm"}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+      }
     },
     "japanese_machiya_mixed_use": {
       "identity": "Contemporary machiya with a narrow timber structural rhythm, deep eaves, translucent lattice screens, recessed shopfront and layered threshold.",

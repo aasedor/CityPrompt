@@ -1289,6 +1289,32 @@ def test_chateauesque_audited_bands_are_single_storeys_with_bounded_openings():
             assert 0.0 < y0 < y1 < 1.0
 
 
+def test_italian_portici_variant_locks_six_arch_corner_arcade_and_hip_roof():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["med_arcade_italian_portici"]
+    graph = profile["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 24.0,
+        "floors": 3,
+        "floor_height_m": 3.4,
+    }
+    assert assemblies["portici_six_arch_front"]["kind"] == "arcade_array"
+    assert assemblies["portici_six_arch_front"]["count"] == 6
+    assert assemblies["portici_four_arch_return"]["axis"] == "left"
+    assert assemblies["portici_four_arch_return"]["count"] == 4
+    assert nodes["portici_terracotta_hip"]["kind"] == "hipped_roof"
+    assert sum(node_id.startswith("portici_chimney_") and "cap" not in node_id for node_id in nodes) == 4
+    assert profile["footprint_compatibility_override"]["recommendedFloors"] == [3, 3]
+
+
 def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():
     np = pytest.importorskip("numpy")
     pytest.importorskip("PIL")

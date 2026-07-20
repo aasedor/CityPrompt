@@ -700,6 +700,33 @@ The polychrome collegiate family added four rules for resizable hero facades:
   compatibility override before canonical generation, identify the one native
   fixed tier, and bound which complete assemblies derived L/U kits must retain.
 
+### Italian portici palazzo + axis-aware arcade lessons
+
+- Reference floor counts outrank provisional cohort placeholders. The selected
+  Italian portici evidence proves three occupied wall levels, so the native
+  keeper is a 30 by 24 metre three-level palazzo rather than a stretched
+  six-level mixed-use stack.
+- Bay counts are part of the construction contract. A strong legacy elevation
+  with four arches and a central pediment was rejected for this six-arch,
+  roof-controlled variant; a new shadow-neutral six-bay atlas aligned the
+  shutters and shopfronts to the physical rhythm.
+- A deep portico is not a row of punched windows. Use an axis-aware fixed
+  arcade assembly with curved rings, shared piers, capitals, recessed occupied
+  shopfront cards and a continuous threshold so a corner return remains
+  genuinely arched in oblique views.
+- Let texture and geometry divide the work deliberately: the atlas carries
+  ochre plaster, shutters, fine window trim and shopfront identity, while the
+  limestone arches, sparse iron balconies, bracketed eaves, hip roof and
+  chimney caps remain shadow-casting assemblies.
+- Roof-plan review must include the entire hierarchy. The first pilot's plain
+  chimney blocks weakened an otherwise correct hip roof; small tiled hipped
+  caps brought the four chimneys back into the photoreal target's silhouette
+  before canonical promotion.
+- A complete rear service base may remain quieter than the public portico, but
+  upper materials, eaves and roof logic still wrap all four elevations. Record
+  that hierarchy explicitly rather than mirroring the ceremonial arcade onto
+  every face without evidence.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

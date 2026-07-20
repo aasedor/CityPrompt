@@ -23,7 +23,7 @@
     {"sequence": 15, "archetype_id": "art_deco_setback_tower", "variant_id": "art_deco_cream_terracotta", "family_id": "art-deco-cream-terracotta-v1-renderlocked", "floors": 15, "width_m": 30, "depth_m": 28, "state": "keeper", "artifact": "art-deco-cream-terracotta-v1/05-canonical-v5", "group": "metropolitan setback icon"},
     {"sequence": 16, "archetype_id": "nordic_timber_midrise", "variant_id": "nordic_timber_mass_timber", "family_id": "nordic-mass-timber-v1-renderlocked", "floors": 7, "width_m": 20, "depth_m": 16, "state": "keeper", "artifact": "nordic-mass-timber-v1/03-canonical-v3", "group": "mass-timber residential"},
     {"sequence": 17, "archetype_id": "scandinavian_urban_residential", "variant_id": "scandi_urban_white_plaster", "family_id": "scandi-white-plaster-v1-renderlocked", "floors": 6, "width_m": 38, "depth_m": 22, "allow_outside_bounds": true, "state": "keeper", "artifact": "scandi-white-plaster-v1/05-canonical-v5", "group": "Scandinavian urban housing"},
-    {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "floors": 6, "state": "pending", "group": "arcaded mixed-use"},
+    {"sequence": 18, "archetype_id": "mediterranean_arcade_mixed_use", "variant_id": "med_arcade_italian_portici", "family_id": "italian-portici-v1-renderlocked", "floors": 3, "width_m": 30, "depth_m": 24, "allow_outside_bounds": true, "state": "keeper", "artifact": "italian-portici-v1/03-canonical-v3", "group": "arcaded mixed-use"},
     {"sequence": 19, "archetype_id": "japanese_machiya_mixed_use", "floors": 3, "state": "pending", "group": "timber mixed-use"},
     {"sequence": 20, "archetype_id": "chateauesque_grand_railway_hotel", "floors": 6, "width_m": 55, "depth_m": 36, "state": "pending", "group": "historic railway hotel"}
   ]

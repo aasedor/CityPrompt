@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-scandi-white-plaster-v85",
+  "memory_version": "2026-07-20-italian-portici-v86",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -800,6 +800,11 @@
       "symptom": "A valid complete family fails the executable quality gate because it declares no preferred parcel profiles",
       "cause": "An older catalogue archetype predated the footprint-compatibility contract, and fixed native geometry did not supply planning guidance by itself.",
       "correction": "Author an explicit compatibility override before canonical generation. Name at least three bounded planning profiles, document the one native fixed tier, and state which complete assemblies derived profiles must preserve."
+    },
+    {
+      "symptom": "A corner portico keeps its curved arches on the principal face but collapses into flat rectangular openings on the return",
+      "cause": "The earlier round-arch helper was hard-wired to the front elevation and treated a deep arcade like a row of punched facade windows.",
+      "correction": "Use an axis-aware fixed arcade assembly with an explicit bay count, shared masonry piers, curved arch rings, recessed occupied shopfront cards and a continuous threshold. Prove both the principal and return rhythms in the front-corner and aerial views."
     }
   ]
 }
