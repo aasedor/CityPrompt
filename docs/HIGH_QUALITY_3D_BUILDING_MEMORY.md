@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-nordic-mass-timber-v84`.
+Current executable memory: `2026-07-20-scandi-white-plaster-v85`.
 
 ## The quality target
 
@@ -677,6 +677,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Assembled-only pilots are the right bounded checkpoint for roof silhouettes
   and semantic-glass artifacts. Their expected missing-module validation is not
   a keeper failure; promotion still requires the complete seven-role package.
+
+### Scandinavian white-plaster housing + audited-band lessons
+
+- Exact storey counts remain a hard gate even for a clean orthographic source.
+  When repeated image corrections still returned four rows for a five-wall-level
+  building, the source was rejected as a full-height atlas rather than stretched.
+- Valid source evidence can still be recovered modularly. Audit the ground,
+  ordinary and crown bands, then sequence or cycle them into the required wall
+  stack while preserving every window's native proportions.
+- Keep silhouette elements out of those bands. Balcony slabs, rails, dormers,
+  Juliet guards, gable roof and passage surround are fixed geometry; the atlas
+  carries plaster, openings and the planted passage view.
+- Portal layers need a deliberate depth order. The shadow cavity is deepest,
+  the main wall skin sits ahead of it, the fixed entrance atlas sits ahead of
+  the wall, and timber jambs/header remain outermost. A coplanar entrance can
+  disappear even when its source texture is correct.
+- Material keys must resolve to the actual texture library. Selecting the
+  registered `standing_seam` key changed the roof from a smooth dark plane to
+  the seam field proved by the aerial reference.
+- Older catalogue entries may have no parcel-profile metadata. Add an explicit
+  compatibility override before canonical generation, identify the one native
+  fixed tier, and bound which complete assemblies derived L/U kits must retain.
 
 ## Updating this memory
 

@@ -317,6 +317,48 @@ def test_nordic_mass_timber_variant_injects_open_pavilion_and_planted_roof_graph
     )
 
 
+def test_scandi_white_plaster_variant_injects_fixed_dormer_passage_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "scandinavian_urban_residential",
+            "variant_id": "scandi_urban_white_plaster",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "white_plaster_five_dormer_perimeter_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 38.0,
+        "depth_m": 22.0,
+        "floors": 6,
+        "floor_height_m": 3.2,
+    }
+    nodes = {node["id"]: node for node in graph["nodes"]}
+    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
+    dormer_bodies = [
+        node_id
+        for node_id in nodes
+        if node_id.startswith("scandi_front_dormer_")
+        and "cap" not in node_id
+    ]
+    assert len(dormer_bodies) == 5
+    assert len([key for key in assemblies if key.endswith("_guard")]) == 5
+    assert assemblies["scandi_passage_atlas"]["band"] == "entrance"
+    passage_y = assemblies["scandi_passage_atlas"]["centre"][1]
+    wall_y = assemblies["scandi_front_skin"]["base_centre"][1]
+    assert passage_y < wall_y
+    assert injected["materials"]["roof"]["texture_key"] == "standing_seam"
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle",
+        "l_shape",
+        "u_shape",
+    ]
+
+
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
     profiles = json.loads(
         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(

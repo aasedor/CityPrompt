@@ -1515,6 +1515,94 @@
       "material_zones": "pale mineral render and brick; warm timber reveals; muted metal roof; dark frames",
       "kits": ["timber_picture_frames", "recessed_balcony_columns", "asymmetric_bays", "slim_eaves"]
     },
+    "scandi_urban_white_plaster": {
+      "identity": "Long white-plaster Scandinavian perimeter block with asymmetric warm-timber balconies, a planted garden passage and five box dormers in a dark standing-seam gable roof.",
+      "material_zones": "warm-white mineral plaster; charcoal windows and rails; oiled-larch balcony decks and passage lining; dark grey standing-seam metal roof",
+      "glass_profile": "residential_low_e",
+      "material_overrides": {
+        "primary": {"base_color": "#eeeae2", "roughness": 0.82, "metallic": 0.0, "texture_key": null},
+        "secondary": {"base_color": "#c7a16f", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_timber"},
+        "accent": {"base_color": "#272b2d", "roughness": 0.38, "metallic": 0.56, "texture_key": "black_metal"},
+        "roof": {"base_color": "#4d5357", "roughness": 0.48, "metallic": 0.58, "texture_key": "standing_seam"}
+      },
+      "signature_material_overrides": {
+        "signature_warm": {"base_color": "#a8753f", "roughness": 0.68, "metallic": 0.0, "texture_key": "natural_timber"},
+        "signature_metal": {"base_color": "#23272a", "roughness": 0.36, "metallic": 0.62, "texture_key": "black_metal"}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [28, 50],
+        "recommendedDepth_m": [18, 30],
+        "recommendedFloors": [4, 7],
+        "wingDepth_m": [10, 16],
+        "preferredBayMultiple_m": 4.2,
+        "notes": [
+          "Use the fixed white-plaster graph only at the native 38 by 22 metre, six-level rectangular tier.",
+          "For derived L- and U-shaped parcel kits, retain the planted passage, balcony stack logic, five-dormer roof order and gable terminations while repeating only audited ordinary wall bays."
+        ]
+      },
+      "kits": ["white_plaster_elevation", "timber_balcony_stacks", "garden_passage", "five_box_dormers", "standing_seam_gable"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "white_plaster_five_dormer_perimeter_v1",
+        "description": "A fixed six-level Scandinavian infill block with five smooth-plaster wall levels, one inhabited dormered attic, asymmetric timber balconies and a planted through-passage.",
+        "height_m": 22.0,
+        "reference_dimensions": {"width_m": 38.0, "depth_m": 22.0, "floors": 6, "floor_height_m": 3.2},
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0.png", "cues": ["white mineral plaster", "asymmetric timber balconies", "garden passage", "five roof dormers"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_60.jpg", "cues": ["long rectangular infill block", "plain gable return", "dark standing-seam roof", "six occupied levels"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/scandinavian_urban_residential/variant_0_angle_90.jpg", "cues": ["ridge parallel to street", "five aligned front dormers", "simple uninterrupted gable roof"]}
+        ],
+        "nodes": [
+          {"id": "scandi_plinth", "kind": "box", "size": [38.6, 22.6, 0.34], "location": [0.0, 0.0, 0.17], "material": "signature_stone", "bevel_m": 0.04},
+          {"id": "scandi_shadow_core", "kind": "box", "size": [37.2, 21.2, 16.2], "location": [0.0, 0.0, 8.1], "material": "primary", "bevel_m": 0.14},
+          {"id": "scandi_main_gable_roof", "kind": "gable_roof", "size": [38.4, 22.4, 5.8], "location": [0.0, 0.0, 16.2], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x"},
+          {"id": "scandi_left_white_gable", "kind": "gable_roof", "size": [0.12, 21.9, 5.68], "location": [-19.24, 0.0, 16.22], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
+          {"id": "scandi_right_white_gable", "kind": "gable_roof", "size": [0.12, 21.9, 5.68], "location": [19.24, 0.0, 16.22], "material": "primary", "bevel_m": 0.02, "ridge_axis": "x"},
+          {"id": "scandi_front_eave", "kind": "box", "size": [38.7, 0.38, 0.18], "location": [0.0, -11.18, 16.22], "material": "signature_metal", "bevel_m": 0.025},
+          {"id": "scandi_rear_eave", "kind": "box", "size": [38.7, 0.38, 0.18], "location": [0.0, 11.18, 16.22], "material": "signature_metal", "bevel_m": 0.025},
+          {"id": "scandi_passage_shadow", "kind": "box", "size": [7.2, 0.5, 3.2], "location": [-5.0, -10.2, 1.7], "material": "interior", "bevel_m": 0.05},
+          {"id": "scandi_passage_left_jamb", "kind": "box", "size": [0.36, 1.15, 3.35], "location": [-8.78, -11.05, 1.72], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "scandi_passage_right_jamb", "kind": "box", "size": [0.36, 1.15, 3.35], "location": [-1.22, -11.05, 1.72], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "scandi_passage_header", "kind": "box", "size": [7.92, 1.15, 0.36], "location": [-5.0, -11.05, 3.38], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "scandi_front_dormer_1", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [-15.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
+          {"id": "scandi_front_dormer_2", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [-7.5, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
+          {"id": "scandi_front_dormer_3", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [0.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
+          {"id": "scandi_front_dormer_4", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [7.5, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
+          {"id": "scandi_front_dormer_5", "kind": "box", "size": [2.35, 2.0, 2.15], "location": [15.0, -8.95, 18.25], "material": "primary", "bevel_m": 0.07},
+          {"id": "scandi_front_dormer_cap_1", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [-15.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
+          {"id": "scandi_front_dormer_cap_2", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [-7.5, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
+          {"id": "scandi_front_dormer_cap_3", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [0.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
+          {"id": "scandi_front_dormer_cap_4", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [7.5, -8.9, 19.4], "material": "roof", "bevel_m": 0.035},
+          {"id": "scandi_front_dormer_cap_5", "kind": "box", "size": [2.7, 2.25, 0.16], "location": [15.0, -8.9, 19.4], "material": "roof", "bevel_m": 0.035}
+        ],
+        "voids": [
+          {"id": "scandi_planted_passage", "size": [7.2, 2.0, 3.2], "location": [-5.0, -11.0, 1.7], "purpose": "fixed timber-lined garden passage through the ground level"}
+        ],
+        "assemblies": [
+          {"id": "scandi_front_skin", "kind": "facade_skin_stack", "axis": "front", "base_centre": [0.0, -10.625, 0.0], "span_m": 37.5, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
+          {"id": "scandi_passage_atlas", "kind": "facade_skin", "axis": "front", "centre": [-5.0, -11.3, 1.7], "span_m": 7.5, "height_m": 3.4, "depth_m": 0.035, "band": "entrance"},
+          {"id": "scandi_rear_skin", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 10.625, 0.0], "span_m": 37.5, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "floor", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
+          {"id": "scandi_left_skin", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-18.625, 0.0, 0.0], "span_m": 21.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
+          {"id": "scandi_right_skin", "kind": "facade_skin_stack", "axis": "right", "base_centre": [18.625, 0.0, 0.0], "span_m": 21.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "floor", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
+          {"id": "scandi_front_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [0.0, -10.68, 0.0], "span_m": 37.5, "columns": 9, "rows": 1, "repeat_span_m": 37.5, "profile_m": 0.065, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "window_region_filter": true, "max_regions": 18, "levels": [{"band": "podium", "height_m": 3.4}, {"band": "floor", "height_m": 3.2}, {"band": "floor_alt", "height_m": 3.2}, {"band": "floor_c", "height_m": 3.2}, {"band": "crown", "height_m": 3.2}]},
+          {"id": "scandi_left_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [-14.0, -10.75, 0.0], "span_m": 4.0, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.35, "rail_profile_m": 0.03, "pickets_per_segment": 10, "slab_material": "signature_warm", "rail_material": "signature_metal"},
+          {"id": "scandi_centre_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [3.2, -10.75, 0.0], "span_m": 4.4, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.45, "rail_profile_m": 0.03, "pickets_per_segment": 11, "slab_material": "signature_warm", "rail_material": "signature_metal"},
+          {"id": "scandi_right_balcony_stack", "kind": "balcony_array", "axis": "front", "centre": [14.1, -10.75, 0.0], "span_m": 4.0, "levels_z": [3.55, 6.75, 9.95, 13.15], "segments": 1, "segment_gap_m": 0.0, "depth_m": 1.35, "rail_profile_m": 0.03, "pickets_per_segment": 10, "slab_material": "signature_warm", "rail_material": "signature_metal"},
+          {"id": "scandi_dormer_1_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-15.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
+          {"id": "scandi_dormer_2_glazing", "kind": "curtain_wall", "axis": "front", "centre": [-7.5, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
+          {"id": "scandi_dormer_3_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
+          {"id": "scandi_dormer_4_glazing", "kind": "curtain_wall", "axis": "front", "centre": [7.5, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
+          {"id": "scandi_dormer_5_glazing", "kind": "curtain_wall", "axis": "front", "centre": [15.0, -9.98, 18.25], "span_m": 1.65, "height_m": 1.55, "columns": 2, "rows": 1, "frame_m": 0.07, "depth_m": 0.08, "glass_material": "glass", "frame_material": "signature_metal"},
+          {"id": "scandi_dormer_1_guard", "kind": "balcony_array", "axis": "front", "centre": [-15.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
+          {"id": "scandi_dormer_2_guard", "kind": "balcony_array", "axis": "front", "centre": [-7.5, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
+          {"id": "scandi_dormer_3_guard", "kind": "balcony_array", "axis": "front", "centre": [0.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
+          {"id": "scandi_dormer_4_guard", "kind": "balcony_array", "axis": "front", "centre": [7.5, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"},
+          {"id": "scandi_dormer_5_guard", "kind": "balcony_array", "axis": "front", "centre": [15.0, -10.0, 0.0], "span_m": 1.9, "levels_z": [17.45], "segments": 1, "segment_gap_m": 0.0, "depth_m": 0.18, "rail_profile_m": 0.025, "pickets_per_segment": 6, "slab_material": "roof", "rail_material": "signature_metal"}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+      }
+    },
     "mediterranean_arcade_mixed_use": {
       "identity": "Mediterranean mixed-use palazzo with a deep ground arcade, shaded upper loggias, stucco wall field, stone trim and generous terracotta eaves.",
       "material_zones": "sun-washed stucco; warm stone arches; dark timber shutters; terracotta roof",

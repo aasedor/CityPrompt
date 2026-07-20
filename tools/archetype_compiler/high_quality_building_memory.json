@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-nordic-mass-timber-v84",
+  "memory_version": "2026-07-20-scandi-white-plaster-v85",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -785,6 +785,21 @@
       "symptom": "A planted roof reads as an inaccessible green slab without an inhabited terrace edge",
       "cause": "The sedum surface was present but the safety boundary and pavilion relationship were treated as material detail rather than roof construction.",
       "correction": "Pair occupied green roofs with a fixed, scale-correct perimeter guard and keep the canopy visibly subordinate to that terrace. Verify deck, planting, guard and pavilion together in the aerial acceptance view."
+    },
+    {
+      "symptom": "A clean rectified elevation contains fewer storey rows than the selected reference building",
+      "cause": "The image model preserved the material and bay brief but treated the exact vertical count as optional across repeated correction prompts.",
+      "correction": "Reject the image as a full-height atlas, audit each valid construction band, and sequence those bands into the required storey count. Never stretch a short elevation vertically to hide a count mismatch."
+    },
+    {
+      "symptom": "A reviewed fixed entrance texture disappears and ordinary facade windows show inside its physical surround",
+      "cause": "The entrance card was coplanar with or behind the principal facade skin, so the broad elevation surface won the depth test.",
+      "correction": "Give fixed portal layers an explicit depth order: shadow cavity deepest, principal wall skin next, entrance identity atlas forward of the wall, and physical jambs and header outermost. Prove the ordering from the street camera."
+    },
+    {
+      "symptom": "A valid complete family fails the executable quality gate because it declares no preferred parcel profiles",
+      "cause": "An older catalogue archetype predated the footprint-compatibility contract, and fixed native geometry did not supply planning guidance by itself.",
+      "correction": "Author an explicit compatibility override before canonical generation. Name at least three bounded planning profiles, document the one native fixed tier, and state which complete assemblies derived profiles must preserve."
     }
   ]
 }
