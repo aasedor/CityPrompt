@@ -16,6 +16,21 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+*.tsbuildinfo
+
+# Local generation and visual-QA outputs
+#
+# Keep heavyweight, reproducible render experiments out of the source tree's
+# normal Git status. Existing tracked assets remain tracked. Promote a chosen
+# deliverable explicitly (prefer Git LFS or artifact storage) instead of
+# committing an entire experiment directory.
+/artifacts/
+/tools/park_trials/
+/tools/archetype_compiler/facade_sheets_pbr_*/
+/tools/archetype_compiler/facade_sheets_openai*/
+/tools/archetype_compiler/facade_sheets_gpt_variant_pilot_v1/
+/tools/archetype_compiler/facade_sheets_v40/
+/tools/archetype_compiler/textures_*/
 
 # IDE
 .vscode/
