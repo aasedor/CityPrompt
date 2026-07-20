@@ -194,3 +194,49 @@ clearances.
 
 - Focused registry/profile/scatter/compiler suite: 4 files / 97 tests passed.
 - Frontend TypeScript validation passed.
+
+## Batch 06 - 2026-07-20 - ten-street render-lock cohort
+
+The first finite Public Realm LEGO street cohort is registered in
+`frontend/src/data/renderlockV1Streets.ts`. Each keeper binds an existing road
+archetype and selected variant to its authoritative metric cross-section, a
+240 m live-QA segment and three catalog reference angles. Reference imagery
+controls character and material intent; `streetSectionProfiles` remains the
+source of truth for right-of-way width, band order and band dimensions.
+
+| # | Archetype / selected variant | Right-of-way | Locked character |
+| --- | --- | ---: | --- |
+| 1 | Yield Street / Dutch Woonerf | 6 m | Curb-free shared brick street |
+| 2 | Narrow Residential Street / Classic | 10 m | Compact tree-canopy residential street |
+| 3 | Collector Road / Classic | 16 m | Conventional curbed collector section |
+| 4 | Main Street Complete / Classic | 18 m | Mixed-use complete main street |
+| 5 | Calgary Local / Street Manual | 16 m | Calgary local technical section |
+| 6 | Protected Bike Lane (Bi-Directional) / Standard | 20 m | One-sided two-way protected cycle track |
+| 7 | Calgary Arterial 4-Lane 50 / Street Manual | 33 m | Four-lane Calgary arterial technical section |
+| 8 | Multi-Use Trail / Green Corridor | 4 m | Curb-free shared greenway trail |
+| 9 | Toronto Victorian Residential Street / Summer | 16 m | Summer-canopy Victorian residential street |
+| 10 | Toronto Laneway / Traditional | 5 m | Curb-free traditional service laneway |
+
+### Live Google Tiles QA
+
+- Cohort project: `http://localhost:5175/projects/8ed5fbc2-cd1d-42cc-81ea-bb8b669b5291`
+- Community 3D compiled all ten 240 m street/path zones atomically with zero
+  building or park fallbacks.
+- One-zone protected-cycle pilot:
+  `http://localhost:5175/projects/c891efec-3445-46d5-95f0-7b232c7692fc`
+- The pilot compiled one street/path layer for the exact 240 x 20 m footprint.
+  Its authoritative section is 0.3 setback, 1.8 sidewalk, 1.5 boulevard, 3.6
+  bidirectional cycle track, 0.5 separator, two 3.25 travel lanes, 2.2 parking,
+  1.5 boulevard, 1.8 sidewalk and 0.3 setback.
+- The initial A render preserved the one-sided protected track but read too
+  wide; B failed by becoming a multi-lane arterial. A masked correction is the
+  accepted photoreal keeper: one left-side two-way track with yellow centerline
+  and bollards, exactly two vehicle lanes, one right-side parallel-parking band,
+  paired sidewalks and tree boulevards.
+- Cost checkpoint: three image calls (two current-view alternatives and one
+  masked correction). No external 3D model-generation calls were used.
+
+### Verification
+
+- Focused registry/profile/mesh/LOD/compiler suite: 5 files / 50 tests passed.
+- Frontend TypeScript validation passed.
