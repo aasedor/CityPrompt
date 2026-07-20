@@ -131,7 +131,10 @@ services:
       - VITE_FAL_KEY=${VITE_FAL_KEY:-}
       - VITE_SENTRY_DSN=${SENTRY_DSN_FRONTEND:-}
     ports:
-      - "5175:5174"
+      # Bind explicitly to IPv4. On Windows + Docker Desktop, the published
+      # IPv6 localhost listener can accept the connection but never proxy a
+      # response, which leaves http://localhost:5175 hanging indefinitely.
+      - "127.0.0.1:5175:5174"
     volumes:
       - ./frontend:/app
       - /app/node_modules
