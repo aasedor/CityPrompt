@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-italian-portici-v86",
+  "memory_version": "2026-07-20-traditional-machiya-v87",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -805,6 +805,16 @@
       "symptom": "A corner portico keeps its curved arches on the principal face but collapses into flat rectangular openings on the return",
       "cause": "The earlier round-arch helper was hard-wired to the front elevation and treated a deep arcade like a row of punched facade windows.",
       "correction": "Use an axis-aware fixed arcade assembly with an explicit bay count, shared masonry piers, curved arch rings, recessed occupied shopfront cards and a continuous threshold. Prove both the principal and return rhythms in the front-corner and aerial views."
+    },
+    {
+      "symptom": "A restored machiya gable reads as an accidental cross instead of a complete timber frame",
+      "cause": "A center post and one collar beam were used as shorthand while the triangular rafters and base beam visible in the reference were omitted.",
+      "correction": "Build the gable frame as one axis-aware assembly with a base beam, paired sloped rafters, king post and bounded collar. Review the complete triangular silhouette from the principal street camera before promotion."
+    },
+    {
+      "symptom": "A machiya roof reads as a smooth dark membrane and its lower shop canopy as a gritty flat slab",
+      "cause": "Material colour carried the roof identity while the repeated kawara ribs, ridge and eave terminations were absent; the street canopy inherited a generic horizontal box.",
+      "correction": "Use an axis-aware tile-rib array with physical downslope ribs, ridge and eave caps, and assemble the lower canopy from shallow sloped roof segments. Verify both principal and return roof planes in oblique and aerial review."
     }
   ]
 }

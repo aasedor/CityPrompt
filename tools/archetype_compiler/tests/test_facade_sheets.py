@@ -1315,6 +1315,37 @@ def test_italian_portici_variant_locks_six_arch_corner_arcade_and_hip_roof():
     assert profile["footprint_compatibility_override"]["recommendedFloors"] == [3, 3]
 
 
+def test_restored_machiya_variant_locks_two_wall_levels_and_kawara_gable_tier():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["machiya_traditional_restored"]
+    graph = profile["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 14.0,
+        "depth_m": 20.0,
+        "floors": 3,
+        "floor_height_m": 3.3,
+    }
+    assert nodes["machiya_main_kawara_roof"]["kind"] == "gable_roof"
+    assert nodes["machiya_main_kawara_roof"]["ridge_axis"] == "y"
+    assert assemblies["machiya_kawara_ribs"]["kind"] == "gable_roof_tile_array"
+    assert assemblies["machiya_kawara_ribs"]["spacing_m"] < 0.5
+    assert assemblies["machiya_front_timber_gable"]["kind"] == "timber_gable_frame"
+    assert assemblies["machiya_front_upper_koshi"]["columns"] == 18
+    assert {"machiya_noren_1", "machiya_noren_2", "machiya_noren_3"} <= nodes.keys()
+    assert profile["footprint_compatibility_override"]["preferredProfiles"] == [
+        "rectangle",
+        "l_shape",
+        "u_shape",
+    ]
+
+
 def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():
     np = pytest.importorskip("numpy")
     pytest.importorskip("PIL")

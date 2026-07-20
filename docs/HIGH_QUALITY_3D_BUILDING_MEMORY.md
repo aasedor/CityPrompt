@@ -727,6 +727,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
   that hierarchy explicitly rather than mirroring the ceremonial arcade onto
   every face without evidence.
 
+### Restored machiya + roof, gable and lattice lessons
+
+- A legacy elevation with too many wall rows can still be useful as audited
+  construction bands. Crop the podium, ordinary wall and crown evidence, then
+  sequence only the bands required by the selected two-wall-level machiya; do
+  not reproduce the source's complete four-row stack.
+- Fine `koshi` lattice needs a restrained physical overlay. Let the atlas carry
+  the dense wood grid while a bounded set of shadow-casting bars establishes
+  depth; duplicating every photographed slat as geometry creates a black cage.
+- The shop threshold is an intentional void, not a bright facade card. Preserve
+  the recessed dark opening, divide the indigo `noren` into separate hanging
+  panels, and leave the narrow garden entry visibly open beside it.
+- Gable framing must read as a complete triangular construction. A lone king
+  post and collar looked like an accidental cross; the accepted assembly adds
+  the base beam and both sloped rafters around the white clay infill.
+- Kawara identity requires silhouette evidence even when the material library
+  has only a neutral dark roof membrane. Use physical downslope ribs, ridge and
+  eave caps on both roof planes, and prove the ridge direction from aerial view.
+- Lower eaves follow the same rule. Replace flat canopy boxes with shallow
+  sloped roof segments that wrap the public faces before canonical promotion.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

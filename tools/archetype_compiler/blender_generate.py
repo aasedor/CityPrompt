@@ -8514,6 +8514,150 @@ def _graph_hip_roof_seam_array(parts: list, spec: dict, mats: dict) -> None:
         )
 
 
+def _graph_gable_roof_tile_array(parts: list, spec: dict, mats: dict) -> None:
+    """Low-poly ceramic tile ribs registered to both planes of a gable roof.
+
+    The roof material supplies colour and fine normal detail; these sparse
+    downslope ribs carry the grazing-angle silhouette of kawara, pantile and
+    other deeply profiled tile systems.  The assembly supports either ridge
+    axis and includes bounded ridge/eave caps so it remains a reusable roof
+    kit rather than a facade-specific decoration.
+    """
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    rise = float(spec["rise_m"])
+    ridge_axis = str(spec.get("ridge_axis", "y"))
+    spacing = max(0.22, float(spec.get("spacing_m", 0.42)))
+    profile = float(spec.get("profile_m", 0.055))
+    rib_height = float(spec.get("rib_height_m", 0.065))
+    cap_width = float(spec.get("cap_width_m", 0.24))
+    roof = _graph_material(mats, spec.get("material", "roof"))
+    prefix = str(spec.get("id", "GraphGableRoofTiles"))
+
+    if ridge_axis == "y":
+        half_run = width / 2
+        slope_length = math.sqrt(half_run * half_run + rise * rise)
+        slope_angle = math.atan2(rise, half_run)
+        count = max(2, int(depth / spacing))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            for index in range(count + 1):
+                y = cy - depth / 2 + depth * index / count
+                rib = add_beveled_box(
+                    f"{prefix}_Plane{side_index}_Rib{index:03d}",
+                    (slope_length, profile, rib_height),
+                    (cx + side * width / 4, y, eave_z + rise / 2 + rib_height * 0.82),
+                    roof, min(0.012, profile * 0.18),
+                )
+                rib.rotation_euler.y = side * slope_angle
+                parts.append(rib)
+        parts.append(add_beveled_box(
+            f"{prefix}_RidgeCap", (cap_width, depth + 0.42, cap_width * 0.72),
+            (cx, cy, eave_z + rise + cap_width * 0.18), roof, min(0.025, cap_width * 0.10),
+        ))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            parts.append(add_beveled_box(
+                f"{prefix}_EaveCap{side_index}", (cap_width * 0.78, depth + 0.32, cap_width * 0.58),
+                (cx + side * width / 2, cy, eave_z + cap_width * 0.04),
+                roof, min(0.02, cap_width * 0.08),
+            ))
+    elif ridge_axis == "x":
+        half_run = depth / 2
+        slope_length = math.sqrt(half_run * half_run + rise * rise)
+        slope_angle = math.atan2(rise, half_run)
+        count = max(2, int(width / spacing))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            for index in range(count + 1):
+                x = cx - width / 2 + width * index / count
+                rib = add_beveled_box(
+                    f"{prefix}_Plane{side_index}_Rib{index:03d}",
+                    (profile, slope_length, rib_height),
+                    (x, cy + side * depth / 4, eave_z + rise / 2 + rib_height * 0.82),
+                    roof, min(0.012, profile * 0.18),
+                )
+                rib.rotation_euler.x = -side * slope_angle
+                parts.append(rib)
+        parts.append(add_beveled_box(
+            f"{prefix}_RidgeCap", (width + 0.42, cap_width, cap_width * 0.72),
+            (cx, cy, eave_z + rise + cap_width * 0.18), roof, min(0.025, cap_width * 0.10),
+        ))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            parts.append(add_beveled_box(
+                f"{prefix}_EaveCap{side_index}", (width + 0.32, cap_width * 0.78, cap_width * 0.58),
+                (cx, cy + side * depth / 2, eave_z + cap_width * 0.04),
+                roof, min(0.02, cap_width * 0.08),
+            ))
+    else:
+        raise ValueError(f"gable roof tile array ridge axis {ridge_axis!r} is unsupported")
+
+
+def _graph_timber_gable_frame(parts: list, spec: dict, mats: dict) -> None:
+    """Triangular timber frame applied to a plaster gable end.
+
+    The sloped rafters are essential: a center post plus collar alone reads as
+    a graphic cross rather than carpentry.  This bounded assembly keeps the
+    base beam, rafters, king post and collar registered to the roof pitch on
+    any cardinal facade axis.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"timber gable frame axis {axis!r} is unsupported")
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    rise = float(spec["rise_m"])
+    depth = float(spec.get("depth_m", 0.26))
+    profile = float(spec.get("profile_m", 0.26))
+    collar_ratio = float(spec.get("collar_height_ratio", 0.54))
+    collar_span_ratio = float(spec.get("collar_span_ratio", 0.56))
+    timber = _graph_material(mats, spec.get("material", "signature_warm"))
+    prefix = str(spec.get("id", "GraphTimberGable"))
+    angle = math.atan2(rise, width / 2)
+    rafter_length = math.sqrt((width / 2) ** 2 + rise ** 2)
+
+    if axis in {"front", "rear"}:
+        parts.append(add_beveled_box(
+            f"{prefix}_BaseBeam", (width, depth, profile),
+            (cx, cy, eave_z + profile / 2), timber, min(0.025, profile * 0.10),
+        ))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            rafter = add_beveled_box(
+                f"{prefix}_Rafter{side_index}", (rafter_length, depth, profile),
+                (cx + side * width / 4, cy, eave_z + rise / 2),
+                timber, min(0.025, profile * 0.10),
+            )
+            rafter.rotation_euler.y = side * angle
+            parts.append(rafter)
+        parts.append(add_beveled_box(
+            f"{prefix}_KingPost", (profile, depth, rise),
+            (cx, cy, eave_z + rise / 2), timber, min(0.025, profile * 0.10),
+        ))
+        parts.append(add_beveled_box(
+            f"{prefix}_Collar", (width * collar_span_ratio, depth, profile * 0.84),
+            (cx, cy, eave_z + rise * collar_ratio), timber, min(0.025, profile * 0.10),
+        ))
+    else:
+        parts.append(add_beveled_box(
+            f"{prefix}_BaseBeam", (depth, width, profile),
+            (cx, cy, eave_z + profile / 2), timber, min(0.025, profile * 0.10),
+        ))
+        for side_index, side in enumerate((-1.0, 1.0)):
+            rafter = add_beveled_box(
+                f"{prefix}_Rafter{side_index}", (depth, rafter_length, profile),
+                (cx, cy + side * width / 4, eave_z + rise / 2),
+                timber, min(0.025, profile * 0.10),
+            )
+            rafter.rotation_euler.x = -side * angle
+            parts.append(rafter)
+        parts.append(add_beveled_box(
+            f"{prefix}_KingPost", (depth, profile, rise),
+            (cx, cy, eave_z + rise / 2), timber, min(0.025, profile * 0.10),
+        ))
+        parts.append(add_beveled_box(
+            f"{prefix}_Collar", (depth, width * collar_span_ratio, profile * 0.84),
+            (cx, cy, eave_z + rise * collar_ratio), timber, min(0.025, profile * 0.10),
+        ))
+
+
 def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
     """Stone rail and low-cost turned balusters around a civic roof edge."""
     cx, cy, base_z = (float(value) for value in spec["centre"])
@@ -9008,6 +9152,10 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_courtyard_hip_roof(parts, assembly, mats)
         elif kind == "hip_roof_seam_array":
             _graph_hip_roof_seam_array(parts, assembly, mats)
+        elif kind == "gable_roof_tile_array":
+            _graph_gable_roof_tile_array(parts, assembly, mats)
+        elif kind == "timber_gable_frame":
+            _graph_timber_gable_frame(parts, assembly, mats)
         elif kind == "classical_balustrade_perimeter":
             _graph_classical_balustrade_perimeter(parts, assembly, mats)
         elif kind == "classical_window_array":
