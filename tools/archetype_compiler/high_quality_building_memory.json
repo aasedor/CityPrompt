@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-haussmann-twin-court-renderlock-v74",
+  "memory_version": "2026-07-20-rounded-corner-turret-renderlock-v75",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -625,6 +625,11 @@
       "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",
       "cause": "The assembled model request no longer exactly matched the massing graph's authored reference width, depth and floor count, so the safety selector correctly bypassed fixed geometry.",
       "correction": "Bind every accepted fixed graph to an explicit native width, depth and floor tier, keep the cohort registry synchronized with those dimensions, and test both the accepted native tier and the intentional generic fallback."
+    },
+    {
+      "symptom": "A boulevard-corner turret appears as a tiny roof bump or a floating onion behind the mansard",
+      "cause": "The crown was centered on the inner tangent origin of the rounded plan, while the continuous mansard skirt passed in front of it and hid the lower bulb; a decorative base ring then floated outside the roof without a masonry drum.",
+      "correction": "Treat the corner pavilion, curved balcony arcs and turret as one fixed landmark assembly. Place the turret centre outward on the street-corner bisector, round the outer mansard contour to the same tangent radius, seat the zinc profile on a stone drum, and prove alignment from both corner-oblique and aerial views."
     }
   ]
 }

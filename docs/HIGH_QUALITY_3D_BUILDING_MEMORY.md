@@ -488,6 +488,23 @@ The polychrome collegiate family added four rules for resizable hero facades:
   roof sashes. A helper that silently allocates its own legacy room palette can
   push an otherwise identical graph over the material-review threshold.
 
+### Rounded boulevard-corner + turret-seat lessons
+
+- A rounded facade cannot be faked by a small cylinder attached to a straight
+  block. Author the masonry quarter-drum, tangent shopfront/window bays, stone
+  courses and balcony arcs as one fixed landmark assembly, then let only the
+  straight wing bays repeat.
+- The turret centre belongs on the outward street-corner bisector, not at the
+  inner tangent origin of the rounded plan. Otherwise the mansard hides the
+  bulb and leaves only a small finial visible from the acceptance camera.
+- Round the mansard's outer contour to the same tangent radius, omit dormers
+  that would collide with the curve, and seat the zinc crown on a real masonry
+  drum. Reject floating decorative rings and validate the seat from both the
+  front-corner oblique and aerial cameras.
+- A perimeter graph must skin short return walls as well as its long cardinal
+  elevations. The aerial view is the fastest gate for blank square-corner ends
+  that a front hero camera can miss.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

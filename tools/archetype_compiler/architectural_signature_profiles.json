@@ -234,7 +234,7 @@
       "identity": "Classic Haussmann perimeter block with a fixed arched entrance, ordered French-window bays, two continuous iron balcony datums, chamfered street corners, twin light courts and an inhabited zinc mansard.",
       "material_zones": "warm Lutetian limestone; black iron balconies; grey standing-seam zinc; dark timber-and-metal shopfronts",
       "glass_profile": "residential_low_e",
-      "material_overrides": {"roof": {"base_color": "#77838c", "roughness": 0.46, "metallic": 0.68, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.48}},
+      "material_overrides": {"roof": {"base_color": "#8f999f", "roughness": 0.44, "metallic": 0.70, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.48}},
       "signature_material_overrides": {"signature_stone": {"base_color": "#d8cfbd", "roughness": 0.76, "texture_key": "limestone"}},
       "kits": ["haussmann_balconies", "deep_cornice", "mansard_dormers"],
       "massing_graph": {
@@ -294,10 +294,50 @@
       }
     },
     "parisian_boulevard_corner": {
-      "identity": "Parisian corner landmark with a rounded corner pavilion, wraparound balconies, strong horizontal stone courses and a turreted mansard crown.",
-      "material_zones": "cream limestone; zinc-grey roof; black iron; darker rusticated base",
-      "material_overrides": {"roof": {"base_color": "#596773", "roughness": 0.48}, "accent": {"base_color": "#202326", "metallic": 0.42}},
-      "kits": ["corner_rotunda", "haussmann_balconies", "deep_cornice", "mansard_dormers", "corner_turret"]
+      "identity": "Parisian corner landmark with a real open court, broad rounded corner pavilion, three wraparound balcony datums, sculptural limestone relief and a dominant zinc onion turret.",
+      "material_zones": "cream Lutetian limestone; zinc-grey standing-seam roof; black iron; darker rusticated commercial base",
+      "glass_profile": "residential_low_e",
+      "material_overrides": {"roof": {"base_color": "#77838c", "roughness": 0.46, "metallic": 0.68, "texture_key": "standing_seam"}, "accent": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.48}},
+      "signature_material_overrides": {"signature_stone": {"base_color": "#d8cfbd", "roughness": 0.76, "texture_key": "limestone"}},
+      "kits": ["corner_rotunda", "haussmann_balconies", "deep_cornice", "mansard_dormers", "corner_turret"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "haussmann_rounded_corner_court_v1",
+        "description": "A fixed seven-level boulevard-corner block with six limestone storeys, one inhabited zinc mansard, a real open court, a 9.5 m rounded street corner and one non-repeating onion turret.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/parisian_boulevard_corner/variant_0.png", "cues": ["rounded limestone corner", "three balcony datums", "caryatid relief", "onion turret"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/parisian_boulevard_corner/variant_0_angle_60.jpg", "cues": ["two tangent street wings", "zinc mansard", "continuous curved balconies", "open court"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/parisian_boulevard_corner/variant_0_angle_90.jpg", "cues": ["single open court", "rounded front-left corner", "perimeter roof", "chimney rhythm"]}
+        ],
+        "height_m": 30.2,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 42.0, "depth_m": 40.0, "floors": 7, "floor_height_m": 3.4},
+        "nodes": [
+          {"id": "corner_front_wing", "kind": "box", "size": [33.0, 9.5, 21.5], "location": [4.5, -15.25, 10.75], "material": "signature_stone", "bevel_m": 0.10},
+          {"id": "corner_rear_wing", "kind": "box", "size": [42.0, 9.5, 21.5], "location": [0.0, 15.25, 10.75], "material": "signature_stone", "bevel_m": 0.10},
+          {"id": "corner_left_wing", "kind": "box", "size": [9.5, 30.5, 21.5], "location": [-16.25, 5.25, 10.75], "material": "signature_stone", "bevel_m": 0.10},
+          {"id": "corner_right_wing", "kind": "box", "size": [9.5, 30.5, 21.5], "location": [16.25, 5.25, 10.75], "material": "signature_stone", "bevel_m": 0.10}
+        ],
+        "voids": [
+          {"id": "corner_open_court", "size": [23.0, 21.0, 30.2], "location": [0.0, 0.0, 15.1], "purpose": "real open interior court visible in the roof-plan reference"}
+        ],
+        "assemblies": [
+          {"id": "corner_front_elevation", "kind": "facade_skin_stack", "axis": "front", "base_centre": [4.5, -20.025, 0.0], "span_m": 33.0, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
+          {"id": "corner_left_elevation", "kind": "facade_skin_stack", "axis": "left", "base_centre": [-21.025, 5.25, 0.0], "span_m": 30.5, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
+          {"id": "corner_rear_elevation", "kind": "facade_skin_stack", "axis": "rear", "base_centre": [0.0, 20.025, 0.0], "span_m": 42.0, "depth_m": 0.05, "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 4}, {"band": "floor", "height_m": 3.4, "repeat_count": 4}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 4}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 4}, {"band": "floor", "height_m": 3.4, "repeat_count": 4}, {"band": "crown", "height_m": 3.4, "repeat_count": 4}]},
+          {"id": "corner_right_elevation", "kind": "facade_skin_stack", "axis": "right", "base_centre": [21.025, 5.25, 0.0], "span_m": 30.5, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 3}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 3}, {"band": "floor", "height_m": 3.4, "repeat_count": 3}, {"band": "crown", "height_m": 3.4, "repeat_count": 3}]},
+          {"id": "corner_right_front_return", "kind": "facade_skin_stack", "axis": "right", "base_centre": [21.025, -15.25, 0.0], "span_m": 9.5, "depth_m": 0.05, "levels": [{"band": "podium", "height_m": 4.5, "repeat_count": 1}, {"band": "floor", "height_m": 3.4, "repeat_count": 1}, {"band": "floor_alt", "height_m": 3.4, "repeat_count": 1}, {"band": "floor_c", "height_m": 3.4, "repeat_count": 1}, {"band": "floor", "height_m": 3.4, "repeat_count": 1}, {"band": "crown", "height_m": 3.4, "repeat_count": 1}]},
+          {"id": "corner_front_glazing", "kind": "glazing_overlay", "axis": "front", "base_centre": [4.5, -20.03, 0.0], "span_m": 33.0, "repeat_span_m": 11.0, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "floor", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
+          {"id": "corner_left_glazing", "kind": "glazing_overlay", "axis": "left", "base_centre": [-21.03, 5.25, 0.0], "span_m": 30.5, "repeat_span_m": 10.1667, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "flip_u": true, "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "floor", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
+          {"id": "corner_right_front_return_glazing", "kind": "glazing_overlay", "axis": "right", "base_centre": [21.03, -15.25, 0.0], "span_m": 9.5, "repeat_span_m": 9.5, "columns": 4, "rows": 1, "glass_profile": "residential_low_e", "frame_mode": "mask_only", "levels": [{"band": "podium", "height_m": 4.5}, {"band": "floor", "height_m": 3.4}, {"band": "floor_alt", "height_m": 3.4}, {"band": "floor_c", "height_m": 3.4}, {"band": "floor", "height_m": 3.4}, {"band": "crown", "height_m": 3.4}]},
+          {"id": "corner_front_balconies", "kind": "balcony_array", "axis": "front", "centre": [4.5, -20.03, 0.0], "span_m": 32.7, "levels_z": [4.65, 11.45, 18.25], "segments": 6, "segment_gap_m": 0.08, "depth_m": 0.72, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "corner_left_balconies", "kind": "balcony_array", "axis": "left", "centre": [-21.03, 5.25, 0.0], "span_m": 30.2, "levels_z": [4.65, 11.45, 18.25], "segments": 6, "segment_gap_m": 0.08, "depth_m": 0.72, "rail_profile_m": 0.028, "pickets_per_segment": 11, "slab_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "corner_landmark_pavilion", "kind": "rounded_corner_pavilion", "centre": [-11.5, -10.5, 0.0], "radius_m": 9.5, "height_m": 21.5, "start_angle_deg": 180.0, "end_angle_deg": 270.0, "segments": 24, "rusticated_height_m": 4.5, "balcony_levels_z": [4.65, 11.45, 18.25], "dome_base_z": 21.25, "dome_radius_m": 4.15, "dome_height_m": 7.7, "dome_offset_ratio": 0.67, "stone_material": "signature_stone", "base_material": "primary", "rail_material": "signature_metal", "roof_material": "roof"},
+          {"id": "corner_perimeter_mansard", "kind": "mansard_perimeter", "centre": [0.0, 0.0, 21.5], "width_m": 42.0, "depth_m": 40.0, "height_m": 6.3, "court_count": 1, "well_width_m": 23.0, "well_depth_m": 21.0, "rounded_corner": "front_left", "corner_radius_m": 9.5, "front_dormer_count": 10, "side_dormer_count": 7, "roof_material": "roof", "lead_material": "roof_lead", "stone_material": "signature_stone", "frame_material": "signature_metal"},
+          {"id": "corner_chimney_clusters", "kind": "chimney_cluster_array", "centres": [[-13.5, 4.5, 26.0], [0.0, 13.5, 26.0], [13.5, 4.5, 26.0], [11.5, -10.0, 26.0]], "count_per_cluster": 3, "spacing_m": 0.55, "section_m": 0.42, "height_m": 1.45, "material": "signature_stone", "cap_material": "signature_stone"}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+      }
     },
     "civic_classical_building": {
       "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",

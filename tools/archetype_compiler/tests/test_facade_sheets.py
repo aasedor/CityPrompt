@@ -749,6 +749,36 @@ def test_classic_haussmann_preserves_twin_courts_and_fixed_entrance():
     assert graph["final_bevel_m"] == 0.0
 
 
+def test_boulevard_corner_preserves_curved_landmark_and_open_court():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "parisian_boulevard_corner",
+            "variant_id": "parisian_corner_haussmann_turret",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "haussmann_rounded_corner_court_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 42.0,
+        "depth_m": 40.0,
+        "floors": 7,
+        "floor_height_m": 3.4,
+    }
+    assert len(graph["voids"]) == 1
+    assert graph["voids"][0]["purpose"].startswith("real open interior court")
+    assert assemblies["corner_landmark_pavilion"]["kind"] == "rounded_corner_pavilion"
+    assert assemblies["corner_landmark_pavilion"]["radius_m"] == 9.5
+    assert assemblies["corner_landmark_pavilion"]["balcony_levels_z"] == [4.65, 11.45, 18.25]
+    assert assemblies["corner_perimeter_mansard"]["rounded_corner"] == "front_left"
+    assert assemblies["corner_right_front_return_glazing"]["span_m"] == 9.5
+    assert graph["final_bevel_m"] == 0.0
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -766,6 +796,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert "disabled_node_ids" in source
     assert 'kind == "canonical_roof"' in source
     assert 'kind == "mansard_perimeter"' in source
+    assert 'kind == "rounded_corner_pavilion"' in source
     assert "focus_height * 2.75" in source
     assert "focus_height * 2.05" in source
 
