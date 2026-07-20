@@ -178,6 +178,37 @@ def test_original_mill_graph_is_not_implicitly_shared_with_sibling_variants():
     assert "brewery warehouse" in injected["architectural_signature"]["identity"]
 
 
+def test_cast_iron_warehouse_variant_injects_fixed_corner_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "adaptive_reuse_warehouse_lofts",
+            "variant_id": "warehouse_loft_cast_iron",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "soho_cast_iron_corner_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 26.0,
+        "floors": 4,
+        "floor_height_m": 4.2,
+    }
+    assert sum(
+        assembly["kind"] == "fire_escape_stack"
+        for assembly in graph["assemblies"]
+    ) == 2
+    assert any(
+        assembly["kind"] == "classical_balustrade_perimeter"
+        for assembly in graph["assemblies"]
+    )
+    assert "massing_graph" not in injected["architectural_signature"]
+
+
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
     profiles = json.loads(
         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(

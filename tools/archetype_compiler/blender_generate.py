@@ -7793,6 +7793,120 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                 ))
 
 
+def _graph_fire_escape_stack(parts: list, spec: dict, mats: dict) -> None:
+    """Fixed cast-iron landings and alternating stair flights on one facade.
+
+    Historic warehouse fire escapes are silhouette-bearing construction, not
+    a dark motif that can be baked into a facade atlas.  The graph contract is
+    deliberately small: each audited level owns a grated landing, three-sided
+    guard, alternating flight, treads and paired wall braces.  ``axis`` keeps
+    the same assembly reusable on principal and return elevations.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"fire escape axis {axis!r} is unsupported")
+    centre = Vector(tuple(float(value) for value in spec["centre"]))
+    levels = [float(value) for value in spec.get("levels_z", [])]
+    if not levels:
+        raise ValueError(f"fire escape {spec.get('id')!r} has no levels_z")
+    width = float(spec.get("width_m", 4.6))
+    depth = float(spec.get("depth_m", 1.18))
+    rail_h = float(spec.get("rail_height_m", 1.0))
+    storey_h = float(spec.get("storey_height_m", 4.2))
+    pickets = max(4, int(spec.get("pickets", 10)))
+    tread_count = max(6, int(spec.get("treads", 11)))
+    metal = _graph_material(mats, spec.get("material", "signature_metal"))
+    prefix = str(spec.get("id", "GraphFireEscape"))
+    outward, along = _glazing_axis_vectors(axis)
+    profile = max(0.025, float(spec.get("profile_m", 0.045)))
+
+    def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
+        return (
+            (along_size, outward_size, z_size)
+            if axis in {"front", "rear"}
+            else (outward_size, along_size, z_size)
+        )
+
+    def beam(name: str, start: Vector, end: Vector, thickness: float = profile) -> None:
+        direction = end - start
+        item = add_box(
+            f"{prefix}_{name}", (thickness, direction.length, thickness),
+            tuple((start + end) * 0.5), metal,
+        )
+        item.rotation_euler = direction.to_track_quat("Y", "Z").to_euler()
+        parts.append(item)
+
+    for level_index, level_z in enumerate(levels):
+        datum = centre + outward * (depth / 2)
+        datum.z = level_z
+        # Closely spaced slats read as an open iron grate in oblique views.
+        slat_count = max(5, int(width / 0.34))
+        for slat_index in range(slat_count + 1):
+            offset = -width / 2 + width * slat_index / slat_count
+            slat = datum + along * offset
+            parts.append(add_box(
+                f"{prefix}_Landing{level_index:02d}_Slat{slat_index:02d}",
+                member_size(profile, depth, 0.055), tuple(slat), metal,
+            ))
+        for outward_ratio, suffix in ((0.05, "Wall"), (0.98, "Front")):
+            rail = centre + outward * (depth * outward_ratio)
+            rail.z = level_z + rail_h
+            parts.append(add_box(
+                f"{prefix}_Landing{level_index:02d}_{suffix}TopRail",
+                member_size(width, profile, profile), tuple(rail), metal,
+            ))
+        for picket_index in range(pickets + 1):
+            offset = -width / 2 + width * picket_index / pickets
+            picket = centre + along * offset + outward * (depth * 0.98)
+            picket.z = level_z + rail_h / 2
+            parts.append(add_box(
+                f"{prefix}_Landing{level_index:02d}_Picket{picket_index:02d}",
+                member_size(profile * 0.72, profile, rail_h), tuple(picket), metal,
+            ))
+        for side_index, side_offset in enumerate((-width / 2, width / 2)):
+            side_top = centre + along * side_offset + outward * (depth / 2)
+            side_top.z = level_z + rail_h
+            parts.append(add_box(
+                f"{prefix}_Landing{level_index:02d}_SideTop{side_index}",
+                member_size(profile, depth, profile), tuple(side_top), metal,
+            ))
+            for outward_ratio in (0.08, 0.5, 0.96):
+                post = centre + along * side_offset + outward * (depth * outward_ratio)
+                post.z = level_z + rail_h / 2
+                parts.append(add_box(
+                    f"{prefix}_Landing{level_index:02d}_SidePost{side_index}_{outward_ratio}",
+                    member_size(profile, profile, rail_h), tuple(post), metal,
+                ))
+
+        lower_z = levels[level_index - 1] if level_index else max(0.65, level_z - storey_h)
+        direction_sign = 1.0 if level_index % 2 == 0 else -1.0
+        lower = centre - along * (direction_sign * width * 0.34) + outward * (depth * 0.68)
+        upper = centre + along * (direction_sign * width * 0.34) + outward * (depth * 0.68)
+        lower.z = lower_z + 0.12
+        upper.z = level_z + 0.08
+        for rail_offset, suffix in ((-depth * 0.23, "Inner"), (depth * 0.23, "Outer")):
+            beam(
+                f"Flight{level_index:02d}_{suffix}Stringer",
+                lower + outward * rail_offset,
+                upper + outward * rail_offset,
+                profile * 1.15,
+            )
+        for tread_index in range(tread_count + 1):
+            ratio = tread_index / tread_count
+            point = lower.lerp(upper, ratio)
+            parts.append(add_box(
+                f"{prefix}_Flight{level_index:02d}_Tread{tread_index:02d}",
+                member_size(0.34, depth * 0.58, 0.045), tuple(point), metal,
+            ))
+        # Two diagonal braces make each landing visibly load-bearing.
+        for brace_index, side_offset in enumerate((-width * 0.38, width * 0.38)):
+            wall = centre + along * side_offset + outward * 0.04
+            outer = centre + along * side_offset + outward * (depth * 0.92)
+            wall.z = max(0.15, level_z - 1.35)
+            outer.z = level_z - 0.04
+            beam(f"Landing{level_index:02d}_Brace{brace_index}", wall, outer, profile * 1.25)
+
+
 def _graph_rounded_corner_pavilion(parts: list, spec: dict, mats: dict) -> None:
     """Fixed curved Haussmann corner with tangent bays and an onion turret."""
     cx, cy, base_z = (float(value) for value in spec["centre"])
@@ -8796,6 +8910,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_mansard_perimeter(parts, assembly, mats)
         elif kind == "balcony_array":
             _graph_balcony_array(parts, assembly, mats)
+        elif kind == "fire_escape_stack":
+            _graph_fire_escape_stack(parts, assembly, mats)
         elif kind == "rounded_corner_pavilion":
             _graph_rounded_corner_pavilion(parts, assembly, mats)
         elif kind == "courtyard_hip_roof":

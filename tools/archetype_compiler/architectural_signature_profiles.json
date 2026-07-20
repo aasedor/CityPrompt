@@ -1144,6 +1144,86 @@
         "target_views": ["archetype_match", "street", "aerial", "context"]
       }
     },
+    "warehouse_loft_cast_iron": {
+      "identity": "Four-level SoHo cast-iron corner warehouse with a tall gallery base, five equal loft bays, fluted full-height iron pilasters, pale window architraves, paired exterior fire escapes, a deep panelled cornice and a continuous ornamental roof rail.",
+      "material_zones": "charcoal-grey painted cast iron; warm cream architraves and sills; black fire-escape steel; clear divided-light occupied glazing; pale weathered membrane roof",
+      "glass_profile": "industrial_sash",
+      "dimension_overrides": {"roof_height_m": 1.0},
+      "material_overrides": {
+        "primary": {"base_color": "#3f4141", "roughness": 0.62, "metallic": 0.32, "texture_key": null},
+        "secondary": {"base_color": "#d8ccb5", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_stone"},
+        "accent": {"base_color": "#171a1c", "roughness": 0.34, "metallic": 0.68, "texture_key": "black_metal"},
+        "roof": {"base_color": "#b7b4aa", "roughness": 0.86, "metallic": 0.0, "texture_key": "roof_membrane"}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#d8ccb5", "roughness": 0.72, "metallic": 0.0, "texture_key": "natural_stone"},
+        "signature_metal": {"base_color": "#272a2b", "roughness": 0.42, "metallic": 0.68, "texture_key": "black_metal"}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [25, 45],
+        "recommendedDepth_m": [20, 36],
+        "recommendedFloors": [4, 4],
+        "wingDepth_m": [10, 15],
+        "preferredBayMultiple_m": 6.0,
+        "notes": [
+          "Use the fixed Cast Iron District graph only at the native 30 by 26 metre, four-level rectangular tier.",
+          "Keep the tall gallery base, five-bay cast-iron order, fire escapes, cornice and roof rail fixed; repeat only complete ordinary loft bays in derived parcel kits."
+        ]
+      },
+      "kits": ["cast_iron_storefront", "fluted_iron_pilasters", "industrial_steel_bays", "external_fire_escape", "pressed_metal_cornice", "roof_guard"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "soho_cast_iron_corner_v1",
+        "description": "A render-locked four-level SoHo warehouse whose five-bay rectified elevation is backed by an iron-framed shadow core, paired exterior fire escapes, a deep panelled cornice and a continuous ornamental roof guard.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1.png", "cues": ["four total levels", "fluted cast-iron order", "cream window architraves", "paired fire escapes", "ornate roof rail"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1_angle_60.jpg", "cues": ["compact corner block", "flat service roof", "deep cornice", "fire escapes on both street elevations"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_1_angle_90.jpg", "cues": ["flat pale membrane", "continuous perimeter iron railing", "one roof hatch", "one modest HVAC unit", "no penthouse"]}
+        ],
+        "height_m": 18.9,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 30.0, "depth_m": 26.0, "floors": 4, "floor_height_m": 4.2},
+        "nodes": [
+          {"id": "cast_iron_plinth", "kind": "box", "size": [30.7, 26.7, 0.30], "location": [0.0, 0.0, 0.15], "material": "signature_metal", "bevel_m": 0.035},
+          {"id": "cast_iron_shadow_core", "kind": "box", "size": [29.0, 25.0, 16.6], "location": [0.0, 0.0, 8.30], "material": "primary", "bevel_m": 0.12},
+          {"id": "cast_iron_roof_deck", "kind": "box", "size": [30.0, 26.0, 0.32], "location": [0.0, 0.0, 16.66], "material": "roof", "bevel_m": 0.035},
+          {"id": "cast_iron_cornice_base", "kind": "box", "size": [30.55, 26.55, 0.34], "location": [0.0, 0.0, 16.38], "material": "signature_metal", "bevel_m": 0.045},
+          {"id": "cast_iron_cornice_frieze", "kind": "box", "size": [30.85, 26.85, 0.62], "location": [0.0, 0.0, 16.84], "material": "signature_metal", "bevel_m": 0.055},
+          {"id": "cast_iron_cornice_cap", "kind": "box", "size": [31.10, 27.10, 0.24], "location": [0.0, 0.0, 17.27], "material": "signature_metal", "bevel_m": 0.045},
+          {"id": "cast_iron_roof_curb", "kind": "box", "size": [30.45, 26.45, 0.18], "location": [0.0, 0.0, 17.48], "material": "signature_metal", "bevel_m": 0.025},
+          {"id": "cast_iron_roof_hatch", "kind": "box", "size": [2.4, 1.5, 0.55], "location": [-5.4, 1.7, 17.84], "material": "signature_metal", "bevel_m": 0.045},
+          {"id": "cast_iron_hvac", "kind": "box", "size": [1.5, 1.4, 0.95], "location": [4.2, 2.2, 18.02], "material": "concrete", "bevel_m": 0.06},
+          {"id": "cast_iron_entry_threshold", "kind": "box", "size": [6.4, 1.0, 0.14], "location": [5.7, -13.25, 0.07], "material": "signature_stone", "bevel_m": 0.025}
+        ],
+        "voids": [
+          {"id": "gallery_depth", "size": [28.4, 1.1, 4.3], "location": [0.0, -12.5, 2.25], "purpose": "deep occupied gallery threshold behind the cast-iron storefront"},
+          {"id": "flat_service_roof", "size": [28.5, 24.5, 1.2], "location": [0.0, 0.0, 18.2], "purpose": "unoccupied membrane roof inside the evidence-led perimeter railing"}
+        ],
+        "assemblies": [
+          {"id": "cast_iron_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation"},
+          {"id": "cast_iron_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+          {"id": "cast_iron_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+          {"id": "cast_iron_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "depth_m": 0.05, "band": "elevation"},
+          {"id": "cast_iron_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "cast_iron_left_glazing", "kind": "glazing_overlay", "axis": "left", "centre": [-14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "cast_iron_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 12.825, 8.25], "span_m": 29.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "cast_iron_right_glazing", "kind": "glazing_overlay", "axis": "right", "centre": [14.825, 0.0, 8.25], "span_m": 25.5, "height_m": 16.45, "columns": 5, "rows": 4, "profile_m": 0.075, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "cast_iron_front_frame", "kind": "frame_grid", "axis": "front", "centre": [0.0, -13.02, 8.25], "span_m": 29.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
+          {"id": "cast_iron_left_frame", "kind": "frame_grid", "axis": "left", "centre": [-15.02, 0.0, 8.25], "span_m": 25.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
+          {"id": "cast_iron_rear_frame", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 13.02, 8.25], "span_m": 29.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
+          {"id": "cast_iron_right_frame", "kind": "frame_grid", "axis": "right", "centre": [15.02, 0.0, 8.25], "span_m": 25.65, "height_m": 16.42, "columns": 5, "rows": 4, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 4], "profile_m": 0.16, "vertical_profile_m": 0.28, "horizontal_profile_m": 0.18, "depth_m": 0.24, "vertical_depth_m": 0.34, "horizontal_depth_m": 0.24, "edge_profile_multiplier": 1.20, "material": "primary"},
+          {"id": "cast_iron_front_dentils", "kind": "corbel_array", "axis": "front", "centre": [0.0, -13.12, 0.0], "span_m": 29.7, "count": 30, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
+          {"id": "cast_iron_left_dentils", "kind": "corbel_array", "axis": "left", "centre": [-15.12, 0.0, 0.0], "span_m": 25.7, "count": 26, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
+          {"id": "cast_iron_rear_dentils", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 13.12, 0.0], "span_m": 29.7, "count": 30, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
+          {"id": "cast_iron_right_dentils", "kind": "corbel_array", "axis": "right", "centre": [15.12, 0.0, 0.0], "span_m": 25.7, "count": 26, "levels_z": [16.72], "depth_m": 0.34, "height_m": 0.20, "width_ratio": 0.42, "material": "signature_metal"},
+          {"id": "cast_iron_front_escape", "kind": "fire_escape_stack", "axis": "front", "centre": [-5.9, -13.12, 0.0], "levels_z": [8.25, 12.45, 16.05], "storey_height_m": 4.2, "width_m": 4.7, "depth_m": 1.18, "rail_height_m": 0.96, "pickets": 10, "treads": 11, "material": "signature_metal"},
+          {"id": "cast_iron_right_escape", "kind": "fire_escape_stack", "axis": "right", "centre": [15.12, 3.7, 0.0], "levels_z": [8.25, 12.45, 16.05], "storey_height_m": 4.2, "width_m": 4.7, "depth_m": 1.18, "rail_height_m": 0.96, "pickets": 10, "treads": 11, "material": "signature_metal"},
+          {"id": "cast_iron_roof_guard", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 17.58], "width_m": 30.5, "depth_m": 26.5, "height_m": 1.02, "spacing_m": 0.46, "material": "signature_metal", "rail_height_m": 0.07, "rail_depth_m": 0.09}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "adaptive_reuse_warehouse_lofts": {
       "identity": "Converted warehouse retaining heavy masonry piers while inserting large steel-and-glass bays, roof monitor, terraces and selective industrial bracing.",
       "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",

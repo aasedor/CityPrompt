@@ -432,7 +432,7 @@ def test_renderlock_v1_building_cohort_is_finite_and_unique():
         (entry["archetype_id"], entry.get("variant_id")) for entry in entries
     }
     assert len(identities) == 20
-    assert sum(entry["state"] == "keeper" for entry in entries) == 12
+    assert sum(entry["state"] == "keeper" for entry in entries) == 13
 
 
 def test_selected_flat_roof_overrides_parent_mansard_alternative():

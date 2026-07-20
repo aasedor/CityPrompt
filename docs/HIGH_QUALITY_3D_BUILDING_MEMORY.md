@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-industrial-original-mill-v80`.
+Current executable memory: `2026-07-20-soho-cast-iron-warehouse-v81`.
 
 ## The quality target
 
@@ -596,6 +596,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
   envelope, but it is not independent secondary-elevation evidence. Inspect
   rear-corner and aerial views, use different crops where supported, and record
   remaining repetition in human QA.
+
+### SoHo cast-iron warehouse + fire-escape lessons
+
+- Storey and bay counts are hard source-image gates. The first rectified image
+  resolved seven unequal bays despite a five-bay brief; it was rejected before
+  any opening schedules or PBR maps were built, and one bounded correction pass
+  produced the accepted five-by-four grid.
+- Do not bake a silhouette assembly into the atlas and model it again. Crop the
+  photographed roof guard out of the architectural elevation when a fixed 3D
+  perimeter rail owns that role, then review both the cornice and roof plan.
+- Fire escapes need physical load paths. Build grated landings, three-sided
+  guards, alternating flights, treads and wall braces as an axis-aware graph
+  assembly so the same kit works on principal and return elevations.
+- Painted cast iron and exposed black steel are different finishes. Use softer
+  charcoal iron for full-height pilasters and the fixed building order; reserve
+  black metal for fire escapes, roof guards and small hardware.
+- A geometry-only assembled pilot can prove axes and silhouettes before PBR,
+  but its missing reusable-module validation is expected and it is never a
+  keeper. Promotion still requires the complete seven-module package.
 
 ## Updating this memory
 

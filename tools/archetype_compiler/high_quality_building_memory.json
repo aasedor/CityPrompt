@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-industrial-original-mill-v80",
+  "memory_version": "2026-07-20-soho-cast-iron-warehouse-v81",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -720,6 +720,26 @@
       "symptom": "A wrapped industrial elevation repeats the principal facade rhythm on less-documented side and rear walls",
       "cause": "Only one rectified orthographic source was available, so one registered atlas supplied all four exposed elevations.",
       "correction": "Use evidence-led UV crops or dedicated secondary schedules when side references support them. When evidence is incomplete, keep the wrap conservative, review both rear-corner and aerial views, and record the limitation in human QA."
+    },
+    {
+      "symptom": "A generated rectified warehouse elevation contains seven unequal bays when the audited construction grid requires five",
+      "cause": "The image generator preserved the material language but ignored the explicit structural count on its first pass.",
+      "correction": "Treat bay and storey counts as hard acceptance gates for source elevations. Run one bounded correction pass before schedules or PBR work, then register every opening to the accepted count."
+    },
+    {
+      "symptom": "A cast-iron warehouse shows two roof railings, including a false glazed-looking band below the real guard",
+      "cause": "The source elevation retained its photographed roof railing inside the architectural UV crop while a fixed 3D perimeter rail was also assembled above the cornice.",
+      "correction": "Crop silhouette assemblies such as roof guards out of the facade atlas when they are promoted to fixed geometry. Reprocess the registered elevation and verify the crown from both street and aerial cameras."
+    },
+    {
+      "symptom": "Exterior fire escapes disappear into a facade texture or read as unsupported black diagonals",
+      "cause": "The defining warehouse circulation was either baked into the atlas or represented without landings, guards, treads and wall braces.",
+      "correction": "Author fire escapes as an axis-aware fixed graph assembly with grated landings, three-sided guards, alternating flights, physical treads and paired braces. Keep them independent of the reusable facade skin."
+    },
+    {
+      "symptom": "A charcoal-painted cast-iron facade becomes a harsh black cage",
+      "cause": "Full-height structural pilasters inherited the same black-metal texture and high metallic response intended for fire escapes and roof railings.",
+      "correction": "Separate painted architectural iron from black exposed steel. Use a softer charcoal primary material for the fixed facade order and reserve black metal for stairs, guards and fine hardware."
     }
   ]
 }
