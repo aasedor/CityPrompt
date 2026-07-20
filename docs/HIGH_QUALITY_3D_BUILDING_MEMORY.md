@@ -748,6 +748,29 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Lower eaves follow the same rule. Replace flat canopy boxes with shallow
   sloped roof segments that wrap the public faces before canonical promotion.
 
+### Scottish Baronial railway hotel + open-court landmark lessons
+
+- Selected-variant evidence outranks a contradictory parent hero. All three
+  Scottish Baronial angles prove pink-grey granite, dark slate and conical
+  tourelles, so the inherited green-copper facade was rejected immediately.
+- Courtyard language is not construction. Build four occupied wings and four
+  corresponding roof fields around a real uninterrupted void, then prove that
+  void from aerial and rear-corner cameras.
+- A clean elevation with the wrong row count is a band library, not a complete
+  atlas. Audit the valid masonry bands and sequence them into the exact six
+  occupied levels without vertically stretching their windows.
+- Landmark entrance towers need a separate envelope and explicit depth order:
+  core, tower skin, portal opening, then physical arch and jamb geometry. A
+  principal facade stack cannot safely stand in for that hierarchy.
+- Do not stretch generic frame grids over round turrets. Place bounded real sash
+  assemblies on tangent planes so each outer turret and gate tourelle reads as
+  occupied rather than blank or cut by tall black slots.
+- Crow-stepped gables carry silhouette identity. Keep their fixed stepped
+  profiles ahead of the sloped roof field and review every step against the sky.
+- A full canonical rebuild remains necessary after an assembled-only graph
+  pilot passes. The pilot can reuse stale generic modules; the promoted family
+  must regenerate every LEGO role with the reviewed PBR source and materials.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

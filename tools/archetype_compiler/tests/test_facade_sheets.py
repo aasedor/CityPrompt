@@ -58,8 +58,8 @@ def test_signature_injection_is_renderer_agnostic_dict_extension():
     chateau = {"source": {"archetype_id": "chateauesque_grand_railway_hotel"},
                "materials": {"roof": {"base_color": "#c9c2b4"}, "accent": {}}}
     inject_signature(chateau)
-    assert chateau["materials"]["roof"]["base_color"] == "#6f9a8b"
-    assert chateau["materials"]["roof"]["texture_key"] == "verdigris_copper"
+    assert chateau["materials"]["roof"]["base_color"] == "#343c47"
+    assert chateau["materials"]["roof"]["texture_key"] == "welsh_slate"
 
 
 def test_signature_injection_prefers_an_explicit_variant_profile():
@@ -589,15 +589,15 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     assert {item["rotation_z_deg"] for item in corner_skins} == {-45.0, 45.0}
 
     chateau = graph_for("chateauesque_grand_railway_hotel")
-    assert chateau["profile"] == "chateauesque_landmark_v21"
+    assert chateau["profile"] == "scottish_baronial_granite_courtyard_v1"
     node_kinds = {node["kind"] for node in chateau["nodes"]}
     assert {"cylinder", "cone", "gable_roof"} <= node_kinds
     assembly_ids = {item["id"] for item in chateau["assemblies"]}
     assert {
-        "hotel_centre_elevation",
-        "hotel_left_tower_elevation",
-        "hotel_left_pavilion_elevation",
-        "hotel_right_pavilion_elevation",
+        "hotel_gate_stack_v2",
+        "hotel_gate_portal",
+        "hotel_crowstep_front",
+        "hotel_gate_front_battlements",
     } <= assembly_ids
 
 
@@ -1344,6 +1344,40 @@ def test_restored_machiya_variant_locks_two_wall_levels_and_kawara_gable_tier():
         "l_shape",
         "u_shape",
     ]
+
+
+def test_scottish_baronial_hotel_locks_open_court_gate_tower_and_crowsteps():
+    profiles = json.loads(
+        (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )["profiles"]
+    profile = profiles["chateauesque_grand_railway_hotel"]
+    graph = profile["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["reference_dimensions"] == {
+        "width_m": 55.0,
+        "depth_m": 36.0,
+        "floors": 6,
+        "floor_height_m": 4.0,
+    }
+    assert {"hotel_shadow_core", "hotel_main_roof"} <= set(graph["disabled_node_ids"])
+    assert {f"hotel_{side}_wing" for side in ("front", "rear", "left", "right")} <= nodes.keys()
+    assert {f"hotel_{side}_roof" for side in ("front", "rear", "left", "right")} <= nodes.keys()
+    assert graph["voids"][1]["size"] == [35.5, 16.5, 31.0]
+    assert nodes["hotel_centre_pavilion"]["material"] == "signature_stone"
+    assert assemblies["hotel_gate_portal"]["kind"] == "arcade_array"
+    assert assemblies["hotel_gate_portal"]["count"] == 1
+    assert assemblies["hotel_crowstep_front"]["kind"] == "crowstep_gable_array"
+    assert assemblies["hotel_crowstep_front"]["positions_m"] == [-13.0, 13.0]
+    assert all(
+        f"hotel_gate_{side}_battlements" in assemblies
+        for side in ("front", "rear", "left", "right")
+    )
+    assert profile["material_overrides"]["roof"]["texture_key"] == "welsh_slate"
+    assert profile["footprint_compatibility_override"]["recommendedFloors"] == [5, 7]
 
 
 def test_pbr_upgrade_emits_registered_material_channels_and_recessed_glass():

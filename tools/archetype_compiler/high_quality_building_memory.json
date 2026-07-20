@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-traditional-machiya-v87",
+  "memory_version": "2026-07-20-scottish-baronial-railway-hotel-v88",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -815,6 +815,36 @@
       "symptom": "A machiya roof reads as a smooth dark membrane and its lower shop canopy as a gritty flat slab",
       "cause": "Material colour carried the roof identity while the repeated kawara ribs, ridge and eave terminations were absent; the street canopy inherited a generic horizontal box.",
       "correction": "Use an axis-aware tile-rib array with physical downslope ribs, ridge and eave caps, and assemble the lower canopy from shallow sloped roof segments. Verify both principal and return roof planes in oblique and aerial review."
+    },
+    {
+      "symptom": "A selected Scottish Baronial railway hotel compiles with green copper cladding from the parent hero image",
+      "cause": "The generic archetype hero was treated as the material authority even though all three selected-variant views proved pink-grey granite and dark slate.",
+      "correction": "Audit every compatible selected-variant angle before source generation. When parent and variant references conflict, the selected variant owns material identity, roof finish and landmark composition."
+    },
+    {
+      "symptom": "A courtyard hotel validates as one solid slab despite catalogue text promising an open court",
+      "cause": "Courtyard metadata was recorded as planning language but never converted into occupied wings and separate roof fields.",
+      "correction": "Construct open courts explicitly from four occupied wings and matching roof fields. Prove the uninterrupted void from aerial and rear-corner cameras before keeper promotion."
+    },
+    {
+      "symptom": "A clean railway-hotel elevation has fewer window rows than the audited six occupied levels",
+      "cause": "The image model preserved the selected material and style but treated the exact vertical count as approximate.",
+      "correction": "Recover the valid elevation as audited single-storey bands and sequence those bands into the exact level count. Do not stretch a short full-height atlas to conceal missing storeys."
+    },
+    {
+      "symptom": "A prominent gate tower stays blank or disappears behind the main wall while its portal competes with ordinary windows",
+      "cause": "The tower skin and portal were coplanar with or behind the tower core and inherited the principal facade depth order.",
+      "correction": "Give landmark entrance towers their own exposed envelope and layer order: core, tower skin, deep portal, then jamb and arch geometry. Verify the full tower from street and oblique cameras."
+    },
+    {
+      "symptom": "Baronial turrets read as blank cylinders or implausible tall black slots",
+      "cause": "Generic frame-grid placeholders were stretched over curved landmark volumes without a real occupied-window schedule.",
+      "correction": "Use bounded real sash assemblies on tangent facade planes and reserve curved volumes for silhouette. Review outer turrets and gate tourelles separately across front, corner and aerial views."
+    },
+    {
+      "symptom": "Crow-stepped gables are present in the graph but disappear behind the roof",
+      "cause": "The stepped profile was placed inside the sloped roof envelope and treated like applied facade ornament.",
+      "correction": "Author crowsteps as fixed silhouette geometry on the exposed gable plane, ahead of the roof field, and prove every step against the sky in the principal acceptance view."
     }
   ]
 }

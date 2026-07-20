@@ -6704,6 +6704,60 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
         ))
 
 
+def _graph_crowstep_gable_array(parts: list, spec: dict, mats: dict) -> None:
+    """Extruded Scottish crow-step gables with a recessed masonry infill.
+
+    The stepped silhouette is a fixed roof termination, not a texture detail.
+    It remains axis-aware so the same construction can terminate principal,
+    rear or return roof fields without becoming a flat triangular decal.
+    """
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"crowstep gable array axis {axis!r} is unsupported")
+    centre = Vector(tuple(float(value) for value in spec["base_centre"]))
+    outward, along = _glazing_axis_vectors(axis)
+    positions = [float(value) for value in (spec.get("positions_m") or [0.0])]
+    width = float(spec.get("width_m", 8.0))
+    height = float(spec.get("height_m", 6.0))
+    depth = float(spec.get("depth_m", 0.62))
+    steps = max(3, int(spec.get("steps", 5)))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    infill = _graph_material(mats, spec.get("infill_material", "primary"))
+    prefix = str(spec.get("id", "GraphCrowstepGable"))
+
+    half_profile: list[tuple[float, float]] = [(-0.5, 0.0)]
+    for index in range(steps):
+        outer_x = -0.5 + 0.5 * index / steps
+        inner_x = -0.5 + 0.5 * (index + 1) / steps
+        z = (index + 1) / steps
+        half_profile.extend([(outer_x, z), (inner_x, z)])
+    outline = half_profile + [(0.0, 1.0)] + [(-x, z) for x, z in reversed(half_profile[:-1])]
+    outline.extend([(0.5, 0.0), (-0.5, 0.0)])
+
+    def extrude(name: str, datum: Vector, profile: list[tuple[float, float]],
+                profile_width: float, profile_height: float, profile_depth: float,
+                outward_offset: float, material) -> bpy.types.Object:
+        base = datum + outward * outward_offset
+        back = [base + along * (x * profile_width) + Vector((0.0, 0.0, z * profile_height)) for x, z in profile]
+        front = [point + outward * profile_depth for point in back]
+        count = len(back)
+        verts = [tuple(point) for point in back] + [tuple(point) for point in front]
+        faces: list[tuple[int, ...]] = [tuple(reversed(range(count))), tuple(range(count, count * 2))]
+        for item in range(count):
+            nxt = (item + 1) % count
+            faces.append((item, nxt, count + nxt, count + item))
+        return add_prism(name, verts, faces, material)
+
+    for index, offset in enumerate(positions):
+        datum = centre + along * offset
+        parts.append(extrude(f"{prefix}_{index:02d}_Stone", datum, outline, width, height, depth, 0.0, stone))
+        triangular = [(-0.42, 0.08), (0.0, 0.82), (0.42, 0.08)]
+        parts.append(extrude(
+            f"{prefix}_{index:02d}_Infill", datum + Vector((0.0, 0.0, height * 0.02)),
+            triangular, width, height, depth * 0.14, depth + 0.02, infill,
+        ))
+
+
 def _graph_chimney_cluster_array(parts: list, spec: dict, mats: dict) -> None:
     """Grouped masonry flues with banded caps for heritage roof silhouettes."""
     centres = [tuple(float(value) for value in centre) for centre in spec.get("centres", [])]
@@ -7177,6 +7231,10 @@ def _graph_facade_skin_stack(parts: list, spec: dict, mats: dict) -> None:
                 "depth_m": depth,
                 "band": level.get("band", "floor"),
                 "flip_u": spec.get("flip_u", False),
+                "uv_u_min": spec.get("uv_u_min", 0.0),
+                "uv_u_max": spec.get("uv_u_max", 1.0),
+                "uv_v_min": spec.get("uv_v_min", 0.0),
+                "uv_v_max": spec.get("uv_v_max", 1.0),
             }
             _graph_facade_skin(
                 parts,
@@ -9100,6 +9158,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_classical_portico(parts, assembly, mats)
         elif kind == "shaped_gable_array":
             _graph_shaped_gable_array(parts, assembly, mats)
+        elif kind == "crowstep_gable_array":
+            _graph_crowstep_gable_array(parts, assembly, mats)
         elif kind == "chimney_cluster_array":
             _graph_chimney_cluster_array(parts, assembly, mats)
         elif kind == "striped_turret_array":
