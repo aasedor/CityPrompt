@@ -917,9 +917,96 @@
       }
     },
     "historical_brick_main_street": {
-      "identity": "Narrow historic main-street building with a transparent cast-iron storefront, brick pilasters, sign frieze, punched sash windows and pressed-metal cornice.",
-      "material_zones": "variegated red brick; painted cast iron; glazed shopfront; dark metal cornice",
-      "kits": ["cast_iron_storefront", "brick_pilasters", "sign_frieze", "pressed_metal_cornice"]
+      "identity": "Two-storey Victorian polychrome main-street shop with six fixed round-arched upper sashes, cream-and-red brick striping, a deep forest-green cast-iron double storefront, carved frieze and a tall panelled parapet concealing a low service roof.",
+      "material_zones": "rich red pressed brick; repeated cream-brick bands and carved limestone; forest-green painted cast iron and timber; dark membrane and corrugated roof; warm occupied glazing",
+      "glass_profile": "heritage_leaded_occupied",
+      "material_overrides": {
+        "primary": {"base_color": "#8f4636", "roughness": 0.86, "metallic": 0.0, "texture_key": "red_brick"},
+        "secondary": {"base_color": "#d2bc92", "roughness": 0.80, "metallic": 0.0, "texture_key": "limestone"},
+        "accent": {"base_color": "#315a3f", "roughness": 0.48, "metallic": 0.24, "texture_key": null},
+        "roof": {"base_color": "#777773", "roughness": 0.66, "metallic": 0.30, "texture_key": "standing_seam_metal"}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#d8c69d", "roughness": 0.79, "metallic": 0.0, "texture_key": "limestone"},
+        "signature_warm": {"base_color": "#53382c", "roughness": 0.61, "metallic": 0.0, "texture_key": "dark_oak"},
+        "signature_metal": {"base_color": "#315a3f", "roughness": 0.47, "metallic": 0.24, "texture_key": null}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [8, 15],
+        "recommendedDepth_m": [16, 22],
+        "recommendedFloors": [2, 4],
+        "wingDepth_m": [7, 10],
+        "preferredBayMultiple_m": 2.4,
+        "notes": [
+          "Use the fixed Victorian polychrome graph only at the native 15 by 22 metre, two-floor rectangular tier.",
+          "On other parcels, keep the paired storefront entrances, end piers, parapet and cornice fixed and repeat only ordinary upper sash and display-window bays."
+        ]
+      },
+      "kits": ["cast_iron_storefront", "round_arch_sashes", "polychrome_brick_bands", "carved_sign_frieze", "panelled_parapet", "concealed_service_roof"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "victorian_polychrome_main_street_v1",
+        "description": "A fixed two-storey polychrome brick shop block with six upper arches, two recessed entries in a deep green cast-iron storefront, striped exposed side walls, carved cream frieze, panelled parapet and a concealed low roof with one chimney.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/historical_brick_main_street/variant_0.png", "cues": ["six round arches", "polychrome cream bands", "forest-green double storefront", "carved cornice and parapet"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/historical_brick_main_street/variant_0_angle_60.jpg", "cues": ["two-storey native height", "striped exposed side", "deep narrow lot", "one tall chimney"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/historical_brick_main_street/variant_0_angle_90.jpg", "cues": ["parapet-concealed mixed roof", "central service deck", "bounded skylights and vents", "no cupola"]}
+        ],
+        "height_m": 10.35,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 15.0, "depth_m": 22.0, "floors": 2, "floor_height_m": 3.6},
+        "nodes": [
+          {"id": "victorian_body", "kind": "box", "size": [15.0, 22.0, 7.55], "location": [0.0, 0.0, 3.775], "material": "primary", "bevel_m": 0.07},
+          {"id": "victorian_base_plinth", "kind": "box", "size": [15.25, 22.25, 0.42], "location": [0.0, 0.0, 0.21], "material": "signature_metal", "bevel_m": 0.04},
+          {"id": "victorian_front_storefront_back", "kind": "box", "size": [14.6, 0.16, 3.75], "location": [0.0, -11.06, 2.05], "material": "signature_metal", "bevel_m": 0.035},
+          {"id": "victorian_storefront_door_left", "kind": "box", "size": [1.25, 0.10, 2.65], "location": [-3.25, -11.20, 1.75], "material": "signature_metal", "bevel_m": 0.035},
+          {"id": "victorian_storefront_door_right", "kind": "box", "size": [1.25, 0.10, 2.65], "location": [3.25, -11.20, 1.75], "material": "signature_metal", "bevel_m": 0.035},
+          {"id": "victorian_front_parapet", "kind": "box", "size": [15.25, 0.52, 1.30], "location": [0.0, -10.78, 8.20], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_rear_parapet", "kind": "box", "size": [15.15, 0.42, 1.05], "location": [0.0, 10.78, 8.05], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_left_parapet", "kind": "box", "size": [0.42, 21.2, 1.05], "location": [-7.29, 0.0, 8.05], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_right_parapet", "kind": "box", "size": [0.42, 21.2, 1.05], "location": [7.29, 0.0, 8.05], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_low_hip_roof", "kind": "hipped_roof", "size": [14.1, 21.1, 1.15], "location": [0.0, 0.0, 8.0], "material": "roof", "bevel_m": 0.045, "ridge_axis": "x", "ridge_inset_m": 3.5},
+          {"id": "victorian_service_deck", "kind": "box", "size": [6.2, 9.2, 0.20], "location": [2.5, 2.4, 8.10], "material": "roof", "bevel_m": 0.03},
+          {"id": "victorian_skylight_front_curb", "kind": "box", "size": [1.45, 2.20, 0.24], "location": [-2.1, -3.8, 8.92], "material": "roof", "bevel_m": 0.035},
+          {"id": "victorian_skylight_front", "kind": "box", "size": [1.25, 2.0, 0.16], "location": [-2.1, -3.8, 9.08], "material": "glass", "bevel_m": 0.035},
+          {"id": "victorian_skylight_rear_curb", "kind": "box", "size": [1.25, 1.85, 0.24], "location": [2.7, 3.2, 8.90], "material": "roof", "bevel_m": 0.035},
+          {"id": "victorian_skylight_rear", "kind": "box", "size": [1.05, 1.65, 0.16], "location": [2.7, 3.2, 9.06], "material": "glass", "bevel_m": 0.035},
+          {"id": "victorian_chimney", "kind": "box", "size": [1.05, 1.05, 1.80], "location": [-5.45, 4.9, 8.95], "material": "primary", "bevel_m": 0.035},
+          {"id": "victorian_chimney_cap", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [-5.45, 4.9, 9.94], "material": "signature_stone", "bevel_m": 0.025},
+          {"id": "victorian_vent", "kind": "cylinder", "radius_m": 0.28, "height_m": 0.80, "location": [3.8, 4.6, 8.78], "material": "roof", "vertices": 18},
+          {"id": "victorian_front_pier_left", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [-7.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_front_pier_centre", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [0.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_front_pier_right", "kind": "box", "size": [0.78, 0.70, 1.20], "location": [7.0, -10.82, 8.65], "material": "primary", "bevel_m": 0.04},
+          {"id": "victorian_pier_cap_left", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [-7.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03},
+          {"id": "victorian_pier_cap_centre", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [0.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03},
+          {"id": "victorian_pier_cap_right", "kind": "box", "size": [1.02, 0.90, 0.20], "location": [7.0, -10.82, 9.30], "material": "signature_stone", "bevel_m": 0.03}
+        ],
+        "voids": [
+          {"id": "victorian_storefront_cavity", "size": [14.2, 1.2, 3.45], "location": [0.0, -10.7, 2.0], "purpose": "deep occupied display glazing and two recessed shop entrances"},
+          {"id": "victorian_upper_openings", "size": [13.8, 0.9, 3.15], "location": [0.0, -10.8, 5.85], "purpose": "six fixed round-arched upper sash openings"}
+        ],
+        "assemblies": [
+          {"id": "victorian_storefront_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -11.20, 2.05], "span_m": 13.8, "height_m": 3.25, "columns": 6, "rows": 2, "frame_m": 0.12, "depth_m": 0.10, "reveal_m": 0.10, "frame_material": "signature_metal", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.30},
+          {"id": "victorian_storefront_entries", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -11.28, 1.82], "positions_m": [-3.25, 3.25], "opening_width_m": 1.30, "opening_height_m": 2.60, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.08, "occupied_as_pane": false, "material": "signature_metal", "glass_material": "signature_metal", "frame_material": "signature_metal", "interior_material": "signature_metal", "door_material": "signature_metal"},
+          {"id": "victorian_storefront_pilasters", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.18, 0.0], "span_m": 14.5, "count": 5, "levels_z": [2.10], "depth_m": 0.28, "height_m": 3.75, "width_ratio": 0.38, "max_width_m": 0.42, "material": "signature_metal"},
+          {"id": "victorian_storefront_frieze", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.24, 3.88], "span_m": 15.15, "height_m": 0.48, "depth_m": 0.34, "material": "signature_metal"},
+          {"id": "victorian_storefront_brackets", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.10, 0.0], "span_m": 14.6, "count": 16, "levels_z": [4.10], "depth_m": 0.32, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_metal"},
+          {"id": "victorian_upper_arches", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -11.12, 5.93], "positions_m": [-5.85, -3.75, -1.65, 1.65, 3.75, 5.85], "opening_width_m": 1.45, "opening_height_m": 2.45, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.17, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_2"},
+          {"id": "victorian_front_polychrome_bands", "kind": "band_segments", "axis": "front", "centre": [0.0, -11.08, 0.0], "levels_z": [4.65, 5.35, 6.05, 6.75], "segments_m": [[-7.125, 0.75], [-4.80, 0.30], [-2.70, 0.30], [0.0, 1.50], [2.70, 0.30], [4.80, 0.30], [7.125, 0.75]], "height_m": 0.28, "depth_m": 0.12, "material": "signature_stone"},
+          {"id": "victorian_left_bands", "kind": "corbel_array", "axis": "left", "centre": [-7.52, 0.0, 0.0], "span_m": 22.0, "count": 28, "levels_z": [4.65, 5.35, 6.05, 6.75], "depth_m": 0.12, "height_m": 0.28, "width_ratio": 1.0, "max_width_m": 0.82, "material": "signature_stone"},
+          {"id": "victorian_right_bands", "kind": "corbel_array", "axis": "right", "centre": [7.52, 0.0, 0.0], "span_m": 22.0, "count": 28, "levels_z": [4.65, 5.35, 6.05, 6.75], "depth_m": 0.12, "height_m": 0.28, "width_ratio": 1.0, "max_width_m": 0.82, "material": "signature_stone"},
+          {"id": "victorian_roof_seams", "kind": "hip_roof_seam_array", "centre": [0.0, 0.0, 8.0], "width_m": 14.1, "depth_m": 21.1, "rise_m": 1.15, "ridge_inset_m": 3.5, "spacing_m": 1.05, "line_width_m": 0.045, "line_height_m": 0.035, "material": "roof"},
+          {"id": "victorian_left_side_windows", "kind": "classical_window_array", "axis": "left", "centre": [-7.56, 0.0, 5.65], "positions_m": [-6.5, -1.0, 4.5], "opening_width_m": 1.25, "opening_height_m": 2.20, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.13, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_1"},
+          {"id": "victorian_rear_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 11.06, 5.65], "positions_m": [-4.6, -1.55, 1.55, 4.6], "opening_width_m": 1.25, "opening_height_m": 2.20, "arched": true, "mullions": 1, "transoms": 1, "profile_m": 0.13, "material": "signature_stone", "frame_material": "signature_metal", "interior_material": "glazing_interior_3"},
+          {"id": "victorian_carved_frieze", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.18, 7.32], "span_m": 15.2, "height_m": 0.46, "depth_m": 0.24, "material": "signature_stone"},
+          {"id": "victorian_frieze_dentils", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.14, 0.0], "span_m": 14.8, "count": 24, "levels_z": [7.55], "depth_m": 0.26, "height_m": 0.22, "width_ratio": 0.48, "material": "signature_stone"},
+          {"id": "victorian_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.22, 7.72], "span_m": 15.35, "height_m": 0.20, "depth_m": 0.34, "material": "signature_stone"},
+          {"id": "victorian_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.26, 8.08], "span_m": 15.55, "height_m": 0.22, "depth_m": 0.42, "material": "signature_stone"},
+          {"id": "victorian_parapet_panels", "kind": "corbel_array", "axis": "front", "centre": [0.0, -11.10, 0.0], "span_m": 13.2, "count": 8, "levels_z": [8.48], "depth_m": 0.18, "height_m": 0.36, "width_ratio": 0.72, "max_width_m": 1.25, "material": "secondary"},
+          {"id": "victorian_parapet_cap", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.20, 8.90], "span_m": 15.45, "height_m": 0.20, "depth_m": 0.36, "material": "signature_stone"}
+        ]
+      }
     },
     "industrial_brick_original_mill": {
       "identity": "Converted Victorian textile mill with tall segmental-arched multi-pane iron sash, deep brick reveals, arched loading-bay shopfronts, corbelled eaves, a restored chimney and a restrained contemporary glass roof monitor.",

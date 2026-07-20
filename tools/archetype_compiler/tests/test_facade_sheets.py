@@ -301,6 +301,43 @@ def test_classic_brownstone_injects_paired_streetwall_stoops_and_panelled_entrie
     ]
 
 
+def test_victorian_main_street_injects_six_arches_segmented_bands_and_seamed_roof():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "historical_brick_main_street",
+            "variant_id": "historical_brick_victorian",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "victorian_polychrome_main_street_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 15.0,
+        "depth_m": 22.0,
+        "floors": 2,
+        "floor_height_m": 3.6,
+    }
+    assert len(assemblies["victorian_upper_arches"]["positions_m"]) == 6
+    assert assemblies["victorian_storefront_entries"]["positions_m"] == [-3.25, 3.25]
+    bands = assemblies["victorian_front_polychrome_bands"]
+    assert bands["kind"] == "band_segments"
+    assert len(bands["levels_z"]) == 4
+    assert len(bands["segments_m"]) == 7
+    assert nodes["victorian_low_hip_roof"]["ridge_axis"] == "x"
+    assert assemblies["victorian_roof_seams"]["kind"] == "hip_roof_seam_array"
+    assert "victorian_skylight_front_curb" in nodes
+    assert "victorian_skylight_rear_curb" in nodes
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
+
+
 def test_v21_expansion_graphs_preserve_family_specific_construction():
     """The methodology batch must not regress to one generic textured box."""
     from signature_profiles import inject_signature

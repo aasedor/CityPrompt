@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-paired-brownstone-streetwall-v78",
+  "memory_version": "2026-07-20-victorian-polychrome-main-street-v79",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -680,6 +680,26 @@
       "symptom": "A flat paired rowhouse roof loses its identity and reads as one generic slab",
       "cause": "The central party-wall seam, stepped cornice/parapet break, chimney caps, pots and skylight rhythm were omitted because none changed the gross height envelope.",
       "correction": "Treat paired roof seams and rooftop service silhouettes as fixed construction evidence. Preserve the two roof halves, stepped front termination and bounded chimney/skylight set, then prove them from the aerial camera."
+    },
+    {
+      "symptom": "A two-storey historic shop compiles as the cohort's generic four-storey main-street block",
+      "cause": "A planning placeholder and parent floor range overrode the selected Victorian variant's three authoritative images.",
+      "correction": "Resolve the native tier from the selected variant before graph authoring. Synchronize the cohort floors and dimensions only after the street, oblique and roof-plan views agree."
+    },
+    {
+      "symptom": "Cream polychrome brick courses draw horizontal bars across upper window glass",
+      "cause": "Continuous shadow-line geometry was layered over simulated openings that used panes and room cards rather than boolean wall voids.",
+      "correction": "Segment decorative masonry bands around the audited opening schedule, placing course geometry only across solid pier spans and proving clear glazing in the front acceptance view."
+    },
+    {
+      "symptom": "A forest-green painted cast-iron storefront renders nearly black",
+      "cause": "A black-metal texture override dominated the intended painted-iron base colour and roughness.",
+      "correction": "Treat painted cast iron as its own material finish. Preserve the evidence-led green albedo and moderate metallic response instead of inheriting a generic black-metal texture key."
+    },
+    {
+      "symptom": "A concealed historic roof has the wrong ridge direction and its skylights disappear into the slope",
+      "cause": "The front hero view was accepted before the roof-plan reference was used to orient the hip, and thin glass boxes were placed below the local roof plane.",
+      "correction": "Use the aerial reference to set ridge axis and seam fan direction, seat skylights on explicit curbs above the local plane, and require the aerial review to prove ridge, seams, chimney and service openings together."
     }
   ]
 }

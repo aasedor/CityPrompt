@@ -561,6 +561,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
   Record that inference in human QA rather than inventing a second principal
   facade.
 
+### Victorian polychrome main-street + simulated-opening lessons
+
+- Cohort placeholders do not outrank selected-variant evidence. The Victorian
+  Polychrome references prove a native two-storey shop block, so the registry's
+  provisional four floors had to be corrected before keeper promotion.
+- Continuous masonry courses cannot pass through layered panes and room cards
+  as if those layers were boolean wall voids. Segment decorative bands around
+  the audited opening schedule and place geometry only on solid pier spans.
+- Painted cast iron is not generic black metal. Preserve the evidence-led
+  forest-green albedo and moderate metallic response instead of allowing a
+  black-metal texture key to erase the painted finish.
+- Roof-plan review controls ridge direction even when the street camera hides
+  most of the roof. Register seams to the corrected hip, lift skylights onto
+  explicit curbs above the local plane, and prove the service roof, chimney and
+  parapet together in the aerial acceptance view.
+- Fixed storefront identity includes entrance count as well as display rhythm.
+  Keep both recessed entries, the cast-iron pilasters, spandrel/frieze hierarchy
+  and six upper arches fixed; only ordinary display or sash bays may repeat.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

@@ -7054,6 +7054,36 @@ def _graph_shadow_line(parts: list, spec: dict, mats: dict) -> None:
     parts.append(add_box(str(spec.get("id", "GraphShadowLine")), size, (cx, cy, cz), mat))
 
 
+def _graph_band_segments(parts: list, spec: dict, mats: dict) -> None:
+    """Repeat masonry courses only across audited solid pier segments."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"massing graph band segments axis {axis!r} is unsupported")
+    cx, cy, _ = (float(value) for value in spec["centre"])
+    levels = [float(value) for value in spec.get("levels_z", [])]
+    segments = [tuple(float(value) for value in item) for item in spec.get("segments_m", [])]
+    if not levels or not segments:
+        raise ValueError(f"band segments {spec.get('id')!r} require levels_z and segments_m")
+    height = float(spec.get("height_m", 0.12))
+    depth = float(spec.get("depth_m", 0.08))
+    mat = _graph_material(mats, spec.get("material", "secondary"))
+    prefix = str(spec.get("id", "GraphBandSegments"))
+    for level_index, z in enumerate(levels):
+        for segment_index, (offset, span) in enumerate(segments):
+            if span <= 0:
+                raise ValueError(f"band segments {prefix!r} contains a non-positive span")
+            if axis in {"front", "rear"}:
+                size = (span, depth, height)
+                location = (cx + offset, cy, z)
+            else:
+                size = (depth, span, height)
+                location = (cx, cy + offset, z)
+            parts.append(add_box(
+                f"{prefix}_{level_index:02d}_{segment_index:02d}",
+                size, location, mat,
+            ))
+
+
 def _graph_skin_material(mats: dict, spec: dict, *, suffix: str = ""):
     role = str(spec.get("band", "elevation"))
     base = mats.get(f"sheet_{role}")
@@ -8738,6 +8768,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_tie_grid(parts, assembly, mats)
         elif kind == "shadow_line":
             _graph_shadow_line(parts, assembly, mats)
+        elif kind == "band_segments":
+            _graph_band_segments(parts, assembly, mats)
         elif kind == "facade_skin":
             _graph_facade_skin(parts, assembly, mats)
         elif kind == "facade_skin_stack":
