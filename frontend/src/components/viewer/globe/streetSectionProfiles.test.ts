@@ -113,7 +113,11 @@ describe('street section pilot profiles', () => {
     const profile = resolvePilotStreetSectionProfile('woonerf_shared_street');
     expect(profile).not.toBeNull();
     expect(profile?.renderCurbs).toBe(false);
-    expect(profile?.bands.map((band) => band.kind)).toEqual(['shoulder', 'motor', 'shoulder']);
+    expect(profile?.bands.map((band) => band.kind)).toEqual([
+      'shoulder', 'planting', 'motor', 'planting', 'shoulder',
+    ]);
+    expect(profile?.bands.find((band) => band.kind === 'motor')?.color).toBe('#a76547');
+    expect(profile?.treeOffsetsM).toHaveLength(2);
     expect(profile?.markings).toHaveLength(0);
   });
 

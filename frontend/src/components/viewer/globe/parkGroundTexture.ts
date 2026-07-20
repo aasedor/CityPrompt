@@ -179,21 +179,22 @@ export function hasCurrentParkGroundSurface(zone: SiteZone): boolean {
   return resolveParkGroundSurfaceSource(zone) !== 'none';
 }
 
-/** Mature planting and seating are completed by the final architectural
- * render once a current ground drape exists. Programmed structures remain
- * eligible for live 3D because their pads and geometry are design-critical. */
+/** AI-resolved park grounds defer finishing props because their exact paths,
+ * water and planting beds are not deterministic. Procedurally compiled park
+ * grounds share the same placement recipe as the 3D kit, so their real tree
+ * and bench assets can safely appear in the interactive Google Tiles scene. */
 export function shouldDeferParkFinishingProp(
   zone: SiteZone,
   propId: PropPlacement['propId'],
 ): boolean {
   return isParkGroundZone(zone)
+    && (!isCommunity3DCompiled(zone) || Boolean(getParkGroundMeta(zone)))
     && (propId === 'tree' || propId === 'bench');
 }
 
-/** The interactive scene never substitutes low-detail cone/box placeholders
- * for a missing park asset. Trees and benches remain render-only even after a
- * real asset exists; design-critical structures can appear once their actual
- * GLB is present. */
+/** The interactive scene never substitutes low-detail placeholders for a
+ * missing park asset. Current procedural grounds may use the real manifest
+ * assets; AI ground imagery still defers its finishing layer to final render. */
 export function shouldRenderLiveParkProp(
   zone: SiteZone,
   propId: PropPlacement['propId'],

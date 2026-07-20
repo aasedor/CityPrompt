@@ -593,8 +593,8 @@ describe('park ground pilot profiles', () => {
       expect(resolveParkGroundProfile(compiled).isPilot, archetypeId).toBe(true);
       expect(resolveParkGroundSurfaceSource(compiled), archetypeId).toBe('procedural');
       expect(hasCurrentParkGroundSurface(compiled), archetypeId).toBe(true);
-      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(true);
-      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(true);
+      expect(shouldDeferParkFinishingProp(compiled, 'tree'), archetypeId).toBe(false);
+      expect(shouldDeferParkFinishingProp(compiled, 'bench'), archetypeId).toBe(false);
     }
   });
 

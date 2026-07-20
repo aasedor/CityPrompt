@@ -125,6 +125,17 @@ interface SyntheticSection {
 }
 
 const SYNTHETIC_SECTIONS: Record<string, SyntheticSection> = {
+  woonerf_shared_street: {
+    rowM: 10,
+    renderCurbs: false,
+    zones: [
+      { type: 'shoulder', width_m: 0.4, label: 'Flush stone edge', surface: 'stone paving' },
+      { type: 'boulevard', width_m: 1.25, label: 'Alternating planter edge', surface: 'permeable paving' },
+      { type: 'shared_lane', width_m: 6.7, label: 'Warm brick shared surface', surface: 'brick paving' },
+      { type: 'boulevard', width_m: 1.25, label: 'Alternating planter edge', surface: 'permeable paving' },
+      { type: 'shoulder', width_m: 0.4, label: 'Flush stone edge', surface: 'stone paving' },
+    ],
+  },
   yield_street: {
     rowM: 6,
     renderCurbs: false,
@@ -305,7 +316,7 @@ function bandStyle(kind: StreetBandKind, surface: string): Pick<StreetSectionBan
   switch (kind) {
     case 'motor':
       if (lower.includes('brick') || lower.includes('cobble') || lower.includes('unit paving')) {
-        return { color: '#87695d', liftM: 0.085 };
+        return { color: '#a76547', liftM: 0.14 };
       }
       return { color: '#565a5d', liftM: 0.075 };
     case 'cycle':
@@ -314,11 +325,13 @@ function bandStyle(kind: StreetBandKind, surface: string): Pick<StreetSectionBan
       return { color: '#656f72', liftM: 0.085 };
     case 'parking': return { color: '#62666a', liftM: 0.08 };
     case 'sidewalk': return { color: '#b8b5ac', liftM: 0.14 };
-    case 'planting': return { color: '#687d55', liftM: 0.11 };
+    case 'planting': return { color: '#587545', liftM: 0.16 };
     case 'median': return { color: '#71875b', liftM: 0.18 };
     case 'buffer': return { color: '#8d987a', liftM: 0.13 };
     case 'path': return { color: '#a8a69e', liftM: 0.1 };
-    case 'shoulder': return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: 0.06 };
+    case 'shoulder':
+      if (lower.includes('stone')) return { color: '#c4b69e', liftM: 0.15 };
+      return { color: lower.includes('gravel') ? '#8d8370' : '#737678', liftM: 0.06 };
     default: return { color: '#89877f', liftM: 0.08 };
   }
 }

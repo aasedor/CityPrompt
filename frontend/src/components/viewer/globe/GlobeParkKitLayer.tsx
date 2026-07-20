@@ -191,6 +191,82 @@ function GLBInstancedProp({
   );
 }
 
+function ProceduralParkFinishingProps({
+  propId,
+  placements,
+  centroid,
+  instanceZ,
+}: {
+  propId: 'tree' | 'bench';
+  placements: PropPlacement[];
+  centroid: { lng: number; lat: number };
+  instanceZ: number[] | null;
+}) {
+  const mPerLon = metersPerDegLon(centroid.lat);
+  return (
+    <>
+      {placements.map((placement, index) => {
+        const x = (placement.lng - centroid.lng) * mPerLon;
+        const y = (placement.lat - centroid.lat) * METERS_PER_DEG_LAT;
+        const z = instanceZ?.[index] ?? 0;
+        if (propId === 'tree') {
+          const scale = Math.max(0.72, placement.scale);
+          return (
+            <group
+              key={`tree-${index}`}
+              position={[x, y, z]}
+              rotation={[0, 0, placement.yawRad]}
+              scale={[scale, scale, scale]}
+              renderOrder={RENDER_ORDER_PROPS}
+            >
+              <mesh position={[0, 0, 2.7]} renderOrder={RENDER_ORDER_PROPS}>
+                <cylinderGeometry args={[0.22, 0.34, 5.4, 10]} />
+                <meshStandardMaterial color="#65503d" roughness={0.96} />
+              </mesh>
+              <mesh position={[-0.35, 0, 6.2]} scale={[1, 0.82, 1.05]} renderOrder={RENDER_ORDER_PROPS}>
+                <dodecahedronGeometry args={[2.15, 1]} />
+                <meshStandardMaterial color="#48663d" roughness={0.94} />
+              </mesh>
+              <mesh position={[1.05, 0.3, 5.85]} scale={[1.05, 0.9, 0.95]} renderOrder={RENDER_ORDER_PROPS}>
+                <dodecahedronGeometry args={[1.55, 1]} />
+                <meshStandardMaterial color="#587649" roughness={0.94} />
+              </mesh>
+              <mesh position={[-0.75, -0.9, 5.6]} scale={[0.9, 1.05, 0.9]} renderOrder={RENDER_ORDER_PROPS}>
+                <dodecahedronGeometry args={[1.45, 1]} />
+                <meshStandardMaterial color="#3f5d36" roughness={0.94} />
+              </mesh>
+            </group>
+          );
+        }
+        return (
+          <group
+            key={`bench-${index}`}
+            position={[x, y, z + 0.42]}
+            rotation={[0, 0, placement.yawRad]}
+            scale={[placement.scale, placement.scale, placement.scale]}
+            renderOrder={RENDER_ORDER_PROPS}
+          >
+            <mesh renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[1.8, 0.48, 0.14]} />
+              <meshStandardMaterial color="#80583d" roughness={0.86} />
+            </mesh>
+            <mesh position={[0, 0.2, 0.48]} rotation={[Math.PI / 12, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
+              <boxGeometry args={[1.8, 0.12, 0.85]} />
+              <meshStandardMaterial color="#745038" roughness={0.86} />
+            </mesh>
+            {[-0.67, 0.67].map((legX) => (
+              <mesh key={legX} position={[legX, 0, -0.25]} renderOrder={RENDER_ORDER_PROPS}>
+                <boxGeometry args={[0.1, 0.38, 0.5]} />
+                <meshStandardMaterial color="#44494a" metalness={0.38} roughness={0.58} />
+              </mesh>
+            ))}
+          </group>
+        );
+      })}
+    </>
+  );
+}
+
 /** Small deterministic structures that are part of an archetype's spatial
  * program but do not yet warrant a fetched GLB kit asset. */
 function ParkSpecialtyStructures({
@@ -632,7 +708,9 @@ function hasLiveProgrammedParkGeometry(zone: SiteZone): boolean {
     plantingStructure,
   ).filter((placement) => {
     const asset = PARK_KIT_MANIFEST[placement.propId];
-    return shouldRenderLiveParkProp(zone, placement.propId, Boolean(asset));
+    const hasProceduralFallback = placement.propId === 'tree' || placement.propId === 'bench';
+    return !shouldDeferParkFinishingProp(zone, placement.propId)
+      && (Boolean(asset) || hasProceduralFallback);
   }).length;
   return shouldMountParkProgramFrame(zone, liveAssetPlacementCount);
 }
@@ -668,12 +746,10 @@ function ParkKitInstance({
   // Landscape pattern stamped by the backend plan generator (green zones and
   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
   const plantingStructure = resolveParkPlantingStructure(zone);
-  // A generated green-space drape is the spatial source of truth in the
-  // interactive Google scene. Trees and benches are render-finishing props:
-  // keeping them out of the live tile view avoids conflicts with AI-resolved
-  // paths/water and prevents lightweight procedural assets from lowering the
-  // visual quality of the surrounding photogrammetry. Programmed structures
-  // (playgrounds, pavilions, bridges, etc.) remain eligible for live 3D.
+  // A generated green-space drape is the spatial source of truth. Procedural
+  // grounds share this kit's deterministic recipe and can therefore show real
+  // manifest trees and benches live; AI-resolved grounds still defer those
+  // finishing props because their detailed layout is not deterministic.
   const hasCurrentParkGround = hasCurrentParkGroundSurface(zone);
   const specialtyStructureKind = useMemo(
     () => resolveParkSpecialtyStructureKind(zone),
@@ -852,6 +928,18 @@ function ParkKitInstance({
           ? group.map((g) => instanceZ[placements.indexOf(g)] ?? 0)
           : null;
         const asset = PARK_KIT_MANIFEST[propId];
+        if (shouldDeferParkFinishingProp(zone, propId)) return null;
+        if (!asset && (propId === 'tree' || propId === 'bench')) {
+          return (
+            <ProceduralParkFinishingProps
+              key={propId}
+              propId={propId}
+              placements={group}
+              centroid={centroid}
+              instanceZ={groupZ}
+            />
+          );
+        }
         if (!shouldRenderLiveParkProp(zone, propId, Boolean(asset)) || !asset) return null;
         return (
           <SilentKitBoundary key={propId} fallback={null}>
@@ -884,9 +972,9 @@ export function GlobeParkKitLayer({
       && z.coordinates.length >= 3
       && shouldRenderCommunityProps(z)
       // Generate 3D always creates a current deterministic ground design;
-      // optional AI orthophotos upgrade its material fidelity. Programmed
-      // structures can stand on either source, while trees and benches remain
-      // deferred to the final architectural render.
+      // optional AI orthophotos upgrade its material fidelity. Deterministic
+      // surfaces can mount the full authored kit, while AI surfaces retain
+      // only design-critical programmed structures.
       && hasCurrentParkGroundSurface(z)
       && hasLiveProgrammedParkGeometry(z)),
     [zones],

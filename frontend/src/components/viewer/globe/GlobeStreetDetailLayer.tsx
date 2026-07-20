@@ -66,6 +66,7 @@ const ISLAND_COLOR = '#96b08a';
 const RENDER_ORDER_DASHES = 122;
 const RENDER_ORDER_FLATWORK = 123;
 const RENDER_ORDER_RAISED = 130;
+const RENDER_ORDER_FURNITURE = 135;
 function isRoundaboutZone(zone: SiteZone): boolean {
   const id = String((zone.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '');
   return id.toLowerCase().replace(/-/g, '_').includes('roundabout');
@@ -290,6 +291,41 @@ function StreetRibbonDetail({
     };
   }, [centerLngLat, halfWidth, sectionProfile, sectionScale, stationZ]);
 
+  const woonerfPlanters = useMemo(() => {
+    if (!centerLngLat || !sectionProfile?.archetypeId.includes('woonerf')) return [];
+    const points = centerLngLat.local;
+    const placements: Array<{
+      x: number;
+      y: number;
+      centerX: number;
+      centerY: number;
+      z: number;
+      rotation: number;
+    }> = [];
+    // Alternate traffic-calming planters along the flush shared surface. Keep
+    // the first and last stations clear so the connection reads as an entry.
+    for (let index = 2; index < points.length - 2; index += 4) {
+      const previous = points[index - 1];
+      const next = points[index + 1];
+      const dx = next.x - previous.x;
+      const dy = next.y - previous.y;
+      const length = Math.hypot(dx, dy) || 1;
+      const normalX = -dy / length;
+      const normalY = dx / length;
+      const side = placements.length % 2 === 0 ? -1 : 1;
+      const offset = Math.max(0.8, halfWidth * 0.72) * side;
+      placements.push({
+        x: points[index].x + normalX * offset,
+        y: points[index].y + normalY * offset,
+        centerX: points[index].x,
+        centerY: points[index].y,
+        z: stationZ?.[index] ?? 0,
+        rotation: Math.atan2(dy, dx),
+      });
+    }
+    return placements;
+  }, [centerLngLat, halfWidth, sectionProfile, stationZ]);
+
   // r3f does not dispose geometry props — without this every drape freeze,
   // edit commit, and zone delete leaks the previous buffers.
   useEffect(
@@ -319,7 +355,7 @@ function StreetRibbonDetail({
         >
           <meshBasicMaterial
             color={band.color}
-            depthTest
+            depthTest={false}
             depthWrite={false}
             polygonOffset
             polygonOffsetFactor={-3}
@@ -364,6 +400,42 @@ function StreetRibbonDetail({
           />
         </mesh>
       )}
+      {woonerfPlanters.map((placement, index) => (
+        <group key={`woonerf-planter-${index}`}>
+          <mesh
+            position={[placement.centerX, placement.centerY, placement.z + 0.17]}
+            rotation={[0, 0, placement.rotation]}
+            renderOrder={RENDER_ORDER_FURNITURE}
+          >
+            <boxGeometry args={[0.55, halfWidth * 1.55, 0.06]} />
+            <meshStandardMaterial color="#d2bea0" roughness={0.90} />
+          </mesh>
+          <group
+            position={[placement.x, placement.y, placement.z + 0.3]}
+            rotation={[0, 0, placement.rotation]}
+            renderOrder={RENDER_ORDER_FURNITURE}
+          >
+            <mesh renderOrder={RENDER_ORDER_FURNITURE}>
+              <boxGeometry args={[1.8, 0.9, 0.6]} />
+              <meshStandardMaterial color="#7d5844" roughness={0.86} />
+            </mesh>
+            <mesh position={[-0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[0.44, 1]} />
+              <meshStandardMaterial color="#526f43" roughness={0.92} />
+            </mesh>
+            <mesh position={[0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[0.44, 1]} />
+              <meshStandardMaterial color="#617b4c" roughness={0.92} />
+            </mesh>
+            {[-1.15, 1.15].map((bollardX) => (
+              <mesh key={bollardX} position={[bollardX, 0, 0.42]} renderOrder={RENDER_ORDER_FURNITURE}>
+                <cylinderGeometry args={[0.09, 0.11, 0.84, 10]} />
+                <meshStandardMaterial color="#343b3b" metalness={0.48} roughness={0.5} />
+              </mesh>
+            ))}
+          </group>
+        </group>
+      ))}
     </EastNorthUpFrame>
   );
 }

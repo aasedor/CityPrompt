@@ -435,9 +435,11 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     || typeof zoneProps?.plaza_archetype_id === 'string'
     || typeof zoneProps?.plaza_aesthetic === 'string'
   );
+  const isWoonerfGround = communityKind === 'street'
+    && String(zoneProps?.road_archetype_id ?? '').toLowerCase().replace(/-/g, '_').includes('woonerf');
   const compiledSurfaceColor = communityKind === 'park'
     ? (isPlazaGround ? '#b5b1a7' : '#66874f')
-    : '#656765';
+    : (isWoonerfGround ? '#9b674f' : '#656765');
   // A prepared site boundary (or an explicit per-zone mask) already removes
   // source photogrammetry. In that case public-realm surfaces must participate
   // in the normal depth buffer so they cannot paint roads and lawns across the
