@@ -56,6 +56,10 @@ import {
   type ParkSpecialtyStructureKind,
 } from './parkGroundProfiles';
 import {
+  GlobeLandscapeBenchStand,
+  GlobeLandscapeTreeStand,
+} from './GlobeLandscapeKit';
+import {
   hasCurrentParkGroundSurface,
   shouldDeferParkFinishingProp,
   shouldRenderLiveParkProp,
@@ -204,68 +208,16 @@ function ProceduralParkFinishingProps({
   instanceZ: number[] | null;
 }) {
   const mPerLon = metersPerDegLon(centroid.lat);
-  return (
-    <>
-      {placements.map((placement, index) => {
-        const x = (placement.lng - centroid.lng) * mPerLon;
-        const y = (placement.lat - centroid.lat) * METERS_PER_DEG_LAT;
-        const z = instanceZ?.[index] ?? 0;
-        if (propId === 'tree') {
-          const scale = Math.max(0.72, placement.scale);
-          return (
-            <group
-              key={`tree-${index}`}
-              position={[x, y, z]}
-              rotation={[0, 0, placement.yawRad]}
-              scale={[scale, scale, scale]}
-              renderOrder={RENDER_ORDER_PROPS}
-            >
-              <mesh position={[0, 0, 2.7]} renderOrder={RENDER_ORDER_PROPS}>
-                <cylinderGeometry args={[0.22, 0.34, 5.4, 10]} />
-                <meshStandardMaterial color="#65503d" roughness={0.96} />
-              </mesh>
-              <mesh position={[-0.35, 0, 6.2]} scale={[1, 0.82, 1.05]} renderOrder={RENDER_ORDER_PROPS}>
-                <dodecahedronGeometry args={[2.15, 1]} />
-                <meshStandardMaterial color="#48663d" roughness={0.94} />
-              </mesh>
-              <mesh position={[1.05, 0.3, 5.85]} scale={[1.05, 0.9, 0.95]} renderOrder={RENDER_ORDER_PROPS}>
-                <dodecahedronGeometry args={[1.55, 1]} />
-                <meshStandardMaterial color="#587649" roughness={0.94} />
-              </mesh>
-              <mesh position={[-0.75, -0.9, 5.6]} scale={[0.9, 1.05, 0.9]} renderOrder={RENDER_ORDER_PROPS}>
-                <dodecahedronGeometry args={[1.45, 1]} />
-                <meshStandardMaterial color="#3f5d36" roughness={0.94} />
-              </mesh>
-            </group>
-          );
-        }
-        return (
-          <group
-            key={`bench-${index}`}
-            position={[x, y, z + 0.42]}
-            rotation={[0, 0, placement.yawRad]}
-            scale={[placement.scale, placement.scale, placement.scale]}
-            renderOrder={RENDER_ORDER_PROPS}
-          >
-            <mesh renderOrder={RENDER_ORDER_PROPS}>
-              <boxGeometry args={[1.8, 0.48, 0.14]} />
-              <meshStandardMaterial color="#80583d" roughness={0.86} />
-            </mesh>
-            <mesh position={[0, 0.2, 0.48]} rotation={[Math.PI / 12, 0, 0]} renderOrder={RENDER_ORDER_PROPS}>
-              <boxGeometry args={[1.8, 0.12, 0.85]} />
-              <meshStandardMaterial color="#745038" roughness={0.86} />
-            </mesh>
-            {[-0.67, 0.67].map((legX) => (
-              <mesh key={legX} position={[legX, 0, -0.25]} renderOrder={RENDER_ORDER_PROPS}>
-                <boxGeometry args={[0.1, 0.38, 0.5]} />
-                <meshStandardMaterial color="#44494a" metalness={0.38} roughness={0.58} />
-              </mesh>
-            ))}
-          </group>
-        );
-      })}
-    </>
-  );
+  const resolved = placements.map((placement, index) => ({
+    x: (placement.lng - centroid.lng) * mPerLon,
+    y: (placement.lat - centroid.lat) * METERS_PER_DEG_LAT,
+    z: instanceZ?.[index] ?? 0,
+    yawRad: placement.yawRad,
+    scale: propId === 'tree' ? Math.max(0.72, placement.scale) : placement.scale,
+  }));
+  return propId === 'tree'
+    ? <GlobeLandscapeTreeStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />
+    : <GlobeLandscapeBenchStand placements={resolved} renderOrder={RENDER_ORDER_PROPS} />;
 }
 
 /** Small deterministic structures that are part of an archetype's spatial

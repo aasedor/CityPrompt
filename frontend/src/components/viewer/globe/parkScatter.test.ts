@@ -38,6 +38,17 @@ function squareRing(sizeM: number): number[][] {
   ];
 }
 
+function rectangleRing(widthM: number, depthM: number): number[][] {
+  const dLng = widthM / M_PER_LON;
+  const dLat = depthM / METERS_PER_DEG_LAT;
+  return [
+    [LNG, LAT],
+    [LNG + dLng, LAT],
+    [LNG + dLng, LAT + dLat],
+    [LNG, LAT + dLat],
+  ];
+}
+
 const NEIGHBORHOOD = resolveParkRecipe('neighborhood_park');
 
 /** Placement position back to metres from the ring origin (LNG/LAT corner). */
@@ -103,7 +114,7 @@ describe('computeParkPlacements', () => {
     }
   });
 
-  it('frames an urban pocket park with canopy in every quadrant', () => {
+  it('frames an urban pocket park with a restrained, distributed specimen canopy', () => {
     const trees = treesOf(computeParkPlacements(
       { id: 'pocket-frame', coordinates: squareRing(36) },
       URBAN_POCKET_PARK,
@@ -113,13 +124,19 @@ describe('computeParkPlacements', () => {
       const [x, y] = toMeters(tree);
       return `${x < 18 ? 'west' : 'east'}-${y < 18 ? 'south' : 'north'}`;
     }));
-    expect(trees.length).toBeGreaterThanOrEqual(12);
-    expect(quadrants).toEqual(new Set([
-      'west-south',
-      'west-north',
-      'east-south',
-      'east-north',
-    ]));
+    expect(trees.length).toBeGreaterThanOrEqual(3);
+    expect(trees.length).toBeLessThanOrEqual(5);
+    expect(quadrants.size).toBeGreaterThanOrEqual(3);
+  });
+
+  it('matches the render-scale canopy rhythm on a 60m by 37m pocket park', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'render-scale-pocket', coordinates: rectangleRing(60, 37) },
+      URBAN_POCKET_PARK,
+      'garden_courtyard',
+    ));
+    expect(trees.length).toBeGreaterThanOrEqual(6);
+    expect(trees.length).toBeLessThanOrEqual(8);
   });
 
   it('gates the playground on area', () => {

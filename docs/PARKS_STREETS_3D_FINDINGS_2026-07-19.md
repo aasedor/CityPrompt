@@ -138,11 +138,30 @@ An item is ready for users only when all of the following pass:
 - Whole-element packing and orientation search: [`frontend/src/components/viewer/globe/parkGroundProfiles.ts`](../frontend/src/components/viewer/globe/parkGroundProfiles.ts)
 - Drape construction and render-reference prompting: [`frontend/src/components/viewer/globe/parkGroundTexture.ts`](../frontend/src/components/viewer/globe/parkGroundTexture.ts)
 - Essential live 3D park objects: [`frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx`](../frontend/src/components/viewer/globe/GlobeParkKitLayer.tsx)
+- Shared metric foliage and seating family: [`frontend/src/components/viewer/globe/GlobeLandscapeKit.tsx`](../frontend/src/components/viewer/globe/GlobeLandscapeKit.tsx)
+- Stable species profiles and asset contracts: [`frontend/src/components/viewer/globe/landscapeKitProfiles.ts`](../frontend/src/components/viewer/globe/landscapeKitProfiles.ts)
 - Final mixed-scene render prompting: [`frontend/src/components/viewer/globe/useGlobeAIRender.ts`](../frontend/src/components/viewer/globe/useGlobeAIRender.ts)
 - Archetype-by-archetype readiness log: [`docs/PUBLIC_REALM_ARCHETYPE_READINESS.md`](PUBLIC_REALM_ARCHETYPE_READINESS.md)
 - Screenshot comparison archive: [`artifacts/park-drape-comparisons`](../artifacts/park-drape-comparisons/)
 
 The orientation-search change uses the `pg6` source signature so older cached drapes cannot silently masquerade as current fitted geometry.
+
+### Render-matched landscape pilot
+
+The downtown pocket-park and woonerf pilot now uses three leaf-textured,
+metric tree families instead of generic low-poly crowns. Species assignment is
+stable for a placement, while instanced trunks and crossed alpha-tested crown
+planes keep the draw-call budget bounded. Each crown includes an overhead plane
+so the same tree reads from street, oblique and plan-review cameras. Park canopy
+density is intentionally calibrated to six-to-eight mature specimen trees on a
+60 x 37 m pocket park; this preserves the central lawn, paths and gateways that
+are visible in the accepted render. The woonerf reuses the same grounded tree
+family with slatted benches and planted soil-filled containers.
+
+This is the first approved interactive vegetation family, not a universal
+forest solution. Future archetypes still require biome, season, age and crown
+palette expansion, but should retain the same metric profile, stable-selection,
+terrain-sampling and bounded-instancing contract.
 
 ## Verification completed for the orientation-search release
 
@@ -158,5 +177,5 @@ The orientation-search change uses the `pg6` source signature so older cached dr
 2. Add explicit context-connection metadata and graph validation for the first street/path archetypes.
 3. Implement a creek-specific fixed profile for the daylighted-creek greenway variant.
 4. Add same-camera image comparison scoring so render/Tiles drift can be measured instead of judged only by eye.
-5. Build a realistic, terrain-grounded canopy library only for archetypes whose interactive identity depends on vegetation.
+5. Expand the approved terrain-grounded canopy pilot with biome, season, age and crown palettes only for archetypes whose interactive identity depends on vegetation.
 6. Continue visual QA in small batches; catalog coverage prevents broken fallbacks but is not evidence that all 875 current variants are visually accepted.
