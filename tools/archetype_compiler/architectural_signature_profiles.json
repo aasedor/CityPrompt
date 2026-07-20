@@ -396,9 +396,68 @@
       }
     },
     "monumental_courthouse_axis": {
-      "identity": "Axial courthouse with a projecting temple front, tall fluted colonnade, deep entablature, judicial stair and severe symmetrical wings.",
-      "material_zones": "light granite and limestone; bronze entrance doors; dark recessed glazing",
-      "kits": ["ceremonial_steps", "giant_portico", "pediment", "giant_pilasters", "civic_cornice"]
+      "identity": "Deep axial neoclassical courthouse with an eight-column Corinthian temple front, full-width judicial stair, sculpted pediment and cross-hipped patinated copper roof.",
+      "material_zones": "white granite and cream limestone ashlar; bronze entrance doors; dark recessed glazing; pale green patinated copper",
+      "glass_profile": "residential_low_e",
+      "material_overrides": {"roof": {"base_color": "#9fb8aa", "roughness": 0.44, "metallic": 0.62, "texture_key": null}, "accent": {"base_color": "#44352b", "roughness": 0.40, "metallic": 0.58}},
+      "signature_material_overrides": {"signature_stone": {"base_color": "#ded5c4", "roughness": 0.72, "texture_key": "limestone"}, "signature_warm": {"base_color": "#4c3526", "roughness": 0.40, "metallic": 0.55}, "signature_metal": {"base_color": "#61776d", "roughness": 0.38, "metallic": 0.70}},
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "u_shape", "courtyard"],
+        "recommendedWidth_m": [40, 80],
+        "recommendedDepth_m": [25, 50],
+        "recommendedFloors": [3, 6],
+        "wingDepth_m": [12, 18],
+        "preferredBayMultiple_m": 5.0,
+        "minimumCourtyard_m": 16,
+        "notes": [
+          "Use the fixed eight-column temple graph only at the native 60 by 45 metre, four-floor rectangular tier.",
+          "For other planning profiles, keep the entrance, corners, crown and roof fixed within each module segment and repeat only audited middle bays."
+        ]
+      },
+      "kits": ["ceremonial_steps", "giant_corinthian_portico", "sculpted_pediment", "ashlar_civic_body", "cross_hip_copper_roof"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "neoclassical_courthouse_temple_v1",
+        "description": "A deep solid judicial volume with one fixed eight-column Corinthian temple front, three bronze doors, high full-width stair terrace, sparse occupied windows and a patinated-copper main hip plus lower portico gable.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0.png", "cues": ["eight colossal Corinthian columns", "broad stair terrace", "allegorical pediment", "deep entablature"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_60.jpg", "cues": ["deep solid body", "sparse side windows", "projecting temple front", "raised copper main roof"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/monumental_courthouse_axis/variant_0_angle_90.jpg", "cues": ["solid rectangular plan", "cross-hip roof intersection", "lower portico gable", "no dome or courtyard"]}
+        ],
+        "height_m": 23.8,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 60.0, "depth_m": 45.0, "floors": 4, "floor_height_m": 5.0},
+        "nodes": [
+          {"id": "courthouse_body", "kind": "box", "size": [52.0, 35.0, 18.8], "location": [0.0, 2.0, 9.4], "material": "signature_stone", "bevel_m": 0.14},
+          {"id": "courthouse_granite_plinth", "kind": "box", "size": [53.0, 36.0, 1.55], "location": [0.0, 2.0, 0.775], "material": "secondary", "bevel_m": 0.08},
+          {"id": "courthouse_front_cornice", "kind": "box", "size": [53.0, 1.0, 0.52], "location": [0.0, -15.5, 18.25], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "courthouse_rear_cornice", "kind": "box", "size": [53.0, 1.0, 0.52], "location": [0.0, 19.5, 18.25], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "courthouse_left_cornice", "kind": "box", "size": [1.0, 35.0, 0.52], "location": [-26.0, 2.0, 18.25], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "courthouse_right_cornice", "kind": "box", "size": [1.0, 35.0, 0.52], "location": [26.0, 2.0, 18.25], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "courthouse_main_copper_hip", "kind": "hipped_roof", "size": [53.0, 36.0, 5.2], "location": [0.0, 2.0, 18.6], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x", "ridge_inset_m": 16.5},
+          {"id": "courthouse_portico_copper_gable", "kind": "gable_roof", "size": [50.8, 9.0, 3.7], "location": [0.0, -16.8, 19.3], "material": "roof", "bevel_m": 0.07, "ridge_axis": "y"}
+        ],
+        "voids": [
+          {"id": "courthouse_entry_recess", "size": [13.0, 2.8, 6.4], "location": [0.0, -16.1, 5.0], "purpose": "three recessed bronze judicial doors behind the giant-order colonnade"}
+        ],
+        "assemblies": [
+          {"id": "courthouse_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -15.6, 1.5], "width_m": 49.0, "depth_m": 7.2, "column_height_m": 15.2, "column_radius_m": 0.78, "count": 8, "flutes": 20, "capital_style": "corinthian", "capital_leaf_count": 8, "pediment_rise_m": 3.65, "tympanum_relief": true, "tympanum_relief_style": "allegorical", "door_count": 3, "door_width_m": 2.45, "door_spacing_m": 4.0, "door_height_m": 5.1, "material": "signature_stone", "door_material": "signature_warm"},
+          {"id": "courthouse_judicial_steps", "kind": "steps", "centre": [0.0, -21.2, 0.0], "width_m": 60.0, "depth_m": 7.0, "count": 14, "rise_m": 0.105, "material": "signature_stone"},
+          {"id": "courthouse_left_stair_cheek", "kind": "shadow_line", "axis": "front", "centre": [-28.4, -21.2, 0.78], "span_m": 3.2, "height_m": 1.56, "depth_m": 7.0, "material": "signature_stone"},
+          {"id": "courthouse_right_stair_cheek", "kind": "shadow_line", "axis": "front", "centre": [28.4, -21.2, 0.78], "span_m": 3.2, "height_m": 1.56, "depth_m": 7.0, "material": "signature_stone"},
+          {"id": "courthouse_main_roof_seams", "kind": "hip_roof_seam_array", "centre": [0.0, 2.0, 18.6], "width_m": 53.0, "depth_m": 36.0, "rise_m": 5.2, "ridge_inset_m": 16.5, "spacing_m": 2.2, "line_width_m": 0.065, "line_height_m": 0.05, "material": "signature_metal"},
+          {"id": "courthouse_front_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -15.58, 11.3], "positions_m": [-11.0, 0.0, 11.0], "opening_width_m": 1.75, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_1"},
+          {"id": "courthouse_left_lower_windows", "kind": "classical_window_array", "axis": "left", "centre": [-26.08, 2.0, 5.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_2"},
+          {"id": "courthouse_left_upper_windows", "kind": "classical_window_array", "axis": "left", "centre": [-26.08, 2.0, 12.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_3"},
+          {"id": "courthouse_right_lower_windows", "kind": "classical_window_array", "axis": "right", "centre": [26.08, 2.0, 5.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_2"},
+          {"id": "courthouse_right_upper_windows", "kind": "classical_window_array", "axis": "right", "centre": [26.08, 2.0, 12.0], "positions_m": [-10.5, -3.5, 3.5, 10.5], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_4"},
+          {"id": "courthouse_rear_lower_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 19.58, 5.0], "positions_m": [-20.0, -12.0, -4.0, 4.0, 12.0, 20.0], "opening_width_m": 1.65, "opening_height_m": 3.6, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_1"},
+          {"id": "courthouse_rear_upper_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 19.58, 12.0], "positions_m": [-20.0, -12.0, -4.0, 4.0, 12.0, 20.0], "opening_width_m": 1.65, "opening_height_m": 3.2, "mullions": 1, "transoms": 1, "interior_material": "glazing_interior_3"},
+          {"id": "courthouse_front_base_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.92, 1.7], "span_m": 52.5, "height_m": 0.22, "depth_m": 0.20, "material": "signature_stone"},
+          {"id": "courthouse_front_upper_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -15.90, 15.6], "span_m": 52.3, "height_m": 0.20, "depth_m": 0.18, "material": "signature_stone"}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+      }
     },
     "collegiate_gothic_jacobethan": {
       "identity": "Symmetrical Jacobethan collegiate manor with red Flemish-bond brick, pale stone quoins and strapwork, five fixed shaped gables, a projecting centre bay, classical entrance porch, steep slate quadrangle roofs and dense grouped chimney stacks.",

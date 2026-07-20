@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-civic-courtyard-roof-ring-v76",
+  "memory_version": "2026-07-20-neoclassical-courthouse-temple-v77",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -645,6 +645,21 @@
       "symptom": "Civic windows disappear into a solid limestone massing core",
       "cause": "Glazing and surround cards were placed coplanar with or behind opaque core faces instead of being registered to the exposed elevation plane.",
       "correction": "Place evidence-led window assemblies just outside the core face, layer occupied glazing behind shallow stone surrounds, and inspect all four elevations in oblique review views."
+    },
+    {
+      "symptom": "A selected neoclassical temple courthouse grows a dome or courtyard that is absent from every variant image",
+      "cause": "Parent-archetype render prose overrode the selected variant's facade, oblique and roof-plan evidence.",
+      "correction": "Resolve conflicts in favor of the selected variant. Lock the native variant dimensions and audit all compatible views before choosing solid body, court, dome or roof topology; encode explicit negative evidence such as no dome and no courtyard in the massing graph."
+    },
+    {
+      "symptom": "A dominant patinated copper hip reads as a smooth plastic tent in aerial review",
+      "cause": "Material color carried the roof identity while the standing-seam construction visible in the roof-plan reference was omitted.",
+      "correction": "Register shallow seam geometry to the actual hipped planes, fan outer seams toward ridge endpoints, keep seam spacing evidence-scaled, and verify the ridge and hip intersections from the aerial acceptance camera."
+    },
+    {
+      "symptom": "A monumental courthouse passes its body dimensions but underfills the authored native frontage",
+      "cause": "The grammar width described the full ceremonial composition while the body and first stair terrace were authored narrower.",
+      "correction": "Treat the stair, cheek walls and temple front as one fixed frontage landmark. Validate the complete assembled extent and let the full-width stair establish the native frontage when supported by the reference."
     }
   ]
 }

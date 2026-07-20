@@ -229,6 +229,37 @@ def test_classical_civic_injects_courtyard_roof_ring_and_four_column_portico():
     assert graph["final_bevel_m"] == 0.0
 
 
+def test_neoclassical_courthouse_injects_eight_column_temple_and_seamed_hip():
+    from signature_profiles import inject_signature
+
+    grammar = {"source": {"archetype_id": "monumental_courthouse_axis"}, "materials": {}}
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    nodes = {item["id"]: item for item in graph["nodes"]}
+
+    assert graph["profile"] == "neoclassical_courthouse_temple_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 60.0,
+        "depth_m": 45.0,
+        "floors": 4,
+        "floor_height_m": 5.0,
+    }
+    portico = assemblies["courthouse_giant_portico"]
+    assert portico["count"] == 8
+    assert portico["flutes"] == 20
+    assert portico["capital_style"] == "corinthian"
+    assert portico["door_count"] == 3
+    assert assemblies["courthouse_judicial_steps"]["width_m"] == 60.0
+    assert assemblies["courthouse_main_roof_seams"]["kind"] == "hip_roof_seam_array"
+    assert nodes["courthouse_main_copper_hip"]["kind"] == "hipped_roof"
+    assert all("dome" not in node["id"] for node in graph["nodes"])
+    assert graph["final_bevel_m"] == 0.0
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "u_shape", "courtyard",
+    ]
+
+
 def test_v21_expansion_graphs_preserve_family_specific_construction():
     """The methodology batch must not regress to one generic textured box."""
     from signature_profiles import inject_signature
@@ -809,6 +840,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert 'kind == "mansard_perimeter"' in source
     assert 'kind == "rounded_corner_pavilion"' in source
     assert 'kind == "courtyard_hip_roof"' in source
+    assert 'kind == "hip_roof_seam_array"' in source
     assert 'kind == "classical_balustrade_perimeter"' in source
     assert 'kind == "classical_window_array"' in source
     assert "focus_height * 2.75" in source

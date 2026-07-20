@@ -6426,6 +6426,8 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
     column_height = float(spec.get("column_height_m", 8.4))
     count = max(4, int(spec.get("count", 6)))
     radius = float(spec.get("column_radius_m", 0.46))
+    flutes = max(0, int(spec.get("flutes", 0)))
+    capital_style = str(spec.get("capital_style", "ionic")).lower()
     pediment_rise = float(spec.get("pediment_rise_m", 2.35))
     stone = _graph_material(mats, spec.get("material", "signature_stone"))
     bronze = _graph_material(mats, spec.get("door_material", "signature_warm"))
@@ -6446,19 +6448,60 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
             f"{prefix}_BaseMoulding{index:02d}", radius * 1.16, 0.18,
             (x, column_y, base_z + 0.29), stone, 24,
         ))
-        parts.append(add_cylinder(
-            f"{prefix}_Shaft{index:02d}", radius, column_height,
-            (x, column_y, shaft_base + column_height / 2), stone, 28,
-        ))
+        if flutes >= 8:
+            segments = flutes * 2
+            shaft_bottom = shaft_base
+            shaft_top = shaft_base + column_height
+            shaft_verts: list[tuple[float, float, float]] = []
+            for z_value in (shaft_bottom, shaft_top):
+                for segment in range(segments):
+                    angle = math.tau * segment / segments
+                    segment_radius = radius if segment % 2 == 0 else radius * 0.925
+                    shaft_verts.append((
+                        x + math.cos(angle) * segment_radius,
+                        column_y + math.sin(angle) * segment_radius,
+                        z_value,
+                    ))
+            shaft_faces: list[tuple[int, ...]] = [
+                tuple(range(segments - 1, -1, -1)),
+                tuple(range(segments, segments * 2)),
+            ]
+            for segment in range(segments):
+                nxt = (segment + 1) % segments
+                shaft_faces.append((segment, nxt, segments + nxt, segments + segment))
+            parts.append(add_prism(
+                f"{prefix}_FlutedShaft{index:02d}", shaft_verts, shaft_faces, stone,
+            ))
+        else:
+            parts.append(add_cylinder(
+                f"{prefix}_Shaft{index:02d}", radius, column_height,
+                (x, column_y, shaft_base + column_height / 2), stone, 28,
+            ))
         capital_z = shaft_base + column_height
         parts.append(add_cylinder(
             f"{prefix}_CapitalNeck{index:02d}", radius * 1.13, 0.20,
             (x, column_y, capital_z + 0.10), stone, 24,
         ))
+        if capital_style == "corinthian":
+            parts.append(add_cylinder(
+                f"{prefix}_CapitalBell{index:02d}", radius * 1.38, 0.34,
+                (x, column_y, capital_z + 0.26), stone, 24,
+            ))
+            leaf_count = max(8, int(spec.get("capital_leaf_count", 8)))
+            for leaf_index in range(leaf_count):
+                angle = math.tau * leaf_index / leaf_count
+                leaf_radius = radius * 1.12
+                parts.append(add_ellipsoid(
+                    f"{prefix}_CapitalLeaf{index:02d}_{leaf_index:02d}",
+                    (x + math.cos(angle) * leaf_radius, column_y + math.sin(angle) * leaf_radius,
+                     capital_z + 0.30),
+                    (radius * 0.30, radius * 0.18, 0.26), stone,
+                ))
         parts.append(add_beveled_box(
             f"{prefix}_CapitalAbacus{index:02d}",
             (radius * 2.75, radius * 2.3, 0.24),
-            (x, column_y, capital_z + 0.30), stone, 0.055,
+            (x, column_y, capital_z + (0.52 if capital_style == "corinthian" else 0.30)),
+            stone, 0.055,
         ))
 
     entablature_z = shaft_base + column_height + 0.58
@@ -6501,17 +6544,39 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
     if bool(spec.get("tympanum_relief", False)):
         relief_y = facade_y - depth * 1.025
         relief_z = pediment_eave_z + pediment_rise * 0.36
-        parts.append(add_ellipsoid(
-            f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
-            (0.72, 0.12, 0.38), stone,
-        ))
-        for relief_index, sign in enumerate((-1, 1)):
-            for item_index, ratio in enumerate((0.18, 0.34)):
-                parts.append(add_ellipsoid(
-                    f"{prefix}_TympanumFigure{relief_index}_{item_index}",
-                    (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
-                    (0.48, 0.10, 0.24), stone,
-                ))
+        if str(spec.get("tympanum_relief_style", "medallion")) == "allegorical":
+            parts.append(add_ellipsoid(
+                f"{prefix}_TympanumJustice", (cx, relief_y, relief_z + 0.10),
+                (0.42, 0.12, 0.82), stone,
+            ))
+            for side_index, sign in enumerate((-1, 1)):
+                for item_index, ratio in enumerate((0.15, 0.28, 0.39)):
+                    body = add_ellipsoid(
+                        f"{prefix}_TympanumFigure{side_index}_{item_index}",
+                        (cx + sign * width * ratio, relief_y,
+                         relief_z - 0.08 - item_index * 0.11),
+                        (0.72 - item_index * 0.10, 0.10, 0.27 - item_index * 0.025), stone,
+                    )
+                    body.rotation_euler.y = sign * (0.12 + item_index * 0.07)
+                    parts.append(body)
+                    parts.append(add_ellipsoid(
+                        f"{prefix}_TympanumHead{side_index}_{item_index}",
+                        (cx + sign * (width * ratio - 0.18), relief_y - 0.015,
+                         relief_z + 0.24 - item_index * 0.08),
+                        (0.15, 0.09, 0.15), stone,
+                    ))
+        else:
+            parts.append(add_ellipsoid(
+                f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
+                (0.72, 0.12, 0.38), stone,
+            ))
+            for relief_index, sign in enumerate((-1, 1)):
+                for item_index, ratio in enumerate((0.18, 0.34)):
+                    parts.append(add_ellipsoid(
+                        f"{prefix}_TympanumFigure{relief_index}_{item_index}",
+                        (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
+                        (0.48, 0.10, 0.24), stone,
+                    ))
     # A dark recessed door and transom keep the centre legible behind the
     # colonnade even when the facade atlas is viewed at a grazing angle.
     door_width = float(spec.get("door_width_m", width * 0.22))
@@ -8265,6 +8330,46 @@ def _graph_courtyard_hip_roof(parts: list, spec: dict, mats: dict) -> None:
     ])
 
 
+def _graph_hip_roof_seam_array(parts: list, spec: dict, mats: dict) -> None:
+    """Standing seams registered to all four planes of a hipped roof."""
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    rise = float(spec["rise_m"])
+    inset = float(spec.get("ridge_inset_m", min(width, depth) * 0.25))
+    spacing = max(0.5, float(spec.get("spacing_m", 2.2)))
+    line_width = float(spec.get("line_width_m", 0.055))
+    line_height = float(spec.get("line_height_m", 0.045))
+    metal = _graph_material(mats, spec.get("material", "signature_metal"))
+    prefix = str(spec.get("id", "GraphHipRoofSeams"))
+    ridge_half = max(0.01, width / 2 - inset)
+    count = max(2, int(width / spacing))
+
+    def seam(name: str, start: Vector, end: Vector) -> None:
+        direction = end - start
+        length = direction.length
+        item = add_box(
+            f"{prefix}_{name}", (line_width, length, line_height),
+            tuple((start + end) * 0.5), metal,
+        )
+        item.rotation_euler = direction.to_track_quat("Y", "Z").to_euler()
+        parts.append(item)
+
+    for index in range(1, count):
+        eave_x = cx - width / 2 + width * index / count
+        ridge_x = cx + max(-ridge_half, min(ridge_half, eave_x - cx))
+        seam(
+            f"Front{index:02d}",
+            Vector((eave_x, cy - depth / 2, eave_z + line_height)),
+            Vector((ridge_x, cy, eave_z + rise + line_height)),
+        )
+        seam(
+            f"Rear{index:02d}",
+            Vector((eave_x, cy + depth / 2, eave_z + line_height)),
+            Vector((ridge_x, cy, eave_z + rise + line_height)),
+        )
+
+
 def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
     """Stone rail and low-cost turned balusters around a civic roof edge."""
     cx, cy, base_z = (float(value) for value in spec["centre"])
@@ -8622,6 +8727,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_rounded_corner_pavilion(parts, assembly, mats)
         elif kind == "courtyard_hip_roof":
             _graph_courtyard_hip_roof(parts, assembly, mats)
+        elif kind == "hip_roof_seam_array":
+            _graph_hip_roof_seam_array(parts, assembly, mats)
         elif kind == "classical_balustrade_perimeter":
             _graph_classical_balustrade_perimeter(parts, assembly, mats)
         elif kind == "classical_window_array":

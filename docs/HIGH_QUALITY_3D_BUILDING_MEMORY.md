@@ -524,6 +524,22 @@ The polychrome collegiate family added four rules for resizable hero facades:
   its channel set was technically valid. Preserve the patina colour and add
   seam relief only when it improves the near LOD without closing the roof ring.
 
+### Neoclassical courthouse + roof-plane lessons
+
+- Selected-variant evidence outranks generic parent-archetype prose. The
+  Neoclassical Temple references prove a deep solid body and cross-hip roof,
+  so the parent courthouse prompt's dome and rotunda were explicitly rejected.
+- A colossal order needs construction rhythm, not smooth cylinders. Use a
+  fluted shaft profile, capital-style-specific geometry, one fixed column count
+  and an audited door/window schedule; never scale the temple centre as a
+  repeatable ordinary bay.
+- Standing seams on a dominant hip are silhouette-adjacent roof construction.
+  Register each seam to its actual slope, fan the outer runs toward the ridge
+  endpoints, and inspect the entire pattern from the aerial acceptance view.
+- Monumental stairs and cheek walls are part of the native frontage envelope.
+  Validate the assembled landmark—not only its body core—and let the full-width
+  ceremonial terrace establish the reference width when the images support it.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

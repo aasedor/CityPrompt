@@ -42,11 +42,14 @@ def inject_signature(
         # opt in without sending a large geometry recipe to image generators.
         massing_graph = profile.pop("massing_graph", None)
         dimension_overrides = profile.pop("dimension_overrides", None)
+        footprint_compatibility_override = profile.pop("footprint_compatibility_override", None)
         grammar["architectural_signature"] = profile
         if massing_graph:
             grammar["massing_graph"] = massing_graph
         if dimension_overrides:
             grammar.setdefault("dimensions", {}).update(deepcopy(dimension_overrides))
+        if footprint_compatibility_override:
+            grammar["footprint_compatibility"] = deepcopy(footprint_compatibility_override)
         materials = grammar.get("materials") or {}
         for slot, override in (profile.get("material_overrides") or {}).items():
             if slot in materials:
