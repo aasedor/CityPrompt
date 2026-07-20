@@ -249,6 +249,38 @@ def test_arch_window_warehouse_variant_injects_ten_bay_romanesque_graph():
     assert all(skin["span_m"] == 7.1 for skin in side_skins)
 
 
+def test_cream_terracotta_art_deco_variant_injects_fixed_setback_lantern_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "art_deco_setback_tower",
+            "variant_id": "art_deco_cream_terracotta",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+
+    assert graph["profile"] == "cream_terracotta_four_stage_lantern_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 28.0,
+        "floors": 15,
+        "floor_height_m": 3.6,
+    }
+    node_ids = {node["id"] for node in graph["nodes"]}
+    assert {"deco_main_shaft", "deco_stage_one", "deco_stage_two", "deco_crown_stage"} <= node_ids
+    assert len([node_id for node_id in node_ids if node_id.startswith("deco_lantern_post_")]) == 8
+    front_stack = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "deco_front_main_skin"
+    )
+    assert front_stack["repeat_count"] == 2
+    assert len(front_stack["levels"]) == 9
+    assert "deco_front_main_glazing" in graph["disabled_assembly_ids"]
+    assert "deco_front_podium_glazing" in graph["disabled_assembly_ids"]
+
+
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
     profiles = json.loads(
         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(

@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-richardsonian-warehouse-v82",
+  "memory_version": "2026-07-20-art-deco-setback-v83",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -755,6 +755,26 @@
       "symptom": "A five-bay short warehouse elevation displays ten compressed Romanesque bays behind five physical piers",
       "cause": "The complete long-face atlas was wrapped onto a shorter side even though the oblique reference proved an independent five-bay structural rhythm.",
       "correction": "Partition the secondary elevation into evidence-led per-bay UV crops and crop the semantic glazing regions with the same bounds. Verify that each cropped bay aligns to one physical side pier interval."
+    },
+    {
+      "symptom": "An Art Deco tower's black commercial podium renders as a blank block while the shaft facade begins above it",
+      "cause": "One facade stack placed the podium atlas on the inset shaft plane even though the granite base has a larger footprint, so the podium skin was buried inside the solid core.",
+      "correction": "Treat each setback footprint as its own exposed envelope. Separate podium, shaft and crown skins and place every surface at the true face of its corresponding tier."
+    },
+    {
+      "symptom": "Upper setback returns remain blank even though the front elevation is fully textured",
+      "cause": "Side skins used the tier depth coordinate instead of the tier width coordinate and landed inside the setback cores.",
+      "correction": "Resolve facade-plane coordinates by axis for every stage: front and rear use half-depth, left and right use half-width. Audit all four return faces from the aerial camera."
+    },
+    {
+      "symptom": "Legacy automatic glass masks tear silver fragments across an otherwise clean historic facade",
+      "cause": "Unregistered semantic cutouts interpreted reflective mullions, relief panels and weathering as irregular glass regions.",
+      "correction": "Do not promote noisy automatic cutouts to physical geometry. Prefer a clean deterministic PBR skin and fixed shadow-bearing piers, or create a reviewed registered opening schedule before enabling recessed semantic glazing."
+    },
+    {
+      "symptom": "A landmark Art Deco crown reads as a generic black cylinder with a gold cap",
+      "cause": "The lantern silhouette was reduced to material colour without a faceted frame, vertical posts, terrace plinth and finial.",
+      "correction": "Build landmark crowns as fixed assemblies: dark faceted lantern core, separate gilded perimeter posts, stepped plinth, polygonal roof and bounded finial, then prove the complete hierarchy in aerial review."
     }
   ]
 }

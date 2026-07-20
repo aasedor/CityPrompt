@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-richardsonian-warehouse-v82`.
+Current executable memory: `2026-07-20-art-deco-setback-v83`.
 
 ## The quality target
 
@@ -637,6 +637,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Roof-plan evidence owns the flat service roof. Preserve the continuous
   parapet, one low access enclosure, one modest HVAC unit and one hatch; do not
   introduce a tower, gable, court or full penthouse absent from the references.
+
+### Cream terra-cotta Art Deco tower + tier-envelope lessons
+
+- Every setback stage owns a distinct exposed envelope. A combined shaft stack
+  buried the podium atlas inside the larger granite base, so podium, shaft,
+  occupied setbacks and crown had to be separated and placed on their true
+  footprint faces.
+- Coordinates are axis-dependent at every tier: front and rear skins use the
+  stage's half-depth, while left and right skins use its half-width. A valid
+  front render cannot excuse blank return walls; aerial review must prove all
+  four faces through the complete setback hierarchy.
+- Do not turn an unreviewed legacy automatic glass mask into hero geometry.
+  Reflective mullions and relief panels produced torn silver cutouts; the clean
+  correction retained the deterministic PBR elevation and fixed physical piers
+  while disabling the noisy semantic overlay until a registered schedule exists.
+- Landmark crowns cannot be generic roof props. Preserve the stepped plinth,
+  dark octagonal lantern, eight separate gilded posts, faceted roof and finial
+  as fixed construction, and compare their silhouette to both oblique and
+  roof-plan references.
+- A geometry-only pilot may validate the 30 by 28 metre footprint, 15 occupied
+  levels and 74.5 metre landmark silhouette, but keeper promotion still needs
+  the complete module package and the corrected textured eight-view review.
 
 ## Updating this memory
 
