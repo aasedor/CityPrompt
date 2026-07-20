@@ -75,7 +75,7 @@ import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
-import { normalizePolygonDrawing } from './drawingGeometry';
+import { isWithinPolygonCloseRadius, normalizePolygonDrawing } from './drawingGeometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import { polygon as turfPolygon, point as turfPoint } from '@turf/helpers';
 
@@ -116,7 +116,6 @@ const DRAWING_OUTLINE_LIFT_METERS = 0.6;
 const GLOBE_SCENE_HTML_Z_INDEX_RANGE: [number, number] = [1, 0];
 const DRAWING_VERTEX_LIFT_METERS = 1;
 const DRAWING_VERTEX_RADIUS_METERS = 2.25;
-const CONNECT_VERTEX_RADIUS_METERS = 30;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
 const MEASURE_LINE_LIFT_METERS = 2;
 const MEASURE_POINT_RADIUS_METERS = 1.8;
@@ -2578,7 +2577,7 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    setCenterNearStartVertex(haversineDistance(centerSurface.lngLat, pts[0]) <= CONNECT_VERTEX_RADIUS_METERS);
+    setCenterNearStartVertex(isWithinPolygonCloseRadius(haversineDistance(centerSurface.lngLat, pts[0])));
   }, [activeSitePlannerTool, hasDrawingTool, linear, raycastSurfacePoint]);
 
   const addDrawingPointFromSurface = useCallback((surface: { lngLat: [number, number]; height: number }) => {
@@ -2749,7 +2748,7 @@ export function GlobeSitePlannerMap({
     if (
       !linear
       && drawingPointsRef.current.length >= minPointsForTool(activeSitePlannerTool)
-      && haversineDistance(clickLngLat, drawingPointsRef.current[0]) <= CONNECT_VERTEX_RADIUS_METERS
+      && isWithinPolygonCloseRadius(haversineDistance(clickLngLat, drawingPointsRef.current[0]))
     ) {
       finishDrawingRef.current?.();
       return;

@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizePolygonDrawing } from './drawingGeometry';
+import {
+  isWithinPolygonCloseRadius,
+  normalizePolygonDrawing,
+  POLYGON_CLOSE_RADIUS_METERS,
+} from './drawingGeometry';
+
+describe('polygon close gesture', () => {
+  it('only closes within the visible start-marker radius', () => {
+    expect(isWithinPolygonCloseRadius(POLYGON_CLOSE_RADIUS_METERS)).toBe(true);
+    expect(isWithinPolygonCloseRadius(POLYGON_CLOSE_RADIUS_METERS + 0.01)).toBe(false);
+    expect(isWithinPolygonCloseRadius(18)).toBe(false);
+  });
+});
 
 describe('normalizePolygonDrawing', () => {
   it('drops a final click that is effectively the first polygon vertex', () => {
