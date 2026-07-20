@@ -5,7 +5,9 @@ structure stamping, single-block typology)."""
 import math
 from dataclasses import replace
 
-from shapely.geometry import Polygon
+import pytest
+from shapely.geometry import Point, Polygon
+from shapely.ops import unary_union
 
 from app.services.master_planner.spec import (
     BandAlternate,
@@ -135,6 +137,13 @@ def test_validate_drops_catalog_less_alternates():
 
 def test_palette_from_spec_maps_bands_and_fallbacks():
     spec, _ = validate_spec(_spec(), "city_policy")
+    # This test exercises conversion, not cross-family coherence. Validation
+    # correctly drops the intentionally New York duplex alternate from the
+    # inferred Calgary family, so insert a validated-shape alternate here to
+    # prove palette_from_spec preserves the raw triple for final-floor lookup.
+    spec.bands["mid"].alternates = [
+        BandAlternate(development_type="residential_duplex", aesthetic="brownstone_rowhouse")
+    ]
     del spec.bands["edge"]  # simulate a band the planner failed to author
     palette = palette_from_spec(spec, "city_policy")
     assert palette.bands["core"].floors_abs == 7.0
@@ -250,6 +259,79 @@ def test_preset_scenarios_stamp_landscape_structures():
               and z["properties"].get("green_kind") in ("central", "pocket", "greenway")]
     assert greens
     assert all(z["properties"].get("planting_structure") for z in greens)
+    ponds = [z for z in result.zones
+             if z["properties"].get("green_kind") == "pond"]
+    greenways = [z for z in result.zones
+                 if z["properties"].get("green_kind") == "greenway"]
+    assert ponds
+    assert all(z["properties"].get("green_space_archetype_id")
+               == "stormwater_retention_pond" for z in ponds)
+    assert greenways
+    assert all(z["properties"].get("green_space_archetype_id")
+               == "linear_park_greenway" for z in greenways)
+
+
+def test_city_beautiful_stamps_fountain_and_civic_plaza_archetypes():
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="city_beautiful", scenario_label="Beautiful",
+        parameters=PARAMS, road_features=[], district_features=[],
+    )
+    open_spaces = [z for z in result.zones
+                   if z["properties"].get("_plan_role") == "open_space"]
+    fountains = [z for z in open_spaces
+                 if z["properties"].get("green_kind") == "pond"]
+    plazas = [z for z in open_spaces
+              if z["properties"].get("green_kind") == "plaza"]
+    assert fountains
+    assert all(z["properties"].get("green_space_archetype_id")
+               == "fountain_water_feature" for z in fountains)
+    assert plazas
+    assert all(z["properties"].get("green_space_archetype_id")
+               == "formal_civic_plaza" for z in plazas)
+
+
+@pytest.mark.parametrize("scenario_id", sorted(PALETTES))
+def test_every_nonwater_public_space_connects_to_the_plan_network(scenario_id):
+    from app.services.site_engine import (
+        build_transformer,
+        local_metric_crs_for_polygon,
+        project_geometry,
+    )
+
+    site = _site()
+    result = generate_plan_geometry(
+        site_polygon_wgs84=site, scenario_id=scenario_id,
+        scenario_label=f"Connected {scenario_id}", parameters=PARAMS,
+        road_features=[], district_features=[],
+    )
+    public_spaces = [
+        zone for zone in result.zones
+        if zone["properties"].get("_plan_role") == "open_space"
+        and zone["properties"].get("green_kind") != "pond"
+    ]
+
+    assert public_spaces
+    assert all(
+        zone["properties"].get("park_access_points")
+        for zone in public_spaces
+    ), [
+        (zone.get("name"), zone["properties"].get("green_kind"))
+        for zone in public_spaces
+        if not zone["properties"].get("park_access_points")
+    ]
+
+    to_metric = build_transformer("EPSG:4326", local_metric_crs_for_polygon(site))
+    street_ground = unary_union([
+        project_geometry(Polygon(zone["coordinates"]), to_metric)
+        for zone in result.zones
+        if zone["properties"].get("_plan_role") == "street"
+    ])
+    for zone in public_spaces:
+        park = project_geometry(Polygon(zone["coordinates"]), to_metric)
+        for coordinates in zone["properties"]["park_access_points"]:
+            gateway = project_geometry(Point(coordinates), to_metric)
+            assert park.boundary.distance(gateway) < 0.1
+            assert street_ground.distance(gateway) < 3.1
 
 
 def test_single_block_site_honors_master_plan_typology():

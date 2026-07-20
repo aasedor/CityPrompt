@@ -61,6 +61,30 @@ describe('legoAssemblyApi', () => {
     expect(saved).toEqual(recipeFixture);
   });
 
+  it('compileCommunity() posts the mixed plan as one transaction', async () => {
+    const response = {
+      status: 'compiled' as const,
+      compiled_at: '2026-07-17T01:00:00Z',
+      counts: { building: 1, park: 1, street: 1 },
+      items: [],
+    };
+    apiPost.mockResolvedValue({ data: response });
+
+    await expect(legoAssemblyApi.compileCommunity([
+      { zone_id: 'building-1', recipe: recipeFixture },
+      { zone_id: 'park-1' },
+      { zone_id: 'street-1' },
+    ])).resolves.toEqual(response);
+
+    expect(apiPost).toHaveBeenCalledWith('/api/v1/lego-assembly/place-community', {
+      items: [
+        { zone_id: 'building-1', recipe: recipeFixture },
+        { zone_id: 'park-1' },
+        { zone_id: 'street-1' },
+      ],
+    });
+  });
+
   it('getRecipe() unwraps legoAssembly and passes null through', async () => {
     apiGet.mockResolvedValueOnce({ data: { legoAssembly: recipeFixture } });
     await expect(legoAssemblyApi.getRecipe('bldg-1')).resolves.toEqual(recipeFixture);
@@ -92,8 +116,21 @@ describe('legoArchetypeContextFromZone', () => {
     });
 
     expect(context.archetype_id).toBe('nordic_timber_midrise');
+    expect(context.allow_setback).toBe(false);
     // Empty strings are filtered out.
     expect(context.reuse_keys).toEqual(['timber', 'midrise']);
+  });
+
+  it('preserves an explicitly selected design variant over the parent visual reference', () => {
+    const context = legoArchetypeContextFromZone({
+      development_selected_variant_id: 'toronto_junction_contemporary_addition',
+      development_archetype_id: 'toronto_junction_converted_industrial_variant_0',
+      generation_style_input: {
+        archetypeId: 'toronto_junction_converted_industrial_variant_0',
+      },
+    });
+
+    expect(context.archetype_id).toBe('toronto_junction_contemporary_addition');
   });
 
   it('falls back to development_* fields when no generation style input exists', () => {
@@ -104,6 +141,19 @@ describe('legoArchetypeContextFromZone', () => {
     });
 
     expect(context.archetype_id).toBe('nordic_timber_midrise');
+    expect(context.allow_setback).toBe(false);
     expect(context.reuse_keys).toEqual(['midrise', 'timber', 'nordic_timber_midrise']);
+  });
+
+  it('allows setbacks only when the archetype grammar explicitly asks for them', () => {
+    const context = legoArchetypeContextFromZone({
+      generation_style_input: {
+        archetypeId: 'art_deco_setback_tower',
+        generationTags: ['art_deco', 'setback_tower'],
+        styleProfile: { massing: 'Tower on podium with stepped setbacks' },
+      },
+    });
+
+    expect(context.allow_setback).toBe(true);
   });
 });

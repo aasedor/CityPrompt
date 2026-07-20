@@ -4,7 +4,7 @@ Wraps the existing ``OSMContextFetcher`` (services/osm_context.py) so any city
 without an open-data connector still produces roads / buildings / parks / water
 DNA facts from OpenStreetMap. The spec's ``adapter_params``:
 
-    category  REQUIRED — one of "buildings" | "roads" | "water" | "parks"
+    category  REQUIRED — one of "buildings" | "roads" | "paths" | "water" | "parks"
 
 The public Overpass API allows roughly one query at a time per IP and 429s
 readily: all fetches in this process serialize behind a lock and retry once
@@ -26,7 +26,8 @@ from app.services.osm_context import OSMContextFetcher
 
 logger = logging.getLogger(__name__)
 
-_LINE_CATEGORIES = {"roads", "water"}
+_LINE_CATEGORIES = {"roads", "paths", "water"}
+_PATH_ROAD_TYPES = {"footway", "path", "cycleway", "pedestrian", "bridleway", "steps"}
 _QUERY_TIMEOUT_S = 30.0
 _RATE_LIMIT_BACKOFF_S = 8.0
 
@@ -73,7 +74,10 @@ async def fetch(
             context = await fetcher.fetch(envelope, buffer_m=0)
 
     features: list[Feature] = []
-    for item in context.get(category, []):
+    source_category = "roads" if category == "paths" else category
+    for item in context.get(source_category, []):
+        if category == "paths" and item.get("road_type") not in _PATH_ROAD_TYPES:
+            continue
         geometry = _coords_to_geometry(item.get("coordinates") or [], category)
         if geometry is None:
             continue

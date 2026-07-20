@@ -17,15 +17,94 @@ export interface EzTreePart {
 /** One entry per species; each species is [branches, leaves] parts. */
 export type EzTreeKit = EzTreePart[][];
 
-// Calgary-plausible mixed stand. Preset native sizes vary, so each species
-// is normalized to an explicit target height (metres).
-const SPECIES: Array<{ preset: string; targetHeight: number; seed: number }> = [
-  { preset: 'Aspen Medium', targetHeight: 9, seed: 11 },
-  { preset: 'Ash Medium', targetHeight: 10, seed: 23 },
-  { preset: 'Pine Medium', targetHeight: 12, seed: 37 },
-];
+export type EzTreeStyle = 'temperate' | 'riparian' | 'ornamental' | 'formal' | 'woodland' | 'botanical';
 
-let cached: EzTreeKit | null | undefined;
+interface SpeciesDefinition {
+  preset: string;
+  targetHeight: number;
+  seed: number;
+}
+
+// Style-specific stands keep the live Google scene legible before the final
+// AI finishing pass. EZ-Tree has a compact preset library, so these are shape
+// families rather than literal botanical claims.
+const SPECIES_BY_STYLE: Record<EzTreeStyle, SpeciesDefinition[]> = {
+  temperate: [
+    { preset: 'Aspen Medium', targetHeight: 9, seed: 11 },
+    { preset: 'Ash Medium', targetHeight: 10, seed: 23 },
+    { preset: 'Pine Medium', targetHeight: 12, seed: 37 },
+  ],
+  // A restrained deciduous water-edge family blends with surrounding Google
+  // photogrammetry more naturally than the default mixed conifer stand.
+  riparian: [
+    { preset: 'Aspen Medium', targetHeight: 9.5, seed: 109 },
+    { preset: 'Ash Medium', targetHeight: 10.5, seed: 113 },
+    { preset: 'Aspen Small', targetHeight: 7.5, seed: 127 },
+  ],
+  ornamental: [
+    { preset: 'Pine Small', targetHeight: 7, seed: 43 },
+    { preset: 'Aspen Small', targetHeight: 6, seed: 47 },
+    { preset: 'Oak Small', targetHeight: 7.5, seed: 53 },
+    { preset: 'Bush 2', targetHeight: 3.5, seed: 59 },
+  ],
+  formal: [
+    { preset: 'Ash Medium', targetHeight: 10, seed: 61 },
+    { preset: 'Oak Medium', targetHeight: 11, seed: 67 },
+  ],
+  woodland: [
+    { preset: 'Oak Large', targetHeight: 15, seed: 71 },
+    { preset: 'Pine Large', targetHeight: 17, seed: 73 },
+    { preset: 'Aspen Large', targetHeight: 14, seed: 79 },
+    { preset: 'Ash Large', targetHeight: 15, seed: 83 },
+  ],
+  botanical: [
+    { preset: 'Oak Medium', targetHeight: 11, seed: 89 },
+    { preset: 'Aspen Medium', targetHeight: 9, seed: 97 },
+    { preset: 'Pine Medium', targetHeight: 12, seed: 101 },
+    { preset: 'Ash Small', targetHeight: 7, seed: 103 },
+    { preset: 'Bush 1', targetHeight: 3, seed: 107 },
+  ],
+};
+
+const cached = new Map<EzTreeStyle, EzTreeKit | null>();
+
+export function resolveEzTreeStyle(
+  archetypeId: string | undefined,
+  plantingStructure: string | undefined,
+): EzTreeStyle {
+  const id = String(archetypeId ?? '').toLowerCase();
+  if (
+    id.includes('reservoir')
+    || id.includes('watershed')
+    || id.includes('wetland')
+    || plantingStructure === 'reservoir_perimeter'
+  ) {
+    return 'riparian';
+  }
+  if (id.includes('japanese') || id.includes('zen') || id.includes('contemplative')) {
+    return 'ornamental';
+  }
+  if (id.includes('botanical') || id.includes('garden') || id.includes('arboretum')) {
+    return 'botanical';
+  }
+  if (
+    id.includes('forest')
+    || id.includes('woodland')
+    || id.includes('regional_park')
+    || id.includes('olmsted')
+    || plantingStructure === 'naturalistic_grove'
+  ) {
+    return 'woodland';
+  }
+  if (
+    plantingStructure === 'formal_allee'
+    || plantingStructure === 'formal_quad'
+    || plantingStructure === 'paved_plaza'
+  ) {
+    return 'formal';
+  }
+  return 'temperate';
+}
 
 function buildSpecies(preset: string, targetHeight: number, seed: number): EzTreePart[] {
   const tree = new Tree();
@@ -78,7 +157,17 @@ function buildSpecies(preset: string, targetHeight: number, seed: number): EzTre
       // transparent atlas dilutes alpha below 0.5 and every fragment is
       // discarded — trees render as bare branches. A low cutoff keeps
       // distant canopies; blending handles the soft edges.
-      material.alphaTest = 0.06;
+      material.alphaTest = 0;
+      material.side = THREE.DoubleSide;
+      // Deep mip levels average the mostly transparent atlas until deciduous
+      // crowns disappear. Preserve the detailed source alpha at aerial scale;
+      // linear filtering keeps it stable without the skeletal-tree failure.
+      if ('map' in material && material.map instanceof THREE.Texture) {
+        material.map.generateMipmaps = false;
+        material.map.minFilter = THREE.LinearFilter;
+        material.map.magFilter = THREE.LinearFilter;
+        material.map.needsUpdate = true;
+      }
     }
     return { geometry, material };
   });
@@ -88,15 +177,19 @@ function buildSpecies(preset: string, targetHeight: number, seed: number): EzTre
  * Build (once) and return the species kit, or null if generation fails —
  * callers fall back to the placeholder cone tree.
  */
-export function getEzTreeKit(): EzTreeKit | null {
-  if (cached !== undefined) return cached;
+export function getEzTreeKit(style: EzTreeStyle = 'temperate'): EzTreeKit | null {
+  if (cached.has(style)) return cached.get(style) ?? null;
   try {
-    cached = SPECIES.map((s) => buildSpecies(s.preset, s.targetHeight, s.seed));
+    const kit = SPECIES_BY_STYLE[style].map((species) => (
+      buildSpecies(species.preset, species.targetHeight, species.seed)
+    ));
+    cached.set(style, kit);
+    return kit;
   } catch (err) {
     console.warn('[ezTreeKit] generation failed, using placeholder trees', err);
-    cached = null;
+    cached.set(style, null);
+    return null;
   }
-  return cached;
 }
 
 /**

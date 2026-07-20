@@ -81,6 +81,90 @@ def test_vertical_plan_reuses_archetype_metadata_and_stacks_modules():
     assert plan["reuse_keys"] == ["nordic", "mixed-use"]
 
 
+def test_exact_variant_uses_fixed_landmark_at_canonical_size_and_floors():
+    raw = entry("assembled", "Tudor quadrangle", "assembled", height=27.6, width=60, depth=25)
+    raw.metadata_["lego"].update({
+        "archetype_ids": ["collegiate_gothic_education", "collegiate_gothic_tudor"],
+        "reuse_keys": ["collegiate_gothic"],
+        "native_floors": 4,
+        "source_variant_id": "collegiate_gothic_tudor",
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=60,
+            target_depth_m=25,
+            target_floors=4,
+            archetype_id="collegiate_gothic_tudor",
+            reuse_keys=("collegiate_gothic",),
+        ),
+    )
+
+    assert plan["version"] == 3
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["assembled_height_m"] == pytest.approx(27.6)
+    assert len(plan["instances"]) == 1
+    assert plan["instances"][0]["role"] == "assembled"
+    assert plan["instances"][0]["scale"] == [1.0, 1.0, 1.0]
+
+
+def test_generation_archetype_id_resolves_to_exact_fixed_landmark():
+    raw = entry("assembled", "Tudor quadrangle", "assembled", height=27.6, width=60, depth=25)
+    raw.metadata_["lego"].update({
+        "archetype_ids": [
+            "collegiate_gothic_education",
+            "collegiate_gothic_tudor",
+            "collegiate_gothic_education_variant_0",
+        ],
+        "reuse_keys": ["collegiate_gothic"],
+        "native_floors": 4,
+        "source_variant_id": "collegiate_gothic_tudor",
+        "generation_archetype_id": "collegiate_gothic_education_variant_0",
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=60,
+            target_depth_m=25,
+            target_floors=4,
+            archetype_id="collegiate_gothic_education_variant_0",
+            reuse_keys=("collegiate_gothic",),
+        ),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["instances"][0]["role"] == "assembled"
+
+
+def test_exact_variant_landmark_resizes_to_a_small_city_parcel():
+    raw = entry("assembled", "Perpendicular chapel", "assembled", height=34.0, width=61.58, depth=42.74)
+    raw.metadata_["lego"].update({
+        "archetype_ids": ["collegiate_gothic_perpendicular"],
+        "reuse_keys": ["collegiate_gothic"],
+        "native_floors": 4,
+        "source_variant_id": "collegiate_gothic_perpendicular",
+    })
+    landmark = descriptor_from_library_entry(raw)
+
+    plan = plan_vertical_assembly(
+        [landmark] if landmark else [],
+        AssemblyRequest(
+            target_width_m=35.3,
+            target_depth_m=21.5,
+            target_floors=4,
+            archetype_id="collegiate_gothic_perpendicular",
+            reuse_keys=("collegiate_gothic",),
+        ),
+    )
+
+    assert plan["fit"]["assembly_mode"] == "fixed_landmark"
+    assert plan["instances"][0]["scale"] == [pytest.approx(0.57324), pytest.approx(0.50304), 1.0]
+
+
 def test_rejects_destructive_footprint_scaling():
     modules = [
         descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
@@ -117,6 +201,26 @@ def test_allow_setback_false_suppresses_setback_even_at_six_floors():
     assert "setback" not in roles
     assert roles == ["podium", "floor", "floor", "floor", "floor", "floor", "roof"]
     assert plan["assembled_height_m"] == pytest.approx(21.5)
+
+
+def test_variant_specific_rooftop_addition_can_start_at_four_floors():
+    setback_entry = entry("setback", "Contemporary rooftop addition", "setback", height=3.2)
+    setback_entry.metadata_["lego"]["setback_min_floors"] = 4
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2)),
+        descriptor_from_library_entry(setback_entry),
+        descriptor_from_library_entry(entry("roof", "Green roof", "roof", height=1.0)),
+    ]
+
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(target_width_m=24, target_depth_m=18, target_floors=4),
+    )
+
+    assert [item["role"] for item in plan["instances"]] == [
+        "podium", "floor", "floor", "setback", "roof",
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -219,7 +323,14 @@ def test_manifest_validation_rejects_path_syntax_in_family_and_role():
 
 
 def test_lego_metadata_from_manifest_builds_planner_shape():
-    manifest = _manifest()
+    manifest = _manifest(
+        archetype_aliases=[
+            "nordic_timber_midrise_variant_1",
+            "nordic_timber_midrise_variant_2",
+            "nordic_timber_midrise_variant_1",
+            "",
+        ]
+    )
     metadata = lego_metadata_from_manifest(
         manifest, manifest["modules"][1], validation_status="pass"
     )
@@ -232,6 +343,8 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     assert metadata["archetype_ids"] == [
         "nordic_timber_midrise",
         "nordic_timber_midrise_variant_0",
+        "nordic_timber_midrise_variant_1",
+        "nordic_timber_midrise_variant_2",
     ]
     assert metadata["min_floors"] == 2 and metadata["max_floors"] == 8
     assert metadata["validation_status"] == "pass"
@@ -243,6 +356,26 @@ def test_lego_metadata_from_manifest_builds_planner_shape():
     )
     assert assembled_meta["enabled"] is False
     assert assembled_meta["role"] == "assembled"
+
+    landmark_manifest = _manifest(
+        variant_id="collegiate_gothic_tudor",
+        massing_graph={"schema": "massing-graph@1", "profile": "gothic_gatehouse_hero"},
+    )
+    landmark_meta = lego_metadata_from_manifest(
+        landmark_manifest,
+        {
+            "role": "assembled",
+            "filename": "tudor_assembled.glb",
+            "width_m": 60.0,
+            "depth_m": 25.0,
+            "height_m": 27.6,
+            "native_floors": 4,
+        },
+    )
+    assert landmark_meta["enabled"] is True
+    assert landmark_meta["native_floors"] == 4
+    assert landmark_meta["source_variant_id"] == "collegiate_gothic_tudor"
+    assert landmark_meta["generation_archetype_id"] == "nordic_timber_midrise_variant_0"
 
 
 def test_find_family_module_entry_dedupes_on_family_and_role():
@@ -273,6 +406,53 @@ def test_requested_archetype_never_substitutes_unrelated_family():
                 archetype_id="contemporary_midrise",
             ),
         )
+
+
+def test_l_shape_plan_places_two_rotated_streetwall_segments():
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5, width=30, depth=10)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2, width=30, depth=10)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0, width=30, depth=10)),
+    ]
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=36,
+            target_depth_m=28,
+            target_floors=5,
+            footprint_profile="l_shape",
+            wing_depth_m=10,
+        ),
+    )
+
+    assert plan["target"]["footprint_profile"] == "l_shape"
+    assert plan["fit"]["segment_count"] == 2
+    assert {instance["segment_id"] for instance in plan["instances"]} == {"front", "left_return"}
+    assert {instance["rotation_degrees"] for instance in plan["instances"]} == {0.0, 90.0}
+    assert len(plan["instances"]) == 12
+
+
+def test_courtyard_plan_places_four_perimeter_segments():
+    modules = [
+        descriptor_from_library_entry(entry("podium", "Podium", "podium", height=4.5, width=30, depth=10)),
+        descriptor_from_library_entry(entry("floor", "Floor", "floor", height=3.2, width=30, depth=10)),
+        descriptor_from_library_entry(entry("roof", "Roof", "roof", height=1.0, width=30, depth=10)),
+    ]
+    plan = plan_vertical_assembly(
+        [module for module in modules if module],
+        AssemblyRequest(
+            target_width_m=36,
+            target_depth_m=30,
+            target_floors=4,
+            footprint_profile="courtyard",
+            wing_depth_m=10,
+        ),
+    )
+    assert plan["fit"]["segment_count"] == 4
+    assert len(plan["footprint_segments"]) == 4
+    assert {segment["id"] for segment in plan["footprint_segments"]} == {
+        "front", "rear", "left_return", "right_return",
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -554,7 +734,15 @@ async def test_recipe_save_get_roundtrip_preserves_instances(client, mock_db, te
     building = Building(
         id=uuid.uuid4(),
         project_id=project.id,
-        specifications={"modelUrlWorkflow": {"model_url": "/api/v1/files/original.glb"}},
+        specifications={
+            "modelUrlWorkflow": {"model_url": "/api/v1/files/original.glb"},
+            "plannedMassing": {
+                "schema_version": 1,
+                "source": "community_3d",
+                "source_zone_id": "old-zone",
+                "height_meters": 12,
+            },
+        },
     )
     mock_db.execute = AsyncMock(
         side_effect=[
@@ -655,15 +843,23 @@ async def test_recipe_404_when_building_missing(client, mock_db, test_user, auth
 # ---------------------------------------------------------------------------
 
 
-def _make_zone(project, *, building_id=None, building_ids=None):
+def _make_zone(
+    project,
+    *,
+    building_id=None,
+    building_ids=None,
+    zone_type="building",
+    properties=None,
+):
     from app.models.models import SiteZone
 
     return SiteZone(
         id=uuid.uuid4(),
         project_id=project.id,
         name="Hotel Site",
-        zone_type="building",
+        zone_type=zone_type,
         geometry="SRID=4326;POLYGON((0 0,1 0,1 1,0 1,0 0))",
+        properties=properties,
         building_id=building_id,
         building_ids=building_ids,
     )
@@ -711,6 +907,8 @@ async def test_place_creates_and_links_building_when_zone_has_none(
     assert saved["instances"] == body["instances"]
     assert "building_name" not in saved
     assert building.specifications["lego_placed"] is True
+    assert zone.properties["community_3d"]["kind"] == "building"
+    assert zone.properties["community_3d"]["generator"] == "lego_assembly"
 
 
 @pytest.mark.anyio
@@ -751,6 +949,263 @@ async def test_place_reuses_existing_building_and_preserves_specifications(
     assert building.specifications["modelUrlWorkflow"]["model_url"] == "/api/v1/files/original.glb"
     assert building.specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
     assert building.specifications["lego_placed"] is True
+    assert "plannedMassing" not in building.specifications
+    assert zone.properties["community_3d"]["state"] == "compiled"
+
+
+@pytest.mark.anyio
+async def test_place_community_compiles_mixed_plan_with_one_server_timestamp(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building_zone = _make_zone(project, properties={"_plan_role": "building"})
+    park_zone = _make_zone(
+        project,
+        zone_type="green_space",
+        properties={"_plan_role": "open_space", "green_space_archetype_id": "neighborhood_park"},
+    )
+    street_zone = _make_zone(
+        project,
+        zone_type="road",
+        properties={"_plan_role": "street", "road_archetype_id": "main_street_complete"},
+    )
+    added: list = []
+    mock_db.add.side_effect = added.append
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(building_zone), _scalar_result(project),
+        _scalar_result(park_zone), _scalar_result(project),
+        _scalar_result(street_zone), _scalar_result(project),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [
+            {"zone_id": str(building_zone.id), "recipe": _recipe_body()},
+            {"zone_id": str(park_zone.id)},
+            {"zone_id": str(street_zone.id)},
+        ]},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["status"] == "compiled"
+    assert payload["counts"] == {"building": 1, "park": 1, "street": 1}
+    assert len(payload["items"]) == 3
+    assert len(added) == 1
+    assert added[0].specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
+    stamps = {
+        zone.properties["community_3d"]["compiled_at"]
+        for zone in (building_zone, park_zone, street_zone)
+    }
+    assert stamps == {payload["compiled_at"]}
+    assert park_zone.properties["green_space_archetype_id"] == "neighborhood_park"
+    assert street_zone.properties["road_archetype_id"] == "main_street_complete"
+    assert park_zone.properties["community_3d"]["generator"] == "park_kit"
+    assert street_zone.properties["community_3d"]["generator"] == "street_section"
+    mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_preserves_all_six_public_realm_archetype_contracts(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    archetype_specs = [
+        ("green_space", "green_space_archetype_id", "neighborhood_park"),
+        ("green_space", "green_space_archetype_id", "urban_pocket_park"),
+        ("green_space", "green_space_archetype_id", "linear_park_greenway"),
+        ("plaza", "plaza_archetype_id", "formal_civic_plaza"),
+        ("plaza", "plaza_archetype_id", "fountain_water_feature"),
+        ("green_space", "green_space_archetype_id", "stormwater_retention_pond"),
+    ]
+    zones = [
+        _make_zone(
+            project,
+            zone_type=zone_type,
+            properties={"_plan_role": "open_space", property_name: archetype_id},
+        )
+        for zone_type, property_name, archetype_id in archetype_specs
+    ]
+    db_results = [_scalar_result(test_user)]
+    for zone in zones:
+        db_results.extend([_scalar_result(zone), _scalar_result(project)])
+    mock_db.execute = AsyncMock(side_effect=db_results)
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [{"zone_id": str(zone.id)} for zone in zones]},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["counts"] == {"building": 0, "park": 6, "street": 0}
+    assert [item["generator"] for item in payload["items"]] == ["park_kit"] * 6
+    assert {item["kind"] for item in payload["items"]} == {"park"}
+    assert {
+        zone.properties["community_3d"]["compiled_at"] for zone in zones
+    } == {payload["compiled_at"]}
+    for zone, (_, property_name, archetype_id) in zip(zones, archetype_specs):
+        assert zone.properties[property_name] == archetype_id
+        assert zone.properties["community_3d"]["state"] == "compiled"
+        assert zone.properties["community_3d"]["generator"] == "park_kit"
+    mock_db.add.assert_not_called()
+    mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_persists_exact_footprint_massing_without_family_recipe(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    zone = _make_zone(
+        project,
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "new_york_corner_bodega",
+            "floors": 3,
+            "floor_height": 3.5,
+        },
+    )
+    added: list = []
+    mock_db.add.side_effect = added.append
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(zone), _scalar_result(project),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [{"zone_id": str(zone.id)}]},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["counts"] == {"building": 1, "park": 0, "street": 0}
+    assert payload["items"][0]["generator"] == "planned_massing"
+    assert len(added) == 1
+    building = added[0]
+    assert building.footprint == zone.geometry
+    assert building.floor_count == 3
+    assert building.height_meters == 10.5
+    assert zone.building_id == building.id
+    assert zone.properties["community_3d"]["generator"] == "planned_massing"
+    fallback = building.specifications["plannedMassing"]
+    assert fallback["archetype_id"] == "new_york_corner_bodega"
+    assert fallback["height_meters"] == 10.5
+    assert "legoAssembly" not in building.specifications
+    mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_rebuild_upgrades_massing_without_losing_public_realm(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    building = Building(
+        id=uuid.uuid4(),
+        project_id=project.id,
+        footprint="SRID=4326;POLYGON((0 0,2 0,2 2,0 2,0 0))",
+        floor_count=3,
+        height_meters=10.5,
+        specifications={
+            "plannedMassing": {
+                "schema_version": 1,
+                "source": "community_3d",
+                "archetype_id": "new_york_corner_bodega",
+            },
+            "modelUrlWorkflow": {"status": "preserve-me"},
+        },
+    )
+    building_zone = _make_zone(
+        project,
+        building_id=building.id,
+        building_ids=[str(building.id)],
+        properties={
+            "_plan_role": "building",
+            "development_archetype_id": "new_york_corner_bodega",
+        },
+    )
+    park_zone = _make_zone(
+        project,
+        zone_type="green_space",
+        properties={
+            "_plan_role": "open_space",
+            "green_space_archetype_id": "neighborhood_park",
+            "park_access_points": [[-114.08, 51.04], [-114.079, 51.041]],
+            "community_3d": {
+                "schema_version": 1,
+                "state": "compiled",
+                "kind": "park",
+                "generator": "park_kit",
+                "compiled_at": "2026-07-17T00:00:00Z",
+            },
+        },
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(building_zone), _scalar_result(project), _scalar_result(building),
+        _scalar_result(park_zone), _scalar_result(project),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [
+            {"zone_id": str(building_zone.id), "recipe": _recipe_body()},
+            {"zone_id": str(park_zone.id)},
+        ]},
+    )
+
+    assert response.status_code == 200, response.text
+    payload = response.json()
+    assert payload["counts"] == {"building": 1, "park": 1, "street": 0}
+    assert payload["items"][0]["building_created"] is False
+    assert payload["items"][0]["generator"] == "lego_assembly"
+    assert "plannedMassing" not in building.specifications
+    assert building.specifications["legoAssembly"]["module_family"] == "nordic-timber-midrise"
+    assert building.specifications["modelUrlWorkflow"] == {"status": "preserve-me"}
+    assert building_zone.properties["community_3d"]["generator"] == "lego_assembly"
+    assert park_zone.properties["green_space_archetype_id"] == "neighborhood_park"
+    assert park_zone.properties["park_access_points"] == [
+        [-114.08, 51.04], [-114.079, 51.041],
+    ]
+    assert park_zone.properties["community_3d"]["generator"] == "park_kit"
+    assert {
+        building_zone.properties["community_3d"]["compiled_at"],
+        park_zone.properties["community_3d"]["compiled_at"],
+    } == {payload["compiled_at"]}
+    mock_db.add.assert_not_called()
+    mock_db.commit.assert_not_awaited()
+
+
+@pytest.mark.anyio
+async def test_place_community_rejects_framework_overlay_without_mutating_it(
+    client, mock_db, test_user, auth_headers
+):
+    project = FakeProject(owner_id=test_user.id)
+    framework = _make_zone(
+        project,
+        zone_type="development_area",
+        properties={"_plan_role": "framework_height", "floors": 12},
+    )
+    mock_db.execute = AsyncMock(side_effect=[
+        _scalar_result(test_user),
+        _scalar_result(framework), _scalar_result(project),
+    ])
+
+    response = await client.post(
+        "/api/v1/lego-assembly/place-community",
+        headers=auth_headers,
+        json={"items": [{"zone_id": str(framework.id)}]},
+    )
+
+    assert response.status_code == 422
+    assert framework.properties == {"_plan_role": "framework_height", "floors": 12}
+    mock_db.add.assert_not_called()
 
 
 @pytest.mark.anyio

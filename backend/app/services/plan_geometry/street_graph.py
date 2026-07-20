@@ -3,7 +3,7 @@
 All math in the site-local metric CRS. The grid orientation follows the site's
 minimum rotated rectangle; the grid phase is shifted so a line passes through
 the first street entry point (where the surrounding network meets the boundary),
-and remaining entries are checked in validation rather than silently ignored.
+then explicit connector stubs join every other feasible road or pathway anchor.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from celery.exceptions import SoftTimeLimitExceeded
 from shapely import affinity
 from shapely.geometry import LineString, Point, Polygon
 from shapely.geometry.base import BaseGeometry
-from shapely.ops import unary_union
+from shapely.ops import nearest_points, unary_union
 from shapely.validation import make_valid
 
 from app.services.plan_geometry.community_rules import RuleProfile
@@ -25,7 +25,11 @@ from app.services.plan_geometry.community_rules import RuleProfile
 logger = logging.getLogger(__name__)
 
 MIN_SEGMENT_M = 40.0     # drop grid stubs shorter than this
-ENTRY_SNAP_MAX_M = 60.0  # an entry further than this from any gridline is "unserved"
+ENTRY_CONNECTOR_MAX_M = 90.0
+CONNECTION_EPSILON_M = 0.05
+ROAD_FRONTAGE_PROXIMITY_M = 32.0
+PATH_FRONTAGE_PROXIMITY_M = 24.0
+PATH_CONNECTOR_WIDTH_M = 4.0
 
 # --- curvilinear grid ---------------------------------------------------------
 CURVE_STEP_M = 8.0                 # densification step along a bowed line
@@ -48,8 +52,9 @@ class StreetSegment:
     """One full-span grid line with its own ROW width (spine vs local)."""
     line: LineString              # metric, full-span (unclipped, like full_span_kept)
     row_width_m: float
-    role: str                     # "spine" | "local"
+    role: str                     # "spine" | "local" | "path"
     sagitta_m: float = 0.0        # max chord deviation of the full-span line
+    context_connection: bool = False
 
 
 @dataclass
@@ -61,6 +66,8 @@ class StreetNetwork:
     roundabouts: list[tuple[Point, float]] = field(default_factory=list)  # (center, radius)
     entries_served: int = 0
     entries_total: int = 0
+    path_entries_served: int = 0
+    path_entries_total: int = 0
     notes: list[dict[str, Any]] = field(default_factory=list)
     curve_mode: str = "none"           # "none" | "spine" | "all" ACTUALLY applied
     curve_skip_reason: str | None = None  # set when a requested curve self-skipped
@@ -79,33 +86,100 @@ def _grid_angle_deg(boundary_m: Polygon) -> float:
     return best_angle
 
 
-def entry_points_from_roads(
-    road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8
+def _entry_points_from_context_lines(
+    lines_m: list[LineString],
+    boundary_m: Polygon,
+    *,
+    proximity_m: float,
+    limit: int,
+    dedupe_m: float,
 ) -> list[Point]:
-    """Where surrounding street centrelines cross the site boundary."""
-    entries: list[Point] = []
+    """Return deterministic boundary anchors for crossing or fronting lines.
+
+    A parcel boundary normally stops at the curb, so the real street/path
+    centreline often runs parallel 8-20 m outside it and never intersects the
+    boundary.  For those lines, intersect a metric proximity band with the
+    boundary and use the midpoint of the longest shared frontage.  Exact
+    crossings are ranked first, followed by the nearest frontages.
+    """
+    candidates: list[tuple[int, float, float, float, Point]] = []
     exterior = boundary_m.exterior
-    for line in road_lines_m:
+    for line in lines_m:
         try:
             crossing = line.intersection(exterior)
         except SoftTimeLimitExceeded:
             raise
         except Exception:  # noqa: BLE001 — municipal geometry
             continue
-        if crossing.is_empty:
-            continue
-        points = [crossing] if isinstance(crossing, Point) else list(getattr(crossing, "geoms", []))
+        points = [crossing] if isinstance(crossing, Point) else [
+            geom for geom in getattr(crossing, "geoms", []) if isinstance(geom, Point)
+        ]
         for point in points:
-            if isinstance(point, Point):
-                entries.append(point)
-    # De-duplicate near-coincident entries (parallel carriageways etc.)
+            candidates.append((0, 0.0, point.x, point.y, point))
+
+        if points or line.distance(exterior) > proximity_m:
+            continue
+        try:
+            proximity_band = line.buffer(proximity_m, cap_style=2, join_style=2)
+            # Intersect individual boundary edges so a shared frontage that
+            # turns a corner cannot become one L-shaped LineString whose
+            # midpoint is biased toward the side leg.
+            edge_frontages: list[LineString] = []
+            boundary_coords = list(exterior.coords)
+            for start, end in zip(boundary_coords[:-1], boundary_coords[1:]):
+                edge_hit = LineString([start, end]).intersection(proximity_band)
+                if isinstance(edge_hit, LineString):
+                    edge_frontages.append(edge_hit)
+                else:
+                    edge_frontages.extend(
+                        geom for geom in getattr(edge_hit, "geoms", [])
+                        if isinstance(geom, LineString)
+                    )
+        except SoftTimeLimitExceeded:
+            raise
+        except Exception:  # noqa: BLE001 — municipal geometry
+            continue
+        pieces = [piece for piece in edge_frontages if piece.length > 0.1]
+        if not pieces:
+            # A near-tangent may collapse the band intersection to a point.
+            boundary_point, _line_point = nearest_points(exterior, line)
+            candidates.append((1, line.distance(exterior), boundary_point.x,
+                               boundary_point.y, boundary_point))
+            continue
+        longest = max(pieces, key=lambda piece: (piece.length, -piece.bounds[0], -piece.bounds[1]))
+        point = longest.interpolate(0.5, normalized=True)
+        candidates.append((1, line.distance(exterior), point.x, point.y, point))
+
+    # Exact crossings before nearby frontages; stable coordinate tie-breaks
+    # make cached redraws byte-identical even when source feature order changes.
+    candidates.sort(key=lambda item: item[:4])
     deduped: list[Point] = []
-    for point in entries:
-        if all(point.distance(existing) > 20.0 for existing in deduped):
+    for _kind, _distance, _x, _y, point in candidates:
+        if all(point.distance(existing) > dedupe_m for existing in deduped):
             deduped.append(point)
         if len(deduped) >= limit:
             break
     return deduped
+
+
+def entry_points_from_roads(
+    road_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8
+) -> list[Point]:
+    """Road access anchors at crossings and adjacent street frontages."""
+    return _entry_points_from_context_lines(
+        road_lines_m, boundary_m,
+        proximity_m=ROAD_FRONTAGE_PROXIMITY_M, limit=limit, dedupe_m=20.0,
+    )
+
+
+def entry_points_from_paths(
+    path_lines_m: list[LineString], boundary_m: Polygon, limit: int = 8
+) -> list[Point]:
+    """Pedestrian/cycle anchors at crossings and adjacent pathway frontages."""
+    return _entry_points_from_context_lines(
+        path_lines_m, boundary_m,
+        proximity_m=PATH_FRONTAGE_PROXIMITY_M, limit=limit, dedupe_m=12.0,
+    )
 
 
 def generate_street_network(
@@ -113,6 +187,7 @@ def generate_street_network(
     rules: RuleProfile,
     entry_points: list[Point] | None = None,
     *,
+    path_entry_points: list[Point] | None = None,
     curve_mode: str = "none",
     seed: int = 0,
 ) -> StreetNetwork:
@@ -122,7 +197,10 @@ def generate_street_network(
     feasibility caps returns a cheap sentinel network (curve_mode="none" +
     curve_skip_reason) WITHOUT paying for generation — the generator's guard
     owns all curvature notes."""
-    network = StreetNetwork(entries_total=len(entry_points or []))
+    network = StreetNetwork(
+        entries_total=len(entry_points or []),
+        path_entries_total=len(path_entry_points or []),
+    )
     boundary_m = make_valid(boundary_m)
     inset = boundary_m.buffer(-rules.perimeter_inset_m)
     if inset.is_empty:
@@ -214,25 +292,6 @@ def generate_street_network(
             line = LineString([(minx - spacing, y), (maxx + spacing, y)])
         lines_work.append((line, role, bow))
 
-    served = 0
-    bowed_lines = [line for line, _role, bow in lines_work if bow]
-    for entry in entries_work:
-        near_x = any(abs(entry.x - x) <= ENTRY_SNAP_MAX_M for x in xs)
-        near_y = any(abs(entry.y - y) <= ENTRY_SNAP_MAX_M for y in ys)
-        if not (near_x or near_y) and bowed_lines:
-            # Scalar test missed, but the bowed street may still pass nearby.
-            near_y = any(line.distance(entry) <= ENTRY_SNAP_MAX_M for line in bowed_lines)
-        if near_x or near_y:
-            served += 1
-    network.entries_served = served
-    if network.entries_total and served < network.entries_total:
-        network.notes.append({
-            "code": "ENTRIES_UNSERVED", "severity": "info",
-            "message": f"{network.entries_total - served} of {network.entries_total} street entry "
-                       "points are more than 60 m from an internal street.",
-            "source_phase": "street_graph",
-        })
-
     # Record in-boundary centerlines (stub-filtered) but buffer the FULL-SPAN
     # lines: a street clipped short of the boundary leaves a land strip at its
     # end and the blocks never sever (observed: one connected block with slits).
@@ -258,6 +317,25 @@ def generate_street_network(
                 row_width_m=width, role=role,
                 sagitta_m=_line_sagitta(line) if bow else 0.0,
             ))
+    road_connectors = 0
+    path_connectors = 0
+    if network.centerlines:
+        road_connectors = _append_context_connectors(
+            boundary_m=boundary_m,
+            entries=entry_points or [],
+            role="local",
+            width_m=rules.local_row_width_m,
+            centerlines=network.centerlines,
+            segments=full_span_kept,
+        )
+        path_connectors = _append_context_connectors(
+            boundary_m=boundary_m,
+            entries=path_entry_points or [],
+            role="path",
+            width_m=PATH_CONNECTOR_WIDTH_M,
+            centerlines=network.centerlines,
+            segments=full_span_kept,
+        )
     network.segments = full_span_kept
     if bowed_kept:
         network.curve_mode = requested_mode
@@ -270,6 +348,33 @@ def generate_street_network(
         })
         network.street_area = Polygon()
         return network
+
+    connected_lines = unary_union(network.centerlines)
+    network.entries_served = sum(
+        1 for entry in (entry_points or [])
+        if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
+    )
+    network.path_entries_served = sum(
+        1 for entry in (path_entry_points or [])
+        if entry.distance(connected_lines) <= CONNECTION_EPSILON_M
+    )
+    unserved_roads = network.entries_total - network.entries_served
+    unserved_paths = network.path_entries_total - network.path_entries_served
+    if unserved_roads or unserved_paths:
+        network.notes.append({
+            "code": "CONTEXT_ENTRIES_UNSERVED", "severity": "info",
+            "message": f"Could not safely reach {unserved_roads} road and {unserved_paths} pathway "
+                       "context anchor(s) from the internal network.",
+            "source_phase": "street_graph",
+        })
+    if network.entries_served or network.path_entries_served:
+        network.notes.append({
+            "code": "CONTEXT_CONNECTIONS_APPLIED", "severity": "info",
+            "message": f"Connected the plan to {network.entries_served} adjacent road and "
+                       f"{network.path_entries_served} pathway anchor(s) "
+                       f"({road_connectors + path_connectors} connector stub(s) added).",
+            "source_phase": "street_graph",
+        })
 
     # Buffer per line THEN union: buffering a merged multiline leaves hairline
     # bridges at the crossings (zero-area slivers) that keep the blocks
@@ -315,6 +420,111 @@ def generate_street_network(
 
     network.street_area = make_valid(unary_union(bands + circles)).intersection(boundary_m)
     return network
+
+
+def _append_context_connectors(
+    *,
+    boundary_m: Polygon,
+    entries: list[Point],
+    role: str,
+    width_m: float,
+    centerlines: list[LineString],
+    segments: list[StreetSegment],
+) -> int:
+    """Join boundary anchors exactly to the nearest generated centreline.
+
+    The historic phase shift aligned only the first anchor and merely checked
+    whether the remainder were within 60 m.  These short, clipped stubs make
+    every feasible connection topological: their ROW/path band participates in
+    block carving and is emitted as real proposal geometry.
+    """
+    added = 0
+    for entry in entries:
+        if not centerlines:
+            break
+        connected = unary_union(centerlines)
+        if entry.distance(connected) <= CONNECTION_EPSILON_M:
+            continue
+        anchor = nearest_points(entry, boundary_m.exterior)[1]
+        raw = _shortest_visible_connector(anchor, centerlines, boundary_m)
+        if raw is None:
+            continue
+        try:
+            clipped = raw.intersection(boundary_m)
+        except SoftTimeLimitExceeded:
+            raise
+        except Exception:  # noqa: BLE001 — defensive against invalid municipal boundaries
+            continue
+        pieces = [clipped] if isinstance(clipped, LineString) else [
+            geom for geom in getattr(clipped, "geoms", []) if isinstance(geom, LineString)
+        ]
+        if not pieces:
+            continue
+        inside_length = sum(piece.length for piece in pieces)
+        if inside_length <= CONNECTION_EPSILON_M or inside_length < raw.length * 0.8:
+            continue
+        # Store the exact anchor-to-network line. Street-area emission clips
+        # its buffer back to the site, while retaining the boundary endpoint
+        # here makes connectivity topological rather than merely visual.
+        centerlines.append(raw)
+        segments.append(StreetSegment(
+            line=raw, row_width_m=width_m, role=role, context_connection=True,
+        ))
+        added += 1
+    return added
+
+
+def _shortest_visible_connector(
+    anchor: Point,
+    centerlines: list[LineString],
+    boundary_m: Polygon,
+) -> LineString | None:
+    """Return the shortest direct connection that remains inside the parcel.
+
+    On a concave site, the nearest network point may sit across a notch. The
+    one-shot nearest-point approach rejected that unsafe shortcut and stopped,
+    even when another centreline was fully visible from the same entrance.
+    Evaluate each line's nearest point and endpoints, then choose the shortest
+    deterministic candidate covered by the valid site.
+    """
+    candidates: list[tuple[float, float, float, LineString]] = []
+    seen: set[tuple[float, float]] = set()
+    for line in centerlines:
+        targets = [
+            nearest_points(anchor, line)[1],
+            Point(line.coords[0]),
+            Point(line.coords[-1]),
+        ]
+        for target in targets:
+            key = (round(target.x, 6), round(target.y, 6))
+            if key in seen:
+                continue
+            seen.add(key)
+            raw = LineString([anchor.coords[0], target.coords[0]])
+            if raw.length <= CONNECTION_EPSILON_M or raw.length > ENTRY_CONNECTOR_MAX_M:
+                continue
+            candidates.append((raw.length, target.x, target.y, raw))
+
+    safe_site = boundary_m.buffer(CONNECTION_EPSILON_M)
+    for _length, _x, _y, raw in sorted(candidates, key=lambda item: item[:3]):
+        try:
+            if not safe_site.covers(raw):
+                continue
+            clipped = raw.intersection(boundary_m)
+            pieces = [clipped] if isinstance(clipped, LineString) else [
+                geom for geom in getattr(clipped, "geoms", [])
+                if isinstance(geom, LineString)
+            ]
+            inside_length = sum(piece.length for piece in pieces)
+            # A tolerance buffer absorbs projection noise, but must never turn
+            # a line running just outside the parcel edge into a valid route.
+            if inside_length >= raw.length * 0.98:
+                return raw
+        except SoftTimeLimitExceeded:
+            raise
+        except Exception:  # noqa: BLE001 - invalid municipal boundaries
+            continue
+    return None
 
 
 MAX_BLOCKS_PER_AXIS = 12   # runaway guard on very large greenfield sites

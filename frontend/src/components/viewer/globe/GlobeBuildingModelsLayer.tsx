@@ -7,14 +7,16 @@
  * recentered (base at ground), swizzled Y-up -> Z-up, contain-fit scaled to
  * the parcel, yawed to the footprint's long axis + rotation_degrees.
  *
- * The zone layer's purple prism doubles as the loading/error fallback: a
- * building's prism is suppressed (via onLoadedIdsChange) only once its GLB
- * has actually mounted, so a 404 or slow network never leaves a hole.
+ * The camera-nearest generated buildings use their complete GLBs. Every
+ * remaining building, plus any detailed GLB that is loading or fails, uses a
+ * terrain-seated exact-footprint massing mesh. The zone prism is suppressed
+ * only once one of those 3D representations has actually mounted.
  */
 
 import {
   Component,
   Suspense,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -25,34 +27,60 @@ import {
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import { resolveApiFileUrl } from '@/services/api';
-import { computeFootprintFrame, computeModelPlacement } from './buildingPlacement';
+import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import { computeFootprintFrame, computeModelPlacement, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
-import { disposeArchitecturalCloneMaterials, prepareArchitecturalClone } from './modelMaterialQuality';
+import {
+  getObjectFilteredTerrainHeight,
+  isPlausibleTerrainAnchor,
+  preferLowerGroundAnchor,
+  resolveZoneTerrainHeight,
+} from './globeTerrainUtils';
+import {
+  disposeArchitecturalCloneMaterials,
+  prepareArchitecturalClone,
+  resolveArchitecturalGlazingLod,
+  setArchitecturalGlazingLod,
+  type ArchitecturalGlazingLod,
+} from './modelMaterialQuality';
+import { buildLegoMassingMeshData, legoMassingColor } from './legoMassingGeometry';
+import {
+  GENERATED_BUILDING_DETAIL_BUDGET,
+  partitionGeneratedBuildingLod,
+} from './generatedBuildingLod';
+import { modelAssetAvailable } from './modelAssetAvailability';
+import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
 
 const DEG_TO_RAD = Math.PI / 180;
-const MAX_PLACED_MODELS = 20;
 const GROUND_EMBED_METERS = 0.3;
 // Above depthTest-false road overlays (120), below zone prisms (200).
 const MODEL_RENDER_ORDER = 150;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
+const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
+const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
+const generatedTerrainSampleCache = new Map<string, number>();
 
 interface GlobeBuildingModelsLayerProps {
   buildings: Building[];
   zones: SiteZone[];
   /** Site-level elevation fallback (from the map's elevation fetch). */
   terrainHeight: number;
-  /** Buildings whose GLB is actually mounted — drives prism suppression. */
+  /** Buildings whose detailed or massing representation is mounted. */
   onLoadedIdsChange: (ids: Set<string>) => void;
+  selectedBuildingId?: string | null;
+  onBuildingClick?: (buildingId: string) => void;
 }
 
-/** useGLTF throws on bad/missing models; Suspense doesn't catch errors.
- *  Fallback is null so the zone prism simply stays visible. */
-class SilentModelBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+/** useGLTF throws on bad/missing models; Suspense doesn't catch errors. */
+class SilentModelBoundary extends Component<{
+  children: ReactNode;
+  fallback?: ReactNode;
+}, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
@@ -61,43 +89,49 @@ class SilentModelBoundary extends Component<{ children: ReactNode }, { failed: b
     console.warn('[GlobeModels] model failed to load', error);
   }
   render() {
-    return this.state.failed ? null : this.props.children;
+    return this.state.failed ? (this.props.fallback ?? null) : this.props.children;
   }
 }
 
-function footprintRingFor(building: Building, zones: SiteZone[]): number[][] | null {
-  if (building.footprint_coordinates && building.footprint_coordinates.length >= 3) {
-    return building.footprint_coordinates;
-  }
-  const zone = zones.find((z) => z.building_id === building.id);
-  return zone && zone.coordinates.length >= 3 ? zone.coordinates : null;
+function setsEqual(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
+  return a.size === b.size && [...a].every((value) => b.has(value));
 }
 
-function zoneFor(building: Building, zones: SiteZone[]): SiteZone | undefined {
-  return zones.find((z) => z.building_id === building.id);
+function stableFrameOffset(id: string, modulo: number): number {
+  let hash = 0;
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (Math.imul(hash, 31) + id.charCodeAt(index)) | 0;
+  }
+  return Math.abs(hash) % modulo;
 }
 
 function BuildingModelInstance({
   building,
   zone,
   ring,
+  frame,
   fallbackTerrainHeight,
   onLoaded,
   onUnloaded,
+  selected,
+  onBuildingClick,
 }: {
   building: Building;
   zone: SiteZone | undefined;
   ring: number[][];
+  frame: FootprintFrame;
   fallbackTerrainHeight: number;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
+  selected: boolean;
+  onBuildingClick?: (buildingId: string) => void;
 }) {
   const url = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
-  const { scene } = useGLTF(url);
+  const gl = useThree((state) => state.gl);
+  const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
+  const { scene } = useGLTF(url, true, true, extendLoader);
   const tiles = useContext(TilesRendererContext);
-  const maxAnisotropy = useThree((state) => state.gl.capabilities.getMaxAnisotropy());
-
-  const frame = useMemo(() => computeFootprintFrame(ring), [ring]);
+  const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
 
   // Bbox once per cached scene (drei caches per URL; clones share buffers).
   const bbox = useMemo(() => new THREE.Box3().setFromObject(scene), [scene]);
@@ -114,9 +148,7 @@ function BuildingModelInstance({
   useEffect(() => () => disposeArchitecturalCloneMaterials(cloned), [cloned]);
 
   const placement = useMemo(
-    () => (frame
-      ? computeModelPlacement(frame, size, building.height_meters, building.rotation_degrees)
-      : null),
+    () => computeModelPlacement(frame, size, building.height_meters, building.rotation_degrees),
     [frame, size, building.height_meters, building.rotation_degrees],
   );
 
@@ -131,14 +163,14 @@ function BuildingModelInstance({
 
   // Prism suppression: only while this GLB is actually mounted.
   useEffect(() => {
+    if (!placement) return undefined;
     onLoaded(building.id);
     return () => onUnloaded(building.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [building.id]);
+  }, [building.id, onLoaded, onUnloaded, placement]);
 
-  // Terrain seating: stored zone elevation first (consistent with the prism it
-  // replaces, and immune to the leftover-photogrammetry-roof trap), then
-  // lower-quartile raycast probes (drape-and-freeze), then the site fallback.
+  // Terrain seating: reconcile a stored elevation with lower-quartile tile
+  // probes and take the lower material surface (ground beats a legacy roof
+  // click), then freeze. The site height remains the loading fallback.
   const zoneProps = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(zoneProps?.terrain_elevation_m ?? zoneProps?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
@@ -147,9 +179,21 @@ function BuildingModelInstance({
   const frameCountRef = useRef(0);
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
+  const modelRootRef = useRef<THREE.Group>(null);
+  const modelWorldPositionRef = useRef(new THREE.Vector3());
+  const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
 
-  useFrame(() => {
-    if (frozenRef.current || storedTerrain !== null || !frame) return;
+  useFrame(({ camera }) => {
+    if (modelRootRef.current) {
+      modelRootRef.current.getWorldPosition(modelWorldPositionRef.current);
+      const distance = camera.position.distanceTo(modelWorldPositionRef.current);
+      const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
+      if (nextLod !== glazingLodRef.current) {
+        setArchitecturalGlazingLod(cloned, nextLod);
+        glazingLodRef.current = nextLod;
+      }
+    }
+    if (frozenRef.current) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -168,18 +212,25 @@ function BuildingModelInstance({
     const samples = probes.map(([lng, lat]) => (
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
-    const filtered = getObjectFilteredTerrainHeight(samples, null);
+    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+    // A legacy stored click can be a valid ground anchor or an old roof hit.
+    // Prefer the lower of two materially different plausible anchors; this
+    // seats the replacement model on ground in both cases.
+    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
     // Gate against the unrefined-root-tile trap: the first finite sample can
     // land ~29km below the true surface and would sink the model with it
     // (see isPlausibleTerrainAnchor). Implausible samples burn an attempt
     // and retry next interval.
-    if (filtered !== null && isPlausibleTerrainAnchor(filtered, fallbackTerrainHeight)) {
-      setSampledTerrain(filtered);
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
+    ) {
+      setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
   });
 
-  if (!frame || !placement) return null;
+  if (!placement) return null;
 
   const terrain = resolveZoneTerrainHeight(sampledTerrain, storedTerrain, fallbackTerrainHeight);
 
@@ -190,8 +241,13 @@ function BuildingModelInstance({
       height={terrain}
     >
       <group
+        ref={modelRootRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, placement.yawRad]}
+        onClick={(event) => {
+          event.stopPropagation();
+          onBuildingClick?.(building.id);
+        }}
       >
         {/* Rx(+90°): glTF Y-up -> ENU Z-up (model Y becomes Up, Z becomes -North) */}
         <group rotation={[Math.PI / 2, 0, 0]} scale={placement.scale}>
@@ -202,6 +258,136 @@ function BuildingModelInstance({
           </group>
         </group>
       </group>
+      {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
+    </EastNorthUpFrame>
+  );
+}
+
+function GeneratedBuildingMassing({
+  building,
+  zone,
+  ring,
+  frame,
+  fallbackTerrainHeight,
+  onLoaded,
+  onUnloaded,
+  selected,
+  onBuildingClick,
+}: {
+  building: Building;
+  zone: SiteZone | undefined;
+  ring: number[][];
+  frame: FootprintFrame;
+  fallbackTerrainHeight: number;
+  onLoaded: (id: string) => void;
+  onUnloaded: (id: string) => void;
+  selected: boolean;
+  onBuildingClick?: (buildingId: string) => void;
+}) {
+  const height = Math.max(2.5, Number(building.height_meters) || 3.2);
+  const geometry = useMemo(() => {
+    const data = buildLegoMassingMeshData(
+      ring,
+      frame.centroidLng,
+      frame.centroidLat,
+      height,
+    );
+    if (!data) return null;
+    const next = new THREE.BufferGeometry();
+    next.setAttribute('position', new THREE.Float32BufferAttribute(data.positions, 3));
+    next.setIndex(data.indices);
+    next.computeVertexNormals();
+    next.computeBoundingSphere();
+    return next;
+  }, [frame.centroidLat, frame.centroidLng, height, ring]);
+  useEffect(() => () => geometry?.dispose(), [geometry]);
+
+  const tiles = useContext(TilesRendererContext);
+  const properties = zone?.properties as Record<string, unknown> | undefined;
+  const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
+  const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
+  const [sampledTerrain, setSampledTerrain] = useState<number | null>(
+    () => generatedTerrainSampleCache.get(building.id) ?? null,
+  );
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const frameCountRef = useRef(stableFrameOffset(
+    building.id,
+    MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL,
+  ));
+  const attemptsRef = useRef(0);
+  const frozenRef = useRef(sampledTerrain !== null);
+
+  useFrame(() => {
+    if (frozenRef.current || !geometry) return;
+    frameCountRef.current += 1;
+    if (frameCountRef.current % MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
+    if (attemptsRef.current >= MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS) {
+      frozenRef.current = true;
+      return;
+    }
+    attemptsRef.current += 1;
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup || tilesGroup.children.length === 0) return;
+
+    const step = Math.max(1, Math.floor(ring.length / 4));
+    const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
+    for (let index = 0; index < ring.length && probes.length < 5; index += step) {
+      probes.push([ring[index][0], ring[index][1]]);
+    }
+    const samples = probes.map(([longitude, latitude]) => (
+      raycastTerrainHeightAtLatLng(longitude, latitude, tilesGroup, raycasterRef.current)
+    ));
+    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(
+        groundCandidate,
+        storedTerrain ?? fallbackTerrainHeight,
+      )
+    ) {
+      generatedTerrainSampleCache.set(building.id, groundCandidate);
+      setSampledTerrain(groundCandidate);
+      frozenRef.current = true;
+    }
+  });
+
+  useEffect(() => {
+    if (!geometry) return undefined;
+    onLoaded(building.id);
+    return () => onUnloaded(building.id);
+  }, [building.id, geometry, onLoaded, onUnloaded]);
+
+  if (!geometry) return null;
+  const terrain = resolveZoneTerrainHeight(
+    sampledTerrain,
+    storedTerrain,
+    fallbackTerrainHeight,
+  );
+
+  return (
+    <EastNorthUpFrame
+      lat={frame.centroidLat * DEG_TO_RAD}
+      lon={frame.centroidLng * DEG_TO_RAD}
+      height={terrain}
+    >
+      <mesh
+        geometry={geometry}
+        position={[0, 0, -GROUND_EMBED_METERS]}
+        renderOrder={MODEL_RENDER_ORDER}
+        onClick={(event) => {
+          event.stopPropagation();
+          onBuildingClick?.(building.id);
+        }}
+      >
+        <meshStandardMaterial
+          color={legoMassingColor(`generated:${building.architectural_style ?? building.name ?? building.id}`)}
+          roughness={0.82}
+          metalness={0.04}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
 }
@@ -211,51 +397,171 @@ export function GlobeBuildingModelsLayer({
   zones,
   terrainHeight,
   onLoadedIdsChange,
+  selectedBuildingId = null,
+  onBuildingClick,
 }: GlobeBuildingModelsLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
+  const camera = useThree((state) => state.camera);
 
-  const placeable = useMemo(() => (
-    buildings
-      .filter((b) => (b.lod_urls?.['0'] ?? b.model_url) && footprintRingFor(b, zones))
-      .sort((a, b) => (a.created_at ?? '').localeCompare(b.created_at ?? '') || a.id.localeCompare(b.id))
-      .slice(0, MAX_PLACED_MODELS)
-  ), [buildings, zones]);
+  const zoneByBuildingId = useMemo(() => {
+    const map = new Map<string, SiteZone>();
+    for (const zone of zones) {
+      if (zone.building_id) map.set(zone.building_id, zone);
+    }
+    return map;
+  }, [zones]);
+
+  const entries = useMemo(() => buildings
+    .map((building) => {
+      if (!(building.lod_urls?.['0'] ?? building.model_url)) return null;
+      const zone = zoneByBuildingId.get(building.id);
+      const ring = building.footprint_coordinates && building.footprint_coordinates.length >= 3
+        ? building.footprint_coordinates
+        : zone?.coordinates;
+      const frame = ring && ring.length >= 3 ? computeFootprintFrame(ring) : null;
+      return ring && frame ? { building, zone, ring, frame } : null;
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+    .sort((a, b) => (
+      (a.building.created_at ?? '').localeCompare(b.building.created_at ?? '')
+      || a.building.id.localeCompare(b.building.id)
+    )), [buildings, zoneByBuildingId]);
+
+  const entryWorldPositions = useMemo(() => {
+    const positions = new Map<string, THREE.Vector3>();
+    for (const entry of entries) {
+      const position = new THREE.Vector3();
+      WGS84_ELLIPSOID.getCartographicToPosition(
+        entry.frame.centroidLat * DEG_TO_RAD,
+        entry.frame.centroidLng * DEG_TO_RAD,
+        terrainHeight,
+        position,
+      );
+      positions.set(entry.building.id, position);
+    }
+    return positions;
+  }, [entries, terrainHeight]);
+
+  const selectDetailedIds = useCallback((cameraPosition: THREE.Vector3) => {
+    const selection = partitionGeneratedBuildingLod(
+      entries,
+      (entry) => entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity,
+    );
+    return new Set(selection.detailed.map((entry) => entry.building.id));
+  }, [entries, entryWorldPositions]);
+  const [detailedIds, setDetailedIds] = useState<Set<string>>(() => new Set());
+  const [availableModelUrls, setAvailableModelUrls] = useState<Set<string>>(() => new Set());
+  const lodFrameRef = useRef(0);
+  useEffect(() => {
+    setDetailedIds(selectDetailedIds(camera.position));
+  }, [camera, selectDetailedIds]);
+  useFrame(() => {
+    lodFrameRef.current += 1;
+    if (lodFrameRef.current % 60 !== 0) return;
+    const next = selectDetailedIds(camera.position);
+    setDetailedIds((previous) => (setsEqual(previous, next) ? previous : next));
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    const urls = [...new Set(entries.map(({ building }) => (
+      resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '')
+    )))].filter(Boolean);
+    setAvailableModelUrls(new Set());
+    void Promise.all(urls.map(async (url) => ({
+      url,
+      available: await modelAssetAvailable(url),
+    }))).then((results) => {
+      if (cancelled) return;
+      setAvailableModelUrls(new Set(
+        results.filter(({ available }) => available).map(({ url }) => url),
+      ));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [entries]);
 
   useEffect(() => {
     onLoadedIdsChange(loadedIds);
   }, [loadedIds, onLoadedIdsChange]);
 
+  useEffect(() => {
+    if (
+      import.meta.env.DEV
+      && entries.length > 0
+      && loadedIds.size === entries.length
+    ) {
+      console.debug(
+        `[GlobeModels] Mounted all ${entries.length} generated buildings `
+        + `(${Math.min(entries.length, GENERATED_BUILDING_DETAIL_BUDGET)} detailed budget, `
+        + `${Math.max(0, entries.length - GENERATED_BUILDING_DETAIL_BUDGET)} massing LOD)`,
+      );
+    }
+  }, [entries.length, loadedIds.size]);
+
   // Clear suppression for everything when the layer unmounts (toggle off).
   useEffect(() => () => onLoadedIdsChange(new Set()), [onLoadedIdsChange]);
 
-  const handleLoaded = (id: string) => setLoadedIds((prev) => {
+  const handleLoaded = useCallback((id: string) => setLoadedIds((prev) => {
     if (prev.has(id)) return prev;
     const next = new Set(prev);
     next.add(id);
     return next;
-  });
-  const handleUnloaded = (id: string) => setLoadedIds((prev) => {
+  }), []);
+  const handleUnloaded = useCallback((id: string) => setLoadedIds((prev) => {
     if (!prev.has(id)) return prev;
     const next = new Set(prev);
     next.delete(id);
     return next;
-  });
+  }), []);
 
   return (
     <>
-      {placeable.map((building) => {
-        const ring = footprintRingFor(building, zones);
-        if (!ring) return null;
+      {entries.map(({ building, zone, ring, frame }) => {
+        const modelUrl = resolveApiFileUrl(building.lod_urls?.['0'] ?? building.model_url ?? '');
+        const massing = (
+          <GeneratedBuildingMassing
+            building={building}
+            zone={zone}
+            ring={ring}
+            frame={frame}
+            fallbackTerrainHeight={terrainHeight}
+            onLoaded={handleLoaded}
+            onUnloaded={handleUnloaded}
+            selected={selectedBuildingId === building.id}
+            onBuildingClick={onBuildingClick}
+          />
+        );
+        if (!detailedIds.has(building.id) || !availableModelUrls.has(modelUrl)) {
+          return (
+            <GeneratedBuildingMassing
+              key={building.id}
+              building={building}
+              zone={zone}
+              ring={ring}
+              frame={frame}
+              fallbackTerrainHeight={terrainHeight}
+              onLoaded={handleLoaded}
+              onUnloaded={handleUnloaded}
+              selected={selectedBuildingId === building.id}
+              onBuildingClick={onBuildingClick}
+            />
+          );
+        }
         return (
-          <SilentModelBoundary key={building.id}>
-            <Suspense fallback={null}>
+          <SilentModelBoundary key={building.id} fallback={massing}>
+            <Suspense fallback={massing}>
               <BuildingModelInstance
                 building={building}
-                zone={zoneFor(building, zones)}
+                zone={zone}
                 ring={ring}
+                frame={frame}
                 fallbackTerrainHeight={terrainHeight}
                 onLoaded={handleLoaded}
                 onUnloaded={handleUnloaded}
+                selected={selectedBuildingId === building.id}
+                onBuildingClick={onBuildingClick}
               />
             </Suspense>
           </SilentModelBoundary>

@@ -22,7 +22,16 @@ export function isPlausibleTerrainAnchor(
 }
 
 export function shouldFilterObjectTerrainHeight(zoneType: string | null | undefined): boolean {
-  return zoneType === 'green_space';
+  return [
+    'building',
+    'residential',
+    'road',
+    'street',
+    'green_space',
+    'park',
+    'plaza',
+    'parking',
+  ].includes(zoneType ?? '');
 }
 
 export function getObjectFilteredTerrainHeight(
@@ -42,12 +51,85 @@ export function getObjectFilteredTerrainHeight(
 
   if (
     Number.isFinite(fallback)
-    && (fallback as number) - groundCandidate <= OBJECT_HEIGHT_FILTER_THRESHOLD_METERS
+    && Math.abs((fallback as number) - groundCandidate) <= OBJECT_HEIGHT_FILTER_THRESHOLD_METERS
   ) {
     return fallback as number;
   }
 
   return groundCandidate;
+}
+
+/** Google Elevation failures historically returned one geoid fallback value
+ * for every requested point. Treat a constant response as unavailable so a
+ * polygon can fall back to the loaded 3D-tile surface instead of becoming a
+ * flat card that bridges across roofs and slopes. */
+export function hasUsableElevationRelief(
+  elevations: Array<number | null | undefined> | null | undefined,
+  minimumRangeMeters = 0.05,
+): elevations is number[] {
+  const finite = (elevations ?? []).filter(
+    (elevation): elevation is number => Number.isFinite(elevation),
+  );
+  if (finite.length < 2) return false;
+  return Math.max(...finite) - Math.min(...finite) >= minimumRangeMeters;
+}
+
+/** Reconcile a current tile probe with a stored placement height. A material
+ * disagreement is usually "ground versus roof"; the lower plausible surface
+ * is the safe seating plane for replacement development. */
+export function preferLowerGroundAnchor(
+  sampled: number | null | undefined,
+  stored: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  const hasSampled = Number.isFinite(sampled);
+  const hasStored = Number.isFinite(stored);
+  if (!hasSampled) return hasStored ? stored as number : null;
+  if (!hasStored) return sampled as number;
+  return Math.abs((sampled as number) - (stored as number)) > thresholdMeters
+    ? Math.min(sampled as number, stored as number)
+    : stored as number;
+}
+
+/** Choose the safest bare-ground frame origin for replacement development.
+ * A current tile ray, a stored zone height, or the project terrain fallback
+ * may each have landed on a roof. Material disagreement therefore resolves to
+ * the lower plausible elevation in both comparisons. */
+export function resolveReplacementGroundAnchor(
+  sampled: number | null | undefined,
+  stored: number | null | undefined,
+  projectTerrain: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  return preferLowerGroundAnchor(
+    preferLowerGroundAnchor(sampled, stored, thresholdMeters),
+    projectTerrain,
+    thresholdMeters,
+  );
+}
+
+/**
+ * Reject an isolated photogrammetry object-top hit for an interior ground
+ * vertex without flattening legitimate terrain below the surrounding ground.
+ *
+ * Public-realm meshes first obtain expensive, object-filtered samples around
+ * their boundary. Interior vertices can then use one cheap raycast each and
+ * compare it with the nearest trusted boundary sample. A roof/tree hit rises
+ * abruptly above that local reference and is replaced; a swale, reservoir or
+ * other lower surface remains valid.
+ */
+export function rejectRaisedObjectTop(
+  sampled: number | null | undefined,
+  nearbyGround: number | null | undefined,
+  thresholdMeters = OBJECT_HEIGHT_FILTER_THRESHOLD_METERS,
+): number | null {
+  const hasSampled = Number.isFinite(sampled);
+  const hasNearbyGround = Number.isFinite(nearbyGround);
+  if (!hasSampled) return hasNearbyGround ? nearbyGround as number : null;
+  if (!hasNearbyGround) return sampled as number;
+  return (sampled as number) > (nearbyGround as number) + thresholdMeters
+    ? nearbyGround as number
+    : sampled as number;
 }
 
 export function getRepresentativeTerrainHeight(

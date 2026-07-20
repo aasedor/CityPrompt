@@ -7,15 +7,32 @@
  * handles dev vs prod); the raw MinIO endpoint isn't browser-reachable.
  */
 
-import { Component, Suspense, type ReactNode } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Bounds, Center, Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei';
+import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Bounds, Center, Environment, Html, OrbitControls, useGLTF, useProgress } from '@react-three/drei';
 import { Loader2, X } from 'lucide-react';
 import { resolveApiFileUrl } from '@/services/api';
+import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import {
+  disposeArchitecturalCloneMaterials,
+  prepareArchitecturalClone,
+  setArchitecturalGlazingLod,
+} from './globe/modelMaterialQuality';
 
 function Model({ url }: { url: string }) {
-  const { scene } = useGLTF(url);
-  return <primitive object={scene} />;
+  const { gl } = useThree();
+  const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
+  const { scene } = useGLTF(url, true, true, extendLoader);
+  const model = useMemo(() => {
+    const cloned = prepareArchitecturalClone(scene, {
+      renderOrder: 0,
+      maxAnisotropy: gl.capabilities.getMaxAnisotropy(),
+    });
+    setArchitecturalGlazingLod(cloned, 'near');
+    return cloned;
+  }, [gl, scene]);
+  useEffect(() => () => disposeArchitecturalCloneMaterials(model), [model]);
+  return <primitive object={model} />;
 }
 
 function LoadProgress() {
@@ -82,10 +99,11 @@ export function BuildingModelViewer({
           </button>
         </div>
 
-        <Canvas camera={{ position: [4, 3, 6], fov: 45 }} dpr={[1, 2]}>
+        <Canvas shadows camera={{ position: [4, 3, 6], fov: 45 }} dpr={[1, 2]}>
           <ambientLight intensity={0.6} />
-          <directionalLight position={[6, 9, 5]} intensity={1.2} />
+          <directionalLight castShadow position={[6, 9, 5]} intensity={1.2} />
           <directionalLight position={[-6, 3, -5]} intensity={0.4} />
+          <Environment preset="city" background={false} />
           <ModelErrorBoundary>
             <Suspense fallback={<LoadProgress />}>
               {/* Center at origin + auto-frame — Meshy models arrive at any

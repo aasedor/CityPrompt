@@ -19,6 +19,7 @@
 import {
   Component,
   Suspense,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -29,30 +30,53 @@ import {
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { resolveApiFileUrl } from '@/services/api';
-import { computeFootprintFrame } from './buildingPlacement';
+import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import { computeFootprintFrame, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { getObjectFilteredTerrainHeight, isPlausibleTerrainAnchor, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import {
+  getObjectFilteredTerrainHeight,
+  isPlausibleTerrainAnchor,
+  preferLowerGroundAnchor,
+  resolveZoneTerrainHeight,
+} from './globeTerrainUtils';
 import {
   computeLegoStackYaw,
   extractLegoRecipe,
+  extractPlannedMassing,
   legoFootprintRing,
   legoInstanceTransform,
+  type PlannedMassingSpec,
   uniqueModuleUrls,
 } from './legoGlobePlacement';
-import { disposeArchitecturalCloneMaterials, prepareArchitecturalClone } from './modelMaterialQuality';
+import {
+  disposeArchitecturalCloneMaterials,
+  prepareArchitecturalClone,
+  resolveArchitecturalGlazingLod,
+  setArchitecturalGlazingLod,
+  type ArchitecturalGlazingLod,
+} from './modelMaterialQuality';
+import { buildLegoMassingMeshData, legoMassingColor } from './legoMassingGeometry';
+import {
+  LEGO_STACK_RENDER_BUDGET,
+  partitionLegoStacksByDistance,
+} from './legoStackBudget';
+import { LocalModelSelectionOutline } from './GlobeModelSelectionOutline';
 
 const DEG_TO_RAD = Math.PI / 180;
-const MAX_LEGO_STACKS = 20;
 const GROUND_EMBED_METERS = 0.3;
 // Same convention as GlobeBuildingModelsLayer: above depthTest-false road
 // overlays (120), below zone prisms (200).
 const LEGO_RENDER_ORDER = 150;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
+const MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL = 300;
+const MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS = 8;
+const legoTerrainSampleCache = new Map<string, number>();
 
 interface GlobeLegoAssemblyLayerProps {
   buildings: Building[];
@@ -61,11 +85,16 @@ interface GlobeLegoAssemblyLayerProps {
   terrainHeight: number;
   /** Buildings whose stack is actually mounted — drives prism suppression. */
   onLoadedIdsChange: (ids: Set<string>) => void;
+  selectedBuildingId?: string | null;
+  onBuildingClick?: (buildingId: string) => void;
 }
 
 /** useGLTF throws on bad/missing modules; Suspense doesn't catch errors.
  *  Fallback is null so the zone prism (or Meshy model) simply stays visible. */
-class SilentLegoBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+class SilentLegoBoundary extends Component<{
+  children: ReactNode;
+  fallback?: ReactNode;
+}, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
@@ -74,26 +103,191 @@ class SilentLegoBoundary extends Component<{ children: ReactNode }, { failed: bo
     console.warn('[GlobeLego] module failed to load', error);
   }
   render() {
-    return this.state.failed ? null : this.props.children;
+    return this.state.failed ? (this.props.fallback ?? null) : this.props.children;
   }
+}
+
+type GlobeBuildingEntry = {
+  building: Building;
+  ring: number[][];
+  frame: FootprintFrame;
+} & (
+  | { kind: 'lego'; recipe: LegoAssemblyRecipe }
+  | { kind: 'massing'; massing: PlannedMassingSpec }
+);
+
+function setsEqual(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
+  return a.size === b.size && [...a].every((value) => b.has(value));
+}
+
+function stableFrameOffset(id: string, modulo: number): number {
+  let hash = 0;
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (Math.imul(hash, 31) + id.charCodeAt(index)) | 0;
+  }
+  return Math.abs(hash) % modulo;
+}
+
+function LegoMassingStack({
+  building,
+  heightMeters,
+  colorSeed,
+  ring,
+  frame,
+  zone,
+  fallbackTerrainHeight,
+  onLoaded,
+  onUnloaded,
+  selected,
+  onBuildingClick,
+}: {
+  building: Building;
+  heightMeters: number | null | undefined;
+  colorSeed: string;
+  ring: number[][];
+  frame: FootprintFrame;
+  zone: SiteZone | undefined;
+  fallbackTerrainHeight: number;
+  onLoaded: (id: string) => void;
+  onUnloaded: (id: string) => void;
+  selected: boolean;
+  onBuildingClick?: (buildingId: string) => void;
+}) {
+  const height = Math.max(
+    2.5,
+    Number(heightMeters)
+      || Number(building.height_meters)
+      || Number(building.floor_count) * 3.2
+      || 10,
+  );
+  const geometry = useMemo(() => {
+    const data = buildLegoMassingMeshData(
+      ring,
+      frame.centroidLng,
+      frame.centroidLat,
+      height,
+    );
+    if (!data) return null;
+    const next = new THREE.BufferGeometry();
+    next.setAttribute('position', new THREE.Float32BufferAttribute(data.positions, 3));
+    next.setIndex(data.indices);
+    next.computeVertexNormals();
+    next.computeBoundingSphere();
+    return next;
+  }, [frame.centroidLat, frame.centroidLng, height, ring]);
+  useEffect(() => () => geometry?.dispose(), [geometry]);
+
+  const tiles = useContext(TilesRendererContext);
+  const properties = zone?.properties as Record<string, unknown> | undefined;
+  const storedRaw = Number(properties?.terrain_elevation_m ?? properties?.terrain_height);
+  const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
+  const [sampledTerrain, setSampledTerrain] = useState<number | null>(
+    () => legoTerrainSampleCache.get(building.id) ?? null,
+  );
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const frameCountRef = useRef(stableFrameOffset(
+    building.id,
+    MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL,
+  ));
+  const attemptsRef = useRef(0);
+  const frozenRef = useRef(sampledTerrain !== null);
+  useFrame(() => {
+    if (frozenRef.current || !geometry) return;
+    frameCountRef.current += 1;
+    if (frameCountRef.current % MASSING_TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
+    if (attemptsRef.current >= MASSING_TERRAIN_SAMPLE_MAX_ATTEMPTS) {
+      frozenRef.current = true;
+      return;
+    }
+    attemptsRef.current += 1;
+    const tilesGroup = tiles?.group;
+    if (!tilesGroup || tilesGroup.children.length === 0) return;
+
+    const step = Math.max(1, Math.floor(ring.length / 4));
+    const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
+    for (let index = 0; index < ring.length && probes.length < 5; index += step) {
+      probes.push([ring[index][0], ring[index][1]]);
+    }
+    const samples = probes.map(([longitude, latitude]) => (
+      raycastTerrainHeightAtLatLng(longitude, latitude, tilesGroup, raycasterRef.current)
+    ));
+    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(
+        groundCandidate,
+        storedTerrain ?? fallbackTerrainHeight,
+      )
+    ) {
+      legoTerrainSampleCache.set(building.id, groundCandidate);
+      setSampledTerrain(groundCandidate);
+      frozenRef.current = true;
+    }
+  });
+
+  useEffect(() => {
+    if (!geometry) return undefined;
+    onLoaded(building.id);
+    return () => onUnloaded(building.id);
+  }, [building.id, geometry, onLoaded, onUnloaded]);
+
+  if (!geometry) return null;
+  const terrain = resolveZoneTerrainHeight(
+    sampledTerrain,
+    storedTerrain,
+    fallbackTerrainHeight,
+  );
+
+  return (
+    <EastNorthUpFrame
+      lat={frame.centroidLat * DEG_TO_RAD}
+      lon={frame.centroidLng * DEG_TO_RAD}
+      height={terrain}
+    >
+      <mesh
+        geometry={geometry}
+        position={[0, 0, -GROUND_EMBED_METERS]}
+        renderOrder={LEGO_RENDER_ORDER}
+        onClick={(event) => {
+          event.stopPropagation();
+          onBuildingClick?.(building.id);
+        }}
+      >
+        <meshStandardMaterial
+          color={legoMassingColor(`${colorSeed}:${building.id}`)}
+          roughness={0.82}
+          metalness={0.02}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
+    </EastNorthUpFrame>
+  );
 }
 
 function LegoStackInstance({
   building,
   recipe,
   ring,
+  frame,
   zone,
   fallbackTerrainHeight,
   onLoaded,
   onUnloaded,
+  selected,
+  onBuildingClick,
 }: {
   building: Building;
   recipe: LegoAssemblyRecipe;
   ring: number[][];
+  frame: FootprintFrame;
   zone: SiteZone | undefined;
   fallbackTerrainHeight: number;
   onLoaded: (id: string) => void;
   onUnloaded: (id: string) => void;
+  selected: boolean;
+  onBuildingClick?: (buildingId: string) => void;
 }) {
   // One suspension point for the whole stack: all distinct module GLBs load
   // before anything mounts, so the prism handoff is atomic (no half-stacks).
@@ -101,11 +295,11 @@ function LegoStackInstance({
     () => uniqueModuleUrls(recipe).map((url) => resolveApiFileUrl(url)),
     [recipe],
   );
-  const gltfs = useGLTF(urls);
+  const gl = useThree((state) => state.gl);
+  const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
+  const gltfs = useGLTF(urls, true, true, extendLoader);
   const tiles = useContext(TilesRendererContext);
-  const maxAnisotropy = useThree((state) => state.gl.capabilities.getMaxAnisotropy());
-
-  const frame = useMemo(() => computeFootprintFrame(ring), [ring]);
+  const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
 
   const sceneByUrl = useMemo(() => {
     const map = new Map<string, THREE.Object3D>();
@@ -153,14 +347,28 @@ function LegoStackInstance({
   const zoneProps = zone?.properties as Record<string, unknown> | undefined;
   const storedRaw = Number(zoneProps?.terrain_elevation_m ?? zoneProps?.terrain_height);
   const storedTerrain = Number.isFinite(storedRaw) ? storedRaw : null;
-  const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
+  const [sampledTerrain, setSampledTerrain] = useState<number | null>(
+    () => legoTerrainSampleCache.get(building.id) ?? null,
+  );
   const raycasterRef = useRef(new THREE.Raycaster());
   const frameCountRef = useRef(0);
   const attemptsRef = useRef(0);
-  const frozenRef = useRef(false);
+  const frozenRef = useRef(sampledTerrain !== null);
+  const stackRef = useRef<THREE.Group>(null);
+  const stackWorldPositionRef = useRef(new THREE.Vector3());
+  const glazingLodRef = useRef<ArchitecturalGlazingLod>('far');
 
-  useFrame(() => {
-    if (frozenRef.current || storedTerrain !== null || !frame) return;
+  useFrame(({ camera }) => {
+    if (stackRef.current) {
+      stackRef.current.getWorldPosition(stackWorldPositionRef.current);
+      const distance = camera.position.distanceTo(stackWorldPositionRef.current);
+      const nextLod = resolveArchitecturalGlazingLod(distance, glazingLodRef.current);
+      if (nextLod !== glazingLodRef.current) {
+        modules.forEach(({ cloned }) => setArchitecturalGlazingLod(cloned, nextLod));
+        glazingLodRef.current = nextLod;
+      }
+    }
+    if (frozenRef.current || !frame) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -179,10 +387,15 @@ function LegoStackInstance({
     const samples = probes.map(([lng, lat]) => (
       raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
     ));
-    const filtered = getObjectFilteredTerrainHeight(samples, null);
+    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
     // Unrefined-root-tile guard: implausible samples burn an attempt and retry.
-    if (filtered !== null && isPlausibleTerrainAnchor(filtered, fallbackTerrainHeight)) {
-      setSampledTerrain(filtered);
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
+    ) {
+      legoTerrainSampleCache.set(building.id, groundCandidate);
+      setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
   });
@@ -202,8 +415,13 @@ function LegoStackInstance({
       height={terrain}
     >
       <group
+        ref={stackRef}
         position={[frame.rectCenterLocal[0], frame.rectCenterLocal[1], -GROUND_EMBED_METERS]}
         rotation={[0, 0, yawRad]}
+        onClick={(event) => {
+          event.stopPropagation();
+          onBuildingClick?.(building.id);
+        }}
       >
         {/* Rx(+90°): glTF Y-up -> ENU Z-up (stack Y becomes Up, Z becomes -North).
             Inside, the stack is built in glTF Y-up space per the legoShared
@@ -222,6 +440,7 @@ function LegoStackInstance({
           ))}
         </group>
       </group>
+      {selected && <LocalModelSelectionOutline ring={ring} frame={frame} />}
     </EastNorthUpFrame>
   );
 }
@@ -231,28 +450,80 @@ export function GlobeLegoAssemblyLayer({
   zones,
   terrainHeight,
   onLoadedIdsChange,
+  selectedBuildingId = null,
+  onBuildingClick,
 }: GlobeLegoAssemblyLayerProps) {
   const [loadedIds, setLoadedIds] = useState<Set<string>>(() => new Set());
+  const camera = useThree((state) => state.camera);
 
-  const { placeable, skippedWithoutFootprint } = useMemo(() => {
-    const entries: Array<{ building: Building; recipe: LegoAssemblyRecipe; ring: number[][] }> = [];
+  const { entries, skippedWithoutFootprint } = useMemo(() => {
+    const nextEntries: GlobeBuildingEntry[] = [];
     let skipped = 0;
     for (const building of buildings) {
       const recipe = extractLegoRecipe(building);
-      if (!recipe) continue;
+      const massing = recipe ? null : extractPlannedMassing(building);
+      if (!recipe && !massing) continue;
       const ring = legoFootprintRing(building);
-      if (!ring) {
+      const frame = ring ? computeFootprintFrame(ring) : null;
+      if (!ring || !frame) {
         skipped += 1;
         continue;
       }
-      entries.push({ building, recipe, ring });
+      nextEntries.push(recipe
+        ? { kind: 'lego', building, recipe, ring, frame }
+        : { kind: 'massing', building, massing: massing!, ring, frame });
     }
-    entries.sort((a, b) => (
+    nextEntries.sort((a, b) => (
       (a.building.created_at ?? '').localeCompare(b.building.created_at ?? '')
       || a.building.id.localeCompare(b.building.id)
     ));
-    return { placeable: entries.slice(0, MAX_LEGO_STACKS), skippedWithoutFootprint: skipped };
+    return { entries: nextEntries, skippedWithoutFootprint: skipped };
   }, [buildings]);
+
+  const entryWorldPositions = useMemo(() => {
+    const positions = new Map<string, THREE.Vector3>();
+    for (const entry of entries) {
+      const position = new THREE.Vector3();
+      WGS84_ELLIPSOID.getCartographicToPosition(
+        entry.frame.centroidLat * DEG_TO_RAD,
+        entry.frame.centroidLng * DEG_TO_RAD,
+        terrainHeight,
+        position,
+      );
+      positions.set(entry.building.id, position);
+    }
+    return positions;
+  }, [entries, terrainHeight]);
+
+  const selectDetailedIds = useCallback((cameraPosition: THREE.Vector3) => {
+    const legoEntries = entries.filter(
+      (entry): entry is Extract<GlobeBuildingEntry, { kind: 'lego' }> => entry.kind === 'lego',
+    );
+    const selection = partitionLegoStacksByDistance(
+      legoEntries,
+      (entry) => entryWorldPositions.get(entry.building.id)?.distanceToSquared(cameraPosition) ?? Infinity,
+    );
+    return new Set(selection.detailed.map((entry) => entry.building.id));
+  }, [entries, entryWorldPositions]);
+  const [detailedIds, setDetailedIds] = useState<Set<string>>(() => new Set());
+  const lodFrameRef = useRef(0);
+  useEffect(() => {
+    setDetailedIds(selectDetailedIds(camera.position));
+  }, [camera, selectDetailedIds]);
+  useFrame(() => {
+    lodFrameRef.current += 1;
+    if (lodFrameRef.current % 60 !== 0) return;
+    const next = selectDetailedIds(camera.position);
+    setDetailedIds((previous) => (setsEqual(previous, next) ? previous : next));
+  });
+
+  const zoneByBuildingId = useMemo(() => {
+    const map = new Map<string, SiteZone>();
+    for (const zone of zones) {
+      if (zone.building_id) map.set(zone.building_id, zone);
+    }
+    return map;
+  }, [zones]);
 
   useEffect(() => {
     if (import.meta.env.DEV && skippedWithoutFootprint > 0) {
@@ -266,43 +537,117 @@ export function GlobeLegoAssemblyLayer({
     onLoadedIdsChange(loadedIds);
   }, [loadedIds, onLoadedIdsChange]);
 
+  useEffect(() => {
+    if (
+      import.meta.env.DEV
+      && entries.length > 0
+      && loadedIds.size === entries.length
+    ) {
+      const legoCount = entries.filter((entry) => entry.kind === 'lego').length;
+      const plannedMassingCount = entries.length - legoCount;
+      console.debug(
+        `[GlobeLego] Mounted all ${entries.length} building representations `
+        + `(${Math.min(legoCount, LEGO_STACK_RENDER_BUDGET)} detailed, `
+        + `${Math.max(0, legoCount - LEGO_STACK_RENDER_BUDGET)} LOD massing, `
+        + `${plannedMassingCount} planned-family massing)`,
+      );
+    }
+  }, [entries.length, loadedIds.size]);
+
   // Clear suppression for everything when the layer unmounts (toggle off).
   useEffect(() => () => onLoadedIdsChange(new Set()), [onLoadedIdsChange]);
 
-  const handleLoaded = (id: string) => setLoadedIds((prev) => {
+  const handleLoaded = useCallback((id: string) => setLoadedIds((prev) => {
     if (prev.has(id)) return prev;
     const next = new Set(prev);
     next.add(id);
     return next;
-  });
-  const handleUnloaded = (id: string) => setLoadedIds((prev) => {
+  }), []);
+  const handleUnloaded = useCallback((id: string) => setLoadedIds((prev) => {
     if (!prev.has(id)) return prev;
     const next = new Set(prev);
     next.delete(id);
     return next;
-  });
+  }), []);
 
   // No recipes on this project: clean no-op (hooks above always run in the
   // same order, so this early return is safe).
-  if (placeable.length === 0) return null;
+  if (entries.length === 0) return null;
 
   return (
     <>
-      {placeable.map(({ building, recipe, ring }) => (
-        <SilentLegoBoundary key={building.id}>
-          <Suspense fallback={null}>
-            <LegoStackInstance
+      {entries.map((entry) => {
+        const { building, ring, frame } = entry;
+        const zone = zoneByBuildingId.get(building.id);
+        if (entry.kind === 'massing') {
+          return (
+            <LegoMassingStack
+              key={building.id}
               building={building}
-              recipe={recipe}
+              heightMeters={entry.massing.height_meters}
+              colorSeed={entry.massing.archetype_id ?? 'planned-massing'}
               ring={ring}
-              zone={zones.find((z) => z.building_id === building.id)}
+              frame={frame}
+              zone={zone}
               fallbackTerrainHeight={terrainHeight}
               onLoaded={handleLoaded}
               onUnloaded={handleUnloaded}
+              selected={selectedBuildingId === building.id}
+              onBuildingClick={onBuildingClick}
             />
-          </Suspense>
-        </SilentLegoBoundary>
-      ))}
+          );
+        }
+        const { recipe } = entry;
+        const massing = (
+          <LegoMassingStack
+            building={building}
+            heightMeters={recipe.assembled_height_m}
+            colorSeed={recipe.module_family}
+            ring={ring}
+            frame={frame}
+            zone={zone}
+            fallbackTerrainHeight={terrainHeight}
+            onLoaded={handleLoaded}
+            onUnloaded={handleUnloaded}
+            selected={selectedBuildingId === building.id}
+            onBuildingClick={onBuildingClick}
+          />
+        );
+        if (!detailedIds.has(building.id)) {
+          return <LegoMassingStack
+            key={building.id}
+            building={building}
+            heightMeters={recipe.assembled_height_m}
+            colorSeed={recipe.module_family}
+            ring={ring}
+            frame={frame}
+            zone={zone}
+            fallbackTerrainHeight={terrainHeight}
+            onLoaded={handleLoaded}
+            onUnloaded={handleUnloaded}
+            selected={selectedBuildingId === building.id}
+            onBuildingClick={onBuildingClick}
+          />;
+        }
+        return (
+          <SilentLegoBoundary key={building.id} fallback={massing}>
+            <Suspense fallback={massing}>
+              <LegoStackInstance
+                building={building}
+                recipe={recipe}
+                ring={ring}
+                frame={frame}
+                zone={zone}
+                fallbackTerrainHeight={terrainHeight}
+                onLoaded={handleLoaded}
+                onUnloaded={handleUnloaded}
+                selected={selectedBuildingId === building.id}
+                onBuildingClick={onBuildingClick}
+              />
+            </Suspense>
+          </SilentLegoBoundary>
+        );
+      })}
     </>
   );
 }

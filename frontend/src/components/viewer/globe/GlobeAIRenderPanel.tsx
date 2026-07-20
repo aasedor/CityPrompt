@@ -11,15 +11,29 @@ import * as THREE from 'three';
 import { useQueryClient } from '@tanstack/react-query';
 import { Boxes, Camera, GripHorizontal, Loader2, Download, X, Check, Image as ImageIcon, Orbit, Trees } from 'lucide-react';
 import type { SiteZone, SavedRender } from '@/types';
-import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, PERZONE_THRESHOLD, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
-import { rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
+import { useGlobeAIRender, type GlobeRenderResult, type GlobeRenderProgress, type OpenAIImageQuality, HIGH_FIDELITY_STYLES } from './useGlobeAIRender';
+import { rendersApi, resolveApiFileUrl } from '@/services/api';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
-import { buildParkDiagram, generateParkGroundTexture, getParkGroundMeta } from './parkGroundTexture';
-
-// Zones the backend's generate-all endpoint turns into Buildings + Meshy jobs.
-const BUILDABLE_ZONE_TYPES = new Set(['building', 'residential', 'development_area']);
+import {
+  buildParkDiagram,
+  generateParkGroundTexture,
+  getParkGroundMeta,
+  MAX_PARK_GROUND_BATCH_CALLS,
+  takeParkGroundBatch,
+} from './parkGroundTexture';
+import {
+  resolveCommunity3DAction,
+  resolveCommunity3DKind,
+  selectCommunity3DCompileZones,
+} from '@/features/community3d/community3d';
+import { analyzePlanBoundaryAlignment } from '@/features/community3d/planBoundaryAlignment';
+import {
+  compileMixedCommunity3D,
+  deriveItems as deriveCommunityBuildingItems,
+} from '@/features/legoAssembly/communityCompiler';
+import { estimateCurrentViewRenderCalls } from './renderCost';
 
 // Both preview slots run GPT Image 2 (user verdict 2026-07-07: Gemini globe
 // renders consistently weaker; GPT holds the drawn structure best). Two
@@ -66,7 +80,9 @@ interface GlobeAIRenderPanelProps {
   siteZones: SiteZone[];
   terrainHeight: number;
   projectId?: string;
-  /** Buildings whose GLB is currently placed on the globe. */
+  /** Currently selected map zone; enables a one-park paid drape action. */
+  selectedZoneId?: string | null;
+  /** Buildings whose detailed model or exact-footprint massing is placed. */
   modeledBuildingIds?: Set<string>;
   /** Hide/show placed models — used for polygon-only captures. */
   setBuildingModelsVisible?: (visible: boolean) => void;
@@ -139,6 +155,7 @@ export function GlobeAIRenderPanel({
   siteZones,
   terrainHeight,
   projectId,
+  selectedZoneId,
   modeledBuildingIds,
   setBuildingModelsVisible,
   onRenderComplete,
@@ -149,9 +166,10 @@ export function GlobeAIRenderPanel({
   onRenderSaved,
   onClose,
 }: GlobeAIRenderPanelProps) {
-  const { renderPreviews, renderPerZone } = useGlobeAIRender();
+  const { renderPreviews } = useGlobeAIRender();
   const queryClient = useQueryClient();
   const [isRendering, setIsRendering] = useState(false);
+  const [isPreparingCapture, setIsPreparingCapture] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
   const [previews, setPreviews] = useState<GlobeRenderResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
@@ -188,38 +206,144 @@ export function GlobeAIRenderPanel({
   const [confirm3DOpen, setConfirm3DOpen] = useState(false);
   const [isQueuing3D, setIsQueuing3D] = useState(false);
   const [generate3DStatus, setGenerate3DStatus] = useState<string | null>(null);
+  const renderCallCount = estimateCurrentViewRenderCalls(
+    COMPARE_RENDER_MODELS.length,
+    highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
+  );
 
   const boundaryZone3D = siteZones.find(
     (z) => z.zone_type === 'site_boundary' && z.coordinates.length >= 3,
   );
-  const buildableZones = siteZones.filter(
-    (z) => BUILDABLE_ZONE_TYPES.has(z.zone_type)
-      && (z.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height',
+  const buildableZones = useMemo(
+    () => deriveCommunityBuildingItems(siteZones)
+      .map((item) => item.zone)
+      .filter((zone) => (
+        (zone.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height'
+      )),
+    [siteZones],
   );
-  const unsavedBuildableCount = buildableZones.filter((z) => !isPersistedZoneId(z.id)).length;
+  const communityGroundZones = useMemo(
+    () => siteZones.filter((z) => {
+      const kind = resolveCommunity3DKind(z);
+      return (kind === 'park' || kind === 'street') && z.coordinates.length >= 3;
+    }),
+    [siteZones],
+  );
+  const communityZones = useMemo(
+    () => [...buildableZones, ...communityGroundZones],
+    [buildableZones, communityGroundZones],
+  );
+  const community3DAction = resolveCommunity3DAction(communityZones);
+  const communityCompileZones = useMemo(
+    () => selectCommunity3DCompileZones(communityZones, community3DAction),
+    [community3DAction, communityZones],
+  );
+  const communityCompileBuildingCount = communityCompileZones.filter(
+    (zone) => resolveCommunity3DKind(zone) === 'building',
+  ).length;
+  const communityCompileParkCount = communityCompileZones.filter(
+    (zone) => resolveCommunity3DKind(zone) === 'park',
+  ).length;
+  const communityCompileStreetCount = communityCompileZones.filter(
+    (zone) => resolveCommunity3DKind(zone) === 'street',
+  ).length;
+  const community3DActionLabel = community3DAction === 'rebuild'
+    ? 'Rebuild'
+    : community3DAction === 'complete'
+      ? 'Complete'
+      : 'Generate';
+  const unsavedCommunityCount = communityZones
+    .filter((z) => !isPersistedZoneId(z.id)).length;
+  const planBoundaryAlignment = useMemo(
+    () => analyzePlanBoundaryAlignment(siteZones),
+    [siteZones],
+  );
+  const planGeometryStale = !planBoundaryAlignment.isAligned;
+  const stalePlanMessage = planGeometryStale
+    ? planBoundaryAlignment.boundary === null && planBoundaryAlignment.requiresBoundary
+      ? `${planBoundaryAlignment.planZones.length} generated plan zones are missing their saved site boundary. Restore or redraw the master plan before generating 3D or renders.`
+      : `${planBoundaryAlignment.misalignedZones.length} of ${planBoundaryAlignment.planZones.length} generated plan zones no longer fit the current site boundary. Redraw the master plan before spending credits on 3D or renders.`
+    : null;
   const boundaryPersisted = Boolean(boundaryZone3D && isPersistedZoneId(boundaryZone3D.id));
+  const communityBoundaryReady = !planBoundaryAlignment.requiresBoundary || boundaryPersisted;
   const canGenerate3D = Boolean(
-    projectId && boundaryPersisted && buildableZones.length > 0 && unsavedBuildableCount === 0,
+    projectId
+    && communityBoundaryReady
+    && !planGeometryStale
+    && communityZones.length > 0
+    && unsavedCommunityCount === 0,
   );
 
   // ── Park ground textures (AI ortho drape; one Gemini render per park) ──
   const [isGeneratingParks, setIsGeneratingParks] = useState(false);
   const [parkGroundStatus, setParkGroundStatus] = useState<string | null>(null);
   const parkZones = siteZones.filter(
-    (z) => z.zone_type === 'green_space' && z.coordinates.length >= 3 && isPersistedZoneId(z.id),
+    (z) => resolveCommunity3DKind(z) === 'park'
+      && z.coordinates.length >= 3
+      && isPersistedZoneId(z.id),
   );
   const parksNeedingGround = parkZones.filter((z) => !getParkGroundMeta(z));
+  const parkGroundBatch = takeParkGroundBatch(parksNeedingGround);
+  const selectedParkNeedingGround = parksNeedingGround.find((z) => z.id === selectedZoneId) ?? null;
+  const parkEligibleForGroundRegeneration = (
+    parkZones.find((z) => z.id === selectedZoneId)
+    ?? (parkZones.length === 1 ? parkZones[0] : null)
+  );
+  const parkHasGroundToRegenerate = parkEligibleForGroundRegeneration
+    && getParkGroundMeta(parkEligibleForGroundRegeneration)
+    ? parkEligibleForGroundRegeneration
+    : null;
+
+  const handleGenerateSelectedParkGround = useCallback(async () => {
+    if (planGeometryStale || isGeneratingParks || !selectedParkNeedingGround) return;
+    const label = selectedParkNeedingGround.name || 'selected park';
+    setIsGeneratingParks(true);
+    setParkGroundStatus(`Generating optional AI material drape for ${label}…`);
+    setError(null);
+    try {
+      await generateParkGroundTexture(selectedParkNeedingGround);
+      setParkGroundStatus(`Generated optional AI material drape for ${label}.`);
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      await queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Could not generate the selected park ground.');
+      setParkGroundStatus(null);
+    } finally {
+      setIsGeneratingParks(false);
+    }
+  }, [isGeneratingParks, planGeometryStale, projectId, queryClient, selectedParkNeedingGround]);
+
+  const handleRegenerateParkGround = useCallback(async () => {
+    if (planGeometryStale || isGeneratingParks || !parkHasGroundToRegenerate) return;
+    const label = parkHasGroundToRegenerate.name || 'selected park';
+    setIsGeneratingParks(true);
+    setParkGroundStatus(`Regenerating geometry-locked AI material drape for ${label}…`);
+    setError(null);
+    try {
+      await generateParkGroundTexture(parkHasGroundToRegenerate);
+      setParkGroundStatus(`Regenerated geometry-locked AI material drape for ${label}.`);
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      await queryClient.invalidateQueries({ queryKey: ['project', projectId] });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Could not regenerate the selected park ground.');
+      setParkGroundStatus(null);
+    } finally {
+      setIsGeneratingParks(false);
+    }
+  }, [isGeneratingParks, parkHasGroundToRegenerate, planGeometryStale, projectId, queryClient]);
 
   const handleGenerateParkGrounds = useCallback(async () => {
-    if (isGeneratingParks || parksNeedingGround.length === 0) return;
+    if (planGeometryStale || isGeneratingParks || parksNeedingGround.length === 0) return;
     setIsGeneratingParks(true);
-    setParkGroundStatus(`Generating park grounds… 0/${parksNeedingGround.length}`);
+    setParkGroundStatus(
+      `Generating optional AI park-ground upgrades… 0/${parkGroundBatch.length} (${parksNeedingGround.length} eligible)`,
+    );
     setError(null);
     let done = 0;
     let failed = 0;
     // Sequential on purpose: each call is a full Gemini render; parallel
     // fan-out would trip the proxy's daily token cap alarms for no benefit.
-    for (const zone of parksNeedingGround) {
+    for (const zone of parkGroundBatch) {
       try {
         await generateParkGroundTexture(zone);
         done += 1;
@@ -227,16 +351,27 @@ export function GlobeAIRenderPanel({
         failed += 1;
         console.warn('[parkGrounds] generation failed for zone', zone.id, err);
       }
-      setParkGroundStatus(`Generating park grounds… ${done + failed}/${parksNeedingGround.length}`);
+      setParkGroundStatus(
+        `Generating optional AI park-ground upgrades… ${done + failed}/${parkGroundBatch.length}`,
+      );
       // Refresh zones as textures land so the globe drapes them immediately.
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
       queryClient.invalidateQueries({ queryKey: ['project', projectId] });
     }
+    const remaining = Math.max(0, parksNeedingGround.length - done);
     setParkGroundStatus(
-      `${done} park ground${done === 1 ? '' : 's'} generated${failed ? `, ${failed} failed` : ''}.`,
+      `${done} AI park-ground upgrade${done === 1 ? '' : 's'} generated${failed ? `, ${failed} failed` : ''}.`
+      + (remaining > 0 ? ` ${remaining} parks still use their complete procedural grounds; start another optional batch explicitly.` : ''),
     );
     setIsGeneratingParks(false);
-  }, [isGeneratingParks, parksNeedingGround, queryClient, projectId]);
+  }, [
+    planGeometryStale,
+    isGeneratingParks,
+    parkGroundBatch,
+    parksNeedingGround.length,
+    queryClient,
+    projectId,
+  ]);
 
   // DEV pilot hook: regenerate the ground texture for ONE park by zone id
   // (the panel button only fills MISSING textures, so per-zone pilots can't
@@ -258,29 +393,38 @@ export function GlobeAIRenderPanel({
   }, [siteZones, queryClient, projectId]);
 
   const handleGenerate3D = useCallback(async () => {
-    if (!projectId || !boundaryZone3D || isQueuing3D) return;
+    if (planGeometryStale || !projectId || !communityBoundaryReady || isQueuing3D) return;
     setIsQueuing3D(true);
     setGenerate3DStatus(null);
     setError(null);
     try {
-      const result3d = await siteZonesApi.generateForBoundary(projectId, boundaryZone3D.id);
-      const queued = result3d?.queued_buildings?.length ?? result3d?.generations_queued ?? 0;
-      setGenerate3DStatus(
-        `${queued} model${queued === 1 ? '' : 's'} queued — they appear on the globe as they finish (a few minutes each).`,
+      const summary = await compileMixedCommunity3D(
+        communityCompileZones,
+        ({ completed, total }) => {
+          setGenerate3DStatus(
+            total > 0
+              ? `Preparing modular buildings… ${completed}/${total}`
+              : 'Compiling parks and streets…',
+          );
+        },
       );
-      // The project query's refetchInterval polls every 3s while any building
-      // is `generating`; models place themselves on completion.
-      // TODO(progress-UI): batch progress bar is owned by the spawned
-      // 3D-generation-progress session — don't wire generationStore here.
-      queryClient.invalidateQueries({ queryKey: ['project', projectId] });
-      queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
+      setGenerate3DStatus(
+        `Built ${summary.detailedBuildings} detailed modular building${summary.detailedBuildings === 1 ? '' : 's'}, `
+        + `${summary.plannedMasses} family-pending exact mass${summary.plannedMasses === 1 ? '' : 'es'}, `
+        + `${summary.parks} park${summary.parks === 1 ? '' : 's'}, and `
+        + `${summary.streets} street/path layer${summary.streets === 1 ? '' : 's'}.`,
+      );
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['project', projectId] }),
+        queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] }),
+      ]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to queue 3D model generation');
+      setError(err instanceof Error ? err.message : 'Failed to build the mixed 3D community');
     } finally {
       setIsQueuing3D(false);
       setConfirm3DOpen(false);
     }
-  }, [projectId, boundaryZone3D, isQueuing3D, queryClient]);
+  }, [planGeometryStale, projectId, communityBoundaryReady, isQueuing3D, communityCompileZones, queryClient]);
 
   useEffect(() => {
     onLightboxOpenChange?.(!!lightboxRender);
@@ -361,6 +505,11 @@ export function GlobeAIRenderPanel({
   const handleRender = useCallback(async () => {
     if (!canvas || !camera || isRendering) return;
 
+    if (planGeometryStale) {
+      setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
+      return;
+    }
+
     const editableZones = siteZones.filter(z =>
       z.zone_type !== 'site_boundary' && z.coordinates.length >= 3
     );
@@ -375,9 +524,8 @@ export function GlobeAIRenderPanel({
       return;
     }
 
-    await onBeforeRender?.();
-
     setIsRendering(true);
+    setIsPreparingCapture(true);
     setResult(null);
     setPreviews([]);
     setSelectedPreviewIndex(null);
@@ -385,107 +533,65 @@ export function GlobeAIRenderPanel({
     setRenderProgress(null);
     const startTime = Date.now();
     const timer = setInterval(() => setRenderTime(Math.round((Date.now() - startTime) / 1000)), 1000);
-
-    // 3D models in the capture: when the toggle is OFF, hide the placed GLBs
-    // for the screenshot (classic polygon-only conditioning) and restore
-    // after. When ON, pass the modeled ids so those zones get
-    // preserve-the-massing prompts instead of replace-the-polygon.
-    const includeModels = renderWithModels && (modeledBuildingIds?.size ?? 0) > 0;
-    const hidModels = !includeModels && (modeledBuildingIds?.size ?? 0) > 0 && !!setBuildingModelsVisible;
-    if (hidModels) {
-      setBuildingModelsVisible!(false);
-      // Let R3F unmount the layer and repaint (prisms return) before capture.
-      await new Promise((resolve) => setTimeout(resolve, 250));
-    }
-    const renderModeledIds = includeModels ? modeledBuildingIds : undefined;
+    let hidModels = false;
 
     try {
-      // Use per-zone when: 5+ zones, OR mixing roads/streets with buildings
-      // (roads and buildings have such different archetypes that single-shot confuses Gemini)
-      const ROAD_TYPES = ['road', 'street', 'path'];
-      const BUILDING_TYPES = ['building', 'residential', 'commercial', 'industrial', 'mixed_use'];
-      const hasRoads = editableZones.some(z => ROAD_TYPES.includes(z.zone_type));
-      const hasBuildings = editableZones.some(z => BUILDING_TYPES.includes(z.zone_type));
-      const hasMixedTypes = hasRoads && hasBuildings;
-      const usePerZone = editableZones.length >= PERZONE_THRESHOLD; // Single-shot is default — per-zone only for 5+ zones
+      // Do not spend image credits against a half-streamed Google scene.
+      // The parent waits for a stable tile window and throws on its bounded
+      // timeout; this catch then returns the user to an idle, retryable state.
+      await onBeforeRender?.();
+      setIsPreparingCapture(false);
+
+      // 3D models in the capture: when the toggle is OFF, hide the placed GLBs
+      // for the screenshot (classic polygon-only conditioning) and restore
+      // after. When ON, pass the modeled ids so those zones get
+      // preserve-the-massing prompts instead of replace-the-polygon.
+      const includeModels = renderWithModels && (modeledBuildingIds?.size ?? 0) > 0;
+      hidModels = !includeModels && (modeledBuildingIds?.size ?? 0) > 0 && !!setBuildingModelsVisible;
+      if (hidModels) {
+        setBuildingModelsVisible!(false);
+        // Let R3F unmount the layer and repaint (prisms return) before capture.
+        await new Promise((resolve) => setTimeout(resolve, 250));
+      }
+      const renderModeledIds = includeModels ? modeledBuildingIds : undefined;
+
+      // Current-view rendering is deliberately bounded to one A/B single-shot
+      // batch. Per-zone generation must never be selected automatically: a
+      // district plan could otherwise fan out into hundreds of paid calls.
       const compareRenderVariants = COMPARE_RENDER_MODELS.map((provider) => ({
         ...provider,
         imageQuality: getQualityForModel(provider.model, DEFAULT_OPENAI_IMAGE_QUALITY),
       }));
-      if (usePerZone) {
-        // Per-zone path is already sequential and slow, so compare providers one at a time.
-        console.log(`[GlobeAIRenderPanel] Using per-zone rendering (${editableZones.length} zones, mixed=${hasMixedTypes})`);
-        const results: GlobeRenderResult[] = [];
-        for (const provider of compareRenderVariants) {
-          const providerResult = await renderPerZone(canvas, camera, siteZones, terrainHeight, {
-            style: selectedStyle,
-            model: provider.model,
-            imageQuality: provider.imageQuality,
-            projectId,
-            customPrompt: customPrompt.trim() || undefined,
-            modeledBuildingIds: renderModeledIds,
-            onProgress: (progress) => setRenderProgress({
-              ...progress,
-              zoneName: `${provider.label}: ${progress.zoneName}`,
-            }),
-          });
-          if (providerResult) {
-            results.push({ ...providerResult, model: provider.model, imageQuality: provider.imageQuality, providerLabel: provider.label });
-          }
+      // Fan out the two bounded previews with different server seeds. The
+      // first success is auto-selected; the user can compare the other.
+      const results = await renderPreviews(canvas, camera, editableZones, terrainHeight, {
+        style: selectedStyle,
+        projectId,
+        customPrompt: customPrompt.trim() || undefined,
+        siteBoundaryZone,
+        highFidelity,
+        modeledBuildingIds: renderModeledIds,
+        variants: compareRenderVariants,
+      });
+      if (results.length > 0) {
+        setPreviews(results);
+        const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
+        const selected = results[firstSuccessfulIndex];
+        setSelectedPreviewIndex(firstSuccessfulIndex);
+        setResult(selected);
+        const savedAny = await autoSaveGlobeRenders(results);
+        if (!selected.error) {
+          onRenderComplete?.(selected);
         }
-        if (results.length > 0) {
-          setPreviews(results);
-          const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
-          const selected = results[firstSuccessfulIndex];
-          setSelectedPreviewIndex(firstSuccessfulIndex);
-          setResult(selected);
-          const savedAny = await autoSaveGlobeRenders(results);
-          if (!selected.error) {
-            onRenderComplete?.(selected);
-          }
-          if (savedAny) {
-            onClose?.();
-          }
-          const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
-          if (failedLabels.length > 0) {
-            setError(`${failedLabels.join(', ')} failed. Open the labeled preview for details.`);
-          }
-        } else {
-          setError('Render returned no image. Try adjusting your view or zones.');
+        if (savedAny) {
+          onClose?.();
+        }
+        const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
+        if (failedLabels.length > 0) {
+          setError(`${failedLabels.join(', ')} failed. Open the labeled preview for details.`);
         }
       } else {
-        // Single-shot: fan out N parallel previews with different server seeds.
-        // First preview is auto-selected so the user sees a large image
-        // immediately; clicking a thumbnail switches the selection.
-        const results = await renderPreviews(canvas, camera, editableZones, terrainHeight, {
-          style: selectedStyle,
-          projectId,
-          customPrompt: customPrompt.trim() || undefined,
-          siteBoundaryZone,
-          highFidelity,
-          modeledBuildingIds: renderModeledIds,
-          variants: compareRenderVariants,
-        });
-        if (results.length > 0) {
-          setPreviews(results);
-          const firstSuccessfulIndex = Math.max(0, results.findIndex((preview) => !preview.error));
-          const selected = results[firstSuccessfulIndex];
-          setSelectedPreviewIndex(firstSuccessfulIndex);
-          setResult(selected);
-          const savedAny = await autoSaveGlobeRenders(results);
-          if (!selected.error) {
-            onRenderComplete?.(selected);
-          }
-          if (savedAny) {
-            onClose?.();
-          }
-          const failedLabels = results.filter((preview) => preview.error).map((preview) => preview.providerLabel || preview.model);
-          if (failedLabels.length > 0) {
-            setError(`${failedLabels.join(', ')} failed. Open the labeled preview for details.`);
-          }
-        } else {
-          setError('Render returned no image. Try adjusting your view or zones.');
-        }
+        setError('Render returned no image. Try adjusting your view or zones.');
       }
     } catch (err: any) {
       setError(err?.response?.data?.detail || err?.message || 'Render failed. Please try again.');
@@ -493,10 +599,11 @@ export function GlobeAIRenderPanel({
       clearInterval(timer);
       setRenderTime(0);
       setRenderProgress(null);
+      setIsPreparingCapture(false);
       setIsRendering(false);
       if (hidModels) setBuildingModelsVisible!(true);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, renderPerZone, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible, planGeometryStale, stalePlanMessage]);
 
   // Close lightbox on Esc
   useEffect(() => {
@@ -737,10 +844,12 @@ export function GlobeAIRenderPanel({
             <Loader2 size={18} className="shrink-0 animate-spin text-[#c9ff3d]" />
             <div className="min-w-0">
               <p className="truncate text-xs font-black uppercase">
-                Rendering the current globe view
+                {isPreparingCapture ? 'Preparing detailed Google tiles' : 'Rendering the current globe view'}
               </p>
               <p className="mt-0.5 text-[11px] font-semibold text-white/65">
-                You can keep reviewing the map while this runs.
+                {isPreparingCapture
+                  ? 'Hold this view still. No image credits are used until the tiles are ready.'
+                  : 'You can keep reviewing the map while this runs.'}
               </p>
             </div>
           </div>
@@ -812,7 +921,7 @@ export function GlobeAIRenderPanel({
               onChange={(e) => setHighFidelity(e.target.checked)}
               className="h-3.5 w-3.5 accent-[#c9ff3d]"
             />
-            High fidelity (two-pass, 2× cost) — restyles the whole frame first, then paints the
+            High fidelity (+1 shared restyle call) — restyles the whole frame first, then paints the
             zones onto it so there is no style seam
           </label>
         )}
@@ -943,12 +1052,19 @@ export function GlobeAIRenderPanel({
       )}
 
       {/* 3D building models — generate from archetype-assigned zones + render mode */}
-      {projectId && buildableZones.length > 0 && (
+      {projectId && communityZones.length > 0 && (
         <div className="border-t-2 border-white/10 px-4 py-3">
           <div className="flex items-center gap-1.5 text-xs font-black uppercase text-white/55">
             <Boxes size={13} />
-            3D Buildings
+            Community 3D
           </div>
+
+          {stalePlanMessage && (
+            <div className="mt-2 rounded border border-red-400/50 bg-red-500/15 p-2.5 text-[11px] text-red-100">
+              <p className="font-black uppercase">Plan boundary changed</p>
+              <p className="mt-1 text-red-100/80">{stalePlanMessage}</p>
+            </div>
+          )}
 
           {(modeledBuildingIds?.size ?? 0) > 0 && (
             <label className="mt-2 flex cursor-pointer items-center justify-between text-[11px] text-white/70">
@@ -968,26 +1084,31 @@ export function GlobeAIRenderPanel({
               onClick={() => setConfirm3DOpen(true)}
               disabled={!canGenerate3D || isQueuing3D}
               title={
-                !boundaryPersisted
-                  ? 'Draw and save a site boundary first'
-                  : unsavedBuildableCount > 0
+                planGeometryStale
+                  ? stalePlanMessage ?? 'Redraw the master plan for this boundary'
+                  : !communityBoundaryReady
+                  ? 'Generated master plans require their saved site boundary'
+                  : unsavedCommunityCount > 0
                     ? 'Save your zones first — unsaved zones lose their archetype styling'
-                    : 'Generate Meshy 3D models for every building zone in the site'
+                    : `${community3DActionLabel} the whole community with modular buildings, exact family-pending massing, parks, and engineered streets`
               }
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
             >
               <Boxes size={13} />
-              Generate 3D Models ({buildableZones.length} zone{buildableZones.length === 1 ? '' : 's'})
+              {community3DActionLabel} Community 3D ({communityCompileZones.length}{' '}
+              {communityCompileZones.length === 1 ? 'zone' : 'zones'})
             </button>
           ) : (
             <div className="mt-2 rounded border border-amber-400/40 bg-amber-400/10 p-2.5 text-[11px] text-amber-100">
               <p className="font-bold">
-                Queue 3D generation for {buildableZones.length} building zone{buildableZones.length === 1 ? '' : 's'}?
+                {community3DActionLabel} {communityCompileBuildingCount} building{communityCompileBuildingCount === 1 ? '' : 's'}, {communityCompileParkCount} park{communityCompileParkCount === 1 ? '' : 's'}, and {communityCompileStreetCount} street{communityCompileStreetCount === 1 ? '' : 's'} in 3D?
               </p>
               <p className="mt-1 text-amber-100/70">
-                ~20 Meshy credits per building; jobs start 45s apart
-                (~{Math.ceil((buildableZones.length * 45) / 60)} min to queue all, a few minutes each to finish).
-                {buildableZones.length > 20 ? ' Note: the globe shows the first 20 models.' : ''}
+                Uses the same atomic compiler as LEGO Builder and no external model-generation credits.
+                Supported families use detailed modular GLBs; families still being authored use honest exact-footprint 3D massing.
+                Parks and engineered street sections compile in the same transaction. The editable tile scene intentionally leaves out
+                trees, benches and loose furniture; Render adds them after paths, water, crossings and fixed programs are known.
+                AI park ground drapes remain an optional Gemini step below.
               </p>
               <div className="mt-2 flex gap-2">
                 <button
@@ -1015,22 +1136,50 @@ export function GlobeAIRenderPanel({
           )}
 
           {parkZones.length > 0 && (
-            <button
+            <>
+              {selectedParkNeedingGround && (
+                <button
+                  type="button"
+                  onClick={handleGenerateSelectedParkGround}
+                  disabled={planGeometryStale || isGeneratingParks}
+                  title="Optional: replace the selected park's complete procedural ground material with one geometry-matched Gemini drape"
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-[#151515] bg-[#c9ff3d] px-3 py-2 text-[11px] font-black uppercase text-[#151515] transition hover:bg-[#d8ff70] disabled:opacity-40"
+                >
+                  {isGeneratingParks ? <Loader2 size={13} className="animate-spin" /> : <Trees size={13} />}
+                  Optional AI Ground Upgrade (1 call)
+                </button>
+              )}
+              {parkHasGroundToRegenerate && (
+                <button
+                  type="button"
+                  onClick={handleRegenerateParkGround}
+                  disabled={planGeometryStale || isGeneratingParks}
+                  title="Replace this park's AI ground material using the latest geometry-lock prompt (one Gemini call)"
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-[11px] font-black uppercase text-amber-100 transition hover:bg-amber-300/20 disabled:opacity-40"
+                >
+                  {isGeneratingParks ? <Loader2 size={13} className="animate-spin" /> : <Trees size={13} />}
+                  Regenerate AI Ground (1 call)
+                </button>
+              )}
+              <button
               type="button"
               onClick={handleGenerateParkGrounds}
-              disabled={isGeneratingParks || parksNeedingGround.length === 0}
+              disabled={planGeometryStale || isGeneratingParks || parksNeedingGround.length === 0}
               title={
-                parksNeedingGround.length === 0
-                  ? 'All park zones already have ground textures'
-                  : `Generate AI ground textures (lawn, paths, plaza — one Gemini render each) for ${parksNeedingGround.length} park zone${parksNeedingGround.length === 1 ? '' : 's'}; 3D trees scatter on top`
+                planGeometryStale
+                  ? stalePlanMessage ?? 'Redraw the master plan for this boundary'
+                  : parksNeedingGround.length === 0
+                  ? 'All park zones already have optional AI ground drapes'
+                  : `Optional material upgrade: replace the next ${parkGroundBatch.length} of ${parksNeedingGround.length} complete procedural park grounds with geometry-matched Gemini drapes (one call each; ${MAX_PARK_GROUND_BATCH_CALLS}-call safety cap). This is not required for Community 3D or Render; the final render adds realistic planting and furniture.`
               }
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border border-white/20 bg-white/5 px-3 py-2 text-[11px] font-black uppercase text-white/80 transition hover:bg-white/10 disabled:opacity-40"
             >
               {isGeneratingParks ? <Loader2 size={13} className="animate-spin" /> : <Trees size={13} />}
               {isGeneratingParks
-                ? 'Generating Park Grounds…'
-                : `Generate Park Grounds (${parksNeedingGround.length})`}
-            </button>
+                ? 'Generating Optional AI Grounds…'
+                : `Optional AI Park Grounds (${parkGroundBatch.length} call${parkGroundBatch.length === 1 ? '' : 's'})`}
+              </button>
+            </>
           )}
           {parkGroundStatus && (
             <p className="mt-2 text-[11px] text-emerald-300/90">{parkGroundStatus}</p>
@@ -1091,27 +1240,41 @@ export function GlobeAIRenderPanel({
 
       {/* Render button */}
       <div className="shrink-0 border-t-2 border-[#151515] bg-[#fff9ec] px-4 py-3">
+        {stalePlanMessage && (
+          <p className="mb-2 rounded border border-red-500/40 bg-red-50 px-2.5 py-2 text-[11px] font-bold text-red-800">
+            Redraw the master plan for the current boundary before rendering.
+          </p>
+        )}
         <button
           onClick={handleRender}
-          disabled={isRendering || !canvas || !camera}
+          disabled={planGeometryStale || isRendering || !canvas || !camera}
           className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-gradient-to-r from-[#28c7e8] via-[#c9ff3d] to-[#ffe45e] px-4 py-2.5 text-sm font-black text-[#151515] shadow-[5px_5px_0_0_#151515] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
         >
           {isRendering ? (
             <>
               <Loader2 size={16} className="animate-spin" />
               <span className="min-w-0 truncate">
-                {renderProgress
+                {isPreparingCapture
+                  ? `Preparing Google tiles... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
+                  : renderProgress
                   ? `Rendering ${renderProgress.step}/${renderProgress.total}: ${renderProgress.zoneName}... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                   : `Rendering current view... ${renderTime > 0 ? `(${renderTime}s)` : ''}`
                 }
               </span>
+            </>
+          ) : planGeometryStale ? (
+            <>
+              <Camera size={16} />
+              <span>Plan boundary changed</span>
             </>
           ) : (
             <>
               <Camera size={16} />
               <span className="flex min-w-0 flex-col leading-tight">
                 <span>Generate Current View Previews</span>
-                <span className="text-[10px] font-bold opacity-70">Uses the globe view on screen now</span>
+                <span className="text-[10px] font-bold opacity-70">
+                  {renderCallCount} image call{renderCallCount === 1 ? '' : 's'} · uses the globe view on screen now
+                </span>
               </span>
             </>
           )}

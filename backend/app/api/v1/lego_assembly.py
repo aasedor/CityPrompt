@@ -5,7 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import uuid
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel, Field
@@ -31,6 +32,7 @@ router = APIRouter()
 # Namespaced key inside Building.specifications so recipes coexist with the
 # existing model_url workflow fields without a schema migration.
 RECIPE_SPEC_KEY = "legoAssembly"
+PLANNED_MASSING_SPEC_KEY = "plannedMassing"
 
 _LEGO_CATEGORY = "lego_module"
 _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
@@ -47,12 +49,16 @@ class LegoAssemblyPlanRequest(BaseModel):
     reuse_keys: list[str] = Field(default_factory=list)
     preferred_family: str | None = None
     allow_setback: bool = True
+    footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
+    wing_depth_m: float | None = Field(default=None, gt=0)
 
 
 class LegoRecipeTarget(BaseModel):
     width_m: float = Field(gt=0)
     depth_m: float = Field(gt=0)
     floors: int = Field(ge=1)
+    footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
+    wing_depth_m: float | None = Field(default=None, gt=0)
 
 
 class LegoRecipeRequest(BaseModel):
@@ -76,8 +82,25 @@ class LegoPlaceRequest(LegoRecipeRequest):
     building_name: str | None = Field(default=None, max_length=255)
 
 
+class Community3DCompileItem(BaseModel):
+    """One planner zone participating in an atomic Community 3D build."""
+
+    zone_id: uuid.UUID
+    # Supported buildings carry an assembly recipe. An unsupported building
+    # intentionally omits it and becomes persisted exact-footprint massing.
+    # Deterministic ground systems also derive from the zone and omit it.
+    recipe: LegoPlaceRequest | None = None
+
+
+class Community3DCompileRequest(BaseModel):
+    # District plans can legitimately contain hundreds of buildings plus
+    # public-realm zones. Keep the atomic all-or-nothing contract for a full
+    # master plan instead of forcing large communities into partial batches.
+    items: list[Community3DCompileItem] = Field(min_length=1, max_length=2000)
+
+
 class LegoModuleMetadataRequest(BaseModel):
-    role: str = Field(pattern="^(podium|floor|setback|crown|roof|attachment)$")
+    role: str = Field(pattern="^(podium|floor|setback|crown|roof|attachment|assembled)$")
     family: str = Field(min_length=1, max_length=100)
     width_m: float = Field(gt=0)
     depth_m: float = Field(gt=0)
@@ -87,6 +110,7 @@ class LegoModuleMetadataRequest(BaseModel):
     reuse_keys: list[str] = Field(default_factory=list)
     min_floors: int | None = Field(default=None, ge=1)
     max_floors: int | None = Field(default=None, ge=1)
+    setback_min_floors: int | None = Field(default=None, ge=2)
     variant_key: str = Field(default="default", pattern="^[a-z0-9][a-z0-9_]{0,49}$")
     lod: int = Field(default=0, ge=0)
     allowed_levels: list[int] = Field(default_factory=list)
@@ -130,6 +154,7 @@ async def list_lego_modules(
                     "reuse_keys": list(descriptor.reuse_keys),
                     "min_floors": descriptor.min_floors,
                     "max_floors": descriptor.max_floors,
+                    "setback_min_floors": descriptor.setback_min_floors,
                     "repeatable_z": descriptor.repeatable_z,
                     "variant_key": descriptor.variant_key,
                     "lod": descriptor.lod,
@@ -172,6 +197,7 @@ async def configure_lego_module(
         "reuse_keys": body.reuse_keys,
         "min_floors": body.min_floors,
         "max_floors": body.max_floors,
+        "setback_min_floors": body.setback_min_floors,
         "variant_key": body.variant_key,
         "lod": body.lod,
         "allowed_levels": body.allowed_levels,
@@ -237,6 +263,8 @@ async def create_lego_assembly_plan(
                 reuse_keys=tuple(body.reuse_keys),
                 preferred_family=body.preferred_family,
                 allow_setback=body.allow_setback,
+                footprint_profile=body.footprint_profile,
+                wing_depth_m=body.wing_depth_m,
             ),
         )
     except AssemblyPlanningError as exc:
@@ -370,6 +398,7 @@ async def import_compiler_manifest(
                     "width_m": dimensions.get("width_m"),
                     "depth_m": dimensions.get("depth_m"),
                     "height_m": assembled.get("height_m"),
+                    "native_floors": assembled.get("floors"),
                     "floor_height_m": dimensions.get("floor_height_m"),
                     "repeatable_z": False,
                     "variant_key": "default",
@@ -553,6 +582,192 @@ async def _get_zone_with_access(
     return zone
 
 
+_COMMUNITY_BUILDING_TYPES = {"building", "residential", "development_area", "development"}
+_COMMUNITY_PARK_TYPES = {"green_space", "park", "plaza", "parking"}
+_COMMUNITY_STREET_TYPES = {"road", "street", "path"}
+
+
+def _community_3d_kind(zone: SiteZone) -> Literal["building", "park", "street"] | None:
+    """Backend twin of the frontend Community 3D classification contract."""
+    if zone.zone_type == "site_boundary":
+        return None
+    props = zone.properties or {}
+    role = props.get("_plan_role")
+    if role == "framework_height":
+        return None
+    if role == "street" or zone.zone_type in _COMMUNITY_STREET_TYPES:
+        return "street"
+    if role in {"open_space", "courtyard"} or zone.zone_type in _COMMUNITY_PARK_TYPES:
+        return "park"
+    if (
+        role == "building"
+        or zone.zone_type in _COMMUNITY_BUILDING_TYPES
+        or bool(props.get("development_archetype_id"))
+    ):
+        return "building"
+    return None
+
+
+def _stamp_community_3d(
+    zone: SiteZone,
+    kind: Literal["building", "park", "street"],
+    compiled_at: str,
+    building_generator: Literal["lego_assembly", "planned_massing"] = "lego_assembly",
+) -> None:
+    generator = {
+        "building": building_generator,
+        "park": "park_kit",
+        "street": "street_section",
+    }[kind]
+    properties = dict(zone.properties or {})
+    properties["community_3d"] = {
+        "schema_version": 1,
+        "state": "compiled",
+        "kind": kind,
+        "generator": generator,
+        "compiled_at": compiled_at,
+    }
+    zone.properties = properties
+
+
+def _recipe_payload(body: LegoRecipeRequest) -> dict[str, Any]:
+    """Serialize a recipe without inventing optional target fields.
+
+    Pydantic includes nested defaults in ``model_dump()`` even when an older
+    client never sent them. Preserve the stable top-level recipe defaults, but
+    keep the target shape faithful so save/get and place/get round-trips remain
+    backward compatible as footprint capabilities evolve.
+    """
+    payload = body.model_dump(exclude={"building_name"})
+    payload["target"] = body.target.model_dump(exclude_unset=True)
+    return payload
+
+
+async def _place_recipe_on_zone(
+    db: AsyncSession,
+    zone: SiteZone,
+    body: LegoPlaceRequest,
+) -> tuple[Building, bool]:
+    """Persist one LEGO recipe without committing, for single or batch use."""
+    building: Building | None = None
+    if zone.building_id is not None:
+        result = await db.execute(select(Building).where(Building.id == zone.building_id))
+        building = result.scalar_one_or_none()
+
+    created = False
+    if building is None:
+        building = Building(
+            id=uuid.uuid4(),
+            project_id=zone.project_id,
+            name=(body.building_name or zone.name or body.archetype_id or "LEGO Building")[:255],
+            footprint=zone.geometry,
+            floor_count=body.target.floors,
+            height_meters=body.assembled_height_m,
+            specifications={},
+        )
+        db.add(building)
+        zone.building_id = building.id
+        zone.building_ids = [str(building.id)]
+        created = True
+    else:
+        # Older flows can link a Building without a usable footprint.
+        if building.footprint is None:
+            building.footprint = zone.geometry
+        if building.floor_count is None:
+            building.floor_count = body.target.floors
+
+    specifications = dict(building.specifications or {})
+    # A real family recipe upgrades the honest conceptual fallback in place.
+    specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
+    specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
+    specifications["lego_placed"] = True
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    return building, created
+
+
+def _positive_float(value: Any) -> float | None:
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if parsed > 0 else None
+
+
+def _positive_int(value: Any) -> int | None:
+    parsed = _positive_float(value)
+    return max(1, round(parsed)) if parsed is not None else None
+
+
+def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
+    """Resolve the planner's authoritative height without inventing a family."""
+    properties = zone.properties or {}
+    floors = _positive_int(properties.get("floors"))
+    floor_height = _positive_float(properties.get("floor_height")) or 3.2
+    height = (
+        _positive_float(properties.get("height_m"))
+        or _positive_float(properties.get("height"))
+        or (floors * floor_height if floors is not None else None)
+        or 10.0
+    )
+    return floors, height
+
+
+async def _place_planned_massing_on_zone(
+    db: AsyncSession,
+    zone: SiteZone,
+) -> tuple[Building, bool]:
+    """Persist an exact-footprint neutral mass for an unsupported family.
+
+    The linked Building gives the globe and render pipeline the same stable ID
+    handshake as LEGO/Meshy geometry. When a real family is imported later,
+    ``_place_recipe_on_zone`` reuses this record and removes the fallback flag.
+    """
+    building: Building | None = None
+    if zone.building_id is not None:
+        result = await db.execute(select(Building).where(Building.id == zone.building_id))
+        building = result.scalar_one_or_none()
+
+    floors, height = _planned_massing_dimensions(zone)
+    properties = zone.properties or {}
+    archetype_id = properties.get("development_archetype_id")
+    created = False
+    if building is None:
+        building = Building(
+            id=uuid.uuid4(),
+            project_id=zone.project_id,
+            name=(zone.name or str(archetype_id or "Planned Building"))[:255],
+            footprint=zone.geometry,
+            floor_count=floors,
+            height_meters=height,
+            specifications={},
+        )
+        db.add(building)
+        zone.building_id = building.id
+        zone.building_ids = [str(building.id)]
+        created = True
+    else:
+        if building.footprint is None:
+            building.footprint = zone.geometry
+        if building.floor_count is None:
+            building.floor_count = floors
+        if building.height_meters is None:
+            building.height_meters = height
+
+    specifications = dict(building.specifications or {})
+    specifications[PLANNED_MASSING_SPEC_KEY] = {
+        "schema_version": 1,
+        "source": "community_3d",
+        "source_zone_id": str(zone.id),
+        "archetype_id": str(archetype_id) if archetype_id else None,
+        "floor_count": floors,
+        "height_meters": height,
+    }
+    building.specifications = specifications
+    flag_modified(building, "specifications")
+    return building, created
+
+
 @router.post("/place/{zone_id}")
 async def place_lego_assembly(
     zone_id: uuid.UUID,
@@ -603,10 +818,12 @@ async def place_lego_assembly(
             building.floor_count = body.target.floors
 
     specifications = dict(building.specifications or {})
-    specifications[RECIPE_SPEC_KEY] = body.model_dump(exclude={"building_name"})
+    specifications.pop(PLANNED_MASSING_SPEC_KEY, None)
+    specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
     specifications["lego_placed"] = True
     building.specifications = specifications
     flag_modified(building, "specifications")
+    _stamp_community_3d(zone, "building", datetime.now(timezone.utc).isoformat())
     await db.flush()
 
     return {
@@ -615,6 +832,74 @@ async def place_lego_assembly(
         "building_id": str(building.id),
         "building_created": created,
         RECIPE_SPEC_KEY: specifications[RECIPE_SPEC_KEY],
+    }
+
+
+@router.post("/place-community")
+async def place_community_3d(
+    body: Community3DCompileRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Atomically compile a mixed master plan into the live 3D community.
+
+    No commit occurs inside the loop. Any invalid, inaccessible, or failed item
+    aborts the request, allowing the request-scoped transaction to roll back
+    every recipe, building link, and compile marker together.
+    """
+    zone_ids = [item.zone_id for item in body.items]
+    if len(set(zone_ids)) != len(zone_ids):
+        raise HTTPException(status_code=422, detail="Each zone may appear only once")
+
+    compiled_at = datetime.now(timezone.utc).isoformat()
+    results: list[dict[str, Any]] = []
+    counts = {"building": 0, "park": 0, "street": 0}
+
+    for item in body.items:
+        zone = await _get_zone_with_access(db, item.zone_id, user, require_editor=True)
+        kind = _community_3d_kind(zone)
+        if kind is None:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Zone {zone.id} is not compilable Community 3D content",
+            )
+        if kind != "building" and item.recipe is not None:
+            raise HTTPException(
+                status_code=422,
+                detail=f"{kind.title()} zone {zone.id} cannot carry a building recipe",
+            )
+
+        building_id: str | None = None
+        building_created = False
+        building_generator: Literal["lego_assembly", "planned_massing"] = "lego_assembly"
+        if kind == "building":
+            if item.recipe is not None:
+                building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)
+            else:
+                building, building_created = await _place_planned_massing_on_zone(db, zone)
+                building_generator = "planned_massing"
+            building_id = str(building.id)
+
+        _stamp_community_3d(zone, kind, compiled_at, building_generator)
+        counts[kind] += 1
+        results.append({
+            "zone_id": str(zone.id),
+            "kind": kind,
+            "building_id": building_id,
+            "building_created": building_created,
+            "generator": (
+                building_generator
+                if kind == "building"
+                else "park_kit" if kind == "park" else "street_section"
+            ),
+        })
+
+    await db.flush()
+    return {
+        "status": "compiled",
+        "compiled_at": compiled_at,
+        "counts": counts,
+        "items": results,
     }
 
 
@@ -630,7 +915,7 @@ async def save_lego_recipe(
     building = await _get_building_with_access(db, building_id, user, require_editor=True)
 
     specifications = dict(building.specifications or {})
-    specifications[RECIPE_SPEC_KEY] = body.model_dump()
+    specifications[RECIPE_SPEC_KEY] = _recipe_payload(body)
     building.specifications = specifications
     flag_modified(building, "specifications")
     await db.flush()

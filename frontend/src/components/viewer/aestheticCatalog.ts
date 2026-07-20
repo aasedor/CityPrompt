@@ -116,6 +116,28 @@ export type ArchetypeVariant = {
   aspectRatio?: string;
 };
 
+export type BuildingFootprintProfile = 'rectangle' | 'l_shape' | 'u_shape' | 'courtyard';
+
+export type FootprintProfileGuidance = {
+  recommendedWidth_m: [number, number];
+  recommendedDepth_m: [number, number];
+  recommendedFloors: [number, number];
+  wingDepth_m?: [number, number];
+  minimumCourtyard_m?: number;
+};
+
+export type FootprintCompatibility = {
+  preferredProfiles: BuildingFootprintProfile[];
+  recommendedWidth_m: [number, number];
+  recommendedDepth_m: [number, number];
+  recommendedFloors: [number, number];
+  wingDepth_m?: [number, number];
+  profiles?: Partial<Record<BuildingFootprintProfile, FootprintProfileGuidance>>;
+  preferredBayMultiple_m?: number;
+  minimumCourtyard_m?: number;
+  notes?: string[];
+};
+
 export type AestheticOption = {
   id: string;
   categoryId?: string;
@@ -144,6 +166,7 @@ export type AestheticOption = {
   minDepth_m?: number;
   maxDepth_m?: number;
   aspectRatio?: string;
+  footprintCompatibility?: FootprintCompatibility;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
 };
@@ -199,6 +222,7 @@ type ArchetypeSeed = {
   minDepth_m?: number;
   maxDepth_m?: number;
   aspectRatio?: string;
+  footprintCompatibility?: FootprintCompatibility;
   propertyPresets?: Partial<SiteZoneProperties>;
   variants?: ArchetypeVariant[];
   thumbnailUrl?: string;
@@ -385,6 +409,7 @@ function toAestheticOption(
     minDepth_m: seed.minDepth_m,
     maxDepth_m: seed.maxDepth_m,
     aspectRatio: seed.aspectRatio,
+    footprintCompatibility: seed.footprintCompatibility,
     propertyPresets: seed.propertyPresets,
     variants: seed.variants,
     generationStyleInput: {

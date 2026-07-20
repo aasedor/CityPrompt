@@ -1,9 +1,9 @@
 import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent as ReactPointerEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Blocks, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Wand2, X } from 'lucide-react';
-import { projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
+import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
 import { LegoAssemblyPreview } from '@/features/legoAssembly/LegoAssemblyPreview';
@@ -35,6 +35,7 @@ import { rebufferRoadOnUpdate } from '@/utils/roadGeometry';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
+import { withModeledBuildingRenderZones } from '@/components/viewer/globe/modelRenderZones';
 
 const GLOBE_RENDER_PANEL_WIDTH = 704;
 
@@ -60,6 +61,8 @@ export function ProjectViewPage() {
     canvas: HTMLCanvasElement;
     camera: any;
     terrainHeight: number;
+    isSettled?: boolean;
+    waitForTilesSettled?: () => Promise<boolean>;
     setBuildingModelsVisible?: (visible: boolean) => void;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
@@ -348,12 +351,16 @@ export function ProjectViewPage() {
   }, []);
 
   const prepareForAIRenderCapture = useCallback(async () => {
+    const tilesSettled = await globeRefs?.waitForTilesSettled?.();
+    if (tilesSettled === false) {
+      throw new Error('Google 3D detail is still loading. Keep this view still for a few seconds, then try the render again. No credits were used.');
+    }
     if (useViewerStore.getState().selectedZoneId) {
       selectZone(null);
     }
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-  }, [selectZone]);
+  }, [globeRefs, selectZone]);
 
   // ── AI Render state ────────────────────────────────────────────────
   const [aiRenderResult, setAiRenderResult] = useState<AIRenderResult | null>(null);
@@ -570,6 +577,21 @@ export function ProjectViewPage() {
     },
   });
 
+  const deleteModeledBuilding = useMutation({
+    mutationFn: (buildingId: string) => buildingsApi.delete(buildingId),
+    onSuccess: async (_result, buildingId) => {
+      setModeledBuildingIds((previous) => {
+        const next = new Set(previous);
+        next.delete(buildingId);
+        return next;
+      });
+      await queryClient.invalidateQueries({ queryKey: ['project', id] });
+      await queryClient.invalidateQueries({ queryKey: ['site-zones', id] });
+      toast.success('3D model deleted');
+    },
+    onError: (error: Error) => toast.error(`Failed to delete 3D model: ${error.message}`),
+  });
+
   // Toast when document processing completes or fails
   useEffect(() => {
     if (!project?.documents) return;
@@ -589,6 +611,13 @@ export function ProjectViewPage() {
   if (isLoading) return <div className="text-center text-primary-950/50">Loading project...</div>;
   if (!project) return <div className="text-center text-primary-950/50">Project not found</div>;
 
+  const globeRenderZones = withModeledBuildingRenderZones(
+    visibleZones,
+    project.buildings ?? [],
+    modeledBuildingIds,
+    project.id,
+  );
+
   // --- Globe mode: full-screen Google 3D Tiles ---
   if (settings.mapMode === 'globe') {
     return (
@@ -602,6 +631,7 @@ export function ProjectViewPage() {
           onZoneUpdated={handleZoneUpdated}
           onZoneSelected={(zoneId) => { if (zoneId) selectZone(zoneId); else selectZone(null); }}
           onZoneDeleted={(zoneId) => deleteZone.mutate(zoneId)}
+          onBuildingDeleted={(buildingId) => deleteModeledBuilding.mutate(buildingId)}
           onGlobeReady={setGlobeRefs}
           onModeledBuildingsChange={setModeledBuildingIds}
           measureModeActive={measureActive}
@@ -720,9 +750,10 @@ export function ProjectViewPage() {
               <GlobeAIRenderPanel
                 canvas={globeRefs?.canvas ?? null}
                 camera={globeRefs?.camera ?? null}
-                siteZones={visibleZones}
+                siteZones={globeRenderZones}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
+                selectedZoneId={selectedZoneId}
                 modeledBuildingIds={modeledBuildingIds}
                 setBuildingModelsVisible={globeRefs?.setBuildingModelsVisible}
                 onBeforeRender={prepareForAIRenderCapture}

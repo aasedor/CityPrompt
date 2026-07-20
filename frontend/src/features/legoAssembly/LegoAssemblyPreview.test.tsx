@@ -233,7 +233,7 @@ describe('LegoAssemblyPreview', () => {
         target_width_m: 32,
         target_depth_m: 20,
         target_floors: 6,
-        allow_setback: true,
+        allow_setback: false,
         archetype_id: 'nordic_timber_midrise',
       }),
     );
@@ -354,7 +354,7 @@ describe('LegoAssemblyPreview', () => {
           target_width_m: 28,
           target_depth_m: 16,
           target_floors: 9,
-          allow_setback: true,
+          allow_setback: false,
         }),
       ),
     );

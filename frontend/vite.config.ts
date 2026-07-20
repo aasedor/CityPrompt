@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  // Local launchers can point Vite at a shared, untracked environment directory
+  // without copying browser API keys into this checkout.
+  envDir: process.env.VITE_ENV_DIR || undefined,
   plugins: [react()],
   resolve: {
     alias: {
@@ -27,7 +30,10 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: process.env.API_PROXY_TARGET || 'http://localhost:8000',
+        // Use the explicit IPv4 loopback in local development. On Windows with
+        // Docker + WSL, `localhost` can resolve to an orphaned IPv6 wslrelay
+        // listener and leave otherwise healthy API requests hanging.
+        target: process.env.API_PROXY_TARGET || 'http://127.0.0.1:8000',
         changeOrigin: true,
       },
     },

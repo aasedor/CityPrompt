@@ -22,9 +22,17 @@ export interface ParkKitAsset {
   maxTriangles?: number;
 }
 
-export const PARK_KIT_MANIFEST: Partial<Record<ParkPropId, ParkKitAsset>> = {
-  tree: { url: '/api/v1/files/kits/park-tree.glb', targetHeight_m: 9, maxTriangles: 5000 },
-  bench: { url: '/api/v1/files/kits/park-bench.glb', targetHeight_m: 0.9 },
-  playground: { url: '/api/v1/files/kits/park-playground.glb', targetHeight_m: 2.8 },
-  pavilion: { url: '/api/v1/files/kits/park-pavilion.glb', targetHeight_m: 3.8 },
-};
+const GENERATED_PARK_KITS_READY = import.meta.env.VITE_PARK_KIT_ASSETS_READY === 'true';
+
+// Do not issue guaranteed 404s for stable URLs until the one-time kit
+// generation job has actually populated them. GlobeParkKitLayer supplies a
+// detailed procedural kit in the meantime, so parks remain visually complete
+// without noisy failed requests on every load.
+export const PARK_KIT_MANIFEST: Partial<Record<ParkPropId, ParkKitAsset>> = GENERATED_PARK_KITS_READY
+  ? {
+      tree: { url: '/api/v1/files/kits/park-tree.glb', targetHeight_m: 9, maxTriangles: 5000 },
+      bench: { url: '/api/v1/files/kits/park-bench.glb', targetHeight_m: 0.9 },
+      playground: { url: '/api/v1/files/kits/park-playground.glb', targetHeight_m: 2.8 },
+      pavilion: { url: '/api/v1/files/kits/park-pavilion.glb', targetHeight_m: 3.8 },
+    }
+  : {};

@@ -7,7 +7,16 @@ import {
   type PropPlacement,
 } from './parkScatter';
 import {
+  BOTANICAL_GARDEN,
+  JAPANESE_GARDEN,
+  LINEAR_GREENWAY,
+  NATURE_PLAY_AREA,
   NEIGHBORHOOD_PARK,
+  PAVED_PLAZA,
+  RESERVOIR_WATERSHED_PARK,
+  SPORTS_FIELD_COMPLEX,
+  STORMWATER_POND,
+  URBAN_FOREST,
   URBAN_POCKET_PARK,
   resolveParkRecipe,
 } from '@/data/parkKitRecipes';
@@ -332,6 +341,74 @@ describe('planting structures', () => {
     }
   });
 
+  it('japanese_stroll_garden leaves the pond core free of trees', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'z-japanese', coordinates: squareRing(60) },
+      NEIGHBORHOOD,
+      'japanese_stroll_garden',
+    ));
+    expect(trees.length).toBeGreaterThan(3);
+    expect(trees.some((tree) => tree.scale >= 1.3)).toBe(false);
+    for (const tree of trees) {
+      const [x, y] = toMeters(tree);
+      expect(Math.hypot(x - 30, y - 30)).toBeGreaterThan(12);
+    }
+  });
+
+  it('sports_perimeter keeps the programmed field interior clear', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'z-sports', coordinates: squareRing(100) },
+      NEIGHBORHOOD,
+      'sports_perimeter',
+    ));
+    expect(trees.length).toBeGreaterThan(12);
+    for (const tree of trees) {
+      const [x, y] = toMeters(tree);
+      expect(Math.min(x, y, 100 - x, 100 - y)).toBeLessThanOrEqual(3.6);
+    }
+  });
+
+  it('reservoir_perimeter keeps the programmed lake interior clear', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'z-reservoir', coordinates: squareRing(100) },
+      RESERVOIR_WATERSHED_PARK,
+      'reservoir_perimeter',
+    ));
+    expect(trees.length).toBeGreaterThan(8);
+    for (const tree of trees) {
+      const [x, y] = toMeters(tree);
+      expect(Math.min(x, y, 100 - x, 100 - y)).toBeLessThanOrEqual(4.6);
+    }
+  });
+
+  it('botanical_collection keeps trees out of the path, conservatory and collection beds', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'z-botanical', coordinates: squareRing(100) },
+      BOTANICAL_GARDEN,
+      'botanical_collection',
+    ));
+    expect(trees.length).toBeGreaterThan(12);
+    for (const tree of trees) {
+      const [x, y] = toMeters(tree);
+
+      // 24 x 14 m conservatory at normalized (0.22, 0.24 from north),
+      // including the live-canopy safety offset.
+      expect(Math.abs(x - 22) <= 14.5 && Math.abs(y - 76) <= 9.5).toBe(false);
+
+      const beds = [
+        { x: 48, y: 65, rx: 16.5, ry: 10.5 },
+        { x: 70, y: 34, rx: 17.5, ry: 11 },
+        { x: 35, y: 28, rx: 15.5, ry: 9.5 },
+      ];
+      for (const bed of beds) {
+        expect(((x - bed.x) / bed.rx) ** 2 + ((y - bed.y) / bed.ry) ** 2).toBeGreaterThan(1);
+      }
+
+      const loopRadius = Math.hypot((x - 50) / 41, (y - 50) / 33);
+      expect(Math.abs(loopRadius - 1) * 33).toBeGreaterThanOrEqual(4 - 1e-6);
+    }
+  });
+
   it('paved_plaza places at most six trees along a single edge and keeps benches', () => {
     const placements = computeParkPlacements(
       { id: 'z-plaza', coordinates: squareRing(100) },
@@ -427,13 +504,60 @@ describe('resolveParkRecipeForZone', () => {
     expect(recipe).toBe(URBAN_POCKET_PARK);
   });
 
-  it('hand-drawn zones without a recognized id keep the trees-only default', () => {
+  it('the Japanese garden pilot resolves to a restrained garden kit', () => {
     const recipe = resolveParkRecipeForZone({
       properties: { green_space_archetype_id: 'japanese_garden' },
       coordinates: bigRing,
     });
     const placements = computeParkPlacements({ id: 'z-hand', coordinates: bigRing }, recipe);
-    expect(placements.every((p) => p.propId === 'tree')).toBe(true);
+    expect(placements.some((p) => p.propId === 'tree')).toBe(true);
+    expect(placements.some((p) => p.propId === 'bench')).toBe(true);
+    expect(placements.some((p) => p.propId === 'playground')).toBe(false);
+  });
+
+  it('the reservoir pilot resolves to a sparse shoreline kit', () => {
+    const recipe = resolveParkRecipeForZone({
+      properties: { green_space_archetype_id: 'reservoir_watershed_park' },
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(RESERVOIR_WATERSHED_PARK);
+    expect(recipe.playground).toBeUndefined();
+    expect(recipe.pavilion).toBeUndefined();
+  });
+
+  it('resolves recurring planner ground archetypes without generic playground fallback', () => {
+    expect(resolveParkRecipe('linear_park_greenway')).toBe(LINEAR_GREENWAY);
+    expect(resolveParkRecipe('stormwater_retention_pond')).toBe(STORMWATER_POND);
+    expect(resolveParkRecipe('formal_civic_plaza')).toBe(PAVED_PLAZA);
+    expect(resolveParkRecipe('fountain_water_feature')).toBe(PAVED_PLAZA);
+    expect(LINEAR_GREENWAY.playground).toBeUndefined();
+    expect(STORMWATER_POND.benches).toBeUndefined();
+  });
+
+  it('resolves all five same-geography park alternatives to distinct authored recipes', () => {
+    expect(resolveParkRecipe('sports_field_complex')).toBe(SPORTS_FIELD_COMPLEX);
+    expect(resolveParkRecipe('urban_forest')).toBe(URBAN_FOREST);
+    expect(resolveParkRecipe('botanical_garden')).toBe(BOTANICAL_GARDEN);
+    expect(resolveParkRecipe('japanese_garden')).toBe(JAPANESE_GARDEN);
+    expect(resolveParkRecipe('nature_play_area')).toBe(NATURE_PLAY_AREA);
+    expect(URBAN_FOREST.trees.perHectare).toBeGreaterThan(BOTANICAL_GARDEN.trees.perHectare);
+    expect(SPORTS_FIELD_COMPLEX.trees.perHectare).toBeLessThan(NATURE_PLAY_AREA.trees.perHectare);
+  });
+
+  it('gives the toolbar plaza type a restrained hardscape recipe', () => {
+    const recipe = resolveParkRecipeForZone({
+      zone_type: 'parking',
+      properties: {},
+      coordinates: bigRing,
+    });
+    expect(recipe).toBe(PAVED_PLAZA);
+    const placements = computeParkPlacements(
+      { id: 'z-plaza', coordinates: bigRing },
+      recipe,
+      'paved_plaza',
+    );
+    expect(placements.some((p) => p.propId === 'bench')).toBe(true);
+    expect(placements.some((p) => p.propId === 'playground')).toBe(false);
   });
 });
 

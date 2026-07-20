@@ -14,9 +14,16 @@
  */
 
 import * as THREE from 'three';
+import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 
 // Stencil reference value used for zone masking
 const STENCIL_REF = 1;
+// The mask now self-seats from streamed Google geometry before freezing. A
+// 100 m lower extent projected its side walls toward an oblique camera and
+// erased a viewport-scale wedge of otherwise valid context. Six metres still
+// covers grading/terrain undulation without turning the stencil silhouette
+// into a giant underground prism.
+const STENCIL_DEPTH_BELOW_ANCHOR_METERS = 6;
 
 const STENCIL_PATCH_STATE_KEY = '__siteforgeTileStencilPatch';
 
@@ -32,14 +39,48 @@ interface MaterialStencilState {
 }
 
 export function shouldCreateTileStencilMask(zoneType: string | null | undefined): boolean {
-  return zoneType === 'building' || zoneType === 'residential';
+  return [
+    'building', 'residential',
+    // These types are only passed to the mask layer once their authored 3D
+    // ground system is compiled. Masking then removes source cars, trees and
+    // low structures that would otherwise poke through the replacement.
+    'road', 'street', 'path', 'green_space', 'park', 'plaza', 'parking',
+  ].includes(zoneType ?? '');
 }
 
 export function getTileStencilVolumeHeight(
   _zoneType: string | null | undefined,
   extrudeHeight: number,
 ): number {
-  return Math.max(extrudeHeight * 2, 200);
+  // Keep the stencil cap just above the replacement massing. The globe opens
+  // about 120 m above the site; the previous 200 m minimum put that camera
+  // *inside* every low-rise mask. From inside a closed stencil volume its side
+  // walls project to the viewport edges, cutting enormous pale wedges out of
+  // the Google tiles. A modest clearance still removes the source building
+  // while keeping the camera above the volume in normal editing views.
+  return Math.max(extrudeHeight + 8, 20);
+}
+
+/** Resolve a streamed-tile anchor without trusting isolated roofs, cars, or
+ * the unrefined root-tile surface. The lower quartile supports either sign of
+ * elevation-datum correction; callers include probes just outside the zone so
+ * real ground wins even when the centroid lands on a source building. */
+export function resolveTileStencilAnchorHeight(
+  samples: Array<number | null | undefined>,
+  storedTerrainHeight: number | null | undefined,
+  fallbackTerrainHeight: number,
+): number {
+  const reference = Number.isFinite(storedTerrainHeight)
+    ? storedTerrainHeight as number
+    : fallbackTerrainHeight;
+  const finiteSamples = samples
+    .filter((sample): sample is number => Number.isFinite(sample))
+    .sort((a, b) => a - b);
+  if (finiteSamples.length === 0) return reference;
+  const candidate = finiteSamples[Math.floor((finiteSamples.length - 1) * 0.25)];
+  return isPlausibleTerrainAnchor(candidate, reference)
+    ? candidate
+    : reference;
 }
 
 /**
@@ -65,8 +106,10 @@ export function createStencilVolume(
   const verts: number[] = [];
   const idx: number[] = [];
 
-  // Bottom face at Z = -10 (slightly below ground)
-  for (const p of localPts) verts.push(p.x, p.y, -10);
+  // The streamed-tile anchor resolves the orthometric/ellipsoidal mismatch.
+  // Keep only a shallow below-grade skirt so oblique cameras do not see the
+  // projected silhouette of a deep underground column.
+  for (const p of localPts) verts.push(p.x, p.y, -STENCIL_DEPTH_BELOW_ANCHOR_METERS);
   // Top face at Z = height
   for (const p of localPts) verts.push(p.x, p.y, height);
 

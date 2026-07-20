@@ -84,7 +84,10 @@ Deduped across memory, docs, git, and scripts. "Revisit only if" = the one narro
 
 **PARKED** (built/feasible, blocked on an external dep — retain, resurrect):
 - **Route-by-style per-model prompt formatters** — BUILT, 43/43 tests, commit **32ae0b0** on `backup-2026-05-06-pre-clean-pull`. Resurrect, don't rewrite.
-- **Render Video pipeline (Gemini Omni)** — BUILT; blocked on `gemini-omni-flash-preview` 404; Veo 3.1 swap-in documented.
+- **Render Video pipeline (Gemini Omni)** — BUILT. The earlier
+  `gemini-omni-flash-preview` 404 was superseded by Google's June 30, 2026 public
+  preview release. Restore behind a provider adapter with Veo 3.1 as fallback;
+  do not rewrite the existing route/video service.
 - **3D Gaussian splat basemap** — feasibility done; no global query-by-coordinate splat repo; per-site drone→Cesium ion only.
 - **SV-photo-as-base photomontage** — works for clean corners; failed on oblique residential (GPT reframes→ghosting). Parked.
 - **Inter-zone adjacency module** (forecourt building-bleed) — BUILT, 24 tests, UNCOMMITTED; A/B pending.

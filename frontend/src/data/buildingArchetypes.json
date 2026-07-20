@@ -175,6 +175,40 @@
   "archetypes": [
     {
       "id": "collegiate_gothic_education",
+      "footprintCompatibility": {
+        "preferredProfiles": ["courtyard", "u_shape", "rectangle"],
+        "recommendedWidth_m": [45, 75],
+        "recommendedDepth_m": [22, 45],
+        "recommendedFloors": [3, 5],
+        "wingDepth_m": [7, 12],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [45, 65],
+            "recommendedDepth_m": [22, 30],
+            "recommendedFloors": [3, 5]
+          },
+          "u_shape": {
+            "recommendedWidth_m": [50, 70],
+            "recommendedDepth_m": [30, 42],
+            "recommendedFloors": [3, 5],
+            "wingDepth_m": [8, 12]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [55, 75],
+            "recommendedDepth_m": [34, 45],
+            "recommendedFloors": [3, 5],
+            "wingDepth_m": [8, 12],
+            "minimumCourtyard_m": 12
+          }
+        },
+        "preferredBayMultiple_m": 5.7,
+        "minimumCourtyard_m": 12,
+        "notes": [
+          "Best as a quadrangle, gatehouse court or long collegiate streetwall.",
+          "Keep the gate tower, pointed portal, corner returns and roof terminals fixed.",
+          "Repeat only bay-aligned academic wings; never stretch buttresses across openings."
+        ]
+      },
     "suggestedWidth_m": 60,
     "suggestedDepth_m": 25,
     "suggestedFloorHeight": 4.0,
@@ -1735,6 +1769,46 @@
     },
     {
       "id": "modern_glass_office_institutional",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape", "courtyard"],
+        "recommendedWidth_m": [24, 60],
+        "recommendedDepth_m": [18, 40],
+        "recommendedFloors": [6, 16],
+        "wingDepth_m": [12, 18],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [24, 48],
+            "recommendedDepth_m": [18, 28],
+            "recommendedFloors": [6, 16]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [32, 54],
+            "recommendedDepth_m": [26, 38],
+            "recommendedFloors": [6, 14],
+            "wingDepth_m": [12, 17]
+          },
+          "u_shape": {
+            "recommendedWidth_m": [40, 60],
+            "recommendedDepth_m": [30, 40],
+            "recommendedFloors": [6, 12],
+            "wingDepth_m": [13, 18]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [44, 60],
+            "recommendedDepth_m": [34, 40],
+            "recommendedFloors": [6, 12],
+            "wingDepth_m": [13, 18],
+            "minimumCourtyard_m": 10
+          }
+        },
+        "preferredBayMultiple_m": 3.75,
+        "minimumCourtyard_m": 10,
+        "notes": [
+          "Preserve transparent corners, the double-height lobby and the roof termination.",
+          "Curtain-wall bays may repeat horizontally and vertically on the authored module grid.",
+          "Use physical glazing near and the semantic baked glass LOD at city distance."
+        ]
+      },
     "suggestedWidth_m": 30,
     "suggestedDepth_m": 20,
     "suggestedFloorHeight": 4.0,
@@ -1911,6 +1985,24 @@
     },
     {
       "id": "modernist_civic_block",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [36, 70],
+        "recommendedDepth_m": [22, 42],
+        "recommendedFloors": [2, 5],
+        "wingDepth_m": [12, 22],
+        "profiles": {
+          "rectangle": {"recommendedWidth_m": [36, 60], "recommendedDepth_m": [22, 34], "recommendedFloors": [2, 5]},
+          "l_shape": {"recommendedWidth_m": [44, 70], "recommendedDepth_m": [30, 42], "recommendedFloors": [2, 5], "wingDepth_m": [14, 22]},
+          "u_shape": {"recommendedWidth_m": [48, 70], "recommendedDepth_m": [32, 42], "recommendedFloors": [2, 4], "wingDepth_m": [14, 20]}
+        },
+        "preferredBayMultiple_m": 4.0,
+        "notes": [
+          "Keep the floating concrete rooms, pilotis forecourt, ceremonial entry cleft and continuous roof plane fixed.",
+          "Stretch only the recessed connective volumes and authored ribbon-window bays.",
+          "Asymmetric L and U footprints suit civic complexes; preserve the public forecourt on the principal edge."
+        ]
+      },
     "suggestedWidth_m": 50,
     "suggestedDepth_m": 30,
     "suggestedFloorHeight": 4.5,
@@ -2258,6 +2350,40 @@
     },
     {
       "id": "civic_classical_building",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "u_shape", "courtyard"],
+        "recommendedWidth_m": [36, 70],
+        "recommendedDepth_m": [22, 48],
+        "recommendedFloors": [2, 4],
+        "wingDepth_m": [10, 18],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [36, 60],
+            "recommendedDepth_m": [22, 34],
+            "recommendedFloors": [2, 4]
+          },
+          "u_shape": {
+            "recommendedWidth_m": [48, 70],
+            "recommendedDepth_m": [34, 46],
+            "recommendedFloors": [2, 4],
+            "wingDepth_m": [12, 18]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [54, 70],
+            "recommendedDepth_m": [38, 48],
+            "recommendedFloors": [2, 4],
+            "wingDepth_m": [12, 18],
+            "minimumCourtyard_m": 14
+          }
+        },
+        "preferredBayMultiple_m": 4.5,
+        "minimumCourtyard_m": 14,
+        "notes": [
+          "Preserve axial symmetry, the ceremonial stair, central portico and pediment.",
+          "Extend only the neutral side-wing bays; do not stretch the giant-order centre.",
+          "Use monumental floor heights rather than stacking ordinary commercial floors."
+        ]
+      },
     "suggestedWidth_m": 40,
     "suggestedDepth_m": 25,
     "suggestedFloorHeight": 5.5,
@@ -2601,6 +2727,24 @@
     },
     {
       "id": "industrial_brick_mixed_use",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [24, 50],
+        "recommendedDepth_m": [16, 32],
+        "recommendedFloors": [3, 6],
+        "wingDepth_m": [10, 16],
+        "profiles": {
+          "rectangle": {"recommendedWidth_m": [24, 44], "recommendedDepth_m": [16, 26], "recommendedFloors": [3, 6]},
+          "l_shape": {"recommendedWidth_m": [32, 50], "recommendedDepth_m": [24, 32], "recommendedFloors": [3, 6], "wingDepth_m": [11, 16]},
+          "u_shape": {"recommendedWidth_m": [38, 50], "recommendedDepth_m": [27, 32], "recommendedFloors": [3, 5], "wingDepth_m": [11, 15]}
+        },
+        "preferredBayMultiple_m": 5.0,
+        "notes": [
+          "Keep gable ends, chimney, roof monitor, loading entrance and corbelled crown fixed.",
+          "Repeat complete brick pier-and-window bays; never stretch individual industrial sash openings.",
+          "Return brick courses and steel glazing around every exposed corner."
+        ]
+      },
     "suggestedWidth_m": 30,
     "suggestedDepth_m": 20,
     "suggestedFloorHeight": 6.0,
@@ -3132,6 +3276,46 @@
     },
     {
       "id": "nordic_timber_midrise",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape", "courtyard"],
+        "recommendedWidth_m": [18, 40],
+        "recommendedDepth_m": [14, 30],
+        "recommendedFloors": [5, 8],
+        "wingDepth_m": [8, 13],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [18, 34],
+            "recommendedDepth_m": [14, 22],
+            "recommendedFloors": [5, 8]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [26, 38],
+            "recommendedDepth_m": [22, 30],
+            "recommendedFloors": [5, 8],
+            "wingDepth_m": [8, 12]
+          },
+          "u_shape": {
+            "recommendedWidth_m": [32, 40],
+            "recommendedDepth_m": [25, 30],
+            "recommendedFloors": [5, 8],
+            "wingDepth_m": [9, 13]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [34, 40],
+            "recommendedDepth_m": [28, 30],
+            "recommendedFloors": [5, 8],
+            "wingDepth_m": [9, 12],
+            "minimumCourtyard_m": 8
+          }
+        },
+        "preferredBayMultiple_m": 5,
+        "minimumCourtyard_m": 8,
+        "notes": [
+          "Keep the mass-timber frame, inhabited loggia rhythm and roof pavilion legible.",
+          "Repeat complete structural bays rather than stretching timber posts or balcony rooms.",
+          "Occupied wings between 8 m and 13 m preserve credible residential depth."
+        ]
+      },
     "suggestedWidth_m": 20,
     "suggestedDepth_m": 16,
     "suggestedFloorHeight": 3.2,
@@ -5107,7 +5291,7 @@
       "developmentType": "residential_duplex"
     },
     {
-      "id": "parisian_midrise_block",
+    "id": "parisian_midrise_block",
     "suggestedWidth_m": 30,
     "suggestedDepth_m": 20,
     "suggestedFloorHeight": 3.4,
@@ -5116,6 +5300,47 @@
     "minDepth_m": 15,
     "maxDepth_m": 28,
     "aspectRatio": "1.5:1",
+    "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape", "courtyard"],
+        "recommendedWidth_m": [24, 42],
+        "recommendedDepth_m": [16, 38],
+        "recommendedFloors": [5, 7],
+        "wingDepth_m": [8, 13],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [24, 42],
+            "recommendedDepth_m": [16, 24],
+            "recommendedFloors": [5, 7]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [32, 40],
+            "recommendedDepth_m": [24, 30],
+            "recommendedFloors": [5, 7],
+            "wingDepth_m": [8, 12]
+          },
+          "u_shape": {
+            "recommendedWidth_m": [36, 42],
+            "recommendedDepth_m": [26, 32],
+            "recommendedFloors": [5, 7],
+            "wingDepth_m": [9, 13]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [36, 42],
+            "recommendedDepth_m": [32, 38],
+            "recommendedFloors": [5, 7],
+            "wingDepth_m": [9, 12],
+            "minimumCourtyard_m": 8
+          }
+        },
+        "preferredBayMultiple_m": 3,
+        "minimumCourtyard_m": 8,
+        "notes": [
+          "Best as a continuous boulevard streetwall or perimeter block.",
+          "Keep occupied wings between 8 m and 13 m deep for credible daylight and room layouts.",
+          "Widths that land near a 3 m facade-bay multiple preserve the authored window rhythm.",
+          "Use the 1K city LOD beyond 180 m and the physical-glazing hero inside 180 m."
+        ]
+    },
       "shadeId": "#d94626",
       "title": "Parisian Mid-Rise",
       "aestheticCategory": "parisian",
@@ -18036,6 +18261,25 @@
     },
     {
           "id": "eixample_apartment_block",
+          "footprintCompatibility": {
+            "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
+            "recommendedWidth_m": [18, 70],
+            "recommendedDepth_m": [18, 70],
+            "recommendedFloors": [5, 7],
+            "wingDepth_m": [10, 16],
+            "profiles": {
+              "rectangle": {"recommendedWidth_m": [18, 26], "recommendedDepth_m": [18, 26], "recommendedFloors": [5, 7]},
+              "l_shape": {"recommendedWidth_m": [28, 48], "recommendedDepth_m": [24, 42], "recommendedFloors": [5, 7], "wingDepth_m": [10, 15]},
+              "courtyard": {"recommendedWidth_m": [42, 70], "recommendedDepth_m": [42, 70], "recommendedFloors": [5, 7], "wingDepth_m": [11, 16], "minimumCourtyard_m": 16}
+            },
+            "preferredBayMultiple_m": 3.6,
+            "minimumCourtyard_m": 16,
+            "notes": [
+              "Use a chamfered corner adapter on exposed Cerda-block corners and preserve the principal portal on that chamfer.",
+              "Repeat complete balcony-and-window bays between fixed quoins and corner returns.",
+              "Full-block assemblies should retain a ventilated interior courtyard rather than filling the polygon solid."
+            ]
+          },
     "suggestedWidth_m": 18,
     "suggestedDepth_m": 18,
     "suggestedFloorHeight": 5.0,
@@ -19962,6 +20206,25 @@
     },
     {
           "id": "london_heritage_mansion_block",
+          "footprintCompatibility": {
+            "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
+            "recommendedWidth_m": [18, 48],
+            "recommendedDepth_m": [14, 36],
+            "recommendedFloors": [4, 7],
+            "wingDepth_m": [9, 15],
+            "profiles": {
+              "rectangle": {"recommendedWidth_m": [18, 32], "recommendedDepth_m": [14, 24], "recommendedFloors": [4, 7]},
+              "l_shape": {"recommendedWidth_m": [26, 44], "recommendedDepth_m": [22, 34], "recommendedFloors": [4, 7], "wingDepth_m": [10, 15]},
+              "courtyard": {"recommendedWidth_m": [36, 48], "recommendedDepth_m": [30, 36], "recommendedFloors": [4, 7], "wingDepth_m": [10, 14], "minimumCourtyard_m": 10}
+            },
+            "preferredBayMultiple_m": 3.2,
+            "minimumCourtyard_m": 10,
+            "notes": [
+              "Keep the rusticated base, entrance pavilion, fixed corner bays, continuous balcony datums and mansard terminals.",
+              "Repeat only authored Portland-stone middle bays and preserve sash proportions.",
+              "Mansard dormers and chimney groups must redistribute by bay count rather than stretch."
+            ]
+          },
           "suggestedWidth_m": 24,
           "suggestedDepth_m": 18,
           "suggestedFloorHeight": 3.8,
@@ -29992,6 +30255,26 @@
     },
     {
         "id": "chateauesque_grand_railway_hotel",
+        "footprintCompatibility": {
+            "preferredProfiles": ["rectangle", "u_shape", "l_shape", "courtyard"],
+            "recommendedWidth_m": [45, 130],
+            "recommendedDepth_m": [28, 62],
+            "recommendedFloors": [4, 9],
+            "wingDepth_m": [14, 24],
+            "profiles": {
+                "rectangle": {"recommendedWidth_m": [45, 70], "recommendedDepth_m": [28, 42], "recommendedFloors": [4, 9]},
+                "u_shape": {"recommendedWidth_m": [58, 90], "recommendedDepth_m": [42, 58], "recommendedFloors": [4, 8], "wingDepth_m": [16, 24]},
+                "l_shape": {"recommendedWidth_m": [52, 80], "recommendedDepth_m": [36, 54], "recommendedFloors": [4, 8], "wingDepth_m": [15, 22]},
+                "courtyard": {"recommendedWidth_m": [65, 130], "recommendedDepth_m": [48, 62], "recommendedFloors": [4, 8], "wingDepth_m": [16, 24], "minimumCourtyard_m": 18}
+            },
+            "preferredBayMultiple_m": 4.6,
+            "minimumCourtyard_m": 18,
+            "notes": [
+                "Keep corner turrets, centre pavilion, porte-cochere, major gables and roof terminals fixed.",
+                "Repeat guest-room bays only within the subordinate wings.",
+                "Redistribute dormers, chimneys and conical turrets semantically; never scale the entire roof ornament field."
+            ]
+        },
         "title": "Chateauesque Grand Railway Hotel",
         "buildingSubcategory": "Hospitality",
         "developmentType": "hotel",
@@ -30048,7 +30331,7 @@
         "minDepth_m": 35,
         "maxDepth_m": 95,
         "aspectRatio": "4:3",
-        "minFloors": 5,
+        "minFloors": 4,
         "maxFloors": 8,
         "thumbnailUrl": "/archetypes/buildings/chateauesque-grand-railway-hotel/hero.png",
         "variants": [

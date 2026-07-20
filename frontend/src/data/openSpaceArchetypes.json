@@ -712,20 +712,20 @@
     },
     {
       "id": "tennis_court_cluster",
-      "suggestedWidth_m": 40,
-      "suggestedDepth_m": 36,
-      "minWidth_m": 20,
-      "maxWidth_m": 80,
-      "minDepth_m": 18,
-      "maxDepth_m": 72,
-      "minAreaSqm": 360,
-      "maxAreaSqm": 5760,
-      "aspectRatio": "1.1:1",
+      "suggestedWidth_m": 82,
+      "suggestedDepth_m": 46,
+      "minWidth_m": 40,
+      "maxWidth_m": 130,
+      "minDepth_m": 22,
+      "maxDepth_m": 80,
+      "minAreaSqm": 880,
+      "maxAreaSqm": 10400,
+      "aspectRatio": "1.8:1",
       "shape": "rectangular",
       "title": "Tennis Court Cluster",
       "aestheticCategory": "sports_recreation",
       "spaceType": "park",
-      "description": "A cluster of tennis courts with colored acrylic surfaces, white line markings, and surrounding chain-link fencing",
+      "description": "A regulation four-court tennis cluster with 36.58 by 18.29 metre court envelopes, colored acrylic surfaces, precise line markings, safe run-off, walkways, and perimeter fencing",
       "generationTags": [
         "park",
         "tennis",
@@ -802,7 +802,7 @@
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, buildings inside the park"
       },
       "districtKit": null,
-      "suggestedAreaSqm": 2000
+      "suggestedAreaSqm": 3772
     },
     {
       "id": "botanical_garden",

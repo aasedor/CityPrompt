@@ -21,6 +21,15 @@ import type { LegoAssemblyInstance, LegoAssemblyRecipe } from '@/features/legoAs
 
 const DEG_TO_RAD = Math.PI / 180;
 
+export interface PlannedMassingSpec {
+  schema_version: 1;
+  source: 'community_3d';
+  source_zone_id: string;
+  archetype_id: string | null;
+  floor_count: number | null;
+  height_meters: number;
+}
+
 function isFiniteTriple(value: unknown): value is [number, number, number] {
   return Array.isArray(value) && value.length === 3 && value.every((n) => Number.isFinite(n));
 }
@@ -57,6 +66,23 @@ export function extractLegoRecipe(building: Building): LegoAssemblyRecipe | null
   return recipe as LegoAssemblyRecipe;
 }
 
+/** Parse the honest exact-footprint fallback used while an archetype family is
+ * unavailable. It is deliberately distinct from a LEGO recipe: no unrelated
+ * facade or module family is implied. */
+export function extractPlannedMassing(building: Building): PlannedMassingSpec | null {
+  const raw = building.specifications?.plannedMassing;
+  if (!raw || typeof raw !== 'object') return null;
+  const massing = raw as Partial<PlannedMassingSpec>;
+  if (
+    massing.schema_version !== 1
+    || massing.source !== 'community_3d'
+    || typeof massing.source_zone_id !== 'string'
+    || massing.source_zone_id.length === 0
+    || !(Number(massing.height_meters) > 0)
+  ) return null;
+  return massing as PlannedMassingSpec;
+}
+
 /** Footprint ring for LEGO placement: building.footprint_coordinates ONLY
  *  (no zone fallback — the recipe was planned against the building parcel). */
 export function legoFootprintRing(building: Building): number[][] | null {
@@ -78,6 +104,10 @@ export function recipeIsRenderable(building: Building): boolean {
  *  layer itself can debug-count recipe-without-footprint skips. */
 export function hasLegoRecipe(building: Building): boolean {
   return extractLegoRecipe(building) !== null;
+}
+
+export function hasPlannedMassing(building: Building): boolean {
+  return extractPlannedMassing(building) !== null && legoFootprintRing(building) !== null;
 }
 
 /**

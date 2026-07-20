@@ -10,7 +10,7 @@ Expected metadata shape::
     {
       "lego": {
         "enabled": true,
-        "role": "podium|floor|setback|crown|roof|attachment",
+        "role": "podium|floor|setback|crown|roof|attachment|assembled",
         "variant_key": "typical_a",
         "lod": 0,
         "family": "nordic-midrise",
@@ -33,7 +33,8 @@ from dataclasses import dataclass
 from typing import Any, Iterable
 
 
-VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment"}
+VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
+VALID_FOOTPRINT_PROFILES = {"rectangle", "l_shape", "u_shape", "courtyard"}
 
 # family/role/variant/LOD become storage-key path segments
 # so they must be plain slugs — no slashes, dots, or other path syntax.
@@ -45,6 +46,13 @@ _VARIANT_SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9_]{0,49}$")
 # pre-assembled preview GLB) is stored in the library with enabled=False so it
 # is browsable but never picked by ``plan_vertical_assembly``.
 STACKABLE_ROLES = ("podium", "floor", "setback", "crown", "roof")
+
+# Exact render-locked landmarks carry their own corners, entrance, crown and
+# roof and are therefore safer to resize as one authored assembly than to fall
+# back to an unrelated generic stack. City Prompt parcels vary widely; allow a
+# useful but bounded range while keeping ordinary repeated modules at ±20%.
+FIXED_LANDMARK_SCALE_MIN = 0.45
+FIXED_LANDMARK_SCALE_MAX = 1.75
 
 # Manifest schema emitted by tools/archetype_compiler/blender_generate.py.
 SUPPORTED_MANIFEST_SCHEMA = 3
@@ -65,10 +73,14 @@ class ModuleDescriptor:
     reuse_keys: tuple[str, ...]
     min_floors: int | None = None
     max_floors: int | None = None
+    setback_min_floors: int | None = None
     repeatable_z: bool = False
     variant_key: str = "default"
     lod: int = 0
     allowed_levels: tuple[int, ...] = ()
+    native_floors: int | None = None
+    source_variant_id: str | None = None
+    generation_archetype_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -80,6 +92,8 @@ class AssemblyRequest:
     reuse_keys: tuple[str, ...] = ()
     preferred_family: str | None = None
     allow_setback: bool = True
+    footprint_profile: str = "rectangle"
+    wing_depth_m: float | None = None
 
 
 class AssemblyPlanningError(ValueError):
@@ -131,12 +145,21 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         reuse_keys=tuple(str(v) for v in lego.get("reuse_keys", []) if v),
         min_floors=_as_int_or_none(lego.get("min_floors")),
         max_floors=_as_int_or_none(lego.get("max_floors")),
+        setback_min_floors=_as_int_or_none(lego.get("setback_min_floors")),
         repeatable_z=bool(lego.get("repeatable_z", role == "floor")),
         variant_key=str(lego.get("variant_key") or "default"),
         lod=max(0, _as_int_or_none(lego.get("lod")) or 0),
         allowed_levels=tuple(
             int(value) for value in (lego.get("allowed_levels") or [])
             if isinstance(value, (int, float)) and int(value) >= 0
+        ),
+        native_floors=_as_int_or_none(lego.get("native_floors")),
+        source_variant_id=(
+            str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None
+        ),
+        generation_archetype_id=(
+            str(lego.get("generation_archetype_id"))
+            if lego.get("generation_archetype_id") else None
         ),
     )
 
@@ -191,6 +214,70 @@ def _best(modules: Iterable[ModuleDescriptor], request: AssemblyRequest) -> Modu
     return max(candidates, key=lambda module: _module_score(module, request))
 
 
+def footprint_segments(
+    profile: str,
+    width_m: float,
+    depth_m: float,
+    native_depth_m: float,
+    wing_depth_m: float | None = None,
+) -> list[dict[str, float | str]]:
+    """Describe a polygonal block as positioned rectangular streetwall bars.
+
+    The recipe renderer already supports per-instance translation and rotation;
+    this is the missing planning layer that lets the same module family follow
+    L, U and closed-court parcels without baking one bespoke GLB per polygon.
+    """
+    if profile not in VALID_FOOTPRINT_PROFILES:
+        raise AssemblyPlanningError(
+            f"Unsupported footprint profile '{profile}'. Expected one of {sorted(VALID_FOOTPRINT_PROFILES)}"
+        )
+    width = float(width_m)
+    depth = float(depth_m)
+    if profile == "rectangle":
+        return [{
+            "id": "main", "centre_x_m": 0.0, "centre_y_m": 0.0,
+            "length_m": width, "thickness_m": depth, "rotation_degrees": 0.0,
+        }]
+    requested = float(wing_depth_m) if wing_depth_m else float(native_depth_m)
+    wing = min(max(5.5, requested), max(5.5, min(width, depth) * 0.46))
+    segments: list[dict[str, float | str]] = [{
+        "id": "front", "centre_x_m": 0.0, "centre_y_m": -(depth - wing) / 2,
+        "length_m": width, "thickness_m": wing, "rotation_degrees": 0.0,
+    }]
+    if profile == "l_shape":
+        segments.append({
+            "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
+            "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
+        })
+    elif profile == "u_shape":
+        segments.extend([
+            {
+                "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
+                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
+            },
+            {
+                "id": "right_return", "centre_x_m": (width - wing) / 2, "centre_y_m": 0.0,
+                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
+            },
+        ])
+    else:
+        segments.extend([
+            {
+                "id": "rear", "centre_x_m": 0.0, "centre_y_m": (depth - wing) / 2,
+                "length_m": width, "thickness_m": wing, "rotation_degrees": 0.0,
+            },
+            {
+                "id": "left_return", "centre_x_m": -(width - wing) / 2, "centre_y_m": 0.0,
+                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
+            },
+            {
+                "id": "right_return", "centre_x_m": (width - wing) / 2, "centre_y_m": 0.0,
+                "length_m": depth, "thickness_m": wing, "rotation_degrees": 90.0,
+            },
+        ])
+    return segments
+
+
 def plan_vertical_assembly(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
@@ -207,7 +294,12 @@ def plan_vertical_assembly(
         raise AssemblyPlanningError("Target floors must be at least 1")
 
     descriptors = list(modules)
-    families = sorted({m.family for m in descriptors})
+    # The API supplies descriptors in ``created_at DESC`` order. Preserve
+    # that stable order so a newly imported, quality-improved family wins an
+    # otherwise exact score tie over its older predecessor. Alphabetically
+    # sorting the set made V4 beat an audited V5 forever unless the caller
+    # knew the internal family slug and explicitly preferred it.
+    families = list(dict.fromkeys(module.family for module in descriptors))
     if request.preferred_family:
         families = [f for f in families if f == request.preferred_family]
     if request.archetype_id:
@@ -231,6 +323,81 @@ def plan_vertical_assembly(
 
     for family in families:
         family_modules = [m for m in descriptors if m.family == family]
+        assembled = _best(
+            (
+                module for module in family_modules
+                if module.role == "assembled"
+                and module.native_floors == request.target_floors
+                and request.footprint_profile == "rectangle"
+                and request.archetype_id
+                and any(
+                    _semantic_id(candidate) == _semantic_id(request.archetype_id)
+                    for candidate in (
+                        module.source_variant_id,
+                        module.generation_archetype_id,
+                    )
+                    if candidate
+                )
+            ),
+            request,
+        )
+        if assembled:
+            scale_x = request.target_width_m / assembled.width_m
+            scale_y = request.target_depth_m / assembled.depth_m
+            if (
+                FIXED_LANDMARK_SCALE_MIN <= scale_x <= FIXED_LANDMARK_SCALE_MAX
+                and FIXED_LANDMARK_SCALE_MIN <= scale_y <= FIXED_LANDMARK_SCALE_MAX
+            ):
+                family_score = 100.0 + _module_score(assembled, request)
+                plan = {
+                    "version": 3,
+                    "family": family,
+                    "archetype_id": request.archetype_id,
+                    "reuse_keys": list(request.reuse_keys),
+                    "target": {
+                        "width_m": request.target_width_m,
+                        "depth_m": request.target_depth_m,
+                        "floors": request.target_floors,
+                        "footprint_profile": request.footprint_profile,
+                        "wing_depth_m": request.target_depth_m,
+                    },
+                    "assembled_height_m": round(assembled.height_m, 4),
+                    "instances": [{
+                        "asset_id": assembled.id,
+                        "asset_name": assembled.name,
+                        "model_url": assembled.model_url,
+                        "family": assembled.family,
+                        "role": "assembled",
+                        "variant_key": assembled.variant_key,
+                        "lod": assembled.lod,
+                        "level": 0,
+                        "segment_id": "landmark",
+                        "position": [0.0, 0.0, 0.0],
+                        "rotation_degrees": 0.0,
+                        "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
+                        "native_dimensions_m": [
+                            assembled.width_m, assembled.depth_m, assembled.height_m,
+                        ],
+                    }],
+                    "fit": {
+                        "scale_x": round(scale_x, 5),
+                        "scale_y": round(scale_y, 5),
+                        "score": round(family_score, 5),
+                        "profile": "rectangle",
+                        "segment_count": 1,
+                        "assembly_mode": "fixed_landmark",
+                    },
+                    "footprint_segments": [{
+                        "id": "landmark", "centre_x_m": 0.0, "centre_y_m": 0.0,
+                        "length_m": request.target_width_m,
+                        "thickness_m": request.target_depth_m,
+                        "rotation_degrees": 0.0,
+                    }],
+                }
+                if family_score > best_score:
+                    best_score = family_score
+                    best_plan = plan
+                continue
         podium = _best((m for m in family_modules if m.role == "podium"), request)
         floor_candidates = [
             m for m in family_modules
@@ -251,7 +418,11 @@ def plan_vertical_assembly(
 
         if not podium or not roof:
             continue
-        use_setback = bool(setback and request.target_floors >= 5 and request.allow_setback)
+        use_setback = bool(
+            setback
+            and request.target_floors >= (setback.setback_min_floors or 5)
+            and request.allow_setback
+        )
         use_crown = bool(crown and request.target_floors >= 3)
         standard_count = request.target_floors - 1 - (1 if use_setback else 0) - (1 if use_crown else 0)
         if standard_count < 0:
@@ -259,43 +430,71 @@ def plan_vertical_assembly(
         if standard_count and not floor_variants:
             continue
 
-        # Reject families that require visually destructive non-uniform scaling.
-        scale_x = request.target_width_m / podium.width_m
-        scale_y = request.target_depth_m / podium.depth_m
-        if not (0.80 <= scale_x <= 1.20 and 0.80 <= scale_y <= 1.20):
+        segments = footprint_segments(
+            request.footprint_profile,
+            request.target_width_m,
+            request.target_depth_m,
+            podium.depth_m,
+            request.wing_depth_m,
+        )
+        segment_scales = [
+            (
+                float(segment["length_m"]) / podium.width_m,
+                float(segment["thickness_m"]) / podium.depth_m,
+            )
+            for segment in segments
+        ]
+        # Rectangles use the strict production fit. Multi-wing profiles need a
+        # little more latitude because the imported family is a streetwall bar,
+        # but still reject anything that would visibly crush the facade atlas.
+        scale_min, scale_max = (0.80, 1.20) if request.footprint_profile == "rectangle" else (0.62, 1.40)
+        if any(not (scale_min <= sx <= scale_max and scale_min <= sy <= scale_max)
+               for sx, sy in segment_scales):
             continue
 
+        levels: list[tuple[ModuleDescriptor, str, int, float]] = []
         z = 0.0
-        instances: list[dict[str, Any]] = []
 
-        def add_instance(module: ModuleDescriptor, role: str, level: int) -> None:
+        def add_level(module: ModuleDescriptor, role: str, level: int) -> None:
             nonlocal z
-            instances.append(
-                {
-                    "asset_id": module.id,
-                    "asset_name": module.name,
-                    "model_url": module.model_url,
-                    "family": module.family,
-                    "role": role,
-                    "variant_key": module.variant_key,
-                    "lod": module.lod,
-                    "level": level,
-                    "position": [0.0, 0.0, round(z, 4)],
-                    "rotation_degrees": 0.0,
-                    "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
-                    "native_dimensions_m": [module.width_m, module.depth_m, module.height_m],
-                }
-            )
+            levels.append((module, role, level, z))
             z += module.height_m
 
-        add_instance(podium, "podium", 0)
+        add_level(podium, "podium", 0)
         for level in range(1, standard_count + 1):
-            add_instance(floor_variants[(level - 1) % len(floor_variants)], "floor", level)
+            add_level(floor_variants[(level - 1) % len(floor_variants)], "floor", level)
         if use_setback and setback:
-            add_instance(setback, "setback", request.target_floors - (2 if use_crown else 1))
+            add_level(setback, "setback", request.target_floors - (2 if use_crown else 1))
         if use_crown and crown:
-            add_instance(crown, "crown", request.target_floors - 1)
-        add_instance(roof, "roof", request.target_floors)
+            add_level(crown, "crown", request.target_floors - 1)
+        add_level(roof, "roof", request.target_floors)
+
+        instances: list[dict[str, Any]] = []
+        for segment in segments:
+            for module, role, level, level_z in levels:
+                scale_x = float(segment["length_m"]) / module.width_m
+                scale_y = float(segment["thickness_m"]) / module.depth_m
+                instances.append(
+                    {
+                        "asset_id": module.id,
+                        "asset_name": module.name,
+                        "model_url": module.model_url,
+                        "family": module.family,
+                        "role": role,
+                        "variant_key": module.variant_key,
+                        "lod": module.lod,
+                        "level": level,
+                        "segment_id": segment["id"],
+                        "position": [
+                            round(float(segment["centre_x_m"]), 4),
+                            round(float(segment["centre_y_m"]), 4),
+                            round(level_z, 4),
+                        ],
+                        "rotation_degrees": float(segment["rotation_degrees"]),
+                        "scale": [round(scale_x, 5), round(scale_y, 5), 1.0],
+                        "native_dimensions_m": [module.width_m, module.depth_m, module.height_m],
+                    }
+                )
 
         family_score = _module_score(podium, request) + _module_score(roof, request)
         if floor_variants:
@@ -313,14 +512,19 @@ def plan_vertical_assembly(
                 "width_m": request.target_width_m,
                 "depth_m": request.target_depth_m,
                 "floors": request.target_floors,
+                "footprint_profile": request.footprint_profile,
+                "wing_depth_m": round(float(segments[0]["thickness_m"]), 4),
             },
             "assembled_height_m": round(z, 4),
             "instances": instances,
             "fit": {
-                "scale_x": round(scale_x, 5),
-                "scale_y": round(scale_y, 5),
+                "scale_x": round(max(scale[0] for scale in segment_scales), 5),
+                "scale_y": round(max(scale[1] for scale in segment_scales), 5),
                 "score": round(family_score, 5),
+                "profile": request.footprint_profile,
+                "segment_count": len(segments),
             },
+            "footprint_segments": segments,
         }
         if family_score > best_score:
             best_score = family_score
@@ -415,8 +619,8 @@ def lego_metadata_from_manifest(
     """Build the ``metadata_["lego"]`` payload for one manifest module.
 
     ``module`` is either an entry of ``manifest["modules"]`` or a synthesized
-    dict for the pre-assembled preview GLB (role ``"assembled"``), which gets
-    ``enabled: false`` so the planner never stacks it.
+    dict for the pre-assembled GLB. Landmark massing graphs enable that asset
+    for exact-variant/canonical-size planning; ordinary previews stay disabled.
     """
     resolved_role = str(role or module.get("role") or "").strip().lower()
     archetype_ids = [str(manifest.get("archetype_id"))]
@@ -426,11 +630,17 @@ def lego_metadata_from_manifest(
     generation_archetype_id = manifest.get("generation_archetype_id")
     if generation_archetype_id:
         archetype_ids.append(str(generation_archetype_id))
+    for alias in manifest.get("archetype_aliases") or []:
+        normalized_alias = str(alias or "").strip()
+        if normalized_alias and normalized_alias not in archetype_ids:
+            archetype_ids.append(normalized_alias)
 
     dimensions = manifest.get("dimensions") or {}
     generator = manifest.get("generator") or {}
     return {
-        "enabled": resolved_role in STACKABLE_ROLES,
+        "enabled": resolved_role in STACKABLE_ROLES or (
+            resolved_role == "assembled" and bool(manifest.get("massing_graph"))
+        ),
         "role": resolved_role,
         "family": str(manifest.get("family") or ""),
         "width_m": module.get("width_m"),
@@ -441,17 +651,21 @@ def lego_metadata_from_manifest(
         "variant_key": str(module.get("variant_key") or "default"),
         "lod": max(0, int(module.get("lod") or 0)),
         "allowed_levels": [int(value) for value in (module.get("allowed_levels") or [])],
+        "native_floors": _as_int_or_none(module.get("native_floors")),
         "archetype_ids": archetype_ids,
         "reuse_keys": [str(k) for k in (manifest.get("reuse_keys") or []) if str(k or "").strip()],
         "min_floors": manifest.get("min_floors", dimensions.get("min_floors")),
         "max_floors": manifest.get("max_floors", dimensions.get("max_floors")),
+        "setback_min_floors": module.get("setback_min_floors"),
         "schema_version": manifest.get("grammar_schema_version") or 1,
         "generator_version": generator.get("version"),
         "validation_status": validation_status,
         "triangle_count": module.get("triangle_count"),
         "material_count": module.get("material_count"),
         "coordinate_contract": manifest.get("coordinate_contract") or {},
+        "footprint_compatibility": manifest.get("footprint_compatibility") or {},
         "source_variant_id": variant_id,
+        "generation_archetype_id": generation_archetype_id,
         "asset_kind": "lego_module",
     }
 

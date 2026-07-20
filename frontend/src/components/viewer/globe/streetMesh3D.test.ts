@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import {
   buildCurbBandGeometry,
+  buildOffsetCurbGeometry,
   buildDashGeometry,
+  buildRibbonBandGeometry,
   buildRoundaboutGeometry,
   densifyPolyline,
 } from './streetMesh3D';
@@ -69,6 +71,50 @@ describe('buildDashGeometry', () => {
     expect(geo!.getAttribute('position').count).toBe(17 * 4);
     const [zMin] = zRange(geo);
     expect(zMin).toBeCloseTo(STREET_DETAIL_3D.dashLift_m, 5);
+  });
+
+  it('offsets markings from the road centerline', () => {
+    const geo = buildDashGeometry(line100, undefined, undefined, 2)!;
+    const pos = geo.getAttribute('position');
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (let i = 0; i < pos.count; i++) {
+      minY = Math.min(minY, pos.getY(i));
+      maxY = Math.max(maxY, pos.getY(i));
+    }
+    expect(minY).toBeGreaterThan(1.8);
+    expect(maxY).toBeLessThan(2.2);
+  });
+});
+
+describe('buildOffsetCurbGeometry', () => {
+  it('places detailed-section curbs at authored internal offsets', () => {
+    const geometry = buildOffsetCurbGeometry(line100, [-3, 4]);
+    expect(geometry).not.toBeNull();
+    const position = geometry!.getAttribute('position');
+    const ys = Array.from({ length: position.count }, (_, index) => position.getY(index));
+    expect(Math.min(...ys)).toBeCloseTo(-3 - STREET_DETAIL_3D.curbWidth_m / 2, 5);
+    expect(Math.max(...ys)).toBeCloseTo(4 + STREET_DETAIL_3D.curbWidth_m / 2, 5);
+    geometry!.dispose();
+  });
+});
+
+describe('buildRibbonBandGeometry', () => {
+  it('builds an offset band that follows station elevations', () => {
+    const geo = buildRibbonBandGeometry(line100, -2, 3, 0.2, [1, 2])!;
+    const pos = geo.getAttribute('position');
+    expect(pos.count).toBe(4);
+
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (let i = 0; i < pos.count; i++) {
+      minY = Math.min(minY, pos.getY(i));
+      maxY = Math.max(maxY, pos.getY(i));
+    }
+    expect(minY).toBeCloseTo(-2);
+    expect(maxY).toBeCloseTo(3);
+    expect(pos.getZ(0)).toBeCloseTo(1.2);
+    expect(pos.getZ(2)).toBeCloseTo(2.2);
   });
 });
 

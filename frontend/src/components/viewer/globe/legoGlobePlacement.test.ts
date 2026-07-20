@@ -5,7 +5,9 @@ import {
   computeLegoStackYaw,
   excludeLegoStackBuildings,
   extractLegoRecipe,
+  extractPlannedMassing,
   hasLegoRecipe,
+  hasPlannedMassing,
   legoFootprintRing,
   legoInstanceTransform,
   recipeIsRenderable,
@@ -137,6 +139,34 @@ describe('legoFootprintRing / recipeIsRenderable', () => {
     expect(recipeIsRenderable(buildingWithRecipe(makeRecipe(), { footprint_coordinates: undefined }))).toBe(false);
     // Footprint but no recipe.
     expect(recipeIsRenderable(makeBuilding({ footprint_coordinates: CALGARY_RING }))).toBe(false);
+  });
+});
+
+describe('planned community massing', () => {
+  const spec = {
+    schema_version: 1 as const,
+    source: 'community_3d' as const,
+    source_zone_id: 'zone-1',
+    archetype_id: 'new_york_corner_bodega',
+    floor_count: 3,
+    height_meters: 10.5,
+  };
+
+  it('accepts a persisted positive-height fallback with a real footprint', () => {
+    const building = makeBuilding({
+      footprint_coordinates: CALGARY_RING,
+      specifications: { plannedMassing: spec },
+    });
+    expect(extractPlannedMassing(building)).toEqual(spec);
+    expect(hasPlannedMassing(building)).toBe(true);
+  });
+
+  it('rejects malformed, non-positive, and footprint-less fallbacks', () => {
+    expect(extractPlannedMassing(makeBuilding())).toBeNull();
+    expect(extractPlannedMassing(makeBuilding({
+      specifications: { plannedMassing: { ...spec, height_meters: 0 } },
+    }))).toBeNull();
+    expect(hasPlannedMassing(makeBuilding({ specifications: { plannedMassing: spec } }))).toBe(false);
   });
 });
 

@@ -15,13 +15,23 @@ from geoalchemy2.elements import WKTElement
 from geoalchemy2.functions import ST_Intersects
 from geoalchemy2.shape import to_shape
 from shapely.geometry import Polygon
+from shapely.validation import explain_validity
 from sqlalchemy import desc, func as sa_func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
 
 from app.core.database import get_db
 from app.core.security import is_admin_or_above, require_auth
-from app.models.models import Building, Project, ProjectShare, SiteZone, User, ZoneHistory
+from app.models.models import (
+    Building,
+    Project,
+    ProjectShare,
+    SiteZone,
+    UrbanDnaScenario,
+    UrbanDnaSnapshot,
+    User,
+    ZoneHistory,
+)
 from app.schemas.schemas import (
     ApplyLayoutRequest,
     BuildingResponse,
@@ -47,6 +57,124 @@ from app.services.osm_context import OSMContextFetcher
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+
+def _open_ring(coordinates: list[list[float]] | None) -> list[list[float]]:
+    ring = [list(point[:2]) for point in (coordinates or []) if len(point) >= 2]
+    if len(ring) > 1 and ring[0] == ring[-1]:
+        ring.pop()
+    return ring
+
+
+def _coordinates_materially_changed(
+    before: list[list[float]] | None,
+    after: list[list[float]] | None,
+    *,
+    tolerance: float = 1e-9,
+) -> bool:
+    """True when a boundary edit changes geometry, ignoring the closing point."""
+    left = _open_ring(before)
+    right = _open_ring(after)
+    if len(left) != len(right):
+        return True
+    return any(
+        abs(a[0] - b[0]) > tolerance or abs(a[1] - b[1]) > tolerance
+        for a, b in zip(left, right)
+    )
+
+
+def _validated_polygon_coordinates(raw_coordinates) -> list[list[float]]:
+    """Normalize a polygon ring and reject geometry PostGIS cannot use safely.
+
+    Clicking the first vertex is a natural way to finish a polygon. Globe
+    raycasts can return that closing click a few centimetres away from the
+    original coordinate, leaving a tiny self-intersecting sliver. Treat a
+    near-closing final vertex as closure, but reject every material
+    self-intersection instead of persisting geometry that later crashes the
+    master planner.
+    """
+    cleaned: list[list[float]] = []
+    for candidate in raw_coordinates or []:
+        if not isinstance(candidate, (list, tuple)) or len(candidate) < 2:
+            continue
+        try:
+            lng = float(candidate[0])
+            lat = float(candidate[1])
+        except (TypeError, ValueError):
+            continue
+        if not (-180 <= lng <= 180 and -90 <= lat <= 90):
+            continue
+        if (
+            not cleaned
+            or abs(lng - cleaned[-1][0]) > 1e-7
+            or abs(lat - cleaned[-1][1]) > 1e-7
+        ):
+            cleaned.append([lng, lat])
+
+    # A last click near the first vertex means "close", not "add a tiny edge".
+    if (
+        len(cleaned) >= 4
+        and abs(cleaned[-1][0] - cleaned[0][0]) <= 1e-7
+        and abs(cleaned[-1][1] - cleaned[0][1]) <= 1e-7
+    ):
+        cleaned.pop()
+    if len(cleaned) < 3:
+        raise ValueError("Polygon must have at least 3 unique vertices")
+
+    polygon = Polygon(cleaned)
+    if polygon.is_empty:
+        raise ValueError("Polygon must enclose a non-zero area")
+    if not polygon.is_valid:
+        raise ValueError(
+            "Polygon boundary self-intersects or overlaps; undo the last point and redraw "
+            f"({explain_validity(polygon)})"
+        )
+    if polygon.area <= 0:
+        raise ValueError("Polygon must enclose a non-zero area")
+    return [*cleaned, cleaned[0]]
+
+
+async def _invalidate_boundary_dependents(
+    db: AsyncSession,
+    boundary: SiteZone,
+) -> None:
+    """Preserve but mark derived plans/DNA stale after boundary geometry moves."""
+    changed_at = datetime.now(timezone.utc).isoformat()
+    zones_result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == boundary.project_id,
+            SiteZone.id != boundary.id,
+        )
+    )
+    for dependent in zones_result.scalars().all():
+        props = dict(dependent.properties or {})
+        if not isinstance(props.get("_plan_scenario"), str):
+            continue
+        props.update({
+            "_plan_boundary_stale": True,
+            "_plan_boundary_zone_id": str(boundary.id),
+            "_plan_boundary_changed_at": changed_at,
+        })
+        dependent.properties = props
+        flag_modified(dependent, "properties")
+
+    snapshots_result = await db.execute(
+        select(UrbanDnaSnapshot).where(UrbanDnaSnapshot.zone_id == boundary.id)
+    )
+    snapshots = list(snapshots_result.scalars().all())
+    stale_message = "Site boundary changed; regenerate Site DNA and master-plan scenarios."
+    for snapshot in snapshots:
+        snapshot.status = "failed"
+        snapshot.error = stale_message
+
+    snapshot_ids = [snapshot.id for snapshot in snapshots]
+    if snapshot_ids:
+        scenarios_result = await db.execute(
+            select(UrbanDnaScenario).where(UrbanDnaScenario.snapshot_id.in_(snapshot_ids))
+        )
+        for scenario in scenarios_result.scalars().all():
+            scenario.status = "failed"
+            scenario.error = stale_message
 
 
 def _safe_int(value, default: int) -> int:
@@ -449,19 +577,12 @@ async def create_zone(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized to add zones to this project")
 
-    # Convert coordinates to WKT POLYGON
-    coords = zone_in.coordinates
-    # De-duplicate nearly-identical consecutive vertices
-    unique_coords: list[list[float]] = []
-    for c in coords:
-        if not unique_coords or abs(c[0] - unique_coords[-1][0]) > 1e-7 or abs(c[1] - unique_coords[-1][1]) > 1e-7:
-            unique_coords.append(c)
-    coords = unique_coords
-    if len(coords) < 3:
-        raise HTTPException(status_code=400, detail="Polygon must have at least 3 unique vertices")
-    # Close the polygon if not already closed
-    if coords[0] != coords[-1]:
-        coords.append(coords[0])
+    # Convert coordinates to a valid WKT POLYGON. Invalid rings used to be
+    # accepted by PostGIS and fail much later in the master planner.
+    try:
+        coords = _validated_polygon_coordinates(zone_in.coordinates)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
 
     zone = SiteZone(
@@ -604,18 +725,28 @@ async def update_zone(
     before_snapshot = _snapshot_from_zone(zone)
 
     update_data = zone_in.model_dump(exclude_unset=True)
+    boundary_geometry_changed = False
 
     # Handle coordinates to geometry conversion
     if "coordinates" in update_data:
-        coords = update_data.pop("coordinates")
-        if coords and len(coords) >= 3:
-            if coords[0] != coords[-1]:
-                coords.append(coords[0])
+        raw_coords = update_data.pop("coordinates")
+        if raw_coords:
+            try:
+                coords = _validated_polygon_coordinates(raw_coords)
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
+            boundary_geometry_changed = (
+                zone.zone_type == "site_boundary"
+                and _coordinates_materially_changed(before_snapshot.get("coordinates"), coords)
+            )
             coords_str = ", ".join(f"{c[0]} {c[1]}" for c in coords)
             zone.geometry = WKTElement(f"POLYGON(({coords_str}))", srid=4326)
 
     for field, value in update_data.items():
         setattr(zone, field, value)
+
+    if boundary_geometry_changed:
+        await _invalidate_boundary_dependents(db, zone)
 
     await db.flush()
 

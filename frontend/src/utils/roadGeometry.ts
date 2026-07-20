@@ -6,13 +6,25 @@ import type { SiteZone, SiteZoneProperties } from '@/types';
  * centerline[i] = midpoint(polygon[i], polygon[n-1-i])
  */
 export function extractCenterline(coords: number[][]): number[][] {
-  const n = coords.length;
+  // GeoJSON/PostGIS polygon rings repeat the first vertex at the end. The
+  // buffer representation itself does not; remove only that closing sentinel
+  // before pairing left and right edges or the first station collapses onto
+  // a parcel corner and subsequent pairs become diagonal.
+  const first = coords[0];
+  const last = coords[coords.length - 1];
+  const isClosed = coords.length > 2
+    && first?.length >= 2
+    && last?.length >= 2
+    && Math.abs(first[0] - last[0]) < 1e-10
+    && Math.abs(first[1] - last[1]) < 1e-10;
+  const ring = isClosed ? coords.slice(0, -1) : coords;
+  const n = ring.length;
   const half = Math.floor(n / 2);
-  if (half < 2) return coords;
+  if (half < 2) return ring;
   const center: number[][] = [];
   for (let i = 0; i < half; i++) {
-    const a = coords[i];
-    const b = coords[n - 1 - i];
+    const a = ring[i];
+    const b = ring[n - 1 - i];
     center.push([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
   }
   return center;

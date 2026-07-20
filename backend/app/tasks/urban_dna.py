@@ -494,20 +494,66 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
                  if s.geometry_type == "line" and "road" in s.id),
                 None,
             )
+            path_specs = [
+                spec for spec in connector.datasets.values()
+                if spec.geometry_type == "line"
+                and any(term in spec.id for term in ("path", "bike", "trail"))
+            ]
             district_spec = next(
                 (s for s in connector.datasets.values() if s.id.endswith("land_use_districts")),
                 None,
             )
-            roads, districts = [], []
+            roads, paths, districts = [], [], []
             if roads_spec is not None:
                 fetched, _ = await _fetch_with_cache(connector, roads_spec, site_polygon, cache)
                 roads = fetched.features if fetched.ok else []
+            for path_spec in path_specs:
+                fetched, _ = await _fetch_with_cache(connector, path_spec, site_polygon, cache)
+                if fetched.ok:
+                    paths.extend(fetched.features)
+            if not paths:
+                # Some city connectors (notably Edmonton) provide authoritative
+                # road centrelines but no pedestrian network. Fetch only the
+                # immediate OSM foot/cycle context for plan anchoring, behind
+                # the normal bbox/TTL cache, without slowing the Site DNA build.
+                from app.services.city_connector.base import CityConnector, DatasetSpec
+
+                class _PlannerPathConnector(CityConnector):
+                    city_id = "planner_context"
+                    display_name = "Planner OSM Path Context"
+
+                def _no_facts(_features, _site):
+                    return {}, []
+
+                fallback_path_spec = DatasetSpec(
+                    id="planner_context.osm_paths",
+                    name="Immediate OSM Paths",
+                    priority=1,
+                    geometry_type="line",
+                    refresh_days=30,
+                    source_url="https://www.openstreetmap.org",
+                    api_endpoint="overpass",
+                    adapter="osm",
+                    adapter_params={"category": "paths"},
+                    dna_fields=("mobility.pathway_m_800m",),
+                    transform=_no_facts,
+                    buffer_m=80.0,
+                    timeout_s=45.0,
+                    confidence_weight=0.7,
+                )
+                _PlannerPathConnector.register(fallback_path_spec)
+                fallback_connector = _PlannerPathConnector()
+                fetched, _ = await _fetch_with_cache(
+                    fallback_connector, fallback_path_spec, site_polygon, cache,
+                )
+                if fetched.ok:
+                    paths.extend(fetched.features)
             if district_spec is not None:
                 fetched, _ = await _fetch_with_cache(connector, district_spec, site_polygon, cache)
                 districts = fetched.features if fetched.ok else []
-            return roads, districts
+            return roads, paths, districts
 
-        road_features, district_features = asyncio.run(_features())
+        road_features, path_features, district_features = asyncio.run(_features())
 
         # Existing plan zones for this scenario (filtered in SQL — a big project
         # shouldn't page every zone's geometry through Python).
@@ -692,6 +738,7 @@ def generate_scenario_plan(self, scenario_row_id: str, locks: list[str] | None =
             parameters=plan_parameters,
             dna=snapshot.dna or {},
             road_features=road_features,
+            path_features=path_features,
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area,
             rule_hints=rule_hints,

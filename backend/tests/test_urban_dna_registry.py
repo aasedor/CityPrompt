@@ -223,6 +223,41 @@ def test_overpass_lock_survives_sequential_event_loops():
 
 
 @pytest.mark.anyio
+async def test_osm_paths_category_keeps_only_walk_and_cycle_lines(monkeypatch):
+    from app.services.city_connector.adapters import osm
+
+    class FakeFetcher:
+        def __init__(self, **_kwargs):
+            pass
+
+        async def fetch(self, _polygon, buffer_m=0):
+            assert buffer_m == 0
+            return {
+                "roads": [
+                    {"coordinates": [(-114.07, 51.04), (-114.069, 51.04)],
+                     "road_type": "footway", "name": "River Walk"},
+                    {"coordinates": [(-114.07, 51.041), (-114.069, 51.041)],
+                     "road_type": "residential", "name": "Local Street"},
+                ]
+            }
+
+    monkeypatch.setattr(osm, "OSMContextFetcher", FakeFetcher)
+    spec = DatasetSpec(
+        id="test.osm_paths", name="Paths", priority=1, geometry_type="line",
+        refresh_days=1, source_url="", api_endpoint="overpass", adapter="osm",
+        adapter_params={"category": "paths"}, dna_fields=("mobility.pathway_m_800m",),
+        transform=_noop_transform, buffer_m=80.0,
+    )
+
+    features, status, warnings = await osm.fetch(spec, DOWNTOWN_CALGARY)
+
+    assert status == "ok"
+    assert warnings == []
+    assert len(features) == 1
+    assert features[0]["properties"]["road_type"] == "footway"
+
+
+@pytest.mark.anyio
 async def test_soft_time_limit_propagates_through_fetch_guard():
     """Regression (review finding): SoftTimeLimitExceeded subclasses Exception; the
     never-fail guard must NOT swallow it or the task runs to SIGKILL and strands

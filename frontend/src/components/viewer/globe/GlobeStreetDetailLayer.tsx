@@ -17,24 +17,39 @@ import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
+import {
+  resolveCommunity3DKind,
+  shouldRenderCommunityGround,
+} from '@/features/community3d/community3d';
 import { extractCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
-import { getObjectFilteredTerrainHeight, resolveZoneTerrainHeight } from './globeTerrainUtils';
+import {
+  getObjectFilteredTerrainHeight,
+  isPlausibleTerrainAnchor,
+  preferLowerGroundAnchor,
+  resolveZoneTerrainHeight,
+} from './globeTerrainUtils';
 import { computeFootprintFrame } from './buildingPlacement';
 import {
   buildCurbBandGeometry,
   buildDashGeometry,
+  buildOffsetCurbGeometry,
+  buildRibbonBandGeometry,
   buildRoundaboutGeometry,
   densifyPolyline,
   type LocalPt,
 } from './streetMesh3D';
 import { STREET_DETAIL_3D } from '@/data/streetGeometryParams';
+import {
+  resolvePilotStreetSectionProfile,
+} from './streetSectionProfiles';
+import {
+  selectDetailedStreetZones,
+  streetTerrainSampleOffset,
+} from './streetDetailLod';
 
 const DEG_TO_RAD = Math.PI / 180;
-// Match GlobeZoneLayer's lightweight cutoff — imported shapefile layers with
-// dozens of road corridors must not trigger detail generation.
-const LIGHTWEIGHT_ZONE_THRESHOLD = 50;
 const TERRAIN_SAMPLE_FRAME_INTERVAL = 30;
 const TERRAIN_SAMPLE_MAX_ATTEMPTS = 20;
 const STATIONS_PER_BATCH = 12;
@@ -51,7 +66,6 @@ const ISLAND_COLOR = '#96b08a';
 const RENDER_ORDER_DASHES = 122;
 const RENDER_ORDER_FLATWORK = 123;
 const RENDER_ORDER_RAISED = 130;
-
 function isRoundaboutZone(zone: SiteZone): boolean {
   const id = String((zone.properties as Record<string, unknown> | undefined)?.road_archetype_id ?? '');
   return id.toLowerCase().replace(/-/g, '_').includes('roundabout');
@@ -73,17 +87,25 @@ function StreetRibbonDetail({
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
-  const frameCountRef = useRef(0);
+  // Across a district plan, distribute terrain rays over the full sampling
+  // interval instead of making every street probe the tiles on one frame.
+  const frameCountRef = useRef(streetTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL));
   const attemptsRef = useRef(0);
   const nextStationRef = useRef(0);
   const stationZRef = useRef<number[] | null>(null);
   const frozenRef = useRef(false);
   const [stationZ, setStationZ] = useState<number[] | null>(null);
+  const sectionProfile = useMemo(
+    () => resolvePilotStreetSectionProfile(zone),
+    [zone.properties],
+  );
 
   // Centerline in lng/lat, densified so stations follow terrain.
-  const { centerLngLat, centroid, halfWidth } = useMemo(() => {
+  const { centerLngLat, centroid, halfWidth, sectionScale } = useMemo(() => {
     const center = extractCenterline(zone.coordinates);
-    if (center.length < 2) return { centerLngLat: null, centroid: null, halfWidth: 0 };
+    if (center.length < 2) return {
+      centerLngLat: null, centroid: null, halfWidth: 0, sectionScale: 1,
+    };
     let lng = 0;
     let lat = 0;
     for (const c of center) {
@@ -102,14 +124,16 @@ function StreetRibbonDetail({
       lng + p.x / mPerLon,
       lat + p.y / METERS_PER_DEG_LAT,
     ]);
+    const resolvedHalfWidth = effectiveRoadWidth(zone.properties) / 2;
     return {
       centerLngLat: { local: densified, lngLat: back },
       centroid: { lng, lat },
-      halfWidth: effectiveRoadWidth(zone.properties) / 2,
+      halfWidth: resolvedHalfWidth,
+      sectionScale: sectionProfile ? (resolvedHalfWidth * 2) / sectionProfile.rowM : 1,
     };
     // zone.updated_at covers property edits that re-buffer the polygon
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [zone.coordinates, zone.updated_at]);
+  }, [zone.coordinates, zone.updated_at, zone.properties, sectionProfile]);
 
   const storedTerrain = zoneStoredTerrain(zone);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
@@ -142,7 +166,7 @@ function StreetRibbonDetail({
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
 
-    const anchored = sampledTerrain !== null || storedTerrain !== null;
+    const anchored = sampledTerrain !== null;
     if (!anchored) {
       if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
         frozenRef.current = true;
@@ -152,8 +176,12 @@ function StreetRibbonDetail({
       const mid = centerLngLat.lngLat[Math.floor(centerLngLat.lngLat.length / 2)];
       const samples = [centerLngLat.lngLat[0], mid, centerLngLat.lngLat[centerLngLat.lngLat.length - 1]]
         .map(([lng, lat]) => raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current));
-      const filtered = getObjectFilteredTerrainHeight(samples, null);
-      if (filtered !== null) setSampledTerrain(filtered);
+      const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+      const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+      if (
+        groundCandidate !== null
+        && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
+      ) setSampledTerrain(groundCandidate);
       return;
     }
 
@@ -174,9 +202,13 @@ function StreetRibbonDetail({
     while (i < n && processed < STATIONS_PER_BATCH) {
       if (!hits[i]) {
         const [lng, lat] = centerLngLat.lngLat[i];
-        const h = raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current);
-        if (h !== null) {
-          zs[i] = h - anchor;
+        const sampled = raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current);
+        const groundCandidate = preferLowerGroundAnchor(sampled, anchor, 4);
+        if (
+          groundCandidate !== null
+          && isPlausibleTerrainAnchor(groundCandidate, anchor)
+        ) {
+          zs[i] = groundCandidate - anchor;
           hits[i] = true;
         }
         processed++;
@@ -199,11 +231,64 @@ function StreetRibbonDetail({
   const geometries = useMemo(() => {
     if (!centerLngLat) return null;
     const zs = stationZ ?? undefined;
+    const bands = sectionProfile
+      ? sectionProfile.bands
+        .filter((band) => band.sourceType !== 'setback')
+        .map((band) => ({
+          band,
+          geometry: buildRibbonBandGeometry(
+            centerLngLat.local,
+            band.startM * sectionScale,
+            band.endM * sectionScale,
+            band.liftM,
+            zs,
+          ),
+        }))
+        .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
+      : [];
+    const markings = sectionProfile
+      ? sectionProfile.markings
+        .map((marking) => ({
+          marking,
+          geometry: marking.dashed
+            ? buildDashGeometry(
+              centerLngLat.local,
+              {
+                ...STREET_DETAIL_3D,
+                dashLength_m: 3,
+                dashGap_m: 5,
+                dashWidth_m: marking.widthM * sectionScale,
+                dashLift_m: 0.17,
+              },
+              zs,
+              marking.offsetM * sectionScale,
+            )
+            : buildRibbonBandGeometry(
+              centerLngLat.local,
+              (marking.offsetM - marking.widthM / 2) * sectionScale,
+              (marking.offsetM + marking.widthM / 2) * sectionScale,
+              0.17,
+              zs,
+            ),
+        }))
+        .filter((item): item is typeof item & { geometry: THREE.BufferGeometry } => Boolean(item.geometry))
+      : [];
     return {
-      curbs: buildCurbBandGeometry(centerLngLat.local, halfWidth, STREET_DETAIL_3D, zs),
-      dashes: buildDashGeometry(centerLngLat.local, STREET_DETAIL_3D, zs),
+      curbs: sectionProfile
+        ? (sectionProfile.renderCurbs
+          ? buildOffsetCurbGeometry(
+            centerLngLat.local,
+            sectionProfile.curbOffsetsM.map((offset) => offset * sectionScale),
+            STREET_DETAIL_3D,
+            zs,
+          )
+          : null)
+        : buildCurbBandGeometry(centerLngLat.local, halfWidth, STREET_DETAIL_3D, zs),
+      dashes: sectionProfile ? null : buildDashGeometry(centerLngLat.local, STREET_DETAIL_3D, zs),
+      bands,
+      markings,
     };
-  }, [centerLngLat, halfWidth, stationZ]);
+  }, [centerLngLat, halfWidth, sectionProfile, sectionScale, stationZ]);
 
   // r3f does not dispose geometry props — without this every drape freeze,
   // edit commit, and zone delete leaks the previous buffers.
@@ -211,11 +296,13 @@ function StreetRibbonDetail({
     () => () => {
       geometries?.curbs?.dispose();
       geometries?.dashes?.dispose();
+      geometries?.bands.forEach((item) => item.geometry.dispose());
+      geometries?.markings.forEach((item) => item.geometry.dispose());
     },
     [geometries],
   );
 
-  if (!centerLngLat || !centroid || !geometries?.curbs || !geometries?.dashes) return null;
+  if (!centerLngLat || !centroid || !geometries) return null;
 
   return (
     <EastNorthUpFrame
@@ -223,12 +310,60 @@ function StreetRibbonDetail({
       lon={centroid.lng * DEG_TO_RAD}
       height={frameElevation}
     >
-      <mesh geometry={geometries.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
-        <meshLambertMaterial color={CURB_COLOR} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-4} />
-      </mesh>
-      <mesh geometry={geometries.dashes} renderOrder={RENDER_ORDER_DASHES} frustumCulled={false}>
-        <meshBasicMaterial color={DASH_COLOR} depthTest={false} side={THREE.DoubleSide} />
-      </mesh>
+      {geometries.bands.map(({ band, geometry }) => (
+        <mesh
+          key={`${band.sourceType}-${band.startM}`}
+          geometry={geometry}
+          renderOrder={RENDER_ORDER_FLATWORK}
+          frustumCulled={false}
+        >
+          <meshBasicMaterial
+            color={band.color}
+            depthTest
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-3}
+            polygonOffsetUnits={-6}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+      {geometries.markings.map(({ marking, geometry }, index) => (
+        <mesh
+          key={`${marking.offsetM}-${index}`}
+          geometry={geometry}
+          renderOrder={RENDER_ORDER_DASHES}
+          frustumCulled={false}
+        >
+          <meshBasicMaterial
+            color={marking.color}
+            depthTest
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-4}
+            polygonOffsetUnits={-8}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+      {geometries.curbs && (
+        <mesh geometry={geometries.curbs} renderOrder={RENDER_ORDER_RAISED} frustumCulled={false}>
+          <meshLambertMaterial color={CURB_COLOR} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-4} />
+        </mesh>
+      )}
+      {geometries.dashes && (
+        <mesh geometry={geometries.dashes} renderOrder={RENDER_ORDER_DASHES} frustumCulled={false}>
+          <meshBasicMaterial
+            color={DASH_COLOR}
+            depthTest
+            depthWrite={false}
+            polygonOffset
+            polygonOffsetFactor={-4}
+            polygonOffsetUnits={-8}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
     </EastNorthUpFrame>
   );
 }
@@ -243,7 +378,7 @@ function RoundaboutDetail({
 }) {
   const tiles = useContext(TilesRendererContext);
   const raycasterRef = useRef(new THREE.Raycaster());
-  const frameCountRef = useRef(0);
+  const frameCountRef = useRef(streetTerrainSampleOffset(zone.id, TERRAIN_SAMPLE_FRAME_INTERVAL));
   const attemptsRef = useRef(0);
   const frozenRef = useRef(false);
   const [sampledTerrain, setSampledTerrain] = useState<number | null>(null);
@@ -276,7 +411,7 @@ function RoundaboutDetail({
   const storedTerrain = zoneStoredTerrain(zone);
 
   useFrame(() => {
-    if (frozenRef.current || storedTerrain !== null || !frame) return;
+    if (frozenRef.current || !frame) return;
     frameCountRef.current += 1;
     if (frameCountRef.current % TERRAIN_SAMPLE_FRAME_INTERVAL !== 0) return;
     if (attemptsRef.current >= TERRAIN_SAMPLE_MAX_ATTEMPTS) {
@@ -286,11 +421,22 @@ function RoundaboutDetail({
     attemptsRef.current += 1;
     const tilesGroup = tiles?.group;
     if (!tilesGroup || tilesGroup.children.length === 0) return;
-    const h = raycastTerrainHeightAtLatLng(
-      frame.centroidLng, frame.centroidLat, tilesGroup, raycasterRef.current,
-    );
-    if (h !== null) {
-      setSampledTerrain(h);
+    const ring = zone.coordinates;
+    const step = Math.max(1, Math.floor(ring.length / 4));
+    const probes: Array<[number, number]> = [[frame.centroidLng, frame.centroidLat]];
+    for (let index = 0; index < ring.length && probes.length < 5; index += step) {
+      probes.push([ring[index][0], ring[index][1]]);
+    }
+    const samples = probes.map(([lng, lat]) => (
+      raycastTerrainHeightAtLatLng(lng, lat, tilesGroup, raycasterRef.current)
+    ));
+    const filtered = getObjectFilteredTerrainHeight(samples, storedTerrain);
+    const groundCandidate = preferLowerGroundAnchor(filtered, storedTerrain);
+    if (
+      groundCandidate !== null
+      && isPlausibleTerrainAnchor(groundCandidate, storedTerrain ?? fallbackTerrainHeight)
+    ) {
+      setSampledTerrain(groundCandidate);
       frozenRef.current = true;
     }
   });
@@ -330,19 +476,27 @@ export function GlobeStreetDetailLayer({
   terrainHeight: number;
 }) {
   const roadZones = useMemo(
-    () => zones.filter((z) => z.zone_type === 'road' && z.coordinates.length >= 4),
+    () => zones.filter((z) =>
+      resolveCommunity3DKind(z) === 'street'
+      && z.coordinates.length >= 4
+      && shouldRenderCommunityGround(z)),
     [zones],
   );
-
-  if (zones.length > LIGHTWEIGHT_ZONE_THRESHOLD) return null;
-
+  const detailedRoadZones = useMemo(
+    () => selectDetailedStreetZones(roadZones),
+    [roadZones],
+  );
   return (
     <>
-      {roadZones.map((zone) =>
+      {detailedRoadZones.map((zone) =>
         isRoundaboutZone(zone) ? (
           <RoundaboutDetail key={zone.id} zone={zone} fallbackTerrainHeight={terrainHeight} />
         ) : (
-          <StreetRibbonDetail key={zone.id} zone={zone} fallbackTerrainHeight={terrainHeight} />
+          <StreetRibbonDetail
+            key={zone.id}
+            zone={zone}
+            fallbackTerrainHeight={terrainHeight}
+          />
         ),
       )}
     </>

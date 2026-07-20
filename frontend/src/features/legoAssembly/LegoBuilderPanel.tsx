@@ -2,129 +2,30 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
-import { Bounds, Grid, OrbitControls } from '@react-three/drei';
-import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Save, X } from 'lucide-react';
+import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
+import { AlertTriangle, Blocks, Check, Copy, Loader2, MapPin, RefreshCw, Route, Save, Trees, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone } from '@/types';
+import { allSettledWithConcurrency } from './allSettledWithConcurrency';
 import {
   legoArchetypeContextFromZone,
   legoAssemblyApi,
   type LegoAssemblyPlan,
-  type LegoAssemblyRecipe,
 } from './legoAssemblyApi';
 import {
   ModuleInstance,
   PreviewErrorBoundary,
   Progress,
-  deriveZoneTargets,
   familyGenerationCommands,
-  findCatalogOption,
   fitIsStretched,
-  normalizeArchetypeId,
 } from './legoShared';
-
-// Zone types that get a modular building even without an explicit archetype.
-const BUILDABLE_ZONE_TYPES = new Set<string>(['building', 'residential', 'development_area', 'development']);
-
-// Equirectangular metres-per-degree constants (matches the plan-scale
-// approximations used elsewhere in the planner).
-const METRES_PER_DEG_LAT = 110540;
-const METRES_PER_DEG_LNG_EQUATOR = 111320;
-
-function isBuildableZone(zone: SiteZone): boolean {
-  return BUILDABLE_ZONE_TYPES.has(zone.zone_type) || Boolean(zone.properties?.development_archetype_id);
-}
-
-/** Mean of the polygon vertices as [lng, lat]; null when there is no usable ring. */
-function polygonCentroid(coordinates: number[][] | undefined): [number, number] | null {
-  if (!coordinates || coordinates.length === 0) return null;
-  let lng = 0;
-  let lat = 0;
-  let count = 0;
-  for (const vertex of coordinates) {
-    if (!Array.isArray(vertex) || vertex.length < 2) continue;
-    const [vLng, vLat] = vertex;
-    if (!Number.isFinite(vLng) || !Number.isFinite(vLat)) continue;
-    lng += vLng;
-    lat += vLat;
-    count += 1;
-  }
-  if (count === 0) return null;
-  return [lng / count, lat / count];
-}
-
-interface ZoneBuildItem {
-  zone: SiteZone;
-  label: string;
-  /** Normalized archetype id used for the generate-family hint commands. */
-  archetypeId?: string;
-  targets: { width_m: number; depth_m: number; floors: number };
-  /** Local-metre offset [x, z] from the plan centroid; null when the zone has no usable polygon. */
-  offset: [number, number] | null;
-  plan?: LegoAssemblyPlan;
-  error?: string;
-  familyMissing?: boolean;
-  /** 'placing' while the place call is in flight; 'placed' once the recipe is on the building. */
-  placeState?: 'placing' | 'placed' | 'failed';
-}
-
-/** The persisted twin of a plan — shared by Place (per zone) and Place all. */
-function recipeFromPlan(item: ZoneBuildItem & { plan: LegoAssemblyPlan }): LegoAssemblyRecipe & { building_name: string } {
-  const context = legoArchetypeContextFromZone(item.zone.properties);
-  return {
-    schema_version: 1,
-    module_family: item.plan.family,
-    archetype_id: item.plan.archetype_id ?? context.archetype_id ?? null,
-    reuse_keys: item.plan.reuse_keys,
-    target: item.plan.target,
-    instances: item.plan.instances,
-    assembled_height_m: item.plan.assembled_height_m,
-    fit: item.plan.fit,
-    assembled_preview_url: null,
-    building_name: item.label,
-  };
-}
-
-/** Buildable zones with catalogue-derived targets and centroid placement offsets. */
-function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
-  const buildable = zones.filter(isBuildableZone);
-  const centroids = buildable.map((zone) => polygonCentroid(zone.coordinates));
-  const anchors = centroids.filter((c): c is [number, number] => c !== null);
-
-  let lng0 = 0;
-  let lat0 = 0;
-  for (const [lng, lat] of anchors) {
-    lng0 += lng;
-    lat0 += lat;
-  }
-  if (anchors.length > 0) {
-    lng0 /= anchors.length;
-    lat0 /= anchors.length;
-  }
-  const metresPerDegLng = METRES_PER_DEG_LNG_EQUATOR * Math.cos((lat0 * Math.PI) / 180);
-
-  return buildable.map((zone, index) => {
-    const context = legoArchetypeContextFromZone(zone.properties);
-    const option = findCatalogOption(context.archetype_id);
-    const centroid = centroids[index];
-    const archetypeLabel = zone.properties?.development_archetype_label;
-    return {
-      zone,
-      label:
-        zone.name
-        || option?.label
-        || (typeof archetypeLabel === 'string' && archetypeLabel ? archetypeLabel : undefined)
-        || normalizeArchetypeId(context.archetype_id)
-        || zone.zone_type,
-      archetypeId: normalizeArchetypeId(context.archetype_id),
-      targets: deriveZoneTargets(option, zone.properties),
-      // Negative z so north points away from the default camera.
-      offset: centroid
-        ? ([(centroid[0] - lng0) * metresPerDegLng, -(centroid[1] - lat0) * METRES_PER_DEG_LAT] as [number, number])
-        : null,
-    };
-  });
-}
+import {
+  deriveGroundItems,
+  deriveItems,
+  recipeFromPlan,
+  type GroundBuildItem,
+  type ZoneBuildItem,
+} from './communityCompiler';
 
 function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   const placed = items.filter(
@@ -134,8 +35,9 @@ function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
   return (
     <>
       <ambientLight intensity={0.8} />
-      <directionalLight position={[8, 12, 7]} intensity={1.5} />
+      <directionalLight castShadow position={[8, 12, 7]} intensity={1.5} />
       <directionalLight position={[-8, 5, -6]} intensity={0.35} />
+      <Environment preset="city" background={false} />
       {/* Neutral ground plane under the whole plan. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]}>
         <planeGeometry args={[4000, 4000]} />
@@ -165,6 +67,7 @@ function BuilderScene({ items }: { items: ZoneBuildItem[] }) {
 
 export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClose: () => void }) {
   const [items, setItems] = useState<ZoneBuildItem[]>(() => deriveItems(zones));
+  const [groundItems, setGroundItems] = useState<GroundBuildItem[]>(() => deriveGroundItems(zones));
   const [planning, setPlanning] = useState(false);
   const [saving, setSaving] = useState(false);
   const [placingAll, setPlacingAll] = useState(false);
@@ -202,57 +105,152 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
 
   const handlePlaceAll = useCallback(async () => {
     const placeable = items.filter(
-      (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => Boolean(item.plan),
+      (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => (
+        Boolean(item.plan) && item.placeState !== 'placed'
+      ),
     );
-    if (placeable.length === 0 || placingAll) return;
+    const massingOnly = items.filter((item) => (
+      !item.plan && Boolean(item.offset) && item.massingState !== 'compiled'
+    ));
+    const groundToCompile = groundItems.filter((item) => item.state !== 'compiled');
+    if (
+      (placeable.length === 0 && massingOnly.length === 0 && groundToCompile.length === 0)
+      || placingAll
+    ) return;
+    const placeableIds = new Set(placeable.map((item) => item.zone.id));
+    const massingOnlyIds = new Set(massingOnly.map((item) => item.zone.id));
+    const groundToCompileIds = new Set(groundToCompile.map((item) => item.zone.id));
     setPlacingAll(true);
     setSaveResult(null);
-    setItems((prev) => prev.map((item) => (item.plan ? { ...item, placeState: 'placing' } : item)));
-    const results = await Promise.allSettled(
-      placeable.map((item) => legoAssemblyApi.place(item.zone.id, recipeFromPlan(item))),
-    );
     setItems((prev) => prev.map((item) => {
-      const index = placeable.findIndex((p) => p.zone.id === item.zone.id);
-      if (index === -1) return item;
-      return { ...item, placeState: results[index].status === 'fulfilled' ? 'placed' : 'failed' };
+      if (placeableIds.has(item.zone.id)) {
+        return { ...item, placeState: 'placing' };
+      }
+      if (massingOnlyIds.has(item.zone.id)) {
+        return { ...item, massingState: 'compiling' };
+      }
+      return item;
     }));
-    const placedCount = results.filter((result) => result.status === 'fulfilled').length;
-    setSaveResult(`Placed ${placedCount} of ${placeable.length} zone${placeable.length === 1 ? '' : 's'} on the map`);
-    await refetchPlacedData();
-    setPlacingAll(false);
-  }, [items, placingAll, refetchPlacedData]);
+    setGroundItems((prev) => prev.map((item) => (
+      item.state === 'compiled' ? item : { ...item, state: 'compiling' }
+    )));
+    try {
+      const result = await legoAssemblyApi.compileCommunity([
+        ...placeable.map((item) => ({
+          zone_id: item.zone.id,
+          recipe: recipeFromPlan(item),
+        })),
+        ...massingOnly.map((item) => ({ zone_id: item.zone.id })),
+        ...groundToCompile.map((item) => ({ zone_id: item.zone.id })),
+      ]);
+      setItems((prev) => prev.map((item) => {
+        if (placeableIds.has(item.zone.id)) {
+          return { ...item, placeState: 'placed' };
+        }
+        if (massingOnlyIds.has(item.zone.id)) {
+          return { ...item, massingState: 'compiled' };
+        }
+        return item;
+      }));
+      setGroundItems((prev) => prev.map((item) => (
+        groundToCompileIds.has(item.zone.id)
+          ? { ...item, state: 'compiled' }
+          : item
+      )));
+      const groundCount = result.counts.park + result.counts.street;
+      setSaveResult(
+        `Built ${placeable.length} detailed building${placeable.length === 1 ? '' : 's'}, `
+        + `${massingOnly.length} family-pending mass${massingOnly.length === 1 ? '' : 'es'}, and `
+        + `${groundCount} park/street layer${groundCount === 1 ? '' : 's'}`,
+      );
+      await refetchPlacedData();
+    } catch (error) {
+      setItems((prev) => prev.map((item) => {
+        if (placeableIds.has(item.zone.id)) {
+          return { ...item, placeState: 'failed' };
+        }
+        if (massingOnlyIds.has(item.zone.id)) {
+          return { ...item, massingState: 'failed' };
+        }
+        return item;
+      }));
+      setGroundItems((prev) => prev.map((item) => (
+        groundToCompileIds.has(item.zone.id)
+          ? { ...item, state: 'failed' }
+          : item
+      )));
+      setSaveResult(getApiErrorMessage(error, 'Could not build this community. No changes were saved.'));
+    } finally {
+      setPlacingAll(false);
+    }
+  }, [groundItems, items, placingAll, refetchPlacedData]);
 
-  const runBatch = useCallback(async () => {
+  const runBatch = useCallback(async (replacePlaced = false) => {
     const base = deriveItems(zones);
     setItems(base);
+    setGroundItems(deriveGroundItems(zones));
     setSaveResult(null);
     if (base.length === 0) return;
     setPlanning(true);
-    const results = await Promise.allSettled(
-      base.map((item) =>
-        legoAssemblyApi.plan({
+    const results = await allSettledWithConcurrency(
+      base,
+      (item) => legoAssemblyApi.plan({
           target_width_m: item.targets.width_m,
           target_depth_m: item.targets.depth_m,
           target_floors: item.targets.floors,
-          allow_setback: true,
+          footprint_profile: item.targets.footprint_profile,
+          wing_depth_m: item.targets.wing_depth_m,
           ...legoArchetypeContextFromZone(item.zone.properties),
         }),
-      ),
+      8,
     );
-    setItems(
-      base.map((item, index) => {
-        const result = results[index];
-        if (result.status === 'fulfilled') return { ...item, plan: result.value };
-        const status = (result.reason as { response?: { status?: number } })?.response?.status;
-        return {
-          ...item,
-          error: getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
-          familyMissing: status === 422,
-        };
-      }),
-    );
+    const plannedItems = base.map((item, index) => {
+      const result = results[index];
+      if (result.status === 'fulfilled') return { ...item, plan: result.value };
+      const status = (result.reason as { response?: { status?: number } })?.response?.status;
+      return {
+        ...item,
+        error: getApiErrorMessage(result.reason, 'Could not assemble this zone.'),
+        familyMissing: status === 422,
+      };
+    });
+    setItems(plannedItems);
+
+    // "Rebuild" must update recipes that are already on the globe. Merely
+    // recalculating the preview leaves their old content-hashed module URLs in
+    // Building.specifications, so a freshly imported family can never replace
+    // the cached live asset. The initial panel load still plans read-only.
+    if (replacePlaced) {
+      const replaceable = plannedItems.filter(
+        (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } => (
+          Boolean(item.plan) && item.placeState === 'placed'
+        ),
+      );
+      if (replaceable.length > 0) {
+        const replaced = await allSettledWithConcurrency(
+          replaceable,
+          (item) => legoAssemblyApi.place(item.zone.id, recipeFromPlan(item)),
+          8,
+        );
+        const failedIds = new Set(
+          replaceable
+            .filter((_item, index) => replaced[index].status === 'rejected')
+            .map((item) => item.zone.id),
+        );
+        const replacedCount = replaced.filter((result) => result.status === 'fulfilled').length;
+        setItems((prev) => prev.map((item) => (
+          failedIds.has(item.zone.id) ? { ...item, placeState: 'failed' } : item
+        )));
+        setSaveResult(
+          failedIds.size > 0
+            ? `Rebuilt ${replacedCount} of ${replaceable.length} placed building${replaceable.length === 1 ? '' : 's'}`
+            : `Rebuilt ${replacedCount} placed building${replacedCount === 1 ? '' : 's'} with the latest family assets`,
+        );
+        await refetchPlacedData();
+      }
+    }
     setPlanning(false);
-  }, [zones]);
+  }, [refetchPlacedData, zones]);
 
   // Plan every buildable zone once when the panel opens; "Rebuild all" re-runs it.
   useEffect(() => {
@@ -265,6 +263,18 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
   const otherFailedCount = items.filter((item) => item.error && !item.familyMissing).length;
   const skippedCount = items.filter((item) => !item.offset).length;
   const placedCount = items.filter((item) => item.plan && item.offset).length;
+  const parkCount = groundItems.filter((item) => item.kind === 'park').length;
+  const streetCount = groundItems.filter((item) => item.kind === 'street').length;
+  const compiledGroundCount = groundItems.filter((item) => item.state === 'compiled').length;
+  const unplacedDetailedCount = items.filter((item) => item.plan && item.placeState !== 'placed').length;
+  const uncompiledMassingCount = items.filter((item) => (
+    !item.plan && item.offset && item.massingState !== 'compiled'
+  )).length;
+  const canBuildCommunity = (
+    unplacedDetailedCount > 0
+    || uncompiledMassingCount > 0
+    || compiledGroundCount < groundItems.length
+  );
 
   const missingArchetypeIds = useMemo(
     () => [...new Set(items.filter((item) => item.familyMissing).map((item) => item.archetypeId ?? '<archetype-id>'))],
@@ -274,16 +284,17 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
 
   const savable = items.filter(
     (item): item is ZoneBuildItem & { plan: LegoAssemblyPlan } =>
-      Boolean(item.plan && (item.zone.building_id ?? item.zone.building_ids?.[0])),
+      Boolean(item.plan && item.zone.building_id),
   );
 
   const handleSaveAll = async () => {
     if (savable.length === 0 || saving) return;
     setSaving(true);
     setSaveResult(null);
-    const results = await Promise.allSettled(
-      savable.map((item) => {
-        const buildingId = (item.zone.building_id ?? item.zone.building_ids?.[0]) as string;
+    const results = await allSettledWithConcurrency(
+      savable,
+      (item) => {
+        const buildingId = item.zone.building_id as string;
         const context = legoArchetypeContextFromZone(item.zone.properties);
         return legoAssemblyApi.saveRecipe(buildingId, {
           schema_version: 1,
@@ -296,7 +307,8 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           fit: item.plan.fit,
           assembled_preview_url: null,
         });
-      }),
+      },
+      8,
     );
     const savedCount = results.filter((result) => result.status === 'fulfilled').length;
     setSaveResult(`Saved ${savedCount} of ${savable.length} recipe${savable.length === 1 ? '' : 's'}`);
@@ -323,9 +335,12 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           <div className="border-b-2 border-[#151515]/15 p-4 pb-3">
             <div className="mb-2 flex items-center gap-2">
               <Blocks className="h-5 w-5" />
-              <h2 className="text-sm font-black uppercase">LEGO Builder</h2>
+              <h2 className="text-sm font-black uppercase">Community 3D Builder</h2>
             </div>
             <p className="text-xs font-bold">
+              {`${items.length} buildings · ${parkCount} parks · ${streetCount} streets`}
+            </p>
+            <p className="mt-1 text-[11px] font-bold text-black/55">
               {`Assembled ${assembledCount} · No family ${noFamilyCount} · Skipped ${skippedCount}`}
               {otherFailedCount > 0 ? ` · Failed ${otherFailedCount}` : ''}
             </p>
@@ -338,9 +353,9 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           </div>
 
           <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-4 pt-3">
-            {items.length === 0 && (
+            {items.length === 0 && groundItems.length === 0 && (
               <p className="text-xs text-black/55">
-                No buildable zones in this plan yet — draw building zones or assign development archetypes first.
+                No buildings, parks, or streets in this plan yet.
               </p>
             )}
 
@@ -348,7 +363,11 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
               <div
                 key={item.zone.id}
                 className={`rounded border-2 p-2 text-[11px] ${
-                  item.error ? 'border-red-300 bg-red-50' : 'border-[#151515]/15 bg-white'
+                  item.error && !item.familyMissing
+                    ? 'border-red-300 bg-red-50'
+                    : item.familyMissing
+                      ? 'border-amber-300 bg-amber-50'
+                      : 'border-[#151515]/15 bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
@@ -359,7 +378,24 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
                       stretched
                     </span>
                   )}
+                  {!item.plan && item.massingState && (
+                    <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                      item.massingState === 'compiled'
+                        ? 'bg-emerald-100 text-emerald-800'
+                        : item.massingState === 'failed'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-sky-100 text-sky-800'
+                    }`}>
+                      {item.massingState === 'compiling'
+                        ? 'massing...'
+                        : item.massingState === 'compiled' ? '3D massing' : 'retry massing'}
+                    </span>
+                  )}
                 </div>
+                <p className="mt-0.5 text-black/55">
+                  {`${item.targets.footprint_profile.replace('_', ' ')} · ${item.targets.width_m.toFixed(1)} × ${item.targets.depth_m.toFixed(1)} m · ${item.targets.floors} floors`}
+                  {!item.targets.within_recommended_size ? ' · outside preferred range' : ''}
+                </p>
                 {item.plan && (
                   <div className="mt-0.5 flex items-center justify-between gap-2">
                     <p className="min-w-0 truncate text-black/60" title={item.plan.family}>
@@ -387,9 +423,12 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
                   </div>
                 )}
                 {item.error && (
-                  <p className="mt-0.5 text-red-800">
+                  <p className={`mt-0.5 ${item.familyMissing ? 'text-amber-900' : 'text-red-800'}`}>
                     {item.familyMissing && <span className="font-black uppercase">No family · </span>}
                     {item.error}
+                    {item.familyMissing && item.offset && (
+                      <span className="font-bold"> Exact-footprint 3D massing will stand in until this family is imported.</span>
+                    )}
                   </p>
                 )}
                 {!item.plan && !item.error && planning && (
@@ -401,19 +440,62 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
               </div>
             ))}
 
+            {groundItems.length > 0 && (
+              <div className="pt-1">
+                <p className="mb-2 text-[10px] font-black uppercase tracking-wide text-black/45">
+                  Ground systems
+                </p>
+                <div className="space-y-2">
+                  {groundItems.map((item) => (
+                    <div
+                      key={item.zone.id}
+                      className={`rounded border-2 p-2 text-[11px] ${
+                        item.state === 'failed' ? 'border-red-300 bg-red-50' : 'border-[#151515]/15 bg-white'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="flex min-w-0 items-center gap-1.5 font-bold">
+                          {item.kind === 'park'
+                            ? <Trees className="h-3.5 w-3.5 shrink-0 text-emerald-700" />
+                            : <Route className="h-3.5 w-3.5 shrink-0 text-slate-700" />}
+                          <span className="truncate" title={item.zone.name ?? item.kind}>
+                            {item.zone.name ?? (item.kind === 'park' ? 'Park / plaza' : 'Street')}
+                          </span>
+                        </span>
+                        <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                          item.state === 'compiled'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : item.state === 'failed'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-sky-100 text-sky-800'
+                        }`}>
+                          {item.state === 'compiling' ? 'building…' : item.state}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-black/55">
+                        {item.kind === 'park'
+                          ? 'Zero-credit archetype ground + programmed structures; final render adds mature planting and seating'
+                          : 'Road surface + curbs, lanes, sidewalks and reserved planting bands; final render adds street trees'}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {missingArchetypeIds.length > 0 && (
-              <div className="rounded border border-red-300 bg-red-50 p-2 text-[11px] text-red-900">
+              <div className="rounded border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-950">
                 <p className="font-bold">
                   {missingArchetypeIds.length === 1
                     ? 'One archetype has no module family yet.'
                     : `${missingArchetypeIds.length} archetypes have no module family yet.`}
                 </p>
-                <p className="mt-1">Generate the families, then import their manifests:</p>
-                <pre className="mt-1.5 select-all overflow-x-auto whitespace-pre-wrap break-all rounded bg-red-100 p-1.5 font-mono text-[10px] leading-relaxed">{hintCommands}</pre>
+                <p className="mt-1">These zones build as neutral, authoritative-height massing now. Generate and import the families to upgrade them in place:</p>
+                <pre className="mt-1.5 select-all overflow-x-auto whitespace-pre-wrap break-all rounded bg-amber-100 p-1.5 font-mono text-[10px] leading-relaxed">{hintCommands}</pre>
                 <button
                   type="button"
                   onClick={copyHintCommands}
-                  className="mt-1.5 flex items-center gap-1 rounded border border-red-400 bg-white px-2 py-0.5 text-[10px] font-bold text-red-800 hover:bg-red-100"
+                  className="mt-1.5 flex items-center gap-1 rounded border border-amber-500 bg-white px-2 py-0.5 text-[10px] font-bold text-amber-900 hover:bg-amber-100"
                 >
                   {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                   {copied ? 'Copied' : 'Copy commands'}
@@ -431,25 +513,25 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
 
             <button
               type="button"
-              onClick={() => void runBatch()}
+              onClick={() => void runBatch(true)}
               disabled={planning || saving}
               className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#c9ff3d] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
             >
               {planning ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-              Rebuild all
+              Rebuild buildings
             </button>
 
             <button
               type="button"
               onClick={() => void handlePlaceAll()}
-              disabled={assembledCount === 0 || placingAll || planning || saving}
-              title={assembledCount === 0
-                ? 'Nothing assembled yet — rebuild first.'
-                : 'Place every assembled zone: buildings are created/linked as needed and the stacks replace the zone polygons on the globe.'}
+              disabled={!canBuildCommunity || placingAll || planning || saving}
+              title={!canBuildCommunity
+                ? 'This community is already built in 3D.'
+                : 'Compile every plan zone: supported buildings use real LEGO families, unsupported families use exact-footprint neutral massing, and parks/streets become generated ground systems.'}
               className="mt-2 flex w-full items-center justify-center gap-2 rounded border-2 border-[#151515] bg-[#28c7e8] px-3 py-2 text-xs font-black uppercase shadow-[3px_3px_0_0_#151515] disabled:opacity-50"
             >
               {placingAll ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
-              Place all
+              Build community in 3D
             </button>
 
             <button
@@ -487,7 +569,7 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
           </button>
 
           {placedCount > 0 ? (
-            <Canvas camera={{ position: [110, 90, 150], fov: 42 }} dpr={[1, 2]}>
+            <Canvas shadows camera={{ position: [110, 90, 150], fov: 42 }} dpr={[1, 2]}>
               <PreviewErrorBoundary>
                 <Suspense fallback={<Progress />}>
                   <BuilderScene items={items} />
@@ -501,8 +583,10 @@ export function LegoBuilderPanel({ zones, onClose }: { zones: SiteZone[]; onClos
                 <p className="max-w-md text-sm font-bold">
                   {planning
                     ? 'Assembling the plan from LEGO modules…'
-                    : items.length === 0
-                      ? 'No buildable zones in this plan yet — draw building zones or assign archetypes first.'
+                    : items.length === 0 && groundItems.length === 0
+                      ? 'No community zones in this plan yet.'
+                      : items.length === 0
+                        ? 'Parks and streets are ready to build on the Google-tile globe.'
                       : 'Nothing could be placed — see the zone list for details.'}
                 </p>
               </div>

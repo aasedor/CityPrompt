@@ -40,6 +40,7 @@ SCORE_WEIGHTS = {
     "canopy_proxy": 0.8,
     "yield_vs_target": 1.0,
     "ceiling_conformance": 1.0,
+    "context_connectivity": 1.0,
 }
 
 
@@ -139,6 +140,25 @@ def evaluate_plan(
             key="intersection_density", score=min(density / INTERSECTION_TARGET_PER_KM2, 1.0),
             measured=round(density, 1), target=INTERSECTION_TARGET_PER_KM2,
             detail=f"{density:.1f} intersections/km² vs {INTERSECTION_TARGET_PER_KM2:.0f} walkable benchmark",
+        ))
+
+    # Existing road/path continuity. Absence of source context is neutral; if
+    # anchors exist, every one must join the internal graph to earn full marks.
+    context_total = (
+        float(gi.get("context_road_anchors") or 0.0)
+        + float(gi.get("context_path_anchors") or 0.0)
+    )
+    if context_total:
+        context_served = (
+            float(gi.get("context_road_connections") or 0.0)
+            + float(gi.get("context_path_connections") or 0.0)
+        )
+        share = min(context_served / context_total, 1.0)
+        report.add(ScoreItem(
+            key="context_connectivity", score=share,
+            measured=round(share, 3), target=1.0,
+            detail=f"{context_served:g}/{context_total:g} detected road/path frontage anchors "
+                   "joined to the internal network",
         ))
 
     # 6. Canopy proxy: planted share of the unbuilt ground plane vs the 2060 target.

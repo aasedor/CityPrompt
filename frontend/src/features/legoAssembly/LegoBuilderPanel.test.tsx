@@ -25,6 +25,9 @@ const { apiGet, apiPost, apiPut, apiDelete } = vi.hoisted(() => ({
 
 vi.mock('@/services/api', () => ({
   api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete },
+  siteZonesApi: {
+    update: (zoneId: string, body: unknown) => apiPut(`/api/v1/site-zones/${zoneId}`, body),
+  },
   resolveApiFileUrl: (url: string) => url,
   getApiErrorMessage: (error: unknown, fallback = 'Something went wrong') => {
     const detail = (error as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail;
@@ -144,23 +147,24 @@ describe('LegoBuilderPanel', () => {
 
     await waitFor(() => expect(apiPost).toHaveBeenCalledTimes(2));
 
-    // Catalogue hit: suggested dims + floor midpoint of 4..8.
+    // The drawn polygon is authoritative for dimensions; catalogue metadata
+    // still supplies the floor midpoint and architectural identity.
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/plan',
       expect.objectContaining({
-        target_width_m: 32,
-        target_depth_m: 20,
+        target_width_m: 110.5,
+        target_depth_m: 70,
         target_floors: 6,
-        allow_setback: true,
+        allow_setback: false,
         archetype_id: 'nordic_timber_midrise',
       }),
     );
-    // No catalogue hit: 24x18 fallbacks, floors from the zone properties.
+    // A missing catalogue entry still uses the drawn polygon dimensions.
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/plan',
       expect.objectContaining({
-        target_width_m: 24,
-        target_depth_m: 18,
+        target_width_m: 110.5,
+        target_depth_m: 70,
         target_floors: 5,
         archetype_id: 'parkside_terraces',
       }),
@@ -169,6 +173,74 @@ describe('LegoBuilderPanel', () => {
     expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
     expect(screen.getByText(/No family 0/)).toBeInTheDocument();
     expect(screen.getByText(/Skipped 0/)).toBeInTheDocument();
+    expect(screen.getByText('2 buildings · 0 parks · 1 streets')).toBeInTheDocument();
+  });
+
+  it('compiles planner parks and streets without treating framework overlays as buildings', async () => {
+    apiPost.mockImplementation((url: string) => (
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-07-17T01:00:00Z',
+              counts: { building: 1, park: 2, street: 1 },
+              items: [],
+            },
+          })
+        : Promise.resolve({ data: planFixture })
+    ));
+
+    const zones = [
+      makeZone({ id: 'z-building', properties: { _plan_role: 'building', development_archetype_id: 'nordic_timber_midrise' } }),
+      makeZone({
+        id: 'z-park',
+        zone_type: 'green_space',
+        name: 'Central Park',
+        properties: { _plan_role: 'open_space', _plan_scenario: 'economic' },
+      }),
+      makeZone({
+        id: 'z-street',
+        zone_type: 'road',
+        name: 'Main Street',
+        properties: { _plan_role: 'street', _plan_scenario: 'economic' },
+      }),
+      makeZone({
+        id: 'z-plaza',
+        zone_type: 'parking',
+        name: 'Civic Plaza',
+        properties: { plaza_archetype_id: 'formal_civic_plaza' },
+      }),
+      makeZone({
+        id: 'z-framework',
+        zone_type: 'development_area',
+        properties: { _plan_role: 'framework_height' },
+      }),
+    ];
+
+    render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
+    await waitFor(() => expect(apiPost).toHaveBeenCalledTimes(1));
+    expect(screen.getByText('1 buildings · 2 parks · 1 streets')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+    await waitFor(() => expect(screen.getByText(
+      'Built 1 detailed building, 0 family-pending masses, and 3 park/street layers',
+    )).toBeInTheDocument());
+
+    expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place-community',
+      {
+        items: expect.arrayContaining([
+          expect.objectContaining({ zone_id: 'z-building', recipe: expect.any(Object) }),
+          { zone_id: 'z-park' },
+          { zone_id: 'z-street' },
+          { zone_id: 'z-plaza' },
+        ]),
+      },
+    );
+    const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
+    expect(compileCall?.[1]).not.toEqual(expect.objectContaining({
+      items: expect.arrayContaining([expect.objectContaining({ zone_id: 'z-framework' })]),
+    }));
   });
 
   it('shows no-family rows and one deduplicated command hint on mixed success/422', async () => {
@@ -201,6 +273,57 @@ describe('LegoBuilderPanel', () => {
     expect(pre?.textContent).toContain('import_manifest.py build/archetypes/parkside_terraces');
     expect(pre?.textContent?.match(/--archetype-id parkside_terraces/g)).toHaveLength(2);
     expect(screen.getByRole('button', { name: /copy commands/i })).toBeInTheDocument();
+  });
+
+  it('builds a grounded exact-footprint mass for a building whose detailed family is pending', async () => {
+    apiPost.mockImplementation((url: string, body: { archetype_id?: string }) => {
+      if (url === '/api/v1/lego-assembly/place-community') {
+        return Promise.resolve({
+          data: {
+            status: 'compiled',
+            compiled_at: '2026-07-17T01:00:00Z',
+            counts: { building: 1, park: 1, street: 0 },
+            items: [
+              { zone_id: 'z-missing', kind: 'building', generator: 'planned_massing' },
+              { zone_id: 'z-park', kind: 'park', generator: 'park_kit' },
+            ],
+          },
+        });
+      }
+      return body.archetype_id === 'parkside_terraces'
+        ? Promise.reject(make422('No module family covers archetype parkside_terraces.'))
+        : Promise.resolve({ data: planFixture });
+    });
+
+    const zones = [
+      makeZone({
+        id: 'z-missing',
+        properties: { development_archetype_id: 'parkside_terraces', floors: 5 },
+      }),
+      makeZone({
+        id: 'z-park',
+        zone_type: 'green_space',
+        properties: { _plan_role: 'open_space' },
+      }),
+    ];
+
+    render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
+    expect(await screen.findByText(/No family 1/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+
+    await waitFor(() => expect(screen.getByText(
+      'Built 0 detailed buildings, 1 family-pending mass, and 1 park/street layer',
+    )).toBeInTheDocument());
+    expect(screen.getByText('3D massing')).toBeInTheDocument();
+
+    const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
+    expect(compileCall?.[1]).toEqual({
+      items: expect.arrayContaining([
+        { zone_id: 'z-missing' },
+        { zone_id: 'z-park' },
+      ]),
+    });
   });
 
   it('saves recipes only for zones with building ids and reports the saved count', async () => {
@@ -264,10 +387,17 @@ describe('LegoBuilderPanel', () => {
     expect(screen.getByText(/not placed in the scene/i)).toBeInTheDocument();
   });
 
-  it('Place all posts every assembled zone to the place endpoint and badges the rows', async () => {
+  it('Build community posts every assembled building and badges the rows', async () => {
     apiPost.mockImplementation((url: string) =>
-      url.includes('/place/')
-        ? Promise.resolve({ data: { status: 'placed', zone_id: 'z', building_id: 'b', building_created: true } })
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.resolve({
+            data: {
+              status: 'compiled',
+              compiled_at: '2026-07-17T01:00:00Z',
+              counts: { building: 2, park: 0, street: 0 },
+              items: [],
+            },
+          })
         : Promise.resolve({ data: planFixture }),
     );
 
@@ -278,27 +408,50 @@ describe('LegoBuilderPanel', () => {
     render(<LegoBuilderPanel zones={zones} onClose={vi.fn()} />);
     expect(await screen.findByText(/Assembled 2/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /place all/i }));
+    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
 
-    await waitFor(() => expect(screen.getByText('Placed 2 of 2 zones on the map')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(
+      'Built 2 detailed buildings, 0 family-pending masses, and 0 park/street layers',
+    )).toBeInTheDocument());
     expect(screen.getAllByText('placed')).toHaveLength(2);
 
-    const placeCalls = apiPost.mock.calls.filter(([url]) => String(url).includes('/place/'));
-    expect(placeCalls.map(([url]) => url)).toEqual(
-      expect.arrayContaining([
-        '/api/v1/lego-assembly/place/z-a',
-        '/api/v1/lego-assembly/place/z-b',
-      ]),
+    const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
+    expect(compileCall?.[1]).toEqual(
+      {
+        items: expect.arrayContaining([
+          expect.objectContaining({
+            zone_id: 'z-a',
+            recipe: expect.objectContaining({
+              schema_version: 1,
+              module_family: 'nordic_timber_midrise_family',
+              instances: planFixture.instances,
+              building_name: expect.any(String),
+            }),
+          }),
+          expect.objectContaining({ zone_id: 'z-b', recipe: expect.any(Object) }),
+        ]),
+      },
     );
-    // Recipe payload + the created building's display name.
-    expect(placeCalls[0][1]).toEqual(
-      expect.objectContaining({
-        schema_version: 1,
-        module_family: 'nordic_timber_midrise_family',
-        instances: planFixture.instances,
-        building_name: expect.any(String),
-      }),
+  });
+
+  it('marks every attempted row retryable when the atomic community build fails', async () => {
+    apiPost.mockImplementation((url: string) =>
+      url === '/api/v1/lego-assembly/place-community'
+        ? Promise.reject(make422('One zone could not be compiled; no changes were saved.'))
+        : Promise.resolve({ data: planFixture }),
     );
+
+    render(<LegoBuilderPanel zones={[
+      makeZone({ id: 'z-building' }),
+      makeZone({ id: 'z-park', zone_type: 'green_space', properties: { _plan_role: 'open_space' } }),
+    ]} onClose={vi.fn()} />);
+    expect(await screen.findByText(/Assembled 1/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /build community in 3d/i }));
+
+    await waitFor(() => expect(screen.getByText('One zone could not be compiled; no changes were saved.')).toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /retry place/i })).toBeInTheDocument();
+    expect(screen.getByText('failed')).toBeInTheDocument();
   });
 
   it('per-row Place places one zone even without a building id and marks failures retryable', async () => {
@@ -326,5 +479,56 @@ describe('LegoBuilderPanel', () => {
     fireEvent.click(screen.getAllByRole('button', { name: /^place$/i })[0]);
     await waitFor(() => expect(screen.getByRole('button', { name: /retry place/i })).toBeInTheDocument());
     expect(screen.getByText('planner said no')).toBeInTheDocument();
+  });
+
+  it('Rebuild buildings replaces an already placed recipe with the latest content-hashed assets', async () => {
+    const refreshedPlan = {
+      ...planFixture,
+      instances: [{ ...planFixture.instances[0], model_url: '/models/podium.glb?v=new-hash' }],
+    };
+    let planCalls = 0;
+    apiPost.mockImplementation((url: string) => {
+      if (url === '/api/v1/lego-assembly/plan') {
+        planCalls += 1;
+        return Promise.resolve({ data: planCalls === 1 ? planFixture : refreshedPlan });
+      }
+      if (url === '/api/v1/lego-assembly/place/zone-placed') {
+        return Promise.resolve({
+          data: { status: 'placed', zone_id: 'zone-placed', building_id: 'building-1', building_created: false },
+        });
+      }
+      return Promise.reject(new Error(`unexpected POST ${url}`));
+    });
+
+    render(<LegoBuilderPanel zones={[makeZone({
+      id: 'zone-placed',
+      building_id: 'building-1',
+      properties: {
+        development_archetype_id: 'nordic_timber_midrise',
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'building',
+          generator: 'lego_assembly',
+          compiled_at: '2026-07-19T00:00:00Z',
+        },
+      },
+    })]} onClose={vi.fn()} />);
+
+    expect(await screen.findByText('placed')).toBeInTheDocument();
+    expect(apiPost).not.toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place/zone-placed',
+      expect.anything(),
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /rebuild buildings/i }));
+
+    await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
+      '/api/v1/lego-assembly/place/zone-placed',
+      expect.objectContaining({
+        instances: [expect.objectContaining({ model_url: '/models/podium.glb?v=new-hash' })],
+      }),
+    ));
+    expect(await screen.findByText(/latest family assets/i)).toBeInTheDocument();
   });
 });

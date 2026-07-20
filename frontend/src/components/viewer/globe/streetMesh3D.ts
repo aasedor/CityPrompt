@@ -42,7 +42,7 @@ export function densifyPolyline(pts: LocalPt[], maxStep: number): LocalPt[] {
 }
 
 /** Unit perpendicular (left of travel direction) at each station. */
-function stationNormals(pts: LocalPt[]): LocalPt[] {
+export function stationNormals(pts: LocalPt[]): LocalPt[] {
   const n = pts.length;
   const normals: LocalPt[] = [];
   for (let i = 0; i < n; i++) {
@@ -54,6 +54,40 @@ function stationNormals(pts: LocalPt[]): LocalPt[] {
     normals.push({ x: -dy / len, y: dx / len });
   }
   return normals;
+}
+
+/** Terrain-following surface ribbon between two signed offsets from a
+ * centerline. Positive offset is left of travel direction. */
+export function buildRibbonBandGeometry(
+  centerline: LocalPt[],
+  startOffset: number,
+  endOffset: number,
+  liftM: number = 0.05,
+  stationZ?: number[],
+): THREE.BufferGeometry | null {
+  if (centerline.length < 2 || Math.abs(endOffset - startOffset) < 0.01) return null;
+  const normals = stationNormals(centerline);
+  const positions: number[] = [];
+  const indices: number[] = [];
+  for (let i = 0; i < centerline.length; i += 1) {
+    const point = centerline[i];
+    const normal = normals[i];
+    const z = (stationZ?.[i] ?? 0) + liftM;
+    positions.push(
+      point.x + normal.x * startOffset,
+      point.y + normal.y * startOffset,
+      z,
+      point.x + normal.x * endOffset,
+      point.y + normal.y * endOffset,
+      z,
+    );
+  }
+  for (let i = 0; i < centerline.length - 1; i += 1) {
+    const a = i * 2;
+    const b = (i + 1) * 2;
+    indices.push(a, b, b + 1, a, b + 1, a + 1);
+  }
+  return toGeometry(positions, indices);
 }
 
 function toGeometry(positions: number[], indices: number[]): THREE.BufferGeometry {
@@ -120,11 +154,60 @@ export function buildCurbBandGeometry(
   return toGeometry(positions, indices);
 }
 
+/** Raised curb prisms at arbitrary signed cross-section offsets. Detailed
+ * sections use this instead of putting a curb at the full right-of-way edge
+ * (which incorrectly stranded curbs behind sidewalks and boulevards). */
+export function buildOffsetCurbGeometry(
+  centerline: LocalPt[],
+  offsetsM: number[],
+  params: StreetDetail3DParams = STREET_DETAIL_3D,
+  stationZ?: number[],
+): THREE.BufferGeometry | null {
+  if (centerline.length < 2 || offsetsM.length === 0) return null;
+  const normals = stationNormals(centerline);
+  const halfWidth = params.curbWidth_m / 2;
+  const height = params.curbHeight_m;
+  const positions: number[] = [];
+  const indices: number[] = [];
+
+  for (const offset of offsetsM) {
+    const base = positions.length / 3;
+    for (let index = 0; index < centerline.length; index += 1) {
+      const point = centerline[index];
+      const normal = normals[index];
+      const z = stationZ?.[index] ?? 0;
+      const lowX = point.x + normal.x * (offset - halfWidth);
+      const lowY = point.y + normal.y * (offset - halfWidth);
+      const highX = point.x + normal.x * (offset + halfWidth);
+      const highY = point.y + normal.y * (offset + halfWidth);
+      positions.push(
+        lowX, lowY, z,
+        lowX, lowY, z + height,
+        highX, highY, z + height,
+        highX, highY, z,
+      );
+    }
+    for (let index = 0; index < centerline.length - 1; index += 1) {
+      const a = base + index * 4;
+      const b = base + (index + 1) * 4;
+      for (const [start, end] of [[0, 1], [1, 2], [2, 3]] as const) {
+        indices.push(
+          a + start, b + start, b + end,
+          a + start, b + end, a + end,
+        );
+      }
+    }
+  }
+
+  return toGeometry(positions, indices);
+}
+
 /** Dashed centerline marking as flat quads slightly above the surface. */
 export function buildDashGeometry(
   centerline: LocalPt[],
   params: StreetDetail3DParams = STREET_DETAIL_3D,
   stationZ?: number[],
+  offsetM: number = 0,
 ): THREE.BufferGeometry | null {
   if (centerline.length < 2) return null;
   const normals = stationNormals(centerline);
@@ -164,10 +247,10 @@ export function buildDashGeometry(
     const e = at(end);
     const base = positions.length / 3;
     positions.push(
-      s.p.x + s.n.x * hw, s.p.y + s.n.y * hw, s.z + params.dashLift_m,
-      s.p.x - s.n.x * hw, s.p.y - s.n.y * hw, s.z + params.dashLift_m,
-      e.p.x - e.n.x * hw, e.p.y - e.n.y * hw, e.z + params.dashLift_m,
-      e.p.x + e.n.x * hw, e.p.y + e.n.y * hw, e.z + params.dashLift_m,
+      s.p.x + s.n.x * (offsetM + hw), s.p.y + s.n.y * (offsetM + hw), s.z + params.dashLift_m,
+      s.p.x + s.n.x * (offsetM - hw), s.p.y + s.n.y * (offsetM - hw), s.z + params.dashLift_m,
+      e.p.x + e.n.x * (offsetM - hw), e.p.y + e.n.y * (offsetM - hw), e.z + params.dashLift_m,
+      e.p.x + e.n.x * (offsetM + hw), e.p.y + e.n.y * (offsetM + hw), e.z + params.dashLift_m,
     );
     indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
     pos += params.dashLength_m + params.dashGap_m;

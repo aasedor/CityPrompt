@@ -15,7 +15,6 @@ from shapely.geometry import Polygon
 
 from app.services.plan_geometry.generator import PlanGeometryResult, generate_plan_geometry
 from app.services.plan_geometry.plan_evaluator import (
-    GOOD_ENOUGH_OVERALL,
     evaluate_plan,
     revise_rules,
 )
@@ -34,6 +33,7 @@ def run_refinement_loop(
     parameters: dict[str, Any],
     dna: dict[str, Any],
     road_features: list[dict[str, Any]] | None = None,
+    path_features: list[dict[str, Any]] | None = None,
     district_features: list[dict[str, Any]] | None = None,
     locked_street_area_wgs84: Polygon | None = None,
     rule_hints: dict[str, float] | None = None,
@@ -55,6 +55,7 @@ def run_refinement_loop(
             scenario_label=scenario_label,
             parameters=parameters,
             road_features=road_features,
+            path_features=path_features,
             district_features=district_features,
             locked_street_area_wgs84=locked_street_area_wgs84,
             rule_overrides=overrides or None,
@@ -79,13 +80,22 @@ def run_refinement_loop(
             units_estimate=units_metric.value if units_metric else None,
         )
 
-        new_overrides, revisions = revise_rules(evaluation, overrides, result.rules, locks)
+        new_overrides, proposed_revisions = revise_rules(
+            evaluation, overrides, result.rules, locks,
+        )
+        # `revisions` means changes that WILL produce the next drawn plan. On
+        # the last allowed pass there is no next plan, so keep any remaining
+        # suggestions separately instead of claiming they were applied.
+        at_iteration_cap = iteration == MAX_ITERATIONS - 1
+        revisions = [] if at_iteration_cap else proposed_revisions
         iterations.append({
             "iteration": iteration + 1,
             "overall_score": evaluation.overall,
             "scores": {k: s.model_dump() for k, s in evaluation.scores.items()},
             "overrides_in_effect": dict(overrides),
             "revisions": revisions,
+            **({"unapplied_revisions": proposed_revisions}
+               if at_iteration_cap and proposed_revisions else {}),
             "block_count": result.block_count,
             "building_count": result.building_count,
         })
@@ -93,11 +103,10 @@ def run_refinement_loop(
             "Plan %s iteration %d: score %.3f, %d revision(s)",
             scenario_id, iteration + 1, evaluation.overall, len(revisions),
         )
-        # Converged = good overall AND no single dimension badly failed — a
-        # weighted average (fire safety counts double) can otherwise mask one
-        # dimension scoring near zero.
-        min_score = min((s.score for s in evaluation.scores.values()), default=1.0)
-        if (evaluation.overall >= GOOD_ENOUGH_OVERALL and min_score >= 0.5) or not revisions:
+        # A proposed bounded revision is part of the plan contract: run it and
+        # measure the result. Stopping solely on the weighted average used to
+        # leave a revision in the audit log that never affected the geometry.
+        if not revisions:
             break
         overrides = new_overrides
 

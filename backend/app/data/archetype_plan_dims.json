@@ -695,7 +695,7 @@
     "balconies",
     "corner_building"
    ],
-   "min_floors": 5.0,
+   "min_floors": 4.0,
    "max_floors": 7.0,
    "usable": true,
    "has_variants": true,
@@ -1665,7 +1665,7 @@
     "stone_masonry",
     "beaux_arts"
    ],
-   "min_floors": 5.0,
+   "min_floors": 4.0,
    "max_floors": 8.0,
    "usable": true,
    "has_variants": true,

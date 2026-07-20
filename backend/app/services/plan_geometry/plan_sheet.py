@@ -201,6 +201,14 @@ def build_plan_sheet(
 
     svg = _drawing_svg(boundary_wgs84, plan_zones)
     gi = plan.get("geometry_inputs") or {}
+    context_total = int((gi.get("context_road_anchors") or 0) + (gi.get("context_path_anchors") or 0))
+    context_served = int(
+        (gi.get("context_road_connections") or 0) + (gi.get("context_path_connections") or 0)
+    )
+    context_summary = (
+        f" · context connections {context_served}/{context_total}"
+        if context_total else ""
+    )
 
     return f"""<!doctype html><html><head><meta charset="utf-8">
 <title>Plan sheet — {_esc(scenario_label)}</title>
@@ -238,7 +246,7 @@ trade-off framings with verifiable citations, not conformance determinations.</d
 <p class="meta">Streets {gi.get('row_area_m2', 0):,.0f} m² · open space {gi.get('open_space_area_m2', 0):,.0f} m² ·
 blocks {gi.get('net_block_area_m2', 0):,.0f} m² · {_esc(plan.get('block_count'))} blocks ·
 {_esc(plan.get('parcel_count'))} parcels · {_esc(plan.get('intersection_density_per_km2'))} intersections/km² ·
-internal ROW {_esc((plan.get('rules') or {}).get('row_width_m'))} m
+internal ROW {_esc((plan.get('rules') or {}).get('row_width_m'))} m{context_summary}
 (clear {_esc((plan.get('rules') or {}).get('clear_width_m'))} m ≥ CSPS033 6 m)</p>
 
 <h2>Derived statistics</h2>

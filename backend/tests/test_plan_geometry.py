@@ -4,12 +4,27 @@ degradation on degenerate sites, locked-streets path, ceiling clamps."""
 
 import math
 
-from shapely.geometry import Polygon, mapping
+import pytest
+from shapely.geometry import LineString, Point, Polygon, mapping
+from shapely.ops import unary_union
 
 from app.services.plan_geometry.community_rules import MIN_ROW_M, resolve_rules
-from app.services.plan_geometry.generator import generate_plan_geometry
+from app.services.plan_geometry.generator import (
+    _is_drivable_context_feature,
+    _normalize_site_polygon,
+    _park_access_points_m,
+    generate_plan_geometry,
+)
+from app.services.plan_geometry.layout_validation import validate_plan
 from app.services.plan_geometry.parceling import building_mass_for_block, subdivide_block
-from app.services.plan_geometry.street_graph import generate_street_network
+from app.services.plan_geometry.street_graph import (
+    _append_context_connectors,
+    StreetNetwork,
+    StreetSegment,
+    entry_points_from_paths,
+    entry_points_from_roads,
+    generate_street_network,
+)
 
 # ~500 x 340 m site in the Beltline (WGS84)
 LAT, LON = 51.0405, -114.0850
@@ -39,6 +54,29 @@ PARAMS = {
 }
 
 
+def test_site_polygon_normalizer_repairs_only_a_negligible_closing_sliver():
+    site = Polygon([
+        (0.0, 0.0),
+        (10.0, 0.0),
+        (10.0, 10.0),
+        (0.0, 10.0),
+        (0.0001, -0.0001),
+    ])
+
+    repaired, note = _normalize_site_polygon(site)
+
+    assert repaired.is_valid
+    assert repaired.area > 99.9
+    assert note and note["code"] == "SITE_BOUNDARY_REPAIRED"
+
+
+def test_site_polygon_normalizer_rejects_material_bow_tie():
+    site = Polygon([(0.0, 0.0), (10.0, 10.0), (0.0, 10.0), (10.0, 0.0)])
+
+    with pytest.raises(ValueError, match="multiple material areas"):
+        _normalize_site_polygon(site)
+
+
 def test_rules_enforce_fire_clear_width_floor():
     rules, notes = resolve_rules("as_of_right", {"streets.row_width_m": {"value": 7.0}})
     assert rules.row_width_m == MIN_ROW_M
@@ -61,6 +99,7 @@ def test_full_generation_meets_p2_gates():
     assert result.block_count >= 2
     assert result.parcel_count >= result.block_count  # every block subdivided
     assert all(len(z["coordinates"]) >= 3 for z in result.zones)
+    assert all(Polygon(z["coordinates"]).is_valid for z in result.zones)
     assert all(z["properties"]["_plan_scenario"] == "lap_compliant" for z in result.zones)
     # Plan zones share one layer; height-framework zones form their OWN layer.
     for zone in result.zones:
@@ -73,6 +112,8 @@ def test_full_generation_meets_p2_gates():
     assert "FIRE_CLEAR_WIDTH_OK" in codes
     assert "PARCELS_LANDLOCKED" not in codes
     assert "MASS_STREET_COLLISION" not in codes
+    assert "MASS_OPEN_SPACE_COLLISION" not in codes
+    assert "MASS_MASS_COLLISION" not in codes
 
     gi = result.geometry_inputs
     # Land budget closes: streets + open + blocks ≈ gross (small boundary slivers allowed)
@@ -97,6 +138,7 @@ def test_full_generation_meets_p2_gates():
     parks = [z for z in result.zones if z["zone_type"] == "green_space"
              and z["properties"].get("_plan_role") == "open_space"]
     assert parks and all(z["properties"]["tree_density"] == 0.6 for z in parks)
+    assert any(z["properties"].get("park_access_points") for z in parks)
 
     # Street hierarchy: a wide main spine plus narrower locals, every full
     # street at or above the CSPS033-derived minimum ROW.
@@ -107,6 +149,49 @@ def test_full_generation_meets_p2_gates():
     non_lane = [z["properties"]["width"] for z in roads
                 if z["properties"].get("street_role") != "lane"]
     assert non_lane and all(w >= MIN_ROW_M for w in non_lane)
+
+
+def test_collision_validation_rejects_buildings_over_parks_but_allows_shared_edges():
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+    building = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+    overlapping_park = Polygon([(5, 0), (15, 0), (15, 10), (5, 10)])
+    edge_touching_park = Polygon([(10, 0), (20, 0), (20, 10), (10, 10)])
+
+    overlap_notes = validate_plan(
+        rules=rules,
+        network=StreetNetwork(),
+        blocks_m=[],
+        parcels_by_block=[],
+        masses_m=[building],
+        open_spaces_m=[overlapping_park],
+    )
+    touching_notes = validate_plan(
+        rules=rules,
+        network=StreetNetwork(),
+        blocks_m=[],
+        parcels_by_block=[],
+        masses_m=[building],
+        open_spaces_m=[edge_touching_park],
+    )
+
+    assert any(note["code"] == "MASS_OPEN_SPACE_COLLISION" for note in overlap_notes)
+    assert all(note["code"] != "MASS_OPEN_SPACE_COLLISION" for note in touching_notes)
+
+
+def test_collision_validation_rejects_overlapping_building_masses():
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+    first = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+    second = Polygon([(5, 0), (15, 0), (15, 10), (5, 10)])
+
+    notes = validate_plan(
+        rules=rules,
+        network=StreetNetwork(),
+        blocks_m=[],
+        parcels_by_block=[],
+        masses_m=[first, second],
+    )
+
+    assert any(note["code"] == "MASS_MASS_COLLISION" for note in notes)
 
 
 def test_block_scale_via_street_network():
@@ -129,6 +214,146 @@ def test_block_scale_via_street_network():
         long_edge = max(math.hypot(x2 - x1, y2 - y1)
                         for (x1, y1), (x2, y2) in zip(coords[:-1], coords[1:]))
         assert long_edge <= rules.block_target_m + rules.row_width_m + 1.0
+
+
+def test_context_entries_detect_parallel_frontages_not_only_crossings():
+    boundary = Polygon([(0, 0), (120, 0), (120, 90), (0, 90)])
+    frontage_road = LineString([(-20, -18), (140, -18)])
+    distant_road = LineString([(-20, -80), (140, -80)])
+    frontage_path = LineString([(24, -12), (54, -12)])
+
+    road_entries = entry_points_from_roads([frontage_road, distant_road], boundary)
+    path_entries = entry_points_from_paths([frontage_path], boundary)
+
+    assert len(road_entries) == 1
+    assert road_entries[0].distance(Point(60, 0)) < 1.0
+    assert len(path_entries) == 1
+    assert path_entries[0].distance(Point(39, 0)) < 1.0
+
+
+def test_park_access_points_prefer_paths_and_land_on_frontages():
+    park = Polygon([(0, 0), (40, 0), (40, 30), (0, 30)])
+    network = StreetNetwork(segments=[
+        StreetSegment(LineString([(-10, -6), (50, -6)]), 12.0, "local"),
+        StreetSegment(LineString([(47, -10), (47, 40)]), 14.0, "path"),
+        StreetSegment(LineString([(-20, 80), (60, 80)]), 16.0, "spine"),
+    ])
+
+    points = _park_access_points_m(park, network)
+
+    assert len(points) == 2
+    assert points[0].distance(Point(40, 15)) < 0.01
+    assert points[1].distance(Point(20, 0)) < 0.01
+    assert all(park.boundary.distance(point) < 0.01 for point in points)
+
+
+def test_network_connects_every_feasible_context_anchor_exactly():
+    boundary = Polygon([(0, 0), (500, 0), (500, 340), (0, 340)])
+    rules, _ = resolve_rules("lap_compliant", PARAMS)
+    road_entries = [Point(0, 70), Point(500, 270)]
+    path_entries = [Point(80, 0)]
+
+    network = generate_street_network(
+        boundary, rules, road_entries, path_entry_points=path_entries,
+    )
+    connected = unary_union(network.centerlines)
+
+    assert network.entries_served == 2
+    assert network.path_entries_served == 1
+    assert all(point.distance(connected) < 0.01 for point in road_entries + path_entries)
+    assert any(segment.role == "path" for segment in network.segments)
+    assert any(note["code"] == "CONTEXT_CONNECTIONS_APPLIED" for note in network.notes)
+
+
+def test_context_connector_tries_visible_network_line_on_concave_site():
+    # The horizontal line is slightly nearer but lies across the missing
+    # north-east notch. The vertical line remains visible through the site's
+    # southern arm and must be used instead of abandoning the entrance.
+    boundary = Polygon([(0, 0), (120, 0), (120, 40), (40, 40), (40, 120), (0, 120)])
+    entry = Point(120, 30)
+    centerlines = [
+        LineString([(35, 0), (35, 120)]),
+        LineString([(0, 50), (40, 50)]),
+    ]
+    segments = []
+
+    added = _append_context_connectors(
+        boundary_m=boundary,
+        entries=[entry],
+        role="local",
+        width_m=14.0,
+        centerlines=centerlines,
+        segments=segments,
+    )
+
+    assert added == 1
+    assert len(segments) == 1
+    assert entry.distance(unary_union(centerlines)) < 0.01
+    assert boundary.buffer(0.05).covers(segments[0].line)
+
+
+def test_drivable_context_filter_rejects_limited_access_and_unbuilt_roads():
+    residential = {
+        "properties": {"ctp_class": "Residential Street", "built_status": "Built"}
+    }
+    skeletal = {"properties": {"ctp_class": "Skeletal Road", "built_status": "Built"}}
+    motorway = {"properties": {"highway": "motorway_link"}}
+    future = {"properties": {"road_class": "Collector", "status": "Proposed"}}
+
+    assert _is_drivable_context_feature(residential)
+    assert not _is_drivable_context_feature(skeletal)
+    assert not _is_drivable_context_feature(motorway)
+    assert not _is_drivable_context_feature(future)
+
+
+def test_plan_emits_path_connectors_and_ignores_limited_access_roads():
+    frontage_road = {
+        "geometry": mapping(LineString([_offset(-20, -15), _offset(520, -15)])),
+        "properties": {"road_type": "residential", "name": "Context Street"},
+    }
+    freeway = {
+        "geometry": mapping(LineString([_offset(-20, 355), _offset(520, 355)])),
+        "properties": {"road_type": "motorway", "name": "Do Not Connect"},
+    }
+    frontage_path = {
+        "geometry": mapping(LineString([_offset(65, -12), _offset(95, -12)])),
+        "properties": {"asset_type": "multi use pathway"},
+    }
+
+    result = generate_plan_geometry(
+        site_polygon_wgs84=_site(), scenario_id="lap_compliant", scenario_label="Connected",
+        parameters=PARAMS, road_features=[frontage_road, freeway],
+        path_features=[frontage_path], district_features=[],
+    )
+
+    path_zones = [
+        zone for zone in result.zones
+        if zone["properties"].get("street_role") == "path"
+    ]
+    assert path_zones
+    assert all(zone["properties"].get("road_archetype_id") == "multi_use_trail"
+               for zone in path_zones)
+    assert all(zone["properties"].get("context_connection") is True for zone in path_zones)
+    assert any(
+        zone["properties"].get("context_connection") is True
+        and zone["properties"].get("street_role") == "local"
+        for zone in result.zones
+    )
+    context_note = next(
+        note for note in result.notes if note["code"] == "CONTEXT_CONNECTIONS_APPLIED"
+    )
+    assert "1 adjacent road" in context_note["message"]
+    assert "1 pathway" in context_note["message"]
+    assert result.geometry_inputs["context_road_anchors"] == 1
+    assert result.geometry_inputs["context_road_connections"] == 1
+    assert result.geometry_inputs["context_path_anchors"] == 1
+    assert result.geometry_inputs["context_path_connections"] == 1
+    assert any(note["code"] == "CONTEXT_CONNECTIVITY_OK" for note in result.notes)
+
+    from app.services.plan_geometry.plan_evaluator import evaluate_plan
+
+    report = evaluate_plan(result, PARAMS, units_estimate=None)
+    assert report.scores["context_connectivity"].score == 1.0
 
 
 def test_parcels_front_the_street_and_slivers_merge():
@@ -238,7 +463,13 @@ def test_plan_sheet_builds_measurable_html():
         payload={
             "plan": {"status": "complete", "generated_at": "t", "final_score": 0.95,
                      "iterations": [{"iteration": 1, "overall_score": 0.95, "scores": {}, "revisions": []}],
-                     "geometry_inputs": result.geometry_inputs, "rules": result.rules,
+                     "geometry_inputs": {
+                         **result.geometry_inputs,
+                         "context_road_anchors": 2,
+                         "context_road_connections": 2,
+                         "context_path_anchors": 1,
+                         "context_path_connections": 1,
+                     }, "rules": result.rules,
                      "block_count": result.block_count, "parcel_count": result.parcel_count,
                      "intersection_density_per_km2": 40.0, "notes": result.notes},
             "metrics": {"metrics": {"gfa_m2": {"label": "Gross floor area", "value": 100000,
@@ -253,6 +484,7 @@ def test_plan_sheet_builds_measurable_html():
     assert "<svg viewBox=" in sheet and "100 m" in sheet     # measurable drawing + scale bar
     assert "footprint × storeys" in sheet                     # derivations on the sheet
     assert "narrow vs fire access" in sheet
+    assert "context connections 3/3" in sheet
     assert sheet.count("<polygon") >= len(plan_zones)
 
 

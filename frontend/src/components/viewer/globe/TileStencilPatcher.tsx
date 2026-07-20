@@ -6,7 +6,7 @@
  * Must be placed inside <TilesRenderer> to access TilesRendererContext.
  */
 
-import { useEffect, useContext, useRef } from 'react';
+import { useEffect, useContext, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { TilesRendererContext } from '3d-tiles-renderer/r3f';
 import {
@@ -15,27 +15,60 @@ import {
   unpatchMaterialStencil,
 } from './StencilMaskPlugin';
 import type { SiteZone } from '@/types';
+import {
+  createTileSpatialMaskConfig,
+  patchMaterialForSpatialMask,
+  shouldUseSpatialTileMask,
+  unpatchMaterialSpatialMask,
+} from './TileSpatialMaskPlugin';
 
 interface TileStencilPatcherProps {
   /** Only patch when there are zones that need tile masking. */
   zones: SiteZone[];
+  terrainHeight: number;
 }
 
-export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
+export function TileStencilPatcher({ zones, terrainHeight }: TileStencilPatcherProps) {
   const tiles = useContext(TilesRendererContext);
   const patchedMaterials = useRef(new Set<THREE.Material>());
-
-  const hasMaskZones = zones.some(
-    z => shouldCreateTileStencilMask(z.zone_type) && z.coordinates.length >= 3
+  const spatialBoundary = zones.find((zone) => zone.zone_type === 'site_boundary')
+    ?? (zones.length === 1 && shouldUseSpatialTileMask(zones[0]) ? zones[0] : undefined);
+  const spatialMask = useMemo(
+    () => (
+      spatialBoundary
+        ? createTileSpatialMaskConfig(spatialBoundary, terrainHeight)
+        : null
+    ),
+    [spatialBoundary, terrainHeight],
+  );
+  const hasStencilZones = !spatialMask && zones.some(
+    (zone) => shouldCreateTileStencilMask(zone.zone_type) && zone.coordinates.length >= 3,
   );
 
   useEffect(() => {
-    if (!tiles || !hasMaskZones) {
-      // Unpatch all if no zones need masking.
-      patchedMaterials.current.forEach(m => unpatchMaterialStencil(m));
+    const unpatchAll = () => {
+      patchedMaterials.current.forEach((material) => {
+        unpatchMaterialSpatialMask(material);
+        unpatchMaterialStencil(material);
+      });
       patchedMaterials.current.clear();
+    };
+
+    if (!tiles || (!spatialMask && !hasStencilZones)) {
+      // Unpatch all if no zones need masking.
+      unpatchAll();
       return;
     }
+
+    const patchMaterial = (material: THREE.Material) => {
+      if (patchedMaterials.current.has(material)) return;
+      if (spatialMask) {
+        patchMaterialForSpatialMask(material, spatialMask);
+      } else {
+        patchMaterialForStencil(material);
+      }
+      patchedMaterials.current.add(material);
+    };
 
     const handleLoadModel = (event: any) => {
       const { scene } = event;
@@ -45,10 +78,7 @@ export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
         if (child.isMesh && child.material) {
           const materials = Array.isArray(child.material) ? child.material : [child.material];
           for (const mat of materials) {
-            if (!patchedMaterials.current.has(mat)) {
-              patchMaterialForStencil(mat);
-              patchedMaterials.current.add(mat);
-            }
+            patchMaterial(mat);
           }
         }
       });
@@ -61,10 +91,7 @@ export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
           if (child.isMesh && child.material) {
             const materials = Array.isArray(child.material) ? child.material : [child.material];
             for (const mat of materials) {
-              if (!patchedMaterials.current.has(mat)) {
-                patchMaterialForStencil(mat);
-                patchedMaterials.current.add(mat);
-              }
+              patchMaterial(mat);
             }
           }
         });
@@ -76,11 +103,9 @@ export function TileStencilPatcher({ zones }: TileStencilPatcherProps) {
 
     return () => {
       tiles.removeEventListener('load-model', handleLoadModel);
-      // Unpatch all on cleanup
-      patchedMaterials.current.forEach(m => unpatchMaterialStencil(m));
-      patchedMaterials.current.clear();
+      unpatchAll();
     };
-  }, [tiles, hasMaskZones]);
+  }, [hasStencilZones, spatialMask, tiles]);
 
   return null;
 }

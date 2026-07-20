@@ -27,6 +27,26 @@ import archetypeCatalog from '@/data/buildingArchetypes.json';
 import openSpaceCatalog from '@/data/openSpaceArchetypes.json';
 import streetPathCatalog from '@/data/streetPathArchetypes.json';
 import { prepareZonesForRender } from '@/components/viewer/resolvePlanZoneArchetypes';
+import {
+  buildParkRenderQualityInstruction,
+  resolveParkGroundProfile,
+} from './parkGroundProfiles';
+import {
+  buildParkDiagram,
+  resolveParkGroundFitInstruction,
+  selectParkRenderGeometryZones,
+} from './parkGroundTexture';
+import {
+  buildStreetRenderGroundTruthInstruction,
+  resolvePilotStreetSectionProfile,
+} from './streetSectionProfiles';
+import {
+  isCommunity3DCompiled,
+  resolveCommunity3DKind,
+  type Community3DKind,
+} from '@/features/community3d/community3d';
+import { projectedBoundsIntersectFrame } from './renderZoneVisibility';
+import { selectRenderLabelIds } from './renderLabelBudget';
 
 const DEG_TO_RAD = Math.PI / 180;
 const GROUND_ZONE_TYPES = new Set(['water', 'green_space', 'park', 'parking', 'road', 'street', 'path', 'plaza', 'development_area']);
@@ -266,6 +286,15 @@ function isBuildingZone(zone: SiteZone): boolean {
   return BUILDING_ZONE_TYPES.has(zone.zone_type);
 }
 
+function hasAuthoredCommunityGround(zone: SiteZone): boolean {
+  const kind = resolveCommunity3DKind(zone);
+  if (kind !== 'park' && kind !== 'street') return false;
+  if (isCommunity3DCompiled(zone)) return true;
+  return kind === 'park' && Boolean(
+    (zone.properties as Record<string, unknown> | undefined)?.park_ground_texture,
+  );
+}
+
 function zoneAreaM2(zone: SiteZone): number {
   if (!zone.coordinates || zone.coordinates.length < 3) return 0;
   return polygonDimensionsMeters(zone.coordinates).area;
@@ -287,7 +316,8 @@ function formatFootprintMetrics(zone: SiteZone): string {
  * Algorithm: For each zone, render all OTHER building zones (that are taller
  * or in front) as filled polygons onto a test canvas, then check how many
  * pixels of the target zone's footprint are covered.
- * If >60% covered, the zone is occluded and should be removed from the prompt.
+ * If its configured coverage threshold is exceeded, the zone is removed from
+ * the prompt.
  */
 function findOccludedZones(
   zones: SiteZone[],
@@ -853,6 +883,21 @@ async function collectArchetypeImages(
       continue;
     }
 
+    // Exact-program parks already attach a to-scale geometry diagram and a
+    // detailed material/canopy contract. Their legacy catalog cards can depict
+    // attractive but contradictory programs (for example a Japanese-garden
+    // card with European parterres and a fountain). Keep those cards out of
+    // the render stack so appearance references never overrule topology.
+    if (resolveCommunity3DKind(zone) === 'park') {
+      const parkProfile = resolveParkGroundProfile(zone);
+      if (!parkProfile.id.startsWith('catalog-')) {
+        console.log(
+          `[GlobeAIRender] Exact-program park "${zone.name || archetypeId}" uses its geometry diagram and profile instead of potentially conflicting catalog cards`,
+        );
+        continue;
+      }
+    }
+
     const entry = catalog.find((a: any) => a.id === archetypeId || archetypeId.startsWith(a.id + '_'));
     if (!entry) {
       console.log(`[GlobeAIRender] Skipping zone "${zone.name || zone.zone_type}" — archetype "${archetypeId}" not found in catalog`);
@@ -973,6 +1018,70 @@ async function collectArchetypeImages(
   return images;
 }
 
+/** Keep only zones that can contribute pixels to the captured frame. This is
+ * separate from occlusion culling: off-screen polygons are irrelevant even
+ * when they are not hidden behind another building. */
+function selectZonesInRenderFrame(
+  zones: SiteZone[],
+  camera: THREE.Camera,
+  width: number,
+  height: number,
+  terrainHeight: number,
+): SiteZone[] {
+  const marginPx = Math.max(24, Math.min(width, height) * 0.03);
+  return zones.filter((zone) => {
+    if (zone.zone_type === 'site_boundary') return true;
+    if (!zone.coordinates || zone.coordinates.length < 3) return false;
+    const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
+    const projected = zone.coordinates
+      .map((coordinate) => projectToPixels(
+        coordinate[0],
+        coordinate[1],
+        zoneTerrainHeight,
+        camera,
+        width,
+        height,
+      ))
+      .filter(Boolean) as { x: number; y: number }[];
+    const buildingHeight = isBuildingZone(zone) ? getZoneBuildingHeight(zone) : 0;
+    if (buildingHeight > 0) {
+      projected.push(...zone.coordinates
+        .map((coordinate) => projectToPixels(
+          coordinate[0],
+          coordinate[1],
+          zoneTerrainHeight + buildingHeight,
+          camera,
+          width,
+          height,
+        ))
+        .filter(Boolean) as { x: number; y: number }[]);
+    }
+    return projectedBoundsIntersectFrame(projected, width, height, marginPx);
+  });
+}
+
+/** Add a bounded set of local, zero-credit park diagrams to the final render
+ * request. The live screenshot carries appearance; these north-up diagrams
+ * prevent image models from simplifying a reservoir shoreline, sports field,
+ * fountain, bridge alignment, or greenway into generic landscaping. */
+function collectParkGeometryImages(
+  zones: SiteZone[],
+): Array<{ image_base64: string; label: string; zone_color: string; angle: string }> {
+  return selectParkRenderGeometryZones(zones).flatMap((zone) => {
+    const diagram = buildParkDiagram(zone);
+    if (!diagram) return [];
+    const profile = resolveParkGroundProfile(zone);
+    const imageBase64 = diagram.dataUrl.split(',')[1];
+    if (!imageBase64) return [];
+    return [{
+      image_base64: imageBase64,
+      label: `PARK GEOMETRY DIAGRAM — authoritative north-up internal layout for "${zone.name || profile.title}": ${profile.renderSummary}. Preserve the parcel boundary, paths, gateways, water/field footprints, fixed pads and structure alignments exactly. PROGRAM LOCKS: ${profile.guideLegend.join('; ')}. ${diagram.fitInstruction} FORBIDDEN REDESIGN: ${profile.criticalConstraints} Diagram colors are schematic geometry cues, not final materials.`,
+      zone_color: colorName(resolveZoneColor(zone)),
+      angle: '90° north-up park geometry diagram',
+    }];
+  });
+}
+
 // ─── COLOR NAMING ──────────────────────────────────────────────────────
 
 function hexToHsl(hex: string): [number, number, number] {
@@ -1084,7 +1193,12 @@ function getMapOverlayPrompt(zone: SiteZone): string | undefined {
   if (!entry) return undefined;
 
   // Check for variant-specific description (e.g., "cul_de_sac_v2" → European cobblestone variant)
-  const variant = entry.variants?.find((v: any) => v.id === archetypeId);
+  const selectedVariantId = (props.development_selected_variant_id as string)
+    || (props.green_space_selected_variant_id as string)
+    || (props.road_selected_variant_id as string)
+    || (props.plaza_selected_variant_id as string)
+    || '';
+  const variant = entry.variants?.find((v: any) => v.id === selectedVariantId);
   const variantDesc = variant?.description ? ` Style: ${variant.description}` : '';
 
   const base = entry.renderPrompt?.mapOverlay || entry.prompt?.subject || '';
@@ -1158,11 +1272,15 @@ function getZoneArchetypeInfo(zone: SiteZone): {
   return {};
 }
 
+export const MAX_DETAILED_RENDER_PROMPT_ZONES = 80;
+export const MAX_DISTRICT_RENDER_GROUP_LINES = 32;
+export const MAX_DISTRICT_RENDER_LABELS = 80;
+
 /**
  * Build SCHEMA-style structured prompt for aerial renders.
  * Based on the proven Mapbox aerial prompt structure.
  */
-function buildPrompt(
+export function buildPrompt(
   zones: SiteZone[],
   style: string,
   camera?: THREE.Camera,
@@ -1171,12 +1289,13 @@ function buildPrompt(
 ): string {
   // --- CAMERA ANGLE ---
   let pitchDesc = 'oblique aerial (~40deg camera elevation above ground; ~50deg from nadir)';
+  let pitchFromNadirDeg = 50;
   if (camera && terrainHeight != null) {
     // Estimate angle from nadir, then convert to architectural camera elevation.
     const camDir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion).normalize();
     const camPos = camera.position.clone().normalize(); // surface normal at camera position
     const cosAngle = THREE.MathUtils.clamp(camDir.dot(camPos.clone().negate()), -1, 1);
-    const pitchFromNadirDeg = Math.acos(cosAngle) * 180 / Math.PI;
+    pitchFromNadirDeg = Math.acos(cosAngle) * 180 / Math.PI;
     const cameraElevationDeg = pitchFromNadirToCameraElevation(pitchFromNadirDeg);
     pitchDesc = describeCameraAngleForPrompt(pitchFromNadirDeg);
     console.log(
@@ -1245,12 +1364,31 @@ function buildPrompt(
   };
 
   const zoneLines: string[] = [];
+  interface DistrictRenderGroup {
+    key: string;
+    kind: Community3DKind | 'zone';
+    title: string;
+    count: number;
+    positions: Set<string>;
+    colors: Set<string>;
+    minFloors: number | null;
+    maxFloors: number | null;
+    minHeightM: number | null;
+    maxHeightM: number | null;
+    minAreaM2: number;
+    maxAreaM2: number;
+    featureSummary: string;
+    modeledCount: number;
+    contextConnectionCount: number;
+  }
+  const districtGroups = new Map<string, DistrictRenderGroup>();
   for (let i = 0; i < renderZones.length; i++) {
     const zone = renderZones[i];
     const color = colorName(resolveZoneColor(zone));
     const position = screenPositionForZone(zone);
     const props = zone.properties || {};
     const info = getZoneArchetypeInfo(zone);
+    const communityKind = resolveCommunity3DKind(zone);
 
     const floors = readFiniteNumber(props.floors) ?? 0;
     const heightM = getZoneBuildingHeight(zone);
@@ -1284,6 +1422,14 @@ function buildPrompt(
 
     // Feature keywords from archetype metadata
     const features: string[] = [];
+    const parkProfile = communityKind === 'park'
+      ? resolveParkGroundProfile(zone)
+      : null;
+    const streetProfile = communityKind === 'street'
+      ? resolvePilotStreetSectionProfile(zone)
+      : null;
+    const authoredGround = hasAuthoredCommunityGround(zone);
+    const parkFitInstruction = parkProfile ? resolveParkGroundFitInstruction(zone) : '';
     if (overlayPrompt) {
       // Use the archetype's own rendering instruction if available
       features.push(overlayPrompt);
@@ -1302,8 +1448,38 @@ function buildPrompt(
     // AI-planner park zones: state the program explicitly and first (survives
     // the feature budget) — models otherwise invent ponds/amphitheatres in
     // large green polygons.
-    if (props._plan_role === 'open_space') {
+    if (props._plan_role === 'open_space' && !authoredGround && !parkProfile?.isPilot) {
       features.unshift('flat neighbourhood park: lawn, tree clusters, walking paths — no water features, no amphitheatre');
+    }
+
+    if (parkProfile && authoredGround) {
+      features.unshift(
+        `3D PARK GROUND TRUTH visible in the screenshot - PRESERVE its exact paths, water/field footprints, fixed pads, shoreline and dam geometry; standing trees and benches are intentionally deferred to the render pass; ${parkProfile.renderSummary}; ${parkFitInstruction}`,
+      );
+    }
+    if (parkProfile) {
+      features.unshift(buildParkRenderQualityInstruction(parkProfile, pitchFromNadirDeg));
+      // This must precede the longer quality paragraph inside the bounded
+      // per-zone feature string. Otherwise mature-planting prose consumes the
+      // full budget before the model sees the exact paths/beds/pads it must
+      // preserve (the botanical trial otherwise invented a fountain/parterre).
+      features.unshift(
+        `PARK TOPOLOGY LOCK - more important than planting style: ${parkProfile.renderSummary}; ${parkProfile.guideLegend.join('; ')}; ${parkProfile.criticalConstraints}; ${parkFitInstruction}`,
+      );
+    }
+    if (streetProfile) {
+      features.unshift(buildStreetRenderGroundTruthInstruction(streetProfile));
+    }
+    if (communityKind === 'street' && authoredGround && !streetProfile) {
+      features.unshift(
+        '3D STREET GROUND TRUTH visible in the screenshot - PRESERVE the exact carriageway/path edges, markings and curb lines already shown; trees and furniture are render-stage elements and may be added only on non-circulation planting/furnishing areas with clear crossings, driveways and sightlines; finish materials without redesigning the section',
+      );
+    }
+    if (props.context_connection === true) {
+      const connectionKind = props.street_role === 'path' ? 'walking/cycling path' : 'street';
+      features.unshift(
+        `CONTEXT CONNECTION: this ${connectionKind} reaches the site boundary to join an existing corridor - keep its centerline, grade and usable surface continuous across the seam; do not terminate it with a curb, lawn, building or planting`,
+      );
     }
 
     // Perimeter blocks under-specify themselves as polygons alone: same-shade
@@ -1327,10 +1503,165 @@ function buildPrompt(
 
     // Custom-style zones carry the user's full description — give it more room
     // than the compressed archetype keyword budget (expansions run ~600-900 chars).
-    const featureBudget = getCustomZoneStyle(zone) ? 900 : 200;
+    const featureBudget = getCustomZoneStyle(zone)
+      ? 900
+      : parkProfile
+        // Park prompts must retain both the geometry-first topology/whole-
+        // element locks and the following mature-landscape quality guidance.
+        // Concave parcels add a bounded fit override, so the previous 1,200
+        // character cap could truncate the quality clause entirely.
+        ? 1700
+        : streetProfile
+          ? 650
+          // Preserve the signature material/form cues that commonly appear
+          // after the first sentence (fire escapes, awnings, civic glazing,
+          // courtyard enclosure) while remaining safely bounded at district
+          // scale by the group-line cap below.
+          : (isBuildingZone(zone) ? 420 : 200);
     const featureStr = features.join(', ').substring(0, featureBudget);
     zoneLines.push(`${i + 1}. [${color}] @ ${position} of frame | ${name} | ${scale} | ${featureStr || 'render as described'}`);
+
+    const groupKind = communityKind ?? (isBuildingZone(zone) ? 'building' : 'zone');
+    const groupKey = [
+      groupKind,
+      name,
+      parkProfile?.id ?? '',
+      streetProfile?.archetypeId ?? '',
+      String(props._plan_role ?? ''),
+      String(props.typology ?? ''),
+    ].join('|');
+    const areaM2 = Math.max(0, zoneAreaM2(zone));
+    const isModeled = Boolean(zone.building_id && modeledBuildingIds?.has(zone.building_id));
+    const isContextConnection = props.context_connection === true;
+    const existingGroup = districtGroups.get(groupKey);
+    if (existingGroup) {
+      existingGroup.count += 1;
+      existingGroup.positions.add(position);
+      existingGroup.colors.add(color);
+      if (floors > 0) {
+        existingGroup.minFloors = existingGroup.minFloors == null
+          ? floors
+          : Math.min(existingGroup.minFloors, floors);
+        existingGroup.maxFloors = existingGroup.maxFloors == null
+          ? floors
+          : Math.max(existingGroup.maxFloors, floors);
+      }
+      if (heightM > 0) {
+        existingGroup.minHeightM = existingGroup.minHeightM == null
+          ? heightM
+          : Math.min(existingGroup.minHeightM, heightM);
+        existingGroup.maxHeightM = existingGroup.maxHeightM == null
+          ? heightM
+          : Math.max(existingGroup.maxHeightM, heightM);
+      }
+      existingGroup.minAreaM2 = Math.min(existingGroup.minAreaM2, areaM2);
+      existingGroup.maxAreaM2 = Math.max(existingGroup.maxAreaM2, areaM2);
+      existingGroup.modeledCount += isModeled ? 1 : 0;
+      existingGroup.contextConnectionCount += isContextConnection ? 1 : 0;
+    } else {
+      districtGroups.set(groupKey, {
+        key: groupKey,
+        kind: groupKind,
+        title: name,
+        count: 1,
+        positions: new Set([position]),
+        colors: new Set([color]),
+        minFloors: floors > 0 ? floors : null,
+        maxFloors: floors > 0 ? floors : null,
+        minHeightM: heightM > 0 ? heightM : null,
+        maxHeightM: heightM > 0 ? heightM : null,
+        minAreaM2: areaM2,
+        maxAreaM2: areaM2,
+        featureSummary: featureStr || 'render as described',
+        modeledCount: isModeled ? 1 : 0,
+        contextConnectionCount: isContextConnection ? 1 : 0,
+      });
+    }
   }
+
+  const useDistrictZoneGroups = renderZones.length > MAX_DETAILED_RENDER_PROMPT_ZONES;
+  const allDistrictGroups = [...districtGroups.values()];
+  const prioritySortedDistrictGroups = [...allDistrictGroups].sort((left, right) => {
+    const priority = (group: DistrictRenderGroup): number => (
+      (group.contextConnectionCount > 0 ? 1_000_000_000 : 0)
+      + (group.kind === 'park' || group.kind === 'street' ? 10_000_000 : 0)
+      + (group.modeledCount > 0 ? 100_000 : 0)
+      + group.count
+    );
+    return priority(right) - priority(left)
+      || right.count - left.count
+      || left.kind.localeCompare(right.kind)
+      || left.title.localeCompare(right.title);
+  });
+  const hasDistrictGroupOverflow = prioritySortedDistrictGroups.length > MAX_DISTRICT_RENDER_GROUP_LINES;
+  const selectedDistrictGroups = hasDistrictGroupOverflow
+    ? prioritySortedDistrictGroups.slice(0, MAX_DISTRICT_RENDER_GROUP_LINES - 1)
+    : prioritySortedDistrictGroups;
+  const overflowDistrictGroups = hasDistrictGroupOverflow
+    ? prioritySortedDistrictGroups.slice(MAX_DISTRICT_RENDER_GROUP_LINES - 1)
+    : [];
+  const districtZoneLines = selectedDistrictGroups
+    .sort((left, right) => (
+      right.count - left.count
+      || left.kind.localeCompare(right.kind)
+      || left.title.localeCompare(right.title)
+    ))
+    .map((group, index) => {
+      const scaleParts: string[] = [];
+      if (group.minFloors != null && group.maxFloors != null) {
+        scaleParts.push(group.minFloors === group.maxFloors
+          ? `${group.minFloors}F`
+          : `${group.minFloors}-${group.maxFloors}F`);
+      }
+      if (group.minHeightM != null && group.maxHeightM != null) {
+        scaleParts.push(Math.round(group.minHeightM) === Math.round(group.maxHeightM)
+          ? `${Math.round(group.minHeightM)}m high`
+          : `${Math.round(group.minHeightM)}-${Math.round(group.maxHeightM)}m high`);
+      }
+      const formatGroupArea = (area: number): string => (
+        area >= 10_000 ? `${(area / 10_000).toFixed(1)} ha` : `${Math.max(1, Math.round(area))} m2`
+      );
+      scaleParts.push(group.minAreaM2 === group.maxAreaM2
+        ? `${formatGroupArea(group.minAreaM2)} footprints`
+        : `${formatGroupArea(group.minAreaM2)}-${formatGroupArea(group.maxAreaM2)} footprints`);
+      const positions = [...group.positions].sort().join(', ');
+      const colors = [...group.colors].sort().join(', ');
+      const geometryTruth = group.modeledCount > 0
+        ? ` ${group.modeledCount}/${group.count} are visible 3D proposal geometries: preserve every individual footprint, height, roofline and silhouette.`
+        : '';
+      const contextTruth = group.contextConnectionCount > 0
+        ? ` ${group.contextConnectionCount} are context connections and must continue through the site edge.`
+        : '';
+      const featureLimit = group.kind === 'building' ? 420 : 900;
+      return `${index + 1}. ${group.count} ${group.kind} zone${group.count === 1 ? '' : 's'} | ${group.title} | fills ${colors} | across ${positions} | ${scaleParts.join(', ')} | ${group.featureSummary.substring(0, featureLimit)}${geometryTruth}${contextTruth}`;
+    });
+  if (overflowDistrictGroups.length > 0) {
+    const overflowByKind = new Map<string, number>();
+    let overflowZoneCount = 0;
+    let overflowContextConnections = 0;
+    for (const group of overflowDistrictGroups) {
+      overflowByKind.set(group.kind, (overflowByKind.get(group.kind) ?? 0) + group.count);
+      overflowZoneCount += group.count;
+      overflowContextConnections += group.contextConnectionCount;
+    }
+    const overflowInventory = [...overflowByKind.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([kind, count]) => `${count} ${kind}`)
+      .join(', ');
+    districtZoneLines.push(
+      `${districtZoneLines.length + 1}. ${overflowDistrictGroups.length} additional program groups covering ${overflowZoneCount} zones (${overflowInventory}) | Follow the representative on-image labels, group-consistent fills and exact mask/3D geometry; do not merge or omit these instances.${overflowContextConnections > 0 ? ` ${overflowContextConnections} are context connections and must continue through the site edge.` : ''}`,
+    );
+  }
+
+  const zoneSchemaClause = useDistrictZoneGroups
+    ? `DISTRICT ZONE GROUPS (${districtGroups.size} archetype/program groups summarized in ${districtZoneLines.length} bounded lines; all ${renderZones.length} individual polygons remain authoritative in the image and mask):\n${districtZoneLines.join('\n')}`
+    : `ZONES:\n${zoneLines.join('\n')}`;
+  const zoneIdentificationClause = useDistrictZoneGroups
+    ? `DISTRICT IDENTIFICATION: Representative text labels identify each program group; every individual zone remains located by its dashed polygon, group-consistent fill, exact mask and any visible 3D proposal geometry. The grouped list summarizes repeated programs only; it does not merge, relocate, omit or enlarge polygons. Treat every separate masked polygon or visible 3D proposal object as one authoritative instance of its group.`
+    : `ZONE IDENTIFICATION: Each zone polygon has TWO visual identifiers: (1) its archetype name written as colored text on the polygon, and (2) a unique bright DASHED BORDER in a distinct color (red, blue, magenta, cyan, yellow, etc.). The text label color matches the border color. Use BOTH the text label AND the border color to identify each zone. Zones with similar fill colors can be distinguished by their different border colors. Road/street zones can be distinguished from existing roads by their dashed border — only polygons with dashed borders are zones to render.`;
+  const zoneAssignmentClause = useDistrictZoneGroups
+    ? `DISTRICT ASSIGNMENT: Preserve the exact on-screen location, footprint, separation, orientation and occlusion of every individual proposal. Apply each grouped archetype consistently to all matching polygon instances without collapsing a row of buildings into one slab, filling courtyards, moving parks, or simplifying street/path networks. The image geometry and mask override any typical archetype dimensions.`
+    : `ZONE ASSIGNMENT: Each zone line in the ZONES list above begins with "@ SCREEN-POSITION" (values: UPPER-LEFT, UPPER-CENTER, UPPER-RIGHT, MIDDLE-LEFT, CENTER, MIDDLE-RIGHT, LOWER-LEFT, LOWER-CENTER, LOWER-RIGHT) — this is the location of that zone's polygon within THIS image's 2D frame. It is a THIRD identification axis alongside color and text label. Verify color, label, AND screen position all match before rendering an archetype at a polygon. If a line says "[magenta] @ LOWER-RIGHT | Grand Magasin", render the Grand Magasin archetype at the polygon in the lower-right region of the frame — NOT at a polygon elsewhere even if its color looks similar. Never swap archetypes between polygons. When two zones have similar fill colors, the SCREEN-POSITION resolves the ambiguity — trust the position anchor over color similarity.`;
 
   // --- ASSEMBLE SCHEMA PROMPT ---
   // Artistic styles drop the photoreal-specific clauses (color temp matching,
@@ -1353,10 +1684,31 @@ function buildPrompt(
   const modeledMandatory = hasModeledZones
     ? ` EXCEPTION — 3D MASSING MODELS: some building zones already contain a detailed 3D building model in the screenshot (not a flat colored polygon). For those, KEEP the model's exact geometry — footprint, height, roofline, silhouette — and render facades/materials/entourage onto it in the declared style.`
     : '';
+  const hasGroundTruthZones = renderZones.some((zone) => (
+    hasAuthoredCommunityGround(zone)
+    || (resolveCommunity3DKind(zone) === 'park' && resolveParkGroundProfile(zone).isPilot)
+    || (resolveCommunity3DKind(zone) === 'street' && Boolean(resolvePilotStreetSectionProfile(zone)))
+  ));
+  const groundTruthMandatory = hasGroundTruthZones
+    ? ' EXCEPTION - 3D PARK/STREET GROUND TRUTH: pilot park surfaces and street cross-sections already visible in the screenshot are authoritative proposal geometry. Finish and blend them photographically, but do not redesign, move, simplify or replace their paths, fields, ponds, shorelines, dams, lanes, medians, cycle tracks or sidewalks. Park and street trees, benches and other furniture may be intentionally absent from the tile view: add them only on eligible dry planting/furnishing areas with circulation, crossing, sightline and water setbacks.'
+    : '';
+  const hasParkZones = renderZones.some((zone) => resolveCommunity3DKind(zone) === 'park');
+  const parkQualityMandatory = hasParkZones
+    ? ` PARK QUALITY: every park must read as a mature designed urban landscape with a legible connected path network, intentional clearings and destinations, layered species-diverse canopy, understory and groundcover. ${pitchFromNadirDeg <= 30 ? 'From this near-nadir view, preserve a crisp aerial mosaic of canopy masses, lawn, beds, paths, water and hardscape.' : 'From this oblique view, show convincing canopy depth, crown variation and grounded shadows while keeping paths, clearings, water and destination structures readable.'} Never return flat green fill, sparse identical tree dots or disconnected decorative paths.`
+    : '';
+  const hasContextConnections = renderZones.some(
+    (zone) => (zone.properties as Record<string, unknown> | undefined)?.context_connection === true,
+  );
+  const contextConnectionMandatory = hasContextConnections
+    ? ' CONTEXT CONNECTIONS: any proposed street or path that reaches the site boundary must visibly continue into the matching existing outside corridor with aligned centerline, grade and usable surface; never cap it with a curb, lawn, building or planting.'
+    : '';
+  const zoneReadingInstruction = useDistrictZoneGroups
+    ? 'Use the representative labels, group-consistent fills, dashed polygons and grouped list together to identify what to render at every individual polygon.'
+    : 'Read the text label on each polygon to identify what to render there.';
   const mandatoryClause = (isArtistic
-    ? `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays with zone content rendered in the declared STYLE. Read the text label on each polygon to identify what to render there. Zone content must be rendered in the same style as the rest of the composition — no photorealistic material breakthrough inside the mask.`
-    : `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. Read the text label on each polygon to identify what to render there. Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`
-  ) + modeledMandatory;
+    ? `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays with zone content rendered in the declared STYLE. ${zoneReadingInstruction} Zone content must be rendered in the same style as the rest of the composition — no photorealistic material breakthrough inside the mask.`
+    : `MANDATORY: The white mask shows the EXACT area to edit. Replace the colored polygon overlays visible in the screenshot with photorealistic architectural materials. ${zoneReadingInstruction} Realistic rooftop materials, facades, and landscaping. Match scale and density of surrounding real 3D buildings. Rendered building facades and roofs MUST have the same color cast, warmth, and atmospheric tint as adjacent real buildings.`
+  ) + modeledMandatory + groundTruthMandatory + parkQualityMandatory + contextConnectionMandatory;
   const prohibitionsClause = (isArtistic
     ? `PROHIBITIONS: colored polygon fills visible on ANY rendered surface, dashed boundary lines or outlines visible, text labels visible, watermarks, mixing photorealistic passages with the declared artistic style (entire output must be in one style), any photoreal material rendering inside the mask.`
     : `PROHIBITIONS: colored polygon fills visible on ANY rendered surface (rooftops, facades, ground), dashed boundary lines or outlines visible, text labels visible, watermarks, color temperature mismatch between rendered and existing buildings, rendered buildings appearing unnaturally crisp or clean compared to surroundings${style === 'winter' ? ', lush green vegetation, summer foliage, bright green lawns' : ''}`
@@ -1375,10 +1727,10 @@ function buildPrompt(
     !isArtistic ? `COLOR TEMPERATURE MATCHING: Analyze the color temperature and atmospheric conditions of the EXISTING buildings and terrain in the photograph. Match the EXACT same warm/cool tone, haze level, and ambient light color on all rendered zones. If the scene has golden-hour warmth, render buildings with the same warm amber tones — NOT neutral daylight grey. Rendered materials must look like they exist in the same atmosphere and light as the surrounding real buildings.` : null,
     !isArtistic ? `ATMOSPHERIC PERSPECTIVE: Apply the same atmospheric haze and aerial perspective visible on surrounding buildings at similar distances. Distant rendered zones should have reduced contrast and shifted color matching the existing depth cues in the photograph.` : null,
     `MAP SCALE: The drawn footprint measurements in ZONES are computed from the longitude/latitude map and are authoritative. Adapt each archetype to fit that footprint; do not enlarge buildings to match a reference image or typical archetype scale.`,
-    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(isBuildingZone).length} building${renderZones.filter(isBuildingZone).length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'green_space').length} park${renderZones.filter(z => z.zone_type === 'green_space').length !== 1 ? 's' : ''}, ${renderZones.filter(z => z.zone_type === 'road').length} road${renderZones.filter(z => z.zone_type === 'road').length !== 1 ? 's' : ''}.`,
-    `ZONES:\n${zoneLines.join('\n')}`,
-    `ZONE IDENTIFICATION: Each zone polygon has TWO visual identifiers: (1) its archetype name written as colored text on the polygon, and (2) a unique bright DASHED BORDER in a distinct color (red, blue, magenta, cyan, yellow, etc.). The text label color matches the border color. Use BOTH the text label AND the border color to identify each zone. Zones with similar fill colors can be distinguished by their different border colors. Road/street zones can be distinguished from existing roads by their dashed border — only polygons with dashed borders are zones to render.`,
-    `ZONE ASSIGNMENT: Each zone line in the ZONES list above begins with "@ SCREEN-POSITION" (values: UPPER-LEFT, UPPER-CENTER, UPPER-RIGHT, MIDDLE-LEFT, CENTER, MIDDLE-RIGHT, LOWER-LEFT, LOWER-CENTER, LOWER-RIGHT) — this is the location of that zone's polygon within THIS image's 2D frame. It is a THIRD identification axis alongside color and text label. Verify color, label, AND screen position all match before rendering an archetype at a polygon. If a line says "[magenta] @ LOWER-RIGHT | Grand Magasin", render the Grand Magasin archetype at the polygon in the lower-right region of the frame — NOT at a polygon elsewhere even if its color looks similar. Never swap archetypes between polygons. When two zones have similar fill colors, the SCREEN-POSITION resolves the ambiguity — trust the position anchor over color similarity.`,
+    `NUMERICAL INVENTORY: This scene contains exactly ${renderZones.length} zone${renderZones.length > 1 ? 's' : ''}: ${renderZones.filter(isBuildingZone).length} building${renderZones.filter(isBuildingZone).length !== 1 ? 's' : ''}, ${renderZones.filter(z => resolveCommunity3DKind(z) === 'park').length} park/plaza${renderZones.filter(z => resolveCommunity3DKind(z) === 'park').length !== 1 ? 's' : ''}, ${renderZones.filter(z => resolveCommunity3DKind(z) === 'street').length} street/path${renderZones.filter(z => resolveCommunity3DKind(z) === 'street').length !== 1 ? 's' : ''}.`,
+    zoneSchemaClause,
+    zoneIdentificationClause,
+    zoneAssignmentClause,
     mandatoryClause,
     prohibitionsClause,
     siteBoundaryClause,
@@ -1799,8 +2151,6 @@ export interface GlobeRenderProgress {
   zoneName: string;
   phase: 'ground' | 'building';
 }
-
-export const PERZONE_THRESHOLD = 99; // Single-shot is always used — per-zone disabled (text labels + borders handle zone identification)
 
 /**
  * Generate a binary mask for a SINGLE zone, with building height extension.
@@ -2252,7 +2602,18 @@ export function useGlobeAIRender() {
         ? 'gemini-3.1-flash-image'
         : model;
 
-      // 1a. Add text labels to screenshot so Gemini can read zone names
+      const frameZones = selectZonesInRenderFrame(
+        zones,
+        camera,
+        canvas.width,
+        canvas.height,
+        terrainHeight,
+      );
+      console.log(
+        `[GlobeAIRender] Frame visibility: ${frameZones.length}/${zones.length} zones can contribute pixels`,
+      );
+
+      // 1a. Add text labels to screenshot so the image model can read zone names
       const imageBase64 = await (async () => {
         const img = await loadImage(base64ToDataUri(baseBase64));
         const labelCanvas = document.createElement('canvas');
@@ -2261,7 +2622,7 @@ export function useGlobeAIRender() {
         const ctx = labelCanvas.getContext('2d')!;
         ctx.drawImage(img, 0, 0);
 
-        const editableZones = zones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates?.length >= 3);
+        const editableZones = frameZones.filter(z => z.zone_type !== 'site_boundary' && z.coordinates?.length >= 3);
         const scaleX = labelCanvas.width / canvas.width;
         const scaleY = labelCanvas.height / canvas.height;
 
@@ -2319,13 +2680,56 @@ export function useGlobeAIRender() {
           ctx.restore();
         }
 
-        // Draw text labels at each zone centroid
+        const labelEntries = editableZones.map((zone, index) => {
+          const props = zone.properties || {};
+          const info = getZoneArchetypeInfo(zone);
+          const communityKind = resolveCommunity3DKind(zone);
+          const parkProfile = communityKind === 'park' ? resolveParkGroundProfile(zone) : null;
+          const streetProfile = communityKind === 'street' ? resolvePilotStreetSectionProfile(zone) : null;
+          const name = (getCustomZoneStyle(zone) ? zone.name : undefined)
+            || info.archetypeTitle
+            || zone.name
+            || ZONE_TYPE_CONFIG[zone.zone_type]?.label
+            || zone.zone_type;
+          const groupKind = communityKind ?? (isBuildingZone(zone) ? 'building' : 'zone');
+          const groupKey = [
+            groupKind,
+            name,
+            parkProfile?.id ?? '',
+            streetProfile?.archetypeId ?? '',
+            String(props._plan_role ?? ''),
+            String(props.typology ?? ''),
+          ].join('|');
+          const priority = (props.context_connection === true ? 1_000_000_000 : 0)
+            + (communityKind === 'park' || communityKind === 'street' ? 10_000_000 : 0)
+            + (getCustomZoneStyle(zone) ? 1_000_000 : 0)
+            + (zone.building_id && options.modeledBuildingIds?.has(zone.building_id) ? 100_000 : 0);
+          return {
+            zone,
+            candidate: {
+              id: zone.id || `render-zone-${index}`,
+              groupKey,
+              priority,
+              area: Math.max(0, zoneAreaM2(zone)),
+            },
+          };
+        });
+        const selectedLabelIds = selectRenderLabelIds(
+          labelEntries.map(entry => entry.candidate),
+          MAX_DISTRICT_RENDER_LABELS,
+        );
+        const labelZones = labelEntries
+          .filter(entry => selectedLabelIds.has(entry.candidate.id))
+          .map(entry => entry.zone);
+
+        // Draw representative text labels at zone centroids. All polygons still
+        // retain their border and mask; only the text is budgeted.
         ctx.font = 'bold 28px Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        for (let zi = 0; zi < editableZones.length; zi++) {
-          const zone = editableZones[zi];
+        for (let zi = 0; zi < labelZones.length; zi++) {
+          const zone = labelZones[zi];
           const zoneTerrainHeight = getZoneTerrainHeight(zone, terrainHeight);
           const centroid = zone.coordinates.reduce(
             (acc, c) => [acc[0] + c[0] / zone.coordinates.length, acc[1] + c[1] / zone.coordinates.length],
@@ -2347,15 +2751,17 @@ export function useGlobeAIRender() {
           ctx.fillStyle = borderColor;
           ctx.fillText(label, x, y);
         }
-        console.log(`[GlobeAIRender] Added ${editableZones.length} text labels + colored borders to screenshot`);
+        console.log(
+          `[GlobeAIRender] Added ${labelZones.length}/${editableZones.length} text labels + ${editableZones.length} colored borders to screenshot`,
+        );
         return labelCanvas.toDataURL('image/jpeg', 0.85).split(',')[1];
       })();
 
       // 1b. Occlusion culling — remove zones hidden behind taller buildings
-      const occludedIds = findOccludedZones(zones, camera, canvas.width, canvas.height, terrainHeight);
+      const occludedIds = findOccludedZones(frameZones, camera, canvas.width, canvas.height, terrainHeight);
       const visibleZones = occludedIds.size > 0
-        ? zones.filter(z => !occludedIds.has(z.id || ''))
-        : zones;
+        ? frameZones.filter(z => !occludedIds.has(z.id || ''))
+        : frameZones;
 
       // 2. Generate binary mask from VISIBLE zone polygons only
       console.log('[GlobeAIRender] Generating mask...');
@@ -2423,6 +2829,21 @@ export function useGlobeAIRender() {
         }
       }
 
+      // 4b. Geometry-critical park diagrams sit immediately after the whole-
+      // plan diagram and before visual-style cards. The bounded selector keeps
+      // large master plans within a useful reference budget; no API call is
+      // made to construct these local canvas diagrams.
+      const parkGeometryImages = localStorage.getItem('cc_park_geometry_conditioning') === '0'
+        ? []
+        : collectParkGeometryImages(visibleZones);
+      if (parkGeometryImages.length > 0) {
+        archetypeImages.splice(planDiagramAttached ? 1 : 0, 0, ...parkGeometryImages);
+        console.log(
+          `[GlobeAIRender] Attached ${parkGeometryImages.length} authoritative park geometry diagram(s) `
+          + `(afterPlan=${planDiagramAttached})`,
+        );
+      }
+
       // GPT Image 2 accepts at most 16 input images — we used to attach up to
       // 48, so "Image N" prompt labels could reference images GPT never saw
       // (silently breaking the slot-1 plan-diagram contract). Clamp BEFORE the
@@ -2440,10 +2861,15 @@ export function useGlobeAIRender() {
 
       if (archetypeImages.length > 0) {
         prompt += (
-          `\n\nARCHETYPE REFERENCE IMAGES (Images 2+): ${archetypeImages.length} ` +
-          `images provide the visual identity for the drawn zones. Each image is ` +
+          `\n\nRENDER REFERENCE IMAGES (Images 2+): ${archetypeImages.length} ` +
+          `images provide authoritative geometry and/or visual identity for the drawn zones. Each image is ` +
           `labeled with its VIEWING ANGLE so you can match your output angle to ` +
           `the right reference:\n` +
+          `  • "90° north-up park geometry diagram" — a schematic, to-scale ` +
+          `internal park plan. Its paths, gateways, water/field footprints, fixed ` +
+          `pads and structure alignments are authoritative; preserve their geometry ` +
+          `but replace diagram colors with the finished materials visible in the ` +
+          `source scene and style references.\n` +
           `  • "0° eye-level / street view" — ground-level photograph at ~0° ` +
           `elevation (90° from nadir): camera looks at the horizon, NOT downward. ` +
           `Shows facade detail, materials, ornament, colors, ground-level character.\n` +
@@ -2451,11 +2877,16 @@ export function useGlobeAIRender() {
           `shows rooftop + upper facades from a corner, triangulates 3D form.\n` +
           `  • "90° nadir / top-down aerial" — drone at 90° elevation (0° from ` +
           `nadir) looking straight down; shows rooftop plan, site layout, roof materials.\n` +
-          `HOW TO USE: when rendering at an oblique camera angle, weight ` +
+          `HOW TO USE: park geometry diagrams control topology at every camera ` +
+          `angle. Style reference images supply appearance only and never ` +
+          `authorize a new fountain, pond, path, building, court, bed, axis or ` +
+          `feature absent from the geometry diagram and its program locks. If a ` +
+          `style reference conflicts with the diagram, follow the diagram. For ` +
+          `visual appearance at an oblique angle, weight ` +
           `the 45° aerial and street-level refs most heavily. When rendering top-` +
           `down or near-nadir, weight the 90° nadir ref most heavily. Use ALL ` +
           `available refs per zone to build a complete 3D understanding of its ` +
-          `materials, form, and site layout before rendering. Each ref is ` +
+          `materials, form, and site layout before rendering. Each zone-specific ref is ` +
           `tagged with the zone's fill color in [brackets] to identify which ` +
           `polygon it belongs to.`
         );
@@ -2475,6 +2906,17 @@ export function useGlobeAIRender() {
           `\n\nSTREETS: the gray corridors in the PLAN DIAGRAM reference (Image 2) are streets — ` +
           `render them as open paved right-of-way, continuous and unobstructed curb to curb; ` +
           `buildings and landscaping meet the curb line and stop.`
+        );
+      }
+
+      if (visibleZones.some(
+        (zone) => (zone.properties as Record<string, unknown> | undefined)?.context_connection === true,
+      )) {
+        prompt += (
+          `\n\nCONTEXT CONNECTIONS: proposed streets and paths marked as boundary connections ` +
+          `must cross the site edge continuously into the matching existing corridor. Align the ` +
+          `centerline, grade, curb/path edges and usable travel surface across the seam; do not ` +
+          `block or terminate a connection with a curb, lawn, building, tree or planting bed.`
         );
       }
 
@@ -2918,10 +3360,22 @@ export function useGlobeAIRender() {
         }
         allPrompts.push(singlePrompt);
 
-        // Single archetype image (variant-aware)
+        // Variant-aware style refs plus an authoritative internal park diagram
+        // when this one-zone pass targets a programmed park.
         const archetypeImages = await collectArchetypeImages([zone]);
+        const parkGeometryImages = collectParkGeometryImages([zone]);
+        const renderReferenceImages = [...parkGeometryImages, ...archetypeImages];
         let prompt = singlePrompt;
-        if (archetypeImages.length > 0) {
+        if (parkGeometryImages.length > 0) {
+          prompt += (
+            `\n\nPARK GEOMETRY REFERENCE: Image 2 is the authoritative north-up internal `
+            + `layout. Preserve every path, gateway, water/field footprint, fixed pad and `
+            + `structure alignment while replacing schematic colors with the requested finish. `
+            + (archetypeImages.length > 0
+              ? 'Images 3+ are appearance references only; they must not override Image 2 geometry.'
+              : '')
+          );
+        } else if (archetypeImages.length > 0) {
           prompt += `\n\nARCHETYPE STYLE REFERENCE: Image 2 shows the exact style for this zone. Replicate this within the masked area.`;
         }
 
@@ -2941,7 +3395,7 @@ export function useGlobeAIRender() {
               project_id: options.projectId,
               image_size: '2K',
               thinking_budget: 0,
-              archetype_images: archetypeImages.length > 0 ? archetypeImages : undefined,
+              archetype_images: renderReferenceImages.length > 0 ? renderReferenceImages : undefined,
             },
             { timeout: 300000 },
           );

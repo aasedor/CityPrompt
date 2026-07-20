@@ -1,7 +1,8 @@
 import { api } from '@/services/api';
 import type { SiteZoneProperties } from '@/types';
 
-export type LegoModuleRole = 'podium' | 'floor' | 'setback' | 'crown' | 'roof' | 'attachment';
+export type LegoModuleRole = 'podium' | 'floor' | 'setback' | 'crown' | 'roof' | 'attachment' | 'assembled';
+export type LegoFootprintProfile = 'rectangle' | 'l_shape' | 'u_shape' | 'courtyard';
 
 export interface LegoModule {
   id: string;
@@ -31,6 +32,7 @@ export interface LegoAssemblyInstance {
   variant_key?: string;
   lod?: number;
   level: number;
+  segment_id?: string;
   position: [number, number, number];
   rotation_degrees: number;
   scale: [number, number, number];
@@ -46,6 +48,8 @@ export interface LegoAssemblyPlan {
     width_m: number;
     depth_m: number;
     floors: number;
+    footprint_profile?: LegoFootprintProfile;
+    wing_depth_m?: number;
   };
   assembled_height_m: number;
   instances: LegoAssemblyInstance[];
@@ -53,7 +57,17 @@ export interface LegoAssemblyPlan {
     scale_x: number;
     scale_y: number;
     score: number;
+    profile?: LegoFootprintProfile;
+    segment_count?: number;
   };
+  footprint_segments?: Array<{
+    id: string;
+    centre_x_m: number;
+    centre_y_m: number;
+    length_m: number;
+    thickness_m: number;
+    rotation_degrees: number;
+  }>;
 }
 
 export interface LegoPlanRequest {
@@ -65,6 +79,8 @@ export interface LegoPlanRequest {
   preferred_family?: string;
   /** Allow the planner to use setback modules (default true on the backend). */
   allow_setback?: boolean;
+  footprint_profile?: LegoFootprintProfile;
+  wing_depth_m?: number;
 }
 
 /**
@@ -80,11 +96,26 @@ export interface LegoAssemblyRecipe {
     width_m: number;
     depth_m: number;
     floors: number;
+    footprint_profile?: LegoFootprintProfile;
+    wing_depth_m?: number;
   };
   instances: LegoAssemblyInstance[];
   assembled_height_m?: number | null;
   fit?: LegoAssemblyPlan['fit'] | null;
   assembled_preview_url?: string | null;
+}
+
+export interface Community3DCompileResponse {
+  status: 'compiled';
+  compiled_at: string;
+  counts: { building: number; park: number; street: number };
+  items: Array<{
+    zone_id: string;
+    kind: 'building' | 'park' | 'street';
+    building_id: string | null;
+    building_created: boolean;
+    generator: 'lego_assembly' | 'planned_massing' | 'park_kit' | 'street_section';
+  }>;
 }
 
 /**
@@ -94,30 +125,48 @@ export interface LegoAssemblyRecipe {
  */
 export function legoArchetypeContextFromZone(
   properties: SiteZoneProperties | undefined,
-): Pick<LegoPlanRequest, 'archetype_id' | 'reuse_keys'> {
+): Pick<LegoPlanRequest, 'archetype_id' | 'reuse_keys' | 'allow_setback'> {
   if (!properties) return {};
 
   const generationInput = properties.generation_style_input as
     | {
         archetypeId?: string;
-        downstreamHints?: { reuseKeys?: string[] };
+        generationTags?: string[];
+        styleProfile?: { massing?: string };
+        downstreamHints?: { reuseKeys?: string[]; allowSetback?: boolean };
       }
     | undefined;
 
-  const archetypeId = generationInput?.archetypeId
+  // A selected design variant is the most specific architectural identity.
+  // The generation input can still contain the parent card's default visual
+  // reference (for example `*_variant_0`), which must not replace a user's
+  // explicit Contemporary Addition / Gothic / corner choice.
+  const archetypeId = (properties.development_selected_variant_id as string | undefined)
+    || generationInput?.archetypeId
     || (properties.development_archetype_id as string | undefined)
     || (properties.development_subcategory as string | undefined);
 
   const reuseKeys = generationInput?.downstreamHints?.reuseKeys;
+  const massingText = String(generationInput?.styleProfile?.massing || '').toLowerCase();
+  const generationTags = generationInput?.generationTags || [];
+  const inferredSetback = generationTags.some((tag) => String(tag).toLowerCase().includes('setback'))
+    || /\b(setback|stepped tower|tower on podium)\b/.test(massingText);
+  // Setbacks are opt-in design grammar. Importing a setback module does not
+  // authorize the planner to insert it into every five-storey family.
+  const allowSetback = typeof generationInput?.downstreamHints?.allowSetback === 'boolean'
+    ? generationInput.downstreamHints.allowSetback
+    : inferredSetback;
 
   return {
     archetype_id: archetypeId,
+    allow_setback: allowSetback,
     reuse_keys: Array.isArray(reuseKeys)
       ? reuseKeys.filter((value): value is string => typeof value === 'string' && value.length > 0)
       : [
-          properties.development_subcategory,
-          properties.development_aesthetic_category,
-          properties.development_archetype_id,
+      properties.development_subcategory,
+      properties.development_aesthetic_category,
+      properties.development_selected_variant_id,
+      properties.development_archetype_id,
         ].filter((value): value is string => typeof value === 'string' && value.length > 0),
   };
 }
@@ -158,6 +207,18 @@ export const legoAssemblyApi = {
       building_created: boolean;
       legoAssembly: LegoAssemblyRecipe;
     }>(`/api/v1/lego-assembly/place/${zoneId}`, recipe);
+    return response.data;
+  },
+
+  /** Persist a mixed building/park/street build as one backend transaction. */
+  async compileCommunity(items: Array<{
+    zone_id: string;
+    recipe?: LegoAssemblyRecipe & { building_name?: string | null };
+  }>): Promise<Community3DCompileResponse> {
+    const response = await api.post<Community3DCompileResponse>(
+      '/api/v1/lego-assembly/place-community',
+      { items },
+    );
     return response.data;
   },
 

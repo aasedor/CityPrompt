@@ -22,6 +22,7 @@ import { pointInPolygon } from '@/utils/coordTransform';
 import { seededRandom } from '@/utils/seededRandom';
 import {
   NEIGHBORHOOD_PARK,
+  PAVED_PLAZA,
   URBAN_POCKET_PARK,
   isDefaultParkRecipe,
   resolveParkRecipe,
@@ -52,6 +53,11 @@ export const PLANTING_STRUCTURES = [
   'active_recreation',
   'formal_quad',
   'garden_courtyard',
+  'japanese_stroll_garden',
+  'sports_perimeter',
+  'reservoir_perimeter',
+  'botanical_collection',
+  'nature_play_grove',
   'paved_plaza',
   'buffer_edge',
 ] as const;
@@ -77,6 +83,11 @@ const STRUCTURE_FURNITURE: Record<
   active_recreation: { playground: true, pavilion: true, benches: true },
   formal_quad: { playground: false, pavilion: false, benches: true },
   garden_courtyard: { playground: false, pavilion: false, benches: true },
+  japanese_stroll_garden: { playground: false, pavilion: false, benches: true },
+  sports_perimeter: { playground: false, pavilion: false, benches: true },
+  reservoir_perimeter: { playground: false, pavilion: false, benches: true },
+  botanical_collection: { playground: false, pavilion: false, benches: true },
+  nature_play_grove: { playground: false, pavilion: false, benches: true },
   paved_plaza: { playground: false, pavilion: false, benches: true },
   buffer_edge: { playground: false, pavilion: false, benches: false },
 };
@@ -479,7 +490,7 @@ function placeFormalQuad(ctx: TreeCtx): void {
 
 /** garden_courtyard — informal court: small 2-3 tree clusters tucked into the
  *  corners plus one off-centre specimen. */
-function placeGardenCourtyard(ctx: TreeCtx): void {
+function placeGardenCourtyard(ctx: TreeCtx, includeSpecimen = true): void {
   const frame = longAxisFrame(ctx.local);
   if (!frame) return;
   const { rng, tr } = ctx;
@@ -507,6 +518,9 @@ function placeGardenCourtyard(ctx: TreeCtx): void {
       placed++;
     }
   }
+  // Japanese stroll gardens omit the centre specimen so the pond and bridge
+  // program stay clear; generic garden courts keep the focal tree.
+  if (!includeSpecimen) return;
   // one specimen, deliberately off-centre
   const reach = Math.min(frame.umax - frame.umin, frame.vmax - frame.vmin);
   let attempts = 0;
@@ -519,6 +533,90 @@ function placeGardenCourtyard(ctx: TreeCtx): void {
     if (!ctx.canPlace(x, y)) continue;
     ctx.push(x, y, rng() * Math.PI * 2, 1.3 + rng() * 0.15);
     break;
+  }
+}
+
+/** Botanical collections use the naturalistic grove rhythm, but their exact
+ * diagram has four no-plant program rooms plus a continuous elliptical path.
+ * Keep that source-of-truth geometry clear before the live tree kit is
+ * instanced; the final render receives the same spatial hierarchy. */
+function botanicalProgramBlocks(
+  bbox: TreeCtx['bbox'],
+  x: number,
+  y: number,
+): boolean {
+  const width = bbox.maxX - bbox.minX;
+  const height = bbox.maxY - bbox.minY;
+  const at = (nx: number, nyFromNorth: number) => ({
+    x: bbox.minX + nx * width,
+    y: bbox.maxY - nyFromNorth * height,
+  });
+
+  const conservatory = at(0.22, 0.24);
+  if (
+    Math.abs(x - conservatory.x) <= 24 / 2 + 2.5
+    && Math.abs(y - conservatory.y) <= 14 / 2 + 2.5
+  ) return true;
+
+  const beds = [
+    { ...at(0.48, 0.35), rx: 28 / 2 + 2.5, ry: 16 / 2 + 2.5 },
+    { ...at(0.70, 0.66), rx: 30 / 2 + 2.5, ry: 17 / 2 + 2.5 },
+    { ...at(0.35, 0.72), rx: 26 / 2 + 2.5, ry: 14 / 2 + 2.5 },
+  ];
+  if (beds.some((bed) => (
+    ((x - bed.x) / bed.rx) ** 2 + ((y - bed.y) / bed.ry) ** 2 <= 1
+  ))) return true;
+
+  // The guide loop is 82% x 66% of the site bbox and 2.8 m wide. A 2.6 m
+  // trunk/crown safety offset keeps even varied tree scales out of its clear
+  // walking width.
+  const center = at(0.5, 0.5);
+  const rx = Math.max(1, width * 0.82 / 2);
+  const ry = Math.max(1, height * 0.66 / 2);
+  const ellipseRadius = Math.hypot((x - center.x) / rx, (y - center.y) / ry);
+  const distanceFromLoopM = Math.abs(ellipseRadius - 1) * Math.min(rx, ry);
+  return distanceFromLoopM < 4;
+}
+
+/** sports_perimeter — keep the entire programmed field/track interior clear.
+ * Trees form a sparse, deterministic perimeter row outside safety areas. */
+function placeSportsPerimeter(ctx: TreeCtx): void {
+  const { rng, tr } = ctx;
+  const spacing = Math.max(12, tr.minSpacing_m);
+  for (const edge of ringEdges(ctx.local)) {
+    for (const point of rowPoints(edge, 3.5, spacing, spacing * 0.5)) {
+      if (ctx.count() >= ctx.target) return;
+      if (!ctx.canPlace(point.x, point.y)) continue;
+      ctx.push(
+        point.x,
+        point.y,
+        Math.atan2(edge.uy, edge.ux),
+        tr.scaleJitter[0] + rng() * (tr.scaleJitter[1] - tr.scaleJitter[0]),
+      );
+    }
+  }
+}
+
+/** reservoir_perimeter — distribute a sparse tree belt evenly around the
+ * outer parcel edge. The central programmed water body and its continuous
+ * trail loop remain completely free of standing vegetation. */
+function placeReservoirPerimeter(ctx: TreeCtx): void {
+  const { rng, tr } = ctx;
+  const spacing = Math.max(9, tr.minSpacing_m + 0.5);
+  const candidates = ringEdges(ctx.local).flatMap((edge) => (
+    rowPoints(edge, 4.5, spacing, spacing * 0.5).map((point) => ({ point, edge }))
+  ));
+  const count = Math.min(ctx.target, candidates.length);
+  for (let index = 0; index < count; index += 1) {
+    const candidate = candidates[Math.floor(((index + 0.5) * candidates.length) / count)];
+    const { x, y } = candidate.point;
+    if (!ctx.canPlace(x, y)) continue;
+    ctx.push(
+      x,
+      y,
+      Math.atan2(candidate.edge.uy, candidate.edge.ux),
+      tr.scaleJitter[0] + rng() * (tr.scaleJitter[1] - tr.scaleJitter[0]),
+    );
   }
 }
 
@@ -608,15 +706,17 @@ const POCKET_PARK_MAX_M2 = 1500;
  * Order: an archetype id that matches a real recipe wins; otherwise
  * plan-generated greens fall back by role — courtyards get the pocket recipe
  * (benches only), open_space parks band by area exactly like the render-time
- * resolver (resolvePlanZoneArchetypes.resolveOpenSpace). Hand-drawn zones
- * without a recognized id keep the trees-only default.
+ * resolver (resolvePlanZoneArchetypes.resolveOpenSpace). Toolbar plazas get a
+ * restrained hardscape recipe; other hand-drawn zones without a recognized
+ * id keep the trees-only default.
  */
 export function resolveParkRecipeForZone(zone: {
   properties?: unknown;
   coordinates: number[][];
+  zone_type?: string;
 }): ParkKitRecipe {
   const props = (zone.properties ?? {}) as Record<string, unknown>;
-  const id = props.green_space_archetype_id;
+  const id = props.green_space_archetype_id ?? props.plaza_archetype_id;
   const byId = resolveParkRecipe(typeof id === 'string' ? id : undefined);
   if (!isDefaultParkRecipe(byId)) return byId;
   const role = props._plan_role;
@@ -626,6 +726,11 @@ export function resolveParkRecipeForZone(zone: {
       ? URBAN_POCKET_PARK
       : NEIGHBORHOOD_PARK;
   }
+  const isPlaza = zone.zone_type === 'parking'
+    || zone.zone_type === 'plaza'
+    || typeof props.plaza_archetype_id === 'string'
+    || typeof props.plaza_aesthetic === 'string';
+  if (isPlaza) return PAVED_PLAZA;
   return byId;
 }
 
@@ -743,6 +848,12 @@ export function computeParkPlacements(
     bbox: { minX, minY, maxX, maxY },
     canPlace: (x, y) => {
       if (!pointInPolygon(x, y, local) || blocked(x, y)) return false;
+      if (
+        structure === 'botanical_collection'
+        && botanicalProgramBlocks({ minX, minY, maxX, maxY }, x, y)
+      ) {
+        return false;
+      }
       for (const [px, py] of placedTrees) {
         if (Math.hypot(x - px, y - py) < tr.minSpacing_m) return false;
       }
@@ -777,6 +888,21 @@ export function computeParkPlacements(
       break;
     case 'garden_courtyard':
       placeGardenCourtyard(ctx);
+      break;
+    case 'japanese_stroll_garden':
+      placeGardenCourtyard(ctx, false);
+      break;
+    case 'sports_perimeter':
+      placeSportsPerimeter(ctx);
+      break;
+    case 'reservoir_perimeter':
+      placeReservoirPerimeter(ctx);
+      break;
+    case 'botanical_collection':
+      placeNaturalisticGrove(ctx);
+      break;
+    case 'nature_play_grove':
+      placeOpenMeadow(ctx);
       break;
     case 'paved_plaza':
       placePavedPlaza(ctx);

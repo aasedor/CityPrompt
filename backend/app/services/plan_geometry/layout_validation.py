@@ -6,6 +6,7 @@ import math
 from typing import Any
 
 from shapely.geometry import Polygon
+from shapely.geometry.base import BaseGeometry
 from shapely.ops import unary_union
 
 from app.services.plan_geometry.community_rules import FIRE_CLEAR_WIDTH_M, RuleProfile
@@ -36,8 +37,32 @@ def validate_plan(
     blocks_m: list[Polygon],
     parcels_by_block: list[list[Polygon]],
     masses_m: list[Polygon],
+    open_spaces_m: list[BaseGeometry] | None = None,
 ) -> list[dict[str, Any]]:
     notes: list[dict[str, Any]] = []
+
+    # Existing-context continuity is a measured plan invariant, not a prompt
+    # aspiration. Only score source anchors that were actually detected; a
+    # site with no available road/path dataset remains neutral and its data
+    # limitation is disclosed elsewhere by Site DNA.
+    context_total = network.entries_total + network.path_entries_total
+    context_served = network.entries_served + network.path_entries_served
+    if context_total:
+        if context_served == context_total:
+            notes.append({
+                "code": "CONTEXT_CONNECTIVITY_OK", "severity": "info",
+                "message": f"All {context_total} detected frontage connection(s) are joined "
+                           "topologically to the internal street/path network "
+                           f"({network.entries_served} road, {network.path_entries_served} path).",
+                "source_phase": "connectivity_validation",
+            })
+        else:
+            notes.append({
+                "code": "CONTEXT_CONNECTIVITY_PARTIAL", "severity": "warning",
+                "message": f"{context_served} of {context_total} detected frontage connection(s) "
+                           "reach the internal network; review the remaining boundary anchors.",
+                "source_phase": "connectivity_validation",
+            })
 
     # Fire access — the hard rule, checked on the resolved profile.
     if rules.clear_width_m + 1e-6 < FIRE_CLEAR_WIDTH_M:
@@ -91,14 +116,39 @@ def validate_plan(
             "source_phase": "parceling",
         })
 
-    # Building masses must not overlap streets or each other.
-    if masses_m and network.street_area is not None and not network.street_area.is_empty:
-        overlap = unary_union(masses_m).intersection(network.street_area)
-        if overlap.area > 1.0:
+    # Building masses must not overlap streets, parks/courtyards, or each
+    # other. Boundary contact is expected, so only material (>1 m²) area
+    # intersections fail. Keeping this invariant in metric space prevents a
+    # later 3D extrusion from turning a subtle plan collision into a park or
+    # reservoir visibly hovering through a building.
+    if masses_m:
+        mass_union = unary_union(masses_m)
+        mass_self_overlap = sum(float(mass.area) for mass in masses_m) - float(mass_union.area)
+        if mass_self_overlap > 1.0:
             notes.append({
-                "code": "MASS_STREET_COLLISION", "severity": "error",
-                "message": f"Building mass overlaps street ROW by {overlap.area:,.0f} m².",
+                "code": "MASS_MASS_COLLISION", "severity": "error",
+                "message": f"Building masses overlap each other by {mass_self_overlap:,.0f} m².",
                 "source_phase": "collision_validation",
             })
+
+        if network.street_area is not None and not network.street_area.is_empty:
+            overlap = mass_union.intersection(network.street_area)
+            if overlap.area > 1.0:
+                notes.append({
+                    "code": "MASS_STREET_COLLISION", "severity": "error",
+                    "message": f"Building mass overlaps street ROW by {overlap.area:,.0f} m².",
+                    "source_phase": "collision_validation",
+                })
+
+        usable_open_spaces = [geom for geom in (open_spaces_m or []) if not geom.is_empty]
+        if usable_open_spaces:
+            overlap = mass_union.intersection(unary_union(usable_open_spaces))
+            if overlap.area > 1.0:
+                notes.append({
+                    "code": "MASS_OPEN_SPACE_COLLISION", "severity": "error",
+                    "message": f"Building mass overlaps park/courtyard space by "
+                               f"{overlap.area:,.0f} m².",
+                    "source_phase": "collision_validation",
+                })
 
     return notes

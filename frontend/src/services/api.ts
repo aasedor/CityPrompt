@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import type {
   Project,
   Building,
@@ -126,11 +127,11 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url?.includes('/auth/')
-    ) {
+    if (shouldAttemptTokenRefresh(
+      error.response?.status,
+      originalRequest?.url,
+      originalRequest?._retry,
+    )) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
@@ -1304,6 +1305,11 @@ export const rendersApi = {
     mask_base64: string;
     prompt: string;
     previous_render_base64?: string;
+    archetype_images?: Array<{
+      image_base64: string;
+      label: string;
+      zone_color?: string;
+    }>;
     project_id?: string;
     seed?: number;
     model?: string;

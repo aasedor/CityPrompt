@@ -2,7 +2,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Canvas } from '@react-three/fiber';
-import { Bounds, Grid, OrbitControls } from '@react-three/drei';
+import { Bounds, Environment, Grid, OrbitControls } from '@react-three/drei';
 import { AlertTriangle, Bookmark, Box, Check, Copy, Loader2, MapPin, Minus, Plus, RefreshCw, Save, Trash2, X } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
@@ -23,7 +23,7 @@ import {
   clamp,
   deriveZoneTargets,
   familyGenerationCommands,
-  findCatalogOption,
+  findZoneCatalogOption,
   fitIsStretched,
   normalizeArchetypeId,
 } from './legoShared';
@@ -32,8 +32,9 @@ function AssemblyScene({ plan }: { plan: LegoAssemblyPlan }) {
   return (
     <>
       <ambientLight intensity={0.8} />
-      <directionalLight position={[8, 12, 7]} intensity={1.5} />
+      <directionalLight castShadow position={[8, 12, 7]} intensity={1.5} />
       <directionalLight position={[-8, 5, -6]} intensity={0.35} />
+      <Environment preset="city" background={false} />
       <Grid args={[80, 80]} cellSize={1} sectionSize={5} fadeDistance={70} />
       <Bounds fit clip observe margin={1.25}>
         <group>
@@ -70,8 +71,8 @@ export function LegoAssemblyPreview({
   const archetypeContext = useMemo(() => legoArchetypeContextFromZone(zoneProperties), [zoneProperties]);
 
   const catalogOption = useMemo(
-    () => findCatalogOption(archetypeContext.archetype_id),
-    [archetypeContext.archetype_id],
+    () => findZoneCatalogOption(archetypeContext.archetype_id, zoneProperties),
+    [archetypeContext.archetype_id, zoneProperties],
   );
 
   const archetypeLabel = catalogOption?.label
@@ -87,7 +88,7 @@ export function LegoAssemblyPreview({
     clamp(depthM ?? defaultTargets.depth_m, MIN_DIMENSION_M, MAX_DIMENSION_M));
   const [targetFloors, setTargetFloors] = useState(() =>
     clamp(floors ?? defaultTargets.floors, MIN_FLOORS, MAX_FLOORS));
-  const [allowSetback, setAllowSetback] = useState(true);
+  const [allowSetback, setAllowSetback] = useState(() => archetypeContext.allow_setback ?? false);
 
   const [plan, setPlan] = useState<LegoAssemblyPlan | null>(null);
   const [loading, setLoading] = useState(false);
@@ -135,8 +136,8 @@ export function LegoAssemblyPreview({
         target_width_m: width,
         target_depth_m: depth,
         target_floors: floorCount,
-        allow_setback: allowSetback,
         ...archetypeContext,
+        allow_setback: allowSetback,
       });
       setPlan(result);
     } catch (cause) {
@@ -481,7 +482,7 @@ export function LegoAssemblyPreview({
           </button>
 
           {plan ? (
-            <Canvas camera={{ position: [12, 10, 16], fov: 42 }} dpr={[1, 2]}>
+            <Canvas shadows camera={{ position: [12, 10, 16], fov: 42 }} dpr={[1, 2]}>
               <PreviewErrorBoundary>
                 <Suspense fallback={<Progress />}>
                   <AssemblyScene plan={plan} />
