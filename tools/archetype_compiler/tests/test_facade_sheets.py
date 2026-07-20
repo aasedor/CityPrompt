@@ -566,8 +566,10 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
 
     assert turret["kind"] == "striped_turret_array"
     assert turret["window_levels_m"] == [3.75, 7.95, 12.15]
+    assert turret["window_style"] == "rectangular"
     assert turret["window_recess_m"] >= 0.1
-    assert turret["window_surround_depth_m"] >= 0.18
+    assert 0.08 <= turret["window_surround_depth_m"] <= 0.12
+    assert turret["window_surround_m"] <= 0.05
     assert len(turret["centres"]) * 2 * len(turret["window_levels_m"]) == 24
     assert not any(
         item["id"].startswith((
@@ -576,6 +578,57 @@ def test_ruskinian_turret_windows_are_owned_by_fixed_corner_assembly():
         ))
         for item in graph["assemblies"]
     )
+
+
+def test_ruskinian_facade_period_matches_registered_source_span():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "collegiate_gothic_education",
+            "variant_id": "collegiate_gothic_ruskinian",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+    front_skin = assemblies["ruskinian_front_elevation"]
+    left_skin = assemblies["ruskinian_left_elevation"]
+    rear_skin = assemblies["ruskinian_rear_elevation"]
+    front_glass = assemblies["ruskinian_front_glazing"]
+    left_glass = assemblies["ruskinian_left_glazing"]
+
+    assert graph["profile"] == "ruskinian_polychrome_hall_v68"
+    assert {level["repeat_count"] for level in front_skin["levels"][1:]} == {7}
+    assert left_skin["repeat_count"] == 6
+    assert rear_skin["repeat_count"] == 7
+    assert {level["band"] for level in left_skin["levels"]} == {"side"}
+    assert {level["band"] for level in rear_skin["levels"]} == {"side"}
+    assert front_glass["columns"] == 7
+    assert left_glass["columns"] == 6
+    assert front_glass["repeat_span_m"] == pytest.approx(30.0 / 7, abs=0.001)
+    assert left_glass["repeat_span_m"] == pytest.approx(25.0 / 6, abs=0.001)
+    assert abs(front_glass["repeat_span_m"] - 4.4) / 4.4 < 0.10
+    assert abs(left_glass["repeat_span_m"] - 3.91) / 3.91 < 0.10
+
+    gable_axes = {
+        item["axis"] for item in graph["assemblies"]
+        if item["id"].startswith("ruskinian_main_") and item["id"].endswith("_gable")
+    }
+    assert gable_axes == {"front", "rear", "left", "right"}
+
+
+def test_blender_facade_loader_and_all_view_set_match_quality_contract():
+    source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
+
+    role_filter = source.split(
+        'for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():', 1
+    )[1].split("continue", 1)[0]
+    assert '"side"' in role_filter
+    for role in ("front_corner_oblique", "rear_corner_oblique", "facade_close"):
+        assert f'("{role}"' in source
+    assert "+ outward * profile_outward_offset" in source
+    assert "base_z + height * 0.10, depth + 0.018, brick" in source
 
 
 def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():

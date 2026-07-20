@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-18-nine-family-v21`.
+Current executable memory: `2026-07-20-ruskinian-gable-layering-v67`.
 
 ## The quality target
 
@@ -394,6 +394,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
   subordinate. Use the same warm stone PBR family, shallow projections and
   narrow profiles; validate in Google Tiles because bright runtime exposure can
   turn a restrained offline course into detached white trim.
+- Derive an integer repeat count from the measured PBR band span before Blender
+  assembly. The physical segment (`wall span / repeat count`) should stay within
+  ten percent of the manifest span on every elevation; otherwise the facade,
+  semantic glass and occupied interiors remain phase-aligned but are still
+  visibly stretched together.
+- Preserving a `side` band in the facade manifest is insufficient: the Blender
+  material loader must materialize that role before the massing graph can apply
+  it. Inspect left, right and rear faces in both near and far review LODs.
+- Treat the quality memory as the camera-set authority. The renderer's `all`
+  preset must emit front-corner, rear-corner and facade-close views as well as
+  preview, street, aerial and context views; a missing role is a producer bug,
+  not a manifest exception.
+- A gable-roof primitive cannot assign its roof finish to a visible masonry
+  end wall. Add fixed, axis-aware gable-end construction with its own verge,
+  horizontal bands and pointed openings on every exposed cross-gable face.
+- Layered gables need an explicit outward construction order. Offset the brick
+  infill to the exposed face of the deeper stone verge; co-locating both prisms
+  hides the infill and turns the whole gable into a pale stone triangle.
+- Multi-role near/far PBR families legitimately carry more materials than a
+  flat legacy atlas. Review above 32 assembled materials while continuing to
+  consolidate shader-equivalent clones and package runtime textures with KTX2.
 
 ## Updating this memory
 

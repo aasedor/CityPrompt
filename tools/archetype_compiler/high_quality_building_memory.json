@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-19-ruskinian-registration-v63",
+  "memory_version": "2026-07-20-ruskinian-gable-layering-v67",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -273,7 +273,7 @@
       "context"
     ],
     "preferred_footprint_profile_count": 3,
-    "material_count_review_threshold": 20,
+    "material_count_review_threshold": 32,
     "triangle_budget": {
       "city_min": 12000,
       "city_max": 180000,
@@ -540,6 +540,26 @@
       "symptom": "Stone courses, turret bands and eaves look like bright applied graphics in Google Tiles",
       "cause": "Relief geometry duplicated atlas bands with excessive projection, thickness or albedo contrast, so it separated visually from the wall material language.",
       "correction": "Let the atlas own fine coursing. Use shallow construction-scale relief only for shadow-bearing datums, inherit the same warm stone PBR family, reduce exposed profile, and calibrate in live photogrammetry rather than compensating with brighter materials."
+    },
+    {
+      "symptom": "A dedicated side-elevation atlas exists but secondary walls render as bare core material",
+      "cause": "The facade package preserved the side band while the Blender material loader filtered that semantic role out before massing-graph assembly.",
+      "correction": "Materialize every declared elevation role, including side, before graph construction and verify the role appears on left, right and rear faces in both near and far review LODs."
+    },
+    {
+      "symptom": "A family validates structurally but fails quality assessment because review cameras are missing",
+      "cause": "The presentation renderer's all-view preset drifted behind the executable required-render contract.",
+      "correction": "Keep the renderer's all-view preset synchronized with the quality gate and emit front-corner, rear-corner and facade-close views for every assembled family."
+    },
+    {
+      "symptom": "A masonry cross-gable end displays the roof-slope texture instead of striped wall construction",
+      "cause": "The generic gable-roof prism assigned one roof material to both slopes and vertical end faces.",
+      "correction": "Place fixed masonry gable-end assemblies outside the roof prism on every exposed axis, then register their verge, horizontal bands and pointed openings independently from the roof slopes."
+    },
+    {
+      "symptom": "A layered masonry gable renders as one solid pale stone triangle",
+      "cause": "The smaller brick infill prism was extruded from the same base plane as the deeper stone verge and remained completely occluded inside it.",
+      "correction": "Offset the infill to the exposed face of the outer verge before extrusion, preserving a visible brick field while the deeper stone prism reads only as a shaped edge and return."
     }
   ]
 }

@@ -794,7 +794,7 @@ def build_materials(grammar: dict) -> dict[str, bpy.types.Material]:
                     full_near.get("albedo", full_elevation),
                 )
         for role, band in FACADE_SHEET["manifest"].get("bands", {}).items():
-            if role not in ("floor", "floor_alt", "floor_c", "crown", "podium", "entrance"):
+            if role not in ("floor", "floor_alt", "floor_c", "side", "crown", "podium", "entrance"):
                 continue
             far_pbr = facade_lod_paths(role, "far")
             near_pbr = facade_lod_paths(role, "near")
@@ -6432,9 +6432,10 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
     of a photograph pasted onto a triangular roof.
     """
     axis = str(spec.get("axis", "front"))
-    if axis != "front":
-        raise ValueError("shaped gable array currently supports the front facade only")
-    cx, facade_y, base_z = (float(value) for value in spec["base_centre"])
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"shaped gable array axis {axis!r} is unsupported")
+    cx, cy, base_z = (float(value) for value in spec["base_centre"])
+    outward, along = _glazing_axis_vectors(axis)
     positions = [float(value) for value in (spec.get("positions_m") or [0.0])]
     width = float(spec.get("width_m", 7.6))
     height = float(spec.get("height_m", 6.0))
@@ -6467,15 +6468,22 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
             (0.455, 0.23), (0.50, 0.23), (0.50, 0.00),
         ]
 
-    def extruded_profile(name: str, centre_x: float, profile_width: float,
+    def extruded_profile(name: str, centre_along: float, profile_width: float,
                          profile_height: float, profile_depth: float,
-                         profile_base_z: float, profile_y: float, material,
+                         profile_base_z: float, profile_outward_offset: float, material,
                          bevel_m: float) -> bpy.types.Object:
-        profile = [(centre_x + x * profile_width, profile_base_z + z * profile_height) for x, z in outline]
+        centre = (
+            Vector((cx, cy, profile_base_z))
+            + along * centre_along
+            + outward * profile_outward_offset
+        )
+        profile = [
+            centre + along * (x * profile_width) + Vector((0.0, 0.0, z * profile_height))
+            for x, z in outline
+        ]
         count = len(profile)
-        back_y = profile_y
-        front_y = profile_y - profile_depth
-        verts = [(x, back_y, z) for x, z in profile] + [(x, front_y, z) for x, z in profile]
+        front = [point + outward * profile_depth for point in profile]
+        verts = [tuple(point) for point in profile] + [tuple(point) for point in front]
         faces: list[tuple[int, ...]] = [
             tuple(reversed(range(count))),
             tuple(range(count, count * 2)),
@@ -6501,24 +6509,24 @@ def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
         return obj
 
     for index, offset in enumerate(positions):
-        x = cx + offset
         tag = f"{prefix}_{index:02d}"
         parts.append(extruded_profile(
-            f"{tag}_StoneScroll", x, width, height, depth,
-            base_z, facade_y, stone, float(spec.get("bevel_m", 0.075)),
+            f"{tag}_StoneScroll", offset, width, height, depth,
+            base_z, 0.0, stone, float(spec.get("bevel_m", 0.075)),
         ))
         parts.append(extruded_profile(
-            f"{tag}_BrickInfill", x, width * 0.82, height * 0.78, depth * 0.16,
-            base_z + height * 0.10, facade_y - depth - 0.018, brick, 0.025,
+            f"{tag}_BrickInfill", offset, width * 0.82, height * 0.78, depth * 0.16,
+            base_z + height * 0.10, depth + 0.018, brick, 0.025,
         ))
         finial_radius = float(spec.get("finial_radius_m", 0.19))
         finial_z = base_z + height + finial_radius * 1.15
+        finial_plan = Vector((cx, cy, 0.0)) + along * offset + outward * (depth * 0.58)
         parts.append(add_cylinder(
             f"{tag}_FinialStem", finial_radius * 0.34, finial_radius * 1.45,
-            (x, facade_y - depth * 0.58, finial_z - finial_radius * 0.58), stone, 12,
+            (finial_plan.x, finial_plan.y, finial_z - finial_radius * 0.58), stone, 12,
         ))
         parts.append(add_ellipsoid(
-            f"{tag}_FinialBall", (x, facade_y - depth * 0.58, finial_z),
+            f"{tag}_FinialBall", (finial_plan.x, finial_plan.y, finial_z),
             (finial_radius, finial_radius, finial_radius), stone,
         ))
 
@@ -8262,6 +8270,12 @@ def render_presentation_views(
              (-1.0, -1.0, focus_height * 0.42), 50),
         ) if landmark else ()),
         ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
+        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 1.55)), focus_height * 0.58),
+         (0.0, -depth * 0.04, focus_height * 0.43), 50),
+        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 1.55), focus_height * 0.62),
+         (0.0, depth * 0.04, focus_height * 0.43), 50),
+        ("facade_close", (0.0, -(depth / 2 + max(27.0, width * 0.70)), focus_height * 0.43),
+         (0.0, -depth / 2, focus_height * 0.43), 57),
         ("aerial", (dist * 0.62, -dist * 0.78, focus_height + dist * 0.52), (0.0, 0.0, focus_height * 0.38), 49),
         ("context", (context_dist * 0.72, -context_dist * 0.85, focus_height + context_dist * 0.70),
          (0.0, 10.0, focus_height * 0.22), 52),
