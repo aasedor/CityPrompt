@@ -1821,9 +1821,10 @@ export function GlobeSitePlannerMap({
   }, [isTerrainReady]);
 
   const markUserInteracted = useCallback(() => {
-    if (hasVisibleInitialCameraRef.current) {
-      hasUserInteractedRef.current = true;
-    }
+    // A real pointer/wheel/keyboard gesture must immediately cancel every
+    // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
+    // flag is set lets a retry move the camera between polygon vertices.
+    hasUserInteractedRef.current = true;
   }, []);
 
   useEffect(() => {

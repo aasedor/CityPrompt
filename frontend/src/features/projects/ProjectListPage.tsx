@@ -5,18 +5,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Download, Images, Plus, FolderOpen, Clock, X, MapPin, Pencil, Wand2 } from 'lucide-react';
 import { getApiErrorMessage, projectsApi, rendersApi, resolveApiFileUrl } from '@/services/api';
+import { geocodingApi, type GeocodeSuggestion } from '@/services/geocoding';
 import { useAuthStore } from '@/store';
 import type { Project, Location, SavedRender, UpdateProjectRequest } from '@/types';
 import { ProjectEditModal } from './ProjectEditModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { isTextEntryTarget } from '@/utils/domEvents';
-
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || '';
-
-interface GeocodeSuggestion {
-  place_name: string;
-  center: [number, number]; // [lng, lat]
-}
 
 export function ProjectListPage() {
   const { user: currentUser } = useAuthStore();
@@ -32,6 +26,7 @@ export function ProjectListPage() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [isResolvingLocation, setIsResolvingLocation] = useState(false);
   const [error, setError] = useState('');
   const [expandedRender, setExpandedRender] = useState<{ project: Project; render: SavedRender } | null>(null);
   const [renderEditTarget, setRenderEditTarget] = useState<{ project: Project; render: SavedRender } | null>(null);
@@ -42,38 +37,42 @@ export function ProjectListPage() {
   // Debounced geocoding
   const geocodeAddress = useCallback((query: string) => {
     if (geocodeTimerRef.current) clearTimeout(geocodeTimerRef.current);
-    if (!query.trim() || !MAPBOX_TOKEN) {
+    if (query.trim().length < 3) {
       setAddressSuggestions([]);
+      setShowSuggestions(false);
       return;
     }
     geocodeTimerRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&limit=5&types=address,place,locality,neighborhood`
-        );
-        const data = await res.json();
-        if (data.features) {
-          setAddressSuggestions(
-            data.features.map((f: any) => ({ place_name: f.place_name, center: f.center }))
-          );
-          setShowSuggestions(true);
-          setHighlightedIndex(-1);
-        }
-      } catch {
+        const nextSuggestions = await geocodingApi.autocomplete(query.trim());
+        setAddressSuggestions(nextSuggestions);
+        setShowSuggestions(nextSuggestions.length > 0);
+        setHighlightedIndex(-1);
+        setError('');
+      } catch (err) {
         setAddressSuggestions([]);
+        setShowSuggestions(false);
+        setError(getApiErrorMessage(err, 'Address search is temporarily unavailable.'));
       }
     }, 350);
   }, []);
 
-  const selectSuggestion = (s: GeocodeSuggestion) => {
+  const selectSuggestion = async (s: GeocodeSuggestion) => {
     setAddressQuery(s.place_name);
-    setSelectedLocation({
-      latitude: s.center[1],
-      longitude: s.center[0],
-      address: s.place_name,
-    });
     setShowSuggestions(false);
     setHighlightedIndex(-1);
+    setIsResolvingLocation(true);
+    try {
+      const resolved = await geocodingApi.resolve(s.id);
+      setSelectedLocation(resolved);
+      setAddressQuery(resolved.address ?? s.place_name);
+      setError('');
+    } catch (err) {
+      setSelectedLocation(null);
+      setError(getApiErrorMessage(err, 'The selected address could not be located.'));
+    } finally {
+      setIsResolvingLocation(false);
+    }
   };
 
   const handleAddressKeyDown = (e: React.KeyboardEvent) => {
@@ -92,7 +91,7 @@ export function ProjectListPage() {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (highlightedIndex >= 0) {
-        selectSuggestion(addressSuggestions[highlightedIndex]);
+        void selectSuggestion(addressSuggestions[highlightedIndex]);
       }
     } else if (e.key === 'Escape') {
       setShowSuggestions(false);
@@ -309,9 +308,8 @@ export function ProjectListPage() {
                 <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-950/30" />
                 <input
                   type="text"
-                  placeholder={MAPBOX_TOKEN ? 'Search for an address...' : 'Set VITE_MAPBOX_TOKEN to enable'}
+                  placeholder="Search for an address..."
                   value={addressQuery}
-                  disabled={!MAPBOX_TOKEN}
                   onChange={(e) => {
                     setAddressQuery(e.target.value);
                     setSelectedLocation(null);
@@ -319,21 +317,21 @@ export function ProjectListPage() {
                   }}
                   onFocus={() => addressSuggestions.length > 0 && setShowSuggestions(true)}
                   onKeyDown={handleAddressKeyDown}
-                  className="input-base w-full pl-9 disabled:bg-primary-950/[0.02] disabled:text-primary-950/30"
+                  className="input-base w-full pl-9"
                 />
               </div>
               {showSuggestions && addressSuggestions.length > 0 && (
                 <div className="absolute z-10 mt-1 w-full rounded-lg border border-primary-950/[0.08] bg-white shadow-elevated max-h-48 overflow-y-auto animate-fade-in">
                   {addressSuggestions.map((s, i) => (
                     <button
-                      key={i}
+                      key={s.id}
                       type="button"
                       className={`w-full text-left px-3 py-2 text-sm border-b border-primary-950/[0.04] last:border-0 ${
                         i === highlightedIndex
                           ? 'bg-primary-950/[0.06] text-primary-400'
                           : 'text-primary-950/70 hover:bg-primary-950/[0.04] hover:text-primary-400'
                       }`}
-                      onClick={() => selectSuggestion(s)}
+                      onClick={() => void selectSuggestion(s)}
                     >
                       <MapPin size={12} className="inline mr-2 text-primary-950/30" />
                       {s.place_name}
@@ -351,10 +349,10 @@ export function ProjectListPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleCreate}
-                disabled={createMutation.isPending}
+                disabled={createMutation.isPending || isResolvingLocation}
                 className="inline-flex items-center rounded-full border-2 border-[#151515] bg-[#151515] px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#151515] disabled:opacity-50"
               >
-                {createMutation.isPending ? 'Creating...' : 'Create Project'}
+                {createMutation.isPending ? 'Creating...' : isResolvingLocation ? 'Locating...' : 'Create Project'}
               </button>
               <button
                 onClick={handleCancel}

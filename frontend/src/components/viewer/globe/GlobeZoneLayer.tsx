@@ -46,6 +46,7 @@ import {
   shouldRenderReplacementFootprintGround,
 } from './sitePreparationSurface';
 import { buildContainedTerrainGroundMesh } from './terrainGroundMesh';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 
 const DEG_TO_RAD = Math.PI / 180;
 const OBJECT_FILTER_SAMPLE_RADIUS_METERS = 8;
@@ -266,6 +267,32 @@ function createLocalGeometry(
   return { fillGeo, fillCoords, outlineGeo, flatTopGeo: fillGeo, localPts };
 }
 
+type LocalZoneGeometry = NonNullable<ReturnType<typeof createLocalGeometry>>;
+
+function disposeLocalZoneGeometry(resource: LocalZoneGeometry) {
+  resource.fillGeo.dispose();
+  if (resource.flatTopGeo && resource.flatTopGeo !== resource.fillGeo) {
+    resource.flatTopGeo.dispose();
+  }
+  resource.outlineGeo.dispose();
+}
+
+function useDeferredLocalGeometryDisposal(resource: LocalZoneGeometry | null) {
+  useEffect(() => (
+    resource
+      ? retainResourceForDeferredDisposal(resource, disposeLocalZoneGeometry)
+      : undefined
+  ), [resource]);
+}
+
+function useDeferredDisposable(resource: { dispose: () => void } | null | undefined) {
+  useEffect(() => (
+    resource
+      ? retainResourceForDeferredDisposal(resource, (value) => value.dispose())
+      : undefined
+  ), [resource]);
+}
+
 /**
  * Raycast from high altitude straight down onto the tile mesh at a given lat/lng.
  * Returns the hit point in ECEF, or null if no hit.
@@ -464,34 +491,13 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [centroid, isReplacementFootprintGround, zone.coordinates],
   );
-  useEffect(
-    () => () => {
-      if (!replacementGroundData) return;
-      replacementGroundData.fillGeo.dispose();
-      if (
-        replacementGroundData.flatTopGeo
-        && replacementGroundData.flatTopGeo !== replacementGroundData.fillGeo
-      ) replacementGroundData.flatTopGeo.dispose();
-      replacementGroundData.outlineGeo.dispose();
-    },
-    [replacementGroundData],
-  );
+  useDeferredLocalGeometryDisposal(replacementGroundData);
 
   // All geometry from createLocalGeometry is component-owned. Reuse it
   // directly in JSX (instead of cloning on every state render) and dispose it
   // when the polygon changes or unmounts. A long drape session otherwise
   // leaked one fill/outline pair per terrain update.
-  useEffect(
-    () => () => {
-      if (!geoData) return;
-      geoData.fillGeo.dispose();
-      if (geoData.flatTopGeo && geoData.flatTopGeo !== geoData.fillGeo) {
-        geoData.flatTopGeo.dispose();
-      }
-      geoData.outlineGeo.dispose();
-    },
-    [geoData],
-  );
+  useDeferredLocalGeometryDisposal(geoData);
 
   const preparedSiteGeo = useMemo(
     () => (
@@ -501,12 +507,12 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [geoData, isPreparedBoundary, zone.id],
   );
-  useEffect(() => () => preparedSiteGeo?.dispose(), [preparedSiteGeo]);
+  useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useMemo(
     () => (isPreparedBoundary ? createSitePreparationTexture(zone.id) : null),
     [isPreparedBoundary, zone.id],
   );
-  useEffect(() => () => preparedSiteTexture?.dispose(), [preparedSiteTexture]);
+  useDeferredDisposable(preparedSiteTexture);
   const replacementGroundGeo = useMemo(
     () => (
       replacementGroundData?.flatTopGeo
@@ -517,7 +523,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [replacementGroundData, zone.id],
   );
-  useEffect(() => () => replacementGroundGeo?.dispose(), [replacementGroundGeo]);
+  useDeferredDisposable(replacementGroundGeo);
   const replacementGroundTexture = useMemo(
     () => (
       isReplacementFootprintGround
@@ -526,10 +532,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     ),
     [isReplacementFootprintGround, zone.id],
   );
-  useEffect(
-    () => () => replacementGroundTexture?.dispose(),
-    [replacementGroundTexture],
-  );
+  useDeferredDisposable(replacementGroundTexture);
 
   // AI park ground texture on the green_space fill mesh (per-zone meta in
   // zone.properties.park_ground_texture; see parkGroundTexture.ts).
@@ -548,7 +551,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     applyParkGroundUVs(geo, geoData.fillCoords, groundMeta);
     return geo;
   }, [groundMeta, geoData]);
-  useEffect(() => () => orthoGeo?.dispose(), [orthoGeo]);
+  useDeferredDisposable(orthoGeo);
   const drapeActive = Boolean(orthoGeo && groundTexture);
 
   // --- Terrain draping for flat zones ---
@@ -891,7 +894,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     geo.computeBoundingSphere();
     return geo;
   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference]);
-  useEffect(() => () => importedFillGeo?.dispose(), [importedFillGeo]);
+  useDeferredDisposable(importedFillGeo);
 
   // A persisted park orthophoto must use the same bare-earth-conforming mesh
   // as every other imported plan surface. Previously `orthoGeo` won the render
@@ -904,7 +907,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     return geo;
   }, [geoData, groundMeta, importedFillGeo]);
 
-  useEffect(() => () => importedOrthoGeo?.dispose(), [importedOrthoGeo]);
+  useDeferredDisposable(importedOrthoGeo);
 
   const importedOutlineGeo = useMemo(() => {
     if (!hasBakedElevationRelief || !geoData?.outlineGeo || !bakedElevations || bakedReference == null) return null;
@@ -921,7 +924,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
     pos.needsUpdate = true;
     return geo;
   }, [hasBakedElevationRelief, geoData, bakedElevations, bakedReference, renderCoordinates]);
-  useEffect(() => () => importedOutlineGeo?.dispose(), [importedOutlineGeo]);
+  useDeferredDisposable(importedOutlineGeo);
 
   if (!geoData) return null;
 
