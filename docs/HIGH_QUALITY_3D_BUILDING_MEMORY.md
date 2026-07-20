@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-art-deco-setback-v83`.
+Current executable memory: `2026-07-20-nordic-mass-timber-v84`.
 
 ## The quality target
 
@@ -659,6 +659,24 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - A geometry-only pilot may validate the 30 by 28 metre footprint, 15 occupied
   levels and 74.5 metre landmark silhouette, but keeper promotion still needs
   the complete module package and the corrected textured eight-view review.
+
+### Nordic mass-timber midrise + open-roof-pavilion lessons
+
+- A roof pavilion's void is construction evidence. The first valid pilot used
+  a full shadow core and curtain walls, turning the light reference canopy into
+  a sealed black box; it was rejected before canonical packaging.
+- Build an open pavilion from fixed timber posts, a thin canopy and only the
+  compact service wall proved by the references. Do not use opaque occupation
+  geometry to close the air between those elements.
+- An occupied green roof needs a visible edge contract as well as a sedum
+  material. Pair the planted deck with a slender perimeter guard and verify its
+  relationship to the pavilion from aerial and street-oblique cameras.
+- The rectified timber atlas can carry natural larch variation and fine joint
+  evidence, while fixed glulam frames, deep loggia shadows and balcony rails
+  carry the near-range structure. Neither layer substitutes for the other.
+- Assembled-only pilots are the right bounded checkpoint for roof silhouettes
+  and semantic-glass artifacts. Their expected missing-module validation is not
+  a keeper failure; promotion still requires the complete seven-role package.
 
 ## Updating this memory
 

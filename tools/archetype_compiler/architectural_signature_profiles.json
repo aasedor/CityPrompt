@@ -1469,7 +1469,7 @@
       "massing_graph": {
         "schema": "massing-graph@1",
         "profile": "gemini_skin_hero",
-        "description": "A warm Nordic midrise using one coherent Gemini timber elevation over a real shadow core, slim floor datums, stone base, inhabited roof terrace and glazed pavilion.",
+        "description": "A warm Nordic midrise using one coherent Gemini timber elevation over a real shadow core, slim floor datums, stone base, inhabited planted roof terrace and an open timber pavilion canopy.",
         "height_m": 26.6,
         "reference_dimensions": {"width_m": 20.0, "depth_m": 16.0, "floors": 7, "floor_height_m": 3.2},
         "nodes": [
@@ -1477,7 +1477,11 @@
           {"id": "timber_shadow_core", "kind": "box", "size": [18.8, 14.8, 22.8], "location": [0.0, 0.0, 11.4], "material": "primary", "bevel_m": 0.18},
           {"id": "terrace_deck", "kind": "box", "size": [20.4, 16.4, 0.32], "location": [0.0, 0.0, 22.96], "material": "signature_metal", "bevel_m": 0.04},
           {"id": "green_roof", "kind": "box", "size": [18.8, 14.8, 0.12], "location": [0.0, 0.2, 23.18], "material": "green_roof", "bevel_m": 0.02},
-          {"id": "pavilion_shadow", "kind": "box", "size": [10.0, 7.0, 2.9], "location": [0.8, 1.7, 24.65], "material": "interior", "bevel_m": 0.12},
+          {"id": "pavilion_service_wall", "kind": "box", "size": [2.5, 4.2, 2.9], "location": [0.8, 2.65, 24.65], "material": "signature_warm", "bevel_m": 0.08},
+          {"id": "pavilion_front_left_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [-4.2, -1.65, 24.65], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "pavilion_front_right_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [5.8, -1.65, 24.65], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "pavilion_rear_left_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [-4.2, 5.05, 24.65], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "pavilion_rear_right_post", "kind": "box", "size": [0.32, 0.32, 2.9], "location": [5.8, 5.05, 24.65], "material": "signature_warm", "bevel_m": 0.035},
           {"id": "pavilion_roof", "kind": "box", "size": [12.0, 9.0, 0.25], "location": [0.8, 1.7, 26.375], "material": "signature_warm", "bevel_m": 0.055},
           {"id": "pavilion_soffit", "kind": "box", "size": [11.65, 8.65, 0.08], "location": [0.8, 1.7, 26.205], "material": "signature_warm", "bevel_m": 0.025},
           {"id": "entry_reveal_header", "kind": "box", "size": [5.2, 0.22, 0.18], "location": [3.8, -8.03, 3.55], "material": "signature_warm", "bevel_m": 0.03}
@@ -1500,8 +1504,7 @@
           {"id": "timber_left_glazing_overlay", "kind": "glazing_overlay", "axis": "left", "centre": [-9.825, 0.0, 11.4], "span_m": 15.5, "height_m": 22.7, "columns": 3, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "flip_u": true, "frame_mode": "mask_only"},
           {"id": "timber_rear_glazing_overlay", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 7.825, 11.4], "span_m": 19.5, "height_m": 22.7, "columns": 4, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "flip_u": true, "frame_mode": "mask_only"},
           {"id": "timber_right_glazing_overlay", "kind": "glazing_overlay", "axis": "right", "centre": [9.825, 0.0, 11.4], "span_m": 15.5, "height_m": 22.7, "columns": 3, "rows": 7, "profile_m": 0.07, "band": "elevation", "glass_profile": "residential_low_e", "frame_mode": "mask_only"},
-          {"id": "pavilion_front_glazing", "kind": "curtain_wall", "axis": "front", "centre": [0.8, -1.85, 24.65], "span_m": 9.5, "height_m": 2.55, "columns": 4, "rows": 1, "frame_m": 0.085, "depth_m": 0.1},
-          {"id": "pavilion_left_glazing", "kind": "curtain_wall", "axis": "left", "centre": [-4.25, 1.7, 24.65], "span_m": 6.5, "height_m": 2.55, "columns": 3, "rows": 1, "frame_m": 0.085, "depth_m": 0.1},
+          {"id": "timber_roof_guard", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 24.0], "width_m": 18.5, "depth_m": 14.5, "height_m": 1.05, "spacing_m": 0.42, "material": "signature_metal", "rail_height_m": 0.06, "rail_depth_m": 0.07},
           {"id": "timber_entry_steps", "kind": "steps", "centre": [3.8, -9.45, 0.0], "width_m": 5.5, "depth_m": 1.8, "count": 3, "rise_m": 0.15, "material": "signature_stone"}
         ],
         "target_views": ["archetype_match", "street", "aerial", "context"]

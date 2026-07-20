@@ -281,6 +281,42 @@ def test_cream_terracotta_art_deco_variant_injects_fixed_setback_lantern_graph()
     assert "deco_front_podium_glazing" in graph["disabled_assembly_ids"]
 
 
+def test_nordic_mass_timber_variant_injects_open_pavilion_and_planted_roof_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "nordic_timber_midrise",
+            "variant_id": "nordic_timber_mass_timber",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+
+    assert graph["profile"] == "gemini_skin_hero"
+    assert graph["reference_dimensions"] == {
+        "width_m": 20.0,
+        "depth_m": 16.0,
+        "floors": 7,
+        "floor_height_m": 3.2,
+    }
+    nodes = {node["id"]: node for node in graph["nodes"]}
+    assemblies = {assembly["id"]: assembly for assembly in graph["assemblies"]}
+    assert "pavilion_shadow" not in nodes
+    assert nodes["pavilion_service_wall"]["size"][0] < nodes["pavilion_roof"]["size"][0]
+    pavilion_posts = [
+        node_id
+        for node_id in nodes
+        if node_id.startswith("pavilion_") and node_id.endswith("_post")
+    ]
+    assert len(pavilion_posts) == 4
+    assert assemblies["timber_roof_guard"]["kind"] == "classical_balustrade_perimeter"
+    assert not any(
+        assembly_id.startswith("pavilion_") and assembly["kind"] == "curtain_wall"
+        for assembly_id, assembly in assemblies.items()
+    )
+
+
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
     profiles = json.loads(
         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(

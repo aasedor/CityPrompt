@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-art-deco-setback-v83",
+  "memory_version": "2026-07-20-nordic-mass-timber-v84",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -775,6 +775,16 @@
       "symptom": "A landmark Art Deco crown reads as a generic black cylinder with a gold cap",
       "cause": "The lantern silhouette was reduced to material colour without a faceted frame, vertical posts, terrace plinth and finial.",
       "correction": "Build landmark crowns as fixed assemblies: dark faceted lantern core, separate gilded perimeter posts, stepped plinth, polygonal roof and bounded finial, then prove the complete hierarchy in aerial review."
+    },
+    {
+      "symptom": "A light roof pavilion from the references renders as a sealed dark glass box",
+      "cause": "A full opaque shadow core and perimeter curtain walls were used to imply occupation, closing the open canopy silhouette that defines the selected timber variant.",
+      "correction": "Model evidence-led open pavilions as fixed post, canopy and compact service-wall assemblies. Preserve open air between posts and compare the skyline from both street-oblique and aerial cameras before keeper promotion."
+    },
+    {
+      "symptom": "A planted roof reads as an inaccessible green slab without an inhabited terrace edge",
+      "cause": "The sedum surface was present but the safety boundary and pavilion relationship were treated as material detail rather than roof construction.",
+      "correction": "Pair occupied green roofs with a fixed, scale-correct perimeter guard and keep the canopy visibly subordinate to that terrace. Verify deck, planting, guard and pavilion together in the aerial acceptance view."
     }
   ]
 }
