@@ -1396,7 +1396,12 @@ def add_frame_bars(
                 parts.append(add_box(f"{prefix}_Mullion{index}", (depth * 1.05, profile * 0.62, opening_h), (x, y + offset, z), mat))
 
 
-def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
+def join_as(
+    name: str,
+    objects: list[bpy.types.Object],
+    *,
+    final_bevel_m: float = 0.025,
+) -> bpy.types.Object:
     """Join module parts into a single mesh so the GLB gets one node per module."""
     bpy.ops.object.select_all(action="DESELECT")
     for obj in objects:
@@ -1409,20 +1414,24 @@ def join_as(name: str, objects: list[bpy.types.Object]) -> bpy.types.Object:
     joined.data.name = name
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     # Small real-world edge radii create highlight lines and eliminate the
-    # unmistakable razor-edged procedural-box look.
-    bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
-    bevel.width = 0.025
-    bevel.segments = 1
-    bevel.limit_method = "ANGLE"
-    try:
-        bevel.harden_normals = True
-    except AttributeError:
-        pass
-    bpy.context.view_layer.objects.active = joined
-    try:
-        bpy.ops.object.modifier_apply(modifier=bevel.name)
-    except RuntimeError:
-        joined.modifiers.remove(bevel)
+    # unmistakable razor-edged procedural-box look. Dense landmark graphs may
+    # opt out because their identity solids were already bevelled individually;
+    # beveling every sash, picket and atlas skin again is invisible at runtime
+    # but can more than double the delivery triangles.
+    if final_bevel_m > 0.0:
+        bevel = joined.modifiers.new(name="ArchitecturalEdge", type="BEVEL")
+        bevel.width = final_bevel_m
+        bevel.segments = 1
+        bevel.limit_method = "ANGLE"
+        try:
+            bevel.harden_normals = True
+        except AttributeError:
+            pass
+        bpy.context.view_layer.objects.active = joined
+        try:
+            bpy.ops.object.modifier_apply(modifier=bevel.name)
+        except RuntimeError:
+            joined.modifiers.remove(bevel)
     apply_box_uv(joined)
     return joined
 
@@ -1827,6 +1836,7 @@ def add_heritage_sash_front(
     surround_material=None,
     frame_material=None,
     glass_material=None,
+    room_material=None,
     trim_scale: float = 1.0,
     sash_mullions: str = "double",
     fine_glazing_rails: bool = True,
@@ -1838,7 +1848,10 @@ def add_heritage_sash_front(
     convincing without requiring sculpted ornament on every stone.
     """
     atlas_cells = mats.get("interior_cells") or []
-    room_mat = atlas_cells[interior_seed % len(atlas_cells)] if atlas_cells else mats["interior_warm"]
+    room_mat = (
+        room_material
+        or (atlas_cells[interior_seed % len(atlas_cells)] if atlas_cells else mats["interior_warm"])
+    )
     surround_mat = surround_material or mats["secondary"]
     frame_mat = frame_material or mats["accent"]
     glass_mat = glass_material or mats["glass"]
@@ -7524,7 +7537,10 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
     outward, along = _glazing_axis_vectors(axis)
     cell = span / segment_count
     segment_span = max(0.8, cell - gap)
-    rail_profile = min(0.055, segment_span * 0.03)
+    rail_profile = max(
+        0.018,
+        min(0.055, float(spec.get("rail_profile_m", segment_span * 0.03))),
+    )
 
     def member_size(along_size: float, outward_size: float, z_size: float) -> tuple[float, float, float]:
         return (
@@ -7585,6 +7601,250 @@ def _graph_balcony_array(parts: list, spec: dict, mats: dict) -> None:
                     f"{prefix}_{level_index:02d}_{segment_index:02d}_Corbel{corbel_index}",
                     member_size(0.16, depth * 0.44, 0.34), tuple(corbel), slab_mat, 0.025,
                 ))
+
+
+def _graph_mansard_perimeter(parts: list, spec: dict, mats: dict) -> None:
+    """Build an inhabited Haussmann mansard around one or two real light courts.
+
+    The ordinary roof module is appropriate for a compact rectangle, but a
+    render-locked boulevard block cannot put a full cornice slab over its
+    courts.  This assembly keeps the outer zinc skirt and dormer rhythm fixed,
+    forms the top deck from explicit perimeter strips, and optionally adds a
+    central roof bridge so a long block retains two open courts.
+    """
+    cx, cy, base_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    height = float(spec.get("height_m", 6.2))
+    court_count = max(1, min(2, int(spec.get("court_count", 1))))
+    court_gap = float(spec.get("court_gap_m", 7.0 if court_count == 2 else 0.0))
+    well_width = float(spec.get("well_width_m", max(8.0, width - 19.0)))
+    well_depth = float(spec.get("well_depth_m", max(8.0, depth - 19.0)))
+    if court_count == 2:
+        individual_well_width = (well_width - court_gap) / 2.0
+        if individual_well_width < 4.0:
+            raise ValueError("two-court mansard requires at least 4 m per light court")
+    else:
+        individual_well_width = well_width
+    skirt_height = float(spec.get("skirt_height_m", max(3.4, height * 0.72)))
+    inset = float(spec.get("inset_m", min(2.25, min(width, depth) * 0.18)))
+    overhang = float(spec.get("overhang_m", 0.28))
+    roof_mat = _graph_material(mats, spec.get("roof_material", "roof"))
+    lead_mat = _graph_material(mats, spec.get("lead_material", "roof_lead"))
+    stone_mat = _graph_material(mats, spec.get("stone_material", "signature_stone"))
+    frame_mat = _graph_material(mats, spec.get("frame_material", "signature_metal"))
+    prefix = str(spec.get("id", "GraphMansardPerimeter"))
+
+    # The cornice is a true ring.  A full slab here would make the court look
+    # open in metadata while remaining visibly capped in the aerial render.
+    cornice_width = float(spec.get("cornice_width_m", 0.72))
+    slab_height = float(spec.get("slab_height_m", 0.18))
+    cornice_z = base_z + slab_height / 2.0
+    parts.extend([
+        add_beveled_box(
+            f"{prefix}_CorniceFront", (width + cornice_width, cornice_width, slab_height),
+            (cx, cy - depth / 2.0, cornice_z), stone_mat, 0.045,
+        ),
+        add_beveled_box(
+            f"{prefix}_CorniceRear", (width + cornice_width, cornice_width, slab_height),
+            (cx, cy + depth / 2.0, cornice_z), stone_mat, 0.045,
+        ),
+        add_beveled_box(
+            f"{prefix}_CorniceLeft", (cornice_width, depth - cornice_width, slab_height),
+            (cx - width / 2.0, cy, cornice_z), stone_mat, 0.045,
+        ),
+        add_beveled_box(
+            f"{prefix}_CorniceRight", (cornice_width, depth - cornice_width, slab_height),
+            (cx + width / 2.0, cy, cornice_z), stone_mat, 0.045,
+        ),
+    ])
+
+    bottom = [
+        (cx - width / 2 - overhang, cy - depth / 2 - overhang, base_z + slab_height),
+        (cx + width / 2 + overhang, cy - depth / 2 - overhang, base_z + slab_height),
+        (cx + width / 2 + overhang, cy + depth / 2 + overhang, base_z + slab_height),
+        (cx - width / 2 - overhang, cy + depth / 2 + overhang, base_z + slab_height),
+    ]
+    top_z = base_z + skirt_height
+    top = [
+        (cx - width / 2 + inset, cy - depth / 2 + inset, top_z),
+        (cx + width / 2 - inset, cy - depth / 2 + inset, top_z),
+        (cx + width / 2 - inset, cy + depth / 2 - inset, top_z),
+        (cx - width / 2 + inset, cy + depth / 2 - inset, top_z),
+    ]
+    parts.append(add_prism(
+        f"{prefix}_OuterZincSkirt", bottom + top,
+        [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)],
+        roof_mat,
+    ))
+
+    top_width = width - inset * 2 + 0.18
+    top_depth = depth - inset * 2 + 0.18
+    outer_strip_x = (top_width - well_width) / 2.0
+    outer_strip_y = (top_depth - well_depth) / 2.0
+    if outer_strip_x <= 0.25 or outer_strip_y <= 0.25:
+        raise ValueError("mansard light courts exceed the available top deck")
+    deck_z = top_z + 0.08
+    parts.extend([
+        add_beveled_box(
+            f"{prefix}_LeadDeckFront", (top_width, outer_strip_y, 0.16),
+            (cx, cy - (well_depth + outer_strip_y) / 2.0, deck_z), lead_mat, 0.025,
+        ),
+        add_beveled_box(
+            f"{prefix}_LeadDeckRear", (top_width, outer_strip_y, 0.16),
+            (cx, cy + (well_depth + outer_strip_y) / 2.0, deck_z), lead_mat, 0.025,
+        ),
+        add_beveled_box(
+            f"{prefix}_LeadDeckLeft", (outer_strip_x, well_depth, 0.16),
+            (cx - (well_width + outer_strip_x) / 2.0, cy, deck_z), lead_mat, 0.025,
+        ),
+        add_beveled_box(
+            f"{prefix}_LeadDeckRight", (outer_strip_x, well_depth, 0.16),
+            (cx + (well_width + outer_strip_x) / 2.0, cy, deck_z), lead_mat, 0.025,
+        ),
+    ])
+    if court_count == 2:
+        parts.append(add_beveled_box(
+            f"{prefix}_LeadDeckCentreBridge", (court_gap, well_depth, 0.16),
+            (cx, cy, deck_z), lead_mat, 0.025,
+        ))
+
+    wall_thickness = float(spec.get("court_wall_thickness_m", 0.20))
+    court_wall_height = skirt_height - slab_height
+    court_wall_z = base_z + slab_height + court_wall_height / 2.0
+    court_centres = (
+        [cx]
+        if court_count == 1 else
+        [cx - (court_gap + individual_well_width) / 2.0,
+         cx + (court_gap + individual_well_width) / 2.0]
+    )
+    for court_index, court_x in enumerate(court_centres):
+        parts.extend([
+            add_beveled_box(
+                f"{prefix}_Court{court_index}_FrontWall",
+                (individual_well_width, wall_thickness, court_wall_height),
+                (court_x, cy - well_depth / 2.0, court_wall_z), stone_mat, 0.030,
+            ),
+            add_beveled_box(
+                f"{prefix}_Court{court_index}_RearWall",
+                (individual_well_width, wall_thickness, court_wall_height),
+                (court_x, cy + well_depth / 2.0, court_wall_z), stone_mat, 0.030,
+            ),
+            add_beveled_box(
+                f"{prefix}_Court{court_index}_LeftWall",
+                (wall_thickness, well_depth, court_wall_height),
+                (court_x - individual_well_width / 2.0, cy, court_wall_z), stone_mat, 0.030,
+            ),
+            add_beveled_box(
+                f"{prefix}_Court{court_index}_RightWall",
+                (wall_thickness, well_depth, court_wall_height),
+                (court_x + individual_well_width / 2.0, cy, court_wall_z), stone_mat, 0.030,
+            ),
+        ])
+        coping_z = top_z + 0.10
+        for edge, size, location in (
+            ("Front", (individual_well_width + 0.24, 0.30, 0.14), (court_x, cy - well_depth / 2.0, coping_z)),
+            ("Rear", (individual_well_width + 0.24, 0.30, 0.14), (court_x, cy + well_depth / 2.0, coping_z)),
+            ("Left", (0.30, well_depth, 0.14), (court_x - individual_well_width / 2.0, cy, coping_z)),
+            ("Right", (0.30, well_depth, 0.14), (court_x + individual_well_width / 2.0, cy, coping_z)),
+        ):
+            parts.append(add_beveled_box(
+                f"{prefix}_Court{court_index}_{edge}Coping", size, location, stone_mat, 0.025,
+            ))
+
+    dormer_width = float(spec.get("dormer_width_m", 1.18))
+    dormer_height = float(spec.get("dormer_height_m", 1.52))
+    dormer_z = base_z + slab_height + skirt_height * 0.50
+    body_depth = float(spec.get("dormer_body_depth_m", 0.72))
+    front_count = max(4, int(spec.get("front_dormer_count", round(width / 4.0))))
+    side_count = max(2, int(spec.get("side_dormer_count", round(depth / 6.0))))
+
+    def add_dormer(tag: str, axis: str, along_value: float) -> None:
+        if axis == "front":
+            body_centre = (cx + along_value, cy - depth / 2.0 + 0.30, dormer_z)
+            window_centre = (cx + along_value, cy - depth / 2.0 - 0.085, dormer_z)
+            body_size = (dormer_width + 0.24, body_depth, dormer_height + 0.24)
+        elif axis == "rear":
+            body_centre = (cx - along_value, cy + depth / 2.0 - 0.30, dormer_z)
+            window_centre = (cx - along_value, cy + depth / 2.0 + 0.085, dormer_z)
+            body_size = (dormer_width + 0.24, body_depth, dormer_height + 0.24)
+        elif axis == "left":
+            body_centre = (cx - width / 2.0 + 0.30, cy + along_value, dormer_z)
+            window_centre = (cx - width / 2.0 - 0.085, cy + along_value, dormer_z)
+            body_size = (body_depth, dormer_width + 0.24, dormer_height + 0.24)
+        else:
+            body_centre = (cx + width / 2.0 - 0.30, cy - along_value, dormer_z)
+            window_centre = (cx + width / 2.0 + 0.085, cy - along_value, dormer_z)
+            body_size = (body_depth, dormer_width + 0.24, dormer_height + 0.24)
+        parts.append(add_beveled_box(
+            f"{prefix}_{tag}_ZincBody", body_size, body_centre, lead_mat, 0.075,
+        ))
+        if axis == "front":
+            seed = sum(ord(character) for character in tag)
+            add_heritage_sash_front(
+                parts, f"{prefix}_{tag}_Sash",
+                window_centre[0], window_centre[1], window_centre[2],
+                dormer_width, dormer_height, mats,
+                pediment="segmental", interior_seed=seed, overlay=True,
+                surround_material=lead_mat, frame_material=frame_mat,
+                glass_material=mats["glazing_interior_cells"][
+                    seed % len(mats["glazing_interior_cells"])
+                ],
+                room_material=mats["glazing_interior_cells"][
+                    seed % len(mats["glazing_interior_cells"])
+                ],
+                trim_scale=0.56, sash_mullions="single", fine_glazing_rails=False,
+            )
+        else:
+            _graph_curtain_wall(parts, {
+                "id": f"{prefix}_{tag}_Sash",
+                "axis": axis,
+                "centre": window_centre,
+                "span_m": dormer_width,
+                "height_m": dormer_height,
+                "columns": 2,
+                "rows": 2,
+                "frame_m": 0.055,
+                "depth_m": 0.055,
+                "glass_material": "glass",
+                "frame_material": spec.get("frame_material", "signature_metal"),
+            }, mats)
+            # A shallow zinc hood prevents the secondary dormers from reading
+            # as plain boxes while the street-facing row keeps curved heads.
+            hood_z = dormer_z + dormer_height / 2.0 + 0.20
+            hood_size = (
+                (dormer_width + 0.36, body_depth + 0.16, 0.14)
+                if axis in {"front", "rear"} else
+                (body_depth + 0.16, dormer_width + 0.36, 0.14)
+            )
+            parts.append(add_beveled_box(
+                f"{prefix}_{tag}_Hood", hood_size,
+                (body_centre[0], body_centre[1], hood_z), roof_mat, 0.035,
+            ))
+
+    for index in range(front_count):
+        offset = -width / 2.0 + width * (index + 0.5) / front_count
+        add_dormer(f"FrontDormer{index:02d}", "front", offset)
+        add_dormer(f"RearDormer{index:02d}", "rear", offset)
+    for index in range(side_count):
+        offset = -depth / 2.0 + depth * (index + 0.5) / side_count
+        add_dormer(f"LeftDormer{index:02d}", "left", offset)
+        add_dormer(f"RightDormer{index:02d}", "right", offset)
+
+    # A narrow standing-seam ridge on the five top-deck strips gives the roof
+    # a legible construction datum without closing either court.
+    seam_z = deck_z + 0.11
+    seam_profile = 0.055
+    for seam_index, seam_x in enumerate((
+        cx - top_width * 0.32, cx - top_width * 0.16,
+        cx, cx + top_width * 0.16, cx + top_width * 0.32,
+    )):
+        parts.append(add_beveled_box(
+            f"{prefix}_StandingSeam{seam_index:02d}",
+            (seam_profile, outer_strip_y, seam_profile),
+            (seam_x, cy - (well_depth + outer_strip_y) / 2.0, seam_z),
+            frame_mat, 0.012,
+        ))
 
 
 def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
@@ -7803,6 +8063,8 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_oriel_array(parts, assembly, mats)
         elif kind == "glazing_overlay":
             _graph_glazing_overlay(parts, assembly, mats)
+        elif kind == "mansard_perimeter":
+            _graph_mansard_perimeter(parts, assembly, mats)
         elif kind == "balcony_array":
             _graph_balcony_array(parts, assembly, mats)
         elif kind == "corbel_array":
@@ -7812,7 +8074,11 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
 
     if not parts:
         raise ValueError("massing graph contains no renderable nodes or assemblies")
-    model = join_as("ASM_MassingGraph", parts)
+    model = join_as(
+        "ASM_MassingGraph",
+        parts,
+        final_bevel_m=float(graph.get("final_bevel_m", 0.025)),
+    )
     _apply_massing_skin_uv(model)
     _consolidate_massing_skin_materials(model)
     # Bevelled plinths and stair nosings can produce a tiny negative export

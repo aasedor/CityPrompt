@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-london-one-view-renderlock-v73",
+  "memory_version": "2026-07-20-haussmann-twin-court-renderlock-v74",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -600,6 +600,26 @@
       "symptom": "A rectified facade source produces broad blank wings on an otherwise correctly proportioned building",
       "cause": "White presentation margins were left inside the architectural UV range and then stretched across the complete canonical elevation.",
       "correction": "Crop the source or UV bounds to the architectural extents before PBR generation, then compare the rendered frontage against the full bay rhythm rather than accepting a technically valid texture package."
+    },
+    {
+      "symptom": "A perimeter block has open courts in its wall massing but the aerial render still shows a continuous roof or cornice lid",
+      "cause": "The body was assembled as wings while the roof retained a full-footprint base slab or top deck, so the declared void stopped at the top storey.",
+      "correction": "Build the cornice and mansard top as explicit perimeter strips, carry every court through the roof, and add only evidence-led cross-wing bridges. Require the aerial acceptance view to prove every court remains open to sky."
+    },
+    {
+      "symptom": "Scaling a boulevard facade creates several grand entrances at regular intervals",
+      "cause": "The source podium combined repeatable shopfronts with the principal entrance and the whole band was tiled across the frontage.",
+      "correction": "Extract the entrance into a fixed facade role, stitch the ordinary outer shopfront slices into a repeatable podium band, and test that the assembled principal elevation contains exactly one entrance landmark."
+    },
+    {
+      "symptom": "A dense fixed graph spends minutes beveling and exports far above the triangle budget without a visible quality gain",
+      "cause": "Identity solids were bevelled individually and the final joined graph applied a second bevel to every sash, rail picket, atlas skin and room card.",
+      "correction": "Allow an audited fixed graph to disable the final global bevel when its silhouette-bearing solids already own construction radii. Verify the optimized render at facade-close and aerial cameras before accepting the triangle reduction."
+    },
+    {
+      "symptom": "A high-detail atlas increases GLB size but the facade looks no sharper than the accepted source",
+      "cause": "A lower-resolution rectified source was upscaled to a 4K near atlas, multiplying texture payload without adding architectural evidence.",
+      "correction": "Set the near-LOD ceiling from native source evidence, never from a blanket hero preset. Keep 2048 px as the quality floor, retain the 1024 px city LOD, and reserve 4K for sources that contain genuine additional detail."
     },
     {
       "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",

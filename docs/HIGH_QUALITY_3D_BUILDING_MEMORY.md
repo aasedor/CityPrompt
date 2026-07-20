@@ -466,6 +466,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
   should preserve the audited mansard, dormers and chimneys while the body,
   cornices and raised pavilions remain explicitly authored.
 
+### Haussmann twin-court + delivery-budget lessons
+
+- A court must remain open through every construction layer. Building the wall
+  body as perimeter wings is insufficient if a full cornice slab or roof deck
+  caps the void; use explicit roof-ring strips and prove every court from the
+  aerial acceptance camera.
+- Separate the principal entrance from a repeatable podium source before
+  scaling. Stitch ordinary shopfront slices into the repeat band and retain one
+  fixed entrance role so a long boulevard frontage cannot duplicate its grand
+  door.
+- Dense fixed graphs may disable the final joined-mesh bevel when their
+  silhouette-bearing solids already own individual construction radii. Review
+  facade-close and aerial views after optimization; the Classic Haussmann graph
+  fell from 215,572 to 69,780 assembled triangles without losing identity.
+- Native source evidence sets the useful near-atlas ceiling. Upscaling a 1141
+  px rectified elevation to 4K added payload but no detail, while a 2K near / 1K
+  far package retained the accepted render and reduced the assembled GLB from
+  33.1 MB to 13.9 MB before KTX2.
+- Reuse the selected occupied-glass cell as both pane and shallow room card in
+  roof sashes. A helper that silently allocates its own legacy room palette can
+  push an otherwise identical graph over the material-review threshold.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

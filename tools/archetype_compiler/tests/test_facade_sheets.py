@@ -719,6 +719,36 @@ def test_london_mansion_uses_registered_wall_and_canonical_mansard_kit():
     assert not any(item["kind"] == "balcony_array" for item in graph["assemblies"])
 
 
+def test_classic_haussmann_preserves_twin_courts_and_fixed_entrance():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "parisian_midrise_block",
+            "variant_id": "parisian_haussmann_classic",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "haussmann_twin_court_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 42.0,
+        "depth_m": 38.0,
+        "floors": 6,
+        "floor_height_m": 3.4,
+    }
+    assert len(graph["voids"]) == 2
+    assert assemblies["haussmann_twin_court_mansard"]["kind"] == "mansard_perimeter"
+    assert assemblies["haussmann_twin_court_mansard"]["court_count"] == 2
+    assert assemblies["haussmann_front_entrance"]["band"] == "entrance"
+    assert assemblies["haussmann_front_podium_left"]["levels"][0]["repeat_count"] == 2
+    assert assemblies["haussmann_front_balconies"]["levels_z"] == [4.65, 14.85]
+    assert assemblies["haussmann_front_balconies"]["rail_profile_m"] == 0.028
+    assert graph["final_bevel_m"] == 0.0
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -735,6 +765,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert "disabled_assembly_ids" in source
     assert "disabled_node_ids" in source
     assert 'kind == "canonical_roof"' in source
+    assert 'kind == "mansard_perimeter"' in source
     assert "focus_height * 2.75" in source
     assert "focus_height * 2.05" in source
 
