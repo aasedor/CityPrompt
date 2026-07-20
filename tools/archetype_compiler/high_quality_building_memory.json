@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-soho-cast-iron-warehouse-v81",
+  "memory_version": "2026-07-20-richardsonian-warehouse-v82",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -740,6 +740,21 @@
       "symptom": "A charcoal-painted cast-iron facade becomes a harsh black cage",
       "cause": "Full-height structural pilasters inherited the same black-metal texture and high metallic response intended for fire escapes and roof railings.",
       "correction": "Separate painted architectural iron from black exposed steel. Use a softer charcoal primary material for the fixed facade order and reserve black metal for stairs, guards and fine hardware."
+    },
+    {
+      "symptom": "A Romanesque warehouse source elevation resolves eight bays when the selected variant proves ten",
+      "cause": "The image generator preserved the architectural style but treated the required structural count as descriptive rather than fixed construction evidence.",
+      "correction": "Reject the source before scheduling openings. Run one bounded correction pass with the exact long-face bay count and do not build PBR maps until the orthographic grid passes."
+    },
+    {
+      "symptom": "A registered warehouse elevation is visibly stretched across a much wider provisional massing graph",
+      "cause": "The planning dimensions were retained after the accepted source measured a substantially smaller physical atlas span.",
+      "correction": "Compare measured atlas span with native graph frontage before canonical generation. Prefer an evidence-led native dimension tier when full-width mapping would otherwise distort bay proportions."
+    },
+    {
+      "symptom": "A five-bay short warehouse elevation displays ten compressed Romanesque bays behind five physical piers",
+      "cause": "The complete long-face atlas was wrapped onto a shorter side even though the oblique reference proved an independent five-bay structural rhythm.",
+      "correction": "Partition the secondary elevation into evidence-led per-bay UV crops and crop the semantic glazing regions with the same bounds. Verify that each cropped bay aligns to one physical side pier interval."
     }
   ]
 }

@@ -1229,6 +1229,105 @@
       "material_zones": "aged brick; charcoal steel; large reflective glass; weathered concrete",
       "kits": ["industrial_steel_bays", "steel_bracing", "roof_monitor", "reuse_terraces"]
     },
+    "warehouse_arch_window_brick": {
+      "identity": "Monumental three-level Richardsonian warehouse with ten heavy red-brick bays, five rock-faced arched loading portals, paired round-arched windows, pale giant archivolts, carved colonettes, string courses and a dense blind-arcade parapet.",
+      "material_zones": "deep red-brown load-bearing brick; rough brownstone plinth and loading voussoirs; warm pale sandstone archivolts, sills and colonettes; black divided-light occupied glazing; weathered built-up roof",
+      "glass_profile": "industrial_sash",
+      "dimension_overrides": {"roof_height_m": 1.5},
+      "material_overrides": {
+        "primary": {"base_color": "#684037", "roughness": 0.91, "metallic": 0.0, "texture_key": "red_brick"},
+        "secondary": {"base_color": "#7a5544", "roughness": 0.93, "metallic": 0.0, "texture_key": "sandstone"},
+        "accent": {"base_color": "#cbb792", "roughness": 0.78, "metallic": 0.0, "texture_key": "natural_stone"},
+        "roof": {"base_color": "#494541", "roughness": 0.92, "metallic": 0.0, "texture_key": "roof_membrane"}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#cbb792", "roughness": 0.78, "metallic": 0.0, "texture_key": "natural_stone"},
+        "signature_warm": {"base_color": "#7a5544", "roughness": 0.93, "metallic": 0.0, "texture_key": "sandstone"},
+        "signature_metal": {"base_color": "#202326", "roughness": 0.38, "metallic": 0.58, "texture_key": "black_metal"}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [44, 55],
+        "recommendedDepth_m": [32, 45],
+        "recommendedFloors": [3, 3],
+        "wingDepth_m": [16, 22],
+        "preferredBayMultiple_m": 5.5,
+        "notes": [
+          "Use the fixed Arch-Window Brick graph only at the native 44 by 36 metre, three-level rectangular tier.",
+          "Keep the five loading portals, ten-bay paired-arch rhythm, rock-faced base, string courses and blind-arcade parapet fixed; repeat only complete paired-arch bays in derived parcel kits."
+        ]
+      },
+      "kits": ["romanesque_arcade", "heavy_masonry_piers", "paired_arch_windows", "loading_portals", "corbelled_cornice", "blind_arcade_parapet"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "richardsonian_ten_bay_warehouse_v1",
+        "description": "A render-locked three-level Richardsonian warehouse whose ten-bay registered elevation is backed by a heavy masonry core, physical loading arches, stone string courses, blind-arcade parapet and a bounded flat service roof.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0.png", "cues": ["three total levels", "ten long-facade bay groups", "alternating loading portals", "paired Romanesque arches", "blind-arcade parapet"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_60.jpg", "cues": ["massive rectangular block", "five-bay short end", "flat concealed roof", "rock-faced base wrapping both streets"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/romanesque_revival_warehouse/variant_0_angle_90.jpg", "cues": ["uninterrupted built-up roof", "continuous masonry parapet", "one low access enclosure", "one modest HVAC box", "no court or penthouse"]}
+        ],
+        "height_m": 20.8,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 44.0, "depth_m": 36.0, "floors": 3, "floor_height_m": 5.4},
+        "nodes": [
+          {"id": "romanesque_plinth", "kind": "box", "size": [44.8, 36.8, 0.38], "location": [0.0, 0.0, 0.19], "material": "signature_warm", "bevel_m": 0.05},
+          {"id": "romanesque_shadow_core", "kind": "box", "size": [43.0, 35.0, 18.0], "location": [0.0, 0.0, 9.0], "material": "primary", "bevel_m": 0.15},
+          {"id": "romanesque_roof_deck", "kind": "box", "size": [44.0, 36.0, 0.34], "location": [0.0, 0.0, 18.17], "material": "roof", "bevel_m": 0.04},
+          {"id": "romanesque_parapet_body", "kind": "box", "size": [44.45, 36.45, 1.38], "location": [0.0, 0.0, 18.70], "material": "primary", "bevel_m": 0.04},
+          {"id": "romanesque_parapet_cap", "kind": "box", "size": [44.75, 36.75, 0.22], "location": [0.0, 0.0, 19.50], "material": "signature_stone", "bevel_m": 0.035},
+          {"id": "romanesque_roof_access", "kind": "box", "size": [6.0, 4.5, 2.35], "location": [8.5, 4.0, 19.35], "material": "primary", "bevel_m": 0.09},
+          {"id": "romanesque_access_cap", "kind": "box", "size": [6.35, 4.85, 0.22], "location": [8.5, 4.0, 20.64], "material": "roof", "bevel_m": 0.04},
+          {"id": "romanesque_hvac", "kind": "box", "size": [2.0, 1.8, 1.25], "location": [-7.0, -3.0, 18.96], "material": "concrete", "bevel_m": 0.07},
+          {"id": "romanesque_roof_hatch", "kind": "box", "size": [2.4, 1.5, 0.65], "location": [-13.5, 5.0, 18.66], "material": "signature_metal", "bevel_m": 0.05}
+        ],
+        "voids": [
+          {"id": "loading_hall_depth", "size": [41.5, 1.4, 5.2], "location": [0.0, -17.5, 2.8], "purpose": "deep loading thresholds behind five fixed Romanesque portals"},
+          {"id": "flat_service_roof", "size": [41.5, 33.5, 2.3], "location": [0.0, 0.0, 19.0], "purpose": "unoccupied built-up roof inside the continuous masonry parapet"}
+        ],
+        "assemblies": [
+          {"id": "romanesque_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "depth_m": 0.05, "band": "elevation"},
+          {"id": "romanesque_left_elevation_1", "kind": "facade_skin", "axis": "left", "centre": [-21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "flip_u": true},
+          {"id": "romanesque_left_elevation_2", "kind": "facade_skin", "axis": "left", "centre": [-21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "flip_u": true},
+          {"id": "romanesque_left_elevation_3", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "flip_u": true},
+          {"id": "romanesque_left_elevation_4", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "flip_u": true},
+          {"id": "romanesque_left_elevation_5", "kind": "facade_skin", "axis": "left", "centre": [-21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "flip_u": true},
+          {"id": "romanesque_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "flip_u": true},
+          {"id": "romanesque_right_elevation_1", "kind": "facade_skin", "axis": "right", "centre": [21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2},
+          {"id": "romanesque_right_elevation_2", "kind": "facade_skin", "axis": "right", "centre": [21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3},
+          {"id": "romanesque_right_elevation_3", "kind": "facade_skin", "axis": "right", "centre": [21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4},
+          {"id": "romanesque_right_elevation_4", "kind": "facade_skin", "axis": "right", "centre": [21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5},
+          {"id": "romanesque_right_elevation_5", "kind": "facade_skin", "axis": "right", "centre": [21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "depth_m": 0.05, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6},
+          {"id": "romanesque_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "columns": 10, "rows": 3, "profile_m": 0.08, "band": "elevation", "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_left_glazing_1", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_left_glazing_2", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_left_glazing_3", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_left_glazing_4", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_left_glazing_5", "kind": "glazing_overlay", "axis": "left", "centre": [-21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_rear_glazing", "kind": "glazing_overlay", "axis": "rear", "centre": [0.0, 17.825, 9.0], "span_m": 43.5, "height_m": 17.9, "columns": 10, "rows": 3, "profile_m": 0.08, "band": "elevation", "glass_profile": "industrial_sash", "flip_u": true, "frame_mode": "mask_only"},
+          {"id": "romanesque_right_glazing_1", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, -14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.1, "uv_u_max": 0.2, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_right_glazing_2", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, -7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.2, "uv_u_max": 0.3, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_right_glazing_3", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 0.0, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.3, "uv_u_max": 0.4, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_right_glazing_4", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 7.1, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.4, "uv_u_max": 0.5, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_right_glazing_5", "kind": "glazing_overlay", "axis": "right", "centre": [21.825, 14.2, 9.0], "span_m": 7.1, "height_m": 17.9, "columns": 1, "rows": 3, "profile_m": 0.08, "band": "elevation", "uv_u_min": 0.5, "uv_u_max": 0.6, "glass_profile": "industrial_sash", "frame_mode": "mask_only"},
+          {"id": "romanesque_front_piers", "kind": "frame_grid", "axis": "front", "centre": [0.0, -18.02, 9.0], "span_m": 43.65, "height_m": 17.85, "columns": 10, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
+          {"id": "romanesque_left_piers", "kind": "frame_grid", "axis": "left", "centre": [-22.02, 0.0, 9.0], "span_m": 35.65, "height_m": 17.85, "columns": 5, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
+          {"id": "romanesque_rear_piers", "kind": "frame_grid", "axis": "rear", "centre": [0.0, 18.02, 9.0], "span_m": 43.65, "height_m": 17.85, "columns": 10, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
+          {"id": "romanesque_right_piers", "kind": "frame_grid", "axis": "right", "centre": [22.02, 0.0, 9.0], "span_m": 35.65, "height_m": 17.85, "columns": 5, "rows": 3, "active_vertical_indices": [0, 1, 2, 3, 4, 5], "active_horizontal_indices": [0, 1, 3], "profile_m": 0.18, "vertical_profile_m": 0.42, "horizontal_profile_m": 0.20, "depth_m": 0.30, "vertical_depth_m": 0.42, "horizontal_depth_m": 0.28, "edge_profile_multiplier": 1.25, "material": "primary"},
+          {"id": "romanesque_front_loading_portals", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -18.12, 3.05], "positions_m": [-17.6, -8.8, 0.0, 8.8, 17.6], "opening_width_m": 3.65, "opening_height_m": 5.2, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.24, "occupied_as_pane": false, "material": "signature_warm", "glass_material": "signature_metal", "frame_material": "signature_warm", "interior_material": "signature_metal", "door_material": "signature_metal"},
+          {"id": "romanesque_left_loading_portals", "kind": "classical_window_array", "axis": "left", "centre": [-22.12, 0.0, 3.05], "positions_m": [-7.2, 7.2], "opening_width_m": 3.65, "opening_height_m": 5.2, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.24, "occupied_as_pane": false, "material": "signature_warm", "glass_material": "signature_metal", "frame_material": "signature_warm", "interior_material": "signature_metal", "door_material": "signature_metal"},
+          {"id": "romanesque_front_string_lower", "kind": "shadow_line", "axis": "front", "centre": [0.0, -18.16, 5.65], "span_m": 44.1, "height_m": 0.28, "depth_m": 0.32, "material": "signature_stone"},
+          {"id": "romanesque_front_string_upper", "kind": "shadow_line", "axis": "front", "centre": [0.0, -18.14, 10.95], "span_m": 44.0, "height_m": 0.24, "depth_m": 0.28, "material": "signature_stone"},
+          {"id": "romanesque_left_string_lower", "kind": "shadow_line", "axis": "left", "centre": [-22.16, 0.0, 5.65], "span_m": 36.1, "height_m": 0.28, "depth_m": 0.32, "material": "signature_stone"},
+          {"id": "romanesque_left_string_upper", "kind": "shadow_line", "axis": "left", "centre": [-22.14, 0.0, 10.95], "span_m": 36.0, "height_m": 0.24, "depth_m": 0.28, "material": "signature_stone"},
+          {"id": "romanesque_front_blind_arcade", "kind": "corbel_array", "axis": "front", "centre": [0.0, -18.18, 0.0], "span_m": 43.9, "count": 36, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
+          {"id": "romanesque_left_blind_arcade", "kind": "corbel_array", "axis": "left", "centre": [-22.18, 0.0, 0.0], "span_m": 35.9, "count": 30, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
+          {"id": "romanesque_rear_blind_arcade", "kind": "corbel_array", "axis": "rear", "centre": [0.0, 18.18, 0.0], "span_m": 43.9, "count": 36, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"},
+          {"id": "romanesque_right_blind_arcade", "kind": "corbel_array", "axis": "right", "centre": [22.18, 0.0, 0.0], "span_m": 35.9, "count": 30, "levels_z": [18.35, 18.82], "depth_m": 0.38, "height_m": 0.30, "width_ratio": 0.48, "material": "primary"}
+        ],
+        "target_views": ["archetype_match", "street", "aerial", "context"]
+      }
+    },
     "romanesque_revival_warehouse": {
       "identity": "Richardsonian warehouse with a massive round-arched base, grouped arched openings, deep voussoirs, heavy masonry piers and corbelled cornice.",
       "material_zones": "dark rock-faced stone and red brick; deep window shadows; copper accents",

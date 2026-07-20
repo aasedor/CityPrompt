@@ -209,6 +209,46 @@ def test_cast_iron_warehouse_variant_injects_fixed_corner_graph():
     assert "massing_graph" not in injected["architectural_signature"]
 
 
+def test_arch_window_warehouse_variant_injects_ten_bay_romanesque_graph():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "romanesque_revival_warehouse",
+            "variant_id": "warehouse_arch_window_brick",
+        },
+        "materials": {"primary": {}, "secondary": {}, "accent": {}, "roof": {}},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+
+    assert graph["profile"] == "richardsonian_ten_bay_warehouse_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 44.0,
+        "depth_m": 36.0,
+        "floors": 3,
+        "floor_height_m": 5.4,
+    }
+    front_piers = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "romanesque_front_piers"
+    )
+    assert front_piers["columns"] == 10
+    assert len(front_piers["active_vertical_indices"]) == 11
+    loading = next(
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"] == "romanesque_front_loading_portals"
+    )
+    assert len(loading["positions_m"]) == 5
+    side_skins = [
+        assembly for assembly in graph["assemblies"]
+        if assembly["id"].startswith("romanesque_left_elevation_")
+    ]
+    assert len(side_skins) == 5
+    assert [skin["uv_u_min"] for skin in side_skins] == [0.1, 0.2, 0.3, 0.4, 0.5]
+    assert all(skin["span_m"] == 7.1 for skin in side_skins)
+
+
 def test_parametric_relief_pilots_keep_landmark_reference_contracts():
     profiles = json.loads(
         (Path(__file__).parents[1] / "architectural_signature_profiles.json").read_text(

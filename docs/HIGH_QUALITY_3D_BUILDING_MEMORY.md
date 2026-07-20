@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-soho-cast-iron-warehouse-v81`.
+Current executable memory: `2026-07-20-richardsonian-warehouse-v82`.
 
 ## The quality target
 
@@ -615,6 +615,28 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - A geometry-only assembled pilot can prove axes and silhouettes before PBR,
   but its missing reusable-module validation is expected and it is never a
   keeper. Promotion still requires the complete seven-module package.
+
+### Richardsonian warehouse + secondary-elevation crop lessons
+
+- Storey and bay counts remain hard gates even when the generated source is
+  stylistically convincing. The first orthographic pass produced eight bays;
+  it was rejected before scheduling, and one bounded correction produced the
+  accepted ten-bay, three-level elevation.
+- Compare the measured physical atlas span with the provisional massing tier.
+  A 42.73 metre registered elevation would have been visibly stretched across
+  the original 55 metre placeholder, so the evidence-led native frontage was
+  corrected to 44 metres before keeper generation.
+- A short elevation is not the long elevation compressed. When the oblique
+  reference proves five side bays, partition that face into five deliberate UV
+  crops and apply identical crops to semantic glazing so every bay aligns with
+  one physical pier interval.
+- Render validation is iterative: the first textured candidate was structurally
+  valid but failed visual review because it squeezed ten bays onto the return.
+  Rejecting that candidate and rerendering the crop pilot was required before
+  rebuilding the complete module family.
+- Roof-plan evidence owns the flat service roof. Preserve the continuous
+  parapet, one low access enclosure, one modest HVAC unit and one hatch; do not
+  introduce a tower, gable, court or full penthouse absent from the references.
 
 ## Updating this memory
 
