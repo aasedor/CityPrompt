@@ -6,6 +6,9 @@ derived generationStyleInput from aestheticCatalog.ts.
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
 from compiler import compile_archetype
@@ -415,3 +418,34 @@ def test_brick_graph_compiles_true_oriel_and_arch_attachments():
     grammar = compile_archetype(payload)
     attachments = {attachment.kind for attachment in grammar.facade_graph.attachments}
     assert {"oriel", "arch", "cornice"} <= attachments
+
+
+def test_renderlock_v1_building_cohort_is_finite_and_unique():
+    cohort_path = Path(__file__).parents[1] / "renderlock_v1_20_buildings.json"
+    cohort = json.loads(cohort_path.read_text(encoding="utf-8"))
+    entries = cohort["entries"]
+
+    assert cohort["target_count"] == 20
+    assert len(entries) == 20
+    assert [entry["sequence"] for entry in entries] == list(range(1, 21))
+    identities = {
+        (entry["archetype_id"], entry.get("variant_id")) for entry in entries
+    }
+    assert len(identities) == 20
+    assert sum(entry["state"] == "keeper" for entry in entries) == 4
+
+
+def test_selected_flat_roof_overrides_parent_mansard_alternative():
+    payload = payload_mixed_use_midrise()
+    payload["roofDetail"] = {
+        "form": "flat terrace with stone balustrade parapet",
+        "material": "terracotta tile parapet cap, membrane terrace",
+    }
+    payload["styleProfile"]["roofForm"] = (
+        "Flat terrace roof with terracotta parapet or low mansard"
+    )
+
+    grammar = compile_archetype(payload)
+
+    assert grammar.roof.type == "flat"
+    assert grammar.roof.parapet is True

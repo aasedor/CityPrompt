@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-dark-frame-office-renderlock-v71",
+  "memory_version": "2026-07-20-eixample-courtyard-renderlock-v72",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -580,6 +580,16 @@
       "symptom": "One office interior bay is smeared across an otherwise correct four-bay curtain wall",
       "cause": "The typical-floor PBR crop isolated a single bay but the fixed canonical facade stretched that crop over the complete elevation span.",
       "correction": "For fixed render-locked elevations, crop the complete audited floor band so every interior bay remains registered to the physical frame; reserve single-bay crops for genuinely tiled LEGO modules and derive a separate side crop for different bay counts."
+    },
+    {
+      "symptom": "A catalogue perimeter block claims a courtyard but the aerial review shows a solid roof or filled core",
+      "cause": "The family inherited a solid showcase core and roof deck while courtyard intent existed only in metadata or footprint compatibility declarations.",
+      "correction": "Disable the inherited solid core and deck at the graph level, assemble explicit cardinal and diagonal perimeter wings with matching roof pieces, and require an aerial view that proves a continuous open light court."
+    },
+    {
+      "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",
+      "cause": "The assembled model request no longer exactly matched the massing graph's authored reference width, depth and floor count, so the safety selector correctly bypassed fixed geometry.",
+      "correction": "Bind every accepted fixed graph to an explicit native width, depth and floor tier, keep the cohort registry synchronized with those dimensions, and test both the accepted native tier and the intentional generic fallback."
     }
   ]
 }

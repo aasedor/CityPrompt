@@ -234,7 +234,7 @@ def test_v21_expansion_graphs_preserve_family_specific_construction():
     assert overlays and all(item.get("frame_mode") == "mask_only" for item in overlays)
 
     eixample = graph_for("eixample_apartment_block")
-    assert eixample["profile"] == "cerda_chamfer_v21"
+    assert eixample["profile"] == "cerda_chamfer_courtyard_v24"
     assert sum(node["kind"] == "chamfered_box" for node in eixample["nodes"]) >= 2
     assert sum(item["kind"] == "balcony_array" for item in eixample["assemblies"]) == 4
     corner_skins = [
@@ -668,6 +668,34 @@ def test_dark_frame_office_preserves_compact_reference_proportions():
     assert len(assemblies["dark_glass_front_skin"]["levels"]) == 7
 
 
+def test_classic_eixample_preserves_four_storeys_and_real_light_court():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "eixample_apartment_block",
+            "variant_id": "eixample-apartment-block-classic",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "cerda_chamfer_courtyard_v24"
+    assert graph["reference_dimensions"] == {
+        "width_m": 23.0,
+        "depth_m": 23.0,
+        "floors": 4,
+        "floor_height_m": 5.0,
+    }
+    assert "eixample_shadow_core" in graph["disabled_node_ids"]
+    assert "eixample_roof_deck" in graph["disabled_node_ids"]
+    assert nodes["eixample_courtyard_floor"]["size"][:2] == [8.8, 8.8]
+    assert assemblies["eixample_front_glazing"]["rows"] == 4
+    assert assemblies["eixample_front_balconies"]["levels_z"] == [6.1, 10.0, 13.7]
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -682,6 +710,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert "near_tree_offset = max(width * 0.72, 12.0)" in source
     assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
     assert "disabled_assembly_ids" in source
+    assert "disabled_node_ids" in source
     assert "focus_height * 2.75" in source
     assert "focus_height * 2.05" in source
 

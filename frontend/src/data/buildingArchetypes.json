@@ -18383,6 +18383,8 @@
                       "id": "eixample-apartment-block-classic",
                       "label": "Classic Eixample",
                       "thumbnailUrl": "/archetypes/buildings/eixample-apartment-block/variant_0.png",
+                      "minFloors": 4,
+                      "maxFloors": 4,
                       "description": "Canonical Cerda-grid apartment with cream stucco facade, regular bay rhythm, iron balconies on every floor, stone-framed tribune gallery on principal floor, and flat terrace roof. Restrained classical ornament.",
                       "facadeDetail": {
                             "primaryMaterial": "cream lime-stucco with scored ashlar lines",

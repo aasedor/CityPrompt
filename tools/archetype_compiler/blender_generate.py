@@ -7686,7 +7686,10 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
     if graph.get("schema") != "massing-graph@1":
         raise ValueError(f"unsupported massing graph schema {graph.get('schema')!r}")
     parts: list[bpy.types.Object] = []
+    disabled_node_ids = {str(item) for item in graph.get("disabled_node_ids", [])}
     for node in graph.get("nodes", []):
+        if str(node.get("id")) in disabled_node_ids:
+            continue
         kind = node.get("kind")
         location = tuple(float(value) for value in node["location"])
         if kind == "box":

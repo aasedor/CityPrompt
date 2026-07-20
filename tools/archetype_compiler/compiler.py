@@ -226,8 +226,11 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
     material_text = str(roof_detail.get("material") or "").lower()
     features_text = str(roof_detail.get("features") or "").lower()
 
-    # Hipped roofs still use the closest supported pitched silhouette.
-    if "mansard" in form_text:
+    # The selected variant's explicit form is authoritative over a parent
+    # profile that merely lists mansard as one possible family alternative.
+    if "mansard" in primary_form_text:
+        # A mansard may legitimately describe its upper termination as a
+        # "flat top"; that phrase must not collapse the silhouette to flat.
         roof_type = "mansard"
     elif "flat" in primary_form_text:
         # The selected variant's explicit roof description is authoritative.
@@ -235,6 +238,9 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
         # (for example "flat or shallow-pitched"); those must not turn an
         # explicitly flat green-roof addition into a generic gable.
         roof_type = "flat"
+    # Hipped roofs still use the closest supported pitched silhouette.
+    elif "mansard" in form_text:
+        roof_type = "mansard"
     elif re.search(r"\bgable|pitched|asymmetric pitch|hipped", form_text) and "flat" not in form_text.split(" or ")[0]:
         roof_type = "gabled"
     elif "mono-pitch" in form_text or "monopitch" in form_text or "shed roof" in form_text:

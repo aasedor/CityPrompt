@@ -432,6 +432,22 @@ The polychrome collegiate family added four rules for resizable hero facades:
   is five bays wide—two sash bays, one fixed centre entrance bay, and two sash
   bays—not a generic four-bay rowhouse.
 
+### Eixample perimeter-ring + native-tier lessons
+
+- A courtyard declaration is not a courtyard. Disable inherited solid cores
+  and roof decks, then build the cardinal wings, diagonal corner wings and roof
+  pieces as a real perimeter ring. The aerial acceptance view must show an
+  uninterrupted open light court.
+- Bind a fixed landmark graph to its accepted native width, depth and floor
+  count. If the requested tier differs, the compiler intentionally falls back
+  to the parametric LEGO stack; keep the profile, cohort registry and tests
+  synchronized so a parcel-envelope correction cannot silently discard the
+  reference-locked massing.
+- Treat catalogue floor evidence as variant-level data. The Classic Eixample
+  references show one ground floor plus three residential levels, so that
+  variant owns a four-storey bound even when the parent archetype permits a
+  broader range.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:
