@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-ruskinian-gable-layering-v67",
+  "memory_version": "2026-07-20-brownstone-sidewall-camera-v70",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -560,6 +560,16 @@
       "symptom": "A layered masonry gable renders as one solid pale stone triangle",
       "cause": "The smaller brick infill prism was extruded from the same base plane as the deeper stone verge and remained completely occluded inside it.",
       "correction": "Offset the infill to the exposed face of the outer verge before extrusion, preserving a visible brick field while the deeper stone prism reads only as a shaped edge and return."
+    },
+    {
+      "symptom": "The locked archetype review camera is completely blocked by a foreground tree on a narrow building",
+      "cause": "Near-context tree offsets scaled only from building width, placing the left tree directly on the camera-to-target corridor for narrow lots.",
+      "correction": "Clamp near-tree offsets to a camera-safe minimum while retaining width-relative spacing for larger buildings, then verify every required review view before accepting a family."
+    },
+    {
+      "symptom": "A quiet rowhouse party wall repeats ornate front-window surrounds across its full depth",
+      "cause": "The principal elevation's decorated repeat bay was reused as the side material band and tiled across every side segment.",
+      "correction": "Author a plain brick secondary-elevation band and add only evidence-supported sparse side and rear openings as physical recessed assemblies."
     }
   ]
 }

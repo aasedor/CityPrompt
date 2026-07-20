@@ -9,7 +9,7 @@ The memory has two forms:
 
 The assessor is [`quality_memory.py`](../tools/archetype_compiler/quality_memory.py). `generate_worldclass_library.py` records its result for every generated family, so a batch can continue while only questionable outputs enter a review queue.
 
-Current executable memory: `2026-07-20-ruskinian-gable-layering-v67`.
+Current executable memory: `2026-07-20-brownstone-sidewall-camera-v70`.
 
 ## The quality target
 
@@ -415,6 +415,18 @@ The polychrome collegiate family added four rules for resizable hero facades:
 - Multi-role near/far PBR families legitimately carry more materials than a
   flat legacy atlas. Review above 32 assembled materials while continuing to
   consolidate shader-equivalent clones and package runtime textures with KTX2.
+
+### Narrow rowhouse camera + secondary-elevation lessons
+
+- A required camera is invalid when contextual planting blocks the asset. Near
+  trees must have a camera-safe minimum lateral offset for narrow lots; width-
+  relative placement alone can put a crown directly on the view corridor.
+- A decorated principal bay is not a universal side-wall module. Use a quiet
+  brick secondary band for party walls, then add only the sparse recessed side
+  and rear openings supported by the oblique and roof references.
+- Keep the exact front-bay count evidence-led. The Red Brick & Sandstone pilot
+  is five bays wide—two sash bays, one fixed centre entrance bay, and two sash
+  bays—not a generic four-bay rowhouse.
 
 ## Updating this memory
 

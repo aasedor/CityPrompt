@@ -7740,7 +7740,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
         else:
             raise ValueError(f"massing graph node {node.get('id')!r} has unsupported kind {kind!r}")
 
+    disabled_assembly_ids = {
+        str(item) for item in graph.get("disabled_assembly_ids", [])
+    }
     for assembly in graph.get("assemblies", []):
+        if str(assembly.get("id")) in disabled_assembly_ids:
+            continue
         kind = assembly.get("kind")
         if kind == "column_array":
             _graph_column_array(parts, assembly, mats)
@@ -8171,13 +8176,15 @@ def render_presentation_views(
         add_context_building(rig, context_index, *spec, facade_cycle[context_index % len(facade_cycle)], context_mats)
         context_only.extend(rig[context_start:])
 
+    near_tree_offset = max(width * 0.72, 12.0)
+    foreground_tree_x = -max(width * 1.10, 18.0)
     tree_positions = (
-        (-width * 0.72, -depth / 2 - 3.1, 0.9), (width * 0.74, -depth / 2 - 3.5, 1.0),
+        (-near_tree_offset, -depth / 2 - 3.1, 0.9), (near_tree_offset, -depth / 2 - 3.5, 1.0),
         (-19.0, 17.0, 1.15), (18.0, 18.0, 0.95), (-36.0, 24.0, 1.2), (39.0, 28.0, 1.1),
         (-67.0, 25.0, 1.05), (72.0, 24.0, 1.2), (-42.0, -21.0, 0.95), (43.0, -22.0, 1.0),
         (-77.0, 61.0, 1.3), (-60.0, 68.0, 1.05), (-30.0, 68.0, 1.15),
         (10.0, 72.0, 1.2), (45.0, 70.0, 1.0), (78.0, 62.0, 1.25),
-        (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (-8.0, -64.0, 1.2),
+        (-86.0, -18.0, 1.15), (86.0, -15.0, 1.0), (foreground_tree_x, -64.0, 1.2),
     )
     for tree_index, (x, y, scale) in enumerate(tree_positions):
         add_preview_tree(rig, tree_index, x, y, scale, bark_mat, leaf_mat if tree_index % 3 else leaf_alt_mat)

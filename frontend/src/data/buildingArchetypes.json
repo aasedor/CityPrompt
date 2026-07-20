@@ -366,6 +366,18 @@
     },
     {
       "id": "brownstone_rowhouse_frontage",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [5, 30],
+        "recommendedDepth_m": [12, 24],
+        "recommendedFloors": [2, 4],
+        "wingDepth_m": [5, 8],
+        "profiles": {
+          "rectangle": {"recommendedWidth_m": [5, 8], "recommendedDepth_m": [12, 18], "recommendedFloors": [2, 4]},
+          "l_shape": {"recommendedWidth_m": [12, 24], "recommendedDepth_m": [12, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]},
+          "u_shape": {"recommendedWidth_m": [18, 30], "recommendedDepth_m": [15, 24], "recommendedFloors": [2, 4], "wingDepth_m": [5, 8]}
+        }
+      },
     "suggestedWidth_m": 6,
     "suggestedDepth_m": 15,
     "suggestedFloorHeight": 3.2,

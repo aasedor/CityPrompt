@@ -618,6 +618,30 @@ def test_ruskinian_facade_period_matches_registered_source_span():
     assert gable_axes == {"front", "rear", "left", "right"}
 
 
+def test_red_sandstone_rowhouse_preserves_reference_five_bay_rhythm():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "brownstone_rowhouse_frontage",
+            "variant_id": "brownstone_rowhouse_red_sandstone",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "red_brick_sandstone_rowhouse_v61"
+    assert assemblies["rowhouse_front_glazing"]["columns"] == 5
+    assert assemblies["rowhouse_stoop"]["base_centre"][0] == 0.0
+    assert "rowhouse_door_pediment" not in assemblies
+    assert "rowhouse_left_front_side_skin" in graph["disabled_assembly_ids"]
+    assert "rowhouse_rear_left_glazing" in graph["disabled_assembly_ids"]
+    for level in ("low", "mid", "high"):
+        assert assemblies[f"rowhouse_rear_left_{level}"]["span_m"] == 0.92
+        assert assemblies[f"rowhouse_rear_right_{level}"]["span_m"] == 0.92
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -629,6 +653,9 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
         assert f'("{role}"' in source
     assert "+ outward * profile_outward_offset" in source
     assert "base_z + height * 0.10, depth + 0.018, brick" in source
+    assert "near_tree_offset = max(width * 0.72, 12.0)" in source
+    assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
+    assert "disabled_assembly_ids" in source
 
 
 def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():

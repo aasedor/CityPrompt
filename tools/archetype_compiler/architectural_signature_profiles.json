@@ -508,7 +508,7 @@
       "kits": ["rowhouse_stoops", "oriel_bays", "rowhouse_divisions", "bracketed_cornice"]
     },
     "brownstone_rowhouse_red_sandstone": {
-      "identity": "A single four-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance between the two central bays and a deep bracketed pressed-metal cornice.",
+      "identity": "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",
       "material_zones": "warm variegated red-brown brick; carved buff sandstone base, lintels, sills and stoop; black wrought iron; dark stained timber door; softly occupied clear sash; grey membrane roof",
       "glass_profile": "residential_low_e",
       "dimension_overrides": {"width_m": 8.0, "depth_m": 15.0, "default_floors": 3, "roof_height_m": 1.2},
@@ -526,15 +526,23 @@
       "kits": ["rowhouse_stoop", "garden_level", "carved_window_returns", "fixed_timber_entrance", "bracketed_cornice", "quiet_party_wall"],
       "massing_graph": {
         "schema": "massing-graph@1",
-        "profile": "red_brick_sandstone_rowhouse_v58",
-        "description": "A render-locked single rowhouse with a fixed elevated entrance, four front sash bays, quieter exposed side and rear elevations, a low parapet roof and physical stone-and-iron depth. Only ordinary middle window bays are repeatable; the entrance, stoop, end conditions, cornice and roof remain fixed.",
+        "profile": "red_brick_sandstone_rowhouse_v61",
+        "description": "A render-locked single rowhouse with a fixed elevated entrance, five front sash bays, quieter exposed side and rear elevations, a low parapet roof and physical stone-and-iron depth. Only ordinary middle window bays are repeatable; the entrance, stoop, end conditions, cornice and roof remain fixed.",
         "reference_views": [
-          {"role": "street_identity", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png", "cues": ["four tall sash bays", "central elevated stoop", "red brick and carved sandstone", "deep bracketed cornice"]},
+          {"role": "street_identity", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0.png", "cues": ["five tall upper sash bays", "central elevated stoop", "red brick and carved sandstone", "deep bracketed cornice"]},
           {"role": "oblique_massing", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_60.jpg", "cues": ["quiet exposed side", "garden level", "flat parapet roof", "chimneys and skylight"]},
           {"role": "roof_plan", "path": "/archetypes/buildings/brownstone_rowhouse_frontage/variant_0_angle_90.jpg", "cues": ["single narrow lot", "rear yard orientation", "low party-wall parapets", "central roof light"]}
         ],
         "height_m": 12.2,
         "reference_dimensions": {"width_m": 8.0, "depth_m": 15.0, "floors": 3, "floor_height_m": 3.2},
+        "disabled_assembly_ids": [
+          "rowhouse_left_front_side_skin", "rowhouse_left_middle_side_skin", "rowhouse_left_rear_side_skin",
+          "rowhouse_right_front_side_skin", "rowhouse_right_middle_side_skin", "rowhouse_right_rear_side_skin",
+          "rowhouse_left_front_side_glazing", "rowhouse_left_middle_side_glazing", "rowhouse_left_rear_side_glazing",
+          "rowhouse_right_front_side_glazing", "rowhouse_right_middle_side_glazing", "rowhouse_right_rear_side_glazing",
+          "rowhouse_rear_left_skin", "rowhouse_rear_right_skin",
+          "rowhouse_rear_left_glazing", "rowhouse_rear_right_glazing"
+        ],
         "nodes": [
           {"id": "rowhouse_plinth", "kind": "box", "size": [8.18, 15.18, 0.20], "location": [0.0, 0.0, 0.10], "material": "signature_stone", "bevel_m": 0.025},
           {"id": "rowhouse_service_core", "kind": "box", "size": [6.60, 13.70, 10.60], "location": [0.0, 0.0, 5.50], "material": "primary", "bevel_m": 0.11},
@@ -547,7 +555,6 @@
           {"id": "rowhouse_door_left_jamb", "kind": "box", "size": [0.19, 0.38, 2.84], "location": [-0.75, -7.39, 2.71], "material": "signature_stone", "bevel_m": 0.028},
           {"id": "rowhouse_door_right_jamb", "kind": "box", "size": [0.19, 0.38, 2.84], "location": [0.75, -7.39, 2.71], "material": "signature_stone", "bevel_m": 0.028},
           {"id": "rowhouse_door_lintel", "kind": "box", "size": [1.70, 0.42, 0.26], "location": [0.0, -7.41, 4.16], "material": "signature_stone", "bevel_m": 0.035},
-          {"id": "rowhouse_door_pediment", "kind": "gable_roof", "size": [1.98, 0.52, 0.58], "location": [0.0, -7.44, 4.43], "material": "signature_stone", "bevel_m": 0.025, "ridge_axis": "y"},
           {"id": "rowhouse_left_garden_curb", "kind": "box", "size": [2.18, 1.12, 0.34], "location": [-2.48, -7.88, 0.27], "material": "signature_stone", "bevel_m": 0.035},
           {"id": "rowhouse_right_garden_curb", "kind": "box", "size": [2.18, 1.12, 0.34], "location": [2.48, -7.88, 0.27], "material": "signature_stone", "bevel_m": 0.035},
           {"id": "rowhouse_skylight_curb", "kind": "box", "size": [1.55, 2.10, 0.22], "location": [0.35, 1.75, 11.14], "material": "signature_stone", "bevel_m": 0.035},
@@ -561,7 +568,7 @@
         ],
         "assemblies": [
           {"id": "rowhouse_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -7.46, 5.55], "span_m": 7.82, "height_m": 10.70, "depth_m": 0.05, "band": "elevation"},
-          {"id": "rowhouse_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -7.50, 5.55], "span_m": 7.82, "height_m": 10.70, "columns": 4, "rows": 1, "band": "elevation", "frame_mode": "sash_relief", "cap_material_key": "signature_stone", "return_material_key": "signature_stone", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "stone_returns": true, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.34, "cavity_depth_m": 0.56, "room_card_recess_m": 0.18, "profile_m": 0.08, "max_regions": 18},
+          {"id": "rowhouse_front_glazing", "kind": "glazing_overlay", "axis": "front", "centre": [0.0, -7.50, 5.55], "span_m": 7.82, "height_m": 10.70, "columns": 5, "rows": 1, "band": "elevation", "frame_mode": "sash_relief", "cap_material_key": "signature_stone", "return_material_key": "signature_stone", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "stone_returns": true, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.34, "cavity_depth_m": 0.56, "room_card_recess_m": 0.18, "profile_m": 0.08, "max_regions": 20},
           {"id": "rowhouse_stoop", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [0.0, -7.47, 0.0], "width_m": 2.35, "run_m": 2.75, "rise_m": 1.30, "landing_depth_m": 0.92, "count": 8, "rail_height_m": 0.92, "stone_material": "signature_stone", "rail_material": "signature_metal"},
           {"id": "rowhouse_fanlight", "kind": "curtain_wall", "axis": "front", "centre": [0.0, -7.52, 3.91], "span_m": 1.20, "height_m": 0.42, "columns": 3, "rows": 1, "frame_m": 0.045, "depth_m": 0.045, "reveal_m": 0.05, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.16},
           {"id": "rowhouse_base_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -7.52, 1.55], "span_m": 7.94, "height_m": 0.20, "depth_m": 0.18, "material": "signature_stone"},
@@ -583,7 +590,16 @@
           {"id": "rowhouse_rear_left_skin", "kind": "facade_skin", "axis": "rear", "centre": [-2.05, 7.36, 5.55], "span_m": 3.60, "height_m": 10.70, "depth_m": 0.05, "band": "side", "flip_u": true},
           {"id": "rowhouse_rear_right_skin", "kind": "facade_skin", "axis": "rear", "centre": [2.05, 7.36, 5.55], "span_m": 3.60, "height_m": 10.70, "depth_m": 0.05, "band": "side"},
           {"id": "rowhouse_rear_left_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [-2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]},
-          {"id": "rowhouse_rear_right_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]}
+          {"id": "rowhouse_rear_right_glazing", "kind": "glazing_overlay", "axis": "rear", "base_centre": [2.05, 7.40, 0.20], "span_m": 3.60, "columns": 1, "rows": 1, "band": "side", "flip_u": true, "frame_mode": "sash_relief", "cap_material_key": "primary", "return_material_key": "primary", "depth_mullions": true, "mullion_count_override": 1, "transom_count_override": 1, "opening_returns": true, "projecting_sills": true, "pane_recess_m": 0.25, "cavity_depth_m": 0.42, "room_card_recess_m": 0.15, "max_regions": 2, "levels": [{"band": "side", "height_m": 4.0}, {"band": "side", "height_m": 3.2}, {"band": "side", "height_m": 3.5}]},
+          {"id": "rowhouse_left_side_window_low", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_left_side_window_mid", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_left_side_window_high", "kind": "curtain_wall", "axis": "left", "centre": [-3.82, 3.40, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.045, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_left_low", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_right_low", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 2.80], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_left_mid", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_right_mid", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 6.10], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_left_high", "kind": "curtain_wall", "axis": "rear", "centre": [-1.65, 7.42, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18},
+          {"id": "rowhouse_rear_right_high", "kind": "curtain_wall", "axis": "rear", "centre": [1.65, 7.42, 9.20], "span_m": 0.92, "height_m": 1.72, "columns": 1, "rows": 2, "frame_m": 0.050, "depth_m": 0.06, "reveal_m": 0.08, "frame_material": "signature_warm", "glass_material": "glass", "interior_material": "interior_warm", "interior_recess_m": 0.18}
         ]
       }
     },
