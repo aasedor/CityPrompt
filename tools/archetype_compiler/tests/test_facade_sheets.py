@@ -194,7 +194,7 @@ def test_collegiate_gothic_injects_variable_silhouette_geometry():
     assert assemblies["gothic_tower_buttresses"]["positions_m"] == [-6.55, 6.55]
 
 
-def test_classical_civic_injects_fixed_four_column_portico():
+def test_classical_civic_injects_courtyard_roof_ring_and_four_column_portico():
     from signature_profiles import inject_signature
 
     grammar = {"source": {"archetype_id": "civic_classical_building"}, "materials": {}}
@@ -202,10 +202,10 @@ def test_classical_civic_injects_fixed_four_column_portico():
     graph = injected["massing_graph"]
     assemblies = {item["id"]: item for item in graph["assemblies"]}
 
-    assert graph["profile"] == "classical_civic_portico_hero"
+    assert graph["profile"] == "classical_civic_courtyard_v2"
     assert graph["reference_dimensions"] == {
         "width_m": 42.0,
-        "depth_m": 26.0,
+        "depth_m": 34.0,
         "floors": 2,
         "floor_height_m": 5.6,
     }
@@ -215,7 +215,18 @@ def test_classical_civic_injects_fixed_four_column_portico():
     portico = assemblies["civic_giant_portico"]
     assert portico["kind"] == "classical_portico"
     assert portico["count"] == 4
-    assert portico["depth_m"] == 4.0
+    assert portico["door_count"] == 3
+    assert portico["depth_m"] == 3.4
+    assert any(
+        void["id"] == "civic_open_court" and void["size"][:2] == [23.0, 15.0]
+        for void in graph["voids"]
+    )
+    assert assemblies["civic_copper_roof_ring"]["kind"] == "courtyard_hip_roof"
+    assert assemblies["civic_roof_balustrade"]["kind"] == "classical_balustrade_perimeter"
+    front_windows = assemblies["civic_front_lower_windows"]
+    assert front_windows["kind"] == "classical_window_array"
+    assert front_windows["arched"] is True
+    assert graph["final_bevel_m"] == 0.0
 
 
 def test_v21_expansion_graphs_preserve_family_specific_construction():
@@ -797,6 +808,9 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert 'kind == "canonical_roof"' in source
     assert 'kind == "mansard_perimeter"' in source
     assert 'kind == "rounded_corner_pavilion"' in source
+    assert 'kind == "courtyard_hip_roof"' in source
+    assert 'kind == "classical_balustrade_perimeter"' in source
+    assert 'kind == "classical_window_array"' in source
     assert "focus_height * 2.75" in source
     assert "focus_height * 2.05" in source
 

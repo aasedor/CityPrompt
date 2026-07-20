@@ -340,44 +340,59 @@
       }
     },
     "civic_classical_building": {
-      "identity": "Civic classical composition with a dominant central pedimented portico, giant-order columns, broad ceremonial stairs and symmetrical stone wings.",
-      "material_zones": "monolithic pale limestone; shadowed entrance portal; bronze doors; lead-grey roof",
+      "identity": "Low two-storey civic perimeter hall with a dominant four-column Ionic portico, broad ceremonial stair, open central court and patinated copper hipped roof ring.",
+      "material_zones": "warm ashlar limestone; bronze entrance doors; dark recessed glazing; pale green patinated standing-seam copper",
       "glass_profile": "residential_low_e",
-      "material_overrides": {"roof": {"base_color": "#718177", "roughness": 0.52, "metallic": 0.46}, "accent": {"base_color": "#3d352c", "roughness": 0.42, "metallic": 0.58}},
+      "material_overrides": {"roof": {"base_color": "#a4bcae", "roughness": 0.46, "metallic": 0.64, "texture_key": null}, "accent": {"base_color": "#3d352c", "roughness": 0.42, "metallic": 0.58}},
+      "signature_material_overrides": {"signature_stone": {"base_color": "#d7cdb7", "roughness": 0.74, "texture_key": "limestone"}, "signature_warm": {"base_color": "#49372a", "roughness": 0.42, "metallic": 0.52}},
       "kits": ["ceremonial_steps", "giant_portico", "pediment", "civic_cornice"],
       "massing_graph": {
         "schema": "massing-graph@1",
-        "profile": "classical_civic_portico_hero",
-        "description": "A low monumental limestone civic hall with fixed giant-order portico, deep ceremonial stair, symmetrical two-storey wings, wrapping cornice and shallow metal roof.",
+        "profile": "classical_civic_courtyard_v2",
+        "description": "A low monumental two-storey limestone perimeter hall with a fixed four-column Ionic portico, three bronze doors, deep ceremonial stair, real open central court and continuous patinated-copper hipped roof ring.",
         "reference_views": [
           {"role": "street_identity", "path": "/archetypes/buildings/civic_classical_building/variant_0.png", "cues": ["four-column giant portico", "central pediment", "broad stair", "arched lower windows"]},
-          {"role": "oblique_massing", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_60.jpg", "cues": ["shallow side wings", "deep portico", "wrapping cornice", "low metal roof"]},
-          {"role": "roof_plan", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_90.jpg", "cues": ["axial rectangular plan", "central roof ridge", "symmetrical terminal bays"]}
+          {"role": "oblique_massing", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_60.jpg", "cues": ["deep side wings", "open central court", "wrapping cornice", "copper roof ring"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/civic_classical_building/variant_0_angle_90.jpg", "cues": ["square perimeter plan", "open central court", "hipped roof ring", "axial portico projection"]}
         ],
-        "height_m": 14.8,
-        "reference_dimensions": {"width_m": 42.0, "depth_m": 26.0, "floors": 2, "floor_height_m": 5.6},
+        "height_m": 14.7,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 42.0, "depth_m": 34.0, "floors": 2, "floor_height_m": 5.6},
         "nodes": [
-          {"id": "civic_plinth", "kind": "box", "size": [43.0, 27.0, 0.45], "location": [0.0, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
-          {"id": "civic_shadow_core", "kind": "box", "size": [40.0, 23.0, 11.4], "location": [0.0, 0.0, 6.15], "material": "primary", "bevel_m": 0.16},
-          {"id": "civic_rusticated_base", "kind": "box", "size": [40.7, 23.7, 1.15], "location": [0.0, 0.0, 1.025], "material": "signature_stone", "bevel_m": 0.07},
-          {"id": "civic_cornice_lower", "kind": "box", "size": [41.0, 24.0, 0.34], "location": [0.0, 0.0, 10.9], "material": "signature_stone", "bevel_m": 0.055},
-          {"id": "civic_cornice_upper", "kind": "box", "size": [41.5, 24.5, 0.27], "location": [0.0, 0.0, 11.28], "material": "signature_stone", "bevel_m": 0.055},
-          {"id": "civic_metal_roof", "kind": "gable_roof", "size": [40.5, 23.5, 3.15], "location": [0.0, 0.0, 11.42], "material": "roof", "bevel_m": 0.08, "ridge_axis": "x"}
+          {"id": "civic_front_wing", "kind": "box", "size": [42.0, 9.5, 11.4], "location": [0.0, -12.25, 5.7], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "civic_rear_wing", "kind": "box", "size": [42.0, 9.5, 11.4], "location": [0.0, 12.25, 5.7], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "civic_left_wing", "kind": "box", "size": [9.5, 15.0, 11.4], "location": [-16.25, 0.0, 5.7], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "civic_right_wing", "kind": "box", "size": [9.5, 15.0, 11.4], "location": [16.25, 0.0, 5.7], "material": "signature_stone", "bevel_m": 0.12},
+          {"id": "civic_front_plinth", "kind": "box", "size": [43.0, 10.1, 0.45], "location": [0.0, -12.25, 0.225], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_rear_plinth", "kind": "box", "size": [43.0, 10.1, 0.45], "location": [0.0, 12.25, 0.225], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_left_plinth", "kind": "box", "size": [10.1, 15.0, 0.45], "location": [-16.25, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_right_plinth", "kind": "box", "size": [10.1, 15.0, 0.45], "location": [16.25, 0.0, 0.225], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_front_cornice", "kind": "box", "size": [42.8, 10.1, 0.46], "location": [0.0, -12.25, 11.15], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_rear_cornice", "kind": "box", "size": [42.8, 10.1, 0.46], "location": [0.0, 12.25, 11.15], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_left_cornice", "kind": "box", "size": [10.1, 15.0, 0.46], "location": [-16.25, 0.0, 11.15], "material": "signature_stone", "bevel_m": 0.055},
+          {"id": "civic_right_cornice", "kind": "box", "size": [10.1, 15.0, 0.46], "location": [16.25, 0.0, 11.15], "material": "signature_stone", "bevel_m": 0.055}
         ],
         "voids": [
-          {"id": "ceremonial_entry", "size": [5.0, 3.0, 5.0], "location": [0.0, -12.0, 3.0], "purpose": "deep bronze entry behind the giant-order portico"}
+          {"id": "civic_open_court", "size": [23.0, 15.0, 14.7], "location": [0.0, 0.0, 7.35], "purpose": "real open civic courtyard visible in the oblique and roof-plan references"},
+          {"id": "ceremonial_entry", "size": [8.2, 3.0, 5.0], "location": [0.0, -17.0, 3.0], "purpose": "three deep bronze doors behind the fixed Ionic portico"}
         ],
         "assemblies": [
-          {"id": "civic_front_elevation", "kind": "facade_skin", "axis": "front", "centre": [0.0, -11.535, 6.15], "span_m": 39.8, "height_m": 11.3, "depth_m": 0.05, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
-          {"id": "civic_left_elevation", "kind": "facade_skin", "axis": "left", "centre": [-20.035, 0.0, 6.15], "span_m": 22.8, "height_m": 11.3, "depth_m": 0.05, "flip_u": true, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
-          {"id": "civic_rear_elevation", "kind": "facade_skin", "axis": "rear", "centre": [0.0, 11.535, 6.15], "span_m": 39.8, "height_m": 11.3, "depth_m": 0.05, "flip_u": true, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
-          {"id": "civic_right_elevation", "kind": "facade_skin", "axis": "right", "centre": [20.035, 0.0, 6.15], "span_m": 22.8, "height_m": 11.3, "depth_m": 0.05, "band": "elevation", "uv_v_min": 0.08, "uv_v_max": 0.91},
-          {"id": "civic_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -11.55, 0.72], "width_m": 18.0, "depth_m": 4.0, "column_height_m": 8.25, "column_radius_m": 0.52, "count": 4, "pediment_rise_m": 2.4, "door_width_m": 4.1, "door_height_m": 4.2, "material": "signature_stone", "door_material": "signature_warm"},
-          {"id": "civic_ceremonial_steps", "kind": "steps", "centre": [0.0, -13.50, 0.0], "width_m": 22.0, "depth_m": 2.8, "count": 9, "rise_m": 0.08, "material": "signature_stone"},
-          {"id": "civic_ground_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.78, 1.72], "span_m": 40.4, "height_m": 0.18, "depth_m": 0.18, "material": "signature_stone"},
-          {"id": "civic_floor_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -11.76, 6.2], "span_m": 40.2, "height_m": 0.16, "depth_m": 0.15, "material": "signature_stone"}
+          {"id": "civic_giant_portico", "kind": "classical_portico", "base_centre": [0.0, -17.05, 0.92], "width_m": 20.0, "depth_m": 3.4, "column_height_m": 8.25, "column_radius_m": 0.52, "count": 4, "pediment_rise_m": 2.4, "tympanum_relief": true, "door_count": 3, "door_width_m": 2.15, "door_spacing_m": 3.0, "door_height_m": 4.2, "material": "signature_stone", "door_material": "signature_warm"},
+          {"id": "civic_ceremonial_steps", "kind": "steps", "centre": [0.0, -18.80, 0.0], "width_m": 23.0, "depth_m": 3.4, "count": 10, "rise_m": 0.10, "material": "signature_stone"},
+          {"id": "civic_front_lower_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -17.08, 3.75], "positions_m": [-14.0, 14.0], "opening_width_m": 2.8, "opening_height_m": 4.5, "arched": true, "mullions": 2, "transoms": 3, "interior_material": "glazing_interior_1"},
+          {"id": "civic_front_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -17.09, 8.75], "positions_m": [-14.0, 14.0], "opening_width_m": 2.6, "opening_height_m": 1.9, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_2"},
+          {"id": "civic_left_lower_windows", "kind": "classical_window_array", "axis": "left", "centre": [-21.08, 0.0, 3.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_3"},
+          {"id": "civic_left_upper_windows", "kind": "classical_window_array", "axis": "left", "centre": [-21.08, 0.0, 8.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_4"},
+          {"id": "civic_right_lower_windows", "kind": "classical_window_array", "axis": "right", "centre": [21.08, 0.0, 3.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_2"},
+          {"id": "civic_right_upper_windows", "kind": "classical_window_array", "axis": "right", "centre": [21.08, 0.0, 8.75], "positions_m": [-5.0, 0.0, 5.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_5"},
+          {"id": "civic_rear_lower_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 17.08, 3.75], "positions_m": [-15.0, -9.0, -3.0, 3.0, 9.0, 15.0], "opening_width_m": 2.2, "opening_height_m": 4.2, "mullions": 1, "transoms": 2, "interior_material": "glazing_interior_1"},
+          {"id": "civic_rear_upper_windows", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 17.08, 8.75], "positions_m": [-15.0, -9.0, -3.0, 3.0, 9.0, 15.0], "opening_width_m": 2.0, "opening_height_m": 1.8, "mullions": 1, "transoms": 0, "interior_material": "glazing_interior_3"},
+          {"id": "civic_copper_roof_ring", "kind": "courtyard_hip_roof", "centre": [0.0, 0.0, 11.42], "width_m": 42.8, "depth_m": 34.8, "court_width_m": 23.0, "court_depth_m": 15.0, "rise_m": 3.2, "ridge_inset_m": 4.2, "material": "roof", "fascia_material": "signature_stone"},
+          {"id": "civic_roof_balustrade", "kind": "classical_balustrade_perimeter", "centre": [0.0, 0.0, 11.55], "width_m": 42.6, "depth_m": 34.6, "height_m": 0.92, "spacing_m": 0.72, "front_centre_gap_m": 21.0, "material": "signature_stone"},
+          {"id": "civic_ground_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -17.12, 1.72], "span_m": 41.0, "height_m": 0.18, "depth_m": 0.18, "material": "signature_stone"},
+          {"id": "civic_floor_course", "kind": "shadow_line", "axis": "front", "centre": [0.0, -17.10, 6.2], "span_m": 40.8, "height_m": 0.16, "depth_m": 0.15, "material": "signature_stone"}
         ],
-        "target_views": ["archetype_match", "street", "aerial", "context"]
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
       }
     },
     "monumental_courthouse_axis": {

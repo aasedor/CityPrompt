@@ -6498,18 +6498,36 @@ def _graph_classical_portico(parts: list, spec: dict, mats: dict) -> None:
         (cx, facade_y - depth * 0.80, pediment_eave_z),
         stone, 0.065, "y",
     ))
+    if bool(spec.get("tympanum_relief", False)):
+        relief_y = facade_y - depth * 1.025
+        relief_z = pediment_eave_z + pediment_rise * 0.36
+        parts.append(add_ellipsoid(
+            f"{prefix}_TympanumCentre", (cx, relief_y, relief_z),
+            (0.72, 0.12, 0.38), stone,
+        ))
+        for relief_index, sign in enumerate((-1, 1)):
+            for item_index, ratio in enumerate((0.18, 0.34)):
+                parts.append(add_ellipsoid(
+                    f"{prefix}_TympanumFigure{relief_index}_{item_index}",
+                    (cx + sign * width * ratio, relief_y, relief_z - 0.10 * item_index),
+                    (0.48, 0.10, 0.24), stone,
+                ))
     # A dark recessed door and transom keep the centre legible behind the
     # colonnade even when the facade atlas is viewed at a grazing angle.
     door_width = float(spec.get("door_width_m", width * 0.22))
     door_height = float(spec.get("door_height_m", 4.1))
-    parts.append(add_beveled_box(
-        f"{prefix}_DoorReveal", (door_width + 0.65, 0.16, door_height + 0.55),
-        (cx, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
-    ))
-    parts.append(add_box(
-        f"{prefix}_BronzeDoor", (door_width, 0.05, door_height),
-        (cx, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
-    ))
+    door_count = max(1, int(spec.get("door_count", 1)))
+    door_spacing = float(spec.get("door_spacing_m", door_width * 1.28))
+    for door_index in range(door_count):
+        door_x = cx + (door_index - (door_count - 1) / 2.0) * door_spacing
+        parts.append(add_beveled_box(
+            f"{prefix}_DoorReveal{door_index:02d}", (door_width + 0.52, 0.16, door_height + 0.55),
+            (door_x, facade_y - 0.10, base_z + door_height / 2 + 0.12), shadow, 0.055,
+        ))
+        parts.append(add_box(
+            f"{prefix}_BronzeDoor{door_index:02d}", (door_width, 0.05, door_height),
+            (door_x, facade_y - 0.20, base_z + door_height / 2 + 0.12), bronze,
+        ))
 
 
 def _graph_shaped_gable_array(parts: list, spec: dict, mats: dict) -> None:
@@ -8181,6 +8199,205 @@ def _graph_mansard_perimeter(parts: list, spec: dict, mats: dict) -> None:
         ))
 
 
+def _graph_courtyard_hip_roof(parts: list, spec: dict, mats: dict) -> None:
+    """Build a continuous shallow hipped roof ring around an open court."""
+    cx, cy, eave_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    court_width = float(spec["court_width_m"])
+    court_depth = float(spec["court_depth_m"])
+    rise = float(spec.get("rise_m", 3.0))
+    inset = float(spec.get("ridge_inset_m", min(4.0, min(width, depth) * 0.16)))
+    court_eave_z = float(spec.get("court_eave_z", eave_z + 0.18))
+    roof = _graph_material(mats, spec.get("material", "roof"))
+    stone = _graph_material(mats, spec.get("fascia_material", "signature_stone"))
+    prefix = str(spec.get("id", "GraphCourtyardHipRoof"))
+    if court_width >= width - inset * 2 or court_depth >= depth - inset * 2:
+        raise ValueError("courtyard hip roof needs a positive ridge band around the court")
+
+    def contour(contour_width: float, contour_depth: float, z: float) -> list[tuple[float, float, float]]:
+        return [
+            (cx - contour_width / 2, cy - contour_depth / 2, z),
+            (cx + contour_width / 2, cy - contour_depth / 2, z),
+            (cx + contour_width / 2, cy + contour_depth / 2, z),
+            (cx - contour_width / 2, cy + contour_depth / 2, z),
+        ]
+
+    outer = contour(width, depth, eave_z)
+    ridge = contour(width - inset * 2, depth - inset * 2, eave_z + rise)
+    inner = contour(court_width, court_depth, court_eave_z)
+    verts = outer + ridge + inner
+    faces: list[tuple[int, ...]] = []
+    for index in range(4):
+        nxt = (index + 1) % 4
+        faces.append((index, nxt, 4 + nxt, 4 + index))
+        faces.append((4 + index, 4 + nxt, 8 + nxt, 8 + index))
+    roof_obj = add_prism(f"{prefix}_CopperRing", verts, faces, roof)
+    for polygon in roof_obj.data.polygons:
+        polygon.use_smooth = False
+    parts.append(roof_obj)
+
+    fascia_h = float(spec.get("fascia_height_m", 0.34))
+    fascia_depth = float(spec.get("fascia_depth_m", 0.42))
+    fascia_z = eave_z - fascia_h / 2 + 0.04
+    parts.extend([
+        add_beveled_box(f"{prefix}_FrontFascia", (width + fascia_depth, fascia_depth, fascia_h),
+                         (cx, cy - depth / 2, fascia_z), stone, 0.045),
+        add_beveled_box(f"{prefix}_RearFascia", (width + fascia_depth, fascia_depth, fascia_h),
+                         (cx, cy + depth / 2, fascia_z), stone, 0.045),
+        add_beveled_box(f"{prefix}_LeftFascia", (fascia_depth, depth, fascia_h),
+                         (cx - width / 2, cy, fascia_z), stone, 0.045),
+        add_beveled_box(f"{prefix}_RightFascia", (fascia_depth, depth, fascia_h),
+                         (cx + width / 2, cy, fascia_z), stone, 0.045),
+    ])
+    coping_h = float(spec.get("court_coping_height_m", 0.22))
+    coping_w = float(spec.get("court_coping_width_m", 0.34))
+    coping_z = court_eave_z + coping_h / 2
+    parts.extend([
+        add_beveled_box(f"{prefix}_CourtFrontCoping", (court_width + coping_w, coping_w, coping_h),
+                         (cx, cy - court_depth / 2, coping_z), stone, 0.035),
+        add_beveled_box(f"{prefix}_CourtRearCoping", (court_width + coping_w, coping_w, coping_h),
+                         (cx, cy + court_depth / 2, coping_z), stone, 0.035),
+        add_beveled_box(f"{prefix}_CourtLeftCoping", (coping_w, court_depth, coping_h),
+                         (cx - court_width / 2, cy, coping_z), stone, 0.035),
+        add_beveled_box(f"{prefix}_CourtRightCoping", (coping_w, court_depth, coping_h),
+                         (cx + court_width / 2, cy, coping_z), stone, 0.035),
+    ])
+
+
+def _graph_classical_balustrade_perimeter(parts: list, spec: dict, mats: dict) -> None:
+    """Stone rail and low-cost turned balusters around a civic roof edge."""
+    cx, cy, base_z = (float(value) for value in spec["centre"])
+    width = float(spec["width_m"])
+    depth = float(spec["depth_m"])
+    height = float(spec.get("height_m", 0.92))
+    spacing = float(spec.get("spacing_m", 0.72))
+    front_gap = float(spec.get("front_centre_gap_m", 0.0))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    prefix = str(spec.get("id", "GraphClassicalBalustrade"))
+    rail_h = float(spec.get("rail_height_m", 0.16))
+    rail_d = float(spec.get("rail_depth_m", 0.26))
+
+    def rail_segment(name: str, axis: str, centre: tuple[float, float], span: float) -> None:
+        size = (span, rail_d, rail_h) if axis in {"front", "rear"} else (rail_d, span, rail_h)
+        x, y = centre
+        parts.append(add_beveled_box(f"{prefix}_{name}_BaseRail", size,
+                                     (x, y, base_z + rail_h / 2), stone, 0.032))
+        parts.append(add_beveled_box(f"{prefix}_{name}_TopRail", size,
+                                     (x, y, base_z + height - rail_h / 2), stone, 0.032))
+
+    front_y, rear_y = cy - depth / 2, cy + depth / 2
+    left_x, right_x = cx - width / 2, cx + width / 2
+    if front_gap > 0:
+        side_span = (width - front_gap) / 2
+        rail_segment("FrontLeft", "front", (cx - (front_gap + side_span) / 2, front_y), side_span)
+        rail_segment("FrontRight", "front", (cx + (front_gap + side_span) / 2, front_y), side_span)
+    else:
+        rail_segment("Front", "front", (cx, front_y), width)
+    rail_segment("Rear", "rear", (cx, rear_y), width)
+    rail_segment("Left", "left", (left_x, cy), depth)
+    rail_segment("Right", "right", (right_x, cy), depth)
+
+    baluster_h = height - rail_h * 2
+    positions: list[tuple[float, float, str]] = []
+    front_count = max(2, int(width / spacing))
+    for index in range(front_count + 1):
+        x = cx - width / 2 + width * index / front_count
+        if front_gap <= 0 or abs(x - cx) >= front_gap / 2:
+            positions.append((x, front_y, f"Front{index:02d}"))
+        positions.append((x, rear_y, f"Rear{index:02d}"))
+    side_count = max(2, int(depth / spacing))
+    for index in range(1, side_count):
+        y = cy - depth / 2 + depth * index / side_count
+        positions.extend([(left_x, y, f"Left{index:02d}"), (right_x, y, f"Right{index:02d}")])
+    for x, y, tag in positions:
+        parts.append(add_cylinder(
+            f"{prefix}_{tag}_Baluster", 0.095, baluster_h,
+            (x, y, base_z + rail_h + baluster_h / 2), stone, 10,
+        ))
+
+
+def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
+    """Sparse recessed civic windows with stone returns and occupied cards."""
+    axis = str(spec.get("axis", "front"))
+    if axis not in {"front", "rear", "left", "right"}:
+        raise ValueError(f"classical window array axis {axis!r} is unsupported")
+    cx, cy, cz = (float(value) for value in spec["centre"])
+    positions = [float(value) for value in spec.get("positions_m", [0.0])]
+    opening_width = float(spec.get("opening_width_m", 2.4))
+    opening_height = float(spec.get("opening_height_m", 3.8))
+    depth = float(spec.get("depth_m", 0.22))
+    profile = float(spec.get("profile_m", 0.18))
+    arched = bool(spec.get("arched", False))
+    mullions = max(1, int(spec.get("mullions", 2)))
+    transoms = max(0, int(spec.get("transoms", 2)))
+    recess = float(spec.get("recess_m", 0.16))
+    stone = _graph_material(mats, spec.get("material", "signature_stone"))
+    frame = _graph_material(mats, spec.get("frame_material", "signature_warm"))
+    glass = _graph_material(mats, spec.get("glass_material", "glass"))
+    interior = _graph_material(mats, spec.get("interior_material", "glazing_interior_1"))
+    pane = interior if bool(spec.get("occupied_as_pane", True)) else glass
+    prefix = str(spec.get("id", "GraphClassicalWindows"))
+    outward, along = _glazing_axis_vectors(axis)
+
+    def oriented_box(name: str, along_value: float, normal_value: float,
+                     along_size: float, normal_size: float, z_size: float,
+                     z_value: float, material) -> bpy.types.Object:
+        location = Vector((cx, cy, z_value)) + along * along_value + outward * normal_value
+        size = (
+            (along_size, normal_size, z_size)
+            if axis in {"front", "rear"} else
+            (normal_size, along_size, z_size)
+        )
+        return add_beveled_box(name, size, tuple(location), material, min(0.028, profile * 0.14))
+
+    for index, along_value in enumerate(positions):
+        tag = f"{prefix}_{index:02d}"
+        parts.append(oriented_box(
+            f"{tag}_Interior", along_value, 0.015,
+            opening_width * 0.88, 0.025, opening_height * 0.88, cz, interior,
+        ))
+        parts.append(oriented_box(
+            f"{tag}_Glass", along_value, 0.050,
+            opening_width, 0.045, opening_height, cz, pane,
+        ))
+        for side_index, offset in enumerate((-opening_width / 2 - profile / 2, opening_width / 2 + profile / 2)):
+            parts.append(oriented_box(
+                f"{tag}_Jamb{side_index}", along_value + offset, 0.0,
+                profile, depth, opening_height + profile * 2, cz, stone,
+            ))
+        parts.append(oriented_box(
+            f"{tag}_Sill", along_value, 0.03,
+            opening_width + profile * 2.8, depth + 0.10, profile,
+            cz - opening_height / 2 - profile * 0.55, stone,
+        ))
+        spring_z = cz + opening_height / 2
+        if arched and axis == "front":
+            parts.append(add_arch_ring(
+                f"{tag}_RoundArch", cx + along_value, cy - depth * 0.10,
+                spring_z - opening_width / 2, opening_width / 2,
+                profile, depth, stone, 20,
+            ))
+        else:
+            parts.append(oriented_box(
+                f"{tag}_Lintel", along_value, 0.03,
+                opening_width + profile * 2.6, depth + 0.08, profile * 1.15,
+                cz + opening_height / 2 + profile * 0.55, stone,
+            ))
+        for mullion_index in range(1, mullions + 1):
+            offset = -opening_width / 2 + opening_width * mullion_index / (mullions + 1)
+            parts.append(oriented_box(
+                f"{tag}_Mullion{mullion_index}", along_value + offset, 0.065,
+                0.055, 0.07, opening_height * 0.96, cz, frame,
+            ))
+        for transom_index in range(1, transoms + 1):
+            z = cz - opening_height / 2 + opening_height * transom_index / (transoms + 1)
+            parts.append(oriented_box(
+                f"{tag}_Transom{transom_index}", along_value, 0.065,
+                opening_width, 0.07, 0.055, z, frame,
+            ))
+
+
 def _graph_corbel_array(parts: list, spec: dict, mats: dict) -> None:
     """Small masonry blocks repeated along one or more true construction courses."""
     axis = str(spec.get("axis", "front"))
@@ -8403,6 +8620,12 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
             _graph_balcony_array(parts, assembly, mats)
         elif kind == "rounded_corner_pavilion":
             _graph_rounded_corner_pavilion(parts, assembly, mats)
+        elif kind == "courtyard_hip_roof":
+            _graph_courtyard_hip_roof(parts, assembly, mats)
+        elif kind == "classical_balustrade_perimeter":
+            _graph_classical_balustrade_perimeter(parts, assembly, mats)
+        elif kind == "classical_window_array":
+            _graph_classical_window_array(parts, assembly, mats)
         elif kind == "corbel_array":
             _graph_corbel_array(parts, assembly, mats)
         else:

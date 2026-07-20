@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-rounded-corner-turret-renderlock-v75",
+  "memory_version": "2026-07-20-civic-courtyard-roof-ring-v76",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -630,6 +630,21 @@
       "symptom": "A boulevard-corner turret appears as a tiny roof bump or a floating onion behind the mansard",
       "cause": "The crown was centered on the inner tangent origin of the rounded plan, while the continuous mansard skirt passed in front of it and hid the lower bulb; a decorative base ring then floated outside the roof without a masonry drum.",
       "correction": "Treat the corner pavilion, curved balcony arcs and turret as one fixed landmark assembly. Place the turret centre outward on the street-corner bisector, round the outer mansard contour to the same tangent radius, seat the zinc profile on a stone drum, and prove alignment from both corner-oblique and aerial views."
+    },
+    {
+      "symptom": "A civic hall declares an open court but renders as a shallow solid block under one continuous roof",
+      "cause": "The front hero view dominated the graph while the oblique and roof-plan references were treated as presentation images instead of authoritative construction evidence.",
+      "correction": "Audit all compatible views before massing. Build four explicit perimeter wings and a hipped roof ring whose outer, ridge and inner contours preserve the court to open sky, then require aerial proof before keeper acceptance."
+    },
+    {
+      "symptom": "A classical portico and ceremonial stair fail an otherwise correct footprint-envelope gate",
+      "cause": "Reference dimensions described the main civic body while the portico and stair projected beyond its street wall.",
+      "correction": "Treat ceremonial projections as audited landmark assemblies, fit their depth to the allowed envelope, and validate the complete assembled extents rather than only the body nodes."
+    },
+    {
+      "symptom": "Civic windows disappear into a solid limestone massing core",
+      "cause": "Glazing and surround cards were placed coplanar with or behind opaque core faces instead of being registered to the exposed elevation plane.",
+      "correction": "Place evidence-led window assemblies just outside the core face, layer occupied glazing behind shallow stone surrounds, and inspect all four elevations in oblique review views."
     }
   ]
 }

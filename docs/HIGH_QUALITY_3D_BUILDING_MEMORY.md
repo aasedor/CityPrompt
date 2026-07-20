@@ -505,6 +505,25 @@ The polychrome collegiate family added four rules for resizable hero facades:
   elevations. The aerial view is the fastest gate for blank square-corner ends
   that a front hero camera can miss.
 
+### Civic courtyard + ceremonial-envelope lessons
+
+- Roof-plan evidence can overturn the apparent solid-block reading of a front
+  hero image. Build civic courts as four perimeter wings and construct the
+  hipped roof from explicit outer, ridge and inner contours so the void remains
+  open to sky; the aerial render is the acceptance proof.
+- A portico and broad ceremonial stair legitimately project beyond the civic
+  body. Treat them as fixed landmark assemblies, fit their depth deliberately,
+  and validate the assembled footprint rather than assuming the body dimensions
+  describe every architectural projection.
+- Window cards on an opaque massing core must sit just outside the exposed wall
+  plane. Layer occupied glazing behind shallow ashlar surrounds, and verify the
+  front, side and rear arrays from oblique cameras rather than trusting graph
+  coordinates alone.
+- Material identity matters at roof scale. The catalogue evidence supports pale
+  green patinated copper, so a raw-brown copper albedo was rejected even though
+  its channel set was technically valid. Preserve the patina colour and add
+  seam relief only when it improves the near LOD without closing the roof ring.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:
