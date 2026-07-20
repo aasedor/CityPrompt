@@ -2358,7 +2358,41 @@
       "minFloors": 1,
       "maxFloors": 4,
       "suggestedAreaSqm": 2000,
-      "developmentType": "mixed_use"
+      "developmentType": "mixed_use",
+      "footprintCompatibility": {
+        "preferredProfiles": ["rectangle", "l_shape", "courtyard"],
+        "recommendedWidth_m": [30, 70],
+        "recommendedDepth_m": [18, 35],
+        "recommendedFloors": [1, 4],
+        "wingDepth_m": [8, 14],
+        "profiles": {
+          "rectangle": {
+            "recommendedWidth_m": [30, 70],
+            "recommendedDepth_m": [18, 35],
+            "recommendedFloors": [1, 4]
+          },
+          "l_shape": {
+            "recommendedWidth_m": [38, 70],
+            "recommendedDepth_m": [24, 35],
+            "recommendedFloors": [1, 4],
+            "wingDepth_m": [8, 14]
+          },
+          "courtyard": {
+            "recommendedWidth_m": [50, 70],
+            "recommendedDepth_m": [30, 35],
+            "recommendedFloors": [2, 4],
+            "wingDepth_m": [9, 13],
+            "minimumCourtyard_m": 10
+          }
+        },
+        "preferredBayMultiple_m": 3.6,
+        "minimumCourtyard_m": 10,
+        "notes": [
+          "Preserve the horizontal steel-frame rhythm, transparent corners and floating roof edge.",
+          "Repeat only neutral middle bays; keep the glazed entrance and carport as fixed semantic modules.",
+          "Distribute mullions and Roman-brick piers by bay count rather than stretching the facade texture."
+        ]
+      }
     },
     {
       "id": "civic_classical_building",
