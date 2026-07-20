@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-eixample-courtyard-renderlock-v72",
+  "memory_version": "2026-07-20-london-one-view-renderlock-v73",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -585,6 +585,21 @@
       "symptom": "A catalogue perimeter block claims a courtyard but the aerial review shows a solid roof or filled core",
       "cause": "The family inherited a solid showcase core and roof deck while courtyard intent existed only in metadata or footprint compatibility declarations.",
       "correction": "Disable the inherited solid core and deck at the graph level, assemble explicit cardinal and diagonal perimeter wings with matching roof pieces, and require an aerial view that proves a continuous open light court."
+    },
+    {
+      "symptom": "A one-view heritage reference passes its front camera but exposes blank, broken or contradictory construction in reverse views",
+      "cause": "The catalogue supplied no independent side or rear evidence, and the family treated the missing evidence as permission to skip those elevations.",
+      "correction": "Mark one-reference families as lower confidence, infer a conservative wrapped envelope, and require rear-corner, aerial and context review before keeper acceptance. Record the inference explicitly in human QA."
+    },
+    {
+      "symptom": "A fixed heritage facade is covered by duplicate sash cages, invented balconies or generic stacked-floor rails",
+      "cause": "A generic repeatable floor kit was layered over an atlas that already owned the complete window and masonry rhythm.",
+      "correction": "Use a fixed massing graph for the evidence-led facade, promote only audited shadow-bearing geometry, and keep semantic glazing mask-only when the atlas already supplies the sash and surround construction."
+    },
+    {
+      "symptom": "A rectified facade source produces broad blank wings on an otherwise correctly proportioned building",
+      "cause": "White presentation margins were left inside the architectural UV range and then stretched across the complete canonical elevation.",
+      "correction": "Crop the source or UV bounds to the architectural extents before PBR generation, then compare the rendered frontage against the full bay rhythm rather than accepting a technically valid texture package."
     },
     {
       "symptom": "A corrected landmark graph silently falls back to a generic LEGO stack when its parcel tier changes",

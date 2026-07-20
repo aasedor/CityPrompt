@@ -7724,6 +7724,15 @@ def build_massing_graph(grammar: dict, mats: dict) -> bpy.types.Object:
                 str(node.get("ridge_axis", "x")),
                 float(node["ridge_inset_m"]) if node.get("ridge_inset_m") is not None else None,
             ))
+        elif kind == "canonical_roof":
+            # Reuse the compiler's complete roof kit (mansard skirt, dormers,
+            # pavilion caps, chimneys and service top) inside a fixed landmark
+            # graph. This keeps the roof as a swappable LEGO assembly without
+            # reintroducing the generic floor/crown stack below it.
+            part = build_roof(grammar, mats)
+            part.name = str(node["id"])
+            part.location = location
+            parts.append(part)
         elif kind == "cylinder":
             part = add_cylinder(
                 str(node["id"]), float(node["radius_m"]), float(node["height_m"]), location,

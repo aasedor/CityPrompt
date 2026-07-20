@@ -696,6 +696,29 @@ def test_classic_eixample_preserves_four_storeys_and_real_light_court():
     assert assemblies["eixample_front_balconies"]["levels_z"] == [6.1, 10.0, 13.7]
 
 
+def test_london_mansion_uses_registered_wall_and_canonical_mansard_kit():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "london_heritage_mansion_block",
+            "variant_id": "london-heritage-mansion-portland-stone",
+        },
+        "materials": {},
+    }
+    graph = inject_signature(grammar)["massing_graph"]
+    nodes = {item["id"]: item for item in graph["nodes"]}
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "portland_stone_mansion_v3"
+    assert graph["reference_dimensions"]["floors"] == 5
+    assert nodes["london_mansard_kit"]["kind"] == "canonical_roof"
+    assert nodes["london_centre_roof_cap"]["kind"] == "hipped_roof"
+    assert assemblies["london_centre_pavilion_sash"]["kind"] == "curtain_wall"
+    assert assemblies["london_front_glazing"]["frame_mode"] == "mask_only"
+    assert not any(item["kind"] == "balcony_array" for item in graph["assemblies"])
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -711,6 +734,7 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
     assert "disabled_assembly_ids" in source
     assert "disabled_node_ids" in source
+    assert 'kind == "canonical_roof"' in source
     assert "focus_height * 2.75" in source
     assert "focus_height * 2.05" in source
 

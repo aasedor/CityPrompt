@@ -448,6 +448,24 @@ The polychrome collegiate family added four rules for resizable hero facades:
   variant owns a four-storey bound even when the parent archetype permits a
   broader range.
 
+### London one-view heritage + fixed-facade lessons
+
+- One authoritative catalogue view is lower-confidence evidence, not a reason
+  to skip the unseen construction. Infer a conservative wrapped envelope and
+  require rear-corner, aerial and context review; record the side/rear inference
+  in the keeper's human QA.
+- When an atlas already owns the complete sash, surround and masonry rhythm,
+  do not stack a generic repeated-floor kit over it. Use a fixed massing graph,
+  promote only audited shadow-bearing detail, and keep glazing mask-only unless
+  a registered opening schedule proves a physical return is needed.
+- White presentation margins in a rectified elevation become blank facade
+  wings when mapped across a canonical skin. Crop the source or UV bounds to
+  the architectural extents before PBR generation and verify the complete bay
+  rhythm in the rendered frontage.
+- A fixed graph can still reuse the canonical roof kit. A dedicated graph node
+  should preserve the audited mansard, dormers and chimneys while the body,
+  cornices and raised pavilions remain explicitly authored.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:
