@@ -147,3 +147,50 @@ The complete same-footprint screenshot audit is stored in [`artifacts/park-drape
 ### Batch 04 cost
 
 - Fifteen image calls were used: eight current-view render images and seven ground-drape generations/retries. The 100-call authorization was treated as a hard ceiling rather than a spending target.
+
+## Batch 05 - 2026-07-20 - ten-park render-lock cohort
+
+The first finite Public Realm LEGO park cohort is registered in
+`frontend/src/data/renderlockV1Parks.ts`. Each entry binds one archetype and
+selected variant to its exact ground-profile version, metric QA footprint and
+three catalog camera references (street, 60-degree oblique and 90-degree
+aerial). Image character controls material and planting appearance; the profile
+continues to control boundary, scale, topology, fixed-program count and safety
+clearances.
+
+| # | Archetype / selected variant | Locked program |
+| --- | --- | --- |
+| 1 | Neighborhood Park / Rustic Timber & Gravel | Connected circuit, four gateways, social lawn, meadow/rain garden, playground and pavilion pads |
+| 2 | Urban Pocket Park / Rustic Timber & Gravel | One clear lawn room and direct connected path |
+| 3 | Linear Greenway / Rail Trail | One continuous 3.5 m end-to-end trail |
+| 4 | Stormwater Pond / Naturalistic | Functional basin, wet shelf, inlet, outlet/weir and dry maintenance access; the reference dock is excluded |
+| 5 | Japanese Garden / Woodland Naturalistic | Stroll loop, koi pond, gravel court, stepping stones and exact bridge alignment |
+| 6 | Sports Complex / Professional Grade | One 100 x 64 m pitch and whole regulation tennis envelopes only |
+| 7 | Urban Forest / Rewilded Urban | Near-closed canopy, one continuous trail and two clearings |
+| 8 | Botanical Garden / Woodland Naturalistic | Interpretive loop, conservatory pad and three distinct collections |
+| 9 | Nature Play / Forest Adventure | Two linked safety clearings, accessible loop and contained rill |
+| 10 | Reservoir / Concrete-Edge Utility | Rectangular impoundment, complete shoreline trail and short-edge dam/spillway |
+
+### Live Google Tiles QA
+
+- Project: `http://localhost:5175/projects/c08fa377-7496-43ad-8f76-e92a15c25f64`
+- Community 3D compiled all ten park zones in one transaction with zero building
+  or street fallbacks.
+- The first downtown grid was rejected because terrain clamping correctly
+  placed the ground programs on photogrammetry rooftops. The same zones were
+  moved through supported APIs to flat open terrain south of Edmonton and
+  rebuilt before visual acceptance.
+- Close-range Tiles review verified the sports profile as one complete pitch
+  plus three complete tennis envelopes. The botanical profile retained one
+  conservatory pad, one interpretive loop and three separate collection rooms.
+- Two photoreal current-view sports renders were generated. Both retained the
+  one-plus-three program and parcel boundary. Render B is the preferred
+  appearance keeper because its goals, nets, fencing, lights and perimeter
+  planting read most clearly without entering a playing surface.
+- Cost checkpoint: two image calls. No optional AI ground drapes or external 3D
+  model-generation calls were used.
+
+### Verification
+
+- Focused registry/profile/scatter/compiler suite: 4 files / 97 tests passed.
+- Frontend TypeScript validation passed.
