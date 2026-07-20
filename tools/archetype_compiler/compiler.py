@@ -161,6 +161,10 @@ _DEFAULT_TEXTURE_ANCHORS: dict[str, tuple[str, float]] = {
     "concrete": ("#b5b1a8", 0.82),
     "roof_membrane": ("#4a4d4f", 0.85),
     "sedum_roof": ("#5f7a48", 0.9),
+    # Signature-only roof material used by historic Chateauesque families.
+    # It is not a generic prose keyword because ordinary catalogue mentions
+    # of copper should continue to resolve to warm unfinished copper.
+    "verdigris_copper": ("#6f9a8b", 0.56),
 }
 
 
@@ -214,6 +218,7 @@ def _derive_glass(palette: dict[str, Any], notes: list[str]) -> Material:
 # ---------------------------------------------------------------------------
 
 def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], notes: list[str]) -> Roof:
+    primary_form_text = str(roof_detail.get("form") or "").lower()
     form_text = " ".join(
         str(v) for v in [roof_detail.get("form"), roof_detail.get("aerialAppearance"), style_profile.get("roofForm")]
         if isinstance(v, str)
@@ -224,6 +229,12 @@ def _derive_roof(roof_detail: dict[str, Any], style_profile: dict[str, Any], not
     # Hipped roofs still use the closest supported pitched silhouette.
     if "mansard" in form_text:
         roof_type = "mansard"
+    elif "flat" in primary_form_text:
+        # The selected variant's explicit roof description is authoritative.
+        # Parent style profiles often list several family-level alternatives
+        # (for example "flat or shallow-pitched"); those must not turn an
+        # explicitly flat green-roof addition into a generic gable.
+        roof_type = "flat"
     elif re.search(r"\bgable|pitched|asymmetric pitch|hipped", form_text) and "flat" not in form_text.split(" or ")[0]:
         roof_type = "gabled"
     elif "mono-pitch" in form_text or "monopitch" in form_text or "shed roof" in form_text:
@@ -488,6 +499,7 @@ def compile_archetype(
     floors: int | None = None,
     width_m: float | None = None,
     depth_m: float | None = None,
+    allow_outside_bounds: bool = False,
 ) -> BuildingGrammar:
     """Derive a BuildingGrammar from an export_catalog.ts payload.
 
@@ -533,12 +545,23 @@ def compile_archetype(
     min_d, max_d = _num(dims.get("minDepth_m")), _num(dims.get("maxDepth_m"))
     width = _num(width_m) or _num(dims.get("suggestedWidth_m")) or 24.0
     depth = _num(depth_m) or _num(dims.get("suggestedDepth_m")) or 18.0
-    clamped_width = _clamp(width, min_w, max_w)
-    clamped_depth = _clamp(depth, min_d, max_d)
+    clamped_width = width if allow_outside_bounds and width_m is not None else _clamp(width, min_w, max_w)
+    clamped_depth = depth if allow_outside_bounds and depth_m is not None else _clamp(depth, min_d, max_d)
     if clamped_width != width:
         notes.append(f"width {width}m clamped to {clamped_width}m (catalogue bounds {min_w}-{max_w}m)")
     if clamped_depth != depth:
         notes.append(f"depth {depth}m clamped to {clamped_depth}m (catalogue bounds {min_d}-{max_d}m)")
+    width_outside = width_m is not None and (
+        (min_w is not None and width < min_w) or (max_w is not None and width > max_w)
+    )
+    depth_outside = depth_m is not None and (
+        (min_d is not None and depth < min_d) or (max_d is not None and depth > max_d)
+    )
+    if allow_outside_bounds and (width_outside or depth_outside):
+        notes.append(
+            f"dimension tier {width}x{depth}m intentionally exceeds catalogue recommendations "
+            f"({min_w}-{max_w}m x {min_d}-{max_d}m)"
+        )
     width, depth = clamped_width, clamped_depth
 
     variant_min_floors = _num((variant or {}).get("minFloors"))
@@ -575,20 +598,39 @@ def compile_archetype(
 
     roof = _derive_roof(roof_detail, style_profile, notes)
 
-    massing_text = f"{str(style_profile.get('massing') or '').lower()} {combined}"
+    # Setbacks are a massing decision, so infer them only from explicit
+    # massing language. Looking through the entire archetype prose made roof
+    # phrases such as "stepped gabled dormers" create an unrelated two-metre
+    # upper-floor terrace on otherwise continuous historic streetwalls.
+    massing_text = str(style_profile.get("massing") or "").lower()
     explicit_variant_massing = f"{variant_desc} {upper_text}"
-    explicit_variant_setback = any(
-        phrase in explicit_variant_massing
-        for phrase in ("upper-floor setback", "upper floor setback", "set back", "stepped massing", "recessed penthouse")
+    setback_phrases = (
+        "upper-floor setback", "upper floor setback", "setback", "set back",
+        "stepped massing", "stepped terrace", "stepped terraces", "steps down",
+        "terraced upper", "recessed penthouse",
     )
+    explicit_variant_setback = any(phrase in explicit_variant_massing for phrase in setback_phrases)
+    explicit_parent_setback = any(phrase in massing_text for phrase in setback_phrases)
     # A selected image variant is more specific than the parent archetype's
     # broad style profile. Do not invent a two-storey setback simply because a
     # generic midrise description says some taller variants may have one.
-    has_setback = explicit_variant_setback if variant else (
-        (max_floors >= 6 and any(k in massing_text for k in ("setback", "step", "terrace", "stepped", "crown")))
-        or default_floors >= 6
+    has_setback = explicit_variant_setback if variant else explicit_parent_setback
+    rooftop_addition_phrases = (
+        "rooftop addition", "penthouse addition", "rooftop penthouse", "set back from the facade",
     )
-    notes.append(f"setback: {has_setback} (default_floors={default_floors}, massing hints in text={any(k in massing_text for k in ('setback','step','terrace'))})")
+    rooftop_pavilion = any(
+        phrase in explicit_variant_massing for phrase in rooftop_addition_phrases
+    )
+    # A rooftop pavilion is represented by the fixed crown at the catalogue's
+    # canonical height. Only insert a second modular setback storey when the
+    # user makes the building taller than that canonical target. This keeps a
+    # four-storey adaptive-reuse block as three preserved brick levels plus one
+    # recessed glass pavilion, matching the approved City Prompt render.
+    setback_min_floors = max(5, default_floors + 1) if rooftop_pavilion else 5
+    notes.append(
+        f"setback: {has_setback} "
+        f"(default_floors={default_floors}, explicit massing language={explicit_variant_setback if variant else explicit_parent_setback})"
+    )
 
     # bays: Nordic/tall-window styles read better slightly narrower
     bay = 3.0
@@ -686,9 +728,16 @@ def compile_archetype(
         facade_graph=_build_facade_graph(facade, default_floors),
         massing=Massing(
             has_setback=has_setback,
+            setback_min_floors=setback_min_floors,
+            rooftop_pavilion=rooftop_pavilion,
             has_podium_retail=retail,
-            setback_front_m=min(2.0, depth / 8),
-            setback_side_m=min(1.2, width / 12),
+            # Adaptive-reuse rooftop pavilions need a legible terrace on all
+            # exposed sides.  The generic setback was visually too slight at
+            # City Prompt scale, making the addition read as another flush
+            # brick storey instead of the recessed glass volume in the
+            # approved render.
+            setback_front_m=min(3.2 if rooftop_pavilion else 2.0, depth / 6),
+            setback_side_m=min(2.4 if rooftop_pavilion else 1.2, width / 10),
             corner_condition=corner_condition,
         ),
         roof=roof,

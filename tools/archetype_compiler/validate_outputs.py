@@ -38,7 +38,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 BOTTOM_TOLERANCE_M = 0.02
 FOOTPRINT_TOLERANCE_M = 0.6          # frames sit slightly proud of walls
-ROOF_OVERHANG_ALLOWANCE_M = 1.2      # gabled/mono-pitch eaves overhang every side
+ROOF_OVERHANG_ALLOWANCE_M = 1.4      # deep landmark/gabled eaves may add ~0.7 m per side
 FRONT_PROTRUSION_ALLOWANCE_M = 3.0   # balconies + canopies overhang the front facade
 HEIGHT_TOLERANCE_M = 1.2             # parapets/mech screens rise above nominal module height
 MAX_EXTENT_M = 500.0
@@ -100,11 +100,14 @@ def _check_module(path: Path, expected: dict[str, Any], errors: list[str], warni
     height = expected.get("height_m")
     # Roof modules (and assembled stacks containing them) may carry eave overhangs
     role = expected.get("role") or ""
+    allow_inset_footprint = bool(expected.get("allow_inset_footprint"))
     width_tol = FOOTPRINT_TOLERANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0)
-    if width and abs(extent_x - width) > width_tol:
+    if width and not allow_inset_footprint and abs(extent_x - width) > width_tol:
         errors.append(f"{label}: X extent {extent_x:.2f} m vs grammar width {width} m (tol {width_tol} m)")
+    elif width and allow_inset_footprint and extent_x > width + width_tol:
+        errors.append(f"{label}: inset X extent {extent_x:.2f} m exceeds grammar width {width} m")
     if depth:
-        if extent_z < depth - FOOTPRINT_TOLERANCE_M:
+        if not allow_inset_footprint and extent_z < depth - FOOTPRINT_TOLERANCE_M:
             errors.append(f"{label}: Z extent {extent_z:.2f} m smaller than grammar depth {depth} m")
         elif extent_z > depth + FRONT_PROTRUSION_ALLOWANCE_M + (ROOF_OVERHANG_ALLOWANCE_M if role in ("roof", "assembled") else 0.0):
             errors.append(
@@ -176,15 +179,46 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
     module_reports = []
     for module in manifest.get("modules", []):
         path = output_dir / module["filename"]
-        module_reports.append(_check_module(path, module, errors, warnings))
+        expected_module = dict(module)
+        if (
+            module.get("role") == "roof"
+            and bool(((grammar or {}).get("massing") or {}).get("rooftop_pavilion"))
+        ):
+            expected_module["allow_inset_footprint"] = True
+        module_reports.append(_check_module(path, expected_module, errors, warnings))
+
+    facade_sheet = manifest.get("facade_sheet") or {}
+    if facade_sheet:
+        coverage = ((facade_sheet.get("assembly_contract") or {}).get("elevation_coverage") or {})
+        for elevation in ("front", "left", "right", "rear"):
+            if not coverage.get(elevation):
+                errors.append(f"manifest: facade-sheet elevation coverage missing '{elevation}'")
+
+        report_by_file = {report.get("file"): report for report in module_reports}
+        for module in manifest.get("modules", []):
+            if module.get("role") not in {"podium", "floor", "crown", "setback"}:
+                continue
+            material_names = report_by_file.get(module.get("filename"), {}).get("materials", [])
+            for elevation in ("Left", "Right", "Rear"):
+                expected_fragment = f"MAT_Sheet_Wrapped_"
+                if not any(
+                    str(material).startswith(expected_fragment)
+                    and str(material).split(".", 1)[0].endswith(f"_{elevation}")
+                    for material in material_names
+                ):
+                    errors.append(
+                        f"{module.get('filename')}: exposed {elevation.lower()} elevation has no always-visible wrapped facade material"
+                    )
 
     assembled = manifest.get("assembled")
     if assembled:
         path = output_dir / assembled["filename"]
+        footprint_target = assembled.get("footprint_target") or {}
         report = _check_module(
             path,
             {"role": "assembled",
-             "width_m": manifest["dimensions"]["width_m"], "depth_m": manifest["dimensions"]["depth_m"],
+             "width_m": footprint_target.get("width_m", manifest["dimensions"]["width_m"]),
+             "depth_m": footprint_target.get("depth_m", manifest["dimensions"]["depth_m"]),
              "height_m": assembled["height_m"]},
             errors, warnings,
         )
@@ -207,7 +241,7 @@ def validate_family(output_dir: Path, grammar_path: Path | None = None) -> dict[
                 f"assembled: manifest height {assembled['height_m']} m != computed stack {expected_height:.2f} m"
             )
         module_reports.append(report)
-    else:
+    elif manifest.get("package_profile") != "lego_modules":
         errors.append("manifest: no assembled preview recorded")
 
     thumbnail = manifest.get("thumbnail")

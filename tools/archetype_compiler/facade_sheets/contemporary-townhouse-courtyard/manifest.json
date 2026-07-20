@@ -1,0 +1,485 @@
+{
+  "schema": "facade-sheet@4",
+  "family": "contemporary-townhouse-courtyard",
+  "archetype_id": "contemporary_townhouse_courtyard",
+  "created_at": "2026-07-17T22:11:31.981118+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 4.0 metre taller ground floor with a clearly detailed main entrance and larger windows; exactly 3 coordinated 3.2 metre upper storeys; then a thin parapet. COUNTING CHECK: show exactly 3 and only 3 horizontal rows of upper-storey windows; do not add, subdivide or imply any extra storey rows. Exactly 4 structural bays across, but preserve intentional asymmetry and signature bays. Architectural identity: Contemporary Townhouse Courtyard; Contemporary Urban; regular facade; flat roof; smooth light render with crisp edges; vertical timber cladding in natural or stained finish; dark powder-coated aluminium frames, corten steel planters. NON-NEGOTIABLE identity cues: preserve the reference's distinctive composition and proportions. Material zoning: faithful archetype-specific material hierarchy. Do not genericize, regularize away, or substitute these cues. Preserve the reference's actual opening shapes: segmental, round or pointed arches must remain arches rather than being regularized into rectangles. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/contemporary_townhouse_courtyard/hero.png",
+  "architectural_signature": null,
+  "span_m": 8.29,
+  "requested_span_m": 21.6,
+  "sheet_bays": 4,
+  "semantic_glass": {
+    "source": "gemini-semantic",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-image",
+    "prompt": "Create a SEMANTIC GLASS MASK for the attached rectified architectural facade elevation. This is a pixel-aligned material-selection map, not a redesigned facade. Preserve the exact camera, crop, proportions, floor lines, bays, openings and edge positions of the source image. Output pure WHITE only for transparent or translucent vision glazing: windows, glazed doors, storefront panes and curtain-wall vision glass. Output pure BLACK for every opaque material, including frames, mullions, spandrel panels, metal backpans, masonry, timber, concrete, roofs, shadows and interiors. Do not include reflections outside the physical pane boundaries. No grey shading, no labels, no legend, no border, no perspective and no artistic reinterpretation. The result must be one edge-to-edge black-and-white mask registered to the source elevation.",
+    "glass_mask": "glass_mask_raw.png",
+    "opaque_mask": "opaque_mask_raw.png",
+    "coverage": 0.32091,
+    "glass_regions": [
+      [
+        0.0,
+        0.0,
+        0.5,
+        0.17878
+      ],
+      [
+        0.75,
+        0.0,
+        0.92448,
+        0.05814
+      ],
+      [
+        0.08594,
+        0.24128,
+        0.11979,
+        0.32267
+      ],
+      [
+        0.13802,
+        0.24128,
+        0.19531,
+        0.32267
+      ],
+      [
+        0.28906,
+        0.24128,
+        0.33594,
+        0.32267
+      ],
+      [
+        0.47656,
+        0.24128,
+        0.52344,
+        0.32267
+      ],
+      [
+        0.55469,
+        0.24128,
+        0.61458,
+        0.32267
+      ],
+      [
+        0.86458,
+        0.24128,
+        0.95573,
+        0.32122
+      ],
+      [
+        0.70833,
+        0.375,
+        0.79948,
+        0.47384
+      ],
+      [
+        0.86458,
+        0.375,
+        0.95573,
+        0.47384
+      ],
+      [
+        0.08594,
+        0.37645,
+        0.11979,
+        0.47238
+      ],
+      [
+        0.13802,
+        0.37645,
+        0.19531,
+        0.47384
+      ],
+      [
+        0.28906,
+        0.37645,
+        0.29688,
+        0.47238
+      ],
+      [
+        0.3151,
+        0.37645,
+        0.33594,
+        0.47384
+      ],
+      [
+        0.47656,
+        0.37645,
+        0.53646,
+        0.47384
+      ],
+      [
+        0.55469,
+        0.37645,
+        0.61458,
+        0.47384
+      ],
+      [
+        0.0,
+        0.55087,
+        1.0,
+        1.0
+      ]
+    ]
+  },
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "glass_mask": "floor_glass.png",
+      "opaque_mask": "floor_opaque.png",
+      "glass_regions": [
+        [
+          0.00521,
+          0.0,
+          0.02604,
+          0.17568
+        ],
+        [
+          0.05729,
+          0.0,
+          0.14583,
+          0.16892
+        ],
+        [
+          0.2526,
+          0.0,
+          0.3099,
+          0.17568
+        ],
+        [
+          0.34115,
+          0.0,
+          0.38542,
+          0.17568
+        ],
+        [
+          0.47917,
+          0.0,
+          0.52604,
+          0.17568
+        ],
+        [
+          0.66927,
+          0.0,
+          0.72656,
+          0.17568
+        ],
+        [
+          0.7474,
+          0.0,
+          0.79427,
+          0.17568
+        ],
+        [
+          0.97917,
+          0.0,
+          1.0,
+          0.17568
+        ],
+        [
+          0.05729,
+          0.41892,
+          0.14583,
+          0.87162
+        ],
+        [
+          0.66927,
+          0.41892,
+          0.72656,
+          0.87162
+        ],
+        [
+          0.7474,
+          0.41892,
+          0.79427,
+          0.87162
+        ],
+        [
+          0.90104,
+          0.41892,
+          1.0,
+          0.87162
+        ],
+        [
+          0.00521,
+          0.42568,
+          0.02604,
+          0.87162
+        ],
+        [
+          0.2526,
+          0.42568,
+          0.3099,
+          0.87162
+        ],
+        [
+          0.34115,
+          0.42568,
+          0.38542,
+          0.87162
+        ],
+        [
+          0.47917,
+          0.42568,
+          0.53906,
+          0.87162
+        ]
+      ],
+      "px": [
+        1024,
+        395
+      ],
+      "height_m": 3.2
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "glass_mask": "floor_alt_glass.png",
+      "opaque_mask": "floor_alt_opaque.png",
+      "glass_regions": [
+        [
+          0.25781,
+          0.24324,
+          0.47135,
+          0.4527
+        ],
+        [
+          0.86458,
+          0.81757,
+          0.95573,
+          1.0
+        ],
+        [
+          0.0026,
+          0.82432,
+          0.02344,
+          1.0
+        ],
+        [
+          0.07292,
+          0.82432,
+          0.08073,
+          1.0
+        ],
+        [
+          0.09896,
+          0.82432,
+          0.11979,
+          1.0
+        ],
+        [
+          0.13802,
+          0.82432,
+          0.1849,
+          1.0
+        ],
+        [
+          0.28906,
+          0.82432,
+          0.33594,
+          1.0
+        ],
+        [
+          0.47656,
+          0.82432,
+          0.52344,
+          1.0
+        ],
+        [
+          0.55469,
+          0.82432,
+          0.61458,
+          1.0
+        ],
+        [
+          0.97656,
+          0.82432,
+          0.9974,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        395
+      ],
+      "height_m": 3.2
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "glass_mask": "crown_glass.png",
+      "opaque_mask": "crown_opaque.png",
+      "glass_regions": [
+        [
+          0.11979,
+          0.0,
+          0.29427,
+          0.10355
+        ],
+        [
+          0.36979,
+          0.0,
+          0.8724,
+          0.35207
+        ],
+        [
+          0.0,
+          0.00888,
+          0.03385,
+          0.09467
+        ],
+        [
+          0.96615,
+          0.01183,
+          0.98438,
+          0.04142
+        ],
+        [
+          0.23698,
+          0.47633,
+          0.32552,
+          0.63905
+        ],
+        [
+          0.01042,
+          0.47929,
+          0.02865,
+          0.64497
+        ],
+        [
+          0.43229,
+          0.47929,
+          0.45312,
+          0.64497
+        ],
+        [
+          0.47135,
+          0.47929,
+          0.47917,
+          0.64497
+        ],
+        [
+          0.51042,
+          0.47929,
+          0.55469,
+          0.64497
+        ],
+        [
+          0.66146,
+          0.47929,
+          0.70833,
+          0.64497
+        ],
+        [
+          0.84896,
+          0.47929,
+          0.89583,
+          0.64497
+        ],
+        [
+          0.92708,
+          0.47929,
+          0.97917,
+          0.64497
+        ],
+        [
+          0.08073,
+          0.75148,
+          0.17188,
+          0.9497
+        ],
+        [
+          0.23698,
+          0.75148,
+          0.32812,
+          0.9497
+        ],
+        [
+          0.01042,
+          0.75444,
+          0.02865,
+          0.9497
+        ],
+        [
+          0.43229,
+          0.75444,
+          0.45312,
+          0.9497
+        ],
+        [
+          0.47135,
+          0.75444,
+          0.47917,
+          0.9497
+        ],
+        [
+          0.51042,
+          0.75444,
+          0.55469,
+          0.9497
+        ],
+        [
+          0.66146,
+          0.75444,
+          0.70833,
+          0.9497
+        ],
+        [
+          0.84896,
+          0.75444,
+          0.90885,
+          0.9497
+        ],
+        [
+          0.92708,
+          0.75444,
+          0.97917,
+          0.9497
+        ]
+      ],
+      "px": [
+        1024,
+        901
+      ],
+      "height_m": 3.2
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "glass_mask": "podium_glass.png",
+      "opaque_mask": "podium_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        494
+      ],
+      "height_m": 4.0
+    }
+  },
+  "detection": {
+    "floor": "fallback-confidence-0.20",
+    "floor_alt": [
+      0.0621,
+      0.2828
+    ],
+    "crown": [
+      0.0,
+      0.5034
+    ],
+    "podium": "pavement-cut-2751px"
+  }
+}

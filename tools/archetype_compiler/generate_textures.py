@@ -69,6 +69,7 @@ TEXTURE_PROSE: dict[str, str] = {
     "corten_steel": "weathered corten steel plates, rust-orange patina with subtle vertical streaking, thin panel seams",
     "zinc": "blue-grey zinc facade cladding, flat-lock rectangular panels with staggered joints",
     "copper": "aged copper facade panels, warm russet brown with soft patina variation",
+    "verdigris_copper": "historic oxidized copper standing-seam roofing, restrained blue-green verdigris with subtle warm copper traces and vertical runoff",
     "standing_seam": "dark grey standing-seam metal cladding, parallel vertical seams every half metre",
     "mediterranean_roof_tile": "handmade Mediterranean terracotta barrel roof tiles, burnt orange and ochre, overlapping rows with subtle weathering",
     "welsh_slate": "dark blue-grey natural Welsh slate roof tiles in overlapping horizontal courses, subtle cleft edges",

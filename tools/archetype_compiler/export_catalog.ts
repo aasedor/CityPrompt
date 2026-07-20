@@ -37,6 +37,7 @@ type RawSeed = Record<string, unknown> & {
   shadeId?: string | null;
   thumbnailUrl?: string;
   districtKit?: string;
+  footprintCompatibility?: AestheticOption['footprintCompatibility'];
   description?: string;
   suggestedFloorHeight?: number;
 };
@@ -70,6 +71,7 @@ interface ExportedArchetype {
   renderPrompt?: unknown;
   thumbnailUrl?: string;
   districtKit?: string;
+  footprintCompatibility?: AestheticOption['footprintCompatibility'];
   dimensions: {
     suggestedWidth_m?: number;
     suggestedDepth_m?: number;
@@ -93,13 +95,24 @@ interface ExportedArchetype {
 function buildPayload(option: AestheticOption, variantId?: string): ExportedArchetype {
   const seed = SEED_BY_ID.get(option.id);
   let selectedVariant: ArchetypeVariant | null = null;
+  let selectedVariantIndex = -1;
   if (variantId) {
-    selectedVariant = (option.variants ?? []).find((variant) => variant.id === variantId) ?? null;
+    selectedVariantIndex = (option.variants ?? []).findIndex((variant) => variant.id === variantId);
+    selectedVariant = selectedVariantIndex >= 0 ? option.variants?.[selectedVariantIndex] ?? null : null;
     if (!selectedVariant) {
       const available = (option.variants ?? []).map((variant) => variant.id).join(', ') || '(none)';
       throw new Error(`Variant '${variantId}' not found on archetype '${option.id}'. Available variants: ${available}`);
     }
   }
+  const generationStyleInput = selectedVariant && option.generationStyleInput
+    ? {
+        ...option.generationStyleInput,
+        archetypeId: `${option.id}_variant_${selectedVariantIndex}`,
+        archetypeLabel: selectedVariant.label,
+        archetypeImageUrl: selectedVariant.thumbnailUrl,
+        archetypeImagePath: selectedVariant.thumbnailUrl,
+      }
+    : option.generationStyleInput;
 
   return {
     exportSchema: EXPORT_SCHEMA,
@@ -115,32 +128,33 @@ function buildPayload(option: AestheticOption, variantId?: string): ExportedArch
     buildingSubcategory: option.buildingSubcategory,
     aestheticCategoryId: option.categoryId,
     aestheticCategoryLabel: BUILDING_AESTHETIC_CATEGORIES_V2.find((category) => category.id === option.categoryId)?.label,
-    description: option.description,
+    description: selectedVariant?.description ?? option.description,
     generationTags: option.generationTags,
     styleProfile: option.styleProfile,
-    generationStyleInput: option.generationStyleInput,
-    facadeDetail: seed?.facadeDetail,
-    roofDetail: seed?.roofDetail,
-    palette: seed?.palette,
-    shadeId: seed?.shadeId,
+    generationStyleInput,
+    facadeDetail: selectedVariant?.facadeDetail ?? seed?.facadeDetail,
+    roofDetail: selectedVariant?.roofDetail ?? seed?.roofDetail,
+    palette: selectedVariant?.palette ?? seed?.palette,
+    shadeId: selectedVariant?.shadeId ?? seed?.shadeId,
     prompt: seed?.prompt,
-    renderPrompt: seed?.renderPrompt,
-    thumbnailUrl: seed?.thumbnailUrl,
+    renderPrompt: selectedVariant?.renderPrompt ?? seed?.renderPrompt,
+    thumbnailUrl: selectedVariant?.thumbnailUrl ?? seed?.thumbnailUrl,
     districtKit: seed?.districtKit,
+    footprintCompatibility: option.footprintCompatibility,
     dimensions: {
-      suggestedWidth_m: option.suggestedWidth_m,
-      suggestedDepth_m: option.suggestedDepth_m,
+      suggestedWidth_m: selectedVariant?.suggestedWidth_m ?? option.suggestedWidth_m,
+      suggestedDepth_m: selectedVariant?.suggestedDepth_m ?? option.suggestedDepth_m,
       minWidth_m: option.minWidth_m,
       maxWidth_m: option.maxWidth_m,
       minDepth_m: option.minDepth_m,
       maxDepth_m: option.maxDepth_m,
-      suggestedAreaSqm: option.suggestedAreaSqm,
-      minAreaSqm: option.minAreaSqm,
-      maxAreaSqm: option.maxAreaSqm,
-      minFloors: option.minFloors,
-      maxFloors: option.maxFloors,
-      suggestedFloorHeight: option.suggestedFloorHeight ?? seed?.suggestedFloorHeight,
-      aspectRatio: option.aspectRatio,
+      suggestedAreaSqm: selectedVariant?.suggestedAreaSqm ?? option.suggestedAreaSqm,
+      minAreaSqm: selectedVariant?.minAreaSqm ?? option.minAreaSqm,
+      maxAreaSqm: selectedVariant?.maxAreaSqm ?? option.maxAreaSqm,
+      minFloors: selectedVariant?.minFloors ?? option.minFloors,
+      maxFloors: selectedVariant?.maxFloors ?? option.maxFloors,
+      suggestedFloorHeight: selectedVariant?.suggestedFloorHeight ?? option.suggestedFloorHeight ?? seed?.suggestedFloorHeight,
+      aspectRatio: selectedVariant?.aspectRatio ?? option.aspectRatio,
     },
     archetypeImages: option.archetypeImages,
     variants: option.variants,

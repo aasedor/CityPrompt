@@ -86,7 +86,7 @@ def test_mixed_use_midrise_gets_retail_podium_and_setback():
     assert grammar.schema_version == SCHEMA_VERSION
     assert grammar.massing.has_podium_retail is True
     assert grammar.dimensions.podium_height_m == pytest.approx(4.5)
-    assert grammar.massing.has_setback is True  # default floors round((3+12)/2)=8 >= 6
+    assert grammar.massing.has_setback is True  # explicit stepped terraces in massing metadata
     assert grammar.dimensions.default_floors == 8
     assert grammar.dimensions.width_m == 38
     # provenance preserved
@@ -132,6 +132,28 @@ def test_tower_podium_gets_narrow_bays_and_setback():
     assert grammar.massing.has_setback is True
 
 
+def test_roof_step_language_does_not_invent_an_upper_floor_setback():
+    payload = payload_mixed_use_midrise(
+        archetypeId="chateauesque_grand_railway_hotel",
+        generationTags=["chateauesque", "stepped_gabled_dormers", "stone_masonry"],
+    )
+    payload["styleProfile"] = {
+        "massing": "Continuous perimeter block with projecting pavilions and corner turrets",
+        "roofForm": "Stepped gabled dormers in a continuous Mansard roof",
+    }
+    payload["facadeDetail"]["upperFloors"] = "continuous guest-room streetwall"
+    payload["dimensions"] = {
+        "suggestedWidth_m": 80,
+        "suggestedDepth_m": 40,
+        "minFloors": 5,
+        "maxFloors": 8,
+    }
+
+    grammar = compile_archetype(payload, floors=5)
+
+    assert grammar.massing.has_setback is False
+
+
 def test_missing_optional_metadata_uses_deterministic_defaults():
     grammar = compile_archetype({"archetypeId": "bare_bones"})
     assert grammar.family_id == "bare-bones"
@@ -174,6 +196,27 @@ def test_flat_roof_with_green_roof_inference():
     assert grammar.roof.type == "flat"
     assert grammar.roof.green_roof is True
     assert grammar.roof.mechanical_screen is True
+
+
+def test_variant_explicit_flat_roof_wins_over_parent_pitched_alternative():
+    payload = payload_mixed_use_midrise()
+    payload["styleProfile"]["roofForm"] = "Flat or shallow-pitched with clerestory monitors"
+    payload["selectedVariant"] = {
+        "id": "toronto_junction_contemporary_addition",
+        "description": "Two-storey rooftop addition set back from the heritage brick facade.",
+        "roofDetail": {
+            "form": "new two-storey addition with flat green roof",
+            "material": "standing-seam zinc cladding with green roof",
+        },
+    }
+
+    grammar = compile_archetype(payload)
+
+    assert grammar.roof.type == "flat"
+    assert grammar.roof.green_roof is True
+    assert grammar.massing.has_setback is True
+    assert grammar.massing.setback_min_floors == grammar.dimensions.default_floors + 1
+    assert grammar.massing.rooftop_pavilion is True
 
 
 def test_london_heritage_prose_selects_mansard_stone_kit_and_pbr_materials():
@@ -258,6 +301,20 @@ def test_floor_override_clamped_to_catalogue_range():
     grammar = compile_archetype(payload_mixed_use_midrise(), floors=40)
     assert grammar.dimensions.default_floors == 12  # clamped to maxFloors
     assert any("clamped" in note for note in grammar.notes)
+
+
+def test_explicit_dimension_tier_can_exceed_catalogue_recommendations():
+    payload = payload_mixed_use_midrise()
+    grammar = compile_archetype(
+        payload,
+        width_m=80,
+        depth_m=60,
+        allow_outside_bounds=True,
+    )
+
+    assert grammar.dimensions.width_m == 80
+    assert grammar.dimensions.depth_m == 60
+    assert any("dimension tier" in note for note in grammar.notes)
 
 
 def test_grammar_round_trips_through_dict():

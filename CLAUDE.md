@@ -82,6 +82,13 @@ Default operating style for non-trivial work in this repo. Preserved from the 20
 - `frontend/src/data/archetypeShadeMap.ts` — unique color per archetype
 - Archetype images: `frontend/public/archetypes/{buildings|openspaces|streets}/{slug}/`
 
+### High-quality modular 3D buildings
+
+Before changing or batch-generating LEGO building families, read
+`docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md`. The executable rules live in
+`tools/archetype_compiler/high_quality_building_memory.json`; keep the human
+runbook, machine memory, assessor tests, and memory version synchronized.
+
 ### State Management (Zustand)
 - `useAuthStore` — user, login, permissions
 - `useViewerStore` — selected zones, editing state

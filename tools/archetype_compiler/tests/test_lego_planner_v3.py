@@ -7,6 +7,7 @@ imports.
 from __future__ import annotations
 
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 
@@ -71,6 +72,23 @@ def test_planner_alternates_floor_variants_then_places_upper_and_crown():
     ]
     assert plan["instances"][-2]["variant_key"] == "crown"
     assert all(item["lod"] == 0 for item in plan["instances"])
+
+
+def test_planner_prefers_first_newest_family_when_quality_scores_tie():
+    base = [
+        module("podium", 4.5),
+        module("floor", 3.4, "typical_a", True),
+        module("roof", 1.2),
+    ]
+    newest = [replace(item, id=f"new-{item.id}", family="family-v5-audited") for item in base]
+    older = [replace(item, id=f"old-{item.id}", family="family-v4") for item in base]
+
+    plan = plan_vertical_assembly(
+        newest + older,
+        AssemblyRequest(22.0, 20.0, 5, archetype_id="contemporary_midrise"),
+    )
+
+    assert plan["family"] == "family-v5-audited"
 
 
 def test_manifest_v3_accepts_distinct_floor_identities_and_rejects_duplicates():

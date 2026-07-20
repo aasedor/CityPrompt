@@ -1,0 +1,53 @@
+{
+  "schema": "worldclass-lego-library@2",
+  "name": "Codex LEGO v21 - Five-Family Methodology Expansion",
+  "description": "Five deliberately different archetypes used to validate that the Kinnaird-class construction memory generalizes beyond the original four production families.",
+  "generation_profile": {
+    "facade_model": "cached-reference-guided-plus-deterministic-pbr",
+    "facade_sheet_schema": "facade-sheet@5",
+    "facade_sheet_root": "tools/archetype_compiler/facade_sheets_pbr_v21",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "city",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "signature_profile": "tools/archetype_compiler/architectural_signature_profiles.json",
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json"
+  },
+  "entries": [
+    {
+      "archetype_id": "london_heritage_mansion_block",
+      "floors": 6,
+      "width_m": 32,
+      "depth_m": 22,
+      "group": "European heritage stonework"
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "floors": 4,
+      "width_m": 30,
+      "depth_m": 20,
+      "group": "Industrial reuse and deep glazing"
+    },
+    {
+      "archetype_id": "eixample_apartment_block",
+      "floors": 6,
+      "width_m": 22,
+      "depth_m": 22,
+      "group": "Chamfered urban perimeter block"
+    },
+    {
+      "archetype_id": "modernist_civic_block",
+      "floors": 4,
+      "width_m": 50,
+      "depth_m": 30,
+      "group": "Asymmetric civic landmark"
+    },
+    {
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "floors": 6,
+      "width_m": 55,
+      "depth_m": 36,
+      "group": "Historic hotel roofscape and turrets"
+    }
+  ]
+}

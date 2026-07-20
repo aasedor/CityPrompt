@@ -20,6 +20,11 @@ sys.path.insert(0, str(TOOL_DIR))
 
 from compiler import compile_archetype  # noqa: E402
 from generate_family import export_archetype  # noqa: E402
+from quality_memory import (  # noqa: E402
+    DEFAULT_MEMORY_PATH,
+    assess_family_quality,
+    load_quality_memory,
+)
 from signature_profiles import inject_signature  # noqa: E402
 
 
@@ -62,12 +67,28 @@ def prepare_grammar(entry: dict, family_dir: Path) -> dict:
     return grammar
 
 
-def family_result(entry: dict, family_dir: Path, sheet_dir: Path) -> dict:
+def family_result(entry: dict, family_dir: Path, sheet_dir: Path, quality_memory: dict) -> dict:
     reports = list(family_dir.glob("validation_report.json"))
     manifests = [path for path in family_dir.glob("*_manifest.json") if path.name != "manifest.json"]
     manifest = json.loads(manifests[0].read_text(encoding="utf-8")) if manifests else {}
     report = json.loads(reports[0].read_text(encoding="utf-8")) if reports else {}
     preview_name = manifest.get("thumbnail")
+    quality_assessment = (
+        assess_family_quality(manifest, report, quality_memory)
+        if manifest and report
+        else {
+            "schema": "high-quality-building-assessment@1",
+            "memory_version": quality_memory["memory_version"],
+            "status": "pending",
+            "high_quality_ready": False,
+            "hard_failures": [],
+            "review_findings": [],
+        }
+    )
+    (family_dir / "quality_assessment.json").write_text(
+        json.dumps(quality_assessment, indent=2) + "\n",
+        encoding="utf-8",
+    )
     return {
         **entry,
         "family": manifest.get("family"),
@@ -80,6 +101,8 @@ def family_result(entry: dict, family_dir: Path, sheet_dir: Path) -> dict:
         "triangle_count": (manifest.get("assembled") or {}).get("triangle_count"),
         "module_count": len(manifest.get("modules") or []),
         "city_prompt_ready": report.get("status") == "pass" and bool(manifests),
+        "high_quality_ready": quality_assessment["high_quality_ready"],
+        "quality_assessment": quality_assessment,
         "import_command": f"python tools/archetype_compiler/import_manifest.py {family_dir.relative_to(REPO_ROOT).as_posix()}",
     }
 
@@ -94,10 +117,17 @@ def main() -> int:
     parser.add_argument("--skip-models", action="store_true", help="prepare grammars/sheets only")
     parser.add_argument("--presentation-view-set", choices=("all", "preview"), default=None)
     parser.add_argument("--facade-sheet-detail", choices=("hero", "city"), default=None)
+    parser.add_argument(
+        "--quality-memory",
+        type=Path,
+        default=DEFAULT_MEMORY_PATH,
+        help="versioned executable quality rules used to route pass/review/fail outputs",
+    )
     args = parser.parse_args()
 
     registry_path = args.registry.resolve()
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    quality_memory = load_quality_memory(args.quality_memory.resolve())
     profile = registry.get("generation_profile") or {}
     entries = list(registry["entries"])
     if args.only:
@@ -165,7 +195,7 @@ def main() -> int:
                 if entry.get("depth_m"):
                     model_command += ["--depth", str(entry["depth_m"])]
                 run(model_command, family_dir / "logs" / "family-batch.log")
-            results.append(family_result(entry, family_dir, sheet_dir))
+            results.append(family_result(entry, family_dir, sheet_dir, quality_memory))
             log(f"completed {archetype_id}")
         except Exception as exc:
             failure = {"archetype_id": archetype_id, "error": str(exc)}
@@ -177,13 +207,28 @@ def main() -> int:
             "library": registry.get("name"),
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "registry": str(registry_path.relative_to(REPO_ROOT)).replace("\\", "/"),
-            "generation_profile": {**profile, "geometry_detail": detail, "presentation_view_set": view_set},
+            "generation_profile": {
+                **profile,
+                "geometry_detail": detail,
+                "presentation_view_set": view_set,
+                "quality_memory_version": quality_memory["memory_version"],
+            },
             "families": results,
             "failures": failures,
             "summary": {
                 "requested": len(entries),
                 "completed": len(results),
                 "city_prompt_ready": sum(bool(item.get("city_prompt_ready")) for item in results),
+                "high_quality_ready": sum(bool(item.get("high_quality_ready")) for item in results),
+                "quality_review": sum(
+                    item.get("quality_assessment", {}).get("status") == "review" for item in results
+                ),
+                "quality_failed": sum(
+                    item.get("quality_assessment", {}).get("status") == "fail" for item in results
+                ),
+                "quality_pending": sum(
+                    item.get("quality_assessment", {}).get("status") == "pending" for item in results
+                ),
                 "failed": len(failures),
             },
         }

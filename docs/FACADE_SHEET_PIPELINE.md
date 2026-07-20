@@ -1,5 +1,11 @@
 # Facade Sheet Pipeline
 
+> Production memory: use this pipeline together with
+> [`HIGH_QUALITY_3D_BUILDING_MEMORY.md`](HIGH_QUALITY_3D_BUILDING_MEMORY.md).
+> Its versioned assessor separates structurally invalid families from valid
+> outputs that merely need visual review, allowing catalogue-scale batches to
+> continue safely.
+
 The facade-sheet pipeline is the v7 high-fidelity path for LEGO building families. It follows the construction pattern observed in the Chicago and Kinnaird reference assets: keep massing and silhouette in geometry, but place windows, reveals, shopfronts, masonry variation, panel joints, and restrained weathering in a rectified photographic facade atlas.
 
 The result is more detailed than a fully procedural facade at City Prompt viewing distances, while remaining modular and far lighter than modelling every joint and window assembly as bespoke geometry.
@@ -9,7 +15,7 @@ The result is more detailed than a fully procedural facade at City Prompt viewin
 The pipeline is now an optional, end-to-end input to the existing archetype compiler:
 
 1. `generate_family.py` exports the real City Prompt catalogue archetype and compiles its deterministic Building Grammar.
-2. `generate_facade_sheets.py` sends the archetype card and construction brief to `gemini-3.1-flash-image` as a texture-map request, not a whole-building rendering request.
+2. `generate_facade_sheets.py` sends the archetype card and construction brief to a selectable image provider as a texture-map request, not a whole-building rendering request. Gemini remains the default; `--provider openai` uses `gpt-image-2`.
 3. The generated orthographic elevation is cached as `elevation_raw.jpg`.
 4. Row-variance autocorrelation detects the actual repeated floor pitch. This is important because image models do not always obey the requested floor count exactly.
 5. The tool cuts one repeatable upper-floor band and one podium band, flattens illumination, moves distinctive accent bays away from the tile seam, and blends only the horizontal edges.
@@ -50,6 +56,20 @@ python tools/archetype_compiler/generate_family.py `
 ```
 
 The Gemini key is read from `GEMINI_API_KEY`, `--api-key`, or `backend/.env`. Re-running without `--force` reuses the cached raw elevation. Use `--reprocess` to re-cut the bands without any API call.
+
+### GPT Image comparison pilot
+
+GPT Image uses the same exact archetype card, rectified-elevation brief, band processor and GLB compiler, so the comparison changes only the image provider. Its cache defaults to `facade_sheets_openai/<family>` and cannot overwrite the Gemini baseline.
+
+```powershell
+$env:OPENAI_API_KEY = "<local key>"
+backend/.venv/Scripts/python.exe tools/archetype_compiler/generate_facade_sheets.py `
+  --provider openai `
+  --family build/archetypes/london-heritage-mansion-block `
+  --force
+```
+
+`OPENAI_API_KEY` can also live in the ignored root `.env` or `backend/.env`. The key is never written to the façade manifest. The manifest records `provider`, `model`, and independent semantic-glass provenance. `--mask-provider deterministic` is useful for a cheaper first-pass sheet; the default `same` uses GPT Image for both elevation and mask when `--provider openai` is selected.
 
 ## Generate the twenty-family pilot
 

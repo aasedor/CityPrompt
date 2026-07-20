@@ -343,11 +343,14 @@ class Massing:
     setback_side_m: float = 1.0
     corner_condition: str = "midblock"
     has_setback: bool = False
+    setback_min_floors: int = 5
+    rooftop_pavilion: bool = False
     has_podium_retail: bool = False
 
     def validate(self, width_m: float, depth_m: float) -> None:
         _require_range("massing.setback_front_m", self.setback_front_m, 0.0, depth_m / 3)
         _require_range("massing.setback_side_m", self.setback_side_m, 0.0, width_m / 3)
+        _require_range("massing.setback_min_floors", self.setback_min_floors, 2, 100)
         if self.corner_condition not in VALID_CORNER_CONDITIONS:
             raise GrammarError(
                 f"massing.corner_condition={self.corner_condition!r} must be one of {VALID_CORNER_CONDITIONS}"

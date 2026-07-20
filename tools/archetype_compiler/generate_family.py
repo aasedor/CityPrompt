@@ -12,6 +12,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -45,13 +46,23 @@ def log(message: str) -> None:
 def run(cmd: list[str], *, cwd: Path, step: str, log_file: Path | None = None) -> subprocess.CompletedProcess:
     log(f"$ {' '.join(str(c) for c in cmd)}")
     result = subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, encoding="utf-8", errors="replace")
+    combined_output = (result.stdout or "") + "\n" + (result.stderr or "")
     if log_file:
         log_file.parent.mkdir(parents=True, exist_ok=True)
         log_file.write_text((result.stdout or "") + "\n--- stderr ---\n" + (result.stderr or ""), encoding="utf-8")
-    if result.returncode != 0:
-        tail = "\n".join(((result.stdout or "") + "\n" + (result.stderr or "")).strip().splitlines()[-25:])
+    # Blender may return process code zero even when its Python entry point
+    # raises. Treat the embedded traceback/argparse failure as authoritative;
+    # otherwise a stale GLB and manifest can make validation report a false
+    # pass after the renderer has actually failed.
+    blender_python_failed = step == "blender" and (
+        "Traceback (most recent call last)" in combined_output
+        or "blender_generate.py: error:" in combined_output
+    )
+    if result.returncode != 0 or blender_python_failed:
+        tail = "\n".join(combined_output.strip().splitlines()[-25:])
         where = f" (full log: {log_file})" if log_file else ""
-        raise StepFailed(step, f"exit code {result.returncode}{where}\n{tail}")
+        reason = f"exit code {result.returncode}" if result.returncode != 0 else "embedded Python failure"
+        raise StepFailed(step, f"{reason}{where}\n{tail}")
     return result
 
 
@@ -99,12 +110,37 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate a modular GLB family from a real catalogue archetype")
     parser.add_argument("--archetype-id", required=True, help="catalogue id, e.g. nordic_timber_midrise (see export_catalog.ts --list)")
     parser.add_argument("--variant-id", default=None)
+    parser.add_argument(
+        "--family-id",
+        default=None,
+        help=(
+            "override the generated kebab-case LEGO family id; use this for "
+            "coexisting footprint tiers such as nordic-timber-midrise-large"
+        ),
+    )
     parser.add_argument("--output", type=Path, default=None, help="default: build/archetypes/<archetype-id>")
     parser.add_argument("--floors", type=int, default=None, help="assembled preview floor count (default: catalogue midpoint)")
     parser.add_argument("--width", type=float, default=None)
     parser.add_argument("--depth", type=float, default=None)
+    parser.add_argument(
+        "--allow-outside-bounds",
+        action="store_true",
+        help="author an explicit footprint tier outside catalogue recommendations",
+    )
+    parser.add_argument("--footprint-profile", choices=("rectangle", "l_shape", "u_shape", "courtyard"), default="rectangle",
+                        help="assembled-preview geographic footprint profile")
+    parser.add_argument("--footprint-width", type=float, default=None,
+                        help="overall assembled footprint width; module width still comes from --width")
+    parser.add_argument("--footprint-depth", type=float, default=None,
+                        help="overall assembled footprint depth; module depth still comes from --depth")
+    parser.add_argument("--wing-depth", type=float, default=None,
+                        help="occupied wing thickness for non-rectangular profiles")
     parser.add_argument("--blender-path", default=None)
     parser.add_argument("--skip-thumbnail", action="store_true")
+    parser.add_argument(
+        "--assembled-only", action="store_true",
+        help="reuse existing module files/metadata and rebuild only the assembled model and review images",
+    )
     parser.add_argument("--keep-blend", action="store_true")
     parser.add_argument("--no-ao", action="store_true", help="skip the Cycles AO bake (fast runs)")
     parser.add_argument("--facade-sheets", type=Path, default=None,
@@ -118,6 +154,11 @@ def main() -> None:
     parser.add_argument("--presentation-view-set", choices=("all", "preview"), default="all")
     parser.add_argument("--skip-validation", action="store_true")
     parser.add_argument("--no-auto-install", action="store_true", help="don't pip-install validation deps automatically")
+    parser.add_argument(
+        "--grammar-only",
+        action="store_true",
+        help="export the catalogue entry and write grammar.json, then stop before Blender generation",
+    )
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -136,11 +177,26 @@ def main() -> None:
     # 2. compile grammar ------------------------------------------------------
     log("step 2/5: compiling Building Grammar")
     try:
-        grammar = compile_archetype(payload, floors=args.floors, width_m=args.width, depth_m=args.depth)
+        grammar = compile_archetype(
+            payload,
+            floors=args.floors,
+            width_m=args.width,
+            depth_m=args.depth,
+            allow_outside_bounds=args.allow_outside_bounds,
+        )
     except Exception as exc:
         raise StepFailed("compile", str(exc))
+    if args.family_id:
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", args.family_id):
+            raise StepFailed("compile", f"--family-id must be a kebab-case slug, got {args.family_id!r}")
+        grammar.family_id = args.family_id
+        grammar.validate()
     grammar_file = output / "grammar.json"
-    grammar_payload = inject_signature(grammar.to_dict(), args.archetype_id)
+    grammar_payload = inject_signature(
+        grammar.to_dict(), args.archetype_id, variant_id=args.variant_id,
+    )
+    if payload.get("footprintCompatibility"):
+        grammar_payload["footprint_compatibility"] = payload["footprintCompatibility"]
     grammar_file.write_text(json.dumps(grammar_payload, indent=2), encoding="utf-8")
     dims = grammar.dimensions
     log(f"grammar: {grammar.family_id} — {dims.width_m}x{dims.depth_m} m, "
@@ -148,6 +204,16 @@ def main() -> None:
     if args.verbose:
         for note in grammar.notes:
             log(f"  note: {note}")
+
+    if args.grammar_only:
+        log("")
+        log("SUCCESS — catalogue source and Building Grammar prepared (--grammar-only)")
+        log(f"  family:        {grammar.family_id}")
+        log(f"  archetype:     {args.archetype_id}")
+        log(f"  grammar:       {grammar_file}")
+        log(f"  output folder: {output}")
+        print(str(output))
+        return
 
     # 3. locate Blender -------------------------------------------------------
     log("step 3/5: locating Blender")
@@ -170,6 +236,8 @@ def main() -> None:
         blender_cmd += ["--keep-blend"]
     if args.skip_thumbnail:
         blender_cmd += ["--no-thumbnail"]
+    if args.assembled_only:
+        blender_cmd += ["--assembled-only"]
     if args.no_ao:
         blender_cmd += ["--no-ao"]
     if args.facade_sheets:
@@ -179,7 +247,14 @@ def main() -> None:
         blender_cmd += ["--textures", str(args.textures.resolve())]
     blender_cmd += ["--presentation-engine", args.presentation_engine,
                     "--presentation-samples", str(args.presentation_samples),
-                    "--presentation-view-set", args.presentation_view_set]
+                    "--presentation-view-set", args.presentation_view_set,
+                    "--footprint-profile", args.footprint_profile]
+    if args.footprint_width is not None:
+        blender_cmd += ["--footprint-width", str(args.footprint_width)]
+    if args.footprint_depth is not None:
+        blender_cmd += ["--footprint-depth", str(args.footprint_depth)]
+    if args.wing_depth is not None:
+        blender_cmd += ["--wing-depth", str(args.wing_depth)]
     result = run(blender_cmd, cwd=REPO_ROOT, step="blender", log_file=logs_dir / "blender.log")
     for line in (result.stdout or "").splitlines():
         if "[blender_generate]" in line:

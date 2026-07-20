@@ -1,0 +1,139 @@
+{
+  "schema": "renderlock-variant-pilot@1",
+  "created": "2026-07-18",
+  "method": "three catalogue views -> rectified GPT elevation -> shadow-neutral PBR -> semantic LEGO assemblies -> street and aerial review",
+  "families": [
+    {
+      "archetype_id": "contemporary_midrise_residential",
+      "variant_id": "contemporary_midrise_variant_brick_bronze",
+      "family_id": "contemporary-midrise-brick-bronze-renderlocked-v1",
+      "review_state": "keeper",
+      "recommended_dimensions_m": [30, 20],
+      "floors": 6
+    },
+    {
+      "archetype_id": "modern_glass_office_institutional",
+      "variant_id": "glass_office_terracotta_fins",
+      "family_id": "glass-office-terracotta-fins-renderlocked-v1",
+      "review_state": "keeper",
+      "recommended_dimensions_m": [32, 22],
+      "floors": 6
+    },
+    {
+      "archetype_id": "victorian_heritage_avenue",
+      "variant_id": "victorian_heritage_second_empire",
+      "family_id": "victorian-second-empire-renderlocked-v1",
+      "review_state": "keeper",
+      "recommended_dimensions_m": [30, 22],
+      "module_dimensions_m": [12, 20],
+      "floors": 4
+    },
+    {
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_perpendicular",
+      "family_id": "collegiate-gothic-perpendicular-renderlocked-v1",
+      "review_state": "rejected_needs_fixed_massing_graph",
+      "reason": "negative space around the fixed towers was printed onto a generic rectangular skin",
+      "required_next_assembly": "fixed central lantern and corner towers plus repeatable nave bays"
+    },
+    {
+      "archetype_id": "toronto_junction_converted_industrial",
+      "variant_id": "toronto_junction_brick_factory",
+      "family_id": "toronto-junction-brick-factory-v2-depth-audited",
+      "review_state": "keeper_live_cityprompt",
+      "recommended_dimensions_m": [25, 20],
+      "floors": 2
+    },
+    {
+      "archetype_id": "toronto_junction_converted_industrial",
+      "variant_id": "toronto_junction_printing_press",
+      "family_id": "toronto-junction-printing-press-v5-depth-audited",
+      "review_state": "keeper_live_cityprompt",
+      "recommended_dimensions_m": [25, 20],
+      "floors": 3,
+      "depth_features": ["semantic opening cavities", "inset masonry returns", "recessed occupied glass", "external fire escape"]
+    },
+    {
+      "archetype_id": "toronto_junction_converted_industrial",
+      "variant_id": "toronto_junction_cold_storage",
+      "family_id": "toronto-junction-cold-storage-v6-depth-audited",
+      "review_state": "keeper_live_cityprompt",
+      "recommended_dimensions_m": [25, 20],
+      "floors": 2,
+      "depth_features": ["deep punched openings", "inset brick returns", "recessed occupied glass", "fixed loading bay"]
+    },
+    {
+      "archetype_id": "toronto_junction_converted_industrial",
+      "variant_id": "toronto_junction_contemporary_addition",
+      "family_id": "toronto-junction-contemporary-addition-v5-depth-audited",
+      "review_state": "keeper_live_cityprompt",
+      "recommended_dimensions_m": [44.8, 36.3],
+      "floors": 4
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_brewery",
+      "family_id": "industrial-brick-brewery-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v44_depth_pass",
+      "recommended_dimensions_m": [40, 26],
+      "floors": 2,
+      "depth_features": ["four fixed deep arch portals", "timber loading beams", "shallow elliptical barrel vaults", "raised clerestory", "registered physical Crittall mullions and transoms", "recessed occupied glazing", "projecting masonry sills"]
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_powerstation",
+      "family_id": "industrial-brick-powerstation-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v44_depth_pass",
+      "recommended_dimensions_m": [36, 24],
+      "floors": 3,
+      "depth_features": ["multi-storey turbine glazing", "deep brick piers", "fixed Corten end insertion", "framed glazed roof lantern", "semantic opening cavities", "registered physical Crittall mullions and transoms", "projecting brick sills", "occupied recessed glazing"]
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_modern_loft",
+      "family_id": "industrial-brick-modern-loft-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v44_depth_pass",
+      "recommended_dimensions_m": [30, 20],
+      "floors": 5,
+      "depth_features": ["corner-returning precast frame", "deep industrial sash", "double-height occupied base", "inhabited roof terrace and pergola", "registered physical mullions and transoms", "recessed occupied glazing", "projecting sills and slab-edge rails"]
+    },
+    {
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_original_mill",
+      "family_id": "industrial-brick-original-mill-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v44_depth_pass",
+      "recommended_dimensions_m": [30, 20],
+      "floors": 5,
+      "depth_features": ["twenty architect-audited segmental openings", "registered physical Crittall mullions and transoms", "recessed occupied glazing", "projecting brick sills and piers", "cropped glass roof monitor", "physical corbelled brick chimney", "four-sided wrapped mill bays"]
+    },
+    {
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_tudor",
+      "family_id": "collegiate-gothic-tudor-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v45_cavity_pass",
+      "recommended_dimensions_m": [60, 25],
+      "floors": 4,
+      "depth_features": ["fixed quadrangle massing graph", "crenellated gatehouse tower", "pointed passage", "stacked projecting oriels", "architect-audited leaded openings", "stone returns and projecting sills", "recessed warm occupied glazing", "continuous facade service cavity", "four-sided collegiate wings and courtyard elevations", "steep slate roofs and clustered chimneys"]
+    },
+    {
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_jacobethan",
+      "family_id": "collegiate-gothic-jacobethan-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v46_depth_pass",
+      "recommended_dimensions_m": [60, 45],
+      "floors": 3,
+      "height_m": 18.3,
+      "depth_features": ["independent quadrangle manor massing", "fixed shaped-gable array", "grouped masonry chimney stacks", "four-sided and courtyard registered glazing", "stone window returns and projecting sills", "physical leaded panes over warm occupied room cards", "continuous facade service cavity", "fixed projecting central oriel", "integrated classical entrance porch", "shadow-neutral Flemish-bond brick PBR atlas"]
+    },
+    {
+      "archetype_id": "collegiate_gothic_education",
+      "variant_id": "collegiate_gothic_ruskinian",
+      "family_id": "collegiate-gothic-ruskinian-v1-renderlocked",
+      "review_state": "keeper_live_cityprompt_v50_lancet_depth_pass",
+      "recommended_dimensions_m": [40, 35],
+      "floors": 4,
+      "height_m": 25.3,
+      "depth_features": ["independent square-hall massing", "four fixed cylindrical striped corner turrets", "projecting carved belt courses", "cross-gable roof with archetype-specific polychrome slate PBR", "fixed central portal and steep front gables", "shape-aware pointed-lancet semantic glass masks", "recessed physical glazing and occupied room cards", "projecting stone sills", "all-elevation facade wrap", "continuous facade service cavity"]
+    }
+  ]
+}

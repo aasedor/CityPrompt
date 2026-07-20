@@ -1,0 +1,45 @@
+{
+  "schema": "worldclass-lego-library@1",
+  "name": "Codex LEGO v20 - Four-Family Production Validation",
+  "description": "Gothic, glass, Nordic and classical families processed through the v19 quality-memory contract.",
+  "generation_profile": {
+    "facade_model": "cached-reference-guided-plus-deterministic-pbr",
+    "facade_sheet_schema": "facade-sheet@5",
+    "facade_sheet_root": "tools/archetype_compiler/facade_sheets_pbr_v20",
+    "texture_library": "tools/archetype_compiler/textures_worldclass_v7",
+    "geometry_detail": "city",
+    "presentation_view_set": "all",
+    "ambient_occlusion": false,
+    "quality_memory": "tools/archetype_compiler/high_quality_building_memory.json"
+  },
+  "entries": [
+    {
+      "archetype_id": "collegiate_gothic_education",
+      "floors": 4,
+      "width_m": 60,
+      "depth_m": 25,
+      "group": "Complex heritage"
+    },
+    {
+      "archetype_id": "modern_glass_office_institutional",
+      "floors": 10,
+      "width_m": 30,
+      "depth_m": 20,
+      "group": "Contemporary glazing"
+    },
+    {
+      "archetype_id": "nordic_timber_midrise",
+      "floors": 7,
+      "width_m": 20,
+      "depth_m": 16,
+      "group": "Timber residential"
+    },
+    {
+      "archetype_id": "civic_classical_building",
+      "floors": 2,
+      "width_m": 42,
+      "depth_m": 26,
+      "group": "Civic monumental"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "schema": "facade-sheet@4",
+  "family": "modern-glass-office-institutional",
+  "archetype_id": "modern_glass_office_institutional",
+  "created_at": "2026-07-18T04:41:02.366045+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-image",
+  "prompt": "Architectural facade TEXTURE MAP for a professional real-time 3D model. Create a strict rectified orthographic front elevation; the flat wall surface fills 100 percent of the image. Bottom to top: one 5.0 metre taller ground floor with a clearly detailed main entrance and larger windows; exactly 3 coordinated 4.0 metre upper storeys; then a thin parapet. COUNTING CHECK: show exactly 3 and only 3 horizontal rows of upper-storey windows; do not add, subdivide or imply any extra storey rows. Exactly 4 structural bays across, but preserve intentional asymmetry and signature bays. Architectural identity: Modern Glass Office / Institutional; Modernist; regular facade; flat roof; unitized curtain wall glazing with low-E coated glass, clear or tinted grey-blue; brushed stainless steel or anodized aluminium mullions and transoms; polished granite or limestone base cladding, stainless steel entrance canopy. NON-NEGOTIABLE identity cues: Compact institutional office with continuous low-iron blue curtain wall, slim silver transoms, dark expressed corner mullions, transparent double-height lobby and a restrained parapet roofline.. Material zoning: low-iron blue glass; charcoal corner mullions; silver aluminum transoms and spandrels; pale stone lobby base. Do not genericize, regularize away, or substitute these cues. Preserve the reference's actual opening shapes: segmental, round or pointed arches must remain arches rather than being regularized into rectangles. Physically believable construction, precise window frames, deep reveals, lintels, sills, material joints and subtle weathering. A few windows may show softly lit, unoccupied interiors. Flat even overcast capture light. The wall reaches every edge: no sky, no pavement, no perspective, no whole-building scene, no people, no signs, no legible text, no trees and no cars.",
+  "style_reference": "/archetypes/buildings/modern_glass_office_institutional/hero.png",
+  "architectural_signature": {
+    "identity": "Compact institutional office with continuous low-iron blue curtain wall, slim silver transoms, dark expressed corner mullions, transparent double-height lobby and a restrained parapet roofline.",
+    "material_zones": "low-iron blue glass; charcoal corner mullions; silver aluminum transoms and spandrels; pale stone lobby base",
+    "glass_profile": "reflective_curtain_wall",
+    "kits": [
+      "double_height_lobby",
+      "curtainwall_grid",
+      "transparent_corners",
+      "parapet_crown"
+    ]
+  },
+  "span_m": 10.86,
+  "requested_span_m": 12.0,
+  "sheet_bays": 4,
+  "semantic_glass": {
+    "source": "gemini-semantic",
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-image",
+    "prompt": "Create a SEMANTIC GLASS MASK for the attached rectified architectural facade elevation. This is a pixel-aligned material-selection map, not a redesigned facade. Preserve the exact camera, crop, proportions, floor lines, bays, openings and edge positions of the source image. Output pure WHITE only for transparent or translucent vision glazing: windows, glazed doors, storefront panes and curtain-wall vision glass. Output pure BLACK for every opaque material, including frames, mullions, spandrel panels, metal backpans, masonry, timber, concrete, roofs, shadows and interiors. Do not include reflections outside the physical pane boundaries. No grey shading, no labels, no legend, no border, no perspective and no artistic reinterpretation. The result must be one edge-to-edge black-and-white mask registered to the source elevation.",
+    "glass_mask": "glass_mask_raw.png",
+    "opaque_mask": "opaque_mask_raw.png",
+    "coverage": 0.64184,
+    "glass_regions": [
+      [
+        0.0,
+        0.04942,
+        1.0,
+        0.15407
+      ],
+      [
+        0.0,
+        0.18169,
+        1.0,
+        0.25872
+      ],
+      [
+        0.0,
+        0.28634,
+        1.0,
+        0.36483
+      ],
+      [
+        0.0,
+        0.39244,
+        1.0,
+        0.46948
+      ],
+      [
+        0.0,
+        0.49709,
+        1.0,
+        0.57413
+      ],
+      [
+        0.0,
+        0.6032,
+        1.0,
+        0.67878
+      ],
+      [
+        0.0,
+        0.7093,
+        1.0,
+        0.78488
+      ],
+      [
+        0.26823,
+        0.82267,
+        1.0,
+        0.99709
+      ]
+    ]
+  },
+  "bands": {
+    "floor": {
+      "albedo": "floor_albedo.jpg",
+      "roughness": "floor_roughness.jpg",
+      "emissive": "floor_emissive.png",
+      "glass_mask": "floor_glass.png",
+      "opaque_mask": "floor_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.31206
+        ],
+        [
+          0.0,
+          0.44681,
+          1.0,
+          0.8227
+        ],
+        [
+          0.0,
+          0.95745,
+          1.0,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        377
+      ],
+      "height_m": 4.0
+    },
+    "floor_alt": {
+      "albedo": "floor_alt_albedo.jpg",
+      "roughness": "floor_alt_roughness.jpg",
+      "emissive": "floor_alt_emissive.png",
+      "glass_mask": "floor_alt_glass.png",
+      "opaque_mask": "floor_alt_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.31206
+        ],
+        [
+          0.0,
+          0.44681,
+          1.0,
+          0.8227
+        ],
+        [
+          0.0,
+          0.95745,
+          1.0,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        377
+      ],
+      "height_m": 4.0
+    },
+    "crown": {
+      "albedo": "crown_albedo.jpg",
+      "roughness": "crown_roughness.jpg",
+      "emissive": "crown_emissive.png",
+      "glass_mask": "crown_glass.png",
+      "opaque_mask": "crown_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.08772,
+          1.0,
+          0.29825
+        ],
+        [
+          0.0,
+          0.3538,
+          1.0,
+          0.5117
+        ],
+        [
+          0.0,
+          0.56433,
+          1.0,
+          0.72222
+        ],
+        [
+          0.0,
+          0.77778,
+          1.0,
+          0.93567
+        ],
+        [
+          0.0,
+          0.99123,
+          0.8099,
+          1.0
+        ],
+        [
+          0.89583,
+          0.99123,
+          0.97396,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        911
+      ],
+      "height_m": 4.0
+    },
+    "podium": {
+      "albedo": "podium_albedo.jpg",
+      "roughness": "podium_roughness.jpg",
+      "emissive": "podium_emissive.png",
+      "glass_mask": "podium_glass.png",
+      "opaque_mask": "podium_opaque.png",
+      "glass_regions": [
+        [
+          0.0,
+          0.0,
+          0.99219,
+          0.2234
+        ],
+        [
+          0.0,
+          0.3617,
+          0.68229,
+          1.0
+        ],
+        [
+          0.95052,
+          0.3617,
+          1.0,
+          1.0
+        ]
+      ],
+      "px": [
+        1024,
+        499
+      ],
+      "height_m": 5.0
+    }
+  },
+  "detection": {
+    "floor": "autocorrelation-580px-0.52",
+    "floor_alt": [
+      0.0872,
+      0.298
+    ],
+    "crown": [
+      0.0,
+      0.5087
+    ],
+    "podium": "pavement-cut-2749px"
+  }
+}

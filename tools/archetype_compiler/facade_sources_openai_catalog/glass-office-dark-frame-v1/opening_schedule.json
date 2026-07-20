@@ -1,0 +1,62 @@
+{
+  "schema": "registered-opening-schedule@1",
+  "source": "elevation_raw.jpg",
+  "notes": "Audited clear-glass fields for six structural bays across seven occupied office levels plus the transparent double-height lobby. Dark steel mullions and transoms remain opaque and are reinforced with physical geometry.",
+  "openings": [
+    {"shape": "rect", "bbox": [0.025, 0.079, 0.145, 0.181]},
+    {"shape": "rect", "bbox": [0.158, 0.079, 0.306, 0.181]},
+    {"shape": "rect", "bbox": [0.318, 0.079, 0.471, 0.181]},
+    {"shape": "rect", "bbox": [0.484, 0.079, 0.636, 0.181]},
+    {"shape": "rect", "bbox": [0.649, 0.079, 0.811, 0.181]},
+    {"shape": "rect", "bbox": [0.823, 0.079, 0.975, 0.181]},
+
+    {"shape": "rect", "bbox": [0.025, 0.197, 0.145, 0.294]},
+    {"shape": "rect", "bbox": [0.158, 0.197, 0.306, 0.294]},
+    {"shape": "rect", "bbox": [0.318, 0.197, 0.471, 0.294]},
+    {"shape": "rect", "bbox": [0.484, 0.197, 0.636, 0.294]},
+    {"shape": "rect", "bbox": [0.649, 0.197, 0.811, 0.294]},
+    {"shape": "rect", "bbox": [0.823, 0.197, 0.975, 0.294]},
+
+    {"shape": "rect", "bbox": [0.025, 0.311, 0.145, 0.409]},
+    {"shape": "rect", "bbox": [0.158, 0.311, 0.306, 0.409]},
+    {"shape": "rect", "bbox": [0.318, 0.311, 0.471, 0.409]},
+    {"shape": "rect", "bbox": [0.484, 0.311, 0.636, 0.409]},
+    {"shape": "rect", "bbox": [0.649, 0.311, 0.811, 0.409]},
+    {"shape": "rect", "bbox": [0.823, 0.311, 0.975, 0.409]},
+
+    {"shape": "rect", "bbox": [0.025, 0.426, 0.145, 0.521]},
+    {"shape": "rect", "bbox": [0.158, 0.426, 0.306, 0.521]},
+    {"shape": "rect", "bbox": [0.318, 0.426, 0.471, 0.521]},
+    {"shape": "rect", "bbox": [0.484, 0.426, 0.636, 0.521]},
+    {"shape": "rect", "bbox": [0.649, 0.426, 0.811, 0.521]},
+    {"shape": "rect", "bbox": [0.823, 0.426, 0.975, 0.521]},
+
+    {"shape": "rect", "bbox": [0.025, 0.538, 0.145, 0.632]},
+    {"shape": "rect", "bbox": [0.158, 0.538, 0.306, 0.632]},
+    {"shape": "rect", "bbox": [0.318, 0.538, 0.471, 0.632]},
+    {"shape": "rect", "bbox": [0.484, 0.538, 0.636, 0.632]},
+    {"shape": "rect", "bbox": [0.649, 0.538, 0.811, 0.632]},
+    {"shape": "rect", "bbox": [0.823, 0.538, 0.975, 0.632]},
+
+    {"shape": "rect", "bbox": [0.025, 0.649, 0.145, 0.744]},
+    {"shape": "rect", "bbox": [0.158, 0.649, 0.306, 0.744]},
+    {"shape": "rect", "bbox": [0.318, 0.649, 0.471, 0.744]},
+    {"shape": "rect", "bbox": [0.484, 0.649, 0.636, 0.744]},
+    {"shape": "rect", "bbox": [0.649, 0.649, 0.811, 0.744]},
+    {"shape": "rect", "bbox": [0.823, 0.649, 0.975, 0.744]},
+
+    {"shape": "rect", "bbox": [0.025, 0.761, 0.145, 0.853]},
+    {"shape": "rect", "bbox": [0.158, 0.761, 0.306, 0.853]},
+    {"shape": "rect", "bbox": [0.318, 0.761, 0.471, 0.853]},
+    {"shape": "rect", "bbox": [0.484, 0.761, 0.636, 0.853]},
+    {"shape": "rect", "bbox": [0.649, 0.761, 0.811, 0.853]},
+    {"shape": "rect", "bbox": [0.823, 0.761, 0.975, 0.853]},
+
+    {"shape": "rect", "bbox": [0.025, 0.873, 0.145, 0.994]},
+    {"shape": "rect", "bbox": [0.158, 0.873, 0.306, 0.994]},
+    {"shape": "rect", "bbox": [0.318, 0.873, 0.471, 0.994]},
+    {"shape": "rect", "bbox": [0.484, 0.873, 0.636, 0.994]},
+    {"shape": "rect", "bbox": [0.649, 0.873, 0.811, 0.994]},
+    {"shape": "rect", "bbox": [0.823, 0.873, 0.975, 0.994]}
+  ]
+}
