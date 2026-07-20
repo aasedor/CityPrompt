@@ -52,7 +52,10 @@ import {
 } from './projectFrameHeight';
 import { TileStencilPatcher } from './TileStencilPatcher';
 import { GlobeTileMaskLayer } from './GlobeTileMaskLayer';
-import { getPreparedSiteBoundaryIds } from './sitePreparationSurface';
+import {
+  getPreparedSiteBoundaryIds,
+  shouldMaskReplacementBuildingTiles,
+} from './sitePreparationSurface';
 import { shouldMaskCommunityGroundTiles } from '@/features/community3d/community3d';
 import { getCameraElevationBadge, pitchFromNadirToCameraElevation } from '../cameraAngles';
 import {
@@ -1446,7 +1449,10 @@ export function GlobeSitePlannerMap({
         return siteZones.filter((zone) => preparedSiteBoundaryIds.has(zone.id));
       }
       return siteZones.filter((zone) => (
-        Boolean(zone.building_id && suppressedBuildingIds.has(zone.building_id))
+        shouldMaskReplacementBuildingTiles(
+          zone,
+          Boolean(zone.building_id && suppressedBuildingIds.has(zone.building_id)),
+        )
         || shouldMaskCommunityGroundTiles(zone)
       ));
     },

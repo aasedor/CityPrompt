@@ -477,13 +477,20 @@ describe('park ground pilot profiles', () => {
     expect(pixels[1]).toBeLessThan(200);
   });
 
-  it('defers trees and benches to the final render for every park surface', () => {
+  it('shows finishing props only after a park surface is compiled', () => {
     const candidate = zone('urban_pocket_park');
     const profile = resolveParkGroundProfile(candidate);
     const generated = {
       ...candidate,
       properties: {
         ...candidate.properties,
+        community_3d: {
+          schema_version: 1,
+          state: 'compiled',
+          kind: 'park',
+          generator: 'park_kit',
+          compiled_at: '2026-07-17T00:00:00Z',
+        },
         park_ground_texture: {
           url: '/park.png',
           document_id: 'doc-1',
@@ -499,11 +506,12 @@ describe('park ground pilot profiles', () => {
         },
       },
     } satisfies SiteZone;
-    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(true);
-    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(true);
+    expect(shouldDeferParkFinishingProp(generated, 'tree')).toBe(false);
+    expect(shouldDeferParkFinishingProp(generated, 'bench')).toBe(false);
     expect(shouldDeferParkFinishingProp(generated, 'playground')).toBe(false);
     expect(shouldDeferParkFinishingProp(candidate, 'tree')).toBe(true);
     expect(shouldRenderLiveParkProp(candidate, 'tree', true)).toBe(false);
+    expect(shouldRenderLiveParkProp(generated, 'tree', true)).toBe(true);
     expect(shouldRenderLiveParkProp(candidate, 'bench', true)).toBe(false);
     expect(shouldRenderLiveParkProp(candidate, 'playground', false)).toBe(false);
     expect(shouldRenderLiveParkProp(candidate, 'playground', true)).toBe(true);

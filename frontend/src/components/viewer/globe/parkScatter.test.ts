@@ -103,6 +103,25 @@ describe('computeParkPlacements', () => {
     }
   });
 
+  it('frames an urban pocket park with canopy in every quadrant', () => {
+    const trees = treesOf(computeParkPlacements(
+      { id: 'pocket-frame', coordinates: squareRing(36) },
+      URBAN_POCKET_PARK,
+      'garden_courtyard',
+    ));
+    const quadrants = new Set(trees.map((tree) => {
+      const [x, y] = toMeters(tree);
+      return `${x < 18 ? 'west' : 'east'}-${y < 18 ? 'south' : 'north'}`;
+    }));
+    expect(trees.length).toBeGreaterThanOrEqual(12);
+    expect(quadrants).toEqual(new Set([
+      'west-south',
+      'west-north',
+      'east-south',
+      'east-north',
+    ]));
+  });
+
   it('gates the playground on area', () => {
     const small = computeParkPlacements({ id: 'z-small', coordinates: squareRing(45) }, NEIGHBORHOOD); // ~2000 m²
     const big = computeParkPlacements({ id: 'z-big', coordinates: squareRing(70) }, NEIGHBORHOOD); // ~4900 m²

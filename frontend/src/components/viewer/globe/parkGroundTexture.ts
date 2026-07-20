@@ -179,22 +179,21 @@ export function hasCurrentParkGroundSurface(zone: SiteZone): boolean {
   return resolveParkGroundSurfaceSource(zone) !== 'none';
 }
 
-/** AI-resolved park grounds defer finishing props because their exact paths,
- * water and planting beds are not deterministic. Procedurally compiled park
- * grounds share the same placement recipe as the 3D kit, so their real tree
- * and bench assets can safely appear in the interactive Google Tiles scene. */
+/** Uncompiled park candidates defer finishing props. Once a park is compiled,
+ * both procedural and AI-upgraded grounds retain the same locked topology and
+ * may show their deterministic 3D canopy and seating in Google Tiles. */
 export function shouldDeferParkFinishingProp(
   zone: SiteZone,
   propId: PropPlacement['propId'],
 ): boolean {
   return isParkGroundZone(zone)
-    && (!isCommunity3DCompiled(zone) || Boolean(getParkGroundMeta(zone)))
+    && !isCommunity3DCompiled(zone)
     && (propId === 'tree' || propId === 'bench');
 }
 
 /** The interactive scene never substitutes low-detail placeholders for a
- * missing park asset. Current procedural grounds may use the real manifest
- * assets; AI ground imagery still defers its finishing layer to final render. */
+ * missing park asset. Every compiled ground may use the real manifest assets
+ * or the deterministic live fallback supplied by GlobeParkKitLayer. */
 export function shouldRenderLiveParkProp(
   zone: SiteZone,
   propId: PropPlacement['propId'],

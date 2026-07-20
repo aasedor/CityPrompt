@@ -304,7 +304,7 @@ function StreetRibbonDetail({
     }> = [];
     // Alternate traffic-calming planters along the flush shared surface. Keep
     // the first and last stations clear so the connection reads as an entry.
-    for (let index = 2; index < points.length - 2; index += 4) {
+    for (let index = 2; index < points.length - 2; index += 3) {
       const previous = points[index - 1];
       const next = points[index + 1];
       const dx = next.x - previous.x;
@@ -411,28 +411,54 @@ function StreetRibbonDetail({
             <meshStandardMaterial color="#d2bea0" roughness={0.90} />
           </mesh>
           <group
-            position={[placement.x, placement.y, placement.z + 0.3]}
+            position={[placement.x, placement.y, placement.z + 0.35]}
             rotation={[0, 0, placement.rotation]}
             renderOrder={RENDER_ORDER_FURNITURE}
           >
             <mesh renderOrder={RENDER_ORDER_FURNITURE}>
-              <boxGeometry args={[1.8, 0.9, 0.6]} />
+              <boxGeometry args={[2.4, 1.2, 0.7]} />
               <meshStandardMaterial color="#7d5844" roughness={0.86} />
             </mesh>
-            <mesh position={[-0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
-              <dodecahedronGeometry args={[0.44, 1]} />
+            <mesh position={[-0.62, 0, 0.58]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[0.52, 1]} />
               <meshStandardMaterial color="#526f43" roughness={0.92} />
             </mesh>
-            <mesh position={[0.45, 0, 0.48]} renderOrder={RENDER_ORDER_FURNITURE}>
-              <dodecahedronGeometry args={[0.44, 1]} />
+            <mesh position={[0.62, 0, 0.58]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[0.52, 1]} />
               <meshStandardMaterial color="#617b4c" roughness={0.92} />
             </mesh>
-            {[-1.15, 1.15].map((bollardX) => (
+            {[-1.45, 1.45].map((bollardX) => (
               <mesh key={bollardX} position={[bollardX, 0, 0.42]} renderOrder={RENDER_ORDER_FURNITURE}>
                 <cylinderGeometry args={[0.09, 0.11, 0.84, 10]} />
                 <meshStandardMaterial color="#343b3b" metalness={0.48} roughness={0.5} />
               </mesh>
             ))}
+            <mesh position={[0, 0, 3.1]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <cylinderGeometry args={[0.18, 0.27, 5.8, 10]} />
+              <meshStandardMaterial color="#66513d" roughness={0.96} />
+            </mesh>
+            <mesh position={[-0.28, 0, 6.55]} scale={[1.05, 0.88, 1.05]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[1.85, 1]} />
+              <meshStandardMaterial color="#48663d" roughness={0.95} />
+            </mesh>
+            <mesh position={[0.82, 0.30, 6.05]} scale={[0.92, 0.84, 0.92]} renderOrder={RENDER_ORDER_FURNITURE}>
+              <dodecahedronGeometry args={[1.25, 1]} />
+              <meshStandardMaterial color="#5d784b" roughness={0.95} />
+            </mesh>
+            {index % 2 === 1 && (
+              <group position={[0, -1.5, 0.36]} renderOrder={RENDER_ORDER_FURNITURE}>
+                <mesh renderOrder={RENDER_ORDER_FURNITURE}>
+                  <boxGeometry args={[1.65, 0.42, 0.12]} />
+                  <meshStandardMaterial color="#866044" roughness={0.88} />
+                </mesh>
+                {[-0.58, 0.58].map((legX) => (
+                  <mesh key={legX} position={[legX, 0, -0.25]} renderOrder={RENDER_ORDER_FURNITURE}>
+                    <boxGeometry args={[0.09, 0.34, 0.5]} />
+                    <meshStandardMaterial color="#3e4444" metalness={0.4} roughness={0.58} />
+                  </mesh>
+                ))}
+              </group>
+            )}
           </group>
         </group>
       ))}

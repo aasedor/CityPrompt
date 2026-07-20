@@ -48,7 +48,11 @@ export const NEIGHBORHOOD_PARK: ParkKitRecipe = {
 };
 
 export const URBAN_POCKET_PARK: ParkKitRecipe = {
-  trees: { perHectare: 60, edgeBias: 0.8, bandDepth_m: 6, minSpacing_m: 5, scaleJitter: [0.8, 1.15] },
+  // A compact downtown park needs a continuous mature canopy frame to read
+  // against surrounding mid-rise massing. 125/ha yields roughly 16 trees on
+  // a 0.13 ha court and 25-30 on a larger 0.2-0.25 ha pocket park, while the
+  // edge bias and spacing keep the central lawn usable and visible.
+  trees: { perHectare: 125, edgeBias: 0.88, bandDepth_m: 7, minSpacing_m: 4.2, scaleJitter: [0.95, 1.35] },
   benches: { areaPerBench_m2: 800, min: 2, max: 4, edgeInset_m: 1.5 },
 };
 

@@ -41,6 +41,7 @@ import {
 import {
   createSitePreparationGeometry,
   createSitePreparationTexture,
+  createWoonerfPaverTexture,
   hasCompiledCommunity,
   overlapPreparedGroundEdges,
   shouldRenderReplacementFootprintGround,
@@ -478,6 +479,21 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       renderCoordinates, centroid[0], centroid[1], extrudeHeight, useTerrainGridFlat,
     );
   }, [renderCoordinates, centroid, extrudeHeight, useTerrainGridFlat]);
+
+  const woonerfGroundGeo = useMemo(
+    () => (
+      isWoonerfGround && geoData?.flatTopGeo
+        ? createSitePreparationGeometry(geoData.flatTopGeo, `${zone.id}-woonerf`)
+        : null
+    ),
+    [geoData, isWoonerfGround, zone.id],
+  );
+  useDeferredDisposable(woonerfGroundGeo);
+  const woonerfGroundTexture = useMemo(
+    () => (isWoonerfGround ? createWoonerfPaverTexture(zone.id) : null),
+    [isWoonerfGround, zone.id],
+  );
+  useDeferredDisposable(woonerfGroundTexture);
 
   const replacementGroundData = useMemo(
     () => (
@@ -947,7 +963,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
       {!isBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary) && (
         <mesh
           ref={flatMeshRef}
-          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? geoData.flatTopGeo}
+          geometry={importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? geoData.flatTopGeo}
           renderOrder={isSiteBoundary ? 100 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
@@ -969,9 +985,9 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
             />
           ) : (
             <meshBasicMaterial
-              key={drapeActive ? groundMeta?.document_id ?? 'drape' : 'plain'}
-              color={drapeActive ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
-              map={drapeActive ? groundTexture : undefined}
+              key={drapeActive ? groundMeta?.document_id ?? 'drape' : isWoonerfGround ? 'woonerf-pavers' : 'plain'}
+              color={drapeActive || isWoonerfGround ? '#ffffff' : isSiteBoundary ? '#ffffff' : isCompiledGround ? compiledSurfaceColor : color}
+              map={drapeActive ? groundTexture : woonerfGroundTexture ?? undefined}
               transparent
               opacity={isSiteBoundary ? 0.15 : 1.0}
               side={THREE.DoubleSide}
@@ -996,7 +1012,7 @@ function ZoneMesh({ zone, isSelected, terrainHeight, onZoneClick, selectionEnabl
         >
           <meshBasicMaterial
             key="replacement-footprint-ground"
-            color="#ffffff"
+            color="#9b9488"
             map={replacementGroundTexture ?? undefined}
             side={THREE.DoubleSide}
             depthTest

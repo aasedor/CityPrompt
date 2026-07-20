@@ -28,10 +28,23 @@ export function shouldRenderReplacementFootprintGround(
   suppressed: boolean,
   sitePrepared: boolean,
 ): boolean {
-  return suppressed
+  return shouldMaskReplacementBuildingTiles(zone, suppressed)
     && !sitePrepared
-    && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type)
     && zone.coordinates.length >= 3;
+}
+
+/** Empty or already-cleared parcels can opt out of cutting the Google mesh.
+ * Respect that explicit project decision for both the tile mask and its
+ * replacement apron; otherwise an unnecessary mask reveals the sky-clear
+ * colour around a model that sits on valid existing terrain. */
+export function shouldMaskReplacementBuildingTiles(
+  zone: SiteZone,
+  suppressed: boolean,
+): boolean {
+  const props = zone.properties as Record<string, unknown> | undefined;
+  return suppressed
+    && props?.community_3d_mask_existing_tiles !== false
+    && ['building', 'residential', 'development_area', 'development'].includes(zone.zone_type);
 }
 
 function hashSeed(value: string): number {
@@ -102,6 +115,50 @@ export function createSitePreparationTexture(seed: string, size = 256): THREE.Da
 
   const texture = new THREE.DataTexture(data, dimension, dimension, THREE.RGBAFormat);
   texture.name = `prepared-site-${seed}`;
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.generateMipmaps = true;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+/** Warm unit-paver texture for compiled woonerfs. The live tile scene needs
+ * enough small-scale construction evidence to read as a shared street rather
+ * than a flat planning polygon, while staying deterministic and credit-free. */
+export function createWoonerfPaverTexture(seed: string, size = 256): THREE.DataTexture {
+  const dimension = Math.max(32, Math.round(size));
+  const data = new Uint8Array(dimension * dimension * 4);
+  const phase = Math.floor(hashSeed(seed) * 97);
+  const brickWidth = 24;
+  const brickHeight = 10;
+  const mortar = [183, 160, 139];
+  const brickA = [156, 92, 65];
+  const brickB = [177, 109, 75];
+
+  for (let y = 0; y < dimension; y += 1) {
+    const row = Math.floor(y / brickHeight);
+    const offsetX = row % 2 === 0 ? 0 : brickWidth / 2;
+    for (let x = 0; x < dimension; x += 1) {
+      const localX = (x + offsetX + phase) % brickWidth;
+      const localY = (y + phase) % brickHeight;
+      const isJoint = localX < 1.6 || localY < 1.4;
+      const variation = (
+        Math.sin((x + phase) * 0.31) + Math.cos((y - phase) * 0.43)
+      ) * 4;
+      const base = isJoint ? mortar : ((row + Math.floor((x + offsetX) / brickWidth)) % 3 === 0 ? brickB : brickA);
+      const pixel = (y * dimension + x) * 4;
+      data[pixel] = Math.max(0, Math.min(255, Math.round(base[0] + variation)));
+      data[pixel + 1] = Math.max(0, Math.min(255, Math.round(base[1] + variation)));
+      data[pixel + 2] = Math.max(0, Math.min(255, Math.round(base[2] + variation)));
+      data[pixel + 3] = 255;
+    }
+  }
+
+  const texture = new THREE.DataTexture(data, dimension, dimension, THREE.RGBAFormat);
+  texture.name = `woonerf-pavers-${seed}`;
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;

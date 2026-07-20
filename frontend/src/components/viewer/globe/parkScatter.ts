@@ -319,6 +319,36 @@ function placeLegacyScatter(ctx: TreeCtx): void {
   }
 }
 
+/** Urban pocket parks need to read as complete outdoor rooms from every
+ * approach. Distribute an irregular but balanced mature canopy around the
+ * full perimeter instead of allowing seeded rejection sampling to cluster on
+ * one or two edges. The center remains open for the authored lawn and paths. */
+function placePocketParkFrame(ctx: TreeCtx): void {
+  const { rng, tr, target } = ctx;
+  const candidateCount = Math.max(24, target * 4);
+  const stations = perimeterStations(ctx.local, candidateCount);
+  if (!stations.length) return;
+  const rotation = Math.floor(rng() * stations.length);
+  for (let slot = 0; slot < target; slot += 1) {
+    const base = Math.floor(((slot + 0.2 + rng() * 0.6) * stations.length) / target);
+    for (let probe = 0; probe < 4; probe += 1) {
+      const st = stations[(rotation + base + probe) % stations.length];
+      const inset = 2.2 + rng() * Math.max(0.5, tr.bandDepth_m - 2.2);
+      const tangentJitter = (rng() - 0.5) * 1.4;
+      const x = st.x + st.nx * inset - st.ny * tangentJitter;
+      const y = st.y + st.ny * inset + st.nx * tangentJitter;
+      if (!ctx.canPlace(x, y)) continue;
+      ctx.push(
+        x,
+        y,
+        rng() * Math.PI * 2,
+        tr.scaleJitter[0] + rng() * (tr.scaleJitter[1] - tr.scaleJitter[0]),
+      );
+      break;
+    }
+  }
+}
+
 /** formal_allee — Parisian jardin: double rows at uniform spacing/scale along
  *  the two longest edges, a single row on the remaining edges when they have
  *  room, and an open centre (no interior scatter). */
@@ -866,52 +896,56 @@ export function computeParkPlacements(
     count: () => placedTrees.length,
   };
 
-  switch (structure) {
-    case 'formal_allee':
-      placeFormalAllee(ctx);
-      break;
-    case 'naturalistic_grove':
-      placeNaturalisticGrove(ctx);
-      break;
-    case 'open_meadow':
-      placeOpenMeadow(ctx);
-      break;
-    case 'active_recreation':
-      // shade anchors: equipment clearance rings + the benches placed above
-      placeActiveRecreation(ctx, [
-        ...clearances.map((c) => ({ x: c.x, y: c.y, standoff: c.r })),
-        ...placements.filter((p) => p.propId === 'bench').map((b) => ({ x: b.x, y: b.y, standoff: 1.5 })),
-      ]);
-      break;
-    case 'formal_quad':
-      placeFormalQuad(ctx);
-      break;
-    case 'garden_courtyard':
-      placeGardenCourtyard(ctx);
-      break;
-    case 'japanese_stroll_garden':
-      placeGardenCourtyard(ctx, false);
-      break;
-    case 'sports_perimeter':
-      placeSportsPerimeter(ctx);
-      break;
-    case 'reservoir_perimeter':
-      placeReservoirPerimeter(ctx);
-      break;
-    case 'botanical_collection':
-      placeNaturalisticGrove(ctx);
-      break;
-    case 'nature_play_grove':
-      placeOpenMeadow(ctx);
-      break;
-    case 'paved_plaza':
-      placePavedPlaza(ctx);
-      break;
-    case 'buffer_edge':
-      placeBufferEdge(ctx);
-      break;
-    default:
-      placeLegacyScatter(ctx);
+  if (recipe === URBAN_POCKET_PARK) {
+    placePocketParkFrame(ctx);
+  } else {
+    switch (structure) {
+      case 'formal_allee':
+        placeFormalAllee(ctx);
+        break;
+      case 'naturalistic_grove':
+        placeNaturalisticGrove(ctx);
+        break;
+      case 'open_meadow':
+        placeOpenMeadow(ctx);
+        break;
+      case 'active_recreation':
+        // shade anchors: equipment clearance rings + the benches placed above
+        placeActiveRecreation(ctx, [
+          ...clearances.map((c) => ({ x: c.x, y: c.y, standoff: c.r })),
+          ...placements.filter((p) => p.propId === 'bench').map((b) => ({ x: b.x, y: b.y, standoff: 1.5 })),
+        ]);
+        break;
+      case 'formal_quad':
+        placeFormalQuad(ctx);
+        break;
+      case 'garden_courtyard':
+        placeGardenCourtyard(ctx);
+        break;
+      case 'japanese_stroll_garden':
+        placeGardenCourtyard(ctx, false);
+        break;
+      case 'sports_perimeter':
+        placeSportsPerimeter(ctx);
+        break;
+      case 'reservoir_perimeter':
+        placeReservoirPerimeter(ctx);
+        break;
+      case 'botanical_collection':
+        placeNaturalisticGrove(ctx);
+        break;
+      case 'nature_play_grove':
+        placeOpenMeadow(ctx);
+        break;
+      case 'paved_plaza':
+        placePavedPlaza(ctx);
+        break;
+      case 'buffer_edge':
+        placeBufferEdge(ctx);
+        break;
+      default:
+        placeLegacyScatter(ctx);
+    }
   }
 
   return placements.map(({ x: _x, y: _y, ...p }) => p);

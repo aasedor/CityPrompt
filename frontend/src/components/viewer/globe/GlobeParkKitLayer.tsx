@@ -1,8 +1,8 @@
 /**
  * GlobeParkKitLayer — mounts only fixed, programmed park structures in the
- * editable Google Tiles scene. Trees and benches are deliberately deferred
- * to the architectural render, and missing playground/pavilion GLBs never
- * fall back to cartoon procedural placeholders.
+ * editable Google Tiles scene, including deterministic live canopy and
+ * seating. Missing playground/pavilion GLBs never fall back to cartoon
+ * procedural placeholders.
  *
  * Placement is seeded by zone.id — orbiting, re-selecting, or reloading
  * never reshuffles a park. renderOrder 145: under placed GLBs (150), above
@@ -746,10 +746,9 @@ function ParkKitInstance({
   // Landscape pattern stamped by the backend plan generator (green zones and
   // courtyards); absent on hand-drawn zones -> legacy edge-biased scatter.
   const plantingStructure = resolveParkPlantingStructure(zone);
-  // A generated green-space drape is the spatial source of truth. Procedural
-  // grounds share this kit's deterministic recipe and can therefore show real
-  // manifest trees and benches live; AI-resolved grounds still defer those
-  // finishing props because their detailed layout is not deterministic.
+  // A generated green-space drape is the spatial source of truth. Both
+  // procedural and AI-upgraded grounds keep the same deterministic placement
+  // recipe, so their live canopy and seating remain stable across reloads.
   const hasCurrentParkGround = hasCurrentParkGroundSurface(zone);
   const specialtyStructureKind = useMemo(
     () => resolveParkSpecialtyStructureKind(zone),
