@@ -540,6 +540,27 @@ The polychrome collegiate family added four rules for resizable hero facades:
   Validate the assembled landmark—not only its body core—and let the full-width
   ceremonial terrace establish the reference width when the images support it.
 
+### Paired brownstone streetwall + stoop/fence lessons
+
+- Selected-variant evidence can describe a larger joined composition than the
+  parent catalogue default. The traditional brownstone images prove a 30 metre
+  paired streetwall with three fixed entrances, so compiling one 18 metre
+  generic rowhouse would discard the defining construction rhythm.
+- An arched entrance is not finished when its bounding silhouette is correct.
+  Keep the timber backing visible and add paired leaves, panel relief and a
+  transom so the portal reads as a door rather than pale glazing or a blank
+  dark slab in the street view.
+- Garden-level ironwork must be segmented around every fixed stoop and landing.
+  Terminate fence rails at stair cheek walls and use the front-corner view to
+  prove all three entrance paths remain clear.
+- A flat roof still carries family identity. Preserve the paired roof seam,
+  stepped cornice/parapet termination, bounded skylights, chimney caps and
+  terracotta pots, then use the aerial review as the acceptance gate.
+- Where the references do not prove a rear addition or exposed party-wall
+  ornament, prefer a conservative solid rear envelope and quiet party wall.
+  Record that inference in human QA rather than inventing a second principal
+  facade.
+
 ## Updating this memory
 
 When a pilot reveals a reusable lesson:

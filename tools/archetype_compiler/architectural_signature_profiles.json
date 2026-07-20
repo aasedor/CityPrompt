@@ -715,9 +715,110 @@
       }
     },
     "classic_brownstone_streetwall": {
-      "identity": "New York brownstone row with individual stoops, high parlor floors, projecting oriels, carved lintels and a heavy bracketed cornice.",
-      "material_zones": "warm brownstone; black iron stoops; dark timber doors; shadowed basement",
-      "kits": ["rowhouse_stoops", "oriel_bays", "rowhouse_divisions", "bracketed_cornice"]
+      "identity": "Paired four-storey New York brownstone streetwall with three fixed high stoops, arched timber entrances, dense pedimented sash rhythm, iron-grilled basement and two continuous bracketed cornice sections.",
+      "material_zones": "warm reddish brownstone ashlar; cream carved window and cornice stone; black iron; dark green and oak doors; pale membrane roofs",
+      "glass_profile": "residential_low_e",
+      "material_overrides": {
+        "primary": {"base_color": "#955c43", "roughness": 0.80, "metallic": 0.0, "texture_key": "brownstone"},
+        "secondary": {"base_color": "#d7c7aa", "roughness": 0.76, "metallic": 0.0, "texture_key": "limestone"},
+        "accent": {"base_color": "#252827", "roughness": 0.38, "metallic": 0.58, "texture_key": "black_metal"},
+        "roof": {"base_color": "#aaa9a3", "roughness": 0.86, "metallic": 0.0, "texture_key": null}
+      },
+      "signature_material_overrides": {
+        "signature_stone": {"base_color": "#ddcfb2", "roughness": 0.76, "metallic": 0.0, "texture_key": "limestone"},
+        "signature_warm": {"base_color": "#284238", "roughness": 0.48, "metallic": 0.05, "texture_key": "dark_oak"},
+        "signature_metal": {"base_color": "#202322", "roughness": 0.34, "metallic": 0.72, "texture_key": "black_metal"}
+      },
+      "footprint_compatibility_override": {
+        "preferredProfiles": ["rectangle", "l_shape", "u_shape"],
+        "recommendedWidth_m": [12, 30],
+        "recommendedDepth_m": [14, 22],
+        "recommendedFloors": [3, 5],
+        "wingDepth_m": [8, 12],
+        "preferredBayMultiple_m": 3.0,
+        "notes": [
+          "Use the fixed paired-streetwall graph only at the native 30 by 22 metre, four-floor rectangular tier.",
+          "On other parcels, keep stoops, entrances, end conditions, cornices and roofs fixed and repeat only ordinary sash bays."
+        ]
+      },
+      "kits": ["three_fixed_stoops", "arched_entrances", "pedimented_sash_bays", "basement_ironwork", "paired_bracketed_cornices", "flat_roof_chimneys"],
+      "massing_graph": {
+        "schema": "massing-graph@1",
+        "profile": "paired_brownstone_streetwall_v1",
+        "description": "Two joined four-storey brownstone sections with three fixed elevated entrances, three complete pedimented sash rows, a shadowed garden level, separate bracketed cornices and flat membrane roofs with skylights and chimneys.",
+        "reference_views": [
+          {"role": "street_identity", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0.png", "cues": ["three elevated arched entrances", "pedimented sash rhythm", "warm brownstone ashlar", "paired bracketed cornices"]},
+          {"role": "oblique_massing", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_60.jpg", "cues": ["two joined roof sections", "three stoops", "flat membrane roofs", "chimneys and skylights"]},
+          {"role": "roof_plan", "path": "/archetypes/buildings/classic_brownstone_streetwall/variant_0_angle_90.jpg", "cues": ["paired rectangular lots", "central party-wall seam", "rear-yard orientation", "no bay windows"]}
+        ],
+        "height_m": 15.30,
+        "final_bevel_m": 0.0,
+        "reference_dimensions": {"width_m": 30.0, "depth_m": 22.0, "floors": 4, "floor_height_m": 3.2},
+        "nodes": [
+          {"id": "brownstone_left_body", "kind": "box", "size": [15.0, 21.0, 12.9], "location": [-7.5, 0.0, 6.45], "material": "primary", "bevel_m": 0.10},
+          {"id": "brownstone_right_body", "kind": "box", "size": [15.0, 21.0, 12.7], "location": [7.5, 0.0, 6.35], "material": "primary", "bevel_m": 0.10},
+          {"id": "brownstone_basement_plinth", "kind": "box", "size": [30.4, 21.4, 1.45], "location": [0.0, 0.0, 0.725], "material": "primary", "bevel_m": 0.06},
+          {"id": "brownstone_left_roof", "kind": "box", "size": [15.0, 20.8, 0.22], "location": [-7.5, 0.0, 13.08], "material": "roof", "bevel_m": 0.03},
+          {"id": "brownstone_right_roof", "kind": "box", "size": [15.0, 20.8, 0.22], "location": [7.5, 0.0, 12.88], "material": "roof", "bevel_m": 0.03},
+          {"id": "brownstone_front_parapet_left", "kind": "box", "size": [15.2, 0.34, 0.55], "location": [-7.5, -10.42, 13.42], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_front_parapet_right", "kind": "box", "size": [15.2, 0.34, 0.55], "location": [7.5, -10.42, 13.22], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_rear_parapet", "kind": "box", "size": [30.2, 0.34, 0.68], "location": [0.0, 10.42, 13.42], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_left_parapet", "kind": "box", "size": [0.34, 20.5, 0.68], "location": [-14.82, 0.0, 13.42], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_right_parapet", "kind": "box", "size": [0.34, 20.5, 0.68], "location": [14.82, 0.0, 13.32], "material": "primary", "bevel_m": 0.035},
+          {"id": "brownstone_door_left", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [-11.0, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "brownstone_door_centre", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [0.5, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "brownstone_door_right", "kind": "box", "size": [1.70, 0.08, 2.75], "location": [11.0, -10.52, 3.48], "material": "signature_warm", "bevel_m": 0.035},
+          {"id": "brownstone_skylight_left", "kind": "box", "size": [2.2, 2.8, 0.28], "location": [-6.5, 1.0, 13.30], "material": "glass", "bevel_m": 0.04},
+          {"id": "brownstone_skylight_right", "kind": "box", "size": [2.2, 2.8, 0.28], "location": [7.0, 0.5, 13.10], "material": "glass", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_left", "kind": "box", "size": [1.10, 1.10, 1.55], "location": [-10.0, 6.5, 13.75], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_centre", "kind": "box", "size": [1.10, 1.10, 1.65], "location": [0.0, 6.5, 13.78], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_right", "kind": "box", "size": [1.10, 1.10, 1.55], "location": [10.0, 6.5, 13.65], "material": "primary", "bevel_m": 0.04},
+          {"id": "brownstone_chimney_cap_left", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [-10.0, 6.5, 14.58], "material": "signature_stone", "bevel_m": 0.025},
+          {"id": "brownstone_chimney_cap_centre", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [0.0, 6.5, 14.65], "material": "signature_stone", "bevel_m": 0.025},
+          {"id": "brownstone_chimney_cap_right", "kind": "box", "size": [1.28, 1.28, 0.18], "location": [10.0, 6.5, 14.48], "material": "signature_stone", "bevel_m": 0.025},
+          {"id": "brownstone_pot_left_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-10.22, 6.5, 14.94], "material": "primary", "vertices": 16},
+          {"id": "brownstone_pot_left_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-9.78, 6.5, 14.94], "material": "primary", "vertices": 16},
+          {"id": "brownstone_pot_centre_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [-0.22, 6.5, 15.01], "material": "primary", "vertices": 16},
+          {"id": "brownstone_pot_centre_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [0.22, 6.5, 15.01], "material": "primary", "vertices": 16},
+          {"id": "brownstone_pot_right_a", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [9.78, 6.5, 14.84], "material": "primary", "vertices": 16},
+          {"id": "brownstone_pot_right_b", "kind": "cylinder", "radius_m": 0.15, "height_m": 0.55, "location": [10.22, 6.5, 14.84], "material": "primary", "vertices": 16}
+        ],
+        "voids": [
+          {"id": "brownstone_garden_level", "size": [29.0, 1.1, 1.7], "location": [0.0, -10.5, 0.9], "purpose": "shadowed iron-grilled basement edge below the three stoops"},
+          {"id": "brownstone_three_entries", "size": [24.0, 3.5, 3.7], "location": [0.0, -11.5, 2.6], "purpose": "three fixed high-stoop entrances distributed across the paired streetwall"}
+        ],
+        "assemblies": [
+          {"id": "brownstone_upper_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 10.65], "positions_m": [-13.2, -10.3, -7.4, -4.5, -1.6, 1.6, 4.5, 7.4, 10.3, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.25, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_1"},
+          {"id": "brownstone_middle_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 7.35], "positions_m": [-13.2, -10.3, -7.4, -4.5, -1.6, 1.6, 4.5, 7.4, 10.3, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.35, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_2"},
+          {"id": "brownstone_parlor_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 4.10], "positions_m": [-13.2, -8.1, -5.2, -2.4, 3.4, 6.3, 8.6, 13.2], "opening_width_m": 1.55, "opening_height_m": 2.35, "pedimented": true, "mullions": 1, "transoms": 1, "profile_m": 0.15, "interior_material": "glazing_interior_3"},
+          {"id": "brownstone_arched_entries", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.60, 3.48], "positions_m": [-11.0, 0.5, 11.0], "opening_width_m": 2.35, "opening_height_m": 3.10, "arched": true, "panelled_door": true, "mullions": 1, "transoms": 0, "profile_m": 0.20, "occupied_as_pane": false, "glass_material": "signature_warm", "frame_material": "signature_warm", "interior_material": "signature_warm", "door_material": "signature_warm"},
+          {"id": "brownstone_stoop_left", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [-11.0, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "brownstone_stoop_centre", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [0.5, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "brownstone_stoop_right", "kind": "rowhouse_stoop", "axis": "front", "base_centre": [11.0, -10.62, 0.0], "width_m": 3.05, "run_m": 3.65, "rise_m": 1.55, "landing_depth_m": 1.05, "count": 10, "rail_height_m": 0.94, "stone_material": "signature_stone", "rail_material": "signature_metal"},
+          {"id": "brownstone_basement_windows", "kind": "classical_window_array", "axis": "front", "centre": [0.0, -10.58, 0.72], "positions_m": [-13.2, -8.1, -5.2, -2.4, 3.4, 6.3, 8.6, 13.2], "opening_width_m": 1.35, "opening_height_m": 1.15, "mullions": 2, "transoms": 1, "profile_m": 0.12, "frame_material": "signature_metal", "interior_material": "massing_joint"},
+          {"id": "brownstone_fence_left_outer", "kind": "corbel_array", "axis": "front", "centre": [-13.8, -12.24, 0.0], "span_m": 2.0, "count": 7, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.18, "material": "signature_metal"},
+          {"id": "brownstone_fence_left_middle", "kind": "corbel_array", "axis": "front", "centre": [-5.25, -12.24, 0.0], "span_m": 7.3, "count": 22, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.16, "material": "signature_metal"},
+          {"id": "brownstone_fence_right_middle", "kind": "corbel_array", "axis": "front", "centre": [5.75, -12.24, 0.0], "span_m": 7.3, "count": 22, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.16, "material": "signature_metal"},
+          {"id": "brownstone_fence_right_outer", "kind": "corbel_array", "axis": "front", "centre": [13.8, -12.24, 0.0], "span_m": 2.0, "count": 7, "levels_z": [0.95], "depth_m": 0.08, "height_m": 1.05, "width_ratio": 0.18, "material": "signature_metal"},
+          {"id": "brownstone_fence_left_outer_rail", "kind": "shadow_line", "axis": "front", "centre": [-13.8, -12.24, 1.47], "span_m": 2.0, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
+          {"id": "brownstone_fence_left_middle_rail", "kind": "shadow_line", "axis": "front", "centre": [-5.25, -12.24, 1.47], "span_m": 7.3, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
+          {"id": "brownstone_fence_right_middle_rail", "kind": "shadow_line", "axis": "front", "centre": [5.75, -12.24, 1.47], "span_m": 7.3, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
+          {"id": "brownstone_fence_right_outer_rail", "kind": "shadow_line", "axis": "front", "centre": [13.8, -12.24, 1.47], "span_m": 2.0, "height_m": 0.07, "depth_m": 0.10, "material": "signature_metal"},
+          {"id": "brownstone_left_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [-7.5, -10.68, 12.52], "span_m": 15.0, "height_m": 0.22, "depth_m": 0.28, "material": "signature_stone"},
+          {"id": "brownstone_left_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [-7.5, -10.72, 12.90], "span_m": 15.25, "height_m": 0.24, "depth_m": 0.34, "material": "signature_stone"},
+          {"id": "brownstone_left_cornice_brackets", "kind": "corbel_array", "axis": "front", "centre": [-7.5, -10.58, 0.0], "span_m": 14.7, "count": 14, "levels_z": [12.67], "depth_m": 0.34, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_stone"},
+          {"id": "brownstone_right_cornice_lower", "kind": "shadow_line", "axis": "front", "centre": [7.5, -10.68, 12.32], "span_m": 15.0, "height_m": 0.22, "depth_m": 0.28, "material": "signature_stone"},
+          {"id": "brownstone_right_cornice_upper", "kind": "shadow_line", "axis": "front", "centre": [7.5, -10.72, 12.70], "span_m": 15.25, "height_m": 0.24, "depth_m": 0.34, "material": "signature_stone"},
+          {"id": "brownstone_right_cornice_brackets", "kind": "corbel_array", "axis": "front", "centre": [7.5, -10.58, 0.0], "span_m": 14.7, "count": 14, "levels_z": [12.47], "depth_m": 0.34, "height_m": 0.28, "width_ratio": 0.42, "material": "signature_stone"},
+          {"id": "brownstone_left_side_low", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 4.10], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_2"},
+          {"id": "brownstone_left_side_mid", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 7.35], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_3"},
+          {"id": "brownstone_left_side_high", "kind": "classical_window_array", "axis": "left", "centre": [-15.08, 0.0, 10.60], "positions_m": [-6.0, 0.0, 6.0], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_4"},
+          {"id": "brownstone_rear_windows_low", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 4.10], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_1"},
+          {"id": "brownstone_rear_windows_mid", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 7.35], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_2"},
+          {"id": "brownstone_rear_windows_high", "kind": "classical_window_array", "axis": "rear", "centre": [0.0, 10.58, 10.60], "positions_m": [-12.5, -9.5, -6.5, -3.5, 3.5, 6.5, 9.5, 12.5], "opening_width_m": 1.35, "opening_height_m": 2.10, "mullions": 1, "transoms": 1, "profile_m": 0.12, "interior_material": "glazing_interior_3"}
+        ],
+        "target_views": ["archetype_match", "street", "front_corner_oblique", "rear_corner_oblique", "facade_close", "aerial", "context"]
+      }
     },
     "brownstone_rowhouse_red_sandstone": {
       "identity": "A single five-bay red-brick rowhouse with an elevated sandstone stoop, a shadowed garden level, tall black-framed double-hung sash, carved sandstone lintels and sills, one fixed dark-timber entrance in the centre bay and a deep bracketed pressed-metal cornice.",

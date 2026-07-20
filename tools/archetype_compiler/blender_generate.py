@@ -8434,6 +8434,8 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
     depth = float(spec.get("depth_m", 0.22))
     profile = float(spec.get("profile_m", 0.18))
     arched = bool(spec.get("arched", False))
+    pedimented = bool(spec.get("pedimented", False))
+    panelled_door = bool(spec.get("panelled_door", False))
     mullions = max(1, int(spec.get("mullions", 2)))
     transoms = max(0, int(spec.get("transoms", 2)))
     recess = float(spec.get("recess_m", 0.16))
@@ -8489,6 +8491,21 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
                 opening_width + profile * 2.6, depth + 0.08, profile * 1.15,
                 cz + opening_height / 2 + profile * 0.55, stone,
             ))
+            if pedimented and axis == "front":
+                parts.append(add_gable_roof(
+                    f"{tag}_Pediment",
+                    (opening_width + profile * 4.2, depth + 0.12, profile * 2.6),
+                    (cx + along_value, cy - depth * 0.48,
+                     cz + opening_height / 2 + profile * 1.15),
+                    stone, min(0.035, profile * 0.18), "y",
+                ))
+                for bracket_index, bracket_offset in enumerate((-opening_width * 0.42, opening_width * 0.42)):
+                    parts.append(oriented_box(
+                        f"{tag}_PedimentBracket{bracket_index}",
+                        along_value + bracket_offset, 0.05,
+                        profile * 0.55, depth + 0.10, profile * 0.90,
+                        cz + opening_height / 2 + profile * 0.38, stone,
+                    ))
         for mullion_index in range(1, mullions + 1):
             offset = -opening_width / 2 + opening_width * mullion_index / (mullions + 1)
             parts.append(oriented_box(
@@ -8500,6 +8517,30 @@ def _graph_classical_window_array(parts: list, spec: dict, mats: dict) -> None:
             parts.append(oriented_box(
                 f"{tag}_Transom{transom_index}", along_value, 0.065,
                 opening_width, 0.07, 0.055, z, frame,
+            ))
+        if panelled_door:
+            door = _graph_material(mats, spec.get("door_material", "signature_warm"))
+            leaf_width = opening_width * 0.38
+            leaf_height = opening_height * 0.58
+            leaf_z = cz - opening_height * 0.16
+            for leaf_index, leaf_offset in enumerate((-opening_width * 0.205, opening_width * 0.205)):
+                parts.append(oriented_box(
+                    f"{tag}_DoorLeaf{leaf_index}", along_value + leaf_offset, 0.10,
+                    leaf_width, 0.085, leaf_height, leaf_z, door,
+                ))
+                for panel_index, panel_z in enumerate((
+                    leaf_z - leaf_height * 0.23,
+                    leaf_z + leaf_height * 0.23,
+                )):
+                    parts.append(oriented_box(
+                        f"{tag}_DoorLeaf{leaf_index}_Panel{panel_index}",
+                        along_value + leaf_offset, 0.155,
+                        leaf_width * 0.72, 0.045, leaf_height * 0.34, panel_z, door,
+                    ))
+            parts.append(oriented_box(
+                f"{tag}_DoorTransom", along_value, 0.145,
+                opening_width * 0.82, 0.055, 0.10,
+                cz + opening_height * 0.17, door,
             ))
 
 

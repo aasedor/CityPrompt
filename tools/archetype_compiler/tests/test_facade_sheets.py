@@ -260,6 +260,47 @@ def test_neoclassical_courthouse_injects_eight_column_temple_and_seamed_hip():
     ]
 
 
+def test_classic_brownstone_injects_paired_streetwall_stoops_and_panelled_entries():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "classic_brownstone_streetwall",
+            "variant_id": "classic_brownstone_traditional",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "paired_brownstone_streetwall_v1"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 22.0,
+        "floors": 4,
+        "floor_height_m": 3.2,
+    }
+    assert {
+        "brownstone_stoop_left",
+        "brownstone_stoop_centre",
+        "brownstone_stoop_right",
+    } <= assemblies.keys()
+    entries = assemblies["brownstone_arched_entries"]
+    assert entries["positions_m"] == [-11.0, 0.5, 11.0]
+    assert entries["arched"] is True
+    assert entries["panelled_door"] is True
+    assert assemblies["brownstone_upper_windows"]["pedimented"] is True
+    assert len(assemblies["brownstone_upper_windows"]["positions_m"]) == 10
+    assert {
+        "brownstone_left_cornice_brackets",
+        "brownstone_right_cornice_brackets",
+    } <= assemblies.keys()
+    assert injected["footprint_compatibility"]["preferredProfiles"] == [
+        "rectangle", "l_shape", "u_shape",
+    ]
+
+
 def test_v21_expansion_graphs_preserve_family_specific_construction():
     """The methodology batch must not regress to one generic textured box."""
     from signature_profiles import inject_signature

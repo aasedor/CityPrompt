@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-neoclassical-courthouse-temple-v77",
+  "memory_version": "2026-07-20-paired-brownstone-streetwall-v78",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -660,6 +660,26 @@
       "symptom": "A monumental courthouse passes its body dimensions but underfills the authored native frontage",
       "cause": "The grammar width described the full ceremonial composition while the body and first stair terrace were authored narrower.",
       "correction": "Treat the stair, cheek walls and temple front as one fixed frontage landmark. Validate the complete assembled extent and let the full-width stair establish the native frontage when supported by the reference."
+    },
+    {
+      "symptom": "A paired brownstone streetwall collapses into one narrow generic rowhouse",
+      "cause": "The parent catalogue defaults described an individual 18 metre lot while the selected variant images proved two joined sections, three entrances and a 30 metre frontage.",
+      "correction": "Audit all selected-variant views before accepting catalogue defaults. Lock multi-building streetwall compositions to the evidence-led native tier and keep the joined roof, entrance and cornice count fixed."
+    },
+    {
+      "symptom": "A fixed timber entry becomes a pale glass arch or an unreadable blank slab",
+      "cause": "The generic arched-opening pane rendered in front of the authored door, or the pane and frame used one undifferentiated material without leaf construction.",
+      "correction": "Assign the arched opening's semantic layers deliberately, keep the timber backing visible, and add shadow-bearing paired leaves, panel relief and a transom before accepting the street view."
+    },
+    {
+      "symptom": "Basement ironwork cuts across a brownstone's stoops and entrance landings",
+      "cause": "A continuous frontage fence was generated without reserving the three fixed stair and landing clearances.",
+      "correction": "Segment garden-level fences between fixed entrances, terminate rails at stoop cheek walls and verify every stair remains unobstructed in the front-corner acceptance view."
+    },
+    {
+      "symptom": "A flat paired rowhouse roof loses its identity and reads as one generic slab",
+      "cause": "The central party-wall seam, stepped cornice/parapet break, chimney caps, pots and skylight rhythm were omitted because none changed the gross height envelope.",
+      "correction": "Treat paired roof seams and rooftop service silhouettes as fixed construction evidence. Preserve the two roof halves, stepped front termination and bounded chimney/skylight set, then prove them from the aerial camera."
     }
   ]
 }
