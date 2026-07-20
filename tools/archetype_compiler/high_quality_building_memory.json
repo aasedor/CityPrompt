@@ -1,6 +1,6 @@
 {
   "schema": "high-quality-building-memory@1",
-  "memory_version": "2026-07-20-brownstone-sidewall-camera-v70",
+  "memory_version": "2026-07-20-dark-frame-office-renderlock-v71",
   "quality_target": "Kinnaird-class architectural identity in a modular, real-time City Prompt GLB",
   "purpose": "Preserve the construction knowledge learned during the high-fidelity LEGO pilots and make it executable for catalogue-scale batches.",
   "non_negotiable_principles": [
@@ -570,6 +570,16 @@
       "symptom": "A quiet rowhouse party wall repeats ornate front-window surrounds across its full depth",
       "cause": "The principal elevation's decorated repeat bay was reused as the side material band and tiled across every side segment.",
       "correction": "Author a plain brick secondary-elevation band and add only evidence-supported sparse side and rear openings as physical recessed assemblies."
+    },
+    {
+      "symptom": "A compact reference office compiles as a much taller and broader generic glass tower",
+      "cause": "A variant-level massing graph inherited dimensions from a previous tower study instead of auditing all three catalogue views and the current variant bounds.",
+      "correction": "Record the reference width, depth, floor grid, structural bay count and roof termination before assembly; bypass or replace any inherited graph whose proportions contradict the authoritative variant images."
+    },
+    {
+      "symptom": "One office interior bay is smeared across an otherwise correct four-bay curtain wall",
+      "cause": "The typical-floor PBR crop isolated a single bay but the fixed canonical facade stretched that crop over the complete elevation span.",
+      "correction": "For fixed render-locked elevations, crop the complete audited floor band so every interior bay remains registered to the physical frame; reserve single-bay crops for genuinely tiled LEGO modules and derive a separate side crop for different bay counts."
     }
   ]
 }

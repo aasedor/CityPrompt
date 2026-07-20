@@ -642,6 +642,32 @@ def test_red_sandstone_rowhouse_preserves_reference_five_bay_rhythm():
         assert assemblies[f"rowhouse_rear_right_{level}"]["span_m"] == 0.92
 
 
+def test_dark_frame_office_preserves_compact_reference_proportions():
+    from signature_profiles import inject_signature
+
+    grammar = {
+        "source": {
+            "archetype_id": "modern_glass_office_institutional",
+            "variant_id": "glass_office_dark_frame",
+        },
+        "materials": {},
+    }
+    injected = inject_signature(grammar)
+    graph = injected["massing_graph"]
+    assemblies = {item["id"]: item for item in graph["assemblies"]}
+
+    assert graph["profile"] == "dark_frame_clear_glass_renderlock_v3"
+    assert graph["reference_dimensions"] == {
+        "width_m": 30.0,
+        "depth_m": 20.0,
+        "floors": 8,
+        "floor_height_m": 3.6,
+    }
+    assert assemblies["dark_glass_front_structure"]["columns"] == 4
+    assert assemblies["dark_glass_front_structure"]["rows"] == 8
+    assert len(assemblies["dark_glass_front_skin"]["levels"]) == 7
+
+
 def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     source = (Path(__file__).parents[1] / "blender_generate.py").read_text(encoding="utf-8")
 
@@ -656,6 +682,8 @@ def test_blender_facade_loader_and_all_view_set_match_quality_contract():
     assert "near_tree_offset = max(width * 0.72, 12.0)" in source
     assert "foreground_tree_x = -max(width * 1.10, 18.0)" in source
     assert "disabled_assembly_ids" in source
+    assert "focus_height * 2.75" in source
+    assert "focus_height * 2.05" in source
 
 
 def test_pbr_upgrade_preserves_fixed_end_bays_while_swapping_middle_bays():

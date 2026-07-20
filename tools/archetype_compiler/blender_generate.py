@@ -8273,13 +8273,13 @@ def render_presentation_views(
             # Pull back enough to retain the roof silhouette and projecting
             # eaves. Cropping those features made softened/gabled buildings
             # read as boxes even when their authored geometry was present.
-            ("archetype_match", (-width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.15)), focus_height * 0.50),
+            ("archetype_match", (-width * 0.88, -(depth / 2 + max(64.0, focus_height * 2.75)), focus_height * 0.50),
              (-1.0, -1.0, focus_height * 0.42), 50),
         ) if landmark else ()),
         ("street", (-width * 0.82, -(depth / 2 + 35.0), focus_height * 0.31), (0.0, -depth * 0.12, focus_height * 0.39), 46),
-        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 1.55)), focus_height * 0.58),
+        ("front_corner_oblique", (-width * 0.96, -(depth / 2 + max(46.0, focus_height * 2.05)), focus_height * 0.58),
          (0.0, -depth * 0.04, focus_height * 0.43), 50),
-        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 1.55), focus_height * 0.62),
+        ("rear_corner_oblique", (width * 0.96, depth / 2 + max(46.0, focus_height * 2.05), focus_height * 0.62),
          (0.0, depth * 0.04, focus_height * 0.43), 50),
         ("facade_close", (0.0, -(depth / 2 + max(27.0, width * 0.70)), focus_height * 0.43),
          (0.0, -depth / 2, focus_height * 0.43), 57),
